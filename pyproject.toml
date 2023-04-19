@@ -5,11 +5,16 @@ description = "Discretized Interpretable Multi Layer Perceptron (DIMLP) and rela
 authors = ["Jean-Marc Boutay <jean-marc.boutay@hesge.ch>", "Guido Bologna <guido.bologna@hesge.ch>"]
 license = "BSD-3-Clause"
 readme = "README.md"
+packages = [{include = "dimlpfidex/example"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+pybind11 = "^2.10.4"
+pybind11-global = "^2.10.4"
 
+[tool.poetry.build]
+script = "build.py"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core", "pybind11"]
 build-backend = "poetry.core.masonry.api"
