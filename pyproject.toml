@@ -5,7 +5,23 @@ description = "Discretized Interpretable Multi Layer Perceptron (DIMLP) and rela
 authors = ["Jean-Marc Boutay <jean-marc.boutay@hesge.ch>", "Guido Bologna <guido.bologna@hesge.ch>"]
 license = "BSD-3-Clause"
 readme = "README.md"
-packages = [{include = "dimlpfidex/example"}]
+packages = [
+    {include = "example"}
+]
+# see python-poetry/poetry/issues/3380
+include = [
+    { path = "example/**/CMakeLists.txt", format = "sdist" },
+    { path = "example/cpp/src/*.cpp", format = "sdist" },
+    { path = "example/cpp/include/*.hpp", format = "sdist" },
+    { path = "example/pybind/*", format = "sdist" },
+    { path = "example/**/*.so", format = "wheel" },
+    { path = "example/**/*.pyd", format = "wheel" },
+]
+exclude = [
+    "example/**/*.cpp",
+    "example/**/*.hpp",
+    "example/**/*.txt",
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"

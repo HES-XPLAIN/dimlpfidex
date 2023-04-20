@@ -1,3 +1,4 @@
+#include "../include/examples.hpp"
 #include <string>
 
 std::string hello() {

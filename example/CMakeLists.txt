@@ -1,14 +1,25 @@
 cmake_minimum_required(VERSION 3.25.2)
-project(dimlpfidex)
+project(example)
 
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
 set(CMAKE_CXX_FLAGS "-O3")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-FILE(GLOB EXAMPLE_SRC
-        dimlpfidex/example/bindings.cpp
-        dimlpfidex/example/examples.cpp
-        )
+include_directories("${CMAKE_SOURCE_DIR}/cpp/include")
+include_directories("${CMAKE_SOURCE_DIR}/pybind")
+
+file(GLOB SOURCE_FILES "cpp/src/*.cpp")
+file(GLOB HEADER_FILES "cpp/include/*.hpp")
+file(GLOB PYTHON_FILES "pybind/*.cpp" "pybind/*.hpp")
+
 
 # Check Python
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
@@ -25,6 +36,7 @@ else()
 endif()
 
 # Check pybind11
+# find_package(pybind11 REQUIRED)
 find_package(pybind11 CONFIG REQUIRED)
 if (Python_FOUND AND Python_Interpreter_FOUND AND pybind11_FOUND)
     message(STATUS "Pybind11 directories: ${pybind11_DIR}")
@@ -34,7 +46,15 @@ if (Python_FOUND AND Python_Interpreter_FOUND AND pybind11_FOUND)
     )
 endif()
 
-pybind11_add_module(example ${EXAMPLE_SRC})
 
-target_include_directories(example PRIVATE ${Python3_INCLUDE_DIRS})
-target_link_libraries(example PRIVATE ${Python3_LIBRARIES})
+pybind11_add_module(example 
+    ${SOURCE_FILES}
+    ${HEADER_FILES}
+    ${PYTHON_FILES}
+)
+
+set_target_properties(
+    example PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+
+target_link_libraries(example PUBLIC)
