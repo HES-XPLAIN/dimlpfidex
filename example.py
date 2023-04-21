@@ -1,3 +1,10 @@
+import os
+import sys
+
+if sys.platform == 'win32':
+    dir_path = os.path.abspath('example')
+    os.add_dll_directory(dir_path)
+
 from example import example
 
 def main():
