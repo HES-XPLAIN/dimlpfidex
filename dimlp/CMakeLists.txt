@@ -13,9 +13,22 @@ set(CMAKE_CXX_FLAGS "-O3")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+# Enable static compilation for MingW
+# see https://cython.readthedocs.io/en/latest/src/tutorial/appendix.html
+if (WIN32)
+    if(MINGW)
+        set(CMAKE_C_LINK_EXECUTABLE "${CMAKE_C_LINK_EXECUTABLE} -static-libgcc -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive")
+        set(CMAKE_CXX_LINK_EXECUTABLE "${CMAKE_CXX_LINK_EXECUTABLE} -static-libgcc -static-libstdc++ -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libgcc -static-libstdc++ -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive")
+        set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_C_FLAGS} -static-libgcc -liconv -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive")
+        set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -static-libgcc -static-libstdc++ -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive")
+    endif()
+endif()
+
 add_subdirectory("cpp")
 include_directories("${CMAKE_SOURCE_DIR}/pybind")
-
 
 # Check Python
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
@@ -42,6 +55,7 @@ if (Python_FOUND AND Python_Interpreter_FOUND AND pybind11_FOUND)
     )
 endif()
 
+# Build binding lib
 pybind11_add_module(dimlp 
     ${COMMON_SRC}
     ${DIMLP_TRN_SRC}
