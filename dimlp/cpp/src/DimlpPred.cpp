@@ -6,10 +6,6 @@ using namespace std;
 #include <string.h>
 #include <fstream>
 
-//#include <pybind11/pybind11.h>
-
-//namespace py = pybind11;
-
 ////////////////////////////////////////////////////////////
 
 void GiveAllParam()
@@ -315,9 +311,3 @@ int main(int nbParam, char** param)
 
    std::cout.rdbuf(cout_buff); // reset to standard output again
 }
-
-/*
-PYBIND11_MODULE(DimlpPredModule, m) {
-    m.doc() = "pybind11 example plugin"; // optional module docstring
-    m.def("GiveAllParam", &GiveAllParam, "A function that gives all parameters");
-}*/

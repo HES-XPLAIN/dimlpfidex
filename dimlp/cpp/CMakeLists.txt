@@ -289,7 +289,33 @@ FILE(GLOB CROSS_VALID_SRC
     src/virtHyp.h
 )
 
+FILE(GLOB FCT_SRC
+    src/DimlpPredFct.cpp
+    src/DimlpPredFct.h
+    src/DimlpClsFct.cpp
+    src/DimlpClsFct.h
+    src/DimlpRulFct.cpp
+    src/DimlpRulFct.h
+    src/DimlpTrnFct.cpp
+    src/DimlpTrnFct.h
+    src/DimlpBTFct.cpp
+    src/DimlpBTFct.h
+    src/DensClsFct.cpp
+    src/DensClsFct.h
+)
 
+# make variables visible to external CMakeLists.txt
+set(COMMON_SRC "${COMMON_SRC}" CACHE INTERNAL "")
+set(DIMLP_TRN_SRC "${DIMLP_TRN_SRC}" CACHE INTERNAL "")
+set(DIMLP_PRED_SRC "${DIMLP_PRED_SRC}" CACHE INTERNAL "")
+set(DIMLP_CLS_SRC "${DIMLP_CLS_SRC}" CACHE INTERNAL "")
+set(DIMLP_BT_SRC "${DIMLP_BT_SRC}" CACHE INTERNAL "")
+set(DENS_CLS_SRC "${DENS_CLS_SRC}" CACHE INTERNAL "")
+set(DIMLP_RUL_SRC "${DIMLP_RUL_SRC}" CACHE INTERNAL "")
+set(CROSS_VALID_SRC "${CROSS_VALID_SRC}" CACHE INTERNAL "")
+set(FCT_SRC "${FCT_SRC}" CACHE INTERNAL "")
+
+# build executables
 add_executable(DimlpTrn ${COMMON_SRC} ${DIMLP_TRN_SRC} src/DimlpTrn.cpp)
 add_executable(DimlpPred ${COMMON_SRC} ${DIMLP_PRED_SRC} src/DimlpPred.cpp)
 add_executable(DimlpCls ${COMMON_SRC} ${DIMLP_CLS_SRC} src/DimlpCls.cpp)
