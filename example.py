@@ -1,10 +1,9 @@
-from example import cpp_add, cpp_fib, cpp_hello
-
+from example import example
 
 def main():
-    print(cpp_hello())
-    print(cpp_add(7, 5))
-    print(cpp_fib(7))
+    print(example.cpp_hello())
+    print(example.cpp_add(7, 5))
+    print(example.cpp_fib(7))
 
 
 if __name__ == '__main__':
