@@ -31,6 +31,10 @@
 *.out
 *.app
 
+# Other files
+*.hid
+*.wts
+
 # CMake
 /cmake-build-debug
 /cmake-build-release
