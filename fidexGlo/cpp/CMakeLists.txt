@@ -32,7 +32,7 @@ FILE(GLOB FIDEXGLOSTATS_SRC
     src/getRulesFun.h
 )
 
-FILE(GLOB HYPERLOCUS_SRC
+FILE(GLOB HYPERLOCUSGLO_SRC
     src/checkFun.cpp
     src/checkFun.h
     src/dataSet.cpp
@@ -43,13 +43,13 @@ FILE(GLOB HYPERLOCUS_SRC
 set(FIDEXGLO_SRC "${FIDEXGLO_SRC}" CACHE INTERNAL "")
 set(FIDEXGLORULES_SRC "${FIDEXGLORULES_SRC}" CACHE INTERNAL "")
 set(FIDEXGLOSTATS_SRC "${FIDEXGLOSTATS_SRC}" CACHE INTERNAL "")
-set(HYPERLOCUS_SRC "${HYPERLOCUS_SRC}" CACHE INTERNAL "")
+set(HYPERLOCUSGLO_SRC "${HYPERLOCUSGLO_SRC}" CACHE INTERNAL "")
 
 # build executables
 add_executable(fidexGlo ${FIDEXGLO_SRC} src/fidexGlo.cpp)
 add_executable(fidexGloRules ${FIDEXGLORULES_SRC} src/fidexGloRules.cpp)
 add_executable(fidexGloStats ${FIDEXGLOSTATS_SRC} src/fidexGloStats.cpp)
-add_executable(hyperLocus ${HYPERLOCUS_SRC} src/hyperLocus.cpp)
+add_executable(hyperLocusGlo ${HYPERLOCUSGLO_SRC} src/hyperLocus.cpp)
 
 set_target_properties(
     fidexGlo PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
@@ -61,5 +61,5 @@ set_target_properties(
     fidexGloStats PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
 set_target_properties(
-    hyperLocus PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+    hyperLocusGlo PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
