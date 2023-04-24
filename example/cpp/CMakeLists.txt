@@ -15,8 +15,12 @@ FILE(GLOB HEADER_FILES
     src/*.hpp
 )
 
-add_library(example SHARED ${SOURCE_FILES} ${HEADER_FILES})
+# make variables visible to external CMakeLists.txt
+set(SOURCE_FILES "${SOURCE_FILES}" CACHE INTERNAL "")
+set(HEADER_FILES "${HEADER_FILES}" CACHE INTERNAL "")
+
+add_library(examplelib SHARED ${SOURCE_FILES} ${HEADER_FILES})
 
 set_target_properties(
-    example PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
+    examplelib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
 )

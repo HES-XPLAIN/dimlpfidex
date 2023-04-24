@@ -1,9 +1,9 @@
-#include "DimlpPredFct.h"
-#include "DimlpClsFct.h"
-#include "DimlpRulFct.h"
-#include "DimlpTrnFct.h"
-#include "DimlpBTFct.h"
-#include "DensClsFct.h"
+#include "../cpp/src/DimlpPredFct.h"
+#include "../cpp/src/DimlpClsFct.h"
+#include "../cpp/src/DimlpRulFct.h"
+#include "../cpp/src/DimlpTrnFct.h"
+#include "../cpp/src/DimlpBTFct.h"
+#include "../cpp/src/DensClsFct.h"
 #include <pybind11/pybind11.h>
 
 namespace py = pybind11;

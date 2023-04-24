@@ -30,6 +30,8 @@ endif()
 add_subdirectory("cpp")
 include_directories("${CMAKE_SOURCE_DIR}/pybind")
 
+file(GLOB PYTHON_FILES "pybind/*.cpp" "pybind/*.h")
+
 # Check Python
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
 if(Python_FOUND)

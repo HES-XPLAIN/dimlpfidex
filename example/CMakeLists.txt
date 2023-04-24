@@ -27,11 +27,10 @@ if (WIN32)
     endif()
 endif()
 
+add_subdirectory("cpp")
 include_directories("${CMAKE_SOURCE_DIR}/cpp/include")
 include_directories("${CMAKE_SOURCE_DIR}/pybind")
 
-file(GLOB SOURCE_FILES "cpp/src/*.cpp")
-file(GLOB HEADER_FILES "cpp/include/*.hpp")
 file(GLOB PYTHON_FILES "pybind/*.cpp" "pybind/*.hpp")
 
 # Check Python
@@ -60,7 +59,7 @@ if (Python_FOUND AND Python_Interpreter_FOUND AND pybind11_FOUND)
 endif()
 
 # Build binding lib
-pybind11_add_module(example 
+pybind11_add_module(example
     ${SOURCE_FILES}
     ${HEADER_FILES}
     ${PYTHON_FILES}
