@@ -1,1 +1,1 @@
-./DimlpTrn.exe -L IrisDatas/irisTrainData.txt -1 IrisDatas/irisTrainClass.txt -T IrisDatas/irisTestData.txt -2 IrisDatas/irisTestClass.txt -I 4 -H2 5 -O 3 -R >> outIris.txt
+./DimlpTrn.exe -L ../data/iris/irisTrainData.txt -1 ../data/iris/irisTrainClass.txt -T ../data/iris/irisTestData.txt -2 ../data/iris/irisTestClass.txt -I 4 -H2 5 -O 3 -R >> outIris.txt
