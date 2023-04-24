@@ -14,13 +14,20 @@ include = [
     { path = "example/cpp/src/*.cpp", format = "sdist" },
     { path = "example/cpp/include/*.hpp", format = "sdist" },
     { path = "example/pybind/*", format = "sdist" },
-    { path = "example/**/*.so", format = "wheel" },
-    { path = "example/**/*.pyd", format = "wheel" },
+    { path = "dimlp/**/CMakeLists.txt", format = "sdist" },
+    { path = "dimlp/cpp/src/*.cpp", format = "sdist" },
+    { path = "dimlp/cpp/src/*.h", format = "sdist" },
+    { path = "dimlp/pybind/*", format = "sdist" },
+    { path = "**/*.so", format = "wheel" },
+    { path = "**/*.pyd", format = "wheel" },
 ]
 exclude = [
     "example/**/*.cpp",
     "example/**/*.hpp",
     "example/**/*.txt",
+    "dimlp/**/*.cpp",
+    "dimlp/**/*.hpp",
+    "dimlp/**/*.txt",
 ]
 
 [tool.poetry.dependencies]
