@@ -54,7 +54,7 @@ pybind11_add_module(example
 )
 
 set_target_properties(
-    example PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
+    example PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/example
 )
 
 target_link_libraries(example PUBLIC)
