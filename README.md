@@ -68,10 +68,10 @@ poetry shell
 
 #### Linux, macOS, Windows/WSL
 
-Compile:
+At the **root** of the project, compile the submodules:
 ```
 mkdir build && cd build
-cmake -DCMAKE_BUILD_TYPE=DEBUG ..
+cmake ..
 cmake --build .
 ```
 
@@ -82,9 +82,9 @@ Get your virtualenv path:
 poetry env info | Select-String -Pattern "Path:" | Select-String -Pattern "virtualenvs"
 ```
 
-Compile:
+At the **root** of the project, compile the submodules:
 ```shell
 mkdir build && cd build
-cmake.exe -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_PREFIX_PATH="<virtualenv path>" ..
+cmake.exe -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH="<virtualenv path>" ..
 cmake.exe --build .
 ```
