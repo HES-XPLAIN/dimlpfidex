@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.25.2)
-project(fidex)
+project(hyperlocus)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -58,14 +58,14 @@ if (Python_FOUND AND Python_Interpreter_FOUND AND pybind11_FOUND)
 endif()
 
 # Build binding lib
-pybind11_add_module(fidex 
-    ${FIDEX_SRC}
+pybind11_add_module(hyperlocus 
+    ${HYPERLOCUS_SRC}
     ${PYTHON_FILES}
 )
 
 set_target_properties(
-    fidex PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/fidex
+    hyperlocus PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/hyperlocus
 )
 
-target_link_libraries(fidex PUBLIC)
+target_link_libraries(hyperlocus PUBLIC)
 ]]

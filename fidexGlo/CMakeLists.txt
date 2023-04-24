@@ -62,7 +62,6 @@ pybind11_add_module(fidexglo
     ${FIDEXGLO_SRC}
     ${FIDEXGLORULES_SRC}
     ${FIDEXGLOSTATS_SRC}
-    ${HYPERLOCUS_SRC}
     ${PYTHON_FILES}
 )
 

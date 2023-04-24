@@ -32,24 +32,15 @@ FILE(GLOB FIDEXGLOSTATS_SRC
     src/getRulesFun.h
 )
 
-FILE(GLOB HYPERLOCUSGLO_SRC
-    src/checkFun.cpp
-    src/checkFun.h
-    src/dataSet.cpp
-    src/dataSet.h
-)
-
 # make variables visible to external CMakeLists.txt
 set(FIDEXGLO_SRC "${FIDEXGLO_SRC}" CACHE INTERNAL "")
 set(FIDEXGLORULES_SRC "${FIDEXGLORULES_SRC}" CACHE INTERNAL "")
 set(FIDEXGLOSTATS_SRC "${FIDEXGLOSTATS_SRC}" CACHE INTERNAL "")
-set(HYPERLOCUSGLO_SRC "${HYPERLOCUSGLO_SRC}" CACHE INTERNAL "")
 
 # build executables
 add_executable(fidexGlo ${FIDEXGLO_SRC} src/fidexGlo.cpp)
 add_executable(fidexGloRules ${FIDEXGLORULES_SRC} src/fidexGloRules.cpp)
 add_executable(fidexGloStats ${FIDEXGLOSTATS_SRC} src/fidexGloStats.cpp)
-add_executable(hyperLocusGlo ${HYPERLOCUSGLO_SRC} src/hyperLocus.cpp)
 
 set_target_properties(
     fidexGlo PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
@@ -59,7 +50,4 @@ set_target_properties(
 )
 set_target_properties(
     fidexGloStats PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
-)
-set_target_properties(
-    hyperLocusGlo PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
