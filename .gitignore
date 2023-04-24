@@ -35,6 +35,7 @@ bin/
 # Other files
 *.hid
 *.wts
+out*.txt
 
 # CMake
 /cmake-build-debug
