@@ -2,6 +2,14 @@ using namespace std;
 #include "DimlpTrnFct.h"
 #include <random>
 #include <algorithm>
+#ifdef _WIN32
+#include <windows.h>
+#endif
+#include <unistd.h>
+#include <sys/stat.h>
+#include <fstream>
+#include <iostream>
+
 
 void GiveAllParam()
 
@@ -15,6 +23,7 @@ void GiveAllParam()
    cout << "Options are: \n\n";
    cout << "-K <K-fold cross-validation>\n"; // Not to be 10
    cout << "-N <number of times we do the cross-validation>\n"; // Not to be 10
+   cout << "-F <Folder where to save weights, predictions and datas after training>\n"; // Not to be CrossValidation
    cout << "-A <file of attributes>\n";
    cout << "-W <file of pretrained weights>\n";
    cout << "-H1 <number of neurons in the first hidden layer> ";
@@ -34,6 +43,15 @@ void GiveAllParam()
    cout << "\n-------------------------------------------------\n\n";
 }
 
+// copy in binary mode
+bool copyFile(const char *SRC, const char* DEST)
+{
+    std::ifstream src(SRC, std::ios::binary);
+    std::ofstream dest(DEST, std::ios::binary);
+    dest << src.rdbuf();
+    return src && dest;
+}
+
 ////////////////////////////////////////////////////////////
 
 int main(int nbParam, char** param)
@@ -50,6 +68,7 @@ int main(int nbParam, char** param)
 
     char* learnTar   = 0;
     char* learnFile  = 0;
+    char* folder = (char*) "CrossValidation";
 
     string genericCommand = "dimlpTrn";
 
@@ -178,6 +197,9 @@ int main(int nbParam, char** param)
 
                            break;
 
+                case 'F' : folder  = param[k];
+                           break;
+
                 default  : cout << "Illegal option: " << param[k-1] << "\n";
                             return -1;
             }
@@ -216,195 +238,264 @@ int main(int nbParam, char** param)
       return -1;
    }
 
-// Get datas on vector
-fstream fileDta;
+    // Get datas on vector
+    fstream fileDta;
 
-fileDta.open(learnFile,ios::in); //Read data file
-if(fileDta.fail()){
-    throw std::runtime_error("Error : file " + std::string(learnFile) + " not found");
-}
-vector<string> learnData;
-string line;
-while (! fileDta.eof() ){
-    getline(fileDta, line);
-    if (line.length()!=0){
-        learnData.push_back(line);
+    fileDta.open(learnFile,ios::in); //Read data file
+    if(fileDta.fail()){
+        throw std::runtime_error("Error : file " + std::string(learnFile) + " not found");
     }
-}
-fileDta.close(); //close data file
-
-
-const int nbSamples = learnData.size();
-if (K > nbSamples)
-{
-    cout << "The number of divisions of the dataset must be less or equal to the number of train samples(" << nbSamples << "), change the option -I.\n";
-    return -1;
-}
-
-vector<string> learnTarData;
-
-// Get datas on vector
-fstream fileDtaTar;
-
-fileDtaTar.open(learnTar,ios::in); //Read data file
-if(fileDtaTar.fail()){
-    throw std::runtime_error("Error : file " + std::string(learnTar) + " not found");
-}
-
-while (! fileDtaTar.eof() ){
-    getline(fileDtaTar, line);
-    if (line.length()!=0){
-        learnTarData.push_back(line);
+    vector<string> learnData;
+    string line;
+    while (! fileDta.eof() ){
+        getline(fileDta, line);
+        if (line.length()!=0){
+            learnData.push_back(line);
+        }
     }
-}
-fileDtaTar.close(); //close data file
-
-if (learnTarData.size() != nbSamples)
-{
-    cout << "The number of samples in each learn files need to be the same.\n";
-    return -1;
-}
+    fileDta.close(); //close data file
 
 
-/*for (int i=0; i<learnData.size(); i++){
-    cout << learnData[i] << endl;
-}
+    const int nbSamples = learnData.size();
+    if (K > nbSamples)
+    {
+        cout << "The number of divisions of the dataset must be less or equal to the number of train samples(" << nbSamples << "), change the option -I.\n";
+        return -1;
+    }
 
-for (int i=0; i<learnTarData.size(); i++){
-    cout << learnTarData[i] << endl;
-}*/
+    vector<string> learnTarData;
+
+    // Get datas on vector
+    fstream fileDtaTar;
+
+    fileDtaTar.open(learnTar,ios::in); //Read data file
+    if(fileDtaTar.fail()){
+        throw std::runtime_error("Error : file " + std::string(learnTar) + " not found");
+    }
+
+    while (! fileDtaTar.eof() ){
+        getline(fileDtaTar, line);
+        if (line.length()!=0){
+            learnTarData.push_back(line);
+        }
+    }
+    fileDtaTar.close(); //close data file
+
+    if (learnTarData.size() != nbSamples)
+    {
+        cout << "The number of samples in each learn files need to be the same.\n";
+        return -1;
+    }
 
 
-// Loop on N executions of cross-validation
-for (int n=0; n<N; n++){
-    // Randomly split data in K sub-parts
-    vector<vector<string>> learnDataSplit;
-    vector<vector<string>> learnTarDataSplit;
+    /*for (int i=0; i<learnData.size(); i++){
+        cout << learnData[i] << endl;
+    }
 
-    std::vector<int> indexes;
-    for (int i = 0; i < nbSamples; ++i)
-        indexes.push_back(i);
+    for (int i=0; i<learnTarData.size(); i++){
+        cout << learnTarData[i] << endl;
+    }*/
+
+
+    // Create folder if doesn't exist
+    struct stat sb;
+    if (stat(folder, &sb) == 0){
+        cout << "Please, choose a folder with -F that doesn't already exist.\n";
+        return -1;
+    }
+    #ifdef __unix__
+    mkdir(folder, 0777);
+    #elif defined(_WIN32)
+    mkdir(folder);
+    #endif
+
     std::random_device rd;
-    std::mt19937 g(rd());
-    std::shuffle(indexes.begin(), indexes.end(), g);
+    // Loop on N executions of cross-validation
+    for (int n=0; n<N; n++){
+        // Create folder
+        string folderName = std::string(folder)+"\\Execution"+std::to_string(n+1);
+        string folderNameLinux = std::string(folder)+"/Execution"+std::to_string(n+1)+"/";
 
-    // Vector of eveanly spaced numbers between 1 and nbSammples+1
-    vector<double> range;
-    double delta = nbSamples/double(K);
-    for(int i=0; i<K+1; i++) {
-        range.push_back(i*delta);
-    }
-    // Split data evenly in K groups
-    for (int k=0; k<range.size()-1; k++){
-        vector<string> tempVect;
-        vector<string> tempVectTar;
-        for(int ind=range[k]; ind<int(range[k+1]); ind ++){
-            tempVect.push_back(learnData[indexes[ind]]);
-            tempVectTar.push_back(learnTarData[indexes[ind]]);
-        }
-        learnDataSplit.push_back(tempVect);
-        learnTarDataSplit.push_back(tempVectTar);
-    }
+        #ifdef __unix__
+        mkdir(folderNameLinux.c_str(), 0777);
+        #elif defined(_WIN32)
+        mkdir(folderName.c_str());
+        #endif
 
-    int validationIdx;
-    int testIdx;
-    for(int k=0; k<K; k++){
-        // Get group index for test, validation and train
-        vector<int> trainIdx;
-        validationIdx = k;
-        testIdx = (k+1)%K;
-        for (int m=2; m<K; m++){
-            trainIdx.push_back((k+m)%K);
-        }
 
-        //Creation of train, test and validation files (temp files)
-        ofstream trainFile("tempTrain.txt");
-        if(trainFile.fail()){
-            throw std::runtime_error("Error : temp train file cound'nt open");
+
+        // Randomly split data in K sub-parts
+        vector<vector<string>> learnDataSplit;
+        vector<vector<string>> learnTarDataSplit;
+
+        std::vector<int> indexes;
+        for (int i = 0; i < nbSamples; ++i)
+            indexes.push_back(i);
+        std::mt19937 g(rd());
+        std::shuffle(indexes.begin(), indexes.end(), g);
+
+        // Vector of eveanly spaced numbers between 1 and nbSammples+1
+        vector<double> range;
+        double delta = nbSamples/double(K);
+        for(int i=0; i<K+1; i++) {
+            range.push_back(i*delta);
         }
-        for (int  id : trainIdx){
-            for(string line : learnDataSplit[id]){
-                trainFile << line << endl;
+        // Split data evenly in K groups
+        for (int q=0; q<range.size()-1; q++){
+            vector<string> tempVect;
+            vector<string> tempVectTar;
+            for(int ind=range[q]; ind<int(range[q+1]); ind ++){
+                tempVect.push_back(learnData[indexes[ind]]);
+                tempVectTar.push_back(learnTarData[indexes[ind]]);
             }
+            learnDataSplit.push_back(tempVect);
+            learnTarDataSplit.push_back(tempVectTar);
         }
-        trainFile.close();
-
-        ofstream testFile("tempTest.txt");
-        if(testFile.fail()){
-            throw std::runtime_error("Error : temp test file cound'nt open");
-        }
-        for(string line : learnDataSplit[testIdx]){
-            testFile << line << endl;
-        }
-        testFile.close();
-
-        ofstream validFile("tempValid.txt");
-        if(validFile.fail()){
-            throw std::runtime_error("Error : temp valid file cound'nt open");
-        }
-        for(string line : learnDataSplit[validationIdx]){
-            validFile << line << endl;
-        }
-        validFile.close();
-
-
-        ofstream trainTarFile("tempTarTrain.txt");
-        if(trainTarFile.fail()){
-            throw std::runtime_error("Error : temp trainTar file cound'nt open");
-        }
-        for (int  id : trainIdx){
-            for(string line : learnTarDataSplit[id]){
-                trainTarFile << line << endl;
+        int validationIdx;
+        int testIdx;
+        for(int k=0; k<K; k++){ // K-fold, we shift groups by 1.
+            // Create folder
+            string folderName = std::string(folder)+"\\Execution"+std::to_string(n+1)+"\\Fold"+std::to_string(k+1);
+            string folderNameLinux = std::string(folder)+"/Execution"+std::to_string(n+1)+"/Fold"+std::to_string(k+1)+"/";
+            #ifdef __unix__
+            mkdir(folderNameLinux.c_str(), 0777);
+            #elif defined(_WIN32)
+            mkdir(folderName.c_str());
+            #endif
+            // Get group index for test, validation and train
+            vector<int> trainIdx;
+            validationIdx = k;
+            testIdx = (k+1)%K;
+            for (int m=2; m<K; m++){
+                trainIdx.push_back((k+m)%K);
             }
-        }
-        trainTarFile.close();
+            //Creation of train, test and validation files (temp files)
+            ofstream trainFile("tempTrain.txt");
+            if(trainFile.fail()){
+                throw std::runtime_error("Error : temp train file cound'nt open");
+            }
+            for (int  id : trainIdx){
+                for(string line : learnDataSplit[id]){
+                    trainFile << line << endl;
+                }
+            }
+            trainFile.close();
+            ofstream testFile("tempTest.txt");
+            if(testFile.fail()){
+                throw std::runtime_error("Error : temp test file cound'nt open");
+            }
+            for(string line : learnDataSplit[testIdx]){
+                testFile << line << endl;
+            }
+            testFile.close();
+            ofstream validFile("tempValid.txt");
+            if(validFile.fail()){
+                throw std::runtime_error("Error : temp valid file cound'nt open");
+            }
+            for(string line : learnDataSplit[validationIdx]){
+                validFile << line << endl;
+            }
+            validFile.close();
 
-        ofstream testTarFile("tempTarTest.txt");
-        if(testTarFile.fail()){
-            throw std::runtime_error("Error : temp testTar file cound'nt open");
-        }
-        for(string line : learnTarDataSplit[testIdx]){
-            testTarFile << line << endl;
-        }
-        testTarFile.close();
+            ofstream trainTarFile("tempTarTrain.txt");
+            if(trainTarFile.fail()){
+                throw std::runtime_error("Error : temp trainTar file cound'nt open");
+            }
+            for (int  id : trainIdx){
+                for(string line : learnTarDataSplit[id]){
+                    trainTarFile << line << endl;
+                }
+            }
+            trainTarFile.close();
 
-        ofstream validTarFile("tempTarValid.txt");
-        if(validTarFile.fail()){
-            throw std::runtime_error("Error : temp validTar file cound'nt open");
+            ofstream testTarFile("tempTarTest.txt");
+            if(testTarFile.fail()){
+                throw std::runtime_error("Error : temp testTar file cound'nt open");
+            }
+            for(string line : learnTarDataSplit[testIdx]){
+                testTarFile << line << endl;
+            }
+            testTarFile.close();
+
+            ofstream validTarFile("tempTarValid.txt");
+            if(validTarFile.fail()){
+                throw std::runtime_error("Error : temp validTar file cound'nt open");
+            }
+            for(string line : learnTarDataSplit[validationIdx]){
+                validTarFile << line << endl;
+            }
+            validTarFile.close();
+            // Train datas with DimlpTrn
+            string command = genericCommand;
+            command += " -L tempTrain.txt ";
+            command += "-T tempTest.txt ";
+            command += "-V tempValid.txt ";
+            command += "-1 tempTarTrain.txt ";
+            command += "-2 tempTarTest.txt ";
+            command += "-3 tempTarValid.txt ";
+
+
+            #ifdef __unix__
+            command += "-p " + std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/train.out "; // Output train pred file
+            command += "-t " + std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/test.out "; // Output test pred file
+            command += "-w " + std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/weights.wts "; // Output weight file
+            #elif defined(_WIN32)
+            command += "-p " + std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\train.out "; // Output train pred file
+            command += "-t " + std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\test.out "; // Output test pred file
+            command += "-w " + std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\weights.wts "; // Output weight file
+            #endif
+            command += "-r consoleTemp.txt"; // To not show console result
+
+            int res = dimlpTrn(command);
+            if (res == -1){
+                return -1; // If there is an error in the Trn
+            }
+
+            #ifdef __unix__
+            if (!copyFile("tempTrain.txt", (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/train.txt").c_str())){
+                cout << "File tempTrain.txt coundn't be copied.\n";
+                return -1;
+            }
+            if (!copyFile("tempTest.txt", (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/test.txt").c_str())){
+                cout << "File tempTest.txt coundn't be copied.\n";
+                return -1;
+            }
+            if (!copyFile("tempTarTrain.txt", (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/trainTarget.txt").c_str())){
+                cout << "File tempTarTrain.txt coundn't be copied.\n";
+                return -1;
+            }
+            if (!copyFile("tempTarTest.txt", (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/testTarget.txt").c_str())){
+                cout << "File tempTarTest.txt coundn't be copied.\n";
+                return -1;
+            }
+            #elif defined(_WIN32)
+                        if (!copyFile("tempTrain.txt", (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\train.txt").c_str())){
+                cout << "File tempTrain.txt coundn't be copied.\n";
+                return -1;
+            }
+            if (!copyFile("tempTest.txt", (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\test.txt").c_str())){
+                cout << "File tempTest.txt coundn't be copied.\n";
+                return -1;
+            }
+            if (!copyFile("tempTarTrain.txt", (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\trainTarget.txt").c_str())){
+                cout << "File tempTarTrain.txt coundn't be copied.\n";
+                return -1;
+            }
+            if (!copyFile("tempTarTest.txt", (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\testTarget.txt").c_str())){
+                cout << "File tempTarTest.txt coundn't be copied.\n";
+                return -1;
+            }
+            #endif
         }
-        for(string line : learnTarDataSplit[validationIdx]){
-            validTarFile << line << endl;
-        }
-        validTarFile.close();
-
-        // Train datas with DimlpTrn
-        cout << genericCommand << endl;
-        genericCommand += "-L tempTrain.txt";
-        genericCommand += "-T tempTest.txt";
-        genericCommand += "-V tempValid.txt";
-        genericCommand += "-1 tempTarTrain.txt";
-        genericCommand += "-2 tempTarTest.txt";
-        genericCommand += "-3 tempTarValid.txt";
-
-//p,t,w
-//copier les fichiers de train et de test dans le dossier aussi
-
 
     }
+
+    remove("consoleTemp.txt");
+    remove("tempTrain.txt");
+    remove("tempTest.txt");
+    remove("tempValid.txt");
+    remove("tempTarTrain.txt");
+    remove("tempTarTest.txt");
+    remove("tempTarValid.txt");
 
 }
-
-//1. boucle for sur N
-    //2 Créer K sous-ensembles de données aléatoirement sur les données (les 2 fichiers si il y en a 2, ou sur le fichier si il n'y en a qu'un)
-    //3. boucle for sur K
-        //4. Décaler les sous-ensemble de 1 et créer des temp files avec
-        //5. Appel du train avec la bonne commande
-
-//6. Delete temp files
-}
-
-
-
-// Idées : dire ou on enregistre les fichiers grâce aux options
-// Ne pas polluer le terminal, pas de règles
-// Si il y a une erreur dans un des Trn, il faut propager et stopper
