@@ -445,12 +445,31 @@ int main(int nbParam, char** param)
 
             double hypValue = hyperspace.getHyperLocus()[dimension][k];
             bool mainSampleGreater = hypValue <= mainSampleValue; // Check if main sample value is on the right of the hyperplan
-            currentHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
+            currentHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue, &mainSamplesValues[currentSample], hyperspace.getHyperLocus()); // Compute new cover samples
             currentHyperbox->computeFidelity(mainSamplesPreds[currentSample], trainPreds); // Compute fidelity
-
             // If the fidelity is better or is same with better covering but not if covering size is lower than minNbCover
+            //cout << "bigger : " << (currentHyperbox->getCoveredSamples().size() >= minNbCover) << endl;
+            cout << "Fid:" << currentHyperbox->getFidelity() << " Best Fid : " << bestHyperbox->getFidelity() << endl;
             if (currentHyperbox->getCoveredSamples().size() >= minNbCover && (currentHyperbox->getFidelity() > bestHyperbox->getFidelity() || (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() > bestHyperbox->getCoveredSamples().size()))){
-              
+              cout << "Better fid or same with bettre cov and >= 25" << endl << endl;
+              //Afficher la règle ici et à la fin quand il y a un nouveau top, pour pouvoir vérifier si sa couverture est correcte!!
+              cout << "Rule :" << endl;
+              /*for (int k=0; k<getDiscriminativeHyperplans().size() ; k++){
+                  attribut = getDiscriminativeHyperplans()[k].first%(*mainSampleData).size();
+                  hypValue = hyperLocus[getDiscriminativeHyperplans()[k].first][getDiscriminativeHyperplans()[k].second];
+                  double mainSampleValue = (*mainSampleData)[attribut];
+                  if(hypValue <= mainSampleValue){
+                  inequality = 1;
+                  //inequalityBool = 1;
+                  }
+                  else{
+                  inequality = 0;
+                  //inequalityBool = 0;
+                  }
+                  drawRule.push_back(make_tuple(attribut,inequality,hypValue));
+
+              }*/
+
               bestHyperbox->setFidelity(currentHyperbox->getFidelity()); // Update best hyperbox
               bestHyperbox->setCoveredSamples(currentHyperbox->getCoveredSamples());
               indexBestHyp = k;
@@ -459,7 +478,11 @@ int main(int nbParam, char** param)
               bestDimension = dimension;
             }
             else if(currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() == bestHyperbox->getCoveredSamples().size()){
+              cout << "Fidelity and cov same as before" << endl;
               maxHyp = k; // Index of last (for now) hyperplan which is equal to the best. 
+            }
+            else{
+              cout << "Pas bon" << endl;
             }
 
             if (bestHyperbox->getFidelity() == 1){
@@ -474,14 +497,18 @@ int main(int nbParam, char** param)
             indexBestHyp = (maxHyp+minHyp)/2;
           }
           // Rule is not added if fidelity and covering size did not increase
-          if (bestHyperbox->getFidelity() > hyperspace.getHyperbox()->getFidelity() || bestHyperbox->getCoveredSamples().size() > hyperspace.getHyperbox()->getCoveredSamples().size()){
+          if (bestHyperbox->getFidelity() > hyperspace.getHyperbox()->getFidelity() || (bestHyperbox->getFidelity() == hyperspace.getHyperbox()->getFidelity() && bestHyperbox->getCoveredSamples().size() > hyperspace.getHyperbox()->getCoveredSamples().size())){
             hyperspace.getHyperbox()->setFidelity(bestHyperbox->getFidelity());
             hyperspace.getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
             hyperspace.getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
+            cout << "NEW BEST! Fid : " << bestHyperbox->getFidelity() << ", Cov : " << bestHyperbox->getCoveredSamples().size() << endl << endl;
           }
         }
 
         nbIt += 1;
+        std::cout << "-------------------------------------------------" << endl;
+        std::cout << "-------------------------------------------------" << endl;
+        std::cout << "-------------------------------------------------" << endl;
       
       };
       meanFidelity += hyperspace.getHyperbox()->getFidelity();
@@ -598,4 +625,4 @@ int main(int nbParam, char** param)
 }
 
 
-  //Exemple : fidex -T datafiles/datanorm -P datafiles/dimlp.out -C datafiles/dataclass2 -S datafiles/testSampleDataCombine -H datafiles/hyperLocus -O datafiles/rule.txt -s datafiles/stats -i 100 -v 25 -d 0.5 -h 0.5
+  //Exemple : .\fidex.exe -T ../fidex/datafiles/datanorm -P ../fidex/datafiles/dimlp.out -C ../fidex/datafiles/dataclass2 -S ../fidex/datafiles/testSampleDataCombine -H ../fidex/datafiles/hyperLocus -O ../fidex/datafiles/rule.txt -s ../fidex/datafiles/stats -i 100 -v 25 -d 0.5 -h 0.5
