@@ -23,7 +23,11 @@ set(FIDEX_SRC "${FIDEX_SRC}" CACHE INTERNAL "")
 
 # build executables
 add_executable(fidex ${FIDEX_SRC} src/fidex.cpp)
+add_executable(checkCovSize ${FIDEX_SRC} src/checkCovSize.cpp)
 
 set_target_properties(
     fidex PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+)
+set_target_properties(
+    checkCovSize PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
