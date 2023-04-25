@@ -159,22 +159,61 @@ int main(int nbParam, char** param)
    // Check how many samples are covered for each rule
    int nbRule = 1;
    for(auto r: rules){
-    cout << "Rule " << std::to_string(nbRule) << " : ";
-    for (auto ant : get<0>(r)){
-        if (get<1>(ant) == 0){
-            cout << get<0>(ant) << "<" << get<2>(ant) << " ";
+        cout << "Rule " << std::to_string(nbRule) << " : ";
+
+        for (auto ant : get<0>(r)){
+            if (get<1>(ant) == 0){
+                cout << get<0>(ant) << " < " << get<2>(ant) << " ";
+            }
+            else{
+                cout << get<0>(ant) << " >= " << get<2>(ant) << " ";
+            }
         }
-        else{
-            cout << get<0>(ant) << ">=" << get<2>(ant) << " ";
+        cout << endl;
+
+        int nbCovered = 0;
+        bool covered;
+        for (int d=0; d<trainData.size(); d++){
+            covered = true;
+            for (auto ant : get<0>(r)){
+                if (get<1>(ant) == 0){
+                    if (trainData[d][get<0>(ant)] >= get<2>(ant)){
+                        
+                        covered = false;
+                        break;
+                    }
+                }
+                else{
+                    if (trainData[d][get<0>(ant)] < get<2>(ant)){
+                        covered = false;
+                        break;
+                    }
+                }
+            }
+            if (covered){
+                nbCovered += 1;
+            }
         }
-    }
-    cout << endl;
+
+
     cout << "Predicted Cov Size : " << get<1>(r) << endl;
-    cout << "True Cov Size : " << endl;
+    cout << "True Cov Size : " << nbCovered << endl << endl;
     nbRule += 1;
    }
 
+    int count = 0;
+    for (auto data: trainData){
+        if (
+            data[7]<0.282512){
+            
+            count += 1;
+        }
+    }
+    cout << count << endl;
+
+
 }
+
 
 
 // Ex : checkCovSize -T datafiles/datanorm -R datafiles/rule.txt

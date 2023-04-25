@@ -404,7 +404,6 @@ int main(int nbParam, char** param)
       int nbIt = 0;
 
       while(hyperspace.getHyperbox()->getFidelity() != 1 && nbIt<itMax){ // While fidelity of our hyperbox is not 100%
-
         unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
         //cout << endl << "It." << nbIt << " F : " << hyperspace.getHyperbox()->getFidelity() << ", att : " << attribut << endl;
         Hyperbox* bestHyperbox = new Hyperbox(); // best hyperbox to choose for next step
@@ -423,7 +422,7 @@ int main(int nbParam, char** param)
 
         vector<int> currentCovSamp;
         
-        for (int d=0; d<nbIn; d++){
+        for (int d=0; d<nbIn; d++){ // Loop on all dimensions
           if (bestHyperbox->getFidelity() == 1){
               break;
           }
@@ -451,6 +450,7 @@ int main(int nbParam, char** param)
 
             // If the fidelity is better or is same with better covering but not if covering size is lower than minNbCover
             if (currentHyperbox->getCoveredSamples().size() >= minNbCover && (currentHyperbox->getFidelity() > bestHyperbox->getFidelity() || (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() > bestHyperbox->getCoveredSamples().size()))){
+              
               bestHyperbox->setFidelity(currentHyperbox->getFidelity()); // Update best hyperbox
               bestHyperbox->setCoveredSamples(currentHyperbox->getCoveredSamples());
               indexBestHyp = k;
@@ -473,10 +473,14 @@ int main(int nbParam, char** param)
           if (maxHyp != -1){
             indexBestHyp = (maxHyp+minHyp)/2;
           }
-          hyperspace.getHyperbox()->setFidelity(bestHyperbox->getFidelity());
-          hyperspace.getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
-          hyperspace.getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
+          // Rule is not added if fidelity and covering size did not increase
+          if (bestHyperbox->getFidelity() > hyperspace.getHyperbox()->getFidelity() || bestHyperbox->getCoveredSamples().size() > hyperspace.getHyperbox()->getCoveredSamples().size()){
+            hyperspace.getHyperbox()->setFidelity(bestHyperbox->getFidelity());
+            hyperspace.getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
+            hyperspace.getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
+          }
         }
+
         nbIt += 1;
       
       };
