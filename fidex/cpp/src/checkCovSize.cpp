@@ -201,10 +201,11 @@ int main(int nbParam, char** param)
     nbRule += 1;
    }
 
+
     int count = 0;
     for (auto data: trainData){
         if (
-            data[7]<0.282512){
+            data[7]<0.282512 && data[14]<0.123020){
             
             count += 1;
         }
@@ -216,4 +217,4 @@ int main(int nbParam, char** param)
 
 
 
-// Ex : checkCovSize -T datafiles/datanorm -R datafiles/rule.txt
+// Ex : .\checkCovSize.exe -T ../fidex/datafiles/datanorm -R ../fidex/datafiles/rule.txt
