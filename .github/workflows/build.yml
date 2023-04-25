@@ -1,0 +1,46 @@
+
+name: Build
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"] # ["3.8", "3.9", "3.10", "3.11"]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install GCC
+        uses: egor-tensin/setup-gcc@v1
+        with:
+          version: latest
+          platform: x64
+
+      - name: Install cmake
+        uses: lukka/get-cmake@latest
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install poetry and dependencies
+        run: |
+          python -m pip install --upgrade pip
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry install
+
+      - name: Compile
+        run: |
+          mkdir build && cd build
+          poetry run cmake ..
+          poetry run cmake --build .
