@@ -59,6 +59,9 @@ pybind11-global = "^2.10.4"
 [tool.poetry.build]
 script = "build.py"
 
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.2.2"
+
 [build-system]
 requires = ["poetry-core", "pybind11"]
 build-backend = "poetry.core.masonry.api"
