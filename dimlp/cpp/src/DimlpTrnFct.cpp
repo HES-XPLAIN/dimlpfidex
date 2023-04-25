@@ -660,12 +660,12 @@ int dimlpTrn(string command){
          
 
  
-   Train.Del();
-   TrainClass.Del();
+   //Train.Del();
+   //TrainClass.Del();
 
    net->Del();
 
-   if (Test.GetNbEx() > 0)
+   /*if (Test.GetNbEx() > 0)
    {
       Test.Del();
       TestClass.Del();
@@ -675,7 +675,7 @@ int dimlpTrn(string command){
    {
       Valid.Del();
       ValidClass.Del();
-   }
+   }*/
 
    std::cout.rdbuf(cout_buff); // reset to standard output again
 
