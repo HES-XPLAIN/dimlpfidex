@@ -2,7 +2,6 @@ using namespace std;
 #include <stdlib.h>
 #include "virtHyp.h"
 #include "stairObj.h"
-#include "stringI.h"
 #include "misc.h"
 
 #include <iostream>
