@@ -66,7 +66,7 @@ pybind11_add_module(fidex
 )
 
 set_target_properties(
-    fidex PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/fidex
+    fidex PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/dimlpfidex
 )
 
 target_link_libraries(fidex PUBLIC)

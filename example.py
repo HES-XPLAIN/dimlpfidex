@@ -2,11 +2,11 @@ import os
 import sys
 
 if sys.platform == 'win32':
-    dir_path = os.path.abspath('example')
+    dir_path = os.path.abspath('dimlpfidex')
     os.add_dll_directory(dir_path)
 
-# from example import example
-from dimlp import dimlp
+# from dimlpfidex import example
+from dimlpfidex import dimlp
 
 def main():
     # print(example.cpp_hello())
