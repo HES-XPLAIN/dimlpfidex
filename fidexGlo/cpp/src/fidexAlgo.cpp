@@ -62,7 +62,9 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
           continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
         }
       }
+      bool maxHypBlocked;
       for(int k=0; k<nbHyp; k++){ // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
+        maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
         //Test if we dropout this hyperplan
         if (dropoutHyp){
           if ((double) rand() / (RAND_MAX) < dropoutHypParam){
@@ -82,10 +84,16 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
           indexBestHyp = k;
           minHyp = k; // New best
           maxHyp = -1;
+          maxHypBlocked = false; // We can increase maxHyp if next is the same
           bestDimension = dimension;
         }
         else if(currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() == bestHyperbox->getCoveredSamples().size()){
-          maxHyp = k; // Index of last (for now) hyperplan which is equal to the best. 
+          if (!maxHypBlocked){
+            maxHyp = k; // Index of last (for now) hyperplan which is equal to the best. 
+          }
+        }
+        else{
+          maxHypBlocked = true; // we can't increase maxHyp anymmore for this best hyperplan
         }
 
         if (bestHyperbox->getFidelity() == 1){
@@ -99,9 +107,12 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
       if (maxHyp != -1){
         indexBestHyp = (maxHyp+minHyp)/2;
       }
-      hyperspace->getHyperbox()->setFidelity(bestHyperbox->getFidelity());
-      hyperspace->getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
-      hyperspace->getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
+      // Rule is not added if fidelity and covering size did not increase
+      if (bestHyperbox->getFidelity() > hyperspace->getHyperbox()->getFidelity() || (bestHyperbox->getFidelity() == hyperspace->getHyperbox()->getFidelity() && bestHyperbox->getCoveredSamples().size() > hyperspace->getHyperbox()->getCoveredSamples().size())){
+        hyperspace->getHyperbox()->setFidelity(bestHyperbox->getFidelity());
+        hyperspace->getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
+        hyperspace->getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
+      }
     }
     nbIt += 1;
   
