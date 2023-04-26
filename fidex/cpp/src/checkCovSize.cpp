@@ -202,17 +202,6 @@ int main(int nbParam, char** param)
    }
 
 
-    int count = 0;
-    for (auto data: trainData){
-        if (
-            data[7]<0.282512 && data[14]<0.123020){
-            
-            count += 1;
-        }
-    }
-    cout << count << endl;
-
-
 }
 
 
