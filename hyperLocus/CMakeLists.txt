@@ -66,7 +66,7 @@ pybind11_add_module(hyperlocus
 )
 
 set_target_properties(
-    hyperlocus PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/hyperlocus
+    hyperlocus PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/dimlpfidex
 )
 
 target_link_libraries(hyperlocus PUBLIC)

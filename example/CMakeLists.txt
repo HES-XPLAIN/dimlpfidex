@@ -66,7 +66,7 @@ pybind11_add_module(example
 )
 
 set_target_properties(
-    example PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/example
+    example PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/dimlpfidex
 )
 
 target_link_libraries(example PUBLIC)
