@@ -1,8 +1,6 @@
 using namespace std;
 #include "DimlpClsFct.h"
 
-#define  HidFile "dimlp.hid"
-
 ////////////////////////////////////////////////////////////
 
 void GiveAllParam()
@@ -20,6 +18,7 @@ void GiveAllParam()
    cout << "-p <output prediction file>\n"; // If we want to specify output prediction file, not to be dimlp.out
    cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
    cout << "-o <output file with test accuracy>\n";
+   cout << "-h <output file with first hidden layer values>\n"; // Not to be dimlp.hid
    cout << "-H1 <number of neurons in the first hidden layer> ";
    cout << "(if not specified this number will be equal to the ";
    cout << "number of input neurons)\n";
@@ -77,13 +76,14 @@ void SaveFirstHid
    DataSet& data,
    Dimlp*   net,
    int      nbHid,
-   char*    outfile
+   char*    outfile,
+   char*    firsthidFile
 )
 
 {  int     p, h;
    filebuf buf;
 
-   if (buf.open(HidFile, ios_base::out) == 0){
+   if (buf.open(firsthidFile, ios_base::out) == 0){
       char errorMsg[] = "Cannot open file for writing";
       WriteError(errorMsg, outfile);
    }
@@ -91,7 +91,7 @@ void SaveFirstHid
    Layer* layer = net->GetLayer(0);
    float* hid   = layer->GetUp();
 
-   cout << "\n\n" << HidFile << ": " << "Writing ...\n";
+   cout << "\n\n" << firsthidFile << ": " << "Writing ...\n";
 
    ostream outFile(&buf);
 
@@ -107,7 +107,7 @@ void SaveFirstHid
        outFile << "\n";
    }
 
-   cout << HidFile << ": " << "Written.\n\n";
+   cout << firsthidFile << ": " << "Written.\n\n";
 }
 
 
@@ -144,6 +144,7 @@ int dimlpCls(string command){
    char* consoleFile = 0;
    char* accuracyFile = 0;
    char* testTar    = 0;
+   char* hidFile = (char*) "dimlp.hid";
 
    int       nbLayers;
    int       nbWeightLayers;
@@ -223,6 +224,9 @@ int dimlpCls(string command){
                          break;
 
               case 'o' : accuracyFile = &(commandList[k])[0];
+                         break;
+
+               case 'h' : hidFile = &(commandList[k])[0];
                          break;
 
               case 'T' : testFile   = &(commandList[k])[0];
@@ -410,7 +414,7 @@ int dimlpCls(string command){
    }
 
    SaveOutputs(Test, &net, nbOut, nbWeightLayers, predFile);
-   SaveFirstHid(Test, &net, vecNbNeurons[1], predFile);
+   SaveFirstHid(Test, &net, vecNbNeurons[1], predFile, hidFile);
 
    Test.Del();
    TestClass.Del();

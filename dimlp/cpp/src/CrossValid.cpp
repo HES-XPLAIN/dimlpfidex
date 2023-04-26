@@ -497,5 +497,5 @@ int main(int nbParam, char** param)
     remove("tempTarTrain.txt");
     remove("tempTarTest.txt");
     remove("tempTarValid.txt");
-
+    remove("dimlpValidation.out");
 }

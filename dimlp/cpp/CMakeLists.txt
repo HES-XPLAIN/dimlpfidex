@@ -27,6 +27,8 @@ FILE(GLOB COMMON_SRC
 )
 
 FILE(GLOB DIMLP_TRN_SRC
+    src/DimlpTrnFct.cpp
+    src/DimlpTrnFct.h
     src/ante.cpp
     src/ante.h
     src/attrName.cpp
@@ -70,6 +72,8 @@ FILE(GLOB DIMLP_TRN_SRC
 )
 
 FILE(GLOB DIMLP_PRED_SRC
+    src/DimlpPredFct.cpp
+    src/DimlpPredFct.h
     src/bpNN.cpp
     src/bpNN.h
     src/dimlp.cpp
@@ -91,6 +95,8 @@ FILE(GLOB DIMLP_PRED_SRC
 )
 
 FILE(GLOB DIMLP_CLS_SRC
+    src/DimlpClsFct.cpp
+    src/DimlpClsFct.h
     src/bpNN.cpp
     src/bpNN.h
     src/dimlp.cpp
@@ -112,6 +118,8 @@ FILE(GLOB DIMLP_CLS_SRC
 )
 
 FILE(GLOB DIMLP_BT_SRC
+    src/DimlpBTFct.cpp
+    src/DimlpBTFct.h
     src/ante.cpp
     src/ante.h
     src/attrName.cpp
@@ -157,6 +165,8 @@ FILE(GLOB DIMLP_BT_SRC
 )
 
 FILE(GLOB DENS_CLS_SRC
+    src/DensClsFct.cpp
+    src/DensClsFct.h
     src/ante.cpp
     src/ante.h
     src/attrName.cpp
@@ -202,6 +212,8 @@ FILE(GLOB DENS_CLS_SRC
 )
 
 FILE(GLOB DIMLP_RUL_SRC
+    src/DimlpRulFct.cpp
+    src/DimlpRulFct.h
     src/ante.cpp
     src/ante.h
     src/attrName.cpp
