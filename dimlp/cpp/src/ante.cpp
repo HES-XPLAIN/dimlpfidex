@@ -2,12 +2,13 @@ using namespace std;
 #include "ante.h"
 
 ///////////////////////////////////////////////////////////////////
- 
-Ante::Ante(int var, float val, char rel) : Rule()
+
+Ante::Ante(int var, float val, char rel)
+    : Rule()
 
 {
-   Rule::Insert(var, val, rel);
-   Rule::GoToBeg();
+  Rule::Insert(var, val, rel);
+  Rule::GoToBeg();
 }
 
 ///////////////////////////////////////////////////////////////////

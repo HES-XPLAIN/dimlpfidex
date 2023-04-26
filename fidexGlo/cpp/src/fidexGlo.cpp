@@ -1,15 +1,15 @@
-#include <time.h>
+#include "getRulesFun.h"
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <vector>
+#include <time.h>
 #include <tuple>
-#include <algorithm>
-#include "getRulesFun.h"
+#include <vector>
 
 using namespace std;
 
-void showParams(){
+void showParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 
   std::cout << "Obligatory parameters : \n\n";
@@ -21,13 +21,11 @@ void showParams(){
   std::cout << "-O <Rule output file>";
 
   std::cout << "\n-------------------------------------------------\n\n";
-
 }
 
-int main(int nbParam, char** param)
-{
+int main(int nbParam, char **param) {
 
-  try{
+  try {
 
     float temps;
     clock_t t1, t2;
@@ -35,58 +33,59 @@ int main(int nbParam, char** param)
     t1 = clock();
 
     // Import parameters
-    if(nbParam == 1){
-        showParams();
-        return -1;
+    if (nbParam == 1) {
+      showParams();
+      return -1;
     }
 
     // Parameters declaration
 
-    char* testSamplesDataFile = 0;
+    char *testSamplesDataFile = 0;
     bool testSamplesDataFileInit = false;
-    char* rulesFile = 0;
+    char *rulesFile = 0;
     bool rulesFileInit = false;
-    char* explanationFile = 0;
+    char *explanationFile = 0;
     bool explanationFileInit = false;
 
     // Import parameters
 
-    for (int p=1; p<nbParam; p++){ // We skip "fidexGlo"
-      if(*param[p] == '-'){
+    for (int p = 1; p < nbParam; p++) { // We skip "fidexGlo"
+      if (*param[p] == '-') {
         p++;
 
-          if (p >= nbParam){
-            throw std::runtime_error("Missing something at the end of the command.");
-          } 
-
-        switch(*(param[p-1] + 1)){ // Get letter after the -
-          
-          case 'S' : 
-            testSamplesDataFile = param[p];
-            testSamplesDataFileInit = true;
-            break;
-          
-          case 'R' :
-            rulesFile = param[p];
-            rulesFileInit = true;
-            break;
-
-          case 'O' :
-            explanationFile = param[p];
-            explanationFileInit = true;
-            break;
-
-          default  : // If we put another -X option
-            throw std::runtime_error("Illegal option : "+ string(param[p-1]));
+        if (p >= nbParam) {
+          throw std::runtime_error(
+              "Missing something at the end of the command.");
         }
 
+        switch (*(param[p - 1] + 1)) { // Get letter after the -
+
+        case 'S':
+          testSamplesDataFile = param[p];
+          testSamplesDataFileInit = true;
+          break;
+
+        case 'R':
+          rulesFile = param[p];
+          rulesFileInit = true;
+          break;
+
+        case 'O':
+          explanationFile = param[p];
+          explanationFileInit = true;
+          break;
+
+        default: // If we put another -X option
+          throw std::runtime_error("Illegal option : " + string(param[p - 1]));
+        }
       }
     }
 
-    if (!testSamplesDataFileInit){
-      throw std::runtime_error("The test samples data file has to be given with option -S");
+    if (!testSamplesDataFileInit) {
+      throw std::runtime_error(
+          "The test samples data file has to be given with option -S");
     }
-    if (!rulesFileInit){
+    if (!rulesFileInit) {
       throw std::runtime_error("The rules file has to be given with option -R");
     }
 
@@ -101,59 +100,71 @@ int main(int nbParam, char** param)
     vector<double> testSampleOutputValuesPredictions;
     int testSamplePred;
     fstream testData;
-    testData.open(testSamplesDataFile,ios::in); // Read data file
-    if(testData.fail()){
-      throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " not found");
+    testData.open(testSamplesDataFile, ios::in); // Read data file
+    if (testData.fail()) {
+      throw std::runtime_error("Error : file " +
+                               std::string(testSamplesDataFile) + " not found");
     }
     string line;
     bool firstLine = true;
-    while (! testData.eof() ){
+    while (!testData.eof()) {
       getline(testData, line);
-      if (line.length()!=0){
+      if (line.length() != 0) {
         std::stringstream myLine(line);
         double value;
         testSampleValues.clear();
-        while ( myLine >> value ){
+        while (myLine >> value) {
           testSampleValues.push_back(value);
         }
         testSamplesValues.push_back(testSampleValues);
-      }
-      else if (firstLine){
-        throw std::runtime_error("Error : in file " + std::string(testSamplesDataFile) + ", first line is empty");
-      }
-      else{
-        while (! testData.eof() ){
+      } else if (firstLine) {
+        throw std::runtime_error("Error : in file " +
+                                 std::string(testSamplesDataFile) +
+                                 ", first line is empty");
+      } else {
+        while (!testData.eof()) {
           getline(testData, line);
-          if(line.length()!=0){
-            throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " is not on good format, there is more than one empty line between 2 samples");
+          if (line.length() != 0) {
+            throw std::runtime_error("Error : file " +
+                                     std::string(testSamplesDataFile) +
+                                     " is not on good format, there is more "
+                                     "than one empty line between 2 samples");
           }
         }
         break; // If there is just an empty line at the end of the file
       }
-      if(!testData.eof()){
+      if (!testData.eof()) {
         getline(testData, line);
-        if (line.length()!=0){
+        if (line.length() != 0) {
           std::stringstream myLine(line);
           double value;
           testSampleOutputValuesPredictions.clear();
-          while ( myLine >> value ){
+          while (myLine >> value) {
             testSampleOutputValuesPredictions.push_back(value);
           }
-          testSamplesOutputValuesPredictions.push_back(testSampleOutputValuesPredictions);
-          testSamplePred = std::max_element(testSampleOutputValuesPredictions.begin(),testSampleOutputValuesPredictions.end()) - testSampleOutputValuesPredictions.begin();
+          testSamplesOutputValuesPredictions.push_back(
+              testSampleOutputValuesPredictions);
+          testSamplePred =
+              std::max_element(testSampleOutputValuesPredictions.begin(),
+                               testSampleOutputValuesPredictions.end()) -
+              testSampleOutputValuesPredictions.begin();
           testSamplesPreds.push_back(testSamplePred);
+        } else {
+          throw std::runtime_error("Error : file " +
+                                   std::string(testSamplesDataFile) +
+                                   " has not enough test prediction data");
         }
-        else{
-          throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " has not enough test prediction data");
-        }
+      } else {
+        throw std::runtime_error("Error : file " +
+                                 std::string(testSamplesDataFile) +
+                                 " has not enough test prediction data");
       }
-      else{
-        throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " has not enough test prediction data");
-      }
-      if(! testData.eof()){
-      getline(testData, line);
-        if (line.length()!=0){
-          throw std::runtime_error("Error : in file " + std::string(testSamplesDataFile) + ", you need to have empty lines between samples");
+      if (!testData.eof()) {
+        getline(testData, line);
+        if (line.length() != 0) {
+          throw std::runtime_error(
+              "Error : in file " + std::string(testSamplesDataFile) +
+              ", you need to have empty lines between samples");
         }
       }
       firstLine = false;
@@ -164,151 +175,173 @@ int main(int nbParam, char** param)
     int nbTestAttributs = testSamplesValues[0].size();
     const int nbClass = testSamplesOutputValuesPredictions[0].size();
 
-    for(int s=0; s<nbSamples; s++){
-      if (testSamplesValues[s].size() != nbTestAttributs){
-        throw std::runtime_error("Error : in file " + std::string(testSamplesDataFile) + ", all test datas need to have the same number of variables");
+    for (int s = 0; s < nbSamples; s++) {
+      if (testSamplesValues[s].size() != nbTestAttributs) {
+        throw std::runtime_error(
+            "Error : in file " + std::string(testSamplesDataFile) +
+            ", all test datas need to have the same number of variables");
       }
     }
 
-    for(int s=0; s<nbSamples; s++){
-      if (testSamplesOutputValuesPredictions[s].size() != nbClass){
-        throw std::runtime_error("Error : in file " + std::string(testSamplesDataFile) + ", all test datas need to have the same number of prediction values");
+    for (int s = 0; s < nbSamples; s++) {
+      if (testSamplesOutputValuesPredictions[s].size() != nbClass) {
+        throw std::runtime_error("Error : in file " +
+                                 std::string(testSamplesDataFile) +
+                                 ", all test datas need to have the same "
+                                 "number of prediction values");
       }
     }
 
     // Get rules
 
-    vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)> 
+    vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>>
+        rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov
+               // size), 0(class), 1(fidelity), 0.92(accuracy)>
     vector<string> lines; // Lines for the output stats
     vector<string> stringRules;
     getRules(rules, lines, stringRules, rulesFile, nbTestAttributs);
-    
+
     std::cout << "Files imported" << endl << endl;
 
     std::cout << "Find explanation for each sample..." << endl << endl;
 
-
     // we search explanation for each sample
 
-    for(int currentSample=0; currentSample<nbSamples; currentSample++){
-    
-      lines.push_back("Explanation for sample " + std::to_string(currentSample) + " :\n");
+    for (int currentSample = 0; currentSample < nbSamples; currentSample++) {
+
+      lines.push_back("Explanation for sample " +
+                      std::to_string(currentSample) + " :\n");
 
       // Find rules activated by this sample
       vector<int> activatedRules;
-      getActivatedRules(activatedRules, &rules, &testSamplesValues[currentSample]);
+      getActivatedRules(activatedRules, &rules,
+                        &testSamplesValues[currentSample]);
 
       // Check which rules are correct
       vector<int> correctRules;
       vector<int> notcorrectRules;
       bool notShowUncorrectRules = false;
-      if(activatedRules.size() == 0){ // If there is no activated rule
+      if (activatedRules.size() == 0) { // If there is no activated rule
         cout << "\nThere is no class activated" << endl;
-        lines.push_back("We couldn't find any global explanation for this sample.");// There is no explanation, we choose the model decision
+        lines.push_back("We couldn't find any global explanation for this "
+                        "sample."); // There is no explanation, we choose the
+                                    // model decision
         lines.push_back("We choose the model prediction.");
-        lines.push_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
-      }
-      else{ // There is some activated rules
-        for (int v : activatedRules){
-          if(get<2>(rules[v]) == testSamplesPreds[currentSample]){ // Check if the class of the rule is the predicted one
+        lines.push_back("The predicted class is " +
+                        std::to_string(testSamplesPreds[currentSample]));
+      } else { // There is some activated rules
+        for (int v : activatedRules) {
+          if (get<2>(rules[v]) ==
+              testSamplesPreds[currentSample]) { // Check if the class of the
+                                                 // rule is the predicted one
             correctRules.push_back(v);
-          }
-          else{
+          } else {
             notcorrectRules.push_back(v);
           }
         }
-        if(correctRules.size() == 0){ // If there is no correct rule
+        if (correctRules.size() == 0) { // If there is no correct rule
           int ancientClass = get<2>(rules[activatedRules[0]]);
-          bool allSameClass = true; // Check if all the rules choose the same class
-          for (int v : activatedRules){
-            if(get<2>(rules[v]) != ancientClass){
+          bool allSameClass =
+              true; // Check if all the rules choose the same class
+          for (int v : activatedRules) {
+            if (get<2>(rules[v]) != ancientClass) {
               allSameClass = false;
               break;
             }
           }
-          if (allSameClass){
+          if (allSameClass) {
             notShowUncorrectRules = true;
-            if (activatedRules.size()>1){
-              lines.push_back("We didn't found any rule with same prediction as the model (class " + std::to_string(testSamplesPreds[currentSample]) + "), but we found "+ std::to_string(activatedRules.size()) + " rules with class " + std::to_string(ancientClass) + " :\n");
+            if (activatedRules.size() > 1) {
+              lines.push_back(
+                  "We didn't found any rule with same prediction as the model "
+                  "(class " +
+                  std::to_string(testSamplesPreds[currentSample]) +
+                  "), but we found " + std::to_string(activatedRules.size()) +
+                  " rules with class " + std::to_string(ancientClass) + " :\n");
+            } else {
+              lines.push_back("We didn't found any rule with same prediction "
+                              "as the model (class " +
+                              std::to_string(testSamplesPreds[currentSample]) +
+                              "), but we found 1 rule with class " +
+                              std::to_string(ancientClass) + " :\n");
             }
-            else{
-              lines.push_back("We didn't found any rule with same prediction as the model (class " + std::to_string(testSamplesPreds[currentSample]) + "), but we found 1 rule with class " + std::to_string(ancientClass) + " :\n");
+            for (int v = 0; v < activatedRules.size(); v++) {
+              lines.push_back("R" + std::to_string(v + 1) + ": " +
+                              stringRules[activatedRules[v]]);
             }
-            for(int v=0; v<activatedRules.size(); v++){
-              lines.push_back("R" + std::to_string(v+1) + ": " + stringRules[activatedRules[v]]);
-            }
-          }
-          else{
+          } else {
             cout << "\nThere is no correct rule for this sample." << endl;
-            lines.push_back("We couldn't find any global explanation for this sample."); // There is no explanation, we choose the model decision
+            lines.push_back("We couldn't find any global explanation for this "
+                            "sample."); // There is no explanation, we choose
+                                        // the model decision
             lines.push_back("We choose the model prediction.");
-            lines.push_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
+            lines.push_back("The predicted class is " +
+                            std::to_string(testSamplesPreds[currentSample]));
           }
 
-        }
-        else{ // There is an explanation which is caracterised by the correct rules
-          if (correctRules.size() > 1){
-            lines.push_back("We have found " + std::to_string(correctRules.size()) + " global rules explaining the model prediction :\n"); // There is no explanation, we choose the model decision
+        } else { // There is an explanation which is caracterised by the correct
+                 // rules
+          if (correctRules.size() > 1) {
+            lines.push_back("We have found " +
+                            std::to_string(correctRules.size()) +
+                            " global rules explaining the model prediction "
+                            ":\n"); // There is no explanation, we choose the
+                                    // model decision
+          } else {
+            lines.push_back(
+                "We have found 1 global rule explaining the model prediction "
+                ":\n"); // There is no explanation, we choose the model decision
           }
-          else{
-            lines.push_back("We have found 1 global rule explaining the model prediction :\n"); // There is no explanation, we choose the model decision
-          }
-          for(int c=0; c<correctRules.size(); c++){
-            lines.push_back("R" + std::to_string(c+1) + ": " + stringRules[correctRules[c]]);
+          for (int c = 0; c < correctRules.size(); c++) {
+            lines.push_back("R" + std::to_string(c + 1) + ": " +
+                            stringRules[correctRules[c]]);
           }
         }
       }
-      if (!notShowUncorrectRules){
-        if(notcorrectRules.size()!=0){
+      if (!notShowUncorrectRules) {
+        if (notcorrectRules.size() != 0) {
           lines.push_back("\nActivated rules without correct decision class :");
-          for(int n=0; n<notcorrectRules.size(); n++){
-            lines.push_back("F" + std::to_string(n+1) + ": " + stringRules[notcorrectRules[n]]);
+          for (int n = 0; n < notcorrectRules.size(); n++) {
+            lines.push_back("F" + std::to_string(n + 1) + ": " +
+                            stringRules[notcorrectRules[n]]);
           }
-        }
-        else{
+        } else {
           lines.push_back("\nThere is no uncorrect rules.");
         }
       }
 
-    lines.push_back("\n--------------------------------------------------------------------\n");
-
+      lines.push_back("\n------------------------------------------------------"
+                      "--------------\n");
     }
 
-
-
-
-
-
-
     // Show result on consol
-    for (string l : lines){
+    for (string l : lines) {
       cout << l << endl;
     }
 
     // Output global explanation result
-    if(explanationFileInit){
-      ofstream outputFile (explanationFile);
-      if(outputFile.is_open()){
-        for (int l=0; l<lines.size(); l++){
-          outputFile << lines[l]+"\n";
+    if (explanationFileInit) {
+      ofstream outputFile(explanationFile);
+      if (outputFile.is_open()) {
+        for (int l = 0; l < lines.size(); l++) {
+          outputFile << lines[l] + "\n";
         }
         outputFile.close();
-      }
-      else{
-        throw std::runtime_error("Error : Couldn't open explanation extraction file " + std::string(explanationFile) + ".");
+      } else {
+        throw std::runtime_error(
+            "Error : Couldn't open explanation extraction file " +
+            std::string(explanationFile) + ".");
       }
     }
 
-
     t2 = clock();
-    temps = (float)(t2-t1)/CLOCKS_PER_SEC;
+    temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
     std::printf("\nFull execution time = %f sec\n", temps);
-  }
-  catch (const char* msg) {
+  } catch (const char *msg) {
     std::printf(msg);
     cerr << msg << endl;
   }
-
 }
 
-// Exemple : fidexGlo -S datafiles/testSampleData -R datafiles/globalRules.txt -O datafiles/explanation.txt
+// Exemple : fidexGlo -S datafiles/testSampleData -R datafiles/globalRules.txt
+// -O datafiles/explanation.txt
