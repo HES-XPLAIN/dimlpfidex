@@ -34,7 +34,7 @@ void GiveAllParam()
 }
 
 ////////////////////////////////////////////////////////////
-#define JOBLOC "/home/ubuntu/job/"
+
 int dimlpRul(string command){
 
     // Parsing the command
