@@ -4,8 +4,6 @@
 using namespace std;
 #include <iostream>
 
-#define WRITERULES 1
-
 #ifndef  FROMREAL
 #include "rulePro.h"
 #include "bpNN.h"

@@ -5,7 +5,7 @@ using namespace std;
 #include <iostream>
 #include "randFun.h"
 
-#ifndef  WRITERULES
+#ifndef  DATASETS
 #include "dataSet.h"
 #endif
 
