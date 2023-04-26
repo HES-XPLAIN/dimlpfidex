@@ -19,7 +19,7 @@ void GiveAllParam()
    cout << "-W <file of weights> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
    cout << " <Options>\n\n";
-   
+
    cout << "Options are: \n\n";
    cout << "-A <file of attributes>\n";
    cout << "-V <validation set file>\n";
@@ -255,8 +255,8 @@ int main(int nbParam, char** param)
          for (k=1, arch.GoToBeg(); k<=arch.GetNbEl(); k++, arch.GoToNext())
          {
              vecNbNeurons[k] = arch.GetVal();
- 
-             if (vecNbNeurons[k] == 0) 
+
+             if (vecNbNeurons[k] == 0)
              {
                 cout << "The number of neurons must be greater than 0.\n";
                 return -1;
@@ -277,8 +277,8 @@ int main(int nbParam, char** param)
          for (k=1, arch.GoToBeg(); k<=arch.GetNbEl(); k++, arch.GoToNext())
          {
              vecNbNeurons[k+1] = arch.GetVal();
- 
-             if (vecNbNeurons[k+1] == 0) 
+
+             if (vecNbNeurons[k+1] == 0)
              {
                 cout << "The number of neurons must be greater than 0.\n";
                 return -1;
@@ -427,8 +427,8 @@ int main(int nbParam, char** param)
 // ----------------------------------------------------------------------
 
    All = Train;
-    
-   cout << "Extraction Part :: " << endl;  
+
+   cout << "Extraction Part :: " << endl;
 
    if (Valid.GetNbEx() > 0)
    {
@@ -449,7 +449,7 @@ int main(int nbParam, char** param)
       Attr = attr;
    }
 
-   RealHyp ryp(All, &net, quant, nbIn, 
+   RealHyp ryp(All, &net, quant, nbIn,
                vecNbNeurons[1] / nbIn, nbWeightLayers);
 
    filebuf buf;
@@ -467,10 +467,10 @@ int main(int nbParam, char** param)
 
    if (ryp.TreeAborted())
    {
-      RealHyp2 ryp2(All, &net, quant, nbIn, 
+      RealHyp2 ryp2(All, &net, quant, nbIn,
                    vecNbNeurons[1] / nbIn, nbWeightLayers);
 
-      ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass, 
+      ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                                       Test, TestClass, Attr, rulesFileost);
 
       ryp2.Del();

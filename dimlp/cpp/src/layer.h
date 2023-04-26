@@ -11,10 +11,10 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
-class Layer 
+class Layer
 {
    float Eta, Mu, Flat;
-   
+
    float EtaCentre, EtaSpread;
 
    int NbDown;
@@ -38,11 +38,11 @@ class Layer
 
    void AssignParam
    (
-        float eta, 
-        float mu, 
+        float eta,
+        float mu,
         float flat,
-        int   nbDown, 
-        int   nbUp, 
+        int   nbDown,
+        int   nbUp,
         int   nbWeights,
         int   nbWeightsForInit);
 
@@ -61,7 +61,7 @@ class Layer
 //----------------------------------------------------------------
 
 public:
-   
+
    void InitWeights();
 
    int GetNbDown() { return NbDown; }
@@ -93,8 +93,8 @@ public:
            void ForwRadial();
    virtual void ForwLayer() { ForwFully(); }
 
-   void ForwAndTransf1() {ForwLayer(); ApplyTransf1(); } 
-   void ForwAndTransf2() {ForwLayer(); ApplyTransf2(); } 
+   void ForwAndTransf1() {ForwLayer(); ApplyTransf1(); }
+   void ForwAndTransf2() {ForwLayer(); ApplyTransf2(); }
 
    void ComputeDeltaOut(float target[]);
 
@@ -119,11 +119,11 @@ public:
 
    Layer
    (
-     float eta, 
+     float eta,
      float mu,
-     float flat, 
-     int   nbDown, 
-     int   nbUp, 
+     float flat,
+     int   nbDown,
+     int   nbUp,
      int   nbWeights,
      int   nbWeightsForInit);
 

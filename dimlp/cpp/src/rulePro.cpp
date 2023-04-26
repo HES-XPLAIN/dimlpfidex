@@ -189,7 +189,7 @@ void RuleProcessing::DelListCar()
    for (p=0; p<nbEx; p++)
        if (checkTab[p] == 0) break;
 
-   if (p != nbEx) 
+   if (p != nbEx)
       areAllCarried = 0;
 
    if (areAllCarried == 1)
@@ -197,7 +197,7 @@ void RuleProcessing::DelListCar()
       for (p=0; p<nbEx; p++)
           if (checkTab[p] > 1) break;
 
-      if (p == nbEx) 
+      if (p == nbEx)
          areDisj = 1;
    }
 
@@ -239,7 +239,7 @@ int RuleProcessing::CheckAllCarried(int toDrop)
    }
 
    for (p=0; p<nbEx; p++)
-       if (checkTab[p] == 0) 
+       if (checkTab[p] == 0)
        {
           delete checkTab;
           return 0;
@@ -288,7 +288,7 @@ int RuleProcessing::GoToSavedAndRemRule(int indPrune)
 
         return 1;
     }
-    
+
     return 0;
 }
 
@@ -309,7 +309,7 @@ void RuleProcessing::FastRulePrune(int nbIt)
 
         if (indMax < 0) break;
 
-        TabRules[indMax] = 0; 
+        TabRules[indMax] = 0;
         count += GoToSavedAndRemRule(indMax);
    }
 
@@ -344,7 +344,7 @@ void RuleProcessing::RulePruneByMinCar()
 
         if (indMin < 0) break;
 
-        TabRules[indMin] = 0; 
+        TabRules[indMin] = 0;
         count += GoToSavedAndRemRule(indMin);
    }
 
@@ -421,7 +421,7 @@ void RuleProcessing::ComputeGain()
            if (AreSameClass(newCarried, ClassPatNet) == 1)
            {
               diff = newCarried->GetNbEl() - oldCarried->GetNbEl();
-                     
+
               RuleInd.Insert(r);
               AntInd.Insert(a);
               Gain.Insert(diff);
@@ -469,7 +469,7 @@ void RuleProcessing::MixPrune()
 
            if (indPrune < 0) break;
 
-           Gain.DelVal(indPrune, -1111111111);  
+           Gain.DelVal(indPrune, -1111111111);
            GoToRuleAndRemAnt(indPrune);
        }
 
@@ -496,7 +496,7 @@ void RuleProcessing::RemSevThres(Rule* r)
        tabFreqLess[h]  = 0;
        tabFreqGreat[h] = 0;
    }
-   
+
    int nbAnt = r->GetNbAnt();
 
    for (a=0, r->GoToBeg(); a<nbAnt; a++, r->GoToNext())
@@ -508,7 +508,7 @@ void RuleProcessing::RemSevThres(Rule* r)
 
           case '>' : tabFreqGreat[r->GetVar()] += 1;
                      break;
-       }       
+       }
    }
 
    for (h=0; h<NbVar; h++)
@@ -629,7 +629,7 @@ void  RuleProcessing::Del()
        delete First;
        First = Current;
    }
-   
+
    NbRules = 0;
 }
 
@@ -731,7 +731,7 @@ int RuleProcessing::TryEnlargedThres()
 
                   oneCopy.SetThres(val);
               }
-           } 
+           }
        }
 
        oneCopy.Del();
@@ -785,18 +785,18 @@ void RuleProcessing::EnlargeAndPrune()
 
 RuleProcessing::RuleProcessing
 (
-   int         nbVar, 
-   int         nbHyp, 
-   DataSet     data, 
+   int         nbVar,
+   int         nbHyp,
+   DataSet     data,
    int*        classPatNet,
    ThresDescr* descr
 )
 
-{  NbRules     = 0; 
-   NbVar       = nbVar; 
-   NbHyp       = nbHyp; 
+{  NbRules     = 0;
+   NbVar       = nbVar;
+   NbHyp       = nbHyp;
 
-   Data        = data; 
+   Data        = data;
    ClassPatNet = classPatNet;
    Descr       = descr;
 }

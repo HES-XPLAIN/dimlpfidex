@@ -14,7 +14,7 @@ class LayerDimlp2 : public Layer
 
    StairObj* Stair;
 
-//----------------------------------------------------------------   
+//----------------------------------------------------------------
 
    float Activation1(float x) { return Stair->Funct(x); }
    void  ForwLayer()          { ForwSpec(); }
@@ -30,11 +30,11 @@ public:
 
    LayerDimlp2
    (
-      float    eta, 
+      float    eta,
       float    mu,
       float    flat,
-      int      nbDown, 
-      int      nbUp, 
+      int      nbDown,
+      int      nbUp,
       int      nbWeights,
       int      nbWeightsForInit,
       int      nbKnots);

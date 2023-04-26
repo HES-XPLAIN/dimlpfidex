@@ -11,7 +11,7 @@ using namespace std;
 class LayerFdimlp : public Layer
 {
 
-//----------------------------------------------------------------   
+//----------------------------------------------------------------
 
    float Activation1(float x) { return Gaussian(x); }
    float Activation2(float x) { return Gaussian(x); }
@@ -26,11 +26,11 @@ public:
 
    LayerFdimlp
    (
-      float    eta, 
+      float    eta,
       float    mu,
       float    flat,
-      int      nbDown, 
-      int      nbUp, 
+      int      nbDown,
+      int      nbUp,
       int      nbWeights,
       int      nbWeightsForInit);
 };

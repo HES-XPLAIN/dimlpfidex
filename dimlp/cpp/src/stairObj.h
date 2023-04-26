@@ -10,7 +10,7 @@ class StairObj
 {
    int     NbBins;
    int     NbKnots;    // Stair is <= activation
-    
+
    float   HiKnot;
    float   LowKnot;
    float   ValLowKnot;
@@ -30,7 +30,7 @@ class StairObj
    float Activation(float x) { return Sigmoid(x);}
 
 //----------------------------------------------------------------
-   
+
 public:
 
    float  GetHiKnot() { return HiKnot; }

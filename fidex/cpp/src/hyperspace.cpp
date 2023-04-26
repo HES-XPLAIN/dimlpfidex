@@ -46,7 +46,7 @@ Hyperbox* Hyperspace::getHyperbox(){
 }
 
 void Hyperspace::ruleExtraction(vector<double>* mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, vector<string> &lines){
-    
+
   double hypValue;
   int attribut;
   bool inequalityBool;
@@ -55,7 +55,7 @@ void Hyperspace::ruleExtraction(vector<double>* mainSampleData, const int mainSa
   string line;
   string inequality;
   for (int k=0; k<hyperbox->getDiscriminativeHyperplans().size() ; k++){
-    
+
     attribut = hyperbox->getDiscriminativeHyperplans()[k].first%(*mainSampleData).size();
     hypValue = hyperLocus[hyperbox->getDiscriminativeHyperplans()[k].first][hyperbox->getDiscriminativeHyperplans()[k].second];
     double mainSampleValue = (*mainSampleData)[attribut];
@@ -84,7 +84,7 @@ void Hyperspace::ruleExtraction(vector<double>* mainSampleData, const int mainSa
 
 double Hyperspace::computeRuleAccuracy(vector<int>* trainPreds, vector<int>* trainTrueClass, bool mainSampleCorrect){ // Percentage of correct model prediction on samples covered by the rule
   int idSample;
-  int total = 0; // Number of indexes predicted good 
+  int total = 0; // Number of indexes predicted good
   for (int i=0; i<hyperbox->getCoveredSamples().size(); i++){
     idSample = hyperbox->getCoveredSamples()[i];
     if ((*trainPreds)[idSample] == (*trainTrueClass)[idSample]){
@@ -103,7 +103,7 @@ double Hyperspace::computeRuleAccuracy(vector<int>* trainPreds, vector<int>* tra
 double Hyperspace::computeRuleConfidence(vector<vector<double>>* trainOutputValuesPredictions, const int mainSamplePred, double mainSamplePredValue){ // Mean output value of prediction of class chosen by the rule for the covered samples
   int idSample;
   int classSample;
-  double total = 0; // Number of indexes predicted good 
+  double total = 0; // Number of indexes predicted good
   for (int i=0; i<hyperbox->getCoveredSamples().size(); i++){
     idSample = hyperbox->getCoveredSamples()[i];
     total += (*trainOutputValuesPredictions)[idSample][mainSamplePred]; // value of output prediction of class chosen by the rule (mainSamplePred)

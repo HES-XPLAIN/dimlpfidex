@@ -16,11 +16,11 @@ public:
                  { return ComputeError(data, target, accuracy); }
 
 
-      void Train(DataSet& train, 
-                 DataSet& trainTar, 
-                 DataSet& test, 
+      void Train(DataSet& train,
+                 DataSet& trainTar,
+                 DataSet& test,
                  DataSet& testTar,
-                 DataSet& valid, 
+                 DataSet& valid,
                  DataSet& validTar,
                  char* accuracyFile,
                  bool fromBT = false)

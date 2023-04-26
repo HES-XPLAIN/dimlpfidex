@@ -28,14 +28,14 @@ RealHyp2::RealHyp2
    float*      out,
    int         nbOut,
    DataSet&    data,
-   BpNN*       nn, 
+   BpNN*       nn,
    int         nbBins,
    int         nbIn,
    int         multiple,
    int         nbWeightLayers
 )                             :
 
-RealHyp(globalVirt, nbNets, out, nbOut, 
+RealHyp(globalVirt, nbNets, out, nbOut,
         data, nn, nbBins, nbIn, multiple, nbWeightLayers, 333)
 {
    SetConfirmedVirt(data);

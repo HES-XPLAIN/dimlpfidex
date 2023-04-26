@@ -27,7 +27,7 @@ class CleanRuleStruct
    int NbAnt;
    int NbOut;
    int DefaultClass;
-   
+
    struct AssocAnte
    {
       int    Var;
@@ -92,7 +92,7 @@ class CleanRuleStruct
   float GlobalAcc(DataSet& data, int* vecWrong, int nbEl);
   void  ComputeAcc
   (
-     int        indClean, 
+     int        indClean,
      StringInt* carried,
      int*       indWrong,
      DataSet&   data,
@@ -118,7 +118,7 @@ class CleanRuleStruct
   void  ElseRepValid();
 
   void  RemAnt(AssocAnte* oneAnt) { oneAnt->Var = -1; }
-  int   IsAntDeleted(AssocAnte* oneAnt) 
+  int   IsAntDeleted(AssocAnte* oneAnt)
           { return ((oneAnt->Var == -1) ? 1 : 0); }
 
   int   RandomPruneAnt();

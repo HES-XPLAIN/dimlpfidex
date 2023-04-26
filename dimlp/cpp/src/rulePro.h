@@ -2,13 +2,13 @@
 #define RULEPRO_H
 
 using namespace std;
-#ifndef  DATASETS 
+#ifndef  DATASETS
 #include "dataSet.h"
 #endif
 
 #define  STRINGINT 1
 
-#ifndef  THRESDESCR 
+#ifndef  THRESDESCR
 #include "thresD.h"
 #endif
 
@@ -47,8 +47,8 @@ class RuleProcessing
    void  SetCountAntRules();
    void  SetCarriedField();
    void  DelListCar();
-   //int   CheckAllCarriedAndDisj(int toDrop); 
-   int   CheckAllCarried(int toDrop); 
+   //int   CheckAllCarriedAndDisj(int toDrop);
+   int   CheckAllCarried(int toDrop);
    void  RemCurrentRule();
    int   GoToSavedAndRemRule(int indPrune);
    void  GoToRuleAndRemAnt(int indPrune);
@@ -83,9 +83,9 @@ public:
 
    RuleProcessing
    (
-     int         nbVar, 
-     int         nbHyp, 
-     DataSet     data, 
+     int         nbVar,
+     int         nbHyp,
+     DataSet     data,
      int*        classPatNet,
      ThresDescr* descr
    );

@@ -88,11 +88,11 @@ int main(int nbParam, char** param)
 
         if (p >= nbParam){
           throw std::runtime_error("Missing something at the end of the command.");
-        } 
+        }
 
         switch(*(param[p-1] + 1)){ // Get letter after the -
-          
-          case 'T' : 
+
+          case 'T' :
             trainDataFile = param[p]; // Parameter after -T
             trainDataFileInit = true;
             break;
@@ -106,7 +106,7 @@ int main(int nbParam, char** param)
             trainDataFileTrueClass = param[p];
             trainDataFileTrueClassInit = true;
             break;
-          
+
           case 'H' :
             hyperLocusFile = param[p];
             hyperLocusFileInit = true;
@@ -232,7 +232,7 @@ int main(int nbParam, char** param)
 
     // compute hyperspace
 
-    std::cout << "Creation of hyperspace..." << endl;   
+    std::cout << "Creation of hyperspace..." << endl;
 
     Hyperspace hyperspace(hyperLocusFile); // Initialize hyperbox and get hyperplans
 
@@ -290,7 +290,7 @@ int main(int nbParam, char** param)
         if(currentMinNbCov+1 < minNbCover){
           nbProblems += 1;
         }
-        
+
         rules.push_back(rule);
       }
 
@@ -517,7 +517,7 @@ int main(int nbParam, char** param)
         // Delete covered samples
         notCoveredSamples.erase(
           std::remove_if(
-            notCoveredSamples.begin(), notCoveredSamples.end(), [&rule](int x){   
+            notCoveredSamples.begin(), notCoveredSamples.end(), [&rule](int x){
               return std::find(get<1>(rule).begin(), get<1>(rule).end(), x) != get<1>(rule).end();
               // find index of coveredSamples which is x (x is element of notCoveredSamples), std::find returns last if x not found
               // -> Removes x if it appears on coveredSamples (found before the end of coveredSamples)
@@ -550,7 +550,7 @@ int main(int nbParam, char** param)
 //--------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------
 
-    
+
     std::cout << "Rules extraction..." << endl << endl;
 
     double meanCovSize = 0;
@@ -591,7 +591,7 @@ int main(int nbParam, char** param)
       line += " Confidence : " + std::to_string(std::get<4>(chosenRules[r])) + "\n"; // Rule accuracy
       lines.push_back(line);
     }
-    
+
 
     meanCovSize/=nbRules;
     meanNbAntecedents/=nbRules;
@@ -623,7 +623,7 @@ int main(int nbParam, char** param)
     std::printf(msg);
     cerr << msg << endl;
   }
-  
+
 
 }
 

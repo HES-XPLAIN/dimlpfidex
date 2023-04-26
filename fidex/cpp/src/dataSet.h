@@ -4,7 +4,7 @@ using namespace std;
 #include <cstring>
 
 class DataSet {
-      
+
       vector<vector<double>> datas;
       vector<int> trueClasses;
       vector<int> predictions;
@@ -29,6 +29,3 @@ public:
       vector<double> getInWeights();
 
 };
-
-
-

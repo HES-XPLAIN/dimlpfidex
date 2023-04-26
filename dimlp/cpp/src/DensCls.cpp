@@ -67,7 +67,7 @@ int main(int nbParam, char** param)
    int nbIn      = 0;
    int nbOut     = 0;
    int quant     = 50;
-   
+
    char* learnFile  = 0;
    char* testFile   = 0;
    char* validFile  = 0;
@@ -108,7 +108,7 @@ int main(int nbParam, char** param)
              {
                 cout << "Missing something at the end of the command.\n";
                 return -1;
-             } 
+             }
           }
 
           switch(*(param[k-1] + 1))
@@ -289,8 +289,8 @@ int main(int nbParam, char** param)
          for (k=1, arch.GoToBeg(); k<=arch.GetNbEl(); k++, arch.GoToNext())
          {
              vecNbNeurons[k] = arch.GetVal();
- 
-             if (vecNbNeurons[k] == 0) 
+
+             if (vecNbNeurons[k] == 0)
              {
                 cout << "The number of neurons must be greater than 0.\n";
                 return -1;
@@ -311,8 +311,8 @@ int main(int nbParam, char** param)
          for (k=1, arch.GoToBeg(); k<=arch.GetNbEl(); k++, arch.GoToNext())
          {
              vecNbNeurons[k+1] = arch.GetVal();
- 
-             if (vecNbNeurons[k+1] == 0) 
+
+             if (vecNbNeurons[k+1] == 0)
              {
                 cout << "The number of neurons must be greater than 0.\n";
                 return -1;
@@ -413,7 +413,7 @@ int main(int nbParam, char** param)
 
    net->DefNetsWithWeights(weightFile);
 
-   
+
    float acc, accTest;
 
    net->ComputeAcc(Train, TrainClass, &acc, 1, predTrainFile);
@@ -474,11 +474,11 @@ int main(int nbParam, char** param)
       cout << "\n\n****************************************************\n\n";
       cout << "*** RULE EXTRACTION\n";
 
-      VirtualHyp* globVirt = net->MakeGlobalVirt(quant, nbIn, 
+      VirtualHyp* globVirt = net->MakeGlobalVirt(quant, nbIn,
                                                  vecNbNeurons[1] / nbIn);
 
-      RealHyp ryp (globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut, 
-                   All, net, quant, nbIn, vecNbNeurons[1] / nbIn, 
+      RealHyp ryp (globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut,
+                   All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
                    nbWeightLayers);
 
       if (rulesFile != 0){
@@ -490,21 +490,21 @@ int main(int nbParam, char** param)
          }
 
          ostream rulesFileost(&buf);
-         ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass, 
+         ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                                              Test, TestClass, Attr, rulesFileost);
 
          if (ryp.TreeAborted())
          {
             ryp.Del();
 
-            VirtualHyp* globVirt = net->MakeGlobalVirt(quant, nbIn, 
+            VirtualHyp* globVirt = net->MakeGlobalVirt(quant, nbIn,
                                                       vecNbNeurons[1] / nbIn);
 
-            RealHyp2 ryp2(globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut, 
-                        All, net, quant, nbIn, vecNbNeurons[1] / nbIn, 
+            RealHyp2 ryp2(globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut,
+                        All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
                         nbWeightLayers);
 
-            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass, 
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                                           Test, TestClass, Attr, rulesFileost);
 
             ryp2.Del();
@@ -515,21 +515,21 @@ int main(int nbParam, char** param)
          cout << "\n\n" << rulesFile << ": " << "Written.\n\n";
       }
       else{
-         ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass, 
+         ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                                              Test, TestClass, Attr, cout);
 
          if (ryp.TreeAborted())
          {
             ryp.Del();
 
-            VirtualHyp* globVirt = net->MakeGlobalVirt(quant, nbIn, 
+            VirtualHyp* globVirt = net->MakeGlobalVirt(quant, nbIn,
                                                       vecNbNeurons[1] / nbIn);
 
-            RealHyp2 ryp2(globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut, 
-                        All, net, quant, nbIn, vecNbNeurons[1] / nbIn, 
+            RealHyp2 ryp2(globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut,
+                        All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
                         nbWeightLayers);
 
-            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass, 
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                                           Test, TestClass, Attr, cout);
 
             ryp2.Del();

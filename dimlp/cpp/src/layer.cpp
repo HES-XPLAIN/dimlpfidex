@@ -8,11 +8,11 @@ using namespace std;
 
 void Layer::AssignParam
 (
-     float eta, 
-     float mu, 
-     float flat, 
-     int   nbDown, 
-     int   nbUp, 
+     float eta,
+     float mu,
+     float flat,
+     int   nbDown,
+     int   nbUp,
      int   nbWeights,
      int   nbWeightsForInit)
 
@@ -158,7 +158,7 @@ void Layer::ComputeDeltaDownSpec2()
 ///////////////////////////////////////////////////////////////////
 
 void Layer::AdaptBiasStand()
- 
+
 {  int i;
    float biasDelta;
 
@@ -179,7 +179,7 @@ void Layer::AdaptBiasStand()
 ///////////////////////////////////////////////////////////////////
 
 void Layer::AdaptBiasSpec2()
- 
+
 {  int   i, j;
    float biasDelta;
    float norm;
@@ -193,13 +193,13 @@ void Layer::AdaptBiasSpec2()
 
    for (i=0, j=0; i<NbUp; i++, j++, bias++, weights++, oldBias++, deltaUp++, down++, up++)
    {
-       if (j == NbDown) 
+       if (j == NbDown)
        {
           down = Down;
           j    = 0;
        }
 
-       norm = (*down - *weights) * (*down - *weights) / 
+       norm = (*down - *weights) * (*down - *weights) /
               ( (*bias) * (*bias) * (*bias) );
 
        biasDelta = (EtaSpread * (*deltaUp) * norm); /* +
@@ -314,7 +314,7 @@ void Layer::ForwSpec()
 
    for (i=0, j=0; i<NbUp; i++, j++, down++, weights++, up++, bias++)
    {
-       if (j == NbDown) 
+       if (j == NbDown)
        {
           down = Down;
           j = 0;
@@ -338,7 +338,7 @@ void Layer::ForwSpec2()
 
    for (i=0, j=0; i<NbUp; i++, j++, down++, weights++, up++, bias++)
    {
-       if (j == NbDown) 
+       if (j == NbDown)
        {
           down = Down;
           j = 0;
@@ -403,7 +403,7 @@ void Layer::AdaptWeightsFully()
    {
        for (j=0, down=Down; j<NbDown; j++, down++, weights++, oldWeights++)
        {
-           weightDelta = (Eta * (*deltaUp) * (*down)) + 
+           weightDelta = (Eta * (*deltaUp) * (*down)) +
                          (Mu * ((*weights) - (*oldWeights)));
 
            *oldWeights = *weights;
@@ -424,16 +424,16 @@ void Layer::AdaptWeightsSpec()
    float* deltaUp    = DeltaUp;
    float* weights    = Weights;
    float* oldWeights = OldWeights;
- 
+
    for (i=0, j=0; i<NbUp; i++, j++, down++, weights++, oldWeights++, deltaUp++)
    {
-       if (j == NbDown) 
+       if (j == NbDown)
        {
           down = Down;
           j    = 0;
        }
 
-       weightDelta = (Eta * (*deltaUp) * (*down)) + 
+       weightDelta = (Eta * (*deltaUp) * (*down)) +
                      (Mu * ((*weights) - (*oldWeights)));
 
        *oldWeights = *weights;
@@ -455,10 +455,10 @@ void Layer::AdaptWeightsSpec2()
    float* bias       = BiasWeights;
    float* weights    = Weights;
    float* oldWeights = OldWeights;
- 
+
    for (i=0, j=0; i<NbUp; i++, j++, down++, up++, weights++, bias++, oldWeights++, deltaUp++)
    {
-       if (j == NbDown) 
+       if (j == NbDown)
        {
           down = Down;
           j    = 0;
@@ -466,7 +466,7 @@ void Layer::AdaptWeightsSpec2()
 
        norm = (*down - *weights) / ((*bias) * (*bias));
 
-       weightDelta = (EtaCentre * (*deltaUp) * norm); /*+ 
+       weightDelta = (EtaCentre * (*deltaUp) * norm); /*+
                      (Mu * ((*weights) - (*oldWeights)));
 
        *oldWeights = *weights;
@@ -490,17 +490,17 @@ void Layer::Del()
    delete BiasWeights;
    delete OldBiasWeights;
    delete ValidBiasWeights;
-}   
+}
 
 ///////////////////////////////////////////////////////////////////
 
-Layer::Layer   
+Layer::Layer
 (
-   float eta, 
-   float mu, 
-   float flat, 
-   int   nbDown, 
-   int   nbUp, 
+   float eta,
+   float mu,
+   float flat,
+   int   nbDown,
+   int   nbUp,
    int   nbWeights,
    int   nbWeightsForInit)
 

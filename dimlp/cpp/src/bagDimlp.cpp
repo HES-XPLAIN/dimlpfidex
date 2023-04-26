@@ -13,7 +13,7 @@ using namespace std;
 
 void BagDimlp::MakeDataSets
 (
-   DataSet& masterTrain, 
+   DataSet& masterTrain,
    DataSet& masterClass,
    int      nbPat
 )
@@ -74,9 +74,9 @@ void BagDimlp::MakeDataSets
 
 void BagDimlp::TrainAll
 (
-   DataSet& masterTrain, 
+   DataSet& masterTrain,
    DataSet& masterClass,
-   DataSet& test, 
+   DataSet& test,
    DataSet& testTar,
    char genericWeightsFile[],
    char* accuracyFile
@@ -85,7 +85,7 @@ void BagDimlp::TrainAll
 {  int   n;
    char  str1[80];
    char  str2[5];
-   
+
    for (n=0; n<NbDimlpNets; n++)
    {
        cout << "\n\n-------------------------------------------------------";
@@ -106,18 +106,18 @@ void BagDimlp::TrainAll
             }
        }
 
-       VectDimlp[n] = new Dimlp(Eta, Mu, Flat, ErrParam, AccuracyParam, 
-                                DeltaErrParam, DiscrLevels, ShowErrParam, 
+       VectDimlp[n] = new Dimlp(Eta, Mu, Flat, ErrParam, AccuracyParam,
+                                DeltaErrParam, DiscrLevels, ShowErrParam,
                                 NbEpochsParam, NbLayers, NbNeurons, WeightFile);
        bool fromBT = true;
-       VectDimlp[n]->Dimlp::Train(*(VectData[n]), *(VectDataClass[n]), 
-                                  test, testTar, 
+       VectDimlp[n]->Dimlp::Train(*(VectData[n]), *(VectDataClass[n]),
+                                  test, testTar,
                                   *(ValData[n]), *(ValDataClass[n]), accuracyFile, fromBT);
-       
+
        strcpy(str1, genericWeightsFile);
        sprintf(str2, "%d", n+1);
        strcat(str1, str2);
-       strcat(str1, ".wts");             
+       strcat(str1, ".wts");
        VectDimlp[n]->Dimlp::SaveWeights(str1);
    }
 }
@@ -129,7 +129,7 @@ void BagDimlp::DefNetsWithWeights(char* prefix)
 {  int   n;
    char  str1[80];
    char  str2[5];
-   
+
    for (n=0; n<NbDimlpNets; n++)
    {
        cout << "\n\n-------------------------------------------------------";
@@ -140,8 +140,8 @@ void BagDimlp::DefNetsWithWeights(char* prefix)
        strcpy(str1, prefix);
        sprintf(str2, "%d", n+1);
        strcat(str1, str2);
-       strcat(str1, ".wts");                
-       VectDimlp[n] = new Dimlp(str1, NbLayers, NbNeurons, 
+       strcat(str1, ".wts");
+       VectDimlp[n] = new Dimlp(str1, NbLayers, NbNeurons,
                                 DiscrLevels);
    }
 }
@@ -188,7 +188,7 @@ void BagDimlp::ForwardOneExample1(DataSet& data, int index)
    for (n=0; n<NbDimlpNets; n++)
    {
        VectDimlp[n]->ForwardOneExample1(data, index);
-       
+
        ptrOut = (VectDimlp[n]->GetLayer(NbLayers-2))->GetUp();
 
        for (k=0; k<NbOut; k++)
@@ -268,7 +268,7 @@ void BagDimlp::ComputeAcc
 
        if (ansNet == ansTar)
           good++;
-       else 
+       else
           bad++;
 
        if (toWrite)
@@ -276,7 +276,7 @@ void BagDimlp::ComputeAcc
           for (o=0, ptrOut = GlobalOut; o<nbOut; o++, ptrOut++)
               //outFile << *ptrOut << " ";
               buf << *ptrOut << " ";
- 
+
           //outFile << "\n";
           buf << "\n";
       }
@@ -333,7 +333,7 @@ BagDimlp::BagDimlp
     int      nbDimlpNets,
     char    weightFile[]) :
 
-    Dimlp(eta, mu, flat, errParam, accuracyParam, deltaErrParam, 
+    Dimlp(eta, mu, flat, errParam, accuracyParam, deltaErrParam,
           discrLevels, showErrParam, nbEpochsParam, nbLayers, nbNeurons, weightFile)
 
 {  int n;
@@ -379,7 +379,7 @@ BagDimlp::BagDimlp
     char    weightFile[]) :
 
     Dimlp(0, 0, 0, 0, 0, 0, discrLevels, 0, 0, nbLayers, nbNeurons, weightFile)
-    
+
 {  int n;
 
    DiscrLevels   = discrLevels;

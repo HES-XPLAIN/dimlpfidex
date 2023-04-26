@@ -109,7 +109,7 @@ void StringInt::Del()
        PtrList = PtrList->Next;
        delete First;
        First = PtrList;
-   } 
+   }
 
    NbEl = 0;
 }

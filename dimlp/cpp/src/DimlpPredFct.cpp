@@ -12,7 +12,7 @@ void GiveAllParam()
    cout << "-W <file of weights> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
    cout << " <Options>\n\n";
-   
+
    cout << "Options are: \n\n";
    cout << "-p <output prediction file>"; // If we want to specify output prediction file, not to be dimlp.out
    cout << "-r <file where you redirect console result>"; // If we want to redirect console result to file
@@ -29,9 +29,9 @@ void GiveAllParam()
 
 void SaveOutputs
 (
-   DataSet& data, 
+   DataSet& data,
    Dimlp*   net,
-   int      nbOut, 
+   int      nbOut,
    int      nbWeightLayers,
    char*    outfile
 )
@@ -59,7 +59,7 @@ void SaveOutputs
        {
            outFile << out[o] << " ";
        }
- 
+
        outFile << "\n";
    }
 
@@ -74,8 +74,8 @@ int dimlpPred(string command){
     const char delim = ' ';
     string s;
     stringstream ss(command);
-    while (std::getline(ss, s, delim)) { 
-            commandList.push_back(s); 
+    while (std::getline(ss, s, delim)) {
+            commandList.push_back(s);
         }
     int nbParam = commandList.size();
 
@@ -165,7 +165,7 @@ int dimlpPred(string command){
 
                 case 'p' : predFile = &(commandList[k])[0];
                             break;
-                
+
                 case 'r' : consoleFile = &(commandList[k])[0];
                             break;
 
@@ -250,8 +250,8 @@ int dimlpPred(string command){
             for (k=1, arch.GoToBeg(); k<=arch.GetNbEl(); k++, arch.GoToNext())
             {
                 vecNbNeurons[k] = arch.GetVal();
-    
-                if (vecNbNeurons[k] == 0) 
+
+                if (vecNbNeurons[k] == 0)
                 {
                     cout << "The number of neurons must be greater than 0.\n";
                     return -1;
@@ -272,8 +272,8 @@ int dimlpPred(string command){
             for (k=1, arch.GoToBeg(); k<=arch.GetNbEl(); k++, arch.GoToNext())
             {
                 vecNbNeurons[k+1] = arch.GetVal();
-    
-                if (vecNbNeurons[k+1] == 0) 
+
+                if (vecNbNeurons[k+1] == 0)
                 {
                     cout << "The number of neurons must be greater than 0.\n";
                     return -1;

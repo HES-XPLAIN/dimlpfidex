@@ -46,7 +46,7 @@ int CheckFloat(char* str)
 
    for (i=0, countDot=0; str[i] != '\0'; i++)
       if (str[i] == '.') countDot++;
-   
+
    for (i=0, countMinus=0; str[i] != '\0'; i++)
       if (str[i] == '.') countMinus++;
 

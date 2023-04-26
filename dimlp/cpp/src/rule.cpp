@@ -85,10 +85,9 @@ void Rule::Del()
        delete FirstAnt;
        FirstAnt = PtrAnt;
    }
-   
+
    NbAnt = 0;
 }
 
 
 ///////////////////////////////////////////////////////////////////
- 

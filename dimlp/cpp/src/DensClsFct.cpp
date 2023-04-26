@@ -46,11 +46,11 @@ int densCls(string command){
     const char delim = ' ';
     string s;
     stringstream ss(command);
-    while (std::getline(ss, s, delim)) { 
-            commandList.push_back(s); 
+    while (std::getline(ss, s, delim)) {
+            commandList.push_back(s);
         }
     int nbParam = commandList.size();
-    
+
     int k;
 
    DataSet  Train;
@@ -72,7 +72,7 @@ int densCls(string command){
    int nbIn      = 0;
    int nbOut     = 0;
    int quant     = 50;
-   
+
    char* learnFile  = 0;
    char* testFile   = 0;
    char* validFile  = 0;
@@ -113,7 +113,7 @@ int densCls(string command){
              {
                 cout << "Missing something at the end of the command.\n";
                 return -1;
-             } 
+             }
           }
 
           switch(commandList[k-1][1])
@@ -294,8 +294,8 @@ int densCls(string command){
          for (k=1, arch.GoToBeg(); k<=arch.GetNbEl(); k++, arch.GoToNext())
          {
              vecNbNeurons[k] = arch.GetVal();
- 
-             if (vecNbNeurons[k] == 0) 
+
+             if (vecNbNeurons[k] == 0)
              {
                 cout << "The number of neurons must be greater than 0.\n";
                 return -1;
@@ -316,8 +316,8 @@ int densCls(string command){
          for (k=1, arch.GoToBeg(); k<=arch.GetNbEl(); k++, arch.GoToNext())
          {
              vecNbNeurons[k+1] = arch.GetVal();
- 
-             if (vecNbNeurons[k+1] == 0) 
+
+             if (vecNbNeurons[k+1] == 0)
              {
                 cout << "The number of neurons must be greater than 0.\n";
                 return -1;
@@ -418,7 +418,7 @@ int densCls(string command){
 
    net->DefNetsWithWeights(weightFile);
 
-   
+
    float acc, accTest;
 
    net->ComputeAcc(Train, TrainClass, &acc, 1, predTrainFile);
@@ -479,11 +479,11 @@ int densCls(string command){
       cout << "\n\n****************************************************\n\n";
       cout << "*** RULE EXTRACTION\n";
 
-      VirtualHyp* globVirt = net->MakeGlobalVirt(quant, nbIn, 
+      VirtualHyp* globVirt = net->MakeGlobalVirt(quant, nbIn,
                                                  vecNbNeurons[1] / nbIn);
 
-      RealHyp ryp (globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut, 
-                   All, net, quant, nbIn, vecNbNeurons[1] / nbIn, 
+      RealHyp ryp (globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut,
+                   All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
                    nbWeightLayers);
 
       if (rulesFile != 0){
@@ -495,21 +495,21 @@ int densCls(string command){
          }
 
          ostream rulesFileost(&buf);
-         ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass, 
+         ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                                              Test, TestClass, Attr, rulesFileost);
 
          if (ryp.TreeAborted())
          {
             ryp.Del();
 
-            VirtualHyp* globVirt = net->MakeGlobalVirt(quant, nbIn, 
+            VirtualHyp* globVirt = net->MakeGlobalVirt(quant, nbIn,
                                                       vecNbNeurons[1] / nbIn);
 
-            RealHyp2 ryp2(globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut, 
-                        All, net, quant, nbIn, vecNbNeurons[1] / nbIn, 
+            RealHyp2 ryp2(globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut,
+                        All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
                         nbWeightLayers);
 
-            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass, 
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                                           Test, TestClass, Attr, rulesFileost);
 
             ryp2.Del();
@@ -520,21 +520,21 @@ int densCls(string command){
          cout << "\n\n" << rulesFile << ": " << "Written.\n\n";
       }
       else{
-         ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass, 
+         ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                                              Test, TestClass, Attr, cout);
 
          if (ryp.TreeAborted())
          {
             ryp.Del();
 
-            VirtualHyp* globVirt = net->MakeGlobalVirt(quant, nbIn, 
+            VirtualHyp* globVirt = net->MakeGlobalVirt(quant, nbIn,
                                                       vecNbNeurons[1] / nbIn);
 
-            RealHyp2 ryp2(globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut, 
-                        All, net, quant, nbIn, vecNbNeurons[1] / nbIn, 
+            RealHyp2 ryp2(globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut,
+                        All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
                         nbWeightLayers);
 
-            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass, 
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                                           Test, TestClass, Attr, cout);
 
             ryp2.Del();

@@ -46,9 +46,9 @@ int DataSet::FirstLecture(char nameFile[])
       char errorMsg[] = "Possible wrong number of attributes in file";
       WriteError(errorMsg, nameFile);
    }
- 
+
    cout << nameFile << ": " << "Read.\n\n";
-   
+
    return count / NbAttr;
 }
 
@@ -69,7 +69,7 @@ void DataSet::SecondLecture(char nameFile[])
    oneExample = new float[NbAttr];
 
    for (count=0; count<NbEx; count++)
-   {  
+   {
        ptr = oneExample;
 
        for (attr=0; attr<NbAttr; attr++, ptr++)
@@ -77,7 +77,7 @@ void DataSet::SecondLecture(char nameFile[])
 
        InsertExample(oneExample, count);
    }
-   
+
    delete oneExample;
 
    cout << nameFile << ": " << "Dataset structures created.\n";
@@ -115,14 +115,14 @@ StringInt* DataSet::Select(Rule* r)
            {
               case '<': if (*(*ptrPat + r->GetVar()) < r->GetVal()) continue;
                         else
-                        { 
+                        {
                            nextPat = 1;
                            break;
                         }
 
               case '>': if (*(*ptrPat + r->GetVar()) >= r->GetVal()) continue;
                         else
-                        { 
+                        {
                            nextPat = 1;
                            break;
                         }
@@ -149,7 +149,7 @@ StringInt* DataSet::Select(Rule* r, StringInt* subSet)
    int        nbAnt   = r->GetNbAnt();
    int        nbEx    = subSet->GetNbEl();
    StringInt* savePat = new StringInt;
-   
+
    for (p=0, subSet->GoToBeg(); p<nbEx; p++, subSet->GoToNext())
    {
        indPat = subSet->GetVal();
@@ -163,14 +163,14 @@ StringInt* DataSet::Select(Rule* r, StringInt* subSet)
            {
               case '<': if (*(*ptrPat + r->GetVar()) < r->GetVal()) continue;
                         else
-                        { 
+                        {
                            nextPat = 1;
                            break;
                         }
 
               case '>': if (*(*ptrPat + r->GetVar()) >= r->GetVal()) continue;
                         else
-                        { 
+                        {
                            nextPat = 1;
                            break;
                         }
@@ -203,7 +203,7 @@ DataSet::DataSet(int nbEx)
 
 {
    NbEx   = nbEx;
-   Set    = new float*[NbEx];   
+   Set    = new float*[NbEx];
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -213,7 +213,7 @@ DataSet::DataSet(char nameFile[], int nbAttr)
 {   NbAttr    = nbAttr;
     NbEx      = FirstLecture(nameFile);
     Set       = new float*[NbEx];
- 
+
     cout << "Number of patterns in file " << nameFile << ": ";
     cout << NbEx << "\n";
 

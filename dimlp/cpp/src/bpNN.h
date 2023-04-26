@@ -16,7 +16,7 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
-class BpNN 
+class BpNN
 {
       char  ReadFile[80];
       char  SaveFile[80];
@@ -117,9 +117,9 @@ public:
             DataSet& target,
             float*   accuracy);
 
-      void TrainPhase(DataSet& train, 
-                      DataSet& trainTar, 
-                      DataSet& test, 
+      void TrainPhase(DataSet& train,
+                      DataSet& trainTar,
+                      DataSet& test,
                       DataSet& testTar,
                       DataSet& valid,
                       DataSet& validTar,

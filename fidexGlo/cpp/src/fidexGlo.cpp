@@ -57,15 +57,15 @@ int main(int nbParam, char** param)
 
           if (p >= nbParam){
             throw std::runtime_error("Missing something at the end of the command.");
-          } 
+          }
 
         switch(*(param[p-1] + 1)){ // Get letter after the -
-          
-          case 'S' : 
+
+          case 'S' :
             testSamplesDataFile = param[p];
             testSamplesDataFileInit = true;
             break;
-          
+
           case 'R' :
             rulesFile = param[p];
             rulesFileInit = true;
@@ -178,11 +178,11 @@ int main(int nbParam, char** param)
 
     // Get rules
 
-    vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)> 
+    vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
     vector<string> lines; // Lines for the output stats
     vector<string> stringRules;
     getRules(rules, lines, stringRules, rulesFile, nbTestAttributs);
-    
+
     std::cout << "Files imported" << endl << endl;
 
     std::cout << "Find explanation for each sample..." << endl << endl;
@@ -191,7 +191,7 @@ int main(int nbParam, char** param)
     // we search explanation for each sample
 
     for(int currentSample=0; currentSample<nbSamples; currentSample++){
-    
+
       lines.push_back("Explanation for sample " + std::to_string(currentSample) + " :\n");
 
       // Find rules activated by this sample

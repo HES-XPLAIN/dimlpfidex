@@ -47,15 +47,15 @@ int main(int nbParam, char** param)
 
         if (p >= nbParam){
           throw std::runtime_error("Missing something at the end of the command.");
-        } 
+        }
 
         switch(*(param[p-1] + 1)){ // Get letter after the -
-          
-          case 'T' : 
+
+          case 'T' :
             trainDataFile = param[p]; // Parameter after -T
             trainDataFileInit = true;
             break;
-          case 'R' : 
+          case 'R' :
             ruleFile = param[p]; // Parameter after -R
             ruleFileInit = true;
             break;
@@ -178,7 +178,7 @@ int main(int nbParam, char** param)
             for (auto ant : get<0>(r)){
                 if (get<1>(ant) == 0){
                     if (trainData[d][get<0>(ant)] >= get<2>(ant)){
-                        
+
                         covered = false;
                         break;
                     }

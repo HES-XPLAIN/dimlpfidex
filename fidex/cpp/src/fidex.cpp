@@ -95,11 +95,11 @@ int main(int nbParam, char** param)
 
         if (p >= nbParam){
           throw std::runtime_error("Missing something at the end of the command.");
-        } 
+        }
 
         switch(*(param[p-1] + 1)){ // Get letter after the -
-          
-          case 'T' : 
+
+          case 'T' :
             trainDataFile = param[p]; // Parameter after -T
             trainDataFileInit = true;
             break;
@@ -113,12 +113,12 @@ int main(int nbParam, char** param)
             trainDataFileTrueClass = param[p];
             trainDataFileTrueClassInit = true;
             break;
-          
-          case 'S' : 
+
+          case 'S' :
             mainSamplesDataFile = param[p];
             mainSamplesDataFileInit = true;
             break;
-          
+
           case 'H' :
             hyperLocusFile = param[p];
             hyperLocusFileInit = true;
@@ -129,7 +129,7 @@ int main(int nbParam, char** param)
             ruleFileInit = true;
             break;
 
-          case 's' : 
+          case 's' :
             statsFile = param[p];
             statsFileInit = true;
             break;
@@ -421,7 +421,7 @@ int main(int nbParam, char** param)
         std::shuffle(std::begin(dimensions), std::end(dimensions), std::default_random_engine(seed));
 
         vector<int> currentCovSamp;
-        
+
         for (int d=0; d<nbIn; d++){ // Loop on all dimensions
           if (bestHyperbox->getFidelity() == 1){
               break;
@@ -461,7 +461,7 @@ int main(int nbParam, char** param)
             }
             else if(currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() == bestHyperbox->getCoveredSamples().size()){
               if (!maxHypBlocked){
-                maxHyp = k; // Index of last (for now) hyperplan which is equal to the best. 
+                maxHyp = k; // Index of last (for now) hyperplan which is equal to the best.
               }
 
             }
@@ -489,7 +489,7 @@ int main(int nbParam, char** param)
         }
 
         nbIt += 1;
-      
+
       };
       meanFidelity += hyperspace.getHyperbox()->getFidelity();
       std::cout << "Final fidelity : " << hyperspace.getHyperbox()->getFidelity() << endl;
@@ -520,14 +520,14 @@ int main(int nbParam, char** param)
       meanAccuracy += ruleAccuracy;
       std::cout << "Rule accuracy : " << ruleAccuracy << endl << endl;
 
-      
+
       int currentSamplePred = mainSamplesPreds[currentSample];
       double currentSamplePredValue = mainSamplesOutputValuesPredictions[currentSample][currentSamplePred];
       double ruleConfidence = hyperspace.computeRuleConfidence(trainOutputValuesPredictions, currentSamplePred, currentSamplePredValue); // Mean output value of prediction of class chosen by the rule for the covered samples
 
       meanConfidence += ruleConfidence;
       std::cout << "Rule confidence : " << ruleConfidence << endl << endl;
-      
+
       meanCovSize += hyperspace.getHyperbox()->getCoveredSamples().size();
       meanNbAntecedentsPerRule += hyperspace.getHyperbox()->getDiscriminativeHyperplans().size();
       hyperspace.ruleExtraction(&mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines);
@@ -589,7 +589,7 @@ int main(int nbParam, char** param)
     temps2 = (float)(d2-d1)/CLOCKS_PER_SEC;
 
     std::printf("\nTime without data import = %f sec\n", temps2);
-    
+
 
     t2 = clock();
     temps = (float)(t2-t1)/CLOCKS_PER_SEC;

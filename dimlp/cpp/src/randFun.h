@@ -13,7 +13,7 @@ class IntRandomFunction {
       void StartOnlyOnece();
 
 public:
-      
+
       IntRandomFunction();
       IntRandomFunction(int lowBound, int hiBound);
 

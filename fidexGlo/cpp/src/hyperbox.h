@@ -3,7 +3,7 @@ using namespace std;
 #include <iostream>
 #include <cstring>
 
-class Hyperbox 
+class Hyperbox
 {
       vector<pair<int, int>> discriminativeHyperplans; //Ex: 16x50
       vector<int> coveredSamples;
@@ -18,7 +18,7 @@ public:
       void setCoveredSamples(vector<int> m_coveredSamples);
       vector<pair<int, int>> getDiscriminativeHyperplans();
       void resetDiscriminativeHyperplans();
-      
+
       // Get new covered samples with a new discriminative hyperplan
       void computeCoveredSamples(vector<int> ancienCoveredSamples, int attribut, vector<vector<double>>* trainData, bool mainSampleGreater, double hypValue);
 

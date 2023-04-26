@@ -49,7 +49,7 @@ void AttrName::SecondLect()
 
    for (k=0; k<NbAttr; k++)
        inFile >> VarNames[k];
-   
+
    for (k=0; k<NbClasses; k++)
        inFile >> ClassNames[k];
 }
@@ -125,4 +125,3 @@ AttrName::AttrName(char* fileAttr, int nbAttr, int nbClasses)
 }
 
 ///////////////////////////////////////////////////////////////////
-

@@ -46,8 +46,8 @@ public:
    (
       int          nbBins,
       int          nbIn,
-      int          multiple, 
-      int          nbNets, 
+      int          multiple,
+      int          nbNets,
       VirtualHyp** virt
    );
 

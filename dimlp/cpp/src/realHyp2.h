@@ -9,7 +9,7 @@ using namespace std;
 class RealHyp2 : public RealHyp
 {
 
-//----------------------------------------------------------------   
+//----------------------------------------------------------------
 
    void GoLeft(int var, int indPat, int startVirt, int netAns)
               { Gl2(var, indPat, startVirt, netAns); }
@@ -38,7 +38,7 @@ public:
       float*      out,
       int         nbOut,
       DataSet&    data,
-      BpNN*       nn, 
+      BpNN*       nn,
       int         nbBins,
       int         nbIn,
       int         multiple,
