@@ -6,7 +6,11 @@ authors = ["Jean-Marc Boutay <jean-marc.boutay@hesge.ch>", "Guido Bologna <guido
 license = "BSD-3-Clause"
 readme = "README.md"
 packages = [
-    {include = "example"}
+    { include = "example", format = "sdist" },
+    { include = "dimlp" },
+    { include = "fidex" },
+    { include = "fidexGlo" },
+    { include = "hyperLocus" },
 ]
 # see python-poetry/poetry/issues/3380
 include = [
