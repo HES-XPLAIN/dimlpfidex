@@ -13,7 +13,7 @@ set(CMAKE_CXX_FLAGS "-O3")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-add_subdirectory("example")
+# add_subdirectory("example")
 add_subdirectory("dimlp")
 add_subdirectory("fidex")
 add_subdirectory("fidexGlo")
