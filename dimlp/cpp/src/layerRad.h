@@ -8,24 +8,31 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
-class LayerRad : public Layer {
+class LayerRad : public Layer
+{
 
-  //----------------------------------------------------------------
+//----------------------------------------------------------------   
 
-  float Activation1(float x) { return Gaussian(x); }
-  void ForwLayer() { ForwRadial(); }
+   float Activation1(float x) { return Gaussian(x); }
+   void  ForwLayer() { ForwRadial(); }
 
-  //----------------------------------------------------------------
+//----------------------------------------------------------------
 
 public:
-  LayerRad(int nbDown, int nbUp, int nbWeights, int nbWeightsForInit)
-      :
 
-        Layer(0, 0, 0, nbDown, nbUp, nbWeights, nbWeightsForInit)
+   LayerRad
+   (
+      int      nbDown, 
+      int      nbUp, 
+      int      nbWeights,
+      int      nbWeightsForInit)     :
 
-  {
-    ;
-  }
+      Layer(0, 0, 0, nbDown, nbUp, nbWeights, nbWeightsForInit)
+
+   {   
+      ;
+   }
+
 };
 
 ///////////////////////////////////////////////////////////////////

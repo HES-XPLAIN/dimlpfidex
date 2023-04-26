@@ -8,23 +8,29 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
-class LayerSP3 : public Layer {
+class LayerSP3 : public Layer
+{
 
-  //----------------------------------------------------------------
+//----------------------------------------------------------------   
 
-  float Activation1(float x) { return Power3(x); }
+   float Activation1(float x) { return Power3(x); }
 
-  //----------------------------------------------------------------
+//----------------------------------------------------------------
 
 public:
-  LayerSP3(int nbDown, int nbUp, int nbWeights, int nbWeightsForInit)
-      :
 
-        Layer(0, 0, 0, nbDown, nbUp, nbWeights, nbWeightsForInit)
+   LayerSP3
+   (
+      int      nbDown, 
+      int      nbUp, 
+      int      nbWeights,
+      int      nbWeightsForInit)     :
 
-  {
-    ;
-  }
+      Layer(0, 0, 0, nbDown, nbUp, nbWeights, nbWeightsForInit)
+
+   {   
+      ;
+   }
 };
 
 ///////////////////////////////////////////////////////////////////

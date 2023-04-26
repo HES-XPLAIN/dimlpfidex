@@ -4,128 +4,129 @@
 using namespace std;
 #include <iostream>
 
-#include "errFunct.h"
 #include "standAct.h"
+#include "errFunct.h"
 
 #define LAYER 1
 
 ///////////////////////////////////////////////////////////////////
 
-class Layer {
-  float Eta, Mu, Flat;
+class Layer 
+{
+   float Eta, Mu, Flat;
+   
+   float EtaCentre, EtaSpread;
 
-  float EtaCentre, EtaSpread;
+   int NbDown;
+   int NbUp;
+   int NbWeights;
+   int NbWeightsForInit;
 
-  int NbDown;
-  int NbUp;
-  int NbWeights;
-  int NbWeightsForInit;
+   float* Down;
+   float* DeltaDown;
+   float* Up;
+   float* DeltaUp;
 
-  float *Down;
-  float *DeltaDown;
-  float *Up;
-  float *DeltaUp;
+   float* Weights;
+   float* OldWeights;
+   float* ValidWeights;
+   float* BiasWeights;
+   float* OldBiasWeights;
+   float* ValidBiasWeights;
 
-  float *Weights;
-  float *OldWeights;
-  float *ValidWeights;
-  float *BiasWeights;
-  float *OldBiasWeights;
-  float *ValidBiasWeights;
+//----------------------------------------------------------------
 
-  //----------------------------------------------------------------
+   void AssignParam
+   (
+        float eta, 
+        float mu, 
+        float flat,
+        int   nbDown, 
+        int   nbUp, 
+        int   nbWeights,
+        int   nbWeightsForInit);
 
-  void AssignParam(float eta, float mu, float flat, int nbDown, int nbUp,
-                   int nbWeights, int nbWeightsForInit);
+   void CreateStruct();
 
-  void CreateStruct();
+   void ApplyTransf1();
+   void ApplyTransf2();
 
-  void ApplyTransf1();
-  void ApplyTransf2();
+   void ForwFully();
 
-  void ForwFully();
+   void ComputeDeltaDownStand();
 
-  void ComputeDeltaDownStand();
+   void AdaptBiasStand();
+   void AdaptWeightsFully();
 
-  void AdaptBiasStand();
-  void AdaptWeightsFully();
-
-  //----------------------------------------------------------------
+//----------------------------------------------------------------
 
 public:
-  void InitWeights();
+   
+   void InitWeights();
 
-  int GetNbDown() { return NbDown; }
-  int GetNbUp() { return NbUp; }
+   int GetNbDown() { return NbDown; }
+   int GetNbUp() { return NbUp; }
 
-  float *GetDown() { return Down; }
-  float *GetUp() { return Up; }
-  float *GetDeltaUp() { return DeltaUp; }
+   float* GetDown() { return Down; }
+   float* GetUp() { return Up; }
+   float* GetDeltaUp() { return DeltaUp; }
 
-  float *GetWeights() { return Weights; }
-  float *GetBias() { return BiasWeights; }
+   float* GetWeights() { return Weights; }
+   float* GetBias() { return BiasWeights; }
 
-  void SetDown(float pat[]) { Down = pat; }
-  void SetDeltaDown(float pat[]) { DeltaDown = pat; }
+   void SetDown(float pat[]) { Down = pat; }
+   void SetDeltaDown(float pat[]) { DeltaDown = pat; }
 
-  virtual float Activation1(float x) { return Sigmoid(x); }
-  virtual float Activation2(float x) { return Sigmoid(x); }
+   virtual float Activation1(float x) { return Sigmoid(x); }
+   virtual float Activation2(float x) { return Sigmoid(x); }
 
-  virtual float HalfErrFunct(int nbTar, float netOut[], float target[]) {
-    return Lmse(nbTar, netOut, target);
-  }
+   virtual float HalfErrFunct (int nbTar, float netOut[], float target[])
+                              { return Lmse(nbTar, netOut, target); }
 
-  void ReadWeights(istream &inFile);
-  void WriteWeights(ostream &outFile);
-  void PushWeights();
-  void PopWeights();
+   void ReadWeights(istream& inFile);
+   void WriteWeights(ostream& outFile);
+   void PushWeights();
+   void PopWeights();
 
-  void ForwSpec();
-  void ForwSpec2();
-  void ForwRadial();
-  virtual void ForwLayer() { ForwFully(); }
+           void ForwSpec();
+           void ForwSpec2();
+           void ForwRadial();
+   virtual void ForwLayer() { ForwFully(); }
 
-  void ForwAndTransf1() {
-    ForwLayer();
-    ApplyTransf1();
-  }
-  void ForwAndTransf2() {
-    ForwLayer();
-    ApplyTransf2();
-  }
+   void ForwAndTransf1() {ForwLayer(); ApplyTransf1(); } 
+   void ForwAndTransf2() {ForwLayer(); ApplyTransf2(); } 
 
-  void ComputeDeltaOut(float target[]);
+   void ComputeDeltaOut(float target[]);
 
-  void ComputeDeltaDownSpec2();
-  virtual void ComputeDeltaDown() { ComputeDeltaDownStand(); }
+           void ComputeDeltaDownSpec2();
+   virtual void ComputeDeltaDown() { ComputeDeltaDownStand(); }
 
-  void AdaptBiasSpec2();
-  virtual void AdaptBias() { AdaptBiasStand(); }
+           void AdaptBiasSpec2();
+   virtual void AdaptBias() { AdaptBiasStand(); }
 
-  void AdaptWeightsSpec();
-  void AdaptWeightsSpec2();
-  virtual void AdaptWeights() { AdaptWeightsFully(); }
+           void AdaptWeightsSpec();
+           void AdaptWeightsSpec2();
+   virtual void AdaptWeights() { AdaptWeightsFully(); }
 
-  void BackLayer() {
-    AdaptWeights();
-    AdaptBias();
-    ComputeDeltaDown();
-  }
-  void BackLayerWithout() {
-    AdaptWeights();
-    AdaptBias();
-  }
+   void BackLayer() {AdaptWeights(); AdaptBias(); ComputeDeltaDown(); }
+   void BackLayerWithout() {AdaptWeights(); AdaptBias(); }
 
-  void SetEtas(float etaCentre, float etaSpread) {
-    EtaCentre = etaCentre;
-    EtaSpread = etaSpread;
-  }
-  void Del();
+   void SetEtas(float etaCentre, float etaSpread)
+               { EtaCentre = etaCentre;  EtaSpread = etaSpread; }
+   void Del();
 
-  //----------------------------------------------------------------
+//----------------------------------------------------------------
 
-  Layer(float eta, float mu, float flat, int nbDown, int nbUp, int nbWeights,
-        int nbWeightsForInit);
+   Layer
+   (
+     float eta, 
+     float mu,
+     float flat, 
+     int   nbDown, 
+     int   nbUp, 
+     int   nbWeights,
+     int   nbWeightsForInit);
+
 };
 
 ///////////////////////////////////////////////////////////////////

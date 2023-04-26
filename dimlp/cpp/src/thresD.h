@@ -6,24 +6,26 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
-class ThresDescr {
-  OneVarThresDescr **Descr;
+class ThresDescr
+{
+   OneVarThresDescr** Descr;
 
-  int NbVar;
+   int NbVar;
 
-  //----------------------------------------------------------------
+//----------------------------------------------------------------
 
 public:
-  OneVarThresDescr *GetDescr(int var) { return Descr[var]; }
 
-  void Insert(int var, float thres, int indPat) {
-    (Descr[var])->OneVarThresDescr::Insert(thres, indPat);
-  }
+   OneVarThresDescr* GetDescr(int var) { return Descr[var]; }
 
-  void ResetAllCountPatDiscr();
-  void Del();
+   void Insert(int var, float thres, int indPat)
+        { (Descr[var])->OneVarThresDescr::Insert(thres, indPat); }
 
-  ThresDescr(int nbVar);
+   void ResetAllCountPatDiscr();
+   void Del();
+
+   ThresDescr(int nbVar);
+
 };
 
 ///////////////////////////////////////////////////////////////////

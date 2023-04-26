@@ -1,29 +1,32 @@
 using namespace std;
-#include <cstring>
-#include <iostream>
 #include <vector>
+#include <iostream>
+#include <cstring>
 
-class Hyperbox {
-  vector<pair<int, int>> discriminativeHyperplans; // Ex: 16x50
-  vector<int> coveredSamples;
-  double fidelity = -1;
+class Hyperbox 
+{
+      vector<pair<int, int>> discriminativeHyperplans; //Ex: 16x50
+      vector<int> coveredSamples;
+      double fidelity = -1;
+
 
 public:
-  Hyperbox();
-  Hyperbox(vector<pair<int, int>> m_discriminativeHyperplans);
 
-  void setCoveredSamples(vector<int> m_coveredSamples);
-  vector<pair<int, int>> getDiscriminativeHyperplans();
-  void resetDiscriminativeHyperplans();
+      Hyperbox();
+      Hyperbox(vector<pair<int, int>> m_discriminativeHyperplans);
 
-  // Get new covered samples with a new discriminative hyperplan
-  void computeCoveredSamples(vector<int> ancienCoveredSamples, int attribut,
-                             vector<vector<double>> *trainData,
-                             bool mainSampleGreater, double hypValue);
+      void setCoveredSamples(vector<int> m_coveredSamples);
+      vector<pair<int, int>> getDiscriminativeHyperplans();
+      void resetDiscriminativeHyperplans();
+      
+      // Get new covered samples with a new discriminative hyperplan
+      void computeCoveredSamples(vector<int> ancienCoveredSamples, int attribut, vector<vector<double>>* trainData, bool mainSampleGreater, double hypValue);
 
-  void computeFidelity(const int mainsamplePred, vector<int> *trainPreds);
-  double getFidelity();
-  void setFidelity(double x);
-  vector<int> getCoveredSamples();
-  void discriminateHyperplan(int i, int j);
+      void computeFidelity(const int mainsamplePred, vector<int>* trainPreds);
+      double getFidelity();
+      void setFidelity(double x);
+      vector<int> getCoveredSamples();
+      void discriminateHyperplan(int i, int j);
+
+
 };
