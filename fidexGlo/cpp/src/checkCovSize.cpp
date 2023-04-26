@@ -110,7 +110,7 @@ int main(int nbParam, char** param)
 
     while (! rulesFile.eof() ){
         getline(rulesFile, line);
-        if (line.length()!=0 && line[0]=='X'){
+        if (line.length()!=0 && (line.find("Covering size : ") != std::string::npos)){
             tuple<vector<tuple<int, bool, double>>, int> currentRule;
             std::string delimiter = "Covering size : ";
             std::string beforeCovSize = line.substr(0, line.find(delimiter));
@@ -118,7 +118,8 @@ int main(int nbParam, char** param)
             std::string afterCovSize = line;
             int covSize = stoi(afterCovSize.substr(0, line.find(" Fidelity")));
             std::string firstPart = beforeCovSize.substr(0, beforeCovSize.find(" ->"));
-            std::stringstream antString(firstPart);
+            std::string anteced = firstPart.erase(0, firstPart.find(" : X") + 3);
+            std::stringstream antString(anteced);
             string ant;
             vector <std::string> antVect;
             while ( antString >> ant ){
@@ -158,19 +159,8 @@ int main(int nbParam, char** param)
 
    // Check how many samples are covered for each rule
    int nbRule = 1;
+
    for(auto r: rules){
-        cout << "Rule " << std::to_string(nbRule) << " : ";
-
-        for (auto ant : get<0>(r)){
-            if (get<1>(ant) == 0){
-                cout << get<0>(ant) << " < " << get<2>(ant) << " ";
-            }
-            else{
-                cout << get<0>(ant) << " >= " << get<2>(ant) << " ";
-            }
-        }
-        cout << endl;
-
         int nbCovered = 0;
         bool covered;
         for (int d=0; d<trainData.size(); d++){
@@ -195,9 +185,22 @@ int main(int nbParam, char** param)
             }
         }
 
+    if(get<1>(r)!=nbCovered){
+        cout << "Rule " << std::to_string(nbRule) << " : ";
 
-    cout << "Predicted Cov Size : " << get<1>(r) << endl;
-    cout << "True Cov Size : " << nbCovered << endl << endl;
+        for (auto ant : get<0>(r)){
+            if (get<1>(ant) == 0){
+                cout << get<0>(ant) << " < " << get<2>(ant) << " ";
+            }
+            else{
+                cout << get<0>(ant) << " >= " << get<2>(ant) << " ";
+            }
+        }
+        cout << endl;
+
+      cout << "Predicted Cov Size : " << get<1>(r) << endl;
+      cout << "True Cov Size : " << nbCovered << endl << endl;
+    }
     nbRule += 1;
    }
 
@@ -206,4 +209,4 @@ int main(int nbParam, char** param)
 
 
 
-// Ex : .\checkCovSize.exe -T ../fidex/datafiles/datanorm -R ../fidex/datafiles/rule.txt
+// Ex : .\checkCovSize.exe -T ../fidexGlo/datafiles/datanormTrain -R ../fidexGlo/datafiles/globalRulesDatanorm.txt

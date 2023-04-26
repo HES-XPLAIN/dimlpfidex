@@ -628,4 +628,5 @@ int main(int nbParam, char** param)
 }
 
 
-//Exemple : fidexGloRules -T datafiles/datanorm -P datafiles/dimlp.out -C datafiles/dataclass2 -H datafiles/hyperLocus -O datafiles/globalRules.txt -M 3 -i 100 -v 2 -d 0.5 -h 0.5
+//Exemple : .\fidexGloRules.exe -T ../fidexGlo/datafiles/datanorm -P ../fidexGlo/datafiles/dimlp.out -C ../fidexGlo/datafiles/dataclass2 -H ../fidexGlo/datafiles/hyperLocus -O ../fidexGlo/datafiles/globalRules.txt -M 3 -i 100 -v 2 -d 0.5 -h 0.5
+// .\fidexGloRules.exe -T ../fidexGlo/datafiles/datanormTrain -P ../fidexGlo/datafiles/dimlpDatanormTrain.out -C ../fidexGlo/datafiles/dataclass2Train -H ../fidexGlo/datafiles/hyperLocusDatanorm -O ../fidexGlo/datafiles/globalRulesDatanorm.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5
