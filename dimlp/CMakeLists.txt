@@ -58,7 +58,7 @@ if (Python_FOUND AND Python_Interpreter_FOUND AND pybind11_FOUND)
 endif()
 
 # Build binding lib
-pybind11_add_module(dimlp
+pybind11_add_module(dimlp 
     ${COMMON_SRC}
     ${DIMLP_TRN_SRC}
     ${DIMLP_PRED_SRC}

@@ -4,38 +4,67 @@
 using namespace std;
 #include "bpNN.h"
 
-class Dimlp : public BpNN {
+class Dimlp : public BpNN
+{
 
-  //---------------------------------------------------------------------
+//---------------------------------------------------------------------
 
 public:
-  float Error(DataSet &data, DataSet &target, float *accuracy)
 
-  {
-    return ComputeError(data, target, accuracy);
-  }
+      float Error(DataSet& data, DataSet& target, float* accuracy)
 
-  void Train(DataSet &train, DataSet &trainTar, DataSet &test, DataSet &testTar,
-             DataSet &valid, DataSet &validTar, char *accuracyFile,
-             bool fromBT = false)
+                 { return ComputeError(data, target, accuracy); }
 
-  {
-    TrainPhase(train, trainTar, test, testTar, valid, validTar, accuracyFile,
-               fromBT);
-  }
 
-  //---------------------------------------------------------------------
+      void Train(DataSet& train, 
+                 DataSet& trainTar, 
+                 DataSet& test, 
+                 DataSet& testTar,
+                 DataSet& valid, 
+                 DataSet& validTar,
+                 char* accuracyFile,
+                 bool fromBT = false)
 
-  Dimlp(float eta, float mu, float flat, float errParam, float accuracyParam,
-        float deltaErrParam, int discrLevels, int showErrParam,
-        int nbEpochsParam, int nbLayers, int nbNeurons[], char weightFile[]);
+           { TrainPhase(train, trainTar, test, testTar, valid, validTar, accuracyFile, fromBT); }
 
-  Dimlp(char readFile[], int nbLayers, int nbNeurons[], int discrLevels);
 
-  Dimlp(char readFile[], float eta, float mu, float flat, float errParam,
-        float accuracyParam, float deltaErrParam, int discrLevels,
-        int showErrParam, int nbEpochsParam, int nbLayers, int nbNeurons[],
-        char weightFile[]);
+//---------------------------------------------------------------------
+
+      Dimlp
+      (
+          float    eta,
+          float    mu,
+          float    flat,
+          float    errParam,
+          float    accuracyParam,
+          float    deltaErrParam,
+          int      discrLevels,
+          int      showErrParam,
+          int      nbEpochsParam,
+          int      nbLayers,
+          int      nbNeurons[],
+          char   weightFile[]);
+
+
+      Dimlp(char readFile[], int nbLayers, int nbNeurons[], int discrLevels);
+
+
+      Dimlp
+      (
+          char     readFile[],
+          float    eta,
+          float    mu,
+          float    flat,
+          float    errParam,
+          float    accuracyParam,
+          float    deltaErrParam,
+          int      discrLevels,
+          int      showErrParam,
+          int      nbEpochsParam,
+          int      nbLayers,
+          int      nbNeurons[],
+          char   weightFile[]);
+
 };
 
 #endif

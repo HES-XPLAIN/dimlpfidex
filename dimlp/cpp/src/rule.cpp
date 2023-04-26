@@ -5,88 +5,90 @@ using namespace std;
 
 int Rule::GetNbAntWithout()
 
-{
-  int a, count;
+{  int a, count;
 
-  for (a = 0, count = 0, GoToBeg(); a < NbAnt; a++, GoToNext())
-    if (IsAntDeleted() == 0)
-      count++;
+   for (a=0, count=0, GoToBeg(); a<NbAnt; a++, GoToNext())
+       if (IsAntDeleted() == 0) count++;
 
-  return count;
+   return count;
 }
 
 ///////////////////////////////////////////////////////////////////
 
 void Rule::DeleteRule()
 
-{
-  int a;
+{  int a;
 
-  for (a = 0, GoToBeg(); a < NbAnt; a++, GoToNext())
-    RemAnt();
+   for (a=0, GoToBeg(); a<NbAnt; a++, GoToNext())
+       RemAnt();
 }
 
 ///////////////////////////////////////////////////////////////////
+
 
 void Rule::Insert(int var, float val, char rel)
 
 {
-  if (NbAnt == 0) {
-    FirstAnt = new Antecedent;
-    FirstAnt->Var = var;
-    FirstAnt->Val = val;
-    FirstAnt->Rel = rel;
-    FirstAnt->Next = 0;
+   if (NbAnt == 0)
+   {
+      FirstAnt       = new Antecedent;
+      FirstAnt->Var  = var;
+      FirstAnt->Val  = val;
+      FirstAnt->Rel  = rel;
+      FirstAnt->Next = 0;
 
-    LastAnt = FirstAnt;
-  }
+      LastAnt = FirstAnt;
+   }
 
-  else {
-    Antecedent *old = LastAnt;
+   else
+   {
+      Antecedent* old = LastAnt;
 
-    LastAnt = new Antecedent;
-    LastAnt->Var = var;
-    LastAnt->Val = val;
-    LastAnt->Rel = rel;
-    LastAnt->Next = 0;
+      LastAnt       = new Antecedent;
+      LastAnt->Var  = var;
+      LastAnt->Val  = val;
+      LastAnt->Rel  = rel;
+      LastAnt->Next = 0;
 
-    old->Next = LastAnt;
-  }
+      old->Next = LastAnt;
+   }
 
-  NbAnt++;
+   NbAnt++;
 }
 
 ///////////////////////////////////////////////////////////////////
 
-Rule *Rule::Copy(Rule *r)
+Rule* Rule::Copy(Rule* r)
 
-{
-  int a;
-  int nbAnt = r->GetNbAnt();
+{  int a;
+   int nbAnt = r->GetNbAnt();
 
-  for (a = 0, r->GoToBeg(); a < nbAnt; a++, r->GoToNext()) {
-    this->Insert(r->GetVar(), r->GetVal(), r->GetRel());
-  }
+   for (a=0, r->GoToBeg(); a<nbAnt; a++, r->GoToNext())
+   {
+       this->Insert(r->GetVar(), r->GetVal(), r->GetRel());
+   }
 
-  return this;
+   return this;
 }
 
 ///////////////////////////////////////////////////////////////////
 
 void Rule::Del()
 
-{
-  int e;
+{  int e;
 
-  PtrAnt = FirstAnt;
+   PtrAnt = FirstAnt;
 
-  for (e = 0; e < NbAnt; e++) {
-    PtrAnt = PtrAnt->Next;
-    delete FirstAnt;
-    FirstAnt = PtrAnt;
-  }
-
-  NbAnt = 0;
+   for (e=0; e<NbAnt; e++)
+   {
+       PtrAnt = PtrAnt->Next;
+       delete FirstAnt;
+       FirstAnt = PtrAnt;
+   }
+   
+   NbAnt = 0;
 }
 
+
 ///////////////////////////////////////////////////////////////////
+ 

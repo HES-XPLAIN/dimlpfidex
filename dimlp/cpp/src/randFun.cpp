@@ -10,11 +10,11 @@ using namespace std;
 void IntRandomFunction::StartOnlyOnece()
 
 {
-#ifdef __unix__
-  srandom(getpid());
-#elif defined(_WIN32)
-  srand(getpid());
-#endif
+   #ifdef __unix__
+   srandom(getpid());
+   #elif defined(_WIN32)
+   srand(getpid());
+   #endif
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -22,29 +22,29 @@ void IntRandomFunction::StartOnlyOnece()
 IntRandomFunction::IntRandomFunction()
 
 {
-  StartOnlyOnece();
+   StartOnlyOnece();
 }
 
 ///////////////////////////////////////////////////////////////////
 
 IntRandomFunction::IntRandomFunction(int lowBound, int hiBound)
 
-{
-  LowBound = lowBound;
-  HiBound = hiBound;
-  Diff = hiBound - lowBound + 1;
+{     
+   LowBound = lowBound;
+   HiBound  = hiBound;
+   Diff     = hiBound - lowBound + 1;
 }
 
 ///////////////////////////////////////////////////////////////////
 
 int IntRandomFunction::RandomInteger()
 
-{
-#ifdef __unix__
-  return (LowBound + (random() % Diff));
-#elif defined(_WIN32)
-  return (LowBound + (rand() % Diff));
-#endif
+{  
+   #ifdef __unix__
+   return (LowBound + (random() % Diff));
+   #elif defined(_WIN32)
+   return (LowBound + (rand() % Diff));
+   #endif
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -52,11 +52,11 @@ int IntRandomFunction::RandomInteger()
 void FloatRandomFunction::StartOnlyOnece()
 
 {
-#ifdef __unix__
-  srand48(getpid());
-#elif defined(_WIN32)
-  srand(getpid());
-#endif
+   #ifdef __unix__
+   srand48(getpid());
+   #elif defined(_WIN32)
+   srand(getpid());
+   #endif
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -64,42 +64,46 @@ void FloatRandomFunction::StartOnlyOnece()
 FloatRandomFunction::FloatRandomFunction()
 
 {
-  StartOnlyOnece();
+   StartOnlyOnece();
 }
 
 ///////////////////////////////////////////////////////////////////
 
-FloatRandomFunction::FloatRandomFunction(float lowBound, float hiBound)
+FloatRandomFunction::FloatRandomFunction
+(
+   float lowBound, 
+   float hiBound)
 
-{
-  LowBound = lowBound;
-  HiBound = hiBound;
+{  
+   LowBound = lowBound;
+   HiBound  = hiBound;
 
-  Diff = HiBound - LowBound;
+   Diff = HiBound - LowBound;
 }
 
 ///////////////////////////////////////////////////////////////////
 
 float FloatRandomFunction::RandomFloat()
 
-{
-#ifdef __unix__
-  return (LowBound + (drand48() * Diff));
-#elif defined(_WIN32)
-  return (LowBound + ((float(rand()) / RAND_MAX) * Diff));
-#endif
+{ 
+   #ifdef __unix__
+   return (LowBound + (drand48() * Diff));
+   #elif defined(_WIN32)
+   return (LowBound + ((float(rand()) / RAND_MAX) * Diff));
+   #endif
 }
 
 ///////////////////////////////////////////////////////////////////
 
 double FloatRandomFunction::RandomDouble()
 
-{
-#ifdef __unix__
-  return (LowBound + (drand48() * Diff));
-#elif defined(_WIN32)
-  return (LowBound + ((double(rand()) / RAND_MAX) * Diff));
-#endif
+{  
+   #ifdef __unix__
+   return (LowBound + (drand48() * Diff));
+   #elif defined(_WIN32)
+   return (LowBound + ((double(rand()) / RAND_MAX) * Diff));
+   #endif
+
 }
 
 ///////////////////////////////////////////////////////////////////

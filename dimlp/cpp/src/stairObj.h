@@ -6,36 +6,41 @@ using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 
-class StairObj {
-  int NbBins;
-  int NbKnots; // Stair is <= activation
+class StairObj
+{
+   int     NbBins;
+   int     NbKnots;    // Stair is <= activation
+    
+   float   HiKnot;
+   float   LowKnot;
+   float   ValLowKnot;
+   float   ValHighKnot;
+   float   Dist;
 
-  float HiKnot;
-  float LowKnot;
-  float ValLowKnot;
-  float ValHighKnot;
-  float Dist;
+   float   BinWidth;
 
-  float BinWidth;
+   float*  Knots;
+   float*  EvalKnots;
 
-  float *Knots;
-  float *EvalKnots;
 
-  //----------------------------------------------------------------
+//----------------------------------------------------------------
 
-  void InitMemberConstForAnsi();
-  void ActivateKnots();
-  float Activation(float x) { return Sigmoid(x); }
+   void  InitMemberConstForAnsi();
+   void  ActivateKnots();
+   float Activation(float x) { return Sigmoid(x);}
 
-  //----------------------------------------------------------------
-
+//----------------------------------------------------------------
+   
 public:
-  float GetHiKnot() { return HiKnot; }
-  float *GetKnots() { return Knots; }
-  float Funct(float x);
 
-  StairObj(int nbBins);
+   float  GetHiKnot() { return HiKnot; }
+   float* GetKnots() { return Knots; }
+   float  Funct(float x);
+
+
+   StairObj(int nbBins);
   ~StairObj();
+
 };
 
 ////////////////////////////////////////////////////////////////////////

@@ -7,27 +7,35 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
-class LayerDimlp : public Layer {
+class LayerDimlp : public Layer
+{
 
-  StairObj *Stair;
+   StairObj* Stair;
 
-  //----------------------------------------------------------------
+//----------------------------------------------------------------   
 
-  float Activation1(float x) { return Stair->Funct(x); }
-  void ForwLayer() { ForwSpec(); }
-  void AdaptWeights() { AdaptWeightsSpec(); }
-  void ComputeDeltaDown() { ; }
+   float Activation1(float x) { return Stair->Funct(x); }
+   void  ForwLayer()          { ForwSpec(); }
+   void  AdaptWeights()       { AdaptWeightsSpec(); }
+   void  ComputeDeltaDown()   { ; }
 
-  //----------------------------------------------------------------
+//----------------------------------------------------------------
 
 public:
-  void Del() {
-    delete Stair;
-    Layer::Del();
-  }
 
-  LayerDimlp(float eta, float mu, float flat, int nbDown, int nbUp,
-             int nbWeights, int nbWeightsForInit, int nbKnots);
+   void Del() { delete Stair; Layer::Del(); }
+
+   LayerDimlp
+   (
+      float    eta, 
+      float    mu,
+      float    flat,
+      int      nbDown, 
+      int      nbUp, 
+      int      nbWeights,
+      int      nbWeightsForInit,
+      int      nbKnots);
+
 };
 
 ///////////////////////////////////////////////////////////////////
