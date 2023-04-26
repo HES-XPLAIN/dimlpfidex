@@ -37,6 +37,7 @@ bin/
 *.wts
 out*.txt
 datafiles/
+.vscode/
 
 # CMake
 /cmake-build-debug
