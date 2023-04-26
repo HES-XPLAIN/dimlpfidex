@@ -6,37 +6,35 @@ using namespace std;
 
 class IntRandomFunction {
 
-      int LowBound;
-      int HiBound;
-      int Diff;
+  int LowBound;
+  int HiBound;
+  int Diff;
 
-      void StartOnlyOnece();
+  void StartOnlyOnece();
 
 public:
-      
-      IntRandomFunction();
-      IntRandomFunction(int lowBound, int hiBound);
+  IntRandomFunction();
+  IntRandomFunction(int lowBound, int hiBound);
 
-      int RandomInteger();
+  int RandomInteger();
 };
 
 ///////////////////////////////////////////////////////////////////
 
 class FloatRandomFunction {
 
-      float LowBound;
-      float HiBound;
-      float Diff;
+  float LowBound;
+  float HiBound;
+  float Diff;
 
-      void  StartOnlyOnece();
+  void StartOnlyOnece();
 
 public:
+  FloatRandomFunction();
+  FloatRandomFunction(float lowBound, float hiBound);
 
-      FloatRandomFunction();
-      FloatRandomFunction(float lowBound, float hiBound);
-
-      float  RandomFloat();
-      double RandomDouble();
+  float RandomFloat();
+  double RandomDouble();
 };
 
 ///////////////////////////////////////////////////////////////////

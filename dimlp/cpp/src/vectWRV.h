@@ -9,16 +9,15 @@ using namespace std;
 class VectWithRandVal
 
 {
-    int  NbElAll;
-    int* Busy;
+  int NbElAll;
+  int *Busy;
 
 public:
+  StringInt *FillWithUniqueInd(int nbElSub);
+  void Append(StringInt *originalList, StringInt *toAppend);
 
-     StringInt* FillWithUniqueInd(int nbElSub);
-     void       Append(StringInt* originalList, StringInt* toAppend);
-
-     VectWithRandVal(int nbElAll);
-     ~VectWithRandVal() { delete Busy; }
+  VectWithRandVal(int nbElAll);
+  ~VectWithRandVal() { delete Busy; }
 };
 
 #endif

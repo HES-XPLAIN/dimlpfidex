@@ -6,112 +6,113 @@ using namespace std;
 void StringInt::Insert(int val)
 
 {
-   if (NbEl == 0)
-   {
-      First       = new Elem;
-      First->Val  = val;
-      First->Next = 0;
+  if (NbEl == 0) {
+    First = new Elem;
+    First->Val = val;
+    First->Next = 0;
 
-      Last = First;
-   }
+    Last = First;
+  }
 
-   else
-   {
-      Elem* old = Last;
+  else {
+    Elem *old = Last;
 
-      Last       = new Elem;
-      Last->Val  = val;
-      Last->Next = 0;
+    Last = new Elem;
+    Last->Val = val;
+    Last->Next = 0;
 
-      old->Next = Last;
-   }
+    old->Next = Last;
+  }
 
-   NbEl++;
+  NbEl++;
 }
 
 ///////////////////////////////////////////////////////////////////
 
 int StringInt::FindIndMax()
 
-{  float max, newVal;
-   int   e, indMax;
+{
+  float max, newVal;
+  int e, indMax;
 
-   if (NbEl == 1) return 0;
+  if (NbEl == 1)
+    return 0;
 
-   GoToBeg();
-   max    = GetVal();
-   indMax = 0;
+  GoToBeg();
+  max = GetVal();
+  indMax = 0;
 
-   for (e=1, GoToNext(); e<NbEl; e++, GoToNext())
-   {
-       newVal = GetVal();
+  for (e = 1, GoToNext(); e < NbEl; e++, GoToNext()) {
+    newVal = GetVal();
 
-       if (newVal > max)
-       {
-          max    = newVal;
-          indMax = e;
-       }
-   }
+    if (newVal > max) {
+      max = newVal;
+      indMax = e;
+    }
+  }
 
-   if (max < 0) return -1;
+  if (max < 0)
+    return -1;
 
-   return indMax;
+  return indMax;
 }
 
 ///////////////////////////////////////////////////////////////////
 
 int StringInt::FindIndMin()
 
-{  float min, newVal;
-   int   e, indMin;
+{
+  float min, newVal;
+  int e, indMin;
 
-   if (NbEl == 1) return 0;
+  if (NbEl == 1)
+    return 0;
 
-   GoToBeg();
-   min    = GetVal();
-   indMin = 0;
+  GoToBeg();
+  min = GetVal();
+  indMin = 0;
 
-   for (e=1, GoToNext(); e<NbEl; e++, GoToNext())
-   {
-       newVal = GetVal();
+  for (e = 1, GoToNext(); e < NbEl; e++, GoToNext()) {
+    newVal = GetVal();
 
-       if (newVal < min)
-       {
-          min    = newVal;
-          indMin = e;
-       }
-   }
+    if (newVal < min) {
+      min = newVal;
+      indMin = e;
+    }
+  }
 
-   return indMin;
+  return indMin;
 }
 
 ///////////////////////////////////////////////////////////////////
 
 void StringInt::DelVal(int indPrune, int newSet)
 
-{  int i;
+{
+  int i;
 
-   for (i=0, GoToBeg(); i<indPrune; i++, GoToNext()) ;
+  for (i = 0, GoToBeg(); i < indPrune; i++, GoToNext())
+    ;
 
-   SetVal(newSet);
+  SetVal(newSet);
 }
 
 ///////////////////////////////////////////////////////////////////
 
 void StringInt::Del()
 
-{  int e;
+{
+  int e;
 
-   PtrList = First;
+  PtrList = First;
 
-   for (e=0; e<NbEl; e++)
-   {
-       PtrList = PtrList->Next;
-       delete First;
-       First = PtrList;
-   } 
+  for (e = 0; e < NbEl; e++) {
+    PtrList = PtrList->Next;
+    delete First;
+    First = PtrList;
+  }
 
-   NbEl = 0;
+  NbEl = 0;
 }
 
 ///////////////////////////////////////////////////////////////////
