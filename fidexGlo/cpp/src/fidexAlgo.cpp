@@ -48,7 +48,7 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
     std::shuffle(std::begin(dimensions), std::end(dimensions), std::default_random_engine(seed));
 
     vector<int> currentCovSamp;
-    
+
     for (int d=0; d<nbIn; d++){
       if (bestHyperbox->getFidelity() == 1){
           break;
@@ -89,7 +89,7 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
         }
         else if(currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() == bestHyperbox->getCoveredSamples().size()){
           if (!maxHypBlocked){
-            maxHyp = k; // Index of last (for now) hyperplan which is equal to the best. 
+            maxHyp = k; // Index of last (for now) hyperplan which is equal to the best.
           }
         }
         else{
@@ -115,7 +115,7 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
       }
     }
     nbIt += 1;
-  
+
   };
 
 
@@ -131,7 +131,7 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
 
   double ruleConfidence = hyperspace->computeRuleConfidence(trainOutputValuesPredictions, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples
   rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence);
-  
+
   return 1;
 
 };

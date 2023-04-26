@@ -46,7 +46,7 @@ Hyperbox* Hyperspace::getHyperbox(){
 }
 
 tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> Hyperspace::ruleExtraction(vector<double>* mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence){
-    
+
 
     tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> rule;
 
@@ -75,7 +75,7 @@ tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> Hypers
 
 double Hyperspace::computeRuleAccuracy(vector<int>* trainPreds, vector<int>* trainTrueClass, bool mainSampleCorrect){ // Percentage of correct model prediction on samples covered by the rule
   int idSample;
-  int total = 0; // Number of indexes predicted good 
+  int total = 0; // Number of indexes predicted good
   for (int i=0; i<hyperbox->getCoveredSamples().size(); i++){
     idSample = hyperbox->getCoveredSamples()[i];
     if ((*trainPreds)[idSample] == (*trainTrueClass)[idSample]){
@@ -89,7 +89,7 @@ double Hyperspace::computeRuleAccuracy(vector<int>* trainPreds, vector<int>* tra
 double Hyperspace::computeRuleConfidence(vector<vector<double>>* trainOutputValuesPredictions, const int mainSamplePred){ // Mean output value of prediction of class chosen by the rule for the covered samples
   int idSample;
   int classSample;
-  double total = 0; // Number of indexes predicted good 
+  double total = 0; // Number of indexes predicted good
   for (int i=0; i<hyperbox->getCoveredSamples().size(); i++){
     idSample = hyperbox->getCoveredSamples()[i];
     total += (*trainOutputValuesPredictions)[idSample][mainSamplePred]; // Value of output prediction for class mainSamplePred(rule class)

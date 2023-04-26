@@ -34,7 +34,7 @@ class BagDimlp : public Dimlp
    DataSet** ValData;
    DataSet** ValDataClass;
 
-   
+
 //---------------------------------------------------------------------
 
 
@@ -47,9 +47,9 @@ public:
 
    void TrainAll
    (
-      DataSet& masterTrain, 
+      DataSet& masterTrain,
       DataSet& masterClass,
-      DataSet& test, 
+      DataSet& test,
       DataSet& testTar,
       char genericWeightsFile[],
       char* accuracyFile
@@ -80,7 +80,7 @@ public:
        int      nbNeurons[],
        int      nbDimlpNets,
        char    weightFile[]);
-       
+
    BagDimlp
    (
     int      discrLevels,

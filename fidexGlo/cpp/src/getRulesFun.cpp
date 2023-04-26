@@ -6,7 +6,7 @@
 
 void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>>& rules, vector<string>& lines, vector<string>& stringRules, char* rulesFile, int nbTestAttributs){
 
-    tuple<vector<tuple<int, bool, double>>, int, int, double, double> rule; // <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)> 
+    tuple<vector<tuple<int, bool, double>>, int, int, double, double> rule; // <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
 
     fstream rulesData;
     rulesData.open(rulesFile,ios::in); // Read data file
@@ -74,11 +74,11 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
       }
     }
     rulesData.close(); //close data file
-}    
-    
-    
+}
+
+
 ////////////////////////////////////////////////////////
-    
+
 void getActivatedRules(vector<int>& activatedRules, vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>>* rules, vector<double>* testValues){
     int attr;
     bool ineq;

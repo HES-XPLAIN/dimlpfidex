@@ -14,7 +14,7 @@ void GiveAllParam()
    cout << "-W <file of weights> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
    cout << " <Options>\n\n";
-   
+
    cout << "Options are: \n\n";
    cout << "-2 <file of classes>\n";
    cout << "-p <output prediction file>\n"; // If we want to specify output prediction file, not to be dimlp.out
@@ -33,9 +33,9 @@ void GiveAllParam()
 
 void SaveOutputs
 (
-   DataSet& data, 
+   DataSet& data,
    Dimlp*   net,
-   int      nbOut, 
+   int      nbOut,
    int      nbWeightLayers,
    char*    outfile
 )
@@ -63,7 +63,7 @@ void SaveOutputs
        {
            outFile << out[o] << " ";
        }
- 
+
        outFile << "\n";
    }
 
@@ -74,7 +74,7 @@ void SaveOutputs
 
 void SaveFirstHid
 (
-   DataSet& data, 
+   DataSet& data,
    Dimlp*   net,
    int      nbHid,
    char*    outfile
@@ -103,7 +103,7 @@ void SaveFirstHid
        {
            outFile << hid[h] << " ";
        }
- 
+
        outFile << "\n";
    }
 
@@ -124,8 +124,8 @@ int dimlpCls(string command){
     const char delim = ' ';
     string s;
     stringstream ss(command);
-    while (std::getline(ss, s, delim)) { 
-            commandList.push_back(s); 
+    while (std::getline(ss, s, delim)) {
+            commandList.push_back(s);
         }
     int nbParam = commandList.size();
 
@@ -218,7 +218,7 @@ int dimlpCls(string command){
 
               case 'p' : predFile = &(commandList[k])[0];
                          break;
-               
+
               case 'r' : consoleFile = &(commandList[k])[0];
                          break;
 
@@ -309,8 +309,8 @@ int dimlpCls(string command){
          for (k=1, arch.GoToBeg(); k<=arch.GetNbEl(); k++, arch.GoToNext())
          {
              vecNbNeurons[k] = arch.GetVal();
- 
-             if (vecNbNeurons[k] == 0) 
+
+             if (vecNbNeurons[k] == 0)
              {
                 cout << "The number of neurons must be greater than 0.\n";
                 return -1;
@@ -331,8 +331,8 @@ int dimlpCls(string command){
          for (k=1, arch.GoToBeg(); k<=arch.GetNbEl(); k++, arch.GoToNext())
          {
              vecNbNeurons[k+1] = arch.GetVal();
- 
-             if (vecNbNeurons[k+1] == 0) 
+
+             if (vecNbNeurons[k+1] == 0)
              {
                 cout << "The number of neurons must be greater than 0.\n";
                 return -1;

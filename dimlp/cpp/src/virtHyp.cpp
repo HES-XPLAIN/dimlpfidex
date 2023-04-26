@@ -122,7 +122,7 @@ int VirtualHyp::KnotInd(int var, float val) // var = index hid
    for (k=0; k<NbHyp; k++, ptrKnots++)
    {
        if (*ptrKnots > val) return k-1;
-   } 
+   }
 
    return NbHyp-1;
 }
@@ -164,8 +164,8 @@ VirtualHyp::VirtualHyp
 (
    int    nbBins,
    int    nbIn,
-   int    multiple, 
-   float* bias, 
+   int    multiple,
+   float* bias,
    float* weights)
 
 {
@@ -190,8 +190,8 @@ VirtualHyp::VirtualHyp
 (
    int          nbBins,
    int          nbIn,
-   int          multiple, 
-   int          nbNets, 
+   int          multiple,
+   int          nbNets,
    VirtualHyp** virt)
 
 {  int nbHypOld;
@@ -230,4 +230,3 @@ VirtualHyp::VirtualHyp
 }
 
 ////////////////////////////////////////////////////////////////////////
-

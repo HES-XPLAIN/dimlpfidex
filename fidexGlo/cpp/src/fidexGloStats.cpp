@@ -65,11 +65,11 @@ int main(int nbParam, char** param)
 
           if (p >= nbParam){
             throw std::runtime_error("Missing something at the end of the command.");
-          } 
+          }
 
         switch(*(param[p-1] + 1)){ // Get letter after the -
-          
-          case 'T' : 
+
+          case 'T' :
             testDataFile = param[p]; // Parameter after -T
             testDataFileInit = true;
             break;
@@ -83,7 +83,7 @@ int main(int nbParam, char** param)
             testDataFileTrueClass = param[p];
             testDataFileTrueClassInit = true;
             break;
-          
+
           case 'R' :
             rulesFile = param[p];
             rulesFileInit = true;
@@ -132,11 +132,11 @@ int main(int nbParam, char** param)
 
     // Get rules
 
-    vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)> 
+    vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
     vector<string> lines; //Lines for the output stats
     vector<string> stringRules;
     getRules(rules, lines, stringRules, rulesFile, nbTestAttributs);
-    
+
     std::cout << "Data imported..." << endl << endl;
 
 
@@ -226,7 +226,7 @@ int main(int nbParam, char** param)
     meanNbWrongActivatedRules/=nbTestData;
     modelAccuracy/=nbTestData;
     accuracyWhenRulesAndModelAgree/=nbRulesAndModelAgree;
-   
+
     lines.push_back("Statistics with a test set of " + std::to_string(nbTestData) + " samples :\n");
     lines.push_back("The global rule fidelity rate is : " + std::to_string(fidelity));
     lines.push_back("The global rules accuracy is : " + std::to_string(accuracy));

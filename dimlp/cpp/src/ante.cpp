@@ -2,7 +2,7 @@ using namespace std;
 #include "ante.h"
 
 ///////////////////////////////////////////////////////////////////
- 
+
 Ante::Ante(int var, float val, char rel) : Rule()
 
 {

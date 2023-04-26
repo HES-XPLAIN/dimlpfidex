@@ -33,7 +33,7 @@ DataSet::DataSet(char* dataFile, char* predFile, char* trueClassFile){
 
     fileDta.close(); //close data file
 
-    
+
 
     // Get data class
 
@@ -66,7 +66,7 @@ DataSet::DataSet(char* dataFile, char* predFile, char* trueClassFile){
       fileCl.close(); //close file
     }
 
-    
+
 
     // Get predictions
 

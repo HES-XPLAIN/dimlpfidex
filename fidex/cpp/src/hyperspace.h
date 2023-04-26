@@ -5,7 +5,7 @@
 #include <tuple>
 
 
-class Hyperspace 
+class Hyperspace
 {
 
     vector<vector<double>> hyperLocus; // All the possible hyperplans
@@ -24,6 +24,3 @@ public:
     double computeRuleConfidence(vector<vector<double>>* trainOutputValuesPredictions, const int mainSamplePred, double mainSamplePredValue);
 
 };
-
-
-

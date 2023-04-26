@@ -7,7 +7,7 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
-class DataSet 
+class DataSet
 {
       int NbEx;
       int NbAttr;
@@ -36,7 +36,7 @@ public:
       void   Del();
       void   LightDel() { delete Set; }
 
-      float* GetExample(int index) { return *(Set + index) ; } 
+      float* GetExample(int index) { return *(Set + index) ; }
       int    GetNbEx() { return NbEx ; }
       int    GetNbAttr() { return NbAttr ; }
 

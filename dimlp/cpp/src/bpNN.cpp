@@ -50,7 +50,7 @@ void BpNN::InitRandomGen()
    if (initRandomGen == 0)
    {
        IntRandomFunction   irf;
-       FloatRandomFunction frf; 
+       FloatRandomFunction frf;
 
        initRandomGen++;
 
@@ -73,9 +73,9 @@ void BpNN::CreateNetStruct(int nbNeurons[])
    VecLayer = new Layer*[NbWeightLayers];
 
    for (l=1; l<NbWeightLayers; l++)
-       VecLayer[l] = new Layer(Eta, Mu, Flat, 
+       VecLayer[l] = new Layer(Eta, Mu, Flat,
                                NbNeurons[l], NbNeurons[l+1],
-                               NbNeurons[l] * NbNeurons[l+1], 
+                               NbNeurons[l] * NbNeurons[l+1],
                                NbNeurons[l] + 1);
 
 
@@ -323,7 +323,7 @@ float BpNN::ComputeErrorSameAct
 
        if (ansNet == ansTar)
           good++;
-       else 
+       else
           bad++;
    }
 
@@ -383,8 +383,8 @@ void BpNN::DefineSmlp()
 {  const int nbWeights        = NbNeurons[0] * NbNeurons[1];
    const int nbWeightsForInit = NbNeurons[0] + 1;
 
-   VecLayer[0] = new Layer(Eta, Mu, Flat, 
-                           NbNeurons[0], NbNeurons[1], 
+   VecLayer[0] = new Layer(Eta, Mu, Flat,
+                           NbNeurons[0], NbNeurons[1],
                            nbWeights, nbWeightsForInit);
 
    VecLayer[1]->SetDown(VecLayer[0]->GetUp());
@@ -398,9 +398,9 @@ void BpNN::DefineDimlp(int discrLevels)
 {  const int nbWeights        = NbNeurons[1];
    const int nbWeightsForInit = 2;
 
-   VecLayer[0] = new LayerDimlp(Eta, Mu, Flat, 
-                                NbNeurons[0], NbNeurons[1], 
-                                nbWeights, nbWeightsForInit, 
+   VecLayer[0] = new LayerDimlp(Eta, Mu, Flat,
+                                NbNeurons[0], NbNeurons[1],
+                                nbWeights, nbWeightsForInit,
                                 discrLevels);
 
    VecLayer[1]->SetDown(VecLayer[0]->GetUp());
@@ -414,9 +414,9 @@ void BpNN::DefineQmlp(int discrLevels)
 {  const int nbWeights        = NbNeurons[1];
    const int nbWeightsForInit = 2;
 
-   VecLayer[0] = new LayerDimlp4(Eta, Mu, Flat, 
-                                 NbNeurons[0], NbNeurons[1], 
-                                 nbWeights, nbWeightsForInit, 
+   VecLayer[0] = new LayerDimlp4(Eta, Mu, Flat,
+                                 NbNeurons[0], NbNeurons[1],
+                                 nbWeights, nbWeightsForInit,
                                  discrLevels);
 
    VecLayer[1]->SetDown(VecLayer[0]->GetUp());
@@ -427,17 +427,17 @@ void BpNN::DefineQmlp(int discrLevels)
 
 void BpNN::DefineFdimlp(int discrLevels)
 
-{  
-   VecLayer[1] = new LayerDimlp3(Eta, Mu, Flat, 
-                                 NbNeurons[1], NbNeurons[2], 
-                                 NbNeurons[2], 2, 
+{
+   VecLayer[1] = new LayerDimlp3(Eta, Mu, Flat,
+                                 NbNeurons[1], NbNeurons[2],
+                                 NbNeurons[2], 2,
                                  discrLevels);
 
    VecLayer[2]->SetDown(VecLayer[1]->GetUp());
    VecLayer[2]->SetDeltaDown(VecLayer[1]->GetDeltaUp());
 
-   VecLayer[0] = new LayerFdimlp(Eta, Mu, Flat, 
-                                 NbNeurons[0], NbNeurons[1], 
+   VecLayer[0] = new LayerFdimlp(Eta, Mu, Flat,
+                                 NbNeurons[0], NbNeurons[1],
                                  NbNeurons[1], 2);
 
    VecLayer[1]->SetDown(VecLayer[0]->GetUp());
@@ -448,17 +448,17 @@ void BpNN::DefineFdimlp(int discrLevels)
 
 void BpNN::DefineFdimlp2(int discrLevels)
 
-{  
-   VecLayer[1] = new LayerDimlp2(Eta, Mu, Flat, 
-                                 NbNeurons[1], NbNeurons[2], 
-                                 NbNeurons[2], 2, 
+{
+   VecLayer[1] = new LayerDimlp2(Eta, Mu, Flat,
+                                 NbNeurons[1], NbNeurons[2],
+                                 NbNeurons[2], 2,
                                  discrLevels);
 
    VecLayer[2]->SetDown(VecLayer[1]->GetUp());
    VecLayer[2]->SetDeltaDown(VecLayer[1]->GetDeltaUp());
 
-   VecLayer[0] = new LayerFdimlp(Eta, Mu, Flat, 
-                                 NbNeurons[0], NbNeurons[1], 
+   VecLayer[0] = new LayerFdimlp(Eta, Mu, Flat,
+                                 NbNeurons[0], NbNeurons[1],
                                  NbNeurons[1], 2);
 
    VecLayer[1]->SetDown(VecLayer[0]->GetUp());
@@ -469,18 +469,18 @@ void BpNN::DefineFdimlp2(int discrLevels)
 
 void BpNN::DefineSD(int discrLevels)
 
-{  
-   VecLayer[1] = new LayerSD(NbNeurons[1], NbNeurons[2], 
-                             NbNeurons[1] * NbNeurons[2], 
+{
+   VecLayer[1] = new LayerSD(NbNeurons[1], NbNeurons[2],
+                             NbNeurons[1] * NbNeurons[2],
                              NbNeurons[1] + 1);
 
    VecLayer[2]->SetDown(VecLayer[1]->GetUp());
    VecLayer[2]->SetDeltaDown(VecLayer[1]->GetDeltaUp());
 
 
-   VecLayer[0] = new LayerDimlp(Eta, Mu, Flat, 
-                                NbNeurons[0], NbNeurons[1], 
-                                NbNeurons[1], 2, 
+   VecLayer[0] = new LayerDimlp(Eta, Mu, Flat,
+                                NbNeurons[0], NbNeurons[1],
+                                NbNeurons[1], 2,
                                 discrLevels);
 
    VecLayer[1]->SetDown(VecLayer[0]->GetUp());
@@ -491,18 +491,18 @@ void BpNN::DefineSD(int discrLevels)
 
 void BpNN::DefineSP5(int discrLevels)
 
-{  
-   VecLayer[1] = new LayerSP5(NbNeurons[1], NbNeurons[2], 
-                              NbNeurons[1] * NbNeurons[2], 
+{
+   VecLayer[1] = new LayerSP5(NbNeurons[1], NbNeurons[2],
+                              NbNeurons[1] * NbNeurons[2],
                               NbNeurons[1] + 1);
 
    VecLayer[2]->SetDown(VecLayer[1]->GetUp());
    VecLayer[2]->SetDeltaDown(VecLayer[1]->GetDeltaUp());
 
 
-   VecLayer[0] = new LayerDimlp(Eta, Mu, Flat, 
-                                NbNeurons[0], NbNeurons[1], 
-                                NbNeurons[1], 2, 
+   VecLayer[0] = new LayerDimlp(Eta, Mu, Flat,
+                                NbNeurons[0], NbNeurons[1],
+                                NbNeurons[1], 2,
                                 discrLevels);
 
    VecLayer[1]->SetDown(VecLayer[0]->GetUp());
@@ -513,18 +513,18 @@ void BpNN::DefineSP5(int discrLevels)
 
 void BpNN::DefineSP3(int discrLevels)
 
-{  
-   VecLayer[1] = new LayerSP3(NbNeurons[1], NbNeurons[2], 
-                              NbNeurons[1] * NbNeurons[2], 
+{
+   VecLayer[1] = new LayerSP3(NbNeurons[1], NbNeurons[2],
+                              NbNeurons[1] * NbNeurons[2],
                               NbNeurons[1] + 1);
 
    VecLayer[2]->SetDown(VecLayer[1]->GetUp());
    VecLayer[2]->SetDeltaDown(VecLayer[1]->GetDeltaUp());
 
 
-   VecLayer[0] = new LayerDimlp(Eta, Mu, Flat, 
-                                NbNeurons[0], NbNeurons[1], 
-                                NbNeurons[1], 2, 
+   VecLayer[0] = new LayerDimlp(Eta, Mu, Flat,
+                                NbNeurons[0], NbNeurons[1],
+                                NbNeurons[1], 2,
                                 discrLevels);
 
    VecLayer[1]->SetDown(VecLayer[0]->GetUp());
@@ -535,18 +535,18 @@ void BpNN::DefineSP3(int discrLevels)
 
 void BpNN::DefineSR(int discrLevels)
 
-{  
-   VecLayer[1] = new LayerRad(NbNeurons[1], NbNeurons[2], 
-                              NbNeurons[1] * NbNeurons[2], 
+{
+   VecLayer[1] = new LayerRad(NbNeurons[1], NbNeurons[2],
+                              NbNeurons[1] * NbNeurons[2],
                               NbNeurons[1] + 1);
 
    VecLayer[2]->SetDown(VecLayer[1]->GetUp());
    VecLayer[2]->SetDeltaDown(VecLayer[1]->GetDeltaUp());
 
 
-   VecLayer[0] = new LayerDimlp(Eta, Mu, Flat, 
-                                NbNeurons[0], NbNeurons[1], 
-                                NbNeurons[1], 2, 
+   VecLayer[0] = new LayerDimlp(Eta, Mu, Flat,
+                                NbNeurons[0], NbNeurons[1],
+                                NbNeurons[1], 2,
                                 discrLevels);
 
    VecLayer[1]->SetDown(VecLayer[0]->GetUp());
@@ -557,18 +557,18 @@ void BpNN::DefineSR(int discrLevels)
 
 void BpNN::DefineSP4(int discrLevels)
 
-{  
-   VecLayer[1] = new LayerSP4(NbNeurons[1], NbNeurons[2], 
-                             NbNeurons[1] * NbNeurons[2], 
+{
+   VecLayer[1] = new LayerSP4(NbNeurons[1], NbNeurons[2],
+                             NbNeurons[1] * NbNeurons[2],
                              NbNeurons[1] + 1);
 
    VecLayer[2]->SetDown(VecLayer[1]->GetUp());
    VecLayer[2]->SetDeltaDown(VecLayer[1]->GetDeltaUp());
 
 
-   VecLayer[0] = new LayerDimlp(Eta, Mu, Flat, 
-                                NbNeurons[0], NbNeurons[1], 
-                                NbNeurons[1], 2, 
+   VecLayer[0] = new LayerDimlp(Eta, Mu, Flat,
+                                NbNeurons[0], NbNeurons[1],
+                                NbNeurons[1], 2,
                                 discrLevels);
 
    VecLayer[1]->SetDown(VecLayer[0]->GetUp());
@@ -605,7 +605,7 @@ float BpNN::ComputeError
 
        if (ansNet == ansTar)
           good++;
-       else 
+       else
           bad++;
    }
 
@@ -619,9 +619,9 @@ float BpNN::ComputeError
 
 void BpNN::TrainPhase
 (
-   DataSet& train, 
-   DataSet& trainTar, 
-   DataSet& test, 
+   DataSet& train,
+   DataSet& trainTar,
+   DataSet& test,
    DataSet& testTar,
    DataSet& valid,
    DataSet& validTar,
@@ -644,8 +644,8 @@ void BpNN::TrainPhase
    cout << temp;
    sprintf(temp, "   ACC = %8f", acc);
    cout << temp;
-   
-   specErr = ComputeErrorSameAct(train, trainTar, &specAcc);          
+
+   specErr = ComputeErrorSameAct(train, trainTar, &specAcc);
    PrintSpecErr(specErr, specAcc);
 
    cout << "\n";
@@ -688,8 +688,8 @@ void BpNN::TrainPhase
    {
        TrainOneEpoch(train, trainTar, &randInt);
 
-       if (e % ShowErrParam == 0) 
-       {   
+       if (e % ShowErrParam == 0)
+       {
           err = ComputeError(train, trainTar, &acc);
 
           sprintf(temp, "%6d: ", e);
@@ -700,7 +700,7 @@ void BpNN::TrainPhase
           cout << temp;
 
 
-          specErr = ComputeErrorSameAct(train, trainTar, &specAcc);           
+          specErr = ComputeErrorSameAct(train, trainTar, &specAcc);
           PrintSpecErr(specErr, specAcc);
 
           cout << "\n";
@@ -817,14 +817,14 @@ BpNN::BpNN
    char  saveFile[],
    char  printNetType[])
 
-{  
+{
    InitRandomGen();
 
    cout << "\n\n-----------------------------------------";
    cout << "-------------------------------------\n\n";
    cout << "Creating " << printNetType << " structures ...";
 
-   AssignParam(eta, mu, flat, errParam, accuracyParam, deltaErrParam, 
+   AssignParam(eta, mu, flat, errParam, accuracyParam, deltaErrParam,
                showErrParam, nbEpochsParam, nbLayers, saveFile);
 
    CreateNetStruct(nbNeurons);
@@ -846,7 +846,7 @@ BpNN::BpNN
    int   nbNeurons[],
    char  printNetType[])
 
-{  
+{
    strcpy(ReadFile, readFile);
 
    NbLayers       = nbLayers;
@@ -883,7 +883,7 @@ BpNN::BpNN
    char  saveFile[],
    char  printNetType[])
 
-{  
+{
    InitRandomGen();
 
    cout << "\n\n-----------------------------------------";
@@ -893,7 +893,7 @@ BpNN::BpNN
 
    strcpy(ReadFile, readFile);
 
-   AssignParam(eta, mu, flat, errParam, accuracyParam, deltaErrParam, 
+   AssignParam(eta, mu, flat, errParam, accuracyParam, deltaErrParam,
                showErrParam, nbEpochsParam, nbLayers, saveFile);
 
    CreateNetStruct(nbNeurons);

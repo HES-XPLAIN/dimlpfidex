@@ -29,7 +29,7 @@ IntRandomFunction::IntRandomFunction()
 
 IntRandomFunction::IntRandomFunction(int lowBound, int hiBound)
 
-{     
+{
    LowBound = lowBound;
    HiBound  = hiBound;
    Diff     = hiBound - lowBound + 1;
@@ -39,7 +39,7 @@ IntRandomFunction::IntRandomFunction(int lowBound, int hiBound)
 
 int IntRandomFunction::RandomInteger()
 
-{  
+{
    #ifdef __unix__
    return (LowBound + (random() % Diff));
    #elif defined(_WIN32)
@@ -71,10 +71,10 @@ FloatRandomFunction::FloatRandomFunction()
 
 FloatRandomFunction::FloatRandomFunction
 (
-   float lowBound, 
+   float lowBound,
    float hiBound)
 
-{  
+{
    LowBound = lowBound;
    HiBound  = hiBound;
 
@@ -85,7 +85,7 @@ FloatRandomFunction::FloatRandomFunction
 
 float FloatRandomFunction::RandomFloat()
 
-{ 
+{
    #ifdef __unix__
    return (LowBound + (drand48() * Diff));
    #elif defined(_WIN32)
@@ -97,7 +97,7 @@ float FloatRandomFunction::RandomFloat()
 
 double FloatRandomFunction::RandomDouble()
 
-{  
+{
    #ifdef __unix__
    return (LowBound + (drand48() * Diff));
    #elif defined(_WIN32)

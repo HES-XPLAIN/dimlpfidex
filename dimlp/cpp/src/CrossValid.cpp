@@ -19,7 +19,7 @@ void GiveAllParam()
    cout << "crossValid -L <training set file> -1 <file of train classes> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
    cout << " <Options>\n\n";
-   
+
    cout << "Options are: \n\n";
    cout << "-K <K-fold cross-validation>\n"; // Not to be 10
    cout << "-N <number of times we do the cross-validation>\n"; // Not to be 10
@@ -56,7 +56,7 @@ bool copyFile(const char *SRC, const char* DEST)
 
 int main(int nbParam, char** param)
 
-{  
+{
 
     int k;
 
@@ -93,12 +93,12 @@ int main(int nbParam, char** param)
                 {
                     cout << "Missing something at the end of the command.\n";
                     return -1;
-                } 
+                }
             }
 
             switch(*(param[k-1] + 1))
             {
-                case 'l' : 
+                case 'l' :
                             eta = param[k];
                             genericCommand += " -l " + eta;
                             break;
@@ -108,38 +108,38 @@ int main(int nbParam, char** param)
                             genericCommand += " -m " + mu;
                             break;
 
-                case 'f' :  
+                case 'f' :
                             flat = param[k];
                             genericCommand += " -f " + flat;
                             break;
 
-                case 'e' : 
+                case 'e' :
                             errThres = param[k];
                             genericCommand += " -e " + errThres;
                             break;
 
-                case 'a' : 
+                case 'a' :
                             accThres = param[k];
                             genericCommand += " -a " + accThres;
                             break;
 
-                case 'd' : 
-                
+                case 'd' :
+
                             deltaErr = param[k];
                             genericCommand += " -d " + deltaErr;
                             break;
 
-                case 's' : 
+                case 's' :
                             showErr = param[k];
                             genericCommand += " -s " + showErr;
                             break;
 
-                case 'i' : 
+                case 'i' :
                             epochs = param[k];
                             genericCommand += " -i " + epochs;
                             break;
 
-                case 'q' :  
+                case 'q' :
                             quant = param[k];
                             genericCommand += " -q " + quant;
                             break;
@@ -149,7 +149,7 @@ int main(int nbParam, char** param)
                            genericCommand += " -I " + nbIn;
                            break;
 
-                case 'H' : 
+                case 'H' :
                            ptrParam = param[k-1];
 
                            if (ptrParam[2] != '\0'){
@@ -164,17 +164,17 @@ int main(int nbParam, char** param)
 
                            break;
 
-                case 'O' : 
+                case 'O' :
                            nbOut = param[k];
                            genericCommand += " -O " + nbOut;
                            break;
 
-                case 'A' :  
+                case 'A' :
                             attrFile = param[k];
                             genericCommand += " -A " + attrFile;
                             break;
 
-                case 'W' : 
+                case 'W' :
                             weightFile = param[k];
                             genericCommand += " -W " + weightFile;
                             break;

@@ -2,7 +2,7 @@
 #define ONEVARTD_H
 
 using namespace std;
-#ifndef STRINGINT 
+#ifndef STRINGINT
 #include "stringI.h"
 #endif
 

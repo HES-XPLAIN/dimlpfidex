@@ -10,7 +10,7 @@ OneVarThresDescr::Elem* OneVarThresDescr::CreateElem(float thres, int indPat)
    e->Thres         = thres;
    e->Next          = 0;
    e->CountPatDiscr = 0;
-   e->ListPat       = new StringInt; 
+   e->ListPat       = new StringInt;
 
    (e->ListPat)->Insert(indPat);
 
@@ -72,7 +72,7 @@ void OneVarThresDescr::Del()
        delete First;
        First = PtrList;
    }
-   
+
    NbThres = 0;
 }
 

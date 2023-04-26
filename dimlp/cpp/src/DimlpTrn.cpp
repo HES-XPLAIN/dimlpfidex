@@ -24,7 +24,7 @@ void GiveAllParam()
    cout << "DimlpTrn -L <training set file> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
    cout << " <Options>\n\n";
-   
+
    cout << "Options are: \n\n";
    cout << "-A <file of attributes>\n";
    cout << "-V <validation set file>\n";
@@ -63,9 +63,9 @@ void GiveAllParam()
 
 void SaveOutputs
 (
-   DataSet& data, 
+   DataSet& data,
    Dimlp*   net,
-   int      nbOut, 
+   int      nbOut,
    int      nbWeightLayers,
    char*    outfile
 )
@@ -93,7 +93,7 @@ void SaveOutputs
        {
            outFile << out[o] << " ";
        }
- 
+
        outFile << "\n";
    }
 
@@ -104,10 +104,10 @@ void SaveOutputs
 
 int main(int nbParam, char** param)
 
-{  
-   
+{
 
-   
+
+
    int k;
 
    DataSet  Train;
@@ -131,7 +131,7 @@ int main(int nbParam, char** param)
    int   showErr  = 10;
    int   epochs   = 1500;
    int   quant    = 50;
-   
+
    int ruleExtr   = 0;
 
    int nbIn  = 0;
@@ -180,12 +180,12 @@ int main(int nbParam, char** param)
              {
                 cout << "Missing something at the end of the command.\n";
                 return -1;
-             } 
+             }
           }
 
           switch(*(param[k-1] + 1))
           {
-              case 'l' : if (CheckFloat(param[k])) 
+              case 'l' : if (CheckFloat(param[k]))
                             eta        = atof(param[k]);
                          else return -1;
 
@@ -207,7 +207,7 @@ int main(int nbParam, char** param)
                             errThres   = atof(param[k]);
                          else return -1;
 
-                         if (flagEp == 0) 
+                         if (flagEp == 0)
                             epochs = 2000000000;
                          break;
 
@@ -215,7 +215,7 @@ int main(int nbParam, char** param)
                             accThres   = atof(param[k]);
                          else return -1;
 
-                         if (flagEp == 0) 
+                         if (flagEp == 0)
                             epochs = 2000000000;
                          break;
 
@@ -223,7 +223,7 @@ int main(int nbParam, char** param)
                             deltaErr   = atof(param[k]);
                          else return -1;
 
-                         if (flagEp == 0) 
+                         if (flagEp == 0)
                             epochs = 2000000000;
                          break;
 
@@ -305,7 +305,7 @@ int main(int nbParam, char** param)
                          break;
 
               case 'o' : accuracyFile = param[k];
-                         break;      
+                         break;
 
               case 'L' : learnFile  = param[k];
                          break;
@@ -427,8 +427,8 @@ int main(int nbParam, char** param)
          for (k=1, arch.GoToBeg(); k<=arch.GetNbEl(); k++, arch.GoToNext())
          {
              vecNbNeurons[k] = arch.GetVal();
- 
-             if (vecNbNeurons[k] == 0) 
+
+             if (vecNbNeurons[k] == 0)
              {
                 cout << "The number of neurons must be greater than 0.\n";
                 return -1;
@@ -449,8 +449,8 @@ int main(int nbParam, char** param)
          for (k=1, arch.GoToBeg(); k<=arch.GetNbEl(); k++, arch.GoToNext())
          {
              vecNbNeurons[k+1] = arch.GetVal();
- 
-             if (vecNbNeurons[k+1] == 0) 
+
+             if (vecNbNeurons[k+1] == 0)
              {
                 cout << "The number of neurons must be greater than 0.\n";
                 return -1;
@@ -544,12 +544,12 @@ int main(int nbParam, char** param)
       }
    }
    if (weightFile == 0)
-      net = new Dimlp(eta, mu, flat, errThres, accThres, deltaErr, 
+      net = new Dimlp(eta, mu, flat, errThres, accThres, deltaErr,
                       quant, showErr, epochs, nbLayers, vecNbNeurons, outputWeightFile);
 
    else
-      net = new Dimlp(weightFile, eta, mu, flat, errThres, accThres, 
-                      deltaErr, quant, showErr, epochs, 
+      net = new Dimlp(weightFile, eta, mu, flat, errThres, accThres,
+                      deltaErr, quant, showErr, epochs,
                       nbLayers, vecNbNeurons, outputWeightFile);
 
    if(accuracyFile != 0){
@@ -599,7 +599,7 @@ int main(int nbParam, char** param)
       cout << "\n\n****************************************************\n\n";
       cout << "*** RULE EXTRACTION\n";
 
-      RealHyp ryp1(All, net, quant, nbIn, 
+      RealHyp ryp1(All, net, quant, nbIn,
                   vecNbNeurons[1] / nbIn, nbWeightLayers);
 
 
@@ -613,18 +613,18 @@ int main(int nbParam, char** param)
 
          ostream rulesFileost(&buf);
 
-         
-         ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass, 
+
+         ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                                              Test, TestClass, Attr, rulesFileost);
 
          if (ryp1.TreeAborted())
          {
             ryp1.Del();
 
-            RealHyp2 ryp2(All, net, quant, nbIn, 
+            RealHyp2 ryp2(All, net, quant, nbIn,
                         vecNbNeurons[1] / nbIn, nbWeightLayers);
 
-            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass, 
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                                     Test, TestClass, Attr, rulesFileost);
 
             ryp2.Del();
@@ -636,17 +636,17 @@ int main(int nbParam, char** param)
       }
 
       else{
-         ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass, 
+         ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                                              Test, TestClass, Attr, cout);
 
          if (ryp1.TreeAborted())
          {
             ryp1.Del();
 
-            RealHyp2 ryp2(All, net, quant, nbIn, 
+            RealHyp2 ryp2(All, net, quant, nbIn,
                         vecNbNeurons[1] / nbIn, nbWeightLayers);
 
-            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass, 
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                                     Test, TestClass, Attr, cout);
 
             ryp2.Del();
@@ -657,9 +657,9 @@ int main(int nbParam, char** param)
 
       if (attrFile != 0) Attr.Del();
    }
-         
 
- 
+
+
    Train.Del();
    TrainClass.Del();
 

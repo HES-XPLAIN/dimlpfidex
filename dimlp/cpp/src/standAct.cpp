@@ -5,7 +5,7 @@ using namespace std;
 
 float Sigmoid(float x)
 
-{  
+{
    return 1.0/(1.0+exp(-x));
 }
 
@@ -25,7 +25,7 @@ float HyperTang(float x)
 
 float Gaussian(float x)
 
-{  
+{
    return exp(-x*x);
 }
 
@@ -33,7 +33,7 @@ float Gaussian(float x)
 
 float Identity(float x)
 
-{  
+{
    return x;
 }
 
@@ -41,7 +41,7 @@ float Identity(float x)
 
 float Power3(float x)
 
-{  
+{
    return x*x*x;
 }
 
@@ -49,7 +49,7 @@ float Power3(float x)
 
 float Power4(float x)
 
-{  
+{
    return x*x*x*x;
 }
 
@@ -57,7 +57,7 @@ float Power4(float x)
 
 float Power5(float x)
 
-{  
+{
    return x*x*x*x*x;
 }
 
