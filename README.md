@@ -88,3 +88,18 @@ mkdir build && cd build
 cmake.exe -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH="<virtualenv path>" ..
 cmake.exe --build .
 ```
+
+### Install Pre-commit hooks
+
+Git hooks are used to ensure quality checks are run by all developers every time
+before a commit.
+
+```shell
+pre-commit install
+```
+
+Pre-commit hooks can be run manually with:
+
+```shell
+pre-commit run --all-files
+```
