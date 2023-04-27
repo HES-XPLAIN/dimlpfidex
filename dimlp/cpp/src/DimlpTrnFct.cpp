@@ -15,6 +15,7 @@ void GiveAllParam()
 
    cout << "DimlpTrn -L <training set file> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
+   cout << "-S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
    cout << " <Options>\n\n";
 
    cout << "Options are: \n\n";
@@ -152,6 +153,8 @@ int dimlpTrn(string command){
    char* testTar    = 0;
    char* validTar   = 0;
    char* attrFile   = 0;
+   string rootFolderTemp;
+   bool rootFolderInit = false;
 
    int   flagEp = 0;
 
@@ -283,6 +286,11 @@ int dimlpTrn(string command){
 
                          break;
 
+              case 'S' :
+                         rootFolderTemp = &(commandList[k])[0];
+                         rootFolderInit = true;
+                         break;
+
               case 'A' : attrFile   = &(commandList[k])[0];
                          break;
 
@@ -352,6 +360,12 @@ int dimlpTrn(string command){
       std::cout.rdbuf(ofs.rdbuf());  // redirect std::cout to file
    }
    std::ostream& output = consoleFile != 0 ? ofs : std::cout;
+
+   if (rootFolderInit == false)
+   {
+      cout << "Give a root folder to save results with -S selection please." << "\n";
+      return -1;
+   }
 
    if (eta <=0)
    {

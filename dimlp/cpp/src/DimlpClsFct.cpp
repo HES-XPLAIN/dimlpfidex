@@ -11,6 +11,7 @@ void GiveAllParam()
    cout << "DimlpCls -T <file of examples> ";
    cout << "-W <file of weights> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
+   cout << "-S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
    cout << " <Options>\n\n";
 
    cout << "Options are: \n\n";
@@ -138,13 +139,22 @@ int dimlpCls(string command){
    int nbIn  = 0;
    int nbOut = 0;
 
-   char* testFile   = 0;
-   char* weightFile = 0;
-   char* predFile = (char*) "dimlp.out";
-   char* consoleFile = 0;
-   char* accuracyFile = 0;
-   char* testTar    = 0;
-   char* hidFile = (char*) "dimlp.hid";
+   string testFileTemp;
+   bool testFileInit = false;
+   string weightFileTemp;
+   bool weightFileInit = false;
+   string predFileTemp = "dimlp.out";
+   bool predFileInit = false;
+   string consoleFileTemp;
+   bool consoleFileInit = false;
+   string accuracyFileTemp;
+   bool accuracyFileInit = false;
+   string testTarTemp;
+   bool testTarInit = false;
+   string hidFileTemp = "dimlp.hid";
+   bool hidFileInit = false;
+   string rootFolderTemp;
+   bool rootFolderInit = false;
 
    int       nbLayers;
    int       nbWeightLayers;
@@ -214,25 +224,44 @@ int dimlpCls(string command){
 
                          break;
 
-              case 'W' : weightFile = &(commandList[k])[0];
+              case 'S' :
+                         rootFolderTemp = &(commandList[k])[0];
+                         rootFolderInit = true;
                          break;
 
-              case 'p' : predFile = &(commandList[k])[0];
+              case 'W' :
+                         weightFileTemp = &(commandList[k])[0];
+                         weightFileInit = true;
                          break;
 
-              case 'r' : consoleFile = &(commandList[k])[0];
+              case 'p' :
+                         predFileTemp = &(commandList[k])[0];
+                         predFileInit = true;
                          break;
 
-              case 'o' : accuracyFile = &(commandList[k])[0];
+              case 'r' :
+                         consoleFileTemp = &(commandList[k])[0];
+                         consoleFileInit = true;
                          break;
 
-               case 'h' : hidFile = &(commandList[k])[0];
+              case 'o' :
+                         accuracyFileTemp = &(commandList[k])[0];
+                         accuracyFileInit = true;
                          break;
 
-              case 'T' : testFile   = &(commandList[k])[0];
+               case 'h' :
+                         hidFileTemp = &(commandList[k])[0];
+                         hidFileInit = true;
                          break;
 
-              case '2' : testTar    = &(commandList[k])[0];
+              case 'T' :
+                         testFileTemp   = &(commandList[k])[0];
+                         testFileInit = true;
+                         break;
+
+              case '2' :
+                         testTarTemp    = &(commandList[k])[0];
+                         testTarInit = true;
                          break;
 
               default  : cout << "Illegal option: " << &(commandList[k-1])[0] << "\n";
@@ -247,15 +276,89 @@ int dimlpCls(string command){
        }
    }
 
+// ----------------------------------------------------------------------
+
+   // create paths with root foler
+   #ifdef __unix__
+   string root = rootFolderTemp + "/";
+   #elif defined(_WIN32)
+   string root = rootFolderTemp + "\\";
+   #endif
+   testFileTemp = root + testFileTemp;
+   weightFileTemp = root + weightFileTemp;
+   predFileTemp = root + predFileTemp;
+   consoleFileTemp = root + consoleFileTemp;
+   accuracyFileTemp = root + accuracyFileTemp;
+   testTarTemp = root + testTarTemp;
+   hidFileTemp = root + hidFileTemp;
+
+   char testFile[160];
+   if(testFileTemp.length()>=160){
+      cout << "Path " << testFileTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(testFile, testFileTemp.c_str());
+
+   char weightFile[160];
+   if(weightFileTemp.length()>=160){
+      cout << "Path " << weightFileTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(weightFile, weightFileTemp.c_str());
+
+   char predFile[160];
+   if(predFileTemp.length()>=160){
+      cout << "Path " << predFileTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(predFile, predFileTemp.c_str());
+
+   char consoleFile[160];
+   if(consoleFileTemp.length()>=160){
+      cout << "Path " << consoleFileTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(consoleFile, consoleFileTemp.c_str());
+
+   char accuracyFile[160];
+   if(accuracyFileTemp.length()>=160){
+      cout << "Path " << accuracyFileTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(accuracyFile, accuracyFileTemp.c_str());
+
+   char testTar[160];
+   if(testTarTemp.length()>=160){
+      cout << "Path " << testTarTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(testTar, testTarTemp.c_str());
+
+   char hidFile[160];
+   if(hidFileTemp.length()>=160){
+      cout << "Path " << hidFileTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(hidFile, hidFileTemp.c_str());
+
+// ----------------------------------------------------------------------
+
    // Get console results to file
    std::ofstream ofs;
    std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
-   if (consoleFile != 0){
+   if (consoleFileInit != false){
       ofs.open(consoleFile);
       std::cout.rdbuf(ofs.rdbuf());  // redirect std::cout to file
    }
    std::ostream& output = consoleFile != 0 ? ofs : std::cout;
 
+// ----------------------------------------------------------------------
+
+   if (rootFolderInit == false)
+   {
+      cout << "Give a root folder to save results with -S selection please." << "\n";
+      return -1;
+   }
 
    if (quant <= 2)
    {
@@ -349,7 +452,7 @@ int dimlpCls(string command){
 // ----------------------------------------------------------------------
 
 
-   if (testFile == 0)
+   if (testFileInit == false)
    {
       cout << "Give a testing file with -T selection please." << "\n";
       return -1;
@@ -357,7 +460,7 @@ int dimlpCls(string command){
 
    else // if (testFile != 0)
    {
-      if (testTar != 0)
+      if (testTarInit != false)
       {
 
          static DataSet test(testFile, nbIn);
@@ -384,7 +487,7 @@ int dimlpCls(string command){
       }
    }
 
-   if (weightFile == 0)
+   if (weightFileInit == false)
    {
       cout << "Give a file of weights with -W selection please." << "\n";
       return -1;
@@ -400,7 +503,7 @@ int dimlpCls(string command){
    cout << "\n\n*** ACCURACY = " << acc << "\n";
 
    // Output accuracy stats in file
-   if(accuracyFile != 0){
+   if(accuracyFileInit != false){
       ofstream accFile (accuracyFile);
       if(accFile.is_open()){
          accFile << "Sum squared error = " << err << "\n";

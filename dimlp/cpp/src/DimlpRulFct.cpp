@@ -12,6 +12,7 @@ void GiveAllParam()
    cout << "DimlpRul -L <training set file> ";
    cout << "-W <file of weights> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
+   cout << "-S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
    cout << " <Options>\n\n";
 
    cout << "Options are: \n\n";
@@ -64,20 +65,35 @@ int dimlpRul(string command){
    int nbIn  = 0;
    int nbOut = 0;
 
-   char* learnFile  = 0;
-   char* testFile   = 0;
-   char* validFile  = 0;
-   char* weightFile = 0;
-   char* learnTar   = 0;
-   char* testTar    = 0;
-   char* validTar   = 0;
-   char*  rulesFile = (char*) "dimlp.rls";
-   char* consoleFile = 0;
-   char* accuracyFile = 0;
-   char* attrFile   = 0;
+   string learnFileTemp;
+   bool learnFileInit = false;
+   string testFileTemp;
+   bool testFileInit = false;
+   string validFileTemp;
+   bool validFileInit = false;
+   string weightFileTemp;
+   bool weightFileInit = false;
+   string learnTarTemp;
+   bool learnTarInit = false;
+   string testTarTemp;
+   bool testTarInit = false;
+   string validTarTemp;
+   bool validTarInit = false;
+   string rulesFileTemp = "dimlp.rls";
+   bool rulesFileInit = false;
+   string consoleFileTemp;
+   bool consoleFileInit = false;
+   string accuracyFileTemp;
+   bool accuracyFileInit = false;
+   string attrFileTemp;
+   bool attrFileInit = false;
+   string rootFolderTemp;
+   bool rootFolderInit = false;
+
    int   nbLayers;
    int   nbWeightLayers;
    int*  vecNbNeurons;
+
 
    StringInt arch;
    StringInt archInd;
@@ -143,37 +159,65 @@ int dimlpRul(string command){
 
                          break;
 
-              case 'A' : attrFile   = &(commandList[k])[0];
+               case 'S' :
+                         rootFolderTemp = &(commandList[k])[0];
+                         rootFolderInit = true;
                          break;
 
-              case 'W' : weightFile = &(commandList[k])[0];
+              case 'A' :
+                         attrFileTemp   = &(commandList[k])[0];
+                         attrFileInit = true;
                          break;
 
-              case 'L' : learnFile  = &(commandList[k])[0];
+              case 'W' :
+                         weightFileTemp = &(commandList[k])[0];
+                         weightFileInit = true;
                          break;
 
-              case 'T' : testFile   = &(commandList[k])[0];
+              case 'L' :
+                         learnFileTemp  = &(commandList[k])[0];
+                         learnFileInit = true;
                          break;
 
-              case 'V' : validFile   = &(commandList[k])[0];
+              case 'T' :
+                         testFileTemp   = &(commandList[k])[0];
+                         testFileInit = true;
                          break;
 
-              case '1' : learnTar   = &(commandList[k])[0];
+              case 'V' :
+                         validFileTemp   = &(commandList[k])[0];
+                         validFileInit = true;
                          break;
 
-              case '2' : testTar    = &(commandList[k])[0];
+              case '1' :
+                         learnTarTemp   = &(commandList[k])[0];
+                         learnTarInit = true;
                          break;
 
-              case '3' : validTar    = &(commandList[k])[0];
+              case '2' :
+                         testTarTemp    = &(commandList[k])[0];
+                         testTarInit = true;
                          break;
 
-              case 'R' : rulesFile = &(commandList[k])[0];
+              case '3' :
+
+                         validTarTemp    = &(commandList[k])[0];
+                         validTarInit = true;
                          break;
 
-              case 'r' : consoleFile = &(commandList[k])[0];
+              case 'R' :
+                         rulesFileTemp = &(commandList[k])[0];
+                         rulesFileInit = true;
                          break;
 
-              case 'o' : accuracyFile = &(commandList[k])[0];
+              case 'r' :
+                         consoleFileTemp = &(commandList[k])[0];
+                         consoleFileInit = true;
+                         break;
+
+              case 'o' :
+                         accuracyFileTemp = &(commandList[k])[0];
+                         accuracyFileInit = true;
                          break;
 
               default  : cout << "Illegal option: " << &(commandList[k-1])[0] << "\n";
@@ -188,17 +232,124 @@ int dimlpRul(string command){
        }
    }
 
+    // ----------------------------------------------------------------------
+
+   // create paths with root foler
+    #ifdef __unix__
+    string root = rootFolderTemp + "/";
+    #elif defined(_WIN32)
+    string root = rootFolderTemp + "\\";
+    #endif
+   learnFileTemp = root + learnFileTemp;
+   testFileTemp = root + testFileTemp;
+   validFileTemp = root + validFileTemp;
+   weightFileTemp = root + weightFileTemp;
+   learnTarTemp = root + learnTarTemp;
+   testTarTemp = root + testTarTemp;
+   validTarTemp = root + validTarTemp;
+   rulesFileTemp = root + rulesFileTemp;
+   consoleFileTemp = root + consoleFileTemp;
+   accuracyFileTemp = root + accuracyFileTemp;
+   attrFileTemp = root + attrFileTemp;
+
+   char learnFile[160];
+   if(learnFileTemp.length()>=160){
+      cout << "Path " << learnFileTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(learnFile, learnFileTemp.c_str());
+
+   char testFile[160];
+   if(testFileTemp.length()>=160){
+      cout << "Path " << testFileTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(testFile, testFileTemp.c_str());
+
+   char validFile[160];
+   if(validFileTemp.length()>=160){
+      cout << "Path " << validFileTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(validFile, validFileTemp.c_str());
+
+   char weightFile[160];
+   if(weightFileTemp.length()>=160){
+      cout << "Path " << weightFileTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(weightFile, weightFileTemp.c_str());
+
+   char learnTar[160];
+   if(learnTarTemp.length()>=160){
+      cout << "Path " << learnTarTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(learnTar, learnTarTemp.c_str());
+
+   char testTar[160];
+   if(testTarTemp.length()>=160){
+      cout << "Path " << testTarTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(testTar, testTarTemp.c_str());
+
+   char validTar[160];
+   if(validTarTemp.length()>=160){
+      cout << "Path " << validTarTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(validTar, validTarTemp.c_str());
+
+   char rulesFile[160];
+   if(rulesFileTemp.length()>=160){
+      cout << "Path " << rulesFileTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(rulesFile, rulesFileTemp.c_str());
+
+   char consoleFile[160];
+   if(consoleFileTemp.length()>=160){
+      cout << "Path " << consoleFileTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(consoleFile, consoleFileTemp.c_str());
+
+   char accuracyFile[160];
+   if(accuracyFileTemp.length()>=160){
+      cout << "Path " << accuracyFileTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(accuracyFile, accuracyFileTemp.c_str());
+
+   char attrFile[160];
+   if(attrFileTemp.length()>=160){
+      cout << "Path " << attrFileTemp << "is too long" << "\n";
+      return -1;
+   }
+   strcpy(attrFile, attrFileTemp.c_str());
+
+   // ----------------------------------------------------------------------
+
    // Get console results to file
    std::ofstream ofs;
    std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
-   if (consoleFile != 0){
+   if (consoleFileInit != false){
       ofs.open(consoleFile);
       std::cout.rdbuf(ofs.rdbuf());  // redirect std::cout to file
    }
 
-   std::ostream& output = consoleFile != 0 ? ofs : std::cout;
+   std::ostream& output = consoleFileInit != false ? ofs : std::cout;
 
-   if (weightFile == 0)
+   // ----------------------------------------------------------------------
+
+   if (rootFolderInit == false)
+   {
+      cout << "Give a root folder to save results with -S selection please." << "\n";
+      return -1;
+   }
+
+   if (weightFileInit == false)
    {
       cout << "Give a file of weights with -W selection please." << "\n";
       return -1;
@@ -295,13 +446,13 @@ int dimlpRul(string command){
 
 // ----------------------------------------------------------------------
 
-   if (learnFile == 0)
+   if (learnFileInit == false)
    {
       cout << "Give the training file with -L selection please." << "\n";
       return -1;
    }
 
-   if (learnTar != 0)
+   if (learnTarInit != false)
    {
       static DataSet train(learnFile, nbIn);
       static DataSet trainClass(learnTar, nbOut);
@@ -324,9 +475,9 @@ int dimlpRul(string command){
       data.Del();
    }
 
-   if (validFile != 0)
+   if (validFileInit != false)
    {
-      if (validTar != 0)
+      if (validTarInit != false)
       {
          static DataSet valid(validFile, nbIn);
          static DataSet validClass(validTar, nbOut);
@@ -351,9 +502,9 @@ int dimlpRul(string command){
       }
    }
 
-   if (testFile != 0)
+   if (testFileInit != false)
    {
-      if (testTar != 0)
+      if (testTarInit != false)
       {
          static DataSet test(testFile, nbIn);
          static DataSet testClass(testTar, nbOut);
@@ -405,7 +556,7 @@ int dimlpRul(string command){
    }
 
    // Output accuracy stats in file
-   if(accuracyFile != 0){
+   if(accuracyFileInit != false){
       ofstream accFile (accuracyFile);
       if(accFile.is_open()){
          accFile << "Sum squared error on training set = " << errTrain << "\n";
@@ -444,7 +595,7 @@ int dimlpRul(string command){
    cout << "\n\n****************************************************\n\n";
    cout << "*** RULE EXTRACTION\n";
 
-   if (attrFile != 0)
+   if (attrFileInit != false)
    {
       AttrName attr(attrFile, nbIn, nbOut);
 
@@ -487,7 +638,7 @@ int dimlpRul(string command){
 
    ryp.Del();
 
-   if (attrFile != 0) Attr.Del();
+   if (attrFileInit != false) Attr.Del();
 
    TrainClass.Del();
 

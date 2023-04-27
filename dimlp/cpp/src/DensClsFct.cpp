@@ -15,6 +15,7 @@ void GiveAllParam()
    cout << "-W <Prefix of file of weights> (for instance give DimlpBT) ";
    cout << "-I <number of input neurons> -O <number of output neurons> ";
    cout << "-N <number of networks>";
+   cout << "-S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
    cout << " <Options>\n\n";
 
    cout << "Options are: \n\n";
@@ -88,6 +89,8 @@ int densCls(string command){
    char* rulesFile = 0;
    char* consoleFile = 0;
    char* accuracyFile = 0;
+   string rootFolderTemp;
+   bool rootFolderInit = false;
 
    int       nbLayers;
    int       nbWeightLayers;
@@ -170,6 +173,11 @@ int densCls(string command){
 
                          break;
 
+                case 'S' :
+                         rootFolderTemp = &(commandList[k])[0];
+                         rootFolderInit = true;
+                         break;
+
               case 'A' : attrFile   = &(commandList[k])[0];
                          break;
 
@@ -225,6 +233,11 @@ int densCls(string command){
    }
    std::ostream& output = consoleFile != 0 ? ofs : std::cout;
 
+   if (rootFolderInit == false)
+   {
+      cout << "Give a root folder to save results with -S selection please." << "\n";
+      return -1;
+   }
 
    if (quant == 0)
    {

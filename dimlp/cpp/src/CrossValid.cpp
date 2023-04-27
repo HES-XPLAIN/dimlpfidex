@@ -18,6 +18,8 @@ void GiveAllParam()
 
    cout << "crossValid -L <training set file> -1 <file of train classes> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
+   cout << "-S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+
    cout << " <Options>\n\n";
 
    cout << "Options are: \n\n";
@@ -72,7 +74,7 @@ int main(int nbParam, char** param)
 
     string genericCommand = "dimlpTrn";
 
-    string eta, mu, flat, errThres, accThres, deltaErr, showErr, epochs, quant, nbIn, nbOut, arch, arch2, attrFile, weightFile;
+    string eta, mu, flat, errThres, accThres, deltaErr, showErr, epochs, quant, nbIn, nbOut, arch, arch2, attrFile, rootFolder, weightFile;
     char* ptrParam;
 
     if (nbParam == 1)
@@ -169,6 +171,11 @@ int main(int nbParam, char** param)
                            genericCommand += " -O " + nbOut;
                            break;
 
+                case 'S' :
+                           rootFolder = param[k];
+                           genericCommand += " -S " + rootFolder;
+                           break;
+
                 case 'A' :
                             attrFile = param[k];
                             genericCommand += " -A " + attrFile;
@@ -213,6 +220,7 @@ int main(int nbParam, char** param)
     }
 
 // ----------------------------------------------------------------------
+
 
    if (N <= 0)
    {
