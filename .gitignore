@@ -177,3 +177,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# coverity
+cov-analysis-linux64.tar.gz
+cov-analysis-linux64/

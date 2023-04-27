@@ -1,0 +1,79 @@
+
+name: "Coverity Scan"
+
+on:
+#  push:
+#   branches:
+#    - main
+#   pull_request:
+#     branches:
+#       - main
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * FRI'
+
+jobs:
+  coverity:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Install GCC
+        uses: egor-tensin/setup-gcc@v1
+        with:
+          version: latest
+          platform: x64
+
+      - name: Install cmake
+        uses: lukka/get-cmake@latest
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install poetry and dependencies
+        run: |
+          python -m pip install --upgrade pip
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry install
+
+      - name: Configure
+        run: |
+          mkdir build && cd build
+          poetry run cmake ..
+
+      - name: Download Coverity Build Tool
+        run: |
+          wget -q https://scan.coverity.com/download/cxx/linux64 --post-data "token=$TOKEN&project=HES-XPLAIN/dimlpfidex" -O cov-analysis-linux64.tar.gz
+          mkdir cov-analysis-linux64
+          tar -xzf cov-analysis-linux64.tar.gz --strip 1 -C cov-analysis-linux64
+        env:
+          TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
+
+      - name: Build with cov-build
+        run: |
+          export PATH=`pwd`/cov-analysis-linux64/bin:$PATH
+          cd build
+          poetry run cov-build --dir cov-int cmake --build .
+
+      - name: Submit result to Coverity Scan
+        run: |
+          version=$(git describe --always | cut -d 'g' -f2- | cut -c -7)
+          cd build
+          tar -czvf dimlpfidex.tgz cov-int
+          curl -k \
+            --form project=dimlpfidex \
+            --form token=$TOKEN \
+            --form email=$EMAIL \
+            --form file=@dimlpfidex.tgz \
+            --form version="${version}" \
+            --form description="development" \
+            https://scan.coverity.com/builds?project=HES-XPLAIN%2Fdimlpfidex
+        env:
+          TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
+          EMAIL: ${{ secrets.COVERITY_SCAN_EMAIL }}
