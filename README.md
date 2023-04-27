@@ -1,6 +1,8 @@
 # dimlpfidex
 Discretized Interpretable Multi Layer Perceptron (DIMLP) and related algorithms
 
+* [Static analysis](https://scan.coverity.com/projects/hes-xplain-dimlpfidex)
+
 ## Contribution
 
 ### Install C++ toolchain
