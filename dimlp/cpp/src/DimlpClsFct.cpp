@@ -350,7 +350,7 @@ int dimlpCls(string command){
       ofs.open(consoleFile);
       std::cout.rdbuf(ofs.rdbuf());  // redirect std::cout to file
    }
-   std::ostream& output = consoleFile != 0 ? ofs : std::cout;
+   std::ostream& output = consoleFileInit != false ? ofs : std::cout;
 
 // ----------------------------------------------------------------------
 
@@ -458,7 +458,7 @@ int dimlpCls(string command){
       return -1;
    }
 
-   else // if (testFile != 0)
+   else // if (testFileInit != false)
    {
       if (testTarInit != false)
       {

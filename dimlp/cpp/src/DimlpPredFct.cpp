@@ -255,7 +255,7 @@ int dimlpPred(string command){
         ofs.open(consoleFile);
         std::cout.rdbuf(ofs.rdbuf());  // redirect std::cout to file
     }
-    std::ostream& output = consoleFile != 0 ? ofs : std::cout;
+    std::ostream& output = consoleFileInit != false ? ofs : std::cout;
 
     // ----------------------------------------------------------------------
 
@@ -296,7 +296,7 @@ int dimlpPred(string command){
         return -1;
     }
 
-    else // if (testFile != 0)
+    else // if (testFileInit != false)
     {
         static DataSet test(testFile, nbIn);
         Test = test;
