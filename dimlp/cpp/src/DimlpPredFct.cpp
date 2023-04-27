@@ -11,6 +11,8 @@ void GiveAllParam()
    cout << "DimlpPred -T <file of examples> ";
    cout << "-W <file of weights> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
+   cout << "-S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+
    cout << " <Options>\n\n";
 
    cout << "Options are: \n\n";
@@ -87,10 +89,16 @@ int dimlpPred(string command){
     int nbIn  = 0;
     int nbOut = 0;
 
-    char* testFile   = 0;
-    char* weightFile = 0;
-    char* predFile = (char*) "dimlp.out";
-    char* consoleFile = 0;
+    string testFileTemp;
+    bool testFileInit = false;
+    string weightFileTemp;
+    bool weightFileInit = false;
+    string predFileTemp = "dimlp.out";
+    bool predFileInit = false;
+    string consoleFileTemp;
+    bool consoleFileInit = false;
+    string rootFolderTemp;
+    bool rootFolderInit = false;
 
     int       nbLayers;
     int       nbWeightLayers;
@@ -160,16 +168,29 @@ int dimlpPred(string command){
 
                             break;
 
-                case 'W' : weightFile = &(commandList[k])[0];
+                case 'S' :
+                            rootFolderTemp = &(commandList[k])[0];
+                            rootFolderInit = true;
                             break;
 
-                case 'p' : predFile = &(commandList[k])[0];
+                case 'W' :
+                            weightFileTemp = &(commandList[k])[0];
+                            weightFileInit = true;
                             break;
 
-                case 'r' : consoleFile = &(commandList[k])[0];
+                case 'p' :
+                            predFileTemp = &(commandList[k])[0];
+                            predFileInit = true;
                             break;
 
-                case 'T' : testFile   = &(commandList[k])[0];
+                case 'r' :
+                            consoleFileTemp = &(commandList[k])[0];
+                            consoleFileInit = true;
+                            break;
+
+                case 'T' :
+                            testFileTemp   = &(commandList[k])[0];
+                            testFileInit   = true;
                             break;
 
                 default  : cout << "Illegal option: " << &(commandList[k-1])[0] << "\n";
@@ -184,15 +205,66 @@ int dimlpPred(string command){
         }
     }
 
+    // ----------------------------------------------------------------------
+
+    // create paths with root foler
+    #ifdef __unix__
+    string root = rootFolderTemp + "/";
+    #elif defined(_WIN32)
+    string root = rootFolderTemp + "\\";
+    #endif
+    predFileTemp = root + predFileTemp;
+    consoleFileTemp = root + consoleFileTemp;
+    testFileTemp = root + testFileTemp;
+    weightFileTemp = root + weightFileTemp;
+
+    char predFile[160];
+    if(predFileTemp.length()>=160){
+        cout << "Path " << predFileTemp << "is too long" << "\n";
+        return -1;
+    }
+    strcpy(predFile, predFileTemp.c_str());
+
+    char consoleFile[160];
+    if(consoleFileTemp.length()>=160){
+        cout << "Path " << consoleFileTemp << "is too long" << "\n";
+        return -1;
+    }
+    strcpy(consoleFile, consoleFileTemp.c_str());
+
+    char testFile[160];
+    if(testFileTemp.length()>=160){
+        cout << "Path " << testFileTemp << "is too long" << "\n";
+        return -1;
+    }
+    strcpy(testFile, testFileTemp.c_str());
+
+    char weightFile[160];
+    if(weightFileTemp.length()>=160){
+        cout << "Path " << weightFileTemp << "is too long" << "\n";
+        return -1;
+    }
+    strcpy(weightFile, weightFileTemp.c_str());
+
+    // ----------------------------------------------------------------------
+
     // Get console results to file
     std::ofstream ofs;
     std::streambuf *cout_buff = std::cout.rdbuf();  // Save old buf
-    if (consoleFile != 0){
+    if (consoleFileInit != false){
         ofs.open(consoleFile);
         std::cout.rdbuf(ofs.rdbuf());  // redirect std::cout to file
     }
     std::ostream& output = consoleFile != 0 ? ofs : std::cout;
 
+    // ----------------------------------------------------------------------
+
+
+   if (rootFolderInit == false)
+   {
+      cout << "Give a root folder to save results with -S selection please." << "\n";
+      return -1;
+   }
 
     if (quant <= 2)
     {
@@ -211,6 +283,25 @@ int dimlpPred(string command){
         cout << "At least two output neurons must be given with option -O.\n";
         return -1;
     }
+
+    if (weightFileInit == false)
+    {
+        cout << "Give a file of weights with -W selection please." << "\n";
+        return -1;
+    }
+
+    if (testFileInit == false)
+    {
+        cout << "Give a testing file with -T selection please." << "\n";
+        return -1;
+    }
+
+    else // if (testFile != 0)
+    {
+        static DataSet test(testFile, nbIn);
+        Test = test;
+    }
+
 
     // ----------------------------------------------------------------------
 
@@ -286,23 +377,6 @@ int dimlpPred(string command){
     // ----------------------------------------------------------------------
 
 
-    if (testFile == 0)
-    {
-        cout << "Give a testing file with -T selection please." << "\n";
-        return -1;
-    }
-
-    else // if (testFile != 0)
-    {
-        static DataSet test(testFile, nbIn);
-        Test = test;
-    }
-
-    if (weightFile == 0)
-    {
-        cout << "Give a file of weights with -W selection please." << "\n";
-        return -1;
-    }
 
     Dimlp net(weightFile, nbLayers, vecNbNeurons, quant);
 
