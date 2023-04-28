@@ -8,10 +8,10 @@ void GiveAllParam()
 {
    cout << "\n-------------------------------------------------\n\n";
 
-   cout << "DimlpPred -T <file of examples> ";
+   cout << "-S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+   cout << "DimlpPred -T <file of examples(path with respect to specified root folder)> ";
    cout << "-W <file of weights> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
-   cout << "-S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
 
    cout << " <Options>\n\n";
 
@@ -208,43 +208,59 @@ int dimlpPred(string command){
     // ----------------------------------------------------------------------
 
     // create paths with root foler
+
+
+    char testFileTmp[160], weightFileTmp[160], predFileTmp[160], consoleFileTmp[160];
+
+    char* testFile = 0;
+    char* weightFile = 0;
+    char* predFile = 0;
+    char* consoleFile = 0;
+
     #ifdef __unix__
     string root = rootFolderTemp + "/";
     #elif defined(_WIN32)
     string root = rootFolderTemp + "\\";
     #endif
-    predFileTemp = root + predFileTemp;
-    consoleFileTemp = root + consoleFileTemp;
-    testFileTemp = root + testFileTemp;
-    weightFileTemp = root + weightFileTemp;
 
-    char predFile[160];
+    predFileTemp = root + predFileTemp;
     if(predFileTemp.length()>=160){
         cout << "Path " << predFileTemp << "is too long" << "\n";
         return -1;
     }
-    strcpy(predFile, predFileTemp.c_str());
+    strcpy(predFileTmp, predFileTemp.c_str());
+    predFile = predFileTmp;
 
-    char consoleFile[160];
-    if(consoleFileTemp.length()>=160){
-        cout << "Path " << consoleFileTemp << "is too long" << "\n";
-        return -1;
+    if (consoleFileInit){
+        consoleFileTemp = root + consoleFileTemp;
+        if(consoleFileTemp.length()>=160){
+            cout << "Path " << consoleFileTemp << "is too long" << "\n";
+            return -1;
+        }
+        strcpy(consoleFileTmp, consoleFileTemp.c_str());
+        consoleFile = consoleFileTmp;
     }
-    strcpy(consoleFile, consoleFileTemp.c_str());
 
-    char testFile[160];
-    if(testFileTemp.length()>=160){
-        cout << "Path " << testFileTemp << "is too long" << "\n";
-        return -1;
+    if(testFileInit){
+        testFileTemp = root + testFileTemp;
+        if(testFileTemp.length()>=160){
+            cout << "Path " << testFileTemp << "is too long" << "\n";
+            return -1;
+        }
+        strcpy(testFileTmp, testFileTemp.c_str());
+        testFile = testFileTmp;
     }
-    strcpy(testFile, testFileTemp.c_str());
 
-    char weightFile[160];
-    if(weightFileTemp.length()>=160){
-        cout << "Path " << weightFileTemp << "is too long" << "\n";
-        return -1;
+    if(weightFileInit){
+        weightFileTemp = root + weightFileTemp;
+        if(weightFileTemp.length()>=160){
+            cout << "Path " << weightFileTemp << "is too long" << "\n";
+            return -1;
+        }
+        strcpy(weightFileTmp, weightFileTemp.c_str());
+        weightFile = weightFileTmp;
     }
-    strcpy(weightFile, weightFileTemp.c_str());
+
 
     // ----------------------------------------------------------------------
 

@@ -630,14 +630,12 @@ void BpNN::TrainPhase
    )
 
 
-{  float oldErr = 0;
+{
+   float oldErr = 0;
    float acc, err, specAcc, specErr, prevValidErr, validErr, accValid, testErr, accTest;
    int   e;
-
    IntRandomFunction randInt(0, train.GetNbEx()-1);
-
    err = ComputeError(train, trainTar, &acc);
-
    char temp[80];
    cout << "     0: ";
    sprintf(temp, " SSE = %12f ", err);

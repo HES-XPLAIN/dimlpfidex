@@ -9,7 +9,8 @@ void GiveAllParam()
 {
    cout << "\n-------------------------------------------------\n\n";
 
-   cout << "DimlpBT -L <training set file> ";
+   cout << "-S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+   cout << "DimlpBT -L <training set file(path with respect to specified root folder)> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
    cout << "-S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
 

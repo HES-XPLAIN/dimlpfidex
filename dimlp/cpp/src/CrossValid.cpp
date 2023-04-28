@@ -16,9 +16,9 @@ void GiveAllParam()
 {
    cout << "\n-------------------------------------------------\n\n";
 
-   cout << "crossValid -L <training set file> -1 <file of train classes> ";
+   cout << "-S <Root folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+   cout << "crossValid -L <training set file(path with respect to specified root folder)> -1 <file of train classes> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
-   cout << "-S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
 
    cout << " <Options>\n\n";
 
@@ -68,13 +68,18 @@ int main(int nbParam, char** param)
     int N = 10; // Number of times we do cross-validation
     int K = 10; // Number of divisions of the dataset (10 = 8 for train, 1 for test and 1 for validation)
 
-    char* learnTar   = 0;
-    char* learnFile  = 0;
-    char* folder = (char*) "CrossValidation";
+    string learnTarTemp;
+    bool learnTarInit = false;
+    string learnFileTemp;
+    bool learnFileInit = false;
+    string folderTemp = "CrossValidation";
+    bool folderInit = false;
+    string rootFolderTemp;
+    bool rootFolderInit = false;
 
     string genericCommand = "dimlpTrn";
 
-    string eta, mu, flat, errThres, accThres, deltaErr, showErr, epochs, quant, nbIn, nbOut, arch, arch2, attrFile, rootFolder, weightFile;
+    string eta, mu, flat, errThres, accThres, deltaErr, showErr, epochs, quant, nbIn, nbOut, arch, arch2, attrFile,  weightFile;
     char* ptrParam;
 
     if (nbParam == 1)
@@ -172,8 +177,9 @@ int main(int nbParam, char** param)
                            break;
 
                 case 'S' :
-                           rootFolder = param[k];
-                           genericCommand += " -S " + rootFolder;
+                           rootFolderTemp = param[k];
+                           rootFolderInit = true;
+                           genericCommand += " -S " + rootFolderTemp;
                            break;
 
                 case 'A' :
@@ -186,10 +192,14 @@ int main(int nbParam, char** param)
                             genericCommand += " -W " + weightFile;
                             break;
 
-                case 'L' : learnFile  = param[k];
+                case 'L' :
+                            learnFileTemp  = param[k];
+                            learnFileInit = true;
                             break;
 
-                case '1' : learnTar   = param[k];
+                case '1' :
+                            learnTarTemp   = param[k];
+                            learnTarInit = true;
                             break;
 
                 case 'K' : if (CheckInt(param[k]))
@@ -204,7 +214,9 @@ int main(int nbParam, char** param)
 
                            break;
 
-                case 'F' : folder  = param[k];
+                case 'F' :
+                           folderTemp  = param[k];
+                           folderInit = true;
                            break;
 
                 default  : cout << "Illegal option: " << param[k-1] << "\n";
@@ -220,7 +232,48 @@ int main(int nbParam, char** param)
     }
 
 // ----------------------------------------------------------------------
+    // create paths with root foler
+    char learnTarTmp[160], learnFileTmp[160], folderTmp[160];
 
+    char* learnTar = 0;
+    char* learnFile = 0;
+    char* folder = 0;
+
+    #ifdef __unix__
+    string root = rootFolderTemp + "/";
+    #elif defined(_WIN32)
+    string root = rootFolderTemp + "\\";
+    #endif
+
+    if (learnTarInit){
+        learnTarTemp = root + learnTarTemp;
+        if(learnTarTemp.length()>=160){
+            cout << "Path " << learnTarTemp << "is too long" << "\n";
+            return -1;
+        }
+        strcpy(learnTarTmp, learnTarTemp.c_str());
+        learnTar = learnTarTmp;
+    }
+
+    if (learnFileInit){
+        learnFileTemp = root + learnFileTemp;
+        if(learnFileTemp.length()>=160){
+            cout << "Path " << learnFileTemp << "is too long" << "\n";
+            return -1;
+        }
+        strcpy(learnFileTmp, learnFileTemp.c_str());
+        learnFile = learnFileTmp;
+    }
+
+    string folderTempFull = root + folderTemp;
+    if(folderTempFull.length()>=160){
+        cout << "Path " << folderTempFull << "is too long" << "\n";
+        return -1;
+    }
+    strcpy(folderTmp, folderTempFull.c_str());
+    folder = folderTmp;
+
+// ----------------------------------------------------------------------
 
    if (N <= 0)
    {
@@ -234,13 +287,13 @@ int main(int nbParam, char** param)
       return -1;
    }
 
-   if (learnFile == 0)
+   if (learnFileInit == false)
    {
       cout << "Give the training file with -L selection please." << "\n";
       return -1;
    }
 
-   if (learnTar == 0)
+   if (learnTarInit == false)
    {
       cout << "Give the training target file with -1 selection please." << "\n";
       return -1;
@@ -296,15 +349,6 @@ int main(int nbParam, char** param)
     }
 
 
-    /*for (int i=0; i<learnData.size(); i++){
-        cout << learnData[i] << endl;
-    }
-
-    for (int i=0; i<learnTarData.size(); i++){
-        cout << learnTarData[i] << endl;
-    }*/
-
-
     // Create folder if doesn't exist
     struct stat sb;
     if (stat(folder, &sb) == 0){
@@ -321,12 +365,12 @@ int main(int nbParam, char** param)
     // Loop on N executions of cross-validation
     for (int n=0; n<N; n++){
         // Create folder
-        string folderName = std::string(folder)+"\\Execution"+std::to_string(n+1);
-        string folderNameLinux = std::string(folder)+"/Execution"+std::to_string(n+1)+"/";
 
         #ifdef __unix__
-        mkdir(folderNameLinux.c_str(), 0777);
+        string folderName = std::string(folder)+"/Execution"+std::to_string(n+1)+"/";
+        mkdir(folderName.c_str(), 0777);
         #elif defined(_WIN32)
+        string folderName = std::string(folder)+"\\Execution"+std::to_string(n+1);
         mkdir(folderName.c_str());
         #endif
 
@@ -363,11 +407,11 @@ int main(int nbParam, char** param)
         int testIdx;
         for(int k=0; k<K; k++){ // K-fold, we shift groups by 1.
             // Create folder
-            string folderName = std::string(folder)+"\\Execution"+std::to_string(n+1)+"\\Fold"+std::to_string(k+1);
-            string folderNameLinux = std::string(folder)+"/Execution"+std::to_string(n+1)+"/Fold"+std::to_string(k+1)+"/";
             #ifdef __unix__
-            mkdir(folderNameLinux.c_str(), 0777);
+            string folderName = std::string(folder)+"/Execution"+std::to_string(n+1)+"/Fold"+std::to_string(k+1)+"/";
+            mkdir(folderName.c_str(), 0777);
             #elif defined(_WIN32)
+            string folderName = std::string(folder)+"\\Execution"+std::to_string(n+1)+"\\Fold"+std::to_string(k+1);
             mkdir(folderName.c_str());
             #endif
             // Get group index for test, validation and train
@@ -444,13 +488,13 @@ int main(int nbParam, char** param)
 
 
             #ifdef __unix__
-            command += "-p " + std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/train.out "; // Output train pred file
-            command += "-t " + std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/test.out "; // Output test pred file
-            command += "-w " + std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/weights.wts "; // Output weight file
+            command += "-p " + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/train.out "; // Output train pred file
+            command += "-t " + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/test.out "; // Output test pred file
+            command += "-w " + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/weights.wts "; // Output weight file
             #elif defined(_WIN32)
-            command += "-p " + std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\train.out "; // Output train pred file
-            command += "-t " + std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\test.out "; // Output test pred file
-            command += "-w " + std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\weights.wts "; // Output weight file
+            command += "-p " + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\train.out "; // Output train pred file
+            command += "-t " + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\test.out "; // Output test pred file
+            command += "-w " + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\weights.wts "; // Output weight file
             #endif
             command += "-r consoleTemp.txt"; // To not show console result
 
@@ -494,11 +538,16 @@ int main(int nbParam, char** param)
                 return -1;
             }
             #endif
+
         }
 
     }
 
-    remove("consoleTemp.txt");
+
+    char toDelete[160];
+    string toDeleteTemp = root + "consoleTemp.txt";
+    strcpy(toDelete, toDeleteTemp.c_str());
+    remove(toDelete);
     remove("tempTrain.txt");
     remove("tempTest.txt");
     remove("tempValid.txt");
@@ -506,4 +555,5 @@ int main(int nbParam, char** param)
     remove("tempTarTest.txt");
     remove("tempTarValid.txt");
     remove("dimlpValidation.out");
+
 }
