@@ -43,7 +43,8 @@ public:
           int      nbEpochsParam,
           int      nbLayers,
           int      nbNeurons[],
-          char   weightFile[]);
+          char     weightFile[],
+          int      seed = 0);
 
 
       Dimlp(char readFile[], int nbLayers, int nbNeurons[], int discrLevels);
@@ -63,7 +64,8 @@ public:
           int      nbEpochsParam,
           int      nbLayers,
           int      nbNeurons[],
-          char   weightFile[]);
+          char     weightFile[],
+          int      seed = 0);
 
 };
 

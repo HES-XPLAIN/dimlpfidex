@@ -52,7 +52,8 @@ public:
       DataSet& test,
       DataSet& testTar,
       char genericWeightsFile[],
-      char* accuracyFile
+      char* accuracyFile,
+      int seed = 0
    );
    void DefNetsWithWeights(char* prefix);
 
@@ -79,7 +80,8 @@ public:
        int      nbLayers,
        int      nbNeurons[],
        int      nbDimlpNets,
-       char    weightFile[]);
+       char     weightFile[],
+       int      seed = 0);
 
    BagDimlp
    (
@@ -87,7 +89,8 @@ public:
     int      nbLayers,
     int*     nbNeurons,
     int      nbDimlpNets,
-    char    weightFile[]);
+    char     weightFile[],
+    int      seed = 0);
 
 };
 

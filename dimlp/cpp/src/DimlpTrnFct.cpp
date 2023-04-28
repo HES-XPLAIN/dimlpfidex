@@ -45,6 +45,7 @@ void GiveAllParam()
    cout << "-d <absolute difference error threshold>\n";
    cout << "-i <number of epochs>\n";
    cout << "-s <number of epochs to show error>\n";
+   cout << "-z <seed (0=ranodom)>";
 
    cout << "\n-------------------------------------------------\n\n";
 }
@@ -134,6 +135,7 @@ int dimlpTrn(string command){
 
    int nbIn  = 0;
    int nbOut = 0;
+   int seed = 0;
 
    string learnFileTemp;
    bool learnFileInit = false;
@@ -294,6 +296,12 @@ int dimlpTrn(string command){
 
               case 'O' : if (CheckInt(&(commandList[k])[0]))
                             nbOut      = atoi(&(commandList[k])[0]);
+                         else return -1;
+
+                         break;
+
+              case 'z' : if (CheckInt(&(commandList[k])[0]))
+                            seed      = atoi(&(commandList[k])[0]);
                          else return -1;
 
                          break;
@@ -778,12 +786,13 @@ int dimlpTrn(string command){
    }
    if (weightFileInit == false)
       net = new Dimlp(eta, mu, flat, errThres, accThres, deltaErr,
-                      quant, showErr, epochs, nbLayers, vecNbNeurons, outputWeightFile);
+                      quant, showErr, epochs, nbLayers, vecNbNeurons, outputWeightFile, seed);
 
    else
       net = new Dimlp(weightFile, eta, mu, flat, errThres, accThres,
                       deltaErr, quant, showErr, epochs,
-                      nbLayers, vecNbNeurons, outputWeightFile);
+                      nbLayers, vecNbNeurons, outputWeightFile, seed);
+
 
    if(accuracyFileInit != false){
       ofstream accFile (accuracyFile);

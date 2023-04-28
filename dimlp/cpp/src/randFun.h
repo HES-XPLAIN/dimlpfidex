@@ -10,11 +10,11 @@ class IntRandomFunction {
       int HiBound;
       int Diff;
 
-      void StartOnlyOnece();
+      void StartOnlyOnece(int seed = 0);
 
 public:
 
-      IntRandomFunction();
+      IntRandomFunction(int seed = 0);
       IntRandomFunction(int lowBound, int hiBound);
 
       int RandomInteger();
@@ -28,11 +28,11 @@ class FloatRandomFunction {
       float HiBound;
       float Diff;
 
-      void  StartOnlyOnece();
+      void  StartOnlyOnece(int seed = 0);
 
 public:
 
-      FloatRandomFunction();
+      FloatRandomFunction(int seed = 0);
       FloatRandomFunction(float lowBound, float hiBound);
 
       float  RandomFloat();

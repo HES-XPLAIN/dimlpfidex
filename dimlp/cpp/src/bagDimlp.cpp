@@ -79,7 +79,8 @@ void BagDimlp::TrainAll
    DataSet& test,
    DataSet& testTar,
    char genericWeightsFile[],
-   char* accuracyFile
+   char* accuracyFile,
+   int seed
 )
 
 {  int   n;
@@ -108,7 +109,7 @@ void BagDimlp::TrainAll
 
        VectDimlp[n] = new Dimlp(Eta, Mu, Flat, ErrParam, AccuracyParam,
                                 DeltaErrParam, DiscrLevels, ShowErrParam,
-                                NbEpochsParam, NbLayers, NbNeurons, WeightFile);
+                                NbEpochsParam, NbLayers, NbNeurons, WeightFile, seed);
        bool fromBT = true;
        VectDimlp[n]->Dimlp::Train(*(VectData[n]), *(VectDataClass[n]),
                                   test, testTar,
@@ -331,10 +332,11 @@ BagDimlp::BagDimlp
     int      nbLayers,
     int*     nbNeurons,
     int      nbDimlpNets,
-    char    weightFile[]) :
+    char     weightFile[],
+    int      seed) :
 
     Dimlp(eta, mu, flat, errParam, accuracyParam, deltaErrParam,
-          discrLevels, showErrParam, nbEpochsParam, nbLayers, nbNeurons, weightFile)
+          discrLevels, showErrParam, nbEpochsParam, nbLayers, nbNeurons, weightFile, seed)
 
 {  int n;
 
@@ -376,9 +378,10 @@ BagDimlp::BagDimlp
     int      nbLayers,
     int*     nbNeurons,
     int      nbDimlpNets,
-    char    weightFile[]) :
+    char     weightFile[],
+    int      seed) :
 
-    Dimlp(0, 0, 0, 0, 0, 0, discrLevels, 0, 0, nbLayers, nbNeurons, weightFile)
+    Dimlp(0, 0, 0, 0, 0, 0, discrLevels, 0, 0, nbLayers, nbNeurons, weightFile, seed)
 
 {  int n;
 

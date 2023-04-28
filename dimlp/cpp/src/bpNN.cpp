@@ -43,14 +43,14 @@ int BpNN::Max(float vec[], int nbEl)
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::InitRandomGen()
+void BpNN::InitRandomGen(int seed)
 {
    static int initRandomGen;
 
    if (initRandomGen == 0)
    {
-       IntRandomFunction   irf;
-       FloatRandomFunction frf;
+       IntRandomFunction   irf(seed);
+       FloatRandomFunction frf(seed);
 
        initRandomGen++;
 
@@ -813,10 +813,11 @@ BpNN::BpNN
    int   nbLayers,
    int   nbNeurons[],
    char  saveFile[],
-   char  printNetType[])
+   char  printNetType[],
+   int seed)
 
 {
-   InitRandomGen();
+   InitRandomGen(seed);
 
    cout << "\n\n-----------------------------------------";
    cout << "-------------------------------------\n\n";
@@ -879,10 +880,11 @@ BpNN::BpNN
    int   nbLayers,
    int   nbNeurons[],
    char  saveFile[],
-   char  printNetType[])
+   char  printNetType[],
+   int seed)
 
 {
-   InitRandomGen();
+   InitRandomGen(seed);
 
    cout << "\n\n-----------------------------------------";
    cout << "-------------------------------------\n\n";
