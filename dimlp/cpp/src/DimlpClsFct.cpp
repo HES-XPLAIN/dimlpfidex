@@ -279,70 +279,90 @@ int dimlpCls(string command){
 // ----------------------------------------------------------------------
 
    // create paths with root foler
+   char testFileTmp[160], weightFileTmp[160], predFileTmp[160], consoleFileTmp[160], accuracyFileTmp[160], testTarTmp[160], hidFileTmp[160];
+
+   char* testFile = 0;
+   char* weightFile = 0;
+   char* predFile = 0;
+   char* consoleFile = 0;
+   char* accuracyFile = 0;
+   char* testTar = 0;
+   char* hidFile = 0;
+
    #ifdef __unix__
    string root = rootFolderTemp + "/";
    #elif defined(_WIN32)
    string root = rootFolderTemp + "\\";
    #endif
-   testFileTemp = root + testFileTemp;
-   weightFileTemp = root + weightFileTemp;
+
+   if (testFileInit){
+      testFileTemp = root + testFileTemp;
+      if(testFileTemp.length()>=160){
+         cout << "Path " << testFileTemp << "is too long" << "\n";
+         return -1;
+      }
+      strcpy(testFileTmp, testFileTemp.c_str());
+      testFile = testFileTmp;
+   }
+
+   if (weightFileInit){
+      weightFileTemp = root + weightFileTemp;
+      if(weightFileTemp.length()>=160){
+         cout << "Path " << weightFileTemp << "is too long" << "\n";
+         return -1;
+      }
+      strcpy(weightFileTmp, weightFileTemp.c_str());
+      weightFile = weightFileTmp;
+   }
+
    predFileTemp = root + predFileTemp;
-   consoleFileTemp = root + consoleFileTemp;
-   accuracyFileTemp = root + accuracyFileTemp;
-   testTarTemp = root + testTarTemp;
-   hidFileTemp = root + hidFileTemp;
-
-   char testFile[160];
-   if(testFileTemp.length()>=160){
-      cout << "Path " << testFileTemp << "is too long" << "\n";
-      return -1;
-   }
-   strcpy(testFile, testFileTemp.c_str());
-
-   char weightFile[160];
-   if(weightFileTemp.length()>=160){
-      cout << "Path " << weightFileTemp << "is too long" << "\n";
-      return -1;
-   }
-   strcpy(weightFile, weightFileTemp.c_str());
-
-   char predFile[160];
    if(predFileTemp.length()>=160){
       cout << "Path " << predFileTemp << "is too long" << "\n";
       return -1;
    }
-   strcpy(predFile, predFileTemp.c_str());
+   strcpy(predFileTmp, predFileTemp.c_str());
+   predFile = predFileTmp;
 
-   char consoleFile[160];
-   if(consoleFileTemp.length()>=160){
-      cout << "Path " << consoleFileTemp << "is too long" << "\n";
-      return -1;
+   if(consoleFileInit){
+      consoleFileTemp = root + consoleFileTemp;
+      if(consoleFileTemp.length()>=160){
+         cout << "Path " << consoleFileTemp << "is too long" << "\n";
+         return -1;
+      }
+      strcpy(consoleFileTmp, consoleFileTemp.c_str());
+      consoleFile = consoleFileTmp;
    }
-   strcpy(consoleFile, consoleFileTemp.c_str());
 
-   char accuracyFile[160];
-   if(accuracyFileTemp.length()>=160){
-      cout << "Path " << accuracyFileTemp << "is too long" << "\n";
-      return -1;
+   if(accuracyFileInit){
+      accuracyFileTemp = root + accuracyFileTemp;
+      if(accuracyFileTemp.length()>=160){
+         cout << "Path " << accuracyFileTemp << "is too long" << "\n";
+         return -1;
+      }
+      strcpy(accuracyFileTmp, accuracyFileTemp.c_str());
+      accuracyFile = accuracyFileTmp;
    }
-   strcpy(accuracyFile, accuracyFileTemp.c_str());
 
-   char testTar[160];
-   if(testTarTemp.length()>=160){
-      cout << "Path " << testTarTemp << "is too long" << "\n";
-      return -1;
+   if(testTarInit){
+      testTarTemp = root + testTarTemp;
+      if(testTarTemp.length()>=160){
+         cout << "Path " << testTarTemp << "is too long" << "\n";
+         return -1;
+      }
+      strcpy(testTarTmp, testTarTemp.c_str());
+      testTar = testTarTmp;
    }
-   strcpy(testTar, testTarTemp.c_str());
 
-   char hidFile[160];
+
+   hidFileTemp = root + hidFileTemp;
    if(hidFileTemp.length()>=160){
       cout << "Path " << hidFileTemp << "is too long" << "\n";
       return -1;
    }
-   strcpy(hidFile, hidFileTemp.c_str());
+   strcpy(hidFileTmp, hidFileTemp.c_str());
+   hidFile = hidFileTmp;
 
 // ----------------------------------------------------------------------
-
    // Get console results to file
    std::ofstream ofs;
    std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
@@ -353,7 +373,6 @@ int dimlpCls(string command){
    std::ostream& output = consoleFileInit != false ? ofs : std::cout;
 
 // ----------------------------------------------------------------------
-
    if (rootFolderInit == false)
    {
       cout << "Give a root folder to save results with -S selection please." << "\n";
@@ -379,7 +398,6 @@ int dimlpCls(string command){
    }
 
 // ----------------------------------------------------------------------
-
    if (arch.GetNbEl() == 0)
    {
       nbLayers       = 3;
@@ -390,7 +408,6 @@ int dimlpCls(string command){
       vecNbNeurons[1] = nbIn;
       vecNbNeurons[2] = nbOut;
    }
-
    else
    {
       archInd.GoToBeg();
@@ -448,7 +465,6 @@ int dimlpCls(string command){
 
       }
    }
-
 // ----------------------------------------------------------------------
 
 
@@ -472,7 +488,6 @@ int dimlpCls(string command){
 
       else
       {
-
          DataSet data(testFile, nbIn + nbOut);
 
          static DataSet test(data.GetNbEx());
@@ -486,7 +501,6 @@ int dimlpCls(string command){
          data.Del();
       }
    }
-
    if (weightFileInit == false)
    {
       cout << "Give a file of weights with -W selection please." << "\n";
