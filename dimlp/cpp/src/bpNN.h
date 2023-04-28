@@ -37,7 +37,7 @@ class BpNN
 
 //------------------------------------------------------------------------
 
-      void InitRandomGen();
+      void InitRandomGen(int seed = 0);
       void CreateNetStruct(int nbNeurons[]);
       void WriteArchParam();
 
@@ -145,7 +145,8 @@ public:
           int      nbLayers,
           int      nbNeurons[],
           char     saveFile[],
-          char     printNetType[]);
+          char     printNetType[],
+          int seed = 0);
 
       BpNN
       (
@@ -168,7 +169,8 @@ public:
           int      nbLayers,
           int      nbNeurons[],
           char     saveFile[],
-          char     printNetType[]);
+          char     printNetType[],
+          int seed = 0);
 
 };
 

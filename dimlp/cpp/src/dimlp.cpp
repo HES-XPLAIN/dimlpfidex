@@ -16,11 +16,12 @@ Dimlp::Dimlp
     int      nbEpochsParam,
     int      nbLayers,
     int      nbNeurons[],
-    char   weightFile[]) :
+    char     weightFile[],
+    int      seed) :
 
     BpNN(eta, mu, flat, errParam, accuracyParam, deltaErrParam,
          showErrParam, nbEpochsParam, nbLayers, nbNeurons, weightFile,
-         netType)
+         netType, seed)
 
 {
    cout << "Number of quantized levels = " << discrLevels << "\n\n";
@@ -63,11 +64,12 @@ Dimlp::Dimlp
     int      nbEpochsParam,
     int      nbLayers,
     int      nbNeurons[],
-    char   weightFile[]) :
+    char     weightFile[],
+    int      seed) :
 
     BpNN(readFile, eta, mu, flat, errParam, accuracyParam, deltaErrParam,
          showErrParam, nbEpochsParam, nbLayers, nbNeurons, weightFile,
-         netType)
+         netType, seed)
 {
    cout << "Number of quantized levels = " << discrLevels << "\n\n";
 
