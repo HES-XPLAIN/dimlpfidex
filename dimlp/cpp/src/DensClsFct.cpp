@@ -11,11 +11,11 @@ void GiveAllParam()
 {
    cout << "\n-------------------------------------------------\n\n";
 
-   cout << "DensCls -L <training set file> ";
+   cout << "-S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+   cout << "DensCls -L <training set file(path with respect to specified root folder)> ";
    cout << "-W <Prefix of file of weights> (for instance give DimlpBT) ";
    cout << "-I <number of input neurons> -O <number of output neurons> ";
    cout << "-N <number of networks>";
-   cout << "-S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
    cout << " <Options>\n\n";
 
    cout << "Options are: \n\n";

@@ -8,10 +8,10 @@ void GiveAllParam()
 {
    cout << "\n-------------------------------------------------\n\n";
 
-   cout << "DimlpCls -T <file of examples> ";
+   cout << "-S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+   cout << "DimlpCls -T <file of examples(path with respect to specified root folder)> ";
    cout << "-W <file of weights> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
-   cout << "-S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
    cout << " <Options>\n\n";
 
    cout << "Options are: \n\n";
