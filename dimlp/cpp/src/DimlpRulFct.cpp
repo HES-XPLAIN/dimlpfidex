@@ -235,99 +235,135 @@ int dimlpRul(string command){
     // ----------------------------------------------------------------------
 
    // create paths with root foler
+
+   char learnFileTmp[160], testFileTmp[160], validFileTmp[160], weightFileTmp[160], learnTarTmp[160], testTarTmp[160], validTarTmp[160], rulesFileTmp[160], consoleFileTmp[160], accuracyFileTmp[160], attrFileTmp[160];
+
+   char* learnFile = 0;
+   char* testFile = 0;
+   char* validFile = 0;
+   char* weightFile = 0;
+   char* learnTar = 0;
+   char* testTar = 0;
+   char* validTar = 0;
+   char* rulesFile = 0;
+   char* consoleFile = 0;
+   char* accuracyFile = 0;
+   char* attrFile = 0;
+
     #ifdef __unix__
     string root = rootFolderTemp + "/";
     #elif defined(_WIN32)
     string root = rootFolderTemp + "\\";
     #endif
-   learnFileTemp = root + learnFileTemp;
-   testFileTemp = root + testFileTemp;
-   validFileTemp = root + validFileTemp;
-   weightFileTemp = root + weightFileTemp;
-   learnTarTemp = root + learnTarTemp;
-   testTarTemp = root + testTarTemp;
-   validTarTemp = root + validTarTemp;
+
+   if (learnFileInit){
+      learnFileTemp = root + learnFileTemp;
+      if(learnFileTemp.length()>=160){
+         cout << "Path " << learnFileTemp << "is too long" << "\n";
+         return -1;
+      }
+      strcpy(learnFileTmp, learnFileTemp.c_str());
+      learnFile = learnFileTmp;
+   }
+
+   if (testFileInit){
+      testFileTemp = root + testFileTemp;
+      if(testFileTemp.length()>=160){
+         cout << "Path " << testFileTemp << "is too long" << "\n";
+         return -1;
+      }
+      strcpy(testFileTmp, testFileTemp.c_str());
+      testFile = testFileTmp;
+   }
+
+   if (validFileInit){
+      validFileTemp = root + validFileTemp;
+      if(validFileTemp.length()>=160){
+         cout << "Path " << validFileTemp << "is too long" << "\n";
+         return -1;
+      }
+      strcpy(validFileTmp, validFileTemp.c_str());
+      validFile = validFileTmp;
+   }
+
+   if (weightFileInit){
+      weightFileTemp = root + weightFileTemp;
+      if(weightFileTemp.length()>=160){
+         cout << "Path " << weightFileTemp << "is too long" << "\n";
+         return -1;
+      }
+      strcpy(weightFileTmp, weightFileTemp.c_str());
+      weightFile = weightFileTmp;
+   }
+
+   if (learnTarInit){
+      learnTarTemp = root + learnTarTemp;
+      if(learnTarTemp.length()>=160){
+         cout << "Path " << learnTarTemp << "is too long" << "\n";
+         return -1;
+      }
+      strcpy(learnTarTmp, learnTarTemp.c_str());
+      learnTar = learnTarTmp;
+   }
+
+   if (testTarInit){
+      testTarTemp = root + testTarTemp;
+      if(testTarTemp.length()>=160){
+         cout << "Path " << testTarTemp << "is too long" << "\n";
+         return -1;
+      }
+      strcpy(testTarTmp, testTarTemp.c_str());
+      testTar = testTarTmp;
+   }
+
+   if (validTarInit){
+      validTarTemp = root + validTarTemp;
+      if(validTarTemp.length()>=160){
+         cout << "Path " << validTarTemp << "is too long" << "\n";
+         return -1;
+      }
+      strcpy(validTarTmp, validTarTemp.c_str());
+      validTar = validTarTmp;
+   }
+
    rulesFileTemp = root + rulesFileTemp;
-   consoleFileTemp = root + consoleFileTemp;
-   accuracyFileTemp = root + accuracyFileTemp;
-   attrFileTemp = root + attrFileTemp;
-
-   char learnFile[160];
-   if(learnFileTemp.length()>=160){
-      cout << "Path " << learnFileTemp << "is too long" << "\n";
-      return -1;
-   }
-   strcpy(learnFile, learnFileTemp.c_str());
-
-   char testFile[160];
-   if(testFileTemp.length()>=160){
-      cout << "Path " << testFileTemp << "is too long" << "\n";
-      return -1;
-   }
-   strcpy(testFile, testFileTemp.c_str());
-
-   char validFile[160];
-   if(validFileTemp.length()>=160){
-      cout << "Path " << validFileTemp << "is too long" << "\n";
-      return -1;
-   }
-   strcpy(validFile, validFileTemp.c_str());
-
-   char weightFile[160];
-   if(weightFileTemp.length()>=160){
-      cout << "Path " << weightFileTemp << "is too long" << "\n";
-      return -1;
-   }
-   strcpy(weightFile, weightFileTemp.c_str());
-
-   char learnTar[160];
-   if(learnTarTemp.length()>=160){
-      cout << "Path " << learnTarTemp << "is too long" << "\n";
-      return -1;
-   }
-   strcpy(learnTar, learnTarTemp.c_str());
-
-   char testTar[160];
-   if(testTarTemp.length()>=160){
-      cout << "Path " << testTarTemp << "is too long" << "\n";
-      return -1;
-   }
-   strcpy(testTar, testTarTemp.c_str());
-
-   char validTar[160];
-   if(validTarTemp.length()>=160){
-      cout << "Path " << validTarTemp << "is too long" << "\n";
-      return -1;
-   }
-   strcpy(validTar, validTarTemp.c_str());
-
-   char rulesFile[160];
    if(rulesFileTemp.length()>=160){
       cout << "Path " << rulesFileTemp << "is too long" << "\n";
       return -1;
    }
-   strcpy(rulesFile, rulesFileTemp.c_str());
+   strcpy(rulesFileTmp, rulesFileTemp.c_str());
+   rulesFile = rulesFileTmp;
 
-   char consoleFile[160];
-   if(consoleFileTemp.length()>=160){
-      cout << "Path " << consoleFileTemp << "is too long" << "\n";
-      return -1;
+   if (consoleFileInit){
+      consoleFileTemp = root + consoleFileTemp;
+      if(consoleFileTemp.length()>=160){
+         cout << "Path " << consoleFileTemp << "is too long" << "\n";
+         return -1;
+      }
+      strcpy(consoleFileTmp, consoleFileTemp.c_str());
+      consoleFile = consoleFileTmp;
    }
-   strcpy(consoleFile, consoleFileTemp.c_str());
 
-   char accuracyFile[160];
-   if(accuracyFileTemp.length()>=160){
-      cout << "Path " << accuracyFileTemp << "is too long" << "\n";
-      return -1;
+   if (accuracyFileInit){
+      accuracyFileTemp = root + accuracyFileTemp;
+      if(accuracyFileTemp.length()>=160){
+         cout << "Path " << accuracyFileTemp << "is too long" << "\n";
+         return -1;
+      }
+      strcpy(accuracyFileTmp, accuracyFileTemp.c_str());
+      accuracyFile = accuracyFileTmp;
    }
-   strcpy(accuracyFile, accuracyFileTemp.c_str());
 
-   char attrFile[160];
-   if(attrFileTemp.length()>=160){
-      cout << "Path " << attrFileTemp << "is too long" << "\n";
-      return -1;
+   if (attrFileInit){
+      attrFileTemp = root + attrFileTemp;
+      if(attrFileTemp.length()>=160){
+         cout << "Path " << attrFileTemp << "is too long" << "\n";
+         return -1;
+      }
+      strcpy(attrFileTmp, attrFileTemp.c_str());
+      attrFile = attrFileTmp;
    }
-   strcpy(attrFile, attrFileTemp.c_str());
+
 
    // ----------------------------------------------------------------------
 
