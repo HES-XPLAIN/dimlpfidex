@@ -41,6 +41,7 @@ void GiveAllParam()
    cout << "-d <absolute difference error threshold>\n";
    cout << "-i <number of epochs>\n";
    cout << "-s <number of epochs to show error>\n";
+   cout << "-z <seed (0=ranodom)>";
 
    cout << "\n-------------------------------------------------\n\n";
 }
@@ -67,6 +68,7 @@ int main(int nbParam, char** param)
 
     int N = 10; // Number of times we do cross-validation
     int K = 10; // Number of divisions of the dataset (10 = 8 for train, 1 for test and 1 for validation)
+    int seed = 0;
 
     string learnTarTemp;
     bool learnTarInit = false;
@@ -213,6 +215,15 @@ int main(int nbParam, char** param)
                            else return -1;
 
                            break;
+
+                case 'z' : if (CheckInt(param[k])){
+                                seed  = atoi(param[k]);
+                                genericCommand += " -z " + std::to_string(seed);
+                            }
+
+                            else return -1;
+
+                            break;
 
                 case 'F' :
                            folderTemp  = param[k];
@@ -554,6 +565,9 @@ int main(int nbParam, char** param)
     remove("tempTarTrain.txt");
     remove("tempTarTest.txt");
     remove("tempTarValid.txt");
-    remove("dimlpValidation.out");
+    char toDeleteVal[160];
+    string toDeleteValTemp = root + "dimlpValidation.out";
+    strcpy(toDeleteVal, toDeleteValTemp.c_str());
+    remove(toDeleteVal);
 
 }

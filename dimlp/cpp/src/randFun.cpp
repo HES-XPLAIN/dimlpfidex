@@ -7,22 +7,32 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
-void IntRandomFunction::StartOnlyOnece()
+void IntRandomFunction::StartOnlyOnece(int seed)
 
 {
    #ifdef __unix__
-   srandom(getpid());
+   if (seed == 0){
+      srandom(getpid());
+   }
+   else{
+      srandom(seed);
+   }
    #elif defined(_WIN32)
-   srand(getpid());
+   if (seed == 0){
+      srand(getpid());
+   }
+   else{
+      srand(seed);
+   }
    #endif
 }
 
 ///////////////////////////////////////////////////////////////////
 
-IntRandomFunction::IntRandomFunction()
+IntRandomFunction::IntRandomFunction(int seed)
 
 {
-   StartOnlyOnece();
+   StartOnlyOnece(seed);
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -49,22 +59,32 @@ int IntRandomFunction::RandomInteger()
 
 ///////////////////////////////////////////////////////////////////
 
-void FloatRandomFunction::StartOnlyOnece()
+void FloatRandomFunction::StartOnlyOnece(int seed)
 
 {
    #ifdef __unix__
-   srand48(getpid());
+   if (seed == 0){
+      srand48(getpid());
+   }
+   else{
+      srand48(seed);
+   }
    #elif defined(_WIN32)
-   srand(getpid());
+   if (seed == 0){
+      srand(getpid());
+   }
+   else{
+      srand(seed);
+   }
    #endif
 }
 
 ///////////////////////////////////////////////////////////////////
 
-FloatRandomFunction::FloatRandomFunction()
+FloatRandomFunction::FloatRandomFunction(int seed)
 
 {
-   StartOnlyOnece();
+   StartOnlyOnece(seed);
 }
 
 ///////////////////////////////////////////////////////////////////

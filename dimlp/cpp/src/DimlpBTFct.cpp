@@ -43,6 +43,7 @@ void GiveAllParam()
    cout << "-i <number of epochs>\n";
    cout << "-s <number of epochs to show error>\n";
    cout << "-n <number of examples for one single network>\n";
+   cout << "-z <seed (0=ranodom)>";
 
    cout << "\n-------------------------------------------------\n\n";
 }
@@ -91,6 +92,7 @@ int dimlpBT(string command){
    int nbIn      = 0;
    int nbOut     = 0;
    int nbExInOne = 0;
+   int seed = 0;
 
 
 
@@ -262,6 +264,12 @@ int dimlpBT(string command){
 
               case 'O' : if (CheckInt(&(commandList[k])[0]))
                             nbOut      = atoi(&(commandList[k])[0]);
+                         else return -1;
+
+                         break;
+
+              case 'z' : if (CheckInt(&(commandList[k])[0]))
+                            seed      = atoi(&(commandList[k])[0]);
                          else return -1;
 
                          break;
@@ -713,7 +721,7 @@ int dimlpBT(string command){
    }
    net = new BagDimlp(eta, mu, flat, errThres, accThres, deltaErr,
                       quant, showErr, epochs, nbLayers, vecNbNeurons,
-                      nbDimlpNets, weightFile);
+                      nbDimlpNets, weightFile, seed);
 
    if (nbExInOne == 0)
       nbExInOne = Train.GetNbEx();
@@ -733,7 +741,7 @@ int dimlpBT(string command){
       }
    }
 
-   net->TrainAll(Train, TrainClass, Test, TestClass, genericWeightsFile, accuracyFile);
+   net->TrainAll(Train, TrainClass, Test, TestClass, genericWeightsFile, accuracyFile, seed);
 
    float acc, accTest;
 
