@@ -372,7 +372,43 @@ int main(int nbParam, char** param)
     mkdir(folder);
     #endif
 
+    std::mt19937 g;
     std::random_device rd;
+    std::vector<int> seeds;
+    if (seed != 0){ // Not random
+        for (int i = 0; i < 10*N; ++i)
+            seeds.push_back(i);
+        std::mt19937 g(seed);
+        std::shuffle(seeds.begin(), seeds.end(), g);
+    }
+
+
+
+    // Create temp file strings for train, test and validation
+    char trainFileStr[160];
+    string trainFileStrTemp = root + "tempTrain.txt";
+    strcpy(trainFileStr, trainFileStrTemp.c_str());
+
+    char testFileStr[160];
+    string testFileStrTemp = root + "tempTest.txt";
+    strcpy(testFileStr, testFileStrTemp.c_str());
+
+    char validFileStr[160];
+    string validFileStrTemp = root + "tempValid.txt";
+    strcpy(validFileStr, validFileStrTemp.c_str());
+
+    char trainTarFileStr[160];
+    string trainTarFileStrTemp = root + "tempTarTrain.txt";
+    strcpy(trainTarFileStr, trainTarFileStrTemp.c_str());
+
+    char testTarFileStr[160];
+    string testTarFileStrTemp = root + "tempTarTest.txt";
+    strcpy(testTarFileStr, testTarFileStrTemp.c_str());
+
+    char validTarFileStr[160];
+    string validTarFileStrTemp = root + "tempTarValid.txt";
+    strcpy(validTarFileStr, validTarFileStrTemp.c_str());
+
     // Loop on N executions of cross-validation
     for (int n=0; n<N; n++){
         // Create folder
@@ -394,8 +430,14 @@ int main(int nbParam, char** param)
         std::vector<int> indexes;
         for (int i = 0; i < nbSamples; ++i)
             indexes.push_back(i);
-        std::mt19937 g(rd());
-        std::shuffle(indexes.begin(), indexes.end(), g);
+        if (seed != 0){ // Not random
+            std::mt19937 g(seeds[n]);
+            std::shuffle(indexes.begin(), indexes.end(), g);
+        }
+        else{ // random
+            std::mt19937 g(rd());
+            std::shuffle(indexes.begin(), indexes.end(), g);
+        }
 
         // Vector of eveanly spaced numbers between 1 and nbSammples+1
         vector<double> range;
@@ -433,7 +475,7 @@ int main(int nbParam, char** param)
                 trainIdx.push_back((k+m)%K);
             }
             //Creation of train, test and validation files (temp files)
-            ofstream trainFile("tempTrain.txt");
+            ofstream trainFile(trainFileStr);
             if(trainFile.fail()){
                 throw std::runtime_error("Error : temp train file cound'nt open");
             }
@@ -443,7 +485,8 @@ int main(int nbParam, char** param)
                 }
             }
             trainFile.close();
-            ofstream testFile("tempTest.txt");
+
+            ofstream testFile(testFileStr);
             if(testFile.fail()){
                 throw std::runtime_error("Error : temp test file cound'nt open");
             }
@@ -451,7 +494,8 @@ int main(int nbParam, char** param)
                 testFile << line << endl;
             }
             testFile.close();
-            ofstream validFile("tempValid.txt");
+
+            ofstream validFile(validFileStr);
             if(validFile.fail()){
                 throw std::runtime_error("Error : temp valid file cound'nt open");
             }
@@ -460,7 +504,7 @@ int main(int nbParam, char** param)
             }
             validFile.close();
 
-            ofstream trainTarFile("tempTarTrain.txt");
+            ofstream trainTarFile(trainTarFileStr);
             if(trainTarFile.fail()){
                 throw std::runtime_error("Error : temp trainTar file cound'nt open");
             }
@@ -471,7 +515,7 @@ int main(int nbParam, char** param)
             }
             trainTarFile.close();
 
-            ofstream testTarFile("tempTarTest.txt");
+            ofstream testTarFile(testTarFileStr);
             if(testTarFile.fail()){
                 throw std::runtime_error("Error : temp testTar file cound'nt open");
             }
@@ -480,7 +524,7 @@ int main(int nbParam, char** param)
             }
             testTarFile.close();
 
-            ofstream validTarFile("tempTarValid.txt");
+            ofstream validTarFile(validTarFileStr);
             if(validTarFile.fail()){
                 throw std::runtime_error("Error : temp validTar file cound'nt open");
             }
@@ -515,36 +559,36 @@ int main(int nbParam, char** param)
             }
 
             #ifdef __unix__
-            if (!copyFile("tempTrain.txt", (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/train.txt").c_str())){
+            if (!copyFile(trainFileStr, (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/train.txt").c_str())){
                 cout << "File tempTrain.txt coundn't be copied.\n";
                 return -1;
             }
-            if (!copyFile("tempTest.txt", (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/test.txt").c_str())){
+            if (!copyFile(testFileStr, (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/test.txt").c_str())){
                 cout << "File tempTest.txt coundn't be copied.\n";
                 return -1;
             }
-            if (!copyFile("tempTarTrain.txt", (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/trainTarget.txt").c_str())){
+            if (!copyFile(trainTarFileStr, (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/trainTarget.txt").c_str())){
                 cout << "File tempTarTrain.txt coundn't be copied.\n";
                 return -1;
             }
-            if (!copyFile("tempTarTest.txt", (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/testTarget.txt").c_str())){
+            if (!copyFile(testTarFileStr, (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/testTarget.txt").c_str())){
                 cout << "File tempTarTest.txt coundn't be copied.\n";
                 return -1;
             }
             #elif defined(_WIN32)
-                        if (!copyFile("tempTrain.txt", (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\train.txt").c_str())){
+            if (!copyFile(trainFileStr, (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\train.txt").c_str())){
                 cout << "File tempTrain.txt coundn't be copied.\n";
                 return -1;
             }
-            if (!copyFile("tempTest.txt", (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\test.txt").c_str())){
+            if (!copyFile(testFileStr, (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\test.txt").c_str())){
                 cout << "File tempTest.txt coundn't be copied.\n";
                 return -1;
             }
-            if (!copyFile("tempTarTrain.txt", (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\trainTarget.txt").c_str())){
+            if (!copyFile(trainTarFileStr, (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\trainTarget.txt").c_str())){
                 cout << "File tempTarTrain.txt coundn't be copied.\n";
                 return -1;
             }
-            if (!copyFile("tempTarTest.txt", (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\testTarget.txt").c_str())){
+            if (!copyFile(testTarFileStr, (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\testTarget.txt").c_str())){
                 cout << "File tempTarTest.txt coundn't be copied.\n";
                 return -1;
             }
@@ -559,12 +603,12 @@ int main(int nbParam, char** param)
     string toDeleteTemp = root + "consoleTemp.txt";
     strcpy(toDelete, toDeleteTemp.c_str());
     remove(toDelete);
-    remove("tempTrain.txt");
-    remove("tempTest.txt");
-    remove("tempValid.txt");
-    remove("tempTarTrain.txt");
-    remove("tempTarTest.txt");
-    remove("tempTarValid.txt");
+    remove(trainFileStr);
+    remove(testFileStr);
+    remove(validFileStr);
+    remove(trainTarFileStr);
+    remove(testTarFileStr);
+    remove(validTarFileStr);
     char toDeleteVal[160];
     string toDeleteValTemp = root + "dimlpValidation.out";
     strcpy(toDeleteVal, toDeleteValTemp.c_str());
