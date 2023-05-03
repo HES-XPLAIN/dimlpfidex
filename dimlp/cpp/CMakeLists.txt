@@ -299,6 +299,12 @@ FILE(GLOB CROSS_VALID_SRC
     src/vectWRV.h
     src/virtHyp.cpp
     src/virtHyp.h
+    ../../hyperLocus/cpp/src/hyperLocusFct.cpp
+    ../../hyperLocus/cpp/src/hyperLocusFct.h
+    ../../hyperLocus/cpp/src/checkFun.cpp
+    ../../hyperLocus/cpp/src/checkFun.h
+    ../../hyperLocus/cpp/src/dataSet.cpp
+    ../../hyperLocus/cpp/src/dataSet.h
 )
 
 FILE(GLOB FCT_SRC

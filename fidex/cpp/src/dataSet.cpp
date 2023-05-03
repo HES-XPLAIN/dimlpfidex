@@ -4,7 +4,7 @@ using namespace std;
 #include <sstream>
 #include <algorithm>
 
-DataSet::DataSet(char* dataFile, char* predFile, char* trueClassFile){
+DataSetFid::DataSetFid(char* dataFile, char* predFile, char* trueClassFile){
     hasDatas = true;
     int i; // iterator
     string line;
@@ -95,7 +95,7 @@ DataSet::DataSet(char* dataFile, char* predFile, char* trueClassFile){
     filePrd.close(); //close file
 }
 
-DataSet::DataSet(char* weightFile){
+DataSetFid::DataSetFid(char* weightFile){
 
     // Get weights
     hasWeights = true;
@@ -125,7 +125,7 @@ DataSet::DataSet(char* weightFile){
 }
 
 
-vector<vector<double>>* DataSet::getDatas(){
+vector<vector<double>>* DataSetFid::getDatas(){
   if (hasDatas){
     return &datas;
   }
@@ -134,7 +134,7 @@ vector<vector<double>>* DataSet::getDatas(){
   }
 }
 
-vector<int>* DataSet::getTrueClasses(){
+vector<int>* DataSetFid::getTrueClasses(){
   if (hasClasses){
     return &trueClasses;
   }
@@ -143,7 +143,7 @@ vector<int>* DataSet::getTrueClasses(){
   }
 }
 
-vector<int>* DataSet::getPredictions(){
+vector<int>* DataSetFid::getPredictions(){
   if (hasDatas){
     return &predictions;
   }
@@ -152,7 +152,7 @@ vector<int>* DataSet::getPredictions(){
   }
 }
 
-vector<vector<double>>* DataSet::getOutputValuesPredictions(){
+vector<vector<double>>* DataSetFid::getOutputValuesPredictions(){
   if (hasDatas){
     return &outputValuesPredictions;
   }
@@ -161,7 +161,7 @@ vector<vector<double>>* DataSet::getOutputValuesPredictions(){
   }
 }
 
-vector<vector<double>> DataSet::getWeights(){
+vector<vector<double>> DataSetFid::getWeights(){
   if (hasWeights){
     return weights;
   }
@@ -170,7 +170,7 @@ vector<vector<double>> DataSet::getWeights(){
   }
 }
 
-vector<double> DataSet::getInBiais(){
+vector<double> DataSetFid::getInBiais(){
   if (hasWeights){
     return weights[0];
   }
@@ -179,7 +179,7 @@ vector<double> DataSet::getInBiais(){
   }
 }
 
-vector<double> DataSet::getInWeights(){
+vector<double> DataSetFid::getInWeights(){
   if (hasWeights){
     return weights[1];
   }

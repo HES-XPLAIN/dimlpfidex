@@ -83,7 +83,7 @@ int main(int nbParam, char** param)
     double dropoutHypParam = 0.5;
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
     double dropoutDimParam = 0.5;
-    DataSet* trainDatas;
+    DataSetFid* trainDatas;
 
 
 
@@ -153,7 +153,7 @@ int main(int nbParam, char** param)
             break;
 
           case 'd' :
-            if (CheckFloat(param[p]) && atof(param[p])>=0 && atof(param[p])<=1){
+            if (CheckFloatFid(param[p]) && atof(param[p])>=0 && atof(param[p])<=1){
               dropoutDimParam = atof(param[p]);
               dropoutDim = true; // We dropout a bunch of dimensions each iteration (accelerate the processus)
               }
@@ -163,7 +163,7 @@ int main(int nbParam, char** param)
             break;
 
             case 'h' :
-            if (CheckFloat(param[p]) && atof(param[p])>=0 && atof(param[p])<=1){
+            if (CheckFloatFid(param[p]) && atof(param[p])>=0 && atof(param[p])<=1){
               dropoutHypParam = atof(param[p]);
               dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
               }
@@ -221,7 +221,7 @@ int main(int nbParam, char** param)
 
     std::cout << "Import files..." << endl;
 
-    trainDatas = new DataSet(trainDataFile, trainDataFilePred, trainDataFileTrueClass);
+    trainDatas = new DataSetFid(trainDataFile, trainDataFilePred, trainDataFileTrueClass);
 
     vector<vector<double>>* trainData = trainDatas->getDatas();
     vector<int>* trainPreds = trainDatas->getPredictions();

@@ -1,9 +1,12 @@
+#ifndef DATASETFID_H
+#define DATASETFID_H
+
 using namespace std;
 #include <vector>
 #include <iostream>
 #include <cstring>
 
-class DataSet {
+class DataSetFid {
 
       vector<vector<double>> datas;
       vector<int> trueClasses;
@@ -16,9 +19,9 @@ class DataSet {
 
 public:
 
-      DataSet();
-      DataSet(char* dataFile, char* predFile, char* trueClassFile = 0);
-      DataSet(char* weightFile);
+      DataSetFid();
+      DataSetFid(char* dataFile, char* predFile, char* trueClassFile = 0);
+      DataSetFid(char* weightFile);
 
       vector<vector<double>>* getDatas();
       vector<int>* getTrueClasses();
@@ -29,3 +32,6 @@ public:
       vector<double> getInWeights();
 
 };
+
+
+#endif

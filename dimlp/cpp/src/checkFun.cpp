@@ -38,8 +38,8 @@ int CheckFloat(char* str)
        if ( (ch > '9')  || (ch < '0') )
           if ( (ch != '.') && (ch != '-') )
           {
-          cout << "Problem with float argument (" << str;
-          cout << ") or with previous argument.\n";
+            cout << "Problem with float argument (" << str;
+            cout << ") or with previous argument.\n";
              return 0;
           }
    }

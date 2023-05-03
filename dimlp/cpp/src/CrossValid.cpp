@@ -9,7 +9,7 @@ using namespace std;
 #include <sys/stat.h>
 #include <fstream>
 #include <iostream>
-//#include "../../../hyperLocus/cpp/src/hyperLocus.cpp"
+#include "../../../hyperLocus/cpp/src/hyperLocusFct.h"
 
 
 void GiveAllParam()
@@ -614,5 +614,7 @@ int main(int nbParam, char** param)
     string toDeleteValTemp = root + "dimlpValidation.out";
     strcpy(toDeleteVal, toDeleteValTemp.c_str());
     remove(toDeleteVal);
+
+    hyperLocus("test");
 
 }

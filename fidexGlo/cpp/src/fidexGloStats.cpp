@@ -55,7 +55,7 @@ int main(int nbParam, char** param)
     char* statsFile = 0;
     bool statsFileInit = false;
 
-    DataSet* testDatas;
+    DataSetFid* testDatas;
 
     // Import parameters
 
@@ -118,7 +118,7 @@ int main(int nbParam, char** param)
 
     // Get test data
 
-    testDatas = new DataSet(testDataFile, testDataFilePred, testDataFileTrueClass);
+    testDatas = new DataSetFid(testDataFile, testDataFilePred, testDataFileTrueClass);
 
     vector<vector<double>>* testData = testDatas->getDatas();
     vector<int>* testPreds = testDatas->getPredictions();
