@@ -209,4 +209,4 @@ int main(int nbParam, char** param)
 
 
 
-// Ex : .\checkCovSize.exe -T ../fidexGlo/datafiles/datanormTrain -R ../fidexGlo/datafiles/globalRulesDatanorm.txt
+// Ex : ./checkCovSize -T ../fidexGlo/datafiles/datanormTrain -R ../fidexGlo/datafiles/globalRulesDatanorm.txt

@@ -588,7 +588,7 @@ int main(int nbParam, char** param)
       line += " Covering size : " + std::to_string(std::get<1>(chosenRules[r]).size()); // Covering size
       line += " Fidelity : 1"; // Rule fidelity
       line += " Accuracy : " + std::to_string(std::get<3>(chosenRules[r])); // Rule accuracy
-      line += " Confidence : " + std::to_string(std::get<4>(chosenRules[r])) + "\n"; // Rule accuracy
+      line += " Confidence : " + std::to_string(std::get<4>(chosenRules[r])) + "\n"; // Rule confidence
       lines.push_back(line);
     }
 

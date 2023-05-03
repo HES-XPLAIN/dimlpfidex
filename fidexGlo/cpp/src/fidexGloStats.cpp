@@ -148,8 +148,10 @@ int main(int nbParam, char** param)
     double defaultRuleRate = 0; // True if there is no activated rule
     double meanNbCorrectActivatedRules = 0; // Mean number of correct activated rules per sample
     double meanNbWrongActivatedRules = 0; // Mean number of wrong activated rules per sample
-    int nbRulesAndModelAgree = 0;
-    double accuracyWhenRulesAndModelAgree = 0; // Model accuracy when rules and model agree (sample has correct activated rules, then percentage of good predictions on them by the model)
+    int nbActivatedRulesAndModelAgree = 0;
+    double accuracyWhenActivatedRulesAndModelAgree = 0; // Model accuracy when activated rules and model agree (sample has correct activated rules or no activated rules, then percentage of good predictions on them by the model)
+    int nbFidelRules = 0;
+    double accuracyWhenRulesAndModelAgree = 0; // Model accuracy when activated rules and model agree (sample has correct activated rules, then percentage of good predictions on them by the model)
     double modelAccuracy = 0;
     vector<double> testValues;
     int testPred;
@@ -171,8 +173,10 @@ int main(int nbParam, char** param)
         if(activatedRules.size() == 0){ // If there is no activated rule
             defaultRuleRate++;
             fidelity++; // It is true to the model because we choose his prediction
+            nbFidelRules++;
             if(testPred == testTrueClass){ // If the model is right, it's true for the accuracy
                 accuracy++;
+                accuracyWhenRulesAndModelAgree++;
             }
         }
         else{ // There is some activated rules
@@ -194,7 +198,7 @@ int main(int nbParam, char** param)
                 }
                 if(allSameClass){
                   explainabilityTotal++; // If all decisions are the same, we have an explanation
-                  if(get<2>(rules[activatedRules[0]]) == testTrueClass){ // If those decsions are the true class, this is accurate
+                  if(get<2>(rules[activatedRules[0]]) == testTrueClass){ // If those decisions are the true class, this is accurate
                     accuracy++;
                   }
                 }
@@ -207,8 +211,10 @@ int main(int nbParam, char** param)
                   accuracy++;
                 }
                 explainabilityTotal++;
-                nbRulesAndModelAgree++;
+                nbActivatedRulesAndModelAgree++;
+                nbFidelRules++;
                 if(testPred == testTrueClass){
+                    accuracyWhenActivatedRulesAndModelAgree++; // It is true for the accuracy because prediction is correct
                     accuracyWhenRulesAndModelAgree++; // It is true for the accuracy because prediction is correct
                 }
                 meanNbCorrectActivatedRules+=correctRules.size();
@@ -225,7 +231,8 @@ int main(int nbParam, char** param)
     meanNbCorrectActivatedRules/=nbTestData;
     meanNbWrongActivatedRules/=nbTestData;
     modelAccuracy/=nbTestData;
-    accuracyWhenRulesAndModelAgree/=nbRulesAndModelAgree;
+    accuracyWhenRulesAndModelAgree/=nbFidelRules;
+    accuracyWhenActivatedRulesAndModelAgree/=nbActivatedRulesAndModelAgree;
 
     lines.push_back("Statistics with a test set of " + std::to_string(nbTestData) + " samples :\n");
     lines.push_back("The global rule fidelity rate is : " + std::to_string(fidelity));
@@ -236,6 +243,7 @@ int main(int nbParam, char** param)
     lines.push_back("The mean number of wrong(not fidel) activation rules per sample is : " + std::to_string(meanNbWrongActivatedRules));
     lines.push_back("The model test accuracy is : " + std::to_string(modelAccuracy));
     lines.push_back("The model test accuracy when rules and model agree is : " + std::to_string(accuracyWhenRulesAndModelAgree));
+    lines.push_back("The model test accuracy when activated rules and model agree is : " + std::to_string(accuracyWhenActivatedRulesAndModelAgree));
 
     for (string l : lines){
         cout << l << endl;

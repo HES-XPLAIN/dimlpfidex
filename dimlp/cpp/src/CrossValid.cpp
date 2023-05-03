@@ -9,6 +9,7 @@ using namespace std;
 #include <sys/stat.h>
 #include <fstream>
 #include <iostream>
+//#include "../../../hyperLocus/cpp/src/hyperLocus.cpp"
 
 
 void GiveAllParam()
