@@ -19,6 +19,8 @@ void GiveAllParam()
 
    cout << "-S <Root folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
    cout << "crossValid -L <training set file(path with respect to specified root folder)> -1 <file of train classes> ";
+   cout << "-Q <number of stairs in staircase activation function> ";
+   cout << "-h <high side of the interval> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
 
    cout << " <Options>\n\n";
@@ -36,7 +38,6 @@ void GiveAllParam()
    cout << "-l <back-propagation learning parameter (Eta)>\n";
    cout << "-m <back-propagation momentum parameter (Mu)>\n";
    cout << "-f <back-propagation flat spot elimination parameter (Flat)>\n";
-   cout << "-q <number of stairs in staircase activation function>\n";
    cout << "-e <error threshold>\n";
    cout << "-a <accuracy threshold>\n";
    cout << "-d <absolute difference error threshold>\n";
@@ -76,13 +77,17 @@ int main(int nbParam, char** param)
     string learnFileTemp;
     bool learnFileInit = false;
     string folderTemp = "CrossValidation";
-    bool folderInit = false;
     string rootFolderTemp;
     bool rootFolderInit = false;
 
     string genericCommand = "dimlpTrn";
+    string hyperLocusGenericCommand = "hyperLocus -h 1";
 
-    string eta, mu, flat, errThres, accThres, deltaErr, showErr, epochs, quant, nbIn, nbOut, arch, arch2, attrFile,  weightFile;
+    string eta, mu, flat, errThres, accThres, deltaErr, showErr, epochs, quant, hiKnot, nbIn, nbOut, arch, arch2, attrFile,  weightFile;
+    bool quantInit = false;
+    bool hiKnotInit = false;
+    bool nbInInit = false;
+    bool nbOutInit = false;
     char* ptrParam;
 
     if (nbParam == 1)
@@ -149,13 +154,22 @@ int main(int nbParam, char** param)
                             genericCommand += " -i " + epochs;
                             break;
 
-                case 'q' :
+                case 'Q' :
                             quant = param[k];
+                            quantInit = true;
                             genericCommand += " -q " + quant;
+                            hyperLocusGenericCommand += " -Q " + quant;
+                            break;
+
+                case 'h' :
+                            hiKnot = param[k];
+                            hiKnotInit = true;
+                            hyperLocusGenericCommand += " -I " + hiKnot;
                             break;
 
                 case 'I' :
                            nbIn = param[k];
+                           nbInInit = true;
                            genericCommand += " -I " + nbIn;
                            break;
 
@@ -176,6 +190,7 @@ int main(int nbParam, char** param)
 
                 case 'O' :
                            nbOut = param[k];
+                           nbOutInit = true;
                            genericCommand += " -O " + nbOut;
                            break;
 
@@ -228,7 +243,6 @@ int main(int nbParam, char** param)
 
                 case 'F' :
                            folderTemp  = param[k];
-                           folderInit = true;
                            break;
 
                 default  : cout << "Illegal option: " << param[k-1] << "\n";
@@ -244,6 +258,38 @@ int main(int nbParam, char** param)
     }
 
 // ----------------------------------------------------------------------
+    if (rootFolderInit == false)
+    {
+        cout << "Give a root folder to save results with -S selection please." << "\n";
+        return -1;
+    }
+
+        if (quantInit == false)
+    {
+        cout << "Give a number of stairs in staircase activation function with -Q selection please." << "\n";
+        return -1;
+    }
+
+        if (hiKnotInit == false)
+    {
+        cout << "Give the high end of the interval for each dimension where an hyperplan can't be after with -h selection please." << "\n";
+        return -1;
+    }
+
+        if (nbInInit == false)
+    {
+        cout << "Give the number of input neurons with option with -I selection please." << "\n";
+        return -1;
+    }
+
+        if (nbOutInit == false)
+    {
+        cout << "Give the number of output neurons with option with -O selection please." << "\n";
+        return -1;
+    }
+
+
+
     // create paths with root foler
     char learnTarTmp[160], learnFileTmp[160], folderTmp[160];
 
@@ -412,6 +458,8 @@ int main(int nbParam, char** param)
 
     // Loop on N executions of cross-validation
     for (int n=0; n<N; n++){
+        cout << "------------------------------" << endl;
+        cout << "n=" << n << endl;
         // Create folder
 
         #ifdef __unix__
@@ -421,7 +469,6 @@ int main(int nbParam, char** param)
         string folderName = std::string(folder)+"\\Execution"+std::to_string(n+1);
         mkdir(folderName.c_str());
         #endif
-
 
 
         // Randomly split data in K sub-parts
@@ -460,6 +507,7 @@ int main(int nbParam, char** param)
         int validationIdx;
         int testIdx;
         for(int k=0; k<K; k++){ // K-fold, we shift groups by 1.
+            cout << "k=" << k << endl;
             // Create folder
             #ifdef __unix__
             string folderName = std::string(folder)+"/Execution"+std::to_string(n+1)+"/Fold"+std::to_string(k+1)+"/";
@@ -554,10 +602,14 @@ int main(int nbParam, char** param)
             #endif
             command += "-r consoleTemp.txt"; // To not show console result
 
+            cout << "Enter in DimlpTrn function" << endl;
             int res = dimlpTrn(command);
             if (res == -1){
+                cout << "Error from DimlpTrn" << endl;
                 return -1; // If there is an error in the Trn
             }
+
+            // Get train and test files in folder
 
             #ifdef __unix__
             if (!copyFile(trainFileStr, (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/train.txt").c_str())){
@@ -595,6 +647,22 @@ int main(int nbParam, char** param)
             }
             #endif
 
+            // Compute hyperlocus in folder
+            string hyperLocusCommand = hyperLocusGenericCommand;
+            #ifdef __unix__
+            hyperLocusCommand += " -W " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/weights.wts ";
+            hyperLocusCommand += "-O " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/hyperLocus.txt ";
+            #elif defined(_WIN32)
+            hyperLocusCommand += " -W " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\weights.wts ";
+            hyperLocusCommand += "-O " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\hyperLocus.txt ";
+            #endif
+
+            cout << "Enter in hyperlocus function" << endl;
+            int resHyp = hyperLocus(hyperLocusCommand);
+            if (resHyp == -1){
+                cout << "Error from hyperLocus" << endl;
+                return -1; // If there is an error in the hyperLocus
+            }
         }
 
     }
@@ -614,7 +682,5 @@ int main(int nbParam, char** param)
     string toDeleteValTemp = root + "dimlpValidation.out";
     strcpy(toDeleteVal, toDeleteValTemp.c_str());
     remove(toDeleteVal);
-
-    hyperLocus("test");
 
 }
