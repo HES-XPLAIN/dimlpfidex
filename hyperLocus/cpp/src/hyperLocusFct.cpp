@@ -8,10 +8,13 @@ void showParams(){
   cout << "Obligatory parameters : \n\n";
   cout << "hyperLocus -W <file of weights> ";
   cout << "-Q <number of stairs in staircase activation function> ";
-  cout << "-I <high side of the interval> \n\n";
+  cout << "-I <high side of the interval>";
+
+  cout << " <Options>\n\n";
 
   cout << "Options are: \n\n";
   cout << "-O <output file>\n";
+  cout << "-h <1 to hide notes on terminal>\n";
 
   cout << "\n-------------------------------------------------\n\n";
 
@@ -79,6 +82,7 @@ int hyperLocus(string command)
       bool nbQuantLevelsInit = false;
       double hiKnot; // High end of the interval for each dimension, a hyperplan can't be after
       bool hiKnotInit = false;
+      bool hideNotes = false;
 
       vector<vector<double>> hyperLocus;
 
@@ -132,6 +136,16 @@ int hyperLocus(string command)
                 outputFile = &(commandList[p])[0];
               break;
 
+              case 'h' :
+                if (CheckPositiveInt(&(commandList[p])[0])){
+                  hideNotes = atoi(&(commandList[p])[0]);
+                }
+                else{
+                  throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p-1])[0]) +", positive integer requested");
+                }
+                break;
+
+
             default  : // If we put another -X option
               throw std::runtime_error("Illegal option : "+ string(&(commandList[p-1])[0]));
           }
@@ -151,11 +165,14 @@ int hyperLocus(string command)
 
     double lowKnot = -hiKnot;
 
-    cout << "\nParameters :\n\n";
-    cout << "- Number of stairs " << nbQuantLevels << endl;
-    cout << "- Interval : [" << lowKnot << "," << hiKnot << "]" << endl << endl;
 
-    cout << "Import weight file..." << endl;
+    if (!hideNotes){
+      cout << "\nParameters :\n\n";
+      cout << "- Number of stairs " << nbQuantLevels << endl;
+      cout << "- Interval : [" << lowKnot << "," << hiKnot << "]" << endl << endl;
+
+      cout << "Import weight file..." << endl;
+    }
 
     DataSetFid weightDatas(dataFileWeights);
 
@@ -163,13 +180,18 @@ int hyperLocus(string command)
     vector<double> biais = weightDatas.getInBiais();
     vector<double> weights = weightDatas.getInWeights();
 
-    cout << "Weight file imported" << endl << endl;
+    if (!hideNotes){
 
-    cout << "computation of hyperLocus" << endl;
+      cout << "Weight file imported" << endl << endl;
+
+      cout << "computation of hyperLocus" << endl;
+    }
     hyperLocus = calcHypLocus(nbQuantLevels, lowKnot, hiKnot, biais, weights);
-    cout << "HyperLocus computed" << endl << endl;
+    if (!hideNotes){
+      cout << "HyperLocus computed" << endl << endl;
 
-    cout << "Extraction of the hyperLocus" << endl;
+      cout << "Extraction of the hyperLocus" << endl;
+    }
 
     ofstream hyperLocusFile (outputFile);
     if(hyperLocusFile.is_open()){
@@ -188,7 +210,9 @@ int hyperLocus(string command)
 
     t2 = clock();
     temps = (float)(t2-t1)/CLOCKS_PER_SEC;
-    printf("\nTime to compute the hyperLocus = %f sec\n", temps);
+    if (!hideNotes){
+      printf("\nTime to compute the hyperLocus = %f sec\n", temps);
+    }
   }
 
   catch (const char* msg) {

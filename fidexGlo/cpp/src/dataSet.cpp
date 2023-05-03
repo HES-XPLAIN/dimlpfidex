@@ -1,5 +1,5 @@
 using namespace std;
-#include "DataSet.h"
+#include "dataSet.h"
 #include <fstream>
 #include <sstream>
 #include <algorithm>
