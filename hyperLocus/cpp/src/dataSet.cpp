@@ -1,10 +1,10 @@
 using namespace std;
-#include "dataSet.h"
+#include "DataSet.h"
 #include <fstream>
 #include <sstream>
 #include <algorithm>
 
-DataSet::DataSet(char* dataFile, char* predFile, char* trueClassFile){
+DataSetFid::DataSetFid(char* dataFile, char* predFile, char* trueClassFile){
     hasDatas = true;
     int i; // iterator
     string line;
@@ -95,7 +95,7 @@ DataSet::DataSet(char* dataFile, char* predFile, char* trueClassFile){
     filePrd.close(); //close file
 }
 
-DataSet::DataSet(char* weightFile){
+DataSetFid::DataSetFid(char* weightFile){
 
     // Get weights
     hasWeights = true;
@@ -125,65 +125,65 @@ DataSet::DataSet(char* weightFile){
 }
 
 
-vector<vector<double>>* DataSet::getDatas(){
+vector<vector<double>>* DataSetFid::getDatas(){
   if (hasDatas){
     return &datas;
   }
   else{
-    throw std::runtime_error("Error : data file not specified for this dataset");
+    throw std::runtime_error("Error : data file not specified for this DataSetFid");
   }
 }
 
-vector<int>* DataSet::getTrueClasses(){
+vector<int>* DataSetFid::getTrueClasses(){
   if (hasClasses){
     return &trueClasses;
   }
   else{
-    throw std::runtime_error("Error : dataClass file not specified for this dataset");
+    throw std::runtime_error("Error : dataClass file not specified for this DataSetFid");
   }
 }
 
-vector<int>* DataSet::getPredictions(){
+vector<int>* DataSetFid::getPredictions(){
   if (hasDatas){
     return &predictions;
   }
   else{
-    throw std::runtime_error("Error : prediction file not specified for this dataset");
+    throw std::runtime_error("Error : prediction file not specified for this DataSetFid");
   }
 }
 
-vector<vector<double>>* DataSet::getOutputValuesPredictions(){
+vector<vector<double>>* DataSetFid::getOutputValuesPredictions(){
   if (hasDatas){
     return &outputValuesPredictions;
   }
   else{
-    throw std::runtime_error("Error : prediction file not specified for this dataset");
+    throw std::runtime_error("Error : prediction file not specified for this DataSetFid");
   }
 }
 
-vector<vector<double>> DataSet::getWeights(){
+vector<vector<double>> DataSetFid::getWeights(){
   if (hasWeights){
     return weights;
   }
   else{
-    throw std::runtime_error("Error : weight file not specified for this dataset");
+    throw std::runtime_error("Error : weight file not specified for this DataSetFid");
   }
 }
 
-vector<double> DataSet::getInBiais(){
+vector<double> DataSetFid::getInBiais(){
   if (hasWeights){
     return weights[0];
   }
   else{
-    throw std::runtime_error("Error : weight file not specified for this dataset");
+    throw std::runtime_error("Error : weight file not specified for this DataSetFid");
   }
 }
 
-vector<double> DataSet::getInWeights(){
+vector<double> DataSetFid::getInWeights(){
   if (hasWeights){
     return weights[1];
   }
   else{
-    throw std::runtime_error("Error : weight file not specified for this dataset");
+    throw std::runtime_error("Error : weight file not specified for this DataSetFid");
   }
 }

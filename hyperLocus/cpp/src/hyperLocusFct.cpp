@@ -119,7 +119,7 @@ int hyperLocus(string command)
               break;
 
             case 'I' :
-              if (CheckFloat(&(commandList[p])[0]) && atof(&(commandList[p])[0])>0){
+              if (CheckFloatFid(&(commandList[p])[0]) && atof(&(commandList[p])[0])>0){
                 hiKnot = atof(&(commandList[p])[0]);
                 hiKnotInit = true;
               }
@@ -157,7 +157,7 @@ int hyperLocus(string command)
 
     cout << "Import weight file..." << endl;
 
-    DataSet weightDatas(dataFileWeights);
+    DataSetFid weightDatas(dataFileWeights);
 
     vector<vector<double>> allWeights = weightDatas.getWeights();
     vector<double> biais = weightDatas.getInBiais();
