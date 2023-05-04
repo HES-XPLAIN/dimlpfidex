@@ -39,7 +39,7 @@ void showParams(){
 }
 
 
-int main(int nbParam, char** param)
+int fidex(string command)
 {
 
 
@@ -48,6 +48,16 @@ int main(int nbParam, char** param)
     clock_t t1, t2;
 
     t1 = clock();
+
+    // Parsing the command
+    vector<string> commandList;
+    const char delim = ' ';
+    string s;
+    stringstream ss(command);
+    while (std::getline(ss, s, delim)) {
+        commandList.push_back(s);
+    }
+    int nbParam = commandList.size();
 
     // Import parameters
     if(nbParam == 1){
@@ -94,100 +104,100 @@ int main(int nbParam, char** param)
     // Import parameters
 
     for (int p=1; p<nbParam; p++){ // We skip "fidex"
-      if(*param[p] == '-'){
+      if(commandList[p][0] == '-'){
         p++;
 
         if (p >= nbParam){
           throw std::runtime_error("Missing something at the end of the command.");
         }
 
-        switch(*(param[p-1] + 1)){ // Get letter after the -
+        switch(commandList[p-1][1]){ // Get letter after the -
 
           case 'T' :
-            trainDataFile = param[p]; // Parameter after -T
+            trainDataFile = &(commandList[p])[0]; // Parameter after -T
             trainDataFileInit = true;
             break;
 
           case 'P' :
-            trainDataFilePred = param[p];
+            trainDataFilePred = &(commandList[p])[0];
             trainDataFilePredInit = true;
             break;
 
           case 'C' :
-            trainDataFileTrueClass = param[p];
+            trainDataFileTrueClass = &(commandList[p])[0];
             trainDataFileTrueClassInit = true;
             break;
 
           case 'S' :
-            mainSamplesDataFile = param[p];
+            mainSamplesDataFile = &(commandList[p])[0];
             mainSamplesDataFileInit = true;
             break;
 
           case 'p' :
-            mainSamplesPredFile = param[p];
+            mainSamplesPredFile = &(commandList[p])[0];
             mainSamplesPredFileInit = true;
             break;
 
           case 'c' :
-            mainSamplesClassFile = param[p];
+            mainSamplesClassFile = &(commandList[p])[0];
             mainSamplesClassFileInit = true;
             break;
 
           case 'H' :
-            hyperLocusFile = param[p];
+            hyperLocusFile = &(commandList[p])[0];
             hyperLocusFileInit = true;
             break;
 
           case 'O' :
-            ruleFile = param[p];
+            ruleFile = &(commandList[p])[0];
             ruleFileInit = true;
             break;
 
           case 's' :
-            statsFile = param[p];
+            statsFile = &(commandList[p])[0];
             statsFileInit = true;
             break;
 
           case 'i' :
-            if (CheckPositiveInt(param[p])){
-              itMax = atoi(param[p]);
+            if (CheckPositiveInt(&(commandList[p])[0])){
+              itMax = atoi(&(commandList[p])[0]);
             }
             else{
-              throw std::runtime_error("Error : invalide type for parameter " + string(param[p-1]) +", positive integer requested");
+              throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p-1])[0]) +", positive integer requested");
             }
             break;
 
           case 'v' :
-            if (CheckPositiveInt(param[p]) && atoi(param[p])>=1){
-              minNbCover = atoi(param[p]);
+            if (CheckPositiveInt(&(commandList[p])[0]) && atoi(&(commandList[p])[0])>=1){
+              minNbCover = atoi(&(commandList[p])[0]);
             }
             else{
-              throw std::runtime_error("Error : invalide type for parameter " + string(param[p-1]) +", strictly positive integer requested");
+              throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p-1])[0]) +", strictly positive integer requested");
             }
             break;
 
           case 'd' :
-            if (CheckFloatFid(param[p]) && atof(param[p])>=0 && atof(param[p])<=1){
-              dropoutDimParam = atof(param[p]);
+            if (CheckFloatFid(&(commandList[p])[0]) && atof(&(commandList[p])[0])>=0 && atof(&(commandList[p])[0])<=1){
+              dropoutDimParam = atof(&(commandList[p])[0]);
               dropoutDim = true; // We dropout a bunch of dimensions each iteration (accelerate the processus)
               }
               else{
-                throw std::runtime_error("Error : invalide type for parameter " + string(param[p-1]) +", float included in [0,1] requested");
+                throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p-1])[0]) +", float included in [0,1] requested");
               }
             break;
 
             case 'h' :
-            if (CheckFloatFid(param[p]) && atof(param[p])>=0 && atof(param[p])<=1){
-              dropoutHypParam = atof(param[p]);
+            if (CheckFloatFid(&(commandList[p])[0]) && atof(&(commandList[p])[0])>=0 && atof(&(commandList[p])[0])<=1){
+              dropoutHypParam = atof(&(commandList[p])[0]);
               dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
               }
               else{
-                throw std::runtime_error("Error : invalide type for parameter " + string(param[p-1]) +", float included in [0,1] requested");
+                throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p-1])[0]) +", float included in [0,1] requested");
               }
             break;
 
           default  : // If we put another -X option
-            throw std::runtime_error("Illegal option : "+ string(param[p-1]));
+            throw std::runtime_error("Illegal option : "+ string(&(commandList[p-1])[0]));
         }
 
       }
@@ -692,6 +702,8 @@ int main(int nbParam, char** param)
     std::printf(msg);
     cerr << msg << endl;
   }
+
+    return 0;
 
 }
 
