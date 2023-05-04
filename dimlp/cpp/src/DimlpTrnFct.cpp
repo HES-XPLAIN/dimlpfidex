@@ -709,9 +709,8 @@ int dimlpTrn(string command){
 
    if (learnTarInit != false)
    {
-
-      static DataSet train(learnFile, nbIn);
-      static DataSet trainClass(learnTar, nbOut);
+      DataSet train(learnFile, nbIn);
+      DataSet trainClass(learnTar, nbOut);
 
       Train      = train;
       TrainClass = trainClass;
@@ -720,8 +719,8 @@ int dimlpTrn(string command){
    {
       DataSet data(learnFile, nbIn + nbOut);
 
-      static DataSet train(data.GetNbEx());
-      static DataSet trainClass(data.GetNbEx());
+      DataSet train(data.GetNbEx());
+      DataSet trainClass(data.GetNbEx());
 
       data.ExtractDataAndTarget(train, nbIn, trainClass, nbOut);
 
@@ -730,13 +729,12 @@ int dimlpTrn(string command){
 
       data.Del();
    }
-
    if (validFileInit != false)
    {
       if (validTarInit != false)
       {
-         static DataSet valid(validFile, nbIn);
-         static DataSet validClass(validTar, nbOut);
+         DataSet valid(validFile, nbIn);
+         DataSet validClass(validTar, nbOut);
 
          Valid      = valid;
          ValidClass = validClass;
@@ -746,8 +744,8 @@ int dimlpTrn(string command){
       {
          DataSet data(validFile, nbIn + nbOut);
 
-         static DataSet valid(data.GetNbEx());
-         static DataSet validClass(data.GetNbEx());
+         DataSet valid(data.GetNbEx());
+         DataSet validClass(data.GetNbEx());
 
          data.ExtractDataAndTarget(valid, nbIn, validClass, nbOut);
 
@@ -762,8 +760,8 @@ int dimlpTrn(string command){
    {
       if (testTarInit != false)
       {
-         static DataSet test(testFile, nbIn);
-         static DataSet testClass(testTar, nbOut);
+         DataSet test(testFile, nbIn);
+         DataSet testClass(testTar, nbOut);
 
          Test      = test;
          TestClass = testClass;
@@ -772,8 +770,8 @@ int dimlpTrn(string command){
       else
       {
          DataSet data(testFile, nbIn + nbOut);
-         static DataSet test(data.GetNbEx());
-         static DataSet testClass(data.GetNbEx());
+         DataSet test(data.GetNbEx());
+         DataSet testClass(data.GetNbEx());
 
          data.ExtractDataAndTarget(test, nbIn, testClass, nbOut);
 
@@ -812,7 +810,7 @@ int dimlpTrn(string command){
       SaveOutputs(Test, net, nbOut, nbWeightLayers, predTestFile); // Get test predictions
    }
    if (validFileInit != false){
-      SaveOutputs(Valid, net, nbOut, nbWeightLayers, predValidationFile); // Get test predictions
+      SaveOutputs(Valid, net, nbOut, nbWeightLayers, predValidationFile); // Get validation predictions
    }
 
    if (ruleExtr)

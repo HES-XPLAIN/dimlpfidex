@@ -210,7 +210,8 @@ DataSet::DataSet(int nbEx)
 
 DataSet::DataSet(char nameFile[], int nbAttr)
 
-{   NbAttr    = nbAttr;
+{
+   NbAttr    = nbAttr;
     NbEx      = FirstLecture(nameFile);
     Set       = new float*[NbEx];
 

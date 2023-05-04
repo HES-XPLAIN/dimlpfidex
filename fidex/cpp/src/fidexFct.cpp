@@ -62,7 +62,7 @@ int fidex(string command)
     // Import parameters
     if(nbParam == 1){
       showParams();
-      return -1;
+      return 0;
     }
 
 
@@ -379,37 +379,41 @@ int fidex(string command)
         string line;
         int mainSampleTrueClass;
         while (! classData.eof() ){
+          int ind = 0;
           getline(classData, line);
           if (line.length()!=0){
-            // Check if true class is positive integer or -1
-            while (std::isspace(line.back())){
-              line.pop_back();
-            }
-            while (std::isspace(line.front())){
-              line.erase(line.begin());
-            }
-            char* trueClassTest = new char[line.length()+1];
-            strcpy(trueClassTest, line.c_str());
 
             std::stringstream myLine(line);
-            myLine >> mainSampleTrueClass;
-            mainSamplesTrueClass.push_back(mainSampleTrueClass);
-
-            if (strcmpi(trueClassTest,"-1") == 0){
-              hasTrueClass.push_back(false);
+            string tempTest;
+            bool found = false;
+            while ( myLine >> tempTest ){
+                if (tempTest != "-1" && tempTest != "0" && tempTest != "1"){
+                    throw std::runtime_error("Error : in file " + std::string(mainSamplesClassFile) + ", true classes need to be 0, 1 or -1(no class)");
+                }
+                mainSampleTrueClass = stoi(tempTest);
+                if (mainSampleTrueClass == 1){
+                    mainSamplesTrueClass.push_back(ind);
+                    hasTrueClass.push_back(true);
+                    found = true;
+                    break;
+                }
+                else if (mainSampleTrueClass == -1){
+                    mainSamplesTrueClass.push_back(-1);
+                    hasTrueClass.push_back(false);
+                    found = true;
+                    break;
+                }
+                ind++;
             }
-            else if(CheckPositiveInt(trueClassTest)){
-              hasTrueClass.push_back(true);
-            }
-            else{
-              throw std::runtime_error("Error : in file " + std::string(mainSamplesClassFile) + ", true classes need to be positive integers or -1(no class)");
+            if (!found){
+                throw std::runtime_error("Error : in file " + std::string(mainSamplesClassFile) + ", true classes need to be have at least a 1 or -1(no class) in each line");
             }
           }
         }
 
         // Check if there is good number of lines
         if (mainSamplesTrueClass.size() != mainSamplesValues.size()){
-          throw std::runtime_error("Error : in file " + std::string(mainSamplesClassFile) + ", you need to specify as many true classes as there is datas (-1 id no true class)");
+          throw std::runtime_error("Error : in file " + std::string(mainSamplesClassFile) + ", you need to specify as many true classes as there is datas (-1 if no true class)");
         }
       }
       else{
