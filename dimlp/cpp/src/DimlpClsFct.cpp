@@ -144,7 +144,6 @@ int dimlpCls(string command){
    string weightFileTemp;
    bool weightFileInit = false;
    string predFileTemp = "dimlp.out";
-   bool predFileInit = false;
    string consoleFileTemp;
    bool consoleFileInit = false;
    string accuracyFileTemp;
@@ -152,7 +151,6 @@ int dimlpCls(string command){
    string testTarTemp;
    bool testTarInit = false;
    string hidFileTemp = "dimlp.hid";
-   bool hidFileInit = false;
    string rootFolderTemp;
    bool rootFolderInit = false;
 
@@ -236,7 +234,6 @@ int dimlpCls(string command){
 
               case 'p' :
                          predFileTemp = &(commandList[k])[0];
-                         predFileInit = true;
                          break;
 
               case 'r' :
@@ -251,7 +248,6 @@ int dimlpCls(string command){
 
                case 'h' :
                          hidFileTemp = &(commandList[k])[0];
-                         hidFileInit = true;
                          break;
 
               case 'T' :

@@ -94,7 +94,6 @@ int dimlpPred(string command){
     string weightFileTemp;
     bool weightFileInit = false;
     string predFileTemp = "dimlp.out";
-    bool predFileInit = false;
     string consoleFileTemp;
     bool consoleFileInit = false;
     string rootFolderTemp;
@@ -180,7 +179,6 @@ int dimlpPred(string command){
 
                 case 'p' :
                             predFileTemp = &(commandList[k])[0];
-                            predFileInit = true;
                             break;
 
                 case 'r' :

@@ -80,7 +80,6 @@ int dimlpRul(string command){
    string validTarTemp;
    bool validTarInit = false;
    string rulesFileTemp = "dimlp.rls";
-   bool rulesFileInit = false;
    string consoleFileTemp;
    bool consoleFileInit = false;
    string accuracyFileTemp;
@@ -207,7 +206,6 @@ int dimlpRul(string command){
 
               case 'R' :
                          rulesFileTemp = &(commandList[k])[0];
-                         rulesFileInit = true;
                          break;
 
               case 'r' :
