@@ -14,3 +14,6 @@ indent_size = 4
 
 [**.{yml,yaml}]
 indent_size = 2
+
+[**.{cpp,hpp,h}]
+indent_size = 2
