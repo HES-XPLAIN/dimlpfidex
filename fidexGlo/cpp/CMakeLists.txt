@@ -28,6 +28,8 @@ FILE(GLOB FIDEXGLORULES_SRC
 )
 
 FILE(GLOB FIDEXGLOSTATS_SRC
+    src/fidexGloStatsFct.cpp
+    src/fidexGloStatsFct.h
     src/dataSet.cpp
     src/dataSet.h
     src/getRulesFun.cpp
