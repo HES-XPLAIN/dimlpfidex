@@ -10,8 +10,8 @@ void GiveAllParam()
 {
    cout << "\n-------------------------------------------------\n\n";
 
-   cout << "-S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
-   cout << "DimlpTrn -L <training set file(path with respect to specified root folder)> ";
+   cout << "DimlpTrn -S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+   cout << "-L <training set file(path with respect to specified root folder)> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
    cout << " <Options>\n\n";
 
@@ -94,6 +94,11 @@ void SaveOutputs
 ////////////////////////////////////////////////////////////
 
 int dimlpTrn(string command){
+
+   float temps;
+   clock_t t1, t2;
+
+   t1 = clock();
 
    // Parsing the command
     vector<string> commandList;
@@ -770,6 +775,7 @@ int dimlpTrn(string command){
       else
       {
          DataSet data(testFile, nbIn + nbOut);
+
          DataSet test(data.GetNbEx());
          DataSet testClass(data.GetNbEx());
 
@@ -916,6 +922,10 @@ int dimlpTrn(string command){
       Valid.Del();
       ValidClass.Del();
    }*/
+
+   t2 = clock();
+   temps = (float)(t2-t1)/CLOCKS_PER_SEC;
+   std::cout << "\nFull execution time = " << temps << " sec\n";
 
    std::cout.rdbuf(cout_buff); // reset to standard output again
 
