@@ -207,6 +207,7 @@ int main(int nbParam, char **param)
         rootFolderTemp = param[k];
         rootFolderInit = true;
         genericCommand += " -S " + rootFolderTemp;
+        hyperLocusGenericCommand += " -S " + rootFolderTemp;
         fidexGenericCommand += " -R " + rootFolderTemp;
         break;
 
@@ -707,8 +708,8 @@ int main(int nbParam, char **param)
       // Compute hyperlocus in folder
       string hyperLocusCommand = hyperLocusGenericCommand;
 
-      hyperLocusCommand += " -W " + folderPath + separator + "weights.wts ";
-      hyperLocusCommand += "-O " + folderPath + separator + "hyperLocus.txt ";
+      hyperLocusCommand += " -W " + folderPathFromRoot + separator + "weights.wts ";
+      hyperLocusCommand += "-O " + folderPathFromRoot + separator + "hyperLocus.txt ";
 
       cout << "Enter in hyperlocus function" << endl;
       int resHyp = hyperLocus(hyperLocusCommand);

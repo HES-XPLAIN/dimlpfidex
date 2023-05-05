@@ -4,7 +4,8 @@ void showParams() {
   cout << "\n-------------------------------------------------\n\n";
 
   cout << "Obligatory parameters : \n\n";
-  cout << "hyperLocus -W <file of weights> ";
+  cout << "hyperLocus -S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+  cout << "-W <file of weights> ";
   cout << "-Q <number of stairs in staircase activation function> ";
   cout << "-I <high side of the interval>";
 
@@ -61,8 +62,11 @@ int hyperLocus(string command) {
 
     // Parameters declaration
 
-    char *dataFileWeights = 0; // Weights obtained with dimlp
+    string dataFileWeightsTemp; // Weights obtained with dimlp
     bool dataFileWeightsInit = false;
+    string outputFile = "hyperLocus.txt";
+    string rootFolderTemp;
+    bool rootFolderInit = false;
 
     int nbQuantLevels; // Number of steps of the step function
     bool nbQuantLevelsInit = false;
@@ -71,8 +75,6 @@ int hyperLocus(string command) {
     bool hideNotes = false;
 
     vector<vector<double>> hyperLocus;
-
-    string outputFile = "hyperLocus.txt";
 
     // Import parameters
 
@@ -93,7 +95,7 @@ int hyperLocus(string command) {
         switch (commandList[p - 1][1]) { // Get letter after the -
 
         case 'W':
-          dataFileWeights = &(commandList[p])[0];
+          dataFileWeightsTemp = &(commandList[p])[0];
           dataFileWeightsInit = true;
           break;
 
@@ -127,11 +129,44 @@ int hyperLocus(string command) {
           }
           break;
 
+        case 'S':
+          rootFolderTemp = &(commandList[p])[0];
+          rootFolderInit = true;
+          break;
+
         default: // If we put another -X option
           throw std::runtime_error("Illegal option : " + string(&(commandList[p - 1])[0]));
         }
       }
     }
+
+    // ----------------------------------------------------------------------
+    // create paths with root foler
+
+    char dataFileWeightsTmp[160];
+
+    char *dataFileWeights = 0;
+
+#ifdef __unix__
+    string root = rootFolderTemp + "/";
+#elif defined(_WIN32)
+    string root = rootFolderTemp + "\\";
+#endif
+
+    if (dataFileWeightsInit) {
+      dataFileWeightsTemp = root + dataFileWeightsTemp;
+      if (dataFileWeightsTemp.length() >= 160) {
+        cout << "Path " << dataFileWeightsTemp << "is too long"
+             << "\n";
+        return -1;
+      }
+      strcpy(dataFileWeightsTmp, dataFileWeightsTemp.c_str());
+      dataFileWeights = dataFileWeightsTmp;
+    }
+
+    outputFile = root + outputFile;
+
+    // ----------------------------------------------------------------------
 
     if (!dataFileWeightsInit) {
       throw std::runtime_error("The weight file has to be given with option -W");
@@ -153,7 +188,6 @@ int hyperLocus(string command) {
 
       cout << "Import weight file..." << endl;
     }
-
     DataSetFid weightDatas(dataFileWeights);
 
     vector<vector<double>> allWeights = weightDatas.getWeights();
@@ -204,5 +238,5 @@ int hyperLocus(string command) {
   return 0;
 }
 
-// Exemple : hyperLocus -W ../fidexGlo/datafiles/dimlp.wts -Q 50 -I 5 -O ../fidexGlo/datafiles/hyperLocus
-//.\hyperLocus.exe -W ../fidexGlo/datafiles/dimlp.wts -Q 50 -I 5 -O ../fidexGlo/datafiles/hyperLocus
+// Exemple : hyperLocus -W dimlp.wts -Q 50 -I 5 -O hyperLocus -S ../fidexGlo/datafiles/
+// .\hyperLocus.exe -W dimlp.wts -Q 50 -I 5 -O hyperLocus -S ../fidexGlo/datafiles/
