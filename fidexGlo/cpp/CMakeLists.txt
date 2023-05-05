@@ -15,6 +15,8 @@ FILE(GLOB FIDEXGLO_SRC
 )
 
 FILE(GLOB FIDEXGLORULES_SRC
+    src/fidexGloRulesFct.cpp
+    src/fidexGloRulesFct.h
     src/checkFun.cpp
     src/checkFun.h
     src/dataSet.cpp
