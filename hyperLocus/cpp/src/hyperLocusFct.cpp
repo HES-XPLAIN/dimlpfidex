@@ -1,8 +1,6 @@
 #include "hyperLocusFct.h"
 
-
-
-void showParams(){
+void showParams() {
   cout << "\n-------------------------------------------------\n\n";
 
   cout << "Obligatory parameters : \n\n";
@@ -17,159 +15,141 @@ void showParams(){
   cout << "-h <1 to hide notes on terminal>\n";
 
   cout << "\n-------------------------------------------------\n\n";
-
-
-
 }
 
+vector<vector<double>> calcHypLocus(int nbQuantLevels, double lowKnot, double hiKnot, vector<double> vectBias, vector<double> vectWeights) {
 
-vector<vector<double>> calcHypLocus(int nbQuantLevels, double lowKnot, double hiKnot, vector<double> vectBias, vector<double> vectWeights){
+  int nbIn = vectBias.size();      // Number of neurons in the first hidden layer (May be the number of input variables)
+  int nbKnots = nbQuantLevels + 1; // Number of separations per dimension
 
-    int nbIn = vectBias.size(); // Number of neurons in the first hidden layer (May be the number of input variables)
-    int nbKnots = nbQuantLevels + 1; // Number of separations per dimension
+  double dist = hiKnot - lowKnot;         // Size of the interval
+  double binWidth = dist / nbQuantLevels; // Width of a box between 2 separations
 
-    double dist = hiKnot - lowKnot; // Size of the interval
-    double binWidth = dist/nbQuantLevels; // Width of a box between 2 separations
+  vector<vector<double>> matHypLocus(nbIn, vector<double>(nbKnots)); // Matrix of hyperplans (dim x hyp)
+  std::vector<double> knots(nbKnots);                                // Vector of location of the separations for one dimension (hyperplans will be placed close)
 
-    vector<vector<double>> matHypLocus(nbIn, vector<double>(nbKnots)); // Matrix of hyperplans (dim x hyp)
-    std::vector<double> knots(nbKnots); // Vector of location of the separations for one dimension (hyperplans will be placed close)
+  for (int k = 0; k < nbKnots; k++) {
+    knots[k] = lowKnot + (binWidth * k); // location of each separation within a dimension (hyperplans will be placed close)
+  }
 
-
-    for(int k = 0; k<nbKnots; k++){
-        knots[k] = lowKnot + (binWidth*k);  // location of each separation within a dimension (hyperplans will be placed close)
+  for (int i = 0; i < nbIn; i++) { // Loop on dimension
+    for (int j = 0; j < nbKnots; j++) {
+      matHypLocus[i][j] = (knots[j] - vectBias[i]) / vectWeights[i]; // Placement of the hyperplan
     }
+  }
 
-    for(int i = 0; i<nbIn; i++){ // Loop on dimension
-        for(int j = 0; j<nbKnots; j++){
-            matHypLocus[i][j] = (knots[j] - vectBias[i]) / vectWeights[i]; // Placement of the hyperplan
-        }
-    }
-
-    return matHypLocus;
-
+  return matHypLocus;
 }
 
+int hyperLocus(string command) {
+  try {
 
+    float temps;
+    clock_t t1, t2;
 
+    t1 = clock();
 
+    // Parsing the command
+    vector<string> commandList;
+    const char delim = ' ';
+    string s;
+    stringstream ss(command);
+    while (std::getline(ss, s, delim)) {
+      commandList.push_back(s);
+    }
+    int nbParam = commandList.size();
 
+    // Parameters declaration
 
-int hyperLocus(string command)
-{
-  try{
+    char *dataFileWeights = 0; // Weights obtained with dimlp
+    bool dataFileWeightsInit = false;
 
-      float temps;
-      clock_t t1, t2;
+    int nbQuantLevels; // Number of steps of the step function
+    bool nbQuantLevelsInit = false;
+    double hiKnot; // High end of the interval for each dimension, a hyperplan can't be after
+    bool hiKnotInit = false;
+    bool hideNotes = false;
 
-      t1 = clock();
+    vector<vector<double>> hyperLocus;
 
-      // Parsing the command
-      vector<string> commandList;
-      const char delim = ' ';
-      string s;
-      stringstream ss(command);
-      while (std::getline(ss, s, delim)) {
-          commandList.push_back(s);
-      }
-      int nbParam = commandList.size();
+    string outputFile = "hyperLocus.txt";
 
-      // Parameters declaration
+    // Import parameters
 
-      char* dataFileWeights = 0; // Weights obtained with dimlp
-      bool dataFileWeightsInit = false;
+    if (nbParam == 1) {
+      showParams();
+      return -1;
+    }
 
-      int nbQuantLevels; // Number of steps of the step function
-      bool nbQuantLevelsInit = false;
-      double hiKnot; // High end of the interval for each dimension, a hyperplan can't be after
-      bool hiKnotInit = false;
-      bool hideNotes = false;
+    for (int p = 1; p < nbParam; p++) { // We skip "fidex"
+      if (commandList[p][0] == '-') {
+        p++;
 
-      vector<vector<double>> hyperLocus;
+        if (p >= nbParam) {
+          cout << "Missing something at the end of the command.\n";
+          return -1;
+        }
 
-      string outputFile = "hyperLocus.txt";
+        switch (commandList[p - 1][1]) { // Get letter after the -
 
-      // Import parameters
+        case 'W':
+          dataFileWeights = &(commandList[p])[0];
+          dataFileWeightsInit = true;
+          break;
 
-      if(nbParam == 1){
-        showParams();
-        return -1;
-      }
-
-      for (int p=1; p<nbParam; p++){ // We skip "fidex"
-        if(commandList[p][0] == '-'){
-          p++;
-
-          if (p >= nbParam)
-          {
-             cout << "Missing something at the end of the command.\n";
-             return -1;
+        case 'Q':
+          if (CheckPositiveInt(&(commandList[p])[0])) {
+            nbQuantLevels = atoi(&(commandList[p])[0]);
+            nbQuantLevelsInit = true;
+          } else {
+            throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p - 1])[0]) + ", positive integer requested");
           }
+          break;
 
-          switch(commandList[p-1][1]){ // Get letter after the -
-
-            case 'W' :
-              dataFileWeights = &(commandList[p])[0];
-              dataFileWeightsInit = true;
-              break;
-
-            case 'Q' :
-              if (CheckPositiveInt(&(commandList[p])[0])){
-                nbQuantLevels = atoi(&(commandList[p])[0]);
-                nbQuantLevelsInit = true;
-              }
-              else{
-                throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p-1])[0]) +", positive integer requested");
-              }
-              break;
-
-            case 'I' :
-              if (CheckFloatFid(&(commandList[p])[0]) && atof(&(commandList[p])[0])>0){
-                hiKnot = atof(&(commandList[p])[0]);
-                hiKnotInit = true;
-              }
-              else{
-                throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p-1])[0]) +", strictly positive float requested");
-              }
-              break;
-
-              case 'O' :
-                outputFile = &(commandList[p])[0];
-              break;
-
-              case 'h' :
-                if (CheckPositiveInt(&(commandList[p])[0])){
-                  hideNotes = atoi(&(commandList[p])[0]);
-                }
-                else{
-                  throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p-1])[0]) +", positive integer requested");
-                }
-                break;
-
-
-            default  : // If we put another -X option
-              throw std::runtime_error("Illegal option : "+ string(&(commandList[p-1])[0]));
+        case 'I':
+          if (CheckFloatFid(&(commandList[p])[0]) && atof(&(commandList[p])[0]) > 0) {
+            hiKnot = atof(&(commandList[p])[0]);
+            hiKnotInit = true;
+          } else {
+            throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p - 1])[0]) + ", strictly positive float requested");
           }
+          break;
+
+        case 'O':
+          outputFile = &(commandList[p])[0];
+          break;
+
+        case 'h':
+          if (CheckPositiveInt(&(commandList[p])[0])) {
+            hideNotes = atoi(&(commandList[p])[0]);
+          } else {
+            throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p - 1])[0]) + ", positive integer requested");
+          }
+          break;
+
+        default: // If we put another -X option
+          throw std::runtime_error("Illegal option : " + string(&(commandList[p - 1])[0]));
         }
       }
+    }
 
-      if (!dataFileWeightsInit){
-        throw std::runtime_error("The weight file has to be given with option -W");
-      }
-      if (!nbQuantLevelsInit){
-        throw std::runtime_error("The number of steps in the step function has to be given with option -Q");
-      }
-      if (!hiKnotInit){
-        throw std::runtime_error("The right end of the interval in which hyperplans are contained has to be given with option -I");
-      }
-
+    if (!dataFileWeightsInit) {
+      throw std::runtime_error("The weight file has to be given with option -W");
+    }
+    if (!nbQuantLevelsInit) {
+      throw std::runtime_error("The number of steps in the step function has to be given with option -Q");
+    }
+    if (!hiKnotInit) {
+      throw std::runtime_error("The right end of the interval in which hyperplans are contained has to be given with option -I");
+    }
 
     double lowKnot = -hiKnot;
 
-
-    if (!hideNotes){
+    if (!hideNotes) {
       cout << "\nParameters :\n\n";
       cout << "- Number of stairs " << nbQuantLevels << endl;
-      cout << "- Interval : [" << lowKnot << "," << hiKnot << "]" << endl << endl;
+      cout << "- Interval : [" << lowKnot << "," << hiKnot << "]" << endl
+           << endl;
 
       cout << "Import weight file..." << endl;
     }
@@ -180,51 +160,49 @@ int hyperLocus(string command)
     vector<double> biais = weightDatas.getInBiais();
     vector<double> weights = weightDatas.getInWeights();
 
-    if (!hideNotes){
+    if (!hideNotes) {
 
-      cout << "Weight file imported" << endl << endl;
+      cout << "Weight file imported" << endl
+           << endl;
 
       cout << "computation of hyperLocus" << endl;
     }
     hyperLocus = calcHypLocus(nbQuantLevels, lowKnot, hiKnot, biais, weights);
-    if (!hideNotes){
-      cout << "HyperLocus computed" << endl << endl;
+    if (!hideNotes) {
+      cout << "HyperLocus computed" << endl
+           << endl;
 
       cout << "Extraction of the hyperLocus" << endl;
     }
 
-    ofstream hyperLocusFile (outputFile);
-    if(hyperLocusFile.is_open()){
-      for (int i=0;i<hyperLocus.size(); i++){
-        for (int j=0; j<hyperLocus[0].size(); j++){
+    ofstream hyperLocusFile(outputFile);
+    if (hyperLocusFile.is_open()) {
+      for (int i = 0; i < hyperLocus.size(); i++) {
+        for (int j = 0; j < hyperLocus[0].size(); j++) {
           hyperLocusFile << hyperLocus[i][j] << " ";
         }
         hyperLocusFile << "\n";
       }
       hyperLocusFile.close();
-    }
-    else{
+    } else {
       throw std::runtime_error("Error : Couldn't open file " + std::string(outputFile) + ".");
     }
 
-
     t2 = clock();
-    temps = (float)(t2-t1)/CLOCKS_PER_SEC;
-    if (!hideNotes){
+    temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
+    if (!hideNotes) {
       printf("\nTime to compute the hyperLocus = %f sec\n", temps);
     }
   }
 
-  catch (const char* msg) {
+  catch (const char *msg) {
     printf(msg);
     cerr << msg << endl;
     return -1;
   }
 
   return 0;
-
 }
 
-
-  //Exemple : hyperLocus -W ../fidexGlo/datafiles/dimlp.wts -Q 50 -I 5 -O ../fidexGlo/datafiles/hyperLocus
+// Exemple : hyperLocus -W ../fidexGlo/datafiles/dimlp.wts -Q 50 -I 5 -O ../fidexGlo/datafiles/hyperLocus
 //.\hyperLocus.exe -W ../fidexGlo/datafiles/dimlp.wts -Q 50 -I 5 -O ../fidexGlo/datafiles/hyperLocus

@@ -6,19 +6,20 @@ using namespace std;
 float Sigmoid(float x)
 
 {
-   return 1.0/(1.0+exp(-x));
+  return 1.0 / (1.0 + exp(-x));
 }
 
 ///////////////////////////////////////////////////////////////////
 
 float HyperTang(float x)
 
-{  float expMinx, expPlusx;
+{
+  float expMinx, expPlusx;
 
-   expPlusx = exp(x);
-   expMinx  = 1.0 / expPlusx;
+  expPlusx = exp(x);
+  expMinx = 1.0 / expPlusx;
 
-   return (expPlusx - expMinx) / (expPlusx + expMinx);
+  return (expPlusx - expMinx) / (expPlusx + expMinx);
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -26,7 +27,7 @@ float HyperTang(float x)
 float Gaussian(float x)
 
 {
-   return exp(-x*x);
+  return exp(-x * x);
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -34,7 +35,7 @@ float Gaussian(float x)
 float Identity(float x)
 
 {
-   return x;
+  return x;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -42,7 +43,7 @@ float Identity(float x)
 float Power3(float x)
 
 {
-   return x*x*x;
+  return x * x * x;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -50,7 +51,7 @@ float Power3(float x)
 float Power4(float x)
 
 {
-   return x*x*x*x;
+  return x * x * x * x;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -58,7 +59,7 @@ float Power4(float x)
 float Power5(float x)
 
 {
-   return x*x*x*x*x;
+  return x * x * x * x * x;
 }
 
 ///////////////////////////////////////////////////////////////////
