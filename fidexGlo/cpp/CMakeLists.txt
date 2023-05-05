@@ -8,6 +8,8 @@ set(CMAKE_CXX_FLAGS "-O3")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 FILE(GLOB FIDEXGLO_SRC
+    src/fidexGloFct.cpp
+    src/fidexGloFct.h
     src/getRulesFun.cpp
     src/getRulesFun.h
 )
