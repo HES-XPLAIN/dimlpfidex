@@ -35,6 +35,7 @@ void showParams(){
   std::cout << "-v <minimum covering number>\n";
   std::cout << "-d <dimension dropout parameter>\n";
   std::cout << "-h <hyperplan dropout parameter>\n";
+  std::cout << "-z <seed (0=ranodom)>";
 
   std::cout << "\n-------------------------------------------------\n\n";
 
@@ -69,6 +70,8 @@ int fidex(string command)
 
 
     // Parameters declaration
+
+    int seed = 0;
 
     string trainDataFileTemp; // Train data
     bool trainDataFileInit = false;
@@ -203,14 +206,20 @@ int fidex(string command)
             break;
 
             case 'h' :
-            if (CheckFloatFid(&(commandList[p])[0]) && atof(&(commandList[p])[0])>=0 && atof(&(commandList[p])[0])<=1){
-              dropoutHypParam = atof(&(commandList[p])[0]);
-              dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
-              }
-              else{
-                throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p-1])[0]) +", float included in [0,1] requested");
-              }
-            break;
+              if (CheckFloatFid(&(commandList[p])[0]) && atof(&(commandList[p])[0])>=0 && atof(&(commandList[p])[0])<=1){
+                dropoutHypParam = atof(&(commandList[p])[0]);
+                dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
+                }
+                else{
+                  throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p-1])[0]) +", float included in [0,1] requested");
+                }
+              break;
+
+              case 'z' : if (CheckPositiveInt(&(commandList[p])[0]))
+                            seed      = atoi(&(commandList[p])[0]);
+                         else return -1;
+
+                         break;
 
           default  : // If we put another -X option
             throw std::runtime_error("Illegal option : "+ string(&(commandList[p-1])[0]));
@@ -606,7 +615,12 @@ int fidex(string command)
 
     vector<string> lines;
 
-    std::srand(time(0)); // Initialize random number generator
+    if (seed == 0){
+      std::srand(time(0)); // Initialize random number generator
+    }
+    else{
+      std::srand(seed);
+    }
 
 
 
@@ -663,7 +677,13 @@ int fidex(string command)
       int nbIt = 0;
 
       while(hyperspace.getHyperbox()->getFidelity() != 1 && nbIt<itMax){ // While fidelity of our hyperbox is not 100%
-        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+        unsigned seedShuffle;
+        if (seed == 0){
+          seedShuffle = std::chrono::system_clock::now().time_since_epoch().count();
+        }
+        else{
+          unsigned seedShuffle = seed;
+        }
         //cout << endl << "It." << nbIt << " F : " << hyperspace.getHyperbox()->getFidelity() << ", att : " << attribut << endl;
         Hyperbox* bestHyperbox = new Hyperbox(); // best hyperbox to choose for next step
         Hyperbox* currentHyperbox = new Hyperbox();
@@ -677,8 +697,7 @@ int fidex(string command)
         // Randomize dimensions
         vector<int> dimensions(nbIn);
         std::iota(std::begin(dimensions), std::end(dimensions),0); //Vector from 0 to nbIn-1
-        std::shuffle(std::begin(dimensions), std::end(dimensions), std::default_random_engine(seed));
-
+        std::shuffle(std::begin(dimensions), std::end(dimensions), std::default_random_engine(seedShuffle));
         vector<int> currentCovSamp;
 
         for (int d=0; d<nbIn; d++){ // Loop on all dimensions

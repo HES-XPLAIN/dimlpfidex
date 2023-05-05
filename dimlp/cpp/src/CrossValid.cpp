@@ -283,6 +283,7 @@ int main(int nbParam, char** param)
                 case 'z' : if (CheckInt(param[k])){
                                 seed  = atoi(param[k]);
                                 genericCommand += " -z " + std::to_string(seed);
+                                fidexGenericCommand += " -z " + std::to_string(seed);
                             }
 
                             else return -1;
