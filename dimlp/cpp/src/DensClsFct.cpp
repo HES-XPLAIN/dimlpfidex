@@ -84,11 +84,8 @@ int densCls(string command){
    string weightFileTemp;
    bool weightFileInit = false;
    string weightFileSaveTemp = "dimlp.wts";
-   bool weightFileSaveInit = false;
    string predTrainFileTemp = "densCls.out";
-   bool predTrainFileInit = false;
    string predTestFileTemp = "densClsTest.out";
-   bool predTestFileInit = false;
    string rulesFileTemp;
    bool rulesFileInit = false;
    string consoleFileTemp;
@@ -218,12 +215,10 @@ int densCls(string command){
 
               case 'p' :
                          predTrainFileTemp = &(commandList[k])[0];
-                         predTrainFileInit = true;
                          break;
 
               case 't' :
                          predTestFileTemp = &(commandList[k])[0];
-                         predTestFileInit = true;
                          break;
 
               case 'o' :

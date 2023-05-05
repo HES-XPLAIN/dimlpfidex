@@ -19,7 +19,8 @@ void showParams(){
   std::cout << "\n-------------------------------------------------\n\n";
 
   std::cout << "Obligatory parameters : \n\n";
-  std::cout << "fidex -T <train dataset file> -P <train prediction file> -C <train true class file> ";
+  std::cout << "fidex -R <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+  std::cout << "-T <train dataset file> -P <train prediction file> -C <train true class file> ";
   std::cout << "-S <test sample(s) data file with data, prediction(if no -p) and true class(if no -c)> ";
   std::cout << "-H <hyperLocus file> ";
   std::cout << "-O <Rule output file>";
@@ -69,30 +70,32 @@ int fidex(string command)
 
     // Parameters declaration
 
-    char* trainDataFile      = 0; // Train data
+    string trainDataFileTemp; // Train data
     bool trainDataFileInit = false;
-    char* trainDataFilePred  = 0; // Train class predictions from dimlp
+    string trainDataFilePredTemp; // Train class predictions from dimlp
     bool trainDataFilePredInit = false;
-    char* trainDataFileTrueClass = 0; // Train true classes
+    string trainDataFileTrueClassTemp; // Train true classes
     bool trainDataFileTrueClassInit = false;
 
-    char* mainSamplesDataFile    = 0; // Test data value, prediction(if no -p) and true class(optional, if no -c)
+    string mainSamplesDataFileTemp; // Test data value, prediction(if no -p) and true class(optional, if no -c)
     bool mainSamplesDataFileInit = false;
-    char* mainSamplesPredFile = 0; // Test predictions
+    string mainSamplesPredFileTemp; // Test predictions
     bool mainSamplesPredFileInit = false;
-    char* mainSamplesClassFile = 0; // Test true classes
+    string mainSamplesClassFileTemp; // Test true classes
     bool mainSamplesClassFileInit = false;
 
     vector<bool> hasTrueClass; // Check if we have the true classes
 
+    string hyperLocusFileTemp;
     bool hyperLocusFileInit = false;
-    char* hyperLocusFile = 0;
+    string ruleFileTemp;
     bool ruleFileInit = false;
-    char* ruleFile = 0;
-    char* statsFile = 0;
+    string statsFileTemp;
     bool statsFileInit = false;
-    char* consoleFile = 0;
+    string consoleFileTemp;
     bool consoleFileInit = false;
+    string rootFolderTemp;
+    bool rootFolderInit = false;
 
     int itMax = 100;  // We stop if we have more than itMax iterations
     int minNbCover = 2; // Minimum size of covering that we ask
@@ -117,54 +120,59 @@ int fidex(string command)
         switch(commandList[p-1][1]){ // Get letter after the -
 
           case 'T' :
-            trainDataFile = &(commandList[p])[0]; // Parameter after -T
+            trainDataFileTemp = &(commandList[p])[0]; // Parameter after -T
             trainDataFileInit = true;
             break;
 
           case 'P' :
-            trainDataFilePred = &(commandList[p])[0];
+            trainDataFilePredTemp = &(commandList[p])[0];
             trainDataFilePredInit = true;
             break;
 
           case 'C' :
-            trainDataFileTrueClass = &(commandList[p])[0];
+            trainDataFileTrueClassTemp = &(commandList[p])[0];
             trainDataFileTrueClassInit = true;
             break;
 
           case 'S' :
-            mainSamplesDataFile = &(commandList[p])[0];
+            mainSamplesDataFileTemp = &(commandList[p])[0];
             mainSamplesDataFileInit = true;
             break;
 
           case 'p' :
-            mainSamplesPredFile = &(commandList[p])[0];
+            mainSamplesPredFileTemp = &(commandList[p])[0];
             mainSamplesPredFileInit = true;
             break;
 
           case 'c' :
-            mainSamplesClassFile = &(commandList[p])[0];
+            mainSamplesClassFileTemp = &(commandList[p])[0];
             mainSamplesClassFileInit = true;
             break;
 
           case 'H' :
-            hyperLocusFile = &(commandList[p])[0];
+            hyperLocusFileTemp = &(commandList[p])[0];
             hyperLocusFileInit = true;
             break;
 
           case 'O' :
-            ruleFile = &(commandList[p])[0];
+            ruleFileTemp = &(commandList[p])[0];
             ruleFileInit = true;
             break;
 
           case 's' :
-            statsFile = &(commandList[p])[0];
+            statsFileTemp = &(commandList[p])[0];
             statsFileInit = true;
             break;
 
           case 'r' :
-            consoleFile = &(commandList[p])[0];
+            consoleFileTemp = &(commandList[p])[0];
             consoleFileInit = true;
             break;
+
+          case 'R' :
+                      rootFolderTemp = &(commandList[p])[0];
+                      rootFolderInit = true;
+                      break;
 
           case 'i' :
             if (CheckPositiveInt(&(commandList[p])[0])){
@@ -211,6 +219,131 @@ int fidex(string command)
       }
     }
 
+
+    // ----------------------------------------------------------------------
+
+    // create paths with root foler
+
+    char trainDataFileTmp[160], trainDataFilePredTmp[160], trainDataFileTrueClassTmp[160], mainSamplesDataFileTmp[160], mainSamplesPredFileTmp[160], mainSamplesClassFileTmp[160], hyperLocusFileTmp[160], ruleFileTmp[160], statsFileTmp[160], consoleFileTmp[160];
+
+    char* trainDataFile = 0;
+    char* trainDataFilePred = 0;
+    char* trainDataFileTrueClass = 0;
+    char* mainSamplesDataFile = 0;
+    char* mainSamplesPredFile = 0;
+    char* mainSamplesClassFile = 0;
+    char* hyperLocusFile = 0;
+    char* ruleFile = 0;
+    char* statsFile = 0;
+    char* consoleFile = 0;
+
+    #ifdef __unix__
+    string root = rootFolderTemp + "/";
+    #elif defined(_WIN32)
+    string root = rootFolderTemp + "\\";
+    #endif
+
+    if (trainDataFileInit){
+        trainDataFileTemp = root + trainDataFileTemp;
+        if(trainDataFileTemp.length()>=160){
+            cout << "Path " << trainDataFileTemp << "is too long" << "\n";
+            return -1;
+        }
+        strcpy(trainDataFileTmp, trainDataFileTemp.c_str());
+        trainDataFile = trainDataFileTmp;
+    }
+
+    if (trainDataFilePredInit){
+        trainDataFilePredTemp = root + trainDataFilePredTemp;
+        if(trainDataFilePredTemp.length()>=160){
+            cout << "Path " << trainDataFilePredTemp << "is too long" << "\n";
+            return -1;
+        }
+        strcpy(trainDataFilePredTmp, trainDataFilePredTemp.c_str());
+        trainDataFilePred = trainDataFilePredTmp;
+    }
+
+    if (trainDataFileTrueClassInit){
+        trainDataFileTrueClassTemp = root + trainDataFileTrueClassTemp;
+        if(trainDataFileTrueClassTemp.length()>=160){
+            cout << "Path " << trainDataFileTrueClassTemp << "is too long" << "\n";
+            return -1;
+        }
+        strcpy(trainDataFileTrueClassTmp, trainDataFileTrueClassTemp.c_str());
+        trainDataFileTrueClass = trainDataFileTrueClassTmp;
+    }
+
+    if (mainSamplesDataFileInit){
+        mainSamplesDataFileTemp = root + mainSamplesDataFileTemp;
+        if(mainSamplesDataFileTemp.length()>=160){
+            cout << "Path " << mainSamplesDataFileTemp << "is too long" << "\n";
+            return -1;
+        }
+        strcpy(mainSamplesDataFileTmp, mainSamplesDataFileTemp.c_str());
+        mainSamplesDataFile = mainSamplesDataFileTmp;
+    }
+
+    if (mainSamplesPredFileInit){
+        mainSamplesPredFileTemp = root + mainSamplesPredFileTemp;
+        if(mainSamplesPredFileTemp.length()>=160){
+            cout << "Path " << mainSamplesPredFileTemp << "is too long" << "\n";
+            return -1;
+        }
+        strcpy(mainSamplesPredFileTmp, mainSamplesPredFileTemp.c_str());
+        mainSamplesPredFile = mainSamplesPredFileTmp;
+    }
+
+    if (mainSamplesClassFileInit){
+        mainSamplesClassFileTemp = root + mainSamplesClassFileTemp;
+        if(mainSamplesClassFileTemp.length()>=160){
+            cout << "Path " << mainSamplesClassFileTemp << "is too long" << "\n";
+            return -1;
+        }
+        strcpy(mainSamplesClassFileTmp, mainSamplesClassFileTemp.c_str());
+        mainSamplesClassFile = mainSamplesClassFileTmp;
+    }
+
+    if (hyperLocusFileInit){
+        hyperLocusFileTemp = root + hyperLocusFileTemp;
+        if(hyperLocusFileTemp.length()>=160){
+            cout << "Path " << hyperLocusFileTemp << "is too long" << "\n";
+            return -1;
+        }
+        strcpy(hyperLocusFileTmp, hyperLocusFileTemp.c_str());
+        hyperLocusFile = hyperLocusFileTmp;
+    }
+
+    if (ruleFileInit){
+        ruleFileTemp = root + ruleFileTemp;
+        if(ruleFileTemp.length()>=160){
+            cout << "Path " << ruleFileTemp << "is too long" << "\n";
+            return -1;
+        }
+        strcpy(ruleFileTmp, ruleFileTemp.c_str());
+        ruleFile = ruleFileTmp;
+    }
+
+    if (statsFileInit){
+        statsFileTemp = root + statsFileTemp;
+        if(statsFileTemp.length()>=160){
+            cout << "Path " << statsFileTemp << "is too long" << "\n";
+            return -1;
+        }
+        strcpy(statsFileTmp, statsFileTemp.c_str());
+        statsFile = statsFileTmp;
+    }
+
+    if (consoleFileInit){
+        consoleFileTemp = root + consoleFileTemp;
+        if(consoleFileTemp.length()>=160){
+            cout << "Path " << consoleFileTemp << "is too long" << "\n";
+            return -1;
+        }
+        strcpy(consoleFileTmp, consoleFileTemp.c_str());
+        consoleFile = consoleFileTmp;
+    }
+
+    // ----------------------------------------------------------------------
 
     if (!trainDataFileInit){
       throw std::runtime_error("The train data file has to be given with option -T");
@@ -736,6 +869,6 @@ int fidex(string command)
 }
 
 
-  //Exemple : .\fidex.exe -T ../fidex/datafiles/datanorm -P ../fidex/datafiles/dimlp.out -C ../fidex/datafiles/dataclass2 -S ../fidex/datafiles/testSampleDataCombine -H ../fidex/datafiles/hyperLocus -O ../fidex/datafiles/rule.txt -s ../fidex/datafiles/stats -i 100 -v 25 -d 0.5 -h 0.5
+  //Exemple : .\fidex.exe -T datanorm -P dimlp.out -C dataclass2 -S testSampleDataCombine -H hyperLocus -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
 
-// .\fidex.exe -T ../fidex/datafiles/datanorm -P ../fidex/datafiles/dimlp.out -C ../fidex/datafiles/dataclass2 -S ../fidex/datafiles/testData.txt -p ../fidex/datafiles/testPred.txt -c ../fidex/datafiles/testClass.txt -H ../fidex/datafiles/hyperLocus -O ../fidex/datafiles/rule.txt -s ../fidex/datafiles/stats -i 100 -v 25 -d 0.5 -h 0.5
+// .\fidex.exe -T datanorm -P dimlp.out -C dataclass2 -S testData.txt -p testPred.txt -c testClass.txt -H hyperLocus -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles

@@ -104,11 +104,8 @@ int dimlpBT(string command){
    bool validFileInit = false;
    string weightFileTemp = "dimlp.wts";;
    string genericWeightsFileTemp = "dimlpBT";
-   bool genericWeightsFileInit = false;
    string predTrainFileTemp = "dimlpBT.out";
-   bool predTrainFileInit = false;
    string predTestFileTemp = "dimlpBTTest.out";
-   bool predTestFileInit = false;
    string rulesFileTemp;
    bool rulesFileInit = false;
    string consoleFileTemp;
@@ -301,17 +298,14 @@ int dimlpBT(string command){
 
               case 'w' :
                          genericWeightsFileTemp = &(commandList[k])[0];
-                         genericWeightsFileInit = true;
                          break;
 
               case 'p' :
                          predTrainFileTemp = &(commandList[k])[0];
-                         predTrainFileInit = true;
                          break;
 
               case 't' :
                          predTestFileTemp = &(commandList[k])[0];
-                         predTestFileInit = true;
                          break;
 
               case 'o' :

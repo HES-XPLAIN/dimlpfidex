@@ -216,6 +216,7 @@ int main(int nbParam, char** param)
                            rootFolderTemp = param[k];
                            rootFolderInit = true;
                            genericCommand += " -S " + rootFolderTemp;
+                           fidexGenericCommand += " -R " + rootFolderTemp;
                            break;
 
                 case 'A' :
@@ -715,7 +716,6 @@ int main(int nbParam, char** param)
 
             command += "-r consoleTemp.txt"; // To not show console result
 
-
             cout << "Enter in DimlpTrn function" << endl;
             int res = dimlpTrn(command);
             if (res == -1){
@@ -741,17 +741,16 @@ int main(int nbParam, char** param)
                 // Compute fidex stats in folder
                 string fidexCommand = fidexGenericCommand;
 
-                fidexCommand += " -T " + folderPath + separator + "train.txt ";
-                fidexCommand += "-P " + folderPath + separator + "train.out ";
-                fidexCommand += "-C " + folderPath + separator + "trainTarget.txt ";
-                fidexCommand += "-S " + folderPath + separator + "test.txt ";
-                fidexCommand += "-p " + folderPath + separator + "test.out ";
-                fidexCommand += "-c " + folderPath + separator + "testTarget.txt ";
-                fidexCommand += "-H " + folderPath + separator + "hyperLocus.txt ";
-                fidexCommand += "-O " + folderPath + separator + "fidexRule.txt ";
-                fidexCommand += "-s " + folderPath + separator + "fidexStats.txt ";
-                fidexCommand += "-r " + folderPath + separator + "fidexResult.txt ";
-
+                fidexCommand += " -T " + folderPathFromRoot + separator + "train.txt ";
+                fidexCommand += "-P " + folderPathFromRoot + separator + "train.out ";
+                fidexCommand += "-C " + folderPathFromRoot + separator + "trainTarget.txt ";
+                fidexCommand += "-S " + folderPathFromRoot + separator + "test.txt ";
+                fidexCommand += "-p " + folderPathFromRoot + separator + "test.out ";
+                fidexCommand += "-c " + folderPathFromRoot + separator + "testTarget.txt ";
+                fidexCommand += "-H " + folderPathFromRoot + separator + "hyperLocus.txt ";
+                fidexCommand += "-O " + folderPathFromRoot + separator + "fidexRule.txt ";
+                fidexCommand += "-s " + folderPathFromRoot + separator + "fidexStats.txt ";
+                fidexCommand += "-r " + folderPathFromRoot + separator + "fidexResult.txt ";
 
                 cout << "Enter in fidex function" << endl;
                 int resFid = fidex(fidexCommand);
@@ -861,4 +860,4 @@ int main(int nbParam, char** param)
 
 }
 
-// .\CrossValid.exe -L datanorm -1 dataclass2 -K 10 -N 2 -Q 50 -I 16 -H2 5 -O 2 -F CrossValidation -S ../dimlp/datafiles -h 5 -n 100 -v 25 -x 0.5 -y 0.5
+// .\CrossValid.exe -L datanorm -1 dataclass2 -K 3 -N 2 -Q 50 -I 16 -H2 5 -O 2 -F CrossValidation -S ../dimlp/datafiles -h 5 -n 100 -v 25 -x 0.5 -y 0.5 -C both

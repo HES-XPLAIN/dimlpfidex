@@ -150,13 +150,9 @@ int dimlpTrn(string command){
    string weightFileTemp;
    bool weightFileInit = false;
    string outputWeightFileTemp = "dimlp.wts";
-   bool outputWeightFileInit = false;
    string predTrainFileTemp = "dimlp.out";
-   bool predTrainFileInit = false;
    string predTestFileTemp = "dimlpTest.out";
-   bool predTestFileInit = false;
    string predValidationFileTemp = "dimlpValidation.out";
-   bool predValidationFileInit = false;
    string rulesFileTemp;
    bool rulesFileInit = false;
    string consoleFileTemp;
@@ -327,22 +323,18 @@ int dimlpTrn(string command){
 
               case 'w' :
                          outputWeightFileTemp = &(commandList[k])[0];
-                         outputWeightFileInit = true;
                          break;
 
               case 'p' :
                          predTrainFileTemp = &(commandList[k])[0];
-                         predTrainFileInit = true;
                          break;
 
               case 't' :
                          predTestFileTemp = &(commandList[k])[0];
-                         predTestFileInit = true;
                          break;
 
               case 'v' :
                          predValidationFileTemp = &(commandList[k])[0];
-                         predValidationFileInit = true;
                          break;
 
               case 'r' :
