@@ -2,4 +2,6 @@
 Language: Cpp
 BasedOnStyle: LLVM
 ColumnLimit: 0
+DerivePointerAlignment: false
+PointerAlignment: Left
 ...
