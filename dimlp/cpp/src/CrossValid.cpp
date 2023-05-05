@@ -18,8 +18,9 @@ void GiveAllParam()
 {
    cout << "\n-------------------------------------------------\n\n";
 
-   cout << "-S <Root folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
-   cout << "crossValid -L <training set file(path with respect to specified root folder)> -1 <file of train classes> ";
+   cout << "crossValid -S <Root folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+   cout << "-C <choose the algorithms by giving : fidex fidexGlo or both>";
+   cout << "-L <training set file(path with respect to specified root folder)> -1 <file of train classes> ";
    cout << "-Q <number of stairs in staircase activation function> ";
    cout << "-h <high side of the interval> ";
    cout << "-I <number of input neurons> -O <number of output neurons>";
@@ -30,6 +31,7 @@ void GiveAllParam()
    cout << "-K <K-fold cross-validation>\n"; // Not to be 10
    cout << "-N <number of times we do the cross-validation>\n"; // Not to be 10
    cout << "-F <Folder where to save weights, predictions and datas after training>\n"; // Not to be CrossValidation
+   cout << "-o <output statistic file name, saved in specific crossValidation folder>\n"; // Not to be crossValidationStats.txt
    cout << "-A <file of attributes>\n";
    cout << "-W <file of pretrained weights>\n";
    cout << "-H1 <number of neurons in the first hidden layer> ";
@@ -68,6 +70,11 @@ int main(int nbParam, char** param)
 
 {
 
+    float temps;
+    clock_t t1, t2;
+
+    t1 = clock();
+
     int k;
 
     DataSet  Train;
@@ -84,6 +91,11 @@ int main(int nbParam, char** param)
     string folderTemp = "CrossValidation";
     string rootFolderTemp;
     bool rootFolderInit = false;
+    string algorithm;
+    bool algorithmInit = false;
+    string statFile = "crossValidationStats.txt";
+    bool isFidex = false;
+    bool isFidexGlo = false;
 
     string genericCommand = "dimlpTrn";
     string hyperLocusGenericCommand = "hyperLocus -h 1";
@@ -226,6 +238,15 @@ int main(int nbParam, char** param)
                             learnTarInit = true;
                             break;
 
+                case 'C' :
+                            algorithm   = param[k];
+                            algorithmInit = true;
+                            break;
+
+                case 'o' :
+                            statFile   = param[k];
+                            break;
+
                 case 'K' : if (CheckInt(param[k]))
                               K = atoi(param[k]);
                            else return -1;
@@ -290,25 +311,37 @@ int main(int nbParam, char** param)
         return -1;
     }
 
-        if (quantInit == false)
+    if (algorithmInit == false)
+    {
+        cout << "Give a algorithm with -C selection please. You can give fidex, fidexGlo or both." << "\n";
+        return -1;
+    }
+
+    if (algorithm != "fidex" && algorithm != "fidexGlo" && algorithm != "both")
+    {
+        cout << "Give a correct algorithm with -C selection please. You can give fidex, fidexGlo or both." << "\n";
+        return -1;
+    }
+
+    if (quantInit == false)
     {
         cout << "Give a number of stairs in staircase activation function with -Q selection please." << "\n";
         return -1;
     }
 
-        if (hiKnotInit == false)
+    if (hiKnotInit == false)
     {
         cout << "Give the high end of the interval for each dimension where an hyperplan can't be after with -h selection please." << "\n";
         return -1;
     }
 
-        if (nbInInit == false)
+    if (nbInInit == false)
     {
         cout << "Give the number of input neurons with option with -I selection please." << "\n";
         return -1;
     }
 
-        if (nbOutInit == false)
+    if (nbOutInit == false)
     {
         cout << "Give the number of output neurons with option with -O selection please." << "\n";
         return -1;
@@ -356,6 +389,12 @@ int main(int nbParam, char** param)
     }
     strcpy(folderTmp, folderTempFull.c_str());
     folder = folderTmp;
+
+    #ifdef __unix__
+    statFile = std::string(folder) + "/" + statFile;
+    #elif defined(_WIN32)
+    statFile = std::string(folder) + "\\" + statFile;
+    #endif
 
 // ----------------------------------------------------------------------
 
@@ -482,12 +521,27 @@ int main(int nbParam, char** param)
     string validTarFileStrTemp = root + "tempTarValid.txt";
     strcpy(validTarFileStr, validTarFileStrTemp.c_str());
 
+
+    if (algorithm == "fidex" || algorithm == "both"){
+        isFidex = true;
+    }
+    if (algorithm == "fidexGlo" || algorithm == "both"){
+        isFidexGlo = true;
+    }
+
+    // Statistics for Fidex
+    double meanCovSizeFid = 0;
+    double meanNbAntFid = 0;
+    double meanFidelFid = 0;
+    double meanAccFid = 0;
+    double meanConfidFid = 0;
+
     // Loop on N executions of cross-validation
     for (int n=0; n<N; n++){
         cout << "------------------------------" << endl;
         cout << "n=" << n << endl;
-        // Create folder
 
+        // Create folder
         #ifdef __unix__
         string folderName = std::string(folder)+"/Execution"+std::to_string(n+1)+"/";
         mkdir(folderName.c_str(), 0777);
@@ -534,6 +588,7 @@ int main(int nbParam, char** param)
         int validationIdx;
         int testIdx;
         for(int k=0; k<K; k++){ // K-fold, we shift groups by 1.
+            cout << "----" << endl;
             cout << "k=" << k << endl;
             // Create folder
             #ifdef __unix__
@@ -722,47 +777,145 @@ int main(int nbParam, char** param)
                 return -1; // If there is an error in the hyperLocus
             }
 
-            // Compute fidex stats in folder
-            string fidexCommand = fidexGenericCommand;
-            cout << fidexCommand << endl;
+            if (isFidex){
+                // Compute fidex stats in folder
+                string fidexCommand = fidexGenericCommand;
 
+                #ifdef __unix__
+                fidexCommand += " -T " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/train.txt ";
+                fidexCommand += "-P " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/train.out ";
+                fidexCommand += "-C " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/trainTarget.txt ";
+                fidexCommand += "-S " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/test.txt ";
+                fidexCommand += "-p " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/test.out ";
+                fidexCommand += "-c " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/testTarget.txt ";
+                fidexCommand += "-H " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/hyperLocus.txt ";
+                fidexCommand += "-O " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/fidexRule.txt ";
+                fidexCommand += "-s " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/fidexStats.txt ";
+                fidexCommand += "-r " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/fidexResult.txt ";
+                #elif defined(_WIN32)
+                fidexCommand += " -T " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\train.txt ";
+                fidexCommand += "-P " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\train.out ";
+                fidexCommand += "-C " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\trainTarget.txt ";
+                fidexCommand += "-S " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\test.txt ";
+                fidexCommand += "-p " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\test.out ";
+                fidexCommand += "-c " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\testTarget.txt ";
+                fidexCommand += "-H " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\hyperLocus.txt ";
+                fidexCommand += "-O " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\fidexRule.txt ";
+                fidexCommand += "-s " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\fidexStats.txt ";
+                fidexCommand += "-r " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\fidexResult.txt ";
+                #endif
 
-            #ifdef __unix__
-            fidexCommand += " -T " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/train.txt ";
-            fidexCommand += "-P " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/train.out ";
-            fidexCommand += "-C " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/trainTarget.txt ";
-            fidexCommand += "-S " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/test.txt ";
-            fidexCommand += "-p " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/test.out ";
-            fidexCommand += "-c " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/testTarget.txt ";
-            fidexCommand += "-H " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/hyperLocus.txt ";
-            fidexCommand += "-O " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/rule.txt ";
-            fidexCommand += "-s " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/stats.txt ";
-            #elif defined(_WIN32)
-            fidexCommand += " -T " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\train.txt ";
-            fidexCommand += "-P " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\train.out ";
-            fidexCommand += "-C " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\trainTarget.txt ";
-            fidexCommand += "-S " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\test.txt ";
-            fidexCommand += "-p " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\test.out ";
-            fidexCommand += "-c " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\testTarget.txt ";
-            fidexCommand += "-H " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\hyperLocus.txt ";
-            fidexCommand += "-O " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\rule.txt ";
-            fidexCommand += "-s " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\stats.txt ";
-            #endif
+                cout << "Enter in fidex function" << endl;
+                int resFid = fidex(fidexCommand);
+                if (resFid == -1){
+                    return -1; // If there is an error in fidex
+                }
 
-            cout << "Enter in fidex function" << endl;
-            int resFid = fidex(fidexCommand);
-            if (resFid == -1){
-                return -1; // If there is an error in fidex
+                // Get statistics from fidex
+                string statsFile = "";
+                #ifdef __unix__
+                statsFile = root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/fidexStats.txt";
+                #elif defined(_WIN32)
+                statsFile = root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\fidexStats.txt";
+                #endif
+
+                fstream statsData;
+                statsData.open(statsFile,ios::in); //Read data file
+                if(statsData.fail()){
+                    throw std::runtime_error("Error : fidex stat file " + std::string(statsFile) + " not found");
+                }
+                string line;
+                getline(statsData, line);
+                getline(statsData, line);
+                vector<double> statVals; //stat values
+                while (! statsData.eof() ){
+                    getline(statsData, line);
+                    if (line.length()!=0){
+                        std::string lastElement(line.substr(line.rfind(" ") + 1));
+                        statVals.push_back(std::stod(lastElement));
+                    }
+                }
+                statsData.close();
+
+                meanCovSizeFid += statVals[0];
+                meanNbAntFid += statVals[1];
+                meanFidelFid += statVals[2];
+                meanAccFid += statVals[3];
+                meanConfidFid += statVals[4];
             }
-
         }
 
     }
+
+    // Compute stats
+
+    int nbExec = N*K;
+    if (isFidex){
+        meanCovSizeFid /= nbExec;
+        meanNbAntFid /= nbExec;
+        meanFidelFid /= nbExec;
+        meanAccFid /= nbExec;
+        meanConfidFid /= nbExec;
+    }
+
+    // Show and save results
+
+    ofstream outputStatsFile (statFile);
+    if(outputStatsFile.is_open()){
+
+        outputStatsFile << "\n---------------------------------------------------------\n";
+        outputStatsFile << "---------------------------------------------------------\n\n";
+        outputStatsFile << "Results for " << N << " times " << K << "-Cross validation :\n\n";
+        cout << "\n---------------------------------------------------------" << endl;
+        cout << "---------------------------------------------------------" << endl << endl;
+        cout << "Results for " << N << " times " << K << "-Cross validation :" << endl << endl;
+        if (isFidex){
+            outputStatsFile << "Fidex :\n";
+            outputStatsFile << "The mean covering size per rule is : " << meanCovSizeFid << "\n";
+            outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntFid << "\n";
+            outputStatsFile << "The mean rule fidelity rate is : " << meanFidelFid << "\n";
+            outputStatsFile << "The mean rule accuracy is : " << meanAccFid << "\n";
+            outputStatsFile << "The mean rule confidence is : " << meanConfidFid << "\n";
+            outputStatsFile << "\n---------------------------------------------------------\n";
+            outputStatsFile << "---------------------------------------------------------\n";
+            cout << "Fidex :" << endl;
+            cout << "The mean covering size per rule is : " << meanCovSizeFid << endl;
+            cout << "The mean number of antecedents per rule is : " << meanNbAntFid << endl;
+            cout << "The mean rule fidelity rate is : " << meanFidelFid << endl;
+            cout << "The mean rule accuracy is : " << meanAccFid << endl;
+            cout << "The mean rule confidence is : " << meanConfidFid << endl;
+            cout << "\n---------------------------------------------------------" << endl;
+            cout << "---------------------------------------------------------" << endl;
+        }
+        if (isFidex && isFidexGlo){
+            cout << endl;
+        }
+        if (isFidexGlo){
+            cout << "FidexGlo :" << endl;
+            cout << "The mean covering size per rule is : " << meanCovSizeFid << endl;
+            cout << "The mean number of antecedents per rule is : " << meanNbAntFid << endl;
+            cout << "The mean rule fidelity rate is : " << meanFidelFid << endl;
+            cout << "The mean rule accuracy is : " << meanAccFid << endl;
+            cout << "The mean rule confidence is : " << meanConfidFid << endl;
+            cout << "\n---------------------------------------------------------" << endl;
+            cout << "---------------------------------------------------------" << endl;
+        }
+    }
+    else{
+        throw std::runtime_error("Error : Couldn't open stats extraction file " + std::string(statFile) + ".");
+    }
+
 
     char toDelete[160];
     string toDeleteTemp = root + "consoleTemp.txt";
     strcpy(toDelete, toDeleteTemp.c_str());
     remove(toDelete);
+
+    t2 = clock();
+    temps = (float)(t2-t1)/CLOCKS_PER_SEC;
+    std::cout << "\nFull execution time = " << temps << " sec\n";
+
+
 
 }
 
