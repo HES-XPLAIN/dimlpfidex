@@ -29,6 +29,7 @@ void showParams(){
   std::cout << "-p <test prediction file> ";
   std::cout << "-c <test true class file> If at least -p is specified, -S needs to have only test datas\n";
   std::cout << "-s <output statistic file>\n";
+  std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
   std::cout << "-i <max iteration number>\n";
   std::cout << "-v <minimum covering number>\n";
   std::cout << "-d <dimension dropout parameter>\n";
@@ -90,6 +91,8 @@ int fidex(string command)
     char* ruleFile = 0;
     char* statsFile = 0;
     bool statsFileInit = false;
+    char* consoleFile = 0;
+    bool consoleFileInit = false;
 
     int itMax = 100;  // We stop if we have more than itMax iterations
     int minNbCover = 2; // Minimum size of covering that we ask
@@ -158,6 +161,11 @@ int fidex(string command)
             statsFileInit = true;
             break;
 
+          case 'r' :
+            consoleFile = &(commandList[p])[0];
+            consoleFileInit = true;
+            break;
+
           case 'i' :
             if (CheckPositiveInt(&(commandList[p])[0])){
               itMax = atoi(&(commandList[p])[0]);
@@ -203,6 +211,7 @@ int fidex(string command)
       }
     }
 
+
     if (!trainDataFileInit){
       throw std::runtime_error("The train data file has to be given with option -T");
     }
@@ -225,6 +234,18 @@ int fidex(string command)
       throw std::runtime_error("The output rule file has to be given with option -O");
     }
 
+// ----------------------------------------------------------------------
+
+   // Get console results to file
+   std::ofstream ofs;
+   std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
+   if (consoleFileInit != false){
+      ofs.open(consoleFile);
+      std::cout.rdbuf(ofs.rdbuf());  // redirect std::cout to file
+   }
+   std::ostream& output = consoleFileInit != false ? ofs : std::cout;
+
+// ----------------------------------------------------------------------
 
     std::cout << "\nParameters :\n\n";
     std::cout << "- Max iteration number : " << itMax << endl;
@@ -693,19 +714,22 @@ int fidex(string command)
     d2 = clock();
     temps2 = (float)(d2-d1)/CLOCKS_PER_SEC;
 
-    std::printf("\nTime without data import = %f sec\n", temps2);
+    std::cout << "\nTime without data import = " << temps2 << " sec\n";
 
 
     t2 = clock();
     temps = (float)(t2-t1)/CLOCKS_PER_SEC;
-    std::printf("\nFull execution time = %f sec\n", temps);
+    std::cout << "\nFull execution time = " << temps << " sec\n";
 
+    std::cout.rdbuf(cout_buff); // reset to standard output again
 
   }
   catch (const char* msg) {
     std::printf(msg);
     cerr << msg << endl;
   }
+
+
 
     return 0;
 
