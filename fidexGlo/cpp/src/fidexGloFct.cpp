@@ -6,12 +6,15 @@ void showParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 
   std::cout << "Obligatory parameters : \n\n";
-  std::cout << "fidexGlo -S <test sample(s) data file> ";
+
+  cout << "fidexGlo -F <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+  std::cout << "-S <test sample(s) data file> ";
   std::cout << "-R <rules input file> ";
   std::cout << "<Options>\n\n";
 
   std::cout << "Options are: \n\n";
   std::cout << "-O <Rule output file>";
+  std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
 
   std::cout << "\n-------------------------------------------------\n\n";
 }
@@ -43,12 +46,16 @@ int fidexGlo(string command) {
 
     // Parameters declaration
 
-    char *testSamplesDataFile = 0;
+    string testSamplesDataFileTemp;
     bool testSamplesDataFileInit = false;
-    char *rulesFile = 0;
+    string rulesFileTemp;
     bool rulesFileInit = false;
-    char *explanationFile = 0;
+    string explanationFileTemp;
     bool explanationFileInit = false;
+    string consoleFileTemp;
+    bool consoleFileInit = false;
+    string rootFolderTemp;
+    bool rootFolderInit = false;
 
     // Import parameters
 
@@ -63,18 +70,28 @@ int fidexGlo(string command) {
         switch (commandList[p - 1][1]) { // Get letter after the -
 
         case 'S':
-          testSamplesDataFile = &(commandList[p])[0];
+          testSamplesDataFileTemp = &(commandList[p])[0];
           testSamplesDataFileInit = true;
           break;
 
         case 'R':
-          rulesFile = &(commandList[p])[0];
+          rulesFileTemp = &(commandList[p])[0];
           rulesFileInit = true;
           break;
 
         case 'O':
-          explanationFile = &(commandList[p])[0];
+          explanationFileTemp = &(commandList[p])[0];
           explanationFileInit = true;
+          break;
+
+        case 'r':
+          consoleFileTemp = &(commandList[p])[0];
+          consoleFileInit = true;
+          break;
+
+        case 'F':
+          rootFolderTemp = &(commandList[p])[0];
+          rootFolderInit = true;
           break;
 
         default: // If we put another -X option
@@ -83,12 +100,86 @@ int fidexGlo(string command) {
       }
     }
 
+    // ----------------------------------------------------------------------
+    // create paths with root foler
+
+    char testSamplesDataFileTmp[160], rulesFileTmp[160], explanationFileTmp[160], consoleFileTmp[160];
+
+    char *testSamplesDataFile = 0;
+    char *rulesFile = 0;
+    char *explanationFile = 0;
+    char *consoleFile = 0;
+
+#ifdef __unix__
+    string root = rootFolderTemp + "/";
+#elif defined(_WIN32)
+    string root = rootFolderTemp + "\\";
+#endif
+
+    if (testSamplesDataFileInit) {
+      testSamplesDataFileTemp = root + testSamplesDataFileTemp;
+      if (testSamplesDataFileTemp.length() >= 160) {
+        cout << "Path " << testSamplesDataFileTemp << "is too long"
+             << "\n";
+        return -1;
+      }
+      strcpy(testSamplesDataFileTmp, testSamplesDataFileTemp.c_str());
+      testSamplesDataFile = testSamplesDataFileTmp;
+    }
+
+    if (rulesFileInit) {
+      rulesFileTemp = root + rulesFileTemp;
+      if (rulesFileTemp.length() >= 160) {
+        cout << "Path " << rulesFileTemp << "is too long"
+             << "\n";
+        return -1;
+      }
+      strcpy(rulesFileTmp, rulesFileTemp.c_str());
+      rulesFile = rulesFileTmp;
+    }
+
+    if (explanationFileInit) {
+      explanationFileTemp = root + explanationFileTemp;
+      if (explanationFileTemp.length() >= 160) {
+        cout << "Path " << explanationFileTemp << "is too long"
+             << "\n";
+        return -1;
+      }
+      strcpy(explanationFileTmp, explanationFileTemp.c_str());
+      explanationFile = explanationFileTmp;
+    }
+
+    if (consoleFileInit) {
+      consoleFileTemp = root + consoleFileTemp;
+      if (consoleFileTemp.length() >= 160) {
+        cout << "Path " << consoleFileTemp << "is too long"
+             << "\n";
+        return -1;
+      }
+      strcpy(consoleFileTmp, consoleFileTemp.c_str());
+      consoleFile = consoleFileTmp;
+    }
+
+    // ----------------------------------------------------------------------
     if (!testSamplesDataFileInit) {
       throw std::runtime_error("The test samples data file has to be given with option -S");
     }
     if (!rulesFileInit) {
       throw std::runtime_error("The rules file has to be given with option -R");
     }
+
+    // ----------------------------------------------------------------------
+
+    // Get console results to file
+    std::ofstream ofs;
+    std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
+    if (consoleFileInit != false) {
+      ofs.open(consoleFile);
+      std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
+    }
+    std::ostream &output = consoleFileInit != false ? ofs : std::cout;
+
+    // ----------------------------------------------------------------------
 
     std::cout << "Import datas..." << endl
               << endl;
@@ -284,7 +375,9 @@ int fidexGlo(string command) {
 
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
-    std::printf("\nFull execution time = %f sec\n", temps);
+    std::cout << "\nFull execution time = " << temps << " sec\n";
+
+    std::cout.rdbuf(cout_buff); // reset to standard output again
 
   } catch (const char *msg) {
     std::printf(msg);
@@ -294,4 +387,4 @@ int fidexGlo(string command) {
   return 0;
 }
 
-// Exemple : .\fidexGlo.exe -S ../fidexGlo/datafiles/testSampleData -R ../fidexGlo/datafiles/globalRules.txt -O ../fidexGlo/datafiles/explanation.txt
+// Exemple : .\fidexGlo.exe -S testSampleData -R globalRules.txt -O explanation.txt -F ../fidexGlo/datafiles/
