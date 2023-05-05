@@ -3,78 +3,77 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
-OneVarThresDescr::Elem* OneVarThresDescr::CreateElem(float thres, int indPat)
+OneVarThresDescr::Elem *OneVarThresDescr::CreateElem(float thres, int indPat)
 
-{  OneVarThresDescr::Elem* e = new OneVarThresDescr::Elem;
+{
+  OneVarThresDescr::Elem *e = new OneVarThresDescr::Elem;
 
-   e->Thres         = thres;
-   e->Next          = 0;
-   e->CountPatDiscr = 0;
-   e->ListPat       = new StringInt;
+  e->Thres = thres;
+  e->Next = 0;
+  e->CountPatDiscr = 0;
+  e->ListPat = new StringInt;
 
-   (e->ListPat)->Insert(indPat);
+  (e->ListPat)->Insert(indPat);
 
-   NbThres++;
+  NbThres++;
 
-   return e;
+  return e;
 }
 
 ///////////////////////////////////////////////////////////////////
 
 void OneVarThresDescr::ResetCountPatDiscr()
 
-{  int t;
+{
+  int t;
 
-   for (t=0, PtrList=First; t<NbThres; t++, PtrList=PtrList->Next)
-       PtrList->CountPatDiscr = 0;
+  for (t = 0, PtrList = First; t < NbThres; t++, PtrList = PtrList->Next)
+    PtrList->CountPatDiscr = 0;
 }
 
 ///////////////////////////////////////////////////////////////////
 
 void OneVarThresDescr::Insert(float thres, int indPat)
 
-{  int e;
-   OneVarThresDescr::Elem* last;
+{
+  int e;
+  OneVarThresDescr::Elem *last;
 
-   if (NbThres == 0)
-      First = CreateElem(thres, indPat);
+  if (NbThres == 0)
+    First = CreateElem(thres, indPat);
 
-   else
-   {
-      for (e=0, PtrList=First; e<NbThres; e++, PtrList=PtrList->Next)
-      {
-          if (PtrList->Thres == thres)
-          {
-             (PtrList->ListPat)->Insert(indPat);
-             break;
-          }
-
-          last = PtrList;
+  else {
+    for (e = 0, PtrList = First; e < NbThres; e++, PtrList = PtrList->Next) {
+      if (PtrList->Thres == thres) {
+        (PtrList->ListPat)->Insert(indPat);
+        break;
       }
 
-      if (e == NbThres)
-         last->Next = CreateElem(thres, indPat);
-   }
+      last = PtrList;
+    }
+
+    if (e == NbThres)
+      last->Next = CreateElem(thres, indPat);
+  }
 }
 
 ///////////////////////////////////////////////////////////////////
 
 void OneVarThresDescr::Del()
 
-{  int e;
+{
+  int e;
 
-   PtrList = First;
+  PtrList = First;
 
-   for (e=0; e<NbThres; e++)
-   {
-       PtrList = PtrList->Next;
-       (First->ListPat)->Del();
-       delete First;
-       First = PtrList;
-   }
+  for (e = 0; e < NbThres; e++) {
+    PtrList = PtrList->Next;
+    (First->ListPat)->Del();
+    delete First;
+    First = PtrList;
+  }
 
-   NbThres = 0;
+  NbThres = 0;
 }
-
 
 ///////////////////////////////////////////////////////////////////

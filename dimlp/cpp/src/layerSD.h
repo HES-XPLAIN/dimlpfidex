@@ -8,29 +8,26 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
-class LayerSD : public Layer
-{
+class LayerSD : public Layer {
 
-//----------------------------------------------------------------
+  //----------------------------------------------------------------
 
-   float Activation1(float x) { return Identity(x); }
+  float Activation1(float x) { return Identity(x); }
 
-//----------------------------------------------------------------
+  //----------------------------------------------------------------
 
 public:
+  LayerSD(
+      int nbDown,
+      int nbUp,
+      int nbWeights,
+      int nbWeightsForInit) :
 
-   LayerSD
-   (
-      int      nbDown,
-      int      nbUp,
-      int      nbWeights,
-      int      nbWeightsForInit)     :
+                              Layer(0, 0, 0, nbDown, nbUp, nbWeights, nbWeightsForInit)
 
-      Layer(0, 0, 0, nbDown, nbUp, nbWeights, nbWeightsForInit)
-
-   {
-      ;
-   }
+  {
+    ;
+  }
 };
 
 ///////////////////////////////////////////////////////////////////

@@ -1,20 +1,20 @@
 #ifndef FIDEXFCT_H
 #define FIDEXFCT_H
 
-#include <time.h>
-#include "dataSet.h"
 #include "checkFun.h"
-#include <sstream>
+#include "dataSet.h"
+#include "hyperspace.h"
+#include <algorithm>
+#include <chrono>
+#include <ctime>
 #include <fstream>
 #include <iostream>
-#include <vector>
-#include "hyperspace.h"
-#include <tuple>
 #include <numeric>
-#include <ctime>
-#include <algorithm>
 #include <random>
-#include <chrono>
+#include <sstream>
+#include <time.h>
+#include <tuple>
+#include <vector>
 
 static void showParams();
 int fidex(string command);

@@ -4,40 +4,40 @@
 using namespace std;
 ///////////////////////////////////////////////////////////////////
 
-class StringInt
-{
-   struct Elem
-   {
-     int   Val;
-     Elem* Next;
-   };
+class StringInt {
+  struct Elem {
+    int Val;
+    Elem *Next;
+  };
 
-   int    NbEl;
+  int NbEl;
 
-   Elem*  First;
-   Elem*  Last;
-   Elem*  PtrList;
+  Elem *First;
+  Elem *Last;
+  Elem *PtrList;
 
-//----------------------------------------------------------------
+  //----------------------------------------------------------------
 
 public:
+  int GetNbEl() { return NbEl; }
+  void GoToBeg() { PtrList = First; }
+  void GoToNext() { PtrList = PtrList->Next; }
+  int GetVal() { return PtrList->Val; }
+  void SetVal(int val) { PtrList->Val = val; }
 
-   int   GetNbEl() { return NbEl; }
-   void  GoToBeg() { PtrList = First; }
-   void  GoToNext() { PtrList = PtrList->Next; }
-   int   GetVal() { return PtrList->Val; }
-   void  SetVal(int val) {  PtrList->Val = val; }
+  void Insert(int val);
+  int FindIndMax();
+  int FindIndMin();
+  void DelVal(int indPrune, int newSet);
 
-   void  Insert(int val);
-   int   FindIndMax();
-   int   FindIndMin();
-   void  DelVal(int indPrune, int newSet);
-
-   void  Del();
-   void  DelAll() { Del(); delete this; }
+  void Del();
+  void DelAll() {
+    Del();
+    delete this;
+  }
 
   ~StringInt() { Del(); }
-   StringInt() { NbEl=0; }
+  StringInt() { NbEl = 0; }
 };
 
 ///////////////////////////////////////////////////////////////////

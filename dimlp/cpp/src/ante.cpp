@@ -6,8 +6,8 @@ using namespace std;
 Ante::Ante(int var, float val, char rel) : Rule()
 
 {
-   Rule::Insert(var, val, rel);
-   Rule::GoToBeg();
+  Rule::Insert(var, val, rel);
+  Rule::GoToBeg();
 }
 
 ///////////////////////////////////////////////////////////////////

@@ -1,189 +1,176 @@
 using namespace std;
 #include "dataSet.h"
+#include <algorithm>
 #include <fstream>
 #include <sstream>
-#include <algorithm>
 
-DataSetFid::DataSetFid(char* dataFile, char* predFile, char* trueClassFile){
-    hasDatas = true;
-    int i; // iterator
-    string line;
+DataSetFid::DataSetFid(char *dataFile, char *predFile, char *trueClassFile) {
+  hasDatas = true;
+  int i; // iterator
+  string line;
 
-    // Get data
+  // Get data
 
-    fstream fileDta;
+  fstream fileDta;
 
-    fileDta.open(dataFile,ios::in); //Read data file
-    if(fileDta.fail()){
-      throw std::runtime_error("Error : file " + std::string(dataFile) + " not found");
-    }
-
-    while (! fileDta.eof() ){
-          getline(fileDta, line);
-          if (line.length()!=0){
-            std::stringstream myLine(line);
-            double value;
-            vector<double> tempVect;
-            while ( myLine >> value ){
-              tempVect.push_back(value);
-            }
-            datas.push_back(tempVect);
-          }
-    }
-
-    fileDta.close(); //close data file
-
-
-
-    // Get data class
-
-    if (trueClassFile != 0){
-
-      hasClasses = true;
-      fstream fileCl;
-
-      fileCl.open(trueClassFile,ios::in); //read true dataclass file
-      if(fileCl.fail()){
-        throw std::runtime_error("Error : file " + std::string(trueClassFile) + " not found");
-      }
-
-      while (! fileCl.eof() ){
-            i = 0;
-            getline(fileCl, line);
-            if (line.length()!=0){
-              std::stringstream myLine(line);
-              int value;
-              while ( myLine >> value ){
-                if (value == 1){
-                  trueClasses.push_back(i);
-                  break;
-                }
-                i++;
-              }
-            }
-      }
-
-      fileCl.close(); //close file
-    }
-
-
-
-    // Get predictions
-
-    fstream filePrd;
-
-    filePrd.open(predFile,ios::in); //read predictions data file
-    if(filePrd.fail()){
-      throw std::runtime_error("Error : file " + std::string(predFile) + " not found");
-    }
-
-    while (! filePrd.eof() ){
-          i = 0;
-          getline(filePrd, line);
-          if (line.length()!=0){
-            std::stringstream myLine(line);
-            double value;
-            vector <double> values;
-            while ( myLine >> value ){
-              values.push_back(value);
-            }
-            outputValuesPredictions.push_back(values);
-            predictions.push_back(std::max_element(values.begin(),values.end()) - values.begin());
-          }
-    }
-
-    filePrd.close(); //close file
-}
-
-DataSetFid::DataSetFid(char* weightFile){
-
-    // Get weights
-    hasWeights = true;
-    fstream fileWts;
-
-    string line;
-
-    fileWts.open(weightFile,ios::in); //Read weight file
-    if(fileWts.fail()){
-      throw std::runtime_error("Error : file " + std::string(weightFile) + " not found");
-    }
-
-    while (! fileWts.eof() ){
-      getline(fileWts, line);
-      if (line.length()!=0){
-        std::stringstream myLine(line);
-        double value;
-        vector<double> tempVect;
-        while ( myLine >> value ){
-          tempVect.push_back(value);
-        }
-        weights.push_back(tempVect);
-      }
-
-    }
-    fileWts.close(); //close file
-}
-
-
-vector<vector<double>>* DataSetFid::getDatas(){
-  if (hasDatas){
-    return &datas;
+  fileDta.open(dataFile, ios::in); // Read data file
+  if (fileDta.fail()) {
+    throw std::runtime_error("Error : file " + std::string(dataFile) + " not found");
   }
-  else{
+
+  while (!fileDta.eof()) {
+    getline(fileDta, line);
+    if (line.length() != 0) {
+      std::stringstream myLine(line);
+      double value;
+      vector<double> tempVect;
+      while (myLine >> value) {
+        tempVect.push_back(value);
+      }
+      datas.push_back(tempVect);
+    }
+  }
+
+  fileDta.close(); // close data file
+
+  // Get data class
+
+  if (trueClassFile != 0) {
+
+    hasClasses = true;
+    fstream fileCl;
+
+    fileCl.open(trueClassFile, ios::in); // read true dataclass file
+    if (fileCl.fail()) {
+      throw std::runtime_error("Error : file " + std::string(trueClassFile) + " not found");
+    }
+
+    while (!fileCl.eof()) {
+      i = 0;
+      getline(fileCl, line);
+      if (line.length() != 0) {
+        std::stringstream myLine(line);
+        int value;
+        while (myLine >> value) {
+          if (value == 1) {
+            trueClasses.push_back(i);
+            break;
+          }
+          i++;
+        }
+      }
+    }
+
+    fileCl.close(); // close file
+  }
+
+  // Get predictions
+
+  fstream filePrd;
+
+  filePrd.open(predFile, ios::in); // read predictions data file
+  if (filePrd.fail()) {
+    throw std::runtime_error("Error : file " + std::string(predFile) + " not found");
+  }
+
+  while (!filePrd.eof()) {
+    i = 0;
+    getline(filePrd, line);
+    if (line.length() != 0) {
+      std::stringstream myLine(line);
+      double value;
+      vector<double> values;
+      while (myLine >> value) {
+        values.push_back(value);
+      }
+      outputValuesPredictions.push_back(values);
+      predictions.push_back(std::max_element(values.begin(), values.end()) - values.begin());
+    }
+  }
+
+  filePrd.close(); // close file
+}
+
+DataSetFid::DataSetFid(char *weightFile) {
+
+  // Get weights
+  hasWeights = true;
+  fstream fileWts;
+
+  string line;
+
+  fileWts.open(weightFile, ios::in); // Read weight file
+  if (fileWts.fail()) {
+    throw std::runtime_error("Error : file " + std::string(weightFile) + " not found");
+  }
+
+  while (!fileWts.eof()) {
+    getline(fileWts, line);
+    if (line.length() != 0) {
+      std::stringstream myLine(line);
+      double value;
+      vector<double> tempVect;
+      while (myLine >> value) {
+        tempVect.push_back(value);
+      }
+      weights.push_back(tempVect);
+    }
+  }
+  fileWts.close(); // close file
+}
+
+vector<vector<double>> *DataSetFid::getDatas() {
+  if (hasDatas) {
+    return &datas;
+  } else {
     throw std::runtime_error("Error : data file not specified for this dataset");
   }
 }
 
-vector<int>* DataSetFid::getTrueClasses(){
-  if (hasClasses){
+vector<int> *DataSetFid::getTrueClasses() {
+  if (hasClasses) {
     return &trueClasses;
-  }
-  else{
+  } else {
     throw std::runtime_error("Error : dataClass file not specified for this dataset");
   }
 }
 
-vector<int>* DataSetFid::getPredictions(){
-  if (hasDatas){
+vector<int> *DataSetFid::getPredictions() {
+  if (hasDatas) {
     return &predictions;
-  }
-  else{
+  } else {
     throw std::runtime_error("Error : prediction file not specified for this dataset");
   }
 }
 
-vector<vector<double>>* DataSetFid::getOutputValuesPredictions(){
-  if (hasDatas){
+vector<vector<double>> *DataSetFid::getOutputValuesPredictions() {
+  if (hasDatas) {
     return &outputValuesPredictions;
-  }
-  else{
+  } else {
     throw std::runtime_error("Error : prediction file not specified for this dataset");
   }
 }
 
-vector<vector<double>> DataSetFid::getWeights(){
-  if (hasWeights){
+vector<vector<double>> DataSetFid::getWeights() {
+  if (hasWeights) {
     return weights;
-  }
-  else{
+  } else {
     throw std::runtime_error("Error : weight file not specified for this dataset");
   }
 }
 
-vector<double> DataSetFid::getInBiais(){
-  if (hasWeights){
+vector<double> DataSetFid::getInBiais() {
+  if (hasWeights) {
     return weights[0];
-  }
-  else{
+  } else {
     throw std::runtime_error("Error : weight file not specified for this dataset");
   }
 }
 
-vector<double> DataSetFid::getInWeights(){
-  if (hasWeights){
+vector<double> DataSetFid::getInWeights() {
+  if (hasWeights) {
     return weights[1];
-  }
-  else{
+  } else {
     throw std::runtime_error("Error : weight file not specified for this dataset");
   }
 }

@@ -2,16 +2,15 @@
 
 ////////////////////////////////////////////////////////////
 
-int main(int nbParam, char** param)
+int main(int nbParam, char **param)
 
 {
-   string command = "dimlpCls";
-   if (nbParam >= 1){
-      for (int p=1; p<nbParam; p++){
-         command += " ";
-         command += param[p];
-      }
-   }
-   dimlpCls(command);
-
+  string command = "dimlpCls";
+  if (nbParam >= 1) {
+    for (int p = 1; p < nbParam; p++) {
+      command += " ";
+      command += param[p];
+    }
+  }
+  dimlpCls(command);
 }
