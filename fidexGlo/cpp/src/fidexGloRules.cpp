@@ -483,20 +483,6 @@ int main(int nbParam, char **param) {
           }
         }
 
-        // std::cout << "Sample : " << idSample << " ";
-        // std::cout << "Size of covering : " << std::get<1>(rule).size() << " ";
-        /*cout << "Covered Samples : ";
-        for (int i=0;i<coveredSamples.size();i++){
-          cout << coveredSamples[i] << " ";
-        }
-        cout << endl;
-        cout << "Rule :" << endl;
-        for (int j=0; j<get<0>(rule).size(); j++){
-          cout  << std::get<0>(std::get<0>(rule)[j]) << " " << std::get<1>(std::get<0>(rule)[j]) << " " << std::get<2>(std::get<0>(rule)[j]) << endl;
-        }
-        cout << "Rule Accuracy : " << std::get<3>(rule) << endl;
-        */
-
         chosenRules.push_back(rule); // We add the new rule
 
         // Delete covered samples
