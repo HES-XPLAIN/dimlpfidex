@@ -357,10 +357,12 @@ int main(int nbParam, char** param)
     char* folder = 0;
 
     #ifdef __unix__
-    string root = rootFolderTemp + "/";
+    string separator = "/";
     #elif defined(_WIN32)
-    string root = rootFolderTemp + "\\";
+    string separator = "\\";
     #endif
+
+    string root = rootFolderTemp + separator;
 
     if (learnTarInit){
         learnTarTemp = root + learnTarTemp;
@@ -390,11 +392,8 @@ int main(int nbParam, char** param)
     strcpy(folderTmp, folderTempFull.c_str());
     folder = folderTmp;
 
-    #ifdef __unix__
-    statFile = std::string(folder) + "/" + statFile;
-    #elif defined(_WIN32)
-    statFile = std::string(folder) + "\\" + statFile;
-    #endif
+    statFile = std::string(folder) + separator + statFile;
+
 
 // ----------------------------------------------------------------------
 
@@ -590,12 +589,14 @@ int main(int nbParam, char** param)
         for(int k=0; k<K; k++){ // K-fold, we shift groups by 1.
             cout << "----" << endl;
             cout << "k=" << k << endl;
+            // path to folder
+            string folderPath = std::string(folder) + separator + "Execution" + std::to_string(n+1) + separator + "Fold" + std::to_string(k+1);
             // Create folder
             #ifdef __unix__
-            string folderName = std::string(folder)+"/Execution"+std::to_string(n+1)+"/Fold"+std::to_string(k+1)+"/";
+            string folderName = folderPath + separator;
             mkdir(folderName.c_str(), 0777);
             #elif defined(_WIN32)
-            string folderName = std::string(folder)+"\\Execution"+std::to_string(n+1)+"\\Fold"+std::to_string(k+1);
+            string folderName = folderPath;
             mkdir(folderName.c_str());
             #endif
             // Get group index for test, validation and train
@@ -667,89 +668,51 @@ int main(int nbParam, char** param)
 
             // Get train, test and validation files in folder
 
-            #ifdef __unix__
-            if (!copyFile(trainFileStr, (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/train.txt").c_str())){
+            if (!copyFile(trainFileStr, (folderPath + separator + "train.txt").c_str())){
                 cout << "File tempTrain.txt coundn't be copied.\n";
                 return -1;
             }
-            if (!copyFile(testFileStr, (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/test.txt").c_str())){
+            if (!copyFile(testFileStr, (folderPath + separator + "test.txt").c_str())){
                 cout << "File tempTest.txt coundn't be copied.\n";
                 return -1;
             }
-            if (!copyFile(validFileStr, (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/valid.txt").c_str())){
-                cout << "File tempvalid.txt coundn't be copied.\n";
-                return -1;
-            }
-            if (!copyFile(trainTarFileStr, (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/trainTarget.txt").c_str())){
-                cout << "File tempTarTrain.txt coundn't be copied.\n";
-                return -1;
-            }
-            if (!copyFile(testTarFileStr, (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/testTarget.txt").c_str())){
-                cout << "File tempTarTest.txt coundn't be copied.\n";
-                return -1;
-            }
-            if (!copyFile(validTarFileStr, (std::string(folder) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/validTarget.txt").c_str())){
-                cout << "File tempTarValid.txt coundn't be copied.\n";
-                return -1;
-            }
-            #elif defined(_WIN32)
-            if (!copyFile(trainFileStr, (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\train.txt").c_str())){
-                cout << "File tempTrain.txt coundn't be copied.\n";
-                return -1;
-            }
-            if (!copyFile(testFileStr, (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\test.txt").c_str())){
-                cout << "File tempTest.txt coundn't be copied.\n";
-                return -1;
-            }
-            if (!copyFile(validFileStr, (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\valid.txt").c_str())){
+            if (!copyFile(validFileStr, (folderPath + separator + "valid.txt").c_str())){
                 cout << "File tempValid.txt coundn't be copied.\n";
                 return -1;
             }
-            if (!copyFile(trainTarFileStr, (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\trainTarget.txt").c_str())){
+            if (!copyFile(trainTarFileStr, (folderPath + separator + "trainTarget.txt").c_str())){
                 cout << "File tempTarTrain.txt coundn't be copied.\n";
                 return -1;
             }
-            if (!copyFile(testTarFileStr, (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\testTarget.txt").c_str())){
+            if (!copyFile(testTarFileStr, (folderPath + separator + "testTarget.txt").c_str())){
                 cout << "File tempTarTest.txt coundn't be copied.\n";
                 return -1;
             }
-            if (!copyFile(validTarFileStr, (std::string(folder) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\validTarget.txt").c_str())){
+            if (!copyFile(validTarFileStr, (folderPath + separator + "validTarget.txt").c_str())){
                 cout << "File tempTarValid.txt coundn't be copied.\n";
                 return -1;
             }
-            #endif
+
 
 
 
 
             // Train datas with DimlpTrn
             string command = genericCommand;
+            string folderPathFromRoot = std::string(folderTemp) + separator + "Execution" + std::to_string(n+1) + separator + "Fold" + std::to_string(k+1);
 
-            #ifdef __unix__
-            command += " -L " + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/train.txt ";
-            command += "-T " + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/test.txt ";
-            command += "-V " + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/valid.txt ";
-            command += "-1 " + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/trainTarget.txt ";
-            command += "-2 " + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/testTarget.txt ";
-            command += "-3 " + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/validTarget.txt ";
+            command += " -L " + folderPathFromRoot + separator + "train.txt ";
+            command += "-T " + folderPathFromRoot + separator + "test.txt ";
+            command += "-V " + folderPathFromRoot + separator + "valid.txt ";
+            command += "-1 " + folderPathFromRoot + separator + "trainTarget.txt ";
+            command += "-2 " + folderPathFromRoot + separator + "testTarget.txt ";
+            command += "-3 " + folderPathFromRoot + separator + "validTarget.txt ";
 
-            command += "-p " + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/train.out "; // Output train pred file
-            command += "-t " + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/test.out "; // Output test pred file
-            command += "-v " + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/valid.out "; // Output validation pred file
-            command += "-w " + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/weights.wts "; // Output weight file
-            #elif defined(_WIN32)
-            command += " -L " + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\train.txt ";
-            command += "-T " + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\test.txt ";
-            command += "-V " + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\valid.txt ";
-            command += "-1 " + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\trainTarget.txt ";
-            command += "-2 " + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\testTarget.txt ";
-            command += "-3 " + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\validTarget.txt ";
+            command += "-p " + folderPathFromRoot + separator + "train.out "; // Output train pred file
+            command += "-t " + folderPathFromRoot + separator + "test.out "; // Output test pred file
+            command += "-v " + folderPathFromRoot + separator + "valid.out "; // Output validation pred file
+            command += "-w " + folderPathFromRoot + separator + "weights.wts "; // Output weight file
 
-            command += "-p " + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\train.out "; // Output train pred file
-            command += "-t " + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\test.out "; // Output test pred file
-            command += "-v " + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\valid.out "; // Output validation pred file
-            command += "-w " + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\weights.wts "; // Output weight file
-            #endif
             command += "-r consoleTemp.txt"; // To not show console result
 
 
@@ -763,13 +726,10 @@ int main(int nbParam, char** param)
 
             // Compute hyperlocus in folder
             string hyperLocusCommand = hyperLocusGenericCommand;
-            #ifdef __unix__
-            hyperLocusCommand += " -W " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/weights.wts ";
-            hyperLocusCommand += "-O " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/hyperLocus.txt ";
-            #elif defined(_WIN32)
-            hyperLocusCommand += " -W " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\weights.wts ";
-            hyperLocusCommand += "-O " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\hyperLocus.txt ";
-            #endif
+
+            hyperLocusCommand += " -W " + folderPath + separator + "weights.wts ";
+            hyperLocusCommand += "-O " + folderPath + separator + "hyperLocus.txt ";
+
 
             cout << "Enter in hyperlocus function" << endl;
             int resHyp = hyperLocus(hyperLocusCommand);
@@ -781,29 +741,17 @@ int main(int nbParam, char** param)
                 // Compute fidex stats in folder
                 string fidexCommand = fidexGenericCommand;
 
-                #ifdef __unix__
-                fidexCommand += " -T " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/train.txt ";
-                fidexCommand += "-P " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/train.out ";
-                fidexCommand += "-C " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/trainTarget.txt ";
-                fidexCommand += "-S " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/test.txt ";
-                fidexCommand += "-p " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/test.out ";
-                fidexCommand += "-c " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/testTarget.txt ";
-                fidexCommand += "-H " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/hyperLocus.txt ";
-                fidexCommand += "-O " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/fidexRule.txt ";
-                fidexCommand += "-s " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/fidexStats.txt ";
-                fidexCommand += "-r " + root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/fidexResult.txt ";
-                #elif defined(_WIN32)
-                fidexCommand += " -T " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\train.txt ";
-                fidexCommand += "-P " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\train.out ";
-                fidexCommand += "-C " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\trainTarget.txt ";
-                fidexCommand += "-S " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\test.txt ";
-                fidexCommand += "-p " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\test.out ";
-                fidexCommand += "-c " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\testTarget.txt ";
-                fidexCommand += "-H " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\hyperLocus.txt ";
-                fidexCommand += "-O " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\fidexRule.txt ";
-                fidexCommand += "-s " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\fidexStats.txt ";
-                fidexCommand += "-r " + root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\fidexResult.txt ";
-                #endif
+                fidexCommand += " -T " + folderPath + separator + "train.txt ";
+                fidexCommand += "-P " + folderPath + separator + "train.out ";
+                fidexCommand += "-C " + folderPath + separator + "trainTarget.txt ";
+                fidexCommand += "-S " + folderPath + separator + "test.txt ";
+                fidexCommand += "-p " + folderPath + separator + "test.out ";
+                fidexCommand += "-c " + folderPath + separator + "testTarget.txt ";
+                fidexCommand += "-H " + folderPath + separator + "hyperLocus.txt ";
+                fidexCommand += "-O " + folderPath + separator + "fidexRule.txt ";
+                fidexCommand += "-s " + folderPath + separator + "fidexStats.txt ";
+                fidexCommand += "-r " + folderPath + separator + "fidexResult.txt ";
+
 
                 cout << "Enter in fidex function" << endl;
                 int resFid = fidex(fidexCommand);
@@ -813,11 +761,7 @@ int main(int nbParam, char** param)
 
                 // Get statistics from fidex
                 string statsFile = "";
-                #ifdef __unix__
-                statsFile = root + std::string(folderTemp) + "/Execution" + std::to_string(n+1) + "/Fold" + std::to_string(k+1) + "/fidexStats.txt";
-                #elif defined(_WIN32)
-                statsFile = root + std::string(folderTemp) + "\\Execution" + std::to_string(n+1) + "\\Fold" + std::to_string(k+1) + "\\fidexStats.txt";
-                #endif
+                statsFile = folderPath + separator + "fidexStats.txt";
 
                 fstream statsData;
                 statsData.open(statsFile,ios::in); //Read data file
@@ -863,8 +807,6 @@ int main(int nbParam, char** param)
     ofstream outputStatsFile (statFile);
     if(outputStatsFile.is_open()){
 
-        outputStatsFile << "\n---------------------------------------------------------\n";
-        outputStatsFile << "---------------------------------------------------------\n\n";
         outputStatsFile << "Results for " << N << " times " << K << "-Cross validation :\n\n";
         cout << "\n---------------------------------------------------------" << endl;
         cout << "---------------------------------------------------------" << endl << endl;
