@@ -33,7 +33,7 @@ class CleanRuleStruct {
   };
 
   struct CleanRule {
-    AssocAnte *SevAnt;
+    AssocAnte* SevAnt;
     int NbAnt;
     int Classification;
     char StrClass[80];
@@ -53,21 +53,21 @@ class CleanRuleStruct {
     int Flag;
   };
 
-  BpNN *Bpnn;
-  RuleProcessing *Pruned;
-  float *Out;
+  BpNN* Bpnn;
+  RuleProcessing* Pruned;
+  float* Out;
 
-  CleanRule **Clean;
-  int *WrongTrain;
-  int *WrongTest;
-  int *WrongValid;
-  int *ClAllNet;
-  int *VectVar;
-  float *VectVal;
+  CleanRule** Clean;
+  int* WrongTrain;
+  int* WrongTest;
+  int* WrongValid;
+  int* ClAllNet;
+  int* VectVar;
+  float* VectVal;
 
-  int *ClassPatNetTrain;
-  int *ClassPatNetTest;
-  int *ClassPatNetValid;
+  int* ClassPatNetTrain;
+  int* ClassPatNetTest;
+  int* ClassPatNetValid;
 
   // ------------------------------------------------------------------------
 
@@ -78,30 +78,30 @@ class CleanRuleStruct {
   int CountCarPatByFlags(int flag);
   float ComputeAvgCar(int flag);
   float ComputeAvgAnt(int flag);
-  int FindMinOnAnt(AssocAnte *ant, int nbAnt);
-  void SortAnt(AssocAnte *ant, int nbAnt, int indRule);
+  int FindMinOnAnt(AssocAnte* ant, int nbAnt);
+  void SortAnt(AssocAnte* ant, int nbAnt, int indRule);
   int FindMaxOnRules(int start);
   int FindMinAntOnRules(int start);
   void SortRules(int indMin);
 
-  float GlobalAcc(DataSet &data, int *vecWrong, int nbEl);
+  float GlobalAcc(DataSet& data, int* vecWrong, int nbEl);
   void ComputeAcc(
       int indClean,
-      StringInt *carried,
-      int *indWrong,
-      DataSet &data,
-      DataSet &dataClass,
-      int *nbPat,
-      int *correct,
-      int *wrong,
-      float *acc);
+      StringInt* carried,
+      int* indWrong,
+      DataSet& data,
+      DataSet& dataClass,
+      int* nbPat,
+      int* correct,
+      int* wrong,
+      float* acc);
 
-  void SetSevInfo(Rule *rule, int indClean);
+  void SetSevInfo(Rule* rule, int indClean);
   void CreateWrongVect();
   void CreateStructures();
 
   void ResetSomeFields();
-  int IsExampleCarried(DataSet &data, int index, CleanRule *rule);
+  int IsExampleCarried(DataSet& data, int index, CleanRule* rule);
   int Fidelity100();
   int Fidelity100Def();
 
@@ -110,15 +110,15 @@ class CleanRuleStruct {
   void ElseRepTest();
   void ElseRepValid();
 
-  void RemAnt(AssocAnte *oneAnt) { oneAnt->Var = -1; }
-  int IsAntDeleted(AssocAnte *oneAnt) { return ((oneAnt->Var == -1) ? 1 : 0); }
+  void RemAnt(AssocAnte* oneAnt) { oneAnt->Var = -1; }
+  int IsAntDeleted(AssocAnte* oneAnt) { return ((oneAnt->Var == -1) ? 1 : 0); }
 
   int RandomPruneAnt();
   int SumCarried();
 
   void RemRule(int r);
   int PruneRule();
-  int OrderedExpand(ThresDescr *descr);
+  int OrderedExpand(ThresDescr* descr);
   int CheckAnt(int indOld);
   void CreateNewClean();
   int SetDefRule();
@@ -126,24 +126,24 @@ class CleanRuleStruct {
   void SetClassPatNet();
   void WriteNumb();
 
-  char *ItoA(int n);
+  char* ItoA(int n);
 
   int DefDef();
-  void UnordAccWithDef(ostream &ruleFile);
-  void UnordAccWithDef2(ostream &ruleFile);
+  void UnordAccWithDef(ostream& ruleFile);
+  void UnordAccWithDef2(ostream& ruleFile);
 
   // ------------------------------------------------------------------------
 
 public:
-  void WriteRules(int def, ostream &ruleFile);
+  void WriteRules(int def, ostream& ruleFile);
   void ElseRepresentation();
-  void SimplifyElse(ThresDescr *descr);
+  void SimplifyElse(ThresDescr* descr);
 
   void Del();
 
-  void SetAttr(char **listAttr);
+  void SetAttr(char** listAttr);
   void SetAttr();
-  void SetStrClass(char **listClass, int def);
+  void SetStrClass(char** listClass, int def);
   void SetStrClass(int def);
 
   CleanRuleStruct(
@@ -154,9 +154,9 @@ public:
       DataSet validClass,
       DataSet test,
       DataSet testClass,
-      RuleProcessing *processed,
-      BpNN *bpNn,
-      float *out,
+      RuleProcessing* processed,
+      BpNN* bpNn,
+      float* out,
       int nbOut);
 
   ////////////////////////////////////////////////////////////////////////

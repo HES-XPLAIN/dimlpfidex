@@ -20,7 +20,7 @@ vector<pair<int, int>> Hyperbox::getDiscriminativeHyperplans() {
   return discriminativeHyperplans;
 }
 
-void Hyperbox::computeCoveredSamples(vector<int> ancienCoveredSamples, int attribut, vector<vector<double>> *trainData, bool mainSampleGreater, double hypValue, vector<double> *mainSampleData) {
+void Hyperbox::computeCoveredSamples(vector<int> ancienCoveredSamples, int attribut, vector<vector<double>>* trainData, bool mainSampleGreater, double hypValue, vector<double>* mainSampleData) {
   vector<int> newCoveredSamples;
   for (int l = 0; l < ancienCoveredSamples.size(); l++) { // We check all already covered samples
     int idCoveredSample = ancienCoveredSamples[l];
@@ -37,7 +37,7 @@ vector<int> Hyperbox::getCoveredSamples() {
   return coveredSamples;
 }
 
-void Hyperbox::computeFidelity(const int mainsamplePred, vector<int> *trainPreds) {
+void Hyperbox::computeFidelity(const int mainsamplePred, vector<int>* trainPreds) {
   int coveredTrueClass = 0;                         // Number of samples covered by the hyperbox and of same class as the example
   int nbCovered = coveredSamples.size();            // Number of samples covered by the hyperbox
   for (int k = 0; k < coveredSamples.size(); k++) { // Loop on all covered samples

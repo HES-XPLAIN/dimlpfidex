@@ -19,7 +19,7 @@ void showParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 }
 
-int main(int nbParam, char **param) {
+int main(int nbParam, char** param) {
 
   // Import parameters
   if (nbParam == 1) {
@@ -29,11 +29,11 @@ int main(int nbParam, char **param) {
 
   // Parameters declaration
 
-  char *trainDataFile = 0; // Train data
+  char* trainDataFile = 0; // Train data
   bool trainDataFileInit = false;
 
   bool ruleFileInit = false;
-  char *ruleFile = 0;
+  char* ruleFile = 0;
 
   // Import parameters
 

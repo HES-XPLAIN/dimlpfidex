@@ -3,7 +3,7 @@ using namespace std;
 
 ////////////////////////////////////////////////////////
 
-int CheckInt(char *str)
+int CheckInt(char* str)
 
 {
   int i;
@@ -25,7 +25,7 @@ int CheckInt(char *str)
 
 ////////////////////////////////////////////////////////
 
-int CheckFloat(char *str)
+int CheckFloat(char* str)
 
 {
   int i, countDot, countMinus;

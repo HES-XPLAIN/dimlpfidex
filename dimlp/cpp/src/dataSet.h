@@ -11,7 +11,7 @@ class DataSet {
   int NbEx;
   int NbAttr;
 
-  float **Set;
+  float** Set;
 
   // ------------------------------------------------------------------
 
@@ -27,22 +27,22 @@ public:
   DataSet();
   DataSet(int nbEx);
   DataSet(char nameFile[], int nbAttr);
-  DataSet(DataSet &bigData, StringInt *listPat);
-  DataSet(DataSet &master, int *indPat, int nbEx);
-  DataSet(DataSet &data1, DataSet &data2);
+  DataSet(DataSet& bigData, StringInt* listPat);
+  DataSet(DataSet& master, int* indPat, int nbEx);
+  DataSet(DataSet& data1, DataSet& data2);
 
   void Del();
   void LightDel() { delete Set; }
 
-  float *GetExample(int index) { return *(Set + index); }
+  float* GetExample(int index) { return *(Set + index); }
   int GetNbEx() { return NbEx; }
   int GetNbAttr() { return NbAttr; }
 
-  StringInt *Select(Rule *r);
-  StringInt *Select(Rule *r, StringInt *subSet);
+  StringInt* Select(Rule* r);
+  StringInt* Select(Rule* r, StringInt* subSet);
 
-  void ExtractDataAndTarget(DataSet &data1, int nbAttr1,
-                            DataSet &data2, int nbAttr2);
+  void ExtractDataAndTarget(DataSet& data1, int nbAttr1,
+                            DataSet& data2, int nbAttr2);
 };
 
 ///////////////////////////////////////////////////////////////////

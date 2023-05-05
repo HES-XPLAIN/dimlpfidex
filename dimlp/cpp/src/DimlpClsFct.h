@@ -11,7 +11,7 @@
 #include <vector>
 
 static void GiveAllParam();
-static void SaveOutputs(DataSet &data, Dimlp *net, int nbOut, int nbWeightLayers, char *outfile);
+static void SaveOutputs(DataSet& data, Dimlp* net, int nbOut, int nbWeightLayers, char* outfile);
 int dimlpCls(string command);
 
 #endif

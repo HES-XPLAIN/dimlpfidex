@@ -42,7 +42,7 @@ void Rule::Insert(int var, float val, char rel)
   }
 
   else {
-    Antecedent *old = LastAnt;
+    Antecedent* old = LastAnt;
 
     LastAnt = new Antecedent;
     LastAnt->Var = var;
@@ -58,7 +58,7 @@ void Rule::Insert(int var, float val, char rel)
 
 ///////////////////////////////////////////////////////////////////
 
-Rule *Rule::Copy(Rule *r)
+Rule* Rule::Copy(Rule* r)
 
 {
   int a;

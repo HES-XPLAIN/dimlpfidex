@@ -7,9 +7,9 @@ class AttrName {
   int NbClasses;
   int StringLength;
 
-  char *FileAttr;
-  char **VarNames;
-  char **ClassNames;
+  char* FileAttr;
+  char** VarNames;
+  char** ClassNames;
 
   int FirstLect();
   void SecondLect();
@@ -18,10 +18,10 @@ public:
   int ReadAttr();
   void Del();
   int IsFileAttr() { return ((FileAttr == 0) ? 0 : 1); }
-  char **GetListAttr() { return VarNames; }
-  char **GetListClasses() { return ClassNames; }
+  char** GetListAttr() { return VarNames; }
+  char** GetListClasses() { return ClassNames; }
 
-  AttrName(char *fileAttr, int nbAttr, int nbClasses);
+  AttrName(char* fileAttr, int nbAttr, int nbClasses);
   AttrName() { FileAttr = 0; }
 };
 

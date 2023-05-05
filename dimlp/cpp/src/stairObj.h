@@ -18,8 +18,8 @@ class StairObj {
 
   float BinWidth;
 
-  float *Knots;
-  float *EvalKnots;
+  float* Knots;
+  float* EvalKnots;
 
   //----------------------------------------------------------------
 
@@ -31,7 +31,7 @@ class StairObj {
 
 public:
   float GetHiKnot() { return HiKnot; }
-  float *GetKnots() { return Knots; }
+  float* GetKnots() { return Knots; }
   float Funct(float x);
 
   StairObj(int nbBins);

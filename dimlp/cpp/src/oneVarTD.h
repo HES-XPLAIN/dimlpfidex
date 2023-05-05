@@ -11,18 +11,18 @@ using namespace std;
 class OneVarThresDescr {
   struct Elem {
     float Thres;
-    StringInt *ListPat;
+    StringInt* ListPat;
     int CountPatDiscr;
-    Elem *Next;
+    Elem* Next;
   };
 
   int NbThres;
-  Elem *First;
-  Elem *PtrList;
+  Elem* First;
+  Elem* PtrList;
 
   //----------------------------------------------------------------
 
-  Elem *CreateElem(float thres, int indPat);
+  Elem* CreateElem(float thres, int indPat);
 
   //----------------------------------------------------------------
 
@@ -31,7 +31,7 @@ public:
   void GoToBeg() { PtrList = First; }
   void GoToNext() { PtrList = PtrList->Next; }
   float GetThres() { return PtrList->Thres; }
-  StringInt *GetPtrPat() { return PtrList->ListPat; }
+  StringInt* GetPtrPat() { return PtrList->ListPat; }
   int GetCountPatDiscr() { return PtrList->CountPatDiscr; }
   void IncCountPatDiscr() { (PtrList->CountPatDiscr)++; }
   void SetCountPat(int val) { PtrList->CountPatDiscr = val; }

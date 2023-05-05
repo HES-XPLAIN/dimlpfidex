@@ -46,8 +46,8 @@ void Layer::InitWeights()
 
 {
   int k;
-  float *ptrW;
-  float *oldW;
+  float* ptrW;
+  float* oldW;
   const float sqrt3 = sqrt(3);
 
   float bound = sqrt3 / sqrt(NbWeightsForInit);
@@ -74,7 +74,7 @@ void Layer::InitWeights()
 void Layer::ApplyTransf1()
 
 {
-  float *up = Up;
+  float* up = Up;
   int n;
 
   for (n = 0; n < NbUp; n++, up++)
@@ -93,7 +93,7 @@ void Layer::ApplyTransf1()
 void Layer::ApplyTransf2()
 
 {
-  float *up = Up;
+  float* up = Up;
   int n;
 
   for (n = 0; n < NbUp; n++, up++)
@@ -107,10 +107,10 @@ void Layer::ComputeDeltaDownStand()
 {
   int i, j;
   float sum;
-  float *down;
-  float *deltaDown;
-  float *weights;
-  float *deltaUp;
+  float* down;
+  float* deltaDown;
+  float* weights;
+  float* deltaUp;
 
   down = Down;
   deltaDown = DeltaDown;
@@ -133,10 +133,10 @@ void Layer::ComputeDeltaDownSpec2()
 {
   int i, j;
   float sum;
-  float *down;
-  float *deltaDown;
-  float *weights;
-  float *deltaUp;
+  float* down;
+  float* deltaDown;
+  float* weights;
+  float* deltaUp;
 
   down = Down;
   deltaDown = DeltaDown;
@@ -163,9 +163,9 @@ void Layer::AdaptBiasStand()
   int i;
   float biasDelta;
 
-  float *bias = BiasWeights;
-  float *oldBias = OldBiasWeights;
-  float *deltaUp = DeltaUp;
+  float* bias = BiasWeights;
+  float* oldBias = OldBiasWeights;
+  float* deltaUp = DeltaUp;
 
   for (i = 0; i < NbUp; i++, bias++, oldBias++, deltaUp++) {
     biasDelta = (Eta * (*deltaUp)) + (Mu * ((*bias) - (*oldBias)));
@@ -185,12 +185,12 @@ void Layer::AdaptBiasSpec2()
   float biasDelta;
   float norm;
 
-  float *down = Down;
-  float *up = Up;
-  float *bias = BiasWeights;
-  float *weights = Weights;
-  float *oldBias = OldBiasWeights;
-  float *deltaUp = DeltaUp;
+  float* down = Down;
+  float* up = Up;
+  float* bias = BiasWeights;
+  float* weights = Weights;
+  float* oldBias = OldBiasWeights;
+  float* deltaUp = DeltaUp;
 
   for (i = 0, j = 0; i < NbUp; i++, j++, bias++, weights++, oldBias++, deltaUp++, down++, up++) {
     if (j == NbDown) {
@@ -212,13 +212,13 @@ void Layer::AdaptBiasSpec2()
 
 ///////////////////////////////////////////////////////////////////
 
-void Layer::ReadWeights(istream &inFile)
+void Layer::ReadWeights(istream& inFile)
 
 {
   int w;
-  float *ptrW;
+  float* ptrW;
 
-  float *ptrOldW = OldBiasWeights;
+  float* ptrOldW = OldBiasWeights;
 
   for (w = 0, ptrW = BiasWeights; w < NbUp; w++, ptrW++, ptrOldW++) {
     inFile >> *ptrW;
@@ -235,11 +235,11 @@ void Layer::ReadWeights(istream &inFile)
 
 ///////////////////////////////////////////////////////////////////
 
-void Layer::WriteWeights(ostream &outFile)
+void Layer::WriteWeights(ostream& outFile)
 
 {
   int w;
-  float *ptrW;
+  float* ptrW;
 
   for (w = 0, ptrW = BiasWeights; w < NbUp; w++, ptrW++)
     outFile << *ptrW << " ";
@@ -284,11 +284,11 @@ void Layer::ForwFully()
 
 {
   int i, j;
-  float *down;
+  float* down;
 
-  float *up = Up;
-  float *weights = Weights;
-  float *bias = BiasWeights;
+  float* up = Up;
+  float* weights = Weights;
+  float* bias = BiasWeights;
 
   for (i = 0; i < NbUp; i++, up++, bias++) {
     down = Down;
@@ -308,10 +308,10 @@ void Layer::ForwSpec()
 {
   int i, j;
 
-  float *up = Up;
-  float *down = Down;
-  float *weights = Weights;
-  float *bias = BiasWeights;
+  float* up = Up;
+  float* down = Down;
+  float* weights = Weights;
+  float* bias = BiasWeights;
 
   for (i = 0, j = 0; i < NbUp; i++, j++, down++, weights++, up++, bias++) {
     if (j == NbDown) {
@@ -331,10 +331,10 @@ void Layer::ForwSpec2()
 {
   int i, j;
 
-  float *up = Up;
-  float *down = Down;
-  float *weights = Weights;
-  float *bias = BiasWeights;
+  float* up = Up;
+  float* down = Down;
+  float* weights = Weights;
+  float* bias = BiasWeights;
 
   for (i = 0, j = 0; i < NbUp; i++, j++, down++, weights++, up++, bias++) {
     if (j == NbDown) {
@@ -353,11 +353,11 @@ void Layer::ForwRadial()
 
 {
   int i, j;
-  float *down;
+  float* down;
 
-  float *up = Up;
-  float *weights = Weights;
-  float *bias = BiasWeights;
+  float* up = Up;
+  float* weights = Weights;
+  float* bias = BiasWeights;
 
   for (i = 0; i < NbUp; i++, up++, bias++) {
     down = Down;
@@ -379,8 +379,8 @@ void Layer::ComputeDeltaOut(float target[])
 {
   int i;
 
-  float *out = Up;
-  float *deltaOut = DeltaUp;
+  float* out = Up;
+  float* deltaOut = DeltaUp;
 
   for (i = 0; i < NbUp; i++, out++, deltaOut++, target++)
     *deltaOut = ((*out) * (1.0 - *out) + Flat) * (*target - *out);
@@ -394,10 +394,10 @@ void Layer::AdaptWeightsFully()
   int i, j;
   float weightDelta;
 
-  float *down = Down;
-  float *deltaUp = DeltaUp;
-  float *weights = Weights;
-  float *oldWeights = OldWeights;
+  float* down = Down;
+  float* deltaUp = DeltaUp;
+  float* weights = Weights;
+  float* oldWeights = OldWeights;
 
   for (i = 0; i < NbUp; i++, deltaUp++) {
     for (j = 0, down = Down; j < NbDown; j++, down++, weights++, oldWeights++) {
@@ -419,10 +419,10 @@ void Layer::AdaptWeightsSpec()
   int i, j;
   float weightDelta;
 
-  float *down = Down;
-  float *deltaUp = DeltaUp;
-  float *weights = Weights;
-  float *oldWeights = OldWeights;
+  float* down = Down;
+  float* deltaUp = DeltaUp;
+  float* weights = Weights;
+  float* oldWeights = OldWeights;
 
   for (i = 0, j = 0; i < NbUp; i++, j++, down++, weights++, oldWeights++, deltaUp++) {
     if (j == NbDown) {
@@ -447,12 +447,12 @@ void Layer::AdaptWeightsSpec2()
   int i, j;
   float weightDelta, norm;
 
-  float *down = Down;
-  float *up = Up;
-  float *deltaUp = DeltaUp;
-  float *bias = BiasWeights;
-  float *weights = Weights;
-  float *oldWeights = OldWeights;
+  float* down = Down;
+  float* up = Up;
+  float* deltaUp = DeltaUp;
+  float* bias = BiasWeights;
+  float* weights = Weights;
+  float* oldWeights = OldWeights;
 
   for (i = 0, j = 0; i < NbUp; i++, j++, down++, up++, weights++, bias++, oldWeights++, deltaUp++) {
     if (j == NbDown) {

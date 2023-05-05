@@ -4,7 +4,7 @@ using namespace std;
 #include <fstream>
 #include <sstream>
 
-DataSetFid::DataSetFid(char *dataFile, char *predFile, char *trueClassFile) {
+DataSetFid::DataSetFid(char* dataFile, char* predFile, char* trueClassFile) {
   hasDatas = true;
   int i; // iterator
   string line;
@@ -91,7 +91,7 @@ DataSetFid::DataSetFid(char *dataFile, char *predFile, char *trueClassFile) {
   filePrd.close(); // close file
 }
 
-DataSetFid::DataSetFid(char *weightFile) {
+DataSetFid::DataSetFid(char* weightFile) {
 
   // Get weights
   hasWeights = true;
@@ -119,7 +119,7 @@ DataSetFid::DataSetFid(char *weightFile) {
   fileWts.close(); // close file
 }
 
-vector<vector<double>> *DataSetFid::getDatas() {
+vector<vector<double>>* DataSetFid::getDatas() {
   if (hasDatas) {
     return &datas;
   } else {
@@ -127,7 +127,7 @@ vector<vector<double>> *DataSetFid::getDatas() {
   }
 }
 
-vector<int> *DataSetFid::getTrueClasses() {
+vector<int>* DataSetFid::getTrueClasses() {
   if (hasClasses) {
     return &trueClasses;
   } else {
@@ -135,7 +135,7 @@ vector<int> *DataSetFid::getTrueClasses() {
   }
 }
 
-vector<int> *DataSetFid::getPredictions() {
+vector<int>* DataSetFid::getPredictions() {
   if (hasDatas) {
     return &predictions;
   } else {
@@ -143,7 +143,7 @@ vector<int> *DataSetFid::getPredictions() {
   }
 }
 
-vector<vector<double>> *DataSetFid::getOutputValuesPredictions() {
+vector<vector<double>>* DataSetFid::getOutputValuesPredictions() {
   if (hasDatas) {
     return &outputValuesPredictions;
   } else {

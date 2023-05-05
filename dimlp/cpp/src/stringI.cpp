@@ -15,7 +15,7 @@ void StringInt::Insert(int val)
   }
 
   else {
-    Elem *old = Last;
+    Elem* old = Last;
 
     Last = new Elem;
     Last->Val = val;

@@ -23,7 +23,7 @@ void showParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 }
 
-int main(int nbParam, char **param) {
+int main(int nbParam, char** param) {
 
   try {
 
@@ -40,19 +40,19 @@ int main(int nbParam, char **param) {
 
     // Parameters declaration
 
-    char *testDataFile = 0; // Parameter after -T
+    char* testDataFile = 0; // Parameter after -T
     bool testDataFileInit = false;
-    char *testDataFilePred = 0;
+    char* testDataFilePred = 0;
     bool testDataFilePredInit = false;
-    char *testDataFileTrueClass = 0;
+    char* testDataFileTrueClass = 0;
     bool testDataFileTrueClassInit = false;
 
-    char *rulesFile = 0;
+    char* rulesFile = 0;
     bool rulesFileInit = false;
-    char *statsFile = 0;
+    char* statsFile = 0;
     bool statsFileInit = false;
 
-    DataSetFid *testDatas;
+    DataSetFid* testDatas;
 
     // Import parameters
 
@@ -117,9 +117,9 @@ int main(int nbParam, char **param) {
 
     testDatas = new DataSetFid(testDataFile, testDataFilePred, testDataFileTrueClass);
 
-    vector<vector<double>> *testData = testDatas->getDatas();
-    vector<int> *testPreds = testDatas->getPredictions();
-    vector<int> *testTrueClasses = testDatas->getTrueClasses();
+    vector<vector<double>>* testData = testDatas->getDatas();
+    vector<int>* testPreds = testDatas->getPredictions();
+    vector<int>* testTrueClasses = testDatas->getTrueClasses();
 
     const int nbTestData = (*testData).size();
     if ((*testPreds).size() != nbTestData || (*testTrueClasses).size() != nbTestData) {
@@ -260,7 +260,7 @@ int main(int nbParam, char **param) {
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
     std::printf("\nFull execution time = %f sec\n", temps);
-  } catch (const char *msg) {
+  } catch (const char* msg) {
     std::printf(msg);
     cerr << msg << endl;
   }

@@ -7,7 +7,7 @@ using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 
-int RuleProcessing::Max(int *tab, int nbRules)
+int RuleProcessing::Max(int* tab, int nbRules)
 
 {
   int max, newVal;
@@ -39,7 +39,7 @@ int RuleProcessing::Max(int *tab, int nbRules)
 
 ///////////////////////////////////////////////////////////////////
 
-int RuleProcessing::Min(int *tab, int nbRules)
+int RuleProcessing::Min(int* tab, int nbRules)
 
 {
   int min, newVal;
@@ -70,7 +70,7 @@ int RuleProcessing::Min(int *tab, int nbRules)
 
 ///////////////////////////////////////////////////////////////////
 
-int RuleProcessing::IsRuleEmpty(Rule *rule)
+int RuleProcessing::IsRuleEmpty(Rule* rule)
 
 {
   int r;
@@ -89,7 +89,7 @@ int RuleProcessing::CountAnt()
 
 {
   int a, r, nbAnt, count;
-  Rule *rule;
+  Rule* rule;
 
   for (r = 0, count = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
     rule = GetRule();
@@ -126,7 +126,7 @@ void RuleProcessing::SetCarriedField()
 
 {
   int r;
-  Rule *rule;
+  Rule* rule;
 
   for (r = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
     rule = GetRule();
@@ -144,8 +144,8 @@ void RuleProcessing::DelListCar()
 
 {
   int r;
-  Rule *rule;
-  StringInt *carried;
+  Rule* rule;
+  StringInt* carried;
 
   for (r = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
     rule = GetRule();
@@ -226,9 +226,9 @@ int RuleProcessing::CheckAllCarried(int toDrop)
   int p, r, nbEl;
 
   int nbEx = Data.GetNbEx();
-  int *checkTab = new int[nbEx];
-  Rule *rule;
-  StringInt *carriedEx;
+  int* checkTab = new int[nbEx];
+  Rule* rule;
+  StringInt* carriedEx;
 
   for (p = 0; p < nbEx; p++)
     checkTab[p] = 0;
@@ -267,7 +267,7 @@ void RuleProcessing::SetCountAntRules()
 
 {
   int r;
-  Rule *rule;
+  Rule* rule;
 
   for (r = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
     rule = GetRule();
@@ -287,7 +287,7 @@ int RuleProcessing::GoToSavedAndRemRule(int indPrune)
 
 {
   int r;
-  Rule *rule;
+  Rule* rule;
 
   if (CheckAllCarried(indPrune) == 1) {
     for (r = 0, GoToBeg(); r < indPrune; r++, GoToNext())
@@ -335,7 +335,7 @@ void RuleProcessing::RulePruneByMinCar()
 
 {
   int count, r, indMin;
-  StringInt *carried;
+  StringInt* carried;
 
   TabRules = new int[NbRules];
 
@@ -371,8 +371,8 @@ void RuleProcessing::GoToRuleAndRemAnt(int indPrune)
 
 {
   int a, r, indRule, indAnt, remAnt;
-  Rule *rule;
-  StringInt *newCarried;
+  Rule* rule;
+  StringInt* newCarried;
 
   for (r = 0, RuleInd.GoToBeg(); r < indPrune; r++, RuleInd.GoToNext())
     ;
@@ -410,9 +410,9 @@ void RuleProcessing::ComputeGain()
 
 {
   int a, r, nbAnt, remAnt, diff;
-  Rule *rule;
-  StringInt *oldCarried;
-  StringInt *newCarried;
+  Rule* rule;
+  StringInt* oldCarried;
+  StringInt* newCarried;
 
   for (r = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
     rule = GetRule();
@@ -500,14 +500,14 @@ void RuleProcessing::MixPrune()
 
 ////////////////////////////////////////////////////////////////////////
 
-void RuleProcessing::RemSevThres(Rule *r)
+void RuleProcessing::RemSevThres(Rule* r)
 
 {
   int a, h, first;
   float min, max, currentVal;
 
-  int *tabFreqLess = new int[NbVar];
-  int *tabFreqGreat = new int[NbVar];
+  int* tabFreqLess = new int[NbVar];
+  int* tabFreqGreat = new int[NbVar];
 
   for (h = 0; h < NbVar; h++) {
     tabFreqLess[h] = 0;
@@ -595,7 +595,7 @@ void RuleProcessing::Clean()
 
 ////////////////////////////////////////////////////////////////////////
 
-void RuleProcessing::Insert(Rule *r)
+void RuleProcessing::Insert(Rule* r)
 
 {
   int a;
@@ -605,7 +605,7 @@ void RuleProcessing::Insert(Rule *r)
     Current = First;
 
   First = new Saved;
-  Rule *ru = new Rule;
+  Rule* ru = new Rule;
 
   for (a = 0, r->GoToBeg(); a < nbAnt; a++, r->GoToNext()) {
     ru->Insert(r->GetVar(), r->GetVal(), r->GetRel());
@@ -643,7 +643,7 @@ void RuleProcessing::Del()
 void RuleProcessing::RemCurrentRule()
 
 {
-  Rule *rule = GetRule();
+  Rule* rule = GetRule();
   int nbAnt = rule->GetNbAnt();
   int a;
 
@@ -657,17 +657,17 @@ int RuleProcessing::TryEnlargedThres()
 {
   int a, r, t, var, nbThresOneVar, nbAnt, nbCarried, nbCarriedMod;
   int nbEnlarged, indMax, count;
-  int *vecCarried;
+  int* vecCarried;
   float val, thres;
   Rule oneCopy;
-  Rule *anotherCopy;
-  Rule *rr;
-  Rule *rule;
-  Rule **enlarged;
+  Rule* anotherCopy;
+  Rule* rr;
+  Rule* rule;
+  Rule** enlarged;
 
-  OneVarThresDescr *oneVarDescr;
-  StringInt *carried;
-  StringInt *carriedMod;
+  OneVarThresDescr* oneVarDescr;
+  StringInt* carried;
+  StringInt* carriedMod;
 
   int nbRules = NbRules;
 
@@ -681,7 +681,7 @@ int RuleProcessing::TryEnlargedThres()
 
     rr = oneCopy.Copy(rule);
 
-    enlarged = new Rule *[NbHyp * NbVar * 2];
+    enlarged = new Rule*[NbHyp * NbVar * 2];
     vecCarried = new int[NbHyp * NbVar * 2];
     nbEnlarged = 0;
 
@@ -789,8 +789,8 @@ RuleProcessing::RuleProcessing(
     int nbVar,
     int nbHyp,
     DataSet data,
-    int *classPatNet,
-    ThresDescr *descr)
+    int* classPatNet,
+    ThresDescr* descr)
 
 {
   NbRules = 0;

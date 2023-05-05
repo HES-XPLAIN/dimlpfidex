@@ -92,17 +92,17 @@ void AttrName::Del()
 
 ///////////////////////////////////////////////////////////////////
 
-AttrName::AttrName(char *fileAttr, int nbAttr, int nbClasses)
+AttrName::AttrName(char* fileAttr, int nbAttr, int nbClasses)
 
 {
   int i, j;
-  char *ptr;
+  char* ptr;
 
   NbAttr = nbAttr;
   NbClasses = nbClasses;
 
-  VarNames = new char *[NbAttr];
-  ClassNames = new char *[NbClasses];
+  VarNames = new char*[NbAttr];
+  ClassNames = new char*[NbClasses];
 
   StringLength = 80;
   FileAttr = new char[StringLength];

@@ -7,14 +7,14 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////
 
 class ThresDescr {
-  OneVarThresDescr **Descr;
+  OneVarThresDescr** Descr;
 
   int NbVar;
 
   //----------------------------------------------------------------
 
 public:
-  OneVarThresDescr *GetDescr(int var) { return Descr[var]; }
+  OneVarThresDescr* GetDescr(int var) { return Descr[var]; }
 
   void Insert(int var, float thres, int indPat) { (Descr[var])->OneVarThresDescr::Insert(thres, indPat); }
 

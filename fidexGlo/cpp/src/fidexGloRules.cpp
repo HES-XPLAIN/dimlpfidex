@@ -30,7 +30,7 @@ void showParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 }
 
-int main(int nbParam, char **param) {
+int main(int nbParam, char** param) {
   try {
 
     float temps;
@@ -46,17 +46,17 @@ int main(int nbParam, char **param) {
 
     // Parameters declaration
 
-    char *trainDataFile = 0; // Train data
+    char* trainDataFile = 0; // Train data
     bool trainDataFileInit = false;
-    char *trainDataFilePred = 0; // Train class predictions from dimlp
+    char* trainDataFilePred = 0; // Train class predictions from dimlp
     bool trainDataFilePredInit = false;
-    char *trainDataFileTrueClass = 0; // Train true classes
+    char* trainDataFileTrueClass = 0; // Train true classes
     bool trainDataFileTrueClassInit = false;
 
     bool hyperLocusFileInit = false;
-    char *hyperLocusFile = 0;
+    char* hyperLocusFile = 0;
     bool rulesFileInit = false;
-    char *rulesFile = 0;
+    char* rulesFile = 0;
     int heuristic = -1;
     bool heuristicInit = false;
 
@@ -70,7 +70,7 @@ int main(int nbParam, char **param) {
     double dropoutHypParam = 0.5;
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
     double dropoutDimParam = 0.5;
-    DataSetFid *trainDatas;
+    DataSetFid* trainDatas;
 
     int nbRules; // Number of rules created
 
@@ -201,10 +201,10 @@ int main(int nbParam, char **param) {
 
     trainDatas = new DataSetFid(trainDataFile, trainDataFilePred, trainDataFileTrueClass);
 
-    vector<vector<double>> *trainData = trainDatas->getDatas();
-    vector<int> *trainPreds = trainDatas->getPredictions();
-    vector<vector<double>> *trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
-    vector<int> *trainTrueClass = trainDatas->getTrueClasses();
+    vector<vector<double>>* trainData = trainDatas->getDatas();
+    vector<int>* trainPreds = trainDatas->getPredictions();
+    vector<vector<double>>* trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
+    vector<int>* trainTrueClass = trainDatas->getTrueClasses();
 
     const int nbDatas = (*trainData).size();
     if ((*trainPreds).size() != nbDatas || (*trainTrueClass).size() != nbDatas) {
@@ -593,7 +593,7 @@ int main(int nbParam, char **param) {
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
     std::printf("\nFull execution time = %f sec\n", temps);
-  } catch (const char *msg) {
+  } catch (const char* msg) {
     std::printf(msg);
     cerr << msg << endl;
   }

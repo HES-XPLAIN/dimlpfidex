@@ -100,8 +100,8 @@ int fidex(string command) {
     double dropoutHypParam = 0.5;
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
     double dropoutDimParam = 0.5;
-    DataSetFid *trainDatas;
-    DataSetFid *testDatas;
+    DataSetFid* trainDatas;
+    DataSetFid* testDatas;
 
     // Import parameters
 
@@ -224,16 +224,16 @@ int fidex(string command) {
 
     char trainDataFileTmp[160], trainDataFilePredTmp[160], trainDataFileTrueClassTmp[160], mainSamplesDataFileTmp[160], mainSamplesPredFileTmp[160], mainSamplesClassFileTmp[160], hyperLocusFileTmp[160], ruleFileTmp[160], statsFileTmp[160], consoleFileTmp[160];
 
-    char *trainDataFile = 0;
-    char *trainDataFilePred = 0;
-    char *trainDataFileTrueClass = 0;
-    char *mainSamplesDataFile = 0;
-    char *mainSamplesPredFile = 0;
-    char *mainSamplesClassFile = 0;
-    char *hyperLocusFile = 0;
-    char *ruleFile = 0;
-    char *statsFile = 0;
-    char *consoleFile = 0;
+    char* trainDataFile = 0;
+    char* trainDataFilePred = 0;
+    char* trainDataFileTrueClass = 0;
+    char* mainSamplesDataFile = 0;
+    char* mainSamplesPredFile = 0;
+    char* mainSamplesClassFile = 0;
+    char* hyperLocusFile = 0;
+    char* ruleFile = 0;
+    char* statsFile = 0;
+    char* consoleFile = 0;
 
 #ifdef __unix__
     string root = rootFolderTemp + "/";
@@ -379,12 +379,12 @@ int fidex(string command) {
 
     // Get console results to file
     std::ofstream ofs;
-    std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
+    std::streambuf* cout_buff = std::cout.rdbuf(); // Save old buf
     if (consoleFileInit != false) {
       ofs.open(consoleFile);
       std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
     }
-    std::ostream &output = consoleFileInit != false ? ofs : std::cout;
+    std::ostream& output = consoleFileInit != false ? ofs : std::cout;
 
     // ----------------------------------------------------------------------
 
@@ -409,10 +409,10 @@ int fidex(string command) {
 
     trainDatas = new DataSetFid(trainDataFile, trainDataFilePred, trainDataFileTrueClass);
 
-    vector<vector<double>> *trainData = trainDatas->getDatas();
-    vector<int> *trainPreds = trainDatas->getPredictions();
-    vector<vector<double>> *trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
-    vector<int> *trainTrueClass = trainDatas->getTrueClasses();
+    vector<vector<double>>* trainData = trainDatas->getDatas();
+    vector<int>* trainPreds = trainDatas->getPredictions();
+    vector<vector<double>>* trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
+    vector<int>* trainTrueClass = trainDatas->getTrueClasses();
 
     if (minNbCover > ((*trainData).size())) {
       throw std::runtime_error("Error : invalide type for parameter -c, strictly positive integer smaller or equal than the number of data sample requested");
@@ -497,7 +497,7 @@ int fidex(string command) {
           while (std::isspace(line.front())) {
             line.erase(line.begin());
           }
-          char *trueClassTest = new char[line.length() + 1];
+          char* trueClassTest = new char[line.length() + 1];
           strcpy(trueClassTest, line.c_str());
           if (!CheckPositiveInt(trueClassTest)) {
             throw std::runtime_error("Error : in file " + std::string(mainSamplesDataFile) + ", true classes need to be positive integers");
@@ -668,8 +668,8 @@ int fidex(string command) {
           unsigned seedShuffle = seed;
         }
         // cout << endl << "It." << nbIt << " F : " << hyperspace.getHyperbox()->getFidelity() << ", att : " << attribut << endl;
-        Hyperbox *bestHyperbox = new Hyperbox(); // best hyperbox to choose for next step
-        Hyperbox *currentHyperbox = new Hyperbox();
+        Hyperbox* bestHyperbox = new Hyperbox(); // best hyperbox to choose for next step
+        Hyperbox* currentHyperbox = new Hyperbox();
         double mainSampleValue;
         int attribut;
         int dimension;
@@ -849,7 +849,7 @@ int fidex(string command) {
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
 
-  } catch (const char *msg) {
+  } catch (const char* msg) {
     std::printf(msg);
     cerr << msg << endl;
   }

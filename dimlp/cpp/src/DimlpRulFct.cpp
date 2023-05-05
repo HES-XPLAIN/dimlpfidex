@@ -90,7 +90,7 @@ int dimlpRul(string command) {
 
   int nbLayers;
   int nbWeightLayers;
-  int *vecNbNeurons;
+  int* vecNbNeurons;
 
   StringInt arch;
   StringInt archInd;
@@ -130,7 +130,7 @@ int dimlpRul(string command) {
         if (CheckInt(&(commandList[k])[0])) {
           arch.Insert(atoi(&(commandList[k])[0]));
 
-          char *ptrParam = &(commandList[k - 1])[0];
+          char* ptrParam = &(commandList[k - 1])[0];
 
           if (ptrParam[2] != '\0') {
             char str[80];
@@ -232,17 +232,17 @@ int dimlpRul(string command) {
 
   char learnFileTmp[160], testFileTmp[160], validFileTmp[160], weightFileTmp[160], learnTarTmp[160], testTarTmp[160], validTarTmp[160], rulesFileTmp[160], consoleFileTmp[160], accuracyFileTmp[160], attrFileTmp[160];
 
-  char *learnFile = 0;
-  char *testFile = 0;
-  char *validFile = 0;
-  char *weightFile = 0;
-  char *learnTar = 0;
-  char *testTar = 0;
-  char *validTar = 0;
-  char *rulesFile = 0;
-  char *consoleFile = 0;
-  char *accuracyFile = 0;
-  char *attrFile = 0;
+  char* learnFile = 0;
+  char* testFile = 0;
+  char* validFile = 0;
+  char* weightFile = 0;
+  char* learnTar = 0;
+  char* testTar = 0;
+  char* validTar = 0;
+  char* rulesFile = 0;
+  char* consoleFile = 0;
+  char* accuracyFile = 0;
+  char* attrFile = 0;
 
 #ifdef __unix__
   string root = rootFolderTemp + "/";
@@ -373,13 +373,13 @@ int dimlpRul(string command) {
 
   // Get console results to file
   std::ofstream ofs;
-  std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
+  std::streambuf* cout_buff = std::cout.rdbuf(); // Save old buf
   if (consoleFileInit != false) {
     ofs.open(consoleFile);
     std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
   }
 
-  std::ostream &output = consoleFileInit != false ? ofs : std::cout;
+  std::ostream& output = consoleFileInit != false ? ofs : std::cout;
 
   // ----------------------------------------------------------------------
 

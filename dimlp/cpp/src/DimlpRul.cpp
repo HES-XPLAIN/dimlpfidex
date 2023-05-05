@@ -1,7 +1,7 @@
 #include "DimlpRulFct.h"
 
 ////////////////////////////////////////////////////////////
-int main(int nbParam, char **param)
+int main(int nbParam, char** param)
 
 {
   string command = "dimlpRul";

@@ -21,17 +21,17 @@ class Layer {
   int NbWeights;
   int NbWeightsForInit;
 
-  float *Down;
-  float *DeltaDown;
-  float *Up;
-  float *DeltaUp;
+  float* Down;
+  float* DeltaDown;
+  float* Up;
+  float* DeltaUp;
 
-  float *Weights;
-  float *OldWeights;
-  float *ValidWeights;
-  float *BiasWeights;
-  float *OldBiasWeights;
-  float *ValidBiasWeights;
+  float* Weights;
+  float* OldWeights;
+  float* ValidWeights;
+  float* BiasWeights;
+  float* OldBiasWeights;
+  float* ValidBiasWeights;
 
   //----------------------------------------------------------------
 
@@ -64,12 +64,12 @@ public:
   int GetNbDown() { return NbDown; }
   int GetNbUp() { return NbUp; }
 
-  float *GetDown() { return Down; }
-  float *GetUp() { return Up; }
-  float *GetDeltaUp() { return DeltaUp; }
+  float* GetDown() { return Down; }
+  float* GetUp() { return Up; }
+  float* GetDeltaUp() { return DeltaUp; }
 
-  float *GetWeights() { return Weights; }
-  float *GetBias() { return BiasWeights; }
+  float* GetWeights() { return Weights; }
+  float* GetBias() { return BiasWeights; }
 
   void SetDown(float pat[]) { Down = pat; }
   void SetDeltaDown(float pat[]) { DeltaDown = pat; }
@@ -79,8 +79,8 @@ public:
 
   virtual float HalfErrFunct(int nbTar, float netOut[], float target[]) { return Lmse(nbTar, netOut, target); }
 
-  void ReadWeights(istream &inFile);
-  void WriteWeights(ostream &outFile);
+  void ReadWeights(istream& inFile);
+  void WriteWeights(ostream& outFile);
   void PushWeights();
   void PopWeights();
 

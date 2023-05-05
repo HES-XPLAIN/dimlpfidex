@@ -3,7 +3,7 @@ using namespace std;
 
 ////////////////////////////////////////////////////////
 
-int CheckPositiveInt(char *str)
+int CheckPositiveInt(char* str)
 
 {
   int i;
@@ -22,7 +22,7 @@ int CheckPositiveInt(char *str)
 
 ////////////////////////////////////////////////////////
 
-int CheckFloatFid(char *str)
+int CheckFloatFid(char* str)
 
 {
   int i, countDot, countMinus;

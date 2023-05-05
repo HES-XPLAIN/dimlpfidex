@@ -31,7 +31,7 @@ ThresDescr::ThresDescr(int nbVar)
   int v;
 
   NbVar = nbVar;
-  Descr = new OneVarThresDescr *[NbVar];
+  Descr = new OneVarThresDescr*[NbVar];
 
   for (v = 0; v < NbVar; v++)
     Descr[v] = new OneVarThresDescr;

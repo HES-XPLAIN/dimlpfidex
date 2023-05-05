@@ -23,7 +23,7 @@ void showParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 }
 
-int main(int nbParam, char **param) {
+int main(int nbParam, char** param) {
 
   try {
 
@@ -40,11 +40,11 @@ int main(int nbParam, char **param) {
 
     // Parameters declaration
 
-    char *testSamplesDataFile = 0;
+    char* testSamplesDataFile = 0;
     bool testSamplesDataFileInit = false;
-    char *rulesFile = 0;
+    char* rulesFile = 0;
     bool rulesFileInit = false;
-    char *explanationFile = 0;
+    char* explanationFile = 0;
     bool explanationFileInit = false;
 
     // Import parameters
@@ -282,7 +282,7 @@ int main(int nbParam, char **param) {
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
     std::printf("\nFull execution time = %f sec\n", temps);
-  } catch (const char *msg) {
+  } catch (const char* msg) {
     std::printf(msg);
     cerr << msg << endl;
   }

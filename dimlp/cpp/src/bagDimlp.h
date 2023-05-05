@@ -21,42 +21,42 @@ class BagDimlp : public Dimlp {
   int ShowErrParam;
   int NbEpochsParam;
   int NbLayers;
-  char *WeightFile;
+  char* WeightFile;
 
-  int *NbNeurons;
+  int* NbNeurons;
 
-  float *GlobalOut;
+  float* GlobalOut;
 
-  Dimlp **VectDimlp;
-  DataSet **VectData;
-  DataSet **VectDataClass;
-  DataSet **ValData;
-  DataSet **ValDataClass;
+  Dimlp** VectDimlp;
+  DataSet** VectData;
+  DataSet** VectDataClass;
+  DataSet** ValData;
+  DataSet** ValDataClass;
 
   //---------------------------------------------------------------------
 
   //---------------------------------------------------------------------
 
 public:
-  float *GetGlobalOut() { return GlobalOut; }
-  void MakeDataSets(DataSet &masterTrain, DataSet &masterClass, int nbPat);
+  float* GetGlobalOut() { return GlobalOut; }
+  void MakeDataSets(DataSet& masterTrain, DataSet& masterClass, int nbPat);
 
   void TrainAll(
-      DataSet &masterTrain,
-      DataSet &masterClass,
-      DataSet &test,
-      DataSet &testTar,
+      DataSet& masterTrain,
+      DataSet& masterClass,
+      DataSet& test,
+      DataSet& testTar,
       char genericWeightsFile[],
-      char *accuracyFile,
+      char* accuracyFile,
       int seed = 0);
-  void DefNetsWithWeights(char *prefix);
+  void DefNetsWithWeights(char* prefix);
 
-  VirtualHyp *MakeGlobalVirt(int nbBins, int nbIn, int multiple);
+  VirtualHyp* MakeGlobalVirt(int nbBins, int nbIn, int multiple);
 
-  void ForwardOneExample1(DataSet &data, int index);
+  void ForwardOneExample1(DataSet& data, int index);
   void ForwardOneExample1();
 
-  void ComputeAcc(DataSet &data, DataSet &target, float *accuracy, int tW, char predFile[]);
+  void ComputeAcc(DataSet& data, DataSet& target, float* accuracy, int tW, char predFile[]);
 
   void Del();
 
@@ -79,7 +79,7 @@ public:
   BagDimlp(
       int discrLevels,
       int nbLayers,
-      int *nbNeurons,
+      int* nbNeurons,
       int nbDimlpNets,
       char weightFile[],
       int seed = 0);

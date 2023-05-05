@@ -18,20 +18,20 @@ class RealHyp2 : public RealHyp {
 
 public:
   RealHyp2(
-      DataSet &data,
-      BpNN *nn,
+      DataSet& data,
+      BpNN* nn,
       int nbBins,
       int nbIn,
       int multiple,
       int nbWeightLayers);
 
   RealHyp2(
-      VirtualHyp *globalVirt,
+      VirtualHyp* globalVirt,
       int nbNets,
-      float *out,
+      float* out,
       int nbOut,
-      DataSet &data,
-      BpNN *nn,
+      DataSet& data,
+      BpNN* nn,
       int nbBins,
       int nbIn,
       int multiple,

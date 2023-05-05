@@ -12,15 +12,15 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////
 
 void BagDimlp::MakeDataSets(
-    DataSet &masterTrain,
-    DataSet &masterClass,
+    DataSet& masterTrain,
+    DataSet& masterClass,
     int nbPat)
 
 {
   int n, p, k, count, val;
-  int *indPat;
-  int *indVal;
-  int *busy;
+  int* indPat;
+  int* indVal;
+  int* busy;
   IntRandomFunction ri(0, nbPat - 1);
 
   indPat = new int[nbPat];
@@ -68,12 +68,12 @@ void BagDimlp::MakeDataSets(
 ///////////////////////////////////////////////////////////////////
 
 void BagDimlp::TrainAll(
-    DataSet &masterTrain,
-    DataSet &masterClass,
-    DataSet &test,
-    DataSet &testTar,
+    DataSet& masterTrain,
+    DataSet& masterClass,
+    DataSet& test,
+    DataSet& testTar,
     char genericWeightsFile[],
-    char *accuracyFile,
+    char* accuracyFile,
     int seed)
 
 {
@@ -117,7 +117,7 @@ void BagDimlp::TrainAll(
 
 ///////////////////////////////////////////////////////////////////
 
-void BagDimlp::DefNetsWithWeights(char *prefix)
+void BagDimlp::DefNetsWithWeights(char* prefix)
 
 {
   int n;
@@ -141,16 +141,16 @@ void BagDimlp::DefNetsWithWeights(char *prefix)
 
 ///////////////////////////////////////////////////////////////////
 
-VirtualHyp *BagDimlp::MakeGlobalVirt(int nbBins, int nbIn, int multiple)
+VirtualHyp* BagDimlp::MakeGlobalVirt(int nbBins, int nbIn, int multiple)
 
 {
   int n;
-  float *bias;
-  float *weights;
-  VirtualHyp **virt;
-  VirtualHyp *globalVirt;
+  float* bias;
+  float* weights;
+  VirtualHyp** virt;
+  VirtualHyp* globalVirt;
 
-  virt = new VirtualHyp *[NbDimlpNets];
+  virt = new VirtualHyp*[NbDimlpNets];
 
   for (n = 0; n < NbDimlpNets; n++) {
     bias = (VectDimlp[n]->GetLayer(0))->GetBias();
@@ -170,11 +170,11 @@ VirtualHyp *BagDimlp::MakeGlobalVirt(int nbBins, int nbIn, int multiple)
 
 ///////////////////////////////////////////////////////////////////
 
-void BagDimlp::ForwardOneExample1(DataSet &data, int index)
+void BagDimlp::ForwardOneExample1(DataSet& data, int index)
 
 {
   int n, k;
-  float *ptrOut;
+  float* ptrOut;
 
   for (k = 0; k < NbOut; k++)
     GlobalOut[k] = 0;
@@ -198,7 +198,7 @@ void BagDimlp::ForwardOneExample1()
 
 {
   int n, k, l;
-  float *ptrOut;
+  float* ptrOut;
 
   for (k = 0; k < NbOut; k++)
     GlobalOut[k] = 0;
@@ -219,17 +219,17 @@ void BagDimlp::ForwardOneExample1()
 ///////////////////////////////////////////////////////////////////
 
 void BagDimlp::ComputeAcc(
-    DataSet &data,
-    DataSet &target,
-    float *accuracy,
+    DataSet& data,
+    DataSet& target,
+    float* accuracy,
     int toWrite,
     char predFile[])
 
 {
   int p, o, ansNet, ansTar;
   int good, bad;
-  float *ptrOut;
-  float *ptrTar;
+  float* ptrOut;
+  float* ptrTar;
   // filebuf  buf;
   ofstream buf;
 
@@ -320,7 +320,7 @@ BagDimlp::BagDimlp(
     int showErrParam,
     int nbEpochsParam,
     int nbLayers,
-    int *nbNeurons,
+    int* nbNeurons,
     int nbDimlpNets,
     char weightFile[],
     int seed) :
@@ -350,12 +350,12 @@ BagDimlp::BagDimlp(
 
   cout << "Number of networks = " << nbDimlpNets << "\n\n";
 
-  VectData = new DataSet *[nbDimlpNets];
-  VectDataClass = new DataSet *[nbDimlpNets];
-  ValData = new DataSet *[nbDimlpNets];
-  ValDataClass = new DataSet *[nbDimlpNets];
+  VectData = new DataSet*[nbDimlpNets];
+  VectDataClass = new DataSet*[nbDimlpNets];
+  ValData = new DataSet*[nbDimlpNets];
+  ValDataClass = new DataSet*[nbDimlpNets];
 
-  VectDimlp = new Dimlp *[nbDimlpNets];
+  VectDimlp = new Dimlp*[nbDimlpNets];
 
   NbOut = nbNeurons[NbLayers - 1];
   GlobalOut = new float[NbOut];
@@ -366,7 +366,7 @@ BagDimlp::BagDimlp(
 BagDimlp::BagDimlp(
     int discrLevels,
     int nbLayers,
-    int *nbNeurons,
+    int* nbNeurons,
     int nbDimlpNets,
     char weightFile[],
     int seed) :
@@ -387,7 +387,7 @@ BagDimlp::BagDimlp(
 
   cout << "Number of networks = " << nbDimlpNets << "\n\n";
 
-  VectDimlp = new Dimlp *[nbDimlpNets];
+  VectDimlp = new Dimlp*[nbDimlpNets];
 
   NbOut = nbNeurons[NbLayers - 1];
   GlobalOut = new float[NbOut];

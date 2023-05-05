@@ -73,7 +73,7 @@ int dimlpBT(string command) {
 
   AttrName Attr;
 
-  BagDimlp *net;
+  BagDimlp* net;
 
   float eta = 0.1;
   float mu = 0.6;
@@ -125,7 +125,7 @@ int dimlpBT(string command) {
 
   int nbLayers;
   int nbWeightLayers;
-  int *vecNbNeurons;
+  int* vecNbNeurons;
 
   StringInt arch;
   StringInt archInd;
@@ -254,7 +254,7 @@ int dimlpBT(string command) {
         if (CheckInt(&(commandList[k])[0])) {
           arch.Insert(atoi(&(commandList[k])[0]));
 
-          char *ptrParam = &(commandList[k - 1])[0];
+          char* ptrParam = &(commandList[k - 1])[0];
 
           if (ptrParam[2] != '\0') {
             char str[80];
@@ -366,20 +366,20 @@ int dimlpBT(string command) {
 
   char learnFileTmp[160], testFileTmp[160], validFileTmp[160], weightFileTmp[160], genericWeightsFileTmp[160], predTrainFileTmp[160], predTestFileTmp[160], rulesFileTmp[160], consoleFileTmp[160], accuracyFileTmp[160], learnTarTmp[160], testTarTmp[160], validTarTmp[160], attrFileTmp[160];
 
-  char *learnFile = 0;
-  char *testFile = 0;
-  char *validFile = 0;
-  char *weightFile = 0;
-  char *genericWeightsFile = 0;
-  char *predTrainFile = 0;
-  char *predTestFile = 0;
-  char *rulesFile = 0;
-  char *consoleFile = 0;
-  char *accuracyFile = 0;
-  char *learnTar = 0;
-  char *testTar = 0;
-  char *validTar = 0;
-  char *attrFile = 0;
+  char* learnFile = 0;
+  char* testFile = 0;
+  char* validFile = 0;
+  char* weightFile = 0;
+  char* genericWeightsFile = 0;
+  char* predTrainFile = 0;
+  char* predTestFile = 0;
+  char* rulesFile = 0;
+  char* consoleFile = 0;
+  char* accuracyFile = 0;
+  char* learnTar = 0;
+  char* testTar = 0;
+  char* validTar = 0;
+  char* attrFile = 0;
 
 #ifdef __unix__
   string root = rootFolderTemp + "/";
@@ -537,12 +537,12 @@ int dimlpBT(string command) {
 
   // Get console results to file
   std::ofstream ofs;
-  std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
+  std::streambuf* cout_buff = std::cout.rdbuf(); // Save old buf
   if (consoleFileInit != false) {
     ofs.open(consoleFile);
     std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
   }
-  std::ostream &output = consoleFileInit != false ? ofs : std::cout;
+  std::ostream& output = consoleFileInit != false ? ofs : std::cout;
   // ----------------------------------------------------------------------
 
   if (rootFolderInit == false) {
@@ -789,7 +789,7 @@ int dimlpBT(string command) {
     cout << "\n\n****************************************************\n\n";
     cout << "*** RULE EXTRACTION\n";
 
-    VirtualHyp *globVirt = net->MakeGlobalVirt(quant, nbIn,
+    VirtualHyp* globVirt = net->MakeGlobalVirt(quant, nbIn,
                                                vecNbNeurons[1] / nbIn);
 
     RealHyp ryp(globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut,
@@ -811,7 +811,7 @@ int dimlpBT(string command) {
       if (ryp.TreeAborted()) {
         ryp.Del();
 
-        VirtualHyp *globVirt = net->MakeGlobalVirt(quant, nbIn,
+        VirtualHyp* globVirt = net->MakeGlobalVirt(quant, nbIn,
                                                    vecNbNeurons[1] / nbIn);
 
         RealHyp2 ryp2(globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut,
@@ -835,7 +835,7 @@ int dimlpBT(string command) {
       if (ryp.TreeAborted()) {
         ryp.Del();
 
-        VirtualHyp *globVirt = net->MakeGlobalVirt(quant, nbIn,
+        VirtualHyp* globVirt = net->MakeGlobalVirt(quant, nbIn,
                                                    vecNbNeurons[1] / nbIn);
 
         RealHyp2 ryp2(globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut,

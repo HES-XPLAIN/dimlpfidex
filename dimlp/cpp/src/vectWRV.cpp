@@ -5,11 +5,11 @@ using namespace std;
 #include <iostream>
 ////////////////////////////////////////////////////////////////////////
 
-StringInt *VectWithRandVal::FillWithUniqueInd(int nbElSub)
+StringInt* VectWithRandVal::FillWithUniqueInd(int nbElSub)
 
 {
   int i, ind;
-  StringInt *toRet = new StringInt;
+  StringInt* toRet = new StringInt;
 
   IntRandomFunction randGen(0, NbElAll - 1);
 
@@ -40,7 +40,7 @@ StringInt *VectWithRandVal::FillWithUniqueInd(int nbElSub)
 
 ////////////////////////////////////////////////////////////////////////
 
-void VectWithRandVal::Append(StringInt *originalList, StringInt *toAppend)
+void VectWithRandVal::Append(StringInt* originalList, StringInt* toAppend)
 
 {
   int i, val;

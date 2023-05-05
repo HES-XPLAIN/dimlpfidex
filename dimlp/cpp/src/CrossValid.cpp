@@ -55,7 +55,7 @@ void GiveAllParam()
 }
 
 // copy in binary mode
-bool copyFile(const char *SRC, const char *DEST) {
+bool copyFile(const char* SRC, const char* DEST) {
   std::ifstream src(SRC, std::ios::binary);
   std::ofstream dest(DEST, std::ios::binary);
   dest << src.rdbuf();
@@ -64,7 +64,7 @@ bool copyFile(const char *SRC, const char *DEST) {
 
 ////////////////////////////////////////////////////////////
 
-int main(int nbParam, char **param)
+int main(int nbParam, char** param)
 
 {
 
@@ -104,7 +104,7 @@ int main(int nbParam, char **param)
   bool hiKnotInit = false;
   bool nbInInit = false;
   bool nbOutInit = false;
-  char *ptrParam;
+  char* ptrParam;
 
   if (nbParam == 1) {
     GiveAllParam();
@@ -349,9 +349,9 @@ int main(int nbParam, char **param)
   // create paths with root foler
   char learnTarTmp[160], learnFileTmp[160], folderTmp[160];
 
-  char *learnTar = 0;
-  char *learnFile = 0;
-  char *folder = 0;
+  char* learnTar = 0;
+  char* learnFile = 0;
+  char* folder = 0;
 
 #ifdef __unix__
   string separator = "/";

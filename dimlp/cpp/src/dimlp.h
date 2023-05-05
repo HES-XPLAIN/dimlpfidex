@@ -9,17 +9,17 @@ class Dimlp : public BpNN {
   //---------------------------------------------------------------------
 
 public:
-  float Error(DataSet &data, DataSet &target, float *accuracy)
+  float Error(DataSet& data, DataSet& target, float* accuracy)
 
   { return ComputeError(data, target, accuracy); }
 
-  void Train(DataSet &train,
-             DataSet &trainTar,
-             DataSet &test,
-             DataSet &testTar,
-             DataSet &valid,
-             DataSet &validTar,
-             char *accuracyFile,
+  void Train(DataSet& train,
+             DataSet& trainTar,
+             DataSet& test,
+             DataSet& testTar,
+             DataSet& valid,
+             DataSet& validTar,
+             char* accuracyFile,
              bool fromBT = false)
 
   { TrainPhase(train, trainTar, test, testTar, valid, validTar, accuracyFile, fromBT); }

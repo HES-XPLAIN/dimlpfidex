@@ -9,7 +9,7 @@ using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 
-int RealHyp::MaxOnPos(int *vec, int nbEl)
+int RealHyp::MaxOnPos(int* vec, int nbEl)
 
 {
   int i;
@@ -25,7 +25,7 @@ int RealHyp::MaxOnPos(int *vec, int nbEl)
 
 ////////////////////////////////////////////////////////////////////////
 
-int RealHyp::GiveIndMax(int *vec, int nbEl)
+int RealHyp::GiveIndMax(int* vec, int nbEl)
 
 {
   int i;
@@ -44,13 +44,13 @@ int RealHyp::GiveIndMax(int *vec, int nbEl)
 
 ////////////////////////////////////////////////////////////////////////
 
-void RealHyp::SetConfirmedVirt(DataSet &data)
+void RealHyp::SetConfirmedVirt(DataSet& data)
 
 {
   int nbPat = data.GetNbEx();
-  int *hyp;
+  int* hyp;
   int p, h, v, indVirt;
-  float *pat;
+  float* pat;
 
   cout << "\n\n*** EXCLUDING UNRELEVANT HYPER-PLANES ...\n\n";
 
@@ -97,8 +97,8 @@ void RealHyp::SetConfirmedVirt2()
 
 {
   const int nbRules = SavedRules->GetNbRules();
-  Rule *rule;
-  int *hyp;
+  Rule* rule;
+  int* hyp;
   int a, h, r, v, var, indVirt, nbAnt;
   float val;
 
@@ -161,9 +161,9 @@ void RealHyp::Gr1(
   int k;
   int newNetAns;
 
-  float *ptrIn = In + var;
-  float *ptrVirt = Virt->GetEpsGoRight(var) + startVirt;
-  int *ptrConf = ConfirmedVirt[var] + startVirt;
+  float* ptrIn = In + var;
+  float* ptrVirt = Virt->GetEpsGoRight(var) + startVirt;
+  int* ptrConf = ConfirmedVirt[var] + startVirt;
 
   for (k = startVirt; k < NbHyp; k++, ptrVirt++, ptrConf++) {
     if (*ptrConf == 0)
@@ -196,9 +196,9 @@ void RealHyp::Gr2(
 
   const int last = NbHyp - 1;
   // cout << "gr2\n";
-  float *ptrIn = In + var;
-  float *ptrVirt = Virt->GetEpsGoRight(var) + startVirt;
-  int *ptrConf = ConfirmedVirt[var] + startVirt;
+  float* ptrIn = In + var;
+  float* ptrVirt = Virt->GetEpsGoRight(var) + startVirt;
+  int* ptrConf = ConfirmedVirt[var] + startVirt;
 
   for (k = startVirt; k < NbHyp; k++, ptrVirt++, ptrConf++) {
     if (*ptrConf == 0)
@@ -232,10 +232,10 @@ void RealHyp::Gl1(
   int k;
   int newNetAns;
 
-  float *ptrIn = In + var;
-  float *ptrVirt = Virt->GetEpsGoLeft(var) + startVirt;
-  float *ptrStart = Virt->GetVirtHyp(var) + startVirt;
-  int *ptrConf = ConfirmedVirt[var] + startVirt;
+  float* ptrIn = In + var;
+  float* ptrVirt = Virt->GetEpsGoLeft(var) + startVirt;
+  float* ptrStart = Virt->GetVirtHyp(var) + startVirt;
+  int* ptrConf = ConfirmedVirt[var] + startVirt;
 
   for (k = startVirt; k >= 0; k--, ptrVirt--, ptrConf--) {
     if (k != 0) {
@@ -271,10 +271,10 @@ void RealHyp::Gl2(
   int k;
   int newNetAns;
 
-  float *ptrIn = In + var;
-  float *ptrVirt = Virt->GetEpsGoLeft(var) + startVirt;
-  float *ptrStart = Virt->GetVirtHyp(var) + startVirt;
-  int *ptrConf = ConfirmedVirt[var] + startVirt;
+  float* ptrIn = In + var;
+  float* ptrVirt = Virt->GetEpsGoLeft(var) + startVirt;
+  float* ptrStart = Virt->GetVirtHyp(var) + startVirt;
+  int* ptrConf = ConfirmedVirt[var] + startVirt;
 
   for (k = startVirt; k >= 0; k--, ptrVirt--, ptrConf--) {
     if (k != 0) {
@@ -300,7 +300,7 @@ void RealHyp::Gl2(
 
 ////////////////////////////////////////////////////////////////////////
 
-void RealHyp::OneExRealHyp(DataSet &data, int indPat)
+void RealHyp::OneExRealHyp(DataSet& data, int indPat)
 
 {
   int indVirt, v, netAns;
@@ -331,7 +331,7 @@ void RealHyp::OneExRealHyp(DataSet &data, int indPat)
 
 ////////////////////////////////////////////////////////////////////////
 
-void RealHyp::SetRealHyp(DataSet &data)
+void RealHyp::SetRealHyp(DataSet& data)
 
 {
   int p;
@@ -358,14 +358,14 @@ void RealHyp::SetRealHyp(DataSet &data)
 
 ////////////////////////////////////////////////////////////////////////
 
-void RealHyp::SetCountPatDiscr(StringInt *listPat, Rule *r)
+void RealHyp::SetCountPatDiscr(StringInt* listPat, Rule* r)
 
 {
   int a, i, j, t, v, nbThres, nbPatThres, listPatThresVal, val;
   float thres;
 
-  OneVarThresDescr *varDescr;
-  StringInt *listPatOneThres;
+  OneVarThresDescr* varDescr;
+  StringInt* listPatOneThres;
 
   int nbPat = listPat->GetNbEl();
   int nbRuleAnt = r->GetNbAnt();
@@ -412,12 +412,12 @@ void RealHyp::SetCountPatDiscr(StringInt *listPat, Rule *r)
 
 ////////////////////////////////////////////////////////////////////////
 
-Ante *RealHyp::FindMostDiscrAnt(int sel)
+Ante* RealHyp::FindMostDiscrAnt(int sel)
 
 {
   int v, t, var, oldCount, newCount, nbThres;
   float val;
-  OneVarThresDescr *oneDescr;
+  OneVarThresDescr* oneDescr;
 
   var = -1;
   val = -1;
@@ -437,20 +437,20 @@ Ante *RealHyp::FindMostDiscrAnt(int sel)
     }
   }
 
-  Ante *ant = new Ante(var, val, '?');
+  Ante* ant = new Ante(var, val, '?');
 
   return ant;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-void RealHyp::DeepSearch(DataSet &data, Rule *path, StringInt *subSet)
+void RealHyp::DeepSearch(DataSet& data, Rule* path, StringInt* subSet)
 
 {
   Rule newLeftPath;
   Rule newRightPath;
 
-  StringInt *newListPat = data.Select(path, subSet);
+  StringInt* newListPat = data.Select(path, subSet);
 
   if (newListPat->GetNbEl() == 0) {
     newListPat->DelAll();
@@ -469,7 +469,7 @@ void RealHyp::DeepSearch(DataSet &data, Rule *path, StringInt *subSet)
 
   SetCountPatDiscr(newListPat, path);
 
-  Ante *ant = FindMostDiscrAnt(0);
+  Ante* ant = FindMostDiscrAnt(0);
   int var = ant->GetVar();
   float val = ant->GetVal();
 
@@ -500,14 +500,14 @@ void RealHyp::DeepSearch(DataSet &data, Rule *path, StringInt *subSet)
 ////////////////////////////////////////////////////////////////////////
 
 int RealHyp::ComputeCorrect(
-    StringInt *listPatLeft,
-    StringInt *listPatRight)
+    StringInt* listPatLeft,
+    StringInt* listPatRight)
 
 {
   int p, q, ind, nbPat, max;
-  int *vectMax;
-  int *classLeft;
-  int *classRight;
+  int* vectMax;
+  int* classLeft;
+  int* classRight;
 
   classLeft = new int[NbOut];
   classRight = new int[NbOut];
@@ -551,18 +551,18 @@ int RealHyp::ComputeCorrect(
 
 ////////////////////////////////////////////////////////////////////////
 
-void RealHyp::SetCountPatDiscr2(DataSet &data, StringInt *listPat, Rule *r)
+void RealHyp::SetCountPatDiscr2(DataSet& data, StringInt* listPat, Rule* r)
 
 {
   int a, t, v, nbThres;
   static int nbCorrect;
   float thres;
 
-  OneVarThresDescr *varDescr;
-  StringInt *newListPatLeft = new StringInt;
-  StringInt *newListPatRight = new StringInt;
-  Rule *newLeftPath = new Rule;
-  Rule *newRightPath = new Rule;
+  OneVarThresDescr* varDescr;
+  StringInt* newListPatLeft = new StringInt;
+  StringInt* newListPatRight = new StringInt;
+  Rule* newLeftPath = new Rule;
+  Rule* newRightPath = new Rule;
 
   Descr->ResetAllCountPatDiscr();
   int nbRuleAnt = r->GetNbAnt();
@@ -608,13 +608,13 @@ void RealHyp::SetCountPatDiscr2(DataSet &data, StringInt *listPat, Rule *r)
 
 ////////////////////////////////////////////////////////////////////////
 
-void RealHyp::DeepSearch2(DataSet &data, Rule *path)
+void RealHyp::DeepSearch2(DataSet& data, Rule* path)
 
 {
   Rule newLeftPath;
   Rule newRightPath;
 
-  StringInt *newListPat = data.Select(path);
+  StringInt* newListPat = data.Select(path);
 
   if (newListPat->GetNbEl() == 0) {
     newListPat->DelAll();
@@ -632,7 +632,7 @@ void RealHyp::DeepSearch2(DataSet &data, Rule *path)
 
   SetCountPatDiscr2(data, newListPat, path);
 
-  Ante *ant = FindMostDiscrAnt(0);
+  Ante* ant = FindMostDiscrAnt(0);
   int var = ant->GetVar();
   float val = ant->GetVal();
 
@@ -658,19 +658,19 @@ void RealHyp::DeepSearch2(DataSet &data, Rule *path)
 ////////////////////////////////////////////////////////////////////////
 
 void RealHyp::RuleExtraction(
-    DataSet &data,
-    DataSet &train,
-    DataSet &trainClass,
-    DataSet &valid,
-    DataSet &validClass,
-    DataSet &test,
-    DataSet &testClass,
-    AttrName &attr,
-    ostream &ruleFile)
+    DataSet& data,
+    DataSet& train,
+    DataSet& trainClass,
+    DataSet& valid,
+    DataSet& validClass,
+    DataSet& test,
+    DataSet& testClass,
+    AttrName& attr,
+    ostream& ruleFile)
 
 {
   Rule empty;
-  StringInt *listAll;
+  StringInt* listAll;
   int nbAnt1;
   int nbAnt2;
 
@@ -876,8 +876,8 @@ void RealHyp::Del()
 ////////////////////////////////////////////////////////////////////////
 
 RealHyp::RealHyp(
-    DataSet &data,
-    BpNN *nn,
+    DataSet& data,
+    BpNN* nn,
     int nbBins,
     int nbIn,
     int multiple,
@@ -908,7 +908,7 @@ RealHyp::RealHyp(
     ClassPatNet[p] = Bpnn->Max(Out, NbOut);
   }
 
-  ConfirmedVirt = new int *[NbIn];
+  ConfirmedVirt = new int*[NbIn];
   ConfBefFirstHyp = new int[NbIn];
 
   for (p = 0; p < NbIn; p++)
@@ -921,8 +921,8 @@ RealHyp::RealHyp(
 ////////////////////////////////////////////////////////////////////////
 
 RealHyp::RealHyp(
-    DataSet &data,
-    BpNN *nn,
+    DataSet& data,
+    BpNN* nn,
     int nbBins,
     int nbIn,
     int multiple,
@@ -954,7 +954,7 @@ RealHyp::RealHyp(
     ClassPatNet[p] = Bpnn->Max(Out, NbOut);
   }
 
-  ConfirmedVirt = new int *[NbIn];
+  ConfirmedVirt = new int*[NbIn];
   ConfBefFirstHyp = new int[NbIn];
 
   for (p = 0; p < NbIn; p++)
@@ -964,12 +964,12 @@ RealHyp::RealHyp(
 ////////////////////////////////////////////////////////////////////////
 
 RealHyp::RealHyp(
-    VirtualHyp *globalVirt,
+    VirtualHyp* globalVirt,
     int nbNets,
-    float *out,
+    float* out,
     int nbOut,
-    DataSet &data,
-    BpNN *nn,
+    DataSet& data,
+    BpNN* nn,
     int nbBins,
     int nbIn,
     int multiple,
@@ -997,7 +997,7 @@ RealHyp::RealHyp(
     ClassPatNet[p] = Bpnn->Max(Out, NbOut);
   }
 
-  ConfirmedVirt = new int *[NbIn];
+  ConfirmedVirt = new int*[NbIn];
   ConfBefFirstHyp = new int[NbIn];
 
   for (p = 0; p < NbIn; p++)
@@ -1010,12 +1010,12 @@ RealHyp::RealHyp(
 ////////////////////////////////////////////////////////////////////////
 
 RealHyp::RealHyp(
-    VirtualHyp *globalVirt,
+    VirtualHyp* globalVirt,
     int nbNets,
-    float *out,
+    float* out,
     int nbOut,
-    DataSet &data,
-    BpNN *nn,
+    DataSet& data,
+    BpNN* nn,
     int nbBins,
     int nbIn,
     int multiple,
@@ -1044,7 +1044,7 @@ RealHyp::RealHyp(
     ClassPatNet[p] = Bpnn->Max(Out, NbOut);
   }
 
-  ConfirmedVirt = new int *[NbIn];
+  ConfirmedVirt = new int*[NbIn];
   ConfBefFirstHyp = new int[NbIn];
 
   for (p = 0; p < NbIn; p++)

@@ -19,13 +19,13 @@ class DataSetFid {
 
 public:
   DataSetFid();
-  DataSetFid(char *dataFile, char *predFile, char *trueClassFile = 0);
-  DataSetFid(char *weightFile);
+  DataSetFid(char* dataFile, char* predFile, char* trueClassFile = 0);
+  DataSetFid(char* weightFile);
 
-  vector<vector<double>> *getDatas();
-  vector<int> *getTrueClasses();
-  vector<int> *getPredictions();
-  vector<vector<double>> *getOutputValuesPredictions();
+  vector<vector<double>>* getDatas();
+  vector<int>* getTrueClasses();
+  vector<int>* getPredictions();
+  vector<vector<double>>* getOutputValuesPredictions();
   vector<vector<double>> getWeights();
   vector<double> getInBiais();
   vector<double> getInWeights();

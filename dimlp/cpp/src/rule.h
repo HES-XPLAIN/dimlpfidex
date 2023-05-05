@@ -9,15 +9,15 @@ class Rule {
     int Var;
     float Val;
     char Rel;
-    Antecedent *Next;
+    Antecedent* Next;
   };
 
   int NbAnt;
 
-  Antecedent *FirstAnt;
-  Antecedent *LastAnt;
-  Antecedent *PtrAnt;
-  Antecedent *Memory;
+  Antecedent* FirstAnt;
+  Antecedent* LastAnt;
+  Antecedent* PtrAnt;
+  Antecedent* Memory;
 
   //----------------------------------------------------------------
 
@@ -38,7 +38,7 @@ public:
   int GetNbAntWithout();
   void DeleteRule();
   void Insert(int var, float val, char rel);
-  Rule *Copy(Rule *r);
+  Rule* Copy(Rule* r);
 
   void Del();
   void DelAll() {

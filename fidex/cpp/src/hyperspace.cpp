@@ -3,7 +3,7 @@ using namespace std;
 #include <fstream>
 #include <sstream>
 
-Hyperspace::Hyperspace(char *hyperLocusFile) {
+Hyperspace::Hyperspace(char* hyperLocusFile) {
 
   // Get hyperLocus
   fstream fileLocus;
@@ -38,11 +38,11 @@ vector<vector<double>> Hyperspace::getHyperLocus() {
   return hyperLocus;
 }
 
-Hyperbox *Hyperspace::getHyperbox() {
+Hyperbox* Hyperspace::getHyperbox() {
   return hyperbox;
 }
 
-void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, vector<string> &lines) {
+void Hyperspace::ruleExtraction(vector<double>* mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, vector<string>& lines) {
 
   double hypValue;
   int attribut;
@@ -77,7 +77,7 @@ void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
   lines.push_back(line);
 }
 
-double Hyperspace::computeRuleAccuracy(vector<int> *trainPreds, vector<int> *trainTrueClass, bool mainSampleCorrect) { // Percentage of correct model prediction on samples covered by the rule
+double Hyperspace::computeRuleAccuracy(vector<int>* trainPreds, vector<int>* trainTrueClass, bool mainSampleCorrect) { // Percentage of correct model prediction on samples covered by the rule
   int idSample;
   int total = 0; // Number of indexes predicted good
   for (int i = 0; i < hyperbox->getCoveredSamples().size(); i++) {
@@ -95,7 +95,7 @@ double Hyperspace::computeRuleAccuracy(vector<int> *trainPreds, vector<int> *tra
   return float(total) / nbCovered;
 }
 
-double Hyperspace::computeRuleConfidence(vector<vector<double>> *trainOutputValuesPredictions, const int mainSamplePred, double mainSamplePredValue) { // Mean output value of prediction of class chosen by the rule for the covered samples
+double Hyperspace::computeRuleConfidence(vector<vector<double>>* trainOutputValuesPredictions, const int mainSamplePred, double mainSamplePredValue) { // Mean output value of prediction of class chosen by the rule for the covered samples
   int idSample;
   int classSample;
   double total = 0; // Number of indexes predicted good

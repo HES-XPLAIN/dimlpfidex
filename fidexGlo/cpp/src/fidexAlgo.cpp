@@ -10,7 +10,7 @@ FidexAlgo::FidexAlgo(){};
 
 // Different mains:
 
-bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> &rule, vector<vector<double>> *trainData, vector<int> *trainPreds, vector<vector<double>> *trainOutputValuesPredictions, vector<int> *trainTrueClass, vector<double> *mainSampleValues, int mainSamplePred, int mainSampleTrueClass, Hyperspace *hyperspace, const int nbIn, const int nbAttributs, const int nbHyp, int itMax, int minNbCover, bool dropoutDim, double dropoutDimParam, bool dropoutHyp, double dropoutHypParam) {
+bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double>& rule, vector<vector<double>>* trainData, vector<int>* trainPreds, vector<vector<double>>* trainOutputValuesPredictions, vector<int>* trainTrueClass, vector<double>* mainSampleValues, int mainSamplePred, int mainSampleTrueClass, Hyperspace* hyperspace, const int nbIn, const int nbAttributs, const int nbHyp, int itMax, int minNbCover, bool dropoutDim, double dropoutDimParam, bool dropoutHyp, double dropoutHypParam) {
   srand(time(0)); // Initialize random number generator
 
   // Compute initial covering
@@ -30,8 +30,8 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
 
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     // cout << endl << "It." << nbIt << " F : " << hyperspace.getHyperbox()->getFidelity() << ", att : " << attribut << endl;
-    Hyperbox *bestHyperbox = new Hyperbox(); // best hyperbox to choose for next step
-    Hyperbox *currentHyperbox = new Hyperbox();
+    Hyperbox* bestHyperbox = new Hyperbox(); // best hyperbox to choose for next step
+    Hyperbox* currentHyperbox = new Hyperbox();
     double mainSampleValue;
     int attribut;
     int dimension;

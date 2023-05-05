@@ -11,7 +11,7 @@ using namespace std;
 
 class LayerDimlp2 : public Layer {
 
-  StairObj *Stair;
+  StairObj* Stair;
 
   //----------------------------------------------------------------
 

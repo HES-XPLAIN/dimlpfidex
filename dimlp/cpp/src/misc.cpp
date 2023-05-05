@@ -3,11 +3,11 @@ using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 
-int Compare(const void *x, const void *y)
+int Compare(const void* x, const void* y)
 
 {
-  float *a = (float *)x;
-  float *b = (float *)y;
+  float* a = (float*)x;
+  float* b = (float*)y;
 
   if (*a > *b)
     return 1;
@@ -20,7 +20,7 @@ int Compare(const void *x, const void *y)
 
 ////////////////////////////////////////////////////////////////////////
 
-int AreSameClass(StringInt *listPat, int *classPatNet)
+int AreSameClass(StringInt* listPat, int* classPatNet)
 
 {
   int p;

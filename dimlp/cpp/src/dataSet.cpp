@@ -9,7 +9,7 @@ void DataSet::InsertExample(float example[], int index)
 
 {
   int i;
-  float **newEx = Set + index;
+  float** newEx = Set + index;
 
   *newEx = new float[NbAttr];
 
@@ -62,8 +62,8 @@ void DataSet::SecondLecture(char nameFile[])
 
 {
   filebuf buf;
-  float *oneExample;
-  float *ptr;
+  float* oneExample;
+  float* ptr;
   int count, attr;
 
   cout << nameFile << ": "
@@ -104,14 +104,14 @@ void DataSet::Del()
 
 ///////////////////////////////////////////////////////////////////
 
-StringInt *DataSet::Select(Rule *r)
+StringInt* DataSet::Select(Rule* r)
 
 {
   int a, p, nextPat;
-  float **ptrPat;
+  float** ptrPat;
   int nbAnt = r->GetNbAnt();
 
-  StringInt *savePat = new StringInt;
+  StringInt* savePat = new StringInt;
 
   for (p = 0, ptrPat = Set; p < NbEx; p++, ptrPat++) {
     for (a = 0, nextPat = 0, r->GoToBeg(); a < nbAnt; a++, r->GoToNext()) {
@@ -149,15 +149,15 @@ StringInt *DataSet::Select(Rule *r)
 
 ////////////////////////////////////////////////////////////////////////
 
-StringInt *DataSet::Select(Rule *r, StringInt *subSet)
+StringInt* DataSet::Select(Rule* r, StringInt* subSet)
 
 {
   int a, p, indPat, nextPat;
-  float **ptrPat;
+  float** ptrPat;
 
   int nbAnt = r->GetNbAnt();
   int nbEx = subSet->GetNbEl();
-  StringInt *savePat = new StringInt;
+  StringInt* savePat = new StringInt;
 
   for (p = 0, subSet->GoToBeg(); p < nbEx; p++, subSet->GoToNext()) {
     indPat = subSet->GetVal();
@@ -212,7 +212,7 @@ DataSet::DataSet(int nbEx)
 
 {
   NbEx = nbEx;
-  Set = new float *[NbEx];
+  Set = new float*[NbEx];
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -222,7 +222,7 @@ DataSet::DataSet(char nameFile[], int nbAttr)
 {
   NbAttr = nbAttr;
   NbEx = FirstLecture(nameFile);
-  Set = new float *[NbEx];
+  Set = new float*[NbEx];
 
   cout << "Number of patterns in file " << nameFile << ": ";
   cout << NbEx << "\n";
@@ -232,16 +232,16 @@ DataSet::DataSet(char nameFile[], int nbAttr)
 
 ///////////////////////////////////////////////////////////////////
 
-DataSet::DataSet(DataSet &bigData, StringInt *listPat)
+DataSet::DataSet(DataSet& bigData, StringInt* listPat)
 
 {
   int i, p;
-  float *ptrEx;
-  float *ptrSub;
+  float* ptrEx;
+  float* ptrSub;
 
   NbEx = listPat->GetNbEl();
   NbAttr = bigData.GetNbAttr();
-  Set = new float *[NbEx];
+  Set = new float*[NbEx];
 
   for (p = 0, listPat->GoToBeg(); p < NbEx; p++, listPat->GoToNext()) {
     Set[p] = new float[NbAttr];
@@ -255,14 +255,14 @@ DataSet::DataSet(DataSet &bigData, StringInt *listPat)
 
 ////////////////////////////////////////////////////////////////////////
 
-DataSet::DataSet(DataSet &data1, DataSet &data2)
+DataSet::DataSet(DataSet& data1, DataSet& data2)
 
 {
   int i, j;
 
   NbAttr = data1.GetNbAttr();
   NbEx = data1.GetNbEx() + data2.GetNbEx();
-  Set = new float *[NbEx];
+  Set = new float*[NbEx];
 
   for (i = 0; i < data1.GetNbEx(); i++)
     Set[i] = data1.GetExample(i);
@@ -277,14 +277,14 @@ DataSet::DataSet(DataSet &data1, DataSet &data2)
 
 ////////////////////////////////////////////////////////////////////////
 
-DataSet::DataSet(DataSet &master, int *indPat, int nbEx)
+DataSet::DataSet(DataSet& master, int* indPat, int nbEx)
 
 {
   int i;
 
   NbAttr = master.GetNbAttr();
   NbEx = nbEx;
-  Set = new float *[nbEx];
+  Set = new float*[nbEx];
 
   for (i = 0; i < nbEx; i++)
     Set[i] = master.GetExample(indPat[i]);
@@ -293,15 +293,15 @@ DataSet::DataSet(DataSet &master, int *indPat, int nbEx)
 ////////////////////////////////////////////////////////////////////////
 
 void DataSet::ExtractDataAndTarget(
-    DataSet &data1, int nbAttr1, DataSet &data2, int nbAttr2)
+    DataSet& data1, int nbAttr1, DataSet& data2, int nbAttr2)
 
 {
   int p, j;
-  float *ptr;
-  float *ptrD1;
-  float *ptrD2;
-  float *vecData1;
-  float *vecData2;
+  float* ptr;
+  float* ptrD1;
+  float* ptrD2;
+  float* vecData1;
+  float* vecData2;
 
   vecData1 = new float[nbAttr1];
   vecData2 = new float[nbAttr2];

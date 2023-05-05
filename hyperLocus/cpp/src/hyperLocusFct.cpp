@@ -61,7 +61,7 @@ int hyperLocus(string command) {
 
     // Parameters declaration
 
-    char *dataFileWeights = 0; // Weights obtained with dimlp
+    char* dataFileWeights = 0; // Weights obtained with dimlp
     bool dataFileWeightsInit = false;
 
     int nbQuantLevels; // Number of steps of the step function
@@ -195,7 +195,7 @@ int hyperLocus(string command) {
     }
   }
 
-  catch (const char *msg) {
+  catch (const char* msg) {
     printf(msg);
     cerr << msg << endl;
     return -1;

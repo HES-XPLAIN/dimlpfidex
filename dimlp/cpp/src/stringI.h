@@ -7,14 +7,14 @@ using namespace std;
 class StringInt {
   struct Elem {
     int Val;
-    Elem *Next;
+    Elem* Next;
   };
 
   int NbEl;
 
-  Elem *First;
-  Elem *Last;
-  Elem *PtrList;
+  Elem* First;
+  Elem* Last;
+  Elem* PtrList;
 
   //----------------------------------------------------------------
 

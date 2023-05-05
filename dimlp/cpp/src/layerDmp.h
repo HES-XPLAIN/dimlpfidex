@@ -9,7 +9,7 @@ using namespace std;
 
 class LayerDimlp : public Layer {
 
-  StairObj *Stair;
+  StairObj* Stair;
 
   //----------------------------------------------------------------
 

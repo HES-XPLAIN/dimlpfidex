@@ -67,7 +67,7 @@ void BpNN::CreateNetStruct(int nbNeurons[])
   for (l = 0; l < NbLayers; l++)
     NbNeurons[l] = nbNeurons[l];
 
-  VecLayer = new Layer *[NbWeightLayers];
+  VecLayer = new Layer*[NbWeightLayers];
 
   for (l = 1; l < NbWeightLayers; l++)
     VecLayer[l] = new Layer(Eta, Mu, Flat,
@@ -178,7 +178,7 @@ void BpNN::SaveWeights()
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::SaveWeights(char *strSave)
+void BpNN::SaveWeights(char* strSave)
 
 {
   int n;
@@ -251,7 +251,7 @@ void BpNN::Pop()
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::ForwardOneExample1(DataSet &data, int index)
+void BpNN::ForwardOneExample1(DataSet& data, int index)
 
 {
   int l;
@@ -264,7 +264,7 @@ void BpNN::ForwardOneExample1(DataSet &data, int index)
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::ForwardOneExample1(float *ex)
+void BpNN::ForwardOneExample1(float* ex)
 
 {
   int l;
@@ -288,7 +288,7 @@ void BpNN::ForwardOneExample1()
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::ForwardOneExample2(DataSet &data, int index)
+void BpNN::ForwardOneExample2(DataSet& data, int index)
 
 {
   int l;
@@ -302,16 +302,16 @@ void BpNN::ForwardOneExample2(DataSet &data, int index)
 ///////////////////////////////////////////////////////////////////
 
 float BpNN::ComputeErrorSameAct(
-    DataSet &data,
-    DataSet &target,
-    float *accuracy)
+    DataSet& data,
+    DataSet& target,
+    float* accuracy)
 
 {
   int p, ansNet, ansTar;
   int good, bad;
   float sum;
-  float *ptrOut;
-  float *ptrTar;
+  float* ptrOut;
+  float* ptrTar;
   const int nbPat = data.GetNbEx();
   const int nbOut = target.GetNbAttr();
 
@@ -340,7 +340,7 @@ float BpNN::ComputeErrorSameAct(
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::BackOneExample(DataSet &target, int index)
+void BpNN::BackOneExample(DataSet& target, int index)
 
 {
   int l;
@@ -355,7 +355,7 @@ void BpNN::BackOneExample(DataSet &target, int index)
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::TrainOneEpoch(DataSet &data, DataSet &target, IntRandomFunction *r)
+void BpNN::TrainOneEpoch(DataSet& data, DataSet& target, IntRandomFunction* r)
 
 {
   int indPat, p;
@@ -580,16 +580,16 @@ void BpNN::DefineSP4(int discrLevels)
 ///////////////////////////////////////////////////////////////////
 
 float BpNN::ComputeError(
-    DataSet &data,
-    DataSet &target,
-    float *accuracy)
+    DataSet& data,
+    DataSet& target,
+    float* accuracy)
 
 {
   int p, ansNet, ansTar;
   int good, bad;
   float sum;
-  float *ptrOut;
-  float *ptrTar;
+  float* ptrOut;
+  float* ptrTar;
   const int nbPat = data.GetNbEx();
   const int nbOut = target.GetNbAttr();
 
@@ -619,13 +619,13 @@ float BpNN::ComputeError(
 ///////////////////////////////////////////////////////////////////
 
 void BpNN::TrainPhase(
-    DataSet &train,
-    DataSet &trainTar,
-    DataSet &test,
-    DataSet &testTar,
-    DataSet &valid,
-    DataSet &validTar,
-    char *accuracyFile,
+    DataSet& train,
+    DataSet& trainTar,
+    DataSet& test,
+    DataSet& testTar,
+    DataSet& valid,
+    DataSet& validTar,
+    char* accuracyFile,
     bool fromBT)
 
 {

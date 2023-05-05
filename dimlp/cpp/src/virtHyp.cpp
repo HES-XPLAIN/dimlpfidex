@@ -13,9 +13,9 @@ void VirtualHyp::CreateVirtualHyp()
 {
   int n;
 
-  VecVirtHyp = new float *[NbIn];
-  VirtGoLeftEps = new float *[NbIn];
-  VirtGoRightEps = new float *[NbIn];
+  VecVirtHyp = new float*[NbIn];
+  VirtGoLeftEps = new float*[NbIn];
+  VirtGoRightEps = new float*[NbIn];
 
   for (n = 0; n < NbIn; n++) {
     VecVirtHyp[n] = new float[NbHyp];
@@ -33,12 +33,12 @@ void VirtualHyp::SetVirtualHyp()
   int v, m, k;
 
   for (v = 0; v < NbIn; v++) {
-    float *ptrVar = VecVirtHyp[v];
-    float *ptrBias = Bias + v;
-    float *ptrWeights = Weights + v;
+    float* ptrVar = VecVirtHyp[v];
+    float* ptrBias = Bias + v;
+    float* ptrWeights = Weights + v;
 
     for (m = 0; m < Multiple; m++, ptrBias += NbIn, ptrWeights += NbIn) {
-      float *ptrKnots = stairObj.GetKnots();
+      float* ptrKnots = stairObj.GetKnots();
 
       for (k = 0; k < NbKnots; k++, ptrKnots++, ptrVar++) {
         if (*ptrWeights != 0.0)
@@ -113,7 +113,7 @@ int VirtualHyp::KnotInd(int var, float val) // var = index hid
 
 {
   int k;
-  float *ptrKnots = VecVirtHyp[var];
+  float* ptrKnots = VecVirtHyp[var];
 
   for (k = 0; k < NbHyp; k++, ptrKnots++) {
     if (*ptrKnots > val)
@@ -129,7 +129,7 @@ int VirtualHyp::GetInd(int var, float val)
 
 {
   int k;
-  float *ptrKnots = VecVirtHyp[var];
+  float* ptrKnots = VecVirtHyp[var];
 
   for (k = 0; k < NbHyp; k++, ptrKnots++)
     if (*ptrKnots == val)
@@ -162,8 +162,8 @@ VirtualHyp::VirtualHyp(
     int nbBins,
     int nbIn,
     int multiple,
-    float *bias,
-    float *weights)
+    float* bias,
+    float* weights)
 
 {
   NbBins = nbBins;
@@ -188,14 +188,14 @@ VirtualHyp::VirtualHyp(
     int nbIn,
     int multiple,
     int nbNets,
-    VirtualHyp **virt)
+    VirtualHyp** virt)
 
 {
   int nbHypOld;
   int v, h, n;
 
-  VirtualHyp *ptrOldVirt;
-  float *vectOldVirt;
+  VirtualHyp* ptrOldVirt;
+  float* vectOldVirt;
 
   NbBins = nbBins;
   NbIn = nbIn;

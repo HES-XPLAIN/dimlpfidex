@@ -3,10 +3,10 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
-OneVarThresDescr::Elem *OneVarThresDescr::CreateElem(float thres, int indPat)
+OneVarThresDescr::Elem* OneVarThresDescr::CreateElem(float thres, int indPat)
 
 {
-  OneVarThresDescr::Elem *e = new OneVarThresDescr::Elem;
+  OneVarThresDescr::Elem* e = new OneVarThresDescr::Elem;
 
   e->Thres = thres;
   e->Next = 0;
@@ -37,7 +37,7 @@ void OneVarThresDescr::Insert(float thres, int indPat)
 
 {
   int e;
-  OneVarThresDescr::Elem *last;
+  OneVarThresDescr::Elem* last;
 
   if (NbThres == 0)
     First = CreateElem(thres, indPat);

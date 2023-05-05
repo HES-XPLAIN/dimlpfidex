@@ -30,11 +30,11 @@ void GiveAllParam()
 ////////////////////////////////////////////////////////////
 
 void SaveOutputs(
-    DataSet &data,
-    Dimlp *net,
+    DataSet& data,
+    Dimlp* net,
     int nbOut,
     int nbWeightLayers,
-    char *outfile)
+    char* outfile)
 
 {
   int p, o;
@@ -45,8 +45,8 @@ void SaveOutputs(
     WriteError(errorMsg, outfile);
   }
 
-  Layer *layer = net->GetLayer(nbWeightLayers - 1);
-  float *out = layer->GetUp();
+  Layer* layer = net->GetLayer(nbWeightLayers - 1);
+  float* out = layer->GetUp();
 
   cout << "\n\n"
        << outfile << ": "
@@ -101,7 +101,7 @@ int dimlpPred(string command) {
 
   int nbLayers;
   int nbWeightLayers;
-  int *vecNbNeurons;
+  int* vecNbNeurons;
 
   StringInt arch;
   StringInt archInd;
@@ -141,7 +141,7 @@ int dimlpPred(string command) {
         if (CheckInt(&(commandList[k])[0])) {
           arch.Insert(atoi(&(commandList[k])[0]));
 
-          char *ptrParam = &(commandList[k - 1])[0];
+          char* ptrParam = &(commandList[k - 1])[0];
 
           if (ptrParam[2] != '\0') {
             char str[80];
@@ -207,10 +207,10 @@ int dimlpPred(string command) {
 
   char testFileTmp[160], weightFileTmp[160], predFileTmp[160], consoleFileTmp[160];
 
-  char *testFile = 0;
-  char *weightFile = 0;
-  char *predFile = 0;
-  char *consoleFile = 0;
+  char* testFile = 0;
+  char* weightFile = 0;
+  char* predFile = 0;
+  char* consoleFile = 0;
 
 #ifdef __unix__
   string root = rootFolderTemp + "/";
@@ -264,12 +264,12 @@ int dimlpPred(string command) {
 
   // Get console results to file
   std::ofstream ofs;
-  std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
+  std::streambuf* cout_buff = std::cout.rdbuf(); // Save old buf
   if (consoleFileInit != false) {
     ofs.open(consoleFile);
     std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
   }
-  std::ostream &output = consoleFileInit != false ? ofs : std::cout;
+  std::ostream& output = consoleFileInit != false ? ofs : std::cout;
 
   // ----------------------------------------------------------------------
 

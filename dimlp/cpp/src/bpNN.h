@@ -29,9 +29,9 @@ class BpNN {
 
   int NbLayers; // Including Input and Output
   int NbWeightLayers;
-  int *NbNeurons;
+  int* NbNeurons;
 
-  Layer **VecLayer;
+  Layer** VecLayer;
 
   //------------------------------------------------------------------------
 
@@ -58,17 +58,17 @@ class BpNN {
 
   //------------------------------------------------------------------------
 
-  void ForwardOneExample2(DataSet &data, int index);
+  void ForwardOneExample2(DataSet& data, int index);
 
   float ComputeErrorSameAct(
-      DataSet &data,
-      DataSet &target,
-      float *accuracy);
+      DataSet& data,
+      DataSet& target,
+      float* accuracy);
 
   //------------------------------------------------------------------------
 
-  void BackOneExample(DataSet &target, int index);
-  void TrainOneEpoch(DataSet &data, DataSet &target, IntRandomFunction *r);
+  void BackOneExample(DataSet& target, int index);
+  void TrainOneEpoch(DataSet& data, DataSet& target, IntRandomFunction* r);
 
   //------------------------------------------------------------------------
 
@@ -76,12 +76,12 @@ public:
   int GetNbLayers() { return NbLayers; }
   int GetNbWeightLayers() { return NbWeightLayers; }
   int Max(float vec[], int nbEl);
-  Layer *GetLayer(int indLayer) { return VecLayer[indLayer]; }
+  Layer* GetLayer(int indLayer) { return VecLayer[indLayer]; }
 
-  void SaveWeights(char *str);
+  void SaveWeights(char* str);
 
-  virtual void ForwardOneExample1(DataSet &data, int index);
-  virtual void ForwardOneExample1(float *ex);
+  virtual void ForwardOneExample1(DataSet& data, int index);
+  virtual void ForwardOneExample1(float* ex);
   virtual void ForwardOneExample1();
 
   void ReadWeights();
@@ -105,17 +105,17 @@ public:
   //------------------------------------------------------------------------
 
   float ComputeError(
-      DataSet &data,
-      DataSet &target,
-      float *accuracy);
+      DataSet& data,
+      DataSet& target,
+      float* accuracy);
 
-  void TrainPhase(DataSet &train,
-                  DataSet &trainTar,
-                  DataSet &test,
-                  DataSet &testTar,
-                  DataSet &valid,
-                  DataSet &validTar,
-                  char *accuracyFile,
+  void TrainPhase(DataSet& train,
+                  DataSet& trainTar,
+                  DataSet& test,
+                  DataSet& testTar,
+                  DataSet& valid,
+                  DataSet& validTar,
+                  char* accuracyFile,
                   bool fromBT = false);
 
   //------------------------------------------------------------------------
