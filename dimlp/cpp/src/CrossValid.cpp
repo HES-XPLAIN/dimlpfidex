@@ -7,6 +7,7 @@ using namespace std;
 #endif
 #include "../../../fidex/cpp/src/fidexFct.h"
 #include "../../../fidexGlo/cpp/src/fidexGloRulesFct.h"
+#include "../../../fidexGlo/cpp/src/fidexGloStatsFct.h"
 #include "../../../hyperLocus/cpp/src/hyperLocusFct.h"
 #include <fstream>
 #include <iostream>
@@ -101,7 +102,8 @@ int main(int nbParam, char **param)
   string genericCommand = "dimlpTrn";
   string hyperLocusGenericCommand = "hyperLocus -h 1";
   string fidexGenericCommand = "fidex";
-  string fidexGloGenericCommand = "fidexGlo";
+  string fidexGloGenericCommand = "fidexGloRules";
+  string fidexGloStatsGenericCommand = "fidexGloStats";
 
   string eta, mu, flat, errThres, accThres, deltaErr, showErr, epochs, quant, hiKnot, nbIn, nbOut, arch, arch2, attrFile, weightFile, itMax, minNbCover, dropoutDimParam, dropoutHypParam;
   bool quantInit = false;
@@ -214,6 +216,7 @@ int main(int nbParam, char **param)
         hyperLocusGenericCommand += " -S " + rootFolderTemp;
         fidexGenericCommand += " -R " + rootFolderTemp;
         fidexGloGenericCommand += " -S " + rootFolderTemp;
+        fidexGloStatsGenericCommand += " -S " + rootFolderTemp;
         break;
 
       case 'A':
@@ -783,7 +786,7 @@ int main(int nbParam, char **param)
       }
 
       if (isFidexGlo) {
-        // Compute fidex stats in folder
+        // Compute fidexGlo rules in folder
         string fidexGloCommand = fidexGloGenericCommand;
 
         fidexGloCommand += " -T " + folderPathFromRoot + separator + "train.txt ";
@@ -792,13 +795,29 @@ int main(int nbParam, char **param)
         fidexGloCommand += "-H " + folderPathFromRoot + separator + "hyperLocus.txt ";
         fidexGloCommand += "-O " + folderPathFromRoot + separator + "fidexGloRules.txt ";
         fidexGloCommand += "-r " + folderPathFromRoot + separator + "fidexGloResult.txt ";
-        fidexGloCommand += " -M " + heuristic;
+        fidexGloCommand += "-M " + heuristic;
 
-        cout << fidexGloCommand << endl;
         cout << "Enter in fidexGlo function" << endl;
-        int resFidGlo = fidexGloRules(fidexGloCommand);
-        if (resFidGlo == -1) {
+        int resFidGloRu = fidexGloRules(fidexGloCommand);
+        if (resFidGloRu == -1) {
           return -1; // If there is an error in fidexGlo
+        }
+
+        // Compute fidexGlo statistics in folder
+        string fidexGloStatsCommand = fidexGloStatsGenericCommand;
+
+        fidexGloStatsCommand += " -T " + folderPathFromRoot + separator + "test.txt ";
+        fidexGloStatsCommand += "-P " + folderPathFromRoot + separator + "test.out ";
+        fidexGloStatsCommand += "-C " + folderPathFromRoot + separator + "testTarget.txt ";
+        fidexGloStatsCommand += "-R " + folderPathFromRoot + separator + "fidexGloRules.txt ";
+        fidexGloStatsCommand += "-O " + folderPathFromRoot + separator + "fidexGloStats.txt ";
+        fidexGloStatsCommand += "-r " + folderPathFromRoot + separator + "fidexGloStatsResult.txt ";
+
+        cout << fidexGloStatsCommand << endl;
+        cout << "Enter in fidexGloStats function" << endl;
+        int resFidGloSt = fidexGloStats(fidexGloStatsCommand);
+        if (resFidGloSt == -1) {
+          return -1; // If there is an error in fidexGloStats
         }
       }
     }
