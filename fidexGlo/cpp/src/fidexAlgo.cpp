@@ -10,8 +10,7 @@ FidexAlgo::FidexAlgo(){};
 
 // Different mains:
 
-bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> &rule, vector<vector<double>> *trainData, vector<int> *trainPreds, vector<vector<double>> *trainOutputValuesPredictions, vector<int> *trainTrueClass, vector<double> *mainSampleValues, int mainSamplePred, int mainSampleTrueClass, Hyperspace *hyperspace, const int nbIn, const int nbAttributs, const int nbHyp, int itMax, int minNbCover, bool dropoutDim, double dropoutDimParam, bool dropoutHyp, double dropoutHypParam) {
-  srand(time(0)); // Initialize random number generator
+bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> &rule, vector<vector<double>> *trainData, vector<int> *trainPreds, vector<vector<double>> *trainOutputValuesPredictions, vector<int> *trainTrueClass, vector<double> *mainSampleValues, int mainSamplePred, int mainSampleTrueClass, Hyperspace *hyperspace, const int nbIn, const int nbAttributs, const int nbHyp, int itMax, int minNbCover, bool dropoutDim, double dropoutDimParam, bool dropoutHyp, double dropoutHypParam, int seed, std::mt19937 g) {
 
   // Compute initial covering
   vector<int> coveredSamples((*trainData).size());                    // Samples covered by the hyperbox
@@ -28,7 +27,11 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
 
   while (hyperspace->getHyperbox()->getFidelity() != 1 && nbIt < itMax) { // While fidelity of our hyperbox is not 100%
 
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    unsigned seedShuffle;
+    if (seed == 0) {
+      seedShuffle = std::chrono::system_clock::now().time_since_epoch().count();
+    }
+
     // cout << endl << "It." << nbIt << " F : " << hyperspace.getHyperbox()->getFidelity() << ", att : " << attribut << endl;
     Hyperbox *bestHyperbox = new Hyperbox(); // best hyperbox to choose for next step
     Hyperbox *currentHyperbox = new Hyperbox();
@@ -42,7 +45,11 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
     // Randomize dimensions
     vector<int> dimensions(nbIn);
     std::iota(std::begin(dimensions), std::end(dimensions), 0); // Vector from 0 to nbIn-1
-    std::shuffle(std::begin(dimensions), std::end(dimensions), std::default_random_engine(seed));
+    if (seed == 0) {                                            // random
+      std::shuffle(std::begin(dimensions), std::end(dimensions), std::default_random_engine(seedShuffle));
+    } else { // not random
+      std::shuffle(std::begin(dimensions), std::end(dimensions), g);
+    }
 
     vector<int> currentCovSamp;
 
