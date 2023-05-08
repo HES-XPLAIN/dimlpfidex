@@ -3,6 +3,7 @@ using namespace std;
 #include <fstream>
 #include <sstream>
 
+namespace FidexGloNameSpace {
 Hyperspace::Hyperspace(char *hyperLocusFile) {
 
   // Get hyperLocus
@@ -92,3 +93,4 @@ double Hyperspace::computeRuleConfidence(vector<vector<double>> *trainOutputValu
   int nbCovered = hyperbox->getCoveredSamples().size();
   return float(total) / nbCovered;
 }
+} // namespace FidexGloNameSpace

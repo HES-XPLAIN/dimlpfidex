@@ -346,7 +346,7 @@ int fidexGloRules(string command) {
 
     std::cout << "Creation of hyperspace..." << endl;
 
-    Hyperspace hyperspace(hyperLocusFile); // Initialize hyperbox and get hyperplans
+    FidexGloNameSpace::Hyperspace hyperspace(hyperLocusFile); // Initialize hyperbox and get hyperplans
 
     const int nbIn = hyperspace.getHyperLocus().size(); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
     const int nbAttributs = (*trainData)[0].size();

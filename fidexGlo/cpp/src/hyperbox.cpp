@@ -4,6 +4,7 @@ using namespace std;
 #include <sstream>
 #include <string>
 
+namespace FidexGloNameSpace {
 Hyperbox::Hyperbox(vector<pair<int, int>> m_discriminativeHyperplans) {
   discriminativeHyperplans = m_discriminativeHyperplans;
 }
@@ -64,3 +65,4 @@ void Hyperbox::resetDiscriminativeHyperplans() {
   vector<pair<int, int>> disc;
   discriminativeHyperplans = disc;
 }
+} // namespace FidexGloNameSpace

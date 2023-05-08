@@ -10,7 +10,7 @@ FidexAlgo::FidexAlgo(){};
 
 // Different mains:
 
-bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> &rule, vector<vector<double>> *trainData, vector<int> *trainPreds, vector<vector<double>> *trainOutputValuesPredictions, vector<int> *trainTrueClass, vector<double> *mainSampleValues, int mainSamplePred, int mainSampleTrueClass, Hyperspace *hyperspace, const int nbIn, const int nbAttributs, const int nbHyp, int itMax, int minNbCover, bool dropoutDim, double dropoutDimParam, bool dropoutHyp, double dropoutHypParam, int seed, std::mt19937 g) {
+bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> &rule, vector<vector<double>> *trainData, vector<int> *trainPreds, vector<vector<double>> *trainOutputValuesPredictions, vector<int> *trainTrueClass, vector<double> *mainSampleValues, int mainSamplePred, int mainSampleTrueClass, FidexGloNameSpace::Hyperspace *hyperspace, const int nbIn, const int nbAttributs, const int nbHyp, int itMax, int minNbCover, bool dropoutDim, double dropoutDimParam, bool dropoutHyp, double dropoutHypParam, int seed, std::mt19937 g) {
 
   // Compute initial covering
   vector<int> coveredSamples((*trainData).size());                    // Samples covered by the hyperbox
@@ -33,8 +33,8 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
     }
 
     // cout << endl << "It." << nbIt << " F : " << hyperspace.getHyperbox()->getFidelity() << ", att : " << attribut << endl;
-    Hyperbox *bestHyperbox = new Hyperbox(); // best hyperbox to choose for next step
-    Hyperbox *currentHyperbox = new Hyperbox();
+    FidexGloNameSpace::Hyperbox *bestHyperbox = new FidexGloNameSpace::Hyperbox(); // best hyperbox to choose for next step
+    FidexGloNameSpace::Hyperbox *currentHyperbox = new FidexGloNameSpace::Hyperbox();
     double mainSampleValue;
     int attribut;
     int dimension;

@@ -6,6 +6,7 @@ using namespace std;
 #include <windows.h>
 #endif
 #include "../../../fidex/cpp/src/fidexFct.h"
+#include "../../../fidexGlo/cpp/src/fidexGloRulesFct.h"
 #include "../../../hyperLocus/cpp/src/hyperLocusFct.h"
 #include <fstream>
 #include <iostream>
@@ -27,10 +28,11 @@ void GiveAllParam()
   cout << " <Options>\n\n";
 
   cout << "Options are: \n\n";
-  cout << "-K <K-fold cross-validation>\n";                                              // Not to be 10
-  cout << "-N <number of times we do the cross-validation>\n";                           // Not to be 10
-  cout << "-F <Folder where to save weights, predictions and datas after training>\n";   // Not to be CrossValidation
-  cout << "-o <output statistic file name, saved in specific crossValidation folder>\n"; // Not to be crossValidationStats.txt
+  cout << "-K <K-fold cross-validation>\n";                                                        // Not to be 10
+  cout << "-N <number of times we do the cross-validation>\n";                                     // Not to be 10
+  cout << "-F <Folder where to save weights, predictions and datas after training>\n";             // Not to be CrossValidation
+  cout << "-M <FidexGlo heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo>\n"; // not to be 1
+  cout << "-o <output statistic file name, saved in specific crossValidation folder>\n";           // Not to be crossValidationStats.txt
   cout << "-A <file of attributes>\n";
   cout << "-W <file of pretrained weights>\n";
   cout << "-H1 <number of neurons in the first hidden layer> ";
@@ -92,12 +94,14 @@ int main(int nbParam, char **param)
   string algorithm;
   bool algorithmInit = false;
   string statFile = "crossValidationStats.txt";
+  string heuristic = "1"; // FidexGlo heuristic
   bool isFidex = false;
   bool isFidexGlo = false;
 
   string genericCommand = "dimlpTrn";
   string hyperLocusGenericCommand = "hyperLocus -h 1";
   string fidexGenericCommand = "fidex";
+  string fidexGloGenericCommand = "fidexGlo";
 
   string eta, mu, flat, errThres, accThres, deltaErr, showErr, epochs, quant, hiKnot, nbIn, nbOut, arch, arch2, attrFile, weightFile, itMax, minNbCover, dropoutDimParam, dropoutHypParam;
   bool quantInit = false;
@@ -209,6 +213,7 @@ int main(int nbParam, char **param)
         genericCommand += " -S " + rootFolderTemp;
         hyperLocusGenericCommand += " -S " + rootFolderTemp;
         fidexGenericCommand += " -R " + rootFolderTemp;
+        fidexGloGenericCommand += " -S " + rootFolderTemp;
         break;
 
       case 'A':
@@ -236,6 +241,10 @@ int main(int nbParam, char **param)
         algorithmInit = true;
         break;
 
+      case 'M':
+        heuristic = param[k];
+        break;
+
       case 'o':
         statFile = param[k];
         break;
@@ -259,21 +268,25 @@ int main(int nbParam, char **param)
       case 'n':
         itMax = param[k];
         fidexGenericCommand += " -i " + itMax;
+        fidexGloGenericCommand += " -i " + itMax;
         break;
 
       case 'v':
         minNbCover = param[k];
         fidexGenericCommand += " -v " + minNbCover;
+        fidexGloGenericCommand += " -v " + minNbCover;
         break;
 
       case 'x':
         dropoutDimParam = param[k];
         fidexGenericCommand += " -d " + dropoutDimParam;
+        fidexGloGenericCommand += " -d " + dropoutDimParam;
         break;
 
       case 'y':
         dropoutHypParam = param[k];
         fidexGenericCommand += " -h " + dropoutHypParam;
+        fidexGloGenericCommand += " -h " + dropoutHypParam;
         break;
 
       case 'z':
@@ -281,6 +294,7 @@ int main(int nbParam, char **param)
           seed = atoi(param[k]);
           genericCommand += " -z " + std::to_string(seed);
           fidexGenericCommand += " -z " + std::to_string(seed);
+          fidexGloGenericCommand += " -z " + std::to_string(seed);
         }
 
         else
@@ -321,6 +335,14 @@ int main(int nbParam, char **param)
     cout << "Give a correct algorithm with -C selection please. You can give fidex, fidexGlo or both."
          << "\n";
     return -1;
+  }
+
+  if (algorithm == "fidex" || algorithm == "both") {
+    isFidex = true;
+  }
+
+  if (algorithm == "fidexGlo" || algorithm == "both") {
+    isFidexGlo = true;
   }
 
   if (quantInit == false) {
@@ -511,13 +533,6 @@ int main(int nbParam, char **param)
   char validTarFileStr[160];
   string validTarFileStrTemp = root + "tempTarValid.txt";
   strcpy(validTarFileStr, validTarFileStrTemp.c_str());
-
-  if (algorithm == "fidex" || algorithm == "both") {
-    isFidex = true;
-  }
-  if (algorithm == "fidexGlo" || algorithm == "both") {
-    isFidexGlo = true;
-  }
 
   // Statistics for Fidex
   double meanCovSizeFid = 0;
@@ -765,6 +780,26 @@ int main(int nbParam, char **param)
         meanFidelFid += statVals[2];
         meanAccFid += statVals[3];
         meanConfidFid += statVals[4];
+      }
+
+      if (isFidexGlo) {
+        // Compute fidex stats in folder
+        string fidexGloCommand = fidexGloGenericCommand;
+
+        fidexGloCommand += " -T " + folderPathFromRoot + separator + "train.txt ";
+        fidexGloCommand += "-P " + folderPathFromRoot + separator + "train.out ";
+        fidexGloCommand += "-C " + folderPathFromRoot + separator + "trainTarget.txt ";
+        fidexGloCommand += "-H " + folderPathFromRoot + separator + "hyperLocus.txt ";
+        fidexGloCommand += "-O " + folderPathFromRoot + separator + "fidexGloRules.txt ";
+        fidexGloCommand += "-r " + folderPathFromRoot + separator + "fidexGloResult.txt ";
+        fidexGloCommand += " -M " + heuristic;
+
+        cout << fidexGloCommand << endl;
+        cout << "Enter in fidexGlo function" << endl;
+        int resFidGlo = fidexGloRules(fidexGloCommand);
+        if (resFidGlo == -1) {
+          return -1; // If there is an error in fidexGlo
+        }
       }
     }
   }

@@ -3,6 +3,7 @@ using namespace std;
 #include <fstream>
 #include <sstream>
 
+namespace FidexNameSpace {
 Hyperspace::Hyperspace(char *hyperLocusFile) {
 
   // Get hyperLocus
@@ -111,3 +112,4 @@ double Hyperspace::computeRuleConfidence(vector<vector<double>> *trainOutputValu
 
   return float(total) / nbCovered;
 }
+} // namespace FidexNameSpace

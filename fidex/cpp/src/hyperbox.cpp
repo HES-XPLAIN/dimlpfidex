@@ -5,6 +5,8 @@ using namespace std;
 #include <string>
 #include <tuple>
 
+namespace FidexNameSpace {
+
 Hyperbox::Hyperbox(vector<pair<int, int>> m_discriminativeHyperplans) {
   discriminativeHyperplans = m_discriminativeHyperplans;
 }
@@ -65,3 +67,4 @@ void Hyperbox::resetDiscriminativeHyperplans() {
   vector<pair<int, int>> disc;
   discriminativeHyperplans = disc;
 }
+} // namespace FidexNameSpace

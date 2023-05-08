@@ -626,7 +626,7 @@ int fidex(string command) {
     // compute hyperspace
     std::cout << "Creation of hyperspace..." << endl;
 
-    Hyperspace hyperspace(hyperLocusFile); // Initialize hyperbox and get hyperplans
+    FidexNameSpace::Hyperspace hyperspace(hyperLocusFile); // Initialize hyperbox and get hyperplans
 
     const int nbIn = hyperspace.getHyperLocus().size(); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
     const int nbHyp = hyperspace.getHyperLocus()[0].size();
@@ -683,8 +683,8 @@ int fidex(string command) {
           unsigned seedShuffle = seed;
         }
         // cout << endl << "It." << nbIt << " F : " << hyperspace.getHyperbox()->getFidelity() << ", att : " << attribut << endl;
-        Hyperbox *bestHyperbox = new Hyperbox(); // best hyperbox to choose for next step
-        Hyperbox *currentHyperbox = new Hyperbox();
+        FidexNameSpace::Hyperbox *bestHyperbox = new FidexNameSpace::Hyperbox(); // best hyperbox to choose for next step
+        FidexNameSpace::Hyperbox *currentHyperbox = new FidexNameSpace::Hyperbox();
         double mainSampleValue;
         int attribut;
         int dimension;
