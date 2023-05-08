@@ -10,7 +10,7 @@ using namespace std;
 void IntRandomFunction::StartOnlyOnece(int seed)
 
 {
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
   if (seed == 0) {
     srandom(getpid());
   } else {
@@ -48,7 +48,7 @@ IntRandomFunction::IntRandomFunction(int lowBound, int hiBound)
 int IntRandomFunction::RandomInteger()
 
 {
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
   return (LowBound + (random() % Diff));
 #elif defined(_WIN32)
   return (LowBound + (rand() % Diff));
@@ -60,7 +60,7 @@ int IntRandomFunction::RandomInteger()
 void FloatRandomFunction::StartOnlyOnece(int seed)
 
 {
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
   if (seed == 0) {
     srand48(getpid());
   } else {
@@ -101,7 +101,7 @@ FloatRandomFunction::FloatRandomFunction(
 float FloatRandomFunction::RandomFloat()
 
 {
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
   return (LowBound + (drand48() * Diff));
 #elif defined(_WIN32)
   return (LowBound + ((float(rand()) / RAND_MAX) * Diff));
@@ -113,7 +113,7 @@ float FloatRandomFunction::RandomFloat()
 double FloatRandomFunction::RandomDouble()
 
 {
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
   return (LowBound + (drand48() * Diff));
 #elif defined(_WIN32)
   return (LowBound + ((double(rand()) / RAND_MAX) * Diff));

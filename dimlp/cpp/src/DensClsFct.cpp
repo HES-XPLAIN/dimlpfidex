@@ -273,7 +273,7 @@ int densCls(string command) {
   char *attrFile = 0;
   char *weightFileSave = 0;
 
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
   string root = rootFolderTemp + "/";
 #elif defined(_WIN32)
   string root = rootFolderTemp + "\\";
