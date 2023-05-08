@@ -10,6 +10,7 @@
 #include <sstream>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <vector>
 
 static void GiveAllParam();

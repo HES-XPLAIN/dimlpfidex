@@ -12,6 +12,7 @@
 #include <time.h>
 #include <tuple>
 #include <vector>
+
 using namespace std;
 
 void showParams() {
@@ -37,6 +38,19 @@ void showParams() {
   std::cout << "-z <seed (0=ranodom)>";
 
   std::cout << "\n-------------------------------------------------\n\n";
+}
+
+bool checkStringEmpty(string line) {
+  if (line.length() == 0) {
+    return true;
+  } else {
+    for (int c : line) {
+      if (isgraph(c)) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
 
 int fidex(string command) {
@@ -439,7 +453,7 @@ int fidex(string command) {
       bool firstLine = true;
       while (!testData.eof()) {
         getline(testData, line);
-        if (line.length() != 0) {
+        if (!checkStringEmpty(line)) {
           std::stringstream myLine(line);
           double value;
           mainSampleValues.clear();
@@ -452,7 +466,7 @@ int fidex(string command) {
         } else {
           while (!testData.eof()) {
             getline(testData, line);
-            if (line.length() != 0) {
+            if (!checkStringEmpty(line)) {
               throw std::runtime_error("Error : file " + std::string(mainSamplesDataFile) + " is not on good format, there is more than one empty line between 2 samples");
             }
           }
@@ -462,7 +476,7 @@ int fidex(string command) {
           throw std::runtime_error("Error : file " + std::string(mainSamplesDataFile) + " has not enough prediction data");
         }
         getline(testData, line);
-        if (line.length() != 0) {
+        if (!checkStringEmpty(line)) {
           std::stringstream myLine(line);
           double value;
           mainSampleOutputValuesPredictions.clear();
@@ -475,7 +489,7 @@ int fidex(string command) {
         } else {
           while (!testData.eof()) {
             getline(testData, line);
-            if (line.length() != 0) {
+            if (!checkStringEmpty(line)) {
               throw std::runtime_error("Error : file " + std::string(mainSamplesDataFile) + " is not on good format, there is empty lines inbetween data");
             }
           }
@@ -486,7 +500,7 @@ int fidex(string command) {
           endOfLine = true;
         }
         getline(testData, line);
-        if (endOfLine || line.length() == 0) {
+        if (endOfLine || checkStringEmpty(line)) {
           hasTrueClass.push_back(false);
           mainSamplesTrueClass.push_back(-1);
         } else {
@@ -508,7 +522,7 @@ int fidex(string command) {
           mainSamplesTrueClass.push_back(mainSampleTrueClass);
           if (!testData.eof()) {
             getline(testData, line);
-            if (line.length() != 0) {
+            if (!checkStringEmpty(line)) {
               throw std::runtime_error("Error : in file " + std::string(mainSamplesDataFile) + ", you need to have empty lines between samples");
             }
           }
@@ -535,7 +549,7 @@ int fidex(string command) {
         while (!classData.eof()) {
           int ind = 0;
           getline(classData, line);
-          if (line.length() != 0) {
+          if (!checkStringEmpty(line)) {
 
             std::stringstream myLine(line);
             string tempTest;
@@ -661,6 +675,7 @@ int fidex(string command) {
       int nbIt = 0;
 
       while (hyperspace.getHyperbox()->getFidelity() != 1 && nbIt < itMax) { // While fidelity of our hyperbox is not 100%
+
         unsigned seedShuffle;
         if (seed == 0) {
           seedShuffle = std::chrono::system_clock::now().time_since_epoch().count();
@@ -684,6 +699,7 @@ int fidex(string command) {
         vector<int> currentCovSamp;
 
         for (int d = 0; d < nbIn; d++) { // Loop on all dimensions
+
           if (bestHyperbox->getFidelity() == 1) {
             break;
           }
@@ -697,8 +713,10 @@ int fidex(string command) {
             }
           }
           bool maxHypBlocked;
+
           for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
-            maxHypBlocked = true;           // We assure that we can't increase maxHyp index for the current best hyperbox
+
+            maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
             // Test if we dropout this hyperplan
             if (dropoutHyp) {
               if ((double)rand() / (RAND_MAX) < dropoutHypParam) {
@@ -707,9 +725,13 @@ int fidex(string command) {
             }
 
             double hypValue = hyperspace.getHyperLocus()[dimension][k];
-            bool mainSampleGreater = hypValue <= mainSampleValue;                                                                                                                       // Check if main sample value is on the right of the hyperplan
+            bool mainSampleGreater = hypValue <= mainSampleValue;
+
+            // Check if main sample value is on the right of the hyperplan
             currentHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue, &mainSamplesValues[currentSample]); // Compute new cover samples
-            currentHyperbox->computeFidelity(mainSamplesPreds[currentSample], trainPreds);                                                                                              // Compute fidelity
+            currentHyperbox->computeFidelity(mainSamplesPreds[currentSample], trainPreds);
+
+            // Compute fidelity
             // If the fidelity is better or is same with better covering but not if covering size is lower than minNbCover
             if (currentHyperbox->getCoveredSamples().size() >= minNbCover && (currentHyperbox->getFidelity() > bestHyperbox->getFidelity() || (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() > bestHyperbox->getCoveredSamples().size()))) {
               bestHyperbox->setFidelity(currentHyperbox->getFidelity()); // Update best hyperbox
@@ -749,6 +771,7 @@ int fidex(string command) {
 
         nbIt += 1;
       };
+
       meanFidelity += hyperspace.getHyperbox()->getFidelity();
       std::cout << "Final fidelity : " << hyperspace.getHyperbox()->getFidelity() << endl;
       if (hyperspace.getHyperbox()->getFidelity() != 1) {
@@ -860,3 +883,27 @@ int fidex(string command) {
 // Exemple : .\fidex.exe -T datanorm -P dimlp.out -C dataclass2 -S testSampleDataCombine -H hyperLocus -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
 
 // .\fidex.exe -T datanorm -P dimlp.out -C dataclass2 -S testData.txt -p testPred.txt -c testClass.txt -H hyperLocus -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
+
+/*
+#include <profileapi.h>
+
+LARGE_INTEGER frequency;        // ticks per second
+LARGE_INTEGER t1, t2;           // ticks
+double elapsedTime;
+
+// get ticks per second
+QueryPerformanceFrequency(&frequency);
+
+// start timer
+QueryPerformanceCounter(&t1);
+
+// do something
+...
+
+// stop timer
+QueryPerformanceCounter(&j2WB2);
+
+// compute and print the elapsed time in millisec
+elapsedTimeWB2 = (j2WB2.QuadPart - j1WB2.QuadPart) * 1000.0 / frequencyWB2.QuadPart;
+std::printf("\npart 2 : Full execution time = %f sec\n", elapsedTimeWB2);
+*/

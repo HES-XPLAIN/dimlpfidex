@@ -19,6 +19,7 @@ void showParams() {
   std::cout << "-v <minimum covering number>\n";
   std::cout << "-d <dimension dropout parameter>\n";
   std::cout << "-h <hyperplan dropout parameter>\n";
+  std::cout << "-z <seed (0=ranodom)>";
 
   std::cout << "\n-------------------------------------------------\n\n";
 }
@@ -48,6 +49,8 @@ int fidexGloRules(string command) {
     }
 
     // Parameters declaration
+
+    int seed = 0;
 
     string trainDataFileTemp; // Train data
     bool trainDataFileInit = false;
@@ -166,6 +169,14 @@ int fidexGloRules(string command) {
           } else {
             throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p - 1])[0]) + ", float included in [0,1] requested");
           }
+          break;
+
+        case 'z':
+          if (CheckPositiveInt(&(commandList[p])[0]))
+            seed = atoi(&(commandList[p])[0]);
+          else
+            return -1;
+
           break;
 
         default: // If we put another -X option
@@ -358,6 +369,20 @@ int fidexGloRules(string command) {
     //--------------------------------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------------------------------
 
+    std::random_device rd;
+    std::mt19937 g;
+    if (seed != 0) { // Not random
+      std::mt19937 g(seed);
+    } else { // random
+      std::mt19937 g(rd());
+    }
+
+    if (seed == 0) {
+      std::srand(time(0)); // Initialize random number generator
+    } else {
+      std::srand(seed);
+    }
+
     // First heuristic : optimal (slower)
     float temps1;
     clock_t c1, c2;
@@ -377,11 +402,13 @@ int fidexGloRules(string command) {
       // Get the rule for each data sample from fidex
       std::cout << "Computing fidex rules..." << endl
                 << endl;
+
       for (int idSample = 0; idSample < nbDatas; idSample++) {
         currentMinNbCov = minNbCover;
         ruleCreated = false;
+
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], (*trainTrueClass)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam);
+          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], (*trainTrueClass)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, seed, g);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           }
@@ -390,6 +417,7 @@ int fidexGloRules(string command) {
           nbProblems += 1;
         }
 
+        // cout << get<1>(rule).size() << endl;
         rules.push_back(rule);
       }
 
@@ -481,7 +509,7 @@ int fidexGloRules(string command) {
         currentMinNbCov = minNbCover;
         ruleCreated = false;
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], (*trainTrueClass)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam);
+          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], (*trainTrueClass)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, seed, g);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           }
@@ -563,8 +591,12 @@ int fidexGloRules(string command) {
                 << endl;
 
       //  Sort data randomly
-      unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-      std::shuffle(std::begin(notCoveredSamples), std::end(notCoveredSamples), std::default_random_engine(seed));
+      if (seed == 0) { // random
+        unsigned seedShuffle = std::chrono::system_clock::now().time_since_epoch().count();
+        std::shuffle(std::begin(notCoveredSamples), std::end(notCoveredSamples), std::default_random_engine(seedShuffle));
+      } else { // not random
+        std::shuffle(std::begin(notCoveredSamples), std::end(notCoveredSamples), g);
+      }
 
       nbRules = 0;
       int idSample;
@@ -587,7 +619,7 @@ int fidexGloRules(string command) {
         currentMinNbCov = minNbCover;
         ruleCreated = false;
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], (*trainTrueClass)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam);
+          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], (*trainTrueClass)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, seed, g);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           }

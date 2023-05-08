@@ -2,7 +2,6 @@ using namespace std;
 
 #define BPNN 1
 #include "DimlpTrnFct.h"
-
 ////////////////////////////////////////////////////////////
 
 void GiveAllParam()
