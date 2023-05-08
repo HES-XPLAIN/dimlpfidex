@@ -1,0 +1,89 @@
+
+name: package
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+env:
+  PYTHON_VERSION: ["3.8", "3.9", "3.10", "3.11"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ${{ env.PYTHON_VERSION }}
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install GCC
+        uses: egor-tensin/setup-gcc@v1
+        with:
+          version: latest
+          platform: x64
+
+      - name: Install cmake
+        uses: lukka/get-cmake@latest
+
+      - name: Set up Poetry
+        run: pipx install poetry
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'poetry'
+
+      - name: Install Python dependencies
+        run: poetry install
+
+      - name: Compile
+        run: |
+          mkdir -p build && cd build
+          poetry run cmake ..
+          poetry run cmake --build .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifact-${{ matrix.os }}-${{ matrix.python-version }}
+          path: dimlpfidex
+
+  package:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ${{ env.PYTHON_VERSION }}
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    needs: [ build ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download artifact (${{ matrix.os }}-${{ matrix.python-version }})
+        uses: actions/download-artifact@v3
+        with:
+          name: artifact-${{ matrix.os }}-${{ matrix.python-version }}
+          path: dimlpfidex
+
+  cleanup:
+    runs-on: ubuntu-latest
+    if: always()
+    needs: deploy
+    steps:
+      - name: Delete artifacts
+        uses: geekyeggo/delete-artifact@v2
+        with:
+          failOnError: false
+          name: |
+            artifact-*
