@@ -1,9 +1,13 @@
+#ifndef HYPERSPACEGLO_H
+#define HYPERSPACEGLO_H
+
 #include "hyperbox.h"
 #include <cstring>
 #include <iostream>
 #include <tuple>
 #include <vector>
 
+namespace FidexGloNameSpace {
 class Hyperspace {
 
   vector<vector<double>> hyperLocus; // All the possible hyperplans
@@ -19,3 +23,6 @@ public:
   double computeRuleAccuracy(vector<int> *trainPreds, vector<int> *trainTrueClass, bool mainSampleCorrect);
   double computeRuleConfidence(vector<vector<double>> *trainOutputValuesPredictions, const int mainSamplePred);
 };
+} // namespace FidexGloNameSpace
+
+#endif

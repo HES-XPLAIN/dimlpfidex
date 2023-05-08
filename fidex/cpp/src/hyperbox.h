@@ -1,8 +1,12 @@
+#ifndef HYPERBOX_H
+#define HYPERBOX_H
+
 using namespace std;
 #include <cstring>
 #include <iostream>
 #include <vector>
 
+namespace FidexNameSpace {
 class Hyperbox {
   vector<pair<int, int>> discriminativeHyperplans;
   vector<int> coveredSamples;
@@ -25,3 +29,5 @@ public:
   vector<int> getCoveredSamples();
   void discriminateHyperplan(int i, int j);
 };
+} // namespace FidexNameSpace
+#endif
