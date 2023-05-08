@@ -278,7 +278,7 @@ int dimlpCls(string command) {
   char *testTar = 0;
   char *hidFile = 0;
 
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
   string root = rootFolderTemp + "/";
 #elif defined(_WIN32)
   string root = rootFolderTemp + "\\";

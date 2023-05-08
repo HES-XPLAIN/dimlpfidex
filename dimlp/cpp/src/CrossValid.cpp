@@ -384,7 +384,7 @@ int main(int nbParam, char **param)
   char *learnFile = 0;
   char *folder = 0;
 
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
   string separator = "/";
 #elif defined(_WIN32)
   string separator = "\\";
@@ -501,7 +501,7 @@ int main(int nbParam, char **param)
     cout << "Please, choose a folder with -F that doesn't already exist.\n";
     return -1;
   }
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
   mkdir(folder, 0777);
 #elif defined(_WIN32)
   mkdir(folder);
@@ -650,7 +650,7 @@ int main(int nbParam, char **param)
     cout << "n=" << n << endl;
 
 // Create folder
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
     string folderName = std::string(folder) + "/Execution" + std::to_string(n + 1) + "/";
     mkdir(folderName.c_str(), 0777);
 #elif defined(_WIN32)
@@ -699,7 +699,7 @@ int main(int nbParam, char **param)
       // path to folder
       string folderPath = std::string(folder) + separator + "Execution" + std::to_string(n + 1) + separator + "Fold" + std::to_string(k + 1);
 // Create folder
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
       string folderName = folderPath + separator;
       mkdir(folderName.c_str(), 0777);
 #elif defined(_WIN32)
