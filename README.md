@@ -103,3 +103,7 @@ Pre-commit hooks can be run manually with:
 ```shell
 pre-commit run --all-files
 ```
+
+## Release
+
+To publish the package on [Pypi](https://pypi.org/project/dimlpfidex/), refer to [RELEASE](RELEASE.md).
