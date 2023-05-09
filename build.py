@@ -1,6 +1,7 @@
 import os
-import platform
+import re
 import subprocess
+import sys
 from glob import glob
 from pybind11.setup_helpers import Pybind11Extension, build_ext
 
@@ -54,14 +55,24 @@ def build(setup_kwargs):
     )
 
 def build_package():
-    # Build the C++ library
     os.makedirs("build", exist_ok=True)
     os.chdir("build")
-    subprocess.run(["cmake", ".."])
-    subprocess.run(["cmake", "--build", "."])
 
-    # Return to the project root directory
-    os.chdir("..")
+    # Platform-specific compilation commands
+    if sys.platform.startswith('linux'):
+        cmake_command = ['poetry', 'run', 'cmake', '..']
+    elif sys.platform == 'darwin':  # macOS
+        cmake_command = ['poetry', 'run', 'cmake', '..']
+    elif sys.platform == 'win32':  # Windows
+        output = subprocess.check_output("poetry env info", shell=True, text=True)
+        path = re.search(r"Path:\s+(.*)", output).group(1) if re.search(r"Path:\s+(.*)", output) else None
+        cmake_command = ['poetry', 'run', 'cmake', '-G', 'MinGW Makefiles', '-DCMAKE_PREFIX_PATH=' + path, '..']
+
+    build_command = ['poetry', 'run', 'cmake', '--build', '.']
+
+    # Run cmake
+    subprocess.check_call(cmake_command)
+    subprocess.check_call(build_command)
 
 
 if __name__ == "__main__":

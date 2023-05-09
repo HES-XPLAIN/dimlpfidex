@@ -66,6 +66,14 @@ poetry install
 poetry shell
 ```
 
+Compile with:
+
+```shell
+poetry build
+```
+
+This is equivalent to the following manual compilation steps:
+
 #### Linux, macOS, Windows/WSL
 
 At the **root** of the project, compile the submodules:
@@ -77,15 +85,11 @@ cmake --build .
 
 #### Windows
 
-Get your virtualenv path:
-```shell
-poetry env info | Select-String -Pattern "Path:" | Select-String -Pattern "virtualenvs"
-```
-
 At the **root** of the project, compile the submodules:
 ```shell
 mkdir build && cd build
-cmake.exe -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH="<virtualenv path>" ..
+$path = (poetry env info | Select-String -Pattern 'Path:\s+(.*)').Matches.Groups[1].Value
+cmake.exe -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH="$path" ..
 cmake.exe --build .
 ```
 
