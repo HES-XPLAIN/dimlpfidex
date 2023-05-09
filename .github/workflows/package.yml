@@ -2,34 +2,50 @@
 name: package
 
 on:
-  workflow_dispatch:
-  push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+  release:
+    types:
+      - published
+#  workflow_dispatch:
+#  push:
+#    tags:
+#      - 'v[0-9]+.[0-9]+.[0-9]+'
 
 env:
-  PYTHON_VERSION: ["3.8", "3.9", "3.10", "3.11"]
+  PYTHON_VERSION: '3.11'
 
 permissions:
   contents: write
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ${{ env.PYTHON_VERSION }}
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
         os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install GCC
+      - name: Set up GCC (Linux)
+        if: runner.os == 'Linux'
         uses: egor-tensin/setup-gcc@v1
         with:
           version: latest
           platform: x64
+
+      - name: Set up GCC (MinGW)
+        if: runner.os == 'Windows'
+        uses: egor-tensin/setup-mingw@v2
+        with:
+          platform: x64
+
+      - name: Set up GCC (macOS)
+        if: runner.os == 'macOS'
+        uses: Dup4/actions-setup-gcc@v1
+        with:
+          version: latest
 
       - name: Install cmake
         uses: lukka/get-cmake@latest
@@ -46,40 +62,45 @@ jobs:
       - name: Install Python dependencies
         run: poetry install --no-root
 
-      - name: Compile
-        run: |
-          mkdir -p build && cd build
-          poetry run cmake ..
-          poetry run cmake --build .
+      - name: Build archives
+        run: poetry build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: artifact-${{ matrix.os }}-${{ matrix.python-version }}
-          path: dimlpfidex
+          name: artifact-dist
+          path: dist/*
 
-  package:
+  publish:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ${{ env.PYTHON_VERSION }}
-        os: [ubuntu-latest, windows-latest, macos-latest]
-
     needs: [ build ]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Download artifact (${{ matrix.os }}-${{ matrix.python-version }})
+      - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: artifact-${{ matrix.os }}-${{ matrix.python-version }}
-          path: dimlpfidex
+          name: artifact-dist
+          path: dist
+
+#      - name: Publish distribution 📦 to Test PyPI
+#        uses: pypa/gh-action-pypi-publish@release/v1
+#        with:
+#          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+#          repository-url: https://test.pypi.org/legacy/
+
+      - name: Publish distribution 📦 to PyPI
+        if: github.event_name == 'release' && github.event.release.target_commitish == 'main'
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
 
   cleanup:
     runs-on: ubuntu-latest
     if: always()
-    needs: deploy
+    needs: publish
     steps:
       - name: Delete artifacts
         uses: geekyeggo/delete-artifact@v2
