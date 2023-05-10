@@ -257,8 +257,8 @@ int fidexGloStats(string command) {
 
     std::cout << "Compute statistics..." << endl
               << endl;
-    double fidelity = 0;       // Global rules fidelity rate (wrong only if there is activated rules but no correct one(with respect to prediction))
-    double accuracy = 0;       // Global rules accuracy (true if there is at least one fidel activated rule and the model is right, or if there is no activated rules and the model is right or if all the activated rules decide the same class and this class is the true one)
+    double fidelity = 0;       // Global rule fidelity rate (wrong only if there is activated rules but no correct one(with respect to prediction))
+    double accuracy = 0;       // Global rule accuracy (true if there is at least one fidel activated rule and the model is right, or if there is no activated rules and the model is right or if all the activated rules decide the same class and this class is the true one)
     double explainabilityRate; // True if there is an activated rule
     double explainabilityTotal = 0;
     double defaultRuleRate = 0;             // True if there is no activated rule
@@ -320,14 +320,12 @@ int fidexGloStats(string command) {
 
         } else { // There is an explanation which is caracterised by the correct rules
 
-          fidelity++;                      // It is true to the model because we found a correct activated rule
-          if (testPred == testTrueClass) { // If the model is right, it's true for the accuracy because we found a fidel rule
-            accuracy++;
-          }
+          fidelity++; // It is true to the model because we found a correct activated rule
           explainabilityTotal++;
           nbActivatedRulesAndModelAgree++;
           nbFidelRules++;
           if (testPred == testTrueClass) {
+            accuracy++;                                // If the model is right, it's true for the accuracy because we found a fidel rule
             accuracyWhenActivatedRulesAndModelAgree++; // It is true for the accuracy because prediction is correct
             accuracyWhenRulesAndModelAgree++;          // It is true for the accuracy because prediction is correct
           }
@@ -349,11 +347,11 @@ int fidexGloStats(string command) {
 
     lines.push_back("Statistics with a test set of " + std::to_string(nbTestData) + " samples :\n");
     lines.push_back("The global rule fidelity rate is : " + std::to_string(fidelity));
-    lines.push_back("The global rules accuracy is : " + std::to_string(accuracy));
+    lines.push_back("The global rule accuracy is : " + std::to_string(accuracy));
     lines.push_back("The explainability rate (when we can find a rule) is : " + std::to_string(explainabilityRate));
     lines.push_back("The default rule rate (when we can't find a rule) is : " + std::to_string(defaultRuleRate));
-    lines.push_back("The mean number of correct(fidel) activation rules per sample is : " + std::to_string(meanNbCorrectActivatedRules));
-    lines.push_back("The mean number of wrong(not fidel) activation rules per sample is : " + std::to_string(meanNbWrongActivatedRules));
+    lines.push_back("The mean number of correct(fidel) activated rules per sample is : " + std::to_string(meanNbCorrectActivatedRules));
+    lines.push_back("The mean number of wrong(not fidel) activated rules per sample is : " + std::to_string(meanNbWrongActivatedRules));
     lines.push_back("The model test accuracy is : " + std::to_string(modelAccuracy));
     lines.push_back("The model test accuracy when rules and model agree is : " + std::to_string(accuracyWhenRulesAndModelAgree));
     lines.push_back("The model test accuracy when activated rules and model agree is : " + std::to_string(accuracyWhenActivatedRulesAndModelAgree));
