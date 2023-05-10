@@ -682,7 +682,7 @@ int fidexGloRules(string command) {
       int r = RulesIds[c];
       meanCovSize += get<1>(chosenRules[r]).size();
       meanNbAntecedents += get<0>(chosenRules[r]).size();
-      line = "";
+      line = "Rule " + std::to_string(c + 1) + ": ";
       line += std::to_string(get<0>(chosenRules[r]).size()) + " : "; // If we need to specify the antecedant number
       for (int a = 0; a < get<0>(chosenRules[r]).size(); a++) {      // each antecedant
         if (get<1>(get<0>(chosenRules[r])[a]) == 1) {                // check inequality
@@ -737,3 +737,6 @@ int fidexGloRules(string command) {
 
 // Exemple :
 //  .\fidexGloRules.exe -T datanormTrain -P dimlpDatanormTrain.out -C dataclass2Train -H hyperLocusDatanorm -O globalRulesDatanorm.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesResult -S ../fidexGlo/datafiles/
+
+// .\fidexGloRules.exe -T covidTrainData.txt -P covidTrainPred.out -C covidTrainClass.txt -H hyperLocusCovid -O globalRulesCovid.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesCovidResult -S ../dimlp/datafiles/covidDataset
+// .\fidexGloRules.exe -T spamTrainData.txt -P spamTrainPred.out -C spamTrainClass.txt -H hyperLocusSpam -O globalRulesSpam.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesSpamResult -S ../dimlp/datafiles/spamDataset

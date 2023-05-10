@@ -272,6 +272,25 @@ int fidexGloStats(string command) {
     vector<double> testValues;
     int testPred;
     int testTrueClass;
+
+    string inequality;
+    /*
+    for (auto myrul: rules){
+      for (int a = 0; a < get<0>(myrul).size(); a++) {      // each antecedant
+        if (get<1>(get<0>(myrul)[a]) == 1) {                // check inequality
+          inequality = ">=";
+        } else {
+          inequality = "<";
+        }
+        cout << "X" + std::to_string(get<0>(get<0>(myrul)[a])) + inequality + std::to_string(get<2>(get<0>(myrul)[a])) + " "; // Write antecedant
+      }
+      cout << "-> class " + std::to_string(std::get<2>(myrul));                // class of the rule
+      cout << " Covering size : " + std::to_string(std::get<1>(myrul)); // Covering size
+      cout << " Fidelity : "+ std::to_string(std::get<3>(myrul));                                                           // Rule fidelity
+      cout << " Accuracy : " + std::to_string(std::get<4>(myrul)) + "\n";             // Rule accuracy
+      //cout << " Confidence : " + std::to_string(std::get<5>(myrul)) + "\n";    // Rule confidence
+    }*/
+
     for (int t = 0; t < nbTestData; t++) { // For each test value
       testValues = (*testData)[t];
       testPred = (*testPreds)[t];
@@ -314,6 +333,19 @@ int fidexGloStats(string command) {
           if (allSameClass) {
             explainabilityTotal++;                                   // If all decisions are the same, we have an explanation
             if (get<2>(rules[activatedRules[0]]) == testTrueClass) { // If those decisions are the true class, this is accurate
+              /*cout << "Test values : ";
+              for (auto myval:testValues){
+                cout << myval << " ";
+              }
+              cout << endl;
+              cout << "pred : " << testPred << endl;
+              cout << "True class : " << testTrueClass << endl;
+              cout << "Activated rules indexes : ";
+              for (auto myact: activatedRules){
+                cout << myact << " ";
+              }
+              cout << endl;*/
+
               accuracy++;
             }
           }
@@ -334,7 +366,6 @@ int fidexGloStats(string command) {
         }
       }
     }
-
     fidelity /= nbTestData;
     accuracy /= nbTestData;
     explainabilityRate = explainabilityTotal / nbTestData;
@@ -388,3 +419,6 @@ int fidexGloStats(string command) {
 }
 
 // Exemple : .\fidexGloStats.exe -T datanorm -P dimlp.out -C dataclass2 -R globalRules.txt -O stats.txt -S ../fidexGlo/datafiles/
+//.\fidexGloStats.exe -T datanormTest -P dimlpDatanormTest.out -C dataclass2Test -R globalRulesDatanorm.txt -O stats.txt -S ../fidexGlo/datafiles
+//.\fidexGloStats.exe -T covidTestData.txt -P covidTestPred.out -C covidTestClass.txt -R globalRulesCovid.txt -O globalStats.txt -S ../dimlp/datafiles/covidDataset
+//.\fidexGloStats.exe -T spamTestData.txt -P spamTestPred.out -C spamTestClass.txt -R globalRulesSpam.txt -O globalStats.txt -S ../dimlp/datafiles/spamDataset

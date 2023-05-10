@@ -916,3 +916,6 @@ int main(int nbParam, char** param)
 {
     dimlpTrn("DimlpTrn -L ../dimlp/datafiles/datanormTrain -1 ../dimlp/datafiles/dataclass2Train -T ../dimlp/datafiles/datanormTest -2 ../dimlp/datafiles/dataclass2Test -w ../dimlp/datafiles/dimlpDatanorm.wts -I 16 -H2 5 -O 2 -p ../dimlp/datafiles/dimlpDatanormTrain.out -t ../dimlp/datafiles/dimlpDatanormTest.out -R -F ../dimlp/datafiles/dimlpDatanormTrn.rls -o ../dimlp/datafiles/dimlpDatanormTrnStats -r ../dimlp/datafiles/dimlpDatanormTrnResult.txt");
 }*/
+
+// .\DimlpTrn.exe -L covidTrainData.txt -1 covidTrainClass.txt -T covidTestData.txt -2 covidTestClass.txt -w covid.wts -I 20 -H2 5 -O 2 -p covidTrainPred.out -t covidTestPred.out -R -F covidTrn.rls -o covidTrnStats -r covidTrnResult.txt -S ../dimlp/datafiles/covidDataset -A attributes.txt
+// .\DimlpTrn.exe -L spamTrainData.txt -1 spamTrainClass.txt -T spamTestData.txt -2 spamTestClass.txt -w spam.wts -I 57 -H2 5 -O 2 -p spamTrainPred.out -t spamTestPred.out -R -F spamTrn.rls -o spamTrnStats -r spamTrnResult.txt -S ../dimlp/datafiles/spamDataset -A attributes.txt
