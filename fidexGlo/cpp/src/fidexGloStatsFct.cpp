@@ -128,7 +128,7 @@ int fidexGloStats(string command) {
     char *statsFile = 0;
     char *consoleFile = 0;
 
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
     string root = rootFolderTemp + "/";
 #elif defined(_WIN32)
     string root = rootFolderTemp + "\\";
