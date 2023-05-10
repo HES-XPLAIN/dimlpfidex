@@ -9,21 +9,34 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.11"] #  ["3.8", "3.9", "3.10", "3.11"]
         os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install GCC
+      - name: Set up GCC
+        if: runner.os == 'Linux'
         uses: egor-tensin/setup-gcc@v1
         with:
           version: latest
           platform: x64
+
+      - name: Set up MinGW
+        if: runner.os == 'Windows'
+        uses: egor-tensin/setup-mingw@v2
+        with:
+          platform: x64
+
+      - name: Set up GCC
+        if: runner.os == 'macOS'
+        uses: Dup4/actions-setup-gcc@v1
+        with:
+          version: latest
 
       - name: Install cmake
         uses: lukka/get-cmake@latest
@@ -40,8 +53,27 @@ jobs:
       - name: Install Python dependencies
         run: poetry install
 
-      - name: Compile
+      - name: Create build dir
+        if: runner.os != 'Windows'
+        run: mkdir -p build
+
+      - name: Create build dir
+        if: runner.os == 'Windows'
         run: |
-          mkdir -p build && cd build
+          rm -r build
+          mkdir build
+
+      - name: Compile
+        if: runner.os != 'Windows'
+        run: |
+          cd build
           poetry run cmake ..
+          poetry run cmake --build .
+
+      - name: Compile
+        if: runner.os == 'Windows'
+        run: |
+          cd build
+          $path = (poetry env info | Select-String -Pattern 'Path:\s+(.*)').Matches.Groups[1].Value
+          poetry run cmake -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH="$path" ..
           poetry run cmake --build .
