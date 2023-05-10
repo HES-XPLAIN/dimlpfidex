@@ -240,3 +240,6 @@ int hyperLocus(string command) {
 
 // Exemple : hyperLocus -W dimlp.wts -Q 50 -I 5 -O hyperLocus -S ../fidexGlo/datafiles/
 // .\hyperLocus.exe -W dimlp.wts -Q 50 -I 5 -O hyperLocus -S ../fidexGlo/datafiles/
+
+// .\hyperLocus.exe -W covid.wts -Q 50 -I 5 -O hyperLocusCovid -S ../dimlp/datafiles/covidDataset
+// .\hyperLocus.exe -W spam.wts -Q 50 -I 5 -O hyperLocusSpam -S ../dimlp/datafiles/spamDataset
