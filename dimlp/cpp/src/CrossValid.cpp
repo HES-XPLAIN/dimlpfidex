@@ -22,8 +22,7 @@ void GiveAllParam()
   cout << "crossValid -S <Root folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
   cout << "-C <choose the algorithms by giving : fidex fidexGlo or both>";
   cout << "-L <training set file(path with respect to specified root folder)> -1 <file of train classes> ";
-  cout << "-Q <number of stairs in staircase activation function> ";
-  cout << "-h <high side of the interval> ";
+  cout << "-h <high side of the interval> "; // Ex: 5
   cout << "-I <number of input neurons> -O <number of output neurons>";
 
   cout << " <Options>\n\n";
@@ -31,7 +30,7 @@ void GiveAllParam()
   cout << "Options are: \n\n";
   cout << "-K <K-fold cross-validation>\n";                                                        // Not to be 10
   cout << "-N <number of times we do the cross-validation>\n";                                     // Not to be 10
-  cout << "-F <Folder where to save weights, predictions and datas after training>\n";             // Not to be CrossValidation
+  cout << "-F <Folder where to save crossValidation data>\n";                                      // Not to be CrossValidation
   cout << "-M <FidexGlo heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo>\n"; // not to be 1
   cout << "-o <output statistic file name, saved in specific crossValidation folder>\n";           // Not to be crossValidationStats.txt
   cout << "-A <file of attributes>\n";
@@ -40,19 +39,20 @@ void GiveAllParam()
   cout << "(if not specified this number will be equal to the ";
   cout << "number of input neurons)\n";
   cout << "-Hk <number of neurons in the kth hidden layer>\n";
-  cout << "-l <back-propagation learning parameter (Eta)>\n";
-  cout << "-m <back-propagation momentum parameter (Mu)>\n";
-  cout << "-f <back-propagation flat spot elimination parameter (Flat)>\n";
-  cout << "-e <error threshold>\n";
-  cout << "-a <accuracy threshold>\n";
-  cout << "-d <absolute difference error threshold>\n";
-  cout << "-i <number of train epochs>\n";
-  cout << "-s <number of train epochs to show error>\n";
-  cout << "-n <max fidex iteration number>\n";
-  cout << "-v <minimum fidex covering number>\n";
-  cout << "-x <dimension dropout parameter for fidex>\n";
-  cout << "-y <hyperplan dropout parameter for fidex>\n";
-  cout << "-z <seed (0=ranodom)>";
+  cout << "-Q <number of stairs in staircase activation function> ";        // Not to be 50
+  cout << "-l <back-propagation learning parameter (Eta)>\n";               // Not to be 0.1
+  cout << "-m <back-propagation momentum parameter (Mu)>\n";                // Not to be 0.6
+  cout << "-f <back-propagation flat spot elimination parameter (Flat)>\n"; // Not to be 0.01
+  cout << "-e <error threshold>\n";                                         // Not to be -1111111111.0
+  cout << "-a <accuracy threshold>\n";                                      // Not to be 11111111111111.0
+  cout << "-d <absolute difference error threshold>\n";                     // Not to be 0
+  cout << "-i <number of train epochs>\n";                                  // Not to be 1500
+  cout << "-s <number of train epochs to show error>\n";                    // Not to be 10
+  cout << "-n <max fidex and fidexGlo iteration number>\n";                 // Not to be 100
+  cout << "-v <minimum fidex and fidexGlo covering number>\n";              // Not to be 2
+  cout << "-x <dimension dropout parameter for fidex and fidexGlo>\n";
+  cout << "-y <hyperplan dropout parameter for fidex and fidexGlo>\n";
+  cout << "-z <seed (0=random)>"; // Not to be 0
 
   cout << "\n-------------------------------------------------\n\n";
 }
@@ -95,9 +95,22 @@ int main(int nbParam, char **param)
   string algorithm;
   bool algorithmInit = false;
   string statFile = "crossValidationStats.txt";
+  string quant = "50";
+  string eta = "0.1";
+  string mu = "0.6";
+  string flat = "0.01";
+  string errThres = "-1111111111.0";
+  string accThres = "11111111111111.0";
+  string deltaErr = "0";
+  string showErr = "10";
+  string epochs = "1500";
+  string itMax = "100";
+  string minNbCover = "2";
   string heuristic = "1"; // FidexGlo heuristic
   bool isFidex = false;
   bool isFidexGlo = false;
+  bool dropoutDim = false;
+  bool dropoutHyp = false;
 
   string genericCommand = "dimlpTrn";
   string hyperLocusGenericCommand = "hyperLocus -h 1";
@@ -105,8 +118,7 @@ int main(int nbParam, char **param)
   string fidexGloGenericCommand = "fidexGloRules";
   string fidexGloStatsGenericCommand = "fidexGloStats";
 
-  string eta, mu, flat, errThres, accThres, deltaErr, showErr, epochs, quant, hiKnot, nbIn, nbOut, arch, arch2, attrFile, weightFile, itMax, minNbCover, dropoutDimParam, dropoutHypParam;
-  bool quantInit = false;
+  string hiKnot, nbIn, nbOut, arch, arch2, attrFile, weightFile, dropoutDimParam, dropoutHypParam;
   bool hiKnotInit = false;
   bool nbInInit = false;
   bool nbOutInit = false;
@@ -172,9 +184,6 @@ int main(int nbParam, char **param)
 
       case 'Q':
         quant = param[k];
-        quantInit = true;
-        genericCommand += " -q " + quant;
-        hyperLocusGenericCommand += " -Q " + quant;
         break;
 
       case 'h':
@@ -282,12 +291,14 @@ int main(int nbParam, char **param)
 
       case 'x':
         dropoutDimParam = param[k];
+        dropoutDim = true;
         fidexGenericCommand += " -d " + dropoutDimParam;
         fidexGloGenericCommand += " -d " + dropoutDimParam;
         break;
 
       case 'y':
         dropoutHypParam = param[k];
+        dropoutHyp = true;
         fidexGenericCommand += " -h " + dropoutHypParam;
         fidexGloGenericCommand += " -h " + dropoutHypParam;
         break;
@@ -346,12 +357,6 @@ int main(int nbParam, char **param)
 
   if (algorithm == "fidexGlo" || algorithm == "both") {
     isFidexGlo = true;
-  }
-
-  if (quantInit == false) {
-    cout << "Give a number of stairs in staircase activation function with -Q selection please."
-         << "\n";
-    return -1;
   }
 
   if (hiKnotInit == false) {
@@ -538,15 +543,110 @@ int main(int nbParam, char **param)
   strcpy(validTarFileStr, validTarFileStrTemp.c_str());
 
   // Statistics for Fidex
-  double meanCovSizeFid = 0;
-  double meanNbAntFid = 0;
-  double meanFidelFid = 0;
-  double meanAccFid = 0;
-  double meanConfidFid = 0;
+  // One execution
+  double meanCovSizeFid = 0.0;
+  double meanNbAntFid = 0.0;
+  double meanFidelFid = 0.0;
+  double meanAccFid = 0.0;
+  double meanConfidFid = 0.0;
+
+  // All executions
+  double meanCovSizeFidAll = 0.0;
+  double meanNbAntFidAll = 0.0;
+  double meanFidelFidAll = 0.0;
+  double meanAccFidAll = 0.0;
+  double meanConfidFidAll = 0.0;
+
+  double stdCovSizeFidAll = 0.0;
+  double stdNbAntFidAll = 0.0;
+  double stdFidelFidAll = 0.0;
+  double stdAccFidAll = 0.0;
+  double stdConfidFidAll = 0.0;
+
+  // Statistics for FidexGlo
+  // One execution
+  double meanNbRules = 0.0;
+  double meanNbCover = 0.0;
+  double meanNbAntecedants = 0.0;
+  double meanFidelGlo = 0.0;
+  double meanAccGlo = 0.0;
+  double meanExplGlo = 0.0;
+  double meanDefaultRate = 0.0;
+  double meanNbFidelActivations = 0.0;
+  double meanWrongActivations = 0.0;
+  double meanTestAccGlo = 0.0;
+  double meanTestAccWhenRulesAndModelAgree = 0.0;
+  double meanTestAccWhenActivatedRulesAndModelAgree = 0.0;
+
+  // All executions
+  double meanNbRulesAll = 0.0;
+  double meanNbCoverAll = 0.0;
+  double meanNbAntecedantsAll = 0.0;
+  double meanFidelGloAll = 0.0;
+  double meanAccGloAll = 0.0;
+  double meanExplGloAll = 0.0;
+  double meanDefaultRateAll = 0.0;
+  double meanNbFidelActivationsAll = 0.0;
+  double meanWrongActivationsAll = 0.0;
+  double meanTestAccGloAll = 0.0;
+  double meanTestAccWhenRulesAndModelAgreeAll = 0.0;
+  double meanTestAccWhenActivatedRulesAndModelAgreeAll = 0.0;
+
+  double stdNbRulesAll;
+  double stdNbCoverAll;
+  double stdNbAntecedantsAll;
+  double stdFidelGloAll;
+  double stdAccGloAll;
+  double stdExplGloAll;
+  double stdDefaultRateAll;
+  double stdNbFidelActivationsAll;
+  double stdWrongActivationsAll;
+  double stdTestAccGloAll;
+  double stdTestAccWhenRulesAndModelAgreeAll;
+  double stdTestAccWhenActivatedRulesAndModelAgreeAll;
+
+  vector<vector<double>> meanFoldValuesFidex;    // each mean value in an entire fold for each fold for fidex
+  vector<vector<double>> meanFoldValuesFidexGlo; // each mean value in an entire fold for each fold for fidexGlo
+
+  std::ofstream outputStatsFile; // Output stats file
+
+  // Parameters
+  outputStatsFile.open(statFile, std::ios::app);
+  if (outputStatsFile.is_open()) {
+
+    outputStatsFile << "Parameters for " << N << " times " << K << "-Cross validation :\n";
+    outputStatsFile << "---------------------------------------------------------\n";
+    outputStatsFile << "Training of dimlp with " << nbIn << " input neurons and " << nbOut << " output neurons\n";
+    outputStatsFile << "The number of stairs in staircase activation function is " << quant << " and the interval in which hyperplans are contained is [-" << hiKnot << "," << hiKnot << "]\n";
+    outputStatsFile << "The back-propagation learning parameter (Eta) is " << eta << "\n";
+    outputStatsFile << "The back-propagation momentum parameter (Mu) is " << mu << "\n";
+    outputStatsFile << "The back-propagation flat spot elimination parameter (Flat) is " << flat << "\n";
+    outputStatsFile << "The error threshold is " << errThres << "\n";
+    outputStatsFile << "The accuracy threshold is " << accThres << "\n";
+    outputStatsFile << "The absolute difference error threshold is " << deltaErr << "\n";
+    outputStatsFile << "The number of train epochs is " << epochs << "\n";
+    outputStatsFile << "The number of train epochs to show error is " << showErr << "\n";
+    outputStatsFile << "The max fidex and fidexGlo iteration number is " << itMax << "\n";
+    outputStatsFile << "The minimum fidex and fidexGlo covering number is " << minNbCover << "\n";
+    if (dropoutHyp) {
+      outputStatsFile << "The hyperplan dropout parameter for fidex and fidexGlo is " << dropoutHypParam << "\n";
+    } else {
+      outputStatsFile << "There is no hyperplan dropout\n";
+    }
+    if (dropoutDim) {
+      outputStatsFile << "The dimension dropout parameter for fidex and fidexGlo is " << dropoutDimParam << "\n";
+    } else {
+      outputStatsFile << "There is no dimension dropout\n";
+    }
+
+    outputStatsFile << "---------------------------------------------------------\n\n";
+    outputStatsFile.close();
+  } else {
+    throw std::runtime_error("Error : Couldn't open stats extraction file " + std::string(statFile) + ".");
+  }
 
   // Loop on N executions of cross-validation
   for (int n = 0; n < N; n++) {
-    cout << "------------------------------" << endl;
     cout << "n=" << n << endl;
 
 // Create folder
@@ -700,6 +800,7 @@ int main(int nbParam, char **param)
       }
 
       // Train datas with DimlpTrn
+      genericCommand += " -q " + quant;
       string command = genericCommand;
       string folderPathFromRoot = std::string(folderTemp) + separator + "Execution" + std::to_string(n + 1) + separator + "Fold" + std::to_string(k + 1);
 
@@ -724,6 +825,7 @@ int main(int nbParam, char **param)
       }
 
       // Compute hyperlocus in folder
+      hyperLocusGenericCommand += " -Q " + quant;
       string hyperLocusCommand = hyperLocusGenericCommand;
 
       hyperLocusCommand += " -W " + folderPathFromRoot + separator + "weights.wts ";
@@ -771,7 +873,7 @@ int main(int nbParam, char **param)
         vector<double> statVals; // stat values
         while (!statsData.eof()) {
           getline(statsData, line);
-          if (line.length() != 0) {
+          if (!checkStringEmpty(line)) {
             std::string lastElement(line.substr(line.rfind(" ") + 1));
             statVals.push_back(std::stod(lastElement));
           }
@@ -813,30 +915,286 @@ int main(int nbParam, char **param)
         fidexGloStatsCommand += "-O " + folderPathFromRoot + separator + "fidexGloStats.txt ";
         fidexGloStatsCommand += "-r " + folderPathFromRoot + separator + "fidexGloStatsResult.txt ";
 
-        cout << fidexGloStatsCommand << endl;
         cout << "Enter in fidexGloStats function" << endl;
         int resFidGloSt = fidexGloStats(fidexGloStatsCommand);
         if (resFidGloSt == -1) {
           return -1; // If there is an error in fidexGloStats
         }
+
+        // Get statistics from fidexGlo
+        string statsGloFile = "";
+        statsGloFile = folderPath + separator + "fidexGloStats.txt";
+
+        fstream statsGloData;
+        statsGloData.open(statsGloFile, ios::in); // Read data file
+        if (statsGloData.fail()) {
+          throw std::runtime_error("Error : fidex stat file " + std::string(statsGloFile) + " not found");
+        }
+        string line, value, meanNbRulesStr, meanNbCoverStr, meanNbAntecedantsStr;
+        getline(statsGloData, line);
+        getline(statsGloData, line);
+
+        if (!checkStringEmpty(line)) {
+          std::stringstream myLine(line);
+          while (myLine >> value) {
+            if (value == "rules") {
+              myLine >> value;
+              myLine >> meanNbRulesStr;
+              meanNbRulesStr.pop_back();
+              meanNbRules += stod(meanNbRulesStr);
+            }
+            if (value == "sample") {
+              myLine >> value;
+              myLine >> value;
+              myLine >> value;
+              myLine >> value;
+              myLine >> value;
+              myLine >> meanNbCoverStr;
+              meanNbCoverStr.pop_back();
+              meanNbCover += stod(meanNbCoverStr);
+            }
+            if (value == "antecedents") {
+              myLine >> value;
+              myLine >> value;
+              myLine >> value;
+              string meanNbAntecedantsStr;
+              myLine >> meanNbAntecedantsStr;
+              meanNbAntecedants += stod(meanNbAntecedantsStr);
+            }
+          }
+        } else {
+          throw std::runtime_error("Error in second line of fidexGlo stat file.");
+        }
+
+        getline(statsGloData, line);
+        getline(statsGloData, line);
+        getline(statsGloData, line);
+        vector<double> statGloVals; // stat values
+        while (!statsGloData.eof()) {
+          getline(statsGloData, line);
+          if (!checkStringEmpty(line)) {
+            std::string lastElement(line.substr(line.rfind(" ") + 1));
+            statGloVals.push_back(std::stod(lastElement));
+          }
+        }
+        statsGloData.close();
+
+        meanFidelGlo += statGloVals[0];
+        meanAccGlo += statGloVals[1];
+        meanExplGlo += statGloVals[2];
+        meanDefaultRate += statGloVals[3];
+        meanNbFidelActivations += statGloVals[4];
+        meanWrongActivations += statGloVals[5];
+        meanTestAccGlo += statGloVals[6];
+        meanTestAccWhenRulesAndModelAgree += statGloVals[7];
+        meanTestAccWhenActivatedRulesAndModelAgree += statGloVals[8];
       }
+    }
+
+    // Compute fold Stats
+    vector<double> meanCurrentExecValuesFidex;
+    if (isFidex) { // For Fidex
+      meanCurrentExecValuesFidex.push_back(meanCovSizeFid / K);
+      meanCovSizeFid = 0;
+      meanCurrentExecValuesFidex.push_back(meanNbAntFid / K);
+      meanNbAntFid = 0;
+      meanCurrentExecValuesFidex.push_back(meanFidelFid / K);
+      meanFidelFid = 0;
+      meanCurrentExecValuesFidex.push_back(meanAccFid / K);
+      meanAccFid = 0;
+      meanCurrentExecValuesFidex.push_back(meanConfidFid / K);
+      meanConfidFid = 0;
+      meanFoldValuesFidex.push_back(meanCurrentExecValuesFidex);
+    }
+    vector<double> meanCurrentExecValuesFidexGlo;
+    if (isFidexGlo) { // For FidexGlo
+      meanCurrentExecValuesFidexGlo.push_back(meanNbRules / K);
+      meanNbRules = 0;
+      meanCurrentExecValuesFidexGlo.push_back(meanNbCover / K);
+      meanNbCover = 0;
+      meanCurrentExecValuesFidexGlo.push_back(meanNbAntecedants / K);
+      meanNbAntecedants = 0;
+      meanCurrentExecValuesFidexGlo.push_back(meanFidelGlo / K);
+      meanFidelGlo = 0;
+      meanCurrentExecValuesFidexGlo.push_back(meanAccGlo / K);
+      meanAccGlo = 0;
+      meanCurrentExecValuesFidexGlo.push_back(meanExplGlo / K);
+      meanExplGlo = 0;
+      meanCurrentExecValuesFidexGlo.push_back(meanDefaultRate / K);
+      meanDefaultRate = 0;
+      meanCurrentExecValuesFidexGlo.push_back(meanNbFidelActivations / K);
+      meanNbFidelActivations = 0;
+      meanCurrentExecValuesFidexGlo.push_back(meanWrongActivations / K);
+      meanWrongActivations = 0;
+      meanCurrentExecValuesFidexGlo.push_back(meanTestAccGlo / K);
+      meanTestAccGlo = 0;
+      meanCurrentExecValuesFidexGlo.push_back(meanTestAccWhenRulesAndModelAgree / K);
+      meanTestAccWhenRulesAndModelAgree = 0;
+      meanCurrentExecValuesFidexGlo.push_back(meanTestAccWhenActivatedRulesAndModelAgree / K);
+      meanTestAccWhenActivatedRulesAndModelAgree = 0;
+      meanFoldValuesFidexGlo.push_back(meanCurrentExecValuesFidexGlo);
+    }
+
+    // Output and show stats
+    // ofstream outputStatsFile(statFile);
+    outputStatsFile.open(statFile, std::ios::app);
+    if (outputStatsFile.is_open()) {
+
+      outputStatsFile << "Results for execution " << n + 1 << " of " << K << "-Cross validation :\n\n";
+      cout << "\n---------------------------------------------------------" << endl;
+      cout << "---------------------------------------------------------" << endl
+           << endl;
+      cout << "Results for execution " << n + 1 << " of " << K << "-Cross validation :" << endl
+           << endl;
+      if (isFidex) {
+        outputStatsFile << "Fidex :\n";
+        outputStatsFile << "The mean covering size per rule is : " << meanCurrentExecValuesFidex[0] << "\n";
+        outputStatsFile << "The mean number of antecedents per rule is : " << meanCurrentExecValuesFidex[1] << "\n";
+        outputStatsFile << "The mean rule fidelity rate is : " << meanCurrentExecValuesFidex[2] << "\n";
+        outputStatsFile << "The mean rule accuracy is : " << meanCurrentExecValuesFidex[3] << "\n";
+        outputStatsFile << "The mean rule confidence is : " << meanCurrentExecValuesFidex[4] << "\n";
+        cout << "Fidex :" << endl;
+        cout << "The mean covering size per rule is : " << meanCurrentExecValuesFidex[0] << endl;
+        cout << "The mean number of antecedents per rule is : " << meanCurrentExecValuesFidex[1] << endl;
+        cout << "The mean rule fidelity rate is : " << meanCurrentExecValuesFidex[2] << endl;
+        cout << "The mean rule accuracy is : " << meanCurrentExecValuesFidex[3] << endl;
+        cout << "The mean rule confidence is : " << meanCurrentExecValuesFidex[4] << endl;
+        cout << "\n---------------------------------------------------------" << endl;
+        cout << "---------------------------------------------------------" << endl;
+      }
+      if (isFidex && isFidexGlo) {
+        outputStatsFile << "\n---------------------------------------------------------\n\n";
+        cout << endl;
+      }
+      if (isFidexGlo) {
+        outputStatsFile << "FidexGlo :\n";
+        outputStatsFile << "The mean number of rules per train sample is : " << meanCurrentExecValuesFidexGlo[0] << "\n";
+        outputStatsFile << "The mean sample covering number per rule is : " << meanCurrentExecValuesFidexGlo[1] << "\n";
+        outputStatsFile << "The mean number of antecedents per rule is : " << meanCurrentExecValuesFidexGlo[2] << "\n";
+        outputStatsFile << "The mean global rule fidelity rate is : " << meanCurrentExecValuesFidexGlo[3] << "\n";
+        outputStatsFile << "The mean global rule accuracy is : " << meanCurrentExecValuesFidexGlo[4] << "\n";
+        outputStatsFile << "The mean explainability rate (when we can find a rule) is : " << meanCurrentExecValuesFidexGlo[5] << "\n";
+        outputStatsFile << "The mean default rule rate (when we can't find a rule) is : " << meanCurrentExecValuesFidexGlo[6] << "\n";
+        outputStatsFile << "The mean number of correct(fidel) activated rules per sample is : " << meanCurrentExecValuesFidexGlo[7] << "\n";
+        outputStatsFile << "The mean number of wrong(not fidel) activated rules per sample is : " << meanCurrentExecValuesFidexGlo[8] << "\n";
+        outputStatsFile << "The mean model test accuracy is : " << meanCurrentExecValuesFidexGlo[9] << "\n";
+        outputStatsFile << "The mean model test accuracy when rules and model agree is : " << meanCurrentExecValuesFidexGlo[10] << "\n";
+        outputStatsFile << "The mean model test accuracy when activated rules and model agree is : " << meanCurrentExecValuesFidexGlo[11] << "\n";
+        cout << "FidexGlo :" << endl;
+        cout << "The mean number of rules per train sample is : " << meanCurrentExecValuesFidexGlo[0] << endl;
+        cout << "The mean sample covering number per rule is : " << meanCurrentExecValuesFidexGlo[1] << endl;
+        cout << "The mean number of antecedents per rule is : " << meanCurrentExecValuesFidexGlo[2] << endl;
+        cout << "The mean global rule fidelity rate is : " << meanCurrentExecValuesFidexGlo[3] << endl;
+        cout << "The mean global rule accuracy is : " << meanCurrentExecValuesFidexGlo[4] << endl;
+        cout << "The mean explainability rate (when we can find a rule) is : " << meanCurrentExecValuesFidexGlo[5] << endl;
+        cout << "The mean default rule rate (when we can't find a rule) is : " << meanCurrentExecValuesFidexGlo[6] << endl;
+        cout << "The mean number of correct(fidel) activated rules per sample is : " << meanCurrentExecValuesFidexGlo[7] << endl;
+        cout << "The mean number of wrong(not fidel) activated rules per sample is : " << meanCurrentExecValuesFidexGlo[8] << endl;
+        cout << "The mean model test accuracy is : " << meanCurrentExecValuesFidexGlo[9] << endl;
+        cout << "The mean model test accuracy when rules and model agree is : " << meanCurrentExecValuesFidexGlo[10] << endl;
+        cout << "The mean model test accuracy when activated rules and model agree is : " << meanCurrentExecValuesFidexGlo[11] << endl;
+        cout << "\n---------------------------------------------------------" << endl;
+        cout << "---------------------------------------------------------" << endl;
+      }
+      outputStatsFile << "\n---------------------------------------------------------\n";
+      outputStatsFile << "---------------------------------------------------------\n\n";
+      outputStatsFile.close();
+    } else {
+      throw std::runtime_error("Error : Couldn't open stats extraction file " + std::string(statFile) + ".");
     }
   }
 
-  // Compute stats
+  // Compute stats on all executions
 
-  int nbExec = N * K;
-  if (isFidex) {
-    meanCovSizeFid /= nbExec;
-    meanNbAntFid /= nbExec;
-    meanFidelFid /= nbExec;
-    meanAccFid /= nbExec;
-    meanConfidFid /= nbExec;
+  if (isFidex) { // For Fidex
+    for (int exec = 0; exec < N; exec++) {
+      meanCovSizeFidAll += meanFoldValuesFidex[exec][0];
+      meanNbAntFidAll += meanFoldValuesFidex[exec][1];
+      meanFidelFidAll += meanFoldValuesFidex[exec][2];
+      meanAccFidAll += meanFoldValuesFidex[exec][3];
+      meanConfidFidAll += meanFoldValuesFidex[exec][4];
+    }
+    meanCovSizeFidAll /= N;
+    meanNbAntFidAll /= N;
+    meanFidelFidAll /= N;
+    meanAccFidAll /= N;
+    meanConfidFidAll /= N;
+
+    for (int exec = 0; exec < N; exec++) {
+      stdCovSizeFidAll += pow(meanFoldValuesFidex[exec][0] - meanCovSizeFidAll, 2);
+      stdNbAntFidAll += pow(meanFoldValuesFidex[exec][1] - meanNbAntFidAll, 2);
+      stdFidelFidAll += pow(meanFoldValuesFidex[exec][2] - meanFidelFidAll, 2);
+      stdAccFidAll += pow(meanFoldValuesFidex[exec][3] - meanAccFidAll, 2);
+      stdConfidFidAll += pow(meanFoldValuesFidex[exec][4] - meanConfidFidAll, 2);
+    }
+
+    stdCovSizeFidAll = sqrt(stdCovSizeFidAll / N);
+    stdNbAntFidAll = sqrt(stdNbAntFidAll / N);
+    stdFidelFidAll = sqrt(stdFidelFidAll / N);
+    stdAccFidAll = sqrt(stdAccFidAll / N);
+    stdConfidFidAll = sqrt(stdConfidFidAll / N);
+  }
+  if (isFidexGlo) { // For FidexGlo
+    for (int exec = 0; exec < N; exec++) {
+      meanNbRulesAll += meanFoldValuesFidexGlo[exec][0];
+      meanNbCoverAll += meanFoldValuesFidexGlo[exec][1];
+      meanNbAntecedantsAll += meanFoldValuesFidexGlo[exec][2];
+      meanFidelGloAll += meanFoldValuesFidexGlo[exec][3];
+      meanAccGloAll += meanFoldValuesFidexGlo[exec][4];
+      meanExplGloAll += meanFoldValuesFidexGlo[exec][5];
+      meanDefaultRateAll += meanFoldValuesFidexGlo[exec][6];
+      meanNbFidelActivationsAll += meanFoldValuesFidexGlo[exec][7];
+      meanWrongActivationsAll += meanFoldValuesFidexGlo[exec][8];
+      meanTestAccGloAll += meanFoldValuesFidexGlo[exec][9];
+      meanTestAccWhenRulesAndModelAgreeAll += meanFoldValuesFidexGlo[exec][10];
+      meanTestAccWhenActivatedRulesAndModelAgreeAll += meanFoldValuesFidexGlo[exec][11];
+    }
+    meanNbRulesAll /= N;
+    meanNbCoverAll /= N;
+    meanNbAntecedantsAll /= N;
+    meanFidelGloAll /= N;
+    meanAccGloAll /= N;
+    meanExplGloAll /= N;
+    meanDefaultRateAll /= N;
+    meanNbFidelActivationsAll /= N;
+    meanWrongActivationsAll /= N;
+    meanTestAccGloAll /= N;
+    meanTestAccWhenRulesAndModelAgreeAll /= N;
+    meanTestAccWhenActivatedRulesAndModelAgreeAll /= N;
+
+    for (int exec = 0; exec < N; exec++) {
+      stdNbRulesAll += pow(meanFoldValuesFidexGlo[exec][0] - meanNbRulesAll, 2);
+      stdNbCoverAll += pow(meanFoldValuesFidexGlo[exec][1] - meanNbCoverAll, 2);
+      stdNbAntecedantsAll += pow(meanFoldValuesFidexGlo[exec][2] - meanNbAntecedantsAll, 2);
+      stdFidelGloAll += pow(meanFoldValuesFidexGlo[exec][3] - meanFidelGloAll, 2);
+      stdAccGloAll += pow(meanFoldValuesFidexGlo[exec][4] - meanAccGloAll, 2);
+      stdExplGloAll += pow(meanFoldValuesFidexGlo[exec][5] - meanExplGloAll, 2);
+      stdDefaultRateAll += pow(meanFoldValuesFidexGlo[exec][6] - meanDefaultRateAll, 2);
+      stdNbFidelActivationsAll += pow(meanFoldValuesFidexGlo[exec][7] - meanNbFidelActivationsAll, 2);
+      stdWrongActivationsAll += pow(meanFoldValuesFidexGlo[exec][8] - meanWrongActivationsAll, 2);
+      stdTestAccGloAll += pow(meanFoldValuesFidexGlo[exec][9] - meanTestAccGloAll, 2);
+      stdTestAccWhenRulesAndModelAgreeAll += pow(meanFoldValuesFidexGlo[exec][10] - meanTestAccWhenRulesAndModelAgreeAll, 2);
+      stdTestAccWhenActivatedRulesAndModelAgreeAll += pow(meanFoldValuesFidexGlo[exec][11] - meanTestAccWhenActivatedRulesAndModelAgreeAll, 2);
+    }
+
+    stdNbRulesAll = sqrt(stdNbRulesAll / N);
+    stdNbCoverAll = sqrt(stdNbCoverAll / N);
+    stdNbAntecedantsAll = sqrt(stdNbAntecedantsAll / N);
+    stdFidelGloAll = sqrt(stdFidelGloAll / N);
+    stdAccGloAll = sqrt(stdAccGloAll / N);
+    stdExplGloAll = sqrt(stdExplGloAll / N);
+    stdDefaultRateAll = sqrt(stdDefaultRateAll / N);
+    stdNbFidelActivationsAll = sqrt(stdNbFidelActivationsAll / N);
+    stdWrongActivationsAll = sqrt(stdWrongActivationsAll / N);
+    stdTestAccGloAll = sqrt(stdTestAccGloAll / N);
+    stdTestAccWhenRulesAndModelAgreeAll = sqrt(stdTestAccWhenRulesAndModelAgreeAll / N);
+    stdTestAccWhenActivatedRulesAndModelAgreeAll = sqrt(stdTestAccWhenActivatedRulesAndModelAgreeAll / N);
   }
 
   // Show and save results
 
-  ofstream outputStatsFile(statFile);
+  // ofstream outputStatsFile(statFile);
+  outputStatsFile.open(statFile, std::ios::app);
   if (outputStatsFile.is_open()) {
 
     outputStatsFile << "Results for " << N << " times " << K << "-Cross validation :\n\n";
@@ -847,35 +1205,89 @@ int main(int nbParam, char **param)
          << endl;
     if (isFidex) {
       outputStatsFile << "Fidex :\n";
-      outputStatsFile << "The mean covering size per rule is : " << meanCovSizeFid << "\n";
-      outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntFid << "\n";
-      outputStatsFile << "The mean rule fidelity rate is : " << meanFidelFid << "\n";
-      outputStatsFile << "The mean rule accuracy is : " << meanAccFid << "\n";
-      outputStatsFile << "The mean rule confidence is : " << meanConfidFid << "\n";
-      outputStatsFile << "\n---------------------------------------------------------\n";
-      outputStatsFile << "---------------------------------------------------------\n";
+      outputStatsFile << "The mean covering size per rule is : " << meanCovSizeFidAll << "\n";
+      outputStatsFile << "The standard deviation of the covering size per rule is : " << stdCovSizeFidAll << "\n";
+      outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntFidAll << "\n";
+      outputStatsFile << "The standard deviation of the number of antecedents per rule is : " << stdNbAntFidAll << "\n";
+      outputStatsFile << "The mean rule fidelity rate is : " << meanFidelFidAll << "\n";
+      outputStatsFile << "The standard deviation of the rule fidelity rate is : " << stdFidelFidAll << "\n";
+      outputStatsFile << "The mean rule accuracy is : " << meanAccFidAll << "\n";
+      outputStatsFile << "The standard deviation of the rule accuracy is : " << stdAccFidAll << "\n";
+      outputStatsFile << "The mean rule confidence is : " << meanConfidFidAll << "\n";
+      outputStatsFile << "The standard deviation of the rule confidence is : " << stdConfidFidAll << "\n";
       cout << "Fidex :" << endl;
-      cout << "The mean covering size per rule is : " << meanCovSizeFid << endl;
-      cout << "The mean number of antecedents per rule is : " << meanNbAntFid << endl;
-      cout << "The mean rule fidelity rate is : " << meanFidelFid << endl;
-      cout << "The mean rule accuracy is : " << meanAccFid << endl;
-      cout << "The mean rule confidence is : " << meanConfidFid << endl;
+      cout << "The mean covering size per rule is : " << meanCovSizeFidAll << endl;
+      cout << "The standard deviation of the covering size per rule is : " << stdCovSizeFidAll << endl;
+      cout << "The mean number of antecedents per rule is : " << meanNbAntFidAll << endl;
+      cout << "The standard deviation of the number of antecedents per rule is : " << stdNbAntFidAll << endl;
+      cout << "The mean rule fidelity rate is : " << meanFidelFidAll << endl;
+      cout << "The standard deviation of the rule fidelity rate is : " << stdFidelFidAll << endl;
+      cout << "The mean rule accuracy is : " << meanAccFidAll << endl;
+      cout << "The standard deviation of the rule accuracy is : " << stdAccFidAll << endl;
+      cout << "The mean rule confidence is : " << meanConfidFidAll << endl;
+      cout << "The standard deviation of the rule confidence is : " << stdConfidFidAll << endl;
       cout << "\n---------------------------------------------------------" << endl;
       cout << "---------------------------------------------------------" << endl;
     }
     if (isFidex && isFidexGlo) {
       cout << endl;
+      outputStatsFile << "\n---------------------------------------------------------\n\n";
     }
     if (isFidexGlo) {
+      outputStatsFile << "FidexGlo :\n";
+      outputStatsFile << "The mean number of rules per train sample is : " << meanNbRulesAll << "\n";
+      outputStatsFile << "The standard deviation of the number of rules per train sample is : " << stdNbRulesAll << "\n";
+      outputStatsFile << "The mean sample covering number per rule is : " << meanNbCoverAll << "\n";
+      outputStatsFile << "The standard deviation of the sample covering number per rule is : " << stdNbCoverAll << "\n";
+      outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntecedantsAll << "\n";
+      outputStatsFile << "The standard deviation of the number of antecedents per rule is : " << stdNbAntecedantsAll << "\n";
+      outputStatsFile << "The mean global rule fidelity rate is : " << meanFidelGloAll << "\n";
+      outputStatsFile << "The standard deviation of the global rule fidelity rate is : " << stdFidelGloAll << "\n";
+      outputStatsFile << "The mean global rule accuracy is : " << meanAccGloAll << "\n";
+      outputStatsFile << "The standard deviation of the global rule accuracy is : " << stdAccGloAll << "\n";
+      outputStatsFile << "The mean explainability rate (when we can find a rule) is : " << meanExplGloAll << "\n";
+      outputStatsFile << "The standard deviation of the explainability rate (when we can find a rule) is : " << stdExplGloAll << "\n";
+      outputStatsFile << "The mean default rule rate (when we can't find a rule) is : " << meanDefaultRateAll << "\n";
+      outputStatsFile << "The standard deviation of the default rule rate (when we can't find a rule) is : " << stdDefaultRateAll << "\n";
+      outputStatsFile << "The mean number of correct(fidel) activated rules per sample is : " << meanNbFidelActivationsAll << "\n";
+      outputStatsFile << "The standard deviation of the number of correct(fidel) activated rules per sample is : " << stdNbFidelActivationsAll << "\n";
+      outputStatsFile << "The mean number of wrong(not fidel) activated rules per sample is : " << meanWrongActivationsAll << "\n";
+      outputStatsFile << "The standard deviation of the number of wrong(not fidel) activated rules per sample is : " << stdWrongActivationsAll << "\n";
+      outputStatsFile << "The mean model test accuracy is : " << meanTestAccGloAll << "\n";
+      outputStatsFile << "The standard deviation of the model test accuracy is : " << stdTestAccGloAll << "\n";
+      outputStatsFile << "The mean model test accuracy when rules and model agree is : " << meanTestAccWhenRulesAndModelAgreeAll << "\n";
+      outputStatsFile << "The standard deviation of the model test accuracy when rules and model agree is : " << stdTestAccWhenRulesAndModelAgreeAll << "\n";
+      outputStatsFile << "The mean model test accuracy when activated rules and model agree is : " << meanTestAccWhenActivatedRulesAndModelAgreeAll << "\n";
+      outputStatsFile << "The standard deviation of the model test accuracy when activated rules and model agree is : " << stdTestAccWhenActivatedRulesAndModelAgreeAll << "\n";
       cout << "FidexGlo :" << endl;
-      cout << "The mean covering size per rule is : " << meanCovSizeFid << endl;
-      cout << "The mean number of antecedents per rule is : " << meanNbAntFid << endl;
-      cout << "The mean rule fidelity rate is : " << meanFidelFid << endl;
-      cout << "The mean rule accuracy is : " << meanAccFid << endl;
-      cout << "The mean rule confidence is : " << meanConfidFid << endl;
+      cout << "The mean number of rules per train sample is : " << meanNbRulesAll << endl;
+      cout << "The standard deviation of the number of rules per train sample is : " << stdNbRulesAll << endl;
+      cout << "The mean sample covering number per rule is : " << meanNbCoverAll << endl;
+      cout << "The standard deviation of the sample covering number per rule is : " << stdNbCoverAll << endl;
+      cout << "The mean number of antecedents per rule is : " << meanNbAntecedantsAll << endl;
+      cout << "The standard deviation of the number of antecedents per rule is : " << stdNbAntecedantsAll << endl;
+      cout << "The mean global rule fidelity rate is : " << meanFidelGloAll << endl;
+      cout << "The standard deviation of the global rule fidelity rate is : " << stdFidelGloAll << endl;
+      cout << "The mean global rule accuracy is : " << meanAccGloAll << endl;
+      cout << "The standard deviation of the global rule accuracy is : " << stdAccGloAll << endl;
+      cout << "The mean explainability rate (when we can find a rule) is : " << meanExplGloAll << endl;
+      cout << "The standard deviation of the explainability rate (when we can find a rule) is : " << stdExplGloAll << endl;
+      cout << "The mean default rule rate (when we can't find a rule) is : " << meanDefaultRateAll << endl;
+      cout << "The standard deviation of the default rule rate (when we can't find a rule) is : " << stdDefaultRateAll << endl;
+      cout << "The mean number of correct(fidel) activated rules per sample is : " << meanNbFidelActivationsAll << endl;
+      cout << "The standard deviation of the number of correct(fidel) activated rules per sample is : " << stdNbFidelActivationsAll << endl;
+      cout << "The mean number of wrong(not fidel) activated rules per sample is : " << meanWrongActivationsAll << endl;
+      cout << "The standard deviation of the number of wrong(not fidel) activated rules per sample is : " << stdWrongActivationsAll << endl;
+      cout << "The mean model test accuracy is : " << meanTestAccGloAll << endl;
+      cout << "The standard deviation of the model test accuracy is : " << stdTestAccGloAll << endl;
+      cout << "The mean model test accuracy when rules and model agree is : " << meanTestAccWhenRulesAndModelAgreeAll << endl;
+      cout << "The standard deviation of the model test accuracy when rules and model agree is : " << stdTestAccWhenRulesAndModelAgreeAll << endl;
+      cout << "The mean model test accuracy when activated rules and model agree is : " << meanTestAccWhenActivatedRulesAndModelAgreeAll << endl;
+      cout << "The standard deviation of the model test accuracy when activated rules and model agree is : " << stdTestAccWhenActivatedRulesAndModelAgreeAll << endl;
       cout << "\n---------------------------------------------------------" << endl;
       cout << "---------------------------------------------------------" << endl;
     }
+    outputStatsFile.close();
   } else {
     throw std::runtime_error("Error : Couldn't open stats extraction file " + std::string(statFile) + ".");
   }
@@ -890,4 +1302,4 @@ int main(int nbParam, char **param)
   std::cout << "\nFull execution time = " << temps << " sec\n";
 }
 
-// .\CrossValid.exe -L datanorm -1 dataclass2 -K 3 -N 2 -Q 50 -I 16 -H2 5 -O 2 -F CrossValidation -S ../dimlp/datafiles -h 5 -n 100 -v 25 -x 0.5 -y 0.5 -C both
+// .\CrossValid.exe -L datanorm -1 dataclass2 -K 3 -N 2 -I 16 -H2 5 -O 2 -F CrossValidation -S ../dimlp/datafiles -h 5 -v 25 -x 0.5 -y 0.5 -C both
