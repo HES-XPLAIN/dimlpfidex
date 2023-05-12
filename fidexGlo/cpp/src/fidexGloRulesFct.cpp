@@ -404,6 +404,10 @@ int fidexGloRules(string command) {
                 << endl;
 
       for (int idSample = 0; idSample < nbDatas; idSample++) {
+
+        if (idSample % int(nbDatas / 100) == 0) {
+          cout << "Processing : " << int((double(idSample) / nbDatas) * 100) << "%" << endl;
+        }
         currentMinNbCov = minNbCover;
         ruleCreated = false;
 
@@ -421,7 +425,7 @@ int fidexGloRules(string command) {
         rules.push_back(rule);
       }
 
-      std::cout << "Number of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
+      std::cout << "\nNumber of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
 
       std::cout << "Fidex rules computed" << endl
                 << endl;
@@ -506,6 +510,9 @@ int fidexGloRules(string command) {
                 << endl;
       for (int idSample = 0; idSample < nbDatas; idSample++) {
 
+        if (idSample % int(nbDatas / 100) == 0) {
+          cout << "Processing : " << int((double(idSample) / nbDatas) * 100) << "%" << endl;
+        }
         currentMinNbCov = minNbCover;
         ruleCreated = false;
         while (!ruleCreated) {
@@ -521,7 +528,7 @@ int fidexGloRules(string command) {
         rules.push_back(rule);
       }
 
-      std::cout << "Number of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
+      std::cout << "\nNumber of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
 
       std::cout << "Fidex rules computed" << endl
                 << endl;
@@ -612,10 +619,12 @@ int fidexGloRules(string command) {
       // While there is some not covered samples
       while (notCoveredSamples.size() != 0) {
 
+        if ((nbDatas - notCoveredSamples.size()) % int(nbDatas / 100) == 0) {
+          cout << "Processing : " << int((double(nbDatas - notCoveredSamples.size()) / nbDatas) * 100) << "%" << endl;
+        }
         // std::cout << "iteration " << nbRules << " ";
 
         idSample = notCoveredSamples[0];
-        // idSample = 14;
         currentMinNbCov = minNbCover;
         ruleCreated = false;
         while (!ruleCreated) {
