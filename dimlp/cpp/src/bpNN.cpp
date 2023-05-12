@@ -644,7 +644,7 @@ void BpNN::TrainPhase(
   specErr = ComputeErrorSameAct(train, trainTar, &specAcc);
   PrintSpecErr(specErr, specAcc);
 
-  cout << "\n";
+  cout << endl;
 
   if (valid.GetNbEx() != 0) {
     prevValidErr = ComputeError(valid, validTar, &accValid);
@@ -692,7 +692,7 @@ void BpNN::TrainPhase(
       specErr = ComputeErrorSameAct(train, trainTar, &specAcc);
       PrintSpecErr(specErr, specAcc);
 
-      cout << "\n";
+      cout << endl;
 
       if (valid.GetNbEx() != 0) {
         validErr = ComputeError(valid, validTar, &accValid);
@@ -709,7 +709,8 @@ void BpNN::TrainPhase(
           prevValidErr = validErr;
         }
 
-        cout << "\n\n";
+        cout << "\n"
+             << endl;
       }
 
       if (acc >= AccuracyParam) {
@@ -799,7 +800,8 @@ BpNN::BpNN(
   InitRandomGen(seed);
 
   cout << "\n\n-----------------------------------------";
-  cout << "-------------------------------------\n\n";
+  cout << "-------------------------------------\n"
+       << endl;
   cout << "Creating " << printNetType << " structures ...";
 
   AssignParam(eta, mu, flat, errParam, accuracyParam, deltaErrParam,
@@ -830,7 +832,8 @@ BpNN::BpNN(
   NbWeightLayers = nbLayers - 1;
 
   cout << "\n\n-----------------------------------------";
-  cout << "-------------------------------------\n\n";
+  cout << "-------------------------------------\n"
+       << endl;
   cout << "Creating " << printNetType << " structures ...";
 
   CreateNetStruct(nbNeurons);
@@ -864,7 +867,8 @@ BpNN::BpNN(
   InitRandomGen(seed);
 
   cout << "\n\n-----------------------------------------";
-  cout << "-------------------------------------\n\n";
+  cout << "-------------------------------------\n"
+       << endl;
   cout << "Creating " << printNetType << " structures ...";
 
   strcpy(ReadFile, readFile);

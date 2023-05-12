@@ -23,7 +23,8 @@ Dimlp::Dimlp(
                      netType, seed)
 
 {
-  cout << "Number of quantized levels = " << discrLevels << "\n\n";
+  cout << "Number of quantized levels = " << discrLevels << "\n"
+       << endl;
 
   DefineDimlp(discrLevels);
 }
@@ -40,7 +41,8 @@ Dimlp::Dimlp(
                             netType)
 
 {
-  cout << "Number of quantized levels = " << discrLevels << "\n\n";
+  cout << "Number of quantized levels = " << discrLevels << "\n"
+       << endl;
 
   DefineDimlp(discrLevels);
   ReadWeights();
@@ -67,7 +69,8 @@ Dimlp::Dimlp(
                 BpNN(readFile, eta, mu, flat, errParam, accuracyParam, deltaErrParam,
                      showErrParam, nbEpochsParam, nbLayers, nbNeurons, weightFile,
                      netType, seed) {
-  cout << "Number of quantized levels = " << discrLevels << "\n\n";
+  cout << "Number of quantized levels = " << discrLevels << "\n"
+       << endl;
 
   DefineDimlp(discrLevels);
   ReadWeights();

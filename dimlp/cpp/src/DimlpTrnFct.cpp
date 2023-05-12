@@ -826,8 +826,9 @@ int dimlpTrn(string command) {
       All = all2;
     }
 
-    cout << "\n\n****************************************************\n\n";
-    cout << "*** RULE EXTRACTION\n";
+    cout << "\n\n****************************************************\n"
+         << endl;
+    cout << "*** RULE EXTRACTION" << endl;
 
     RealHyp ryp1(All, net, quant, nbIn,
                  vecNbNeurons[1] / nbIn, nbWeightLayers);
@@ -919,3 +920,4 @@ int main(int nbParam, char** param)
 
 // .\DimlpTrn.exe -L covidTrainData.txt -1 covidTrainClass.txt -T covidTestData.txt -2 covidTestClass.txt -w covid.wts -I 20 -H2 5 -O 2 -p covidTrainPred.out -t covidTestPred.out -R -F covidTrn.rls -o covidTrnStats -r covidTrnResult.txt -S ../dimlp/datafiles/covidDataset -A attributes.txt
 // .\DimlpTrn.exe -L spamTrainData.txt -1 spamTrainClass.txt -T spamTestData.txt -2 spamTestClass.txt -w spam.wts -I 57 -H2 5 -O 2 -p spamTrainPred.out -t spamTestPred.out -R -F spamTrn.rls -o spamTrnStats -r spamTrnResult.txt -S ../dimlp/datafiles/spamDataset -A attributes.txt
+// .\DimlpTrn.exe -L isoletTrainData.txt -1 isoletTrainClass.txt -T isoletTestData.txt -2 isoletTestClass.txt -w isoletV3.wts -I 617 -H2 5 -O 26 -p isoletTrainPredV3.out -t isoletTestPredV3.out -R -F isoletTrnV3.rls -o isoletTrnStatsV3 -r isoletTrnResultV3.txt -S ../dimlp/datafiles/isoletDataset -A attributes.txt

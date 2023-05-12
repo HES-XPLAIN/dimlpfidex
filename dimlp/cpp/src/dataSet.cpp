@@ -34,7 +34,7 @@ int DataSet::FirstLecture(char nameFile[])
   istream inFile(&buf);
 
   cout << nameFile << ": "
-       << "Reading ...\n";
+       << "Reading ..." << endl;
 
   for (count = 0; (inFile >> x); count++)
     ;
@@ -51,7 +51,8 @@ int DataSet::FirstLecture(char nameFile[])
   }
 
   cout << nameFile << ": "
-       << "Read.\n\n";
+       << "Read.\n"
+       << endl;
 
   return count / NbAttr;
 }
@@ -67,7 +68,7 @@ void DataSet::SecondLecture(char nameFile[])
   int count, attr;
 
   cout << nameFile << ": "
-       << "Creating dataset structures ...\n";
+       << "Creating dataset structures ..." << endl;
 
   buf.open(nameFile, ios_base::in);
   istream inFile(&buf);
@@ -86,7 +87,7 @@ void DataSet::SecondLecture(char nameFile[])
   delete oneExample;
 
   cout << nameFile << ": "
-       << "Dataset structures created.\n";
+       << "Dataset structures created." << endl;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -225,7 +226,7 @@ DataSet::DataSet(char nameFile[], int nbAttr)
   Set = new float *[NbEx];
 
   cout << "Number of patterns in file " << nameFile << ": ";
-  cout << NbEx << "\n";
+  cout << NbEx << endl;
 
   SecondLecture(nameFile);
 }
