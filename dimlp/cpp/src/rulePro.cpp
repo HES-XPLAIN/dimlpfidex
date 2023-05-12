@@ -469,13 +469,13 @@ void RuleProcessing::MixPrune()
   AntInd.Del();
 
   for (;;) {
-    cout << "\nNumber of rules = " << CountRules() << "\n";
-    cout << "Number of antecedents = " << CountAnt() << "\n";
+    cout << "\nNumber of rules = " << CountRules() << endl;
+    cout << "Number of antecedents = " << CountAnt() << endl;
 
     ComputeGain();
 
     cout << "Number of possible antecedents to prune = ";
-    cout << Gain.GetNbEl() << "\n";
+    cout << Gain.GetNbEl() << endl;
 
     if (Gain.GetNbEl() == 0)
       return;
@@ -771,12 +771,13 @@ void RuleProcessing::EnlargeAndPrune()
   int found;
 
   do {
-    cout << "Number of rules = " << CountRules() << "\n";
-    cout << "Number of antecedents = " << CountAnt() << "\n";
+    cout << "Number of rules = " << CountRules() << endl;
+    cout << "Number of antecedents = " << CountAnt() << endl;
 
     found = TryEnlargedThres();
 
-    cout << "Number of possible extensions = " << found << "\n\n";
+    cout << "Number of possible extensions = " << found << "\n"
+         << endl;
 
     RulePruneByMinCar();
 

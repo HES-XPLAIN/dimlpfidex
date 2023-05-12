@@ -339,7 +339,8 @@ void RealHyp::SetRealHyp(DataSet &data)
   const int nbEx = data.GetNbEx();
 
   cout << "*** ESTIMATING RELEVANCE OF DISCRIMINANT HYPER-PLANES ";
-  cout << "WITH AVAILABLE EXAMPLES ...\n\n";
+  cout << "WITH AVAILABLE EXAMPLES ...\n"
+       << endl;
 
   if (nbEx >= 10)
     modulo = nbEx / 10;
@@ -348,7 +349,7 @@ void RealHyp::SetRealHyp(DataSet &data)
 
   for (p = 0; p < nbEx; p++) {
     if (p % modulo == 0)
-      cout << p << "\n";
+      cout << p << endl;
 
     OneExRealHyp(data, p);
   }
@@ -677,7 +678,8 @@ void RealHyp::RuleExtraction(
   Aborted = 0;
   SavedRules = new RuleProcessing(NbIn, NbHyp, data, ClassPatNet, Descr);
 
-  cout << "*** BUILDING DECISION TREE ...\n\n";
+  cout << "*** BUILDING DECISION TREE ...\n"
+       << endl;
 
   listAll = data.Select(&empty);
   DeepSearch(data, &empty, listAll);
@@ -685,7 +687,8 @@ void RealHyp::RuleExtraction(
 
   if (Aborted) {
     cout << "*** TREE ABORTED !\n\n";
-    cout << "*** TRYING AN ALTERNATIVE ALGORITHM \n\n";
+    cout << "*** TRYING AN ALTERNATIVE ALGORITHM \n"
+         << endl;
 
     SavedRules->Del();
     Descr->Del();
@@ -708,7 +711,7 @@ void RealHyp::RuleExtraction(
     cout << "--- Number of rules = 0\n";
     cout << "--- Number of antecedents = 0\n";
     cout << "--- Number of antecedents per rule = 0\n";
-    cout << "--- Number of examples per rule = 0\n";
+    cout << "--- Number of examples per rule = 0" << endl;
 
     SavedRules->Del();
 
@@ -718,15 +721,18 @@ void RealHyp::RuleExtraction(
     return;
   }
 
-  cout << "\n\n*** PRUNING ANTECEDENTS AND PRUNING RULES ...\n\n";
+  cout << "\n\n*** PRUNING ANTECEDENTS AND PRUNING RULES ...\n"
+       << endl;
   SavedRules->MixPrune();
 
-  cout << "\n\n*** EXPANDING RULES ...\n\n";
+  cout << "\n\n*** EXPANDING RULES ...\n"
+       << endl;
   SavedRules->EnlargeAndPrune();
 
   nbAnt1 = SavedRules->CountAnt();
 
-  cout << "\n\n*** RETRYING RULE EXTRACTION ...\n\n";
+  cout << "\n\n*** RETRYING RULE EXTRACTION ...\n"
+       << endl;
 
   CleanRuleStruct clean(data, train, trainClass,
                         valid, validClass, test, testClass,
@@ -740,7 +746,8 @@ void RealHyp::RuleExtraction(
 
   SavedRules->Del();
 
-  cout << "*** BUILDING DECISION TREE ...\n\n";
+  cout << "*** BUILDING DECISION TREE ...\n"
+       << endl;
 
   listAll = data.Select(&empty);
   DeepSearch(data, &empty, listAll);
@@ -754,24 +761,27 @@ void RealHyp::RuleExtraction(
 
   SavedRules->Clean();
 
-  cout << "\n\n*** PRUNING ANTECEDENTS AND PRUNING RULES ...\n\n";
+  cout << "\n\n*** PRUNING ANTECEDENTS AND PRUNING RULES ...\n"
+       << endl;
   SavedRules->MixPrune();
 
-  cout << "\n\n*** EXPANDING RULES ...\n\n";
+  cout << "\n\n*** EXPANDING RULES ...\n"
+       << endl;
   SavedRules->EnlargeAndPrune();
 
   nbAnt2 = SavedRules->CountAnt();
 
   if (nbAnt2 < nbAnt1) {
     cout << "\n\n*** RULE SET IMPROVED BY " << nbAnt1 - nbAnt2;
-    cout << " ANTECEDENTS\n";
+    cout << " ANTECEDENTS" << endl;
 
     clean.Del();
     CleanRuleStruct clean(data, train, trainClass,
                           valid, validClass, test, testClass,
                           SavedRules, Bpnn, Out, NbOut);
 
-    cout << "\n\n*** WRITING IF-THEN RULES ...\n\n";
+    cout << "\n\n*** WRITING IF-THEN RULES ...\n"
+         << endl;
 
     if (attr.IsFileAttr()) {
       clean.SetAttr(attr.GetListAttr());
