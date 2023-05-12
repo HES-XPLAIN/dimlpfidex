@@ -2,7 +2,12 @@
 
 Instructions for the release process.
 
-1. Update the `version` string in `pyproject.toml` to the release version.
+1. . Update the `version` string in `pyproject.toml` to the release version.
+```
+poetry version <version>
+```
+Beside an explicit version string, a bump rule such as `patch`, `minor`, `major`
+can be passed.
 
 2. Commit
 ```
