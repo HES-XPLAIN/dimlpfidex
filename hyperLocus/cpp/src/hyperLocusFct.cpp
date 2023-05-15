@@ -244,3 +244,4 @@ int hyperLocus(string command) {
 // .\hyperLocus.exe -W covid.wts -Q 50 -I 5 -O hyperLocusCovid -S ../dimlp/datafiles/covidDataset
 // .\hyperLocus.exe -W spam.wts -Q 50 -I 5 -O hyperLocusSpam -S ../dimlp/datafiles/spamDataset
 // .\hyperLocus.exe -W isoletV2.wts -Q 50 -I 5 -O hyperLocusIsoletV2 -S ../dimlp/datafiles/isoletDataset
+// .\hyperLocus.exe -W HAPTV2.wts -Q 50 -I 5 -O hyperLocusHAPTV2 -S ../dimlp/datafiles/HAPTDataset

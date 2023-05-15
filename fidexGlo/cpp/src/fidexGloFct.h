@@ -1,6 +1,7 @@
 #ifndef FIDEXGLOFCT_H
 #define FIDEXGLOFCT_H
 
+#include "dataset.h"
 #include "getRulesFun.h"
 #include <algorithm>
 #include <fstream>
@@ -13,5 +14,6 @@
 
 static void showParams();
 int fidexGlo(string command);
+bool checkStringEmpty(string line);
 
 #endif

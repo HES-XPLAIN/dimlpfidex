@@ -750,3 +750,4 @@ int fidexGloRules(string command) {
 // .\fidexGloRules.exe -T covidTrainData.txt -P covidTrainPred.out -C covidTrainClass.txt -H hyperLocusCovid -O globalRulesCovid.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesCovidResult -S ../dimlp/datafiles/covidDataset
 // .\fidexGloRules.exe -T spamTrainData.txt -P spamTrainPred.out -C spamTrainClass.txt -H hyperLocusSpam -O globalRulesSpam.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesSpamResult -S ../dimlp/datafiles/spamDataset
 // .\fidexGloRules.exe -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -H hyperLocusIsoletV2 -O globalRulesIsoletV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesIsoletResultV2 -S ../dimlp/datafiles/isoletDataset
+// .\fidexGloRules.exe -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -H hyperLocusHAPTV2 -O globalRulesHAPTV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesHAPTResultV2 -S ../dimlp/datafiles/HAPTDataset
