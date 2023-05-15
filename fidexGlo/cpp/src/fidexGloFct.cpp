@@ -8,15 +8,29 @@ void showParams() {
   std::cout << "Obligatory parameters : \n\n";
 
   cout << "fidexGlo -F <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
-  std::cout << "-S <test sample(s) data file> ";
+  std::cout << "-S <test sample(s) data file with data and prediction(if no -p)> ";
   std::cout << "-R <rules input file> ";
   std::cout << "<Options>\n\n";
 
   std::cout << "Options are: \n\n";
-  std::cout << "-O <Rule output file>";
+  std::cout << "-p <test prediction file>, -S needs to have only test datas\n";
+  std::cout << "-O <Rule output file>\n";
   std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
 
   std::cout << "\n-------------------------------------------------\n\n";
+}
+
+bool checkStringEmpty(string line) {
+  if (line.length() == 0) {
+    return true;
+  } else {
+    for (int c : line) {
+      if (isgraph(c)) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
 
 int fidexGlo(string command) {
@@ -48,6 +62,8 @@ int fidexGlo(string command) {
 
     string testSamplesDataFileTemp;
     bool testSamplesDataFileInit = false;
+    string testSamplesPredFileTemp; // Test predictions
+    bool testSamplesPredFileInit = false;
     string rulesFileTemp;
     bool rulesFileInit = false;
     string explanationFileTemp;
@@ -56,6 +72,7 @@ int fidexGlo(string command) {
     bool consoleFileInit = false;
     string rootFolderTemp;
     bool rootFolderInit = false;
+    DataSetFid *testDatas;
 
     // Import parameters
 
@@ -72,6 +89,11 @@ int fidexGlo(string command) {
         case 'S':
           testSamplesDataFileTemp = &(commandList[p])[0];
           testSamplesDataFileInit = true;
+          break;
+
+        case 'p':
+          testSamplesPredFileTemp = &(commandList[p])[0];
+          testSamplesPredFileInit = true;
           break;
 
         case 'R':
@@ -103,9 +125,10 @@ int fidexGlo(string command) {
     // ----------------------------------------------------------------------
     // create paths with root foler
 
-    char testSamplesDataFileTmp[160], rulesFileTmp[160], explanationFileTmp[160], consoleFileTmp[160];
+    char testSamplesDataFileTmp[160], testSamplesPredFileTmp[160], rulesFileTmp[160], explanationFileTmp[160], consoleFileTmp[160];
 
     char *testSamplesDataFile = 0;
+    char *testSamplesPredFile = 0;
     char *rulesFile = 0;
     char *explanationFile = 0;
     char *consoleFile = 0;
@@ -125,6 +148,17 @@ int fidexGlo(string command) {
       }
       strcpy(testSamplesDataFileTmp, testSamplesDataFileTemp.c_str());
       testSamplesDataFile = testSamplesDataFileTmp;
+    }
+
+    if (testSamplesPredFileInit) {
+      testSamplesPredFileTemp = root + testSamplesPredFileTemp;
+      if (testSamplesPredFileTemp.length() >= 160) {
+        cout << "Path " << testSamplesPredFileTemp << "is too long"
+             << "\n";
+        return -1;
+      }
+      strcpy(testSamplesPredFileTmp, testSamplesPredFileTemp.c_str());
+      testSamplesPredFile = testSamplesPredFileTmp;
     }
 
     if (rulesFileInit) {
@@ -185,44 +219,48 @@ int fidexGlo(string command) {
               << endl;
 
     // Get test data
-
+    vector<int> testSamplesPreds;
     vector<vector<double>> testSamplesValues;
     vector<vector<double>> testSamplesOutputValuesPredictions;
-    vector<int> testSamplesPreds;
-    vector<double> testSampleValues;
-    vector<double> testSampleOutputValuesPredictions;
-    int testSamplePred;
-    fstream testData;
-    testData.open(testSamplesDataFile, ios::in); // Read data file
-    if (testData.fail()) {
-      throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " not found");
-    }
-    string line;
-    bool firstLine = true;
-    while (!testData.eof()) {
-      getline(testData, line);
-      if (line.length() != 0) {
-        std::stringstream myLine(line);
-        double value;
-        testSampleValues.clear();
-        while (myLine >> value) {
-          testSampleValues.push_back(value);
-        }
-        testSamplesValues.push_back(testSampleValues);
-      } else if (firstLine) {
-        throw std::runtime_error("Error : in file " + std::string(testSamplesDataFile) + ", first line is empty");
-      } else {
-        while (!testData.eof()) {
-          getline(testData, line);
-          if (line.length() != 0) {
-            throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " is not on good format, there is more than one empty line between 2 samples");
-          }
-        }
-        break; // If there is just an empty line at the end of the file
+
+    if (!testSamplesPredFileInit) { // If we have only one test data file with data and prediction
+
+      vector<double> testSampleValues;
+      vector<double> testSampleOutputValuesPredictions;
+      int testSamplePred;
+      fstream testData;
+      testData.open(testSamplesDataFile, ios::in); // Read data file
+      if (testData.fail()) {
+        throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " not found");
       }
-      if (!testData.eof()) {
+      string line;
+      bool firstLine = true;
+      while (!testData.eof()) {
         getline(testData, line);
-        if (line.length() != 0) {
+        if (!checkStringEmpty(line)) {
+          std::stringstream myLine(line);
+          double value;
+          testSampleValues.clear();
+          while (myLine >> value) {
+            testSampleValues.push_back(value);
+          }
+          testSamplesValues.push_back(testSampleValues);
+        } else if (firstLine) {
+          throw std::runtime_error("Error : in file " + std::string(testSamplesDataFile) + ", first line is empty");
+        } else {
+          while (!testData.eof()) {
+            getline(testData, line);
+            if (!checkStringEmpty(line)) {
+              throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " is not on good format, there is more than one empty line between 2 samples");
+            }
+          }
+          break; // If there is just an empty line at the end of the file
+        }
+        if (testData.eof()) {
+          throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " has not enough prediction data");
+        }
+        getline(testData, line);
+        if (!checkStringEmpty(line)) {
           std::stringstream myLine(line);
           double value;
           testSampleOutputValuesPredictions.clear();
@@ -232,21 +270,36 @@ int fidexGlo(string command) {
           testSamplesOutputValuesPredictions.push_back(testSampleOutputValuesPredictions);
           testSamplePred = std::max_element(testSampleOutputValuesPredictions.begin(), testSampleOutputValuesPredictions.end()) - testSampleOutputValuesPredictions.begin();
           testSamplesPreds.push_back(testSamplePred);
+
         } else {
-          throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " has not enough test prediction data");
+          while (!testData.eof()) {
+            getline(testData, line);
+            if (!checkStringEmpty(line)) {
+              throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " is not on good format, there is empty lines inbetween data");
+            }
+          }
+          throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " has not enough prediction data");
         }
-      } else {
-        throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " has not enough test prediction data");
-      }
-      if (!testData.eof()) {
-        getline(testData, line);
-        if (line.length() != 0) {
-          throw std::runtime_error("Error : in file " + std::string(testSamplesDataFile) + ", you need to have empty lines between samples");
+        if (!testData.eof()) {
+          getline(testData, line);
+          if (line.length() != 0) {
+            throw std::runtime_error("Error : in file " + std::string(testSamplesDataFile) + ", you need to have empty lines between samples");
+          }
         }
+        firstLine = false;
       }
-      firstLine = false;
+      testData.close(); // close data file
+    } else {            // We have a different file for test predictions
+      testDatas = new DataSetFid(testSamplesDataFile, testSamplesPredFile);
+      testSamplesValues = (*testDatas->getDatas());
+      testSamplesPreds = (*testDatas->getPredictions());
+      testSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
+
+      // Check if there is good number of lines
+      if (testSamplesPreds.size() != testSamplesValues.size()) {
+        throw std::runtime_error("Error : in file " + std::string(testSamplesPredFile) + ", you need to specify as many predictions as there is datas");
+      }
     }
-    testData.close(); // close data file
 
     int nbSamples = testSamplesValues.size();
     int nbTestAttributs = testSamplesValues[0].size();

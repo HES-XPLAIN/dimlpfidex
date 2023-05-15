@@ -1,17 +1,4 @@
-#include "checkFun.h"
-#include "dataSet.h"
-#include "hyperspace.h"
-#include <algorithm>
-#include <chrono>
-#include <ctime>
-#include <fstream>
-#include <iostream>
-#include <numeric>
-#include <random>
-#include <sstream>
-#include <time.h>
-#include <tuple>
-#include <vector>
+#include "fidexFct.h"
 
 using namespace std;
 
@@ -537,6 +524,11 @@ int fidex(string command) {
       mainSamplesPreds = (*testDatas->getPredictions());
       mainSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
 
+      // Check if there is good number of lines
+      if (mainSamplesPreds.size() != mainSamplesValues.size()) {
+        throw std::runtime_error("Error : in file " + std::string(mainSamplesPredFile) + ", you need to specify as many predictions as there is datas");
+      }
+
       // Classes :
       if (mainSamplesClassFileInit) {
         fstream classData;
@@ -884,6 +876,7 @@ int fidex(string command) {
 
 // .\fidex.exe -T datanorm -P dimlp.out -C dataclass2 -S testData.txt -p testPred.txt -c testClass.txt -H hyperLocus -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
 // .\fidex.exe -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -S isoletTestData.txt -p isoletTestPredV2.out -c isoletTestClass.txt -H hyperLocusIsoletV2 -O ruleFidex.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../dimlp/datafiles/isoletDataset
+// .\fidex.exe -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -S Test/X_test.txt -p Test/pred_testV2.out -c Test/y_test.txt -H hyperLocusHAPTV2 -O ruleFidexV2.txt -s stats -i 100 -v 2 -d 0.5 -h 0.5 -R ../dimlp/datafiles/HAPTDataset
 
 /*
 #include <profileapi.h>

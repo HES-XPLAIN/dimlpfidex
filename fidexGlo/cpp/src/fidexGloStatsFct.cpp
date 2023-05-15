@@ -423,3 +423,4 @@ int fidexGloStats(string command) {
 //.\fidexGloStats.exe -T covidTestData.txt -P covidTestPred.out -C covidTestClass.txt -R globalRulesCovid.txt -O globalStats.txt -S ../dimlp/datafiles/covidDataset
 //.\fidexGloStats.exe -T spamTestData.txt -P spamTestPred.out -C spamTestClass.txt -R globalRulesSpam.txt -O globalStats.txt -S ../dimlp/datafiles/spamDataset
 //.\fidexGloStats.exe -T isoletTestData.txt -P isoletTestPred.out -C isoletTestClass.txt -R globalRulesIsolet.txt -O globalStats.txt -S ../dimlp/datafiles/isoletDataset
+//.\fidexGloStats.exe -T Test/X_test.txt -P Test/pred_testV2.out -C Test/y_test.txt -R globalRulesHAPTV2.txt -O globalStatsV2.txt -S ../dimlp/datafiles/HAPTDataset
