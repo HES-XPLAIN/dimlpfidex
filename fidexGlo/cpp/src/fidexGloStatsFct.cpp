@@ -379,8 +379,8 @@ int fidexGloStats(string command) {
     lines.push_back("Statistics with a test set of " + std::to_string(nbTestData) + " samples :\n");
     lines.push_back("The global rule fidelity rate is : " + std::to_string(fidelity));
     lines.push_back("The global rule accuracy is : " + std::to_string(accuracy));
-    lines.push_back("The explainability rate (when we can find a rule) is : " + std::to_string(explainabilityRate));
-    lines.push_back("The default rule rate (when we can't find a rule) is : " + std::to_string(defaultRuleRate));
+    lines.push_back("The explainability rate (when we can find one or more rules, either correct ones or activated ones which all agree on the same class) is : " + std::to_string(explainabilityRate));
+    lines.push_back("The default rule rate (when we can't find any rule activated for a sample) is : " + std::to_string(defaultRuleRate));
     lines.push_back("The mean number of correct(fidel) activated rules per sample is : " + std::to_string(meanNbCorrectActivatedRules));
     lines.push_back("The mean number of wrong(not fidel) activated rules per sample is : " + std::to_string(meanNbWrongActivatedRules));
     lines.push_back("The model test accuracy is : " + std::to_string(modelAccuracy));
