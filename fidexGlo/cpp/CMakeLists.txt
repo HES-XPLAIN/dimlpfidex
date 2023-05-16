@@ -35,6 +35,8 @@ FILE(GLOB FIDEXGLOSTATS_SRC
     src/fidexGloStatsFct.h
     src/dataSet.cpp
     src/dataSet.h
+    src/checkFun.cpp
+    src/checkFun.h
     src/getRulesFun.cpp
     src/getRulesFun.h
 )

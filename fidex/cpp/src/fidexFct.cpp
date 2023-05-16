@@ -16,6 +16,7 @@ void showParams() {
   std::cout << "Options are: \n\n";
   std::cout << "-p <test prediction file> ";
   std::cout << "-c <test true class file> If at least -p is specified, -S needs to have only test datas\n";
+  std::cout << "-A <file of attributes>\n";
   std::cout << "-s <output statistic file>\n";
   std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
   std::cout << "-i <max iteration number>\n";
@@ -25,19 +26,6 @@ void showParams() {
   std::cout << "-z <seed (0=ranodom)>";
 
   std::cout << "\n-------------------------------------------------\n\n";
-}
-
-bool checkStringEmpty(string line) {
-  if (line.length() == 0) {
-    return true;
-  } else {
-    for (int c : line) {
-      if (isgraph(c)) {
-        return false;
-      }
-    }
-    return true;
-  }
 }
 
 int fidex(string command) {
@@ -81,6 +69,8 @@ int fidex(string command) {
     bool mainSamplesPredFileInit = false;
     string mainSamplesClassFileTemp; // Test true classes
     bool mainSamplesClassFileInit = false;
+    string attributFileTemp; // attribut file
+    bool attributFileInit = false;
 
     vector<bool> hasTrueClass; // Check if we have the true classes
 
@@ -144,6 +134,11 @@ int fidex(string command) {
         case 'c':
           mainSamplesClassFileTemp = &(commandList[p])[0];
           mainSamplesClassFileInit = true;
+          break;
+
+        case 'A':
+          attributFileTemp = &(commandList[p])[0];
+          attributFileInit = true;
           break;
 
         case 'H':
@@ -223,7 +218,7 @@ int fidex(string command) {
 
     // create paths with root foler
 
-    char trainDataFileTmp[160], trainDataFilePredTmp[160], trainDataFileTrueClassTmp[160], mainSamplesDataFileTmp[160], mainSamplesPredFileTmp[160], mainSamplesClassFileTmp[160], hyperLocusFileTmp[160], ruleFileTmp[160], statsFileTmp[160], consoleFileTmp[160];
+    char trainDataFileTmp[160], trainDataFilePredTmp[160], trainDataFileTrueClassTmp[160], mainSamplesDataFileTmp[160], mainSamplesPredFileTmp[160], mainSamplesClassFileTmp[160], attributFileTmp[160], hyperLocusFileTmp[160], ruleFileTmp[160], statsFileTmp[160], consoleFileTmp[160];
 
     char *trainDataFile = 0;
     char *trainDataFilePred = 0;
@@ -231,6 +226,7 @@ int fidex(string command) {
     char *mainSamplesDataFile = 0;
     char *mainSamplesPredFile = 0;
     char *mainSamplesClassFile = 0;
+    char *attributFile = 0;
     char *hyperLocusFile = 0;
     char *ruleFile = 0;
     char *statsFile = 0;
@@ -306,6 +302,17 @@ int fidex(string command) {
       }
       strcpy(mainSamplesClassFileTmp, mainSamplesClassFileTemp.c_str());
       mainSamplesClassFile = mainSamplesClassFileTmp;
+    }
+
+    if (attributFileInit) {
+      attributFileTemp = root + attributFileTemp;
+      if (attributFileTemp.length() >= 160) {
+        cout << "Path " << attributFileTemp << "is too long"
+             << "\n";
+        return -1;
+      }
+      strcpy(attributFileTmp, attributFileTemp.c_str());
+      attributFile = attributFileTmp;
     }
 
     if (hyperLocusFileInit) {

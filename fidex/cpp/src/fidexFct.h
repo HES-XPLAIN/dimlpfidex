@@ -18,6 +18,5 @@
 
 static void showParams();
 int fidex(string command);
-bool checkStringEmpty(string line);
 
 #endif
