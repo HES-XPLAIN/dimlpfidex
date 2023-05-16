@@ -20,7 +20,7 @@ DataSetFid::DataSetFid(char *dataFile, char *predFile, char *trueClassFile) {
 
   while (!fileDta.eof()) {
     getline(fileDta, line);
-    if (line.length() != 0) {
+    if (!checkStringEmpty(line)) {
       std::stringstream myLine(line);
       double value;
       vector<double> tempVect;
@@ -48,7 +48,7 @@ DataSetFid::DataSetFid(char *dataFile, char *predFile, char *trueClassFile) {
     while (!fileCl.eof()) {
       i = 0;
       getline(fileCl, line);
-      if (line.length() != 0) {
+      if (!checkStringEmpty(line)) {
         std::stringstream myLine(line);
         int value;
         while (myLine >> value) {
@@ -76,7 +76,7 @@ DataSetFid::DataSetFid(char *dataFile, char *predFile, char *trueClassFile) {
   while (!filePrd.eof()) {
     i = 0;
     getline(filePrd, line);
-    if (line.length() != 0) {
+    if (!checkStringEmpty(line)) {
       std::stringstream myLine(line);
       double value;
       vector<double> values;
@@ -106,7 +106,7 @@ DataSetFid::DataSetFid(char *weightFile) {
 
   while (!fileWts.eof()) {
     getline(fileWts, line);
-    if (line.length() != 0) {
+    if (!checkStringEmpty(line)) {
       std::stringstream myLine(line);
       double value;
       vector<double> tempVect;
@@ -172,5 +172,37 @@ vector<double> DataSetFid::getInWeights() {
     return weights[1];
   } else {
     throw std::runtime_error("Error : weight file not specified for this dataset");
+  }
+}
+
+Attribute::Attribute(char *attributeFile) {
+
+  hasAttributes = true;
+  // Get attributes
+  fstream fileAttr;
+
+  string line;
+
+  fileAttr.open(attributeFile, ios::in); // Read weight file
+  if (fileAttr.fail()) {
+    throw std::runtime_error("Error : file " + std::string(attributeFile) + " not found");
+  }
+  while (!fileAttr.eof()) {
+    getline(fileAttr, line);
+    if (!checkStringEmpty(line)) {
+      std::stringstream myLine(line);
+      string attr;
+      myLine >> attr;
+      attributes.push_back(attr);
+    }
+  }
+  fileAttr.close(); // close file
+}
+
+vector<string> Attribute::getAttributes() {
+  if (hasAttributes) {
+    return attributes;
+  } else {
+    throw std::runtime_error("Error : attribute file not specified for this dataset");
   }
 }
