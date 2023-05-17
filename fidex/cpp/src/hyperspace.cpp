@@ -43,11 +43,10 @@ Hyperbox *Hyperspace::getHyperbox() {
   return hyperbox;
 }
 
-void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, vector<string> &lines) {
+void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, vector<string> &lines, bool hasAttributeNames, vector<string> *attributeNames, bool hasClassNames, vector<string> *classNames) {
 
   double hypValue;
   int attribut;
-  bool inequalityBool;
 
   string line;
   string inequality;
@@ -58,15 +57,21 @@ void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
     double mainSampleValue = (*mainSampleData)[attribut];
     if (hypValue <= mainSampleValue) {
       inequality = ">=";
-      // inequalityBool = 1;
     } else {
       inequality = "<";
-      // inequalityBool = 0;
     }
-    // rule.push_back(make_tuple(attribut, inequalityBool, hypValue));
-    line += "X" + std::to_string(attribut) + inequality + std::to_string(hypValue) + " ";
+    if (hasAttributeNames) {
+      line += (*attributeNames)[attribut];
+    } else {
+      line += "X" + std::to_string(attribut);
+    }
+    line += inequality + std::to_string(hypValue) + " ";
   }
-  line += "-> class " + std::to_string(mainSamplePred);
+  if (hasClassNames) {
+    line += "-> " + (*classNames)[mainSamplePred];
+  } else {
+    line += "-> class " + std::to_string(mainSamplePred);
+  }
   line += " Covering size : " + std::to_string(hyperbox->getCoveredSamples().size());
   line += " Fidelity : " + std::to_string(hyperbox->getFidelity());
   line += " Accuracy : " + std::to_string(ruleAccuracy);

@@ -41,7 +41,7 @@ public:
   Attribute();
   Attribute(char *attributFile);
 
-  vector<string> getAttributes();
+  vector<string> *getAttributes();
 };
 
 #endif

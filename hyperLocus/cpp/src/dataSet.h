@@ -2,6 +2,7 @@
 #define DATASETFID_H
 
 using namespace std;
+#include "checkFun.h"
 #include <cstring>
 #include <iostream>
 #include <vector>
@@ -29,6 +30,18 @@ public:
   vector<vector<double>> getWeights();
   vector<double> getInBiais();
   vector<double> getInWeights();
+};
+
+class Attribute {
+
+  vector<string> attributes;
+  bool hasAttributes;
+
+public:
+  Attribute();
+  Attribute(char *attributFile);
+
+  vector<string> *getAttributes();
 };
 
 #endif

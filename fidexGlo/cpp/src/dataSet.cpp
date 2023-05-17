@@ -199,9 +199,9 @@ Attribute::Attribute(char *attributeFile) {
   fileAttr.close(); // close file
 }
 
-vector<string> Attribute::getAttributes() {
+vector<string> *Attribute::getAttributes() {
   if (hasAttributes) {
-    return attributes;
+    return &attributes;
   } else {
     throw std::runtime_error("Error : attribute file not specified for this dataset");
   }

@@ -191,17 +191,16 @@ Attribute::Attribute(char *attributeFile) {
     getline(fileAttr, line);
     if (!checkStringEmpty(line)) {
       std::stringstream myLine(line);
-      string attr;
-      myLine >> attr;
+      string attr = myLine.str();
       attributes.push_back(attr);
     }
   }
   fileAttr.close(); // close file
 }
 
-vector<string> Attribute::getAttributes() {
+vector<string> *Attribute::getAttributes() {
   if (hasAttributes) {
-    return attributes;
+    return &attributes;
   } else {
     throw std::runtime_error("Error : attribute file not specified for this dataset");
   }
