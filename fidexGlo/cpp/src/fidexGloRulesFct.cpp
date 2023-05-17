@@ -14,6 +14,7 @@ void showParams() {
   std::cout << "<Options>\n\n";
 
   std::cout << "Options are: \n\n";
+  std::cout << "-A <file of attributes>\n";
   std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
   std::cout << "-i <max iteration number>\n";
   std::cout << "-v <minimum covering number>\n";
@@ -67,6 +68,8 @@ int fidexGloRules(string command) {
     bool consoleFileInit = false;
     string rootFolderTemp;
     bool rootFolderInit = false;
+    string attributFileTemp; // attribut file
+    bool attributFileInit = false;
 
     int heuristic = -1;
     bool heuristicInit = false;
@@ -78,6 +81,7 @@ int fidexGloRules(string command) {
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
     double dropoutDimParam = 0.5;
     DataSetFid *trainDatas;
+    Attribute *attributesData;
 
     int nbRules; // Number of rules created
 
@@ -121,6 +125,11 @@ int fidexGloRules(string command) {
         case 'r':
           consoleFileTemp = &(commandList[p])[0];
           consoleFileInit = true;
+          break;
+
+        case 'A':
+          attributFileTemp = &(commandList[p])[0];
+          attributFileInit = true;
           break;
 
         case 'S':
@@ -188,7 +197,7 @@ int fidexGloRules(string command) {
     // ----------------------------------------------------------------------
     // create paths with root foler
 
-    char trainDataFileTmp[160], trainDataFilePredTmp[160], trainDataFileTrueClassTmp[160], rulesFileTmp[160], hyperLocusFileTmp[160], consoleFileTmp[160];
+    char trainDataFileTmp[160], trainDataFilePredTmp[160], trainDataFileTrueClassTmp[160], rulesFileTmp[160], hyperLocusFileTmp[160], consoleFileTmp[160], attributFileTmp[160];
 
     char *trainDataFile = 0;
     char *trainDataFilePred = 0;
@@ -196,6 +205,7 @@ int fidexGloRules(string command) {
     char *rulesFile = 0;
     char *hyperLocusFile = 0;
     char *consoleFile = 0;
+    char *attributFile = 0;
 
 #if defined(__unix__) || defined(__APPLE__)
     string root = rootFolderTemp + "/";
@@ -269,6 +279,17 @@ int fidexGloRules(string command) {
       consoleFile = consoleFileTmp;
     }
 
+    if (attributFileInit) {
+      attributFileTemp = root + attributFileTemp;
+      if (attributFileTemp.length() >= 160) {
+        cout << "Path " << attributFileTemp << "is too long"
+             << "\n";
+        return -1;
+      }
+      strcpy(attributFileTmp, attributFileTemp.c_str());
+      attributFile = attributFileTmp;
+    }
+
     // ----------------------------------------------------------------------
 
     if (!trainDataFileInit) {
@@ -331,12 +352,36 @@ int fidexGloRules(string command) {
     vector<int> *trainTrueClass = trainDatas->getTrueClasses();
 
     const int nbDatas = (*trainData).size();
+    const int nbAttributs = (*trainData)[0].size();
+    const int nbClass = (*trainOutputValuesPredictions)[0].size();
     if ((*trainPreds).size() != nbDatas || (*trainTrueClass).size() != nbDatas) {
       throw std::runtime_error("All the train files need to have the same amount of datas");
     }
 
     if (minNbCover > nbDatas) {
       throw std::runtime_error("Error : invalide type for parameter -c, strictly positive integer smaller or equal than the number of data sample requested");
+    }
+
+    // Get attributes
+    vector<string> attributeNames;
+    vector<string> classNames;
+    bool hasClassNames;
+    if (attributFileInit) {
+      attributesData = new Attribute(attributFile);
+      attributeNames = (*attributesData->getAttributes());
+      if (attributeNames.size() < nbAttributs) {
+        throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not enough attribute names");
+      } else if (attributeNames.size() == nbAttributs) {
+        hasClassNames = false;
+      } else if (attributeNames.size() != nbAttributs + nbClass) {
+        throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not the good amount of attribute and class names");
+      } else {
+        hasClassNames = true;
+        auto firstEl = attributeNames.end() - nbClass;
+        auto lastEl = attributeNames.end();
+        classNames.insert(classNames.end(), firstEl, lastEl);
+        attributeNames.erase(firstEl, lastEl);
+      }
     }
 
     std::cout << "Files imported" << endl
@@ -349,7 +394,6 @@ int fidexGloRules(string command) {
     FidexGloNameSpace::Hyperspace hyperspace(hyperLocusFile); // Initialize hyperbox and get hyperplans
 
     const int nbIn = hyperspace.getHyperLocus().size(); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
-    const int nbAttributs = (*trainData)[0].size();
     const int nbHyp = hyperspace.getHyperLocus()[0].size();
 
     // Check size of hyperlocus
@@ -699,9 +743,19 @@ int fidexGloRules(string command) {
         } else {
           inequality = "<";
         }
-        line += "X" + std::to_string(get<0>(get<0>(chosenRules[r])[a])) + inequality + std::to_string(get<2>(get<0>(chosenRules[r])[a])) + " "; // Write antecedant
+        if (attributFileInit) {
+          line += attributeNames[get<0>(get<0>(chosenRules[r])[a])];
+        } else {
+          line += "X" + std::to_string(get<0>(get<0>(chosenRules[r])[a]));
+        }
+        line += inequality + std::to_string(get<2>(get<0>(chosenRules[r])[a])) + " ";
       }
-      line += "-> class " + std::to_string(std::get<2>(chosenRules[r]));                // class of the rule
+      // class of the rule
+      if (hasClassNames) {
+        line += "-> " + classNames[std::get<2>(chosenRules[r])];
+      } else {
+        line += "-> class " + std::to_string(std::get<2>(chosenRules[r]));
+      }
       line += " Covering size : " + std::to_string(std::get<1>(chosenRules[r]).size()); // Covering size
       line += " Fidelity : 1";                                                          // Rule fidelity
       line += " Accuracy : " + std::to_string(std::get<3>(chosenRules[r]));             // Rule accuracy

@@ -13,6 +13,8 @@ FILE(GLOB FIDEXGLO_SRC
     src/getRulesFun.h
     src/dataSet.cpp
     src/dataSet.h
+    src/checkFun.cpp
+    src/checkFun.h
 )
 
 FILE(GLOB FIDEXGLORULES_SRC

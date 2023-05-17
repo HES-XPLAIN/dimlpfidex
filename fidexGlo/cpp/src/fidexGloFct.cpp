@@ -20,19 +20,6 @@ void showParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 }
 
-bool checkStringEmpty(string line) {
-  if (line.length() == 0) {
-    return true;
-  } else {
-    for (int c : line) {
-      if (isgraph(c)) {
-        return false;
-      }
-    }
-    return true;
-  }
-}
-
 int fidexGlo(string command) {
 
   try {
