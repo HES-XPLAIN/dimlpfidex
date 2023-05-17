@@ -771,6 +771,14 @@ int fidexGloRules(string command) {
       // We add to the file the number of rules, the mean covering per rule and the mean number of antecedents per rule
       string startLine = "Number of rules : " + std::to_string(nbRules) + ", mean sample covering number per rule : " + std::to_string(meanCovSize) + ", mean number of antecedents per rule : " + std::to_string(meanNbAntecedents) + "\n";
       file2 << startLine;
+      string secondLine = "The name of the attributes and classes are not specified\n";
+      if (attributFileInit) {
+        secondLine = "The name of the attributes is specified\n";
+        if (hasClassNames) {
+          secondLine = "The name of the attributes and classes are specified\n";
+        }
+      }
+      file2 << secondLine;
       for (int l = 0; l < lines.size(); l++) {
         file2 << lines[l];
       }
