@@ -191,8 +191,7 @@ Attribute::Attribute(char *attributeFile) {
     getline(fileAttr, line);
     if (!checkStringEmpty(line)) {
       std::stringstream myLine(line);
-      string attr;
-      myLine >> attr;
+      string attr = myLine.str();
       attributes.push_back(attr);
     }
   }

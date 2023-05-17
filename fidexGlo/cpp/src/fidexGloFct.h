@@ -14,6 +14,5 @@
 
 static void showParams();
 int fidexGlo(string command);
-bool checkStringEmpty(string line);
 
 #endif
