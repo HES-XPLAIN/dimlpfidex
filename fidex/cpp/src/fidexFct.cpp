@@ -94,6 +94,8 @@ int fidex(string command) {
     DataSetFid *trainDatas;
     DataSetFid *testDatas;
 
+    Attribute *attributesData;
+
     // Import parameters
 
     for (int p = 1; p < nbParam; p++) { // We skip "fidex"
@@ -604,6 +606,28 @@ int fidex(string command) {
       }
     }
 
+    // Get attributes
+    vector<string> attributeNames;
+    vector<string> classNames;
+    bool hasClassNames;
+    if (attributFileInit) {
+      attributesData = new Attribute(attributFile);
+      attributeNames = (*attributesData->getAttributes());
+      if (attributeNames.size() < nbAttributs) {
+        throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not enough attribute names");
+      } else if (attributeNames.size() == nbAttributs) {
+        hasClassNames = false;
+      } else if (attributeNames.size() != nbAttributs + nbClass) {
+        throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not the good amount of attribute and class names");
+      } else {
+        hasClassNames = true;
+        auto firstEl = attributeNames.end() - nbClass;
+        auto lastEl = attributeNames.end();
+        classNames.insert(classNames.end(), firstEl, lastEl);
+        attributeNames.erase(firstEl, lastEl);
+      }
+    }
+
     std::cout << "Files imported" << endl
               << endl;
     std::cout << "----------------------------------------------" << endl
@@ -681,7 +705,6 @@ int fidex(string command) {
         } else {
           unsigned seedShuffle = seed;
         }
-        // cout << endl << "It." << nbIt << " F : " << hyperspace.getHyperbox()->getFidelity() << ", att : " << attribut << endl;
         FidexNameSpace::Hyperbox *bestHyperbox = new FidexNameSpace::Hyperbox(); // best hyperbox to choose for next step
         FidexNameSpace::Hyperbox *currentHyperbox = new FidexNameSpace::Hyperbox();
         double mainSampleValue;
@@ -789,7 +812,7 @@ int fidex(string command) {
                   << endl;
       }
 
-      // Compute rule accuracy
+      // Compute rule accuracy and confidence
       double ruleAccuracy;
       if (hasTrueClass[currentSample]) {
         bool mainSampleCorrect = mainSamplesPreds[currentSample] == mainSamplesTrueClass[currentSample];
@@ -812,7 +835,8 @@ int fidex(string command) {
 
       meanCovSize += hyperspace.getHyperbox()->getCoveredSamples().size();
       meanNbAntecedentsPerRule += hyperspace.getHyperbox()->getDiscriminativeHyperplans().size();
-      hyperspace.ruleExtraction(&mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines);
+      // Extract rules
+      hyperspace.ruleExtraction(&mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, attributFileInit, &attributeNames, hasClassNames, &classNames);
 
       std::cout << "Result found after " << nbIt << " iterations." << endl;
 
