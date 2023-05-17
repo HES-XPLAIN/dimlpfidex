@@ -13,6 +13,7 @@ void showParams() {
   std::cout << "<Options>\n\n";
 
   std::cout << "Options are: \n\n";
+  std::cout << "-A <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it\n";
   std::cout << "-p <test prediction file>, -S needs to have only test datas\n";
   std::cout << "-O <Rule output file>\n";
   std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
@@ -59,7 +60,10 @@ int fidexGlo(string command) {
     bool consoleFileInit = false;
     string rootFolderTemp;
     bool rootFolderInit = false;
+    string attributFileTemp; // attribut file
+    bool attributFileInit = false;
     DataSetFid *testDatas;
+    Attribute *attributesData;
 
     // Import parameters
 
@@ -98,6 +102,11 @@ int fidexGlo(string command) {
           consoleFileInit = true;
           break;
 
+        case 'A':
+          attributFileTemp = &(commandList[p])[0];
+          attributFileInit = true;
+          break;
+
         case 'F':
           rootFolderTemp = &(commandList[p])[0];
           rootFolderInit = true;
@@ -112,13 +121,14 @@ int fidexGlo(string command) {
     // ----------------------------------------------------------------------
     // create paths with root foler
 
-    char testSamplesDataFileTmp[160], testSamplesPredFileTmp[160], rulesFileTmp[160], explanationFileTmp[160], consoleFileTmp[160];
+    char testSamplesDataFileTmp[160], testSamplesPredFileTmp[160], rulesFileTmp[160], explanationFileTmp[160], consoleFileTmp[160], attributFileTmp[160];
 
     char *testSamplesDataFile = 0;
     char *testSamplesPredFile = 0;
     char *rulesFile = 0;
     char *explanationFile = 0;
     char *consoleFile = 0;
+    char *attributFile = 0;
 
 #if defined(__unix__) || defined(__APPLE__)
     string root = rootFolderTemp + "/";
@@ -179,6 +189,17 @@ int fidexGlo(string command) {
       }
       strcpy(consoleFileTmp, consoleFileTemp.c_str());
       consoleFile = consoleFileTmp;
+    }
+
+    if (attributFileInit) {
+      attributFileTemp = root + attributFileTemp;
+      if (attributFileTemp.length() >= 160) {
+        cout << "Path " << attributFileTemp << "is too long"
+             << "\n";
+        return -1;
+      }
+      strcpy(attributFileTmp, attributFileTemp.c_str());
+      attributFile = attributFileTmp;
     }
 
     // ----------------------------------------------------------------------
@@ -304,12 +325,34 @@ int fidexGlo(string command) {
       }
     }
 
+    // Get attributes
+    vector<string> attributeNames;
+    vector<string> classNames;
+    bool hasClassNames;
+    if (attributFileInit) {
+      attributesData = new Attribute(attributFile);
+      attributeNames = (*attributesData->getAttributes());
+      if (attributeNames.size() < nbTestAttributs) {
+        throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not enough attribute names");
+      } else if (attributeNames.size() == nbTestAttributs) {
+        hasClassNames = false;
+      } else if (attributeNames.size() != nbTestAttributs + nbClass) {
+        throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not the good amount of attribute and class names");
+      } else {
+        hasClassNames = true;
+        auto firstEl = attributeNames.end() - nbClass;
+        auto lastEl = attributeNames.end();
+        classNames.insert(classNames.end(), firstEl, lastEl);
+        attributeNames.erase(firstEl, lastEl);
+      }
+    }
+
     // Get rules
 
     vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
     vector<string> lines;                                                            // Lines for the output stats
     vector<string> stringRules;
-    getRules(rules, lines, stringRules, rulesFile, nbTestAttributs);
+    getRules(rules, lines, stringRules, rulesFile, nbTestAttributs, attributFileInit, attributeNames, hasClassNames, classNames);
 
     std::cout << "Files imported" << endl
               << endl;
@@ -427,4 +470,4 @@ int fidexGlo(string command) {
   return 0;
 }
 
-// Exemple : .\fidexGlo.exe -S testSampleData -R globalRules.txt -O explanation.txt -F ../fidexGlo/datafiles/
+// Exemple : .\fidexGlo.exe -S testSampleData -R globalRulesDatanorm.txt -O explanation.txt -F ../fidexGlo/datafiles/

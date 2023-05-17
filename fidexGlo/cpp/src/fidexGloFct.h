@@ -1,7 +1,7 @@
 #ifndef FIDEXGLOFCT_H
 #define FIDEXGLOFCT_H
 
-#include "dataset.h"
+#include "dataSet.h"
 #include "getRulesFun.h"
 #include <algorithm>
 #include <fstream>
