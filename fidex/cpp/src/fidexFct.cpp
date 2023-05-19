@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void showParams() {
+void showFidexParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 
   std::cout << "Obligatory parameters : \n\n";
@@ -28,11 +28,12 @@ void showParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 }
 
-int fidex(string command) {
+int fidex(const string &command) {
 
   try {
     float temps;
-    clock_t t1, t2;
+    clock_t t1;
+    clock_t t2;
 
     t1 = clock();
 
@@ -44,13 +45,7 @@ int fidex(string command) {
     while (std::getline(ss, s, delim)) {
       commandList.push_back(s);
     }
-    int nbParam = commandList.size();
-
-    // Import parameters
-    if (nbParam == 1) {
-      showParams();
-      return 0;
-    }
+    size_t nbParam = commandList.size();
 
     // Parameters declaration
 
@@ -83,7 +78,6 @@ int fidex(string command) {
     string consoleFileTemp;
     bool consoleFileInit = false;
     string rootFolderTemp;
-    bool rootFolderInit = false;
 
     int itMax = 100;         // We stop if we have more than itMax iterations
     int minNbCover = 2;      // Minimum size of covering that we ask
@@ -91,14 +85,17 @@ int fidex(string command) {
     double dropoutHypParam = 0.5;
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
     double dropoutDimParam = 0.5;
-    DataSetFid *trainDatas;
     DataSetFid *testDatas;
-
-    Attribute *attributesData;
 
     // Import parameters
 
-    for (int p = 1; p < nbParam; p++) { // We skip "fidex"
+    if (nbParam == 1) {
+      showFidexParams();
+      return 0;
+    }
+
+    int p = 1; // We skip "fidexGlo"
+    while (p < nbParam) {
       if (commandList[p][0] == '-') {
         p++;
 
@@ -106,133 +103,136 @@ int fidex(string command) {
           throw std::runtime_error("Missing something at the end of the command.");
         }
 
-        switch (commandList[p - 1][1]) { // Get letter after the -
+        char option = commandList[p - 1][1];
+        const char *arg = &(commandList[p])[0];
+        const char *lastArg = &(commandList[p - 1])[0];
+
+        switch (option) { // Get letter after the -
 
         case 'T':
-          trainDataFileTemp = &(commandList[p])[0]; // Parameter after -T
+          trainDataFileTemp = arg; // Parameter after -T
           trainDataFileInit = true;
           break;
 
         case 'P':
-          trainDataFilePredTemp = &(commandList[p])[0];
+          trainDataFilePredTemp = arg;
           trainDataFilePredInit = true;
           break;
 
         case 'C':
-          trainDataFileTrueClassTemp = &(commandList[p])[0];
+          trainDataFileTrueClassTemp = arg;
           trainDataFileTrueClassInit = true;
           break;
 
         case 'S':
-          mainSamplesDataFileTemp = &(commandList[p])[0];
+          mainSamplesDataFileTemp = arg;
           mainSamplesDataFileInit = true;
           break;
 
         case 'p':
-          mainSamplesPredFileTemp = &(commandList[p])[0];
+          mainSamplesPredFileTemp = arg;
           mainSamplesPredFileInit = true;
           break;
 
         case 'c':
-          mainSamplesClassFileTemp = &(commandList[p])[0];
+          mainSamplesClassFileTemp = arg;
           mainSamplesClassFileInit = true;
           break;
 
         case 'A':
-          attributFileTemp = &(commandList[p])[0];
+          attributFileTemp = arg;
           attributFileInit = true;
           break;
 
         case 'H':
-          hyperLocusFileTemp = &(commandList[p])[0];
+          hyperLocusFileTemp = arg;
           hyperLocusFileInit = true;
           break;
 
         case 'O':
-          ruleFileTemp = &(commandList[p])[0];
+          ruleFileTemp = arg;
           ruleFileInit = true;
           break;
 
         case 's':
-          statsFileTemp = &(commandList[p])[0];
+          statsFileTemp = arg;
           statsFileInit = true;
           break;
 
         case 'r':
-          consoleFileTemp = &(commandList[p])[0];
+          consoleFileTemp = arg;
           consoleFileInit = true;
           break;
 
         case 'R':
-          rootFolderTemp = &(commandList[p])[0];
-          rootFolderInit = true;
+          rootFolderTemp = arg;
           break;
 
         case 'i':
-          if (CheckPositiveInt(&(commandList[p])[0])) {
-            itMax = atoi(&(commandList[p])[0]);
+          if (CheckPositiveInt(arg)) {
+            itMax = atoi(arg);
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p - 1])[0]) + ", positive integer requested");
+            throw std::runtime_error("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
           }
           break;
 
         case 'v':
-          if (CheckPositiveInt(&(commandList[p])[0]) && atoi(&(commandList[p])[0]) >= 1) {
-            minNbCover = atoi(&(commandList[p])[0]);
+          if (CheckPositiveInt(arg) && atoi(arg) >= 1) {
+            minNbCover = atoi(arg);
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p - 1])[0]) + ", strictly positive integer requested");
+            throw std::runtime_error("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
           }
           break;
 
         case 'd':
-          if (CheckFloatFid(&(commandList[p])[0]) && atof(&(commandList[p])[0]) >= 0 && atof(&(commandList[p])[0]) <= 1) {
-            dropoutDimParam = atof(&(commandList[p])[0]);
+          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+            dropoutDimParam = atof(arg);
             dropoutDim = true; // We dropout a bunch of dimensions each iteration (accelerate the processus)
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p - 1])[0]) + ", float included in [0,1] requested");
+            throw std::runtime_error("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
           }
           break;
 
         case 'h':
-          if (CheckFloatFid(&(commandList[p])[0]) && atof(&(commandList[p])[0]) >= 0 && atof(&(commandList[p])[0]) <= 1) {
-            dropoutHypParam = atof(&(commandList[p])[0]);
+          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+            dropoutHypParam = atof(arg);
             dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + string(&(commandList[p - 1])[0]) + ", float included in [0,1] requested");
+            throw std::runtime_error("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
           }
           break;
 
         case 'z':
-          if (CheckPositiveInt(&(commandList[p])[0]))
-            seed = atoi(&(commandList[p])[0]);
+          if (CheckPositiveInt(arg))
+            seed = atoi(arg);
           else
             return -1;
 
           break;
 
         default: // If we put another -X option
-          throw std::runtime_error("Illegal option : " + string(&(commandList[p - 1])[0]));
+          throw std::runtime_error("Illegal option : " + string(lastArg));
         }
       }
+
+      p++;
     }
 
     // ----------------------------------------------------------------------
 
     // create paths with root foler
 
-    char trainDataFileTmp[160], trainDataFilePredTmp[160], trainDataFileTrueClassTmp[160], mainSamplesDataFileTmp[160], mainSamplesPredFileTmp[160], mainSamplesClassFileTmp[160], attributFileTmp[160], hyperLocusFileTmp[160], ruleFileTmp[160], statsFileTmp[160], consoleFileTmp[160];
-
-    char *trainDataFile = 0;
-    char *trainDataFilePred = 0;
-    char *trainDataFileTrueClass = 0;
-    char *mainSamplesDataFile = 0;
-    char *mainSamplesPredFile = 0;
-    char *mainSamplesClassFile = 0;
-    char *attributFile = 0;
-    char *hyperLocusFile = 0;
-    char *ruleFile = 0;
-    char *statsFile = 0;
-    char *consoleFile = 0;
+    const char *trainDataFile = nullptr;
+    const char *trainDataFilePred = nullptr;
+    const char *trainDataFileTrueClass = nullptr;
+    const char *mainSamplesDataFile = nullptr;
+    const char *mainSamplesPredFile = nullptr;
+    const char *mainSamplesClassFile = nullptr;
+    const char *attributFile = nullptr;
+    const char *hyperLocusFile = nullptr;
+    const char *ruleFile = nullptr;
+    const char *statsFile = nullptr;
+    const char *consoleFile = nullptr;
 
 #if defined(__unix__) || defined(__APPLE__)
     string root = rootFolderTemp + "/";
@@ -242,123 +242,57 @@ int fidex(string command) {
 
     if (trainDataFileInit) {
       trainDataFileTemp = root + trainDataFileTemp;
-      if (trainDataFileTemp.length() >= 160) {
-        cout << "Path " << trainDataFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(trainDataFileTmp, trainDataFileTemp.c_str());
-      trainDataFile = trainDataFileTmp;
+      trainDataFile = &trainDataFileTemp[0];
     }
 
     if (trainDataFilePredInit) {
       trainDataFilePredTemp = root + trainDataFilePredTemp;
-      if (trainDataFilePredTemp.length() >= 160) {
-        cout << "Path " << trainDataFilePredTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(trainDataFilePredTmp, trainDataFilePredTemp.c_str());
-      trainDataFilePred = trainDataFilePredTmp;
+      trainDataFilePred = &trainDataFilePredTemp[0];
     }
 
     if (trainDataFileTrueClassInit) {
       trainDataFileTrueClassTemp = root + trainDataFileTrueClassTemp;
-      if (trainDataFileTrueClassTemp.length() >= 160) {
-        cout << "Path " << trainDataFileTrueClassTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(trainDataFileTrueClassTmp, trainDataFileTrueClassTemp.c_str());
-      trainDataFileTrueClass = trainDataFileTrueClassTmp;
+      trainDataFileTrueClass = &trainDataFileTrueClassTemp[0];
     }
 
     if (mainSamplesDataFileInit) {
       mainSamplesDataFileTemp = root + mainSamplesDataFileTemp;
-      if (mainSamplesDataFileTemp.length() >= 160) {
-        cout << "Path " << mainSamplesDataFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(mainSamplesDataFileTmp, mainSamplesDataFileTemp.c_str());
-      mainSamplesDataFile = mainSamplesDataFileTmp;
+      mainSamplesDataFile = &mainSamplesDataFileTemp[0];
     }
 
     if (mainSamplesPredFileInit) {
       mainSamplesPredFileTemp = root + mainSamplesPredFileTemp;
-      if (mainSamplesPredFileTemp.length() >= 160) {
-        cout << "Path " << mainSamplesPredFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(mainSamplesPredFileTmp, mainSamplesPredFileTemp.c_str());
-      mainSamplesPredFile = mainSamplesPredFileTmp;
+      mainSamplesPredFile = &mainSamplesPredFileTemp[0];
     }
 
     if (mainSamplesClassFileInit) {
       mainSamplesClassFileTemp = root + mainSamplesClassFileTemp;
-      if (mainSamplesClassFileTemp.length() >= 160) {
-        cout << "Path " << mainSamplesClassFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(mainSamplesClassFileTmp, mainSamplesClassFileTemp.c_str());
-      mainSamplesClassFile = mainSamplesClassFileTmp;
+      mainSamplesClassFile = &mainSamplesClassFileTemp[0];
     }
 
     if (attributFileInit) {
       attributFileTemp = root + attributFileTemp;
-      if (attributFileTemp.length() >= 160) {
-        cout << "Path " << attributFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(attributFileTmp, attributFileTemp.c_str());
-      attributFile = attributFileTmp;
+      attributFile = &attributFileTemp[0];
     }
 
     if (hyperLocusFileInit) {
       hyperLocusFileTemp = root + hyperLocusFileTemp;
-      if (hyperLocusFileTemp.length() >= 160) {
-        cout << "Path " << hyperLocusFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(hyperLocusFileTmp, hyperLocusFileTemp.c_str());
-      hyperLocusFile = hyperLocusFileTmp;
+      hyperLocusFile = &hyperLocusFileTemp[0];
     }
 
     if (ruleFileInit) {
       ruleFileTemp = root + ruleFileTemp;
-      if (ruleFileTemp.length() >= 160) {
-        cout << "Path " << ruleFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(ruleFileTmp, ruleFileTemp.c_str());
-      ruleFile = ruleFileTmp;
+      ruleFile = &ruleFileTemp[0];
     }
 
     if (statsFileInit) {
       statsFileTemp = root + statsFileTemp;
-      if (statsFileTemp.length() >= 160) {
-        cout << "Path " << statsFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(statsFileTmp, statsFileTemp.c_str());
-      statsFile = statsFileTmp;
+      statsFile = &statsFileTemp[0];
     }
 
     if (consoleFileInit) {
       consoleFileTemp = root + consoleFileTemp;
-      if (consoleFileTemp.length() >= 160) {
-        cout << "Path " << consoleFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(consoleFileTmp, consoleFileTemp.c_str());
-      consoleFile = consoleFileTmp;
+      consoleFile = &consoleFileTemp[0];
     }
 
     // ----------------------------------------------------------------------
@@ -394,7 +328,6 @@ int fidex(string command) {
       ofs.open(consoleFile);
       std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
     }
-    std::ostream &output = consoleFileInit != false ? ofs : std::cout;
 
     // ----------------------------------------------------------------------
 
@@ -417,7 +350,7 @@ int fidex(string command) {
 
     std::cout << "Import files..." << endl;
 
-    trainDatas = new DataSetFid(trainDataFile, trainDataFilePred, trainDataFileTrueClass);
+    std::unique_ptr<DataSetFid> trainDatas(new DataSetFid(trainDataFile, trainDataFilePred, trainDataFileTrueClass));
 
     vector<vector<double>> *trainData = trainDatas->getDatas();
     vector<int> *trainPreds = trainDatas->getPredictions();
@@ -480,7 +413,7 @@ int fidex(string command) {
             mainSampleOutputValuesPredictions.push_back(value);
           }
           mainSamplesOutputValuesPredictions.push_back(mainSampleOutputValuesPredictions);
-          mainSamplePred = std::max_element(mainSampleOutputValuesPredictions.begin(), mainSampleOutputValuesPredictions.end()) - mainSampleOutputValuesPredictions.begin();
+          mainSamplePred = static_cast<int>(std::max_element(mainSampleOutputValuesPredictions.begin(), mainSampleOutputValuesPredictions.end()) - mainSampleOutputValuesPredictions.begin());
           mainSamplesPreds.push_back(mainSamplePred);
         } else {
           while (!testData.eof()) {
@@ -507,8 +440,7 @@ int fidex(string command) {
           while (std::isspace(line.front())) {
             line.erase(line.begin());
           }
-          char *trueClassTest = new char[line.length() + 1];
-          strcpy(trueClassTest, line.c_str());
+          char *trueClassTest = strdup(line.c_str());
           if (!CheckPositiveInt(trueClassTest)) {
             throw std::runtime_error("Error : in file " + std::string(mainSamplesDataFile) + ", true classes need to be positive integers");
           }
@@ -584,24 +516,24 @@ int fidex(string command) {
           throw std::runtime_error("Error : in file " + std::string(mainSamplesClassFile) + ", you need to specify as many true classes as there is datas (-1 if no true class)");
         }
       } else {
-        for (int i = 0; i < mainSamplesValues.size(); i++) {
+        for (auto i : mainSamplesValues) {
           hasTrueClass.push_back(false);
         }
       }
     }
 
-    int nbSamples = mainSamplesValues.size();
-    const int nbAttributs = mainSamplesValues[0].size();
-    const int nbClass = mainSamplesOutputValuesPredictions[0].size();
+    const size_t nbSamples = mainSamplesValues.size();
+    const size_t nbAttributs = mainSamplesValues[0].size();
+    const size_t nbClass = mainSamplesOutputValuesPredictions[0].size();
 
-    for (int s = 0; s < nbSamples; s++) {
-      if (mainSamplesValues[s].size() != nbAttributs) {
+    for (int spl = 0; spl < nbSamples; spl++) {
+      if (mainSamplesValues[spl].size() != nbAttributs) {
         throw std::runtime_error("Error : in file " + std::string(mainSamplesDataFile) + ", all test datas need to have the same number of variables");
       }
     }
 
-    for (int s = 0; s < nbSamples; s++) {
-      if (mainSamplesOutputValuesPredictions[s].size() != nbClass) {
+    for (int spl = 0; spl < nbSamples; spl++) {
+      if (mainSamplesOutputValuesPredictions[spl].size() != nbClass) {
         throw std::runtime_error("Error : in file " + std::string(mainSamplesDataFile) + ", all test datas need to have the same number of prediction values");
       }
     }
@@ -611,7 +543,7 @@ int fidex(string command) {
     vector<string> classNames;
     bool hasClassNames;
     if (attributFileInit) {
-      attributesData = new Attribute(attributFile);
+      std::unique_ptr<Attribute> attributesData(new Attribute(attributFile));
       attributeNames = (*attributesData->getAttributes());
       if (attributeNames.size() < nbAttributs) {
         throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not enough attribute names");
@@ -634,7 +566,8 @@ int fidex(string command) {
               << endl;
 
     float temps2;
-    clock_t d1, d2;
+    clock_t d1;
+    clock_t d2;
 
     d1 = clock();
 
@@ -651,8 +584,8 @@ int fidex(string command) {
 
     FidexNameSpace::Hyperspace hyperspace(hyperLocusFile); // Initialize hyperbox and get hyperplans
 
-    const int nbIn = hyperspace.getHyperLocus().size(); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
-    const int nbHyp = hyperspace.getHyperLocus()[0].size();
+    const size_t nbIn = hyperspace.getHyperLocus().size(); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
+    const size_t nbHyp = hyperspace.getHyperLocus()[0].size();
 
     // Check size of hyperlocus
     if (nbIn == 0 || nbIn % nbAttributs != 0) {
@@ -705,8 +638,8 @@ int fidex(string command) {
         } else {
           unsigned seedShuffle = seed;
         }
-        FidexNameSpace::Hyperbox *bestHyperbox = new FidexNameSpace::Hyperbox(); // best hyperbox to choose for next step
-        FidexNameSpace::Hyperbox *currentHyperbox = new FidexNameSpace::Hyperbox();
+        std::unique_ptr<FidexNameSpace::Hyperbox> bestHyperbox(new FidexNameSpace::Hyperbox());    // best hyperbox to choose for next step
+        std::unique_ptr<FidexNameSpace::Hyperbox> currentHyperbox(new FidexNameSpace::Hyperbox()); // best hyperbox to choose for next step
         double mainSampleValue;
         int attribut;
         int dimension;
@@ -729,21 +662,19 @@ int fidex(string command) {
           attribut = dimension % nbAttributs;
           mainSampleValue = mainSamplesValues[currentSample][attribut];
           // Test if we dropout this dimension
-          if (dropoutDim) {
-            if ((double)rand() / (RAND_MAX) < dropoutDimParam) {
-              continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
-            }
+
+          if (dropoutDim && ((double)rand() / RAND_MAX) < dropoutDimParam) {
+            continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
           }
+
           bool maxHypBlocked;
 
           for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
 
             maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
             // Test if we dropout this hyperplan
-            if (dropoutHyp) {
-              if ((double)rand() / (RAND_MAX) < dropoutHypParam) {
-                continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
-              }
+            if (dropoutHyp && ((double)rand() / RAND_MAX) < dropoutHypParam) {
+              continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
             }
 
             double hypValue = hyperspace.getHyperLocus()[dimension][k];
@@ -792,7 +723,7 @@ int fidex(string command) {
         }
 
         nbIt += 1;
-      };
+      }
 
       meanFidelity += hyperspace.getHyperbox()->getFidelity();
       std::cout << "Final fidelity : " << hyperspace.getHyperbox()->getFidelity() << endl;
@@ -833,8 +764,8 @@ int fidex(string command) {
       std::cout << "Rule confidence : " << ruleConfidence << endl
                 << endl;
 
-      meanCovSize += hyperspace.getHyperbox()->getCoveredSamples().size();
-      meanNbAntecedentsPerRule += hyperspace.getHyperbox()->getDiscriminativeHyperplans().size();
+      meanCovSize += static_cast<double>(hyperspace.getHyperbox()->getCoveredSamples().size());
+      meanNbAntecedentsPerRule += static_cast<double>(hyperspace.getHyperbox()->getDiscriminativeHyperplans().size());
       // Extract rules
       hyperspace.ruleExtraction(&mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, attributFileInit, &attributeNames, hasClassNames, &classNames);
 
@@ -843,7 +774,7 @@ int fidex(string command) {
       std::cout << "-------------------------------------------------" << endl;
 
       if (nbSamples > 1) {
-        lines.push_back("-------------------------------------------------\n");
+        lines.emplace_back("-------------------------------------------------\n");
       }
 
       // Reinitialize discriminativeHyperplans for next sample
@@ -876,8 +807,8 @@ int fidex(string command) {
 
     ofstream outputFile(ruleFile);
     if (outputFile.is_open()) {
-      for (int l = 0; l < lines.size(); l++) {
-        outputFile << lines[l] + "\n";
+      for (const auto &line : lines) {
+        outputFile << line << "\n";
       }
       outputFile.close();
     } else {
@@ -896,20 +827,22 @@ int fidex(string command) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
 
   } catch (const char *msg) {
-    std::printf(msg);
     cerr << msg << endl;
+    return -1;
   }
 
   return 0;
 }
 
-// Exemple : .\fidex.exe -T datanorm -P dimlp.out -C dataclass2 -S testSampleDataCombine -H hyperLocus -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
+/* Exemple pour lancer le code :
 
-// .\fidex.exe -T datanorm -P dimlp.out -C dataclass2 -S testData.txt -p testPred.txt -c testClass.txt -H hyperLocus -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
-// .\fidex.exe -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -S isoletTestData.txt -p isoletTestPredV2.out -c isoletTestClass.txt -H hyperLocusIsoletV2 -O ruleFidex.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../dimlp/datafiles/isoletDataset
-// .\fidex.exe -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -S Test/X_test.txt -p Test/pred_testV2.out -c Test/y_test.txt -H hyperLocusHAPTV2 -O ruleFidexV2.txt -s stats -i 100 -v 2 -d 0.5 -h 0.5 -R ../dimlp/datafiles/HAPTDataset
+.\fidex.exe -T datanorm -P dimlp.out -C dataclass2 -S testSampleDataCombine -H hyperLocus -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
 
-/*
+.\fidex.exe -T datanorm -P dimlp.out -C dataclass2 -S testData.txt -p testPred.txt -c testClass.txt -H hyperLocus -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
+.\fidex.exe -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -S isoletTestData.txt -p isoletTestPredV2.out -c isoletTestClass.txt -H hyperLocusIsoletV2 -O ruleFidex.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../dimlp/datafiles/isoletDataset
+.\fidex.exe -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -S Test/X_test.txt -p Test/pred_testV2.out -c Test/y_test.txt -H hyperLocusHAPTV2 -O ruleFidexV2.txt -s stats -i 100 -v 2 -d 0.5 -h 0.5 -R ../dimlp/datafiles/HAPTDataset
+
+
 #include <profileapi.h>
 
 LARGE_INTEGER frequency;        // ticks per second
