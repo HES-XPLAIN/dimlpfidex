@@ -41,12 +41,6 @@ int fidexGlo(const string &command) {
     }
     std::size_t nbParam = commandList.size();
 
-    // Import parameters
-    if (nbParam == 1) {
-      showParams();
-      return -1;
-    }
-
     // Parameters declaration
 
     string testSamplesDataFileTemp;
@@ -64,6 +58,11 @@ int fidexGlo(const string &command) {
     bool attributFileInit = false;
 
     // Import parameters
+
+    if (nbParam == 1) {
+      showParams();
+      return -1;
+    }
 
     int p = 1; // We skip "fidexGlo"
     while (p < nbParam) {
@@ -428,6 +427,7 @@ int fidexGlo(const string &command) {
   } catch (const char *msg) {
     std::printf(msg);
     cerr << msg << endl;
+    return -1;
   }
 
   return 0;

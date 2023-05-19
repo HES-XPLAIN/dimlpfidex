@@ -9,8 +9,8 @@
 #include <string.h>
 #include <time.h>
 
-static void showParams();
-static std::vector<std::vector<double>> calcHypLocus(int nbQuantLevels, double lowKnot, double hiKnot, std::vector<double> vectBias, std::vector<double> vectWeights);
-int hyperLocus(std::string command);
+void showParams();
+std::vector<std::vector<double>> calcHypLocus(int nbQuantLevels, double lowKnot, double hiKnot, std::vector<double> vectBias, std::vector<double> vectWeights);
+int hyperLocus(const std::string &command);
 
 #endif

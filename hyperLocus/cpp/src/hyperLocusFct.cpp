@@ -20,7 +20,7 @@ void showParams() {
 
 std::vector<std::vector<double>> calcHypLocus(int nbQuantLevels, double lowKnot, double hiKnot, std::vector<double> vectBias, std::vector<double> vectWeights) {
 
-  int nbIn = vectBias.size();      // Number of neurons in the first hidden layer (May be the number of input variables)
+  size_t nbIn = vectBias.size();   // Number of neurons in the first hidden layer (May be the number of input variables)
   int nbKnots = nbQuantLevels + 1; // Number of separations per dimension
 
   double dist = hiKnot - lowKnot;         // Size of the interval
@@ -42,11 +42,12 @@ std::vector<std::vector<double>> calcHypLocus(int nbQuantLevels, double lowKnot,
   return matHypLocus;
 }
 
-int hyperLocus(std::string command) {
+int hyperLocus(const std::string &command) {
   try {
 
     float temps;
-    clock_t t1, t2;
+    clock_t t1;
+    clock_t t2;
 
     t1 = clock();
 
@@ -58,7 +59,7 @@ int hyperLocus(std::string command) {
     while (std::getline(ss, s, delim)) {
       commandList.push_back(s);
     }
-    int nbParam = commandList.size();
+    size_t nbParam = commandList.size();
 
     // Parameters declaration
 
@@ -66,7 +67,6 @@ int hyperLocus(std::string command) {
     bool dataFileWeightsInit = false;
     std::string outputFile = "hyperLocus.txt";
     std::string rootFolderTemp;
-    bool rootFolderInit = false;
 
     int nbQuantLevels; // Number of steps of the step function
     bool nbQuantLevelsInit = false;
@@ -83,69 +83,72 @@ int hyperLocus(std::string command) {
       return -1;
     }
 
-    for (int p = 1; p < nbParam; p++) { // We skip "fidex"
+    int p = 1; // We skip "fidex"
+    while (p < nbParam) {
       if (commandList[p][0] == '-') {
         p++;
 
         if (p >= nbParam) {
-          std::cout << "Missing something at the end of the command.\n";
-          return -1;
+          throw std::runtime_error("Missing something at the end of the command.");
         }
 
-        switch (commandList[p - 1][1]) { // Get letter after the -
+        char option = commandList[p - 1][1];
+        const char *arg = &(commandList[p])[0];
+        const char *lastArg = &(commandList[p - 1])[0];
+
+        switch (option) { // Get letter after the -
 
         case 'W':
-          dataFileWeightsTemp = &(commandList[p])[0];
+          dataFileWeightsTemp = arg;
           dataFileWeightsInit = true;
           break;
 
         case 'Q':
-          if (CheckPositiveInt(&(commandList[p])[0])) {
-            nbQuantLevels = atoi(&(commandList[p])[0]);
+          if (CheckPositiveInt(arg)) {
+            nbQuantLevels = atoi(arg);
             nbQuantLevelsInit = true;
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + std::string(&(commandList[p - 1])[0]) + ", positive integer requested");
+            throw std::runtime_error("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
           }
           break;
 
         case 'I':
-          if (CheckFloatFid(&(commandList[p])[0]) && atof(&(commandList[p])[0]) > 0) {
-            hiKnot = atof(&(commandList[p])[0]);
+          if (CheckFloatFid(arg) && atof(arg) > 0) {
+            hiKnot = atof(arg);
             hiKnotInit = true;
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + std::string(&(commandList[p - 1])[0]) + ", strictly positive float requested");
+            throw std::runtime_error("Error : invalide type for parameter " + std::string(lastArg) + ", strictly positive float requested");
           }
           break;
 
         case 'O':
-          outputFile = &(commandList[p])[0];
+          outputFile = arg;
           break;
 
         case 'h':
-          if (CheckPositiveInt(&(commandList[p])[0])) {
-            hideNotes = atoi(&(commandList[p])[0]);
+          if (CheckPositiveInt(arg)) {
+            hideNotes = atoi(arg);
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + std::string(&(commandList[p - 1])[0]) + ", positive integer requested");
+            throw std::runtime_error("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
           }
           break;
 
         case 'S':
-          rootFolderTemp = &(commandList[p])[0];
-          rootFolderInit = true;
+          rootFolderTemp = arg;
           break;
 
         default: // If we put another -X option
-          throw std::runtime_error("Illegal option : " + std::string(&(commandList[p - 1])[0]));
+          throw std::runtime_error("Illegal option : " + std::string(lastArg));
         }
       }
+
+      p++;
     }
 
     // ----------------------------------------------------------------------
     // create paths with root foler
 
-    char dataFileWeightsTmp[160];
-
-    char *dataFileWeights = 0;
+    const char *dataFileWeights = nullptr;
 
 #if defined(__unix__) || defined(__APPLE__)
     std::string root = rootFolderTemp + "/";
@@ -155,13 +158,7 @@ int hyperLocus(std::string command) {
 
     if (dataFileWeightsInit) {
       dataFileWeightsTemp = root + dataFileWeightsTemp;
-      if (dataFileWeightsTemp.length() >= 160) {
-        std::cout << "Path " << dataFileWeightsTemp << "is too long"
-                  << "\n";
-        return -1;
-      }
-      strcpy(dataFileWeightsTmp, dataFileWeightsTemp.c_str());
-      dataFileWeights = dataFileWeightsTmp;
+      dataFileWeights = &dataFileWeightsTemp[0];
     }
 
     outputFile = root + outputFile;
@@ -211,9 +208,9 @@ int hyperLocus(std::string command) {
 
     std::ofstream hyperLocusFile(outputFile);
     if (hyperLocusFile.is_open()) {
-      for (int i = 0; i < hyperLocus.size(); i++) {
-        for (int j = 0; j < hyperLocus[0].size(); j++) {
-          hyperLocusFile << hyperLocus[i][j] << " ";
+      for (const auto &row : hyperLocus) {
+        for (const auto &element : row) {
+          hyperLocusFile << element << " ";
         }
         hyperLocusFile << "\n";
       }
@@ -230,7 +227,6 @@ int hyperLocus(std::string command) {
   }
 
   catch (const char *msg) {
-    printf(msg);
     std::cerr << msg << std::endl;
     return -1;
   }
@@ -238,10 +234,13 @@ int hyperLocus(std::string command) {
   return 0;
 }
 
-// Exemple : hyperLocus -W dimlp.wts -Q 50 -I 5 -O hyperLocus -S ../fidexGlo/datafiles/
-// .\hyperLocus.exe -W dimlp.wts -Q 50 -I 5 -O hyperLocus -S ../fidexGlo/datafiles/
+/* Exemples pour lancer le code :
 
-// .\hyperLocus.exe -W covid.wts -Q 50 -I 5 -O hyperLocusCovid -S ../dimlp/datafiles/covidDataset
-// .\hyperLocus.exe -W spam.wts -Q 50 -I 5 -O hyperLocusSpam -S ../dimlp/datafiles/spamDataset
-// .\hyperLocus.exe -W isoletV2.wts -Q 50 -I 5 -O hyperLocusIsoletV2 -S ../dimlp/datafiles/isoletDataset
-// .\hyperLocus.exe -W HAPTV2.wts -Q 50 -I 5 -O hyperLocusHAPTV2 -S ../dimlp/datafiles/HAPTDataset
+  .\hyperLocus.exe -W dimlp.wts -Q 50 -I 5 -O hyperLocus -S ../fidexGlo/datafiles/
+
+  .\hyperLocus.exe -W covid.wts -Q 50 -I 5 -O hyperLocusCovid -S ../dimlp/datafiles/covidDataset
+  .\hyperLocus.exe -W spam.wts -Q 50 -I 5 -O hyperLocusSpam -S ../dimlp/datafiles/spamDataset
+  .\hyperLocus.exe -W isoletV2.wts -Q 50 -I 5 -O hyperLocusIsoletV2 -S ../dimlp/datafiles/isoletDataset
+  .\hyperLocus.exe -W HAPTV2.wts -Q 50 -I 5 -O hyperLocusHAPTV2 -S ../dimlp/datafiles/HAPTDataset
+
+*/
