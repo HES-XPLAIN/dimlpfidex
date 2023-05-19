@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.24.2)
+cmake_minimum_required(VERSION 3.21.2)
 project(dimlp)
 
 set(CMAKE_CXX_STANDARD 11)
