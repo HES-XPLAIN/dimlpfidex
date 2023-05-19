@@ -169,8 +169,9 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
   lines.push_back("Global statistics of the rule set : ");
 
   string line;
-  getline(rulesData, line); // Skip first line;
-  getline(rulesData, line); // Skip second line
+  getline(rulesData, line);     // Skip first line;
+  lines.push_back(line + "\n"); // Add global statistics to output file
+  getline(rulesData, line);     // Skip second line
   bool attributsInFile = true;
   bool classesInFile = false;
   if (line.find("not") != std::string::npos) {
@@ -184,7 +185,7 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
   if (classesInFile && !hasClassNames) {
     throw std::runtime_error("The class names have to be given in attribut file");
   }
-  lines.push_back(line + "\n"); // Add global statistics to output file
+
   while (getline(rulesData, line)) {
     if (!checkStringEmpty(line)) {
       stringRules.push_back(line);
