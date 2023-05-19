@@ -1,47 +1,49 @@
 #ifndef DATASETFID_H
 #define DATASETFID_H
 
-using namespace std;
 #include "checkFun.h"
+#include <algorithm>
 #include <cstring>
+#include <fstream>
 #include <iostream>
+#include <sstream>
 #include <vector>
 
 class DataSetFid {
 
-  vector<vector<double>> datas;
-  vector<int> trueClasses;
-  vector<int> predictions;
-  vector<vector<double>> outputValuesPredictions;
-  vector<vector<double>> weights;
-  bool hasDatas = 0;
-  bool hasClasses = 0;
-  bool hasWeights = 0;
+  std::vector<std::vector<double>> datas;
+  std::vector<int> trueClasses;
+  std::vector<int> predictions;
+  std::vector<std::vector<double>> outputValuesPredictions;
+  std::vector<std::vector<double>> weights;
+  bool hasDatas = false;
+  bool hasClasses = false;
+  bool hasWeights = false;
 
 public:
   DataSetFid();
-  DataSetFid(char *dataFile, char *predFile, char *trueClassFile = 0);
-  DataSetFid(char *weightFile);
+  DataSetFid(const char *dataFile, const char *predFile, const char *trueClassFile = nullptr);
+  explicit DataSetFid(const char *weightFile);
 
-  vector<vector<double>> *getDatas();
-  vector<int> *getTrueClasses();
-  vector<int> *getPredictions();
-  vector<vector<double>> *getOutputValuesPredictions();
-  vector<vector<double>> getWeights();
-  vector<double> getInBiais();
-  vector<double> getInWeights();
+  std::vector<std::vector<double>> *getDatas();
+  std::vector<int> *getTrueClasses();
+  std::vector<int> *getPredictions();
+  std::vector<std::vector<double>> *getOutputValuesPredictions();
+  std::vector<std::vector<double>> getWeights() const;
+  std::vector<double> getInBiais() const;
+  std::vector<double> getInWeights() const;
 };
 
 class Attribute {
 
-  vector<string> attributes;
+  std::vector<std::string> attributes;
   bool hasAttributes;
 
 public:
   Attribute();
-  Attribute(char *attributFile);
+  explicit Attribute(const char *attributFile);
 
-  vector<string> *getAttributes();
+  std::vector<std::string> *getAttributes();
 };
 
 #endif

@@ -1,10 +1,12 @@
 #ifndef CHECKFUNFid_H
 #define CHECKFUNFid_H
 
+#include <algorithm>
+#include <iostream>
 #include <string>
-using namespace std;
-extern int CheckPositiveInt(char *str);
-extern int CheckFloatFid(char *str);
-extern bool checkStringEmpty(string line);
+
+int CheckPositiveInt(const char *str);
+int CheckFloatFid(const char *str);
+bool checkStringEmpty(std::string line);
 
 #endif

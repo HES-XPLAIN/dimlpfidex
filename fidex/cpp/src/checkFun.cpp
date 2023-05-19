@@ -1,15 +1,13 @@
-using namespace std;
-#include <iostream>
+#include "checkFun.h"
 
 ////////////////////////////////////////////////////////
 
-int CheckPositiveInt(char *str)
+int CheckPositiveInt(const char *str)
 
 {
-  int i;
   char ch;
 
-  for (i = 0; str[i] != '\0'; i++) {
+  for (int i = 0; str[i] != '\0'; i++) {
     ch = str[i];
 
     if ((ch > '9') || (ch < '0')) {
@@ -22,21 +20,22 @@ int CheckPositiveInt(char *str)
 
 ////////////////////////////////////////////////////////
 
-int CheckFloatFid(char *str)
+int CheckFloatFid(const char *str)
 
 {
-  int i, countDot, countMinus;
+  int i;
+  int countDot;
+  int countMinus;
   char ch;
 
   for (i = 0; str[i] != '\0'; i++) {
     ch = str[i];
 
-    if ((ch > '9') || (ch < '0'))
-      if ((ch != '.') && (ch != '-')) {
-        cout << "Problem with float argument (" << str;
-        cout << ") or with previous argument.\n";
-        return 0;
-      }
+    if (((ch > '9') || (ch < '0')) && (ch != '.') && (ch != '-')) {
+      std::cout << "Problem with float argument (" << str;
+      std::cout << ") or with the previous argument.\n";
+      return 0;
+    }
   }
 
   for (i = 0, countDot = 0; str[i] != '\0'; i++)
@@ -48,8 +47,8 @@ int CheckFloatFid(char *str)
       countMinus++;
 
   if ((countDot > 1) || (countMinus > 1)) {
-    cout << "Problem with float argument (" << str;
-    cout << ") or with previous argument.\n";
+    std::cout << "Problem with float argument (" << str;
+    std::cout << ") or with previous argument.\n";
     return 0;
   }
 
@@ -58,14 +57,12 @@ int CheckFloatFid(char *str)
 
 ////////////////////////////////////////////////////////
 
-bool checkStringEmpty(string line) {
+bool checkStringEmpty(std::string line) {
   if (line.length() == 0) {
     return true;
   } else {
-    for (int c : line) {
-      if (isgraph(c)) {
-        return false;
-      }
+    if (std::any_of(line.begin(), line.end(), [](int c) { return isgraph(c); })) {
+      return false;
     }
     return true;
   }
