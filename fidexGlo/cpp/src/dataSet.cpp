@@ -1,11 +1,8 @@
-using namespace std;
 #include "dataSet.h"
-#include <algorithm>
-#include <fstream>
-#include <sstream>
+using namespace std;
 
-DataSetFid::DataSetFid(char *dataFile, char *predFile, char *trueClassFile) {
-  hasDatas = true;
+DataSetFid::DataSetFid(const char *dataFile, const char *predFile, const char *trueClassFile) : hasDatas(true) {
+
   int i; // iterator
   string line;
 
@@ -35,7 +32,7 @@ DataSetFid::DataSetFid(char *dataFile, char *predFile, char *trueClassFile) {
 
   // Get data class
 
-  if (trueClassFile != 0) {
+  if (trueClassFile != nullptr) {
 
     hasClasses = true;
     fstream fileCl;
@@ -74,7 +71,6 @@ DataSetFid::DataSetFid(char *dataFile, char *predFile, char *trueClassFile) {
   }
 
   while (!filePrd.eof()) {
-    i = 0;
     getline(filePrd, line);
     if (line.length() != 0) {
       std::stringstream myLine(line);
@@ -84,17 +80,16 @@ DataSetFid::DataSetFid(char *dataFile, char *predFile, char *trueClassFile) {
         values.push_back(value);
       }
       outputValuesPredictions.push_back(values);
-      predictions.push_back(std::max_element(values.begin(), values.end()) - values.begin());
+      predictions.push_back(static_cast<int>(std::max_element(values.begin(), values.end()) - values.begin()));
     }
   }
 
   filePrd.close(); // close file
 }
 
-DataSetFid::DataSetFid(char *weightFile) {
+DataSetFid::DataSetFid(const char *weightFile) : hasWeights(true) {
 
   // Get weights
-  hasWeights = true;
   fstream fileWts;
 
   string line;
@@ -151,7 +146,7 @@ vector<vector<double>> *DataSetFid::getOutputValuesPredictions() {
   }
 }
 
-vector<vector<double>> DataSetFid::getWeights() {
+vector<vector<double>> DataSetFid::getWeights() const {
   if (hasWeights) {
     return weights;
   } else {
@@ -159,7 +154,7 @@ vector<vector<double>> DataSetFid::getWeights() {
   }
 }
 
-vector<double> DataSetFid::getInBiais() {
+vector<double> DataSetFid::getInBiais() const {
   if (hasWeights) {
     return weights[0];
   } else {
@@ -167,7 +162,7 @@ vector<double> DataSetFid::getInBiais() {
   }
 }
 
-vector<double> DataSetFid::getInWeights() {
+vector<double> DataSetFid::getInWeights() const {
   if (hasWeights) {
     return weights[1];
   } else {
@@ -175,7 +170,7 @@ vector<double> DataSetFid::getInWeights() {
   }
 }
 
-Attribute::Attribute(char *attributeFile) {
+Attribute::Attribute(const char *attributeFile) {
 
   hasAttributes = true;
   // Get attributes
@@ -190,7 +185,7 @@ Attribute::Attribute(char *attributeFile) {
   while (!fileAttr.eof()) {
     getline(fileAttr, line);
     // Remove invisible characters at the end if exist
-    for (int i = line.length() - 1; i >= 0; i--) {
+    for (int i = static_cast<int>(line.length()) - 1; i >= 0; i--) {
       if (!std::isspace(line[i])) {
         line.erase(i + 1);
         break;
