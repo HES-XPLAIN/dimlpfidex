@@ -189,6 +189,13 @@ Attribute::Attribute(char *attributeFile) {
   }
   while (!fileAttr.eof()) {
     getline(fileAttr, line);
+    // Remove invisible characters at the end if exist
+    for (int i = line.length() - 1; i >= 0; i--) {
+      if (!std::isspace(line[i])) {
+        line.erase(i + 1);
+        break;
+      }
+    }
     if (!checkStringEmpty(line)) {
       std::stringstream myLine(line);
       string attr = myLine.str();
