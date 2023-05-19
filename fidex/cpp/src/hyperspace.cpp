@@ -4,7 +4,7 @@ using namespace std;
 #include <sstream>
 
 namespace FidexNameSpace {
-Hyperspace::Hyperspace(char *hyperLocusFile) {
+Hyperspace::Hyperspace(const char *hyperLocusFile) {
 
   // Get hyperLocus
   fstream fileLocus;

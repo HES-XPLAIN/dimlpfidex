@@ -9,6 +9,7 @@
 #include <ctime>
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <numeric>
 #include <random>
 #include <sstream>
@@ -16,7 +17,7 @@
 #include <tuple>
 #include <vector>
 
-static void showParams();
-int fidex(string command);
+void showFidexParams();
+int fidex(const string &command);
 
 #endif

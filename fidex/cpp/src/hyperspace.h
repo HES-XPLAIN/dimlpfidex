@@ -15,7 +15,7 @@ class Hyperspace {
 
 public:
   Hyperspace();
-  Hyperspace(char *hyperLocusFile);
+  Hyperspace(const char *hyperLocusFile);
 
   Hyperbox *getHyperbox();
   vector<vector<double>> getHyperLocus();
