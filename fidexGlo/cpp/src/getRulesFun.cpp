@@ -156,7 +156,7 @@ RuleInfo parseRuleLine(const std::string &line, bool attributsInFile, vector<str
 
 ////////////////////////////////////////////////////////
 
-void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> &rules, vector<string> &lines, vector<string> &stringRules, char *rulesFile, int nbTestAttributs, bool hasAttributeNames, vector<string> attributeNames, bool hasClassNames, vector<string> classNames) {
+void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> &rules, vector<string> &lines, vector<string> &stringRules, const char *rulesFile, size_t nbTestAttributs, bool hasAttributeNames, vector<string> attributeNames, bool hasClassNames, vector<string> classNames) {
 
   tuple<vector<tuple<int, bool, double>>, int, int, double, double> rule; // <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
 

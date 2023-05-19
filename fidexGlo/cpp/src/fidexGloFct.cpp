@@ -21,12 +21,13 @@ void showParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 }
 
-int fidexGlo(string command) {
+int fidexGlo(const string &command) {
 
   try {
 
     float temps;
-    clock_t t1, t2;
+    clock_t t1;
+    clock_t t2;
 
     t1 = clock();
 
@@ -38,7 +39,7 @@ int fidexGlo(string command) {
     while (std::getline(ss, s, delim)) {
       commandList.push_back(s);
     }
-    int nbParam = commandList.size();
+    std::size_t nbParam = commandList.size();
 
     // Import parameters
     if (nbParam == 1) {
@@ -59,15 +60,13 @@ int fidexGlo(string command) {
     string consoleFileTemp;
     bool consoleFileInit = false;
     string rootFolderTemp;
-    bool rootFolderInit = false;
     string attributFileTemp; // attribut file
     bool attributFileInit = false;
-    DataSetFid *testDatas;
-    Attribute *attributesData;
 
     // Import parameters
 
-    for (int p = 1; p < nbParam; p++) { // We skip "fidexGlo"
+    int p = 1; // We skip "fidexGlo"
+    while (p < nbParam) {
       if (commandList[p][0] == '-') {
         p++;
 
@@ -75,60 +74,61 @@ int fidexGlo(string command) {
           throw std::runtime_error("Missing something at the end of the command.");
         }
 
-        switch (commandList[p - 1][1]) { // Get letter after the -
+        char option = commandList[p - 1][1];
+        const char *arg = &(commandList[p])[0];
 
+        switch (option) { // Get letter after the -
         case 'S':
-          testSamplesDataFileTemp = &(commandList[p])[0];
+          testSamplesDataFileTemp = arg;
           testSamplesDataFileInit = true;
           break;
 
         case 'p':
-          testSamplesPredFileTemp = &(commandList[p])[0];
+          testSamplesPredFileTemp = arg;
           testSamplesPredFileInit = true;
           break;
 
         case 'R':
-          rulesFileTemp = &(commandList[p])[0];
+          rulesFileTemp = arg;
           rulesFileInit = true;
           break;
 
         case 'O':
-          explanationFileTemp = &(commandList[p])[0];
+          explanationFileTemp = arg;
           explanationFileInit = true;
           break;
 
         case 'r':
-          consoleFileTemp = &(commandList[p])[0];
+          consoleFileTemp = arg;
           consoleFileInit = true;
           break;
 
         case 'A':
-          attributFileTemp = &(commandList[p])[0];
+          attributFileTemp = arg;
           attributFileInit = true;
           break;
 
         case 'F':
-          rootFolderTemp = &(commandList[p])[0];
-          rootFolderInit = true;
+          rootFolderTemp = arg;
           break;
 
         default: // If we put another -X option
-          throw std::runtime_error("Illegal option : " + string(&(commandList[p - 1])[0]));
+          throw std::runtime_error("Illegal option: " + std::string(&option, 1));
         }
       }
+
+      p++;
     }
 
     // ----------------------------------------------------------------------
     // create paths with root foler
 
-    char testSamplesDataFileTmp[160], testSamplesPredFileTmp[160], rulesFileTmp[160], explanationFileTmp[160], consoleFileTmp[160], attributFileTmp[160];
-
-    char *testSamplesDataFile = 0;
-    char *testSamplesPredFile = 0;
-    char *rulesFile = 0;
-    char *explanationFile = 0;
-    char *consoleFile = 0;
-    char *attributFile = 0;
+    const char *testSamplesDataFile = nullptr;
+    const char *testSamplesPredFile = nullptr;
+    const char *rulesFile = nullptr;
+    const char *explanationFile = nullptr;
+    const char *consoleFile = nullptr;
+    const char *attributFile = nullptr;
 
 #if defined(__unix__) || defined(__APPLE__)
     string root = rootFolderTemp + "/";
@@ -138,68 +138,32 @@ int fidexGlo(string command) {
 
     if (testSamplesDataFileInit) {
       testSamplesDataFileTemp = root + testSamplesDataFileTemp;
-      if (testSamplesDataFileTemp.length() >= 160) {
-        cout << "Path " << testSamplesDataFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(testSamplesDataFileTmp, testSamplesDataFileTemp.c_str());
-      testSamplesDataFile = testSamplesDataFileTmp;
+      testSamplesDataFile = &testSamplesDataFileTemp[0];
     }
 
     if (testSamplesPredFileInit) {
       testSamplesPredFileTemp = root + testSamplesPredFileTemp;
-      if (testSamplesPredFileTemp.length() >= 160) {
-        cout << "Path " << testSamplesPredFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(testSamplesPredFileTmp, testSamplesPredFileTemp.c_str());
-      testSamplesPredFile = testSamplesPredFileTmp;
+      testSamplesPredFile = &testSamplesPredFileTemp[0];
     }
 
     if (rulesFileInit) {
       rulesFileTemp = root + rulesFileTemp;
-      if (rulesFileTemp.length() >= 160) {
-        cout << "Path " << rulesFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(rulesFileTmp, rulesFileTemp.c_str());
-      rulesFile = rulesFileTmp;
+      rulesFile = &rulesFileTemp[0];
     }
 
     if (explanationFileInit) {
       explanationFileTemp = root + explanationFileTemp;
-      if (explanationFileTemp.length() >= 160) {
-        cout << "Path " << explanationFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(explanationFileTmp, explanationFileTemp.c_str());
-      explanationFile = explanationFileTmp;
+      explanationFile = &explanationFileTemp[0];
     }
 
     if (consoleFileInit) {
       consoleFileTemp = root + consoleFileTemp;
-      if (consoleFileTemp.length() >= 160) {
-        cout << "Path " << consoleFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(consoleFileTmp, consoleFileTemp.c_str());
-      consoleFile = consoleFileTmp;
+      consoleFile = &consoleFileTemp[0];
     }
 
     if (attributFileInit) {
       attributFileTemp = root + attributFileTemp;
-      if (attributFileTemp.length() >= 160) {
-        cout << "Path " << attributFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(attributFileTmp, attributFileTemp.c_str());
-      attributFile = attributFileTmp;
+      attributFile = &attributFileTemp[0];
     }
 
     // ----------------------------------------------------------------------
@@ -219,7 +183,6 @@ int fidexGlo(string command) {
       ofs.open(consoleFile);
       std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
     }
-    std::ostream &output = consoleFileInit != false ? ofs : std::cout;
 
     // ----------------------------------------------------------------------
 
@@ -276,7 +239,7 @@ int fidexGlo(string command) {
             testSampleOutputValuesPredictions.push_back(value);
           }
           testSamplesOutputValuesPredictions.push_back(testSampleOutputValuesPredictions);
-          testSamplePred = std::max_element(testSampleOutputValuesPredictions.begin(), testSampleOutputValuesPredictions.end()) - testSampleOutputValuesPredictions.begin();
+          testSamplePred = static_cast<int>(std::max_element(testSampleOutputValuesPredictions.begin(), testSampleOutputValuesPredictions.end()) - testSampleOutputValuesPredictions.begin());
           testSamplesPreds.push_back(testSamplePred);
 
         } else {
@@ -298,7 +261,7 @@ int fidexGlo(string command) {
       }
       testData.close(); // close data file
     } else {            // We have a different file for test predictions
-      testDatas = new DataSetFid(testSamplesDataFile, testSamplesPredFile);
+      std::unique_ptr<DataSetFid> testDatas(new DataSetFid(testSamplesDataFile, testSamplesPredFile));
       testSamplesValues = (*testDatas->getDatas());
       testSamplesPreds = (*testDatas->getPredictions());
       testSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
@@ -309,18 +272,18 @@ int fidexGlo(string command) {
       }
     }
 
-    int nbSamples = testSamplesValues.size();
-    int nbTestAttributs = testSamplesValues[0].size();
-    const int nbClass = testSamplesOutputValuesPredictions[0].size();
+    size_t nbSamples = testSamplesValues.size();
+    size_t nbTestAttributs = testSamplesValues[0].size();
+    size_t nbClass = testSamplesOutputValuesPredictions[0].size();
 
-    for (int s = 0; s < nbSamples; s++) {
-      if (testSamplesValues[s].size() != nbTestAttributs) {
+    for (int spl = 0; spl < nbSamples; spl++) {
+      if (testSamplesValues[spl].size() != nbTestAttributs) {
         throw std::runtime_error("Error : in file " + std::string(testSamplesDataFile) + ", all test datas need to have the same number of variables");
       }
     }
 
-    for (int s = 0; s < nbSamples; s++) {
-      if (testSamplesOutputValuesPredictions[s].size() != nbClass) {
+    for (int spl = 0; spl < nbSamples; spl++) {
+      if (testSamplesOutputValuesPredictions[spl].size() != nbClass) {
         throw std::runtime_error("Error : in file " + std::string(testSamplesDataFile) + ", all test datas need to have the same number of prediction values");
       }
     }
@@ -330,7 +293,7 @@ int fidexGlo(string command) {
     vector<string> classNames;
     bool hasClassNames;
     if (attributFileInit) {
-      attributesData = new Attribute(attributFile);
+      std::unique_ptr<Attribute> attributesData(new Attribute(attributFile));
       attributeNames = (*attributesData->getAttributes());
       if (attributeNames.size() < nbTestAttributs) {
         throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not enough attribute names");
@@ -374,11 +337,11 @@ int fidexGlo(string command) {
       vector<int> correctRules;
       vector<int> notcorrectRules;
       bool notShowUncorrectRules = false;
-      if (activatedRules.size() == 0) { // If there is no activated rule
+      if (activatedRules.empty()) { // If there is no activated rule
         cout << "\nThere is no class activated" << endl;
-        lines.push_back("We couldn't find any global explanation for this sample."); // There is no explanation, we choose the model decision
-        lines.push_back("We choose the model prediction.");
-        lines.push_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
+        lines.emplace_back("We couldn't find any global explanation for this sample."); // There is no explanation, we choose the model decision
+        lines.emplace_back("We choose the model prediction.");
+        lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
       } else { // There is some activated rules
         for (int v : activatedRules) {
           if (get<2>(rules[v]) == testSamplesPreds[currentSample]) { // Check if the class of the rule is the predicted one
@@ -387,7 +350,7 @@ int fidexGlo(string command) {
             notcorrectRules.push_back(v);
           }
         }
-        if (correctRules.size() == 0) { // If there is no correct rule
+        if (correctRules.empty()) { // If there is no correct rule
           int ancientClass = get<2>(rules[activatedRules[0]]);
           bool allSameClass = true; // Check if all the rules choose the same class
           for (int v : activatedRules) {
@@ -399,43 +362,43 @@ int fidexGlo(string command) {
           if (allSameClass) {
             notShowUncorrectRules = true;
             if (activatedRules.size() > 1) {
-              lines.push_back("We didn't found any rule with same prediction as the model (class " + std::to_string(testSamplesPreds[currentSample]) + "), but we found " + std::to_string(activatedRules.size()) + " rules with class " + std::to_string(ancientClass) + " :\n");
+              lines.emplace_back("We didn't found any rule with same prediction as the model (class " + std::to_string(testSamplesPreds[currentSample]) + "), but we found " + std::to_string(activatedRules.size()) + " rules with class " + std::to_string(ancientClass) + " :\n");
             } else {
-              lines.push_back("We didn't found any rule with same prediction as the model (class " + std::to_string(testSamplesPreds[currentSample]) + "), but we found 1 rule with class " + std::to_string(ancientClass) + " :\n");
+              lines.emplace_back("We didn't found any rule with same prediction as the model (class " + std::to_string(testSamplesPreds[currentSample]) + "), but we found 1 rule with class " + std::to_string(ancientClass) + " :\n");
             }
             for (int v = 0; v < activatedRules.size(); v++) {
-              lines.push_back("R" + std::to_string(v + 1) + ": " + stringRules[activatedRules[v]]);
+              lines.emplace_back("R" + std::to_string(v + 1) + ": " + stringRules[activatedRules[v]]);
             }
           } else {
             cout << "\nThere is no correct rule for this sample." << endl;
-            lines.push_back("We couldn't find any global explanation for this sample."); // There is no explanation, we choose the model decision
-            lines.push_back("We choose the model prediction.");
-            lines.push_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
+            lines.emplace_back("We couldn't find any global explanation for this sample."); // There is no explanation, we choose the model decision
+            lines.emplace_back("We choose the model prediction.");
+            lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
           }
 
         } else { // There is an explanation which is caracterised by the correct rules
           if (correctRules.size() > 1) {
-            lines.push_back("We have found " + std::to_string(correctRules.size()) + " global rules explaining the model prediction :\n"); // There is no explanation, we choose the model decision
+            lines.emplace_back("We have found " + std::to_string(correctRules.size()) + " global rules explaining the model prediction :\n"); // There is no explanation, we choose the model decision
           } else {
-            lines.push_back("We have found 1 global rule explaining the model prediction :\n"); // There is no explanation, we choose the model decision
+            lines.emplace_back("We have found 1 global rule explaining the model prediction :\n"); // There is no explanation, we choose the model decision
           }
           for (int c = 0; c < correctRules.size(); c++) {
-            lines.push_back("R" + std::to_string(c + 1) + ": " + stringRules[correctRules[c]]);
+            lines.emplace_back("R" + std::to_string(c + 1) + ": " + stringRules[correctRules[c]]);
           }
         }
       }
       if (!notShowUncorrectRules) {
-        if (notcorrectRules.size() != 0) {
-          lines.push_back("\nActivated rules without correct decision class :");
+        if (notcorrectRules.empty()) {
+          lines.emplace_back("\nActivated rules without correct decision class :");
           for (int n = 0; n < notcorrectRules.size(); n++) {
-            lines.push_back("F" + std::to_string(n + 1) + ": " + stringRules[notcorrectRules[n]]);
+            lines.emplace_back("F" + std::to_string(n + 1) + ": " + stringRules[notcorrectRules[n]]);
           }
         } else {
-          lines.push_back("\nThere is no uncorrect rules.");
+          lines.emplace_back("\nThere is no uncorrect rules.");
         }
       }
 
-      lines.push_back("\n--------------------------------------------------------------------\n");
+      lines.emplace_back("\n--------------------------------------------------------------------\n");
     }
 
     // Show result on consol
@@ -447,8 +410,8 @@ int fidexGlo(string command) {
     if (explanationFileInit) {
       ofstream outputFile(explanationFile);
       if (outputFile.is_open()) {
-        for (int l = 0; l < lines.size(); l++) {
-          outputFile << lines[l] + "\n";
+        for (const auto &line : lines) {
+          outputFile << line << "\n";
         }
         outputFile.close();
       } else {
@@ -470,4 +433,4 @@ int fidexGlo(string command) {
   return 0;
 }
 
-// Exemple : .\fidexGlo.exe -S testSampleData -R globalRulesDatanorm.txt -O explanation.txt -F ../fidexGlo/datafiles/
+// Exemple pour lancer le code : .\fidexGlo.exe -S testSampleData -R globalRulesDatanorm.txt -O explanation.txt -F ../fidexGlo/datafiles/

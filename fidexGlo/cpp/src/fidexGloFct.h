@@ -6,13 +6,14 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <string.h>
 #include <time.h>
 #include <tuple>
 #include <vector>
 
-static void showParams();
-int fidexGlo(string command);
+void showParams();
+int fidexGlo(const std::string &command);
 
 #endif
