@@ -82,7 +82,7 @@ pybind11 = "^2.10.4"
 pybind11-global = "^2.10.4"
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "^3.2.2"
+pre-commit = "^3.3.2"
 
 [tool.poetry.build]
 script = "build.py"
