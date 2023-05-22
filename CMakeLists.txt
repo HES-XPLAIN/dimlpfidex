@@ -21,3 +21,6 @@ add_subdirectory("dimlp")
 add_subdirectory("fidexCommon")
 add_subdirectory("fidex")
 add_subdirectory("fidexGlo")
+
+# documentation
+add_subdirectory("docs")
