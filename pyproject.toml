@@ -78,6 +78,11 @@ scikit-learn = "^1.2.2"
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.3.2"
 
+
+[tool.poetry.group.doc.dependencies]
+sphinx-rtd-theme = "^1.2.0"
+breathe = "^4.35.0"
+
 [tool.poetry.build]
 script = "build.py"
 
