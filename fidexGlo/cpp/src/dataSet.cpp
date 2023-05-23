@@ -172,7 +172,6 @@ vector<double> DataSetFid::getInWeights() const {
 
 Attribute::Attribute(const char *attributeFile) {
 
-  hasAttributes = true;
   // Get attributes
   fstream fileAttr;
 

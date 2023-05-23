@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void showParams() {
+void showStatsParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 
   std::cout << "Obligatory parameters : \n\n";
@@ -19,12 +19,13 @@ void showParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 }
 
-int fidexGloStats(string command) {
+int fidexGloStats(const string &command) {
 
   try {
 
     float temps;
-    clock_t t1, t2;
+    clock_t t1;
+    clock_t t2;
 
     t1 = clock();
 
@@ -36,13 +37,7 @@ int fidexGloStats(string command) {
     while (std::getline(ss, s, delim)) {
       commandList.push_back(s);
     }
-    int nbParam = commandList.size();
-
-    // Import parameters
-    if (nbParam == 1) {
-      showParams();
-      return -1;
-    }
+    size_t nbParam = commandList.size();
 
     // Parameters declaration
 
@@ -60,83 +55,86 @@ int fidexGloStats(string command) {
     string consoleFileTemp;
     bool consoleFileInit = false;
     string rootFolderTemp;
-    bool rootFolderInit = false;
     string attributFileTemp; // attribut file
     bool attributFileInit = false;
 
-    DataSetFid *testDatas;
-    Attribute *attributesData;
-
     // Import parameters
 
-    for (int p = 1; p < nbParam; p++) { // We skip "fidexGlo"
+    if (nbParam == 1) {
+      showStatsParams();
+      return -1;
+    }
+
+    int p = 1; // We skip "fidexGlo"
+    while (p < nbParam) {
       if (commandList[p][0] == '-') {
         p++;
 
         if (p >= nbParam) {
           throw std::runtime_error("Missing something at the end of the command.");
         }
-
-        switch (commandList[p - 1][1]) { // Get letter after the -
+        char option = commandList[p - 1][1];
+        const char *arg = &(commandList[p])[0];
+        const char *lastArg = &(commandList[p - 1])[0];
+        switch (option) { // Get letter after the -
 
         case 'T':
-          testDataFileTemp = &(commandList[p])[0]; // Parameter after -T
+          testDataFileTemp = arg; // Parameter after -T
           testDataFileInit = true;
           break;
 
         case 'P':
-          testDataFilePredTemp = &(commandList[p])[0];
+          testDataFilePredTemp = arg;
           testDataFilePredInit = true;
           break;
 
         case 'C':
-          testDataFileTrueClassTemp = &(commandList[p])[0];
+          testDataFileTrueClassTemp = arg;
           testDataFileTrueClassInit = true;
           break;
 
         case 'R':
-          rulesFileTemp = &(commandList[p])[0];
+          rulesFileTemp = arg;
           rulesFileInit = true;
           break;
 
         case 'O':
-          statsFileTemp = &(commandList[p])[0];
+          statsFileTemp = arg;
           statsFileInit = true;
           break;
 
         case 'r':
-          consoleFileTemp = &(commandList[p])[0];
+          consoleFileTemp = arg;
           consoleFileInit = true;
           break;
 
         case 'A':
-          attributFileTemp = &(commandList[p])[0];
+          attributFileTemp = arg;
           attributFileInit = true;
           break;
 
         case 'S':
-          rootFolderTemp = &(commandList[p])[0];
-          rootFolderInit = true;
+          rootFolderTemp = arg;
           break;
 
         default: // If we put another -X option
-          throw std::runtime_error("Illegal option : " + string(&(commandList[p - 1])[0]));
+          throw std::runtime_error("Illegal option : " + string(lastArg));
         }
       }
+
+      p++;
     }
 
     // ----------------------------------------------------------------------
     // create paths with root foler
 
-    char testDataFileTmp[160], testDataFilePredTmp[160], testDataFileTrueClassTmp[160], rulesFileTmp[160], statsFileTmp[160], consoleFileTmp[160], attributFileTmp[160];
-
-    char *testDataFile = 0;
-    char *testDataFilePred = 0;
-    char *testDataFileTrueClass = 0;
-    char *rulesFile = 0;
-    char *statsFile = 0;
-    char *consoleFile = 0;
-    char *attributFile = 0;
+    const char *testDataFile = nullptr;
+    const char *testDataFilePred = nullptr;
+    const char *testDataFileTrueClass = nullptr;
+    const char *rulesFile = nullptr;
+    const char *statsFile = nullptr;
+    const char *consoleFile = nullptr;
+    const char *attributFile = nullptr;
 
 #if defined(__unix__) || defined(__APPLE__)
     string root = rootFolderTemp + "/";
@@ -146,79 +144,37 @@ int fidexGloStats(string command) {
 
     if (testDataFileInit) {
       testDataFileTemp = root + testDataFileTemp;
-      if (testDataFileTemp.length() >= 160) {
-        cout << "Path " << testDataFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(testDataFileTmp, testDataFileTemp.c_str());
-      testDataFile = testDataFileTmp;
+      testDataFile = &testDataFileTemp[0];
     }
 
     if (testDataFilePredInit) {
       testDataFilePredTemp = root + testDataFilePredTemp;
-      if (testDataFilePredTemp.length() >= 160) {
-        cout << "Path " << testDataFilePredTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(testDataFilePredTmp, testDataFilePredTemp.c_str());
-      testDataFilePred = testDataFilePredTmp;
+      testDataFilePred = &testDataFilePredTemp[0];
     }
 
     if (testDataFileTrueClassInit) {
       testDataFileTrueClassTemp = root + testDataFileTrueClassTemp;
-      if (testDataFileTrueClassTemp.length() >= 160) {
-        cout << "Path " << testDataFileTrueClassTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(testDataFileTrueClassTmp, testDataFileTrueClassTemp.c_str());
-      testDataFileTrueClass = testDataFileTrueClassTmp;
+      testDataFileTrueClass = &testDataFileTrueClassTemp[0];
     }
 
     if (rulesFileInit) {
       rulesFileTemp = root + rulesFileTemp;
-      if (rulesFileTemp.length() >= 160) {
-        cout << "Path " << rulesFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(rulesFileTmp, rulesFileTemp.c_str());
-      rulesFile = rulesFileTmp;
+      rulesFile = &rulesFileTemp[0];
     }
 
     if (statsFileInit) {
       statsFileTemp = root + statsFileTemp;
-      if (statsFileTemp.length() >= 160) {
-        cout << "Path " << statsFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(statsFileTmp, statsFileTemp.c_str());
-      statsFile = statsFileTmp;
+      statsFile = &statsFileTemp[0];
     }
 
     if (consoleFileInit) {
       consoleFileTemp = root + consoleFileTemp;
-      if (consoleFileTemp.length() >= 160) {
-        cout << "Path " << consoleFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(consoleFileTmp, consoleFileTemp.c_str());
-      consoleFile = consoleFileTmp;
+      consoleFile = &consoleFileTemp[0];
     }
 
     if (attributFileInit) {
       attributFileTemp = root + attributFileTemp;
-      if (attributFileTemp.length() >= 160) {
-        cout << "Path " << attributFileTemp << "is too long"
-             << "\n";
-        return -1;
-      }
-      strcpy(attributFileTmp, attributFileTemp.c_str());
-      attributFile = attributFileTmp;
+      attributFile = &attributFileTemp[0];
     }
 
     // ----------------------------------------------------------------------
@@ -245,7 +201,6 @@ int fidexGloStats(string command) {
       ofs.open(consoleFile);
       std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
     }
-    std::ostream &output = consoleFileInit != false ? ofs : std::cout;
 
     // ----------------------------------------------------------------------
 
@@ -254,24 +209,24 @@ int fidexGloStats(string command) {
 
     // Get test data
 
-    testDatas = new DataSetFid(testDataFile, testDataFilePred, testDataFileTrueClass);
+    std::unique_ptr<DataSetFid> testDatas(new DataSetFid(testDataFile, testDataFilePred, testDataFileTrueClass));
 
     vector<vector<double>> *testData = testDatas->getDatas();
     vector<int> *testPreds = testDatas->getPredictions();
     vector<int> *testTrueClasses = testDatas->getTrueClasses();
-    const int nbClass = (*testDatas->getOutputValuesPredictions())[0].size();
+    const auto nbClass = static_cast<int>((*testDatas->getOutputValuesPredictions())[0].size());
 
-    const int nbTestData = (*testData).size();
+    const auto nbTestData = static_cast<int>((*testData).size());
     if ((*testPreds).size() != nbTestData || (*testTrueClasses).size() != nbTestData) {
       throw std::runtime_error("All the test files need to have the same amount of datas");
     }
-    int nbTestAttributs = (*testData)[0].size();
+    auto nbTestAttributs = static_cast<int>((*testData)[0].size());
     // Get attributes
     vector<string> attributeNames;
     vector<string> classNames;
     bool hasClassNames;
     if (attributFileInit) {
-      attributesData = new Attribute(attributFile);
+      std::unique_ptr<Attribute> attributesData(new Attribute(attributFile));
       attributeNames = (*attributesData->getAttributes());
       if (attributeNames.size() < nbTestAttributs) {
         throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not enough attribute names");
@@ -293,7 +248,7 @@ int fidexGloStats(string command) {
     vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
     vector<string> lines;                                                            // Lines for the output stats
     vector<string> stringRules;
-    getRules(rules, lines, stringRules, rulesFile, nbTestAttributs, attributFileInit, attributeNames, hasClassNames, classNames);
+    getRules(rules, lines, stringRules, rulesFile, attributFileInit, attributeNames, hasClassNames, classNames);
 
     std::cout << "Data imported..." << endl
               << endl;
@@ -316,24 +271,6 @@ int fidexGloStats(string command) {
     int testPred;
     int testTrueClass;
 
-    string inequality;
-    /*
-    for (auto myrul: rules){
-      for (int a = 0; a < get<0>(myrul).size(); a++) {      // each antecedant
-        if (get<1>(get<0>(myrul)[a]) == 1) {                // check inequality
-          inequality = ">=";
-        } else {
-          inequality = "<";
-        }
-        cout << "X" + std::to_string(get<0>(get<0>(myrul)[a])) + inequality + std::to_string(get<2>(get<0>(myrul)[a])) + " "; // Write antecedant
-      }
-      cout << "-> class " + std::to_string(std::get<2>(myrul));                // class of the rule
-      cout << " Covering size : " + std::to_string(std::get<1>(myrul)); // Covering size
-      cout << " Fidelity : "+ std::to_string(std::get<3>(myrul));                                                           // Rule fidelity
-      cout << " Accuracy : " + std::to_string(std::get<4>(myrul)) + "\n";             // Rule accuracy
-      //cout << " Confidence : " + std::to_string(std::get<5>(myrul)) + "\n";    // Rule confidence
-    }*/
-
     for (int t = 0; t < nbTestData; t++) { // For each test value
       testValues = (*testData)[t];
       testPred = (*testPreds)[t];
@@ -348,7 +285,7 @@ int fidexGloStats(string command) {
 
       // Check which rules are correct
       vector<int> correctRules;
-      if (activatedRules.size() == 0) { // If there is no activated rule
+      if (activatedRules.empty()) { // If there is no activated rule
         defaultRuleRate++;
         fidelity++; // It is true to the model because we choose his prediction
         nbFidelRules++;
@@ -362,8 +299,8 @@ int fidexGloStats(string command) {
             correctRules.push_back(v);
           }
         }
-        if (correctRules.size() == 0) { // If there is no correct rule
-          meanNbWrongActivatedRules += activatedRules.size();
+        if (correctRules.empty()) { // If there is no correct rule
+          meanNbWrongActivatedRules += static_cast<double>(activatedRules.size());
 
           int ancientClass = get<2>(rules[activatedRules[0]]);
           bool allSameClass = true; // Check if all the rules choose the same class
@@ -376,19 +313,6 @@ int fidexGloStats(string command) {
           if (allSameClass) {
             explainabilityTotal++;                                   // If all decisions are the same, we have an explanation
             if (get<2>(rules[activatedRules[0]]) == testTrueClass) { // If those decisions are the true class, this is accurate
-              /*cout << "Test values : ";
-              for (auto myval:testValues){
-                cout << myval << " ";
-              }
-              cout << endl;
-              cout << "pred : " << testPred << endl;
-              cout << "True class : " << testTrueClass << endl;
-              cout << "Activated rules indexes : ";
-              for (auto myact: activatedRules){
-                cout << myact << " ";
-              }
-              cout << endl;*/
-
               accuracy++;
             }
           }
@@ -404,8 +328,8 @@ int fidexGloStats(string command) {
             accuracyWhenActivatedRulesAndModelAgree++; // It is true for the accuracy because prediction is correct
             accuracyWhenRulesAndModelAgree++;          // It is true for the accuracy because prediction is correct
           }
-          meanNbCorrectActivatedRules += correctRules.size();
-          meanNbWrongActivatedRules += (activatedRules.size() - correctRules.size());
+          meanNbCorrectActivatedRules += static_cast<double>(correctRules.size());
+          meanNbWrongActivatedRules += static_cast<double>(activatedRules.size() - correctRules.size());
         }
       }
     }
@@ -438,8 +362,8 @@ int fidexGloStats(string command) {
     if (statsFileInit) {
       ofstream outputFile(statsFile);
       if (outputFile.is_open()) {
-        for (int l = 0; l < lines.size(); l++) {
-          outputFile << lines[l] + "\n";
+        for (const string &line : lines) {
+          outputFile << line + "\n";
         }
         outputFile.close();
       } else {
@@ -454,16 +378,19 @@ int fidexGloStats(string command) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
 
   } catch (const char *msg) {
-    std::printf(msg);
     cerr << msg << endl;
   }
 
   return 0;
 }
 
-// Exemple : .\fidexGloStats.exe -T datanorm -P dimlp.out -C dataclass2 -R globalRules.txt -O stats.txt -S ../fidexGlo/datafiles/
-//.\fidexGloStats.exe -T datanormTest -P dimlpDatanormTest.out -C dataclass2Test -R globalRulesDatanorm.txt -O stats.txt -S ../fidexGlo/datafiles
-//.\fidexGloStats.exe -T covidTestData.txt -P covidTestPred.out -C covidTestClass.txt -R globalRulesCovid.txt -O globalStats.txt -S ../dimlp/datafiles/covidDataset
-//.\fidexGloStats.exe -T spamTestData.txt -P spamTestPred.out -C spamTestClass.txt -R globalRulesSpam.txt -O globalStats.txt -S ../dimlp/datafiles/spamDataset
-//.\fidexGloStats.exe -T isoletTestData.txt -P isoletTestPred.out -C isoletTestClass.txt -R globalRulesIsolet.txt -O globalStats.txt -S ../dimlp/datafiles/isoletDataset
-//.\fidexGloStats.exe -T Test/X_test.txt -P Test/pred_testV2.out -C Test/y_test.txt -R globalRulesHAPTV2.txt -O globalStatsV2.txt -S ../dimlp/datafiles/HAPTDataset
+/* Exemples pour lancer le code :
+
+.\fidexGloStats.exe -T datanorm -P dimlp.out -C dataclass2 -R globalRules.txt -O stats.txt -S ../fidexGlo/datafiles
+.\fidexGloStats.exe -T datanormTest -P dimlpDatanormTest.out -C dataclass2Test -R globalRulesDatanorm.txt -O stats.txt -S ../fidexGlo/datafiles
+.\fidexGloStats.exe -T covidTestData.txt -P covidTestPred.out -C covidTestClass.txt -R globalRulesCovid.txt -O globalStats.txt -S ../dimlp/datafiles/covidDataset
+.\fidexGloStats.exe -T spamTestData.txt -P spamTestPred.out -C spamTestClass.txt -R globalRulesSpam.txt -O globalStats.txt -S ../dimlp/datafiles/spamDataset
+.\fidexGloStats.exe -T isoletTestData.txt -P isoletTestPred.out -C isoletTestClass.txt -R globalRulesIsolet.txt -O globalStats.txt -S ../dimlp/datafiles/isoletDataset
+.\fidexGloStats.exe -T Test/X_test.txt -P Test/pred_testV2.out -C Test/y_test.txt -R globalRulesHAPTV2.txt -O globalStatsV2.txt -S ../dimlp/datafiles/HAPTDataset
+
+*/

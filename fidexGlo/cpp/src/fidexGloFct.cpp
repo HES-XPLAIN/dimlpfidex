@@ -314,7 +314,7 @@ int fidexGlo(const string &command) {
     vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
     vector<string> lines;                                                            // Lines for the output stats
     vector<string> stringRules;
-    getRules(rules, lines, stringRules, rulesFile, nbTestAttributs, attributFileInit, attributeNames, hasClassNames, classNames);
+    getRules(rules, lines, stringRules, rulesFile, attributFileInit, attributeNames, hasClassNames, classNames);
 
     std::cout << "Files imported" << endl
               << endl;
@@ -425,7 +425,6 @@ int fidexGlo(const string &command) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
 
   } catch (const char *msg) {
-    std::printf(msg);
     cerr << msg << endl;
     return -1;
   }

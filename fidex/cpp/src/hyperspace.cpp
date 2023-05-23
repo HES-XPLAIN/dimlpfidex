@@ -1,7 +1,5 @@
-using namespace std;
 #include "hyperspace.h"
-#include <fstream>
-#include <sstream>
+using namespace std;
 
 namespace FidexNameSpace {
 Hyperspace::Hyperspace(const char *hyperLocusFile) {
@@ -35,7 +33,7 @@ Hyperspace::Hyperspace(const char *hyperLocusFile) {
   hyperbox = new Hyperbox(discriminativeHyperplans);
 }
 
-vector<vector<double>> Hyperspace::getHyperLocus() {
+vector<vector<double>> Hyperspace::getHyperLocus() const {
   return hyperLocus;
 }
 
@@ -44,7 +42,6 @@ Hyperbox *Hyperspace::getHyperbox() {
 }
 
 void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, vector<string> &lines, bool hasAttributeNames, vector<string> *attributeNames, bool hasClassNames, vector<string> *classNames) {
-
   double hypValue;
   int attribut;
 
@@ -83,7 +80,7 @@ void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
   lines.push_back(line);
 }
 
-double Hyperspace::computeRuleAccuracy(vector<int> *trainPreds, vector<int> *trainTrueClass, bool mainSampleCorrect) { // Percentage of correct model prediction on samples covered by the rule
+double Hyperspace::computeRuleAccuracy(vector<int> *trainPreds, vector<int> *trainTrueClass, bool mainSampleCorrect) const { // Percentage of correct model prediction on samples covered by the rule
   int idSample;
   int total = 0; // Number of indexes predicted good
   for (int i = 0; i < hyperbox->getCoveredSamples().size(); i++) {
@@ -95,15 +92,14 @@ double Hyperspace::computeRuleAccuracy(vector<int> *trainPreds, vector<int> *tra
   if (mainSampleCorrect) { // Add test sample value
     total += 1;
   }
-  int nbCovered = hyperbox->getCoveredSamples().size();
+  size_t nbCovered = hyperbox->getCoveredSamples().size();
   nbCovered += 1;
 
-  return float(total) / nbCovered;
+  return float(total) / static_cast<double>(nbCovered);
 }
 
-double Hyperspace::computeRuleConfidence(vector<vector<double>> *trainOutputValuesPredictions, const int mainSamplePred, double mainSamplePredValue) { // Mean output value of prediction of class chosen by the rule for the covered samples
+double Hyperspace::computeRuleConfidence(vector<vector<double>> *trainOutputValuesPredictions, const int mainSamplePred, double mainSamplePredValue) const { // Mean output value of prediction of class chosen by the rule for the covered samples
   int idSample;
-  int classSample;
   double total = 0; // Number of indexes predicted good
   for (int i = 0; i < hyperbox->getCoveredSamples().size(); i++) {
     idSample = hyperbox->getCoveredSamples()[i];
@@ -112,9 +108,9 @@ double Hyperspace::computeRuleConfidence(vector<vector<double>> *trainOutputValu
 
   total += mainSamplePredValue; // Add test sample value
 
-  int nbCovered = hyperbox->getCoveredSamples().size();
+  size_t nbCovered = hyperbox->getCoveredSamples().size();
   nbCovered += 1;
 
-  return float(total) / nbCovered;
+  return float(total) / static_cast<double>(nbCovered);
 }
 } // namespace FidexNameSpace

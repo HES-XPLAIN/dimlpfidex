@@ -5,12 +5,13 @@
 #include "getRulesFun.h"
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <time.h>
 #include <tuple>
 #include <vector>
 
-static void showParams();
-int fidexGloStats(string command);
+void showStatsParams();
+int fidexGloStats(const std::string &command);
 
 #endif

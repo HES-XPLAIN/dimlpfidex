@@ -37,7 +37,7 @@ public:
 class Attribute {
 
   std::vector<std::string> attributes;
-  bool hasAttributes;
+  bool hasAttributes = true;
 
 public:
   Attribute();
