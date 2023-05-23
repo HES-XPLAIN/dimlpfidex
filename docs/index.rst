@@ -10,7 +10,9 @@ Welcome to DimlpFidex's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
+.. doxygenclass:: BpNN
+   :project: dimlp
+   :members:
 
 Indices and tables
 ==================
