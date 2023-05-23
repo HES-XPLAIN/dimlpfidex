@@ -5,7 +5,7 @@
 int main(int nbParam, char **param)
 
 {
-  string command = "fidexGloStats";
+  std::string command = "fidexGloStats";
   if (nbParam >= 1) {
     for (int p = 1; p < nbParam; p++) {
       command += " ";

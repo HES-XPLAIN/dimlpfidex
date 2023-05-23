@@ -1,8 +1,8 @@
-using namespace std;
 #include "DimlpTrnFct.h"
 #include <algorithm>
 #include <random>
 #ifdef _WIN32
+#include <direct.h>
 #include <windows.h>
 #endif
 #include "../../../fidex/cpp/src/fidexFct.h"
@@ -12,9 +12,86 @@ using namespace std;
 #include <fstream>
 #include <iostream>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 
-void GiveAllParam()
+using namespace std;
+
+bool removeDirectory(const std::string &path) {
+  struct stat fileStat;
+  if (stat(path.c_str(), &fileStat) != 0) { // If the folder doesn't exist
+    std::cout << "the folder " << path << " doesn't exist and trying to delete it..." << std::endl;
+    return false;
+  }
+
+  if (!S_ISDIR(fileStat.st_mode)) { // Check if it is a file and not a folder
+    std::cout << "Error : A file with same folder name (" << path << ") exists." << std::endl;
+    return false;
+  }
+
+  // Delete files and sub-folders recursively
+#ifdef _WIN32
+  std::wstring wpath(path.begin(), path.end());
+  if (!RemoveDirectoryW(wpath.c_str())) {
+    DWORD error = GetLastError();
+    if (error == ERROR_DIR_NOT_EMPTY) {
+      std::string command = "cmd /c rmdir /s /q \"" + path + "\"";
+      int result = std::system(command.c_str());
+      if (result != 0) {
+        std::cout << "Error when deleting directory and its content: " << path << "." << std::endl;
+        return false;
+      }
+    } else {
+      std::cout << "Error when deleting directory: " << path << "." << std::endl;
+      return false;
+    }
+  }
+#else
+  std::string command = "rm -rf " + path;
+  int result = std::system(command.c_str());
+
+  if (result == 0) {
+    return true;
+  } else {
+    return false;
+  }
+#endif
+  return true;
+}
+
+bool createOrClearDirectory(const std::string &path) {
+  struct stat fileStat;
+  if (stat(path.c_str(), &fileStat) == 0) { // If the folder already exists
+    if (!S_ISDIR(fileStat.st_mode)) {       // Check if it is a file and not a folder
+      std::cout << "Error : A file with same folder name (" << path << ") exists." << std::endl;
+      return false;
+    }
+
+    // Delete existing folder and his content
+    if (removeDirectory(path) == false) {
+      std::cout << "Error when deleting directory and his content" << path << ", try deleting it manually." << std::endl;
+      return false;
+    }
+  }
+
+  // Create folder
+#ifdef _WIN32
+  if (_mkdir(path.c_str()) != 0) {
+    std::cout << "Error during creation of the directory " << path << "." << std::endl;
+    return false;
+  }
+#else
+#define CREATE_DIRECTORY(path) mkdir(path, 0777)
+  if (mkdir(path.c_str(), 0777) != 0) {
+    std::cout << "Error during creation of the directory " << path << "." << std::endl;
+    return false;
+  }
+#endif
+
+  return true;
+}
+
+static void GiveAllParam()
 
 {
   cout << "\n-------------------------------------------------\n\n";
@@ -72,11 +149,10 @@ int main(int nbParam, char **param)
 {
 
   float temps;
-  clock_t t1, t2;
+  clock_t t1;
+  clock_t t2;
 
   t1 = clock();
-
-  int k;
 
   DataSet Train;
   DataSet TrainClass;
@@ -118,91 +194,101 @@ int main(int nbParam, char **param)
   string fidexGloGenericCommand = "fidexGloRules";
   string fidexGloStatsGenericCommand = "fidexGloStats";
 
-  string hiKnot, nbIn, nbOut, arch, arch2, attrFile, weightFile, dropoutDimParam, dropoutHypParam;
+  string hiKnot;
+  string nbIn;
+  string nbOut;
+  string arch;
+  string arch2;
+  string attrFile;
+  string weightFile;
+  string dropoutDimParam;
+  string dropoutHypParam;
+
   bool hiKnotInit = false;
   bool nbInInit = false;
   bool nbOutInit = false;
-  char *ptrParam;
+  const char *ptrParam;
 
   if (nbParam == 1) {
     GiveAllParam();
     return -1;
   }
 
-  for (k = 1; k < nbParam; k++) {
-    if (*param[k] == '-') {
-      k++;
+  int p = 1; // We skip "crossValid"
+  while (p < nbParam) {
+    if (*param[p] == '-') {
+      p++;
 
-      if (k >= nbParam) {
-        if (*(param[k - 1] + 1) != 'R') {
-          cout << "Missing something at the end of the command.\n";
-          return -1;
-        }
+      if (p >= nbParam && *(param[p - 1] + 1) != 'R') {
+        cout << "Missing something at the end of the command.\n";
+        return -1;
       }
 
-      switch (*(param[k - 1] + 1)) {
+      char option = *(param[p - 1] + 1);
+
+      switch (option) {
       case 'l':
-        eta = param[k];
+        eta = param[p];
         genericCommand += " -l " + eta;
         break;
 
       case 'm':
-        mu = param[k];
+        mu = param[p];
         genericCommand += " -m " + mu;
         break;
 
       case 'f':
-        flat = param[k];
+        flat = param[p];
         genericCommand += " -f " + flat;
         break;
 
       case 'e':
-        errThres = param[k];
+        errThres = param[p];
         genericCommand += " -e " + errThres;
         break;
 
       case 'a':
-        accThres = param[k];
+        accThres = param[p];
         genericCommand += " -a " + accThres;
         break;
 
       case 'd':
 
-        deltaErr = param[k];
+        deltaErr = param[p];
         genericCommand += " -d " + deltaErr;
         break;
 
       case 's':
-        showErr = param[k];
+        showErr = param[p];
         genericCommand += " -s " + showErr;
         break;
 
       case 'i':
-        epochs = param[k];
+        epochs = param[p];
         genericCommand += " -i " + epochs;
         break;
 
       case 'Q':
-        quant = param[k];
+        quant = param[p];
         break;
 
       case 'h':
-        hiKnot = param[k];
+        hiKnot = param[p];
         hiKnotInit = true;
         hyperLocusGenericCommand += " -I " + hiKnot;
         break;
 
       case 'I':
-        nbIn = param[k];
+        nbIn = param[p];
         nbInInit = true;
         genericCommand += " -I " + nbIn;
         break;
 
       case 'H':
-        ptrParam = param[k - 1];
+        ptrParam = param[p - 1];
 
         if (ptrParam[2] != '\0') {
-          arch = param[k];
+          arch = param[p];
           arch2 = ptrParam[2];
           genericCommand += " -H" + arch2 + " " + arch;
         } else {
@@ -213,13 +299,13 @@ int main(int nbParam, char **param)
         break;
 
       case 'O':
-        nbOut = param[k];
+        nbOut = param[p];
         nbOutInit = true;
         genericCommand += " -O " + nbOut;
         break;
 
       case 'S':
-        rootFolderTemp = param[k];
+        rootFolderTemp = param[p];
         rootFolderInit = true;
         genericCommand += " -S " + rootFolderTemp;
         hyperLocusGenericCommand += " -S " + rootFolderTemp;
@@ -229,83 +315,83 @@ int main(int nbParam, char **param)
         break;
 
       case 'A':
-        attrFile = param[k];
+        attrFile = param[p];
         genericCommand += " -A " + attrFile;
         break;
 
       case 'W':
-        weightFile = param[k];
+        weightFile = param[p];
         genericCommand += " -W " + weightFile;
         break;
 
       case 'L':
-        learnFileTemp = param[k];
+        learnFileTemp = param[p];
         learnFileInit = true;
         break;
 
       case '1':
-        learnTarTemp = param[k];
+        learnTarTemp = param[p];
         learnTarInit = true;
         break;
 
       case 'C':
-        algorithm = param[k];
+        algorithm = param[p];
         algorithmInit = true;
         break;
 
       case 'M':
-        heuristic = param[k];
+        heuristic = param[p];
         break;
 
       case 'o':
-        statFile = param[k];
+        statFile = param[p];
         break;
 
       case 'K':
-        if (CheckInt(param[k]))
-          K = atoi(param[k]);
+        if (CheckInt(param[p]))
+          K = atoi(param[p]);
         else
           return -1;
 
         break;
 
       case 'N':
-        if (CheckInt(param[k]))
-          N = atoi(param[k]);
+        if (CheckInt(param[p]))
+          N = atoi(param[p]);
         else
           return -1;
 
         break;
 
       case 'n':
-        itMax = param[k];
+        itMax = param[p];
         fidexGenericCommand += " -i " + itMax;
         fidexGloGenericCommand += " -i " + itMax;
         break;
 
       case 'v':
-        minNbCover = param[k];
+        minNbCover = param[p];
         fidexGenericCommand += " -v " + minNbCover;
         fidexGloGenericCommand += " -v " + minNbCover;
         break;
 
       case 'x':
-        dropoutDimParam = param[k];
+        dropoutDimParam = param[p];
         dropoutDim = true;
         fidexGenericCommand += " -d " + dropoutDimParam;
         fidexGloGenericCommand += " -d " + dropoutDimParam;
         break;
 
       case 'y':
-        dropoutHypParam = param[k];
+        dropoutHypParam = param[p];
         dropoutHyp = true;
         fidexGenericCommand += " -h " + dropoutHypParam;
         fidexGloGenericCommand += " -h " + dropoutHypParam;
         break;
 
       case 'z':
-        if (CheckInt(param[k])) {
-          seed = atoi(param[k]);
+        if (CheckInt(param[p])) {
+          seed = atoi(param[p]);
           genericCommand += " -z " + std::to_string(seed);
           fidexGenericCommand += " -z " + std::to_string(seed);
           fidexGloGenericCommand += " -z " + std::to_string(seed);
@@ -317,19 +403,21 @@ int main(int nbParam, char **param)
         break;
 
       case 'F':
-        folderTemp = param[k];
+        folderTemp = param[p];
         break;
 
       default:
-        cout << "Illegal option: " << param[k - 1] << "\n";
+        cout << "Illegal option: " << param[p - 1] << "\n";
         return -1;
       }
     }
 
     else {
-      cout << "Illegal option: " << param[k] << "\n";
+      cout << "Illegal option: " << param[p] << "\n";
       return -1;
     }
+
+    p++;
   }
 
   // ----------------------------------------------------------------------
@@ -378,11 +466,10 @@ int main(int nbParam, char **param)
   }
 
   // create paths with root foler
-  char learnTarTmp[160], learnFileTmp[160], folderTmp[160];
 
-  char *learnTar = 0;
-  char *learnFile = 0;
-  char *folder = 0;
+  const char *learnTar = nullptr;
+  const char *learnFile = nullptr;
+  const char *folder = nullptr;
 
 #if defined(__unix__) || defined(__APPLE__)
   string separator = "/";
@@ -394,34 +481,16 @@ int main(int nbParam, char **param)
 
   if (learnTarInit) {
     learnTarTemp = root + learnTarTemp;
-    if (learnTarTemp.length() >= 160) {
-      cout << "Path " << learnTarTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(learnTarTmp, learnTarTemp.c_str());
-    learnTar = learnTarTmp;
+    learnTar = &learnTarTemp[0];
   }
 
   if (learnFileInit) {
     learnFileTemp = root + learnFileTemp;
-    if (learnFileTemp.length() >= 160) {
-      cout << "Path " << learnFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(learnFileTmp, learnFileTemp.c_str());
-    learnFile = learnFileTmp;
+    learnFile = &learnFileTemp[0];
   }
 
   string folderTempFull = root + folderTemp;
-  if (folderTempFull.length() >= 160) {
-    cout << "Path " << folderTempFull << "is too long"
-         << "\n";
-    return -1;
-  }
-  strcpy(folderTmp, folderTempFull.c_str());
-  folder = folderTmp;
+  folder = &folderTempFull[0];
 
   statFile = std::string(folder) + separator + statFile;
 
@@ -466,7 +535,7 @@ int main(int nbParam, char **param)
   }
   fileDta.close(); // close data file
 
-  const int nbSamples = learnData.size();
+  const size_t nbSamples = learnData.size();
   if (K > nbSamples) {
     cout << "The number of divisions of the dataset must be less or equal to the number of train samples(" << nbSamples << "), change the option -I.\n";
     return -1;
@@ -495,17 +564,11 @@ int main(int nbParam, char **param)
     return -1;
   }
 
-  // Create folder if doesn't exist
-  struct stat sb;
-  if (stat(folder, &sb) == 0) {
-    cout << "Please, choose a folder with -F that doesn't already exist.\n";
-    return -1;
+  if (createOrClearDirectory(folder)) { // Create folder if doesn't exist
+    std::cout << "Folder created." << std::endl;
+  } else {
+    throw std::runtime_error("Error during the creation of the directory " + std::string(folder) + ".");
   }
-#if defined(__unix__) || defined(__APPLE__)
-  mkdir(folder, 0777);
-#elif defined(_WIN32)
-  mkdir(folder);
-#endif
 
   std::mt19937 g;
   std::random_device rd;
@@ -518,29 +581,29 @@ int main(int nbParam, char **param)
   }
 
   // Create temp file strings for train, test and validation
-  char trainFileStr[160];
+  const char *trainFileStr = nullptr;
   string trainFileStrTemp = root + "tempTrain.txt";
-  strcpy(trainFileStr, trainFileStrTemp.c_str());
+  trainFileStr = &trainFileStrTemp[0];
 
-  char testFileStr[160];
+  const char *testFileStr = nullptr;
   string testFileStrTemp = root + "tempTest.txt";
-  strcpy(testFileStr, testFileStrTemp.c_str());
+  testFileStr = &testFileStrTemp[0];
 
-  char validFileStr[160];
+  const char *validFileStr = nullptr;
   string validFileStrTemp = root + "tempValid.txt";
-  strcpy(validFileStr, validFileStrTemp.c_str());
+  validFileStr = &validFileStrTemp[0];
 
-  char trainTarFileStr[160];
+  const char *trainTarFileStr = nullptr;
   string trainTarFileStrTemp = root + "tempTarTrain.txt";
-  strcpy(trainTarFileStr, trainTarFileStrTemp.c_str());
+  trainTarFileStr = &trainTarFileStrTemp[0];
 
-  char testTarFileStr[160];
+  const char *testTarFileStr = nullptr;
   string testTarFileStrTemp = root + "tempTarTest.txt";
-  strcpy(testTarFileStr, testTarFileStrTemp.c_str());
+  testTarFileStr = &testTarFileStrTemp[0];
 
-  char validTarFileStr[160];
+  const char *validTarFileStr = nullptr;
   string validTarFileStrTemp = root + "tempTarValid.txt";
-  strcpy(validTarFileStr, validTarFileStrTemp.c_str());
+  validTarFileStr = &validTarFileStrTemp[0];
 
   // Statistics for Fidex
   // One execution
@@ -675,7 +738,7 @@ int main(int nbParam, char **param)
 
     // Vector of eveanly spaced numbers between 1 and nbSammples+1
     vector<double> range;
-    double delta = nbSamples / double(K);
+    double delta = static_cast<double>(nbSamples) / static_cast<double>(K);
     for (int i = 0; i < K + 1; i++) {
       range.push_back(i * delta);
     }
@@ -683,7 +746,7 @@ int main(int nbParam, char **param)
     for (int q = 0; q < range.size() - 1; q++) {
       vector<string> tempVect;
       vector<string> tempVectTar;
-      for (int ind = range[q]; ind < int(range[q + 1]); ind++) {
+      for (auto ind = static_cast<int>(range[q]); ind < static_cast<int>(range[q + 1]); ind++) {
         tempVect.push_back(learnData[indexes[ind]]);
         tempVectTar.push_back(learnTarData[indexes[ind]]);
       }
@@ -698,13 +761,13 @@ int main(int nbParam, char **param)
       cout << "k=" << k << endl;
       // path to folder
       string folderPath = std::string(folder) + separator + "Execution" + std::to_string(n + 1) + separator + "Fold" + std::to_string(k + 1);
-// Create folder
+      // Create folder
 #if defined(__unix__) || defined(__APPLE__)
-      string folderName = folderPath + separator;
-      mkdir(folderName.c_str(), 0777);
+      string folderFoldName = folderPath + separator;
+      mkdir(folderFoldName.c_str(), 0777);
 #elif defined(_WIN32)
-      string folderName = folderPath;
-      mkdir(folderName.c_str());
+      string folderFoldName = folderPath;
+      mkdir(folderFoldName.c_str());
 #endif
       // Get group index for test, validation and train
       vector<int> trainIdx;
@@ -719,8 +782,8 @@ int main(int nbParam, char **param)
         throw std::runtime_error("Error : temp train file cound'nt open");
       }
       for (int id : trainIdx) {
-        for (string line : learnDataSplit[id]) {
-          trainFile << line << endl;
+        for (string lineTrn : learnDataSplit[id]) {
+          trainFile << lineTrn << endl;
         }
       }
       trainFile.close();
@@ -729,8 +792,8 @@ int main(int nbParam, char **param)
       if (testFile.fail()) {
         throw std::runtime_error("Error : temp test file cound'nt open");
       }
-      for (string line : learnDataSplit[testIdx]) {
-        testFile << line << endl;
+      for (string lineTst : learnDataSplit[testIdx]) {
+        testFile << lineTst << endl;
       }
       testFile.close();
 
@@ -738,8 +801,8 @@ int main(int nbParam, char **param)
       if (validFile.fail()) {
         throw std::runtime_error("Error : temp valid file cound'nt open");
       }
-      for (string line : learnDataSplit[validationIdx]) {
-        validFile << line << endl;
+      for (string lineVal : learnDataSplit[validationIdx]) {
+        validFile << lineVal << endl;
       }
       validFile.close();
 
@@ -748,8 +811,8 @@ int main(int nbParam, char **param)
         throw std::runtime_error("Error : temp trainTar file cound'nt open");
       }
       for (int id : trainIdx) {
-        for (string line : learnTarDataSplit[id]) {
-          trainTarFile << line << endl;
+        for (string lineTrntar : learnTarDataSplit[id]) {
+          trainTarFile << lineTrntar << endl;
         }
       }
       trainTarFile.close();
@@ -758,8 +821,8 @@ int main(int nbParam, char **param)
       if (testTarFile.fail()) {
         throw std::runtime_error("Error : temp testTar file cound'nt open");
       }
-      for (string line : learnTarDataSplit[testIdx]) {
-        testTarFile << line << endl;
+      for (string lineTstTar : learnTarDataSplit[testIdx]) {
+        testTarFile << lineTstTar << endl;
       }
       testTarFile.close();
 
@@ -767,8 +830,8 @@ int main(int nbParam, char **param)
       if (validTarFile.fail()) {
         throw std::runtime_error("Error : temp validTar file cound'nt open");
       }
-      for (string line : learnTarDataSplit[validationIdx]) {
-        validTarFile << line << endl;
+      for (string lineValTar : learnTarDataSplit[validationIdx]) {
+        validTarFile << lineValTar << endl;
       }
       validTarFile.close();
 
@@ -867,14 +930,14 @@ int main(int nbParam, char **param)
         if (statsData.fail()) {
           throw std::runtime_error("Error : fidex stat file " + std::string(statsFile) + " not found");
         }
-        string line;
-        getline(statsData, line);
-        getline(statsData, line);
+        string lineStats;
+        getline(statsData, lineStats);
+        getline(statsData, lineStats);
         vector<double> statVals; // stat values
         while (!statsData.eof()) {
-          getline(statsData, line);
-          if (!checkStringEmpty(line)) {
-            std::string lastElement(line.substr(line.rfind(" ") + 1));
+          getline(statsData, lineStats);
+          if (!checkStringEmpty(lineStats)) {
+            std::string lastElement(lineStats.substr(lineStats.rfind(" ") + 1));
             statVals.push_back(std::stod(lastElement));
           }
         }
@@ -930,12 +993,17 @@ int main(int nbParam, char **param)
         if (statsGloData.fail()) {
           throw std::runtime_error("Error : fidex stat file " + std::string(statsGloFile) + " not found");
         }
-        string line, value, meanNbRulesStr, meanNbCoverStr, meanNbAntecedantsStr;
-        getline(statsGloData, line);
-        getline(statsGloData, line);
+        string lineStatsGlo;
+        string value;
+        string meanNbRulesStr;
+        string meanNbCoverStr;
+        string meanNbAntecedantsStr;
 
-        if (!checkStringEmpty(line)) {
-          std::stringstream myLine(line);
+        getline(statsGloData, lineStatsGlo);
+        getline(statsGloData, lineStatsGlo);
+
+        if (!checkStringEmpty(lineStatsGlo)) {
+          std::stringstream myLine(lineStatsGlo);
           while (myLine >> value) {
             if (value == "rules") {
               myLine >> value;
@@ -957,7 +1025,6 @@ int main(int nbParam, char **param)
               myLine >> value;
               myLine >> value;
               myLine >> value;
-              string meanNbAntecedantsStr;
               myLine >> meanNbAntecedantsStr;
               meanNbAntecedants += stod(meanNbAntecedantsStr);
             }
@@ -966,14 +1033,14 @@ int main(int nbParam, char **param)
           throw std::runtime_error("Error in second line of fidexGlo stat file.");
         }
 
-        getline(statsGloData, line);
-        getline(statsGloData, line);
-        getline(statsGloData, line);
+        getline(statsGloData, lineStatsGlo);
+        getline(statsGloData, lineStatsGlo);
+        getline(statsGloData, lineStatsGlo);
         vector<double> statGloVals; // stat values
         while (!statsGloData.eof()) {
-          getline(statsGloData, line);
-          if (!checkStringEmpty(line)) {
-            std::string lastElement(line.substr(line.rfind(" ") + 1));
+          getline(statsGloData, lineStatsGlo);
+          if (!checkStringEmpty(lineStatsGlo)) {
+            std::string lastElement(lineStatsGlo.substr(lineStatsGlo.rfind(" ") + 1));
             statGloVals.push_back(std::stod(lastElement));
           }
         }
@@ -1193,7 +1260,6 @@ int main(int nbParam, char **param)
 
   // Show and save results
 
-  // ofstream outputStatsFile(statFile);
   outputStatsFile.open(statFile, std::ios::app);
   if (outputStatsFile.is_open()) {
 
@@ -1292,9 +1358,9 @@ int main(int nbParam, char **param)
     throw std::runtime_error("Error : Couldn't open stats extraction file " + std::string(statFile) + ".");
   }
 
-  char toDelete[160];
+  const char *toDelete = nullptr;
   string toDeleteTemp = root + "consoleTemp.txt";
-  strcpy(toDelete, toDeleteTemp.c_str());
+  toDelete = &toDeleteTemp[0];
   remove(toDelete);
 
   t2 = clock();

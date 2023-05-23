@@ -1,5 +1,5 @@
-using namespace std;
 #include "dataSet.h"
+using namespace std;
 
 DataSetFid::DataSetFid(const char *dataFile, const char *predFile, const char *trueClassFile) : hasDatas(true) {
   int i; // iterator
@@ -171,7 +171,6 @@ vector<double> DataSetFid::getInWeights() const {
 
 Attribute::Attribute(const char *attributeFile) {
 
-  hasAttributes = true;
   // Get attributes
   fstream fileAttr;
 

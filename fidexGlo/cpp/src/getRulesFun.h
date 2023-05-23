@@ -1,4 +1,3 @@
-using namespace std;
 #include "checkFun.h"
 #include <fstream>
 #include <iostream>
@@ -7,5 +6,5 @@ using namespace std;
 #include <tuple>
 #include <vector>
 
-extern void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> &rules, vector<string> &lines, vector<string> &stringRules, const char *rulesFile, size_t nbTestAttributsbool, bool hasAttributeNames, vector<string> attributeNames, bool hasClassNames, vector<string> classNames);
-extern void getActivatedRules(vector<int> &activatedRules, vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> *rules, vector<double> *testValues);
+extern void getRules(std::vector<std::tuple<std::vector<std::tuple<int, bool, double>>, int, int, double, double>> &rules, std::vector<std::string> &lines, std::vector<std::string> &stringRules, const char *rulesFile, bool hasAttributeNames, const std::vector<std::string> &attributeNames, bool hasClassNames, const std::vector<std::string> &classNames);
+extern void getActivatedRules(std::vector<int> &activatedRules, std::vector<std::tuple<std::vector<std::tuple<int, bool, double>>, int, int, double, double>> *rules, std::vector<double> *testValues);

@@ -1,16 +1,11 @@
 #include "fidexAlgo.h"
-#include <algorithm>
-#include <chrono>
-#include <ctime>
-#include <numeric>
-#include <random>
-#include <sstream>
 
-FidexAlgo::FidexAlgo(){};
+using namespace std;
+FidexAlgo::FidexAlgo() = default;
 
 // Different mains:
 
-bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> &rule, vector<vector<double>> *trainData, vector<int> *trainPreds, vector<vector<double>> *trainOutputValuesPredictions, vector<int> *trainTrueClass, vector<double> *mainSampleValues, int mainSamplePred, int mainSampleTrueClass, FidexGloNameSpace::Hyperspace *hyperspace, const int nbIn, const int nbAttributs, const int nbHyp, int itMax, int minNbCover, bool dropoutDim, double dropoutDimParam, bool dropoutHyp, double dropoutHypParam, int seed, std::mt19937 g) {
+bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> &rule, vector<vector<double>> *trainData, vector<int> *trainPreds, vector<vector<double>> *trainOutputValuesPredictions, vector<int> *trainTrueClass, vector<double> *mainSampleValues, int mainSamplePred, int mainSampleTrueClass, FidexGloNameSpace::Hyperspace *hyperspace, const int nbIn, const int nbAttributs, const int nbHyp, int itMax, int minNbCover, bool dropoutDim, double dropoutDimParam, bool dropoutHyp, double dropoutHypParam, int seed, std::mt19937 g) const {
 
   // Compute initial covering
   vector<int> coveredSamples((*trainData).size());                    // Samples covered by the hyperbox
@@ -32,9 +27,8 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
       seedShuffle = std::chrono::system_clock::now().time_since_epoch().count();
     }
 
-    // cout << endl << "It." << nbIt << " F : " << hyperspace.getHyperbox()->getFidelity() << ", att : " << attribut << endl;
-    FidexGloNameSpace::Hyperbox *bestHyperbox = new FidexGloNameSpace::Hyperbox(); // best hyperbox to choose for next step
-    FidexGloNameSpace::Hyperbox *currentHyperbox = new FidexGloNameSpace::Hyperbox();
+    std::unique_ptr<FidexGloNameSpace::Hyperbox> bestHyperbox(new FidexGloNameSpace::Hyperbox()); // best hyperbox to choose for next step
+    std::unique_ptr<FidexGloNameSpace::Hyperbox> currentHyperbox(new FidexGloNameSpace::Hyperbox());
     double mainSampleValue;
     int attribut;
     int dimension;
@@ -61,19 +55,15 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
       attribut = dimension % nbAttributs;
       mainSampleValue = (*mainSampleValues)[attribut];
       // Test if we dropout this dimension
-      if (dropoutDim) {
-        if ((double)rand() / (RAND_MAX) < dropoutDimParam) {
-          continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
-        }
+      if (dropoutDim && ((double)rand() / RAND_MAX < dropoutDimParam)) {
+        continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
       }
       bool maxHypBlocked;
       for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
         maxHypBlocked = true;           // We assure that we can't increase maxHyp index for the current best hyperbox
         // Test if we dropout this hyperplan
-        if (dropoutHyp) {
-          if ((double)rand() / (RAND_MAX) < dropoutHypParam) {
-            continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
-          }
+        if (dropoutHyp && ((double)rand() / RAND_MAX < dropoutHypParam)) {
+          continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
         }
 
         double hypValue = hyperspace->getHyperLocus()[dimension][k];
@@ -117,60 +107,40 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
       }
     }
     nbIt += 1;
-  };
+  }
 
   if (hyperspace->getHyperbox()->getFidelity() != 1) {
-    return 0;
+    return false;
   }
 
   // Compute rule accuracy
 
-  bool mainSampleCorrect = mainSamplePred == mainSampleTrueClass;
-
-  double ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass, mainSampleCorrect); // Percentage of correct model prediction on samples covered by the rule
+  double ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass); // Percentage of correct model prediction on samples covered by the rule
 
   double ruleConfidence = hyperspace->computeRuleConfidence(trainOutputValuesPredictions, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples
   rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence);
 
-  return 1;
-};
+  return true;
+}
 
-//---------------------------
-// A FAIRE / questions :
-//---------------------------
-
-// Faire une vérif des formats des fichiers ? Peut-être plus tard
-// Quel est un bon interval? Et ici on obligé d'être entre -x et x... (sigmoid!) Comment trouver le nb de steps également? Faire une vérif?
-// Pourquoi si ya 50 steps ya 51 hyperplans et pas 50? En fait, les 50 serait le nombre de plateaux qui ne vont pas à l'infini (1 marche : _|- = 0 nbQ)
-
-//---------------------------
-// Questionnements et suite :
-//---------------------------
-
-// On prend les hyperplans centraux quand plusieurs sont égaux pour avoir plus d'écart entre les points, pour une meilleure généralisation.
-
-// Ajouter un système de relance pour voir si on obtient un meilleur résultat et prendre le meilleur? (covering, nombre d'antécédents)
-// Créer un Fidex glo
-
-// Calculer un temps très court :
 /*
 
     #include <Windows.h>
 
-    LARGE_INTEGER frequency2;        // ticks per second
-    LARGE_INTEGER g1, g2;           // ticks
+    LARGE_INTEGER frequency2;        ticks per second
+    LARGE_INTEGER g1, g2;           ticks
     double elapsedTime2;
 
-    // get ticks per second
+    get ticks per second
     QueryPerformanceFrequency(&frequency2);
 
-    // start timer
+    start timer
     QueryPerformanceCounter(&g1);
 
-    // stop timer
+    stop timer
     QueryPerformanceCounter(&g2);
 
-    // compute and print the elapsed time in millisec
+    compute and print the elapsed time in millisec
     elapsedTime2 = (g2.QuadPart - g1.QuadPart) * 1000.0 / frequency2.QuadPart;
 
     */

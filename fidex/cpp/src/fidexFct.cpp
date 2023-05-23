@@ -85,7 +85,6 @@ int fidex(const string &command) {
     double dropoutHypParam = 0.5;
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
     double dropoutDimParam = 0.5;
-    DataSetFid *testDatas;
 
     // Import parameters
 
@@ -440,7 +439,7 @@ int fidex(const string &command) {
           while (std::isspace(line.front())) {
             line.erase(line.begin());
           }
-          char *trueClassTest = strdup(line.c_str());
+          const char *trueClassTest = strdup(line.c_str());
           if (!CheckPositiveInt(trueClassTest)) {
             throw std::runtime_error("Error : in file " + std::string(mainSamplesDataFile) + ", true classes need to be positive integers");
           }
@@ -460,7 +459,7 @@ int fidex(const string &command) {
 
       testData.close(); // close data file
     } else {            // We have different files for test predictions and test classes
-      testDatas = new DataSetFid(mainSamplesDataFile, mainSamplesPredFile);
+      std::unique_ptr<DataSetFid> testDatas(new DataSetFid(mainSamplesDataFile, mainSamplesPredFile));
       mainSamplesValues = (*testDatas->getDatas());
       mainSamplesPreds = (*testDatas->getPredictions());
       mainSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
@@ -487,7 +486,7 @@ int fidex(const string &command) {
             std::stringstream myLine(line);
             string tempTest;
             bool found = false;
-            while (myLine >> tempTest) {
+            while (myLine >> tempTest && !found) {
               if (tempTest != "-1" && tempTest != "0" && tempTest != "1") {
                 throw std::runtime_error("Error : in file " + std::string(mainSamplesClassFile) + ", true classes need to be 0, 1 or -1(no class)");
               }
@@ -496,12 +495,10 @@ int fidex(const string &command) {
                 mainSamplesTrueClass.push_back(ind);
                 hasTrueClass.push_back(true);
                 found = true;
-                break;
               } else if (mainSampleTrueClass == -1) {
                 mainSamplesTrueClass.push_back(-1);
                 hasTrueClass.push_back(false);
                 found = true;
-                break;
               }
               ind++;
             }
@@ -516,7 +513,7 @@ int fidex(const string &command) {
           throw std::runtime_error("Error : in file " + std::string(mainSamplesClassFile) + ", you need to specify as many true classes as there is datas (-1 if no true class)");
         }
       } else {
-        for (auto i : mainSamplesValues) {
+        for (const auto &_ : mainSamplesValues) {
           hasTrueClass.push_back(false);
         }
       }
@@ -541,7 +538,7 @@ int fidex(const string &command) {
     // Get attributes
     vector<string> attributeNames;
     vector<string> classNames;
-    bool hasClassNames;
+    bool hasClassNames = false;
     if (attributFileInit) {
       std::unique_ptr<Attribute> attributesData(new Attribute(attributFile));
       attributeNames = (*attributesData->getAttributes());
@@ -681,7 +678,7 @@ int fidex(const string &command) {
             bool mainSampleGreater = hypValue <= mainSampleValue;
 
             // Check if main sample value is on the right of the hyperplan
-            currentHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue, &mainSamplesValues[currentSample]); // Compute new cover samples
+            currentHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
             currentHyperbox->computeFidelity(mainSamplesPreds[currentSample], trainPreds);
 
             // Compute fidelity
@@ -784,11 +781,11 @@ int fidex(const string &command) {
     }
 
     // Stats
-    meanFidelity /= nbSamples;
-    meanConfidence /= nbSamples;
-    meanCovSize /= nbSamples;
-    meanNbAntecedentsPerRule /= nbSamples;
-    meanAccuracy /= nbSamples;
+    meanFidelity /= static_cast<double>(nbSamples);
+    meanConfidence /= static_cast<double>(nbSamples);
+    meanCovSize /= static_cast<double>(nbSamples);
+    meanNbAntecedentsPerRule /= static_cast<double>(nbSamples);
+    meanAccuracy /= static_cast<double>(nbSamples);
 
     if (statsFileInit) {
       ofstream outputStatsFile(statsFile);
@@ -834,34 +831,37 @@ int fidex(const string &command) {
   return 0;
 }
 
-/* Exemple pour lancer le code :
+/*
 
-.\fidex.exe -T datanorm -P dimlp.out -C dataclass2 -S testSampleDataCombine -H hyperLocus -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
+  Exemple pour lancer le code :
 
-.\fidex.exe -T datanorm -P dimlp.out -C dataclass2 -S testData.txt -p testPred.txt -c testClass.txt -H hyperLocus -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
-.\fidex.exe -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -S isoletTestData.txt -p isoletTestPredV2.out -c isoletTestClass.txt -H hyperLocusIsoletV2 -O ruleFidex.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../dimlp/datafiles/isoletDataset
-.\fidex.exe -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -S Test/X_test.txt -p Test/pred_testV2.out -c Test/y_test.txt -H hyperLocusHAPTV2 -O ruleFidexV2.txt -s stats -i 100 -v 2 -d 0.5 -h 0.5 -R ../dimlp/datafiles/HAPTDataset
+  .\fidex.exe -T datanorm -P dimlp.out -C dataclass2 -S testSampleDataCombine -H hyperLocus -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
+
+  .\fidex.exe -T datanorm -P dimlp.out -C dataclass2 -S testData.txt -p testPred.txt -c testClass.txt -H hyperLocus -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
+  .\fidex.exe -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -S isoletTestData.txt -p isoletTestPredV2.out -c isoletTestClass.txt -H hyperLocusIsoletV2 -O ruleFidex.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../dimlp/datafiles/isoletDataset
+  .\fidex.exe -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -S Test/X_test.txt -p Test/pred_testV2.out -c Test/y_test.txt -H hyperLocusHAPTV2 -O ruleFidexV2.txt -s stats -i 100 -v 2 -d 0.5 -h 0.5 -R ../dimlp/datafiles/HAPTDataset
 
 
-#include <profileapi.h>
+  #include <profileapi.h>
 
-LARGE_INTEGER frequency;        // ticks per second
-LARGE_INTEGER t1, t2;           // ticks
-double elapsedTime;
+  LARGE_INTEGER frequency;        - ticks per second
+  LARGE_INTEGER t1, t2;           - ticks
+  double elapsedTime;
 
-// get ticks per second
-QueryPerformanceFrequency(&frequency);
+  get ticks per second
+  QueryPerformanceFrequency(&frequency);
 
-// start timer
-QueryPerformanceCounter(&t1);
+  start timer
+  QueryPerformanceCounter(&t1);
 
-// do something
-...
+  do something
+  ...
 
-// stop timer
-QueryPerformanceCounter(&j2WB2);
+  stop timer
+  QueryPerformanceCounter(&j2WB2);
 
-// compute and print the elapsed time in millisec
-elapsedTimeWB2 = (j2WB2.QuadPart - j1WB2.QuadPart) * 1000.0 / frequencyWB2.QuadPart;
-std::printf("\npart 2 : Full execution time = %f sec\n", elapsedTimeWB2);
+  compute and print the elapsed time in millisec
+  elapsedTimeWB2 = (j2WB2.QuadPart - j1WB2.QuadPart) * 1000.0 / frequencyWB2.QuadPart;
+  std::printf("\npart 2 : Full execution time = %f sec\n", elapsedTimeWB2);
+
 */

@@ -13,7 +13,7 @@
 #include <string>
 #include <time.h>
 
-static void showParams();
-int fidexGloRules(string command);
+void showRulesParams();
+int fidexGloRules(const std::string &command);
 
 #endif

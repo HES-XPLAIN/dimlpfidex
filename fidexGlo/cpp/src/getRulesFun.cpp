@@ -1,5 +1,7 @@
 #include "getRulesFun.h"
 
+using namespace std;
+
 struct RuleInfo {
   vector<tuple<int, bool, double>> antecedents;
   int ruleClass;
@@ -68,12 +70,12 @@ RuleInfo parseRuleLine(const std::string &line, bool attributsInFile, vector<str
       }
       if (i == antecedentEndIndex) {
         if (tokens[i].find("<") != std::string::npos) {
-          ineq = 0;
+          ineq = false;
           std::vector<std::string> antToken = splitString(tokens[i], "<");
           attributeName += antToken[0];
           val = std::stod(antToken[1]);
         } else {
-          ineq = 1;
+          ineq = true;
           std::vector<std::string> antToken = splitString(tokens[i], ">=");
           attributeName += antToken[0];
           val = std::stod(antToken[1]);
@@ -87,7 +89,7 @@ RuleInfo parseRuleLine(const std::string &line, bool attributsInFile, vector<str
       bool foundName = false;
       for (size_t idAtr = 0; idAtr < attributeNames.size(); idAtr++) {
         if (attributeNames[idAtr] == attributeName) {
-          attributeIdx = idAtr; // Match found, return the index
+          attributeIdx = static_cast<int>(idAtr); // Match found, return the index
           foundName = true;
           break;
         }
@@ -127,7 +129,7 @@ RuleInfo parseRuleLine(const std::string &line, bool attributsInFile, vector<str
     bool foundClassName = false;
     for (size_t idAtr = 0; idAtr < classNames.size(); idAtr++) {
       if (classNames[idAtr] == className) {
-        classIdx = idAtr; // Match found, return the index
+        classIdx = static_cast<int>(idAtr); // Match found, return the index
         foundClassName = true;
         break;
       }
@@ -156,7 +158,7 @@ RuleInfo parseRuleLine(const std::string &line, bool attributsInFile, vector<str
 
 ////////////////////////////////////////////////////////
 
-void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> &rules, vector<string> &lines, vector<string> &stringRules, const char *rulesFile, size_t nbTestAttributs, bool hasAttributeNames, vector<string> attributeNames, bool hasClassNames, vector<string> classNames) {
+void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> &rules, vector<string> &lines, vector<string> &stringRules, const char *rulesFile, bool hasAttributeNames, const vector<string> &attributeNames, bool hasClassNames, const vector<string> &classNames) {
 
   tuple<vector<tuple<int, bool, double>>, int, int, double, double> rule; // <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
 
@@ -166,7 +168,7 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
     throw std::runtime_error("Error : file " + std::string(rulesFile) + " not found");
   }
 
-  lines.push_back("Global statistics of the rule set : ");
+  lines.emplace_back("Global statistics of the rule set : ");
 
   string line;
   getline(rulesData, line);     // Skip first line;
@@ -206,10 +208,10 @@ void getActivatedRules(vector<int> &activatedRules, vector<tuple<vector<tuple<in
   double val;
   for (int r = 0; r < (*rules).size(); r++) { // For each rule
     bool notActivated = false;
-    for (int a = 0; a < get<0>((*rules)[r]).size(); a++) { // For each antecedent
-      attr = get<0>(get<0>((*rules)[r])[a]);
-      ineq = get<1>(get<0>((*rules)[r])[a]);
-      val = get<2>(get<0>((*rules)[r])[a]);
+    for (const auto &antecedent : get<0>((*rules)[r])) { // For each antecedant
+      attr = get<0>(antecedent);
+      ineq = get<1>(antecedent);
+      val = get<2>(antecedent);
       if (ineq == 0 && (*testValues)[attr] >= val) { // If the inequality is not verified
         notActivated = true;
       }

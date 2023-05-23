@@ -1,55 +1,52 @@
-using namespace std;
 #include "hyperbox.h"
-#include <fstream>
-#include <sstream>
-#include <string>
+
+using namespace std;
 
 namespace FidexGloNameSpace {
-Hyperbox::Hyperbox(vector<pair<int, int>> m_discriminativeHyperplans) {
-  discriminativeHyperplans = m_discriminativeHyperplans;
+
+Hyperbox::Hyperbox(const vector<pair<int, int>> &m_discriminativeHyperplans)
+    : discriminativeHyperplans(m_discriminativeHyperplans) {
 }
 
-Hyperbox::Hyperbox() {
-}
+Hyperbox::Hyperbox() = default;
 
-void Hyperbox::setCoveredSamples(vector<int> m_coveredSamples) {
+void Hyperbox::setCoveredSamples(const vector<int> &m_coveredSamples) {
   coveredSamples = m_coveredSamples;
 }
 
-vector<pair<int, int>> Hyperbox::getDiscriminativeHyperplans() {
+vector<pair<int, int>> Hyperbox::getDiscriminativeHyperplans() const {
   return discriminativeHyperplans;
 }
 
-void Hyperbox::computeCoveredSamples(vector<int> ancienCoveredSamples, int attribut, vector<vector<double>> *trainData, bool mainSampleGreater, double hypValue) {
+void Hyperbox::computeCoveredSamples(const vector<int> &ancienCoveredSamples, int attribut, vector<vector<double>> *trainData, bool mainSampleGreater, double hypValue) {
   vector<int> newCoveredSamples;
-  for (int l = 0; l < ancienCoveredSamples.size(); l++) { // We check all already covered samples
-    int idCoveredSample = ancienCoveredSamples[l];
+  for (int idCoveredSample : ancienCoveredSamples) { // We check all already covered samples
     double sampleValue = (*trainData)[idCoveredSample][attribut];
     bool sampleGreater = hypValue <= sampleValue;
-    if (!(mainSampleGreater ^ sampleGreater)) {     // If both samples are on same side of hyperplan (^ = xor)
+    if (mainSampleGreater == sampleGreater) {       // If both samples are on same side of hyperplan
       newCoveredSamples.push_back(idCoveredSample); // This sample is covered again
     }
   }
   coveredSamples = newCoveredSamples;
 }
 
-vector<int> Hyperbox::getCoveredSamples() {
+vector<int> Hyperbox::getCoveredSamples() const {
   return coveredSamples;
 }
 
 void Hyperbox::computeFidelity(const int mainsamplePred, vector<int> *trainPreds) {
-  int coveredTrueClass = 0;                         // Number of samples covered by the hyperbox and of same class as the example
-  int nbCovered = coveredSamples.size();            // Number of samples covered by the hyperbox
-  for (int k = 0; k < coveredSamples.size(); k++) { // Loop on all covered samples
-    int idSample = coveredSamples[k];
+  int coveredTrueClass = 0;                          // Number of samples covered by the hyperbox and of same class as the example
+  size_t nbCovered = coveredSamples.size();          // Number of samples covered by the hyperbox
+  for (int idSample : coveredSamples) {              // Loop on all covered samples
     if (mainsamplePred == (*trainPreds)[idSample]) { // Check if sample is of right class (class predicted by dimlp network for our main sample)
       coveredTrueClass += 1;
     }
   }
+
   fidelity = (double)coveredTrueClass / (double)nbCovered;
 }
 
-double Hyperbox::getFidelity() {
+double Hyperbox::getFidelity() const {
   return fidelity;
 }
 

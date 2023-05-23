@@ -18,6 +18,6 @@
 #include <vector>
 
 void showFidexParams();
-int fidex(const string &command);
+int fidex(const std::string &command);
 
 #endif
