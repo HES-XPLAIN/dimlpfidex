@@ -4,6 +4,7 @@
 using namespace std;
 #include "randFun.h"
 #include <iostream>
+#include <vector>
 
 #ifndef DATASETS
 #include "dataSet.h"
@@ -36,7 +37,7 @@ class BpNN {
   //------------------------------------------------------------------------
 
   void InitRandomGen(int seed = 0);
-  void CreateNetStruct(int nbNeurons[]);
+  void CreateNetStruct(std::vector<int> nbNeurons);
   void WriteArchParam();
 
   void AssignParam(
@@ -49,7 +50,7 @@ class BpNN {
       int showErrParam,
       int nbEpochsParam,
       int nbLayers,
-      char saveFile[]);
+      const char saveFile[]);
 
   void WriteParam();
   void SaveWeights();
@@ -115,7 +116,7 @@ public:
                   DataSet &testTar,
                   DataSet &valid,
                   DataSet &validTar,
-                  char *accuracyFile,
+                  const char *accuracyFile,
                   bool fromBT = false);
 
   //------------------------------------------------------------------------
@@ -134,19 +135,19 @@ public:
       int showErrParam,
       int nbEpochsParam,
       int nbLayers,
-      int nbNeurons[],
-      char saveFile[],
-      char printNetType[],
+      std::vector<int> nbNeurons,
+      const char saveFile[],
+      const char printNetType[],
       int seed = 0);
 
   BpNN(
-      char readFile[],
+      const char readFile[],
       int nbLayers,
-      int nbNeurons[],
-      char printNetType[]);
+      std::vector<int> nbNeurons,
+      const char printNetType[]);
 
   BpNN(
-      char readFile[],
+      const char readFile[],
       float eta,
       float mu,
       float flat,
@@ -156,9 +157,9 @@ public:
       int showErrParam,
       int nbEpochsParam,
       int nbLayers,
-      int nbNeurons[],
-      char saveFile[],
-      char printNetType[],
+      std::vector<int> nbNeurons,
+      const char saveFile[],
+      const char printNetType[],
       int seed = 0);
 };
 

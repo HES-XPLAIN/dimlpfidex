@@ -23,7 +23,7 @@ class BagDimlp : public Dimlp {
   int NbLayers;
   char *WeightFile;
 
-  int *NbNeurons;
+  std::vector<int> NbNeurons;
 
   float *GlobalOut;
 
@@ -71,7 +71,7 @@ public:
       int showErrParam,
       int nbEpochsParam,
       int nbLayers,
-      int nbNeurons[],
+      std::vector<int> nbNeurons,
       int nbDimlpNets,
       char weightFile[],
       int seed = 0);
@@ -79,7 +79,7 @@ public:
   BagDimlp(
       int discrLevels,
       int nbLayers,
-      int *nbNeurons,
+      std::vector<int> nbNeurons,
       int nbDimlpNets,
       char weightFile[],
       int seed = 0);

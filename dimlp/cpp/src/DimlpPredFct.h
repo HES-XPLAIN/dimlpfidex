@@ -10,8 +10,8 @@
 #include <string.h>
 #include <vector>
 
-static void GiveAllParam();
-static void SaveOutputs(DataSet &data, Dimlp *net, int nbOut, int nbWeightLayers, char *outfile);
-int dimlpPred(string command);
+void GiveAllParamPred();
+static void SaveOutputs(DataSet &data, Dimlp *net, int nbOut, int nbWeightLayers, const char *outfile);
+int dimlpPred(const string &command);
 
 #endif

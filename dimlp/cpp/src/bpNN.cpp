@@ -57,7 +57,7 @@ void BpNN::InitRandomGen(int seed) {
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::CreateNetStruct(int nbNeurons[])
+void BpNN::CreateNetStruct(std::vector<int> nbNeurons)
 
 {
   int l;
@@ -107,7 +107,7 @@ void BpNN::AssignParam(
     int showErrParam,
     int nbEpochsParam,
     int nbLayers,
-    char saveFile[])
+    const char saveFile[])
 
 {
   Eta = eta;
@@ -625,7 +625,7 @@ void BpNN::TrainPhase(
     DataSet &testTar,
     DataSet &valid,
     DataSet &validTar,
-    char *accuracyFile,
+    const char *accuracyFile,
     bool fromBT)
 
 {
@@ -791,9 +791,9 @@ BpNN::BpNN(
     int showErrParam,
     int nbEpochsParam,
     int nbLayers,
-    int nbNeurons[],
-    char saveFile[],
-    char printNetType[],
+    std::vector<int> nbNeurons,
+    const char saveFile[],
+    const char printNetType[],
     int seed)
 
 {
@@ -820,10 +820,10 @@ BpNN::BpNN(
 ///////////////////////////////////////////////////////////////////
 
 BpNN::BpNN(
-    char readFile[80],
+    const char readFile[],
     int nbLayers,
-    int nbNeurons[],
-    char printNetType[])
+    std::vector<int> nbNeurons,
+    const char printNetType[])
 
 {
   strcpy(ReadFile, readFile);
@@ -848,7 +848,7 @@ BpNN::BpNN(
 ///////////////////////////////////////////////////////////////////
 
 BpNN::BpNN(
-    char readFile[80],
+    const char readFile[],
     float eta,
     float mu,
     float flat,
@@ -858,9 +858,9 @@ BpNN::BpNN(
     int showErrParam,
     int nbEpochsParam,
     int nbLayers,
-    int nbNeurons[],
-    char saveFile[],
-    char printNetType[],
+    std::vector<int> nbNeurons,
+    const char saveFile[],
+    const char printNetType[],
     int seed)
 
 {

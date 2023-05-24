@@ -1,9 +1,10 @@
-using namespace std;
 #include "DimlpPredFct.h"
+
+using namespace std;
 
 ////////////////////////////////////////////////////////////
 
-void GiveAllParam()
+void GiveAllParamPred()
 
 {
   cout << "\n-------------------------------------------------\n\n";
@@ -29,24 +30,23 @@ void GiveAllParam()
 
 ////////////////////////////////////////////////////////////
 
-void SaveOutputs(
+static void SaveOutputs(
     DataSet &data,
     Dimlp *net,
     int nbOut,
     int nbWeightLayers,
-    char *outfile)
+    const char *outfile)
 
 {
-  int p, o;
   filebuf buf;
 
-  if (buf.open(outfile, ios_base::out) == 0) {
-    char errorMsg[] = "Cannot open file for writing";
+  if (buf.open(outfile, ios_base::out) == nullptr) {
+    string errorMsg = "Cannot open file for writing";
     WriteError(errorMsg, outfile);
   }
 
   Layer *layer = net->GetLayer(nbWeightLayers - 1);
-  float *out = layer->GetUp();
+  const float *out = layer->GetUp();
 
   cout << "\n\n"
        << outfile << ": "
@@ -54,10 +54,10 @@ void SaveOutputs(
 
   ostream outFile(&buf);
 
-  for (p = 0; p < data.GetNbEx(); p++) {
+  for (int p = 0; p < data.GetNbEx(); p++) {
     net->ForwardOneExample1(data, p);
 
-    for (o = 0; o < nbOut; o++) {
+    for (int o = 0; o < nbOut; o++) {
       outFile << out[o] << " ";
     }
 
@@ -69,7 +69,7 @@ void SaveOutputs(
 }
 
 ////////////////////////////////////////////////////////////
-int dimlpPred(string command) {
+int dimlpPred(const string &command) {
 
   // Parsing the command
   vector<string> commandList;
@@ -79,9 +79,7 @@ int dimlpPred(string command) {
   while (std::getline(ss, s, delim)) {
     commandList.push_back(s);
   }
-  int nbParam = commandList.size();
-
-  int k;
+  size_t nbParam = commandList.size();
 
   DataSet Test;
 
@@ -101,17 +99,20 @@ int dimlpPred(string command) {
 
   int nbLayers;
   int nbWeightLayers;
-  int *vecNbNeurons;
+  std::vector<int> vecNbNeurons;
 
   StringInt arch;
   StringInt archInd;
 
+  // Import parameters
+
   if (nbParam == 1) {
-    GiveAllParam();
+    GiveAllParamPred();
     return -1;
   }
 
-  for (k = 1; k < nbParam; k++) {
+  int k = 1; // We skip "DimlpPred"
+  while (k < nbParam) {
     if (commandList[k][0] == '-') {
       k++;
 
@@ -120,34 +121,35 @@ int dimlpPred(string command) {
         return -1;
       }
 
-      switch (commandList[k - 1][1]) {
+      char option = commandList[k - 1][1];
+      const char *arg = &(commandList[k])[0];
+      const char *lastArg = &(commandList[k - 1])[0];
+      switch (option) {
       case 'q':
-        if (CheckInt(&(commandList[k])[0]))
-          quant = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          quant = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'I':
-        if (CheckInt(&(commandList[k])[0]))
-          nbIn = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          nbIn = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'H':
-        if (CheckInt(&(commandList[k])[0])) {
-          arch.Insert(atoi(&(commandList[k])[0]));
+        if (CheckInt(arg)) {
+          arch.Insert(atoi(arg));
 
-          char *ptrParam = &(commandList[k - 1])[0];
+          const char *ptrParam = lastArg;
 
           if (ptrParam[2] != '\0') {
-            char str[80];
-
-            strcpy(str, ptrParam + 2);
-            archInd.Insert(atoi(str));
+            std::string str(ptrParam + 2);
+            archInd.Insert(std::atoi(str.c_str()));
           } else {
             cout << "Which hidden layer (-H) ?\n";
             return -1;
@@ -158,39 +160,39 @@ int dimlpPred(string command) {
         break;
 
       case 'O':
-        if (CheckInt(&(commandList[k])[0]))
-          nbOut = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          nbOut = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'S':
-        rootFolderTemp = &(commandList[k])[0];
+        rootFolderTemp = arg;
         rootFolderInit = true;
         break;
 
       case 'W':
-        weightFileTemp = &(commandList[k])[0];
+        weightFileTemp = arg;
         weightFileInit = true;
         break;
 
       case 'p':
-        predFileTemp = &(commandList[k])[0];
+        predFileTemp = arg;
         break;
 
       case 'r':
-        consoleFileTemp = &(commandList[k])[0];
+        consoleFileTemp = arg;
         consoleFileInit = true;
         break;
 
       case 'T':
-        testFileTemp = &(commandList[k])[0];
+        testFileTemp = arg;
         testFileInit = true;
         break;
 
       default:
-        cout << "Illegal option: " << &(commandList[k - 1])[0] << "\n";
+        cout << "Illegal option: " << lastArg << "\n";
         return -1;
       }
     }
@@ -199,18 +201,18 @@ int dimlpPred(string command) {
       cout << "Illegal option: " << &(commandList[k])[0] << "\n";
       return -1;
     }
+
+    k++;
   }
 
   // ----------------------------------------------------------------------
 
   // create paths with root foler
 
-  char testFileTmp[160], weightFileTmp[160], predFileTmp[160], consoleFileTmp[160];
-
-  char *testFile = 0;
-  char *weightFile = 0;
-  char *predFile = 0;
-  char *consoleFile = 0;
+  const char *testFile = nullptr;
+  const char *weightFile = nullptr;
+  const char *predFile = nullptr;
+  const char *consoleFile = nullptr;
 
 #if defined(__unix__) || defined(__APPLE__)
   string root = rootFolderTemp + "/";
@@ -219,45 +221,21 @@ int dimlpPred(string command) {
 #endif
 
   predFileTemp = root + predFileTemp;
-  if (predFileTemp.length() >= 160) {
-    cout << "Path " << predFileTemp << "is too long"
-         << "\n";
-    return -1;
-  }
-  strcpy(predFileTmp, predFileTemp.c_str());
-  predFile = predFileTmp;
+  predFile = &predFileTemp[0];
 
   if (consoleFileInit) {
     consoleFileTemp = root + consoleFileTemp;
-    if (consoleFileTemp.length() >= 160) {
-      cout << "Path " << consoleFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(consoleFileTmp, consoleFileTemp.c_str());
-    consoleFile = consoleFileTmp;
+    consoleFile = &consoleFileTemp[0];
   }
 
   if (testFileInit) {
     testFileTemp = root + testFileTemp;
-    if (testFileTemp.length() >= 160) {
-      cout << "Path " << testFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(testFileTmp, testFileTemp.c_str());
-    testFile = testFileTmp;
+    testFile = &testFileTemp[0];
   }
 
   if (weightFileInit) {
     weightFileTemp = root + weightFileTemp;
-    if (weightFileTemp.length() >= 160) {
-      cout << "Path " << weightFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(weightFileTmp, weightFileTemp.c_str());
-    weightFile = weightFileTmp;
+    weightFile = &weightFileTemp[0];
   }
 
   // ----------------------------------------------------------------------
@@ -269,7 +247,6 @@ int dimlpPred(string command) {
     ofs.open(consoleFile);
     std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
   }
-  std::ostream &output = consoleFileInit != false ? ofs : std::cout;
 
   // ----------------------------------------------------------------------
 
@@ -318,7 +295,7 @@ int dimlpPred(string command) {
     nbLayers = 3;
     nbWeightLayers = nbLayers - 1;
 
-    vecNbNeurons = new int[nbLayers];
+    vecNbNeurons.assign(nbLayers, 0);
     vecNbNeurons[0] = nbIn;
     vecNbNeurons[1] = nbIn;
     vecNbNeurons[2] = nbOut;
@@ -339,7 +316,7 @@ int dimlpPred(string command) {
       nbLayers = arch.GetNbEl() + 2;
       nbWeightLayers = nbLayers - 1;
 
-      vecNbNeurons = new int[nbLayers];
+      vecNbNeurons.assign(nbLayers, 0);
       vecNbNeurons[0] = nbIn;
       vecNbNeurons[nbLayers - 1] = nbOut;
 
@@ -357,7 +334,7 @@ int dimlpPred(string command) {
       nbLayers = arch.GetNbEl() + 3;
       nbWeightLayers = nbLayers - 1;
 
-      vecNbNeurons = new int[nbLayers];
+      vecNbNeurons.assign(nbLayers, 0);
       vecNbNeurons[0] = nbIn;
       vecNbNeurons[1] = nbIn;
       vecNbNeurons[nbLayers - 1] = nbOut;
@@ -387,9 +364,5 @@ int dimlpPred(string command) {
 
   return 0;
 }
-/*
-int main(int nbParam, char** param)
-{
-    dimlpPred("DimlpPred -T ../dimlp/datafiles/datanormTest -W ../dimlp/datafiles/dimlpDatanorm.wts -I 16 -H2 5 -O 2 -q 50 -p ../dimlp/datafiles/dimlpDatanormTest.out -r ../dimlp/datafiles/dimlpDatanormPredResult.txt");
-}
-*/
+
+// Exemple to launch the code : .\DimlpPred.exe -T datanormTest -W dimlpDatanorm.wts -I 16 -H2 5 -O 2 -q 50 -p dimlpDatanormTest.out -r dimlpDatanormPredResult.txt -S ../dimlp/datafiles

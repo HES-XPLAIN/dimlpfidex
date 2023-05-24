@@ -1,15 +1,15 @@
-using namespace std;
 #include <iostream>
+
+using namespace std;
 
 ////////////////////////////////////////////////////////
 
-int CheckInt(char *str)
+int CheckInt(const char *str)
 
 {
-  int i;
   char ch;
 
-  for (i = 0; str[i] != '\0'; i++) {
+  for (int i = 0; str[i] != '\0'; i++) {
     ch = str[i];
 
     if ((ch > '9') || (ch < '0')) {
@@ -25,28 +25,28 @@ int CheckInt(char *str)
 
 ////////////////////////////////////////////////////////
 
-int CheckFloat(char *str)
+int CheckFloat(const char *str)
 
 {
-  int i, countDot, countMinus;
+  int countDot = 0;
+  int countMinus = 0;
   char ch;
 
-  for (i = 0; str[i] != '\0'; i++) {
+  for (int i = 0; str[i] != '\0'; i++) {
     ch = str[i];
 
-    if ((ch > '9') || (ch < '0'))
-      if ((ch != '.') && (ch != '-')) {
-        cout << "Problem with float argument (" << str;
-        cout << ") or with previous argument.\n";
-        return 0;
-      }
+    if ((ch > '9' || ch < '0') && (ch != '.' && ch != '-')) {
+      cout << "Problem with float argument (" << str;
+      cout << ") or with previous argument.\n";
+      return 0;
+    }
   }
 
-  for (i = 0, countDot = 0; str[i] != '\0'; i++)
+  for (int i = 0; str[i] != '\0'; i++)
     if (str[i] == '.')
       countDot++;
 
-  for (i = 0, countMinus = 0; str[i] != '\0'; i++)
+  for (int i = 0; str[i] != '\0'; i++)
     if (str[i] == '.')
       countMinus++;
 

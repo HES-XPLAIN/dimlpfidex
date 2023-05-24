@@ -21,7 +21,7 @@ public:
   char **GetListAttr() { return VarNames; }
   char **GetListClasses() { return ClassNames; }
 
-  AttrName(char *fileAttr, int nbAttr, int nbClasses);
+  AttrName(const char *fileAttr, int nbAttr, int nbClasses);
   AttrName() { FileAttr = 0; }
 };
 

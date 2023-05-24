@@ -1,10 +1,12 @@
+#include "DimlpTrnFct.h"
+
 using namespace std;
 
-#define BPNN 1
-#include "DimlpTrnFct.h"
+const int BPNN = 1;
+
 ////////////////////////////////////////////////////////////
 
-void GiveAllParam()
+void GiveAllParamDimlpTrn()
 
 {
   cout << "\n-------------------------------------------------\n\n";
@@ -50,24 +52,23 @@ void GiveAllParam()
 
 ////////////////////////////////////////////////////////////
 
-void SaveOutputs(
+static void SaveOutputs(
     DataSet &data,
     Dimlp *net,
     int nbOut,
     int nbWeightLayers,
-    char *outfile)
+    const char *outfile)
 
 {
-  int p, o;
   filebuf buf;
 
-  if (buf.open(outfile, ios_base::out) == 0) {
-    char errorMsg[] = "Cannot open file for writing";
+  if (buf.open(outfile, ios_base::out) == nullptr) {
+    string errorMsg = "Cannot open file for writing";
     WriteError(errorMsg, outfile);
   }
 
   Layer *layer = net->GetLayer(nbWeightLayers - 1);
-  float *out = layer->GetUp();
+  const float *out = layer->GetUp();
 
   cout << "\n\n"
        << outfile << ": "
@@ -75,10 +76,10 @@ void SaveOutputs(
 
   ostream outFile(&buf);
 
-  for (p = 0; p < data.GetNbEx(); p++) {
+  for (int p = 0; p < data.GetNbEx(); p++) {
     net->ForwardOneExample1(data, p);
 
-    for (o = 0; o < nbOut; o++) {
+    for (int o = 0; o < nbOut; o++) {
       outFile << out[o] << " ";
     }
 
@@ -91,10 +92,11 @@ void SaveOutputs(
 
 ////////////////////////////////////////////////////////////
 
-int dimlpTrn(string command) {
+int dimlpTrn(const string &command) {
 
   float temps;
-  clock_t t1, t2;
+  clock_t t1;
+  clock_t t2;
 
   t1 = clock();
 
@@ -106,9 +108,7 @@ int dimlpTrn(string command) {
   while (std::getline(ss, s, delim)) {
     commandList.push_back(s);
   }
-  int nbParam = commandList.size();
-
-  int k;
+  size_t nbParam = commandList.size();
 
   DataSet Train;
   DataSet Test;
@@ -122,11 +122,11 @@ int dimlpTrn(string command) {
 
   Dimlp *net;
 
-  float eta = 0.1;
-  float mu = 0.6;
-  float flat = 0.01;
-  float errThres = -1111111111.0;
-  float accThres = 11111111111111.0;
+  float eta = 0.1f;
+  float mu = 0.6f;
+  float flat = 0.01f;
+  float errThres = -1111111111.0f;
+  float accThres = 11111111111111.0f;
   float deltaErr = 0;
   int showErr = 10;
   int epochs = 1500;
@@ -171,55 +171,57 @@ int dimlpTrn(string command) {
 
   int nbLayers;
   int nbWeightLayers;
-  int *vecNbNeurons;
+  std::vector<int> vecNbNeurons;
 
   StringInt arch;
   StringInt archInd;
 
   if (nbParam == 1) {
-    GiveAllParam();
+    GiveAllParamDimlpTrn();
     return -1;
   }
 
-  for (k = 1; k < nbParam; k++) {
+  int k = 1; // We skip "DimlpTrn"
+  while (k < nbParam) {
     if (commandList[k][0] == '-') {
       k++;
 
-      if (k >= nbParam) {
-        if (*(&(commandList[k - 1])[0] + 1) != 'R') {
-          cout << "Missing something at the end of the command.\n";
-          return -1;
-        }
+      if (k >= nbParam && *(&(commandList[k - 1])[0] + 1) != 'R') {
+        cout << "Missing something at the end of the command.\n";
+        return -1;
       }
 
-      switch (commandList[k - 1][1]) {
+      char option = commandList[k - 1][1];
+      const char *arg = &(commandList[k])[0];
+      const char *lastArg = &(commandList[k - 1])[0];
+      switch (option) {
       case 'l':
-        if (CheckFloat(&(commandList[k])[0]))
-          eta = atof(&(commandList[k])[0]);
+        if (CheckFloat(arg))
+          eta = static_cast<float>(atof(arg));
         else
           return -1;
 
         break;
 
       case 'm':
-        if (CheckFloat(&(commandList[k])[0]))
-          mu = atof(&(commandList[k])[0]);
+        if (CheckFloat(arg))
+          mu = static_cast<float>(atof(arg));
         else
           return -1;
 
         break;
 
       case 'f':
-        if (CheckFloat(&(commandList[k])[0]))
-          flat = atof(&(commandList[k])[0]);
+        if (CheckFloat(arg))
+          flat = static_cast<float>(atof(arg));
         else
           return -1;
 
         break;
 
       case 'e':
-        if (CheckFloat(&(commandList[k])[0]))
-          errThres = atof(&(commandList[k])[0]);
+        if (CheckFloat(arg))
+          errThres = static_cast<float>(atof(arg));
         else
           return -1;
 
@@ -228,8 +230,8 @@ int dimlpTrn(string command) {
         break;
 
       case 'a':
-        if (CheckFloat(&(commandList[k])[0]))
-          accThres = atof(&(commandList[k])[0]);
+        if (CheckFloat(arg))
+          accThres = static_cast<float>(atof(arg));
         else
           return -1;
 
@@ -238,8 +240,8 @@ int dimlpTrn(string command) {
         break;
 
       case 'd':
-        if (CheckFloat(&(commandList[k])[0]))
-          deltaErr = atof(&(commandList[k])[0]);
+        if (CheckFloat(arg))
+          deltaErr = static_cast<float>(atof(arg));
         else
           return -1;
 
@@ -248,16 +250,16 @@ int dimlpTrn(string command) {
         break;
 
       case 's':
-        if (CheckInt(&(commandList[k])[0]))
-          showErr = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          showErr = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'i':
-        if (CheckInt(&(commandList[k])[0])) {
-          epochs = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg)) {
+          epochs = atoi(arg);
           flagEp = 1;
         } else
           return -1;
@@ -265,32 +267,30 @@ int dimlpTrn(string command) {
         break;
 
       case 'q':
-        if (CheckInt(&(commandList[k])[0]))
-          quant = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          quant = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'I':
-        if (CheckInt(&(commandList[k])[0]))
-          nbIn = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          nbIn = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'H':
-        if (CheckInt(&(commandList[k])[0])) {
-          arch.Insert(atoi(&(commandList[k])[0]));
+        if (CheckInt(arg)) {
+          arch.Insert(atoi(arg));
 
-          char *ptrParam = &(commandList[k - 1])[0];
+          const char *ptrParam = lastArg;
 
           if (ptrParam[2] != '\0') {
-            char str[80];
-
-            strcpy(str, ptrParam + 2);
-            archInd.Insert(atoi(str));
+            std::string str(ptrParam + 2);
+            archInd.Insert(std::atoi(str.c_str()));
           } else {
             cout << "Which hidden layer (-H) ?\n";
             return -1;
@@ -301,89 +301,89 @@ int dimlpTrn(string command) {
         break;
 
       case 'O':
-        if (CheckInt(&(commandList[k])[0]))
-          nbOut = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          nbOut = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'z':
-        if (CheckInt(&(commandList[k])[0]))
-          seed = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          seed = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'S':
-        rootFolderTemp = &(commandList[k])[0];
+        rootFolderTemp = arg;
         rootFolderInit = true;
         break;
 
       case 'A':
-        attrFileTemp = &(commandList[k])[0];
+        attrFileTemp = arg;
         attrFileInit = true;
         break;
 
       case 'W':
-        weightFileTemp = &(commandList[k])[0];
+        weightFileTemp = arg;
         weightFileInit = true;
         break;
 
       case 'w':
-        outputWeightFileTemp = &(commandList[k])[0];
+        outputWeightFileTemp = arg;
         break;
 
       case 'p':
-        predTrainFileTemp = &(commandList[k])[0];
+        predTrainFileTemp = arg;
         break;
 
       case 't':
-        predTestFileTemp = &(commandList[k])[0];
+        predTestFileTemp = arg;
         break;
 
       case 'v':
-        predValidationFileTemp = &(commandList[k])[0];
+        predValidationFileTemp = arg;
         break;
 
       case 'r':
-        consoleFileTemp = &(commandList[k])[0];
+        consoleFileTemp = arg;
         consoleFileInit = true;
         break;
 
       case 'o':
-        accuracyFileTemp = &(commandList[k])[0];
+        accuracyFileTemp = arg;
         accuracyFileInit = true;
         break;
 
       case 'L':
-        learnFileTemp = &(commandList[k])[0];
+        learnFileTemp = arg;
         learnFileInit = true;
         break;
 
       case 'T':
-        testFileTemp = &(commandList[k])[0];
+        testFileTemp = arg;
         testFileInit = true;
         break;
 
       case 'V':
-        validFileTemp = &(commandList[k])[0];
+        validFileTemp = arg;
         validFileInit = true;
         break;
 
       case '1':
-        learnTarTemp = &(commandList[k])[0];
+        learnTarTemp = arg;
         learnTarInit = true;
         break;
 
       case '2':
-        testTarTemp = &(commandList[k])[0];
+        testTarTemp = arg;
         testTarInit = true;
         break;
 
       case '3':
-        validTarTemp = &(commandList[k])[0];
+        validTarTemp = arg;
         validTarInit = true;
         break;
 
@@ -393,12 +393,12 @@ int dimlpTrn(string command) {
         break;
 
       case 'F':
-        rulesFileTemp = &(commandList[k])[0];
+        rulesFileTemp = arg;
         rulesFileInit = true;
         break;
 
       default:
-        cout << "Illegal option: " << &(commandList[k - 1])[0] << "\n";
+        cout << "Illegal option: " << lastArg << "\n";
         return -1;
       }
     }
@@ -407,27 +407,28 @@ int dimlpTrn(string command) {
       cout << "Illegal option: " << &(commandList[k])[0] << "\n";
       return -1;
     }
+
+    k++;
   }
 
   // ----------------------------------------------------------------------
   // create paths with root foler
-  char learnFileTmp[160], testFileTmp[160], validFileTmp[160], weightFileTmp[160], outputWeightFileTmp[160], predTrainFileTmp[160], predTestFileTmp[160], predValidationFileTmp[160], rulesFileTmp[160], consoleFileTmp[160], accuracyFileTmp[160], learnTarTmp[160], testTarTmp[160], validTarTmp[160], attrFileTmp[160];
 
-  char *learnFile = 0;
-  char *testFile = 0;
-  char *validFile = 0;
-  char *weightFile = 0;
-  char *outputWeightFile = 0;
-  char *predTrainFile = 0;
-  char *predTestFile = 0;
-  char *predValidationFile = 0;
-  char *rulesFile = 0;
-  char *consoleFile = 0;
-  char *accuracyFile = 0;
-  char *learnTar = 0;
-  char *testTar = 0;
-  char *validTar = 0;
-  char *attrFile = 0;
+  const char *learnFile = nullptr;
+  const char *testFile = nullptr;
+  const char *validFile = nullptr;
+  const char *weightFile = nullptr;
+  const char *outputWeightFile = nullptr;
+  const char *predTrainFile = nullptr;
+  const char *predTestFile = nullptr;
+  const char *predValidationFile = nullptr;
+  const char *rulesFile = nullptr;
+  const char *consoleFile = nullptr;
+  const char *accuracyFile = nullptr;
+  const char *learnTar = nullptr;
+  const char *testTar = nullptr;
+  const char *validTar = nullptr;
+  const char *attrFile = nullptr;
 
 #if defined(__unix__) || defined(__APPLE__)
   string root = rootFolderTemp + "/";
@@ -436,159 +437,69 @@ int dimlpTrn(string command) {
 #endif
   if (learnFileInit) {
     learnFileTemp = root + learnFileTemp;
-    if (learnFileTemp.length() >= 160) {
-      cout << "Path " << learnFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(learnFileTmp, learnFileTemp.c_str());
-    learnFile = learnFileTmp;
+    learnFile = &learnFileTemp[0];
   }
 
   if (testFileInit) {
     testFileTemp = root + testFileTemp;
-    if (testFileTemp.length() >= 160) {
-      cout << "Path " << testFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(testFileTmp, testFileTemp.c_str());
-    testFile = testFileTmp;
+    testFile = &testFileTemp[0];
   }
 
   if (validFileInit) {
     validFileTemp = root + validFileTemp;
-    if (validFileTemp.length() >= 160) {
-      cout << "Path " << validFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(validFileTmp, validFileTemp.c_str());
-    validFile = validFileTmp;
+    validFile = &validFileTemp[0];
   }
 
   if (weightFileInit) {
     weightFileTemp = root + weightFileTemp;
-    if (weightFileTemp.length() >= 160) {
-      cout << "Path " << weightFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(weightFileTmp, weightFileTemp.c_str());
-    weightFile = weightFileTmp;
+    weightFile = &weightFileTemp[0];
   }
 
   outputWeightFileTemp = root + outputWeightFileTemp;
-  if (outputWeightFileTemp.length() >= 160) {
-    cout << "Path " << outputWeightFileTemp << "is too long"
-         << "\n";
-    return -1;
-  }
-  strcpy(outputWeightFileTmp, outputWeightFileTemp.c_str());
-  outputWeightFile = outputWeightFileTmp;
+  outputWeightFile = &outputWeightFileTemp[0];
 
   predTrainFileTemp = root + predTrainFileTemp;
-  if (predTrainFileTemp.length() >= 160) {
-    cout << "Path " << predTrainFileTemp << "is too long"
-         << "\n";
-    return -1;
-  }
-  strcpy(predTrainFileTmp, predTrainFileTemp.c_str());
-  predTrainFile = predTrainFileTmp;
+  predTrainFile = &predTrainFileTemp[0];
 
   predTestFileTemp = root + predTestFileTemp;
-  if (predTestFileTemp.length() >= 160) {
-    cout << "Path " << predTestFileTemp << "is too long"
-         << "\n";
-    return -1;
-  }
-  strcpy(predTestFileTmp, predTestFileTemp.c_str());
-  predTestFile = predTestFileTmp;
+  predTestFile = &predTestFileTemp[0];
 
   predValidationFileTemp = root + predValidationFileTemp;
-  if (predValidationFileTemp.length() >= 160) {
-    cout << "Path " << predValidationFileTemp << "is too long"
-         << "\n";
-    return -1;
-  }
-  strcpy(predValidationFileTmp, predValidationFileTemp.c_str());
-  predValidationFile = predValidationFileTmp;
+  predValidationFile = &predValidationFileTemp[0];
 
   if (rulesFileInit) {
     rulesFileTemp = root + rulesFileTemp;
-    if (rulesFileTemp.length() >= 160) {
-      cout << "Path " << rulesFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(rulesFileTmp, rulesFileTemp.c_str());
-    rulesFile = rulesFileTmp;
+    rulesFile = &rulesFileTemp[0];
   }
 
   if (consoleFileInit) {
     consoleFileTemp = root + consoleFileTemp;
-    if (consoleFileTemp.length() >= 160) {
-      cout << "Path " << consoleFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(consoleFileTmp, consoleFileTemp.c_str());
-    consoleFile = consoleFileTmp;
+    consoleFile = &consoleFileTemp[0];
   }
 
   if (accuracyFileInit) {
     accuracyFileTemp = root + accuracyFileTemp;
-    if (accuracyFileTemp.length() >= 160) {
-      cout << "Path " << accuracyFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(accuracyFileTmp, accuracyFileTemp.c_str());
-    accuracyFile = accuracyFileTmp;
+    accuracyFile = &accuracyFileTemp[0];
   }
 
   if (learnTarInit) {
     learnTarTemp = root + learnTarTemp;
-    if (learnTarTemp.length() >= 160) {
-      cout << "Path " << learnTarTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(learnTarTmp, learnTarTemp.c_str());
-    learnTar = learnTarTmp;
+    learnTar = &learnTarTemp[0];
   }
 
   if (testTarInit) {
     testTarTemp = root + testTarTemp;
-    if (testTarTemp.length() >= 160) {
-      cout << "Path " << testTarTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(testTarTmp, testTarTemp.c_str());
-    testTar = testTarTmp;
+    testTar = &testTarTemp[0];
   }
 
   if (validTarInit) {
     validTarTemp = root + validTarTemp;
-    if (validTarTemp.length() >= 160) {
-      cout << "Path " << validTarTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(validTarTmp, validTarTemp.c_str());
-    validTar = validTarTmp;
+    validTar = &validTarTemp[0];
   }
 
   if (attrFileInit) {
     attrFileTemp = root + attrFileTemp;
-    if (attrFileTemp.length() >= 160) {
-      cout << "Path " << attrFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(attrFileTmp, attrFileTemp.c_str());
-    attrFile = attrFileTmp;
+    attrFile = &attrFileTemp[0];
   }
 
   // ----------------------------------------------------------------------
@@ -600,7 +511,6 @@ int dimlpTrn(string command) {
     ofs.open(consoleFile);
     std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
   }
-  std::ostream &output = consoleFileInit != false ? ofs : std::cout;
 
   // ----------------------------------------------------------------------
 
@@ -646,7 +556,7 @@ int dimlpTrn(string command) {
     nbLayers = 3;
     nbWeightLayers = nbLayers - 1;
 
-    vecNbNeurons = new int[nbLayers];
+    vecNbNeurons.assign(nbLayers, 0);
     vecNbNeurons[0] = nbIn;
     vecNbNeurons[1] = nbIn;
     vecNbNeurons[2] = nbOut;
@@ -667,7 +577,7 @@ int dimlpTrn(string command) {
       nbLayers = arch.GetNbEl() + 2;
       nbWeightLayers = nbLayers - 1;
 
-      vecNbNeurons = new int[nbLayers];
+      vecNbNeurons.assign(nbLayers, 0);
       vecNbNeurons[0] = nbIn;
       vecNbNeurons[nbLayers - 1] = nbOut;
 
@@ -685,7 +595,7 @@ int dimlpTrn(string command) {
       nbLayers = arch.GetNbEl() + 3;
       nbWeightLayers = nbLayers - 1;
 
-      vecNbNeurons = new int[nbLayers];
+      vecNbNeurons.assign(nbLayers, 0);
       vecNbNeurons[0] = nbIn;
       vecNbNeurons[1] = nbIn;
       vecNbNeurons[nbLayers - 1] = nbOut;
@@ -790,7 +700,7 @@ int dimlpTrn(string command) {
       accFile << "Accuracy : \n\n";
       accFile.close();
     } else {
-      char errorMsg[] = "Cannot open file for writing";
+      string errorMsg = "Cannot open file for writing";
       WriteError(errorMsg, accuracyFile);
     }
   }
@@ -836,8 +746,8 @@ int dimlpTrn(string command) {
     if (rulesFileInit != false) {
       filebuf buf;
 
-      if (buf.open(rulesFile, ios_base::out) == 0) {
-        char errorMsg[] = "Cannot open file for writing";
+      if (buf.open(rulesFile, ios_base::out) == nullptr) {
+        string errorMsg = "Cannot open file for writing";
         WriteError(errorMsg, rulesFile);
       }
 
@@ -912,13 +822,11 @@ int dimlpTrn(string command) {
   return 0;
 }
 
-/*
-int main(int nbParam, char** param)
-{
-    dimlpTrn("DimlpTrn -L ../dimlp/datafiles/datanormTrain -1 ../dimlp/datafiles/dataclass2Train -T ../dimlp/datafiles/datanormTest -2 ../dimlp/datafiles/dataclass2Test -w ../dimlp/datafiles/dimlpDatanorm.wts -I 16 -H2 5 -O 2 -p ../dimlp/datafiles/dimlpDatanormTrain.out -t ../dimlp/datafiles/dimlpDatanormTest.out -R -F ../dimlp/datafiles/dimlpDatanormTrn.rls -o ../dimlp/datafiles/dimlpDatanormTrnStats -r ../dimlp/datafiles/dimlpDatanormTrnResult.txt");
-}*/
+/* Exemples to launch the code :
 
-// .\DimlpTrn.exe -L covidTrainData.txt -1 covidTrainClass.txt -T covidTestData.txt -2 covidTestClass.txt -w covid.wts -I 20 -H2 5 -O 2 -p covidTrainPred.out -t covidTestPred.out -R -F covidTrn.rls -o covidTrnStats -r covidTrnResult.txt -S ../dimlp/datafiles/covidDataset -A attributes.txt
-// .\DimlpTrn.exe -L spamTrainData.txt -1 spamTrainClass.txt -T spamTestData.txt -2 spamTestClass.txt -w spam.wts -I 57 -H2 5 -O 2 -p spamTrainPred.out -t spamTestPred.out -R -F spamTrn.rls -o spamTrnStats -r spamTrnResult.txt -S ../dimlp/datafiles/spamDataset -A attributes.txt
-// .\DimlpTrn.exe -L isoletTrainData.txt -1 isoletTrainClass.txt -T isoletTestData.txt -2 isoletTestClass.txt -w isoletV3.wts -I 617 -H2 5 -O 26 -p isoletTrainPredV3.out -t isoletTestPredV3.out -R -F isoletTrnV3.rls -o isoletTrnStatsV3 -r isoletTrnResultV3.txt -S ../dimlp/datafiles/isoletDataset -A attributes.txt
-// .\DimlpTrn.exe -L Train/X_train.txt -1 Train/y_train.txt -T test/X_test.txt -2 Test/y_test.txt -w HAPT.wts -I 561 -H2 5 -O 12 -p Train/pred_train.out -t Test/pred_test.out -R -F HAPTTrain.rls -o HAPTTrnStats -r HAPTTrnResult.txt -S ../dimlp/datafiles/HAPTDataset -A attributes.txt
+.\DimlpTrn.exe -L covidTrainData.txt -1 covidTrainClass.txt -T covidTestData.txt -2 covidTestClass.txt -w covid.wts -I 20 -H2 5 -O 2 -p covidTrainPred.out -t covidTestPred.out -R -F covidTrn.rls -o covidTrnStats -r covidTrnResult.txt -S ../dimlp/datafiles/covidDataset -A attributes.txt
+.\DimlpTrn.exe -L spamTrainData.txt -1 spamTrainClass.txt -T spamTestData.txt -2 spamTestClass.txt -w spam.wts -I 57 -H2 5 -O 2 -p spamTrainPred.out -t spamTestPred.out -R -F spamTrn.rls -o spamTrnStats -r spamTrnResult.txt -S ../dimlp/datafiles/spamDataset -A attributes.txt
+.\DimlpTrn.exe -L isoletTrainData.txt -1 isoletTrainClass.txt -T isoletTestData.txt -2 isoletTestClass.txt -w isoletV3.wts -I 617 -H2 5 -O 26 -p isoletTrainPredV3.out -t isoletTestPredV3.out -R -F isoletTrnV3.rls -o isoletTrnStatsV3 -r isoletTrnResultV3.txt -S ../dimlp/datafiles/isoletDataset -A attributes.txt
+.\DimlpTrn.exe -L Train/X_train.txt -1 Train/y_train.txt -T test/X_test.txt -2 Test/y_test.txt -w HAPT.wts -I 561 -H2 5 -O 12 -p Train/pred_train.out -t Test/pred_test.out -R -F HAPTTrain.rls -o HAPTTrnStats -r HAPTTrnResult.txt -S ../dimlp/datafiles/HAPTDataset -A attributes.txt
+
+*/

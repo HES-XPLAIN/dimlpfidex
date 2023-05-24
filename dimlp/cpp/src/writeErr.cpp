@@ -1,10 +1,9 @@
+#include "writeErr.h"
 using namespace std;
-#include <iostream>
-#include <stdlib.h>
 
 ///////////////////////////////////////////////////////////////////
 
-void WriteError(char s1[], char s2[])
+[[noreturn]] void WriteError(const string &s1, const string &s2)
 
 {
   cerr << s1 << " " << s2 << ".\n";

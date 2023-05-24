@@ -7,14 +7,15 @@
 #include "writeErr.h"
 
 #include <fstream>
+#include <memory>
 #include <sstream>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include <vector>
 
-static void GiveAllParam();
-static void SaveOutputs(DataSet &data, Dimlp *net, int nbOut, int nbWeightLayers, char *outfile);
-int dimlpTrn(string command);
+void GiveAllParamDimlpTrn();
+static void SaveOutputs(DataSet &data, Dimlp *net, int nbOut, int nbWeightLayers, const char *outfile);
+int dimlpTrn(const string &command);
 
 #endif

@@ -92,7 +92,7 @@ void AttrName::Del()
 
 ///////////////////////////////////////////////////////////////////
 
-AttrName::AttrName(char *fileAttr, int nbAttr, int nbClasses)
+AttrName::AttrName(const char *fileAttr, int nbAttr, int nbClasses)
 
 {
   int i, j;

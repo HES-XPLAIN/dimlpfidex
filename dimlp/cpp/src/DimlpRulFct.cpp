@@ -1,10 +1,12 @@
-using namespace std;
 #include "DimlpRulFct.h"
-#define BPNN 1
+
+using namespace std;
+
+const int BPNN = 1;
 
 ////////////////////////////////////////////////////////////
 
-void GiveAllParam()
+void GiveAllParamDimlpRul()
 
 {
   cout << "\n-------------------------------------------------\n\n";
@@ -36,7 +38,7 @@ void GiveAllParam()
 
 ////////////////////////////////////////////////////////////
 
-int dimlpRul(string command) {
+int dimlpRul(const string &command) {
 
   // Parsing the command
   vector<string> commandList;
@@ -46,9 +48,7 @@ int dimlpRul(string command) {
   while (std::getline(ss, s, delim)) {
     commandList.push_back(s);
   }
-  int nbParam = commandList.size();
-
-  int k;
+  size_t nbParam = commandList.size();
 
   DataSet Train;
   DataSet Test;
@@ -90,17 +90,18 @@ int dimlpRul(string command) {
 
   int nbLayers;
   int nbWeightLayers;
-  int *vecNbNeurons;
+  std::vector<int> vecNbNeurons;
 
   StringInt arch;
   StringInt archInd;
 
   if (nbParam == 1) {
-    GiveAllParam();
+    GiveAllParamDimlpRul();
     return -1;
   }
 
-  for (k = 1; k < nbParam; k++) {
+  int k = 1; // We skip "DimlpRul"
+  while (k < nbParam) {
     if (commandList[k][0] == '-') {
       k++;
 
@@ -109,34 +110,35 @@ int dimlpRul(string command) {
         return -1;
       }
 
+      char option = commandList[k - 1][1];
+      const char *arg = &(commandList[k])[0];
+      const char *lastArg = &(commandList[k - 1])[0];
       switch (commandList[k - 1][1]) {
       case 'q':
-        if (CheckInt(&(commandList[k])[0]))
-          quant = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          quant = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'I':
-        if (CheckInt(&(commandList[k])[0]))
-          nbIn = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          nbIn = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'H':
-        if (CheckInt(&(commandList[k])[0])) {
-          arch.Insert(atoi(&(commandList[k])[0]));
+        if (CheckInt(arg)) {
+          arch.Insert(atoi(arg));
 
-          char *ptrParam = &(commandList[k - 1])[0];
+          const char *ptrParam = lastArg;
 
           if (ptrParam[2] != '\0') {
-            char str[80];
-
-            strcpy(str, ptrParam + 2);
-            archInd.Insert(atoi(str));
+            std::string str(ptrParam + 2);
+            archInd.Insert(std::atoi(str.c_str()));
           } else {
             cout << "Which hidden layer (-H) ?\n";
             return -1;
@@ -147,75 +149,75 @@ int dimlpRul(string command) {
         break;
 
       case 'O':
-        if (CheckInt(&(commandList[k])[0]))
-          nbOut = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          nbOut = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'S':
-        rootFolderTemp = &(commandList[k])[0];
+        rootFolderTemp = arg;
         rootFolderInit = true;
         break;
 
       case 'A':
-        attrFileTemp = &(commandList[k])[0];
+        attrFileTemp = arg;
         attrFileInit = true;
         break;
 
       case 'W':
-        weightFileTemp = &(commandList[k])[0];
+        weightFileTemp = arg;
         weightFileInit = true;
         break;
 
       case 'L':
-        learnFileTemp = &(commandList[k])[0];
+        learnFileTemp = arg;
         learnFileInit = true;
         break;
 
       case 'T':
-        testFileTemp = &(commandList[k])[0];
+        testFileTemp = arg;
         testFileInit = true;
         break;
 
       case 'V':
-        validFileTemp = &(commandList[k])[0];
+        validFileTemp = arg;
         validFileInit = true;
         break;
 
       case '1':
-        learnTarTemp = &(commandList[k])[0];
+        learnTarTemp = arg;
         learnTarInit = true;
         break;
 
       case '2':
-        testTarTemp = &(commandList[k])[0];
+        testTarTemp = arg;
         testTarInit = true;
         break;
 
       case '3':
 
-        validTarTemp = &(commandList[k])[0];
+        validTarTemp = arg;
         validTarInit = true;
         break;
 
       case 'R':
-        rulesFileTemp = &(commandList[k])[0];
+        rulesFileTemp = arg;
         break;
 
       case 'r':
-        consoleFileTemp = &(commandList[k])[0];
+        consoleFileTemp = arg;
         consoleFileInit = true;
         break;
 
       case 'o':
-        accuracyFileTemp = &(commandList[k])[0];
+        accuracyFileTemp = arg;
         accuracyFileInit = true;
         break;
 
       default:
-        cout << "Illegal option: " << &(commandList[k - 1])[0] << "\n";
+        cout << "Illegal option: " << lastArg << "\n";
         return -1;
       }
     }
@@ -224,25 +226,24 @@ int dimlpRul(string command) {
       cout << "Illegal option: " << &(commandList[k])[0] << "\n";
       return -1;
     }
+    k++;
   }
 
   // ----------------------------------------------------------------------
 
   // create paths with root foler
 
-  char learnFileTmp[160], testFileTmp[160], validFileTmp[160], weightFileTmp[160], learnTarTmp[160], testTarTmp[160], validTarTmp[160], rulesFileTmp[160], consoleFileTmp[160], accuracyFileTmp[160], attrFileTmp[160];
-
-  char *learnFile = 0;
-  char *testFile = 0;
-  char *validFile = 0;
-  char *weightFile = 0;
-  char *learnTar = 0;
-  char *testTar = 0;
-  char *validTar = 0;
-  char *rulesFile = 0;
-  char *consoleFile = 0;
-  char *accuracyFile = 0;
-  char *attrFile = 0;
+  const char *learnFile = nullptr;
+  const char *testFile = nullptr;
+  const char *validFile = nullptr;
+  const char *weightFile = nullptr;
+  const char *learnTar = nullptr;
+  const char *testTar = nullptr;
+  const char *validTar = nullptr;
+  const char *rulesFile = nullptr;
+  const char *consoleFile = nullptr;
+  const char *accuracyFile = nullptr;
+  const char *attrFile = nullptr;
 
 #if defined(__unix__) || defined(__APPLE__)
   string root = rootFolderTemp + "/";
@@ -252,121 +253,55 @@ int dimlpRul(string command) {
 
   if (learnFileInit) {
     learnFileTemp = root + learnFileTemp;
-    if (learnFileTemp.length() >= 160) {
-      cout << "Path " << learnFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(learnFileTmp, learnFileTemp.c_str());
-    learnFile = learnFileTmp;
+    learnFile = &learnFileTemp[0];
   }
 
   if (testFileInit) {
     testFileTemp = root + testFileTemp;
-    if (testFileTemp.length() >= 160) {
-      cout << "Path " << testFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(testFileTmp, testFileTemp.c_str());
-    testFile = testFileTmp;
+    testFile = &testFileTemp[0];
   }
 
   if (validFileInit) {
     validFileTemp = root + validFileTemp;
-    if (validFileTemp.length() >= 160) {
-      cout << "Path " << validFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(validFileTmp, validFileTemp.c_str());
-    validFile = validFileTmp;
+    validFile = &validFileTemp[0];
   }
 
   if (weightFileInit) {
     weightFileTemp = root + weightFileTemp;
-    if (weightFileTemp.length() >= 160) {
-      cout << "Path " << weightFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(weightFileTmp, weightFileTemp.c_str());
-    weightFile = weightFileTmp;
+    weightFile = &weightFileTemp[0];
   }
 
   if (learnTarInit) {
     learnTarTemp = root + learnTarTemp;
-    if (learnTarTemp.length() >= 160) {
-      cout << "Path " << learnTarTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(learnTarTmp, learnTarTemp.c_str());
-    learnTar = learnTarTmp;
+    learnTar = &learnTarTemp[0];
   }
 
   if (testTarInit) {
     testTarTemp = root + testTarTemp;
-    if (testTarTemp.length() >= 160) {
-      cout << "Path " << testTarTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(testTarTmp, testTarTemp.c_str());
-    testTar = testTarTmp;
+    testTar = &testTarTemp[0];
   }
 
   if (validTarInit) {
     validTarTemp = root + validTarTemp;
-    if (validTarTemp.length() >= 160) {
-      cout << "Path " << validTarTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(validTarTmp, validTarTemp.c_str());
-    validTar = validTarTmp;
+    validTar = &validTarTemp[0];
   }
 
   rulesFileTemp = root + rulesFileTemp;
-  if (rulesFileTemp.length() >= 160) {
-    cout << "Path " << rulesFileTemp << "is too long"
-         << "\n";
-    return -1;
-  }
-  strcpy(rulesFileTmp, rulesFileTemp.c_str());
-  rulesFile = rulesFileTmp;
+  rulesFile = &rulesFileTemp[0];
 
   if (consoleFileInit) {
     consoleFileTemp = root + consoleFileTemp;
-    if (consoleFileTemp.length() >= 160) {
-      cout << "Path " << consoleFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(consoleFileTmp, consoleFileTemp.c_str());
-    consoleFile = consoleFileTmp;
+    consoleFile = &consoleFileTemp[0];
   }
 
   if (accuracyFileInit) {
     accuracyFileTemp = root + accuracyFileTemp;
-    if (accuracyFileTemp.length() >= 160) {
-      cout << "Path " << accuracyFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(accuracyFileTmp, accuracyFileTemp.c_str());
-    accuracyFile = accuracyFileTmp;
+    accuracyFile = &accuracyFileTemp[0];
   }
 
   if (attrFileInit) {
     attrFileTemp = root + attrFileTemp;
-    if (attrFileTemp.length() >= 160) {
-      cout << "Path " << attrFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(attrFileTmp, attrFileTemp.c_str());
-    attrFile = attrFileTmp;
+    attrFile = &attrFileTemp[0];
   }
 
   // ----------------------------------------------------------------------
@@ -378,8 +313,6 @@ int dimlpRul(string command) {
     ofs.open(consoleFile);
     std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
   }
-
-  std::ostream &output = consoleFileInit != false ? ofs : std::cout;
 
   // ----------------------------------------------------------------------
 
@@ -416,7 +349,7 @@ int dimlpRul(string command) {
     nbLayers = 3;
     nbWeightLayers = nbLayers - 1;
 
-    vecNbNeurons = new int[nbLayers];
+    vecNbNeurons.assign(nbLayers, 0);
     vecNbNeurons[0] = nbIn;
     vecNbNeurons[1] = nbIn;
     vecNbNeurons[2] = nbOut;
@@ -437,7 +370,7 @@ int dimlpRul(string command) {
       nbLayers = arch.GetNbEl() + 2;
       nbWeightLayers = nbLayers - 1;
 
-      vecNbNeurons = new int[nbLayers];
+      vecNbNeurons.assign(nbLayers, 0);
       vecNbNeurons[0] = nbIn;
       vecNbNeurons[nbLayers - 1] = nbOut;
 
@@ -455,7 +388,7 @@ int dimlpRul(string command) {
       nbLayers = arch.GetNbEl() + 3;
       nbWeightLayers = nbLayers - 1;
 
-      vecNbNeurons = new int[nbLayers];
+      vecNbNeurons.assign(nbLayers, 0);
       vecNbNeurons[0] = nbIn;
       vecNbNeurons[1] = nbIn;
       vecNbNeurons[nbLayers - 1] = nbOut;

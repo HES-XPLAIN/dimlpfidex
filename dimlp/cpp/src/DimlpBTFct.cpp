@@ -125,7 +125,7 @@ int dimlpBT(string command) {
 
   int nbLayers;
   int nbWeightLayers;
-  int *vecNbNeurons;
+  std::vector<int> vecNbNeurons;
 
   StringInt arch;
   StringInt archInd;
@@ -587,7 +587,7 @@ int dimlpBT(string command) {
     nbLayers = 3;
     nbWeightLayers = nbLayers - 1;
 
-    vecNbNeurons = new int[nbLayers];
+    vecNbNeurons.assign(nbLayers, 0);
     vecNbNeurons[0] = nbIn;
     vecNbNeurons[1] = nbIn;
     vecNbNeurons[2] = nbOut;
@@ -608,7 +608,7 @@ int dimlpBT(string command) {
       nbLayers = arch.GetNbEl() + 2;
       nbWeightLayers = nbLayers - 1;
 
-      vecNbNeurons = new int[nbLayers];
+      vecNbNeurons.assign(nbLayers, 0);
       vecNbNeurons[0] = nbIn;
       vecNbNeurons[nbLayers - 1] = nbOut;
 
@@ -626,7 +626,7 @@ int dimlpBT(string command) {
       nbLayers = arch.GetNbEl() + 3;
       nbWeightLayers = nbLayers - 1;
 
-      vecNbNeurons = new int[nbLayers];
+      vecNbNeurons.assign(nbLayers, 0);
       vecNbNeurons[0] = nbIn;
       vecNbNeurons[1] = nbIn;
       vecNbNeurons[nbLayers - 1] = nbOut;
