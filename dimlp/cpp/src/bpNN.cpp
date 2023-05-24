@@ -1,29 +1,14 @@
-using namespace std;
-#include <math.h>
-
 #include "bpNN.h"
-#include "writeErr.h"
 
-#define LLL 1
-#include "layerFdp.h"
+const int LLL = 1;
+const int LD3 = 1;
+const int LD4 = 1;
 
-#define LD3 1
-#include "layerD3.h"
-
-#define LD4 1
-#include "layerD4.h"
-
-#include "layerRad.h"
-#include "layerSD.h"
-#include "layerSP3.h"
-#include "layerSP4.h"
-#include "layerSP5.h"
-#include <bits/stdc++.h>
-#include <fstream>
+using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
-int BpNN::Max(float vec[], int nbEl)
+int BpNN::Max(float vec[], int nbEl) const
 
 {
   float max = vec[0];
@@ -42,7 +27,7 @@ int BpNN::Max(float vec[], int nbEl)
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::InitRandomGen(int seed) {
+void BpNN::InitRandomGen(int seed) const {
   static int initRandomGen;
 
   if (initRandomGen == 0) {
@@ -83,7 +68,7 @@ void BpNN::CreateNetStruct(std::vector<int> nbNeurons)
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::WriteArchParam()
+void BpNN::WriteArchParam() const
 
 {
   int l;
@@ -107,7 +92,7 @@ void BpNN::AssignParam(
     int showErrParam,
     int nbEpochsParam,
     int nbLayers,
-    const char saveFile[])
+    const std::string &saveFile)
 
 {
   Eta = eta;
@@ -119,14 +104,14 @@ void BpNN::AssignParam(
   ShowErrParam = showErrParam;
   NbEpochsParam = nbEpochsParam;
   NbLayers = nbLayers;
-  strcpy(SaveFile, saveFile);
+  SaveFile = saveFile;
 
   NbWeightLayers = nbLayers - 1;
 }
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::WriteParam() {
+void BpNN::WriteParam() const {
   cout << "Parameters:\n\n";
 
   cout << "Eta                   = " << Eta << "\n";
@@ -152,14 +137,14 @@ void BpNN::WriteParam() {
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::SaveWeights()
+void BpNN::SaveWeights() const
 
 {
   int n;
   filebuf buf;
 
-  if (buf.open(SaveFile, ios_base::out) == 0) {
-    char errorMsg[] = "Cannot open file for writing";
+  if (buf.open(SaveFile, ios_base::out) == nullptr) {
+    string errorMsg = "Cannot open file for writing";
     WriteError(errorMsg, SaveFile);
   }
 
@@ -178,14 +163,14 @@ void BpNN::SaveWeights()
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::SaveWeights(char *strSave)
+void BpNN::SaveWeights(char *strSave) const
 
 {
   int n;
   filebuf buf;
 
-  if (buf.open(strSave, ios_base::out) == 0) {
-    char errorMsg[] = "Cannot open file for writing";
+  if (buf.open(strSave, ios_base::out) == nullptr) {
+    string errorMsg = "Cannot open file for writing";
     WriteError(errorMsg, strSave);
   }
   ostream outFile(&buf);
@@ -203,14 +188,14 @@ void BpNN::SaveWeights(char *strSave)
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::ReadWeights()
+void BpNN::ReadWeights() const
 
 {
   int n;
   filebuf buf;
 
-  if (buf.open(ReadFile, ios_base::in) == 0) {
-    char errorMsg[] = "Cannot open input file ";
+  if (buf.open(ReadFile, ios_base::in) == nullptr) {
+    string errorMsg = "Cannot open input file ";
     WriteError(errorMsg, ReadFile);
   }
 
@@ -229,7 +214,7 @@ void BpNN::ReadWeights()
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::Push()
+void BpNN::Push() const
 
 {
   int l;
@@ -240,7 +225,7 @@ void BpNN::Push()
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::Pop()
+void BpNN::Pop() const
 
 {
   int l;
@@ -267,11 +252,10 @@ void BpNN::ForwardOneExample1(DataSet &data, int index)
 void BpNN::ForwardOneExample1(float *ex)
 
 {
-  int l;
 
   VecLayer[0]->SetDown(ex);
 
-  for (l = 0; l < NbWeightLayers; l++)
+  for (int l = 0; l < NbWeightLayers; l++)
     VecLayer[l]->ForwAndTransf1();
 }
 
@@ -280,22 +264,19 @@ void BpNN::ForwardOneExample1(float *ex)
 void BpNN::ForwardOneExample1()
 
 {
-  int l;
-
-  for (l = 0; l < NbWeightLayers; l++)
+  for (int l = 0; l < NbWeightLayers; l++)
     VecLayer[l]->ForwAndTransf1();
 }
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::ForwardOneExample2(DataSet &data, int index)
+void BpNN::ForwardOneExample2(DataSet &data, int index) const
 
 {
-  int l;
 
   VecLayer[0]->SetDown(data.GetExample(index));
 
-  for (l = 0; l < NbWeightLayers; l++)
+  for (int l = 0; l < NbWeightLayers; l++)
     VecLayer[l]->ForwAndTransf2();
 }
 
@@ -304,11 +285,14 @@ void BpNN::ForwardOneExample2(DataSet &data, int index)
 float BpNN::ComputeErrorSameAct(
     DataSet &data,
     DataSet &target,
-    float *accuracy)
+    float *accuracy) const
 
 {
-  int p, ansNet, ansTar;
-  int good, bad;
+  int p;
+  int ansNet;
+  int ansTar;
+  int good;
+  int bad;
   float sum;
   float *ptrOut;
   float *ptrTar;
@@ -332,7 +316,7 @@ float BpNN::ComputeErrorSameAct(
       bad++;
   }
 
-  *accuracy = good + bad;
+  *accuracy = static_cast<float>(good) + static_cast<float>(bad);
   *accuracy = (float)good / *accuracy;
 
   return sum;
@@ -340,7 +324,7 @@ float BpNN::ComputeErrorSameAct(
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::BackOneExample(DataSet &target, int index)
+void BpNN::BackOneExample(DataSet &target, int index) const
 
 {
   int l;
@@ -355,7 +339,7 @@ void BpNN::BackOneExample(DataSet &target, int index)
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::TrainOneEpoch(DataSet &data, DataSet &target, IntRandomFunction *r)
+void BpNN::TrainOneEpoch(DataSet &data, DataSet &target, IntRandomFunction *r) const
 
 {
   int indPat, p;
@@ -372,12 +356,11 @@ void BpNN::TrainOneEpoch(DataSet &data, DataSet &target, IntRandomFunction *r)
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::PrintSpecErrDimlp(float specErr, float specAcc) {
-  char temp[80];
-  sprintf(temp, "    (SSE = %12f ", specErr);
-  cout << temp;
-  sprintf(temp, "   ACC = %8f)", specAcc);
-  cout << temp;
+void BpNN::PrintSpecErrDimlp(float specErr, float specAcc) const {
+  std::ostringstream oss;
+  oss << "    (SSE = " << std::setprecision(12) << specErr << "    ACC = " << std::setprecision(8) << specAcc << ")";
+  std::string temp = oss.str();
+  std::cout << temp << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -634,26 +617,22 @@ void BpNN::TrainPhase(
   int e;
   IntRandomFunction randInt(0, train.GetNbEx() - 1);
   err = ComputeError(train, trainTar, &acc);
-  char temp[80];
-  cout << "     0: ";
-  sprintf(temp, " SSE = %12f ", err);
-  cout << temp;
-  sprintf(temp, "   ACC = %8f", acc);
-  cout << temp;
+  std::ostringstream oss;
+  oss << "     0:  SSE = " << std::setprecision(12) << err << "    ACC = " << std::setprecision(8) << acc;
+  std::string temp = oss.str();
+  std::cout << temp;
 
   specErr = ComputeErrorSameAct(train, trainTar, &specAcc);
   PrintSpecErr(specErr, specAcc);
-
-  cout << endl;
 
   if (valid.GetNbEx() != 0) {
     prevValidErr = ComputeError(valid, validTar, &accValid);
 
     cout << "Validation set: ";
-    sprintf(temp, " SSE = %12f ", prevValidErr);
-    cout << temp;
-    sprintf(temp, "   ACC = %8f\n\n", accValid);
-    cout << temp;
+    std::ostringstream ossVal;
+    ossVal << " SSE = " << std::setprecision(12) << prevValidErr << "    ACC = " << std::setprecision(8) << accValid << "\n\n";
+    temp = ossVal.str();
+    std::cout << temp;
 
     Push();
   }
@@ -682,26 +661,22 @@ void BpNN::TrainPhase(
     if (e % ShowErrParam == 0) {
       err = ComputeError(train, trainTar, &acc);
 
-      sprintf(temp, "%6d: ", e);
-      cout << temp;
-      sprintf(temp, " SSE = %12f ", err);
-      cout << temp;
-      sprintf(temp, "   ACC = %8f", acc);
-      cout << temp;
+      std::ostringstream oss2;
+      oss2 << std::setfill(' ') << std::setw(6 - std::to_string(e).length()) << "" << e << ":  SSE = " << std::setprecision(12) << err << "    ACC = " << std::setprecision(8) << acc;
+      temp = oss2.str();
+      std::cout << temp;
 
       specErr = ComputeErrorSameAct(train, trainTar, &specAcc);
       PrintSpecErr(specErr, specAcc);
-
-      cout << endl;
 
       if (valid.GetNbEx() != 0) {
         validErr = ComputeError(valid, validTar, &accValid);
 
         cout << "Validation set: ";
-        sprintf(temp, " SSE = %12f ", validErr);
-        cout << temp;
-        sprintf(temp, "   ACC = %8f", accValid);
-        cout << temp;
+        std::ostringstream ossVal2;
+        ossVal2 << " SSE = " << std::setprecision(12) << validErr << "    ACC = " << std::setprecision(8) << accValid << "\n\n";
+        temp = ossVal2.str();
+        std::cout << temp;
 
         if (validErr < prevValidErr) {
           cout << " (Better validation error, saving weights)";
@@ -791,8 +766,8 @@ BpNN::BpNN(
     int showErrParam,
     int nbEpochsParam,
     int nbLayers,
-    std::vector<int> nbNeurons,
-    const char saveFile[],
+    const std::vector<int> &nbNeurons,
+    const std::string &saveFile,
     const char printNetType[],
     int seed)
 
@@ -820,13 +795,13 @@ BpNN::BpNN(
 ///////////////////////////////////////////////////////////////////
 
 BpNN::BpNN(
-    const char readFile[],
+    const std::string &readFile,
     int nbLayers,
-    std::vector<int> nbNeurons,
+    const std::vector<int> &nbNeurons,
     const char printNetType[])
 
 {
-  strcpy(ReadFile, readFile);
+  ReadFile = readFile;
 
   NbLayers = nbLayers;
   NbWeightLayers = nbLayers - 1;
@@ -848,7 +823,7 @@ BpNN::BpNN(
 ///////////////////////////////////////////////////////////////////
 
 BpNN::BpNN(
-    const char readFile[],
+    const std::string &readFile,
     float eta,
     float mu,
     float flat,
@@ -858,8 +833,8 @@ BpNN::BpNN(
     int showErrParam,
     int nbEpochsParam,
     int nbLayers,
-    std::vector<int> nbNeurons,
-    const char saveFile[],
+    const std::vector<int> &nbNeurons,
+    const std::string &saveFile,
     const char printNetType[],
     int seed)
 
@@ -871,7 +846,7 @@ BpNN::BpNN(
        << endl;
   cout << "Creating " << printNetType << " structures ...";
 
-  strcpy(ReadFile, readFile);
+  ReadFile = readFile;
 
   AssignParam(eta, mu, flat, errParam, accuracyParam, deltaErrParam,
               showErrParam, nbEpochsParam, nbLayers, saveFile);

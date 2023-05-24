@@ -1,7 +1,6 @@
 #ifndef BPNN_H
 #define BPNN_H
 
-using namespace std;
 #include "randFun.h"
 #include <iostream>
 #include <vector>
@@ -10,23 +9,41 @@ using namespace std;
 #include "dataSet.h"
 #endif
 
+#include "layerD2.h"
 #include "layerDmp.h"
 
-#define LD2 1
-#include "layerD2.h"
+#include "writeErr.h"
+#include <math.h>
+
+#include "layerD3.h"
+#include "layerD4.h"
+#include "layerFdp.h"
+
+#include "layerRad.h"
+#include "layerSD.h"
+#include "layerSP3.h"
+#include "layerSP4.h"
+#include "layerSP5.h"
+#include <bits/stdc++.h>
+#include <fstream>
+
+const int LD2 = 1;
 
 ///////////////////////////////////////////////////////////////////
 
 class BpNN {
-  char ReadFile[80];
-  char SaveFile[80];
+  std::string ReadFile;
+  std::string SaveFile;
 
   float Eta;
   float Mu;
   float Flat;
 
-  float ErrParam, AccuracyParam, DeltaErrParam;
-  int ShowErrParam, NbEpochsParam;
+  float ErrParam;
+  float AccuracyParam;
+  float DeltaErrParam;
+  int ShowErrParam;
+  int NbEpochsParam;
 
   int NbLayers; // Including Input and Output
   int NbWeightLayers;
@@ -36,9 +53,9 @@ class BpNN {
 
   //------------------------------------------------------------------------
 
-  void InitRandomGen(int seed = 0);
+  void InitRandomGen(int seed = 0) const;
   void CreateNetStruct(std::vector<int> nbNeurons);
-  void WriteArchParam();
+  void WriteArchParam() const;
 
   void AssignParam(
       float eta,
@@ -50,44 +67,44 @@ class BpNN {
       int showErrParam,
       int nbEpochsParam,
       int nbLayers,
-      const char saveFile[]);
+      const std::string &saveFile);
 
-  void WriteParam();
-  void SaveWeights();
-  void Push();
-  void Pop();
+  void WriteParam() const;
+  void SaveWeights() const;
+  void Push() const;
+  void Pop() const;
 
   //------------------------------------------------------------------------
 
-  void ForwardOneExample2(DataSet &data, int index);
+  void ForwardOneExample2(DataSet &data, int index) const;
 
   float ComputeErrorSameAct(
       DataSet &data,
       DataSet &target,
-      float *accuracy);
+      float *accuracy) const;
 
   //------------------------------------------------------------------------
 
-  void BackOneExample(DataSet &target, int index);
-  void TrainOneEpoch(DataSet &data, DataSet &target, IntRandomFunction *r);
+  void BackOneExample(DataSet &target, int index) const;
+  void TrainOneEpoch(DataSet &data, DataSet &target, IntRandomFunction *r) const;
 
   //------------------------------------------------------------------------
 
 public:
-  int GetNbLayers() { return NbLayers; }
-  int GetNbWeightLayers() { return NbWeightLayers; }
-  int Max(float vec[], int nbEl);
+  int GetNbLayers() const { return NbLayers; }
+  int GetNbWeightLayers() const { return NbWeightLayers; }
+  int Max(float vec[], int nbEl) const;
   Layer *GetLayer(int indLayer) { return VecLayer[indLayer]; }
 
-  void SaveWeights(char *str);
+  void SaveWeights(char *str) const;
 
   virtual void ForwardOneExample1(DataSet &data, int index);
   virtual void ForwardOneExample1(float *ex);
   virtual void ForwardOneExample1();
 
-  void ReadWeights();
+  void ReadWeights() const;
 
-  void PrintSpecErrDimlp(float specErr, float specAcc);
+  void PrintSpecErrDimlp(float specErr, float specAcc) const;
 
   virtual void PrintSpecErr(float err, float acc) { PrintSpecErrDimlp(err, acc); }
 
@@ -121,9 +138,12 @@ public:
 
   //------------------------------------------------------------------------
 
+  BpNN(const BpNN &) = default;            // Default copy constructor
+  BpNN &operator=(const BpNN &) = default; // Default copy assignment operator
+
   void Del();
 
-  ~BpNN() { Del(); }
+  virtual ~BpNN() { Del(); } // virtual destructor
 
   BpNN(
       float eta,
@@ -135,19 +155,19 @@ public:
       int showErrParam,
       int nbEpochsParam,
       int nbLayers,
-      std::vector<int> nbNeurons,
-      const char saveFile[],
+      const std::vector<int> &nbNeurons,
+      const std::string &saveFile,
       const char printNetType[],
       int seed = 0);
 
   BpNN(
-      const char readFile[],
+      const std::string &readFile,
       int nbLayers,
-      std::vector<int> nbNeurons,
+      const std::vector<int> &nbNeurons,
       const char printNetType[]);
 
   BpNN(
-      const char readFile[],
+      const std::string &readFile,
       float eta,
       float mu,
       float flat,
@@ -157,8 +177,8 @@ public:
       int showErrParam,
       int nbEpochsParam,
       int nbLayers,
-      std::vector<int> nbNeurons,
-      const char saveFile[],
+      const std::vector<int> &nbNeurons,
+      const std::string &saveFile,
       const char printNetType[],
       int seed = 0);
 };
