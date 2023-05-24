@@ -1,9 +1,9 @@
-using namespace std;
 #include "DimlpClsFct.h"
+using namespace std;
 
 ////////////////////////////////////////////////////////////
 
-void GiveAllParam()
+void GiveAllParamDimlpCls()
 
 {
   cout << "\n-------------------------------------------------\n\n";
@@ -31,24 +31,23 @@ void GiveAllParam()
 
 ////////////////////////////////////////////////////////////
 
-void SaveOutputs(
+static void SaveOutputs(
     DataSet &data,
     Dimlp *net,
     int nbOut,
     int nbWeightLayers,
-    char *outfile)
+    const char *outfile)
 
 {
-  int p, o;
   filebuf buf;
 
-  if (buf.open(outfile, ios_base::out) == 0) {
-    char errorMsg[] = "Cannot open file for writing";
+  if (buf.open(outfile, ios_base::out) == nullptr) {
+    string errorMsg = "Cannot open file for writing";
     WriteError(errorMsg, outfile);
   }
 
   Layer *layer = net->GetLayer(nbWeightLayers - 1);
-  float *out = layer->GetUp();
+  const float *out = layer->GetUp();
 
   cout << "\n\n"
        << outfile << ": "
@@ -56,10 +55,10 @@ void SaveOutputs(
 
   ostream outFile(&buf);
 
-  for (p = 0; p < data.GetNbEx(); p++) {
+  for (int p = 0; p < data.GetNbEx(); p++) {
     net->ForwardOneExample1(data, p);
 
-    for (o = 0; o < nbOut; o++) {
+    for (int o = 0; o < nbOut; o++) {
       outFile << out[o] << " ";
     }
 
@@ -76,20 +75,19 @@ void SaveFirstHid(
     DataSet &data,
     Dimlp *net,
     int nbHid,
-    char *outfile,
-    char *firsthidFile)
+    const char *outfile,
+    const char *firsthidFile)
 
 {
-  int p, h;
   filebuf buf;
 
-  if (buf.open(firsthidFile, ios_base::out) == 0) {
-    char errorMsg[] = "Cannot open file for writing";
+  if (buf.open(firsthidFile, ios_base::out) == nullptr) {
+    string errorMsg = "Cannot open file for writing";
     WriteError(errorMsg, outfile);
   }
 
   Layer *layer = net->GetLayer(0);
-  float *hid = layer->GetUp();
+  const float *hid = layer->GetUp();
 
   cout << "\n\n"
        << firsthidFile << ": "
@@ -97,10 +95,10 @@ void SaveFirstHid(
 
   ostream outFile(&buf);
 
-  for (p = 0; p < data.GetNbEx(); p++) {
+  for (int p = 0; p < data.GetNbEx(); p++) {
     net->ForwardOneExample1(data, p);
 
-    for (h = 0; h < nbHid; h++) {
+    for (int h = 0; h < nbHid; h++) {
       outFile << hid[h] << " ";
     }
 
@@ -113,7 +111,7 @@ void SaveFirstHid(
 
 ////////////////////////////////////////////////////////////
 
-int dimlpCls(string command) {
+int dimlpCls(const string &command) {
 
   // Parsing the command
   vector<string> commandList;
@@ -123,9 +121,7 @@ int dimlpCls(string command) {
   while (std::getline(ss, s, delim)) {
     commandList.push_back(s);
   }
-  int nbParam = commandList.size();
-
-  int k;
+  size_t nbParam = commandList.size();
 
   DataSet Test;
   DataSet TestClass;
@@ -151,17 +147,18 @@ int dimlpCls(string command) {
 
   int nbLayers;
   int nbWeightLayers;
-  int *vecNbNeurons;
+  std::vector<int> vecNbNeurons;
 
   StringInt arch;
   StringInt archInd;
 
   if (nbParam == 1) {
-    GiveAllParam();
+    GiveAllParamDimlpCls();
     return -1;
   }
 
-  for (k = 1; k < nbParam; k++) {
+  int k = 1; // We skip "DimlpCls"
+  while (k < nbParam) {
     if (commandList[k][0] == '-') {
       k++;
 
@@ -170,34 +167,35 @@ int dimlpCls(string command) {
         return -1;
       }
 
-      switch (commandList[k - 1][1]) {
+      char option = commandList[k - 1][1];
+      const char *arg = &(commandList[k])[0];
+      const char *lastArg = &(commandList[k - 1])[0];
+      switch (option) {
       case 'q':
-        if (CheckInt(&(commandList[k])[0]))
-          quant = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          quant = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'I':
-        if (CheckInt(&(commandList[k])[0]))
-          nbIn = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          nbIn = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'H':
-        if (CheckInt(&(commandList[k])[0])) {
-          arch.Insert(atoi(&(commandList[k])[0]));
+        if (CheckInt(arg)) {
+          arch.Insert(atoi(arg));
 
-          char *ptrParam = &(commandList[k - 1])[0];
+          const char *ptrParam = lastArg;
 
           if (ptrParam[2] != '\0') {
-            char str[80];
-
-            strcpy(str, ptrParam + 2);
-            archInd.Insert(atoi(str));
+            std::string str(ptrParam + 2);
+            archInd.Insert(std::atoi(str.c_str()));
           } else {
             cout << "Which hidden layer (-H) ?\n";
             return -1;
@@ -208,53 +206,53 @@ int dimlpCls(string command) {
         break;
 
       case 'O':
-        if (CheckInt(&(commandList[k])[0]))
-          nbOut = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          nbOut = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'S':
-        rootFolderTemp = &(commandList[k])[0];
+        rootFolderTemp = arg;
         rootFolderInit = true;
         break;
 
       case 'W':
-        weightFileTemp = &(commandList[k])[0];
+        weightFileTemp = arg;
         weightFileInit = true;
         break;
 
       case 'p':
-        predFileTemp = &(commandList[k])[0];
+        predFileTemp = arg;
         break;
 
       case 'r':
-        consoleFileTemp = &(commandList[k])[0];
+        consoleFileTemp = arg;
         consoleFileInit = true;
         break;
 
       case 'o':
-        accuracyFileTemp = &(commandList[k])[0];
+        accuracyFileTemp = arg;
         accuracyFileInit = true;
         break;
 
       case 'h':
-        hidFileTemp = &(commandList[k])[0];
+        hidFileTemp = arg;
         break;
 
       case 'T':
-        testFileTemp = &(commandList[k])[0];
+        testFileTemp = arg;
         testFileInit = true;
         break;
 
       case '2':
-        testTarTemp = &(commandList[k])[0];
+        testTarTemp = arg;
         testTarInit = true;
         break;
 
       default:
-        cout << "Illegal option: " << &(commandList[k - 1])[0] << "\n";
+        cout << "Illegal option: " << lastArg << "\n";
         return -1;
       }
     }
@@ -263,20 +261,20 @@ int dimlpCls(string command) {
       cout << "Illegal option: " << &(commandList[k])[0] << "\n";
       return -1;
     }
+    k++;
   }
 
   // ----------------------------------------------------------------------
 
   // create paths with root foler
-  char testFileTmp[160], weightFileTmp[160], predFileTmp[160], consoleFileTmp[160], accuracyFileTmp[160], testTarTmp[160], hidFileTmp[160];
 
-  char *testFile = 0;
-  char *weightFile = 0;
-  char *predFile = 0;
-  char *consoleFile = 0;
-  char *accuracyFile = 0;
-  char *testTar = 0;
-  char *hidFile = 0;
+  const char *testFile = nullptr;
+  const char *weightFile = nullptr;
+  const char *predFile = nullptr;
+  const char *consoleFile = nullptr;
+  const char *accuracyFile = nullptr;
+  const char *testTar = nullptr;
+  const char *hidFile = nullptr;
 
 #if defined(__unix__) || defined(__APPLE__)
   string root = rootFolderTemp + "/";
@@ -286,76 +284,34 @@ int dimlpCls(string command) {
 
   if (testFileInit) {
     testFileTemp = root + testFileTemp;
-    if (testFileTemp.length() >= 160) {
-      cout << "Path " << testFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(testFileTmp, testFileTemp.c_str());
-    testFile = testFileTmp;
+    testFile = &testFileTemp[0];
   }
 
   if (weightFileInit) {
     weightFileTemp = root + weightFileTemp;
-    if (weightFileTemp.length() >= 160) {
-      cout << "Path " << weightFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(weightFileTmp, weightFileTemp.c_str());
-    weightFile = weightFileTmp;
+    weightFile = &weightFileTemp[0];
   }
 
   predFileTemp = root + predFileTemp;
-  if (predFileTemp.length() >= 160) {
-    cout << "Path " << predFileTemp << "is too long"
-         << "\n";
-    return -1;
-  }
-  strcpy(predFileTmp, predFileTemp.c_str());
-  predFile = predFileTmp;
+  predFile = &predFileTemp[0];
 
   if (consoleFileInit) {
     consoleFileTemp = root + consoleFileTemp;
-    if (consoleFileTemp.length() >= 160) {
-      cout << "Path " << consoleFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(consoleFileTmp, consoleFileTemp.c_str());
-    consoleFile = consoleFileTmp;
+    consoleFile = &consoleFileTemp[0];
   }
 
   if (accuracyFileInit) {
     accuracyFileTemp = root + accuracyFileTemp;
-    if (accuracyFileTemp.length() >= 160) {
-      cout << "Path " << accuracyFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(accuracyFileTmp, accuracyFileTemp.c_str());
-    accuracyFile = accuracyFileTmp;
+    accuracyFile = &accuracyFileTemp[0];
   }
 
   if (testTarInit) {
     testTarTemp = root + testTarTemp;
-    if (testTarTemp.length() >= 160) {
-      cout << "Path " << testTarTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(testTarTmp, testTarTemp.c_str());
-    testTar = testTarTmp;
+    testTar = &testTarTemp[0];
   }
 
   hidFileTemp = root + hidFileTemp;
-  if (hidFileTemp.length() >= 160) {
-    cout << "Path " << hidFileTemp << "is too long"
-         << "\n";
-    return -1;
-  }
-  strcpy(hidFileTmp, hidFileTemp.c_str());
-  hidFile = hidFileTmp;
+  hidFile = &hidFileTemp[0];
 
   // ----------------------------------------------------------------------
   // Get console results to file
@@ -365,7 +321,6 @@ int dimlpCls(string command) {
     ofs.open(consoleFile);
     std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
   }
-  std::ostream &output = consoleFileInit != false ? ofs : std::cout;
 
   // ----------------------------------------------------------------------
   if (rootFolderInit == false) {
@@ -394,7 +349,7 @@ int dimlpCls(string command) {
     nbLayers = 3;
     nbWeightLayers = nbLayers - 1;
 
-    vecNbNeurons = new int[nbLayers];
+    vecNbNeurons.assign(nbLayers, 0);
     vecNbNeurons[0] = nbIn;
     vecNbNeurons[1] = nbIn;
     vecNbNeurons[2] = nbOut;
@@ -413,7 +368,7 @@ int dimlpCls(string command) {
       nbLayers = arch.GetNbEl() + 2;
       nbWeightLayers = nbLayers - 1;
 
-      vecNbNeurons = new int[nbLayers];
+      vecNbNeurons.assign(nbLayers, 0);
       vecNbNeurons[0] = nbIn;
       vecNbNeurons[nbLayers - 1] = nbOut;
 
@@ -431,7 +386,7 @@ int dimlpCls(string command) {
       nbLayers = arch.GetNbEl() + 3;
       nbWeightLayers = nbLayers - 1;
 
-      vecNbNeurons = new int[nbLayers];
+      vecNbNeurons.assign(nbLayers, 0);
       vecNbNeurons[0] = nbIn;
       vecNbNeurons[1] = nbIn;
       vecNbNeurons[nbLayers - 1] = nbOut;

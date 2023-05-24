@@ -303,7 +303,6 @@ void BagDimlp::Del()
   delete ValData;
   delete ValDataClass;
   delete VectDimlp;
-  delete NbNeurons;
   delete GlobalOut;
 }
 
@@ -320,7 +319,7 @@ BagDimlp::BagDimlp(
     int showErrParam,
     int nbEpochsParam,
     int nbLayers,
-    int *nbNeurons,
+    std::vector<int> nbNeurons,
     int nbDimlpNets,
     char weightFile[],
     int seed) :
@@ -341,7 +340,7 @@ BagDimlp::BagDimlp(
   ShowErrParam = showErrParam;
   NbEpochsParam = nbEpochsParam;
   NbLayers = nbLayers;
-  NbNeurons = new int[nbLayers];
+  NbNeurons.assign(nbLayers, 0);
   NbDimlpNets = nbDimlpNets;
   WeightFile = weightFile;
 
@@ -366,7 +365,7 @@ BagDimlp::BagDimlp(
 BagDimlp::BagDimlp(
     int discrLevels,
     int nbLayers,
-    int *nbNeurons,
+    std::vector<int> nbNeurons,
     int nbDimlpNets,
     char weightFile[],
     int seed) :
@@ -378,7 +377,7 @@ BagDimlp::BagDimlp(
 
   DiscrLevels = discrLevels;
   NbLayers = nbLayers;
-  NbNeurons = new int[nbLayers];
+  NbNeurons.assign(nbLayers, 0);
   NbDimlpNets = nbDimlpNets;
   WeightFile = weightFile;
 

@@ -11,7 +11,7 @@
 #include <string.h>
 #include <vector>
 
-static void GiveAllParam();
-int dimlpRul(string command);
+void GiveAllParamDimlpRul();
+int dimlpRul(const string &command);
 
 #endif

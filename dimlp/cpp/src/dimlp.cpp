@@ -14,8 +14,8 @@ Dimlp::Dimlp(
     int showErrParam,
     int nbEpochsParam,
     int nbLayers,
-    int nbNeurons[],
-    char weightFile[],
+    std::vector<int> nbNeurons,
+    const char weightFile[],
     int seed) :
 
                 BpNN(eta, mu, flat, errParam, accuracyParam, deltaErrParam,
@@ -32,9 +32,9 @@ Dimlp::Dimlp(
 ////////////////////////////////////////////////////////////////////////
 
 Dimlp::Dimlp(
-    char readFile[],
+    const char readFile[],
     int nbLayers,
-    int nbNeurons[],
+    std::vector<int> nbNeurons,
     int discrLevels) :
 
                        BpNN(readFile, nbLayers, nbNeurons,
@@ -51,7 +51,7 @@ Dimlp::Dimlp(
 ////////////////////////////////////////////////////////////////////////
 
 Dimlp::Dimlp(
-    char readFile[],
+    const char readFile[],
     float eta,
     float mu,
     float flat,
@@ -62,8 +62,8 @@ Dimlp::Dimlp(
     int showErrParam,
     int nbEpochsParam,
     int nbLayers,
-    int nbNeurons[],
-    char weightFile[],
+    std::vector<int> nbNeurons,
+    const char weightFile[],
     int seed) :
 
                 BpNN(readFile, eta, mu, flat, errParam, accuracyParam, deltaErrParam,

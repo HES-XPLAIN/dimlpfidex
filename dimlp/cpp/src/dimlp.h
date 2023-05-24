@@ -1,8 +1,10 @@
 #ifndef DIMLP_H
 #define DIMLP_H
 
-using namespace std;
 #include "bpNN.h"
+#include <vector>
+
+using namespace std;
 
 class Dimlp : public BpNN {
 
@@ -19,7 +21,7 @@ public:
              DataSet &testTar,
              DataSet &valid,
              DataSet &validTar,
-             char *accuracyFile,
+             const char *accuracyFile,
              bool fromBT = false)
 
   { TrainPhase(train, trainTar, test, testTar, valid, validTar, accuracyFile, fromBT); }
@@ -37,14 +39,14 @@ public:
       int showErrParam,
       int nbEpochsParam,
       int nbLayers,
-      int nbNeurons[],
-      char weightFile[],
+      std::vector<int> nbNeurons,
+      const char weightFile[],
       int seed = 0);
 
-  Dimlp(char readFile[], int nbLayers, int nbNeurons[], int discrLevels);
+  Dimlp(const char readFile[], int nbLayers, std::vector<int> nbNeurons, int discrLevels);
 
   Dimlp(
-      char readFile[],
+      const char readFile[],
       float eta,
       float mu,
       float flat,
@@ -55,8 +57,8 @@ public:
       int showErrParam,
       int nbEpochsParam,
       int nbLayers,
-      int nbNeurons[],
-      char weightFile[],
+      std::vector<int> nbNeurons,
+      const char weightFile[],
       int seed = 0);
 };
 

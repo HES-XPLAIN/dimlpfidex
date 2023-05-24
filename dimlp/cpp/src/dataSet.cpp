@@ -19,7 +19,7 @@ void DataSet::InsertExample(float example[], int index)
 
 ///////////////////////////////////////////////////////////////////
 
-int DataSet::FirstLecture(char nameFile[])
+int DataSet::FirstLecture(const char nameFile[])
 
 {
   filebuf buf;
@@ -59,7 +59,7 @@ int DataSet::FirstLecture(char nameFile[])
 
 ///////////////////////////////////////////////////////////////////
 
-void DataSet::SecondLecture(char nameFile[])
+void DataSet::SecondLecture(const char nameFile[])
 
 {
   filebuf buf;
@@ -218,7 +218,7 @@ DataSet::DataSet(int nbEx)
 
 ///////////////////////////////////////////////////////////////////
 
-DataSet::DataSet(char nameFile[], int nbAttr)
+DataSet::DataSet(const char nameFile[], int nbAttr)
 
 {
   NbAttr = nbAttr;

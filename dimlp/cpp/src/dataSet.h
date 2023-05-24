@@ -15,8 +15,8 @@ class DataSet {
 
   // ------------------------------------------------------------------
 
-  int FirstLecture(char nameFile[]);
-  void SecondLecture(char nameFile[]);
+  int FirstLecture(const char nameFile[]);
+  void SecondLecture(const char nameFile[]);
 
   void SetNbAttr(int nbAttr) { NbAttr = nbAttr; }
   void InsertExample(float example[], int index);
@@ -26,7 +26,7 @@ class DataSet {
 public:
   DataSet();
   DataSet(int nbEx);
-  DataSet(char nameFile[], int nbAttr);
+  DataSet(const char nameFile[], int nbAttr);
   DataSet(DataSet &bigData, StringInt *listPat);
   DataSet(DataSet &master, int *indPat, int nbEx);
   DataSet(DataSet &data1, DataSet &data2);
