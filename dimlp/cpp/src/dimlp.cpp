@@ -1,7 +1,8 @@
-using namespace std;
 #include "dimlp.h"
+using namespace std;
+
 ////////////////////////////////////////////////////////////////////////
-char netType[] = "Discretized Interpretable Multi-Layer Perceptron";
+const char netType[] = "Discretized Interpretable Multi-Layer Perceptron";
 
 Dimlp::Dimlp(
     float eta,
@@ -14,7 +15,7 @@ Dimlp::Dimlp(
     int showErrParam,
     int nbEpochsParam,
     int nbLayers,
-    std::vector<int> nbNeurons,
+    const std::vector<int> &nbNeurons,
     const char weightFile[],
     int seed) :
 
@@ -34,7 +35,7 @@ Dimlp::Dimlp(
 Dimlp::Dimlp(
     const char readFile[],
     int nbLayers,
-    std::vector<int> nbNeurons,
+    const std::vector<int> &nbNeurons,
     int discrLevels) :
 
                        BpNN(readFile, nbLayers, nbNeurons,
@@ -62,7 +63,7 @@ Dimlp::Dimlp(
     int showErrParam,
     int nbEpochsParam,
     int nbLayers,
-    std::vector<int> nbNeurons,
+    const std::vector<int> &nbNeurons,
     const char weightFile[],
     int seed) :
 

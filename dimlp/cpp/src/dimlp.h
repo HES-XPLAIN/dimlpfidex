@@ -4,8 +4,6 @@
 #include "bpNN.h"
 #include <vector>
 
-using namespace std;
-
 class Dimlp : public BpNN {
 
   //---------------------------------------------------------------------
@@ -28,6 +26,8 @@ public:
 
   //---------------------------------------------------------------------
 
+  ~Dimlp() override = default; // Virtual destructor
+
   Dimlp(
       float eta,
       float mu,
@@ -39,11 +39,11 @@ public:
       int showErrParam,
       int nbEpochsParam,
       int nbLayers,
-      std::vector<int> nbNeurons,
+      const std::vector<int> &nbNeurons,
       const char weightFile[],
       int seed = 0);
 
-  Dimlp(const char readFile[], int nbLayers, std::vector<int> nbNeurons, int discrLevels);
+  Dimlp(const char readFile[], int nbLayers, const std::vector<int> &nbNeurons, int discrLevels);
 
   Dimlp(
       const char readFile[],
@@ -57,7 +57,7 @@ public:
       int showErrParam,
       int nbEpochsParam,
       int nbLayers,
-      std::vector<int> nbNeurons,
+      const std::vector<int> &nbNeurons,
       const char weightFile[],
       int seed = 0);
 };
