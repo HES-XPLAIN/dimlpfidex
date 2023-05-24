@@ -11,7 +11,7 @@
 #include <string.h>
 #include <vector>
 
-static void GiveAllParam();
-int dimlpBT(string command);
+void GiveAllParamDimlpBT();
+int dimlpBT(const string &command);
 
 #endif

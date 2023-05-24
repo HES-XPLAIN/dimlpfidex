@@ -1,10 +1,11 @@
-using namespace std;
 #include "DensClsFct.h"
-#define BPNN 1
+using namespace std;
+
+const int BPNN = 1;
 
 ////////////////////////////////////////////////////////////
 
-void GiveAllParam()
+void GiveAllParamDensCls()
 
 {
   cout << "\n-------------------------------------------------\n\n";
@@ -38,7 +39,7 @@ void GiveAllParam()
 
 ////////////////////////////////////////////////////////////
 
-int densCls(string command) {
+int densCls(const string &command) {
 
   // Parsing the command
   vector<string> commandList;
@@ -48,9 +49,7 @@ int densCls(string command) {
   while (std::getline(ss, s, delim)) {
     commandList.push_back(s);
   }
-  int nbParam = commandList.size();
-
-  int k;
+  size_t nbParam = commandList.size();
 
   DataSet Train;
   DataSet Test;
@@ -108,63 +107,63 @@ int densCls(string command) {
   StringInt archInd;
 
   if (nbParam == 1) {
-    GiveAllParam();
+    GiveAllParamDensCls();
     return -1;
   }
 
-  for (k = 1; k < nbParam; k++) {
+  int k = 1; // We skip "DensCls"
+  while (k < nbParam) {
     if (commandList[k][0] == '-') {
       k++;
 
-      if (k >= nbParam) {
-        if (commandList[k - 1][1] != 'R') {
-          cout << "Missing something at the end of the command.\n";
-          return -1;
-        }
+      if (k >= nbParam && commandList[k - 1][1] != 'R') {
+        cout << "Missing something at the end of the command.\n";
+        return -1;
       }
 
-      switch (commandList[k - 1][1]) {
+      char option = commandList[k - 1][1];
+      const char *arg = &(commandList[k])[0];
+      const char *lastArg = &(commandList[k - 1])[0];
+      switch (option) {
 
       case 'W':
-        weightFileTemp = &(commandList[k])[0];
+        weightFileTemp = arg;
         weightFileInit = true;
         break;
 
       case 'q':
-        if (CheckInt(&(commandList[k])[0]))
-          quant = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          quant = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'N':
-        if (CheckInt(&(commandList[k])[0]))
-          nbDimlpNets = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          nbDimlpNets = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'I':
-        if (CheckInt(&(commandList[k])[0]))
-          nbIn = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          nbIn = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'H':
-        if (CheckInt(&(commandList[k])[0])) {
-          arch.Insert(atoi(&(commandList[k])[0]));
+        if (CheckInt(arg)) {
+          arch.Insert(atoi(arg));
 
-          char *ptrParam = &(commandList[k - 1])[0];
+          const char *ptrParam = lastArg;
 
           if (ptrParam[2] != '\0') {
-            char str[80];
-
-            strcpy(str, ptrParam + 2);
-            archInd.Insert(atoi(str));
+            std::string str(ptrParam + 2);
+            archInd.Insert(std::atoi(str.c_str()));
           } else {
             cout << "Which hidden layer (-H) ?\n";
             return -1;
@@ -175,58 +174,58 @@ int densCls(string command) {
         break;
 
       case 'O':
-        if (CheckInt(&(commandList[k])[0]))
-          nbOut = atoi(&(commandList[k])[0]);
+        if (CheckInt(arg))
+          nbOut = atoi(arg);
         else
           return -1;
 
         break;
 
       case 'S':
-        rootFolderTemp = &(commandList[k])[0];
+        rootFolderTemp = arg;
         rootFolderInit = true;
         break;
 
       case 'A':
-        attrFileTemp = &(commandList[k])[0];
+        attrFileTemp = arg;
         attrFileInit = true;
         break;
 
       case 'L':
-        learnFileTemp = &(commandList[k])[0];
+        learnFileTemp = arg;
         learnFileInit = true;
         break;
 
       case 'T':
-        testFileTemp = &(commandList[k])[0];
+        testFileTemp = arg;
         testFileInit = true;
         break;
 
       case 'r':
-        consoleFileTemp = &(commandList[k])[0];
+        consoleFileTemp = arg;
         consoleFileInit = true;
         break;
 
       case 'p':
-        predTrainFileTemp = &(commandList[k])[0];
+        predTrainFileTemp = arg;
         break;
 
       case 't':
-        predTestFileTemp = &(commandList[k])[0];
+        predTestFileTemp = arg;
         break;
 
       case 'o':
-        accuracyFileTemp = &(commandList[k])[0];
+        accuracyFileTemp = arg;
         accuracyFileInit = true;
         break;
 
       case '1':
-        learnTarTemp = &(commandList[k])[0];
+        learnTarTemp = arg;
         learnTarInit = true;
         break;
 
       case '2':
-        testTarTemp = &(commandList[k])[0];
+        testTarTemp = arg;
         testTarInit = true;
         break;
 
@@ -236,12 +235,12 @@ int densCls(string command) {
         break;
 
       case 'F':
-        rulesFileTemp = &(commandList[k])[0];
+        rulesFileTemp = arg;
         rulesFileInit = true;
         break;
 
       default:
-        cout << "Illegal option: " << &(commandList[k - 1])[0] << "\n";
+        cout << "Illegal option: " << lastArg << "\n";
         return -1;
       }
     }
@@ -250,28 +249,27 @@ int densCls(string command) {
       cout << "Illegal option: " << &(commandList[k])[0] << "\n";
       return -1;
     }
+    k++;
   }
 
   // ----------------------------------------------------------------------
 
   // create paths with root foler
 
-  char learnFileTmp[160], testFileTmp[160], validFileTmp[160], weightFileTmp[160], predTrainFileTmp[160], predTestFileTmp[160], rulesFileTmp[160], consoleFileTmp[160], accuracyFileTmp[160], learnTarTmp[160], testTarTmp[160], validTarTmp[160], attrFileTmp[160], weightFileSaveTmp[160];
-
-  char *learnFile = 0;
-  char *testFile = 0;
-  char *validFile = 0;
-  char *weightFile = 0;
-  char *predTrainFile = 0;
-  char *predTestFile = 0;
-  char *rulesFile = 0;
-  char *consoleFile = 0;
-  char *accuracyFile = 0;
-  char *learnTar = 0;
-  char *testTar = 0;
-  char *validTar = 0;
-  char *attrFile = 0;
-  char *weightFileSave = 0;
+  const char *learnFile = nullptr;
+  const char *testFile = nullptr;
+  const char *validFile = nullptr;
+  const char *weightFile = nullptr;
+  const char *predTrainFile = nullptr;
+  const char *predTestFile = nullptr;
+  const char *rulesFile = nullptr;
+  const char *consoleFile = nullptr;
+  const char *accuracyFile = nullptr;
+  const char *learnTar = nullptr;
+  const char *testTar = nullptr;
+  const char *validTar = nullptr;
+  const char *attrFile = nullptr;
+  const char *weightFileSave = nullptr;
 
 #if defined(__unix__) || defined(__APPLE__)
   string root = rootFolderTemp + "/";
@@ -281,151 +279,67 @@ int densCls(string command) {
 
   if (learnFileInit) {
     learnFileTemp = root + learnFileTemp;
-    if (learnFileTemp.length() >= 160) {
-      cout << "Path " << learnFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(learnFileTmp, learnFileTemp.c_str());
-    learnFile = learnFileTmp;
+    learnFile = &learnFileTemp[0];
   }
 
   if (testFileInit) {
     testFileTemp = root + testFileTemp;
-    if (testFileTemp.length() >= 160) {
-      cout << "Path " << testFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(testFileTmp, testFileTemp.c_str());
-    testFile = testFileTmp;
+    testFile = &testFileTemp[0];
   }
 
   if (validFileInit) {
     validFileTemp = root + validFileTemp;
-    if (validFileTemp.length() >= 160) {
-      cout << "Path " << validFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(validFileTmp, validFileTemp.c_str());
-    validFile = validFileTmp;
+    validFile = &validFileTemp[0];
   }
 
   if (weightFileInit) {
     weightFileTemp = root + weightFileTemp;
-    if (weightFileTemp.length() >= 160) {
-      cout << "Path " << weightFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(weightFileTmp, weightFileTemp.c_str());
-    weightFile = weightFileTmp;
+    weightFile = &weightFileTemp[0];
   }
 
   predTrainFileTemp = root + predTrainFileTemp;
-  if (predTrainFileTemp.length() >= 160) {
-    cout << "Path " << predTrainFileTemp << "is too long"
-         << "\n";
-    return -1;
-  }
-  strcpy(predTrainFileTmp, predTrainFileTemp.c_str());
-  predTrainFile = predTrainFileTmp;
+  predTrainFile = &predTrainFileTemp[0];
 
   predTestFileTemp = root + predTestFileTemp;
-  if (predTestFileTemp.length() >= 160) {
-    cout << "Path " << predTestFileTemp << "is too long"
-         << "\n";
-    return -1;
-  }
-  strcpy(predTestFileTmp, predTestFileTemp.c_str());
-  predTestFile = predTestFileTmp;
+  predTestFile = &predTestFileTemp[0];
 
   if (rulesFileInit) {
     rulesFileTemp = root + rulesFileTemp;
-    if (rulesFileTemp.length() >= 160) {
-      cout << "Path " << rulesFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(rulesFileTmp, rulesFileTemp.c_str());
-    rulesFile = rulesFileTmp;
+    rulesFile = &rulesFileTemp[0];
   }
 
   if (consoleFileInit) {
     consoleFileTemp = root + consoleFileTemp;
-    if (consoleFileTemp.length() >= 160) {
-      cout << "Path " << consoleFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(consoleFileTmp, consoleFileTemp.c_str());
-    consoleFile = consoleFileTmp;
+    consoleFile = &consoleFileTemp[0];
   }
 
   if (accuracyFileInit) {
     accuracyFileTemp = root + accuracyFileTemp;
-    if (accuracyFileTemp.length() >= 160) {
-      cout << "Path " << accuracyFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(accuracyFileTmp, accuracyFileTemp.c_str());
-    accuracyFile = accuracyFileTmp;
+    accuracyFile = &accuracyFileTemp[0];
   }
 
   if (learnTarInit) {
     learnTarTemp = root + learnTarTemp;
-    if (learnTarTemp.length() >= 160) {
-      cout << "Path " << learnTarTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(learnTarTmp, learnTarTemp.c_str());
-    learnTar = learnTarTmp;
+    learnTar = &learnTarTemp[0];
   }
 
   if (testTarInit) {
     testTarTemp = root + testTarTemp;
-    if (testTarTemp.length() >= 160) {
-      cout << "Path " << testTarTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(testTarTmp, testTarTemp.c_str());
-    testTar = testTarTmp;
+    testTar = &testTarTemp[0];
   }
 
   if (validTarInit) {
     validTarTemp = root + validTarTemp;
-    if (validTarTemp.length() >= 160) {
-      cout << "Path " << validTarTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(validTarTmp, validTarTemp.c_str());
-    validTar = validTarTmp;
+    validTar = &validTarTemp[0];
   }
 
   if (attrFileInit) {
     attrFileTemp = root + attrFileTemp;
-    if (attrFileTemp.length() >= 160) {
-      cout << "Path " << attrFileTemp << "is too long"
-           << "\n";
-      return -1;
-    }
-    strcpy(attrFileTmp, attrFileTemp.c_str());
-    attrFile = attrFileTmp;
+    attrFile = &attrFileTemp[0];
   }
 
   weightFileSaveTemp = root + weightFileSaveTemp;
-  if (weightFileSaveTemp.length() >= 160) {
-    cout << "Path " << weightFileSaveTemp << "is too long"
-         << "\n";
-    return -1;
-  }
-  strcpy(weightFileSaveTmp, weightFileSaveTemp.c_str());
-  weightFileSave = weightFileSaveTmp;
+  weightFileSave = &weightFileSaveTemp[0];
 
   // ----------------------------------------------------------------------
 
@@ -436,7 +350,6 @@ int densCls(string command) {
     ofs.open(consoleFile);
     std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
   }
-  std::ostream &output = consoleFileInit != false ? ofs : std::cout;
 
   // ----------------------------------------------------------------------
 
@@ -614,7 +527,8 @@ int densCls(string command) {
 
   net->DefNetsWithWeights(weightFile);
 
-  float acc, accTest;
+  float acc;
+  float accTest;
 
   net->ComputeAcc(Train, TrainClass, &acc, 1, predTrainFile);
   cout << "\n\n*** GLOBAL ACCURACY ON TRAINING SET = " << acc << "\n\n";
@@ -650,15 +564,6 @@ int densCls(string command) {
       Attr = attr;
     }
 
-    /*
-          if (Test.GetNbEx() > 0)
-          {
-             static DataSet all(Train, Test);
-             All = all;
-          }
-
-          else
-    */
     All = Train;
 
     if (Valid.GetNbEx() > 0) {
@@ -679,8 +584,8 @@ int densCls(string command) {
     if (rulesFileInit != false) {
       filebuf buf;
 
-      if (buf.open(rulesFile, ios_base::out) == 0) {
-        char errorMsg[] = "Cannot open file for writing";
+      if (buf.open(rulesFile, ios_base::out) == nullptr) {
+        string errorMsg = "Cannot open file for writing";
         WriteError(errorMsg, rulesFile);
       }
 
@@ -691,10 +596,10 @@ int densCls(string command) {
       if (ryp.TreeAborted()) {
         ryp.Del();
 
-        VirtualHyp *globVirt = net->MakeGlobalVirt(quant, nbIn,
-                                                   vecNbNeurons[1] / nbIn);
+        VirtualHyp *globVirt2 = net->MakeGlobalVirt(quant, nbIn,
+                                                    vecNbNeurons[1] / nbIn);
 
-        RealHyp2 ryp2(globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut,
+        RealHyp2 ryp2(globVirt2, nbDimlpNets, net->GetGlobalOut(), nbOut,
                       All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
                       nbWeightLayers);
 
@@ -715,10 +620,10 @@ int densCls(string command) {
       if (ryp.TreeAborted()) {
         ryp.Del();
 
-        VirtualHyp *globVirt = net->MakeGlobalVirt(quant, nbIn,
-                                                   vecNbNeurons[1] / nbIn);
+        VirtualHyp *globVirt3 = net->MakeGlobalVirt(quant, nbIn,
+                                                    vecNbNeurons[1] / nbIn);
 
-        RealHyp2 ryp2(globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut,
+        RealHyp2 ryp2(globVirt3, nbDimlpNets, net->GetGlobalOut(), nbOut,
                       All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
                       nbWeightLayers);
 

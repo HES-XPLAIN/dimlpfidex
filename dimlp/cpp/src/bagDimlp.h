@@ -21,7 +21,7 @@ class BagDimlp : public Dimlp {
   int ShowErrParam;
   int NbEpochsParam;
   int NbLayers;
-  char *WeightFile;
+  const char *WeightFile;
 
   std::vector<int> NbNeurons;
 
@@ -46,17 +46,17 @@ public:
       DataSet &masterClass,
       DataSet &test,
       DataSet &testTar,
-      char genericWeightsFile[],
-      char *accuracyFile,
+      const char genericWeightsFile[],
+      const char *accuracyFile,
       int seed = 0);
-  void DefNetsWithWeights(char *prefix);
+  void DefNetsWithWeights(const char *prefix);
 
   VirtualHyp *MakeGlobalVirt(int nbBins, int nbIn, int multiple);
 
   void ForwardOneExample1(DataSet &data, int index);
   void ForwardOneExample1();
 
-  void ComputeAcc(DataSet &data, DataSet &target, float *accuracy, int tW, char predFile[]);
+  void ComputeAcc(DataSet &data, DataSet &target, float *accuracy, int tW, const char predFile[]);
 
   void Del();
 
@@ -73,7 +73,7 @@ public:
       int nbLayers,
       std::vector<int> nbNeurons,
       int nbDimlpNets,
-      char weightFile[],
+      const char weightFile[],
       int seed = 0);
 
   BagDimlp(
@@ -81,7 +81,7 @@ public:
       int nbLayers,
       std::vector<int> nbNeurons,
       int nbDimlpNets,
-      char weightFile[],
+      const char weightFile[],
       int seed = 0);
 };
 

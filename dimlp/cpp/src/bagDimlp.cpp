@@ -72,8 +72,8 @@ void BagDimlp::TrainAll(
     DataSet &masterClass,
     DataSet &test,
     DataSet &testTar,
-    char genericWeightsFile[],
-    char *accuracyFile,
+    const char genericWeightsFile[],
+    const char *accuracyFile,
     int seed)
 
 {
@@ -94,7 +94,7 @@ void BagDimlp::TrainAll(
         accFile << "Network " << n + 1 << " : \n\n";
         accFile.close();
       } else {
-        char errorMsg[] = "Cannot open file for writing";
+        string errorMsg = "Cannot open file for writing";
         WriteError(errorMsg, accuracyFile);
       }
     }
@@ -117,7 +117,7 @@ void BagDimlp::TrainAll(
 
 ///////////////////////////////////////////////////////////////////
 
-void BagDimlp::DefNetsWithWeights(char *prefix)
+void BagDimlp::DefNetsWithWeights(const char *prefix)
 
 {
   int n;
@@ -223,7 +223,7 @@ void BagDimlp::ComputeAcc(
     DataSet &target,
     float *accuracy,
     int toWrite,
-    char predFile[])
+    const char predFile[])
 
 {
   int p, o, ansNet, ansTar;
@@ -321,7 +321,7 @@ BagDimlp::BagDimlp(
     int nbLayers,
     std::vector<int> nbNeurons,
     int nbDimlpNets,
-    char weightFile[],
+    const char weightFile[],
     int seed) :
 
                 Dimlp(eta, mu, flat, errParam, accuracyParam, deltaErrParam,
@@ -367,7 +367,7 @@ BagDimlp::BagDimlp(
     int nbLayers,
     std::vector<int> nbNeurons,
     int nbDimlpNets,
-    char weightFile[],
+    const char weightFile[],
     int seed) :
 
                 Dimlp(0, 0, 0, 0, 0, 0, discrLevels, 0, 0, nbLayers, nbNeurons, weightFile, seed)

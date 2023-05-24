@@ -11,7 +11,7 @@
 #include <string.h>
 #include <vector>
 
-static void GiveAllParam();
-int densCls(string command);
+void GiveAllParamDensCls();
+int densCls(const string &command);
 
 #endif

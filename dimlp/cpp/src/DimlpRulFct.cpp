@@ -113,7 +113,7 @@ int dimlpRul(const string &command) {
       char option = commandList[k - 1][1];
       const char *arg = &(commandList[k])[0];
       const char *lastArg = &(commandList[k - 1])[0];
-      switch (commandList[k - 1][1]) {
+      switch (option) {
       case 'q':
         if (CheckInt(arg))
           quant = atoi(arg);
@@ -484,7 +484,13 @@ int dimlpRul(const string &command) {
 
   Dimlp net(weightFile, nbLayers, vecNbNeurons, quant);
 
-  float accTrain, errTrain, accValid, errValid, accTest, errTest;
+  float accTrain;
+  float errTrain;
+  float accValid;
+  float errValid;
+  float accTest;
+  float errTest;
+
   errTrain = net.Error(Train, TrainClass, &accTrain);
 
   cout << "\n\n*** SUM SQUARED ERROR ON TRAINING SET = " << errTrain;
@@ -556,8 +562,8 @@ int dimlpRul(const string &command) {
 
   filebuf buf;
 
-  if (buf.open(rulesFile, ios_base::out) == 0) {
-    char errorMsg[] = "Cannot open file for writing";
+  if (buf.open(rulesFile, ios_base::out) == nullptr) {
+    string errorMsg = "Cannot open file for writing";
     WriteError(errorMsg, rulesFile);
   }
 
