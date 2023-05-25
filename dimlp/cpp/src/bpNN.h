@@ -93,10 +93,10 @@ class BpNN {
 public:
   int GetNbLayers() const { return NbLayers; }
   int GetNbWeightLayers() const { return NbWeightLayers; }
-  int Max(float vec[], int nbEl) const;
+  int Max(const float vec[], int nbEl) const;
   Layer *GetLayer(int indLayer) { return VecLayer[indLayer]; }
 
-  void SaveWeights(char *str) const;
+  void SaveWeights(const char *str) const;
 
   virtual void ForwardOneExample1(DataSet &data, int index);
   virtual void ForwardOneExample1(float *ex);

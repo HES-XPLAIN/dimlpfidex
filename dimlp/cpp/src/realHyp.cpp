@@ -684,7 +684,6 @@ void RealHyp::RuleExtraction(
   listAll = data.Select(&empty);
   DeepSearch(data, &empty, listAll);
   listAll->DelAll();
-
   if (Aborted) {
     cout << "*** TREE ABORTED !\n\n";
     cout << "*** TRYING AN ALTERNATIVE ALGORITHM \n"
@@ -720,7 +719,6 @@ void RealHyp::RuleExtraction(
 
     return;
   }
-
   cout << "\n\n*** PRUNING ANTECEDENTS AND PRUNING RULES ...\n"
        << endl;
   SavedRules->MixPrune();
@@ -745,7 +743,6 @@ void RealHyp::RuleExtraction(
   SetRealHyp(data);
 
   SavedRules->Del();
-
   cout << "*** BUILDING DECISION TREE ...\n"
        << endl;
 
@@ -770,7 +767,6 @@ void RealHyp::RuleExtraction(
   SavedRules->EnlargeAndPrune();
 
   nbAnt2 = SavedRules->CountAnt();
-
   if (nbAnt2 < nbAnt1) {
     cout << "\n\n*** RULE SET IMPROVED BY " << nbAnt1 - nbAnt2;
     cout << " ANTECEDENTS" << endl;
@@ -779,7 +775,6 @@ void RealHyp::RuleExtraction(
     CleanRuleStruct clean(data, train, trainClass,
                           valid, validClass, test, testClass,
                           SavedRules, Bpnn, Out, NbOut);
-
     cout << "\n\n*** WRITING IF-THEN RULES ...\n"
          << endl;
 
@@ -861,7 +856,6 @@ void RealHyp::RuleExtraction(
           clean.Del();
     */
   }
-
   SavedRules->Del();
 
   Descr->Del();

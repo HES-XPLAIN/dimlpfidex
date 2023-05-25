@@ -29,14 +29,14 @@ class CleanRuleStruct {
     int Var;
     float Val;
     char Rel;
-    char Str[80];
+    std::string Str;
   };
 
   struct CleanRule {
     AssocAnte *SevAnt;
     int NbAnt;
     int Classification;
-    char StrClass[80];
+    std::string StrClass;
     int NbAllCarried;
     int NbCarriedTrain;
     int NbCarriedTest;
@@ -141,9 +141,9 @@ public:
 
   void Del();
 
-  void SetAttr(char **listAttr);
+  void SetAttr(std::vector<std::string> listAttr);
   void SetAttr();
-  void SetStrClass(char **listClass, int def);
+  void SetStrClass(std::vector<std::string> listClass, int def);
   void SetStrClass(int def);
 
   CleanRuleStruct(

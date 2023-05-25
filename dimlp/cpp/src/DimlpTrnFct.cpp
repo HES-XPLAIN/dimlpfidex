@@ -716,6 +716,7 @@ int dimlpTrn(const string &command) {
   }
 
   if (ruleExtr) {
+
     if (attrFileInit != false) {
       AttrName attr(attrFile, nbIn, nbOut);
 
@@ -739,10 +740,8 @@ int dimlpTrn(const string &command) {
     cout << "\n\n****************************************************\n"
          << endl;
     cout << "*** RULE EXTRACTION" << endl;
-
     RealHyp ryp1(All, net, quant, nbIn,
                  vecNbNeurons[1] / nbIn, nbWeightLayers);
-
     if (rulesFileInit != false) {
       filebuf buf;
 
@@ -750,12 +749,10 @@ int dimlpTrn(const string &command) {
         string errorMsg = "Cannot open file for writing";
         WriteError(errorMsg, rulesFile);
       }
-
       ostream rulesFileost(&buf);
 
       ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                           Test, TestClass, Attr, rulesFileost);
-
       if (ryp1.TreeAborted()) {
         ryp1.Del();
 
@@ -791,9 +788,6 @@ int dimlpTrn(const string &command) {
       } else
         ryp1.Del();
     }
-
-    if (attrFileInit != false)
-      Attr.Del();
   }
 
   // Train.Del();

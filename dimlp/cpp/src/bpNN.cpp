@@ -8,14 +8,13 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
-int BpNN::Max(float vec[], int nbEl) const
+int BpNN::Max(const float vec[], int nbEl) const
 
 {
   float max = vec[0];
   int indMax = 0;
-  int k;
 
-  for (k = 1; k < nbEl; k++) {
+  for (int k = 1; k < nbEl; k++) {
     if (vec[k] > max) {
       max = vec[k];
       indMax = k;
@@ -140,7 +139,6 @@ void BpNN::WriteParam() const {
 void BpNN::SaveWeights() const
 
 {
-  int n;
   filebuf buf;
 
   if (buf.open(SaveFile, ios_base::out) == nullptr) {
@@ -154,7 +152,7 @@ void BpNN::SaveWeights() const
        << SaveFile << ": "
        << "Writing ...\n";
 
-  for (n = 0; n < NbWeightLayers; n++)
+  for (int n = 0; n < NbWeightLayers; n++)
     VecLayer[n]->WriteWeights(outFile);
 
   cout << SaveFile << ": "
@@ -163,10 +161,9 @@ void BpNN::SaveWeights() const
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::SaveWeights(char *strSave) const
+void BpNN::SaveWeights(const char *strSave) const
 
 {
-  int n;
   filebuf buf;
 
   if (buf.open(strSave, ios_base::out) == nullptr) {
@@ -179,7 +176,7 @@ void BpNN::SaveWeights(char *strSave) const
        << strSave << ": "
        << "Writing ...\n";
 
-  for (n = 0; n < NbWeightLayers; n++)
+  for (int n = 0; n < NbWeightLayers; n++)
     VecLayer[n]->WriteWeights(outFile);
 
   cout << strSave << ": "
@@ -191,7 +188,6 @@ void BpNN::SaveWeights(char *strSave) const
 void BpNN::ReadWeights() const
 
 {
-  int n;
   filebuf buf;
 
   if (buf.open(ReadFile, ios_base::in) == nullptr) {
@@ -205,7 +201,7 @@ void BpNN::ReadWeights() const
        << ReadFile << ": "
        << "Reading ...\n";
 
-  for (n = 0; n < NbLayers - 1; n++)
+  for (int n = 0; n < NbLayers - 1; n++)
     VecLayer[n]->ReadWeights(inFile);
 
   cout << ReadFile << ": "
@@ -217,9 +213,7 @@ void BpNN::ReadWeights() const
 void BpNN::Push() const
 
 {
-  int l;
-
-  for (l = 0; l < NbWeightLayers; l++)
+  for (int l = 0; l < NbWeightLayers; l++)
     VecLayer[l]->PushWeights();
 }
 
@@ -228,9 +222,7 @@ void BpNN::Push() const
 void BpNN::Pop() const
 
 {
-  int l;
-
-  for (l = 0; l < NbWeightLayers; l++)
+  for (int l = 0; l < NbWeightLayers; l++)
     VecLayer[l]->PopWeights();
 }
 
@@ -239,11 +231,10 @@ void BpNN::Pop() const
 void BpNN::ForwardOneExample1(DataSet &data, int index)
 
 {
-  int l;
 
   VecLayer[0]->SetDown(data.GetExample(index));
 
-  for (l = 0; l < NbWeightLayers; l++)
+  for (int l = 0; l < NbWeightLayers; l++)
     VecLayer[l]->ForwAndTransf1();
 }
 
@@ -327,11 +318,10 @@ float BpNN::ComputeErrorSameAct(
 void BpNN::BackOneExample(DataSet &target, int index) const
 
 {
-  int l;
 
   VecLayer[NbWeightLayers - 1]->ComputeDeltaOut(target.GetExample(index));
 
-  for (l = NbWeightLayers - 1; l > 0; l--)
+  for (int l = NbWeightLayers - 1; l > 0; l--)
     VecLayer[l]->BackLayer();
 
   VecLayer[0]->BackLayerWithout();
@@ -342,11 +332,11 @@ void BpNN::BackOneExample(DataSet &target, int index) const
 void BpNN::TrainOneEpoch(DataSet &data, DataSet &target, IntRandomFunction *r) const
 
 {
-  int indPat, p;
+  int indPat;
 
   const int nbPat = data.GetNbEx();
 
-  for (p = 0; p < nbPat; p++) {
+  for (int p = 0; p < nbPat; p++) {
     indPat = r->RandomInteger();
 
     ForwardOneExample2(data, indPat);
@@ -568,8 +558,11 @@ float BpNN::ComputeError(
     float *accuracy)
 
 {
-  int p, ansNet, ansTar;
-  int good, bad;
+  int p;
+  int ansNet;
+  int ansTar;
+  int good;
+  int bad;
   float sum;
   float *ptrOut;
   float *ptrTar;
@@ -593,7 +586,7 @@ float BpNN::ComputeError(
       bad++;
   }
 
-  *accuracy = good + bad;
+  *accuracy = static_cast<float>(good) + static_cast<float>(bad);
   *accuracy = (float)good / *accuracy;
 
   return sum;
@@ -613,8 +606,16 @@ void BpNN::TrainPhase(
 
 {
   float oldErr = 0;
-  float acc, err, specAcc, specErr, prevValidErr, validErr, accValid, testErr, accTest;
-  int e;
+  float acc;
+  float err;
+  float specAcc;
+  float specErr;
+  float prevValidErr;
+  float validErr;
+  float accValid;
+  float testErr;
+  float accTest;
+
   IntRandomFunction randInt(0, train.GetNbEx() - 1);
   err = ComputeError(train, trainTar, &acc);
   std::ostringstream oss;
@@ -655,14 +656,14 @@ void BpNN::TrainPhase(
     return;
   }
 
-  for (e = 1; e <= NbEpochsParam; e++) {
+  for (int e = 1; e <= NbEpochsParam; e++) {
     TrainOneEpoch(train, trainTar, &randInt);
 
     if (e % ShowErrParam == 0) {
       err = ComputeError(train, trainTar, &acc);
 
       std::ostringstream oss2;
-      oss2 << std::setfill(' ') << std::setw(6 - std::to_string(e).length()) << "" << e << ":  SSE = " << std::setprecision(12) << err << "    ACC = " << std::setprecision(8) << acc;
+      oss2 << std::setfill(' ') << std::setw(6 - static_cast<int>(std::to_string(e).length())) << "" << e << ":  SSE = " << std::setprecision(12) << err << "    ACC = " << std::setprecision(8) << acc;
       temp = oss2.str();
       std::cout << temp;
 
@@ -729,7 +730,7 @@ void BpNN::TrainPhase(
     cout << "\n\n*** ACCURACY ON TESTING SET = " << accTest << "\n";
   }
   // Output accuracy stats in file
-  if (accuracyFile != 0) {
+  if (accuracyFile != nullptr) {
     ofstream accFile(accuracyFile, ios::app);
     if (accFile.is_open()) {
       accFile << "Sum squared error on training set = " << err << "\n";
@@ -744,7 +745,7 @@ void BpNN::TrainPhase(
       }
       accFile.close();
     } else {
-      char errorMsg[] = "Cannot open file for writing";
+      string errorMsg = "Cannot open file for writing";
       WriteError(errorMsg, accuracyFile);
     }
   }
@@ -799,12 +800,7 @@ BpNN::BpNN(
     int nbLayers,
     const std::vector<int> &nbNeurons,
     const char printNetType[])
-
-{
-  ReadFile = readFile;
-
-  NbLayers = nbLayers;
-  NbWeightLayers = nbLayers - 1;
+    : ReadFile(readFile), NbLayers(nbLayers), NbWeightLayers(nbLayers - 1) {
 
   cout << "\n\n-----------------------------------------";
   cout << "-------------------------------------\n"
@@ -837,16 +833,13 @@ BpNN::BpNN(
     const std::string &saveFile,
     const char printNetType[],
     int seed)
-
-{
+    : ReadFile(readFile) {
   InitRandomGen(seed);
 
   cout << "\n\n-----------------------------------------";
   cout << "-------------------------------------\n"
        << endl;
   cout << "Creating " << printNetType << " structures ...";
-
-  ReadFile = readFile;
 
   AssignParam(eta, mu, flat, errParam, accuracyParam, deltaErrParam,
               showErrParam, nbEpochsParam, nbLayers, saveFile);
@@ -866,11 +859,10 @@ BpNN::BpNN(
 void BpNN::Del()
 
 {
-  int l;
 
   delete NbNeurons;
 
-  for (l = 0; l < NbWeightLayers; l++)
+  for (int l = 0; l < NbWeightLayers; l++)
     VecLayer[l]->Del();
 
   delete VecLayer;

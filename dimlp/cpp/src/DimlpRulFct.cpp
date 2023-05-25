@@ -590,9 +590,6 @@ int dimlpRul(const string &command) {
 
   ryp.Del();
 
-  if (attrFileInit != false)
-    Attr.Del();
-
   TrainClass.Del();
 
   if (Test.GetNbEx() > 0) {
