@@ -71,6 +71,25 @@ def build_package():
     subprocess.check_call(cmake_command)
     subprocess.check_call(build_command)
 
+def build_documentation():
+    os.makedirs("build", exist_ok=True)
+    os.chdir("build")
+
+    # Platform-specific compilation commands
+    if sys.platform.startswith('linux'):
+        cmake_command = ['poetry', 'run', 'cmake', '-DBUILD_DOCUMENTATION=ON', '..']
+    elif sys.platform == 'darwin':  # macOS
+        cmake_command = ['poetry', 'run', 'cmake', '-DBUILD_DOCUMENTATION=ON', '..']
+    elif sys.platform == 'win32':  # Windows
+        output = subprocess.check_output("poetry env info", shell=True, text=True)
+        path = re.search(r"Path:\s+(.*)", output).group(1) if re.search(r"Path:\s+(.*)", output) else None
+        cmake_command = ['poetry', 'run', 'cmake', '-G', 'MinGW Makefiles', '-DBUILD_DOCUMENTATION=ON', '-DCMAKE_PREFIX_PATH=' + path, '..']
+
+    build_command = ['poetry', 'run', 'cmake', '--build', '.']
+
+    # Run cmake
+    subprocess.check_call(cmake_command)
+    subprocess.check_call(build_command)
 
 if __name__ == "__main__":
     # # Define the setup parameters
@@ -85,3 +104,4 @@ if __name__ == "__main__":
 
     # build with cmake
     build_package()
+    # build_documentation()

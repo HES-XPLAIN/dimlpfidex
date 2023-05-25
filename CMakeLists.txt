@@ -16,6 +16,11 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # create compilation database
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# set build options
+option(BUILD_DOCUMENTATION "Build Doxygen documentation" OFF)
+message(STATUS "BUILD_DOCUMENTATION is set to ${BUILD_DOCUMENTATION}")
+
+# binaries
 # add_subdirectory("example")
 add_subdirectory("dimlp")
 add_subdirectory("fidexCommon")
@@ -23,5 +28,7 @@ add_subdirectory("fidex")
 add_subdirectory("fidexGlo")
 
 # documentation
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/docs" ${CMAKE_MODULE_PATH})
-add_subdirectory("docs")
+if (BUILD_DOCUMENTATION)
+    set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/docs" ${CMAKE_MODULE_PATH})
+    add_subdirectory("docs")
+endif()
