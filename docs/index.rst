@@ -10,9 +10,10 @@ Welcome to DimlpFidex's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-.. doxygenclass:: BpNN
-   :project: dimlp
-   :members:
+   dimlp
+   fidex
+   fidexGlo
+   hyperLocust
 
 Indices and tables
 ==================
