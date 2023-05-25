@@ -137,8 +137,6 @@ void CleanRuleStruct::SortAnt(AssocAnte *ant, int nbAnt, int indRule)
     ant[indMin].Var = 2000000000;
   }
 
-  delete ant;
-
   Clean[indRule]->SevAnt = sorted;
 }
 
@@ -652,13 +650,10 @@ void CleanRuleStruct::CreateWrongVect()
 void CleanRuleStruct::Del()
 
 {
-  int r;
 
-  for (r = 0; r < NbRules; r++) {
-    delete Clean[r]->SevAnt;
+  for (int r = 0; r < NbRules; r++) {
     delete Clean[r];
   }
-
   delete Clean[NbRules];
   delete Clean;
 
@@ -1301,7 +1296,6 @@ void CleanRuleStruct::CreateNewClean()
   }
 
   for (r = 0; r < NbRules; r++) {
-    delete Clean[r]->SevAnt;
     delete Clean[r];
   }
 
@@ -1559,23 +1553,24 @@ char *CleanRuleStruct::ItoA(int n)
     strRev[k] = str[i - 1 - k];
 
   strRev[i] = '\0';
-
   return strRev;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::SetAttr(char **listAttr)
+void CleanRuleStruct::SetAttr(vector<string> listAttr)
 
 {
-  int a, r, nbAnt;
+  int a;
+  int nbAnt;
   AssocAnte *ptr;
 
-  for (r = 0; r < NbRules; r++) {
+  for (int r = 0; r < NbRules; r++) {
     nbAnt = Clean[r]->NbAnt;
 
-    for (a = 0, ptr = Clean[r]->SevAnt; a < nbAnt; a++, ptr++)
-      strcpy(ptr->Str, listAttr[ptr->Var]);
+    for (a = 0, ptr = Clean[r]->SevAnt; a < nbAnt; a++, ptr++) {
+      ptr->Str = listAttr[ptr->Var];
+    }
   }
 }
 
@@ -1584,33 +1579,32 @@ void CleanRuleStruct::SetAttr(char **listAttr)
 void CleanRuleStruct::SetAttr()
 
 {
-  int a, r, nbAnt;
+  int a;
+  int nbAnt;
   AssocAnte *ptr;
   char *str;
-  char str2[80];
 
-  for (r = 0; r < NbRules; r++) {
+  for (int r = 0; r < NbRules; r++) {
     nbAnt = Clean[r]->NbAnt;
 
     for (a = 0, ptr = Clean[r]->SevAnt; a < nbAnt; a++, ptr++) {
       str = ItoA((ptr->Var) + 1);
 
-      strcpy(str2, "x");
-      strcat(str2, str);
-      strcpy(ptr->Str, str2);
+      std::string str2 = "x";
+      str2 += str;
+      ptr->Str = str2;
     }
   }
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::SetStrClass(char **listClass, int def)
+void CleanRuleStruct::SetStrClass(vector<string> listClass, int def)
 
 {
-  int r;
-
-  for (r = 0; r < NbRules + def; r++)
-    strcpy(Clean[r]->StrClass, listClass[Clean[r]->Classification]);
+  for (int r = 0; r < NbRules + def; r++) {
+    Clean[r]->StrClass = listClass[Clean[r]->Classification];
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1618,13 +1612,11 @@ void CleanRuleStruct::SetStrClass(char **listClass, int def)
 void CleanRuleStruct::SetStrClass(int def)
 
 {
-  int r;
   char *str;
 
-  for (r = 0; r < NbRules + def; r++) {
+  for (int r = 0; r < NbRules + def; r++) {
     str = ItoA((Clean[r]->Classification) + 1);
-
-    strcpy(Clean[r]->StrClass, str);
+    Clean[r]->StrClass = str;
   }
 }
 

@@ -634,9 +634,6 @@ int densCls(const string &command) {
       } else
         ryp.Del();
     }
-
-    if (attrFileInit != false)
-      Attr.Del();
   }
 
   std::cout.rdbuf(cout_buff); // reset to standard output again

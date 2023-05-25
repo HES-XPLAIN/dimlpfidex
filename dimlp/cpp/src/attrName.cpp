@@ -1,22 +1,18 @@
-using namespace std;
 #include "attrName.h"
-#include <fstream>
-#include <iostream>
-#include <string.h>
+using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
-int AttrName::FirstLect()
+int AttrName::FirstLect() const
 
 {
   filebuf buf;
-  char str[StringLength];
+  std::string str;
   int k;
 
-  if (buf.open(FileAttr, ios_base::in) == 0) {
-    cout << "Cannot open file of attribute names";
-    cout << " (" << FileAttr << ")\n\n";
-    return 0;
+  if (buf.open(FileAttr, ios_base::in) == nullptr) {
+    string errorMsg = "Cannot open file of attribute names";
+    WriteError(errorMsg, FileAttr);
   }
 
   istream inFile(&buf);
@@ -33,7 +29,6 @@ int AttrName::FirstLect()
 
   cout << FileAttr;
   cout << ": Problem with number of attributes or number of classes.\n\n";
-
   return 0;
 }
 
@@ -43,18 +38,28 @@ void AttrName::SecondLect()
 
 {
   filebuf buf;
-  int k;
 
-  if (buf.open(FileAttr, ios_base::in) == 0)
-    ;
+  if (buf.open(FileAttr, ios_base::in) == nullptr) {
+    string errorMsg = "Cannot open file of attribute names";
+    WriteError(errorMsg, FileAttr);
+  }
 
   istream inFile(&buf);
 
-  for (k = 0; k < NbAttr; k++)
-    inFile >> VarNames[k];
+  VarNames.clear();
+  string varName;
+  int k = 0;
+  while (k < NbAttr) {
+    inFile >> varName;
+    VarNames.push_back(varName);
+    k++;
+  }
 
-  for (k = 0; k < NbClasses; k++)
-    inFile >> ClassNames[k];
+  ClassNames.clear();
+  string className;
+  while (inFile >> className) {
+    ClassNames.push_back(className);
+  }
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -65,65 +70,17 @@ int AttrName::ReadAttr()
   if (FirstLect())
     SecondLect();
   else {
-    FileAttr = 0;
+    FileAttr = nullptr;
     return 0;
   }
-
   return 1;
 }
 
 ///////////////////////////////////////////////////////////////////
 
-void AttrName::Del()
+AttrName::AttrName(const char *fileAttr, int nbAttr, int nbClasses) : NbAttr(nbAttr), NbClasses(nbClasses), FileAttr(fileAttr)
 
 {
-  int i;
-
-  for (i = 0; i < NbAttr; i++)
-    delete VarNames[i];
-
-  for (i = 0; i < NbClasses; i++)
-    delete ClassNames[i];
-
-  delete VarNames;
-  delete ClassNames;
-  delete FileAttr;
-}
-
-///////////////////////////////////////////////////////////////////
-
-AttrName::AttrName(const char *fileAttr, int nbAttr, int nbClasses)
-
-{
-  int i, j;
-  char *ptr;
-
-  NbAttr = nbAttr;
-  NbClasses = nbClasses;
-
-  VarNames = new char *[NbAttr];
-  ClassNames = new char *[NbClasses];
-
-  StringLength = 80;
-  FileAttr = new char[StringLength];
-
-  strcpy(FileAttr, fileAttr);
-
-  for (i = 0; i < NbAttr; i++) {
-    VarNames[i] = new char[StringLength];
-    ptr = VarNames[i];
-
-    for (j = 0; j < StringLength; j++)
-      ptr[j] = '\0';
-  }
-
-  for (i = 0; i < NbClasses; i++) {
-    ClassNames[i] = new char[StringLength];
-    ptr = ClassNames[i];
-
-    for (j = 0; j < StringLength; j++)
-      ptr[j] = '\0';
-  }
 }
 
 ///////////////////////////////////////////////////////////////////
