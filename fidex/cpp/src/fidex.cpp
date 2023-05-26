@@ -1,7 +1,8 @@
 #include "fidexFct.h"
 
-////////////////////////////////////////////////////////////
-
+/**
+ * The main entry point of the Fidex program.
+ */
 int main(int nbParam, char **param)
 
 {
