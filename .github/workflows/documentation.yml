@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - main
+      - doxygen  # debug
 
 env:
   PYTHON_VERSION: "3.11"
