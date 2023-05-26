@@ -1,11 +1,11 @@
 #ifndef LAYERD2_H
 #define LAYERD2_H
 
+using namespace std;
 #ifndef LD2
 #include "layer.h"
 #include "stairObj.h"
 #endif
-#include <memory>
 
 ///////////////////////////////////////////////////////////////////
 
@@ -15,15 +15,19 @@ class LayerDimlp2 : public Layer {
 
   //----------------------------------------------------------------
 
-  float Activation1(float x) override { return Stair->Funct(x); }
-  void ForwLayer() override { ForwSpec(); }
-  void AdaptWeights() override {}
-  void AdaptBias() override {}
-  void ComputeDeltaDown() override { ComputeDeltaDownSpec2(); }
+  float Activation1(float x) { return Stair->Funct(x); }
+  void ForwLayer() { ForwSpec(); }
+  void AdaptWeights() { ; }
+  void AdaptBias() { ; }
+  void ComputeDeltaDown() { ComputeDeltaDownSpec2(); }
 
   //----------------------------------------------------------------
 
 public:
+  void Del() {
+    delete Stair;
+  }
+
   LayerDimlp2(
       float eta,
       float mu,

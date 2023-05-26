@@ -102,7 +102,7 @@ public:
     ApplyTransf2();
   }
 
-  void ComputeDeltaOut(float target[]);
+  void ComputeDeltaOut(const vector<float> &target);
 
   void ComputeDeltaDownSpec2();
   virtual void ComputeDeltaDown() { ComputeDeltaDownStand(); }
@@ -131,7 +131,7 @@ public:
 
   //----------------------------------------------------------------
 
-  virtual ~Layer() = default;
+  virtual ~Layer() = default; // virtual destructor
 
   Layer(
       float eta,

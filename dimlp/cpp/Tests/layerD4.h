@@ -1,30 +1,34 @@
-#ifndef LAYERD2_H
-#define LAYERD2_H
+#ifndef LAYERD4_H
+#define LAYERD4_H
 
-#ifndef LD2
+using namespace std;
+#ifndef LD4
 #include "layer.h"
 #include "stairObj.h"
 #endif
-#include <memory>
 
 ///////////////////////////////////////////////////////////////////
 
-class LayerDimlp2 : public Layer {
+class LayerDimlp4 : public Layer {
 
   StairObj *Stair;
 
   //----------------------------------------------------------------
 
-  float Activation1(float x) override { return Stair->Funct(x); }
-  void ForwLayer() override { ForwSpec(); }
-  void AdaptWeights() override {}
-  void AdaptBias() override {}
-  void ComputeDeltaDown() override { ComputeDeltaDownSpec2(); }
+  float Activation1(float x) { return Stair->Funct(x); }
+  void ForwLayer() { ForwSpec(); }
+  void AdaptWeights() { ; }
+  void AdaptBias() { ; }
+  void ComputeDeltaDown() { ; }
 
   //----------------------------------------------------------------
 
 public:
-  LayerDimlp2(
+  void Del() {
+    delete Stair;
+  }
+
+  LayerDimlp4(
       float eta,
       float mu,
       float flat,
