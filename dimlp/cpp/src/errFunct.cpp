@@ -1,13 +1,13 @@
-using namespace std;
+#include <vector>
 ///////////////////////////////////////////////////////////////////
 
-float Lmse(int nbTar, float netOut[], float target[])
+float Lmse(int nbTar, std::vector<float> netOut, std::vector<float> target)
 
 {
-  int i;
-  float diff, sum = 0.0;
+  float diff;
+  float sum = 0.0;
 
-  for (i = 0; i < nbTar; i++) {
+  for (int i = 0; i < nbTar; i++) {
     diff = target[i] - netOut[i];
     sum += diff * diff;
   }

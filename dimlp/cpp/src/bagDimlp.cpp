@@ -17,16 +17,17 @@ void BagDimlp::MakeDataSets(
     int nbPat)
 
 {
-  int n, p, k, count, val;
-  int *indPat;
-  int *indVal;
-  int *busy;
+  int p;
+  int k;
+  int count;
+  int val;
+  std::vector<int> indPat(nbPat);
   IntRandomFunction ri(0, nbPat - 1);
 
-  indPat = new int[nbPat];
+  // indPat = new int[nbPat];
 
-  for (n = 0; n < NbDimlpNets; n++) {
-    busy = new int[nbPat];
+  for (int n = 0; n < NbDimlpNets; n++) {
+    std::vector<int> busy(nbPat, 0);
 
     for (p = 0; p < nbPat; p++)
       busy[p] = 0;
@@ -37,39 +38,29 @@ void BagDimlp::MakeDataSets(
       busy[val] = 1;
     }
 
-    for (p = 0, count = 0; p < nbPat; p++)
-      if (busy[p] == 0)
-        count++;
-
+    count = static_cast<int>(std::count(busy.begin(), busy.end(), 0));
     cout << "Network " << n + 1 << " Number of Validation Examples = ";
     cout << count << "\n";
 
-    indVal = new int[count];
+    // indVal = new int[count];
+    std::vector<int> indVal(count);
 
     for (p = 0, k = 0; p < nbPat; p++)
       if (busy[p] == 0) {
         indVal[k] = p;
         k++;
       }
+    VectData[n] = new DataSet(masterTrain, indPat.data(), nbPat);
+    VectDataClass[n] = new DataSet(masterClass, indPat.data(), nbPat);
 
-    VectData[n] = new DataSet(masterTrain, indPat, nbPat);
-    VectDataClass[n] = new DataSet(masterClass, indPat, nbPat);
-
-    ValData[n] = new DataSet(masterTrain, indVal, count);
-    ValDataClass[n] = new DataSet(masterClass, indVal, count);
-
-    delete busy;
-    delete indVal;
+    ValData[n] = new DataSet(masterTrain, indVal.data(), count);
+    ValDataClass[n] = new DataSet(masterClass, indVal.data(), count);
   }
-
-  delete indPat;
 }
 
 ///////////////////////////////////////////////////////////////////
 
 void BagDimlp::TrainAll(
-    DataSet &masterTrain,
-    DataSet &masterClass,
     DataSet &test,
     DataSet &testTar,
     const char genericWeightsFile[],
@@ -77,18 +68,16 @@ void BagDimlp::TrainAll(
     int seed)
 
 {
-  int n;
-  char str1[80];
-  char str2[5];
+  string str1;
 
-  for (n = 0; n < NbDimlpNets; n++) {
+  for (int n = 0; n < NbDimlpNets; n++) {
     cout << "\n\n-------------------------------------------------------";
     cout << "---------------------------";
 
     cout << "\n\nTraining network " << n + 1 << "\n";
 
     // Output accuracy on file
-    if (accuracyFile != 0) {
+    if (accuracyFile != nullptr) {
       ofstream accFile(accuracyFile, ios::app);
       if (accFile.is_open()) {
         accFile << "Network " << n + 1 << " : \n\n";
@@ -107,11 +96,9 @@ void BagDimlp::TrainAll(
                                test, testTar,
                                *(ValData[n]), *(ValDataClass[n]), accuracyFile, fromBT);
 
-    strcpy(str1, genericWeightsFile);
-    sprintf(str2, "%d", n + 1);
-    strcat(str1, str2);
-    strcat(str1, ".wts");
-    VectDimlp[n]->Dimlp::SaveWeights(str1);
+    str1 = genericWeightsFile + std::to_string(n + 1) + ".wts";
+
+    VectDimlp[n]->Dimlp::SaveWeights(str1.c_str());
   }
 }
 
@@ -120,21 +107,16 @@ void BagDimlp::TrainAll(
 void BagDimlp::DefNetsWithWeights(const char *prefix)
 
 {
-  int n;
-  char str1[80];
-  char str2[5];
+  string str1;
 
-  for (n = 0; n < NbDimlpNets; n++) {
+  for (int n = 0; n < NbDimlpNets; n++) {
     cout << "\n\n-------------------------------------------------------";
     cout << "---------------------------";
 
     cout << "\n\nBuilding network " << n + 1 << "\n";
 
-    strcpy(str1, prefix);
-    sprintf(str2, "%d", n + 1);
-    strcat(str1, str2);
-    strcat(str1, ".wts");
-    VectDimlp[n] = new Dimlp(str1, NbLayers, NbNeurons,
+    str1 = prefix + std::to_string(n + 1) + ".wts";
+    VectDimlp[n] = new Dimlp(str1.c_str(), NbLayers, NbNeurons,
                              DiscrLevels);
   }
 }
@@ -163,7 +145,7 @@ VirtualHyp *BagDimlp::MakeGlobalVirt(int nbBins, int nbIn, int multiple)
   for (n = 0; n < NbDimlpNets; n++)
     virt[n]->Del();
 
-  delete virt;
+  delete[] virt;
 
   return globalVirt;
 }
@@ -173,13 +155,13 @@ VirtualHyp *BagDimlp::MakeGlobalVirt(int nbBins, int nbIn, int multiple)
 void BagDimlp::ForwardOneExample1(DataSet &data, int index)
 
 {
-  int n, k;
-  float *ptrOut;
+  int k;
+  const float *ptrOut;
 
   for (k = 0; k < NbOut; k++)
     GlobalOut[k] = 0;
 
-  for (n = 0; n < NbDimlpNets; n++) {
+  for (int n = 0; n < NbDimlpNets; n++) {
     VectDimlp[n]->ForwardOneExample1(data, index);
 
     ptrOut = (VectDimlp[n]->GetLayer(NbLayers - 2))->GetUp();
@@ -197,13 +179,13 @@ void BagDimlp::ForwardOneExample1(DataSet &data, int index)
 void BagDimlp::ForwardOneExample1()
 
 {
-  int n, k, l;
-  float *ptrOut;
+  int k;
+  const float *ptrOut;
 
   for (k = 0; k < NbOut; k++)
     GlobalOut[k] = 0;
 
-  for (n = 0; n < NbDimlpNets; n++) {
+  for (int n = 0; n < NbDimlpNets; n++) {
     VectDimlp[n]->ForwardOneExample1();
 
     ptrOut = (VectDimlp[n]->GetLayer(NbLayers - 2))->GetUp();
@@ -226,18 +208,17 @@ void BagDimlp::ComputeAcc(
     const char predFile[])
 
 {
-  int p, o, ansNet, ansTar;
-  int good, bad;
-  float *ptrOut;
-  float *ptrTar;
-  // filebuf  buf;
+  int p;
+  int ansNet;
+  int ansTar;
+  int good;
+  int bad;
+  std::vector<float> ptrOut;
+  std::vector<float> ptrTar;
   ofstream buf;
 
   const int nbPat = data.GetNbEx();
   const int nbOut = target.GetNbAttr();
-
-  // if (buf.open("dimlpBT.out", output) == 0)
-  //  cout << "Cannot open file for writing.\n\n";
 
   if (toWrite) {
     cout << "\n\n"
@@ -248,16 +229,14 @@ void BagDimlp::ComputeAcc(
   if (!buf)
     cout << "Cannot open file for writing";
 
-  // ostream outFile(&buf);
-
   for (p = 0, good = 0, bad = 0; p < nbPat; p++) {
     BagDimlp::ForwardOneExample1(data, p);
 
     ptrOut = GlobalOut;
-    ptrTar = target.GetExample(p);
+    ptrTar.assign(target.GetExample(p), target.GetExample(p) + nbOut);
 
-    ansNet = Max(ptrOut, nbOut);
-    ansTar = Max(ptrTar, nbOut);
+    ansNet = Max(ptrOut.data(), nbOut);
+    ansTar = Max(ptrTar.data(), nbOut);
 
     if (ansNet == ansTar)
       good++;
@@ -265,11 +244,10 @@ void BagDimlp::ComputeAcc(
       bad++;
 
     if (toWrite) {
-      for (o = 0, ptrOut = GlobalOut; o < nbOut; o++, ptrOut++)
-        // outFile << *ptrOut << " ";
-        buf << *ptrOut << " ";
+      for (int o = 0; o < nbOut; o++) {
+        buf << ptrOut[o] << " ";
+      }
 
-      // outFile << "\n";
       buf << "\n";
     }
   }
@@ -278,32 +256,8 @@ void BagDimlp::ComputeAcc(
          << "Written.\n\n";
   }
 
-  *accuracy = good + bad;
+  *accuracy = static_cast<float>(good) + static_cast<float>(bad);
   *accuracy = (float)good / *accuracy;
-}
-
-///////////////////////////////////////////////////////////////////
-
-void BagDimlp::Del()
-
-{
-  int n;
-
-  for (n = 0; n < NbDimlpNets; n++) {
-    VectData[n]->LightDel();
-    VectDataClass[n]->LightDel();
-    ValData[n]->LightDel();
-    ValDataClass[n]->LightDel();
-
-    VectDimlp[n]->Del();
-  }
-
-  delete VectData;
-  delete VectDataClass;
-  delete ValData;
-  delete ValDataClass;
-  delete VectDimlp;
-  delete GlobalOut;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -325,26 +279,16 @@ BagDimlp::BagDimlp(
     int seed) :
 
                 Dimlp(eta, mu, flat, errParam, accuracyParam, deltaErrParam,
-                      discrLevels, showErrParam, nbEpochsParam, nbLayers, nbNeurons, weightFile, seed)
+                      discrLevels, showErrParam, nbEpochsParam, nbLayers, nbNeurons, weightFile, seed),
+                NbDimlpNets(nbDimlpNets), Eta(eta), Mu(mu), Flat(flat), ErrParam(errParam), AccuracyParam(accuracyParam),
+                DeltaErrParam(deltaErrParam), DiscrLevels(discrLevels), ShowErrParam(showErrParam),
+                NbEpochsParam(nbEpochsParam), NbLayers(nbLayers), WeightFile(weightFile)
 
 {
-  int n;
 
-  Eta = eta;
-  Mu = mu;
-  Flat = flat;
-  ErrParam = errParam;
-  AccuracyParam = accuracyParam;
-  DeltaErrParam = deltaErrParam;
-  DiscrLevels = discrLevels;
-  ShowErrParam = showErrParam;
-  NbEpochsParam = nbEpochsParam;
-  NbLayers = nbLayers;
   NbNeurons.assign(nbLayers, 0);
-  NbDimlpNets = nbDimlpNets;
-  WeightFile = weightFile;
 
-  for (n = 0; n < nbLayers; n++)
+  for (int n = 0; n < nbLayers; n++)
     NbNeurons[n] = nbNeurons[n];
 
   cout << "Number of networks = " << nbDimlpNets << "\n\n";
@@ -357,7 +301,8 @@ BagDimlp::BagDimlp(
   VectDimlp = new Dimlp *[nbDimlpNets];
 
   NbOut = nbNeurons[NbLayers - 1];
-  GlobalOut = new float[NbOut];
+  GlobalOut.resize(NbOut);
+  // GlobalOut = new float[NbOut];
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -370,18 +315,13 @@ BagDimlp::BagDimlp(
     const char weightFile[],
     int seed) :
 
-                Dimlp(0, 0, 0, 0, 0, 0, discrLevels, 0, 0, nbLayers, nbNeurons, weightFile, seed)
+                Dimlp(0, 0, 0, 0, 0, 0, discrLevels, 0, 0, nbLayers, nbNeurons, weightFile, seed),
+                NbDimlpNets(nbDimlpNets), DiscrLevels(discrLevels), NbLayers(nbLayers), WeightFile(weightFile)
 
 {
-  int n;
-
-  DiscrLevels = discrLevels;
-  NbLayers = nbLayers;
   NbNeurons.assign(nbLayers, 0);
-  NbDimlpNets = nbDimlpNets;
-  WeightFile = weightFile;
 
-  for (n = 0; n < nbLayers; n++)
+  for (int n = 0; n < nbLayers; n++)
     NbNeurons[n] = nbNeurons[n];
 
   cout << "Number of networks = " << nbDimlpNets << "\n\n";
@@ -389,7 +329,8 @@ BagDimlp::BagDimlp(
   VectDimlp = new Dimlp *[nbDimlpNets];
 
   NbOut = nbNeurons[NbLayers - 1];
-  GlobalOut = new float[NbOut];
+  // GlobalOut = new float[NbOut];
+  GlobalOut.resize(NbOut);
 }
 
 ///////////////////////////////////////////////////////////////////

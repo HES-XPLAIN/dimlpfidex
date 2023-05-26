@@ -1,7 +1,8 @@
 #ifndef ERRFUNCT_H
 #define ERRFUNCT_H
 
-using namespace std;
-extern float Lmse(int nbTar, float netOut[], float target[]);
+#include <vector>
+
+extern float Lmse(int nbTar, std::vector<float> netOut, std::vector<float> target);
 
 #endif

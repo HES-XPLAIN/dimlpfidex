@@ -1,11 +1,10 @@
 #ifndef BAGDIMLP_H
 #define BAGDIMLP_H
 
-using namespace std;
 #include "dimlp.h"
 #include "virtHyp.h"
 
-#define VIRT 1
+const int VIRT = 1;
 
 class BagDimlp : public Dimlp {
   int NbDimlpNets;
@@ -25,7 +24,7 @@ class BagDimlp : public Dimlp {
 
   std::vector<int> NbNeurons;
 
-  float *GlobalOut;
+  std::vector<float> GlobalOut;
 
   Dimlp **VectDimlp;
   DataSet **VectData;
@@ -38,12 +37,10 @@ class BagDimlp : public Dimlp {
   //---------------------------------------------------------------------
 
 public:
-  float *GetGlobalOut() { return GlobalOut; }
+  float *GetGlobalOut() { return GlobalOut.data(); }
   void MakeDataSets(DataSet &masterTrain, DataSet &masterClass, int nbPat);
 
   void TrainAll(
-      DataSet &masterTrain,
-      DataSet &masterClass,
       DataSet &test,
       DataSet &testTar,
       const char genericWeightsFile[],
@@ -53,12 +50,11 @@ public:
 
   VirtualHyp *MakeGlobalVirt(int nbBins, int nbIn, int multiple);
 
-  void ForwardOneExample1(DataSet &data, int index);
-  void ForwardOneExample1();
+  using BpNN::ForwardOneExample1;
+  void ForwardOneExample1(DataSet &data, int index) override;
+  void ForwardOneExample1() override;
 
   void ComputeAcc(DataSet &data, DataSet &target, float *accuracy, int tW, const char predFile[]);
-
-  void Del();
 
   BagDimlp(
       float eta,

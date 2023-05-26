@@ -26,7 +26,6 @@ class LayerDimlp2 : public Layer {
 public:
   void Del() {
     delete Stair;
-    Layer::Del();
   }
 
   LayerDimlp2(

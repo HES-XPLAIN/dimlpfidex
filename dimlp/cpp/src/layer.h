@@ -1,20 +1,24 @@
 #ifndef LAYER_H
 #define LAYER_H
 
-using namespace std;
 #include <iostream>
 
 #include "errFunct.h"
+#include "randFun.h"
 #include "standAct.h"
+#include <math.h>
 
-#define LAYER 1
+const int LAYER = 1;
 
 ///////////////////////////////////////////////////////////////////
 
 class Layer {
-  float Eta, Mu, Flat;
+  float Eta;
+  float Mu;
+  float Flat;
 
-  float EtaCentre, EtaSpread;
+  float EtaCentre;
+  float EtaSpread;
 
   int NbDown;
   int NbUp;
@@ -23,15 +27,15 @@ class Layer {
 
   float *Down;
   float *DeltaDown;
-  float *Up;
-  float *DeltaUp;
+  vector<float> Up;
+  vector<float> DeltaUp;
 
-  float *Weights;
-  float *OldWeights;
-  float *ValidWeights;
-  float *BiasWeights;
-  float *OldBiasWeights;
-  float *ValidBiasWeights;
+  vector<float> Weights;
+  vector<float> OldWeights;
+  vector<float> ValidWeights;
+  vector<float> BiasWeights;
+  vector<float> OldBiasWeights;
+  vector<float> ValidBiasWeights;
 
   //----------------------------------------------------------------
 
@@ -61,15 +65,15 @@ class Layer {
 public:
   void InitWeights();
 
-  int GetNbDown() { return NbDown; }
-  int GetNbUp() { return NbUp; }
+  int GetNbDown() const { return NbDown; }
+  int GetNbUp() const { return NbUp; }
 
   float *GetDown() { return Down; }
-  float *GetUp() { return Up; }
-  float *GetDeltaUp() { return DeltaUp; }
+  float *GetUp() { return Up.data(); }
+  float *GetDeltaUp() { return DeltaUp.data(); }
 
-  float *GetWeights() { return Weights; }
-  float *GetBias() { return BiasWeights; }
+  float *GetWeights() { return Weights.data(); }
+  float *GetBias() { return BiasWeights.data(); }
 
   void SetDown(float pat[]) { Down = pat; }
   void SetDeltaDown(float pat[]) { DeltaDown = pat; }
@@ -77,7 +81,7 @@ public:
   virtual float Activation1(float x) { return Sigmoid(x); }
   virtual float Activation2(float x) { return Sigmoid(x); }
 
-  virtual float HalfErrFunct(int nbTar, float netOut[], float target[]) { return Lmse(nbTar, netOut, target); }
+  virtual float HalfErrFunct(int nbTar, const std::vector<float> &netOut, const std::vector<float> &target) { return Lmse(nbTar, netOut, target); }
 
   void ReadWeights(istream &inFile);
   void WriteWeights(ostream &outFile);
@@ -124,7 +128,6 @@ public:
     EtaCentre = etaCentre;
     EtaSpread = etaSpread;
   }
-  void Del();
 
   //----------------------------------------------------------------
 

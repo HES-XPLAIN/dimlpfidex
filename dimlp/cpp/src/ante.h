@@ -1,7 +1,6 @@
 #ifndef ANTE_H
 #define ANTE_H
 
-using namespace std;
 #ifndef RULE
 #include "rule.h"
 #endif

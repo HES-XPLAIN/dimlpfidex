@@ -285,19 +285,19 @@ float BpNN::ComputeErrorSameAct(
   int good;
   int bad;
   float sum;
-  float *ptrOut;
-  float *ptrTar;
+  std::vector<float> ptrOut;
+  std::vector<float> ptrTar;
   const int nbPat = data.GetNbEx();
   const int nbOut = target.GetNbAttr();
 
   for (p = 0, sum = 0.0, good = 0, bad = 0; p < nbPat; p++) {
     ForwardOneExample2(data, p);
 
-    ptrOut = VecLayer[NbWeightLayers - 1]->GetUp();
-    ptrTar = target.GetExample(p);
+    ptrOut.assign(VecLayer[NbWeightLayers - 1]->GetUp(), VecLayer[NbWeightLayers - 1]->GetUp() + nbOut);
+    ptrTar.assign(target.GetExample(p), target.GetExample(p) + nbOut);
 
-    ansNet = Max(ptrOut, nbOut);
-    ansTar = Max(ptrTar, nbOut);
+    ansNet = Max(ptrOut.data(), nbOut);
+    ansTar = Max(ptrTar.data(), nbOut);
 
     sum += VecLayer[NbWeightLayers - 1]->HalfErrFunct(nbOut, ptrOut, ptrTar);
 
@@ -564,19 +564,19 @@ float BpNN::ComputeError(
   int good;
   int bad;
   float sum;
-  float *ptrOut;
-  float *ptrTar;
+  vector<float> ptrOut;
+  vector<float> ptrTar;
   const int nbPat = data.GetNbEx();
   const int nbOut = target.GetNbAttr();
 
   for (p = 0, sum = 0.0, good = 0, bad = 0; p < nbPat; p++) {
     ForwardOneExample1(data, p);
 
-    ptrOut = VecLayer[NbWeightLayers - 1]->GetUp();
-    ptrTar = target.GetExample(p);
+    ptrOut.assign(VecLayer[NbWeightLayers - 1]->GetUp(), VecLayer[NbWeightLayers - 1]->GetUp() + nbOut);
+    ptrTar.assign(target.GetExample(p), target.GetExample(p) + nbOut);
 
-    ansNet = Max(ptrOut, nbOut);
-    ansTar = Max(ptrTar, nbOut);
+    ansNet = Max(ptrOut.data(), nbOut);
+    ansTar = Max(ptrTar.data(), nbOut);
 
     sum += VecLayer[NbWeightLayers - 1]->HalfErrFunct(nbOut, ptrOut, ptrTar);
 
@@ -861,9 +861,6 @@ void BpNN::Del()
 {
 
   delete NbNeurons;
-
-  for (int l = 0; l < NbWeightLayers; l++)
-    VecLayer[l]->Del();
 
   delete VecLayer;
 }
