@@ -1,15 +1,17 @@
 #include "dataSet.h"
-using namespace std;
 
+using namespace std;
 ///////////////////////////////////////////////////////////////////
 
-void DataSet::InsertExample(const std::vector<float> &example, int index) {
-  float **newEx = Set + index;
+void DataSet::InsertExample(const vector<float> &example, int index)
 
-  *newEx = new float[NbAttr];
+{
+  vector<float> &newEx = Set[index];
+  newEx.resize(NbAttr);
 
-  for (int i = 0; i < NbAttr; i++)
-    (*newEx)[i] = example[i];
+  for (int i = 0; i < NbAttr; i++) {
+    newEx[i] = example[i];
+  }
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -56,9 +58,11 @@ int DataSet::FirstLecture(const char nameFile[]) const
 
 ///////////////////////////////////////////////////////////////////
 
-void DataSet::SecondLecture(const char nameFile[]) {
+void DataSet::SecondLecture(const char nameFile[])
+
+{
   filebuf buf;
-  std::vector<float> oneExample;
+  vector<float> oneExample(NbAttr);
 
   cout << nameFile << ": "
        << "Creating dataset structures ..." << endl;
@@ -66,12 +70,10 @@ void DataSet::SecondLecture(const char nameFile[]) {
   buf.open(nameFile, ios_base::in);
   istream inFile(&buf);
 
-  oneExample.resize(NbAttr);
-
   for (int count = 0; count < NbEx; count++) {
-    for (int attr = 0; attr < NbAttr; attr++)
+    for (int attr = 0; attr < NbAttr; attr++) {
       inFile >> oneExample[attr];
-
+    }
     InsertExample(oneExample, count);
   }
 
@@ -84,10 +86,12 @@ void DataSet::SecondLecture(const char nameFile[]) {
 void DataSet::Del()
 
 {
+  /*
   for (int p = 0; p < NbEx; p++)
     delete Set[p];
 
   delete Set;
+  */
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -96,21 +100,21 @@ StringInt *DataSet::Select(Rule *r)
 
 {
   int a;
-  int p;
   int nextPat;
-  float **ptrPat;
   int nbAnt = r->GetNbAnt();
 
   auto savePat = new StringInt;
 
-  for (p = 0, ptrPat = Set; p < NbEx; p++, ptrPat++) {
+  for (int p = 0; p < NbEx; p++) {
+    const vector<float> &example = Set[p];
+
     for (a = 0, nextPat = 0, r->GoToBeg(); a < nbAnt; a++, r->GoToNext()) {
       if (r->IsAntDeleted() == 1)
         continue;
 
       switch (r->GetRel()) {
       case '<':
-        if (*(*ptrPat + r->GetVar()) < r->GetVal())
+        if (example[r->GetVar()] < r->GetVal())
           continue;
         else {
           nextPat = 1;
@@ -118,13 +122,12 @@ StringInt *DataSet::Select(Rule *r)
         }
 
       case '>':
-        if (*(*ptrPat + r->GetVar()) >= r->GetVal())
+        if (example[r->GetVar()] >= r->GetVal())
           continue;
         else {
           nextPat = 1;
           break;
         }
-
       default:
         break;
       }
@@ -149,7 +152,6 @@ StringInt *DataSet::Select(Rule *r, StringInt *subSet)
   int p;
   int indPat;
   int nextPat;
-  float **ptrPat;
 
   int nbAnt = r->GetNbAnt();
   int nbEx = subSet->GetNbEl();
@@ -157,7 +159,7 @@ StringInt *DataSet::Select(Rule *r, StringInt *subSet)
 
   for (p = 0, subSet->GoToBeg(); p < nbEx; p++, subSet->GoToNext()) {
     indPat = subSet->GetVal();
-    ptrPat = Set + indPat;
+    const vector<float> &example = Set[indPat];
 
     for (a = 0, nextPat = 0, r->GoToBeg(); a < nbAnt; a++, r->GoToNext()) {
       if (r->IsAntDeleted() == 1)
@@ -165,7 +167,7 @@ StringInt *DataSet::Select(Rule *r, StringInt *subSet)
 
       switch (r->GetRel()) {
       case '<':
-        if (*(*ptrPat + r->GetVar()) < r->GetVal())
+        if (example[r->GetVar()] < r->GetVal())
           continue;
         else {
           nextPat = 1;
@@ -173,7 +175,7 @@ StringInt *DataSet::Select(Rule *r, StringInt *subSet)
         }
 
       case '>':
-        if (*(*ptrPat + r->GetVar()) >= r->GetVal())
+        if (example[r->GetVar()] >= r->GetVal())
           continue;
         else {
           nextPat = 1;
@@ -200,7 +202,7 @@ StringInt *DataSet::Select(Rule *r, StringInt *subSet)
 DataSet::DataSet(int nbEx) : NbEx(nbEx)
 
 {
-  Set = new float *[NbEx];
+  Set.resize(NbEx);
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -209,7 +211,7 @@ DataSet::DataSet(const char nameFile[], int nbAttr) : NbAttr(nbAttr)
 
 {
   NbEx = FirstLecture(nameFile);
-  Set = new float *[NbEx];
+  Set.resize(NbEx);
 
   cout << "Number of patterns in file " << nameFile << ": ";
   cout << NbEx << endl;
@@ -223,18 +225,17 @@ DataSet::DataSet(DataSet &bigData, StringInt *listPat) : NbEx(listPat->GetNbEl()
 
 {
   int p;
-  const float *ptrEx;
-  float *ptrSub;
 
-  Set = new float *[NbEx];
+  Set.resize(NbEx);
 
   for (p = 0, listPat->GoToBeg(); p < NbEx; p++, listPat->GoToNext()) {
-    Set[p] = new float[NbAttr];
-    ptrSub = Set[p];
-    ptrEx = bigData.GetExample(listPat->GetVal());
+    Set[p].resize(NbAttr);
+    vector<float> &subSet = Set[p];
+    const vector<float> &example = bigData.GetExample(listPat->GetVal());
 
-    for (int i = 0; i < NbAttr; i++, ptrSub++, ptrEx++)
-      *ptrSub = *ptrEx;
+    for (int i = 0; i < NbAttr; i++) {
+      subSet[i] = example[i];
+    }
   }
 }
 
@@ -245,20 +246,24 @@ DataSet::DataSet(DataSet &data1, DataSet &data2) : NbEx(data1.GetNbEx() + data2.
 {
   int i;
 
-  Set = new float *[NbEx];
+  Set.resize(NbEx);
 
   for (i = 0; i < data1.GetNbEx(); i++)
     Set[i] = data1.GetExample(i);
 
   for (int j = 0; j < data2.GetNbEx(); i++, j++)
     Set[i] = data2.GetExample(j);
+
+  // cout << "Created merged dataset with " << NbEx << " examples." << "\n";
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-DataSet::DataSet(DataSet &master, const int *indPat, int nbEx) : NbEx(nbEx), NbAttr(master.GetNbAttr()), Set(new float *[nbEx])
+DataSet::DataSet(DataSet &master, int *indPat, int nbEx) : NbEx(nbEx), NbAttr(master.GetNbAttr())
 
 {
+  Set.resize(NbEx);
+
   for (int i = 0; i < nbEx; i++)
     Set[i] = master.GetExample(indPat[i]);
 }
@@ -268,29 +273,26 @@ DataSet::DataSet(DataSet &master, const int *indPat, int nbEx) : NbEx(nbEx), NbA
 void DataSet::ExtractDataAndTarget(
     DataSet &data1, int nbAttr1, DataSet &data2, int nbAttr2) {
   int j;
-  const float *ptr;
-  float *ptrD1;
-  float *ptrD2;
-  std::vector<float> vecData1(nbAttr1);
-  std::vector<float> vecData2(nbAttr2);
+  vector<float> vecData1(nbAttr1);
+  vector<float> vecData2(nbAttr2);
 
   data1.SetNbAttr(nbAttr1);
   data2.SetNbAttr(nbAttr2);
 
   for (int p = 0; p < NbEx; p++) {
-    ptr = Set[p];
-    ptrD1 = vecData1.data();
-    ptrD2 = vecData2.data();
+    const vector<float> &example = Set[p];
+    vector<float> &data1Example = vecData1;
+    vector<float> &data2Example = vecData2;
 
-    for (j = 0; j < nbAttr1; j++, ptrD1++, ptr++)
-      *ptrD1 = *ptr;
+    for (j = 0; j < nbAttr1; j++)
+      data1Example[j] = example[j];
 
-    data1.InsertExample(vecData1, p);
+    data1.InsertExample(data1Example, p);
 
-    for (j = 0; j < nbAttr2; j++, ptrD2++, ptr++)
-      *ptrD2 = *ptr;
+    for (j = 0; j < nbAttr2; j++)
+      data2Example[j] = example[j + nbAttr1];
 
-    data2.InsertExample(vecData2, p);
+    data2.InsertExample(data2Example, p);
   }
 }
 

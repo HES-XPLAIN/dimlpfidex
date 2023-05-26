@@ -14,7 +14,7 @@ class DataSet {
   int NbEx = 0;
   int NbAttr = 0;
 
-  float **Set = nullptr;
+  vector<vector<float>> Set;
 
   // ------------------------------------------------------------------
 
@@ -22,7 +22,7 @@ class DataSet {
   void SecondLecture(const char nameFile[]);
 
   void SetNbAttr(int nbAttr) { NbAttr = nbAttr; }
-  void InsertExample(const std::vector<float> &example, int index);
+  void InsertExample(const vector<float> &example, int index);
 
   // ------------------------------------------------------------------
 
@@ -31,13 +31,13 @@ public:
   explicit DataSet(int nbEx);
   DataSet(const char nameFile[], int nbAttr);
   DataSet(DataSet &bigData, StringInt *listPat);
-  DataSet(DataSet &master, const int *indPat, int nbEx);
+  DataSet(DataSet &master, int *indPat, int nbEx);
   DataSet(DataSet &data1, DataSet &data2);
 
   void Del();
-  void LightDel() { delete Set; }
+  // void LightDel() { delete Set; }
 
-  float *GetExample(int index) { return *(Set + index); }
+  const vector<float> &GetExample(int index) { return Set[index]; }
   int GetNbEx() const { return NbEx; }
   int GetNbAttr() const { return NbAttr; }
 

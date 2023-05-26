@@ -1,9 +1,9 @@
-#include "layerD2.h"
 using namespace std;
+#include "layerDmp.h"
 
 ///////////////////////////////////////////////////////////////////
 
-LayerDimlp2::LayerDimlp2(
+LayerDimlp::LayerDimlp(
     float eta,
     float mu,
     float flat,
@@ -16,7 +16,7 @@ LayerDimlp2::LayerDimlp2(
                    Layer(eta, mu, flat, nbDown, nbUp, nbWeights, nbWeightsForInit)
 
 {
-  std::unique_ptr<StairObj> stair(new StairObj(nbKnots));
+  Stair = new StairObj(nbKnots);
 }
 
 ///////////////////////////////////////////////////////////////////
