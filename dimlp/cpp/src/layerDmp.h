@@ -23,7 +23,6 @@ class LayerDimlp : public Layer {
 public:
   void Del() {
     delete Stair;
-    Layer::Del();
   }
 
   LayerDimlp(

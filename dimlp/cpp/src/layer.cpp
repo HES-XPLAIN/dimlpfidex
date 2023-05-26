@@ -1,9 +1,6 @@
-using namespace std;
-#include <math.h>
-
 #include "layer.h"
-#include "randFun.h"
 
+using namespace std;
 ///////////////////////////////////////////////////////////////////
 
 void Layer::AssignParam(
@@ -30,14 +27,14 @@ void Layer::AssignParam(
 void Layer::CreateStruct()
 
 {
-  Up = new float[NbUp];
-  DeltaUp = new float[NbUp];
-  Weights = new float[NbWeights];
-  OldWeights = new float[NbWeights];
-  ValidWeights = new float[NbWeights];
-  BiasWeights = new float[NbUp];
-  OldBiasWeights = new float[NbUp];
-  ValidBiasWeights = new float[NbUp];
+  Up.resize(NbUp);
+  DeltaUp.resize(NbUp);
+  Weights.resize(NbWeights);
+  OldWeights.resize(NbWeights);
+  ValidWeights.resize(NbWeights);
+  BiasWeights.resize(NbUp);
+  OldBiasWeights.resize(NbUp);
+  ValidBiasWeights.resize(NbUp);
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -48,22 +45,21 @@ void Layer::InitWeights()
   int k;
   float *ptrW;
   float *oldW;
-  const float sqrt3 = sqrt(3);
+  const auto sqrt3 = static_cast<float>(sqrt(3));
 
-  float bound = sqrt3 / sqrt(NbWeightsForInit);
+  float bound = sqrt3 / static_cast<float>(sqrt(NbWeightsForInit));
   FloatRandomFunction randVal(-bound, bound);
-  //   FloatRandomFunction randVal(-1.0, 1.0);
 
-  oldW = OldWeights;
+  oldW = OldWeights.data();
 
-  for (k = 0, ptrW = Weights; k < NbWeights; k++, ptrW++, oldW++) {
+  for (k = 0, ptrW = Weights.data(); k < NbWeights; k++, ptrW++, oldW++) {
     *ptrW = randVal.RandomFloat();
     *oldW = *ptrW;
   }
 
-  oldW = OldBiasWeights;
+  oldW = OldBiasWeights.data();
 
-  for (k = 0, ptrW = BiasWeights; k < NbUp; k++, ptrW++, oldW++) {
+  for (k = 0, ptrW = BiasWeights.data(); k < NbUp; k++, ptrW++, oldW++) {
     *ptrW = randVal.RandomFloat();
     *oldW = *ptrW;
   }
@@ -71,21 +67,10 @@ void Layer::InitWeights()
 
 ///////////////////////////////////////////////////////////////////
 
-void Layer::ApplyTransf1()
-
-{
-  float *up = Up;
-  int n;
-
-  for (n = 0; n < NbUp; n++, up++)
-    *up = Activation1(*up);
-  /*
-  up = Up;
-     for (n=0; n<NbUp; n++, up++)
-         cout << *up << " ";
-  cout << "\n";
-  up = Up;
-  */
+void Layer::ApplyTransf1() {
+  for (float &value : Up) {
+    value = Activation1(value);
+  }
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -93,11 +78,9 @@ void Layer::ApplyTransf1()
 void Layer::ApplyTransf2()
 
 {
-  float *up = Up;
-  int n;
-
-  for (n = 0; n < NbUp; n++, up++)
-    *up = Activation2(*up);
+  for (float &value : Up) {
+    value = Activation2(value);
+  }
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -105,24 +88,24 @@ void Layer::ApplyTransf2()
 void Layer::ComputeDeltaDownStand()
 
 {
-  int i, j;
+  int j;
   float sum;
-  float *down;
+  const float *down;
   float *deltaDown;
-  float *weights;
-  float *deltaUp;
+  const float *weights;
+  const float *deltaUp;
 
   down = Down;
   deltaDown = DeltaDown;
 
-  for (i = 0; i < NbDown; i++, down++, deltaDown++) {
-    weights = Weights + i;
-    deltaUp = DeltaUp;
+  for (int i = 0; i < NbDown; i++, down++, deltaDown++) {
+    weights = Weights.data() + i;
+    deltaUp = DeltaUp.data();
 
     for (j = 0, sum = 0.0; j < NbUp; j++, deltaUp++, weights += NbDown)
       sum += (*weights) * (*deltaUp);
 
-    *deltaDown = ((*down) * (1.0 - *down) + Flat) * sum;
+    *deltaDown = ((*down) * (1.0f - *down) + Flat) * sum;
   }
 }
 
@@ -131,28 +114,25 @@ void Layer::ComputeDeltaDownStand()
 void Layer::ComputeDeltaDownSpec2()
 
 {
-  int i, j;
+  int j;
   float sum;
-  float *down;
+  const float *down;
   float *deltaDown;
-  float *weights;
-  float *deltaUp;
+  const float *weights;
+  const float *deltaUp;
 
   down = Down;
   deltaDown = DeltaDown;
 
-  for (i = 0; i < NbDown; i++, down++, deltaDown++) {
-    weights = Weights + i;
-    deltaUp = DeltaUp + i;
+  for (int i = 0; i < NbDown; i++, down++, deltaDown++) {
+    weights = Weights.data() + i;
+    deltaUp = DeltaUp.data() + i;
 
     for (j = 0, sum = 0.0; j < NbUp; j += NbDown, deltaUp += NbDown, weights += NbDown)
       sum += (*weights) * (*deltaUp);
 
     *deltaDown = (*down) * sum;
-
-    // cout << *deltaDown << " ";
   }
-  // cout << "\n";
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -160,14 +140,13 @@ void Layer::ComputeDeltaDownSpec2()
 void Layer::AdaptBiasStand()
 
 {
-  int i;
   float biasDelta;
 
-  float *bias = BiasWeights;
-  float *oldBias = OldBiasWeights;
-  float *deltaUp = DeltaUp;
+  float *bias = BiasWeights.data();
+  float *oldBias = OldBiasWeights.data();
+  const float *deltaUp = DeltaUp.data();
 
-  for (i = 0; i < NbUp; i++, bias++, oldBias++, deltaUp++) {
+  for (int i = 0; i < NbUp; i++, bias++, oldBias++, deltaUp++) {
     biasDelta = (Eta * (*deltaUp)) + (Mu * ((*bias) - (*oldBias)));
 
     *oldBias = *bias;
@@ -181,16 +160,17 @@ void Layer::AdaptBiasStand()
 void Layer::AdaptBiasSpec2()
 
 {
-  int i, j;
+  int i;
+  int j;
   float biasDelta;
   float norm;
 
-  float *down = Down;
-  float *up = Up;
-  float *bias = BiasWeights;
-  float *weights = Weights;
-  float *oldBias = OldBiasWeights;
-  float *deltaUp = DeltaUp;
+  const float *down = Down;
+  const float *up = Up.data();
+  float *bias = BiasWeights.data();
+  const float *weights = Weights.data();
+  const float *oldBias = OldBiasWeights.data();
+  const float *deltaUp = DeltaUp.data();
 
   for (i = 0, j = 0; i < NbUp; i++, j++, bias++, weights++, oldBias++, deltaUp++, down++, up++) {
     if (j == NbDown) {
@@ -201,11 +181,7 @@ void Layer::AdaptBiasSpec2()
     norm = (*down - *weights) * (*down - *weights) /
            ((*bias) * (*bias) * (*bias));
 
-    biasDelta = (EtaSpread * (*deltaUp) * norm); /* +
-                (Mu * ((*bias) - (*oldBias)));
-
-    *oldBias = *bias;
-*/
+    biasDelta = (EtaSpread * (*deltaUp) * norm);
     *bias += biasDelta;
   }
 }
@@ -218,16 +194,16 @@ void Layer::ReadWeights(istream &inFile)
   int w;
   float *ptrW;
 
-  float *ptrOldW = OldBiasWeights;
+  float *ptrOldW = OldBiasWeights.data();
 
-  for (w = 0, ptrW = BiasWeights; w < NbUp; w++, ptrW++, ptrOldW++) {
+  for (w = 0, ptrW = BiasWeights.data(); w < NbUp; w++, ptrW++, ptrOldW++) {
     inFile >> *ptrW;
     *ptrOldW = *ptrW;
   }
 
-  ptrOldW = OldWeights;
+  ptrOldW = OldWeights.data();
 
-  for (w = 0, ptrW = Weights; w < NbWeights; w++, ptrW++, ptrOldW++) {
+  for (w = 0, ptrW = Weights.data(); w < NbWeights; w++, ptrW++, ptrOldW++) {
     inFile >> *ptrW;
     *ptrOldW = *ptrW;
   }
@@ -239,13 +215,13 @@ void Layer::WriteWeights(ostream &outFile)
 
 {
   int w;
-  float *ptrW;
+  const float *ptrW;
 
-  for (w = 0, ptrW = BiasWeights; w < NbUp; w++, ptrW++)
+  for (w = 0, ptrW = BiasWeights.data(); w < NbUp; w++, ptrW++)
     outFile << *ptrW << " ";
   outFile << "\n";
 
-  for (w = 0, ptrW = Weights; w < NbWeights; w++, ptrW++)
+  for (w = 0, ptrW = Weights.data(); w < NbWeights; w++, ptrW++)
     outFile << *ptrW << " ";
   outFile << "\n";
 }
@@ -283,22 +259,19 @@ void Layer::PopWeights()
 void Layer::ForwFully()
 
 {
-  int i, j;
-  float *down;
+  const float *down;
 
-  float *up = Up;
-  float *weights = Weights;
-  float *bias = BiasWeights;
+  float *up = Up.data();
+  const float *weights = Weights.data();
+  const float *bias = BiasWeights.data();
 
-  for (i = 0; i < NbUp; i++, up++, bias++) {
+  for (int i = 0; i < NbUp; i++, up++, bias++) {
     down = Down;
     *up = *bias;
 
-    for (j = 0; j < NbDown; j++, down++, weights++)
+    for (int j = 0; j < NbDown; j++, down++, weights++)
       *up += (*down) * (*weights);
-    // cout << *up << " ";
   }
-  // cout << "\n";
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -306,12 +279,13 @@ void Layer::ForwFully()
 void Layer::ForwSpec()
 
 {
-  int i, j;
+  int i;
+  int j;
 
-  float *up = Up;
-  float *down = Down;
-  float *weights = Weights;
-  float *bias = BiasWeights;
+  float *up = Up.data();
+  const float *down = Down;
+  const float *weights = Weights.data();
+  const float *bias = BiasWeights.data();
 
   for (i = 0, j = 0; i < NbUp; i++, j++, down++, weights++, up++, bias++) {
     if (j == NbDown) {
@@ -329,12 +303,13 @@ void Layer::ForwSpec()
 void Layer::ForwSpec2()
 
 {
-  int i, j;
+  int i;
+  int j;
 
-  float *up = Up;
-  float *down = Down;
-  float *weights = Weights;
-  float *bias = BiasWeights;
+  float *up = Up.data();
+  const float *down = Down;
+  const float *weights = Weights.data();
+  const float *bias = BiasWeights.data();
 
   for (i = 0, j = 0; i < NbUp; i++, j++, down++, weights++, up++, bias++) {
     if (j == NbDown) {
@@ -352,22 +327,20 @@ void Layer::ForwSpec2()
 void Layer::ForwRadial()
 
 {
-  int i, j;
-  float *down;
+  const float *down;
 
-  float *up = Up;
-  float *weights = Weights;
-  float *bias = BiasWeights;
+  float *up = Up.data();
+  const float *weights = Weights.data();
+  const float *bias = BiasWeights.data();
 
-  for (i = 0; i < NbUp; i++, up++, bias++) {
+  for (int i = 0; i < NbUp; i++, up++, bias++) {
     down = Down;
     *up = 0.0;
 
-    for (j = 0; j < NbDown; j++, down++, weights++)
+    for (int j = 0; j < NbDown; j++, down++, weights++)
       *up += (((*down) - (*weights)) * ((*down) - (*weights)));
 
     *up = sqrt(*up);
-    //       *bias = sqrt(*bias);
     *up = *up * *bias;
   }
 }
@@ -377,13 +350,12 @@ void Layer::ForwRadial()
 void Layer::ComputeDeltaOut(float target[])
 
 {
-  int i;
 
-  float *out = Up;
-  float *deltaOut = DeltaUp;
+  const float *out = Up.data();
+  float *deltaOut = DeltaUp.data();
 
-  for (i = 0; i < NbUp; i++, out++, deltaOut++, target++)
-    *deltaOut = ((*out) * (1.0 - *out) + Flat) * (*target - *out);
+  for (int i = 0; i < NbUp; i++, out++, deltaOut++, target++)
+    *deltaOut = ((*out) * (1.0f - *out) + Flat) * (*target - *out);
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -391,15 +363,15 @@ void Layer::ComputeDeltaOut(float target[])
 void Layer::AdaptWeightsFully()
 
 {
-  int i, j;
+  int j;
   float weightDelta;
 
-  float *down = Down;
-  float *deltaUp = DeltaUp;
-  float *weights = Weights;
-  float *oldWeights = OldWeights;
+  const float *down;
+  const float *deltaUp = DeltaUp.data();
+  float *weights = Weights.data();
+  float *oldWeights = OldWeights.data();
 
-  for (i = 0; i < NbUp; i++, deltaUp++) {
+  for (int i = 0; i < NbUp; i++, deltaUp++) {
     for (j = 0, down = Down; j < NbDown; j++, down++, weights++, oldWeights++) {
       weightDelta = (Eta * (*deltaUp) * (*down)) +
                     (Mu * ((*weights) - (*oldWeights)));
@@ -416,13 +388,14 @@ void Layer::AdaptWeightsFully()
 void Layer::AdaptWeightsSpec()
 
 {
-  int i, j;
+  int i;
+  int j;
   float weightDelta;
 
-  float *down = Down;
-  float *deltaUp = DeltaUp;
-  float *weights = Weights;
-  float *oldWeights = OldWeights;
+  const float *down = Down;
+  const float *deltaUp = DeltaUp.data();
+  float *weights = Weights.data();
+  float *oldWeights = OldWeights.data();
 
   for (i = 0, j = 0; i < NbUp; i++, j++, down++, weights++, oldWeights++, deltaUp++) {
     if (j == NbDown) {
@@ -444,15 +417,17 @@ void Layer::AdaptWeightsSpec()
 void Layer::AdaptWeightsSpec2()
 
 {
-  int i, j;
-  float weightDelta, norm;
+  int i;
+  int j;
+  float weightDelta;
+  float norm;
 
-  float *down = Down;
-  float *up = Up;
-  float *deltaUp = DeltaUp;
-  float *bias = BiasWeights;
-  float *weights = Weights;
-  float *oldWeights = OldWeights;
+  const float *down = Down;
+  const float *up = Up.data();
+  const float *deltaUp = DeltaUp.data();
+  const float *bias = BiasWeights.data();
+  float *weights = Weights.data();
+  const float *oldWeights = OldWeights.data();
 
   for (i = 0, j = 0; i < NbUp; i++, j++, down++, up++, weights++, bias++, oldWeights++, deltaUp++) {
     if (j == NbDown) {
@@ -462,30 +437,9 @@ void Layer::AdaptWeightsSpec2()
 
     norm = (*down - *weights) / ((*bias) * (*bias));
 
-    weightDelta = (EtaCentre * (*deltaUp) * norm); /*+
-                  (Mu * ((*weights) - (*oldWeights)));
-
-    *oldWeights = *weights;
-*/
+    weightDelta = (EtaCentre * (*deltaUp) * norm);
     *weights += weightDelta;
   }
-}
-
-///////////////////////////////////////////////////////////////////
-
-void Layer::Del()
-
-{
-  delete Up;
-  delete DeltaUp;
-
-  delete Weights;
-  delete OldWeights;
-  delete ValidWeights;
-
-  delete BiasWeights;
-  delete OldBiasWeights;
-  delete ValidBiasWeights;
 }
 
 ///////////////////////////////////////////////////////////////////

@@ -647,9 +647,7 @@ int dimlpBT(const string &command) {
       WriteError(errorMsg, accuracyFile);
     }
   }
-
-  net->TrainAll(Train, TrainClass, Test, TestClass, genericWeightsFile, accuracyFile, seed);
-
+  net->TrainAll(Test, TestClass, genericWeightsFile, accuracyFile, seed);
   float acc;
   float accTest;
 
