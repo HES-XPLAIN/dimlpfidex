@@ -874,7 +874,6 @@ void RealHyp::Del()
 
   delete ConfirmedVirt;
   delete ConfBefFirstHyp;
-  delete ClassPatNet;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -905,7 +904,7 @@ RealHyp::RealHyp(
 
   Virt = new VirtualHyp(NbBins, NbIn, Multiple, Bias, Weights);
   Descr = new ThresDescr(NbIn);
-  ClassPatNet = new int[data.GetNbEx()];
+  ClassPatNet.resize(data.GetNbEx());
 
   for (p = 0; p < data.GetNbEx(); p++) {
     Bpnn->ForwardOneExample1(data, p);
@@ -951,7 +950,7 @@ RealHyp::RealHyp(
 
   Virt = new VirtualHyp(NbBins, NbIn, Multiple, Bias, Weights);
   Descr = new ThresDescr(NbIn);
-  ClassPatNet = new int[data.GetNbEx()];
+  ClassPatNet.resize(data.GetNbEx());
 
   for (p = 0; p < data.GetNbEx(); p++) {
     Bpnn->ForwardOneExample1(data, p);
@@ -994,7 +993,7 @@ RealHyp::RealHyp(
 
   Virt = globalVirt;
   Descr = new ThresDescr(NbIn);
-  ClassPatNet = new int[data.GetNbEx()];
+  ClassPatNet.resize(data.GetNbEx());
 
   for (p = 0; p < data.GetNbEx(); p++) {
     Bpnn->ForwardOneExample1(data, p);
@@ -1041,7 +1040,7 @@ RealHyp::RealHyp(
 
   Virt = globalVirt;
   Descr = new ThresDescr(NbIn);
-  ClassPatNet = new int[data.GetNbEx()];
+  ClassPatNet.resize(data.GetNbEx());
 
   for (p = 0; p < data.GetNbEx(); p++) {
     Bpnn->ForwardOneExample1(data, p);

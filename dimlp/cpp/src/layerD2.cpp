@@ -1,5 +1,4 @@
 #include "layerD2.h"
-using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
@@ -13,10 +12,10 @@ LayerDimlp2::LayerDimlp2(
     int nbWeightsForInit,
     int nbKnots) :
 
-                   Layer(eta, mu, flat, nbDown, nbUp, nbWeights, nbWeightsForInit)
+                   Layer(eta, mu, flat, nbDown, nbUp, nbWeights, nbWeightsForInit),
+                   Stair(std::unique_ptr<StairObj>(new StairObj(nbKnots)))
 
 {
-  std::unique_ptr<StairObj> stair(new StairObj(nbKnots));
 }
 
 ///////////////////////////////////////////////////////////////////

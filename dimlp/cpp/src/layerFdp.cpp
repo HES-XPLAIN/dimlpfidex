@@ -1,4 +1,3 @@
-using namespace std;
 #include "layerFdp.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -15,7 +14,6 @@ LayerFdimlp::LayerFdimlp(
                             Layer(eta, mu, flat, nbDown, nbUp, nbWeights, nbWeightsForInit)
 
 {
-  ;
 }
 
 ///////////////////////////////////////////////////////////////////

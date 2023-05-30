@@ -56,9 +56,7 @@ void VirtualHyp::SetVirtualHyp()
 void VirtualHyp::SortVirtualHyp()
 
 {
-  int v;
-
-  for (v = 0; v < NbIn; v++)
+  for (int v = 0; v < NbIn; v++)
     qsort(VecVirtHyp[v], NbHyp, sizeof(float), Compare);
 }
 

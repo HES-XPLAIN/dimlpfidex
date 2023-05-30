@@ -790,7 +790,7 @@ RuleProcessing::RuleProcessing(
     int nbVar,
     int nbHyp,
     DataSet data,
-    int *classPatNet,
+    std::vector<int> classPatNet,
     ThresDescr *descr)
 
 {

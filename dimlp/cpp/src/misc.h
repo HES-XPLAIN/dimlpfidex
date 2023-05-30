@@ -1,9 +1,9 @@
 #ifndef MISC_H
 #define MISC_H
 #include "stringI.h"
+#include <vector>
 
-using namespace std;
 extern int Compare(const void *x, const void *y);
-extern int AreSameClass(StringInt *listPat, int *classPatNet);
+extern int AreSameClass(StringInt *listPat, std::vector<int> classPatNet);
 
 #endif

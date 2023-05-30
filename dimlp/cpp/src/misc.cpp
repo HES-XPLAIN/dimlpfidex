@@ -1,13 +1,14 @@
-using namespace std;
 #include "stringI.h"
+#include <iostream>
+#include <vector>
 
 ////////////////////////////////////////////////////////////////////////
 
 int Compare(const void *x, const void *y)
 
 {
-  float *a = (float *)x;
-  float *b = (float *)y;
+  auto *a = (const float *)x;
+  auto *b = (const float *)y;
 
   if (*a > *b)
     return 1;
@@ -20,7 +21,7 @@ int Compare(const void *x, const void *y)
 
 ////////////////////////////////////////////////////////////////////////
 
-int AreSameClass(StringInt *listPat, int *classPatNet)
+int AreSameClass(StringInt *listPat, std::vector<int> classPatNet)
 
 {
   int p;
