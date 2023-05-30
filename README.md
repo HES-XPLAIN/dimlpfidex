@@ -82,4 +82,4 @@ pre-commit run --all-files
 
 ## Release
 
-To publish the package on [Pypi](https://pypi.org/project/dimlpfidex/), refer to [RELEASE](RELEASE.md).
+To publish the package on [PyPI](https://pypi.org/project/dimlpfidex/), refer to [RELEASE](RELEASE.md).
