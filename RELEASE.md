@@ -2,19 +2,36 @@
 
 Instructions for the release process and publication on PyPI.
 
-1. . Update the `version` string in `pyproject.toml` to the release version.
+## Update version
+
+Update the `version` string in `pyproject.toml` to the release version on a branch.
+
 ```
 poetry version <version>
 ```
 Beside an explicit version string, a bump rule such as `patch`, `minor`, `major`
 can be passed.
 
-2. Commit
+## Commit
+
+Commit and push the branch.
 ```
 git commit -a -m "Version X.Y.Z"
+git push
 ```
 
-3. Merge the PR in the GitHub interface.
+## Create PR
+
+Create a PR in the GitHub interface.
+
+Alternatively, use the GitHub CLI:
+```
+gh pr create -f
+```
+
+## Merge PR
+
+Merge the PR in the GitHub interface.
 
 Alternatively, use the GitHub CLI:
 ```
@@ -22,7 +39,9 @@ gh pr merge -r -d
 ```
 Use `--rebase` and optionally `--delete` to remove the remote and local branches.
 
-3. Select *Create a new release* in the GitHub interface.
+## Create new release
+
+Select *Create a new release* in the GitHub interface.
 
 * In *Choose a tag*, enter a new tag in the form `X.Y.Z`
 * Add notes to describe the changes
@@ -32,3 +51,8 @@ Alternatively, use the GitHub CLI interactively:
 ```
 gh release create
 ```
+
+## Done!
+
+Wait a few minutes for the package to be automatically built, packaged and
+published on PyPI.
