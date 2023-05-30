@@ -1,6 +1,6 @@
 # Release
 
-Instructions for the release process.
+Instructions for the release process and publication on PyPI.
 
 1. . Update the `version` string in `pyproject.toml` to the release version.
 ```
@@ -14,12 +14,21 @@ can be passed.
 git commit -a -m "Version X.Y.Z"
 ```
 
-3. Tag
-```
-git tag -a "vX.Y.Z" -m "Optional release message"
-```
+3. Merge the PR in the GitHub interface.
 
-4. Push
+Alternatively, use the GitHub CLI:
 ```
-git push origin main --tags
+gh pr merge -r -d
+```
+Use `--rebase` and optionally `--delete` to remove the remote and local branches.
+
+3. Select *Create a new release* in the GitHub interface.
+
+* In *Choose a tag*, enter a new tag in the form `X.Y.Z`
+* Add notes to describe the changes
+* Select *Publish release*
+
+Alternatively, use the GitHub CLI interactively:
+```
+gh release create
 ```
