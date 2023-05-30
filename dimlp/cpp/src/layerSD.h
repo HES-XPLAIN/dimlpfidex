@@ -1,7 +1,6 @@
 #ifndef LAYERSD_H
 #define LAYERSD_H
 
-using namespace std;
 #ifndef LAYER
 #include "layer.h"
 #endif
@@ -12,7 +11,7 @@ class LayerSD : public Layer {
 
   //----------------------------------------------------------------
 
-  float Activation1(float x) { return Identity(x); }
+  float Activation1(float x) override { return Identity(x); }
 
   //----------------------------------------------------------------
 
@@ -26,7 +25,6 @@ public:
                               Layer(0, 0, 0, nbDown, nbUp, nbWeights, nbWeightsForInit)
 
   {
-    ;
   }
 };
 

@@ -11,7 +11,7 @@
 
 class LayerDimlp2 : public Layer {
 
-  StairObj *Stair;
+  std::unique_ptr<StairObj> Stair;
 
   //----------------------------------------------------------------
 

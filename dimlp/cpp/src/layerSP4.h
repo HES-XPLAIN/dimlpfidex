@@ -1,7 +1,6 @@
 #ifndef LAYERSP4_H
 #define LAYERSP4_H
 
-using namespace std;
 #ifndef LAYER
 #include "layer.h"
 #endif
@@ -12,7 +11,7 @@ class LayerSP4 : public Layer {
 
   //----------------------------------------------------------------
 
-  float Activation1(float x) { return Power4(x); }
+  float Activation1(float x) override { return Power4(x); }
 
   //----------------------------------------------------------------
 
@@ -26,7 +25,6 @@ public:
                               Layer(0, 0, 0, nbDown, nbUp, nbWeights, nbWeightsForInit)
 
   {
-    ;
   }
 };
 

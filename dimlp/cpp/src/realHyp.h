@@ -18,6 +18,7 @@ using namespace std;
 #define DATASETS 1
 #include "attrName.h"
 #include "rulePro.h"
+#include <vector>
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -43,7 +44,7 @@ class RealHyp {
 
   int **ConfirmedVirt;
   int *ConfBefFirstHyp;
-  int *ClassPatNet;
+  std::vector<int> ClassPatNet;
 
   int Aborted;
   //----------------------------------------------------------------

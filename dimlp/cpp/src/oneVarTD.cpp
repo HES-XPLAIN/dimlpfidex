@@ -1,17 +1,17 @@
-using namespace std;
 #include "oneVarTD.h"
+#include "iostream"
 
 ///////////////////////////////////////////////////////////////////
 
-OneVarThresDescr::Elem *OneVarThresDescr::CreateElem(float thres, int indPat)
+std::shared_ptr<OneVarThresDescr::Elem> OneVarThresDescr::CreateElem(float thres, int indPat)
 
 {
-  OneVarThresDescr::Elem *e = new OneVarThresDescr::Elem;
+  auto e = std::make_shared<OneVarThresDescr::Elem>();
 
   e->Thres = thres;
-  e->Next = 0;
+  e->Next = nullptr;
   e->CountPatDiscr = 0;
-  e->ListPat = new StringInt;
+  e->ListPat = std::unique_ptr<StringInt>(new StringInt);
 
   (e->ListPat)->Insert(indPat);
 
@@ -37,7 +37,7 @@ void OneVarThresDescr::Insert(float thres, int indPat)
 
 {
   int e;
-  OneVarThresDescr::Elem *last;
+  auto last = std::make_shared<OneVarThresDescr::Elem>();
 
   if (NbThres == 0)
     First = CreateElem(thres, indPat);
@@ -62,14 +62,11 @@ void OneVarThresDescr::Insert(float thres, int indPat)
 void OneVarThresDescr::Del()
 
 {
-  int e;
-
   PtrList = First;
 
-  for (e = 0; e < NbThres; e++) {
+  for (int e = 0; e < NbThres; e++) {
     PtrList = PtrList->Next;
-    (First->ListPat)->Del();
-    delete First;
+    (First->ListPat.get())->Del();
     First = PtrList;
   }
 

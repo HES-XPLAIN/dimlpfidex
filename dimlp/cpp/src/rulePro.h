@@ -12,6 +12,8 @@ using namespace std;
 #include "thresD.h"
 #endif
 
+#include <vector>
+
 ////////////////////////////////////////////////////////////////////////
 
 class RuleProcessing
@@ -22,7 +24,7 @@ class RuleProcessing
   int NbHyp;
 
   DataSet Data;
-  int *ClassPatNet;
+  std::vector<int> ClassPatNet;
   int *TabRules;
   ThresDescr *Descr;
 
@@ -83,7 +85,7 @@ public:
       int nbVar,
       int nbHyp,
       DataSet data,
-      int *classPatNet,
+      std::vector<int> classPatNet,
       ThresDescr *descr);
 
   RuleProcessing() { NbRules = 0; }

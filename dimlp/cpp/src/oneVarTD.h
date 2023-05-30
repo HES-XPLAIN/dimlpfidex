@@ -1,46 +1,46 @@
 #ifndef ONEVARTD_H
 #define ONEVARTD_H
 
-using namespace std;
 #ifndef STRINGINT
 #include "stringI.h"
 #endif
+#include <memory>
 
 ///////////////////////////////////////////////////////////////////
 
 class OneVarThresDescr {
   struct Elem {
     float Thres;
-    StringInt *ListPat;
+    std::unique_ptr<StringInt> ListPat;
     int CountPatDiscr;
-    Elem *Next;
+    std::shared_ptr<Elem> Next;
   };
 
-  int NbThres;
-  Elem *First;
-  Elem *PtrList;
+  int NbThres = 0;
+  std::shared_ptr<Elem> First;
+  std::shared_ptr<Elem> PtrList;
 
   //----------------------------------------------------------------
 
-  Elem *CreateElem(float thres, int indPat);
+  std::shared_ptr<Elem> CreateElem(float thres, int indPat);
 
   //----------------------------------------------------------------
 
 public:
-  int GetNbThres() { return NbThres; }
+  int GetNbThres() const { return NbThres; }
   void GoToBeg() { PtrList = First; }
   void GoToNext() { PtrList = PtrList->Next; }
-  float GetThres() { return PtrList->Thres; }
-  StringInt *GetPtrPat() { return PtrList->ListPat; }
-  int GetCountPatDiscr() { return PtrList->CountPatDiscr; }
-  void IncCountPatDiscr() { (PtrList->CountPatDiscr)++; }
-  void SetCountPat(int val) { PtrList->CountPatDiscr = val; }
+  float GetThres() const { return PtrList->Thres; }
+  StringInt *GetPtrPat() { return PtrList->ListPat.get(); }
+  int GetCountPatDiscr() const { return PtrList->CountPatDiscr; }
+  void IncCountPatDiscr() const { (PtrList->CountPatDiscr)++; }
+  void SetCountPat(int val) const { PtrList->CountPatDiscr = val; }
 
   void ResetCountPatDiscr();
   void Insert(float thres, int indPat);
   void Del();
 
-  OneVarThresDescr() { NbThres = 0; }
+  OneVarThresDescr() = default;
 };
 
 ///////////////////////////////////////////////////////////////////

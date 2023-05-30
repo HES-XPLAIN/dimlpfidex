@@ -1,4 +1,3 @@
-using namespace std;
 #include "layerD4.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -13,10 +12,10 @@ LayerDimlp4::LayerDimlp4(
     int nbWeightsForInit,
     int nbKnots) :
 
-                   Layer(eta, mu, flat, nbDown, nbUp, nbWeights, nbWeightsForInit)
+                   Layer(eta, mu, flat, nbDown, nbUp, nbWeights, nbWeightsForInit),
+                   Stair(std::unique_ptr<StairObj>(new StairObj(nbKnots)))
 
 {
-  Stair = new StairObj(nbKnots);
 }
 
 ///////////////////////////////////////////////////////////////////

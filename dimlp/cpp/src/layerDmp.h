@@ -1,30 +1,26 @@
 #ifndef LAYERDMP
 #define LAYERDMP
 
-using namespace std;
 #include "layer.h"
 #include "stairObj.h"
+#include <memory>
 
 ///////////////////////////////////////////////////////////////////
 
 class LayerDimlp : public Layer {
 
-  StairObj *Stair;
+  std::unique_ptr<StairObj> Stair;
 
   //----------------------------------------------------------------
 
-  float Activation1(float x) { return Stair->Funct(x); }
-  void ForwLayer() { ForwSpec(); }
-  void AdaptWeights() { AdaptWeightsSpec(); }
-  void ComputeDeltaDown() { ; }
+  float Activation1(float x) override { return Stair->Funct(x); }
+  void ForwLayer() override { ForwSpec(); }
+  void AdaptWeights() override { AdaptWeightsSpec(); }
+  void ComputeDeltaDown() override {}
 
   //----------------------------------------------------------------
 
 public:
-  void Del() {
-    delete Stair;
-  }
-
   LayerDimlp(
       float eta,
       float mu,
