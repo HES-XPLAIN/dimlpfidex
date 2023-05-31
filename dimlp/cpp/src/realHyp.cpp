@@ -2,7 +2,6 @@ using namespace std;
 #include "realHyp.h"
 #include "misc.h"
 #define STRINGINT 1
-#include "vectWRV.h"
 
 #define FROMREAL 1
 #include "cleanRS.h"
@@ -162,7 +161,7 @@ void RealHyp::Gr1(
   int newNetAns;
 
   float *ptrIn = In + var;
-  float *ptrVirt = Virt->GetEpsGoRight(var) + startVirt;
+  float *ptrVirt = Virt->GetEpsGoRight(var).data() + startVirt;
   int *ptrConf = ConfirmedVirt[var] + startVirt;
 
   for (k = startVirt; k < NbHyp; k++, ptrVirt++, ptrConf++) {
@@ -176,7 +175,7 @@ void RealHyp::Gr1(
     newNetAns = Bpnn->Max(Out, NbOut);
 
     if (newNetAns != netAns) {
-      Descr->Insert(var, *((Virt->GetVirtHyp(var)) + k), indPat);
+      Descr->Insert(var, *((Virt->GetVirtHyp(var)).data() + k), indPat);
       break;
     }
   }
@@ -197,7 +196,7 @@ void RealHyp::Gr2(
   const int last = NbHyp - 1;
   // cout << "gr2\n";
   float *ptrIn = In + var;
-  float *ptrVirt = Virt->GetEpsGoRight(var) + startVirt;
+  float *ptrVirt = Virt->GetEpsGoRight(var).data() + startVirt;
   int *ptrConf = ConfirmedVirt[var] + startVirt;
 
   for (k = startVirt; k < NbHyp; k++, ptrVirt++, ptrConf++) {
@@ -211,12 +210,12 @@ void RealHyp::Gr2(
     newNetAns = Bpnn->Max(Out, NbOut);
 
     if (newNetAns != netAns) {
-      Descr->Insert(var, *((Virt->GetVirtHyp(var)) + k), indPat);
+      Descr->Insert(var, *((Virt->GetVirtHyp(var)).data() + k), indPat);
       break;
     }
 
     if (k == last)
-      Descr->Insert(var, *((Virt->GetVirtHyp(var)) + startVirt), indPat);
+      Descr->Insert(var, *((Virt->GetVirtHyp(var)).data() + startVirt), indPat);
   }
 }
 
@@ -233,8 +232,8 @@ void RealHyp::Gl1(
   int newNetAns;
 
   float *ptrIn = In + var;
-  float *ptrVirt = Virt->GetEpsGoLeft(var) + startVirt;
-  float *ptrStart = Virt->GetVirtHyp(var) + startVirt;
+  float *ptrVirt = Virt->GetEpsGoLeft(var).data() + startVirt;
+  float *ptrStart = Virt->GetVirtHyp(var).data() + startVirt;
   int *ptrConf = ConfirmedVirt[var] + startVirt;
 
   for (k = startVirt; k >= 0; k--, ptrVirt--, ptrConf--) {
@@ -272,8 +271,8 @@ void RealHyp::Gl2(
   int newNetAns;
 
   float *ptrIn = In + var;
-  float *ptrVirt = Virt->GetEpsGoLeft(var) + startVirt;
-  float *ptrStart = Virt->GetVirtHyp(var) + startVirt;
+  float *ptrVirt = Virt->GetEpsGoLeft(var).data() + startVirt;
+  float *ptrStart = Virt->GetVirtHyp(var).data() + startVirt;
   int *ptrConf = ConfirmedVirt[var] + startVirt;
 
   for (k = startVirt; k >= 0; k--, ptrVirt--, ptrConf--) {
@@ -691,7 +690,6 @@ void RealHyp::RuleExtraction(
 
     SavedRules->Del();
     Descr->Del();
-    Virt->Del();
 
     return;
   }
@@ -715,7 +713,6 @@ void RealHyp::RuleExtraction(
     SavedRules->Del();
 
     Descr->Del();
-    Virt->Del();
 
     return;
   }
@@ -859,7 +856,6 @@ void RealHyp::RuleExtraction(
   SavedRules->Del();
 
   Descr->Del();
-  Virt->Del();
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -1,27 +1,27 @@
 #ifndef THRESD_H
 #define THRESD_H
 
-using namespace std;
 #include "oneVarTD.h"
+#include <vector>
 
 ///////////////////////////////////////////////////////////////////
 
 class ThresDescr {
-  OneVarThresDescr **Descr;
+  std::vector<std::shared_ptr<OneVarThresDescr>> Descr;
 
   int NbVar;
 
   //----------------------------------------------------------------
 
 public:
-  OneVarThresDescr *GetDescr(int var) { return Descr[var]; }
+  OneVarThresDescr *GetDescr(int var) { return Descr[var].get(); }
 
   void Insert(int var, float thres, int indPat) { (Descr[var])->OneVarThresDescr::Insert(thres, indPat); }
 
   void ResetAllCountPatDiscr();
   void Del();
 
-  ThresDescr(int nbVar);
+  explicit ThresDescr(int nbVar);
 };
 
 ///////////////////////////////////////////////////////////////////

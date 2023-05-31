@@ -1,6 +1,4 @@
 #include "oneVarTD.h"
-#include "iostream"
-
 ///////////////////////////////////////////////////////////////////
 
 std::shared_ptr<OneVarThresDescr::Elem> OneVarThresDescr::CreateElem(float thres, int indPat)

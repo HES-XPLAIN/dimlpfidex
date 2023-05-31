@@ -142,9 +142,6 @@ VirtualHyp *BagDimlp::MakeGlobalVirt(int nbBins, int nbIn, int multiple)
 
   globalVirt = new VirtualHyp(nbBins, nbIn, multiple, NbDimlpNets, virt);
 
-  for (n = 0; n < NbDimlpNets; n++)
-    virt[n]->Del();
-
   delete[] virt;
 
   return globalVirt;

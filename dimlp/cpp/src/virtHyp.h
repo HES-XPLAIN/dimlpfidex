@@ -1,7 +1,7 @@
 #ifndef VIRTHYP_H
 #define VIRTHYP_H
+#include <vector>
 
-using namespace std;
 ///////////////////////////////////////////////////////////////////
 
 class VirtualHyp {
@@ -15,9 +15,9 @@ class VirtualHyp {
   float *Bias;
   float *Weights;
 
-  float **VecVirtHyp;
-  float **VirtGoLeftEps;
-  float **VirtGoRightEps;
+  std::vector<std::vector<float>> VecVirtHyp;
+  std::vector<std::vector<float>> VirtGoLeftEps;
+  std::vector<std::vector<float>> VirtGoRightEps;
 
   //----------------------------------------------------------------
 
@@ -29,14 +29,12 @@ class VirtualHyp {
   //----------------------------------------------------------------
 
 public:
-  float *GetVirtHyp(int var) { return VecVirtHyp[var]; }
-  float *GetEpsGoLeft(int var) { return VirtGoLeftEps[var]; }
-  float *GetEpsGoRight(int var) { return VirtGoRightEps[var]; }
+  std::vector<float> &GetVirtHyp(int var) { return VecVirtHyp[var]; }
+  std::vector<float> &GetEpsGoLeft(int var) { return VirtGoLeftEps[var]; }
+  std::vector<float> &GetEpsGoRight(int var) { return VirtGoRightEps[var]; }
 
   int KnotInd(int var, float val);
   int GetInd(int var, float val);
-
-  void Del();
 
   VirtualHyp(int nbBins, int nbIn, int multiple, float *bias, float *weights);
 

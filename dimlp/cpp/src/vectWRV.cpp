@@ -1,15 +1,15 @@
-using namespace std;
 #include "vectWRV.h"
 #include "randFun.h"
 
 #include <iostream>
 ////////////////////////////////////////////////////////////////////////
 
-StringInt *VectWithRandVal::FillWithUniqueInd(int nbElSub)
+std::shared_ptr<StringInt> VectWithRandVal::FillWithUniqueInd(int nbElSub)
 
 {
-  int i, ind;
-  StringInt *toRet = new StringInt;
+  int i;
+  int ind;
+  auto toRet = std::make_shared<StringInt>();
 
   IntRandomFunction randGen(0, NbElAll - 1);
 
@@ -43,7 +43,8 @@ StringInt *VectWithRandVal::FillWithUniqueInd(int nbElSub)
 void VectWithRandVal::Append(StringInt *originalList, StringInt *toAppend)
 
 {
-  int i, val;
+  int i;
+  int val;
   int nbApp = toAppend->GetNbEl();
 
   for (i = 0, toAppend->GoToBeg(); i < nbApp; i++, toAppend->GoToNext()) {
@@ -55,15 +56,12 @@ void VectWithRandVal::Append(StringInt *originalList, StringInt *toAppend)
 
 ////////////////////////////////////////////////////////////////////////
 
-VectWithRandVal::VectWithRandVal(int nbElAll)
+VectWithRandVal::VectWithRandVal(int nbElAll) : NbElAll(nbElAll)
 
 {
-  int p;
+  Busy.resize(NbElAll);
 
-  NbElAll = nbElAll;
-  Busy = new int[NbElAll];
-
-  for (p = 0; p < nbElAll; p++)
+  for (int p = 0; p < nbElAll; p++)
     Busy[p] = 0;
 }
 

@@ -1,4 +1,3 @@
-using namespace std;
 #include "stringI.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -7,19 +6,19 @@ void StringInt::Insert(int val)
 
 {
   if (NbEl == 0) {
-    First = new Elem;
+    First = std::make_shared<Elem>();
     First->Val = val;
-    First->Next = 0;
+    First->Next = nullptr;
 
     Last = First;
   }
 
   else {
-    Elem *old = Last;
+    std::shared_ptr<Elem> old = Last;
 
-    Last = new Elem;
+    Last = std::make_shared<Elem>();
     Last->Val = val;
-    Last->Next = 0;
+    Last->Next = nullptr;
 
     old->Next = Last;
   }
@@ -32,18 +31,20 @@ void StringInt::Insert(int val)
 int StringInt::FindIndMax()
 
 {
-  float max, newVal;
-  int e, indMax;
+  float max;
+  float newVal;
+  int e;
+  int indMax;
 
   if (NbEl == 1)
     return 0;
 
   GoToBeg();
-  max = GetVal();
+  max = static_cast<float>(GetVal());
   indMax = 0;
 
   for (e = 1, GoToNext(); e < NbEl; e++, GoToNext()) {
-    newVal = GetVal();
+    newVal = static_cast<float>(GetVal());
 
     if (newVal > max) {
       max = newVal;
@@ -62,18 +63,20 @@ int StringInt::FindIndMax()
 int StringInt::FindIndMin()
 
 {
-  float min, newVal;
-  int e, indMin;
+  float min;
+  float newVal;
+  int e;
+  int indMin;
 
   if (NbEl == 1)
     return 0;
 
   GoToBeg();
-  min = GetVal();
+  min = static_cast<float>(GetVal());
   indMin = 0;
 
   for (e = 1, GoToNext(); e < NbEl; e++, GoToNext()) {
-    newVal = GetVal();
+    newVal = static_cast<float>(GetVal());
 
     if (newVal < min) {
       min = newVal;
@@ -95,24 +98,6 @@ void StringInt::DelVal(int indPrune, int newSet)
     ;
 
   SetVal(newSet);
-}
-
-///////////////////////////////////////////////////////////////////
-
-void StringInt::Del()
-
-{
-  int e;
-
-  PtrList = First;
-
-  for (e = 0; e < NbEl; e++) {
-    PtrList = PtrList->Next;
-    delete First;
-    First = PtrList;
-  }
-
-  NbEl = 0;
 }
 
 ///////////////////////////////////////////////////////////////////

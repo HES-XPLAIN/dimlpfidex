@@ -1,4 +1,3 @@
-using namespace std;
 #include <math.h>
 
 ///////////////////////////////////////////////////////////////////
@@ -6,7 +5,7 @@ using namespace std;
 float Sigmoid(float x)
 
 {
-  return 1.0 / (1.0 + exp(-x));
+  return static_cast<float>(1.0 / (1.0 + exp(-x)));
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -14,10 +13,11 @@ float Sigmoid(float x)
 float HyperTang(float x)
 
 {
-  float expMinx, expPlusx;
+  float expMinx;
+  float expPlusx;
 
   expPlusx = exp(x);
-  expMinx = 1.0 / expPlusx;
+  expMinx = static_cast<float>(1.0) / expPlusx;
 
   return (expPlusx - expMinx) / (expPlusx + expMinx);
 }

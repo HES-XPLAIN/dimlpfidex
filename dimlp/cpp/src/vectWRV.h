@@ -1,23 +1,25 @@
 #ifndef VECTWRV_H
 #define VECTWRV_H
 
-using namespace std;
 #ifndef STRINGINT
 #include "stringI.h"
 #endif
+
+#include <memory>
+#include <vector>
 
 class VectWithRandVal
 
 {
   int NbElAll;
-  int *Busy;
+  std::vector<int> Busy;
 
 public:
-  StringInt *FillWithUniqueInd(int nbElSub);
+  std::shared_ptr<StringInt> FillWithUniqueInd(int nbElSub);
   void Append(StringInt *originalList, StringInt *toAppend);
 
-  VectWithRandVal(int nbElAll);
-  ~VectWithRandVal() { delete Busy; }
+  explicit VectWithRandVal(int nbElAll);
+  ~VectWithRandVal() = default;
 };
 
 #endif

@@ -1,8 +1,8 @@
 #ifndef STAIROBJ_H
 #define STAIROBJ_H
 
-using namespace std;
 #include "standAct.h"
+#include <vector>
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -18,24 +18,23 @@ class StairObj {
 
   float BinWidth;
 
-  float *Knots;
-  float *EvalKnots;
+  std::vector<float> Knots;
+  std::vector<float> EvalKnots;
 
   //----------------------------------------------------------------
 
   void InitMemberConstForAnsi();
   void ActivateKnots();
-  float Activation(float x) { return Sigmoid(x); }
+  float Activation(float x) const { return Sigmoid(x); }
 
   //----------------------------------------------------------------
 
 public:
-  float GetHiKnot() { return HiKnot; }
-  float *GetKnots() { return Knots; }
-  float Funct(float x);
+  float GetHiKnot() const { return HiKnot; }
+  std::vector<float> &GetKnots() { return Knots; }
+  float Funct(float x) const;
 
-  StairObj(int nbBins);
-  ~StairObj();
+  explicit StairObj(int nbBins);
 };
 
 ////////////////////////////////////////////////////////////////////////
