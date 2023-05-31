@@ -1,7 +1,8 @@
 #ifndef RULE_H
 #define RULE_H
 
-using namespace std;
+#include <memory>
+
 ////////////////////////////////////////////////////////////////////////
 
 class Rule {
@@ -9,29 +10,29 @@ class Rule {
     int Var;
     float Val;
     char Rel;
-    Antecedent *Next;
+    std::shared_ptr<Antecedent> Next;
   };
 
-  int NbAnt;
+  int NbAnt = 0;
 
-  Antecedent *FirstAnt;
-  Antecedent *LastAnt;
-  Antecedent *PtrAnt;
-  Antecedent *Memory;
+  std::shared_ptr<Antecedent> FirstAnt;
+  std::shared_ptr<Antecedent> LastAnt;
+  std::shared_ptr<Antecedent> PtrAnt;
+  std::shared_ptr<Antecedent> Memory;
 
   //----------------------------------------------------------------
 
 public:
-  int GetNbAnt() { return NbAnt; }
+  int GetNbAnt() const { return NbAnt; }
   void GoToBeg() { PtrAnt = FirstAnt; }
   void GoToNext() { PtrAnt = PtrAnt->Next; }
-  int GetVar() { return PtrAnt->Var; }
-  float GetVal() { return PtrAnt->Val; }
-  char GetRel() { return PtrAnt->Rel; }
+  int GetVar() const { return PtrAnt->Var; }
+  float GetVal() const { return PtrAnt->Val; }
+  char GetRel() const { return PtrAnt->Rel; }
   void RemAnt() { PtrAnt->Var = -1; }
   void SetAnt(int var) { PtrAnt->Var = var; }
   void SetThres(float val) { PtrAnt->Val = val; }
-  int IsAntDeleted() { return ((PtrAnt->Var == -1) ? 1 : 0); }
+  int IsAntDeleted() const { return ((PtrAnt->Var == -1) ? 1 : 0); }
   void SavePtrAnt() { Memory = PtrAnt; }
   void PrevPtrAnt() { PtrAnt = Memory; }
 
@@ -40,14 +41,16 @@ public:
   void Insert(int var, float val, char rel);
   Rule *Copy(Rule *r);
 
-  void Del();
+  void Del() {
+    NbAnt = 0;
+  }
   void DelAll() {
-    Del();
+    NbAnt = 0;
     delete this;
   }
 
-  Rule() { NbAnt = 0; }
-  ~Rule() { Del(); }
+  Rule() = default;
+  ~Rule() = default;
 };
 
 #endif

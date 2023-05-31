@@ -1,4 +1,3 @@
-using namespace std;
 #include "rule.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -6,7 +5,8 @@ using namespace std;
 int Rule::GetNbAntWithout()
 
 {
-  int a, count;
+  int a;
+  int count;
 
   for (a = 0, count = 0, GoToBeg(); a < NbAnt; a++, GoToNext())
     if (IsAntDeleted() == 0)
@@ -32,23 +32,24 @@ void Rule::Insert(int var, float val, char rel)
 
 {
   if (NbAnt == 0) {
-    FirstAnt = new Antecedent;
+    FirstAnt = std::make_shared<Antecedent>();
+    // FirstAnt = new Antecedent;
     FirstAnt->Var = var;
     FirstAnt->Val = val;
     FirstAnt->Rel = rel;
-    FirstAnt->Next = 0;
+    FirstAnt->Next = nullptr;
 
     LastAnt = FirstAnt;
   }
 
   else {
-    Antecedent *old = LastAnt;
+    std::shared_ptr<Antecedent> old = LastAnt;
 
-    LastAnt = new Antecedent;
+    LastAnt = std::make_shared<Antecedent>();
     LastAnt->Var = var;
     LastAnt->Val = val;
     LastAnt->Rel = rel;
-    LastAnt->Next = 0;
+    LastAnt->Next = nullptr;
 
     old->Next = LastAnt;
   }
@@ -69,24 +70,6 @@ Rule *Rule::Copy(Rule *r)
   }
 
   return this;
-}
-
-///////////////////////////////////////////////////////////////////
-
-void Rule::Del()
-
-{
-  int e;
-
-  PtrAnt = FirstAnt;
-
-  for (e = 0; e < NbAnt; e++) {
-    PtrAnt = PtrAnt->Next;
-    delete FirstAnt;
-    FirstAnt = PtrAnt;
-  }
-
-  NbAnt = 0;
 }
 
 ///////////////////////////////////////////////////////////////////

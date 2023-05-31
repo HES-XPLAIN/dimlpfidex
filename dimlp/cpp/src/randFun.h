@@ -1,7 +1,6 @@
 #ifndef RANDFUN_H
 #define RANDFUN_H
 
-using namespace std;
 ///////////////////////////////////////////////////////////////////
 
 class IntRandomFunction {
@@ -10,13 +9,13 @@ class IntRandomFunction {
   int HiBound;
   int Diff;
 
-  void StartOnlyOnece(int seed = 0);
+  void StartOnlyOnece(int seed = 0) const;
 
 public:
-  IntRandomFunction(int seed = 0);
-  IntRandomFunction(int lowBound, int hiBound);
+  explicit IntRandomFunction(int seed = 0);
+  explicit IntRandomFunction(int lowBound, int hiBound);
 
-  int RandomInteger();
+  int RandomInteger() const;
 };
 
 ///////////////////////////////////////////////////////////////////
@@ -27,14 +26,14 @@ class FloatRandomFunction {
   float HiBound;
   float Diff;
 
-  void StartOnlyOnece(int seed = 0);
+  void StartOnlyOnece(int seed = 0) const;
 
 public:
-  FloatRandomFunction(int seed = 0);
-  FloatRandomFunction(float lowBound, float hiBound);
+  explicit FloatRandomFunction(int seed = 0);
+  explicit FloatRandomFunction(float lowBound, float hiBound);
 
-  float RandomFloat();
-  double RandomDouble();
+  float RandomFloat() const;
+  double RandomDouble() const;
 };
 
 ///////////////////////////////////////////////////////////////////

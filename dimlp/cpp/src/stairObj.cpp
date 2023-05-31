@@ -1,4 +1,3 @@
-using namespace std;
 #include "stairObj.h"
 
 ////////////////////////////////////////////////////////////////////////
@@ -16,25 +15,23 @@ void StairObj::InitMemberConstForAnsi()
 void StairObj::ActivateKnots()
 
 {
-  int k;
+  BinWidth = Dist / static_cast<float>(NbBins);
 
-  BinWidth = (float)(Dist) / (float)(NbBins);
+  Knots.resize(NbKnots);
+  EvalKnots.resize(NbKnots);
 
-  Knots = new float[NbKnots];
-  EvalKnots = new float[NbKnots];
-
-  for (k = 0; k < NbKnots; k++) {
-    Knots[k] = LowKnot + (BinWidth * k);
+  for (int k = 0; k < NbKnots; k++) {
+    Knots[k] = LowKnot + (BinWidth * static_cast<float>(k));
     EvalKnots[k] = Activation(Knots[k]);
   }
 
-  ValLowKnot = Activation(-1111111111.0);
+  ValLowKnot = Activation(static_cast<float>(-1111111111.0));
   ValHighKnot = Activation(HiKnot);
 }
 
 ///////////////////////////////////////////////////////////////////
 
-float StairObj::Funct(float x)
+float StairObj::Funct(float x) const
 
 {
   int indBin;
@@ -44,29 +41,17 @@ float StairObj::Funct(float x)
   if (x >= HiKnot)
     return ValHighKnot;
 
-  indBin = (int)((x - LowKnot) / BinWidth);
-  return *(EvalKnots + indBin);
+  indBin = static_cast<int>((x - LowKnot) / BinWidth);
+  return EvalKnots[indBin];
 }
 
 ///////////////////////////////////////////////////////////////////
 
-StairObj::StairObj(int nbBins)
+StairObj::StairObj(int nbBins) : NbBins(nbBins), NbKnots(nbBins + 1)
 
 {
-  NbBins = nbBins;
-  NbKnots = nbBins + 1;
-
   InitMemberConstForAnsi();
   ActivateKnots();
-}
-
-///////////////////////////////////////////////////////////////////
-
-StairObj::~StairObj()
-
-{
-  delete Knots;
-  delete EvalKnots;
 }
 
 ///////////////////////////////////////////////////////////////////

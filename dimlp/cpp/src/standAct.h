@@ -1,7 +1,6 @@
 #ifndef STANDACT_H
 #define STANDACT_H
 
-using namespace std;
 extern float Sigmoid(float x);
 extern float HyperTang(float x);
 extern float Gaussian(float x);

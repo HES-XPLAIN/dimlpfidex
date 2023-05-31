@@ -12,6 +12,6 @@
 
 void GiveAllParamPred();
 static void SaveOutputs(DataSet &data, Dimlp *net, int nbOut, int nbWeightLayers, const char *outfile);
-int dimlpPred(const string &command);
+int dimlpPred(const std::string &command);
 
 #endif

@@ -12,6 +12,6 @@
 
 void GiveAllParamDimlpCls();
 static void SaveOutputs(DataSet &data, Dimlp *net, int nbOut, int nbWeightLayers, const char *outfile);
-int dimlpCls(const string &command);
+int dimlpCls(const std::string &command);
 
 #endif

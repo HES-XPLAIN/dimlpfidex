@@ -1,7 +1,6 @@
 #ifndef REALHYP2_H
 #define REALHYP2_H
 
-using namespace std;
 #include "realHyp.h"
 
 ///////////////////////////////////////////////////////////////////
@@ -10,13 +9,15 @@ class RealHyp2 : public RealHyp {
 
   //----------------------------------------------------------------
 
-  void GoLeft(int var, int indPat, int startVirt, int netAns) { Gl2(var, indPat, startVirt, netAns); }
+  void GoLeft(int var, int indPat, int startVirt, int netAns) override { Gl2(var, indPat, startVirt, netAns); }
 
-  void GoRight(int var, int indPat, int startVirt, int netAns) { Gr2(var, indPat, startVirt, netAns); }
+  void GoRight(int var, int indPat, int startVirt, int netAns) override { Gr2(var, indPat, startVirt, netAns); }
 
   //----------------------------------------------------------------
 
 public:
+  virtual ~RealHyp2() = default;
+
   RealHyp2(
       DataSet &data,
       BpNN *nn,

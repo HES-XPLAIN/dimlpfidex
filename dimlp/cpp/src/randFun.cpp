@@ -1,4 +1,3 @@
-using namespace std;
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -7,7 +6,7 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
-void IntRandomFunction::StartOnlyOnece(int seed)
+void IntRandomFunction::StartOnlyOnece(int seed) const
 
 {
 #if defined(__unix__) || defined(__APPLE__)
@@ -35,17 +34,14 @@ IntRandomFunction::IntRandomFunction(int seed)
 
 ///////////////////////////////////////////////////////////////////
 
-IntRandomFunction::IntRandomFunction(int lowBound, int hiBound)
+IntRandomFunction::IntRandomFunction(int lowBound, int hiBound) : LowBound(lowBound), HiBound(hiBound), Diff(hiBound - lowBound + 1)
 
 {
-  LowBound = lowBound;
-  HiBound = hiBound;
-  Diff = hiBound - lowBound + 1;
 }
 
 ///////////////////////////////////////////////////////////////////
 
-int IntRandomFunction::RandomInteger()
+int IntRandomFunction::RandomInteger() const
 
 {
 #if defined(__unix__) || defined(__APPLE__)
@@ -57,7 +53,7 @@ int IntRandomFunction::RandomInteger()
 
 ///////////////////////////////////////////////////////////////////
 
-void FloatRandomFunction::StartOnlyOnece(int seed)
+void FloatRandomFunction::StartOnlyOnece(int seed) const
 
 {
 #if defined(__unix__) || defined(__APPLE__)
@@ -87,22 +83,18 @@ FloatRandomFunction::FloatRandomFunction(int seed)
 
 FloatRandomFunction::FloatRandomFunction(
     float lowBound,
-    float hiBound)
+    float hiBound) : LowBound(lowBound), HiBound(hiBound), Diff(hiBound - lowBound)
 
 {
-  LowBound = lowBound;
-  HiBound = hiBound;
-
-  Diff = HiBound - LowBound;
 }
 
 ///////////////////////////////////////////////////////////////////
 
-float FloatRandomFunction::RandomFloat()
+float FloatRandomFunction::RandomFloat() const
 
 {
 #if defined(__unix__) || defined(__APPLE__)
-  return (LowBound + (drand48() * Diff));
+  return (LowBound + (static_cast<float>(drand48()) * Diff));
 #elif defined(_WIN32)
   return (LowBound + ((float(rand()) / RAND_MAX) * Diff));
 #endif
@@ -110,7 +102,7 @@ float FloatRandomFunction::RandomFloat()
 
 ///////////////////////////////////////////////////////////////////
 
-double FloatRandomFunction::RandomDouble()
+double FloatRandomFunction::RandomDouble() const
 
 {
 #if defined(__unix__) || defined(__APPLE__)

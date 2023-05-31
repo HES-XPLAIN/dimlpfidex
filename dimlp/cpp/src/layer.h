@@ -27,15 +27,15 @@ class Layer {
 
   float *Down;
   float *DeltaDown;
-  vector<float> Up;
-  vector<float> DeltaUp;
+  std::vector<float> Up;
+  std::vector<float> DeltaUp;
 
-  vector<float> Weights;
-  vector<float> OldWeights;
-  vector<float> ValidWeights;
-  vector<float> BiasWeights;
-  vector<float> OldBiasWeights;
-  vector<float> ValidBiasWeights;
+  std::vector<float> Weights;
+  std::vector<float> OldWeights;
+  std::vector<float> ValidWeights;
+  std::vector<float> BiasWeights;
+  std::vector<float> OldBiasWeights;
+  std::vector<float> ValidBiasWeights;
 
   //----------------------------------------------------------------
 
@@ -83,8 +83,8 @@ public:
 
   virtual float HalfErrFunct(int nbTar, const std::vector<float> &netOut, const std::vector<float> &target) { return Lmse(nbTar, netOut, target); }
 
-  void ReadWeights(istream &inFile);
-  void WriteWeights(ostream &outFile);
+  void ReadWeights(std::istream &inFile);
+  void WriteWeights(std::ostream &outFile);
   void PushWeights();
   void PopWeights();
 
