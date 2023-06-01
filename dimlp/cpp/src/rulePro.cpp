@@ -544,7 +544,7 @@ void RuleProcessing::RemSevThres(Rule *r)
   }
 
   delete[] tabFreqLess;
-  delete tabFreqGreat;
+  delete[] tabFreqGreat;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -652,7 +652,7 @@ int RuleProcessing::TryEnlargedThres()
 
     nbAnt = rule->GetNbAnt();
 
-    rr = oneCopy.Copy(rule);
+    oneCopy.Copy(rule);
 
     enlarged = new Rule *[NbHyp * NbVar * 2];
     vecCarried = new int[NbHyp * NbVar * 2];
@@ -699,7 +699,7 @@ int RuleProcessing::TryEnlargedThres()
               anotherCopy = new Rule;
 
               oneCopy.SavePtrAnt();
-              rr = anotherCopy->Copy(&oneCopy);
+              anotherCopy->Copy(&oneCopy);
               oneCopy.PrevPtrAnt();
 
               vecCarried[nbEnlarged] = nbCarriedMod;
