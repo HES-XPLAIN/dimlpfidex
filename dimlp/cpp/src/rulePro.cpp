@@ -634,7 +634,6 @@ int RuleProcessing::TryEnlargedThres()
   float thres;
   Rule oneCopy;
   Rule *anotherCopy;
-  const Rule *rr;
   Rule *rule;
   Rule **enlarged;
 
