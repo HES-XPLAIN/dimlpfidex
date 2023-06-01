@@ -12,6 +12,6 @@
 #include <vector>
 
 void GiveAllParamDensCls();
-int densCls(const string &command);
+int densCls(const std::string &command);
 
 #endif

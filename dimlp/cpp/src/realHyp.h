@@ -1,7 +1,6 @@
 #ifndef REALHYP_H
 #define REALHYP_H
 
-using namespace std;
 #ifndef BPNN
 #include "bpNN.h"
 #endif
@@ -10,15 +9,16 @@ using namespace std;
 #include "virtHyp.h"
 #endif
 
-#define STRINGINT 1
-#define THRESDESCR 1
-#include "thresD.h"
-#define RULE 1
 #include "ante.h"
-#define DATASETS 1
 #include "attrName.h"
 #include "rulePro.h"
+#include "thresD.h"
 #include <vector>
+
+const int STRINGINT = 1;
+const int THRESDESCR = 1;
+const int RULE = 1;
+const int DATASETS = 1;
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -51,8 +51,8 @@ class RealHyp {
 
   void SaveRule(Rule *path) { SavedRules->Insert(path); }
 
-  int MaxOnPos(int *vec, int nbEl);
-  int GiveIndMax(int *vec, int nbEl);
+  int MaxOnPos(const int *vec, int nbEl) const;
+  int GiveIndMax(const int *vec, int nbEl) const;
 
   void SetConfirmedVirt2();
 
@@ -69,7 +69,7 @@ class RealHyp {
 
   int ComputeCorrect(StringInt *listPatLeft, StringInt *listPatRight);
   void SetCountPatDiscr(StringInt *listPat, Rule *r);
-  void SetCountPatDiscr2(DataSet &data, StringInt *listPat, Rule *r);
+  void SetCountPatDiscr2(DataSet &data, Rule *r);
 
   void DeepSearch(DataSet &data, Rule *path, StringInt *subSet);
   void DeepSearch2(DataSet &data, Rule *path);
@@ -77,7 +77,7 @@ class RealHyp {
   //----------------------------------------------------------------
 
 public:
-  int TreeAborted() { return Aborted; }
+  int TreeAborted() const { return Aborted; }
 
   void SetConfirmedVirt(DataSet &data);
   void SetRealHyp(DataSet &data);
@@ -87,18 +87,20 @@ public:
 
   void RuleExtraction(
       DataSet &data,
-      DataSet &train,
-      DataSet &trainClass,
-      DataSet &valid,
-      DataSet &validClass,
-      DataSet &test,
-      DataSet &testClass,
-      AttrName &attr,
-      ostream &ruleFile);
+      const DataSet &train,
+      const DataSet &trainClass,
+      const DataSet &valid,
+      const DataSet &validClass,
+      const DataSet &test,
+      const DataSet &testClass,
+      const AttrName &attr,
+      std::ostream &ruleFile);
 
   //----------------------------------------------------------------
 
   void Del();
+
+  virtual ~RealHyp() = default;
 
   RealHyp(
       DataSet &data,

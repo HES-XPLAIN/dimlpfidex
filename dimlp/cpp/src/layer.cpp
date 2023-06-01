@@ -347,7 +347,7 @@ void Layer::ForwRadial()
 
 ///////////////////////////////////////////////////////////////////
 
-void Layer::ComputeDeltaOut(float target[])
+void Layer::ComputeDeltaOut(const float target[])
 
 {
 

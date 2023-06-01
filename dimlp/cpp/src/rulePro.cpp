@@ -1,4 +1,3 @@
-using namespace std;
 #include "rulePro.h"
 #include "misc.h"
 #include "randFun.h"
@@ -7,11 +6,12 @@ using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 
-int RuleProcessing::Max(int *tab, int nbRules)
+int RuleProcessing::Max(const int *tab, int nbRules) const
 
 {
-  int max, newVal;
-  int e, indMax;
+  int max;
+  int newVal;
+  int indMax;
 
   if (nbRules == 0)
     return -1;
@@ -22,7 +22,7 @@ int RuleProcessing::Max(int *tab, int nbRules)
   max = tab[0];
   indMax = 0;
 
-  for (e = 1; e < nbRules; e++) {
+  for (int e = 1; e < nbRules; e++) {
     newVal = tab[e];
 
     if (newVal > max) {
@@ -39,11 +39,12 @@ int RuleProcessing::Max(int *tab, int nbRules)
 
 ///////////////////////////////////////////////////////////////////
 
-int RuleProcessing::Min(int *tab, int nbRules)
+int RuleProcessing::Min(const int *tab, int nbRules) const
 
 {
-  int min, newVal;
-  int e, indMin;
+  int min;
+  int newVal;
+  int indMin;
 
   if (nbRules == 0)
     return -1;
@@ -53,7 +54,7 @@ int RuleProcessing::Min(int *tab, int nbRules)
 
   min = 1111111111;
 
-  for (e = 0; e < nbRules; e++) {
+  for (int e = 0; e < nbRules; e++) {
     newVal = tab[e];
 
     if ((newVal > 0) && (newVal < min)) {
@@ -70,7 +71,7 @@ int RuleProcessing::Min(int *tab, int nbRules)
 
 ///////////////////////////////////////////////////////////////////
 
-int RuleProcessing::IsRuleEmpty(Rule *rule)
+int RuleProcessing::IsRuleEmpty(Rule *rule) const
 
 {
   int r;
@@ -88,7 +89,10 @@ int RuleProcessing::IsRuleEmpty(Rule *rule)
 int RuleProcessing::CountAnt()
 
 {
-  int a, r, nbAnt, count;
+  int a;
+  int r;
+  int nbAnt;
+  int count;
   Rule *rule;
 
   for (r = 0, count = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
@@ -108,7 +112,8 @@ int RuleProcessing::CountAnt()
 int RuleProcessing::CountRules()
 
 {
-  int r, count;
+  int r;
+  int count;
 
   for (r = 0, count = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
     if (IsRuleEmpty(GetRule()) == 1)
@@ -160,73 +165,15 @@ void RuleProcessing::DelListCar()
 
 ////////////////////////////////////////////////////////////////////////
 
-/*int RuleProcessing::CheckAllCarriedAndDisj(int toDrop)
-
-{  int p, r, nbEl;
-
-   int        nbEx          = Data.GetNbEx();
-   int        areAllCarried = 1;
-   int        areDisj       = 0;
-   int*       checkTab      = new int[nbEx];
-   Rule*      rule;
-   StringInt* carriedEx;
-
-   for (p=0; p<nbEx; p++)
-       checkTab[p] = 0;
-
-   for (r=0, GoToBeg(); r<NbRules; r++, GoToNext())
-   {
-       if (r == toDrop) continue;
-
-       rule = GetRule();
-
-       if (IsRuleEmpty(rule) == 1) continue;
-
-       carriedEx = Current->Carried;
-
-       if (AreSameClass(carriedEx, ClassPatNet) == 0)
-       {
-          delete checkTab;
-          return 0;
-       }
-
-       nbEl = carriedEx->GetNbEl();
-
-       for (p=0, carriedEx->GoToBeg(); p<nbEl; p++, carriedEx->GoToNext())
-           checkTab[carriedEx->GetVal()] += 1;
-   }
-
-   for (p=0; p<nbEx; p++)
-       if (checkTab[p] == 0) break;
-
-   if (p != nbEx)
-      areAllCarried = 0;
-
-   if (areAllCarried == 1)
-   {
-      for (p=0; p<nbEx; p++)
-          if (checkTab[p] > 1) break;
-
-      if (p == nbEx)
-         areDisj = 1;
-   }
-
-   delete checkTab;
-
-   if ((areAllCarried == 0) && (areDisj == 0)) return 0;
-   if ((areAllCarried == 1) && (areDisj == 0)) return 2;
-   if ((areAllCarried == 1) && (areDisj == 1)) return 3;
-}*/
-
-////////////////////////////////////////////////////////////////////////
-
 int RuleProcessing::CheckAllCarried(int toDrop)
 
 {
-  int p, r, nbEl;
+  int p;
+  int r;
+  int nbEl;
 
   int nbEx = Data.GetNbEx();
-  int *checkTab = new int[nbEx];
+  auto checkTab = new int[nbEx];
   Rule *rule;
   StringInt *carriedEx;
 
@@ -252,11 +199,11 @@ int RuleProcessing::CheckAllCarried(int toDrop)
 
   for (p = 0; p < nbEx; p++)
     if (checkTab[p] == 0) {
-      delete checkTab;
+      delete[] checkTab;
       return 0;
     }
 
-  delete checkTab;
+  delete[] checkTab;
 
   return 1;
 }
@@ -308,7 +255,9 @@ int RuleProcessing::GoToSavedAndRemRule(int indPrune)
 void RuleProcessing::FastRulePrune(int nbIt)
 
 {
-  int count, i, indMax;
+  int count;
+  int i;
+  int indMax;
 
   TabRules = new int[NbRules];
 
@@ -334,7 +283,9 @@ void RuleProcessing::FastRulePrune(int nbIt)
 void RuleProcessing::RulePruneByMinCar()
 
 {
-  int count, r, indMin;
+  int count;
+  int r;
+  int indMin;
   StringInt *carried;
 
   TabRules = new int[NbRules];
@@ -362,7 +313,7 @@ void RuleProcessing::RulePruneByMinCar()
   }
 
   DelListCar();
-  delete TabRules;
+  delete[] TabRules;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -370,7 +321,11 @@ void RuleProcessing::RulePruneByMinCar()
 void RuleProcessing::GoToRuleAndRemAnt(int indPrune)
 
 {
-  int a, r, indRule, indAnt, remAnt;
+  int a;
+  int r;
+  int indRule;
+  int indAnt;
+  int remAnt;
   Rule *rule;
   StringInt *newCarried;
 
@@ -409,7 +364,11 @@ void RuleProcessing::GoToRuleAndRemAnt(int indPrune)
 void RuleProcessing::ComputeGain()
 
 {
-  int a, r, nbAnt, remAnt, diff;
+  int a;
+  int r;
+  int nbAnt;
+  int remAnt;
+  int diff;
   Rule *rule;
   StringInt *oldCarried;
   StringInt *newCarried;
@@ -456,7 +415,8 @@ void RuleProcessing::ComputeGain()
 void RuleProcessing::MixPrune()
 
 {
-  int i, indPrune, nbIt;
+  int indPrune;
+  int nbIt;
 
   ComputeGain();
   nbIt = Gain.GetNbEl();
@@ -469,18 +429,18 @@ void RuleProcessing::MixPrune()
   AntInd.Del();
 
   for (;;) {
-    cout << "\nNumber of rules = " << CountRules() << endl;
-    cout << "Number of antecedents = " << CountAnt() << endl;
+    std::cout << "\nNumber of rules = " << CountRules() << std::endl;
+    std::cout << "Number of antecedents = " << CountAnt() << std::endl;
 
     ComputeGain();
 
-    cout << "Number of possible antecedents to prune = ";
-    cout << Gain.GetNbEl() << endl;
+    std::cout << "Number of possible antecedents to prune = ";
+    std::cout << Gain.GetNbEl() << std::endl;
 
     if (Gain.GetNbEl() == 0)
       return;
 
-    for (i = 0; i < nbIt; i++) {
+    for (int i = 0; i < nbIt; i++) {
       indPrune = Gain.FindIndMax();
 
       if (indPrune < 0)
@@ -503,11 +463,15 @@ void RuleProcessing::MixPrune()
 void RuleProcessing::RemSevThres(Rule *r)
 
 {
-  int a, h, first;
-  float min, max, currentVal;
+  int a;
+  int h;
+  int first;
+  float min;
+  float max;
+  float currentVal;
 
-  int *tabFreqLess = new int[NbVar];
-  int *tabFreqGreat = new int[NbVar];
+  auto tabFreqLess = new int[NbVar];
+  auto tabFreqGreat = new int[NbVar];
 
   for (h = 0; h < NbVar; h++) {
     tabFreqLess[h] = 0;
@@ -524,6 +488,9 @@ void RuleProcessing::RemSevThres(Rule *r)
 
     case '>':
       tabFreqGreat[r->GetVar()] += 1;
+      break;
+
+    default:
       break;
     }
   }
@@ -546,9 +513,8 @@ void RuleProcessing::RemSevThres(Rule *r)
       }
 
       for (a = 0, r->GoToBeg(); a < nbAnt; a++, r->GoToNext()) {
-        if ((r->GetVar() == h) && (r->GetRel() == '>'))
-          if (r->GetVal() != max)
-            r->RemAnt();
+        if ((r->GetVar() == h) && (r->GetRel() == '>') && (r->GetVal() != max))
+          r->RemAnt();
       }
     }
   }
@@ -571,14 +537,13 @@ void RuleProcessing::RemSevThres(Rule *r)
       }
 
       for (a = 0, r->GoToBeg(); a < nbAnt; a++, r->GoToNext()) {
-        if ((r->GetVar() == h) && (r->GetRel() == '<'))
-          if (r->GetVal() != min)
-            r->RemAnt();
+        if ((r->GetVar() == h) && (r->GetRel() == '<') && (r->GetVal() != min))
+          r->RemAnt();
       }
     }
   }
 
-  delete tabFreqLess;
+  delete[] tabFreqLess;
   delete tabFreqGreat;
 }
 
@@ -605,7 +570,7 @@ void RuleProcessing::Insert(Rule *r)
     Current = First;
 
   First = new Saved;
-  Rule *ru = new Rule;
+  auto ru = new Rule;
 
   for (a = 0, r->GoToBeg(); a < nbAnt; a++, r->GoToNext()) {
     ru->Insert(r->GetVar(), r->GetVal(), r->GetRel());
@@ -624,11 +589,9 @@ void RuleProcessing::Insert(Rule *r)
 void RuleProcessing::Del()
 
 {
-  int e;
-
   Current = First;
 
-  for (e = 0; e < NbRules; e++) {
+  for (int e = 0; e < NbRules; e++) {
     Current = Current->Next;
     (First->OneRule)->Del();
     delete First;
@@ -655,13 +618,23 @@ void RuleProcessing::RemCurrentRule()
 int RuleProcessing::TryEnlargedThres()
 
 {
-  int a, r, t, var, nbThresOneVar, nbAnt, nbCarried, nbCarriedMod;
-  int nbEnlarged, indMax, count;
+  int a;
+  int r;
+  int t;
+  int var;
+  int nbThresOneVar;
+  int nbAnt;
+  int nbCarried;
+  int nbCarriedMod;
+  int nbEnlarged;
+  int indMax;
+  int count;
   int *vecCarried;
-  float val, thres;
+  float val;
+  float thres;
   Rule oneCopy;
   Rule *anotherCopy;
-  Rule *rr;
+  const Rule *rr;
   Rule *rule;
   Rule **enlarged;
 
@@ -688,9 +661,14 @@ int RuleProcessing::TryEnlargedThres()
     carried = Data.Select(rule);
     nbCarried = carried->GetNbEl();
 
-    for (a = 0, oneCopy.GoToBeg(); a < nbAnt; a++, oneCopy.GoToNext()) {
-      if (oneCopy.IsAntDeleted() == 1)
+    a = 0;
+    oneCopy.GoToBeg();
+    while (a < nbAnt) {
+      if (oneCopy.IsAntDeleted() == 1) {
+        a++;
+        oneCopy.GoToNext();
         continue;
+      }
 
       var = oneCopy.GetVar();
       val = oneCopy.GetVal();
@@ -735,6 +713,9 @@ int RuleProcessing::TryEnlargedThres()
           oneCopy.SetThres(val);
         }
       }
+
+      a++;
+      oneCopy.GoToNext();
     }
 
     oneCopy.Del();
@@ -771,13 +752,13 @@ void RuleProcessing::EnlargeAndPrune()
   int found;
 
   do {
-    cout << "Number of rules = " << CountRules() << endl;
-    cout << "Number of antecedents = " << CountAnt() << endl;
+    std::cout << "Number of rules = " << CountRules() << std::endl;
+    std::cout << "Number of antecedents = " << CountAnt() << std::endl;
 
     found = TryEnlargedThres();
 
-    cout << "Number of possible extensions = " << found << "\n"
-         << endl;
+    std::cout << "Number of possible extensions = " << found << "\n"
+              << std::endl;
 
     RulePruneByMinCar();
 
@@ -790,17 +771,10 @@ RuleProcessing::RuleProcessing(
     int nbVar,
     int nbHyp,
     DataSet data,
-    std::vector<int> classPatNet,
-    ThresDescr *descr)
+    const std::vector<int> &classPatNet,
+    ThresDescr *descr) : NbVar(nbVar), NbHyp(nbHyp), Data(data), ClassPatNet(classPatNet), Descr(descr)
 
 {
-  NbRules = 0;
-  NbVar = nbVar;
-  NbHyp = nbHyp;
-
-  Data = data;
-  ClassPatNet = classPatNet;
-  Descr = descr;
 }
 
 ////////////////////////////////////////////////////////////////////////
