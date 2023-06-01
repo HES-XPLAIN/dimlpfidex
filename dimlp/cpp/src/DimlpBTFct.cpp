@@ -1,6 +1,7 @@
 #include "DimlpBTFct.h"
 const int BPNN = 1;
 
+using namespace std;
 ////////////////////////////////////////////////////////////
 
 void GiveAllParamDimlpBT()

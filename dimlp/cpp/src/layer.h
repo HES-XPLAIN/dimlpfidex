@@ -102,7 +102,7 @@ public:
     ApplyTransf2();
   }
 
-  void ComputeDeltaOut(float target[]);
+  void ComputeDeltaOut(const float target[]);
 
   void ComputeDeltaDownSpec2();
   virtual void ComputeDeltaDown() { ComputeDeltaDownStand(); }

@@ -4,20 +4,19 @@
 #ifndef RULE
 #include "rule.h"
 #endif
-
 ////////////////////////////////////////////////////////////////////////
 
-class Ante : Rule {
+class Ante : public Rule {
 
   //----------------------------------------------------------------
 
 public:
-  int GetVar() { return Rule::GetVar(); }
-  float GetVal() { return Rule::GetVal(); }
-  char GetRel() { return Rule::GetRel(); }
+  int GetVarAnte() const { return Rule::GetVar(); }
+  float GetValAnte() const { return Rule::GetVal(); }
+  char GetRelAnte() const { return Rule::GetRel(); }
 
-  void Del() { Rule::Del(); }
-  void DelAll() {
+  void DelAnte() { Rule::Del(); }
+  void DelAllAnte() {
     Rule::Del();
     delete this;
   }

@@ -126,7 +126,6 @@ void BagDimlp::DefNetsWithWeights(const char *prefix)
 VirtualHyp *BagDimlp::MakeGlobalVirt(int nbBins, int nbIn, int multiple)
 
 {
-  int n;
   float *bias;
   float *weights;
   VirtualHyp **virt;
@@ -134,7 +133,7 @@ VirtualHyp *BagDimlp::MakeGlobalVirt(int nbBins, int nbIn, int multiple)
 
   virt = new VirtualHyp *[NbDimlpNets];
 
-  for (n = 0; n < NbDimlpNets; n++) {
+  for (int n = 0; n < NbDimlpNets; n++) {
     bias = (VectDimlp[n]->GetLayer(0))->GetBias();
     weights = (VectDimlp[n]->GetLayer(0))->GetWeights();
     virt[n] = new VirtualHyp(nbBins, nbIn, multiple, bias, weights);

@@ -1,7 +1,6 @@
 #ifndef CLEANRS_H
 #define CLEANRS_H
 
-using namespace std;
 #include <iostream>
 
 #ifndef FROMREAL
@@ -71,22 +70,21 @@ class CleanRuleStruct {
 
   // ------------------------------------------------------------------------
 
-  void ResetFlag();
-  void SetFlagToOne();
-  int CountFlaggedRules(int flag);
-  int CountFlaggedAnt(int flag);
-  int CountCarPatByFlags(int flag);
-  float ComputeAvgCar(int flag);
-  float ComputeAvgAnt(int flag);
-  int FindMinOnAnt(AssocAnte *ant, int nbAnt);
+  void ResetFlag() const;
+  void SetFlagToOne() const;
+  int CountFlaggedRules(int flag) const;
+  int CountFlaggedAnt(int flag) const;
+  int CountCarPatByFlags(int flag) const;
+  float ComputeAvgCar(int flag) const;
+  float ComputeAvgAnt(int flag) const;
+  int FindMinOnAnt(const AssocAnte *ant, int nbAnt) const;
   void SortAnt(AssocAnte *ant, int nbAnt, int indRule);
-  int FindMaxOnRules(int start);
-  int FindMinAntOnRules(int start);
+  int FindMaxOnRules(int start) const;
+  int FindMinAntOnRules(int start) const;
   void SortRules(int indMin);
 
   float GlobalAcc(DataSet &data, int *vecWrong, int nbEl);
   void ComputeAcc(
-      int indClean,
       StringInt *carried,
       int *indWrong,
       DataSet &data,
@@ -100,8 +98,8 @@ class CleanRuleStruct {
   void CreateWrongVect();
   void CreateStructures();
 
-  void ResetSomeFields();
-  int IsExampleCarried(DataSet &data, int index, CleanRule *rule);
+  void ResetSomeFields() const;
+  int IsExampleCarried(DataSet &data, int index, const CleanRule *rule) const;
   int Fidelity100();
   int Fidelity100Def();
 
@@ -111,39 +109,39 @@ class CleanRuleStruct {
   void ElseRepValid();
 
   void RemAnt(AssocAnte *oneAnt) { oneAnt->Var = -1; }
-  int IsAntDeleted(AssocAnte *oneAnt) { return ((oneAnt->Var == -1) ? 1 : 0); }
+  int IsAntDeleted(const AssocAnte *oneAnt) const { return ((oneAnt->Var == -1) ? 1 : 0); }
 
   int RandomPruneAnt();
-  int SumCarried();
+  int SumCarried() const;
 
   void RemRule(int r);
   int PruneRule();
   int OrderedExpand(ThresDescr *descr);
-  int CheckAnt(int indOld);
+  int CheckAnt(int indOld) const;
   void CreateNewClean();
   int SetDefRule();
   void DelClassPat();
   void SetClassPatNet();
-  void WriteNumb();
+  void WriteNumb() const;
 
   char *ItoA(int n);
 
-  int DefDef();
-  void UnordAccWithDef(ostream &ruleFile);
-  void UnordAccWithDef2(ostream &ruleFile);
+  int DefDef() const;
+  void UnordAccWithDef(std::ostream &ruleFile);
+  void UnordAccWithDef2(std::ostream &ruleFile);
 
   // ------------------------------------------------------------------------
 
 public:
-  void WriteRules(int def, ostream &ruleFile);
+  void WriteRules(int def, std::ostream &ruleFile);
   void ElseRepresentation();
   void SimplifyElse(ThresDescr *descr);
 
   void Del();
 
-  void SetAttr(std::vector<std::string> listAttr);
+  void SetAttr(std::vector<std::string> listAttr) const;
   void SetAttr();
-  void SetStrClass(std::vector<std::string> listClass, int def);
+  void SetStrClass(std::vector<std::string> listClass, int def) const;
   void SetStrClass(int def);
 
   CleanRuleStruct(

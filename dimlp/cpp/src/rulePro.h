@@ -1,12 +1,9 @@
 #ifndef RULEPRO_H
 #define RULEPRO_H
 
-using namespace std;
 #ifndef DATASETS
 #include "dataSet.h"
 #endif
-
-#define STRINGINT 1
 
 #ifndef THRESDESCR
 #include "thresD.h"
@@ -19,7 +16,7 @@ using namespace std;
 class RuleProcessing
 
 {
-  int NbRules;
+  int NbRules = 0;
   int NbVar;
   int NbHyp;
 
@@ -44,12 +41,11 @@ class RuleProcessing
 
   //----------------------------------------------------------------
 
-  int Max(int *tab, int nbRules);
-  int Min(int *tab, int nbRules);
+  int Max(const int *tab, int nbRules) const;
+  int Min(const int *tab, int nbRules) const;
   void SetCountAntRules();
   void SetCarriedField();
   void DelListCar();
-  // int   CheckAllCarriedAndDisj(int toDrop);
   int CheckAllCarried(int toDrop);
   void RemCurrentRule();
   int GoToSavedAndRemRule(int indPrune);
@@ -63,8 +59,8 @@ class RuleProcessing
   //----------------------------------------------------------------
 
 public:
-  int IsRuleEmpty(Rule *rule);
-  int GetNbRules() { return NbRules; }
+  int IsRuleEmpty(Rule *rule) const;
+  int GetNbRules() const { return NbRules; }
   void GoToBeg() { Current = First; }
   void GoToNext() { Current = Current->Next; }
   Rule *GetRule() { return Current->OneRule; }
@@ -85,10 +81,10 @@ public:
       int nbVar,
       int nbHyp,
       DataSet data,
-      std::vector<int> classPatNet,
+      const std::vector<int> &classPatNet,
       ThresDescr *descr);
 
-  RuleProcessing() { NbRules = 0; }
+  RuleProcessing() = default;
 };
 
 #endif

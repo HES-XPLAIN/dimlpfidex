@@ -12,6 +12,6 @@
 #include <vector>
 
 void GiveAllParamDimlpBT();
-int dimlpBT(const string &command);
+int dimlpBT(const std::string &command);
 
 #endif

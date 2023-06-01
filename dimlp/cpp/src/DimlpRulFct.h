@@ -12,6 +12,6 @@
 #include <vector>
 
 void GiveAllParamDimlpRul();
-int dimlpRul(const string &command);
+int dimlpRul(const std::string &command);
 
 #endif

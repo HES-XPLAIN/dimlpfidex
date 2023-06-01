@@ -329,7 +329,7 @@ void BpNN::BackOneExample(DataSet &target, int index) const
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::TrainOneEpoch(DataSet &data, DataSet &target, IntRandomFunction *r) const
+void BpNN::TrainOneEpoch(DataSet &data, DataSet &target, const IntRandomFunction *r) const
 
 {
   int indPat;

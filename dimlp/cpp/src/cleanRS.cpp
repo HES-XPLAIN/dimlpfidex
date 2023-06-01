@@ -1,36 +1,34 @@
-using namespace std;
 #include "cleanRS.h"
 #include <stdlib.h>
 #include <string.h>
 
+using namespace std;
+
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::ResetFlag()
+void CleanRuleStruct::ResetFlag() const
 
 {
-  int r;
-
-  for (r = 0; r < NbRules; r++)
+  for (int r = 0; r < NbRules; r++)
     Clean[r]->Flag = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::SetFlagToOne()
+void CleanRuleStruct::SetFlagToOne() const
 
 {
-  int r;
-
-  for (r = 0; r < NbRules; r++)
+  for (int r = 0; r < NbRules; r++)
     Clean[r]->Flag = 1;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-int CleanRuleStruct::CountFlaggedRules(int flag)
+int CleanRuleStruct::CountFlaggedRules(int flag) const
 
 {
-  int r, countRules;
+  int r;
+  int countRules;
 
   for (r = 0, countRules = 0; r < NbRules; r++)
     if (Clean[r]->Flag == flag)
@@ -41,10 +39,11 @@ int CleanRuleStruct::CountFlaggedRules(int flag)
 
 ////////////////////////////////////////////////////////////////////////
 
-int CleanRuleStruct::CountFlaggedAnt(int flag)
+int CleanRuleStruct::CountFlaggedAnt(int flag) const
 
 {
-  int r, countAnt;
+  int r;
+  int countAnt;
 
   for (r = 0, countAnt = 0; r < NbRules; r++)
     if (Clean[r]->Flag == flag)
@@ -55,10 +54,11 @@ int CleanRuleStruct::CountFlaggedAnt(int flag)
 
 ////////////////////////////////////////////////////////////////////////
 
-int CleanRuleStruct::CountCarPatByFlags(int flag)
+int CleanRuleStruct::CountCarPatByFlags(int flag) const
 
 {
-  int r, countPat;
+  int r;
+  int countPat;
 
   for (r = 0, countPat = 0; r < NbRules; r++)
     if (Clean[r]->Flag == flag)
@@ -69,7 +69,7 @@ int CleanRuleStruct::CountCarPatByFlags(int flag)
 
 ////////////////////////////////////////////////////////////////////////
 
-float CleanRuleStruct::ComputeAvgCar(int flag)
+float CleanRuleStruct::ComputeAvgCar(int flag) const
 
 {
   return (float)CountCarPatByFlags(flag) /
@@ -78,7 +78,7 @@ float CleanRuleStruct::ComputeAvgCar(int flag)
 
 ////////////////////////////////////////////////////////////////////////
 
-float CleanRuleStruct::ComputeAvgAnt(int flag)
+float CleanRuleStruct::ComputeAvgAnt(int flag) const
 
 {
   return (float)CountFlaggedAnt(flag) /
@@ -87,17 +87,16 @@ float CleanRuleStruct::ComputeAvgAnt(int flag)
 
 ////////////////////////////////////////////////////////////////////////
 
-int CleanRuleStruct::FindMinOnAnt(AssocAnte *ant, int nbAnt)
+int CleanRuleStruct::FindMinOnAnt(const AssocAnte *ant, int nbAnt) const
 
 {
-  int a;
   int min;
   int indMin;
 
   indMin = 0;
   min = ant[0].Var;
 
-  for (a = 1; a < nbAnt; a++) {
+  for (int a = 1; a < nbAnt; a++) {
     if (ant[a].Var <= min) {
       if (ant[a].Var < min) {
         min = ant[a].Var;
@@ -122,12 +121,11 @@ int CleanRuleStruct::FindMinOnAnt(AssocAnte *ant, int nbAnt)
 void CleanRuleStruct::SortAnt(AssocAnte *ant, int nbAnt, int indRule)
 
 {
-  int a;
   int indMin;
 
-  AssocAnte *sorted = new AssocAnte[nbAnt];
+  auto sorted = new AssocAnte[nbAnt];
 
-  for (a = 0; a < nbAnt; a++) {
+  for (int a = 0; a < nbAnt; a++) {
     indMin = FindMinOnAnt(ant, nbAnt);
 
     sorted[a].Var = ant[indMin].Var;
@@ -142,17 +140,16 @@ void CleanRuleStruct::SortAnt(AssocAnte *ant, int nbAnt, int indRule)
 
 ////////////////////////////////////////////////////////////////////////
 
-int CleanRuleStruct::FindMinAntOnRules(int start)
+int CleanRuleStruct::FindMinAntOnRules(int start) const
 
 {
-  int r;
   int max;
   int indMax;
 
   max = 1111111111;
   indMax = -1;
 
-  for (r = start; r < NbRules; r++) {
+  for (int r = start; r < NbRules; r++) {
     if (Clean[r]->Flag == 0) {
       if (Clean[r]->NbAnt < max) {
         max = Clean[r]->NbAnt;
@@ -166,17 +163,16 @@ int CleanRuleStruct::FindMinAntOnRules(int start)
 
 ////////////////////////////////////////////////////////////////////////
 
-int CleanRuleStruct::FindMaxOnRules(int start)
+int CleanRuleStruct::FindMaxOnRules(int start) const
 
 {
-  int r;
   int max;
   int indMax;
 
   max = -1;
   indMax = -1;
 
-  for (r = start; r < NbRules; r++) {
+  for (int r = start; r < NbRules; r++) {
     if (Clean[r]->Flag == 0) {
       if (Clean[r]->NbAllCarried > max) {
         max = Clean[r]->NbAllCarried;
@@ -193,13 +189,12 @@ int CleanRuleStruct::FindMaxOnRules(int start)
 void CleanRuleStruct::SortRules(int minAnt)
 
 {
-  int r;
   int indMax;
   CleanRule *ptrClean;
 
   ResetFlag();
 
-  for (r = 0; r < NbRules - 1; r++) {
+  for (int r = 0; r < NbRules - 1; r++) {
     if (minAnt == 0)
       indMax = FindMaxOnRules(r);
     else
@@ -223,7 +218,8 @@ float CleanRuleStruct::GlobalAcc(DataSet &data, int *vecWrong, int nbEl)
 {
   int e;
   int count;
-  int cl, clNet;
+  int cl;
+  int clNet;
 
   for (e = 0, count = 0; e < nbEl; e++) {
     if (vecWrong[e] == -1) // -1 -> Non Carried
@@ -248,7 +244,6 @@ float CleanRuleStruct::GlobalAcc(DataSet &data, int *vecWrong, int nbEl)
 ////////////////////////////////////////////////////////////////////////
 
 void CleanRuleStruct::ComputeAcc(
-    int indClean,
     StringInt *carried,
     int *indWrong,
     DataSet &data,
@@ -310,7 +305,7 @@ void CleanRuleStruct::SetSevInfo(Rule *rule, int indClean)
 
   carried = Train.Select(rule);
 
-  ComputeAcc(indClean, carried, WrongTrain, Train, TrainClass,
+  ComputeAcc(carried, WrongTrain, Train, TrainClass,
              &(Clean[indClean]->NbCarriedTrain),
              &(Clean[indClean]->NbCorrectTrain),
              &(Clean[indClean]->NbWrongTrain),
@@ -321,7 +316,7 @@ void CleanRuleStruct::SetSevInfo(Rule *rule, int indClean)
   if (Test.GetNbEx() != 0) {
     carried = Test.Select(rule);
 
-    ComputeAcc(indClean, carried, WrongTest, Test, TestClass,
+    ComputeAcc(carried, WrongTest, Test, TestClass,
                &(Clean[indClean]->NbCarriedTest),
                &(Clean[indClean]->NbCorrectTest),
                &(Clean[indClean]->NbWrongTest),
@@ -340,7 +335,7 @@ void CleanRuleStruct::SetSevInfo(Rule *rule, int indClean)
   if (Valid.GetNbEx() != 0) {
     carried = Valid.Select(rule);
 
-    ComputeAcc(indClean, carried, WrongValid, Valid, ValidClass,
+    ComputeAcc(carried, WrongValid, Valid, ValidClass,
                &(Clean[indClean]->NbCarriedValid),
                &(Clean[indClean]->NbCorrectValid),
                &(Clean[indClean]->NbWrongValid),
@@ -423,14 +418,12 @@ void CleanRuleStruct::WriteRules(int def, ostream &ruleFile)
 
 {
   int r;
-  int a;
   int count;
   int nbRules;
 
-  AssocAnte *ptrAnt;
+  const AssocAnte *ptrAnt;
 
   if (def == 1) {
-    //      DetermineDefRule();
     SetFlagToOne();
     Clean[NbRules]->Flag = 1;
     nbRules = NbRules + 1;
@@ -447,11 +440,12 @@ void CleanRuleStruct::WriteRules(int def, ostream &ruleFile)
     if (Clean[r]->Flag != 1)
       continue;
 
-    ruleFile << "Rule " << ++count << ": ";
+    count++;
+    ruleFile << "Rule " << count << ": ";
 
     ptrAnt = Clean[r]->SevAnt;
 
-    for (a = 0; a < Clean[r]->NbAnt; a++, ptrAnt++) {
+    for (int a = 0; a < Clean[r]->NbAnt; a++, ptrAnt++) {
       ruleFile << "(" << ptrAnt->Str << " ";
       ruleFile << ptrAnt->Rel << " ";
       ruleFile << ptrAnt->Val << ") ";
@@ -484,7 +478,8 @@ void CleanRuleStruct::WriteRules(int def, ostream &ruleFile)
     if (r != NbRules) {
       ruleFile << "Rule ";
       ruleFile.width(4);
-      ruleFile << ++count << ": ";
+      count++;
+      ruleFile << count << ": ";
     } else {
       ruleFile << "Default  : ";
     }
@@ -529,7 +524,8 @@ void CleanRuleStruct::WriteRules(int def, ostream &ruleFile)
       if (r != NbRules) {
         ruleFile << "Rule ";
         ruleFile.width(4);
-        ruleFile << ++count << ": ";
+        count++;
+        ruleFile << count << ": ";
       } else {
         ruleFile << "Default  :";
       }
@@ -563,43 +559,6 @@ void CleanRuleStruct::WriteRules(int def, ostream &ruleFile)
 
   ruleFile << "---------------------------------------------------------\n\n";
 
-  /*
-     if (Test.GetNbEx() != 0)
-     {
-        ruleFile << "---------------------------------------------------------\n\n";
-
-        ruleFile << "Testing set:\n\n";
-
-        ruleFile << "---------------------------------------------------------\n\n";
-
-        for (r=0, count=0; r<nbRules; r++)
-        {
-            if (Clean[r]->Flag != 1) continue;
-
-         if (r != NbRules)
-            ruleFile << form("Rule %4d:", ++count);
-         else
-            ruleFile << "Default  :";
-
-            ruleFile << form("%5d ", Clean[r]->NbCarriedTest);
-            ruleFile << form("%5d ", Clean[r]->NbCorrectTest);
-            ruleFile << form("%5d ", Clean[r]->NbWrongTest);
-            if (Clean[r]->AccuracyTest != -1.0)
-               ruleFile << form("     %1.6f ", Clean[r]->AccuracyTest);
-            else
-               ruleFile << "              ";
-            ruleFile << "      Class = " << Clean[r]->StrClass;
-
-            ruleFile << "\n";
-        }
-
-        ruleFile << "\n";
-        ruleFile << "---------------------------------------------------------\n\n";
-
-        ruleFile << "Accuracy of rules on testing set = ";
-        ruleFile << GlobalAcc(Test, WrongTest,  Test.GetNbEx()) << "\n\n";
-     }
-  */
   ruleFile << "---------------------------------------------------------\n\n";
 
   ruleFile << "--- Number of rules = " << CountFlaggedRules(1) << "\n";
@@ -634,7 +593,7 @@ void CleanRuleStruct::CreateWrongVect()
     for (p = 0; p < Test.GetNbEx(); p++)
       WrongTest[p] = -1;
   } else
-    WrongTest = 0;
+    WrongTest = nullptr;
 
   if (Valid.GetNbEx() != 0) {
     WrongValid = new int[Valid.GetNbEx()];
@@ -642,7 +601,7 @@ void CleanRuleStruct::CreateWrongVect()
     for (p = 0; p < Valid.GetNbEx(); p++)
       WrongValid[p] = -1;
   } else
-    WrongValid = 0;
+    WrongValid = nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -680,22 +639,9 @@ CleanRuleStruct::CleanRuleStruct(
     RuleProcessing *processed,
     BpNN *bpNn,
     float *out,
-    int nbOut)
+    int nbOut) : All(all), Train(train), TrainClass(trainClass), Test(test), TestClass(testClass), Valid(valid), ValidClass(validClass), NbOut(nbOut), Bpnn(bpNn), Pruned(processed), Out(out)
 
 {
-  int p;
-
-  All = all;
-  Train = train;
-  TrainClass = trainClass;
-  Valid = valid;
-  ValidClass = validClass;
-  Test = test;
-  TestClass = testClass;
-  Bpnn = bpNn;
-  Out = out;
-  Pruned = processed;
-  NbOut = nbOut;
   NbRules = Pruned->CountRules();
 
   CreateWrongVect();
@@ -704,7 +650,7 @@ CleanRuleStruct::CleanRuleStruct(
   const int nbEx = All.GetNbEx();
   ClAllNet = new int[nbEx];
 
-  for (p = 0; p < nbEx; p++) {
+  for (int p = 0; p < nbEx; p++) {
     Bpnn->ForwardOneExample1(All, p);
     ClAllNet[p] = Bpnn->Max(Out, NbOut);
   }
@@ -714,12 +660,10 @@ CleanRuleStruct::CleanRuleStruct(
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::ResetSomeFields()
+void CleanRuleStruct::ResetSomeFields() const
 
 {
-  int r;
-
-  for (r = 0; r < NbRules + 1; r++) {
+  for (int r = 0; r < NbRules + 1; r++) {
     Clean[r]->NbAllCarried = 0;
     Clean[r]->NbCarriedTrain = 0;
     Clean[r]->NbCarriedTest = 0;
@@ -741,7 +685,7 @@ void CleanRuleStruct::ResetSomeFields()
 int CleanRuleStruct::IsExampleCarried(
     DataSet &data,
     int index,
-    CleanRule *rule)
+    const CleanRule *rule) const
 
 {
   int a;
@@ -750,7 +694,7 @@ int CleanRuleStruct::IsExampleCarried(
   float val;
   char rel;
 
-  AssocAnte *ptrAnt;
+  const AssocAnte *ptrAnt;
 
   const int nbRuleAnt = rule->NbAnt;
   const float *ptrPat = data.GetExample(index);
@@ -777,6 +721,9 @@ int CleanRuleStruct::IsExampleCarried(
         continue;
       else
         return 0;
+
+    default:
+      break;
     }
   }
 
@@ -804,7 +751,7 @@ void CleanRuleStruct::ElseRepresentation()
 int CleanRuleStruct::Fidelity100()
 
 {
-  int p, r;
+  int r;
   int nbEx;
 
   nbEx = All.GetNbEx();
@@ -812,7 +759,7 @@ int CleanRuleStruct::Fidelity100()
   for (r = 0; r < NbRules + 1; r++)
     Clean[r]->NbAllCarried = 0;
 
-  for (p = 0; p < nbEx; p++) {
+  for (int p = 0; p < nbEx; p++) {
     for (r = 0; r < NbRules; r++) {
       if (IsExampleCarried(All, p, Clean[r]) == 1) {
         Clean[r]->NbAllCarried += 1;
@@ -840,7 +787,7 @@ int CleanRuleStruct::Fidelity100()
 int CleanRuleStruct::Fidelity100Def()
 
 {
-  int p, r;
+  int r;
   int nbEx;
 
   nbEx = All.GetNbEx();
@@ -848,7 +795,7 @@ int CleanRuleStruct::Fidelity100Def()
   for (r = 0; r < NbRules; r++)
     Clean[r]->NbAllCarried = 0;
 
-  for (p = 0; p < nbEx; p++) {
+  for (int p = 0; p < nbEx; p++) {
     for (r = 0; r < NbRules; r++) {
       if (Clean[r]->Flag == 0)
         continue;
@@ -872,12 +819,12 @@ int CleanRuleStruct::Fidelity100Def()
 void CleanRuleStruct::ElseRepAll()
 
 {
-  int p, r;
+  int r;
   int nbEx;
 
   nbEx = All.GetNbEx();
 
-  for (p = 0; p < nbEx; p++) {
+  for (int p = 0; p < nbEx; p++) {
     for (r = 0; r < NbRules; r++) {
       if (IsExampleCarried(All, p, Clean[r]) == 1) {
         Clean[r]->NbAllCarried += 1;
@@ -895,12 +842,12 @@ void CleanRuleStruct::ElseRepAll()
 void CleanRuleStruct::ElseRepTrain()
 
 {
-  int p, r;
+  int r;
   int nbEx;
 
   nbEx = Train.GetNbEx();
 
-  for (p = 0; p < nbEx; p++) {
+  for (int p = 0; p < nbEx; p++) {
     for (r = 0; r < NbRules; r++) {
       if (IsExampleCarried(Train, p, Clean[r]) == 1) {
         Clean[r]->NbCarriedTrain += 1;
@@ -938,12 +885,12 @@ void CleanRuleStruct::ElseRepTrain()
 void CleanRuleStruct::ElseRepTest()
 
 {
-  int p, r;
+  int r;
   int nbEx;
 
   nbEx = Test.GetNbEx();
 
-  for (p = 0; p < nbEx; p++) {
+  for (int p = 0; p < nbEx; p++) {
     for (r = 0; r < NbRules; r++) {
       if (IsExampleCarried(Test, p, Clean[r]) == 1) {
         Clean[r]->NbCarriedTest += 1;
@@ -993,12 +940,12 @@ void CleanRuleStruct::ElseRepTest()
 void CleanRuleStruct::ElseRepValid()
 
 {
-  int p, r;
+  int r;
   int nbEx;
 
   nbEx = Valid.GetNbEx();
 
-  for (p = 0; p < nbEx; p++) {
+  for (int p = 0; p < nbEx; p++) {
     for (r = 0; r < NbRules; r++) {
       if (IsExampleCarried(Valid, p, Clean[r]) == 1) {
         Clean[r]->NbCarriedValid += 1;
@@ -1039,7 +986,8 @@ int CleanRuleStruct::RandomPruneAnt()
   const int nbAllAnt = CountFlaggedAnt(1);
   int countFail = 0;
   int countPrune = 0;
-  int a, r;
+  int a;
+  int r;
   int nbAnt;
   int toDelVar;
   int pruned;
@@ -1128,7 +1076,9 @@ int CleanRuleStruct::OrderedExpand(ThresDescr *descr)
 
 {
   int countExpand = 0;
-  int a, r, s, t, dd;
+  int a;
+  int r;
+  int s;
   int nbAnt;
   float toExpVal;
   float thres;
@@ -1139,9 +1089,9 @@ int CleanRuleStruct::OrderedExpand(ThresDescr *descr)
   OneVarThresDescr *oneVarDescr;
   AssocAnte *ant;
 
-  int *vectCar = new int[NbRules];
+  auto vectCar = new int[NbRules];
 
-  dd = Fidelity100();
+  Fidelity100();
 
   for (r = 0; r < NbRules; r++)
     vectCar[r] = Clean[r]->NbAllCarried;
@@ -1166,7 +1116,7 @@ int CleanRuleStruct::OrderedExpand(ThresDescr *descr)
       if (nbThresOneVar > 1) {
         oneVarDescr->GoToBeg();
 
-        for (t = 0; t < nbThresOneVar; t++, oneVarDescr->GoToNext()) {
+        for (int t = 0; t < nbThresOneVar; t++, oneVarDescr->GoToNext()) {
           thres = oneVarDescr->GetThres();
 
           if (thres == toExpVal)
@@ -1205,25 +1155,24 @@ int CleanRuleStruct::OrderedExpand(ThresDescr *descr)
           vectCar[s] = Clean[s]->NbAllCarried;
 
         countExpand++;
-        // cout << countExpand << "\n";
       }
     }
   }
 
-  delete vectCar;
+  delete[] vectCar;
 
   return countExpand;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-int CleanRuleStruct::CheckAnt(int indOld)
+int CleanRuleStruct::CheckAnt(int indOld) const
 
 {
   const int oldNbAnt = Clean[indOld]->NbAnt;
   int countOldAnt = 0;
   int i;
-  AssocAnte *ptrOldAnt;
+  const AssocAnte *ptrOldAnt;
 
   for (i = 0, ptrOldAnt = Clean[indOld]->SevAnt; i < oldNbAnt; i++, ptrOldAnt++) {
     if (IsAntDeleted(ptrOldAnt) == 0)
@@ -1238,17 +1187,18 @@ int CleanRuleStruct::CheckAnt(int indOld)
 void CleanRuleStruct::CreateNewClean()
 
 {
-  int a, n, r;
+  int n;
+  int r;
   int nbOldAnt;
   int nbNewAnt;
-  AssocAnte *ptrOldAnt;
+  const AssocAnte *ptrOldAnt;
   AssocAnte *ptrNewAnt;
 
   for (r = 0, n = 0; r < NbRules; r++)
     if (CheckAnt(r))
       n++;
 
-  CleanRule **newClean = new CleanRule *[n + 1];
+  auto newClean = new CleanRule *[n + 1];
   newClean[n] = new CleanRule;
 
   newClean[n]->Classification = Clean[NbRules]->Classification;
@@ -1281,7 +1231,7 @@ void CleanRuleStruct::CreateNewClean()
       ptrOldAnt = Clean[r]->SevAnt;
       ptrNewAnt = newClean[n]->SevAnt;
 
-      for (a = 0; a < nbOldAnt; a++, ptrOldAnt++) {
+      for (int a = 0; a < nbOldAnt; a++, ptrOldAnt++) {
         if (IsAntDeleted(ptrOldAnt) == 0) {
           ptrNewAnt->Var = ptrOldAnt->Var;
           ptrNewAnt->Val = ptrOldAnt->Val;
@@ -1309,10 +1259,11 @@ void CleanRuleStruct::CreateNewClean()
 
 ////////////////////////////////////////////////////////////////////////
 
-int CleanRuleStruct::SumCarried()
+int CleanRuleStruct::SumCarried() const
 
 {
-  int r, count;
+  int r;
+  int count;
 
   for (r = 0, count = 0; r < NbRules + 1; r++)
     count += Clean[r]->NbAllCarried;
@@ -1325,14 +1276,16 @@ int CleanRuleStruct::SumCarried()
 int CleanRuleStruct::PruneRule()
 
 {
-  int a, r, nbAnt, toRet = 0;
+  int a;
+  int nbAnt;
+  int toRet = 0;
   int *saved;
   AssocAnte *ptrAnt;
 
-  a = Fidelity100();
+  Fidelity100();
   // cout << SumCarried() << " -- ";
 
-  for (r = 0; r < NbRules; r++) {
+  for (int r = 0; r < NbRules; r++) {
     if (CheckAnt(r) == 0)
       continue;
 
@@ -1352,10 +1305,9 @@ int CleanRuleStruct::PruneRule()
 
     else {
       toRet += 1;
-      // cout << "Rem Rule\n";
     }
 
-    delete saved;
+    delete[] saved;
   }
 
   return toRet;
@@ -1363,10 +1315,11 @@ int CleanRuleStruct::PruneRule()
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::WriteNumb()
+void CleanRuleStruct::WriteNumb() const
 
 {
-  int r, n;
+  int r;
+  int n;
 
   for (r = 0, n = 0; r < NbRules; r++)
     if (CheckAnt(r))
@@ -1385,7 +1338,10 @@ void CleanRuleStruct::WriteNumb()
 void CleanRuleStruct::SimplifyElse(ThresDescr *descr)
 
 {
-  int rpa, pr, oe, pr2, dd;
+  int rpa;
+  int pr;
+  int oe;
+  int pr2;
 
   SortRules(0);
   SetFlagToOne();
@@ -1400,7 +1356,7 @@ void CleanRuleStruct::SimplifyElse(ThresDescr *descr)
 
   } while ((rpa != 0) || (pr != 0) || (oe != 0) || (pr2 != 0));
 
-  dd = Fidelity100();
+  Fidelity100();
 
   CreateNewClean();
 
@@ -1426,9 +1382,13 @@ void CleanRuleStruct::SimplifyElse(ThresDescr *descr)
 int CleanRuleStruct::SetDefRule()
 
 {
-  int r, cl, nbDelAnt, defClass, countAnt;
+  int r;
+  int cl;
+  int nbDelAnt;
+  int defClass;
+  int countAnt;
   StringInt **vectList;
-  int *nbDeletedAnt = new int[NbOut];
+  auto nbDeletedAnt = new int[NbOut];
 
   ElseRepresentation();
 
@@ -1466,7 +1426,7 @@ int CleanRuleStruct::SetDefRule()
     }
   }
 
-  delete nbDeletedAnt;
+  delete[] nbDeletedAnt;
 
   const int nbDef = vectList[defClass]->GetNbEl();
 
@@ -1477,7 +1437,7 @@ int CleanRuleStruct::SetDefRule()
 
   for (cl = 0; cl < NbOut; cl++)
     vectList[cl]->DelAll();
-  delete vectList;
+  delete[] vectList;
 
   return defClass;
 }
@@ -1530,7 +1490,10 @@ void CleanRuleStruct::DelClassPat()
 char *CleanRuleStruct::ItoA(int n)
 
 {
-  int div, mod, k, i;
+  int div;
+  int mod;
+  int k;
+  int i;
   char str[80];
   static char strRev[80];
 
@@ -1542,7 +1505,7 @@ char *CleanRuleStruct::ItoA(int n)
     div = n / 10;
     mod = n % 10;
 
-    str[i] = mod + '0';
+    str[i] = static_cast<char>(mod + '0');
 
     i++;
     n = div;
@@ -1558,7 +1521,7 @@ char *CleanRuleStruct::ItoA(int n)
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::SetAttr(vector<string> listAttr)
+void CleanRuleStruct::SetAttr(vector<string> listAttr) const
 
 {
   int a;
@@ -1582,7 +1545,7 @@ void CleanRuleStruct::SetAttr()
   int a;
   int nbAnt;
   AssocAnte *ptr;
-  char *str;
+  const char *str;
 
   for (int r = 0; r < NbRules; r++) {
     nbAnt = Clean[r]->NbAnt;
@@ -1599,7 +1562,7 @@ void CleanRuleStruct::SetAttr()
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::SetStrClass(vector<string> listClass, int def)
+void CleanRuleStruct::SetStrClass(vector<string> listClass, int def) const
 
 {
   for (int r = 0; r < NbRules + def; r++) {
@@ -1612,7 +1575,7 @@ void CleanRuleStruct::SetStrClass(vector<string> listClass, int def)
 void CleanRuleStruct::SetStrClass(int def)
 
 {
-  char *str;
+  const char *str;
 
   for (int r = 0; r < NbRules + def; r++) {
     str = ItoA((Clean[r]->Classification) + 1);
@@ -1622,10 +1585,13 @@ void CleanRuleStruct::SetStrClass(int def)
 
 ////////////////////////////////////////////////////////////////////////
 
-int CleanRuleStruct::DefDef()
+int CleanRuleStruct::DefDef() const
 
 {
-  int r, def, count, i;
+  int r;
+  int def;
+  int count;
+  int i;
 
   if (NbRules == 0)
     return 0;
@@ -1659,8 +1625,15 @@ int CleanRuleStruct::DefDef()
 void CleanRuleStruct::UnordAccWithDef(ostream &ruleFile)
 
 {
-  int p, r, c, s, count, z;
-  int indRule, cl, clNet, flagContr;
+  int r;
+  int c;
+  int s;
+  int count;
+  int z;
+  int indRule;
+  int cl;
+  int clNet;
+  int flagContr;
 
   int globalAcc = 0;
   int globalWithout = 0;
@@ -1671,8 +1644,8 @@ void CleanRuleStruct::UnordAccWithDef(ostream &ruleFile)
 
   ResetSomeFields();
 
-  for (p = 0; p < nbEx; p++) {
-    int *vectRulCar = new int[nbRules];
+  for (int p = 0; p < nbEx; p++) {
+    auto vectRulCar = new int[nbRules];
 
     Bpnn->ForwardOneExample1(Test, p);
     clNet = Bpnn->Max(Out, NbOut);
@@ -1680,7 +1653,6 @@ void CleanRuleStruct::UnordAccWithDef(ostream &ruleFile)
     for (r = 0, c = 0, z = 0; r < nbRules; r++) {
       if (IsExampleCarried(Test, p, Clean[r]) == 1) {
         z = 1;
-        // cout << "-- " << r+1 << " " << 1 + Clean[r]->Classification << ClassPatNetTest[p] + 1 << "\n";
 
         cout << p + 1 << ": "
              << "-- R" << r + 1 << " " << 1 + Clean[r]->Classification << " " << clNet + 1 << " " << ClassPatNetTest[p] + 1 << "\n";
@@ -1756,11 +1728,9 @@ void CleanRuleStruct::UnordAccWithDef(ostream &ruleFile)
         {
           indRule = vectRulCar[s];
 
-          if (clNet == Clean[indRule]->Classification) {
-            if (Clean[indRule]->Classification == ClassPatNetTest[p]) {
-              globalAcc++;
-              break;
-            }
+          if (clNet == Clean[indRule]->Classification && Clean[indRule]->Classification == ClassPatNetTest[p]) {
+            globalAcc++;
+            break;
           }
         }
 
@@ -1780,20 +1750,13 @@ void CleanRuleStruct::UnordAccWithDef(ostream &ruleFile)
       }
     }
 
-    delete vectRulCar;
+    delete[] vectRulCar;
   }
 
   cout << "--- Accuracy on testing set = " << (float)globalAcc * 100.0 / (float)nbEx << "\n";
   cout << "--- Fidelity = " << (float)fidelity * 100.0 / (float)nbEx << "\n";
   cout << "--- Acc on Fid = " << (float)globalWithout * 100.0 / (float)fidelity << "\n";
   cout << "--- Contradictions = " << (float)contr * 100.0 / (float)nbEx << "\n\n";
-
-  /*
-  for (r=0; r<nbRules; r++)
-  {
-      cout << r+1 << ": " << Clean[r]->NbWrongTest << "\n";
-  }
-  */
 
   ruleFile << "---------------------------------------------------------\n\n";
 
@@ -1805,7 +1768,8 @@ void CleanRuleStruct::UnordAccWithDef(ostream &ruleFile)
     if (r != NbRules) {
       ruleFile << "Rule ";
       ruleFile.width(4);
-      ruleFile << ++count << ": ";
+      count++;
+      ruleFile << count << ": ";
     }
 
     ruleFile.width(5);
@@ -1838,8 +1802,15 @@ void CleanRuleStruct::UnordAccWithDef(ostream &ruleFile)
 void CleanRuleStruct::UnordAccWithDef2(ostream &ruleFile)
 
 {
-  int p, r, c, s, count, z;
-  int indRule, cl, clNet, flagContr;
+  int r;
+  int c;
+  int s;
+  int count;
+  int z;
+  int indRule;
+  int cl;
+  int clNet;
+  int flagContr;
 
   int globalAcc = 0;
   int globalWithout = 0;
@@ -1856,8 +1827,8 @@ void CleanRuleStruct::UnordAccWithDef2(ostream &ruleFile)
   cout << "CLASSIFICATION ON THE TESTING SET\n\n";
   cout << "(Case: Activated Rule -- Rule Class, Net Class, True Class):\n\n";
 
-  for (p = 0; p < nbEx; p++) {
-    int *vectRulCar = new int[nbRules];
+  for (int p = 0; p < nbEx; p++) {
+    auto vectRulCar = new int[nbRules];
 
     Bpnn->ForwardOneExample1(Test, p);
     clNet = Bpnn->Max(Out, NbOut);
@@ -1865,7 +1836,6 @@ void CleanRuleStruct::UnordAccWithDef2(ostream &ruleFile)
     for (r = 0, c = 0, z = 0; r < nbRules; r++) {
       if (IsExampleCarried(Test, p, Clean[r]) == 1) {
         z = 1;
-        // cout << "-- " << r+1 << " " << 1 + Clean[r]->Classification << ClassPatNetTest[p] + 1 << "\n";
 
         cout << p + 1 << ": R" << r + 1 << " -- " << 1 + Clean[r]->Classification << " " << clNet + 1 << " " << ClassPatNetTest[p] + 1;
         if (Clean[r]->Classification != clNet)
@@ -1948,11 +1918,9 @@ void CleanRuleStruct::UnordAccWithDef2(ostream &ruleFile)
         {
           indRule = vectRulCar[s];
 
-          if (clNet == Clean[indRule]->Classification) {
-            if (Clean[indRule]->Classification == ClassPatNetTest[p]) {
-              globalAcc++;
-              break;
-            }
+          if (clNet == Clean[indRule]->Classification && Clean[indRule]->Classification == ClassPatNetTest[p]) {
+            globalAcc++;
+            break;
           }
         }
 
@@ -1980,23 +1948,13 @@ void CleanRuleStruct::UnordAccWithDef2(ostream &ruleFile)
       }
     }
 
-    delete vectRulCar;
+    delete[] vectRulCar;
   }
 
   ruleFile << "--- Accuracy of rules on testing set = " << (float)globalAcc / (float)nbEx << "\n";
   ruleFile << "--- Fidelity on testing set (" << fidelity << "/" << nbEx << ") = " << (float)fidelity / (float)nbEx << "\n";
   ruleFile << "--- Accuracy when rules and network agree (" << globalWithout << "/" << fidelity << ") = " << (float)globalWithout / (float)fidelity << "\n\n";
-  //   cout << "--- Contradictions = " << (float) contr / (float) nbEx << "\n";
   ruleFile << "--- Number of default rule activations (network classification) = " << countDef << "\n\n";
-  //   cout << "--- NoFid = " <<  noFid << "\n";
-  //   cout << "--- NoFidBad = " <<  noFidBad << "\n\n";
-
-  /*
-  for (r=0; r<nbRules; r++)
-  {
-      cout << r+1 << ": " << Clean[r]->NbWrongTest << "\n";
-  }
-  */
 
   ruleFile << "---------------------------------------------------------\n\n";
 
@@ -2008,7 +1966,8 @@ void CleanRuleStruct::UnordAccWithDef2(ostream &ruleFile)
     if (r != NbRules) {
       ruleFile << "Rule ";
       ruleFile.width(4);
-      ruleFile << ++count << ": ";
+      count++;
+      ruleFile << count << ": ";
     }
 
     ruleFile.width(5);
