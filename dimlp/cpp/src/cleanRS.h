@@ -52,11 +52,11 @@ class CleanRuleStruct {
     int Flag;
   };
 
-  BpNN *Bpnn;
-  RuleProcessing *Pruned;
+  std::shared_ptr<BpNN> Bpnn;
+  std::shared_ptr<RuleProcessing> Pruned;
   float *Out;
 
-  CleanRule **Clean;
+  std::vector<std::shared_ptr<CleanRule>> Clean;
   int *WrongTrain;
   int *WrongTest;
   int *WrongValid;
@@ -78,28 +78,28 @@ class CleanRuleStruct {
   float ComputeAvgCar(int flag) const;
   float ComputeAvgAnt(int flag) const;
   int FindMinOnAnt(const AssocAnte *ant, int nbAnt) const;
-  void SortAnt(AssocAnte *ant, int nbAnt, int indRule);
+  void SortAnt(AssocAnte *ant, int nbAnt, int indRule) const;
   int FindMaxOnRules(int start) const;
   int FindMinAntOnRules(int start) const;
   void SortRules(int indMin);
 
-  float GlobalAcc(DataSet &data, int *vecWrong, int nbEl);
+  float GlobalAcc(DataSet &data, int *vecWrong, int nbEl) const;
   void ComputeAcc(
-      StringInt *carried,
+      std::shared_ptr<StringInt> carried,
       int *indWrong,
       DataSet &data,
       DataSet &dataClass,
       int *nbPat,
       int *correct,
       int *wrong,
-      float *acc);
+      float *acc) const;
 
-  void SetSevInfo(Rule *rule, int indClean);
+  void SetSevInfo(std::shared_ptr<Rule> rule, int indClean);
   void CreateWrongVect();
   void CreateStructures();
 
   void ResetSomeFields() const;
-  int IsExampleCarried(DataSet &data, int index, const CleanRule *rule) const;
+  int IsExampleCarried(DataSet &data, int index, std::shared_ptr<CleanRule> rule) const;
   int Fidelity100();
   int Fidelity100Def();
 
@@ -108,13 +108,13 @@ class CleanRuleStruct {
   void ElseRepTest();
   void ElseRepValid();
 
-  void RemAnt(AssocAnte *oneAnt) { oneAnt->Var = -1; }
+  void RemAnt(AssocAnte *oneAnt) const { oneAnt->Var = -1; }
   int IsAntDeleted(const AssocAnte *oneAnt) const { return ((oneAnt->Var == -1) ? 1 : 0); }
 
   int RandomPruneAnt();
   int SumCarried() const;
 
-  void RemRule(int r);
+  void RemRule(int r) const;
   int PruneRule();
   int OrderedExpand(ThresDescr *descr);
   int CheckAnt(int indOld) const;
@@ -152,8 +152,8 @@ public:
       DataSet validClass,
       DataSet test,
       DataSet testClass,
-      RuleProcessing *processed,
-      BpNN *bpNn,
+      std::shared_ptr<RuleProcessing> processed,
+      std::shared_ptr<BpNN> bpNn,
       float *out,
       int nbOut);
 

@@ -1,5 +1,6 @@
 #ifndef VIRTHYP_H
 #define VIRTHYP_H
+#include <memory>
 #include <vector>
 
 ///////////////////////////////////////////////////////////////////
@@ -43,7 +44,7 @@ public:
       int nbIn,
       int multiple,
       int nbNets,
-      VirtualHyp **virt);
+      std::vector<std::shared_ptr<VirtualHyp>> virt);
 };
 
 ///////////////////////////////////////////////////////////////////

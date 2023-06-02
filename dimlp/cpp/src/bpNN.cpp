@@ -46,18 +46,19 @@ void BpNN::CreateNetStruct(std::vector<int> nbNeurons)
 {
   int l;
 
-  NbNeurons = new int[NbLayers];
+  NbNeurons.resize(NbLayers);
 
   for (l = 0; l < NbLayers; l++)
     NbNeurons[l] = nbNeurons[l];
 
-  VecLayer = new Layer *[NbWeightLayers];
+  VecLayer.resize(NbWeightLayers);
 
   for (l = 1; l < NbWeightLayers; l++)
-    VecLayer[l] = new Layer(Eta, Mu, Flat,
-                            NbNeurons[l], NbNeurons[l + 1],
-                            NbNeurons[l] * NbNeurons[l + 1],
-                            NbNeurons[l] + 1);
+
+    VecLayer[l] = std::make_shared<Layer>(Eta, Mu, Flat,
+                                          NbNeurons[l], NbNeurons[l + 1],
+                                          NbNeurons[l] * NbNeurons[l + 1],
+                                          NbNeurons[l] + 1);
 
   for (l = 2; l < NbWeightLayers; l++) {
     VecLayer[l]->SetDown(VecLayer[l - 1]->GetUp());
@@ -361,9 +362,9 @@ void BpNN::DefineSmlp()
   const int nbWeights = NbNeurons[0] * NbNeurons[1];
   const int nbWeightsForInit = NbNeurons[0] + 1;
 
-  VecLayer[0] = new Layer(Eta, Mu, Flat,
-                          NbNeurons[0], NbNeurons[1],
-                          nbWeights, nbWeightsForInit);
+  VecLayer[0] = std::make_shared<Layer>(Eta, Mu, Flat,
+                                        NbNeurons[0], NbNeurons[1],
+                                        nbWeights, nbWeightsForInit);
 
   VecLayer[1]->SetDown(VecLayer[0]->GetUp());
   VecLayer[1]->SetDeltaDown(VecLayer[0]->GetDeltaUp());
@@ -377,10 +378,10 @@ void BpNN::DefineDimlp(int discrLevels)
   const int nbWeights = NbNeurons[1];
   const int nbWeightsForInit = 2;
 
-  VecLayer[0] = new LayerDimlp(Eta, Mu, Flat,
-                               NbNeurons[0], NbNeurons[1],
-                               nbWeights, nbWeightsForInit,
-                               discrLevels);
+  VecLayer[0] = std::make_shared<LayerDimlp>(Eta, Mu, Flat,
+                                             NbNeurons[0], NbNeurons[1],
+                                             nbWeights, nbWeightsForInit,
+                                             discrLevels);
 
   VecLayer[1]->SetDown(VecLayer[0]->GetUp());
   VecLayer[1]->SetDeltaDown(VecLayer[0]->GetDeltaUp());
@@ -394,10 +395,10 @@ void BpNN::DefineQmlp(int discrLevels)
   const int nbWeights = NbNeurons[1];
   const int nbWeightsForInit = 2;
 
-  VecLayer[0] = new LayerDimlp4(Eta, Mu, Flat,
-                                NbNeurons[0], NbNeurons[1],
-                                nbWeights, nbWeightsForInit,
-                                discrLevels);
+  VecLayer[0] = std::make_shared<LayerDimlp4>(Eta, Mu, Flat,
+                                              NbNeurons[0], NbNeurons[1],
+                                              nbWeights, nbWeightsForInit,
+                                              discrLevels);
 
   VecLayer[1]->SetDown(VecLayer[0]->GetUp());
   VecLayer[1]->SetDeltaDown(VecLayer[0]->GetDeltaUp());
@@ -408,17 +409,17 @@ void BpNN::DefineQmlp(int discrLevels)
 void BpNN::DefineFdimlp(int discrLevels)
 
 {
-  VecLayer[1] = new LayerDimlp3(Eta, Mu, Flat,
-                                NbNeurons[1], NbNeurons[2],
-                                NbNeurons[2], 2,
-                                discrLevels);
+  VecLayer[1] = std::make_shared<LayerDimlp3>(Eta, Mu, Flat,
+                                              NbNeurons[1], NbNeurons[2],
+                                              NbNeurons[2], 2,
+                                              discrLevels);
 
   VecLayer[2]->SetDown(VecLayer[1]->GetUp());
   VecLayer[2]->SetDeltaDown(VecLayer[1]->GetDeltaUp());
 
-  VecLayer[0] = new LayerFdimlp(Eta, Mu, Flat,
-                                NbNeurons[0], NbNeurons[1],
-                                NbNeurons[1], 2);
+  VecLayer[0] = std::make_shared<LayerFdimlp>(Eta, Mu, Flat,
+                                              NbNeurons[0], NbNeurons[1],
+                                              NbNeurons[1], 2);
 
   VecLayer[1]->SetDown(VecLayer[0]->GetUp());
   VecLayer[1]->SetDeltaDown(VecLayer[0]->GetDeltaUp());
@@ -429,17 +430,17 @@ void BpNN::DefineFdimlp(int discrLevels)
 void BpNN::DefineFdimlp2(int discrLevels)
 
 {
-  VecLayer[1] = new LayerDimlp2(Eta, Mu, Flat,
-                                NbNeurons[1], NbNeurons[2],
-                                NbNeurons[2], 2,
-                                discrLevels);
+  VecLayer[1] = std::make_shared<LayerDimlp2>(Eta, Mu, Flat,
+                                              NbNeurons[1], NbNeurons[2],
+                                              NbNeurons[2], 2,
+                                              discrLevels);
 
   VecLayer[2]->SetDown(VecLayer[1]->GetUp());
   VecLayer[2]->SetDeltaDown(VecLayer[1]->GetDeltaUp());
 
-  VecLayer[0] = new LayerFdimlp(Eta, Mu, Flat,
-                                NbNeurons[0], NbNeurons[1],
-                                NbNeurons[1], 2);
+  VecLayer[0] = std::make_shared<LayerFdimlp>(Eta, Mu, Flat,
+                                              NbNeurons[0], NbNeurons[1],
+                                              NbNeurons[1], 2);
 
   VecLayer[1]->SetDown(VecLayer[0]->GetUp());
   VecLayer[1]->SetDeltaDown(VecLayer[0]->GetDeltaUp());
@@ -450,17 +451,17 @@ void BpNN::DefineFdimlp2(int discrLevels)
 void BpNN::DefineSD(int discrLevels)
 
 {
-  VecLayer[1] = new LayerSD(NbNeurons[1], NbNeurons[2],
-                            NbNeurons[1] * NbNeurons[2],
-                            NbNeurons[1] + 1);
+  VecLayer[1] = std::make_shared<LayerSD>(NbNeurons[1], NbNeurons[2],
+                                          NbNeurons[1] * NbNeurons[2],
+                                          NbNeurons[1] + 1);
 
   VecLayer[2]->SetDown(VecLayer[1]->GetUp());
   VecLayer[2]->SetDeltaDown(VecLayer[1]->GetDeltaUp());
 
-  VecLayer[0] = new LayerDimlp(Eta, Mu, Flat,
-                               NbNeurons[0], NbNeurons[1],
-                               NbNeurons[1], 2,
-                               discrLevels);
+  VecLayer[0] = std::make_shared<LayerDimlp>(Eta, Mu, Flat,
+                                             NbNeurons[0], NbNeurons[1],
+                                             NbNeurons[1], 2,
+                                             discrLevels);
 
   VecLayer[1]->SetDown(VecLayer[0]->GetUp());
   VecLayer[1]->SetDeltaDown(VecLayer[0]->GetDeltaUp());
@@ -471,17 +472,17 @@ void BpNN::DefineSD(int discrLevels)
 void BpNN::DefineSP5(int discrLevels)
 
 {
-  VecLayer[1] = new LayerSP5(NbNeurons[1], NbNeurons[2],
-                             NbNeurons[1] * NbNeurons[2],
-                             NbNeurons[1] + 1);
+  VecLayer[1] = std::make_shared<LayerSP5>(NbNeurons[1], NbNeurons[2],
+                                           NbNeurons[1] * NbNeurons[2],
+                                           NbNeurons[1] + 1);
 
   VecLayer[2]->SetDown(VecLayer[1]->GetUp());
   VecLayer[2]->SetDeltaDown(VecLayer[1]->GetDeltaUp());
 
-  VecLayer[0] = new LayerDimlp(Eta, Mu, Flat,
-                               NbNeurons[0], NbNeurons[1],
-                               NbNeurons[1], 2,
-                               discrLevels);
+  VecLayer[0] = std::make_shared<LayerDimlp>(Eta, Mu, Flat,
+                                             NbNeurons[0], NbNeurons[1],
+                                             NbNeurons[1], 2,
+                                             discrLevels);
 
   VecLayer[1]->SetDown(VecLayer[0]->GetUp());
   VecLayer[1]->SetDeltaDown(VecLayer[0]->GetDeltaUp());
@@ -492,17 +493,17 @@ void BpNN::DefineSP5(int discrLevels)
 void BpNN::DefineSP3(int discrLevels)
 
 {
-  VecLayer[1] = new LayerSP3(NbNeurons[1], NbNeurons[2],
-                             NbNeurons[1] * NbNeurons[2],
-                             NbNeurons[1] + 1);
+  VecLayer[1] = std::make_shared<LayerSP3>(NbNeurons[1], NbNeurons[2],
+                                           NbNeurons[1] * NbNeurons[2],
+                                           NbNeurons[1] + 1);
 
   VecLayer[2]->SetDown(VecLayer[1]->GetUp());
   VecLayer[2]->SetDeltaDown(VecLayer[1]->GetDeltaUp());
 
-  VecLayer[0] = new LayerDimlp(Eta, Mu, Flat,
-                               NbNeurons[0], NbNeurons[1],
-                               NbNeurons[1], 2,
-                               discrLevels);
+  VecLayer[0] = std::make_shared<LayerDimlp>(Eta, Mu, Flat,
+                                             NbNeurons[0], NbNeurons[1],
+                                             NbNeurons[1], 2,
+                                             discrLevels);
 
   VecLayer[1]->SetDown(VecLayer[0]->GetUp());
   VecLayer[1]->SetDeltaDown(VecLayer[0]->GetDeltaUp());
@@ -513,17 +514,17 @@ void BpNN::DefineSP3(int discrLevels)
 void BpNN::DefineSR(int discrLevels)
 
 {
-  VecLayer[1] = new LayerRad(NbNeurons[1], NbNeurons[2],
-                             NbNeurons[1] * NbNeurons[2],
-                             NbNeurons[1] + 1);
+  VecLayer[1] = std::make_shared<LayerRad>(NbNeurons[1], NbNeurons[2],
+                                           NbNeurons[1] * NbNeurons[2],
+                                           NbNeurons[1] + 1);
 
   VecLayer[2]->SetDown(VecLayer[1]->GetUp());
   VecLayer[2]->SetDeltaDown(VecLayer[1]->GetDeltaUp());
 
-  VecLayer[0] = new LayerDimlp(Eta, Mu, Flat,
-                               NbNeurons[0], NbNeurons[1],
-                               NbNeurons[1], 2,
-                               discrLevels);
+  VecLayer[0] = std::make_shared<LayerDimlp>(Eta, Mu, Flat,
+                                             NbNeurons[0], NbNeurons[1],
+                                             NbNeurons[1], 2,
+                                             discrLevels);
 
   VecLayer[1]->SetDown(VecLayer[0]->GetUp());
   VecLayer[1]->SetDeltaDown(VecLayer[0]->GetDeltaUp());
@@ -534,17 +535,17 @@ void BpNN::DefineSR(int discrLevels)
 void BpNN::DefineSP4(int discrLevels)
 
 {
-  VecLayer[1] = new LayerSP4(NbNeurons[1], NbNeurons[2],
-                             NbNeurons[1] * NbNeurons[2],
-                             NbNeurons[1] + 1);
+  VecLayer[1] = std::make_shared<LayerSP4>(NbNeurons[1], NbNeurons[2],
+                                           NbNeurons[1] * NbNeurons[2],
+                                           NbNeurons[1] + 1);
 
   VecLayer[2]->SetDown(VecLayer[1]->GetUp());
   VecLayer[2]->SetDeltaDown(VecLayer[1]->GetDeltaUp());
 
-  VecLayer[0] = new LayerDimlp(Eta, Mu, Flat,
-                               NbNeurons[0], NbNeurons[1],
-                               NbNeurons[1], 2,
-                               discrLevels);
+  VecLayer[0] = std::make_shared<LayerDimlp>(Eta, Mu, Flat,
+                                             NbNeurons[0], NbNeurons[1],
+                                             NbNeurons[1], 2,
+                                             discrLevels);
 
   VecLayer[1]->SetDown(VecLayer[0]->GetUp());
   VecLayer[1]->SetDeltaDown(VecLayer[0]->GetDeltaUp());
@@ -852,17 +853,6 @@ BpNN::BpNN(
   cout << printNetType << " network created.\n\n";
   cout << "\n\n-----------------------------------------";
   cout << "-------------------------------------\n\n";
-}
-
-///////////////////////////////////////////////////////////////////
-
-void BpNN::Del()
-
-{
-
-  delete NbNeurons;
-
-  delete VecLayer;
 }
 
 ///////////////////////////////////////////////////////////////////

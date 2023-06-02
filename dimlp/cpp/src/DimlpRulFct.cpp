@@ -482,7 +482,7 @@ int dimlpRul(const string &command) {
 
   // ----------------------------------------------------------------------
 
-  Dimlp net(weightFile, nbLayers, vecNbNeurons, quant);
+  auto net = std::make_shared<Dimlp>(weightFile, nbLayers, vecNbNeurons, quant);
 
   float accTrain;
   float errTrain;
@@ -491,20 +491,20 @@ int dimlpRul(const string &command) {
   float accTest;
   float errTest;
 
-  errTrain = net.Error(Train, TrainClass, &accTrain);
+  errTrain = net->Error(Train, TrainClass, &accTrain);
 
   cout << "\n\n*** SUM SQUARED ERROR ON TRAINING SET = " << errTrain;
   cout << "\n\n*** ACCURACY ON TRAINING SET = " << accTrain << "\n";
 
   if (Valid.GetNbEx() > 0) {
-    errValid = net.Error(Valid, ValidClass, &accValid);
+    errValid = net->Error(Valid, ValidClass, &accValid);
 
     cout << "\n\n*** SUM SQUARED ERROR ON VALIDATION SET = " << errValid;
     cout << "\n\n*** ACCURACY ON VALIDATION SET = " << accValid << "\n";
   }
 
   if (Test.GetNbEx() > 0) {
-    errTest = net.Error(Test, TestClass, &accTest);
+    errTest = net->Error(Test, TestClass, &accTest);
 
     cout << "\n\n*** SUM SQUARED ERROR ON TESTING SET = " << errTest;
     cout << "\n\n*** ACCURACY ON TESTING SET = " << accTest << "\n";
@@ -557,7 +557,7 @@ int dimlpRul(const string &command) {
     Attr = attr;
   }
 
-  RealHyp ryp(All, &net, quant, nbIn,
+  RealHyp ryp(All, net, quant, nbIn,
               vecNbNeurons[1] / nbIn, nbWeightLayers);
 
   filebuf buf;
@@ -573,13 +573,11 @@ int dimlpRul(const string &command) {
                      Test, TestClass, Attr, rulesFileost);
 
   if (ryp.TreeAborted()) {
-    RealHyp2 ryp2(All, &net, quant, nbIn,
+    RealHyp2 ryp2(All, net, quant, nbIn,
                   vecNbNeurons[1] / nbIn, nbWeightLayers);
 
     ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                         Test, TestClass, Attr, rulesFileost);
-
-    ryp2.Del();
   }
 
   cout << "\n\n"
@@ -587,8 +585,6 @@ int dimlpRul(const string &command) {
        << "Written.\n\n";
 
   std::cout.rdbuf(cout_buff); // reset to standard output again
-
-  ryp.Del();
 
   TrainClass.Del();
 

@@ -16,23 +16,21 @@ class RealHyp2 : public RealHyp {
   //----------------------------------------------------------------
 
 public:
-  virtual ~RealHyp2() = default;
-
   RealHyp2(
       DataSet &data,
-      BpNN *nn,
+      std::shared_ptr<BpNN> nn,
       int nbBins,
       int nbIn,
       int multiple,
       int nbWeightLayers);
 
   RealHyp2(
-      VirtualHyp *globalVirt,
+      std::shared_ptr<VirtualHyp> globalVirt,
       int nbNets,
       float *out,
       int nbOut,
       DataSet &data,
-      BpNN *nn,
+      std::shared_ptr<BpNN> nn,
       int nbBins,
       int nbIn,
       int multiple,

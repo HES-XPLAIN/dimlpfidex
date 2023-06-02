@@ -50,11 +50,11 @@ void BagDimlp::MakeDataSets(
         indVal[k] = p;
         k++;
       }
-    VectData[n] = new DataSet(masterTrain, indPat.data(), nbPat);
-    VectDataClass[n] = new DataSet(masterClass, indPat.data(), nbPat);
+    VectData[n] = std::make_shared<DataSet>(masterTrain, indPat.data(), nbPat);
+    VectDataClass[n] = std::make_shared<DataSet>(masterClass, indPat.data(), nbPat);
 
-    ValData[n] = new DataSet(masterTrain, indVal.data(), count);
-    ValDataClass[n] = new DataSet(masterClass, indVal.data(), count);
+    ValData[n] = std::make_shared<DataSet>(masterTrain, indVal.data(), count);
+    ValDataClass[n] = std::make_shared<DataSet>(masterClass, indVal.data(), count);
   }
 }
 
@@ -88,9 +88,9 @@ void BagDimlp::TrainAll(
       }
     }
 
-    VectDimlp[n] = new Dimlp(Eta, Mu, Flat, ErrParam, AccuracyParam,
-                             DeltaErrParam, DiscrLevels, ShowErrParam,
-                             NbEpochsParam, NbLayers, NbNeurons, WeightFile, seed);
+    VectDimlp[n] = std::make_shared<Dimlp>(Eta, Mu, Flat, ErrParam, AccuracyParam,
+                                           DeltaErrParam, DiscrLevels, ShowErrParam,
+                                           NbEpochsParam, NbLayers, NbNeurons, WeightFile, seed);
     bool fromBT = true;
     VectDimlp[n]->Dimlp::Train(*(VectData[n]), *(VectDataClass[n]),
                                test, testTar,
@@ -116,32 +116,29 @@ void BagDimlp::DefNetsWithWeights(const char *prefix)
     cout << "\n\nBuilding network " << n + 1 << "\n";
 
     str1 = prefix + std::to_string(n + 1) + ".wts";
-    VectDimlp[n] = new Dimlp(str1.c_str(), NbLayers, NbNeurons,
-                             DiscrLevels);
+    VectDimlp[n] = std::make_shared<Dimlp>(str1.c_str(), NbLayers, NbNeurons,
+                                           DiscrLevels);
   }
 }
 
 ///////////////////////////////////////////////////////////////////
 
-VirtualHyp *BagDimlp::MakeGlobalVirt(int nbBins, int nbIn, int multiple)
+std::shared_ptr<VirtualHyp> BagDimlp::MakeGlobalVirt(int nbBins, int nbIn, int multiple)
 
 {
   float *bias;
   float *weights;
-  VirtualHyp **virt;
-  VirtualHyp *globalVirt;
+  std::vector<std::shared_ptr<VirtualHyp>> virt;
+  std::shared_ptr<VirtualHyp> globalVirt;
 
-  virt = new VirtualHyp *[NbDimlpNets];
+  virt.resize(NbDimlpNets);
 
   for (int n = 0; n < NbDimlpNets; n++) {
     bias = (VectDimlp[n]->GetLayer(0))->GetBias();
     weights = (VectDimlp[n]->GetLayer(0))->GetWeights();
-    virt[n] = new VirtualHyp(nbBins, nbIn, multiple, bias, weights);
+    virt[n] = std::make_shared<VirtualHyp>(nbBins, nbIn, multiple, bias, weights);
   }
-
-  globalVirt = new VirtualHyp(nbBins, nbIn, multiple, NbDimlpNets, virt);
-
-  delete[] virt;
+  globalVirt = std::make_shared<VirtualHyp>(nbBins, nbIn, multiple, NbDimlpNets, virt);
 
   return globalVirt;
 }
@@ -289,16 +286,15 @@ BagDimlp::BagDimlp(
 
   cout << "Number of networks = " << nbDimlpNets << "\n\n";
 
-  VectData = new DataSet *[nbDimlpNets];
-  VectDataClass = new DataSet *[nbDimlpNets];
-  ValData = new DataSet *[nbDimlpNets];
-  ValDataClass = new DataSet *[nbDimlpNets];
+  VectData.resize(nbDimlpNets);
+  VectDataClass.resize(nbDimlpNets);
+  ValData.resize(nbDimlpNets);
+  ValDataClass.resize(nbDimlpNets);
 
-  VectDimlp = new Dimlp *[nbDimlpNets];
+  VectDimlp.resize(nbDimlpNets);
 
   NbOut = nbNeurons[NbLayers - 1];
   GlobalOut.resize(NbOut);
-  // GlobalOut = new float[NbOut];
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -322,7 +318,7 @@ BagDimlp::BagDimlp(
 
   cout << "Number of networks = " << nbDimlpNets << "\n\n";
 
-  VectDimlp = new Dimlp *[nbDimlpNets];
+  VectDimlp.resize(nbDimlpNets);
 
   NbOut = nbNeurons[NbLayers - 1];
   // GlobalOut = new float[NbOut];

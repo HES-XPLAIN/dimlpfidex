@@ -72,8 +72,6 @@ int dimlpBT(const string &command) {
 
   AttrName Attr;
 
-  BagDimlp *net;
-
   float eta = 0.1f;
   float mu = 0.6f;
   float flat = 0.01f;
@@ -628,9 +626,9 @@ int dimlpBT(const string &command) {
       data.Del();
     }
   }
-  net = new BagDimlp(eta, mu, flat, errThres, accThres, deltaErr,
-                     quant, showErr, epochs, nbLayers, vecNbNeurons,
-                     nbDimlpNets, weightFile, seed);
+  auto net = std::make_shared<BagDimlp>(eta, mu, flat, errThres, accThres, deltaErr,
+                                        quant, showErr, epochs, nbLayers, vecNbNeurons,
+                                        nbDimlpNets, weightFile, seed);
 
   if (nbExInOne == 0)
     nbExInOne = Train.GetNbEx();
@@ -701,8 +699,8 @@ int dimlpBT(const string &command) {
     cout << "\n\n****************************************************\n\n";
     cout << "*** RULE EXTRACTION\n";
 
-    VirtualHyp *globVirt = net->MakeGlobalVirt(quant, nbIn,
-                                               vecNbNeurons[1] / nbIn);
+    std::shared_ptr<VirtualHyp> globVirt = net->MakeGlobalVirt(quant, nbIn,
+                                                               vecNbNeurons[1] / nbIn);
 
     RealHyp ryp(globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut,
                 All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
@@ -721,10 +719,9 @@ int dimlpBT(const string &command) {
                          Test, TestClass, Attr, rulesFileost);
 
       if (ryp.TreeAborted()) {
-        ryp.Del();
 
-        VirtualHyp *globVirt2 = net->MakeGlobalVirt(quant, nbIn,
-                                                    vecNbNeurons[1] / nbIn);
+        std::shared_ptr<VirtualHyp> globVirt2 = net->MakeGlobalVirt(quant, nbIn,
+                                                                    vecNbNeurons[1] / nbIn);
 
         RealHyp2 ryp2(globVirt2, nbDimlpNets, net->GetGlobalOut(), nbOut,
                       All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
@@ -732,10 +729,7 @@ int dimlpBT(const string &command) {
 
         ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                             Test, TestClass, Attr, rulesFileost);
-
-        ryp2.Del();
-      } else
-        ryp.Del();
+      }
 
       cout << "\n\n"
            << rulesFile << ": "
@@ -745,10 +739,9 @@ int dimlpBT(const string &command) {
                          Test, TestClass, Attr, cout);
 
       if (ryp.TreeAborted()) {
-        ryp.Del();
 
-        VirtualHyp *globVirt3 = net->MakeGlobalVirt(quant, nbIn,
-                                                    vecNbNeurons[1] / nbIn);
+        std::shared_ptr<VirtualHyp> globVirt3 = net->MakeGlobalVirt(quant, nbIn,
+                                                                    vecNbNeurons[1] / nbIn);
 
         RealHyp2 ryp2(globVirt3, nbDimlpNets, net->GetGlobalOut(), nbOut,
                       All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
@@ -756,10 +749,7 @@ int dimlpBT(const string &command) {
 
         ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                             Test, TestClass, Attr, cout);
-
-        ryp2.Del();
-      } else
-        ryp.Del();
+      }
     }
   }
 
@@ -767,8 +757,6 @@ int dimlpBT(const string &command) {
 
   Train.Del();
   TrainClass.Del();
-
-  net->Del();
 
   if (Test.GetNbEx() > 0) {
     Test.Del();

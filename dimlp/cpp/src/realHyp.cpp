@@ -9,12 +9,12 @@ using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 
-int RealHyp::MaxOnPos(const int *vec, int nbEl) const
+int RealHyp::MaxOnPos(const std::vector<int> &vec) const
 
 {
-  int max = *vec;
+  int max = vec[0];
 
-  for (int i = 1; i < nbEl; i++) {
+  for (int i = 1; i < vec.size(); i++) {
     if (vec[i] > max)
       max = vec[i];
   }
@@ -57,7 +57,7 @@ void RealHyp::SetConfirmedVirt(DataSet &data)
   for (v = 0; v < NbIn; v++) {
     ConfBefFirstHyp[v] = 0;
 
-    hyp = ConfirmedVirt[v];
+    hyp = ConfirmedVirt[v].data();
 
     for (h = 0; h < NbHyp; h++, hyp++)
       *hyp = 0;
@@ -70,7 +70,7 @@ void RealHyp::SetConfirmedVirt(DataSet &data)
       indVirt = Virt->KnotInd(v, *pat);
 
       if ((indVirt >= 0) && (indVirt <= NbHyp - 1))
-        *(ConfirmedVirt[v] + indVirt) = 1;
+        *(ConfirmedVirt[v].data() + indVirt) = 1;
       else if (indVirt == -1)
         ConfBefFirstHyp[v] = 1;
       else
@@ -81,7 +81,7 @@ void RealHyp::SetConfirmedVirt(DataSet &data)
   int count = 0;
 
   for (v = 0; v < NbIn; v++) {
-    hyp = ConfirmedVirt[v];
+    hyp = ConfirmedVirt[v].data();
 
     for (h = 0; h < NbHyp; h++, hyp++)
       if (*hyp == 1)
@@ -97,7 +97,7 @@ void RealHyp::SetConfirmedVirt2()
 
 {
   const int nbRules = SavedRules->GetNbRules();
-  Rule *rule;
+  std::shared_ptr<Rule> rule;
   int *hyp;
   int a;
   int h;
@@ -111,7 +111,7 @@ void RealHyp::SetConfirmedVirt2()
   cout << "\n\n*** EXCLUDING UNRELEVANT HYPER-PLANES FROM RULES ...\n\n";
 
   for (v = 0; v < NbIn; v++) {
-    hyp = ConfirmedVirt[v];
+    hyp = ConfirmedVirt[v].data();
 
     for (h = 0; h < NbHyp; h++, hyp++)
       *hyp = 0;
@@ -137,7 +137,7 @@ void RealHyp::SetConfirmedVirt2()
         }
 
         else
-          *(ConfirmedVirt[var] + indVirt) = 1;
+          *(ConfirmedVirt[var].data() + indVirt) = 1;
       }
     }
   }
@@ -145,7 +145,7 @@ void RealHyp::SetConfirmedVirt2()
   int count = 0;
 
   for (v = 0; v < NbIn; v++) {
-    hyp = ConfirmedVirt[v];
+    hyp = ConfirmedVirt[v].data();
 
     for (h = 0; h < NbHyp; h++, hyp++)
       if (*hyp == 1)
@@ -168,7 +168,7 @@ void RealHyp::Gr1(
 
   float *ptrIn = In + var;
   const float *ptrVirt = Virt->GetEpsGoRight(var).data() + startVirt;
-  const int *ptrConf = ConfirmedVirt[var] + startVirt;
+  const int *ptrConf = ConfirmedVirt[var].data() + startVirt;
 
   for (int k = startVirt; k < NbHyp; k++, ptrVirt++, ptrConf++) {
     if (*ptrConf == 0)
@@ -201,7 +201,7 @@ void RealHyp::Gr2(
   const int last = NbHyp - 1;
   float *ptrIn = In + var;
   const float *ptrVirt = Virt->GetEpsGoRight(var).data() + startVirt;
-  const int *ptrConf = ConfirmedVirt[var] + startVirt;
+  const int *ptrConf = ConfirmedVirt[var].data() + startVirt;
 
   for (int k = startVirt; k < NbHyp; k++, ptrVirt++, ptrConf++) {
     if (*ptrConf == 0)
@@ -237,7 +237,7 @@ void RealHyp::Gl1(
   float *ptrIn = In + var;
   const float *ptrVirt = Virt->GetEpsGoLeft(var).data() + startVirt;
   const float *ptrStart = Virt->GetVirtHyp(var).data() + startVirt;
-  const int *ptrConf = ConfirmedVirt[var] + startVirt;
+  const int *ptrConf = ConfirmedVirt[var].data() + startVirt;
 
   for (int k = startVirt; k >= 0; k--, ptrVirt--, ptrConf--) {
     if (k != 0) {
@@ -275,7 +275,7 @@ void RealHyp::Gl2(
   float *ptrIn = In + var;
   const float *ptrVirt = Virt->GetEpsGoLeft(var).data() + startVirt;
   const float *ptrStart = Virt->GetVirtHyp(var).data() + startVirt;
-  const int *ptrConf = ConfirmedVirt[var] + startVirt;
+  const int *ptrConf = ConfirmedVirt[var].data() + startVirt;
 
   for (int k = startVirt; k >= 0; k--, ptrVirt--, ptrConf--) {
     if (k != 0) {
@@ -361,7 +361,7 @@ void RealHyp::SetRealHyp(DataSet &data)
 
 ////////////////////////////////////////////////////////////////////////
 
-void RealHyp::SetCountPatDiscr(StringInt *listPat, Rule *r)
+void RealHyp::SetCountPatDiscr(std::shared_ptr<StringInt> listPat, std::shared_ptr<Rule> r) const
 
 {
   int a;
@@ -421,7 +421,7 @@ void RealHyp::SetCountPatDiscr(StringInt *listPat, Rule *r)
 
 ////////////////////////////////////////////////////////////////////////
 
-Ante *RealHyp::FindMostDiscrAnt(int sel)
+std::shared_ptr<Ante> RealHyp::FindMostDiscrAnt(int sel) const
 
 {
   int v;
@@ -450,31 +450,30 @@ Ante *RealHyp::FindMostDiscrAnt(int sel)
       }
     }
   }
-
-  auto ant = new Ante(var, val, '?');
+  auto ant = std::make_shared<Ante>(var, val, '?');
 
   return ant;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-void RealHyp::DeepSearch(DataSet &data, Rule *path, StringInt *subSet)
+void RealHyp::DeepSearch(DataSet &data, std::shared_ptr<Rule> path, std::shared_ptr<StringInt> subSet)
 
 {
   Rule newLeftPath;
   Rule newRightPath;
 
-  StringInt *newListPat = data.Select(path, subSet);
+  std::shared_ptr<StringInt> newListPat = data.Select(path, subSet);
 
   if (newListPat->GetNbEl() == 0) {
-    newListPat->DelAll();
+    newListPat->Del();
     path->Del();
 
     return;
   }
 
   if (AreSameClass(newListPat, ClassPatNet) == 1) {
-    newListPat->DelAll();
+    newListPat->Del();
     SaveRule(path);
     path->Del();
 
@@ -483,13 +482,13 @@ void RealHyp::DeepSearch(DataSet &data, Rule *path, StringInt *subSet)
 
   SetCountPatDiscr(newListPat, path);
 
-  Ante *ant = FindMostDiscrAnt(0);
+  std::shared_ptr<Ante> ant = FindMostDiscrAnt(0);
   int var = ant->GetVarAnte();
   float val = ant->GetValAnte();
 
   if (var < 0) {
-    ant->DelAllAnte();
-    newListPat->DelAll();
+    ant->DelAnte();
+    newListPat->Del();
     DeepSearch2(data, path);
     path->Del();
 
@@ -500,39 +499,31 @@ void RealHyp::DeepSearch(DataSet &data, Rule *path, StringInt *subSet)
   (newRightPath.Copy(path))->Insert(var, val, '>');
 
   path->Del();
-  ant->DelAllAnte();
+  ant->DelAnte();
 
-  DeepSearch(data, &newLeftPath, newListPat);
-  DeepSearch(data, &newRightPath, newListPat);
+  DeepSearch(data, std::make_shared<Rule>(newLeftPath), newListPat);
+  DeepSearch(data, std::make_shared<Rule>(newRightPath), newListPat);
 
-  newListPat->DelAll();
+  newListPat->Del();
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 int RealHyp::ComputeCorrect(
-    StringInt *listPatLeft,
-    StringInt *listPatRight)
+    std::shared_ptr<StringInt> listPatLeft,
+    std::shared_ptr<StringInt> listPatRight)
 
 {
   int p;
   int ind;
   int nbPat;
   int max;
-  int *vectMax;
-  int *classLeft;
-  int *classRight;
 
-  classLeft = new int[NbOut];
-  classRight = new int[NbOut];
-
-  for (p = 0; p < NbOut; p++) {
-    classLeft[p] = 0;
-    classRight[p] = 0;
-  }
+  std::vector<int> classLeft(NbOut, 0);
+  std::vector<int> classRight(NbOut, 0);
 
   int nbComp = NbOut * (NbOut - 1);
-  vectMax = new int[nbComp];
+  std::vector<int> vectMax(nbComp);
 
   nbPat = listPatLeft->GetNbEl();
 
@@ -554,18 +545,14 @@ int RealHyp::ComputeCorrect(
     }
   }
 
-  max = MaxOnPos(vectMax, nbComp);
-
-  delete classLeft;
-  delete classRight;
-  delete vectMax;
+  max = MaxOnPos(vectMax);
 
   return max;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-void RealHyp::SetCountPatDiscr2(DataSet &data, Rule *r)
+void RealHyp::SetCountPatDiscr2(DataSet &data, std::shared_ptr<Rule> r)
 
 {
   int a;
@@ -575,10 +562,10 @@ void RealHyp::SetCountPatDiscr2(DataSet &data, Rule *r)
   float thres;
 
   OneVarThresDescr *varDescr;
-  auto newListPatLeft = new StringInt;
-  auto newListPatRight = new StringInt;
-  auto newLeftPath = new Rule;
-  auto newRightPath = new Rule;
+  std::shared_ptr<StringInt> newListPatLeft;
+  std::shared_ptr<StringInt> newListPatRight;
+  auto newLeftPath = std::make_shared<Rule>();
+  auto newRightPath = std::make_shared<Rule>();
 
   Descr->ResetAllCountPatDiscr();
   int nbRuleAnt = r->GetNbAnt();
@@ -615,31 +602,26 @@ void RealHyp::SetCountPatDiscr2(DataSet &data, Rule *r)
       newListPatRight->Del();
     }
   }
-
-  delete newListPatLeft;
-  delete newListPatRight;
-  delete newLeftPath;
-  delete newRightPath;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-void RealHyp::DeepSearch2(DataSet &data, Rule *path)
+void RealHyp::DeepSearch2(DataSet &data, std::shared_ptr<Rule> path)
 
 {
   Rule newLeftPath;
   Rule newRightPath;
 
-  StringInt *newListPat = data.Select(path);
+  std::shared_ptr<StringInt> newListPat = data.Select(path);
 
   if (newListPat->GetNbEl() == 0) {
-    newListPat->DelAll();
+    newListPat->Del();
     path->Del();
     return;
   }
 
   if (AreSameClass(newListPat, ClassPatNet) == 1) {
-    newListPat->DelAll();
+    newListPat->Del();
     SaveRule(path);
     path->Del();
 
@@ -648,14 +630,14 @@ void RealHyp::DeepSearch2(DataSet &data, Rule *path)
 
   SetCountPatDiscr2(data, path);
 
-  Ante *ant = FindMostDiscrAnt(0);
+  std::shared_ptr<Ante> ant = FindMostDiscrAnt(0);
   int var = ant->GetVarAnte();
   float val = ant->GetValAnte();
 
   if (var < 0) {
     Aborted = 1;
-    ant->DelAllAnte();
-    newListPat->DelAll();
+    ant->DelAnte();
+    newListPat->Del();
 
     return;
   }
@@ -664,11 +646,11 @@ void RealHyp::DeepSearch2(DataSet &data, Rule *path)
   (newRightPath.Copy(path))->Insert(var, val, '>');
 
   path->Del();
-  ant->DelAllAnte();
-  newListPat->DelAll();
+  ant->DelAnte();
+  newListPat->Del();
 
-  DeepSearch2(data, &newLeftPath);
-  DeepSearch2(data, &newRightPath);
+  DeepSearch2(data, std::make_shared<Rule>(newLeftPath));
+  DeepSearch2(data, std::make_shared<Rule>(newRightPath));
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -686,19 +668,20 @@ void RealHyp::RuleExtraction(
 
 {
   Rule empty;
-  StringInt *listAll;
+  std::shared_ptr<StringInt> listAll;
   int nbAnt1;
   int nbAnt2;
 
   Aborted = 0;
-  SavedRules = new RuleProcessing(NbIn, NbHyp, data, ClassPatNet, Descr);
+
+  SavedRules = std::make_shared<RuleProcessing>(NbIn, NbHyp, data, ClassPatNet, Descr);
 
   cout << "*** BUILDING DECISION TREE ...\n"
        << endl;
 
-  listAll = data.Select(&empty);
-  DeepSearch(data, &empty, listAll);
-  listAll->DelAll();
+  listAll = data.Select(std::make_shared<Rule>(empty));
+  DeepSearch(data, std::make_shared<Rule>(empty), listAll);
+  listAll->Del();
   if (Aborted) {
     cout << "*** TREE ABORTED !\n\n";
     cout << "*** TRYING AN ALTERNATIVE ALGORITHM \n"
@@ -757,9 +740,9 @@ void RealHyp::RuleExtraction(
   cout << "*** BUILDING DECISION TREE ...\n"
        << endl;
 
-  listAll = data.Select(&empty);
-  DeepSearch(data, &empty, listAll);
-  listAll->DelAll();
+  listAll = data.Select(std::make_shared<Rule>(empty));
+  DeepSearch(data, std::make_shared<Rule>(empty), listAll);
+  listAll->Del();
 
   if (Aborted) {
     cout << "*** TREE ABORTED !\n\n";
@@ -796,7 +779,6 @@ void RealHyp::RuleExtraction(
       clean2.SetAttr();
       clean2.SetStrClass(0);
     }
-
     clean2.WriteRules(0, ruleFile);
   }
 
@@ -824,21 +806,9 @@ void RealHyp::RuleExtraction(
 
 ////////////////////////////////////////////////////////////////////////
 
-void RealHyp::Del()
-
-{
-  for (int i = 0; i < NbIn; i++)
-    delete ConfirmedVirt[i];
-
-  delete ConfirmedVirt;
-  delete ConfBefFirstHyp;
-}
-
-////////////////////////////////////////////////////////////////////////
-
 RealHyp::RealHyp(
     DataSet &data,
-    BpNN *nn,
+    std::shared_ptr<BpNN> nn,
     int nbBins,
     int nbIn,
     int multiple,
@@ -854,8 +824,8 @@ RealHyp::RealHyp(
   Weights = (Bpnn->GetLayer(0))->GetWeights();
   Out = (Bpnn->GetLayer(NbWeightLayers - 1))->GetUp();
 
-  Virt = new VirtualHyp(NbBins, NbIn, Multiple, Bias, Weights);
-  Descr = new ThresDescr(NbIn);
+  Virt = std::make_shared<VirtualHyp>(NbBins, NbIn, Multiple, Bias, Weights);
+  Descr = std::make_shared<ThresDescr>(NbIn);
   ClassPatNet.resize(data.GetNbEx());
 
   for (p = 0; p < data.GetNbEx(); p++) {
@@ -863,11 +833,11 @@ RealHyp::RealHyp(
     ClassPatNet[p] = Bpnn->Max(Out, NbOut);
   }
 
-  ConfirmedVirt = new int *[NbIn];
-  ConfBefFirstHyp = new int[NbIn];
+  ConfirmedVirt.resize(NbIn);
+  ConfBefFirstHyp.resize(NbIn);
 
   for (p = 0; p < NbIn; p++)
-    ConfirmedVirt[p] = new int[NbHyp];
+    ConfirmedVirt[p].resize(NbHyp);
 
   SetConfirmedVirt(data);
   SetRealHyp(data);
@@ -877,7 +847,7 @@ RealHyp::RealHyp(
 
 RealHyp::RealHyp(
     DataSet &data,
-    BpNN *nn,
+    std::shared_ptr<BpNN> nn,
     int nbBins,
     int nbIn,
     int multiple,
@@ -894,8 +864,8 @@ RealHyp::RealHyp(
   Weights = (Bpnn->GetLayer(0))->GetWeights();
   Out = (Bpnn->GetLayer(NbWeightLayers - 1))->GetUp();
 
-  Virt = new VirtualHyp(NbBins, NbIn, Multiple, Bias, Weights);
-  Descr = new ThresDescr(NbIn);
+  Virt = std::make_shared<VirtualHyp>(NbBins, NbIn, Multiple, Bias, Weights);
+  Descr = std::make_shared<ThresDescr>(NbIn);
   ClassPatNet.resize(data.GetNbEx());
 
   for (p = 0; p < data.GetNbEx(); p++) {
@@ -903,22 +873,22 @@ RealHyp::RealHyp(
     ClassPatNet[p] = Bpnn->Max(Out, NbOut);
   }
 
-  ConfirmedVirt = new int *[NbIn];
-  ConfBefFirstHyp = new int[NbIn];
+  ConfirmedVirt.resize(NbIn);
+  ConfBefFirstHyp.resize(NbIn);
 
   for (p = 0; p < NbIn; p++)
-    ConfirmedVirt[p] = new int[NbHyp];
+    ConfirmedVirt[p].resize(NbHyp);
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 RealHyp::RealHyp(
-    VirtualHyp *globalVirt,
+    std::shared_ptr<VirtualHyp> globalVirt,
     int nbNets,
     float *out,
     int nbOut,
     DataSet &data,
-    BpNN *nn,
+    std::shared_ptr<BpNN> nn,
     int nbBins,
     int nbIn,
     int multiple,
@@ -929,7 +899,7 @@ RealHyp::RealHyp(
 
   NbHyp = (NbBins + 1) * Multiple * nbNets;
 
-  Descr = new ThresDescr(NbIn);
+  Descr = std::make_shared<ThresDescr>(NbIn);
   ClassPatNet.resize(data.GetNbEx());
 
   for (p = 0; p < data.GetNbEx(); p++) {
@@ -937,11 +907,11 @@ RealHyp::RealHyp(
     ClassPatNet[p] = Bpnn->Max(Out, NbOut);
   }
 
-  ConfirmedVirt = new int *[NbIn];
-  ConfBefFirstHyp = new int[NbIn];
+  ConfirmedVirt.resize(NbIn);
+  ConfBefFirstHyp.resize(NbIn);
 
   for (p = 0; p < NbIn; p++)
-    ConfirmedVirt[p] = new int[NbHyp];
+    ConfirmedVirt[p].resize(NbHyp);
 
   SetConfirmedVirt(data);
   SetRealHyp(data);
@@ -950,12 +920,12 @@ RealHyp::RealHyp(
 ////////////////////////////////////////////////////////////////////////
 
 RealHyp::RealHyp(
-    VirtualHyp *globalVirt,
+    std::shared_ptr<VirtualHyp> globalVirt,
     int nbNets,
     float *out,
     int nbOut,
     DataSet &data,
-    BpNN *nn,
+    std::shared_ptr<BpNN> nn,
     int nbBins,
     int nbIn,
     int multiple,
@@ -967,7 +937,7 @@ RealHyp::RealHyp(
 
   NbHyp = (NbBins + 1) * Multiple * nbNets;
 
-  Descr = new ThresDescr(NbIn);
+  Descr = std::make_shared<ThresDescr>(NbIn);
   ClassPatNet.resize(data.GetNbEx());
 
   for (p = 0; p < data.GetNbEx(); p++) {
@@ -975,11 +945,11 @@ RealHyp::RealHyp(
     ClassPatNet[p] = Bpnn->Max(Out, NbOut);
   }
 
-  ConfirmedVirt = new int *[NbIn];
-  ConfBefFirstHyp = new int[NbIn];
+  ConfirmedVirt.resize(NbIn);
+  ConfBefFirstHyp.resize(NbIn);
 
   for (p = 0; p < NbIn; p++)
-    ConfirmedVirt[p] = new int[NbHyp];
+    ConfirmedVirt[p].resize(NbHyp);
 }
 
 ////////////////////////////////////////////////////////////////////////

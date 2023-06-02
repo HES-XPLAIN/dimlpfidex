@@ -15,7 +15,7 @@
 #include <vector>
 
 void GiveAllParamDimlpTrn();
-static void SaveOutputs(DataSet &data, Dimlp *net, int nbOut, int nbWeightLayers, const char *outfile);
+static void SaveOutputs(DataSet &data, std::shared_ptr<Dimlp> net, int nbOut, int nbWeightLayers, const char *outfile);
 int dimlpTrn(const std::string &command);
 
 #endif

@@ -156,12 +156,12 @@ VirtualHyp::VirtualHyp(
     int nbIn,
     int multiple,
     int nbNets,
-    VirtualHyp **virt) : NbBins(nbBins), NbIn(nbIn), Multiple(multiple)
+    std::vector<std::shared_ptr<VirtualHyp>> virt) : NbBins(nbBins), NbIn(nbIn), Multiple(multiple)
 
 {
   int nbHypOld;
 
-  VirtualHyp *ptrOldVirt;
+  std::shared_ptr<VirtualHyp> ptrOldVirt;
   const float *vectOldVirt;
 
   NbKnots = NbBins + 1;

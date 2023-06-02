@@ -61,8 +61,6 @@ int densCls(const string &command) {
 
   AttrName Attr;
 
-  BagDimlp *net;
-
   int nbDimlpNets = 0;
 
   int ruleExtr = 0;
@@ -523,7 +521,7 @@ int densCls(const string &command) {
     }
   }
 
-  net = new BagDimlp(quant, nbLayers, vecNbNeurons, nbDimlpNets, weightFileSave);
+  auto net = std::make_shared<BagDimlp>(quant, nbLayers, vecNbNeurons, nbDimlpNets, weightFileSave);
 
   net->DefNetsWithWeights(weightFile);
 
@@ -574,8 +572,8 @@ int densCls(const string &command) {
     cout << "\n\n****************************************************\n\n";
     cout << "*** RULE EXTRACTION\n";
 
-    VirtualHyp *globVirt = net->MakeGlobalVirt(quant, nbIn,
-                                               vecNbNeurons[1] / nbIn);
+    std::shared_ptr<VirtualHyp> globVirt = net->MakeGlobalVirt(quant, nbIn,
+                                                               vecNbNeurons[1] / nbIn);
 
     RealHyp ryp(globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut,
                 All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
@@ -594,10 +592,9 @@ int densCls(const string &command) {
                          Test, TestClass, Attr, rulesFileost);
 
       if (ryp.TreeAborted()) {
-        ryp.Del();
 
-        VirtualHyp *globVirt2 = net->MakeGlobalVirt(quant, nbIn,
-                                                    vecNbNeurons[1] / nbIn);
+        std::shared_ptr<VirtualHyp> globVirt2 = net->MakeGlobalVirt(quant, nbIn,
+                                                                    vecNbNeurons[1] / nbIn);
 
         RealHyp2 ryp2(globVirt2, nbDimlpNets, net->GetGlobalOut(), nbOut,
                       All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
@@ -605,10 +602,7 @@ int densCls(const string &command) {
 
         ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                             Test, TestClass, Attr, rulesFileost);
-
-        ryp2.Del();
-      } else
-        ryp.Del();
+      }
 
       cout << "\n\n"
            << rulesFile << ": "
@@ -618,10 +612,9 @@ int densCls(const string &command) {
                          Test, TestClass, Attr, cout);
 
       if (ryp.TreeAborted()) {
-        ryp.Del();
 
-        VirtualHyp *globVirt3 = net->MakeGlobalVirt(quant, nbIn,
-                                                    vecNbNeurons[1] / nbIn);
+        std::shared_ptr<VirtualHyp> globVirt3 = net->MakeGlobalVirt(quant, nbIn,
+                                                                    vecNbNeurons[1] / nbIn);
 
         RealHyp2 ryp2(globVirt3, nbDimlpNets, net->GetGlobalOut(), nbOut,
                       All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
@@ -629,10 +622,7 @@ int densCls(const string &command) {
 
         ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                             Test, TestClass, Attr, cout);
-
-        ryp2.Del();
-      } else
-        ryp.Del();
+      }
     }
   }
 
@@ -640,8 +630,6 @@ int densCls(const string &command) {
 
   Train.Del();
   TrainClass.Del();
-
-  // net->Del();
 
   if (Test.GetNbEx() > 0) {
     Test.Del();

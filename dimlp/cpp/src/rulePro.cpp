@@ -6,7 +6,7 @@
 
 ////////////////////////////////////////////////////////////////////////
 
-int RuleProcessing::Max(const int *tab, int nbRules) const
+int RuleProcessing::Max(const std::vector<int> &tab, int nbRules) const
 
 {
   int max;
@@ -39,7 +39,7 @@ int RuleProcessing::Max(const int *tab, int nbRules) const
 
 ///////////////////////////////////////////////////////////////////
 
-int RuleProcessing::Min(const int *tab, int nbRules) const
+int RuleProcessing::Min(const std::vector<int> &tab, int nbRules) const
 
 {
   int min;
@@ -71,7 +71,7 @@ int RuleProcessing::Min(const int *tab, int nbRules) const
 
 ///////////////////////////////////////////////////////////////////
 
-int RuleProcessing::IsRuleEmpty(Rule *rule) const
+int RuleProcessing::IsRuleEmpty(std::shared_ptr<Rule> rule) const
 
 {
   int r;
@@ -93,7 +93,7 @@ int RuleProcessing::CountAnt()
   int r;
   int nbAnt;
   int count;
-  Rule *rule;
+  std::shared_ptr<Rule> rule;
 
   for (r = 0, count = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
     rule = GetRule();
@@ -131,7 +131,7 @@ void RuleProcessing::SetCarriedField()
 
 {
   int r;
-  Rule *rule;
+  std::shared_ptr<Rule> rule;
 
   for (r = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
     rule = GetRule();
@@ -149,8 +149,8 @@ void RuleProcessing::DelListCar()
 
 {
   int r;
-  Rule *rule;
-  StringInt *carried;
+  std::shared_ptr<Rule> rule;
+  std::shared_ptr<StringInt> carried;
 
   for (r = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
     rule = GetRule();
@@ -159,7 +159,7 @@ void RuleProcessing::DelListCar()
       continue;
 
     carried = Current->Carried;
-    carried->DelAll();
+    carried->Del();
   }
 }
 
@@ -173,12 +173,9 @@ int RuleProcessing::CheckAllCarried(int toDrop)
   int nbEl;
 
   int nbEx = Data.GetNbEx();
-  auto checkTab = new int[nbEx];
-  Rule *rule;
-  StringInt *carriedEx;
-
-  for (p = 0; p < nbEx; p++)
-    checkTab[p] = 0;
+  std::vector<int> checkTab(nbEx, 0);
+  std::shared_ptr<Rule> rule;
+  std::shared_ptr<StringInt> carriedEx;
 
   for (r = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
     if (r == toDrop)
@@ -199,11 +196,8 @@ int RuleProcessing::CheckAllCarried(int toDrop)
 
   for (p = 0; p < nbEx; p++)
     if (checkTab[p] == 0) {
-      delete[] checkTab;
       return 0;
     }
-
-  delete[] checkTab;
 
   return 1;
 }
@@ -214,7 +208,7 @@ void RuleProcessing::SetCountAntRules()
 
 {
   int r;
-  Rule *rule;
+  std::shared_ptr<Rule> rule;
 
   for (r = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
     rule = GetRule();
@@ -234,7 +228,7 @@ int RuleProcessing::GoToSavedAndRemRule(int indPrune)
 
 {
   int r;
-  Rule *rule;
+  std::shared_ptr<Rule> rule;
 
   if (CheckAllCarried(indPrune) == 1) {
     for (r = 0, GoToBeg(); r < indPrune; r++, GoToNext())
@@ -242,7 +236,7 @@ int RuleProcessing::GoToSavedAndRemRule(int indPrune)
 
     rule = GetRule();
     rule->DeleteRule();
-    (Current->Carried)->DelAll();
+    (Current->Carried)->Del();
 
     return 1;
   }
@@ -259,7 +253,7 @@ void RuleProcessing::FastRulePrune(int nbIt)
   int i;
   int indMax;
 
-  TabRules = new int[NbRules];
+  TabRules.resize(NbRules);
 
   SetCountAntRules();
   SetCarriedField();
@@ -275,7 +269,6 @@ void RuleProcessing::FastRulePrune(int nbIt)
   }
 
   DelListCar();
-  delete TabRules;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -286,9 +279,9 @@ void RuleProcessing::RulePruneByMinCar()
   int count;
   int r;
   int indMin;
-  StringInt *carried;
+  std::shared_ptr<StringInt> carried;
 
-  TabRules = new int[NbRules];
+  TabRules.resize(NbRules);
 
   SetCountAntRules();
   SetCarriedField();
@@ -299,7 +292,7 @@ void RuleProcessing::RulePruneByMinCar()
 
     carried = Data.Select(GetRule());
     TabRules[r] = carried->GetNbEl();
-    carried->DelAll();
+    carried->Del();
   }
 
   for (r = 0, count = 0; r < NbRules; r++) {
@@ -313,7 +306,6 @@ void RuleProcessing::RulePruneByMinCar()
   }
 
   DelListCar();
-  delete[] TabRules;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -326,8 +318,8 @@ void RuleProcessing::GoToRuleAndRemAnt(int indPrune)
   int indRule;
   int indAnt;
   int remAnt;
-  Rule *rule;
-  StringInt *newCarried;
+  std::shared_ptr<Rule> rule;
+  std::shared_ptr<StringInt> newCarried;
 
   for (r = 0, RuleInd.GoToBeg(); r < indPrune; r++, RuleInd.GoToNext())
     ;
@@ -356,7 +348,7 @@ void RuleProcessing::GoToRuleAndRemAnt(int indPrune)
     rule->SetAnt(remAnt);
   }
 
-  newCarried->DelAll();
+  newCarried->Del();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -369,9 +361,9 @@ void RuleProcessing::ComputeGain()
   int nbAnt;
   int remAnt;
   int diff;
-  Rule *rule;
-  StringInt *oldCarried;
-  StringInt *newCarried;
+  std::shared_ptr<Rule> rule;
+  std::shared_ptr<StringInt> oldCarried;
+  std::shared_ptr<StringInt> newCarried;
 
   for (r = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
     rule = GetRule();
@@ -402,11 +394,10 @@ void RuleProcessing::ComputeGain()
         AntInd.Insert(a);
         Gain.Insert(diff);
       }
-
-      newCarried->DelAll();
+      newCarried->Del();
     }
 
-    oldCarried->DelAll();
+    oldCarried->Del();
   }
 }
 
@@ -460,7 +451,7 @@ void RuleProcessing::MixPrune()
 
 ////////////////////////////////////////////////////////////////////////
 
-void RuleProcessing::RemSevThres(Rule *r)
+void RuleProcessing::RemSevThres(std::shared_ptr<Rule> r) const
 
 {
   int a;
@@ -470,8 +461,8 @@ void RuleProcessing::RemSevThres(Rule *r)
   float max;
   float currentVal;
 
-  auto tabFreqLess = new int[NbVar];
-  auto tabFreqGreat = new int[NbVar];
+  std::vector<int> tabFreqLess(NbVar);
+  std::vector<int> tabFreqGreat(NbVar);
 
   for (h = 0; h < NbVar; h++) {
     tabFreqLess[h] = 0;
@@ -542,9 +533,6 @@ void RuleProcessing::RemSevThres(Rule *r)
       }
     }
   }
-
-  delete[] tabFreqLess;
-  delete[] tabFreqGreat;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -560,7 +548,7 @@ void RuleProcessing::Clean()
 
 ////////////////////////////////////////////////////////////////////////
 
-void RuleProcessing::Insert(Rule *r)
+void RuleProcessing::Insert(std::shared_ptr<Rule> r)
 
 {
   int a;
@@ -569,8 +557,8 @@ void RuleProcessing::Insert(Rule *r)
   if (NbRules != 0)
     Current = First;
 
-  First = new Saved;
-  auto ru = new Rule;
+  First = std::make_shared<Saved>();
+  auto ru = std::make_shared<Rule>();
 
   for (a = 0, r->GoToBeg(); a < nbAnt; a++, r->GoToNext()) {
     ru->Insert(r->GetVar(), r->GetVal(), r->GetRel());
@@ -594,19 +582,17 @@ void RuleProcessing::Del()
   for (int e = 0; e < NbRules; e++) {
     Current = Current->Next;
     (First->OneRule)->Del();
-    delete First;
     First = Current;
   }
-
   NbRules = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-void RuleProcessing::RemCurrentRule()
+void RuleProcessing::RemCurrentRule() const
 
 {
-  Rule *rule = GetRule();
+  std::shared_ptr<Rule> rule = GetRule();
   int nbAnt = rule->GetNbAnt();
   int a;
 
@@ -619,8 +605,8 @@ int RuleProcessing::TryEnlargedThres()
 
 {
   int a;
-  int r;
   int t;
+  int r;
   int var;
   int nbThresOneVar;
   int nbAnt;
@@ -629,17 +615,17 @@ int RuleProcessing::TryEnlargedThres()
   int nbEnlarged;
   int indMax;
   int count;
-  int *vecCarried;
+  std::vector<int> vecCarried;
   float val;
   float thres;
   Rule oneCopy;
-  Rule *anotherCopy;
-  Rule *rule;
-  Rule **enlarged;
+  std::shared_ptr<Rule> anotherCopy;
+  std::shared_ptr<Rule> rule;
+  std::vector<std::shared_ptr<Rule>> enlarged;
 
   OneVarThresDescr *oneVarDescr;
-  StringInt *carried;
-  StringInt *carriedMod;
+  std::shared_ptr<StringInt> carried;
+  std::shared_ptr<StringInt> carriedMod;
 
   int nbRules = NbRules;
 
@@ -653,8 +639,8 @@ int RuleProcessing::TryEnlargedThres()
 
     oneCopy.Copy(rule);
 
-    enlarged = new Rule *[NbHyp * NbVar * 2];
-    vecCarried = new int[NbHyp * NbVar * 2];
+    enlarged.resize(NbHyp * NbVar * 2);
+    vecCarried.resize(NbHyp * NbVar * 2);
     nbEnlarged = 0;
 
     carried = Data.Select(rule);
@@ -688,26 +674,23 @@ int RuleProcessing::TryEnlargedThres()
           oneCopy.SetThres(thres);
 
           oneCopy.SavePtrAnt();
-          carriedMod = Data.Select(&oneCopy);
+          carriedMod = Data.Select(std::make_shared<Rule>(oneCopy));
           oneCopy.PrevPtrAnt();
 
           nbCarriedMod = carriedMod->GetNbEl();
 
-          if (nbCarriedMod > nbCarried) {
-            if (AreSameClass(carriedMod, ClassPatNet) == 1) {
-              anotherCopy = new Rule;
+          if (nbCarriedMod > nbCarried && AreSameClass(carriedMod, ClassPatNet) == 1) {
+            anotherCopy = std::make_shared<Rule>();
 
-              oneCopy.SavePtrAnt();
-              anotherCopy->Copy(&oneCopy);
-              oneCopy.PrevPtrAnt();
+            oneCopy.SavePtrAnt();
+            anotherCopy->Copy(std::make_shared<Rule>(oneCopy));
+            oneCopy.PrevPtrAnt();
 
-              vecCarried[nbEnlarged] = nbCarriedMod;
-              enlarged[nbEnlarged] = anotherCopy;
-              nbEnlarged++;
-            }
+            vecCarried[nbEnlarged] = nbCarriedMod;
+            enlarged[nbEnlarged] = anotherCopy;
+            nbEnlarged++;
           }
-
-          carriedMod->DelAll();
+          carriedMod->Del();
 
           oneCopy.SetThres(val);
         }
@@ -718,7 +701,7 @@ int RuleProcessing::TryEnlargedThres()
     }
 
     oneCopy.Del();
-    carried->DelAll();
+    carried->Del();
 
     if (nbEnlarged > 0) {
       RemCurrentRule();
@@ -731,11 +714,8 @@ int RuleProcessing::TryEnlargedThres()
       Previous();
 
       for (t = 0; t < nbEnlarged; t++)
-        enlarged[t]->DelAll();
+        enlarged[t]->Del();
     }
-
-    delete enlarged;
-    delete vecCarried;
 
     count += nbEnlarged;
   }
@@ -771,7 +751,7 @@ RuleProcessing::RuleProcessing(
     int nbHyp,
     DataSet data,
     const std::vector<int> &classPatNet,
-    ThresDescr *descr) : NbVar(nbVar), NbHyp(nbHyp), Data(data), ClassPatNet(classPatNet), Descr(descr)
+    std::shared_ptr<ThresDescr> descr) : NbVar(nbVar), NbHyp(nbHyp), Data(data), ClassPatNet(classPatNet), Descr(descr)
 
 {
 }

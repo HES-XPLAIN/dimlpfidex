@@ -118,7 +118,7 @@ int CleanRuleStruct::FindMinOnAnt(const AssocAnte *ant, int nbAnt) const
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::SortAnt(AssocAnte *ant, int nbAnt, int indRule)
+void CleanRuleStruct::SortAnt(AssocAnte *ant, int nbAnt, int indRule) const
 
 {
   int indMin;
@@ -150,11 +150,9 @@ int CleanRuleStruct::FindMinAntOnRules(int start) const
   indMax = -1;
 
   for (int r = start; r < NbRules; r++) {
-    if (Clean[r]->Flag == 0) {
-      if (Clean[r]->NbAnt < max) {
-        max = Clean[r]->NbAnt;
-        indMax = r;
-      }
+    if (Clean[r]->Flag == 0 && Clean[r]->NbAnt < max) {
+      max = Clean[r]->NbAnt;
+      indMax = r;
     }
   }
 
@@ -173,11 +171,9 @@ int CleanRuleStruct::FindMaxOnRules(int start) const
   indMax = -1;
 
   for (int r = start; r < NbRules; r++) {
-    if (Clean[r]->Flag == 0) {
-      if (Clean[r]->NbAllCarried > max) {
-        max = Clean[r]->NbAllCarried;
-        indMax = r;
-      }
+    if (Clean[r]->Flag == 0 && Clean[r]->NbAllCarried > max) {
+      max = Clean[r]->NbAllCarried;
+      indMax = r;
     }
   }
 
@@ -190,7 +186,7 @@ void CleanRuleStruct::SortRules(int minAnt)
 
 {
   int indMax;
-  CleanRule *ptrClean;
+  std::shared_ptr<CleanRule> ptrClean;
 
   ResetFlag();
 
@@ -213,7 +209,7 @@ void CleanRuleStruct::SortRules(int minAnt)
 
 // does not work with contradictions
 
-float CleanRuleStruct::GlobalAcc(DataSet &data, int *vecWrong, int nbEl)
+float CleanRuleStruct::GlobalAcc(DataSet &data, int *vecWrong, int nbEl) const
 
 {
   int e;
@@ -244,14 +240,14 @@ float CleanRuleStruct::GlobalAcc(DataSet &data, int *vecWrong, int nbEl)
 ////////////////////////////////////////////////////////////////////////
 
 void CleanRuleStruct::ComputeAcc(
-    StringInt *carried,
+    std::shared_ptr<StringInt> carried,
     int *indWrong,
     DataSet &data,
     DataSet &dataClass,
     int *nbPat,
     int *correct,
     int *wrong,
-    float *acc)
+    float *acc) const
 
 {
   int p;
@@ -289,10 +285,10 @@ void CleanRuleStruct::ComputeAcc(
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::SetSevInfo(Rule *rule, int indClean)
+void CleanRuleStruct::SetSevInfo(std::shared_ptr<Rule> rule, int indClean)
 
 {
-  StringInt *carried;
+  std::shared_ptr<StringInt> carried;
 
   carried = All.Select(rule);
   carried->GoToBeg();
@@ -363,11 +359,11 @@ void CleanRuleStruct::CreateStructures()
   int r;
   int allAnt;
   AssocAnte *ptrCleanAnt;
-  Rule *rule;
+  std::shared_ptr<Rule> rule;
 
-  Clean = new CleanRule *[NbRules + 1];
+  Clean.resize(NbRules + 1);
 
-  Clean[NbRules] = new CleanRule; // for Def
+  Clean[NbRules] = std::make_shared<CleanRule>(); // for Def
   Clean[NbRules]->Classification = -1;
 
   int countEffectRules = 0;
@@ -382,7 +378,7 @@ void CleanRuleStruct::CreateStructures()
     allAnt = rule->GetNbAnt();
     countEffectAnt = rule->GetNbAntWithout();
 
-    Clean[countEffectRules] = new CleanRule;
+    Clean[countEffectRules] = std::make_shared<CleanRule>();
     Clean[countEffectRules]->SevAnt = new AssocAnte[countEffectAnt];
     Clean[countEffectRules]->NbAnt = countEffectAnt;
 
@@ -570,9 +566,8 @@ void CleanRuleStruct::WriteRules(int def, ostream &ruleFile)
 
   ruleFile << "---------------------------------------------------------\n\n";
 
-  if (def == 0)
-    if (Test.GetNbEx() != 0)
-      UnordAccWithDef2(ruleFile);
+  if (def == 0 && Test.GetNbEx() != 0)
+    UnordAccWithDef2(ruleFile);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -610,11 +605,11 @@ void CleanRuleStruct::Del()
 
 {
 
-  for (int r = 0; r < NbRules; r++) {
-    delete Clean[r];
-  }
-  delete Clean[NbRules];
-  delete Clean;
+  /*for (int r = 0; r < NbRules; r++) {
+    //delete Clean[r];
+  }*/
+  // delete Clean[NbRules];
+  // delete Clean;
 
   delete WrongTrain;
   delete WrongTest;
@@ -636,8 +631,8 @@ CleanRuleStruct::CleanRuleStruct(
     DataSet validClass,
     DataSet test,
     DataSet testClass,
-    RuleProcessing *processed,
-    BpNN *bpNn,
+    std::shared_ptr<RuleProcessing> processed,
+    std::shared_ptr<BpNN> bpNn,
     float *out,
     int nbOut) : All(all), Train(train), TrainClass(trainClass), Test(test), TestClass(testClass), Valid(valid), ValidClass(validClass), NbOut(nbOut), Bpnn(bpNn), Pruned(processed), Out(out)
 
@@ -685,7 +680,7 @@ void CleanRuleStruct::ResetSomeFields() const
 int CleanRuleStruct::IsExampleCarried(
     DataSet &data,
     int index,
-    const CleanRule *rule) const
+    std::shared_ptr<CleanRule> rule) const
 
 {
   int a;
@@ -1059,7 +1054,7 @@ int CleanRuleStruct::RandomPruneAnt()
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::RemRule(int r)
+void CleanRuleStruct::RemRule(int r) const
 
 {
   const int nbAnt = Clean[r]->NbAnt;
@@ -1198,8 +1193,8 @@ void CleanRuleStruct::CreateNewClean()
     if (CheckAnt(r))
       n++;
 
-  auto newClean = new CleanRule *[n + 1];
-  newClean[n] = new CleanRule;
+  std::vector<std::shared_ptr<CleanRule>> newClean(n + 1);
+  newClean[n] = std::make_shared<CleanRule>();
 
   newClean[n]->Classification = Clean[NbRules]->Classification;
 
@@ -1208,7 +1203,7 @@ void CleanRuleStruct::CreateNewClean()
     nbNewAnt = CheckAnt(r);
 
     if (nbNewAnt > 0) {
-      newClean[n] = new CleanRule;
+      newClean[n] = std::make_shared<CleanRule>();
       newClean[n]->SevAnt = new AssocAnte[nbNewAnt];
       newClean[n]->NbAnt = nbNewAnt;
       newClean[n]->Classification = Clean[r]->Classification;
@@ -1246,11 +1241,11 @@ void CleanRuleStruct::CreateNewClean()
   }
 
   for (r = 0; r < NbRules; r++) {
-    delete Clean[r];
+    // delete Clean[r];
   }
 
-  delete Clean[NbRules];
-  delete Clean;
+  // delete Clean[NbRules];
+  // delete Clean;
 
   Clean = newClean;
 
@@ -1387,15 +1382,15 @@ int CleanRuleStruct::SetDefRule()
   int nbDelAnt;
   int defClass;
   int countAnt;
-  StringInt **vectList;
+  std::vector<std::shared_ptr<StringInt>> vectList;
   auto nbDeletedAnt = new int[NbOut];
 
   ElseRepresentation();
 
-  vectList = new StringInt *[NbOut];
+  vectList.resize(NbOut);
 
   for (cl = 0; cl < NbOut; cl++)
-    vectList[cl] = new StringInt;
+    vectList[cl] = std::make_shared<StringInt>();
 
   for (cl = 0; cl < NbOut; cl++) {
     SetFlagToOne();
@@ -1436,8 +1431,7 @@ int CleanRuleStruct::SetDefRule()
     RemRule(vectList[defClass]->GetVal());
 
   for (cl = 0; cl < NbOut; cl++)
-    vectList[cl]->DelAll();
-  delete[] vectList;
+    vectList[cl]->Del();
 
   return defClass;
 }
@@ -1549,13 +1543,13 @@ void CleanRuleStruct::SetAttr()
 
   for (int r = 0; r < NbRules; r++) {
     nbAnt = Clean[r]->NbAnt;
-
     for (a = 0, ptr = Clean[r]->SevAnt; a < nbAnt; a++, ptr++) {
       str = ItoA((ptr->Var) + 1);
-
       std::string str2 = "x";
       str2 += str;
+      std::cout << "MONTESTBUGSETATTR6" << std::endl;
       ptr->Str = str2;
+      std::cout << "MONTESTBUGSETATTR7" << std::endl;
     }
   }
 }

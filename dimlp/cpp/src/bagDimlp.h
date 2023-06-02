@@ -26,11 +26,11 @@ class BagDimlp : public Dimlp {
 
   std::vector<float> GlobalOut;
 
-  Dimlp **VectDimlp;
-  DataSet **VectData;
-  DataSet **VectDataClass;
-  DataSet **ValData;
-  DataSet **ValDataClass;
+  std::vector<std::shared_ptr<Dimlp>> VectDimlp;
+  std::vector<std::shared_ptr<DataSet>> VectData;
+  std::vector<std::shared_ptr<DataSet>> VectDataClass;
+  std::vector<std::shared_ptr<DataSet>> ValData;
+  std::vector<std::shared_ptr<DataSet>> ValDataClass;
 
   //---------------------------------------------------------------------
 
@@ -48,7 +48,7 @@ public:
       int seed = 0);
   void DefNetsWithWeights(const char *prefix);
 
-  VirtualHyp *MakeGlobalVirt(int nbBins, int nbIn, int multiple);
+  std::shared_ptr<VirtualHyp> MakeGlobalVirt(int nbBins, int nbIn, int multiple);
 
   using BpNN::ForwardOneExample1;
   void ForwardOneExample1(DataSet &data, int index) override;

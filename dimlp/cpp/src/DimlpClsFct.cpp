@@ -46,7 +46,7 @@ static void SaveOutputs(
     WriteError(errorMsg, outfile);
   }
 
-  Layer *layer = net->GetLayer(nbWeightLayers - 1);
+  std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
   const float *out = layer->GetUp();
 
   cout << "\n\n"
@@ -86,7 +86,7 @@ void SaveFirstHid(
     WriteError(errorMsg, outfile);
   }
 
-  Layer *layer = net->GetLayer(0);
+  std::shared_ptr<Layer> layer = net->GetLayer(0);
   const float *hid = layer->GetUp();
 
   cout << "\n\n"

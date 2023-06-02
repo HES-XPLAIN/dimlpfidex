@@ -45,7 +45,7 @@ static void SaveOutputs(
     WriteError(errorMsg, outfile);
   }
 
-  Layer *layer = net->GetLayer(nbWeightLayers - 1);
+  std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
   const float *out = layer->GetUp();
 
   cout << "\n\n"

@@ -4,7 +4,7 @@
 
 RealHyp2::RealHyp2(
     DataSet &data,
-    BpNN *nn,
+    std::shared_ptr<BpNN> nn,
     int nbBins,
     int nbIn,
     int multiple,
@@ -18,12 +18,12 @@ RealHyp2::RealHyp2(
 ///////////////////////////////////////////////////////////////////
 
 RealHyp2::RealHyp2(
-    VirtualHyp *globalVirt,
+    std::shared_ptr<VirtualHyp> globalVirt,
     int nbNets,
     float *out,
     int nbOut,
     DataSet &data,
-    BpNN *nn,
+    std::shared_ptr<BpNN> nn,
     int nbBins,
     int nbIn,
     int multiple,
