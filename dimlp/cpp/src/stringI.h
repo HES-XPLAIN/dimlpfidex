@@ -24,7 +24,7 @@ public:
   void GoToBeg() { PtrList = First; }
   void GoToNext() { PtrList = PtrList->Next; }
   int GetVal() const { return PtrList->Val; }
-  void SetVal(int val) { PtrList->Val = val; }
+  void SetVal(int val) const { PtrList->Val = val; }
 
   void Insert(int val);
   int FindIndMax();
@@ -32,10 +32,6 @@ public:
   void DelVal(int indPrune, int newSet);
 
   void Del() { NbEl = 0; };
-  void DelAll() {
-    Del();
-    delete this;
-  }
 
   ~StringInt() = default;
   StringInt() = default;

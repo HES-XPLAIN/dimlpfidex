@@ -47,9 +47,9 @@ class BpNN {
 
   int NbLayers; // Including Input and Output
   int NbWeightLayers;
-  int *NbNeurons;
+  std::vector<int> NbNeurons;
 
-  Layer **VecLayer;
+  std::vector<std::shared_ptr<Layer>> VecLayer;
 
   //------------------------------------------------------------------------
 
@@ -94,7 +94,7 @@ public:
   int GetNbLayers() const { return NbLayers; }
   int GetNbWeightLayers() const { return NbWeightLayers; }
   int Max(const float vec[], int nbEl) const;
-  Layer *GetLayer(int indLayer) { return VecLayer[indLayer]; }
+  std::shared_ptr<Layer> GetLayer(int indLayer) { return VecLayer[indLayer]; }
 
   void SaveWeights(const char *str) const;
 
@@ -141,9 +141,7 @@ public:
   BpNN(const BpNN &) = default;            // Default copy constructor
   BpNN &operator=(const BpNN &) = default; // Default copy assignment operator
 
-  void Del();
-
-  virtual ~BpNN() { Del(); } // virtual destructor
+  virtual ~BpNN() = default; // virtual destructor
 
   BpNN(
       float eta,

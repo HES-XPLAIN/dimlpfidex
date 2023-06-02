@@ -23,10 +23,10 @@ const int DATASETS = 1;
 ////////////////////////////////////////////////////////////////////////
 
 class RealHyp {
-  BpNN *Bpnn;
-  VirtualHyp *Virt;
-  ThresDescr *Descr;
-  RuleProcessing *SavedRules;
+  std::shared_ptr<BpNN> Bpnn;
+  std::shared_ptr<VirtualHyp> Virt;
+  std::shared_ptr<ThresDescr> Descr;
+  std::shared_ptr<RuleProcessing> SavedRules;
 
   //----------------------------------------------------------------
 
@@ -42,16 +42,16 @@ class RealHyp {
   int NbWeightLayers;
   int NbOut; // Attenzione al numero di classi quando = 1
 
-  int **ConfirmedVirt;
-  int *ConfBefFirstHyp;
+  std::vector<std::vector<int>> ConfirmedVirt;
+  std::vector<int> ConfBefFirstHyp;
   std::vector<int> ClassPatNet;
 
   int Aborted;
   //----------------------------------------------------------------
 
-  void SaveRule(Rule *path) { SavedRules->Insert(path); }
+  void SaveRule(std::shared_ptr<Rule> path) const { SavedRules->Insert(path); }
 
-  int MaxOnPos(const int *vec, int nbEl) const;
+  int MaxOnPos(const std::vector<int> &vec) const;
   int GiveIndMax(const int *vec, int nbEl) const;
 
   void SetConfirmedVirt2();
@@ -65,14 +65,14 @@ class RealHyp {
 
   void OneExRealHyp(DataSet &data, int indPat);
 
-  Ante *FindMostDiscrAnt(int sel);
+  std::shared_ptr<Ante> FindMostDiscrAnt(int sel) const;
 
-  int ComputeCorrect(StringInt *listPatLeft, StringInt *listPatRight);
-  void SetCountPatDiscr(StringInt *listPat, Rule *r);
-  void SetCountPatDiscr2(DataSet &data, Rule *r);
+  int ComputeCorrect(std::shared_ptr<StringInt> listPatLeft, std::shared_ptr<StringInt> listPatRight);
+  void SetCountPatDiscr(std::shared_ptr<StringInt> listPat, std::shared_ptr<Rule> r) const;
+  void SetCountPatDiscr2(DataSet &data, std::shared_ptr<Rule> r);
 
-  void DeepSearch(DataSet &data, Rule *path, StringInt *subSet);
-  void DeepSearch2(DataSet &data, Rule *path);
+  void DeepSearch(DataSet &data, std::shared_ptr<Rule> path, std::shared_ptr<StringInt> subSet);
+  void DeepSearch2(DataSet &data, std::shared_ptr<Rule> path);
 
   //----------------------------------------------------------------
 
@@ -98,13 +98,11 @@ public:
 
   //----------------------------------------------------------------
 
-  void Del();
-
   virtual ~RealHyp() = default;
 
   RealHyp(
       DataSet &data,
-      BpNN *nn,
+      std::shared_ptr<BpNN> nn,
       int nbBins,
       int nbIn,
       int multiple,
@@ -112,7 +110,7 @@ public:
 
   RealHyp(
       DataSet &data,
-      BpNN *nn,
+      std::shared_ptr<BpNN> nn,
       int nbBins,
       int nbIn,
       int multiple,
@@ -120,24 +118,24 @@ public:
       int dummy);
 
   RealHyp(
-      VirtualHyp *globalVirt,
+      std::shared_ptr<VirtualHyp> globalVirt,
       int nbNets,
       float *out,
       int nbOut,
       DataSet &data,
-      BpNN *nn,
+      std::shared_ptr<BpNN> nn,
       int nbBins,
       int nbIn,
       int multiple,
       int nbWeightLayers);
 
   RealHyp(
-      VirtualHyp *globalVirt,
+      std::shared_ptr<VirtualHyp> globalVirt,
       int nbNets,
       float *out,
       int nbOut,
       DataSet &data,
-      BpNN *nn,
+      std::shared_ptr<BpNN> nn,
       int nbBins,
       int nbIn,
       int multiple,

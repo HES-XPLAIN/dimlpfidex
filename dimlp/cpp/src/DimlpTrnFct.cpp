@@ -54,7 +54,7 @@ void GiveAllParamDimlpTrn()
 
 static void SaveOutputs(
     DataSet &data,
-    Dimlp *net,
+    std::shared_ptr<Dimlp> net,
     int nbOut,
     int nbWeightLayers,
     const char *outfile)
@@ -67,7 +67,7 @@ static void SaveOutputs(
     WriteError(errorMsg, outfile);
   }
 
-  Layer *layer = net->GetLayer(nbWeightLayers - 1);
+  std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
   const float *out = layer->GetUp();
 
   cout << "\n\n"
@@ -120,7 +120,7 @@ int dimlpTrn(const string &command) {
 
   AttrName Attr;
 
-  Dimlp *net;
+  std::shared_ptr<Dimlp> net;
 
   float eta = 0.1f;
   float mu = 0.6f;
@@ -686,13 +686,13 @@ int dimlpTrn(const string &command) {
     }
   }
   if (weightFileInit == false)
-    net = new Dimlp(eta, mu, flat, errThres, accThres, deltaErr,
-                    quant, showErr, epochs, nbLayers, vecNbNeurons, outputWeightFile, seed);
+    net = std::make_shared<Dimlp>(eta, mu, flat, errThres, accThres, deltaErr,
+                                  quant, showErr, epochs, nbLayers, vecNbNeurons, outputWeightFile, seed);
 
   else
-    net = new Dimlp(weightFile, eta, mu, flat, errThres, accThres,
-                    deltaErr, quant, showErr, epochs,
-                    nbLayers, vecNbNeurons, outputWeightFile, seed);
+    net = std::make_shared<Dimlp>(weightFile, eta, mu, flat, errThres, accThres,
+                                  deltaErr, quant, showErr, epochs,
+                                  nbLayers, vecNbNeurons, outputWeightFile, seed);
 
   if (accuracyFileInit != false) {
     ofstream accFile(accuracyFile);
@@ -750,11 +750,10 @@ int dimlpTrn(const string &command) {
         WriteError(errorMsg, rulesFile);
       }
       ostream rulesFileost(&buf);
-
       ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                           Test, TestClass, Attr, rulesFileost);
+
       if (ryp1.TreeAborted()) {
-        ryp1.Del();
 
         RealHyp2 ryp2(All, net, quant, nbIn,
                       vecNbNeurons[1] / nbIn, nbWeightLayers);
@@ -762,13 +761,11 @@ int dimlpTrn(const string &command) {
         ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                             Test, TestClass, Attr, rulesFileost);
 
-        ryp2.Del();
       } else
-        ryp1.Del();
 
-      cout << "\n\n"
-           << rulesFile << ": "
-           << "Written.\n\n";
+        cout << "\n\n"
+             << rulesFile << ": "
+             << "Written.\n\n";
     }
 
     else {
@@ -776,24 +773,18 @@ int dimlpTrn(const string &command) {
                           Test, TestClass, Attr, cout);
 
       if (ryp1.TreeAborted()) {
-        ryp1.Del();
 
         RealHyp2 ryp2(All, net, quant, nbIn,
                       vecNbNeurons[1] / nbIn, nbWeightLayers);
 
         ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                             Test, TestClass, Attr, cout);
-
-        ryp2.Del();
-      } else
-        ryp1.Del();
+      }
     }
   }
 
   // Train.Del();
   // TrainClass.Del();
-
-  net->Del();
 
   /*if (Test.GetNbEx() > 0)
   {

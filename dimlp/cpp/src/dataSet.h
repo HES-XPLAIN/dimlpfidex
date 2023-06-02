@@ -41,8 +41,8 @@ public:
   int GetNbEx() const { return NbEx; }
   int GetNbAttr() const { return NbAttr; }
 
-  StringInt *Select(Rule *r);
-  StringInt *Select(Rule *r, StringInt *subSet);
+  std::shared_ptr<StringInt> Select(std::shared_ptr<Rule> r);
+  std::shared_ptr<StringInt> Select(std::shared_ptr<Rule> r, std::shared_ptr<StringInt> subSet);
 
   void ExtractDataAndTarget(DataSet &data1, int nbAttr1,
                             DataSet &data2, int nbAttr2);

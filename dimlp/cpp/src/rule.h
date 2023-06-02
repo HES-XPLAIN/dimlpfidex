@@ -29,9 +29,9 @@ public:
   int GetVar() const { return PtrAnt->Var; }
   float GetVal() const { return PtrAnt->Val; }
   char GetRel() const { return PtrAnt->Rel; }
-  void RemAnt() { PtrAnt->Var = -1; }
-  void SetAnt(int var) { PtrAnt->Var = var; }
-  void SetThres(float val) { PtrAnt->Val = val; }
+  void RemAnt() const { PtrAnt->Var = -1; }
+  void SetAnt(int var) const { PtrAnt->Var = var; }
+  void SetThres(float val) const { PtrAnt->Val = val; }
   int IsAntDeleted() const { return ((PtrAnt->Var == -1) ? 1 : 0); }
   void SavePtrAnt() { Memory = PtrAnt; }
   void PrevPtrAnt() { PtrAnt = Memory; }
@@ -39,14 +39,10 @@ public:
   int GetNbAntWithout();
   void DeleteRule();
   void Insert(int var, float val, char rel);
-  Rule *Copy(Rule *r);
+  Rule *Copy(std::shared_ptr<Rule> r);
 
   void Del() {
     NbAnt = 0;
-  }
-  void DelAll() {
-    NbAnt = 0;
-    delete this;
   }
 
   Rule() = default;

@@ -22,35 +22,35 @@ class RuleProcessing
 
   DataSet Data;
   std::vector<int> ClassPatNet;
-  int *TabRules;
-  ThresDescr *Descr;
+  std::vector<int> TabRules;
+  std::shared_ptr<ThresDescr> Descr;
 
   StringInt Gain;
   StringInt RuleInd;
   StringInt AntInd;
 
   struct Saved {
-    Rule *OneRule;
-    StringInt *Carried;
-    Saved *Next;
+    std::shared_ptr<Rule> OneRule;
+    std::shared_ptr<StringInt> Carried;
+    std::shared_ptr<Saved> Next;
   };
 
-  Saved *First;
-  Saved *Current;
-  Saved *Memory;
+  std::shared_ptr<Saved> First;
+  std::shared_ptr<Saved> Current;
+  std::shared_ptr<Saved> Memory;
 
   //----------------------------------------------------------------
 
-  int Max(const int *tab, int nbRules) const;
-  int Min(const int *tab, int nbRules) const;
+  int Max(const std::vector<int> &tab, int nbRules) const;
+  int Min(const std::vector<int> &tab, int nbRules) const;
   void SetCountAntRules();
   void SetCarriedField();
   void DelListCar();
   int CheckAllCarried(int toDrop);
-  void RemCurrentRule();
+  void RemCurrentRule() const;
   int GoToSavedAndRemRule(int indPrune);
   void GoToRuleAndRemAnt(int indPrune);
-  void RemSevThres(Rule *r);
+  void RemSevThres(std::shared_ptr<Rule> r) const;
   void ComputeGain();
   void RulePruneByMinCar();
   void FastRulePrune(int nbIt);
@@ -59,11 +59,11 @@ class RuleProcessing
   //----------------------------------------------------------------
 
 public:
-  int IsRuleEmpty(Rule *rule) const;
+  int IsRuleEmpty(std::shared_ptr<Rule> rule) const;
   int GetNbRules() const { return NbRules; }
   void GoToBeg() { Current = First; }
   void GoToNext() { Current = Current->Next; }
-  Rule *GetRule() { return Current->OneRule; }
+  std::shared_ptr<Rule> GetRule() const { return Current->OneRule; }
   void Save() { Memory = Current; }
   void Previous() { Current = Memory; }
 
@@ -74,7 +74,7 @@ public:
   void MixPrune();
   void EnlargeAndPrune();
 
-  void Insert(Rule *r);
+  void Insert(std::shared_ptr<Rule> r);
   void Del();
 
   RuleProcessing(
@@ -82,7 +82,7 @@ public:
       int nbHyp,
       DataSet data,
       const std::vector<int> &classPatNet,
-      ThresDescr *descr);
+      std::shared_ptr<ThresDescr> descr);
 
   RuleProcessing() = default;
 };

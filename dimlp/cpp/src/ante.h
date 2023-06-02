@@ -16,10 +16,6 @@ public:
   char GetRelAnte() const { return Rule::GetRel(); }
 
   void DelAnte() { Rule::Del(); }
-  void DelAllAnte() {
-    Rule::Del();
-    delete this;
-  }
 
   Ante(int var, float val, char rel);
 };

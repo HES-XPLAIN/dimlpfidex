@@ -92,7 +92,7 @@ void DataSet::Del()
 
 ///////////////////////////////////////////////////////////////////
 
-StringInt *DataSet::Select(Rule *r)
+std::shared_ptr<StringInt> DataSet::Select(std::shared_ptr<Rule> r)
 
 {
   int a;
@@ -100,8 +100,7 @@ StringInt *DataSet::Select(Rule *r)
   int nextPat;
   float **ptrPat;
   int nbAnt = r->GetNbAnt();
-
-  auto savePat = new StringInt;
+  auto savePat = std::make_shared<StringInt>();
 
   for (p = 0, ptrPat = Set; p < NbEx; p++, ptrPat++) {
     for (a = 0, nextPat = 0, r->GoToBeg(); a < nbAnt; a++, r->GoToNext()) {
@@ -142,7 +141,7 @@ StringInt *DataSet::Select(Rule *r)
 
 ////////////////////////////////////////////////////////////////////////
 
-StringInt *DataSet::Select(Rule *r, StringInt *subSet)
+std::shared_ptr<StringInt> DataSet::Select(std::shared_ptr<Rule> r, std::shared_ptr<StringInt> subSet)
 
 {
   int a;
@@ -153,7 +152,7 @@ StringInt *DataSet::Select(Rule *r, StringInt *subSet)
 
   int nbAnt = r->GetNbAnt();
   int nbEx = subSet->GetNbEl();
-  auto savePat = new StringInt;
+  auto savePat = std::make_shared<StringInt>();
 
   for (p = 0, subSet->GoToBeg(); p < nbEx; p++, subSet->GoToNext()) {
     indPat = subSet->GetVal();

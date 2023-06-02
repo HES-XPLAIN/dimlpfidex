@@ -21,7 +21,7 @@ int Compare(const void *x, const void *y)
 
 ////////////////////////////////////////////////////////////////////////
 
-int AreSameClass(StringInt *listPat, std::vector<int> classPatNet)
+int AreSameClass(std::shared_ptr<StringInt> listPat, std::vector<int> classPatNet)
 
 {
   int p;

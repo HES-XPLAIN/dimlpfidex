@@ -59,7 +59,7 @@ void Rule::Insert(int var, float val, char rel)
 
 ///////////////////////////////////////////////////////////////////
 
-Rule *Rule::Copy(Rule *r)
+Rule *Rule::Copy(std::shared_ptr<Rule> r)
 
 {
   int a;
