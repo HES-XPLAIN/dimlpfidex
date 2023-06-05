@@ -93,7 +93,7 @@ class BpNN {
 public:
   int GetNbLayers() const { return NbLayers; }
   int GetNbWeightLayers() const { return NbWeightLayers; }
-  int Max(const float vec[], int nbEl) const;
+  int Max(const std::vector<float> &vec) const;
   std::shared_ptr<Layer> GetLayer(int indLayer) { return VecLayer[indLayer]; }
 
   void SaveWeights(const char *str) const;

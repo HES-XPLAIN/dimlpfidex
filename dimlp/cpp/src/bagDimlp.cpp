@@ -228,8 +228,8 @@ void BagDimlp::ComputeAcc(
     ptrOut = GlobalOut;
     ptrTar.assign(target.GetExample(p), target.GetExample(p) + nbOut);
 
-    ansNet = Max(ptrOut.data(), nbOut);
-    ansTar = Max(ptrTar.data(), nbOut);
+    ansNet = Max(ptrOut);
+    ansTar = Max(ptrTar);
 
     if (ansNet == ansTar)
       good++;

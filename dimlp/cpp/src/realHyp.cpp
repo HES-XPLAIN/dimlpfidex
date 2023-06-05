@@ -178,7 +178,7 @@ void RealHyp::Gr1(
 
     Bpnn->ForwardOneExample1();
 
-    newNetAns = Bpnn->Max(Out, NbOut);
+    newNetAns = Bpnn->Max(std::vector<float>(Out, Out + NbOut));
 
     if (newNetAns != netAns) {
       Descr->Insert(var, *((Virt->GetVirtHyp(var)).data() + k), indPat);
@@ -211,7 +211,7 @@ void RealHyp::Gr2(
 
     Bpnn->ForwardOneExample1();
 
-    newNetAns = Bpnn->Max(Out, NbOut);
+    newNetAns = Bpnn->Max(std::vector<float>(Out, Out + NbOut));
 
     if (newNetAns != netAns) {
       Descr->Insert(var, *((Virt->GetVirtHyp(var)).data() + k), indPat);
@@ -252,7 +252,7 @@ void RealHyp::Gl1(
 
     Bpnn->ForwardOneExample1();
 
-    newNetAns = Bpnn->Max(Out, NbOut);
+    newNetAns = Bpnn->Max(std::vector<float>(Out, Out + NbOut));
 
     if (newNetAns != netAns) {
       Descr->Insert(var, *ptrStart, indPat);
@@ -290,7 +290,7 @@ void RealHyp::Gl2(
 
     Bpnn->ForwardOneExample1();
 
-    newNetAns = Bpnn->Max(Out, NbOut);
+    newNetAns = Bpnn->Max(std::vector<float>(Out, Out + NbOut));
 
     if (newNetAns != netAns) {
       Descr->Insert(var, *ptrStart, indPat);
@@ -830,7 +830,7 @@ RealHyp::RealHyp(
 
   for (p = 0; p < data.GetNbEx(); p++) {
     Bpnn->ForwardOneExample1(data, p);
-    ClassPatNet[p] = Bpnn->Max(Out, NbOut);
+    ClassPatNet[p] = Bpnn->Max(std::vector<float>(Out, Out + NbOut));
   }
 
   ConfirmedVirt.resize(NbIn);
@@ -870,7 +870,7 @@ RealHyp::RealHyp(
 
   for (p = 0; p < data.GetNbEx(); p++) {
     Bpnn->ForwardOneExample1(data, p);
-    ClassPatNet[p] = Bpnn->Max(Out, NbOut);
+    ClassPatNet[p] = Bpnn->Max(std::vector<float>(Out, Out + NbOut));
   }
 
   ConfirmedVirt.resize(NbIn);
@@ -904,7 +904,7 @@ RealHyp::RealHyp(
 
   for (p = 0; p < data.GetNbEx(); p++) {
     Bpnn->ForwardOneExample1(data, p);
-    ClassPatNet[p] = Bpnn->Max(Out, NbOut);
+    ClassPatNet[p] = Bpnn->Max(std::vector<float>(Out, Out + NbOut));
   }
 
   ConfirmedVirt.resize(NbIn);
@@ -942,7 +942,7 @@ RealHyp::RealHyp(
 
   for (p = 0; p < data.GetNbEx(); p++) {
     Bpnn->ForwardOneExample1(data, p);
-    ClassPatNet[p] = Bpnn->Max(Out, NbOut);
+    ClassPatNet[p] = Bpnn->Max(std::vector<float>(Out, Out + NbOut));
   }
 
   ConfirmedVirt.resize(NbIn);
