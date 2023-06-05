@@ -123,7 +123,7 @@ void CleanRuleStruct::SortAnt(AssocAnte *ant, int nbAnt, int indRule) const
 {
   int indMin;
 
-  auto sorted = new AssocAnte[nbAnt];
+  std::vector<AssocAnte> sorted(nbAnt);
 
   for (int a = 0; a < nbAnt; a++) {
     indMin = FindMinOnAnt(ant, nbAnt);
@@ -301,7 +301,7 @@ void CleanRuleStruct::SetSevInfo(std::shared_ptr<Rule> rule, int indClean)
 
   carried = Train.Select(rule);
 
-  ComputeAcc(carried, WrongTrain, Train, TrainClass,
+  ComputeAcc(carried, WrongTrain.data(), Train, TrainClass,
              &(Clean[indClean]->NbCarriedTrain),
              &(Clean[indClean]->NbCorrectTrain),
              &(Clean[indClean]->NbWrongTrain),
@@ -312,7 +312,7 @@ void CleanRuleStruct::SetSevInfo(std::shared_ptr<Rule> rule, int indClean)
   if (Test.GetNbEx() != 0) {
     carried = Test.Select(rule);
 
-    ComputeAcc(carried, WrongTest, Test, TestClass,
+    ComputeAcc(carried, WrongTest.data(), Test, TestClass,
                &(Clean[indClean]->NbCarriedTest),
                &(Clean[indClean]->NbCorrectTest),
                &(Clean[indClean]->NbWrongTest),
@@ -331,7 +331,7 @@ void CleanRuleStruct::SetSevInfo(std::shared_ptr<Rule> rule, int indClean)
   if (Valid.GetNbEx() != 0) {
     carried = Valid.Select(rule);
 
-    ComputeAcc(carried, WrongValid, Valid, ValidClass,
+    ComputeAcc(carried, WrongValid.data(), Valid, ValidClass,
                &(Clean[indClean]->NbCarriedValid),
                &(Clean[indClean]->NbCorrectValid),
                &(Clean[indClean]->NbWrongValid),
@@ -350,15 +350,12 @@ void CleanRuleStruct::SetSevInfo(std::shared_ptr<Rule> rule, int indClean)
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::CreateStructures()
-
-{
+void CleanRuleStruct::CreateStructures() {
   const int nbPrunedRules = Pruned->GetNbRules();
 
   int a;
   int r;
   int allAnt;
-  AssocAnte *ptrCleanAnt;
   std::shared_ptr<Rule> rule;
 
   Clean.resize(NbRules + 1);
@@ -379,26 +376,23 @@ void CleanRuleStruct::CreateStructures()
     countEffectAnt = rule->GetNbAntWithout();
 
     Clean[countEffectRules] = std::make_shared<CleanRule>();
-    Clean[countEffectRules]->SevAnt = new AssocAnte[countEffectAnt];
+    Clean[countEffectRules]->SevAnt.resize(countEffectAnt);
     Clean[countEffectRules]->NbAnt = countEffectAnt;
 
-    ptrCleanAnt = Clean[countEffectRules]->SevAnt;
-    countEffectAnt = 0;
+    int indexCleanAnt = 0;
 
     for (a = 0, rule->GoToBeg(); a < allAnt; a++, rule->GoToNext()) {
       if (rule->IsAntDeleted() == 1)
         continue;
 
-      ptrCleanAnt->Var = rule->GetVar();
-      ptrCleanAnt->Val = rule->GetVal();
-      ptrCleanAnt->Rel = rule->GetRel();
+      Clean[countEffectRules]->SevAnt[indexCleanAnt].Var = rule->GetVar();
+      Clean[countEffectRules]->SevAnt[indexCleanAnt].Val = rule->GetVal();
+      Clean[countEffectRules]->SevAnt[indexCleanAnt].Rel = rule->GetRel();
 
-      countEffectAnt++;
-      ptrCleanAnt++;
+      indexCleanAnt++;
     }
 
-    SortAnt(Clean[countEffectRules]->SevAnt,
-            Clean[countEffectRules]->NbAnt, countEffectRules);
+    SortAnt(&Clean[countEffectRules]->SevAnt[0], Clean[countEffectRules]->NbAnt, countEffectRules);
 
     SetSevInfo(rule, countEffectRules);
 
@@ -439,7 +433,7 @@ void CleanRuleStruct::WriteRules(int def, ostream &ruleFile)
     count++;
     ruleFile << "Rule " << count << ": ";
 
-    ptrAnt = Clean[r]->SevAnt;
+    ptrAnt = const_cast<const AssocAnte *>(Clean[r]->SevAnt.data());
 
     for (int a = 0; a < Clean[r]->NbAnt; a++, ptrAnt++) {
       ruleFile << "(" << ptrAnt->Str << " ";
@@ -504,7 +498,7 @@ void CleanRuleStruct::WriteRules(int def, ostream &ruleFile)
   ruleFile << "\n---------------------------------------------------------\n\n";
 
   ruleFile << "Accuracy of rules on training set = ";
-  ruleFile << GlobalAcc(Train, WrongTrain, Train.GetNbEx()) << "\n\n";
+  ruleFile << GlobalAcc(Train, WrongTrain.data(), Train.GetNbEx()) << "\n\n";
 
   if (Valid.GetNbEx() != 0) {
     ruleFile << "---------------------------------------------------------\n\n";
@@ -550,7 +544,7 @@ void CleanRuleStruct::WriteRules(int def, ostream &ruleFile)
     ruleFile << "---------------------------------------------------------\n\n";
 
     ruleFile << "Accuracy of rules on validation set = ";
-    ruleFile << GlobalAcc(Valid, WrongValid, Valid.GetNbEx()) << "\n\n";
+    ruleFile << GlobalAcc(Valid, WrongValid.data(), Valid.GetNbEx()) << "\n\n";
   }
 
   ruleFile << "---------------------------------------------------------\n\n";
@@ -577,48 +571,26 @@ void CleanRuleStruct::CreateWrongVect()
 {
   int p;
 
-  WrongTrain = new int[Train.GetNbEx()];
+  WrongTrain.resize(Train.GetNbEx());
 
   for (p = 0; p < Train.GetNbEx(); p++)
     WrongTrain[p] = -1;
 
   if (Test.GetNbEx() != 0) {
-    WrongTest = new int[Test.GetNbEx()];
+    WrongTest.resize(Test.GetNbEx());
 
     for (p = 0; p < Test.GetNbEx(); p++)
       WrongTest[p] = -1;
   } else
-    WrongTest = nullptr;
+    WrongTest.clear();
 
   if (Valid.GetNbEx() != 0) {
-    WrongValid = new int[Valid.GetNbEx()];
+    WrongValid.resize(Valid.GetNbEx());
 
     for (p = 0; p < Valid.GetNbEx(); p++)
       WrongValid[p] = -1;
   } else
-    WrongValid = nullptr;
-}
-
-////////////////////////////////////////////////////////////////////////
-
-void CleanRuleStruct::Del()
-
-{
-
-  /*for (int r = 0; r < NbRules; r++) {
-    //delete Clean[r];
-  }*/
-  // delete Clean[NbRules];
-  // delete Clean;
-
-  delete WrongTrain;
-  delete WrongTest;
-  delete WrongValid;
-  delete ClAllNet;
-
-  DelClassPat();
-
-  NbRules = 0;
+    WrongValid.clear();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -643,7 +615,7 @@ CleanRuleStruct::CleanRuleStruct(
   CreateStructures();
 
   const int nbEx = All.GetNbEx();
-  ClAllNet = new int[nbEx];
+  ClAllNet.resize(nbEx);
 
   for (int p = 0; p < nbEx; p++) {
     Bpnn->ForwardOneExample1(All, p);
@@ -694,7 +666,7 @@ int CleanRuleStruct::IsExampleCarried(
   const int nbRuleAnt = rule->NbAnt;
   const float *ptrPat = data.GetExample(index);
 
-  for (a = 0, ptrAnt = rule->SevAnt; a < nbRuleAnt; a++, ptrAnt++) {
+  for (a = 0, ptrAnt = const_cast<const AssocAnte *>(rule->SevAnt.data()); a < nbRuleAnt; a++, ptrAnt++) {
     if (IsAntDeleted(ptrAnt))
       continue;
 
@@ -1000,7 +972,7 @@ int CleanRuleStruct::RandomPruneAnt()
     do {
       do {
         nbAnt = Clean[r]->NbAnt;
-        ant = Clean[r]->SevAnt;
+        ant = Clean[r]->SevAnt.data();
         ant = ant + a;
 
         if (IsAntDeleted(ant) == 1) {
@@ -1061,7 +1033,7 @@ void CleanRuleStruct::RemRule(int r) const
   AssocAnte *ptrAnt;
   int a;
 
-  for (a = 0, ptrAnt = Clean[r]->SevAnt; a < nbAnt; a++, ptrAnt++)
+  for (a = 0, ptrAnt = Clean[r]->SevAnt.data(); a < nbAnt; a++, ptrAnt++)
     RemAnt(ptrAnt);
 }
 
@@ -1084,7 +1056,7 @@ int CleanRuleStruct::OrderedExpand(ThresDescr *descr)
   OneVarThresDescr *oneVarDescr;
   AssocAnte *ant;
 
-  auto vectCar = new int[NbRules];
+  std::vector<int> vectCar(NbRules);
 
   Fidelity100();
 
@@ -1094,7 +1066,7 @@ int CleanRuleStruct::OrderedExpand(ThresDescr *descr)
   for (r = 0; r < NbRules; r++) {
     nbAnt = Clean[r]->NbAnt;
 
-    for (a = 0, ant = Clean[r]->SevAnt; a < nbAnt; a++, ant++) {
+    for (a = 0, ant = Clean[r]->SevAnt.data(); a < nbAnt; a++, ant++) {
       if (IsAntDeleted(ant) == 1)
         continue;
 
@@ -1154,8 +1126,6 @@ int CleanRuleStruct::OrderedExpand(ThresDescr *descr)
     }
   }
 
-  delete[] vectCar;
-
   return countExpand;
 }
 
@@ -1169,7 +1139,7 @@ int CleanRuleStruct::CheckAnt(int indOld) const
   int i;
   const AssocAnte *ptrOldAnt;
 
-  for (i = 0, ptrOldAnt = Clean[indOld]->SevAnt; i < oldNbAnt; i++, ptrOldAnt++) {
+  for (i = 0, ptrOldAnt = const_cast<const AssocAnte *>(Clean[indOld]->SevAnt.data()); i < oldNbAnt; i++, ptrOldAnt++) {
     if (IsAntDeleted(ptrOldAnt) == 0)
       countOldAnt++;
   }
@@ -1204,7 +1174,7 @@ void CleanRuleStruct::CreateNewClean()
 
     if (nbNewAnt > 0) {
       newClean[n] = std::make_shared<CleanRule>();
-      newClean[n]->SevAnt = new AssocAnte[nbNewAnt];
+      newClean[n]->SevAnt.resize(nbNewAnt);
       newClean[n]->NbAnt = nbNewAnt;
       newClean[n]->Classification = Clean[r]->Classification;
 
@@ -1223,8 +1193,8 @@ void CleanRuleStruct::CreateNewClean()
       newClean[n]->AccuracyTest = Clean[r]->AccuracyTest;
       newClean[n]->AccuracyValid = Clean[r]->AccuracyValid;
 
-      ptrOldAnt = Clean[r]->SevAnt;
-      ptrNewAnt = newClean[n]->SevAnt;
+      ptrOldAnt = const_cast<const AssocAnte *>(Clean[r]->SevAnt.data());
+      ptrNewAnt = newClean[n]->SevAnt.data();
 
       for (int a = 0; a < nbOldAnt; a++, ptrOldAnt++) {
         if (IsAntDeleted(ptrOldAnt) == 0) {
@@ -1239,13 +1209,6 @@ void CleanRuleStruct::CreateNewClean()
       n++;
     }
   }
-
-  for (r = 0; r < NbRules; r++) {
-    // delete Clean[r];
-  }
-
-  // delete Clean[NbRules];
-  // delete Clean;
 
   Clean = newClean;
 
@@ -1274,7 +1237,7 @@ int CleanRuleStruct::PruneRule()
   int a;
   int nbAnt;
   int toRet = 0;
-  int *saved;
+  std::vector<int> saved;
   AssocAnte *ptrAnt;
 
   Fidelity100();
@@ -1286,23 +1249,21 @@ int CleanRuleStruct::PruneRule()
 
     nbAnt = Clean[r]->NbAnt;
 
-    saved = new int[nbAnt];
+    saved.resize(nbAnt);
 
-    for (a = 0, ptrAnt = Clean[r]->SevAnt; a < nbAnt; a++, ptrAnt++)
+    for (a = 0, ptrAnt = Clean[r]->SevAnt.data(); a < nbAnt; a++, ptrAnt++)
       saved[a] = ptrAnt->Var;
 
     RemRule(r);
 
     if ((Fidelity100() != 1) || (SumCarried() != All.GetNbEx())) {
-      for (a = 0, ptrAnt = Clean[r]->SevAnt; a < nbAnt; a++, ptrAnt++)
+      for (a = 0, ptrAnt = Clean[r]->SevAnt.data(); a < nbAnt; a++, ptrAnt++)
         ptrAnt->Var = saved[a];
     }
 
     else {
       toRet += 1;
     }
-
-    delete[] saved;
   }
 
   return toRet;
@@ -1383,7 +1344,7 @@ int CleanRuleStruct::SetDefRule()
   int defClass;
   int countAnt;
   std::vector<std::shared_ptr<StringInt>> vectList;
-  auto nbDeletedAnt = new int[NbOut];
+  std::vector<int> nbDeletedAnt(NbOut);
 
   ElseRepresentation();
 
@@ -1421,8 +1382,6 @@ int CleanRuleStruct::SetDefRule()
     }
   }
 
-  delete[] nbDeletedAnt;
-
   const int nbDef = vectList[defClass]->GetNbEl();
 
   vectList[defClass]->GoToBeg();
@@ -1447,20 +1406,20 @@ void CleanRuleStruct::SetClassPatNet()
   const int nbTest = TestClass.GetNbEx();
   const int nbValid = ValidClass.GetNbEx();
 
-  ClassPatNetTrain = new int[nbTrain];
+  ClassPatNetTrain.resize(nbTrain);
 
   for (p = 0; p < nbTrain; p++)
     ClassPatNetTrain[p] = Bpnn->Max(TrainClass.GetExample(p), NbOut);
 
   if (nbTest > 0) {
-    ClassPatNetTest = new int[nbTest];
+    ClassPatNetTest.resize(nbTest);
 
     for (p = 0; p < nbTest; p++)
       ClassPatNetTest[p] = Bpnn->Max(TestClass.GetExample(p), NbOut);
   }
 
   if (nbValid > 0) {
-    ClassPatNetValid = new int[nbValid];
+    ClassPatNetValid.resize(nbValid);
 
     for (p = 0; p < nbValid; p++)
       ClassPatNetValid[p] = Bpnn->Max(ValidClass.GetExample(p), NbOut);
@@ -1469,30 +1428,12 @@ void CleanRuleStruct::SetClassPatNet()
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::DelClassPat()
-
-{
-  delete ClassPatNetTrain;
-  if (TestClass.GetNbEx() > 0)
-    delete ClassPatNetTest;
-  if (ValidClass.GetNbEx() > 0)
-    delete ClassPatNetValid;
-}
-
-////////////////////////////////////////////////////////////////////////
-
-char *CleanRuleStruct::ItoA(int n)
-
-{
+std::string CleanRuleStruct::ItoA(int n) const {
   int div;
   int mod;
-  int k;
   int i;
-  char str[80];
-  static char strRev[80];
-
-  for (k = 0; k < 80; k++)
-    strRev[k] = '\0';
+  std::string str;
+  std::string strRev;
 
   i = 0;
   do {
@@ -1506,10 +1447,9 @@ char *CleanRuleStruct::ItoA(int n)
 
   } while (div != 0);
 
-  for (k = 0; k < i; k++)
-    strRev[k] = str[i - 1 - k];
+  for (int k = 0; k < i; k++)
+    strRev += str[i - 1 - k];
 
-  strRev[i] = '\0';
   return strRev;
 }
 
@@ -1525,7 +1465,7 @@ void CleanRuleStruct::SetAttr(vector<string> listAttr) const
   for (int r = 0; r < NbRules; r++) {
     nbAnt = Clean[r]->NbAnt;
 
-    for (a = 0, ptr = Clean[r]->SevAnt; a < nbAnt; a++, ptr++) {
+    for (a = 0, ptr = Clean[r]->SevAnt.data(); a < nbAnt; a++, ptr++) {
       ptr->Str = listAttr[ptr->Var];
     }
   }
@@ -1533,23 +1473,17 @@ void CleanRuleStruct::SetAttr(vector<string> listAttr) const
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::SetAttr()
-
-{
+void CleanRuleStruct::SetAttr() {
   int a;
   int nbAnt;
   AssocAnte *ptr;
-  const char *str;
 
   for (int r = 0; r < NbRules; r++) {
     nbAnt = Clean[r]->NbAnt;
-    for (a = 0, ptr = Clean[r]->SevAnt; a < nbAnt; a++, ptr++) {
-      str = ItoA((ptr->Var) + 1);
-      std::string str2 = "x";
-      str2 += str;
-      std::cout << "MONTESTBUGSETATTR6" << std::endl;
-      ptr->Str = str2;
-      std::cout << "MONTESTBUGSETATTR7" << std::endl;
+    for (a = 0, ptr = Clean[r]->SevAnt.data(); a < nbAnt; a++, ptr++) {
+      std::string varStr = ItoA(ptr->Var + 1);
+      std::string str = "x" + varStr;
+      ptr->Str = str;
     }
   }
 }
@@ -1566,13 +1500,9 @@ void CleanRuleStruct::SetStrClass(vector<string> listClass, int def) const
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::SetStrClass(int def)
-
-{
-  const char *str;
-
+void CleanRuleStruct::SetStrClass(int def) {
   for (int r = 0; r < NbRules + def; r++) {
-    str = ItoA((Clean[r]->Classification) + 1);
+    std::string str = ItoA(Clean[r]->Classification + 1);
     Clean[r]->StrClass = str;
   }
 }
@@ -1639,7 +1569,7 @@ void CleanRuleStruct::UnordAccWithDef(ostream &ruleFile)
   ResetSomeFields();
 
   for (int p = 0; p < nbEx; p++) {
-    auto vectRulCar = new int[nbRules];
+    std::vector<int> vectRulCar(nbRules);
 
     Bpnn->ForwardOneExample1(Test, p);
     clNet = Bpnn->Max(Out, NbOut);
@@ -1743,8 +1673,6 @@ void CleanRuleStruct::UnordAccWithDef(ostream &ruleFile)
         }
       }
     }
-
-    delete[] vectRulCar;
   }
 
   cout << "--- Accuracy on testing set = " << (float)globalAcc * 100.0 / (float)nbEx << "\n";
@@ -1822,7 +1750,7 @@ void CleanRuleStruct::UnordAccWithDef2(ostream &ruleFile)
   cout << "(Case: Activated Rule -- Rule Class, Net Class, True Class):\n\n";
 
   for (int p = 0; p < nbEx; p++) {
-    auto vectRulCar = new int[nbRules];
+    std::vector<int> vectRulCar(nbRules);
 
     Bpnn->ForwardOneExample1(Test, p);
     clNet = Bpnn->Max(Out, NbOut);
@@ -1941,8 +1869,6 @@ void CleanRuleStruct::UnordAccWithDef2(ostream &ruleFile)
         }
       }
     }
-
-    delete[] vectRulCar;
   }
 
   ruleFile << "--- Accuracy of rules on testing set = " << (float)globalAcc / (float)nbEx << "\n";

@@ -32,7 +32,7 @@ class CleanRuleStruct {
   };
 
   struct CleanRule {
-    AssocAnte *SevAnt;
+    std::vector<AssocAnte> SevAnt;
     int NbAnt;
     int Classification;
     std::string StrClass;
@@ -57,16 +57,14 @@ class CleanRuleStruct {
   float *Out;
 
   std::vector<std::shared_ptr<CleanRule>> Clean;
-  int *WrongTrain;
-  int *WrongTest;
-  int *WrongValid;
-  int *ClAllNet;
-  int *VectVar;
-  float *VectVal;
+  std::vector<int> WrongTrain;
+  std::vector<int> WrongTest;
+  std::vector<int> WrongValid;
+  std::vector<int> ClAllNet;
 
-  int *ClassPatNetTrain;
-  int *ClassPatNetTest;
-  int *ClassPatNetValid;
+  std::vector<int> ClassPatNetTrain;
+  std::vector<int> ClassPatNetTest;
+  std::vector<int> ClassPatNetValid;
 
   // ------------------------------------------------------------------------
 
@@ -120,11 +118,10 @@ class CleanRuleStruct {
   int CheckAnt(int indOld) const;
   void CreateNewClean();
   int SetDefRule();
-  void DelClassPat();
   void SetClassPatNet();
   void WriteNumb() const;
 
-  char *ItoA(int n);
+  std::string ItoA(int n) const;
 
   int DefDef() const;
   void UnordAccWithDef(std::ostream &ruleFile);
@@ -137,7 +134,7 @@ public:
   void ElseRepresentation();
   void SimplifyElse(ThresDescr *descr);
 
-  void Del();
+  void Del() { NbRules = 0; };
 
   void SetAttr(std::vector<std::string> listAttr) const;
   void SetAttr();
