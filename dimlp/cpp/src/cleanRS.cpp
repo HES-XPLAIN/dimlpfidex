@@ -223,7 +223,7 @@ float CleanRuleStruct::GlobalAcc(DataSet &data, int *vecWrong, int nbEl) const
       cout << "Warning ***\n\n";
 
       Bpnn->ForwardOneExample1(data, e);
-      clNet = Bpnn->Max(Out, NbOut);
+      clNet = Bpnn->Max(std::vector<float>(Out, Out + NbOut));
       cl = DefaultClass;
 
       if (cl == clNet)
@@ -263,8 +263,8 @@ void CleanRuleStruct::ComputeAcc(
     indPat = carried->GetVal();
 
     Bpnn->ForwardOneExample1(data, indPat);
-    clNet = Bpnn->Max(Out, NbOut);
-    cl = Bpnn->Max(dataClass.GetExample(indPat), NbOut);
+    clNet = Bpnn->Max(std::vector<float>(Out, Out + NbOut));
+    cl = Bpnn->Max(std::vector<float>(dataClass.GetExample(indPat), dataClass.GetExample(indPat) + NbOut));
 
     if (cl == clNet) {
       *correct += 1;
@@ -296,7 +296,7 @@ void CleanRuleStruct::SetSevInfo(std::shared_ptr<Rule> rule, int indClean)
 
   Clean[indClean]->Flag = 0;
   Clean[indClean]->NbAllCarried = carried->GetNbEl();
-  Clean[indClean]->Classification = Bpnn->Max(Out, NbOut);
+  Clean[indClean]->Classification = Bpnn->Max(std::vector<float>(Out, Out + NbOut));
   carried->Del();
 
   carried = Train.Select(rule);
@@ -619,9 +619,8 @@ CleanRuleStruct::CleanRuleStruct(
 
   for (int p = 0; p < nbEx; p++) {
     Bpnn->ForwardOneExample1(All, p);
-    ClAllNet[p] = Bpnn->Max(Out, NbOut);
+    ClAllNet[p] = Bpnn->Max(std::vector<float>(Out, Out + NbOut));
   }
-
   SetClassPatNet();
 }
 
@@ -1407,23 +1406,24 @@ void CleanRuleStruct::SetClassPatNet()
   const int nbValid = ValidClass.GetNbEx();
 
   ClassPatNetTrain.resize(nbTrain);
-
+  std::cout << "MONTEST2" << endl;
   for (p = 0; p < nbTrain; p++)
-    ClassPatNetTrain[p] = Bpnn->Max(TrainClass.GetExample(p), NbOut);
-
+    ClassPatNetTrain[p] = Bpnn->Max(std::vector<float>(TrainClass.GetExample(p), TrainClass.GetExample(p) + NbOut));
+  std::cout << "MONTEST3" << endl;
   if (nbTest > 0) {
     ClassPatNetTest.resize(nbTest);
-
+    std::cout << "MONTEST4" << endl;
     for (p = 0; p < nbTest; p++)
-      ClassPatNetTest[p] = Bpnn->Max(TestClass.GetExample(p), NbOut);
+      ClassPatNetTest[p] = Bpnn->Max(std::vector<float>(TestClass.GetExample(p), TestClass.GetExample(p) + NbOut));
   }
-
+  std::cout << "MONTEST5" << endl;
   if (nbValid > 0) {
     ClassPatNetValid.resize(nbValid);
-
+    std::cout << "MONTEST6" << endl;
     for (p = 0; p < nbValid; p++)
-      ClassPatNetValid[p] = Bpnn->Max(ValidClass.GetExample(p), NbOut);
+      ClassPatNetValid[p] = Bpnn->Max(std::vector<float>(ValidClass.GetExample(p), ValidClass.GetExample(p) + NbOut));
   }
+  std::cout << "MONTEST7" << endl;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1572,7 +1572,7 @@ void CleanRuleStruct::UnordAccWithDef(ostream &ruleFile)
     std::vector<int> vectRulCar(nbRules);
 
     Bpnn->ForwardOneExample1(Test, p);
-    clNet = Bpnn->Max(Out, NbOut);
+    clNet = Bpnn->Max(std::vector<float>(Out, Out + NbOut));
 
     for (r = 0, c = 0, z = 0; r < nbRules; r++) {
       if (IsExampleCarried(Test, p, Clean[r]) == 1) {
@@ -1753,7 +1753,7 @@ void CleanRuleStruct::UnordAccWithDef2(ostream &ruleFile)
     std::vector<int> vectRulCar(nbRules);
 
     Bpnn->ForwardOneExample1(Test, p);
-    clNet = Bpnn->Max(Out, NbOut);
+    clNet = Bpnn->Max(std::vector<float>(Out, Out + NbOut));
 
     for (r = 0, c = 0, z = 0; r < nbRules; r++) {
       if (IsExampleCarried(Test, p, Clean[r]) == 1) {

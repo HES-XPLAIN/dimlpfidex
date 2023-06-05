@@ -8,13 +8,13 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
-int BpNN::Max(const float vec[], int nbEl) const
+int BpNN::Max(const std::vector<float> &vec) const
 
 {
   float max = vec[0];
   int indMax = 0;
 
-  for (int k = 1; k < nbEl; k++) {
+  for (int k = 1; k < vec.size(); k++) {
     if (vec[k] > max) {
       max = vec[k];
       indMax = k;
@@ -297,8 +297,8 @@ float BpNN::ComputeErrorSameAct(
     ptrOut.assign(VecLayer[NbWeightLayers - 1]->GetUp(), VecLayer[NbWeightLayers - 1]->GetUp() + nbOut);
     ptrTar.assign(target.GetExample(p), target.GetExample(p) + nbOut);
 
-    ansNet = Max(ptrOut.data(), nbOut);
-    ansTar = Max(ptrTar.data(), nbOut);
+    ansNet = Max(ptrOut);
+    ansTar = Max(ptrTar);
 
     sum += VecLayer[NbWeightLayers - 1]->HalfErrFunct(nbOut, ptrOut, ptrTar);
 
@@ -576,8 +576,8 @@ float BpNN::ComputeError(
     ptrOut.assign(VecLayer[NbWeightLayers - 1]->GetUp(), VecLayer[NbWeightLayers - 1]->GetUp() + nbOut);
     ptrTar.assign(target.GetExample(p), target.GetExample(p) + nbOut);
 
-    ansNet = Max(ptrOut.data(), nbOut);
-    ansTar = Max(ptrTar.data(), nbOut);
+    ansNet = Max(ptrOut);
+    ansTar = Max(ptrTar);
 
     sum += VecLayer[NbWeightLayers - 1]->HalfErrFunct(nbOut, ptrOut, ptrTar);
 
