@@ -370,19 +370,14 @@ int fidexGloRules(const string &command) {
     //--------------------------------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------------------------------
 
-    std::random_device rd;
-    std::mt19937 g;
-    if (seed != 0) { // Not random
-      std::mt19937 g(seed);
-    } else { // random
-      std::mt19937 g(rd());
-    }
+    // Initialize random number generator
 
     if (seed == 0) {
-      std::srand(time(0)); // Initialize random number generator
-    } else {
-      std::srand(seed);
+      auto currentTime = std::chrono::high_resolution_clock::now();
+      auto seedValue = currentTime.time_since_epoch().count();
+      seed = static_cast<unsigned int>(seedValue);
     }
+    std::mt19937 gen(seed);
 
     // First heuristic : optimal (slower)
     float temps1;
@@ -414,7 +409,7 @@ int fidexGloRules(const string &command) {
         ruleCreated = false;
 
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], (*trainTrueClass)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, seed, g);
+          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           }
@@ -509,7 +504,7 @@ int fidexGloRules(const string &command) {
         currentMinNbCov = minNbCover;
         ruleCreated = false;
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], (*trainTrueClass)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, seed, g);
+          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           }
@@ -586,12 +581,7 @@ int fidexGloRules(const string &command) {
                 << endl;
 
       //  Sort data randomly
-      if (seed == 0) { // random
-        unsigned seedShuffle = std::chrono::system_clock::now().time_since_epoch().count();
-        std::shuffle(std::begin(notCoveredSamples), std::end(notCoveredSamples), std::default_random_engine(seedShuffle));
-      } else { // not random
-        std::shuffle(std::begin(notCoveredSamples), std::end(notCoveredSamples), g);
-      }
+      std::shuffle(std::begin(notCoveredSamples), std::end(notCoveredSamples), gen);
 
       nbRules = 0;
       int idSample;
@@ -615,7 +605,7 @@ int fidexGloRules(const string &command) {
         currentMinNbCov = minNbCover;
         ruleCreated = false;
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], (*trainTrueClass)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, seed, g);
+          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           }

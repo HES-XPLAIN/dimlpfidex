@@ -142,13 +142,13 @@ public:
   void SetStrClass(int def);
 
   CleanRuleStruct(
-      DataSet all,
-      DataSet train,
-      DataSet trainClass,
-      DataSet valid,
-      DataSet validClass,
-      DataSet test,
-      DataSet testClass,
+      const DataSet &all,
+      const DataSet &train,
+      const DataSet &trainClass,
+      const DataSet &valid,
+      const DataSet &validClass,
+      const DataSet &test,
+      const DataSet &testClass,
       std::shared_ptr<RuleProcessing> processed,
       std::shared_ptr<BpNN> bpNn,
       float *out,

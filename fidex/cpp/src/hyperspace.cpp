@@ -30,14 +30,14 @@ Hyperspace::Hyperspace(const char *hyperLocusFile) {
 
   vector<pair<int, int>> discriminativeHyperplans;
 
-  hyperbox = new Hyperbox(discriminativeHyperplans);
+  hyperbox = std::make_shared<Hyperbox>(discriminativeHyperplans);
 }
 
 vector<vector<double>> Hyperspace::getHyperLocus() const {
   return hyperLocus;
 }
 
-Hyperbox *Hyperspace::getHyperbox() {
+std::shared_ptr<Hyperbox> Hyperspace::getHyperbox() const {
   return hyperbox;
 }
 
