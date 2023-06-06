@@ -81,8 +81,8 @@ bool createOrClearDirectory(const std::string &path) {
     return false;
   }
 #else
-#define CREATE_DIRECTORY(path) mkdir(path, 0777)
-  if (mkdir(path.c_str(), 0777) != 0) {
+#define CREATE_DIRECTORY(path) mkdir(path, 0700)
+  if (mkdir(path.c_str(), 0700) != 0) {
     std::cout << "Error during creation of the directory " << path << "." << std::endl;
     return false;
   }
@@ -153,9 +153,6 @@ int main(int nbParam, char **param)
   clock_t t2;
 
   t1 = clock();
-
-  DataSet Train;
-  DataSet TrainClass;
 
   int N = 10; // Number of times we do cross-validation
   int K = 10; // Number of divisions of the dataset (10 = 8 for train, 1 for test and 1 for validation)
@@ -570,14 +567,15 @@ int main(int nbParam, char **param)
     throw std::runtime_error("Error during the creation of the directory " + std::string(folder) + ".");
   }
 
-  std::mt19937 g;
+  // Initialize random number generator
+
   std::random_device rd;
   std::vector<int> seeds;
   if (seed != 0) { // Not random
     for (int i = 0; i < 10 * N; ++i)
       seeds.push_back(i);
-    std::mt19937 g(seed);
-    std::shuffle(seeds.begin(), seeds.end(), g);
+    std::mt19937 gen(seed);
+    std::shuffle(seeds.begin(), seeds.end(), gen);
   }
 
   // Create temp file strings for train, test and validation
@@ -715,7 +713,7 @@ int main(int nbParam, char **param)
 // Create folder
 #if defined(__unix__) || defined(__APPLE__)
     string folderName = std::string(folder) + "/Execution" + std::to_string(n + 1) + "/";
-    mkdir(folderName.c_str(), 0777);
+    mkdir(folderName.c_str(), 0700);
 #elif defined(_WIN32)
     string folderName = std::string(folder) + "\\Execution" + std::to_string(n + 1);
     mkdir(folderName.c_str());
@@ -764,7 +762,7 @@ int main(int nbParam, char **param)
       // Create folder
 #if defined(__unix__) || defined(__APPLE__)
       string folderFoldName = folderPath + separator;
-      mkdir(folderFoldName.c_str(), 0777);
+      mkdir(folderFoldName.c_str(), 0700);
 #elif defined(_WIN32)
       string folderFoldName = folderPath;
       mkdir(folderFoldName.c_str());
@@ -1358,10 +1356,43 @@ int main(int nbParam, char **param)
     throw std::runtime_error("Error : Couldn't open stats extraction file " + std::string(statFile) + ".");
   }
 
-  const char *toDelete = nullptr;
-  string toDeleteTemp = root + "consoleTemp.txt";
-  toDelete = &toDeleteTemp[0];
-  remove(toDelete);
+  // Delete temporary files
+
+  const char *deleteConsole = nullptr;
+  string deleteConsoleTemp = root + "consoleTemp.txt";
+  deleteConsole = &deleteConsoleTemp[0];
+  remove(deleteConsole);
+  const char *deleteTrain = nullptr;
+  string deleteTrainTemp = root + "tempTrain.txt";
+  deleteTrain = &deleteTrainTemp[0];
+  remove(deleteTrain);
+  const char *deleteTest = nullptr;
+  string deleteTestTemp = root + "tempTest.txt";
+  deleteTest = &deleteTestTemp[0];
+  remove(deleteTest);
+  const char *deleteValid = nullptr;
+  string deleteValidTemp = root + "tempValid.txt";
+  deleteValid = &deleteValidTemp[0];
+  remove(deleteValid);
+  const char *deleteTarTrain = nullptr;
+  string deleteTarTrainTemp = root + "tempTarTrain.txt";
+  deleteTarTrain = &deleteTarTrainTemp[0];
+  remove(deleteTarTrain);
+  const char *deleteTarTest = nullptr;
+  string deleteTarTestTemp = root + "tempTarTest.txt";
+  deleteTarTest = &deleteTarTestTemp[0];
+  remove(deleteTarTest);
+  const char *deleteTarValid = nullptr;
+  string deleteTarValidTemp = root + "tempTarValid.txt";
+  deleteTarValid = &deleteTarValidTemp[0];
+
+  remove(deleteConsole);
+  remove(deleteTrain);
+  remove(deleteTest);
+  remove(deleteValid);
+  remove(deleteTarTrain);
+  remove(deleteTarTest);
+  remove(deleteTarValid);
 
   t2 = clock();
   temps = (float)(t2 - t1) / CLOCKS_PER_SEC;

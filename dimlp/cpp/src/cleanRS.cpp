@@ -596,13 +596,13 @@ void CleanRuleStruct::CreateWrongVect()
 ////////////////////////////////////////////////////////////////////////
 
 CleanRuleStruct::CleanRuleStruct(
-    DataSet all,
-    DataSet train,
-    DataSet trainClass,
-    DataSet valid,
-    DataSet validClass,
-    DataSet test,
-    DataSet testClass,
+    const DataSet &all,
+    const DataSet &train,
+    const DataSet &trainClass,
+    const DataSet &valid,
+    const DataSet &validClass,
+    const DataSet &test,
+    const DataSet &testClass,
     std::shared_ptr<RuleProcessing> processed,
     std::shared_ptr<BpNN> bpNn,
     float *out,
@@ -1406,24 +1406,18 @@ void CleanRuleStruct::SetClassPatNet()
   const int nbValid = ValidClass.GetNbEx();
 
   ClassPatNetTrain.resize(nbTrain);
-  std::cout << "MONTEST2" << endl;
   for (p = 0; p < nbTrain; p++)
     ClassPatNetTrain[p] = Bpnn->Max(std::vector<float>(TrainClass.GetExample(p), TrainClass.GetExample(p) + NbOut));
-  std::cout << "MONTEST3" << endl;
   if (nbTest > 0) {
     ClassPatNetTest.resize(nbTest);
-    std::cout << "MONTEST4" << endl;
     for (p = 0; p < nbTest; p++)
       ClassPatNetTest[p] = Bpnn->Max(std::vector<float>(TestClass.GetExample(p), TestClass.GetExample(p) + NbOut));
   }
-  std::cout << "MONTEST5" << endl;
   if (nbValid > 0) {
     ClassPatNetValid.resize(nbValid);
-    std::cout << "MONTEST6" << endl;
     for (p = 0; p < nbValid; p++)
       ClassPatNetValid[p] = Bpnn->Max(std::vector<float>(ValidClass.GetExample(p), ValidClass.GetExample(p) + NbOut));
   }
-  std::cout << "MONTEST7" << endl;
 }
 
 ////////////////////////////////////////////////////////////////////////

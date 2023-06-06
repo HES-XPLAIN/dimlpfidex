@@ -14,13 +14,13 @@ namespace FidexGloNameSpace {
 class Hyperspace {
 
   std::vector<std::vector<double>> hyperLocus; // All the possible hyperplans
-  Hyperbox *hyperbox;
+  std::shared_ptr<Hyperbox> hyperbox;
 
 public:
   Hyperspace();
   explicit Hyperspace(const char *hyperLocusFile);
 
-  Hyperbox *getHyperbox();
+  std::shared_ptr<Hyperbox> getHyperbox() const;
   std::vector<std::vector<double>> getHyperLocus() const;
   std::tuple<std::vector<std::tuple<int, bool, double>>, std::vector<int>, int, double, double> ruleExtraction(std::vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence);
   double computeRuleAccuracy(std::vector<int> *trainPreds, std::vector<int> *trainTrueClass) const;

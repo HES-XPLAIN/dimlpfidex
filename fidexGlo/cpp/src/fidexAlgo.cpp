@@ -5,7 +5,10 @@ FidexAlgo::FidexAlgo() = default;
 
 // Different mains:
 
-bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> &rule, vector<vector<double>> *trainData, vector<int> *trainPreds, vector<vector<double>> *trainOutputValuesPredictions, vector<int> *trainTrueClass, vector<double> *mainSampleValues, int mainSamplePred, int mainSampleTrueClass, FidexGloNameSpace::Hyperspace *hyperspace, const int nbIn, const int nbAttributs, const int nbHyp, int itMax, int minNbCover, bool dropoutDim, double dropoutDimParam, bool dropoutHyp, double dropoutHypParam, int seed, std::mt19937 g) const {
+bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> &rule, vector<vector<double>> *trainData, vector<int> *trainPreds, vector<vector<double>> *trainOutputValuesPredictions, vector<int> *trainTrueClass, vector<double> *mainSampleValues, int mainSamplePred, FidexGloNameSpace::Hyperspace *hyperspace, const int nbIn, const int nbAttributs, const int nbHyp, int itMax, int minNbCover, bool dropoutDim, double dropoutDimParam, bool dropoutHyp, double dropoutHypParam, std::mt19937 gen) const {
+
+  // Initialize uniform distribution
+  std::uniform_real_distribution<double> dis(0.0, 1.0);
 
   // Compute initial covering
   vector<int> coveredSamples((*trainData).size());                    // Samples covered by the hyperbox
@@ -22,11 +25,6 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
 
   while (hyperspace->getHyperbox()->getFidelity() != 1 && nbIt < itMax) { // While fidelity of our hyperbox is not 100%
 
-    unsigned seedShuffle;
-    if (seed == 0) {
-      seedShuffle = std::chrono::system_clock::now().time_since_epoch().count();
-    }
-
     std::unique_ptr<FidexGloNameSpace::Hyperbox> bestHyperbox(new FidexGloNameSpace::Hyperbox()); // best hyperbox to choose for next step
     std::unique_ptr<FidexGloNameSpace::Hyperbox> currentHyperbox(new FidexGloNameSpace::Hyperbox());
     double mainSampleValue;
@@ -39,11 +37,7 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
     // Randomize dimensions
     vector<int> dimensions(nbIn);
     std::iota(std::begin(dimensions), std::end(dimensions), 0); // Vector from 0 to nbIn-1
-    if (seed == 0) {                                            // random
-      std::shuffle(std::begin(dimensions), std::end(dimensions), std::default_random_engine(seedShuffle));
-    } else { // not random
-      std::shuffle(std::begin(dimensions), std::end(dimensions), g);
-    }
+    std::shuffle(std::begin(dimensions), std::end(dimensions), gen);
 
     vector<int> currentCovSamp;
 
@@ -54,15 +48,16 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
       dimension = dimensions[d];
       attribut = dimension % nbAttributs;
       mainSampleValue = (*mainSampleValues)[attribut];
+
       // Test if we dropout this dimension
-      if (dropoutDim && ((double)rand() / RAND_MAX < dropoutDimParam)) {
+      if (dropoutDim && dis(gen) < dropoutDimParam) {
         continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
       }
-      bool maxHypBlocked;
+      bool maxHypBlocked = true;        // We assure that we can't increase maxHyp index for the current best hyperbox
       for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
-        maxHypBlocked = true;           // We assure that we can't increase maxHyp index for the current best hyperbox
+
         // Test if we dropout this hyperplan
-        if (dropoutHyp && ((double)rand() / RAND_MAX < dropoutHypParam)) {
+        if (dropoutHyp && dis(gen) < dropoutHypParam) {
           continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
         }
 

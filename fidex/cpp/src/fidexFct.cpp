@@ -513,9 +513,7 @@ int fidex(const string &command) {
           throw std::runtime_error("Error : in file " + std::string(mainSamplesClassFile) + ", you need to specify as many true classes as there is datas (-1 if no true class)");
         }
       } else {
-        for (const auto &_ : mainSamplesValues) {
-          hasTrueClass.push_back(false);
-        }
+        hasTrueClass.resize(mainSamplesValues.size(), false);
       }
     }
 
@@ -570,11 +568,15 @@ int fidex(const string &command) {
 
     vector<string> lines;
 
+    // Initialize random number generator
+
     if (seed == 0) {
-      std::srand(time(0)); // Initialize random number generator
-    } else {
-      std::srand(seed);
+      auto currentTime = std::chrono::high_resolution_clock::now();
+      auto seedValue = currentTime.time_since_epoch().count();
+      seed = static_cast<unsigned int>(seedValue);
     }
+    std::mt19937 gen(seed);
+    std::uniform_real_distribution<double> dis(0.0, 1.0);
 
     // compute hyperspace
     std::cout << "Creation of hyperspace..." << endl;
@@ -629,12 +631,6 @@ int fidex(const string &command) {
 
       while (hyperspace.getHyperbox()->getFidelity() != 1 && nbIt < itMax) { // While fidelity of our hyperbox is not 100%
 
-        unsigned seedShuffle;
-        if (seed == 0) {
-          seedShuffle = std::chrono::system_clock::now().time_since_epoch().count();
-        } else {
-          unsigned seedShuffle = seed;
-        }
         std::unique_ptr<FidexNameSpace::Hyperbox> bestHyperbox(new FidexNameSpace::Hyperbox());    // best hyperbox to choose for next step
         std::unique_ptr<FidexNameSpace::Hyperbox> currentHyperbox(new FidexNameSpace::Hyperbox()); // best hyperbox to choose for next step
         double mainSampleValue;
@@ -647,7 +643,7 @@ int fidex(const string &command) {
         // Randomize dimensions
         vector<int> dimensions(nbIn);
         std::iota(std::begin(dimensions), std::end(dimensions), 0); // Vector from 0 to nbIn-1
-        std::shuffle(std::begin(dimensions), std::end(dimensions), std::default_random_engine(seedShuffle));
+        std::shuffle(std::begin(dimensions), std::end(dimensions), gen);
         vector<int> currentCovSamp;
 
         for (int d = 0; d < nbIn; d++) { // Loop on all dimensions
@@ -660,17 +656,16 @@ int fidex(const string &command) {
           mainSampleValue = mainSamplesValues[currentSample][attribut];
           // Test if we dropout this dimension
 
-          if (dropoutDim && ((double)rand() / RAND_MAX) < dropoutDimParam) {
+          if (dropoutDim && dis(gen) < dropoutDimParam) {
             continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
           }
 
-          bool maxHypBlocked;
+          bool maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
 
           for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
 
-            maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
             // Test if we dropout this hyperplan
-            if (dropoutHyp && ((double)rand() / RAND_MAX) < dropoutHypParam) {
+            if (dropoutHyp && dis(gen) < dropoutHypParam) {
               continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
             }
 
@@ -697,7 +692,7 @@ int fidex(const string &command) {
               }
 
             } else {
-              maxHypBlocked = true; // we can't increase maxHyp anymmore for this best hyperplan
+              maxHypBlocked = true; // we can't increase maxHyp anymore for this best hyperplan
             }
 
             if (bestHyperbox->getFidelity() == 1) {
