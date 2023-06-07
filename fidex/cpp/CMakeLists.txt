@@ -19,7 +19,9 @@ FILE(GLOB FIDEX_SRC
 set(FIDEX_SRC "${FIDEX_SRC}" CACHE INTERNAL "")
 
 # build executables
-add_executable(fidex ${FIDEX_SRC} ${COMMON_SRC_FIDEX} src/fidex.cpp)
+add_executable(fidex ${FIDEX_SRC} src/fidex.cpp)
+add_dependencies(fidex fidexCommon)
+target_link_libraries(fidex fidexCommon)
 
 set_target_properties(
     fidex PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin

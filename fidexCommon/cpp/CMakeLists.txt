@@ -12,12 +12,8 @@ FILE(GLOB COMMON_SRC_FIDEX
     src/dataSet.cpp
     src/checkFun.cpp
     src/checkFun.h
-
 )
 
 # make variables visible to external CMakeLists.txt
 set(COMMON_SRC_FIDEX "${COMMON_SRC_FIDEX}" CACHE INTERNAL "")
-
-set_target_properties(
-    fidex PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
-)
+add_library(fidexCommon STATIC ${COMMON_SRC_FIDEX})
