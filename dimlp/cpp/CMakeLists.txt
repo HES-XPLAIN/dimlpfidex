@@ -302,8 +302,6 @@ FILE(GLOB CROSS_VALID_SRC
     ../../hyperLocus/cpp/src/hyperLocusFct.h
     ../../fidex/cpp/src/fidexFct.cpp
     ../../fidex/cpp/src/fidexFct.h
-    ../../fidex/cpp/src/hyperbox.cpp
-    ../../fidex/cpp/src/hyperbox.h
     ../../fidex/cpp/src/hyperspace.cpp
     ../../fidex/cpp/src/hyperspace.h
     ../../fidexGlo/cpp/src/fidexGloRulesFct.cpp
@@ -323,6 +321,8 @@ FILE(GLOB CROSS_VALID_SRC
     ../../fidexCommon/cpp/src/dataSet.cpp
     ../../fidexCommon/cpp/src/checkFun.h
     ../../fidexCommon/cpp/src/checkFun.cpp
+    ../../fidexCommon/cpp/src/hyperbox.cpp
+    ../../fidexCommon/cpp/src/hyperbox.h
 )
 
 FILE(GLOB FCT_SRC

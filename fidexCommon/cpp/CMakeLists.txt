@@ -12,6 +12,8 @@ FILE(GLOB COMMON_SRC_FIDEX
     src/dataSet.cpp
     src/checkFun.cpp
     src/checkFun.h
+    src/hyperbox.cpp
+    src/hyperbox.h
 )
 
 # make variables visible to external CMakeLists.txt

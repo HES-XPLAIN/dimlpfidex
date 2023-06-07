@@ -25,8 +25,8 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
 
   while (hyperspace->getHyperbox()->getFidelity() != 1 && nbIt < itMax) { // While fidelity of our hyperbox is not 100%
 
-    std::unique_ptr<FidexGloNameSpace::Hyperbox> bestHyperbox(new FidexGloNameSpace::Hyperbox()); // best hyperbox to choose for next step
-    std::unique_ptr<FidexGloNameSpace::Hyperbox> currentHyperbox(new FidexGloNameSpace::Hyperbox());
+    std::unique_ptr<Hyperbox> bestHyperbox(new Hyperbox()); // best hyperbox to choose for next step
+    std::unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());
     double mainSampleValue;
     int attribut;
     int dimension;

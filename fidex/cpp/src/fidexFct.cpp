@@ -631,8 +631,8 @@ int fidex(const string &command) {
 
       while (hyperspace.getHyperbox()->getFidelity() != 1 && nbIt < itMax) { // While fidelity of our hyperbox is not 100%
 
-        std::unique_ptr<FidexNameSpace::Hyperbox> bestHyperbox(new FidexNameSpace::Hyperbox());    // best hyperbox to choose for next step
-        std::unique_ptr<FidexNameSpace::Hyperbox> currentHyperbox(new FidexNameSpace::Hyperbox()); // best hyperbox to choose for next step
+        std::unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());    // best hyperbox to choose for next step
+        std::unique_ptr<Hyperbox> currentHyperbox(new Hyperbox()); // best hyperbox to choose for next step
         double mainSampleValue;
         int attribut;
         int dimension;

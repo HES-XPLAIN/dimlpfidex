@@ -20,8 +20,6 @@ FILE(GLOB FIDEXGLORULES_SRC
     src/fidexGloRulesFct.h
     src/fidexAlgo.cpp
     src/fidexAlgo.h
-    src/hyperbox.cpp
-    src/hyperbox.h
     src/hyperspace.cpp
     src/hyperspace.h
 )
