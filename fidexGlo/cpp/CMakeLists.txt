@@ -41,10 +41,18 @@ set(FIDEXGLORULES_SRC "${FIDEXGLORULES_SRC}" CACHE INTERNAL "")
 set(FIDEXGLOSTATS_SRC "${FIDEXGLOSTATS_SRC}" CACHE INTERNAL "")
 
 # build executables
-add_executable(fidexGlo ${FIDEXGLO_SRC} ${COMMON_SRC_FIDEX} src/fidexGlo.cpp)
-add_executable(fidexGloRules ${FIDEXGLORULES_SRC} ${COMMON_SRC_FIDEX} src/fidexGloRules.cpp)
-add_executable(fidexGloStats ${FIDEXGLOSTATS_SRC} ${COMMON_SRC_FIDEX} src/fidexGloStats.cpp)
-add_executable(checkCovSize ${COMMON_SRC_FIDEX} src/checkCovSize.cpp)
+add_executable(fidexGlo ${FIDEXGLO_SRC} src/fidexGlo.cpp)
+add_executable(fidexGloRules ${FIDEXGLORULES_SRC} src/fidexGloRules.cpp)
+add_executable(fidexGloStats ${FIDEXGLOSTATS_SRC} src/fidexGloStats.cpp)
+add_executable(checkCovSize src/checkCovSize.cpp)
+add_dependencies(fidexGlo fidexCommon)
+add_dependencies(fidexGloRules fidexCommon)
+add_dependencies(fidexGloStats fidexCommon)
+add_dependencies(checkCovSize fidexCommon)
+target_link_libraries(fidexGlo fidexCommon)
+target_link_libraries(fidexGloRules fidexCommon)
+target_link_libraries(fidexGloStats fidexCommon)
+target_link_libraries(checkCovSize fidexCommon)
 
 set_target_properties(
     fidexGlo PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin

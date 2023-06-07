@@ -68,7 +68,9 @@ def build_package():
         path = re.search(r"Path:\s+(.*)", output).group(1) if re.search(r"Path:\s+(.*)", output) else None
         cmake_command = ['poetry', 'run', 'cmake', '-G', 'MinGW Makefiles', '-DCMAKE_PREFIX_PATH=' + path, '..']
 
-    build_command = ['poetry', 'run', 'cmake', '--build', '.']
+    # affinity
+    cpu_count = len(os.sched_getaffinity(0))
+    build_command = ['poetry', 'run', 'cmake', '--build', '.', '-j', str(cpu_count)]
 
     # Run cmake
     subprocess.check_call(cmake_command)
