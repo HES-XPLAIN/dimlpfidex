@@ -19,7 +19,7 @@ FILE(GLOB HYPERLOCUS_SRC
 set(HYPERLOCUS_SRC "${HYPERLOCUS_SRC}" CACHE INTERNAL "")
 
 # build executables
-add_executable(hyperLocus ${HYPERLOCUS_SRC} src/hyperLocus.cpp)
+add_executable(hyperLocus ${HYPERLOCUS_SRC} ${COMMON_SRC_FIDEX} src/hyperLocus.cpp)
 
 set_target_properties(
     hyperLocus PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin

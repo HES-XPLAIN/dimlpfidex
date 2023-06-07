@@ -1,6 +1,7 @@
 #ifndef FIDEXFCT_H
 #define FIDEXFCT_H
 
+#include "../../../fidexCommon/cpp/src/errorHandler.h"
 #include "checkFun.h"
 #include "dataSet.h"
 #include "hyperspace.h"

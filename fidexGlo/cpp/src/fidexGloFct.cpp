@@ -70,7 +70,7 @@ int fidexGlo(const string &command) {
         p++;
 
         if (p >= nbParam) {
-          throw std::runtime_error("Missing something at the end of the command.");
+          throw CommandArgumentException("Missing something at the end of the command.");
         }
 
         char option = commandList[p - 1][1];
@@ -112,7 +112,7 @@ int fidexGlo(const string &command) {
           break;
 
         default: // If we put another -X option
-          throw std::runtime_error("Illegal option: " + std::string(&option, 1));
+          throw CommandArgumentException("Illegal option: " + std::string(&option, 1));
         }
       }
 
@@ -167,10 +167,10 @@ int fidexGlo(const string &command) {
 
     // ----------------------------------------------------------------------
     if (!testSamplesDataFileInit) {
-      throw std::runtime_error("The test samples data file has to be given with option -S");
+      throw CommandArgumentException("The test samples data file has to be given with option -S");
     }
     if (!rulesFileInit) {
-      throw std::runtime_error("The rules file has to be given with option -R");
+      throw CommandArgumentException("The rules file has to be given with option -R");
     }
 
     // ----------------------------------------------------------------------
@@ -201,7 +201,7 @@ int fidexGlo(const string &command) {
       fstream testData;
       testData.open(testSamplesDataFile, ios::in); // Read data file
       if (testData.fail()) {
-        throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " not found");
+        throw FileNotFoundError("Error : file " + std::string(testSamplesDataFile) + " not found");
       }
       string line;
       bool firstLine = true;
@@ -216,18 +216,18 @@ int fidexGlo(const string &command) {
           }
           testSamplesValues.push_back(testSampleValues);
         } else if (firstLine) {
-          throw std::runtime_error("Error : in file " + std::string(testSamplesDataFile) + ", first line is empty");
+          throw FileFormatError("Error : in file " + std::string(testSamplesDataFile) + ", first line is empty");
         } else {
           while (!testData.eof()) {
             getline(testData, line);
             if (!checkStringEmpty(line)) {
-              throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " is not on good format, there is more than one empty line between 2 samples");
+              throw FileFormatError("Error : file " + std::string(testSamplesDataFile) + " is not on good format, there is more than one empty line between 2 samples");
             }
           }
           break; // If there is just an empty line at the end of the file
         }
         if (testData.eof()) {
-          throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " has not enough prediction data");
+          throw FileContentError("Error : file " + std::string(testSamplesDataFile) + " has not enough prediction data");
         }
         getline(testData, line);
         if (!checkStringEmpty(line)) {
@@ -245,15 +245,15 @@ int fidexGlo(const string &command) {
           while (!testData.eof()) {
             getline(testData, line);
             if (!checkStringEmpty(line)) {
-              throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " is not on good format, there is empty lines inbetween data");
+              throw FileFormatError("Error : file " + std::string(testSamplesDataFile) + " is not on good format, there is empty lines inbetween data");
             }
           }
-          throw std::runtime_error("Error : file " + std::string(testSamplesDataFile) + " has not enough prediction data");
+          throw FileContentError("Error : file " + std::string(testSamplesDataFile) + " has not enough prediction data");
         }
         if (!testData.eof()) {
           getline(testData, line);
           if (line.length() != 0) {
-            throw std::runtime_error("Error : in file " + std::string(testSamplesDataFile) + ", you need to have empty lines between samples");
+            throw FileFormatError("Error : in file " + std::string(testSamplesDataFile) + ", you need to have empty lines between samples");
           }
         }
         firstLine = false;
@@ -267,7 +267,7 @@ int fidexGlo(const string &command) {
 
       // Check if there is good number of lines
       if (testSamplesPreds.size() != testSamplesValues.size()) {
-        throw std::runtime_error("Error : in file " + std::string(testSamplesPredFile) + ", you need to specify as many predictions as there is datas");
+        throw FileContentError("Error : in file " + std::string(testSamplesPredFile) + ", you need to specify as many predictions as there is datas");
       }
     }
 
@@ -277,13 +277,13 @@ int fidexGlo(const string &command) {
 
     for (int spl = 0; spl < nbSamples; spl++) {
       if (testSamplesValues[spl].size() != nbTestAttributs) {
-        throw std::runtime_error("Error : in file " + std::string(testSamplesDataFile) + ", all test datas need to have the same number of variables");
+        throw FileContentError("Error : in file " + std::string(testSamplesDataFile) + ", all test datas need to have the same number of variables");
       }
     }
 
     for (int spl = 0; spl < nbSamples; spl++) {
       if (testSamplesOutputValuesPredictions[spl].size() != nbClass) {
-        throw std::runtime_error("Error : in file " + std::string(testSamplesDataFile) + ", all test datas need to have the same number of prediction values");
+        throw FileContentError("Error : in file " + std::string(testSamplesDataFile) + ", all test datas need to have the same number of prediction values");
       }
     }
 
@@ -295,11 +295,11 @@ int fidexGlo(const string &command) {
       std::unique_ptr<Attribute> attributesData(new Attribute(attributFile));
       attributeNames = (*attributesData->getAttributes());
       if (attributeNames.size() < nbTestAttributs) {
-        throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not enough attribute names");
+        throw FileContentError("Error : in file " + std::string(attributFile) + ", there is not enough attribute names");
       } else if (attributeNames.size() == nbTestAttributs) {
         hasClassNames = false;
       } else if (attributeNames.size() != nbTestAttributs + nbClass) {
-        throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not the good amount of attribute and class names");
+        throw FileContentError("Error : in file " + std::string(attributFile) + ", there is not the good amount of attribute and class names");
       } else {
         hasClassNames = true;
         auto firstEl = attributeNames.end() - nbClass;
@@ -414,7 +414,7 @@ int fidexGlo(const string &command) {
         }
         outputFile.close();
       } else {
-        throw std::runtime_error("Error : Couldn't open explanation extraction file " + std::string(explanationFile) + ".");
+        throw CannotOpenFileError("Error : Couldn't open explanation extraction file " + std::string(explanationFile) + ".");
       }
     }
 

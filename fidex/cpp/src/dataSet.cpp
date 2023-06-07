@@ -11,7 +11,7 @@ DataSetFid::DataSetFid(const char *dataFile, const char *predFile, const char *t
 
   fileDta.open(dataFile, ios::in); // Read data file
   if (fileDta.fail()) {
-    throw std::runtime_error("Error : file " + std::string(dataFile) + " not found");
+    throw FileNotFoundError("Error : file " + std::string(dataFile) + " not found");
   }
 
   while (!fileDta.eof()) {
@@ -38,7 +38,7 @@ DataSetFid::DataSetFid(const char *dataFile, const char *predFile, const char *t
 
     fileCl.open(trueClassFile, ios::in); // read true dataclass file
     if (fileCl.fail()) {
-      throw std::runtime_error("Error : file " + std::string(trueClassFile) + " not found");
+      throw FileNotFoundError("Error : file " + std::string(trueClassFile) + " not found");
     }
 
     while (!fileCl.eof()) {
@@ -66,7 +66,7 @@ DataSetFid::DataSetFid(const char *dataFile, const char *predFile, const char *t
 
   filePrd.open(predFile, ios::in); // read predictions data file
   if (filePrd.fail()) {
-    throw std::runtime_error("Error : file " + std::string(predFile) + " not found");
+    throw FileNotFoundError("Error : file " + std::string(predFile) + " not found");
   }
 
   while (!filePrd.eof()) {
@@ -95,7 +95,7 @@ DataSetFid::DataSetFid(const char *weightFile) : hasWeights(true) {
 
   fileWts.open(weightFile, ios::in); // Read weight file
   if (fileWts.fail()) {
-    throw std::runtime_error("Error : file " + std::string(weightFile) + " not found");
+    throw FileNotFoundError("Error : file " + std::string(weightFile) + " not found");
   }
 
   while (!fileWts.eof()) {
@@ -117,7 +117,7 @@ vector<vector<double>> *DataSetFid::getDatas() {
   if (hasDatas) {
     return &datas;
   } else {
-    throw std::runtime_error("Error : data file not specified for this dataset");
+    throw CommandArgumentException("Error : data file not specified for this dataset");
   }
 }
 
@@ -125,7 +125,7 @@ vector<int> *DataSetFid::getTrueClasses() {
   if (hasClasses) {
     return &trueClasses;
   } else {
-    throw std::runtime_error("Error : dataClass file not specified for this dataset");
+    throw CommandArgumentException("Error : dataClass file not specified for this dataset");
   }
 }
 
@@ -133,7 +133,7 @@ vector<int> *DataSetFid::getPredictions() {
   if (hasDatas) {
     return &predictions;
   } else {
-    throw std::runtime_error("Error : prediction file not specified for this dataset");
+    throw CommandArgumentException("Error : prediction file not specified for this dataset");
   }
 }
 
@@ -141,7 +141,7 @@ vector<vector<double>> *DataSetFid::getOutputValuesPredictions() {
   if (hasDatas) {
     return &outputValuesPredictions;
   } else {
-    throw std::runtime_error("Error : prediction file not specified for this dataset");
+    throw CommandArgumentException("Error : prediction file not specified for this dataset");
   }
 }
 
@@ -149,7 +149,7 @@ vector<vector<double>> DataSetFid::getWeights() const {
   if (hasWeights) {
     return weights;
   } else {
-    throw std::runtime_error("Error : weight file not specified for this dataset");
+    throw CommandArgumentException("Error : weight file not specified for this dataset");
   }
 }
 
@@ -157,7 +157,7 @@ vector<double> DataSetFid::getInBiais() const {
   if (hasWeights) {
     return weights[0];
   } else {
-    throw std::runtime_error("Error : weight file not specified for this dataset");
+    throw CommandArgumentException("Error : weight file not specified for this dataset");
   }
 }
 
@@ -165,7 +165,7 @@ vector<double> DataSetFid::getInWeights() const {
   if (hasWeights) {
     return weights[1];
   } else {
-    throw std::runtime_error("Error : weight file not specified for this dataset");
+    throw CommandArgumentException("Error : weight file not specified for this dataset");
   }
 }
 
@@ -178,7 +178,7 @@ Attribute::Attribute(const char *attributeFile) {
 
   fileAttr.open(attributeFile, ios::in); // Read weight file
   if (fileAttr.fail()) {
-    throw std::runtime_error("Error : file " + std::string(attributeFile) + " not found");
+    throw FileNotFoundError("Error : file " + std::string(attributeFile) + " not found");
   }
   while (!fileAttr.eof()) {
     getline(fileAttr, line);
@@ -202,6 +202,6 @@ vector<string> *Attribute::getAttributes() {
   if (hasAttributes) {
     return &attributes;
   } else {
-    throw std::runtime_error("Error : attribute file not specified for this dataset");
+    throw CommandArgumentException("Error : attribute file not specified for this dataset");
   }
 }

@@ -90,7 +90,7 @@ int fidexGloRules(const string &command) {
         p++;
 
         if (p >= nbParam) {
-          throw std::runtime_error("Missing something at the end of the command.");
+          throw CommandArgumentException("Missing something at the end of the command.");
         }
 
         char option = commandList[p - 1][1];
@@ -142,7 +142,7 @@ int fidexGloRules(const string &command) {
             heuristic = atoi(arg);
             heuristicInit = true;
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + string(lastArg) + ", heuristic must be an integer between 1 and 3(1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo)");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", heuristic must be an integer between 1 and 3(1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo)");
           }
           break;
 
@@ -150,7 +150,7 @@ int fidexGloRules(const string &command) {
           if (CheckPositiveInt(arg)) {
             itMax = atoi(arg);
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
           }
           break;
 
@@ -158,7 +158,7 @@ int fidexGloRules(const string &command) {
           if (CheckPositiveInt(arg) && atoi(arg) >= 1) {
             minNbCover = atoi(arg);
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
           }
           break;
 
@@ -167,7 +167,7 @@ int fidexGloRules(const string &command) {
             dropoutDimParam = atof(arg);
             dropoutDim = true; // We dropout a bunch of dimensions each iteration (accelerate the processus)
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
           }
           break;
 
@@ -176,7 +176,7 @@ int fidexGloRules(const string &command) {
             dropoutHypParam = atof(arg);
             dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
           }
           break;
 
@@ -184,12 +184,12 @@ int fidexGloRules(const string &command) {
           if (CheckPositiveInt(arg))
             seed = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
 
           break;
 
         default: // If we put another -X option
-          throw std::runtime_error("Illegal option : " + string(lastArg));
+          throw CommandArgumentException("Illegal option : " + string(lastArg));
         }
       }
 
@@ -251,22 +251,22 @@ int fidexGloRules(const string &command) {
     // ----------------------------------------------------------------------
 
     if (!trainDataFileInit) {
-      throw std::runtime_error("The train data file has to be given with option -T");
+      throw CommandArgumentException("The train data file has to be given with option -T");
     }
     if (!trainDataFilePredInit) {
-      throw std::runtime_error("The train prediction file has to be given with option -P");
+      throw CommandArgumentException("The train prediction file has to be given with option -P");
     }
     if (!trainDataFileTrueClassInit) {
-      throw std::runtime_error("The train true classes file has to be given with option -C");
+      throw CommandArgumentException("The train true classes file has to be given with option -C");
     }
     if (!hyperLocusFileInit) {
-      throw std::runtime_error("The hyperLocus file has to be given with option -H");
+      throw CommandArgumentException("The hyperLocus file has to be given with option -H");
     }
     if (!rulesFileInit) {
-      throw std::runtime_error("The output rules file has to be given with option -O");
+      throw CommandArgumentException("The output rules file has to be given with option -O");
     }
     if (!heuristicInit) {
-      throw std::runtime_error("The heuristic(1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo) has to be given with option -M");
+      throw CommandArgumentException("The heuristic(1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo) has to be given with option -M");
     }
 
     // ----------------------------------------------------------------------
@@ -312,11 +312,11 @@ int fidexGloRules(const string &command) {
     const auto nbAttributs = static_cast<int>((*trainData)[0].size());
     const auto nbClass = static_cast<int>((*trainOutputValuesPredictions)[0].size());
     if ((*trainPreds).size() != nbDatas || (*trainTrueClass).size() != nbDatas) {
-      throw std::runtime_error("All the train files need to have the same amount of datas");
+      throw FileFormatError("All the train files need to have the same amount of datas");
     }
 
     if (minNbCover > nbDatas) {
-      throw std::runtime_error("Error : invalide type for parameter -c, strictly positive integer smaller or equal than the number of data sample requested");
+      throw CommandArgumentException("Error : invalide type for parameter -c, strictly positive integer smaller or equal than the number of data sample requested");
     }
 
     // Get attributes
@@ -327,11 +327,11 @@ int fidexGloRules(const string &command) {
       std::unique_ptr<Attribute> attributesData(new Attribute(attributFile));
       attributeNames = (*attributesData->getAttributes());
       if (attributeNames.size() < nbAttributs) {
-        throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not enough attribute names");
+        throw FileContentError("Error : in file " + std::string(attributFile) + ", there is not enough attribute names");
       } else if (attributeNames.size() == nbAttributs) {
         hasClassNames = false;
       } else if (attributeNames.size() != nbAttributs + nbClass) {
-        throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not the good amount of attribute and class names");
+        throw FileContentError("Error : in file " + std::string(attributFile) + ", there is not the good amount of attribute and class names");
       } else {
         hasClassNames = true;
         auto firstEl = attributeNames.end() - nbClass;
@@ -355,7 +355,7 @@ int fidexGloRules(const string &command) {
 
     // Check size of hyperlocus
     if (nbIn == 0 || nbIn % nbAttributs != 0) {
-      throw std::runtime_error("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributs - " + std::to_string(nbAttributs));
+      throw InternalError("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributs - " + std::to_string(nbAttributs));
     }
 
     std::cout << "Hyperspace created" << endl
@@ -717,7 +717,7 @@ int fidexGloRules(const string &command) {
       file2.close();
 
     } else {
-      throw std::runtime_error("Error : Couldn't open rules extraction file " + std::string(rulesFile) + ".");
+      throw CannotOpenFileError("Error : Couldn't open rules extraction file " + std::string(rulesFile) + ".");
     }
 
     std::cout << "Mean covering size per rule : " << meanCovSize << endl;

@@ -33,7 +33,8 @@ RuleInfo parseRuleLine(const std::string &line, bool attributsInFile, vector<str
   size_t antecedentsEndIndex = 0;
 
   // Find the antecedant start index
-  for (antecedentStartIndex = 0; antecedentStartIndex < tokens.size(); ++antecedentStartIndex) {
+  antecedentStartIndex = 0;
+  while (antecedentStartIndex < tokens.size()) {
     if (tokens[antecedentStartIndex] == ":") {
       antecedentStartIndex = 4;
       break;
@@ -42,6 +43,7 @@ RuleInfo parseRuleLine(const std::string &line, bool attributsInFile, vector<str
       antecedentStartIndex = 2;
       break;
     }
+    ++antecedentStartIndex;
   }
 
   // Find the end index of antecedents part
@@ -95,7 +97,7 @@ RuleInfo parseRuleLine(const std::string &line, bool attributsInFile, vector<str
         }
       }
       if (!foundName) {
-        throw std::runtime_error("Error : attribute name found in Rules file is not contained into attribute file.");
+        throw FileContentError("Error : attribute name found in Rules file is not contained into attribute file.");
       }
       attr = attributeIdx;
     } else {
@@ -135,7 +137,7 @@ RuleInfo parseRuleLine(const std::string &line, bool attributsInFile, vector<str
       }
     }
     if (!foundClassName) {
-      throw std::runtime_error("Error : class name found in Rules file is not contained into attribute file.");
+      throw FileContentError("Error : class name found in Rules file is not contained into attribute file.");
     }
     ruleInfo.ruleClass = classIdx;
   } else {
@@ -165,7 +167,7 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
   fstream rulesData;
   rulesData.open(rulesFile, ios::in); // Read data file
   if (rulesData.fail()) {
-    throw std::runtime_error("Error : file " + std::string(rulesFile) + " not found");
+    throw FileNotFoundError("Error : file " + std::string(rulesFile) + " not found");
   }
 
   lines.emplace_back("Global statistics of the rule set : ");
@@ -182,10 +184,10 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
     classesInFile = true;
   }
   if (attributsInFile && !hasAttributeNames) {
-    throw std::runtime_error("The attribute names file has to be given with option -A");
+    throw CommandArgumentException("The attribute names file has to be given with option -A");
   }
   if (classesInFile && !hasClassNames) {
-    throw std::runtime_error("The class names have to be given in attribut file");
+    throw CommandArgumentException("The class names have to be given in attribut file");
   }
 
   while (getline(rulesData, line)) {

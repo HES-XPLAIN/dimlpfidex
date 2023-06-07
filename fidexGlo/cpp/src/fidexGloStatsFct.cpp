@@ -71,7 +71,7 @@ int fidexGloStats(const string &command) {
         p++;
 
         if (p >= nbParam) {
-          throw std::runtime_error("Missing something at the end of the command.");
+          throw CommandArgumentException("Missing something at the end of the command.");
         }
         char option = commandList[p - 1][1];
         const char *arg = &(commandList[p])[0];
@@ -118,7 +118,7 @@ int fidexGloStats(const string &command) {
           break;
 
         default: // If we put another -X option
-          throw std::runtime_error("Illegal option : " + string(lastArg));
+          throw CommandArgumentException("Illegal option : " + string(lastArg));
         }
       }
 
@@ -180,16 +180,16 @@ int fidexGloStats(const string &command) {
     // ----------------------------------------------------------------------
 
     if (!testDataFileInit) {
-      throw std::runtime_error("The test data file has to be given with option -T");
+      throw CommandArgumentException("The test data file has to be given with option -T");
     }
     if (!testDataFilePredInit) {
-      throw std::runtime_error("The test predictions data file has to be given with option -P");
+      throw CommandArgumentException("The test predictions data file has to be given with option -P");
     }
     if (!testDataFileTrueClassInit) {
-      throw std::runtime_error("The test true class data file has to be given with option -T");
+      throw CommandArgumentException("The test true class data file has to be given with option -T");
     }
     if (!rulesFileInit) {
-      throw std::runtime_error("The rules file has to be given with option -R");
+      throw CommandArgumentException("The rules file has to be given with option -R");
     }
 
     // ----------------------------------------------------------------------
@@ -218,7 +218,7 @@ int fidexGloStats(const string &command) {
 
     const auto nbTestData = static_cast<int>((*testData).size());
     if ((*testPreds).size() != nbTestData || (*testTrueClasses).size() != nbTestData) {
-      throw std::runtime_error("All the test files need to have the same amount of datas");
+      throw FileFormatError("All the test files need to have the same amount of datas");
     }
     auto nbTestAttributs = static_cast<int>((*testData)[0].size());
     // Get attributes
@@ -229,11 +229,11 @@ int fidexGloStats(const string &command) {
       std::unique_ptr<Attribute> attributesData(new Attribute(attributFile));
       attributeNames = (*attributesData->getAttributes());
       if (attributeNames.size() < nbTestAttributs) {
-        throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not enough attribute names");
+        throw FileContentError("Error : in file " + std::string(attributFile) + ", there is not enough attribute names");
       } else if (attributeNames.size() == nbTestAttributs) {
         hasClassNames = false;
       } else if (attributeNames.size() != nbTestAttributs + nbClass) {
-        throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not the good amount of attribute and class names");
+        throw FileContentError("Error : in file " + std::string(attributFile) + ", there is not the good amount of attribute and class names");
       } else {
         hasClassNames = true;
         auto firstEl = attributeNames.end() - nbClass;
@@ -367,7 +367,7 @@ int fidexGloStats(const string &command) {
         }
         outputFile.close();
       } else {
-        throw std::runtime_error("Error : Couldn't open explanation extraction file " + std::string(statsFile) + ".");
+        throw CannotOpenFileError("Error : Couldn't open explanation extraction file " + std::string(statsFile) + ".");
       }
     }
 

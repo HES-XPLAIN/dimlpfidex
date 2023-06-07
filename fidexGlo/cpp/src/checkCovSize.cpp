@@ -2,6 +2,7 @@
 File to check if cover size is right for each rule.
 */
 
+#include "../../../fidexCommon/cpp/src/errorHandler.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -43,7 +44,7 @@ int main(int nbParam, char **param) {
       p++;
 
       if (p >= nbParam) {
-        throw std::runtime_error("Missing something at the end of the command.");
+        throw CommandArgumentException("Missing something at the end of the command.");
       }
       char option = *(param[p - 1] + 1);
       const char *arg = param[p];
@@ -59,7 +60,7 @@ int main(int nbParam, char **param) {
         break;
 
       default: // If we put another -X option
-        throw std::runtime_error("Illegal option : " + string(param[p - 1]));
+        throw CommandArgumentException("Illegal option : " + string(param[p - 1]));
       }
     }
 
@@ -67,10 +68,10 @@ int main(int nbParam, char **param) {
   }
 
   if (!trainDataFileInit) {
-    throw std::runtime_error("The train data file has to be given with option -T");
+    throw CommandArgumentException("The train data file has to be given with option -T");
   }
   if (!ruleFileInit) {
-    throw std::runtime_error("The rule file has to be given with option -R");
+    throw CommandArgumentException("The rule file has to be given with option -R");
   }
 
   // Get train data
@@ -80,7 +81,7 @@ int main(int nbParam, char **param) {
 
   fileDta.open(trainDataFile, ios::in); // Read data file
   if (fileDta.fail()) {
-    throw std::runtime_error("Error : file " + std::string(trainDataFile) + " not found");
+    throw FileNotFoundError("Error : file " + std::string(trainDataFile) + " not found");
   }
 
   while (!fileDta.eof()) {
@@ -104,7 +105,7 @@ int main(int nbParam, char **param) {
 
   rulesFile.open(ruleFile, ios::in); // Read data file
   if (rulesFile.fail()) {
-    throw std::runtime_error("Error : file " + std::string(ruleFile) + " not found");
+    throw FileNotFoundError("Error : file " + std::string(ruleFile) + " not found");
   }
 
   while (!rulesFile.eof()) {
