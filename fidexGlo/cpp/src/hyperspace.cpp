@@ -11,7 +11,7 @@ Hyperspace::Hyperspace(const char *hyperLocusFile) {
 
   fileLocus.open(hyperLocusFile, ios::in); // Read hyperLocus file
   if (fileLocus.fail()) {
-    throw std::runtime_error("Error : file " + std::string(hyperLocusFile) + " not found");
+    throw FileNotFoundError("Error : file " + std::string(hyperLocusFile) + " not found");
   }
 
   while (!fileLocus.eof()) {

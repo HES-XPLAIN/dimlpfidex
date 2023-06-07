@@ -1,6 +1,7 @@
 #ifndef FIDEXGLOFCT_H
 #define FIDEXGLOFCT_H
 
+#include "../../../fidexCommon/cpp/src/errorHandler.h"
 #include "dataSet.h"
 #include "getRulesFun.h"
 #include <algorithm>

@@ -1,6 +1,7 @@
 #ifndef FIDEXGLORULESFCT_H
 #define FIDEXGLORULESFCT_H
 
+#include "../../../fidexCommon/cpp/src/errorHandler.h"
 #include "checkFun.h"
 #include "dataSet.h"
 #include "fidexAlgo.h"

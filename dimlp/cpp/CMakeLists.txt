@@ -322,6 +322,7 @@ FILE(GLOB CROSS_VALID_SRC
     ../../fidexGlo/cpp/src/hyperspace.h
     ../../fidexGlo/cpp/src/fidexGloStatsFct.cpp
     ../../fidexGlo/cpp/src/fidexGloStatsFct.h
+    ../../fidexCommon/cpp/src/errorHandler.h
 )
 
 FILE(GLOB FCT_SRC

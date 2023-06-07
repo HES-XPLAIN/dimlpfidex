@@ -99,7 +99,7 @@ int fidex(const string &command) {
         p++;
 
         if (p >= nbParam) {
-          throw std::runtime_error("Missing something at the end of the command.");
+          throw CommandArgumentException("Missing something at the end of the command.");
         }
 
         char option = commandList[p - 1][1];
@@ -171,7 +171,7 @@ int fidex(const string &command) {
           if (CheckPositiveInt(arg)) {
             itMax = atoi(arg);
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
           }
           break;
 
@@ -179,7 +179,7 @@ int fidex(const string &command) {
           if (CheckPositiveInt(arg) && atoi(arg) >= 1) {
             minNbCover = atoi(arg);
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
           }
           break;
 
@@ -188,7 +188,7 @@ int fidex(const string &command) {
             dropoutDimParam = atof(arg);
             dropoutDim = true; // We dropout a bunch of dimensions each iteration (accelerate the processus)
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
           }
           break;
 
@@ -197,7 +197,7 @@ int fidex(const string &command) {
             dropoutHypParam = atof(arg);
             dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
           }
           break;
 
@@ -205,12 +205,12 @@ int fidex(const string &command) {
           if (CheckPositiveInt(arg))
             seed = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
 
           break;
 
         default: // If we put another -X option
-          throw std::runtime_error("Illegal option : " + string(lastArg));
+          throw CommandArgumentException("Illegal option : " + string(lastArg));
         }
       }
 
@@ -297,25 +297,25 @@ int fidex(const string &command) {
     // ----------------------------------------------------------------------
 
     if (!trainDataFileInit) {
-      throw std::runtime_error("The train data file has to be given with option -T");
+      throw CommandArgumentException("The train data file has to be given with option -T");
     }
     if (!trainDataFilePredInit) {
-      throw std::runtime_error("The train prediction file has to be given with option -P");
+      throw CommandArgumentException("The train prediction file has to be given with option -P");
     }
     if (!trainDataFileTrueClassInit) {
-      throw std::runtime_error("The train true classes file has to be given with option -C");
+      throw CommandArgumentException("The train true classes file has to be given with option -C");
     }
     if (!mainSamplesDataFileInit) {
-      throw std::runtime_error("The test samples data file <value, prediction(if no -p), true class(if no -c)> has to be given with option -S");
+      throw CommandArgumentException("The test samples data file <value, prediction(if no -p), true class(if no -c)> has to be given with option -S");
     }
     if (mainSamplesClassFileInit && !mainSamplesPredFileInit) {
-      throw std::runtime_error("The test prediction data file(-p) needs to be specified if the test class data file(-c) is given");
+      throw CommandArgumentException("The test prediction data file(-p) needs to be specified if the test class data file(-c) is given");
     }
     if (!hyperLocusFileInit) {
-      throw std::runtime_error("The hyperLocus file has to be given with option -H");
+      throw CommandArgumentException("The hyperLocus file has to be given with option -H");
     }
     if (!ruleFileInit) {
-      throw std::runtime_error("The output rule file has to be given with option -O");
+      throw CommandArgumentException("The output rule file has to be given with option -O");
     }
 
     // ----------------------------------------------------------------------
@@ -357,7 +357,7 @@ int fidex(const string &command) {
     vector<int> *trainTrueClass = trainDatas->getTrueClasses();
 
     if (minNbCover > ((*trainData).size())) {
-      throw std::runtime_error("Error : invalide type for parameter -c, strictly positive integer smaller or equal than the number of data sample requested");
+      throw CommandArgumentException("Error : invalide type for parameter -c, strictly positive integer smaller or equal than the number of data sample requested");
     }
 
     // Get test data
@@ -375,7 +375,7 @@ int fidex(const string &command) {
       fstream testData;
       testData.open(mainSamplesDataFile, ios::in); // Read data file
       if (testData.fail()) {
-        throw std::runtime_error("Error : file " + std::string(mainSamplesDataFile) + " not found");
+        throw FileNotFoundError("Error : file " + std::string(mainSamplesDataFile) + " not found");
       }
       string line;
       bool firstLine = true;
@@ -390,18 +390,18 @@ int fidex(const string &command) {
           }
           mainSamplesValues.push_back(mainSampleValues);
         } else if (firstLine) {
-          throw std::runtime_error("Error : in file " + std::string(mainSamplesDataFile) + ", first line is empty");
+          throw FileFormatError("Error : in file " + std::string(mainSamplesDataFile) + ", first line is empty");
         } else {
           while (!testData.eof()) {
             getline(testData, line);
             if (!checkStringEmpty(line)) {
-              throw std::runtime_error("Error : file " + std::string(mainSamplesDataFile) + " is not on good format, there is more than one empty line between 2 samples");
+              throw FileFormatError("Error : file " + std::string(mainSamplesDataFile) + " is not on good format, there is more than one empty line between 2 samples");
             }
           }
           break; // There is just empty lines at the end of the file
         }
         if (testData.eof()) {
-          throw std::runtime_error("Error : file " + std::string(mainSamplesDataFile) + " has not enough prediction data");
+          throw FileContentError("Error : file " + std::string(mainSamplesDataFile) + " has not enough prediction data");
         }
         getline(testData, line);
         if (!checkStringEmpty(line)) {
@@ -418,10 +418,10 @@ int fidex(const string &command) {
           while (!testData.eof()) {
             getline(testData, line);
             if (!checkStringEmpty(line)) {
-              throw std::runtime_error("Error : file " + std::string(mainSamplesDataFile) + " is not on good format, there is empty lines inbetween data");
+              throw FileFormatError("Error : file " + std::string(mainSamplesDataFile) + " is not on good format, there is empty lines inbetween data");
             }
           }
-          throw std::runtime_error("Error : file " + std::string(mainSamplesDataFile) + " has not enough prediction data");
+          throw FileContentError("Error : file " + std::string(mainSamplesDataFile) + " has not enough prediction data");
         }
         bool endOfLine = false;
         if (testData.eof()) {
@@ -441,7 +441,7 @@ int fidex(const string &command) {
           }
           const char *trueClassTest = strdup(line.c_str());
           if (!CheckPositiveInt(trueClassTest)) {
-            throw std::runtime_error("Error : in file " + std::string(mainSamplesDataFile) + ", true classes need to be positive integers");
+            throw FileContentError("Error : in file " + std::string(mainSamplesDataFile) + ", true classes need to be positive integers");
           }
           hasTrueClass.push_back(true);
           std::stringstream myLine(line);
@@ -450,7 +450,7 @@ int fidex(const string &command) {
           if (!testData.eof()) {
             getline(testData, line);
             if (!checkStringEmpty(line)) {
-              throw std::runtime_error("Error : in file " + std::string(mainSamplesDataFile) + ", you need to have empty lines between samples");
+              throw FileFormatError("Error : in file " + std::string(mainSamplesDataFile) + ", you need to have empty lines between samples");
             }
           }
         }
@@ -466,7 +466,7 @@ int fidex(const string &command) {
 
       // Check if there is good number of lines
       if (mainSamplesPreds.size() != mainSamplesValues.size()) {
-        throw std::runtime_error("Error : in file " + std::string(mainSamplesPredFile) + ", you need to specify as many predictions as there is datas");
+        throw FileContentError("Error : in file " + std::string(mainSamplesPredFile) + ", you need to specify as many predictions as there is datas");
       }
 
       // Classes :
@@ -474,7 +474,7 @@ int fidex(const string &command) {
         fstream classData;
         classData.open(mainSamplesClassFile, ios::in); // Read data file
         if (classData.fail()) {
-          throw std::runtime_error("Error : file " + std::string(mainSamplesClassFile) + " not found");
+          throw FileNotFoundError("Error : file " + std::string(mainSamplesClassFile) + " not found");
         }
         string line;
         int mainSampleTrueClass;
@@ -488,7 +488,7 @@ int fidex(const string &command) {
             bool found = false;
             while (myLine >> tempTest && !found) {
               if (tempTest != "-1" && tempTest != "0" && tempTest != "1") {
-                throw std::runtime_error("Error : in file " + std::string(mainSamplesClassFile) + ", true classes need to be 0, 1 or -1(no class)");
+                throw FileContentError("Error : in file " + std::string(mainSamplesClassFile) + ", true classes need to be 0, 1 or -1(no class)");
               }
               mainSampleTrueClass = stoi(tempTest);
               if (mainSampleTrueClass == 1) {
@@ -503,14 +503,14 @@ int fidex(const string &command) {
               ind++;
             }
             if (!found) {
-              throw std::runtime_error("Error : in file " + std::string(mainSamplesClassFile) + ", true classes need to be have at least a 1 or -1(no class) in each line");
+              throw FileContentError("Error : in file " + std::string(mainSamplesClassFile) + ", true classes need to be have at least a 1 or -1(no class) in each line");
             }
           }
         }
 
         // Check if there is good number of lines
         if (mainSamplesTrueClass.size() != mainSamplesValues.size()) {
-          throw std::runtime_error("Error : in file " + std::string(mainSamplesClassFile) + ", you need to specify as many true classes as there is datas (-1 if no true class)");
+          throw FileContentError("Error : in file " + std::string(mainSamplesClassFile) + ", you need to specify as many true classes as there is datas (-1 if no true class)");
         }
       } else {
         hasTrueClass.resize(mainSamplesValues.size(), false);
@@ -523,13 +523,13 @@ int fidex(const string &command) {
 
     for (int spl = 0; spl < nbSamples; spl++) {
       if (mainSamplesValues[spl].size() != nbAttributs) {
-        throw std::runtime_error("Error : in file " + std::string(mainSamplesDataFile) + ", all test datas need to have the same number of variables");
+        throw FileContentError("Error : in file " + std::string(mainSamplesDataFile) + ", all test datas need to have the same number of variables");
       }
     }
 
     for (int spl = 0; spl < nbSamples; spl++) {
       if (mainSamplesOutputValuesPredictions[spl].size() != nbClass) {
-        throw std::runtime_error("Error : in file " + std::string(mainSamplesDataFile) + ", all test datas need to have the same number of prediction values");
+        throw FileContentError("Error : in file " + std::string(mainSamplesDataFile) + ", all test datas need to have the same number of prediction values");
       }
     }
 
@@ -541,11 +541,11 @@ int fidex(const string &command) {
       std::unique_ptr<Attribute> attributesData(new Attribute(attributFile));
       attributeNames = (*attributesData->getAttributes());
       if (attributeNames.size() < nbAttributs) {
-        throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not enough attribute names");
+        throw FileContentError("Error : in file " + std::string(attributFile) + ", there is not enough attribute names");
       } else if (attributeNames.size() == nbAttributs) {
         hasClassNames = false;
       } else if (attributeNames.size() != nbAttributs + nbClass) {
-        throw std::runtime_error("Error : in file " + std::string(attributFile) + ", there is not the good amount of attribute and class names");
+        throw FileContentError("Error : in file " + std::string(attributFile) + ", there is not the good amount of attribute and class names");
       } else {
         hasClassNames = true;
         auto firstEl = attributeNames.end() - nbClass;
@@ -588,7 +588,7 @@ int fidex(const string &command) {
 
     // Check size of hyperlocus
     if (nbIn == 0 || nbIn % nbAttributs != 0) {
-      throw std::runtime_error("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributs - " + std::to_string(nbAttributs));
+      throw InternalError("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributs - " + std::to_string(nbAttributs));
     }
 
     std::cout << "Hyperspace created" << endl
@@ -793,7 +793,7 @@ int fidex(const string &command) {
         outputStatsFile << "The mean rule confidence is : " << meanConfidence << "\n";
         outputStatsFile.close();
       } else {
-        throw std::runtime_error("Error : Couldn't open stats extraction file " + std::string(statsFile) + ".");
+        throw CannotOpenFileError("Error : Couldn't open stats extraction file " + std::string(statsFile) + ".");
       }
     }
 
@@ -804,7 +804,7 @@ int fidex(const string &command) {
       }
       outputFile.close();
     } else {
-      throw std::runtime_error("Error : Couldn't open rule extraction file " + std::string(ruleFile) + ".");
+      throw CannotOpenFileError("Error : Couldn't open rule extraction file " + std::string(ruleFile) + ".");
     }
 
     d2 = clock();

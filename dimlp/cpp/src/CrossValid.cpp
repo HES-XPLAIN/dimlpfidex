@@ -6,6 +6,7 @@
 #include <windows.h>
 #endif
 #include "../../../fidex/cpp/src/fidexFct.h"
+#include "../../../fidexCommon/cpp/src/errorHandler.h"
 #include "../../../fidexGlo/cpp/src/fidexGloRulesFct.h"
 #include "../../../fidexGlo/cpp/src/fidexGloStatsFct.h"
 #include "../../../hyperLocus/cpp/src/hyperLocusFct.h"
@@ -520,7 +521,7 @@ int main(int nbParam, char **param)
 
   fileDta.open(learnFile, ios::in); // Read data file
   if (fileDta.fail()) {
-    throw std::runtime_error("Error : file " + std::string(learnFile) + " not found");
+    throw FileNotFoundError("Error : file " + std::string(learnFile) + " not found");
   }
   vector<string> learnData;
   string line;
@@ -545,7 +546,7 @@ int main(int nbParam, char **param)
 
   fileDtaTar.open(learnTar, ios::in); // Read data file
   if (fileDtaTar.fail()) {
-    throw std::runtime_error("Error : file " + std::string(learnTar) + " not found");
+    throw FileNotFoundError("Error : file " + std::string(learnTar) + " not found");
   }
 
   while (!fileDtaTar.eof()) {
@@ -564,7 +565,7 @@ int main(int nbParam, char **param)
   if (createOrClearDirectory(folder)) { // Create folder if doesn't exist
     std::cout << "Folder created." << std::endl;
   } else {
-    throw std::runtime_error("Error during the creation of the directory " + std::string(folder) + ".");
+    throw CannotCreateDirectoryError("Error during the creation of the directory " + std::string(folder) + ".");
   }
 
   // Initialize random number generator
@@ -703,7 +704,7 @@ int main(int nbParam, char **param)
     outputStatsFile << "---------------------------------------------------------\n\n";
     outputStatsFile.close();
   } else {
-    throw std::runtime_error("Error : Couldn't open stats extraction file " + std::string(statFile) + ".");
+    throw CannotOpenFileError("Error : Couldn't open stats extraction file " + std::string(statFile) + ".");
   }
 
   // Loop on N executions of cross-validation
@@ -777,7 +778,7 @@ int main(int nbParam, char **param)
       // Creation of train, test and validation files (temp files)
       ofstream trainFile(trainFileStr);
       if (trainFile.fail()) {
-        throw std::runtime_error("Error : temp train file cound'nt open");
+        throw CannotOpenFileError("Error : temp train file cound'nt open");
       }
       for (int id : trainIdx) {
         for (string lineTrn : learnDataSplit[id]) {
@@ -788,7 +789,7 @@ int main(int nbParam, char **param)
 
       ofstream testFile(testFileStr);
       if (testFile.fail()) {
-        throw std::runtime_error("Error : temp test file cound'nt open");
+        throw CannotOpenFileError("Error : temp test file cound'nt open");
       }
       for (string lineTst : learnDataSplit[testIdx]) {
         testFile << lineTst << endl;
@@ -797,7 +798,7 @@ int main(int nbParam, char **param)
 
       ofstream validFile(validFileStr);
       if (validFile.fail()) {
-        throw std::runtime_error("Error : temp valid file cound'nt open");
+        throw CannotOpenFileError("Error : temp valid file cound'nt open");
       }
       for (string lineVal : learnDataSplit[validationIdx]) {
         validFile << lineVal << endl;
@@ -806,7 +807,7 @@ int main(int nbParam, char **param)
 
       ofstream trainTarFile(trainTarFileStr);
       if (trainTarFile.fail()) {
-        throw std::runtime_error("Error : temp trainTar file cound'nt open");
+        throw CannotOpenFileError("Error : temp trainTar file cound'nt open");
       }
       for (int id : trainIdx) {
         for (string lineTrntar : learnTarDataSplit[id]) {
@@ -817,7 +818,7 @@ int main(int nbParam, char **param)
 
       ofstream testTarFile(testTarFileStr);
       if (testTarFile.fail()) {
-        throw std::runtime_error("Error : temp testTar file cound'nt open");
+        throw CannotOpenFileError("Error : temp testTar file cound'nt open");
       }
       for (string lineTstTar : learnTarDataSplit[testIdx]) {
         testTarFile << lineTstTar << endl;
@@ -826,7 +827,7 @@ int main(int nbParam, char **param)
 
       ofstream validTarFile(validTarFileStr);
       if (validTarFile.fail()) {
-        throw std::runtime_error("Error : temp validTar file cound'nt open");
+        throw CannotOpenFileError("Error : temp validTar file cound'nt open");
       }
       for (string lineValTar : learnTarDataSplit[validationIdx]) {
         validTarFile << lineValTar << endl;
@@ -926,7 +927,7 @@ int main(int nbParam, char **param)
         fstream statsData;
         statsData.open(statsFile, ios::in); // Read data file
         if (statsData.fail()) {
-          throw std::runtime_error("Error : fidex stat file " + std::string(statsFile) + " not found");
+          throw FileNotFoundError("Error : fidex stat file " + std::string(statsFile) + " not found");
         }
         string lineStats;
         getline(statsData, lineStats);
@@ -989,7 +990,7 @@ int main(int nbParam, char **param)
         fstream statsGloData;
         statsGloData.open(statsGloFile, ios::in); // Read data file
         if (statsGloData.fail()) {
-          throw std::runtime_error("Error : fidex stat file " + std::string(statsGloFile) + " not found");
+          throw FileNotFoundError("Error : fidex stat file " + std::string(statsGloFile) + " not found");
         }
         string lineStatsGlo;
         string value;
@@ -1028,7 +1029,7 @@ int main(int nbParam, char **param)
             }
           }
         } else {
-          throw std::runtime_error("Error in second line of fidexGlo stat file.");
+          throw FileContentError("Error in second line of fidexGlo stat file.");
         }
 
         getline(statsGloData, lineStatsGlo);
@@ -1165,7 +1166,7 @@ int main(int nbParam, char **param)
       outputStatsFile << "---------------------------------------------------------\n\n";
       outputStatsFile.close();
     } else {
-      throw std::runtime_error("Error : Couldn't open stats extraction file " + std::string(statFile) + ".");
+      throw CannotOpenFileError("Error : Couldn't open stats extraction file " + std::string(statFile) + ".");
     }
   }
 
@@ -1353,7 +1354,7 @@ int main(int nbParam, char **param)
     }
     outputStatsFile.close();
   } else {
-    throw std::runtime_error("Error : Couldn't open stats extraction file " + std::string(statFile) + ".");
+    throw CannotOpenFileError("Error : Couldn't open stats extraction file " + std::string(statFile) + ".");
   }
 
   // Delete temporary files

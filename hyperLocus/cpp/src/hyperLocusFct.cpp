@@ -89,7 +89,7 @@ int hyperLocus(const std::string &command) {
         p++;
 
         if (p >= nbParam) {
-          throw std::runtime_error("Missing something at the end of the command.");
+          throw CommandArgumentException("Missing something at the end of the command.");
         }
 
         char option = commandList[p - 1][1];
@@ -108,7 +108,7 @@ int hyperLocus(const std::string &command) {
             nbQuantLevels = atoi(arg);
             nbQuantLevelsInit = true;
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
           }
           break;
 
@@ -117,7 +117,7 @@ int hyperLocus(const std::string &command) {
             hiKnot = atof(arg);
             hiKnotInit = true;
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + std::string(lastArg) + ", strictly positive float requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", strictly positive float requested");
           }
           break;
 
@@ -129,7 +129,7 @@ int hyperLocus(const std::string &command) {
           if (CheckPositiveInt(arg)) {
             hideNotes = atoi(arg);
           } else {
-            throw std::runtime_error("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
           }
           break;
 
@@ -138,7 +138,7 @@ int hyperLocus(const std::string &command) {
           break;
 
         default: // If we put another -X option
-          throw std::runtime_error("Illegal option : " + std::string(lastArg));
+          throw CommandArgumentException("Illegal option : " + std::string(lastArg));
         }
       }
 
@@ -166,13 +166,13 @@ int hyperLocus(const std::string &command) {
     // ----------------------------------------------------------------------
 
     if (!dataFileWeightsInit) {
-      throw std::runtime_error("The weight file has to be given with option -W");
+      throw CommandArgumentException("The weight file has to be given with option -W");
     }
     if (!nbQuantLevelsInit) {
-      throw std::runtime_error("The number of steps in the step function has to be given with option -Q");
+      throw CommandArgumentException("The number of steps in the step function has to be given with option -Q");
     }
     if (!hiKnotInit) {
-      throw std::runtime_error("The right end of the interval in which hyperplans are contained has to be given with option -I");
+      throw CommandArgumentException("The right end of the interval in which hyperplans are contained has to be given with option -I");
     }
 
     double lowKnot = -hiKnot;
@@ -216,7 +216,7 @@ int hyperLocus(const std::string &command) {
       }
       hyperLocusFile.close();
     } else {
-      throw std::runtime_error("Error : Couldn't open file " + std::string(outputFile) + ".");
+      throw CannotOpenFileError("Error : Couldn't open file " + std::string(outputFile) + ".");
     }
 
     t2 = clock();
