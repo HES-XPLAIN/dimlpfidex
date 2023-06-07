@@ -9,8 +9,6 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 FILE(GLOB FIDEX_SRC
     src/fidexFct.cpp
     src/fidexFct.h
-    src/hyperbox.cpp
-    src/hyperbox.h
     src/hyperspace.cpp
     src/hyperspace.h
 )

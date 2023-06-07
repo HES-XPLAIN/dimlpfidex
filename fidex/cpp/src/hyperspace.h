@@ -2,7 +2,7 @@
 #define HYPERSPACE_H
 
 #include "../../../fidexCommon/cpp/src/errorHandler.h"
-#include "hyperbox.h"
+#include "../../../fidexCommon/cpp/src/hyperbox.h"
 #include <cstring>
 #include <fstream>
 #include <iostream>

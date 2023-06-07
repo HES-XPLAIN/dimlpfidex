@@ -1,8 +1,6 @@
 #include "hyperbox.h"
 using namespace std;
 
-namespace FidexNameSpace {
-
 Hyperbox::Hyperbox(const vector<pair<int, int>> &m_discriminativeHyperplans)
     : discriminativeHyperplans(m_discriminativeHyperplans) {
 }
@@ -22,7 +20,7 @@ void Hyperbox::computeCoveredSamples(const vector<int> &ancienCoveredSamples, in
   for (int idCoveredSample : ancienCoveredSamples) { // We check all already covered samples
     double sampleValue = (*trainData)[idCoveredSample][attribut];
     bool sampleGreater = hypValue <= sampleValue;
-    if (mainSampleGreater == sampleGreater) {       // If both samples are on same side of hyperplan (^ = xor)
+    if (mainSampleGreater == sampleGreater) {       // If both samples are on same side of hyperplan
       newCoveredSamples.push_back(idCoveredSample); // This sample is covered again
     }
   }
@@ -41,6 +39,7 @@ void Hyperbox::computeFidelity(const int mainsamplePred, vector<int> *trainPreds
       coveredTrueClass += 1;
     }
   }
+
   fidelity = (double)coveredTrueClass / (double)nbCovered;
 }
 
@@ -60,4 +59,3 @@ void Hyperbox::resetDiscriminativeHyperplans() {
   vector<pair<int, int>> disc;
   discriminativeHyperplans = disc;
 }
-} // namespace FidexNameSpace

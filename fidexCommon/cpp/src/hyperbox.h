@@ -6,12 +6,10 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <tuple>
 #include <vector>
 
-namespace FidexNameSpace {
 class Hyperbox {
-  std::vector<std::pair<int, int>> discriminativeHyperplans;
+  std::vector<std::pair<int, int>> discriminativeHyperplans; // Ex: 16x50
   std::vector<int> coveredSamples;
   double fidelity = -1;
 
@@ -32,5 +30,5 @@ public:
   std::vector<int> getCoveredSamples() const;
   void discriminateHyperplan(int i, int j);
 };
-} // namespace FidexNameSpace
+
 #endif
