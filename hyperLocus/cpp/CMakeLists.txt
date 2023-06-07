@@ -9,10 +9,6 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 FILE(GLOB HYPERLOCUS_SRC
     src/hyperLocusFct.cpp
     src/hyperLocusFct.h
-    src/checkFun.cpp
-    src/checkFun.h
-    src/dataSet.cpp
-    src/dataSet.h
 )
 
 # make variables visible to external CMakeLists.txt

@@ -1,9 +1,9 @@
 #ifndef HYPERLOCUSFCT_H
 #define HYPERLOCUSFCT_H
 
+#include "../../../fidexCommon/cpp/src/checkFun.h"
+#include "../../../fidexCommon/cpp/src/dataSet.h"
 #include "../../../fidexCommon/cpp/src/errorHandler.h"
-#include "checkFun.h"
-#include "dataSet.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>

@@ -1,5 +1,5 @@
+#include "../../../fidexCommon/cpp/src/checkFun.h"
 #include "../../../fidexCommon/cpp/src/errorHandler.h"
-#include "checkFun.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>

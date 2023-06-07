@@ -1,9 +1,9 @@
 #ifndef FIDEXFCT_H
 #define FIDEXFCT_H
 
+#include "../../../fidexCommon/cpp/src/checkFun.h"
+#include "../../../fidexCommon/cpp/src/dataSet.h"
 #include "../../../fidexCommon/cpp/src/errorHandler.h"
-#include "checkFun.h"
-#include "dataSet.h"
 #include "hyperspace.h"
 #include <algorithm>
 #include <chrono>

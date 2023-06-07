@@ -8,6 +8,11 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 FILE(GLOB COMMON_SRC_FIDEX
     src/errorHandler.h
+    src/dataSet.h
+    src/dataSet.cpp
+    src/checkFun.cpp
+    src/checkFun.h
+
 )
 
 # make variables visible to external CMakeLists.txt
