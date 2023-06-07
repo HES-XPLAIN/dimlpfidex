@@ -1,8 +1,8 @@
 #ifndef DATASETFID_H
 #define DATASETFID_H
 
-#include "../../../fidexCommon/cpp/src/errorHandler.h"
 #include "checkFun.h"
+#include "errorHandler.h"
 #include <algorithm>
 #include <cstring>
 #include <fstream>

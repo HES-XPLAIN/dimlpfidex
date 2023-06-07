@@ -13,17 +13,11 @@ FILE(GLOB FIDEXGLO_SRC
     src/getRulesFun.h
     src/dataSet.cpp
     src/dataSet.h
-    src/checkFun.cpp
-    src/checkFun.h
 )
 
 FILE(GLOB FIDEXGLORULES_SRC
     src/fidexGloRulesFct.cpp
     src/fidexGloRulesFct.h
-    src/checkFun.cpp
-    src/checkFun.h
-    src/dataSet.cpp
-    src/dataSet.h
     src/fidexAlgo.cpp
     src/fidexAlgo.h
     src/hyperbox.cpp
@@ -37,8 +31,6 @@ FILE(GLOB FIDEXGLOSTATS_SRC
     src/fidexGloStatsFct.h
     src/dataSet.cpp
     src/dataSet.h
-    src/checkFun.cpp
-    src/checkFun.h
     src/getRulesFun.cpp
     src/getRulesFun.h
 )

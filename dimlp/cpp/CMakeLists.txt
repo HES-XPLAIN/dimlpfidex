@@ -300,10 +300,6 @@ FILE(GLOB CROSS_VALID_SRC
     src/virtHyp.h
     ../../hyperLocus/cpp/src/hyperLocusFct.cpp
     ../../hyperLocus/cpp/src/hyperLocusFct.h
-    ../../hyperLocus/cpp/src/checkFun.cpp
-    ../../hyperLocus/cpp/src/checkFun.h
-    ../../hyperLocus/cpp/src/dataSet.cpp
-    ../../hyperLocus/cpp/src/dataSet.h
     ../../fidex/cpp/src/fidexFct.cpp
     ../../fidex/cpp/src/fidexFct.h
     ../../fidex/cpp/src/hyperbox.cpp
@@ -323,6 +319,10 @@ FILE(GLOB CROSS_VALID_SRC
     ../../fidexGlo/cpp/src/fidexGloStatsFct.cpp
     ../../fidexGlo/cpp/src/fidexGloStatsFct.h
     ../../fidexCommon/cpp/src/errorHandler.h
+    ../../fidexCommon/cpp/src/dataSet.h
+    ../../fidexCommon/cpp/src/dataSet.cpp
+    ../../fidexCommon/cpp/src/checkFun.h
+    ../../fidexCommon/cpp/src/checkFun.cpp
 )
 
 FILE(GLOB FCT_SRC
