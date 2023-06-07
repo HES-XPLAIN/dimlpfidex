@@ -69,8 +69,8 @@ def build_package():
         cmake_command = ['poetry', 'run', 'cmake', '-G', 'MinGW Makefiles', '-DCMAKE_PREFIX_PATH=' + path, '..']
 
     # affinity
-    cpu_count = len(os.sched_getaffinity(0))
-    build_command = ['poetry', 'run', 'cmake', '--build', '.', '-j', str(cpu_count)]
+
+    build_command = ['poetry', 'run', 'cmake', '--build', '.']
 
     # Run cmake
     subprocess.check_call(cmake_command)
