@@ -27,7 +27,7 @@ void GiveAllParamDimlpTrn()
   cout << "-w <output weight file>\n";                     // If we want to specify weight output file, not to be weights.wts
   cout << "-p <output train prediction file>\n";           // If we want to specify output train prediction file, not to be dimlp.out
   cout << "-t <output test prediction file>\n";            // If we want to specify output test prediction file, not to be dimlpTest.out
-  cout << "-v <output validation prediction file>\n";      // If we want to specify output test prediction file, not to be dimlpValidation.out
+  cout << "-v <output validation prediction file>\n";      // If we want to specify output validation prediction file, not to be dimlpValidation.out
   cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
   cout << "-o <output file with train, test and validation accuracy>\n";
   cout << "-H1 <number of neurons in the first hidden layer> ";
@@ -176,9 +176,9 @@ int dimlpTrn(const string &command) {
   StringInt arch;
   StringInt archInd;
 
-  if (nbParam == 1) {
+  if (nbParam <= 1) {
     GiveAllParamDimlpTrn();
-    return -1;
+    return 0;
   }
 
   int k = 1; // We skip "DimlpTrn"

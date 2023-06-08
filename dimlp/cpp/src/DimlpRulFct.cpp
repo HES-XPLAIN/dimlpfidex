@@ -95,9 +95,9 @@ int dimlpRul(const string &command) {
   StringInt arch;
   StringInt archInd;
 
-  if (nbParam == 1) {
+  if (nbParam <= 1) {
     GiveAllParamDimlpRul();
-    return -1;
+    return 0;
   }
 
   int k = 1; // We skip "DimlpRul"

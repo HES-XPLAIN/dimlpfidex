@@ -207,9 +207,9 @@ int main(int nbParam, char **param)
   bool nbOutInit = false;
   const char *ptrParam;
 
-  if (nbParam == 1) {
+  if (nbParam <= 1) {
     GiveAllParam();
-    return -1;
+    return 0;
   }
 
   int p = 1; // We skip "crossValid"

@@ -88,7 +88,7 @@ int fidex(const string &command) {
 
     // Import parameters
 
-    if (nbParam == 1) {
+    if (nbParam <= 1) {
       showFidexParams();
       return 0;
     }

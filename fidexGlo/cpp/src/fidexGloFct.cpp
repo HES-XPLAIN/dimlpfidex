@@ -59,9 +59,9 @@ int fidexGlo(const string &command) {
 
     // Import parameters
 
-    if (nbParam == 1) {
+    if (nbParam <= 1) {
       showParams();
-      return -1;
+      return 0;
     }
 
     int p = 1; // We skip "fidexGlo"
@@ -387,7 +387,7 @@ int fidexGlo(const string &command) {
         }
       }
       if (!notShowUncorrectRules) {
-        if (notcorrectRules.empty()) {
+        if (!notcorrectRules.empty()) {
           lines.emplace_back("\nActivated rules without correct decision class :");
           for (int n = 0; n < notcorrectRules.size(); n++) {
             lines.emplace_back("F" + std::to_string(n + 1) + ": " + stringRules[notcorrectRules[n]]);

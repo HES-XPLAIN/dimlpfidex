@@ -23,9 +23,9 @@ void showParams() {
 int main(int nbParam, char **param) {
 
   // Import parameters
-  if (nbParam == 1) {
+  if (nbParam <= 1) {
     showParams();
-    return -1;
+    return 0;
   }
 
   // Parameters declaration
