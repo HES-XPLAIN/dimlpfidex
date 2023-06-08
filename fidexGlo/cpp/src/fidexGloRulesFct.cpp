@@ -79,9 +79,9 @@ int fidexGloRules(const string &command) {
 
     // Import parameters
 
-    if (nbParam == 1) {
+    if (nbParam <= 1) {
       showRulesParams();
-      return -1;
+      return 0;
     }
 
     int p = 1; // We skip "fidexGloRules"

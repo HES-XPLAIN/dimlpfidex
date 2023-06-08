@@ -152,9 +152,9 @@ int dimlpCls(const string &command) {
   StringInt arch;
   StringInt archInd;
 
-  if (nbParam == 1) {
+  if (nbParam <= 1) {
     GiveAllParamDimlpCls();
-    return -1;
+    return 0;
   }
 
   int k = 1; // We skip "DimlpCls"

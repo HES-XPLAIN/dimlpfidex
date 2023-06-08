@@ -78,9 +78,9 @@ int hyperLocus(const std::string &command) {
 
     // Import parameters
 
-    if (nbParam == 1) {
+    if (nbParam <= 1) {
       showParams();
-      return -1;
+      return 0;
     }
 
     int p = 1; // We skip "fidex"

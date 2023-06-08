@@ -104,9 +104,9 @@ int densCls(const string &command) {
   StringInt arch;
   StringInt archInd;
 
-  if (nbParam == 1) {
+  if (nbParam <= 1) {
     GiveAllParamDensCls();
-    return -1;
+    return 0;
   }
 
   int k = 1; // We skip "DensCls"

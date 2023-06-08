@@ -106,9 +106,9 @@ int dimlpPred(const string &command) {
 
   // Import parameters
 
-  if (nbParam == 1) {
+  if (nbParam <= 1) {
     GiveAllParamPred();
-    return -1;
+    return 0;
   }
 
   int k = 1; // We skip "DimlpPred"
