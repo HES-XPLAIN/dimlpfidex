@@ -56,16 +56,4 @@ jobs:
       - name: Compile
         if: runner.os != 'Windows'
         run: |
-          mkdir build
-          cd build
-          poetry run cmake ..
-          poetry run cmake --build .
-
-      - name: Compile
-        if: runner.os == 'Windows'
-        run: |
-          mkdir build
-          cd build
-          $path = (poetry env info | Select-String -Pattern 'Path:\s+(.*)').Matches.Groups[1].Value
-          poetry run cmake -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH="$path" ..
-          poetry run cmake --build .
+          poetry build
