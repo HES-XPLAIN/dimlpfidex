@@ -61,16 +61,18 @@ def build_package():
     # Platform-specific compilation commands
     if sys.platform.startswith('linux'):
         cmake_command = ['poetry', 'run', 'cmake', '..']
+        cpu_count = len(os.sched_getaffinity(0))
     elif sys.platform == 'darwin':  # macOS
         cmake_command = ['poetry', 'run', 'cmake', '..']
+        cpu_count = os.cpu_count()
     elif sys.platform == 'win32':  # Windows
         output = subprocess.check_output("poetry env info", shell=True, text=True)
         path = re.search(r"Path:\s+(.*)", output).group(1) if re.search(r"Path:\s+(.*)", output) else None
         cmake_command = ['poetry', 'run', 'cmake', '-G', 'MinGW Makefiles', '-DCMAKE_PREFIX_PATH=' + path, '..']
+        cpu_count = os.cpu_count()
 
-    # affinity
-
-    build_command = ['poetry', 'run', 'cmake', '--build', '.']
+    print("CPUs count:", cpu_count)
+    build_command = ['poetry', 'run', 'cmake', '--build', '.', '-j', str(cpu_count)]
 
     # Run cmake
     subprocess.check_call(cmake_command)
