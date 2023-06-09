@@ -9,7 +9,7 @@
 namespace py = pybind11;
 
 PYBIND11_MODULE(dimlp, m) {
-  m.doc() = "pybind11 example plugin"; // optional module docstring
+  m.doc() = "pybind11 dimlp plugin"; // optional module docstring
   m.def("dimlpPred", &dimlpPred, "A function to get predictions on test set, training needs to be done before.");
   m.def("dimlpCls", &dimlpCls, "A function to get predictions and accuracy on test set, need to give test classess and training needs to be done before.");
   m.def("dimlpRul", &dimlpRul, "A function to get rules with stats for train, test and validation sets, gives also accuracy and error.");

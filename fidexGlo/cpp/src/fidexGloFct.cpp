@@ -221,6 +221,7 @@ int fidexGlo(const string &command) {
           while (!testData.eof()) {
             getline(testData, line);
             if (!checkStringEmpty(line)) {
+              cout << line << endl;
               throw FileFormatError("Error : file " + std::string(testSamplesDataFile) + " is not on good format, there is more than one empty line between 2 samples");
             }
           }
@@ -252,7 +253,7 @@ int fidexGlo(const string &command) {
         }
         if (!testData.eof()) {
           getline(testData, line);
-          if (line.length() != 0) {
+          if (!checkStringEmpty(line)) {
             throw FileFormatError("Error : in file " + std::string(testSamplesDataFile) + ", you need to have empty lines between samples");
           }
         }

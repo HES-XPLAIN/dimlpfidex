@@ -1,4 +1,4 @@
-project(fidex)
+project(fidexProject)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -17,10 +17,10 @@ FILE(GLOB FIDEX_SRC
 set(FIDEX_SRC "${FIDEX_SRC}" CACHE INTERNAL "")
 
 # build executables
-add_executable(fidex ${FIDEX_SRC} src/fidex.cpp)
-add_dependencies(fidex fidexCommon)
-target_link_libraries(fidex fidexCommon)
+add_executable(fidexProject ${FIDEX_SRC} src/fidex.cpp)
+add_dependencies(fidexProject fidexCommon)
+target_link_libraries(fidexProject fidexCommon)
 
 set_target_properties(
-    fidex PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+    fidexProject PROPERTIES OUTPUT_NAME "fidex" RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
