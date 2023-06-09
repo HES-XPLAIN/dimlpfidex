@@ -1,4 +1,4 @@
-project(fidexglo)
+project(fidexGloProject)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -30,7 +30,7 @@ endif()
 add_subdirectory("cpp")
 include_directories("${CMAKE_SOURCE_DIR}/pybind")
 
-#[[
+
 file(GLOB PYTHON_FILES "pybind/*.cpp" "pybind/*.h")
 
 # Check Python
@@ -72,4 +72,3 @@ set_target_properties(
 )
 
 target_link_libraries(fidexglo PUBLIC)
-]]
