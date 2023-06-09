@@ -1134,7 +1134,7 @@ int main(int nbParam, char **param)
       }
       if (isFidexGlo) {
         outputStatsFile << "FidexGlo :\n";
-        outputStatsFile << "The mean number of rules per train sample is : " << meanCurrentExecValuesFidexGlo[0] << "\n";
+        outputStatsFile << "The mean number of rules is : " << meanCurrentExecValuesFidexGlo[0] << "\n";
         outputStatsFile << "The mean sample covering number per rule is : " << meanCurrentExecValuesFidexGlo[1] << "\n";
         outputStatsFile << "The mean number of antecedents per rule is : " << meanCurrentExecValuesFidexGlo[2] << "\n";
         outputStatsFile << "The mean global rule fidelity rate is : " << meanCurrentExecValuesFidexGlo[3] << "\n";
@@ -1147,7 +1147,7 @@ int main(int nbParam, char **param)
         outputStatsFile << "The mean model test accuracy when rules and model agree is : " << meanCurrentExecValuesFidexGlo[10] << "\n";
         outputStatsFile << "The mean model test accuracy when activated rules and model agree is : " << meanCurrentExecValuesFidexGlo[11] << "\n";
         cout << "FidexGlo :" << endl;
-        cout << "The mean number of rules per train sample is : " << meanCurrentExecValuesFidexGlo[0] << endl;
+        cout << "The mean number of rules is : " << meanCurrentExecValuesFidexGlo[0] << endl;
         cout << "The mean sample covering number per rule is : " << meanCurrentExecValuesFidexGlo[1] << endl;
         cout << "The mean number of antecedents per rule is : " << meanCurrentExecValuesFidexGlo[2] << endl;
         cout << "The mean global rule fidelity rate is : " << meanCurrentExecValuesFidexGlo[3] << endl;
@@ -1300,8 +1300,8 @@ int main(int nbParam, char **param)
     }
     if (isFidexGlo) {
       outputStatsFile << "FidexGlo :\n";
-      outputStatsFile << "The mean number of rules per train sample is : " << meanNbRulesAll << "\n";
-      outputStatsFile << "The standard deviation of the number of rules per train sample is : " << stdNbRulesAll << "\n";
+      outputStatsFile << "The mean number of rules is : " << meanNbRulesAll << "\n";
+      outputStatsFile << "The standard deviation of the number of rules is : " << stdNbRulesAll << "\n";
       outputStatsFile << "The mean sample covering number per rule is : " << meanNbCoverAll << "\n";
       outputStatsFile << "The standard deviation of the sample covering number per rule is : " << stdNbCoverAll << "\n";
       outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntecedantsAll << "\n";
@@ -1325,8 +1325,8 @@ int main(int nbParam, char **param)
       outputStatsFile << "The mean model test accuracy when activated rules and model agree is : " << meanTestAccWhenActivatedRulesAndModelAgreeAll << "\n";
       outputStatsFile << "The standard deviation of the model test accuracy when activated rules and model agree is : " << stdTestAccWhenActivatedRulesAndModelAgreeAll << "\n";
       cout << "FidexGlo :" << endl;
-      cout << "The mean number of rules per train sample is : " << meanNbRulesAll << endl;
-      cout << "The standard deviation of the number of rules per train sample is : " << stdNbRulesAll << endl;
+      cout << "The mean number of rules is : " << meanNbRulesAll << endl;
+      cout << "The standard deviation of the number of rules is : " << stdNbRulesAll << endl;
       cout << "The mean sample covering number per rule is : " << meanNbCoverAll << endl;
       cout << "The standard deviation of the sample covering number per rule is : " << stdNbCoverAll << endl;
       cout << "The mean number of antecedents per rule is : " << meanNbAntecedantsAll << endl;

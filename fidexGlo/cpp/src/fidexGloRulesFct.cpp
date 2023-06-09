@@ -392,6 +392,7 @@ int fidexGloRules(const string &command) {
       vector<tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double>> rules;
       bool ruleCreated;
       int nbProblems = 0;
+      int nbRulesNotFound = 0;
       int currentMinNbCov;
       tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> rule; // Ex: ([X2<3.5 X3>=4], covering, class)
       auto exp = FidexAlgo();
@@ -407,11 +408,21 @@ int fidexGloRules(const string &command) {
         }
         currentMinNbCov = minNbCover;
         ruleCreated = false;
-
+        int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
           ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
+          } else {
+            counterFailed += 1;
+          }
+          if (counterFailed >= 30) {
+            nbRulesNotFound += 1;
+            auto it = std::find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
+            if (it != notCoveredSamples.end()) {
+              notCoveredSamples.erase(it);
+            }
+            break;
           }
         }
         if (currentMinNbCov + 1 < minNbCover) {
@@ -422,6 +433,9 @@ int fidexGloRules(const string &command) {
       }
 
       std::cout << "\nNumber of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
+      if (nbRulesNotFound > 0) {
+        std::cout << "Number of rules not found : " << nbRulesNotFound << endl;
+      }
 
       std::cout << "Fidex rules computed" << endl
                 << endl;
@@ -489,6 +503,7 @@ int fidexGloRules(const string &command) {
       vector<tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double>> rules;
       bool ruleCreated;
       int nbProblems = 0;
+      int nbRulesNotFound = 0;
       int currentMinNbCov;
       tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> rule; // Ex: ([X2<3.5 X3>=4], covering, class)
       auto exp = FidexAlgo();
@@ -503,20 +518,35 @@ int fidexGloRules(const string &command) {
         }
         currentMinNbCov = minNbCover;
         ruleCreated = false;
+        int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
           ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
+          } else {
+            counterFailed += 1;
+          }
+          if (counterFailed >= 30) {
+            nbRulesNotFound += 1;
+            auto it = std::find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
+            if (it != notCoveredSamples.end()) {
+              notCoveredSamples.erase(it);
+            }
+            break;
           }
         }
         if (currentMinNbCov + 1 < minNbCover) {
           nbProblems += 1;
         }
-
-        rules.push_back(rule);
+        if (ruleCreated) {
+          rules.push_back(rule);
+        }
       }
 
       std::cout << "\nNumber of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
+      if (nbRulesNotFound > 0) {
+        std::cout << "Number of rules not found : " << nbRulesNotFound << endl;
+      }
 
       std::cout << "Fidex rules computed" << endl
                 << endl;
@@ -588,6 +618,7 @@ int fidexGloRules(const string &command) {
       bool ruleCreated;
       int currentMinNbCov;
       int nbProblems = 0;
+      int nbRulesNotFound = 0;
       tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> rule; // Ex: ([X2<3.5 X3>=4], covering, class)
       auto exp = FidexAlgo();
 
@@ -604,34 +635,48 @@ int fidexGloRules(const string &command) {
         idSample = notCoveredSamples[0];
         currentMinNbCov = minNbCover;
         ruleCreated = false;
+        int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
           ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
+          } else {
+            counterFailed += 1;
+          }
+          if (counterFailed >= 30) {
+            nbRulesNotFound += 1;
+            break;
           }
           if (currentMinNbCov + 1 < minNbCover) {
             nbProblems += 1;
           }
         }
 
-        chosenRules.push_back(rule); // We add the new rule
+        if (ruleCreated) {
+          chosenRules.push_back(rule); // We add the new rule
 
-        // Delete covered samples
-        notCoveredSamples.erase(
-            std::remove_if(
-                notCoveredSamples.begin(), notCoveredSamples.end(), [&rule](int x) {
-                  return std::find(get<1>(rule).begin(), get<1>(rule).end(), x) != get<1>(rule).end();
-                  // find index of coveredSamples which is x (x is element of notCoveredSamples), std::find returns last if x not found
-                  // -> Removes x if it appears on coveredSamples (found before the end of coveredSamples)
-                }),
-            notCoveredSamples.end());
+          // Delete covered samples
+          notCoveredSamples.erase(
+              std::remove_if(
+                  notCoveredSamples.begin(), notCoveredSamples.end(), [&rule](int x) {
+                    return std::find(get<1>(rule).begin(), get<1>(rule).end(), x) != get<1>(rule).end();
+                    // find index of coveredSamples which is x (x is element of notCoveredSamples), std::find returns last if x not found
+                    // -> Removes x if it appears on coveredSamples (found before the end of coveredSamples)
+                  }),
+              notCoveredSamples.end());
 
-        nbRules++;
+          nbRules++;
+        } else {
+          notCoveredSamples.erase(notCoveredSamples.begin());
+        }
       }
 
       std::cout << endl;
 
       std::cout << "Number of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
+      if (nbRulesNotFound > 0) {
+        std::cout << "Number of rules not found : " << nbRulesNotFound << endl;
+      }
 
       std::cout << "We created " << nbRules << " rules." << endl
                 << endl;
