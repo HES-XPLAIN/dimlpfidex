@@ -711,6 +711,25 @@ int fidex(const string &command) {
             hyperspace.getHyperbox()->setFidelity(bestHyperbox->getFidelity());
             hyperspace.getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
             hyperspace.getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
+          } else if (minNbCover == 1 && dropoutDim == false && dropoutHyp == false) { // If we have a minimum covering of 1 and no dropout, we need to choose randomly a hyperplan, because we are stocked
+            std::unique_ptr<Hyperbox> randomHyperbox(new Hyperbox());                 // best hyperbox to choose for next step
+
+            std::uniform_int_distribution<int> distribution(0, static_cast<int>(nbIn) - 1);
+            int randomDimension = dimensions[distribution(gen)];
+            attribut = randomDimension % nbAttributs;
+            mainSampleValue = mainSamplesValues[currentSample][attribut];
+            std::uniform_int_distribution<int> distributionHyp(0, static_cast<int>(nbHyp) - 1);
+            int indexRandomHyp = dimensions[distributionHyp(gen)];
+            double hypValue = hyperspace.getHyperLocus()[randomDimension][indexRandomHyp];
+            bool mainSampleGreater = hypValue <= mainSampleValue;
+
+            // Check if main sample value is on the right of the hyperplan
+            randomHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
+            randomHyperbox->computeFidelity(mainSamplesPreds[currentSample], trainPreds);
+
+            hyperspace.getHyperbox()->setFidelity(randomHyperbox->getFidelity());
+            hyperspace.getHyperbox()->setCoveredSamples(randomHyperbox->getCoveredSamples());
+            hyperspace.getHyperbox()->discriminateHyperplan(randomDimension, indexRandomHyp);
           }
         }
 
@@ -720,8 +739,9 @@ int fidex(const string &command) {
       meanFidelity += hyperspace.getHyperbox()->getFidelity();
       std::cout << "Final fidelity : " << hyperspace.getHyperbox()->getFidelity() << endl;
       if (hyperspace.getHyperbox()->getFidelity() != 1) {
-        std::cout << "WARNING Fidelity is not maximum! You may want to try again." << endl
-                  << endl;
+        std::cout << "WARNING Fidelity is not maximum! You may want to try again." << endl;
+        std::cout << "If you can't find a maximal fidelity, try a lowest minimal covering" << endl;
+        std::cout << "If this is not enough, put the min covering to 1 and do not use dropout." << endl;
       } else {
         std::cout << endl;
       }
