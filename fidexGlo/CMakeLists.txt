@@ -59,7 +59,7 @@ if (Python_FOUND AND Python_Interpreter_FOUND AND pybind11_FOUND)
 endif()
 
 # Build binding lib
-pybind11_add_module(fidexglo
+pybind11_add_module(fidexGlo
     ${FIDEXGLO_SRC}
     ${FIDEXGLORULES_SRC}
     ${FIDEXGLOSTATS_SRC}
@@ -68,7 +68,7 @@ pybind11_add_module(fidexglo
 )
 
 set_target_properties(
-    fidexglo PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/dimlpfidex
+    fidexGlo PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/dimlpfidex
 )
 
-target_link_libraries(fidexglo PUBLIC)
+target_link_libraries(fidexGlo PUBLIC)
