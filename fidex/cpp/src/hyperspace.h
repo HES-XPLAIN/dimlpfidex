@@ -19,7 +19,7 @@ class Hyperspace {
 
 public:
   Hyperspace();
-  explicit Hyperspace(const char *hyperLocusFile);
+  explicit Hyperspace(const std::vector<std::vector<double>> &matHypLocus);
 
   std::shared_ptr<Hyperbox> getHyperbox() const;
   std::vector<std::vector<double>> getHyperLocus() const;

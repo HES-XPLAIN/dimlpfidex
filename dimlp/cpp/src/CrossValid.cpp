@@ -9,7 +9,6 @@
 #include "../../../fidexCommon/cpp/src/errorHandler.h"
 #include "../../../fidexGlo/cpp/src/fidexGloRulesFct.h"
 #include "../../../fidexGlo/cpp/src/fidexGloStatsFct.h"
-#include "../../../hyperLocus/cpp/src/hyperLocusFct.h"
 #include <fstream>
 #include <iostream>
 #include <sys/stat.h>
@@ -187,7 +186,6 @@ int main(int nbParam, char **param)
   bool dropoutHyp = false;
 
   string genericCommand = "dimlpTrn";
-  string hyperLocusGenericCommand = "hyperLocus -h 1";
   string fidexGenericCommand = "fidex";
   string fidexGloGenericCommand = "fidexGloRules";
   string fidexGloStatsGenericCommand = "fidexGloStats";
@@ -273,7 +271,8 @@ int main(int nbParam, char **param)
       case 'h':
         hiKnot = param[p];
         hiKnotInit = true;
-        hyperLocusGenericCommand += " -I " + hiKnot;
+        fidexGenericCommand += " -I " + hiKnot;
+        fidexGloGenericCommand += " -I " + hiKnot;
         break;
 
       case 'I':
@@ -306,7 +305,6 @@ int main(int nbParam, char **param)
         rootFolderTemp = param[p];
         rootFolderInit = true;
         genericCommand += " -S " + rootFolderTemp;
-        hyperLocusGenericCommand += " -S " + rootFolderTemp;
         fidexGenericCommand += " -R " + rootFolderTemp;
         fidexGloGenericCommand += " -S " + rootFolderTemp;
         fidexGloStatsGenericCommand += " -S " + rootFolderTemp;
@@ -886,18 +884,10 @@ int main(int nbParam, char **param)
         return -1; // If there is an error in the Trn
       }
 
-      // Compute hyperlocus in folder
-      hyperLocusGenericCommand += " -Q " + quant;
-      string hyperLocusCommand = hyperLocusGenericCommand;
-
-      hyperLocusCommand += " -W " + folderPathFromRoot + separator + "weights.wts ";
-      hyperLocusCommand += "-O " + folderPathFromRoot + separator + "hyperLocus.txt ";
-
-      cout << "Enter in hyperlocus function" << endl;
-      int resHyp = hyperLocus(hyperLocusCommand);
-      if (resHyp == -1) {
-        return -1; // If there is an error in the hyperLocus
-      }
+      fidexGenericCommand += " -Q " + quant;
+      fidexGloGenericCommand += " -Q " + quant;
+      fidexGenericCommand += " -W " + folderPathFromRoot + separator + "weights.wts ";
+      fidexGloGenericCommand += " -W " + folderPathFromRoot + separator + "weights.wts ";
 
       if (isFidex) {
         // Compute fidex stats in folder
@@ -909,7 +899,6 @@ int main(int nbParam, char **param)
         fidexCommand += "-S " + folderPathFromRoot + separator + "test.txt ";
         fidexCommand += "-p " + folderPathFromRoot + separator + "test.out ";
         fidexCommand += "-c " + folderPathFromRoot + separator + "testTarget.txt ";
-        fidexCommand += "-H " + folderPathFromRoot + separator + "hyperLocus.txt ";
         fidexCommand += "-O " + folderPathFromRoot + separator + "fidexRule.txt ";
         fidexCommand += "-s " + folderPathFromRoot + separator + "fidexStats.txt ";
         fidexCommand += "-r " + folderPathFromRoot + separator + "fidexResult.txt ";
@@ -956,7 +945,6 @@ int main(int nbParam, char **param)
         fidexGloCommand += " -T " + folderPathFromRoot + separator + "train.txt ";
         fidexGloCommand += "-P " + folderPathFromRoot + separator + "train.out ";
         fidexGloCommand += "-C " + folderPathFromRoot + separator + "trainTarget.txt ";
-        fidexGloCommand += "-H " + folderPathFromRoot + separator + "hyperLocus.txt ";
         fidexGloCommand += "-O " + folderPathFromRoot + separator + "fidexGloRules.txt ";
         fidexGloCommand += "-r " + folderPathFromRoot + separator + "fidexGloResult.txt ";
         fidexGloCommand += "-M " + heuristic;
