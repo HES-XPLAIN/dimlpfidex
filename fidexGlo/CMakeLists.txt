@@ -60,10 +60,10 @@ endif()
 
 # Build binding lib
 pybind11_add_module(fidexGlo
+    ${COMMON_SRC_FIDEX}
     ${FIDEXGLO_SRC}
     ${FIDEXGLORULES_SRC}
     ${FIDEXGLOSTATS_SRC}
-    ${COMMON_SRC_FIDEX}
     ${PYTHON_FILES}
 )
 
