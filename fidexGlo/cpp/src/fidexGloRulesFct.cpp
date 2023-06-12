@@ -6,9 +6,9 @@ void showRulesParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 
   std::cout << "Obligatory parameters : \n\n";
-  cout << "fidexGloRules -S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+  std::cout << "fidexGloRules -S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
   std::cout << "-T <train dataset file> -P <train prediction file> -C <train true class file> ";
-  std::cout << "-W <weights file> ";
+  std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> ";
   std::cout << "-Q <number of stairs in staircase activation function> ";
   std::cout << "-I <high side of the interval> ";
   std::cout << "-O <Rules output file> ";
@@ -16,6 +16,7 @@ void showRulesParams() {
   std::cout << "<Options>\n\n";
 
   std::cout << "Options are: \n\n";
+  std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging>";
   std::cout << "-A <file of attributes>\n";
   std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
   std::cout << "-i <max iteration number>\n";
@@ -57,7 +58,8 @@ int fidexGloRules(const string &command) {
     string trainDataFileTrueClassTemp; // Train true classes
     bool trainDataFileTrueClassInit = false;
 
-    string weightsFileTemp;
+    std::string weightsFileTemp;
+    std::vector<std::string> weightsFilesTemp;
     bool weightsFileInit = false;
     string rulesFileTemp;
     bool rulesFileInit = false;
@@ -66,6 +68,8 @@ int fidexGloRules(const string &command) {
     string rootFolderTemp;
     string attributFileTemp; // attribut file
     bool attributFileInit = false;
+
+    int nbDimlpNets = 1; // Number of networks. 1 means no bagging
 
     int nbQuantLevels; // Number of steps of the step function
     bool nbQuantLevelsInit = false;
@@ -120,9 +124,17 @@ int fidexGloRules(const string &command) {
           trainDataFileTrueClassInit = true;
           break;
 
-        case 'W':
+        case 'W': {
           weightsFileTemp = arg;
           weightsFileInit = true;
+        } break;
+
+        case 'N':
+          if (CheckPositiveInt(arg))
+            nbDimlpNets = atoi(arg);
+          else
+            return -1;
+
           break;
 
         case 'Q':
@@ -221,6 +233,15 @@ int fidexGloRules(const string &command) {
       p++;
     }
 
+    // Fill weights vector
+    if (nbDimlpNets == 1) {
+      weightsFilesTemp.push_back(weightsFileTemp);
+    } else {
+      for (int n = 0; n < nbDimlpNets; n++) {
+        weightsFilesTemp.push_back(weightsFileTemp + std::to_string(n + 1) + ".wts");
+      }
+    }
+
     // ----------------------------------------------------------------------
     // create paths with root foler
 
@@ -228,7 +249,7 @@ int fidexGloRules(const string &command) {
     const char *trainDataFilePred = nullptr;
     const char *trainDataFileTrueClass = nullptr;
     const char *rulesFile = nullptr;
-    const char *weightsFile = nullptr;
+    std::vector<const char *> weightsFiles;
     const char *consoleFile = nullptr;
     const char *attributFile = nullptr;
 
@@ -259,8 +280,10 @@ int fidexGloRules(const string &command) {
     }
 
     if (weightsFileInit) {
-      weightsFileTemp = root + weightsFileTemp;
-      weightsFile = &weightsFileTemp[0];
+      for (int i; i < weightsFilesTemp.size(); i++) {
+        weightsFilesTemp[i] = root + weightsFilesTemp[i];
+        weightsFiles.push_back(&weightsFilesTemp[i][0]);
+      }
     }
 
     if (consoleFileInit) {
@@ -285,7 +308,7 @@ int fidexGloRules(const string &command) {
       throw CommandArgumentException("The train true classes file has to be given with option -C");
     }
     if (!weightsFileInit) {
-      throw CommandArgumentException("The hyperLocus file has to be given with option -H");
+      throw CommandArgumentException("The weights file(s) have to be given with option -W");
     }
     if (!nbQuantLevelsInit) {
       throw CommandArgumentException("The number of steps in the step function has to be given with option -Q");
@@ -379,8 +402,14 @@ int fidexGloRules(const string &command) {
 
     std::cout << "Creation of hyperspace..." << endl;
 
-    std::vector<std::vector<double>> matHypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
-    FidexGloNameSpace::Hyperspace hyperspace(matHypLocus);                                           // Initialize hyperbox and get hyperplans
+    std::vector<std::vector<double>> matHypLocus;
+
+    for (const auto &weightsFile : weightsFiles) {
+      std::vector<std::vector<double>> hypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
+      matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end());                      // Concatenate hypLocus to matHypLocus
+    }
+
+    FidexGloNameSpace::Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans
 
     const auto nbIn = static_cast<int>(hyperspace.getHyperLocus().size()); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
     const auto nbHyp = static_cast<int>(hyperspace.getHyperLocus()[0].size());

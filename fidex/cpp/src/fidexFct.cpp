@@ -9,13 +9,14 @@ void showFidexParams() {
   std::cout << "fidex -R <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
   std::cout << "-T <train dataset file> -P <train prediction file> -C <train true class file> ";
   std::cout << "-S <test sample(s) data file with data, prediction(if no -p) and true class(if no -c)> ";
-  std::cout << "-W <weights file> ";
+  std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> ";
   std::cout << "-Q <number of stairs in staircase activation function> ";
   std::cout << "-I <high side of the interval> ";
   std::cout << "-O <Rule output file>";
   std::cout << "<Options>\n\n";
 
   std::cout << "Options are: \n\n";
+  std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging>";
   std::cout << "-p <test prediction file> ";
   std::cout << "-c <test true class file> If at least -p is specified, -S needs to have only test datas\n";
   std::cout << "-A <file of attributes>\n";
@@ -71,7 +72,8 @@ int fidex(const string &command) {
 
     vector<bool> hasTrueClass; // Check if we have the true classes
 
-    string weightsFileTemp;
+    std::string weightsFileTemp;
+    std::vector<std::string> weightsFilesTemp;
     bool weightsFileInit = false;
     string ruleFileTemp;
     bool ruleFileInit = false;
@@ -80,6 +82,8 @@ int fidex(const string &command) {
     string consoleFileTemp;
     bool consoleFileInit = false;
     string rootFolderTemp;
+
+    int nbDimlpNets = 1; // Number of networks. 1 means no bagging
 
     int nbQuantLevels; // Number of steps of the step function
     bool nbQuantLevelsInit = false;
@@ -150,9 +154,17 @@ int fidex(const string &command) {
           attributFileInit = true;
           break;
 
-        case 'W':
+        case 'W': {
           weightsFileTemp = arg;
           weightsFileInit = true;
+        } break;
+
+        case 'N':
+          if (CheckPositiveInt(arg))
+            nbDimlpNets = atoi(arg);
+          else
+            return -1;
+
           break;
 
         case 'Q':
@@ -244,6 +256,15 @@ int fidex(const string &command) {
 
     // ----------------------------------------------------------------------
 
+    // Fill weights vector
+    if (nbDimlpNets == 1) {
+      weightsFilesTemp.push_back(weightsFileTemp);
+    } else {
+      for (int n = 0; n < nbDimlpNets; n++) {
+        weightsFilesTemp.push_back(weightsFileTemp + std::to_string(n + 1) + ".wts");
+      }
+    }
+
     // create paths with root foler
 
     const char *trainDataFile = nullptr;
@@ -253,7 +274,7 @@ int fidex(const string &command) {
     const char *mainSamplesPredFile = nullptr;
     const char *mainSamplesClassFile = nullptr;
     const char *attributFile = nullptr;
-    const char *weightsFile = nullptr;
+    std::vector<const char *> weightsFiles;
     const char *ruleFile = nullptr;
     const char *statsFile = nullptr;
     const char *consoleFile = nullptr;
@@ -300,8 +321,10 @@ int fidex(const string &command) {
     }
 
     if (weightsFileInit) {
-      weightsFileTemp = root + weightsFileTemp;
-      weightsFile = &weightsFileTemp[0];
+      for (int i; i < weightsFilesTemp.size(); i++) {
+        weightsFilesTemp[i] = root + weightsFilesTemp[i];
+        weightsFiles.push_back(&weightsFilesTemp[i][0]);
+      }
     }
 
     if (ruleFileInit) {
@@ -612,8 +635,13 @@ int fidex(const string &command) {
     // compute hyperspace
     std::cout << "Creation of hyperspace..." << endl;
 
-    std::vector<std::vector<double>> matHypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
-    FidexNameSpace::Hyperspace hyperspace(matHypLocus);                                              // Initialize hyperbox and get hyperplans
+    std::vector<std::vector<double>> matHypLocus;
+
+    for (const auto &weightsFile : weightsFiles) {
+      std::vector<std::vector<double>> hypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
+      matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end());                      // Concatenate hypLocus to matHypLocus
+    }
+    FidexNameSpace::Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans
 
     const size_t nbIn = hyperspace.getHyperLocus().size(); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
     const size_t nbHyp = hyperspace.getHyperLocus()[0].size();
