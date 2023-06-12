@@ -60,10 +60,7 @@ endif()
 
 # Build binding lib
 pybind11_add_module(fidexGlo
-<<<<<<< HEAD
     ${COMMON_SRC_FIDEX}
-=======
->>>>>>> 62a29be (Corrected binding for WSL but doesn't work for Windows)
     ${FIDEXGLO_SRC}
     ${FIDEXGLORULES_SRC}
     ${FIDEXGLOSTATS_SRC}
@@ -74,12 +71,4 @@ set_target_properties(
     fidexGlo PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/dimlpfidex
 )
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 target_link_libraries(fidexGlo PUBLIC)
-=======
-target_link_libraries(fidexglo PUBLIC)
->>>>>>> 26bce39 (Binding Python worked for Fidex on Linux but after added FidexGlo it doesn't, and does not compile on Windows)
-=======
-target_link_libraries(fidexGlo PUBLIC)
->>>>>>> 62a29be (Corrected binding for WSL but doesn't work for Windows)
