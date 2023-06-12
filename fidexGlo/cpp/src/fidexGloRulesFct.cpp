@@ -8,7 +8,9 @@ void showRulesParams() {
   std::cout << "Obligatory parameters : \n\n";
   cout << "fidexGloRules -S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
   std::cout << "-T <train dataset file> -P <train prediction file> -C <train true class file> ";
-  std::cout << "-H <hyperLocus file> ";
+  std::cout << "-W <weights file> ";
+  std::cout << "-Q <number of stairs in staircase activation function> ";
+  std::cout << "-I <high side of the interval> ";
   std::cout << "-O <Rules output file> ";
   std::cout << "-M <Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo> ";
   std::cout << "<Options>\n\n";
@@ -55,8 +57,8 @@ int fidexGloRules(const string &command) {
     string trainDataFileTrueClassTemp; // Train true classes
     bool trainDataFileTrueClassInit = false;
 
-    string hyperLocusFileTemp;
-    bool hyperLocusFileInit = false;
+    string weightsFileTemp;
+    bool weightsFileInit = false;
     string rulesFileTemp;
     bool rulesFileInit = false;
     string consoleFileTemp;
@@ -64,6 +66,11 @@ int fidexGloRules(const string &command) {
     string rootFolderTemp;
     string attributFileTemp; // attribut file
     bool attributFileInit = false;
+
+    int nbQuantLevels; // Number of steps of the step function
+    bool nbQuantLevelsInit = false;
+    double hiKnot; // High end of the interval for each dimension, a hyperplan can't be after
+    bool hiKnotInit = false;
 
     int heuristic = -1;
     bool heuristicInit = false;
@@ -113,9 +120,27 @@ int fidexGloRules(const string &command) {
           trainDataFileTrueClassInit = true;
           break;
 
-        case 'H':
-          hyperLocusFileTemp = arg;
-          hyperLocusFileInit = true;
+        case 'W':
+          weightsFileTemp = arg;
+          weightsFileInit = true;
+          break;
+
+        case 'Q':
+          if (CheckPositiveInt(arg)) {
+            nbQuantLevels = atoi(arg);
+            nbQuantLevelsInit = true;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
+          }
+          break;
+
+        case 'I':
+          if (CheckFloatFid(arg) && atof(arg) > 0) {
+            hiKnot = atof(arg);
+            hiKnotInit = true;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", strictly positive float requested");
+          }
           break;
 
         case 'O':
@@ -203,7 +228,7 @@ int fidexGloRules(const string &command) {
     const char *trainDataFilePred = nullptr;
     const char *trainDataFileTrueClass = nullptr;
     const char *rulesFile = nullptr;
-    const char *hyperLocusFile = nullptr;
+    const char *weightsFile = nullptr;
     const char *consoleFile = nullptr;
     const char *attributFile = nullptr;
 
@@ -233,9 +258,9 @@ int fidexGloRules(const string &command) {
       rulesFile = &rulesFileTemp[0];
     }
 
-    if (hyperLocusFileInit) {
-      hyperLocusFileTemp = root + hyperLocusFileTemp;
-      hyperLocusFile = &hyperLocusFileTemp[0];
+    if (weightsFileInit) {
+      weightsFileTemp = root + weightsFileTemp;
+      weightsFile = &weightsFileTemp[0];
     }
 
     if (consoleFileInit) {
@@ -259,8 +284,14 @@ int fidexGloRules(const string &command) {
     if (!trainDataFileTrueClassInit) {
       throw CommandArgumentException("The train true classes file has to be given with option -C");
     }
-    if (!hyperLocusFileInit) {
+    if (!weightsFileInit) {
       throw CommandArgumentException("The hyperLocus file has to be given with option -H");
+    }
+    if (!nbQuantLevelsInit) {
+      throw CommandArgumentException("The number of steps in the step function has to be given with option -Q");
+    }
+    if (!hiKnotInit) {
+      throw CommandArgumentException("The right end of the interval in which hyperplans are contained has to be given with option -I");
     }
     if (!rulesFileInit) {
       throw CommandArgumentException("The output rules file has to be given with option -O");
@@ -348,7 +379,8 @@ int fidexGloRules(const string &command) {
 
     std::cout << "Creation of hyperspace..." << endl;
 
-    FidexGloNameSpace::Hyperspace hyperspace(hyperLocusFile); // Initialize hyperbox and get hyperplans
+    std::vector<std::vector<double>> matHypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
+    FidexGloNameSpace::Hyperspace hyperspace(matHypLocus);                                           // Initialize hyperbox and get hyperplans
 
     const auto nbIn = static_cast<int>(hyperspace.getHyperLocus().size()); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
     const auto nbHyp = static_cast<int>(hyperspace.getHyperLocus()[0].size());
@@ -783,11 +815,11 @@ int fidexGloRules(const string &command) {
 
 /* Exemples pour lancer le code :
 
-./fidexGloRules -T datanormTrain -P dimlpDatanormTrain.out -C dataclass2Train -H hyperLocusDatanorm -O globalRulesDatanorm.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesResult -S ../fidexGlo/datafiles/
+./fidexGloRules -T datanormTrain -P dimlpDatanormTrain.out -C dataclass2Train -W dimlpDatanorm.wts -Q 50 -I 5 -O globalRulesDatanorm.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesResult -S ../fidexGlo/datafiles/
 
-.\fidexGloRules.exe -T covidTrainData.txt -P covidTrainPred.out -C covidTrainClass.txt -H hyperLocusCovid -O globalRulesCovid.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesCovidResult -S ../dimlp/datafiles/covidDataset
-.\fidexGloRules.exe -T spamTrainData.txt -P spamTrainPred.out -C spamTrainClass.txt -H hyperLocusSpam -O globalRulesSpam.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesSpamResult -S ../dimlp/datafiles/spamDataset
-.\fidexGloRules.exe -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -H hyperLocusIsoletV2 -O globalRulesIsoletV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesIsoletResultV2 -S ../dimlp/datafiles/isoletDataset
-.\fidexGloRules.exe -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -H hyperLocusHAPTV2 -O globalRulesHAPTV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesHAPTResultV2 -S ../dimlp/datafiles/HAPTDataset
+.\fidexGloRules.exe -T covidTrainData.txt -P covidTrainPred.out -C covidTrainClass.txt -W covid.wts -Q 50 -I 5 -O globalRulesCovid.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesCovidResult -S ../dimlp/datafiles/covidDataset
+.\fidexGloRules.exe -T spamTrainData.txt -P spamTrainPred.out -C spamTrainClass.txt -W spam.wts -Q 50 -I 5 -O globalRulesSpam.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesSpamResult -S ../dimlp/datafiles/spamDataset
+.\fidexGloRules.exe -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -W isoletV2.wts -Q 50 -I 5 -O globalRulesIsoletV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesIsoletResultV2 -S ../dimlp/datafiles/isoletDataset
+.\fidexGloRules.exe -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -W HAPTV2.wts -Q 50 -I 5 -O globalRulesHAPTV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesHAPTResultV2 -S ../dimlp/datafiles/HAPTDataset
 
 */

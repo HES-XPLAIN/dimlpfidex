@@ -2,34 +2,9 @@
 using namespace std;
 
 namespace FidexGloNameSpace {
-Hyperspace::Hyperspace(const char *hyperLocusFile) {
-
-  // Get hyperLocus
-  fstream fileLocus;
-
-  string line;
-
-  fileLocus.open(hyperLocusFile, ios::in); // Read hyperLocus file
-  if (fileLocus.fail()) {
-    throw FileNotFoundError("Error : file " + std::string(hyperLocusFile) + " not found");
-  }
-
-  while (!fileLocus.eof()) {
-    getline(fileLocus, line);
-    if (line.length() != 0) {
-      std::stringstream myLine(line);
-      double value;
-      vector<double> tempVect;
-      while (myLine >> value) {
-        tempVect.push_back(value);
-      }
-      hyperLocus.push_back(tempVect);
-    }
-  }
-  fileLocus.close(); // close file
+Hyperspace::Hyperspace(const std::vector<std::vector<double>> &matHypLocus) : hyperLocus(matHypLocus) {
 
   vector<pair<int, int>> discriminativeHyperplans;
-
   hyperbox = std::make_shared<Hyperbox>(discriminativeHyperplans);
 }
 
