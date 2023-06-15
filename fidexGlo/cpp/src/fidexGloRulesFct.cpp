@@ -464,8 +464,9 @@ int fidexGloRules(const string &command) {
 
       for (int idSample = 0; idSample < nbDatas; idSample++) {
 
-        if (idSample % int(nbDatas / 100) == 0) {
-          cout << "Processing : " << int((double(idSample) / nbDatas) * 100) << "%" << endl;
+        if (idSample % int(nbDatas / 100) == 0 && consoleFileInit == false) {
+          cout << "Processing : " << int((double(idSample) / nbDatas) * 100) << "%\r";
+          std::cout.flush();
         }
         currentMinNbCov = minNbCover;
         ruleCreated = false;
@@ -574,8 +575,9 @@ int fidexGloRules(const string &command) {
                 << endl;
       for (int idSample = 0; idSample < nbDatas; idSample++) {
 
-        if (idSample % int(nbDatas / 100) == 0) {
-          cout << "Processing : " << int((double(idSample) / nbDatas) * 100) << "%" << endl;
+        if (idSample % int(nbDatas / 100) == 0 && consoleFileInit == false) {
+          cout << "Processing : " << int((double(idSample) / nbDatas) * 100) << "%\r";
+          std::cout.flush();
         }
         currentMinNbCov = minNbCover;
         ruleCreated = false;
@@ -689,8 +691,9 @@ int fidexGloRules(const string &command) {
       // While there is some not covered samples
       while (!notCoveredSamples.empty()) {
 
-        if ((nbDatas - notCoveredSamples.size()) % int(nbDatas / 100) == 0) {
-          cout << "Processing : " << int((double(nbDatas - notCoveredSamples.size()) / nbDatas) * 100) << "%" << endl;
+        if ((nbDatas - notCoveredSamples.size()) % int(nbDatas / 100) == 0 && consoleFileInit == false) {
+          cout << "Processing : " << int((double(nbDatas - notCoveredSamples.size()) / nbDatas) * 100) << "%r";
+          std::cout.flush();
         }
 
         idSample = notCoveredSamples[0];
