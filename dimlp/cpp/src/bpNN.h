@@ -24,8 +24,10 @@
 #include "layerSP3.h"
 #include "layerSP4.h"
 #include "layerSP5.h"
-#include <bits/stdc++.h>
+#include <algorithm>
 #include <fstream>
+#include <iomanip>
+#include <sstream>
 
 const int LD2 = 1;
 
