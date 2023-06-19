@@ -190,7 +190,7 @@ int main(int nbParam, char **param)
   string fidexGloGenericCommand = "fidexGloRules";
   string fidexGloStatsGenericCommand = "fidexGloStats";
 
-  string hiKnot;
+  string hiKnot = "5";
   string nbIn;
   string nbOut;
   string arch;
@@ -200,7 +200,6 @@ int main(int nbParam, char **param)
   string dropoutDimParam;
   string dropoutHypParam;
 
-  bool hiKnotInit = false;
   bool nbInInit = false;
   bool nbOutInit = false;
   const char *ptrParam;
@@ -270,7 +269,6 @@ int main(int nbParam, char **param)
 
       case 'h':
         hiKnot = param[p];
-        hiKnotInit = true;
         fidexGenericCommand += " -I " + hiKnot;
         fidexGloGenericCommand += " -I " + hiKnot;
         break;
@@ -441,12 +439,6 @@ int main(int nbParam, char **param)
 
   if (algorithm == "fidexGlo" || algorithm == "both") {
     isFidexGlo = true;
-  }
-
-  if (hiKnotInit == false) {
-    cout << "Give the high end of the interval for each dimension where an hyperplan can't be after with -h selection please."
-         << "\n";
-    return -1;
   }
 
   if (nbInInit == false) {

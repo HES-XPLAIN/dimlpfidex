@@ -1,11 +1,11 @@
 import math
 
 class StairObj:
-    def __init__(self, nb_bins):
+    def __init__(self, nb_bins, hiknot):
         self.nb_bins = nb_bins
         self.nb_knots = nb_bins + 1 # Stair is <= activation
 
-        self.hiknot = 0.0
+        self.hiknot = hiknot
         self.lowknot = 0.0
         self.val_lowknot = 0.0
         self.val_highknot = 0.0
@@ -20,7 +20,6 @@ class StairObj:
         self.activate_knots()
 
     def init_member_const_for_ansi(self):
-        self.hiknot = 5.0
         self.lowknot = -self.hiknot
         self.dist = self.hiknot - self.lowknot
 

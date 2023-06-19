@@ -6,6 +6,11 @@ def check_strictly_positive(variable):
         return True
     return False
 
+def check_int(variable):
+    if isinstance(variable, int) and variable > 0:
+        return True
+    return False
+
 def get_data(file_name): # Get data from file
     try:
         with open(file_name, "r") as my_file:
@@ -24,13 +29,13 @@ def get_data(file_name): # Get data from file
         raise ValueError(f"Error : Couldn't open file {file_name}.")
 
 
-def compute_first_hidden_layer(input_data, k, nb_stairs):
+def compute_first_hidden_layer(input_data, k, nb_stairs, hiknot):
     mu = np.mean(input_data, axis=0) # mean over variables
     sigma = np.std(input_data, axis=0)
     weights = k/sigma
     biais = -k*mu/sigma
     h = k*(input_data-mu)/sigma # With indices : hij=K*(xij-muj)/sigmaj
-    stair = StairObj(nb_stairs)
+    stair = StairObj(nb_stairs, hiknot)
 
     output_data = [[stair.funct(d) for d in row] for row in h]
 
@@ -51,8 +56,9 @@ def svmTrn(*args, **kwargs):
             print("----------------------------")
             print("Optional parameters :")
             print("test_class : test class file")
-            print("nb_stairs : number of stairs in staircase activation function (=50 by default)")
-            print("K : Parameter to improve dynamics (=1 by default)")
+            print("nb_stairs : number of stairs in staircase activation function (50 by default)")
+            print("hiknot : <high side of the interval (5 by default)>");
+            print("K : Parameter to improve dynamics (1 by default)")
             print("----------------------------")
             print("Here is an example, keep same parameter names :")
             print('svmTrn(trainData="trainDataFile.txt", testData="testDataFile.txt")')
@@ -66,6 +72,7 @@ def svmTrn(*args, **kwargs):
             test_class_file = kwargs.get('test_class')
             K = kwargs.get('K')
             quant = kwargs.get('nb_stairs')
+            hiknot = kwargs.get('hiknot')
 
             # Check parameters
 
@@ -105,6 +112,12 @@ def svmTrn(*args, **kwargs):
                 if (not check_strictly_positive(quant)):
                     print('Error, parameter quant is not a strictly positive number')
                     return
+            if hiknot is None:
+                hiknot = 5
+            else:
+                if (not check_int(quant)):
+                    print('Error, parameter hiknot is not a number')
+                    return
 
             # Get data
             train_data = get_data(train_data_file)
@@ -115,8 +128,8 @@ def svmTrn(*args, **kwargs):
 
             # Get weights and biais from first hidden layer as well as data transformed in first hidden layer
 
-            train_data_h1, train_weights_h1, train_biais_h1 = compute_first_hidden_layer(train_data, K, quant)
-            test_data_h1, test_weights_h1, test_biais_h1 = compute_first_hidden_layer(test_data, K, quant)
+            train_data_h1, train_weights_h1, train_biais_h1 = compute_first_hidden_layer(train_data, K, quant, hiknot)
+            test_data_h1, test_weights_h1, test_biais_h1 = compute_first_hidden_layer(test_data, K, quant, hiknot)
 
     except ValueError as error:
         print(error)
