@@ -10,7 +10,6 @@ void showRulesParams() {
   std::cout << "-T <train dataset file> -P <train prediction file> -C <train true class file> ";
   std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> ";
   std::cout << "-Q <number of stairs in staircase activation function> ";
-  std::cout << "-I <high side of the interval> ";
   std::cout << "-O <Rules output file> ";
   std::cout << "-M <Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo> ";
   std::cout << "<Options>\n\n";
@@ -23,6 +22,7 @@ void showRulesParams() {
   std::cout << "-v <minimum covering number>\n";
   std::cout << "-d <dimension dropout parameter>\n";
   std::cout << "-h <hyperplan dropout parameter>\n";
+  std::cout << "-I <high side of the interval (5 by default)> ";
   std::cout << "-z <seed (0=ranodom)>";
 
   std::cout << "\n-------------------------------------------------\n\n";
@@ -73,8 +73,7 @@ int fidexGloRules(const string &command) {
 
     int nbQuantLevels; // Number of steps of the step function
     bool nbQuantLevelsInit = false;
-    double hiKnot; // High end of the interval for each dimension, a hyperplan can't be after
-    bool hiKnotInit = false;
+    double hiKnot = 5; // High end of the interval for each dimension, a hyperplan can't be after
 
     int heuristic = -1;
     bool heuristicInit = false;
@@ -149,7 +148,6 @@ int fidexGloRules(const string &command) {
         case 'I':
           if (CheckFloatFid(arg) && atof(arg) > 0) {
             hiKnot = atof(arg);
-            hiKnotInit = true;
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", strictly positive float requested");
           }
@@ -312,9 +310,6 @@ int fidexGloRules(const string &command) {
     }
     if (!nbQuantLevelsInit) {
       throw CommandArgumentException("The number of steps in the step function has to be given with option -Q");
-    }
-    if (!hiKnotInit) {
-      throw CommandArgumentException("The right end of the interval in which hyperplans are contained has to be given with option -I");
     }
     if (!rulesFileInit) {
       throw CommandArgumentException("The output rules file has to be given with option -O");
