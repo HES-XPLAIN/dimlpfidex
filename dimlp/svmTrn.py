@@ -1,4 +1,5 @@
 import numpy as np
+from .stairObj import StairObj
 
 def check_strictly_positive(variable):
     if isinstance(variable, (float,int)) and variable > 0:
@@ -23,17 +24,20 @@ def get_data(file_name): # Get data from file
         raise ValueError(f"Error : Couldn't open file {file_name}.")
 
 
-def compute_first_hidden_layer(input_data, K):
+def compute_first_hidden_layer(input_data, k, nb_stairs):
     mu = np.mean(input_data, axis=0) # mean over variables
     sigma = np.std(input_data, axis=0)
-    weights = K/sigma
-    biais = -K*mu/sigma
-    h = K*(input_data-mu)/sigma #hij=K*(xij-muj)/sigmaj
-    return h, weights, biais
+    weights = k/sigma
+    biais = -k*mu/sigma
+    h = k*(input_data-mu)/sigma # With indices : hij=K*(xij-muj)/sigmaj
+    stair = StairObj(nb_stairs)
+
+    output_data = [[stair.funct(d) for d in row] for row in h]
+
+    return output_data, weights, biais
 
 def svmTrn(*args, **kwargs):
     try:
-
 
         if args or not kwargs:
             print("---------------------------------------------------------------------")
@@ -47,6 +51,7 @@ def svmTrn(*args, **kwargs):
             print("----------------------------")
             print("Optional parameters :")
             print("test_class : test class file")
+            print("nb_stairs : number of stairs in staircase activation function (=50 by default)")
             print("K : Parameter to improve dynamics (=1 by default)")
             print("----------------------------")
             print("Here is an example, keep same parameter names :")
@@ -60,6 +65,7 @@ def svmTrn(*args, **kwargs):
             test_data_file = kwargs.get('test_data')
             test_class_file = kwargs.get('test_class')
             K = kwargs.get('K')
+            quant = kwargs.get('nb_stairs')
 
             # Check parameters
 
@@ -93,17 +99,24 @@ def svmTrn(*args, **kwargs):
                 if (not check_strictly_positive(K)):
                     print('Error, parameter K is not a strictly positive number')
                     return
+            if quant is None:
+                quant = 50
+            else:
+                if (not check_strictly_positive(quant)):
+                    print('Error, parameter quant is not a strictly positive number')
+                    return
 
             # Get data
-                train_data = get_data(train_data_file)
-                train_class = get_data(train_class_file)
-                test_data = get_data(test_data_file)
-                if (test_class_file is not None):
-                    test_class = get_data(test_class_file)
+            train_data = get_data(train_data_file)
+            train_class = get_data(train_class_file)
+            test_data = get_data(test_data_file)
+            if (test_class_file is not None):
+                test_class = get_data(test_class_file)
 
-            # Get weights and biais from first hidden layer as well as transformed data
+            # Get weights and biais from first hidden layer as well as data transformed in first hidden layer
 
-            compute_first_hidden_layer(train_data, K)
+            train_data_h1, train_weights_h1, train_biais_h1 = compute_first_hidden_layer(train_data, K, quant)
+            test_data_h1, test_weights_h1, test_biais_h1 = compute_first_hidden_layer(test_data, K, quant)
 
     except ValueError as error:
         print(error)
