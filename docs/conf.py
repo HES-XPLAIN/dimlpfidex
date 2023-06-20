@@ -38,7 +38,6 @@ breathe_projects = {
     "dimlp": "../build/docs/doxygen/xml/",
     "fidex": "../build/docs/doxygen/xml/",
     "fidexglo": "../build/docs/doxygen/xml/",
-    "hyperlocust": "../build/docs/doxygen/xml/",
 }
 breathe_default_project = "dimlp"
 
