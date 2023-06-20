@@ -96,8 +96,7 @@ static void GiveAllParam()
 {
   cout << "\n-------------------------------------------------\n\n";
 
-  cout << "crossValid -S <Root folder with respect to folder bin where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
-  cout << "-C <choose the algorithms by giving : fidex fidexGlo or both>";
+  cout << "crossValid -C <choose the algorithms by giving : fidex fidexGlo or both>";
   cout << "-L <training set file(path with respect to specified root folder)> -1 <file of train classes> ";
   cout << "-h <high side of the interval> "; // Ex: 5
   cout << "-I <number of input neurons> -O <number of output neurons>";
@@ -105,6 +104,7 @@ static void GiveAllParam()
   cout << " <Options>\n\n";
 
   cout << "Options are: \n\n";
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
   cout << "-K <K-fold cross-validation>\n";                                                        // Not to be 10
   cout << "-N <number of times we do the cross-validation>\n";                                     // Not to be 10
   cout << "-F <Folder where to save crossValidation data>\n";                                      // Not to be CrossValidation
@@ -415,11 +415,6 @@ int main(int nbParam, char **param)
   }
 
   // ----------------------------------------------------------------------
-  if (rootFolderInit == false) {
-    cout << "Give a root folder to save results with -S selection please."
-         << "\n";
-    return -1;
-  }
 
   if (algorithmInit == false) {
     cout << "Give a algorithm with -C selection please. You can give fidex, fidexGlo or both."
@@ -465,7 +460,12 @@ int main(int nbParam, char **param)
   string separator = "\\";
 #endif
 
-  string root = rootFolderTemp + separator;
+  string root;
+  if (rootFolderInit) {
+    root = ".." + separator + rootFolderTemp + separator;
+  } else {
+    root = ".." + separator;
+  }
 
   if (learnTarInit) {
     learnTarTemp = root + learnTarTemp;
@@ -1380,4 +1380,4 @@ int main(int nbParam, char **param)
   std::cout << "\nFull execution time = " << temps << " sec\n";
 }
 
-// .\CrossValid.exe -L datanorm -1 dataclass2 -K 3 -N 2 -I 16 -H2 5 -O 2 -F CrossValidation -S ../dimlp/datafiles -h 5 -v 25 -x 0.5 -y 0.5 -C both
+// ./CrossValid -L datanorm -1 dataclass2 -K 3 -N 2 -I 16 -H2 5 -O 2 -F CrossValidation -S dimlp/datafiles -h 5 -v 25 -x 0.5 -y 0.5 -C both

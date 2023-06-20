@@ -9,14 +9,14 @@ void GiveAllParamPred()
 {
   cout << "\n-------------------------------------------------\n\n";
 
-  cout << "DimlpPred -S <Folder with respect to folder bin where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
-  cout << "-T <file of examples(path with respect to specified root folder)> ";
+  cout << "DimlpPred -T <file of examples(path with respect to specified root folder)> ";
   cout << "-W <file of weights> ";
   cout << "-I <number of input neurons> -O <number of output neurons>";
 
   cout << " <Options>\n\n";
 
   cout << "Options are: \n\n";
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
   cout << "-p <output prediction file>";                 // If we want to specify output prediction file, not to be dimlp.out
   cout << "-r <file where you redirect console result>"; // If we want to redirect console result to file
   cout << "-H1 <number of neurons in the first hidden layer> ";
@@ -214,10 +214,20 @@ int dimlpPred(const string &command) {
   const char *predFile = nullptr;
   const char *consoleFile = nullptr;
 
+  string root;
 #if defined(__unix__) || defined(__APPLE__)
-  string root = rootFolderTemp + "/";
+  if (rootFolderInit) {
+    root = "../" + rootFolderTemp + "/";
+  } else {
+    root = "../";
+  }
+
 #elif defined(_WIN32)
-  string root = rootFolderTemp + "\\";
+  if (rootFolderInit) {
+    root = "..\\" + rootFolderTemp + "\\";
+  } else {
+    root = "..\\";
+  }
 #endif
 
   predFileTemp = root + predFileTemp;
@@ -249,12 +259,6 @@ int dimlpPred(const string &command) {
   }
 
   // ----------------------------------------------------------------------
-
-  if (rootFolderInit == false) {
-    cout << "Give a root folder to save results with -S selection please."
-         << "\n";
-    return -1;
-  }
 
   if (quant <= 2) {
     cout << "The number of quantized levels must be greater than 2.\n";
@@ -365,4 +369,4 @@ int dimlpPred(const string &command) {
   return 0;
 }
 
-// Exemple to launch the code : .\DimlpPred.exe -T datanormTest -W dimlpDatanorm.wts -I 16 -H2 5 -O 2 -q 50 -p dimlpDatanormTest.out -r dimlpDatanormPredResult.txt -S ../dimlp/datafiles
+// Exemple to launch the code : ./DimlpPred -T datanormTest -W dimlpDatanorm.wts -I 16 -H2 5 -O 2 -q 50 -p dimlpDatanormTest.out -r dimlpDatanormPredResult.txt -S dimlp/datafiles

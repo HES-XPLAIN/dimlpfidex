@@ -9,13 +9,13 @@ void GiveAllParamDimlpBT()
 {
   cout << "\n-------------------------------------------------\n\n";
 
-  cout << "DimlpBT -S <Folder with respect to folder bin where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
-  cout << "-L <training set file(path with respect to specified root folder)> ";
+  cout << "DimlpBT -L <training set file(path with respect to specified root folder)> ";
   cout << "-I <number of input neurons> -O <number of output neurons>";
 
   cout << " <Options>\n\n";
 
   cout << "Options are: \n\n";
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
   cout << "-N <number of networks>\n";
   cout << "-A <file of attributes>\n";
   cout << "-T <testing set file>\n";
@@ -381,10 +381,20 @@ int dimlpBT(const string &command) {
   const char *validTar = nullptr;
   const char *attrFile = nullptr;
 
+  string root;
 #if defined(__unix__) || defined(__APPLE__)
-  string root = rootFolderTemp + "/";
+  if (rootFolderInit) {
+    root = "../" + rootFolderTemp + "/";
+  } else {
+    root = "../";
+  }
+
 #elif defined(_WIN32)
-  string root = rootFolderTemp + "\\";
+  if (rootFolderInit) {
+    root = "..\\" + rootFolderTemp + "\\";
+  } else {
+    root = "..\\";
+  }
 #endif
 
   if (learnFileInit) {
@@ -460,12 +470,6 @@ int dimlpBT(const string &command) {
   }
 
   // ----------------------------------------------------------------------
-
-  if (rootFolderInit == false) {
-    cout << "Give a root folder to save results with -S selection please."
-         << "\n";
-    return -1;
-  }
 
   if (eta <= 0) {
     cout << "The learning parameter must be greater than 0.\n";
@@ -783,6 +787,6 @@ int dimlpBT(const string &command) {
 /*
 int main(int nbParam, char** param)
 {
-    dimlpBT("DimlpBT -L ../dimlp/datafiles/datanormTrain -1 ../dimlp/datafiles/dataclass2Train -T ../dimlp/datafiles/datanormTest -2 ../dimlp/datafiles/dataclass2Test -I 16 -H2 5 -O 2 -N 2 -w ../dimlp/datafiles/dimlpDatanormBT -p ../dimlp/datafiles/dimlpDatanormBTTrain.out -t ../dimlp/datafiles/dimlpDatanormBTTest.out -o ../dimlp/datafiles/dimlpDatanormBTStats -r ../dimlp/datafiles/dimlpDatanormBTResult.txt");
+    dimlpBT("DimlpBT -L datanormTrain -1 dataclass2Train -T datanormTest -2 dataclass2Test -I 16 -H2 5 -O 2 -N 2 -w dimlpDatanormBT -p dimlpDatanormBTTrain.out -t dimlpDatanormBTTest.out -o dimlpDatanormBTStats -r dimlpDatanormBTResult.txt -S dimlp/datafiles");
 }
 */

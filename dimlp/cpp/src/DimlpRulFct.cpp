@@ -11,13 +11,13 @@ void GiveAllParamDimlpRul()
 {
   cout << "\n-------------------------------------------------\n\n";
 
-  cout << "DimlpRul -S <Folder with respect to folder bin where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
-  cout << "-L <training set file(path with respect to specified root folder)> ";
+  cout << "DimlpRul -L <training set file(path with respect to specified root folder)> ";
   cout << "-W <file of weights> ";
   cout << "-I <number of input neurons> -O <number of output neurons>";
   cout << " <Options>\n\n";
 
   cout << "Options are: \n\n";
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
   cout << "-A <file of attributes>\n";
   cout << "-V <validation set file>\n";
   cout << "-T <testing set file>\n";
@@ -245,10 +245,20 @@ int dimlpRul(const string &command) {
   const char *accuracyFile = nullptr;
   const char *attrFile = nullptr;
 
+  string root;
 #if defined(__unix__) || defined(__APPLE__)
-  string root = rootFolderTemp + "/";
+  if (rootFolderInit) {
+    root = "../" + rootFolderTemp + "/";
+  } else {
+    root = "../";
+  }
+
 #elif defined(_WIN32)
-  string root = rootFolderTemp + "\\";
+  if (rootFolderInit) {
+    root = "..\\" + rootFolderTemp + "\\";
+  } else {
+    root = "..\\";
+  }
 #endif
 
   if (learnFileInit) {
@@ -315,12 +325,6 @@ int dimlpRul(const string &command) {
   }
 
   // ----------------------------------------------------------------------
-
-  if (rootFolderInit == false) {
-    cout << "Give a root folder to save results with -S selection please."
-         << "\n";
-    return -1;
-  }
 
   if (weightFileInit == false) {
     cout << "Give a file of weights with -W selection please."
@@ -604,6 +608,6 @@ int dimlpRul(const string &command) {
 /*
 int main(int nbParam, char** param)
 {
-    dimlpRul("DimlpRul -L ../dimlp/datafiles/datanormTrain -1 ../dimlp/datafiles/dataclass2Train -W ../dimlp/datafiles/dimlpDatanorm.wts -T ../dimlp/datafiles/datanormTest -2 ../dimlp/datafiles/dataclass2Test -I 16 -H2 5 -O 2 -R ../dimlp/datafiles/dimlpDatanormRul.rls -o ../dimlp/datafiles/dimlpDatanormRulStats -r ../dimlp/datafiles/dimlpDatanormRulResult.txt");
+    dimlpRul("DimlpRul -L datanormTrain -1 dataclass2Train -W dimlpDatanorm.wts -T datanormTest -2 dataclass2Test -I 16 -H2 5 -O 2 -R dimlpDatanormRul.rls -o dimlpDatanormRulStats -r dimlpDatanormRulResult.txt -S dimlp/datafiles");
 }
 */

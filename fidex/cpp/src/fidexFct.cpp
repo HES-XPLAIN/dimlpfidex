@@ -6,8 +6,7 @@ void showFidexParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 
   std::cout << "Obligatory parameters : \n\n";
-  std::cout << "fidex -R <Folder with respect to folder bin where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
-  std::cout << "-T <train dataset file> -P <train prediction file> -C <train true class file> ";
+  std::cout << "fidex -T <train dataset file> -P <train prediction file> -C <train true class file> ";
   std::cout << "-S <test sample(s) data file with data, prediction(if no -p) and true class(if no -c)> ";
   std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> ";
   std::cout << "-Q <number of stairs in staircase activation function> ";
@@ -15,6 +14,7 @@ void showFidexParams() {
   std::cout << "<Options>\n\n";
 
   std::cout << "Options are: \n\n";
+  std::cout << "-R <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
   std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging>";
   std::cout << "-p <test prediction file> ";
   std::cout << "-c <test true class file> If at least -p is specified, -S needs to have only test datas\n";
@@ -82,6 +82,7 @@ int fidex(const string &command) {
     string consoleFileTemp;
     bool consoleFileInit = false;
     string rootFolderTemp;
+    bool rootFolderInit = false;
 
     int nbDimlpNets = 1; // Number of networks. 1 means no bagging
 
@@ -200,6 +201,7 @@ int fidex(const string &command) {
 
         case 'R':
           rootFolderTemp = arg;
+          rootFolderInit = true;
           break;
 
         case 'i':
@@ -277,10 +279,20 @@ int fidex(const string &command) {
     const char *statsFile = nullptr;
     const char *consoleFile = nullptr;
 
+    string root;
 #if defined(__unix__) || defined(__APPLE__)
-    string root = rootFolderTemp + "/";
+    if (rootFolderInit) {
+      root = "../" + rootFolderTemp + "/";
+    } else {
+      root = "../";
+    }
+
 #elif defined(_WIN32)
-    string root = rootFolderTemp + "\\";
+    if (rootFolderInit) {
+      root = "..\\" + rootFolderTemp + "\\";
+    } else {
+      root = "..\\";
+    }
 #endif
 
     if (trainDataFileInit) {
@@ -905,11 +917,11 @@ int fidex(const string &command) {
 
   Exemple pour lancer le code :
 
-  .\fidex.exe -T datanorm -P dimlp.out -C dataclass2 -S testSampleDataCombine -W dimlp.wts -Q 50 -I 5 -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
+  ./fidex -T datanorm -P dimlp.out -C dataclass2 -S testSampleDataCombine -W dimlp.wts -Q 50 -I 5 -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R fidex/datafiles
 
-  .\fidex.exe -T datanorm -P dimlp.out -C dataclass2 -S testData.txt -p testPred.txt -c testClass.txt -W dimlp.wts -Q 50 -I 5 -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
-  .\fidex.exe -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -S isoletTestData.txt -p isoletTestPredV2.out -c isoletTestClass.txt -W isoletV2.wts -Q 50 -I 5 -O ruleFidex.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../dimlp/datafiles/isoletDataset
-  .\fidex.exe -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -S Test/X_test.txt -p Test/pred_testV2.out -c Test/y_test.txt -W HAPTV2.wts -Q 50 -I 5 -O ruleFidexV2.txt -s stats -i 100 -v 2 -d 0.5 -h 0.5 -R ../dimlp/datafiles/HAPTDataset
+  ./fidex -T datanorm -P dimlp.out -C dataclass2 -S testData.txt -p testPred.txt -c testClass.txt -W dimlp.wts -Q 50 -I 5 -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R fidex/datafiles
+  ./fidex -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -S isoletTestData.txt -p isoletTestPredV2.out -c isoletTestClass.txt -W isoletV2.wts -Q 50 -I 5 -O ruleFidex.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R dimlp/datafiles/isoletDataset
+  ./fidex -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -S Test/X_test.txt -p Test/pred_testV2.out -c Test/y_test.txt -W HAPTV2.wts -Q 50 -I 5 -O ruleFidexV2.txt -s stats -i 100 -v 2 -d 0.5 -h 0.5 -R dimlp/datafiles/HAPTDataset
 
 
   #include <profileapi.h>

@@ -6,12 +6,12 @@ void showStatsParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 
   std::cout << "Obligatory parameters : \n\n";
-  cout << "fidexGloStats -S <Folder with respect to folder bin where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
-  std::cout << "-T <test data file> -P <test prediction file> -C <test true class file> ";
+  std::cout << "fidexGloStats -T <test data file> -P <test prediction file> -C <test true class file> ";
   std::cout << "-R <rules input file> ";
   std::cout << "<Options>\n\n";
 
   std::cout << "Options are: \n\n";
+  std::cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
   std::cout << "-A <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it\n";
   std::cout << "-O <stats output file>\n";
   std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
@@ -55,6 +55,7 @@ int fidexGloStats(const string &command) {
     string consoleFileTemp;
     bool consoleFileInit = false;
     string rootFolderTemp;
+    bool rootFolderInit = false;
     string attributFileTemp; // attribut file
     bool attributFileInit = false;
 
@@ -115,6 +116,7 @@ int fidexGloStats(const string &command) {
 
         case 'S':
           rootFolderTemp = arg;
+          rootFolderInit = true;
           break;
 
         default: // If we put another -X option
@@ -136,10 +138,20 @@ int fidexGloStats(const string &command) {
     const char *consoleFile = nullptr;
     const char *attributFile = nullptr;
 
+    string root;
 #if defined(__unix__) || defined(__APPLE__)
-    string root = rootFolderTemp + "/";
+    if (rootFolderInit) {
+      root = "../" + rootFolderTemp + "/";
+    } else {
+      root = "../";
+    }
+
 #elif defined(_WIN32)
-    string root = rootFolderTemp + "\\";
+    if (rootFolderInit) {
+      root = "..\\" + rootFolderTemp + "\\";
+    } else {
+      root = "..\\";
+    }
 #endif
 
     if (testDataFileInit) {
@@ -386,11 +398,11 @@ int fidexGloStats(const string &command) {
 
 /* Exemples pour lancer le code :
 
-.\fidexGloStats.exe -T datanorm -P dimlp.out -C dataclass2 -R globalRules.txt -O stats.txt -S ../fidexGlo/datafiles
-.\fidexGloStats.exe -T datanormTest -P dimlpDatanormTest.out -C dataclass2Test -R globalRulesDatanorm.txt -O stats.txt -S ../fidexGlo/datafiles
-.\fidexGloStats.exe -T covidTestData.txt -P covidTestPred.out -C covidTestClass.txt -R globalRulesCovid.txt -O globalStats.txt -S ../dimlp/datafiles/covidDataset
-.\fidexGloStats.exe -T spamTestData.txt -P spamTestPred.out -C spamTestClass.txt -R globalRulesSpam.txt -O globalStats.txt -S ../dimlp/datafiles/spamDataset
-.\fidexGloStats.exe -T isoletTestData.txt -P isoletTestPred.out -C isoletTestClass.txt -R globalRulesIsolet.txt -O globalStats.txt -S ../dimlp/datafiles/isoletDataset
-.\fidexGloStats.exe -T Test/X_test.txt -P Test/pred_testV2.out -C Test/y_test.txt -R globalRulesHAPTV2.txt -O globalStatsV2.txt -S ../dimlp/datafiles/HAPTDataset
+./fidexGloStats -T datanorm -P dimlp.out -C dataclass2 -R globalRules.txt -O stats.txt -S fidexGlo/datafiles
+./fidexGloStats -T datanormTest -P dimlpDatanormTest.out -C dataclass2Test -R globalRulesDatanorm.txt -O stats.txt -S fidexGlo/datafiles
+./fidexGloStats -T covidTestData.txt -P covidTestPred.out -C covidTestClass.txt -R globalRulesCovid.txt -O globalStats.txt -S dimlp/datafiles/covidDataset
+./fidexGloStats -T spamTestData.txt -P spamTestPred.out -C spamTestClass.txt -R globalRulesSpam.txt -O globalStats.txt -S dimlp/datafiles/spamDataset
+./fidexGloStats -T isoletTestData.txt -P isoletTestPred.out -C isoletTestClass.txt -R globalRulesIsolet.txt -O globalStats.txt -S dimlp/datafiles/isoletDataset
+./fidexGloStats -T Test/X_test.txt -P Test/pred_testV2.out -C Test/y_test.txt -R globalRulesHAPTV2.txt -O globalStatsV2.txt -S dimlp/datafiles/HAPTDataset
 
 */

@@ -11,12 +11,12 @@ void GiveAllParamDimlpTrn()
 {
   cout << "\n-------------------------------------------------\n\n";
 
-  cout << "DimlpTrn -S <Folder with respect to folder bin where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
-  cout << "-L <training set file(path with respect to specified root folder)> ";
+  cout << "DimlpTrn -L <training set file(path with respect to specified root folder)> ";
   cout << "-I <number of input neurons> -O <number of output neurons>";
   cout << " <Options>\n\n";
 
   cout << "Options are: \n\n";
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
   cout << "-A <file of attributes>\n";
   cout << "-V <validation set file>\n";
   cout << "-T <testing set file>\n";
@@ -430,10 +430,20 @@ int dimlpTrn(const string &command) {
   const char *validTar = nullptr;
   const char *attrFile = nullptr;
 
+  string root;
 #if defined(__unix__) || defined(__APPLE__)
-  string root = rootFolderTemp + "/";
+  if (rootFolderInit) {
+    root = "../" + rootFolderTemp + "/";
+  } else {
+    root = "../";
+  }
+
 #elif defined(_WIN32)
-  string root = rootFolderTemp + "\\";
+  if (rootFolderInit) {
+    root = "..\\" + rootFolderTemp + "\\";
+  } else {
+    root = "..\\";
+  }
 #endif
   if (learnFileInit) {
     learnFileTemp = root + learnFileTemp;
@@ -513,12 +523,6 @@ int dimlpTrn(const string &command) {
   }
 
   // ----------------------------------------------------------------------
-
-  if (rootFolderInit == false) {
-    cout << "Give a root folder to save results with -S selection please."
-         << "\n";
-    return -1;
-  }
 
   if (eta <= 0) {
     cout << "The learning parameter must be greater than 0.\n";
@@ -809,9 +813,9 @@ int dimlpTrn(const string &command) {
 
 /* Exemples to launch the code :
 
-.\DimlpTrn.exe -L covidTrainData.txt -1 covidTrainClass.txt -T covidTestData.txt -2 covidTestClass.txt -w covid.wts -I 20 -H2 5 -O 2 -p covidTrainPred.out -t covidTestPred.out -R -F covidTrn.rls -o covidTrnStats -r covidTrnResult.txt -S ../dimlp/datafiles/covidDataset -A attributes.txt
-.\DimlpTrn.exe -L spamTrainData.txt -1 spamTrainClass.txt -T spamTestData.txt -2 spamTestClass.txt -w spam.wts -I 57 -H2 5 -O 2 -p spamTrainPred.out -t spamTestPred.out -R -F spamTrn.rls -o spamTrnStats -r spamTrnResult.txt -S ../dimlp/datafiles/spamDataset -A attributes.txt
-.\DimlpTrn.exe -L isoletTrainData.txt -1 isoletTrainClass.txt -T isoletTestData.txt -2 isoletTestClass.txt -w isoletV3.wts -I 617 -H2 5 -O 26 -p isoletTrainPredV3.out -t isoletTestPredV3.out -R -F isoletTrnV3.rls -o isoletTrnStatsV3 -r isoletTrnResultV3.txt -S ../dimlp/datafiles/isoletDataset -A attributes.txt
-.\DimlpTrn.exe -L Train/X_train.txt -1 Train/y_train.txt -T test/X_test.txt -2 Test/y_test.txt -w HAPT.wts -I 561 -H2 5 -O 12 -p Train/pred_train.out -t Test/pred_test.out -R -F HAPTTrain.rls -o HAPTTrnStats -r HAPTTrnResult.txt -S ../dimlp/datafiles/HAPTDataset -A attributes.txt
+./DimlpTrn -L covidTrainData.txt -1 covidTrainClass.txt -T covidTestData.txt -2 covidTestClass.txt -w covid.wts -I 20 -H2 5 -O 2 -p covidTrainPred.out -t covidTestPred.out -R -F covidTrn.rls -o covidTrnStats -r covidTrnResult.txt -S dimlp/datafiles/covidDataset -A attributes.txt
+./DimlpTrn -L spamTrainData.txt -1 spamTrainClass.txt -T spamTestData.txt -2 spamTestClass.txt -w spam.wts -I 57 -H2 5 -O 2 -p spamTrainPred.out -t spamTestPred.out -R -F spamTrn.rls -o spamTrnStats -r spamTrnResult.txt -S dimlp/datafiles/spamDataset -A attributes.txt
+./DimlpTrn -L isoletTrainData.txt -1 isoletTrainClass.txt -T isoletTestData.txt -2 isoletTestClass.txt -w isoletV3.wts -I 617 -H2 5 -O 26 -p isoletTrainPredV3.out -t isoletTestPredV3.out -R -F isoletTrnV3.rls -o isoletTrnStatsV3 -r isoletTrnResultV3.txt -S dimlp/datafiles/isoletDataset -A attributes.txt
+./DimlpTrn -L Train/X_train.txt -1 Train/y_train.txt -T test/X_test.txt -2 Test/y_test.txt -w HAPT.wts -I 561 -H2 5 -O 12 -p Train/pred_train.out -t Test/pred_test.out -R -F HAPTTrain.rls -o HAPTTrnStats -r HAPTTrnResult.txt -S dimlp/datafiles/HAPTDataset -A attributes.txt
 
 */

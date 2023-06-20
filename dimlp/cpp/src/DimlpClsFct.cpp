@@ -8,13 +8,13 @@ void GiveAllParamDimlpCls()
 {
   cout << "\n-------------------------------------------------\n\n";
 
-  cout << "DimlpCls -S <Folder with respect to folder bin where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
-  cout << "-T <file of examples(path with respect to specified root folder)> ";
+  cout << "DimlpCls -T <file of examples(path with respect to specified root folder)> ";
   cout << "-W <file of weights> ";
   cout << "-I <number of input neurons> -O <number of output neurons>";
   cout << " <Options>\n\n";
 
   cout << "Options are: \n\n";
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
   cout << "-2 <file of classes>\n";
   cout << "-p <output prediction file>\n";                 // If we want to specify output prediction file, not to be dimlp.out
   cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
@@ -276,10 +276,20 @@ int dimlpCls(const string &command) {
   const char *testTar = nullptr;
   const char *hidFile = nullptr;
 
+  string root;
 #if defined(__unix__) || defined(__APPLE__)
-  string root = rootFolderTemp + "/";
+  if (rootFolderInit) {
+    root = "../" + rootFolderTemp + "/";
+  } else {
+    root = "../";
+  }
+
 #elif defined(_WIN32)
-  string root = rootFolderTemp + "\\";
+  if (rootFolderInit) {
+    root = "..\\" + rootFolderTemp + "\\";
+  } else {
+    root = "..\\";
+  }
 #endif
 
   if (testFileInit) {
@@ -323,11 +333,6 @@ int dimlpCls(const string &command) {
   }
 
   // ----------------------------------------------------------------------
-  if (rootFolderInit == false) {
-    cout << "Give a root folder to save results with -S selection please."
-         << "\n";
-    return -1;
-  }
 
   if (quant <= 2) {
     cout << "The number of quantized levels must be greater than 2.\n";
@@ -479,5 +484,5 @@ int dimlpCls(const string &command) {
 int main(int nbParam, char** param)
 
 {
-    dimlpCls("DimlpCls -T ../dimlp/datafiles/datanormTest -2 ../dimlp/datafiles/dataclass2Test -W ../dimlp/datafiles/dimlpDatanorm.wts -I 16 -H2 5 -O 2 -q 50 -p ../dimlp/datafiles/dimlpDatanormTest.out -o ../dimlp/datafiles/dimlpDatanormClsStats -r ../dimlp/datafiles/dimlpDatanormClsResult.txt");
+    dimlpCls("DimlpCls -T datanormTest -2 dataclass2Test -W dimlpDatanorm.wts -I 16 -H2 5 -O 2 -q 50 -p dimlpDatanormTest.out -o dimlpDatanormClsStats -r dimlpDatanormClsResult.txt -S dimlp/datafiles");
 }*/

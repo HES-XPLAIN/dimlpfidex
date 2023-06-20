@@ -6,8 +6,7 @@ void showRulesParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 
   std::cout << "Obligatory parameters : \n\n";
-  std::cout << "fidexGloRules -S <Folder with respect to folder bin where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
-  std::cout << "-T <train dataset file> -P <train prediction file> -C <train true class file> ";
+  std::cout << "fidexGloRules -T <train dataset file> -P <train prediction file> -C <train true class file> ";
   std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> ";
   std::cout << "-Q <number of stairs in staircase activation function> ";
   std::cout << "-O <Rules output file> ";
@@ -15,6 +14,7 @@ void showRulesParams() {
   std::cout << "<Options>\n\n";
 
   std::cout << "Options are: \n\n";
+  std::cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
   std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging>";
   std::cout << "-A <file of attributes>\n";
   std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
@@ -66,6 +66,7 @@ int fidexGloRules(const string &command) {
     string consoleFileTemp;
     bool consoleFileInit = false;
     string rootFolderTemp;
+    bool rootFolderInit = false;
     string attributFileTemp; // attribut file
     bool attributFileInit = false;
 
@@ -170,6 +171,7 @@ int fidexGloRules(const string &command) {
 
         case 'S':
           rootFolderTemp = arg;
+          rootFolderInit = true;
           break;
 
         case 'M':
@@ -251,10 +253,20 @@ int fidexGloRules(const string &command) {
     const char *consoleFile = nullptr;
     const char *attributFile = nullptr;
 
+    string root;
 #if defined(__unix__) || defined(__APPLE__)
-    string root = rootFolderTemp + "/";
+    if (rootFolderInit) {
+      root = "../" + rootFolderTemp + "/";
+    } else {
+      root = "../";
+    }
+
 #elif defined(_WIN32)
-    string root = rootFolderTemp + "\\";
+    if (rootFolderInit) {
+      root = "..\\" + rootFolderTemp + "\\";
+    } else {
+      root = "..\\";
+    }
 #endif
 
     if (trainDataFileInit) {
@@ -842,11 +854,11 @@ int fidexGloRules(const string &command) {
 
 /* Exemples pour lancer le code :
 
-./fidexGloRules -T datanormTrain -P dimlpDatanormTrain.out -C dataclass2Train -W dimlpDatanorm.wts -Q 50 -I 5 -O globalRulesDatanorm.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesResult -S ../fidexGlo/datafiles/
+./fidexGloRules -T datanormTrain -P dimlpDatanormTrain.out -C dataclass2Train -W dimlpDatanorm.wts -Q 50 -I 5 -O globalRulesDatanorm.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesResult -S fidexGlo/datafiles/
 
-.\fidexGloRules.exe -T covidTrainData.txt -P covidTrainPred.out -C covidTrainClass.txt -W covid.wts -Q 50 -I 5 -O globalRulesCovid.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesCovidResult -S ../dimlp/datafiles/covidDataset
-.\fidexGloRules.exe -T spamTrainData.txt -P spamTrainPred.out -C spamTrainClass.txt -W spam.wts -Q 50 -I 5 -O globalRulesSpam.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesSpamResult -S ../dimlp/datafiles/spamDataset
-.\fidexGloRules.exe -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -W isoletV2.wts -Q 50 -I 5 -O globalRulesIsoletV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesIsoletResultV2 -S ../dimlp/datafiles/isoletDataset
-.\fidexGloRules.exe -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -W HAPTV2.wts -Q 50 -I 5 -O globalRulesHAPTV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesHAPTResultV2 -S ../dimlp/datafiles/HAPTDataset
+./fidexGloRules -T covidTrainData.txt -P covidTrainPred.out -C covidTrainClass.txt -W covid.wts -Q 50 -I 5 -O globalRulesCovid.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesCovidResult -S dimlp/datafiles/covidDataset
+./fidexGloRules -T spamTrainData.txt -P spamTrainPred.out -C spamTrainClass.txt -W spam.wts -Q 50 -I 5 -O globalRulesSpam.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesSpamResult -S dimlp/datafiles/spamDataset
+./fidexGloRules -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -W isoletV2.wts -Q 50 -I 5 -O globalRulesIsoletV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesIsoletResultV2 -S dimlp/datafiles/isoletDataset
+./fidexGloRules -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -W HAPTV2.wts -Q 50 -I 5 -O globalRulesHAPTV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesHAPTResultV2 -S dimlp/datafiles/HAPTDataset
 
 */

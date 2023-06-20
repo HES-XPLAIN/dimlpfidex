@@ -10,14 +10,14 @@ void GiveAllParamDensCls()
 {
   cout << "\n-------------------------------------------------\n\n";
 
-  cout << "DensCls -S <Folder with respect to folder bin where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
-  cout << "-L <training set file(path with respect to specified root folder)> ";
+  cout << "DensCls -L <training set file(path with respect to specified root folder)> ";
   cout << "-W <Prefix of file of weights> (for instance give DimlpBT) ";
   cout << "-I <number of input neurons> -O <number of output neurons> ";
   cout << "-N <number of networks>";
   cout << " <Options>\n\n";
 
   cout << "Options are: \n\n";
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
   cout << "-A <file of attributes>\n";
   cout << "-T <testing set file>\n";
   cout << "-1 <file of train classes>\n";
@@ -269,10 +269,20 @@ int densCls(const string &command) {
   const char *attrFile = nullptr;
   const char *weightFileSave = nullptr;
 
+  string root;
 #if defined(__unix__) || defined(__APPLE__)
-  string root = rootFolderTemp + "/";
+  if (rootFolderInit) {
+    root = "../" + rootFolderTemp + "/";
+  } else {
+    root = "../";
+  }
+
 #elif defined(_WIN32)
-  string root = rootFolderTemp + "\\";
+  if (rootFolderInit) {
+    root = "..\\" + rootFolderTemp + "\\";
+  } else {
+    root = "..\\";
+  }
 #endif
 
   if (learnFileInit) {
@@ -350,12 +360,6 @@ int densCls(const string &command) {
   }
 
   // ----------------------------------------------------------------------
-
-  if (rootFolderInit == false) {
-    cout << "Give a root folder to save results with -S selection please."
-         << "\n";
-    return -1;
-  }
 
   if (quant == 0) {
     cout << "The number of quantized levels must be greater than 0.\n";
@@ -646,6 +650,6 @@ int densCls(const string &command) {
 /*
 int main(int nbParam, char** param)
 {
-    densCls("DensCls -L ../dimlp/datafiles/datanormTrain -1 ../dimlp/datafiles/dataclass2Train -T ../dimlp/datafiles/datanormTest -2 ../dimlp/datafiles/dataclass2Test -I 16 -H2 5 -O 2 -N 2 -W ../dimlp/datafiles/dimlpDatanormBT -R -F ../dimlp/datafiles/dimlpDatanormDensClsRul.rls -p ../dimlp/datafiles/dimlpDatanormDensClsTrain.out -t ../dimlp/datafiles/dimlpDatanormDensClsTest.out -o ../dimlp/datafiles/dimlpDatanormDensClsStats -r ../dimlp/datafiles/dimlpDatanormDensClsResult.txt");
+    densCls("DensCls -L datanormTrain -1 dataclass2Train -T datanormTest -2 dataclass2Test -I 16 -H2 5 -O 2 -N 2 -W dimlpDatanormBT -R -F dimlpDatanormDensClsRul.rls -p dimlpDatanormDensClsTrain.out -t dimlpDatanormDensClsTest.out -o dimlpDatanormDensClsStats -r dimlpDatanormDensClsResult.txt -S dimlp/datafiles");
 }
 */
