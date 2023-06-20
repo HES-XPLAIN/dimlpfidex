@@ -96,7 +96,7 @@ static void GiveAllParam()
 {
   cout << "\n-------------------------------------------------\n\n";
 
-  cout << "crossValid -S <Root folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+  cout << "crossValid -S <Root folder with respect to folder bin where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
   cout << "-C <choose the algorithms by giving : fidex fidexGlo or both>";
   cout << "-L <training set file(path with respect to specified root folder)> -1 <file of train classes> ";
   cout << "-h <high side of the interval> "; // Ex: 5

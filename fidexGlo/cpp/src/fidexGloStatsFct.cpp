@@ -6,7 +6,7 @@ void showStatsParams() {
   std::cout << "\n-------------------------------------------------\n\n";
 
   std::cout << "Obligatory parameters : \n\n";
-  cout << "fidexGloStats -S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+  cout << "fidexGloStats -S <Folder with respect to folder bin where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
   std::cout << "-T <test data file> -P <test prediction file> -C <test true class file> ";
   std::cout << "-R <rules input file> ";
   std::cout << "<Options>\n\n";
