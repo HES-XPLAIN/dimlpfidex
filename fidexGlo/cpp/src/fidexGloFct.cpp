@@ -7,12 +7,12 @@ void showParams() {
 
   std::cout << "Obligatory parameters : \n\n";
 
-  cout << "fidexGlo -F <Folder with respect to folder bin where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
-  std::cout << "-S <test sample(s) data file with data and prediction(if no -p)> ";
+  std::cout << "fidexGlo -S <test sample(s) data file with data and prediction(if no -p)> ";
   std::cout << "-R <rules input file> ";
   std::cout << "<Options>\n\n";
 
   std::cout << "Options are: \n\n";
+  std::cout << "-F <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
   std::cout << "-A <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it\n";
   std::cout << "-p <test prediction file>, -S needs to have only test datas\n";
   std::cout << "-O <Rule output file>\n";
@@ -54,6 +54,7 @@ int fidexGlo(const string &command) {
     string consoleFileTemp;
     bool consoleFileInit = false;
     string rootFolderTemp;
+    bool rootFolderInit = false;
     string attributFileTemp; // attribut file
     bool attributFileInit = false;
 
@@ -109,6 +110,7 @@ int fidexGlo(const string &command) {
 
         case 'F':
           rootFolderTemp = arg;
+          rootFolderInit = true;
           break;
 
         default: // If we put another -X option
@@ -129,10 +131,20 @@ int fidexGlo(const string &command) {
     const char *consoleFile = nullptr;
     const char *attributFile = nullptr;
 
+    string root;
 #if defined(__unix__) || defined(__APPLE__)
-    string root = rootFolderTemp + "/";
+    if (rootFolderInit) {
+      root = "../" + rootFolderTemp + "/";
+    } else {
+      root = "../";
+    }
+
 #elif defined(_WIN32)
-    string root = rootFolderTemp + "\\";
+    if (rootFolderInit) {
+      root = "..\\" + rootFolderTemp + "\\";
+    } else {
+      root = "..\\";
+    }
 #endif
 
     if (testSamplesDataFileInit) {
@@ -433,4 +445,4 @@ int fidexGlo(const string &command) {
   return 0;
 }
 
-// Exemple pour lancer le code : .\fidexGlo.exe -S testSampleData -R globalRulesDatanorm.txt -O explanation.txt -F ../fidexGlo/datafiles/
+// Exemple pour lancer le code : ./fidexGlo -S testSampleData -R globalRulesDatanorm.txt -O explanation.txt -F fidexGlo/datafiles/
