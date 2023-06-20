@@ -8,7 +8,7 @@ void GiveAllParamDimlpCls()
 {
   cout << "\n-------------------------------------------------\n\n";
 
-  cout << "DimlpCls -S <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+  cout << "DimlpCls -S <Folder with respect to folder bin where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
   cout << "-T <file of examples(path with respect to specified root folder)> ";
   cout << "-W <file of weights> ";
   cout << "-I <number of input neurons> -O <number of output neurons>";

@@ -7,7 +7,7 @@ void showParams() {
 
   std::cout << "Obligatory parameters : \n\n";
 
-  cout << "fidexGlo -F <Folder where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
+  cout << "fidexGlo -F <Folder with respect to folder bin where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>";
   std::cout << "-S <test sample(s) data file with data and prediction(if no -p)> ";
   std::cout << "-R <rules input file> ";
   std::cout << "<Options>\n\n";
