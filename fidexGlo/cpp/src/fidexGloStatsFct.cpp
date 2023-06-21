@@ -226,7 +226,7 @@ int fidexGloStats(const string &command) {
     vector<vector<double>> *testData = testDatas->getDatas();
     vector<int> *testPreds = testDatas->getPredictions();
     vector<int> *testTrueClasses = testDatas->getTrueClasses();
-    const auto nbClass = static_cast<int>((*testDatas->getOutputValuesPredictions())[0].size());
+    const auto nbClass = testDatas->getNbClasses();
 
     const auto nbTestData = static_cast<int>((*testData).size());
     if ((*testPreds).size() != nbTestData || (*testTrueClasses).size() != nbTestData) {

@@ -76,6 +76,9 @@ DataSetFid::DataSetFid(const char *dataFile, const char *predFile, const char *t
       double value;
       vector<double> values;
       while (myLine >> value) {
+        if (value != 1 && value != 0) {
+          everyPredIsBool = false;
+        }
         values.push_back(value);
       }
       outputValuesPredictions.push_back(values);
@@ -143,6 +146,18 @@ vector<vector<double>> *DataSetFid::getOutputValuesPredictions() {
   } else {
     throw CommandArgumentException("Error : prediction file not specified for this dataset");
   }
+}
+
+bool DataSetFid::hasConfidence() const {
+  if (everyPredIsBool) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+int DataSetFid::getNbClasses() const {
+  return outputValuesPredictions[0].size();
 }
 
 vector<vector<double>> DataSetFid::getWeights() const {

@@ -65,12 +65,12 @@ def compute_first_hidden_layer(input_data, k, nb_stairs, hiknot, weights_file):
     # Output weights and biais
     try:
         with open(weights_file, "w") as my_file:
-            for w in weights:
-                 my_file.write(str(w))
-                 my_file.write(" ")
-            my_file.write("\n")
             for b in biais:
                  my_file.write(str(b))
+                 my_file.write(" ")
+            my_file.write("\n")
+            for w in weights:
+                 my_file.write(str(w))
                  my_file.write(" ")
             my_file.close()
     except (FileNotFoundError):

@@ -20,6 +20,7 @@ class DataSetFid {
   bool hasDatas = false;
   bool hasClasses = false;
   bool hasWeights = false;
+  bool everyPredIsBool = true; // If every prediction is boolean, then there is no interest in computing confidence, it will always be 1
 
 public:
   DataSetFid();
@@ -30,6 +31,8 @@ public:
   std::vector<int> *getTrueClasses();
   std::vector<int> *getPredictions();
   std::vector<std::vector<double>> *getOutputValuesPredictions();
+  bool hasConfidence() const;
+  int getNbClasses() const;
   std::vector<std::vector<double>> getWeights() const;
   std::vector<double> getInBiais() const;
   std::vector<double> getInWeights() const;

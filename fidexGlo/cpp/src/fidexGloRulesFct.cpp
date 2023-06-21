@@ -366,12 +366,20 @@ int fidexGloRules(const string &command) {
 
     vector<vector<double>> *trainData = trainDatas->getDatas();
     vector<int> *trainPreds = trainDatas->getPredictions();
-    vector<vector<double>> *trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
+
+    vector<vector<double>> *trainOutputValuesPredictions = nullptr;
+    bool hasConfidence;
+    if (trainDatas->hasConfidence()) {
+      trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
+      hasConfidence = true;
+    } else {
+      hasConfidence = false;
+    }
     vector<int> *trainTrueClass = trainDatas->getTrueClasses();
 
     const auto nbDatas = static_cast<int>((*trainData).size());
     const auto nbAttributs = static_cast<int>((*trainData)[0].size());
-    const auto nbClass = static_cast<int>((*trainOutputValuesPredictions)[0].size());
+    const auto nbClass = trainDatas->getNbClasses();
     if ((*trainPreds).size() != nbDatas || (*trainTrueClass).size() != nbDatas) {
       throw FileFormatError("All the train files need to have the same amount of datas");
     }
@@ -479,7 +487,7 @@ int fidexGloRules(const string &command) {
         ruleCreated = false;
         int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
+          ruleCreated = exp.fidex(rule, trainData, trainPreds, hasConfidence, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           } else {
@@ -590,7 +598,7 @@ int fidexGloRules(const string &command) {
         ruleCreated = false;
         int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
+          ruleCreated = exp.fidex(rule, trainData, trainPreds, hasConfidence, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           } else {
@@ -708,7 +716,7 @@ int fidexGloRules(const string &command) {
         ruleCreated = false;
         int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
+          ruleCreated = exp.fidex(rule, trainData, trainPreds, hasConfidence, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, nbHyp, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           } else {
@@ -806,7 +814,11 @@ int fidexGloRules(const string &command) {
       line += " Covering size : " + std::to_string(std::get<1>(chosenRules[r]).size()); // Covering size
       line += " Fidelity : 1";                                                          // Rule fidelity
       line += " Accuracy : " + std::to_string(std::get<3>(chosenRules[r]));             // Rule accuracy
-      line += " Confidence : " + std::to_string(std::get<4>(chosenRules[r])) + "\n";    // Rule confidence
+      if (hasConfidence) {
+        line += " Confidence : " + std::to_string(std::get<4>(chosenRules[r])) + "\n"; // Rule confidence
+      } else {
+        line += "\n";
+      }
       lines.push_back(line);
     }
 
