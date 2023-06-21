@@ -1,0 +1,19 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_checkFun.h:
+
+Program Listing for File checkFun.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_checkFun.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/checkFun.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef CHECKFUN_H
+   #define CHECKFUN_H
+   
+   extern int CheckInt(const char *str);
+   extern int CheckFloat(const char *str);
+   
+   #endif

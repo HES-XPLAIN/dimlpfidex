@@ -1,0 +1,14 @@
+.. _exhale_variable_realHyp_8h_1a0044f4b060fc5239a937d6a34e910593:
+
+Variable STRINGINT
+==================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp.h`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: STRINGINT
+   :project: dimlp

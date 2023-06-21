@@ -1,0 +1,56 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_cleanRS.h:
+
+File cleanRS.h
+==============
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/cleanRS.h``)
+--------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_cleanRS.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``bpNN.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bpNN.h`)
+
+- ``iostream``
+
+- ``rulePro.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_rulePro.h`)
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_cleanRS.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp.cpp`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_struct_structCleanRuleStruct_1_1AssocAnte`
+
+- :ref:`exhale_struct_structCleanRuleStruct_1_1CleanRule`
+
+- :ref:`exhale_class_classCleanRuleStruct`
+

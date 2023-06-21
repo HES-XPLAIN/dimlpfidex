@@ -1,0 +1,29 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpBTFct.h:
+
+Program Listing for File DimlpBTFct.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpBTFct.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/DimlpBTFct.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef DIMLPBTFCT_H
+   #define DIMLPBTFCT_H
+   
+   #include "bagDimlp.h"
+   #include "checkFun.h"
+   #include "realHyp2.h"
+   #include "writeErr.h"
+   #include <fstream>
+   #include <sstream>
+   #include <stdlib.h>
+   #include <string.h>
+   #include <vector>
+   
+   void GiveAllParamDimlpBT();
+   int dimlpBT(const std::string &command);
+   
+   #endif

@@ -1,0 +1,14 @@
+.. _exhale_function_getRulesFun_8h_1acaed85a932241e46ede2c153d4d53b89:
+
+Function getActivatedRules(std::vector<int>&, std::vector<std::tuple<std::vector<std::tuple<int, bool, double>>, int, int, double, double>> \*, std::vector<double> \*)
+=======================================================================================================================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_getRulesFun.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: getActivatedRules(std::vector<int>&, std::vector<std::tuple<std::vector<std::tuple<int, bool, double>>, int, int, double, double>> *, std::vector<double> *)
+   :project: dimlp

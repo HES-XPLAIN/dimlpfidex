@@ -1,0 +1,14 @@
+.. _exhale_variable_bagDimlp_8h_1a3739e3dc14d07ac6155791efa07348c8:
+
+Variable VIRT
+=============
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bagDimlp.h`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: VIRT
+   :project: dimlp

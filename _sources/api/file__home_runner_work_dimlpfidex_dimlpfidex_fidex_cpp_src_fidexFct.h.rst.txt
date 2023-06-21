@@ -1,0 +1,84 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.h:
+
+File fidexFct.h
+===============
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/fidexFct.h``)
+---------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../fidexCommon/cpp/src/checkFun.h``
+
+- ``../../../fidexCommon/cpp/src/dataSet.h``
+
+- ``../../../fidexCommon/cpp/src/errorHandler.h``
+
+- ``../../../fidexCommon/cpp/src/hyperLocus.h``
+
+- ``algorithm``
+
+- ``chrono``
+
+- ``ctime``
+
+- ``fstream``
+
+- ``hyperspace.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperspace.h`)
+
+- ``iostream``
+
+- ``memory``
+
+- ``numeric``
+
+- ``random``
+
+- ``sstream``
+
+- ``time.h``
+
+- ``tuple``
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_CrossValid.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidex.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.cpp`
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_fidexFct_8h_1a413bb8e6d52f49aa7bc90467e92972e0`
+
+- :ref:`exhale_function_fidexFct_8h_1afb3c1683e14a0a8d7273cc282879b303`
+

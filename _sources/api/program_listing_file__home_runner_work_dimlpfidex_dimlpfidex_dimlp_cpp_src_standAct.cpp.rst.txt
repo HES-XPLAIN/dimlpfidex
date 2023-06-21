@@ -1,0 +1,69 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_standAct.cpp:
+
+Program Listing for File standAct.cpp
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_standAct.cpp>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/standAct.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #include <math.h>
+   
+   
+   float Sigmoid(float x)
+   
+   {
+     return static_cast<float>(1.0 / (1.0 + exp(-x)));
+   }
+   
+   
+   float HyperTang(float x)
+   
+   {
+     float expMinx;
+     float expPlusx;
+   
+     expPlusx = exp(x);
+     expMinx = static_cast<float>(1.0) / expPlusx;
+   
+     return (expPlusx - expMinx) / (expPlusx + expMinx);
+   }
+   
+   
+   float Gaussian(float x)
+   
+   {
+     return exp(-x * x);
+   }
+   
+   
+   float Identity(float x)
+   
+   {
+     return x;
+   }
+   
+   
+   float Power3(float x)
+   
+   {
+     return x * x * x;
+   }
+   
+   
+   float Power4(float x)
+   
+   {
+     return x * x * x * x;
+   }
+   
+   
+   float Power5(float x)
+   
+   {
+     return x * x * x * x * x;
+   }
+   

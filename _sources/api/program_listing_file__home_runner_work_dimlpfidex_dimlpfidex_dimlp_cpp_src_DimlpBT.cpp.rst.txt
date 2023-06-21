@@ -1,0 +1,27 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpBT.cpp:
+
+Program Listing for File DimlpBT.cpp
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpBT.cpp>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/DimlpBT.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #include "DimlpBTFct.h"
+   
+   
+   int main(int nbParam, char **param)
+   
+   {
+     std::string command = "dimlpBT";
+     if (nbParam >= 1) {
+       for (int p = 1; p < nbParam; p++) {
+         command += " ";
+         command += param[p];
+       }
+     }
+     dimlpBT(command);
+   }

@@ -1,0 +1,14 @@
+.. _exhale_variable_bpNN_8h_1a4429f13b0fff2556a90b182206602ea2:
+
+Variable LD2
+============
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bpNN.h`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: LD2
+   :project: dimlp

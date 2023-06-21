@@ -1,0 +1,58 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlp.h:
+
+File dimlp.h
+============
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/dimlp.h``)
+------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlp.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``bpNN.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bpNN.h`)
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpClsFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpPredFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpRulFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpTrnFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bagDimlp.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlp.cpp`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classDimlp`
+

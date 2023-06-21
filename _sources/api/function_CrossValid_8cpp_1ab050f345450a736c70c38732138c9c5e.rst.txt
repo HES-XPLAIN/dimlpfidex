@@ -1,0 +1,14 @@
+.. _exhale_function_CrossValid_8cpp_1ab050f345450a736c70c38732138c9c5e:
+
+Function createOrClearDirectory
+===============================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_CrossValid.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: createOrClearDirectory(const std::string&)
+   :project: dimlp

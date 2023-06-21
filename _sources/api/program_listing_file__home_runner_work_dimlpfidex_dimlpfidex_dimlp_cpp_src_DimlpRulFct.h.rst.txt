@@ -1,0 +1,29 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpRulFct.h:
+
+Program Listing for File DimlpRulFct.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpRulFct.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/DimlpRulFct.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef DIMLPRULFCT_H
+   #define DIMLPRULFCT_H
+   
+   #include "checkFun.h"
+   #include "dimlp.h"
+   #include "realHyp2.h"
+   #include "writeErr.h"
+   #include <fstream>
+   #include <iostream>
+   #include <sstream>
+   #include <string.h>
+   #include <vector>
+   
+   void GiveAllParamDimlpRul();
+   int dimlpRul(const std::string &command);
+   
+   #endif

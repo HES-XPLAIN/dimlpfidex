@@ -1,0 +1,14 @@
+.. _exhale_function_DimlpBTFct_8cpp_1aeb82b1c41c916f67bb66635ede684378:
+
+Function dimlpBT(const string&)
+===============================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpBTFct.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: dimlpBT(const string&)
+   :project: dimlp

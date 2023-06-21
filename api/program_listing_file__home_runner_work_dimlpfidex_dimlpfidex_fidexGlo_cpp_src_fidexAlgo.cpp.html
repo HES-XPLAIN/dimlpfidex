@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Listing for File fidexAlgo.cpp &mdash; DimlpFidex 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            DimlpFidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DimlpFidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Program Listing for File fidexAlgo.cpp</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_fidexAlgo.cpp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="program-listing-for-file-fidexalgo-cpp">
+<span id="program-listing-file-home-runner-work-dimlpfidex-dimlpfidex-fidexglo-cpp-src-fidexalgo-cpp"></span><h1>Program Listing for File fidexAlgo.cpp<a class="headerlink" href="#program-listing-for-file-fidexalgo-cpp" title="Permalink to this headline"></a></h1>
+<p>↰ <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_fidexAlgo.cpp.html#file-home-runner-work-dimlpfidex-dimlpfidex-fidexglo-cpp-src-fidexalgo-cpp"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">/home/runner/work/dimlpfidex/dimlpfidex/fidexGlo/cpp/src/fidexAlgo.cpp</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;fidexAlgo.h&quot;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
+<span class="n">FidexAlgo</span><span class="o">::</span><span class="n">FidexAlgo</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="c1">// Different mains:</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">FidexAlgo::fidex</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rule</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">trainData</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">trainPreds</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">hasConfidence</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">trainOutputValuesPredictions</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">trainTrueClass</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">mainSampleValues</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">mainSamplePred</span><span class="p">,</span><span class="w"> </span><span class="n">FidexGloNameSpace</span><span class="o">::</span><span class="n">Hyperspace</span><span class="w"> </span><span class="o">*</span><span class="n">hyperspace</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nbAttributs</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nbHyp</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">itMax</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">minNbCover</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">dropoutDim</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">dropoutDimParam</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">dropoutHyp</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">dropoutHypParam</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">mt19937</span><span class="w"> </span><span class="n">gen</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="c1">// Initialize uniform distribution</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">uniform_real_distribution</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dis</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Compute initial covering</span>
+<span class="w">  </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">coveredSamples</span><span class="p">((</span><span class="o">*</span><span class="n">trainData</span><span class="p">).</span><span class="n">size</span><span class="p">());</span><span class="w">                    </span><span class="c1">// Samples covered by the hyperbox</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">iota</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">begin</span><span class="p">(</span><span class="n">coveredSamples</span><span class="p">),</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">end</span><span class="p">(</span><span class="n">coveredSamples</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// Vector from 0 to len(coveredSamples)-1</span>
+
+<span class="w">  </span><span class="c1">// Store covering and compute initial fidelty</span>
+<span class="w">  </span><span class="n">hyperspace</span><span class="o">-&gt;</span><span class="n">getHyperbox</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">setCoveredSamples</span><span class="p">(</span><span class="n">coveredSamples</span><span class="p">);</span>
+<span class="w">  </span><span class="n">hyperspace</span><span class="o">-&gt;</span><span class="n">getHyperbox</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">computeFidelity</span><span class="p">(</span><span class="n">mainSamplePred</span><span class="p">,</span><span class="w"> </span><span class="n">trainPreds</span><span class="p">);</span><span class="w"> </span><span class="c1">// Compute fidelity of initial hyperbox</span>
+
+<span class="w">  </span><span class="c1">// If we come from fidexGlo, we reset hyperbox discriminativeHyperplans</span>
+<span class="w">  </span><span class="n">hyperspace</span><span class="o">-&gt;</span><span class="n">getHyperbox</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">resetDiscriminativeHyperplans</span><span class="p">();</span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbIt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">hyperspace</span><span class="o">-&gt;</span><span class="n">getHyperbox</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">getFidelity</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">nbIt</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">itMax</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// While fidelity of our hyperbox is not 100%</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Hyperbox</span><span class="o">&gt;</span><span class="w"> </span><span class="n">bestHyperbox</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Hyperbox</span><span class="p">());</span><span class="w"> </span><span class="c1">// best hyperbox to choose for next step</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Hyperbox</span><span class="o">&gt;</span><span class="w"> </span><span class="n">currentHyperbox</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Hyperbox</span><span class="p">());</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">mainSampleValue</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">attribut</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">dimension</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">indexBestHyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">bestDimension</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">minHyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="c1">// Index of first hyperplan without any change of the best hyperplan</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">maxHyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Randomize dimensions</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dimensions</span><span class="p">(</span><span class="n">nbIn</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">iota</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">begin</span><span class="p">(</span><span class="n">dimensions</span><span class="p">),</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">end</span><span class="p">(</span><span class="n">dimensions</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// Vector from 0 to nbIn-1</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shuffle</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">begin</span><span class="p">(</span><span class="n">dimensions</span><span class="p">),</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">end</span><span class="p">(</span><span class="n">dimensions</span><span class="p">),</span><span class="w"> </span><span class="n">gen</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">currentCovSamp</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbIn</span><span class="p">;</span><span class="w"> </span><span class="n">d</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bestHyperbox</span><span class="o">-&gt;</span><span class="n">getFidelity</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="n">dimension</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dimensions</span><span class="p">[</span><span class="n">d</span><span class="p">];</span>
+<span class="w">      </span><span class="n">attribut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dimension</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">nbAttributs</span><span class="p">;</span>
+<span class="w">      </span><span class="n">mainSampleValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">mainSampleValues</span><span class="p">)[</span><span class="n">attribut</span><span class="p">];</span>
+
+<span class="w">      </span><span class="c1">// Test if we dropout this dimension</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dropoutDim</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">dis</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">dropoutDimParam</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">continue</span><span class="p">;</span><span class="w"> </span><span class="c1">// Drop this dimension if below parameter ex: param=0.2 -&gt; 20% are dropped</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="kt">bool</span><span class="w"> </span><span class="n">maxHypBlocked</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w">        </span><span class="c1">// We assure that we can&#39;t increase maxHyp index for the current best hyperbox</span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbHyp</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)</span>
+
+<span class="w">        </span><span class="c1">// Test if we dropout this hyperplan</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dropoutHyp</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">dis</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">dropoutHypParam</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="k">continue</span><span class="p">;</span><span class="w"> </span><span class="c1">// Drop this hyperplan if below parameter ex: param=0.2 -&gt; 20% are dropped</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">hypValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hyperspace</span><span class="o">-&gt;</span><span class="n">getHyperLocus</span><span class="p">()[</span><span class="n">dimension</span><span class="p">][</span><span class="n">k</span><span class="p">];</span>
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">mainSampleGreater</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hypValue</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">mainSampleValue</span><span class="p">;</span><span class="w">                                                                                     </span><span class="c1">// Check if main sample value is on the right of the hyperplan</span>
+<span class="w">        </span><span class="n">currentHyperbox</span><span class="o">-&gt;</span><span class="n">computeCoveredSamples</span><span class="p">(</span><span class="n">hyperspace</span><span class="o">-&gt;</span><span class="n">getHyperbox</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">getCoveredSamples</span><span class="p">(),</span><span class="w"> </span><span class="n">attribut</span><span class="p">,</span><span class="w"> </span><span class="n">trainData</span><span class="p">,</span><span class="w"> </span><span class="n">mainSampleGreater</span><span class="p">,</span><span class="w"> </span><span class="n">hypValue</span><span class="p">);</span><span class="w"> </span><span class="c1">// Compute new cover samples</span>
+<span class="w">        </span><span class="n">currentHyperbox</span><span class="o">-&gt;</span><span class="n">computeFidelity</span><span class="p">(</span><span class="n">mainSamplePred</span><span class="p">,</span><span class="w"> </span><span class="n">trainPreds</span><span class="p">);</span><span class="w">                                                                             </span><span class="c1">// Compute fidelity</span>
+
+<span class="w">        </span><span class="c1">// If the fidelity is better or is same with better covering but not if covering size is lower than minNbCover</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">currentHyperbox</span><span class="o">-&gt;</span><span class="n">getCoveredSamples</span><span class="p">().</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">minNbCover</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">currentHyperbox</span><span class="o">-&gt;</span><span class="n">getFidelity</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">bestHyperbox</span><span class="o">-&gt;</span><span class="n">getFidelity</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">currentHyperbox</span><span class="o">-&gt;</span><span class="n">getFidelity</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">bestHyperbox</span><span class="o">-&gt;</span><span class="n">getFidelity</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">currentHyperbox</span><span class="o">-&gt;</span><span class="n">getCoveredSamples</span><span class="p">().</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">bestHyperbox</span><span class="o">-&gt;</span><span class="n">getCoveredSamples</span><span class="p">().</span><span class="n">size</span><span class="p">())))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">bestHyperbox</span><span class="o">-&gt;</span><span class="n">setFidelity</span><span class="p">(</span><span class="n">currentHyperbox</span><span class="o">-&gt;</span><span class="n">getFidelity</span><span class="p">());</span><span class="w"> </span><span class="c1">// Update best hyperbox</span>
+<span class="w">          </span><span class="n">bestHyperbox</span><span class="o">-&gt;</span><span class="n">setCoveredSamples</span><span class="p">(</span><span class="n">currentHyperbox</span><span class="o">-&gt;</span><span class="n">getCoveredSamples</span><span class="p">());</span>
+<span class="w">          </span><span class="n">indexBestHyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="p">;</span>
+<span class="w">          </span><span class="n">minHyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="p">;</span><span class="w"> </span><span class="c1">// New best</span>
+<span class="w">          </span><span class="n">maxHyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">          </span><span class="n">maxHypBlocked</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"> </span><span class="c1">// We can increase maxHyp if next is the same</span>
+<span class="w">          </span><span class="n">bestDimension</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dimension</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">currentHyperbox</span><span class="o">-&gt;</span><span class="n">getFidelity</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">bestHyperbox</span><span class="o">-&gt;</span><span class="n">getFidelity</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">currentHyperbox</span><span class="o">-&gt;</span><span class="n">getCoveredSamples</span><span class="p">().</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">bestHyperbox</span><span class="o">-&gt;</span><span class="n">getCoveredSamples</span><span class="p">().</span><span class="n">size</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">maxHypBlocked</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">maxHyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="p">;</span><span class="w"> </span><span class="c1">// Index of last (for now) hyperplan which is equal to the best.</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">maxHypBlocked</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"> </span><span class="c1">// we can&#39;t increase maxHyp anymmore for this best hyperplan</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bestHyperbox</span><span class="o">-&gt;</span><span class="n">getFidelity</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Modication of our hyperbox with the best at this iteration and modify discriminative hyperplans</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">indexBestHyp</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">-1</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">bestDimension</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// If we found any good dimension with good hyperplan (with enough covering)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">maxHyp</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">indexBestHyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">maxHyp</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">minHyp</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="c1">// Rule is not added if fidelity and covering size did not increase</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bestHyperbox</span><span class="o">-&gt;</span><span class="n">getFidelity</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">hyperspace</span><span class="o">-&gt;</span><span class="n">getHyperbox</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">getFidelity</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">bestHyperbox</span><span class="o">-&gt;</span><span class="n">getFidelity</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">hyperspace</span><span class="o">-&gt;</span><span class="n">getHyperbox</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">getFidelity</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">bestHyperbox</span><span class="o">-&gt;</span><span class="n">getCoveredSamples</span><span class="p">().</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">hyperspace</span><span class="o">-&gt;</span><span class="n">getHyperbox</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">getCoveredSamples</span><span class="p">().</span><span class="n">size</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">hyperspace</span><span class="o">-&gt;</span><span class="n">getHyperbox</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">setFidelity</span><span class="p">(</span><span class="n">bestHyperbox</span><span class="o">-&gt;</span><span class="n">getFidelity</span><span class="p">());</span>
+<span class="w">        </span><span class="n">hyperspace</span><span class="o">-&gt;</span><span class="n">getHyperbox</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">setCoveredSamples</span><span class="p">(</span><span class="n">bestHyperbox</span><span class="o">-&gt;</span><span class="n">getCoveredSamples</span><span class="p">());</span>
+<span class="w">        </span><span class="n">hyperspace</span><span class="o">-&gt;</span><span class="n">getHyperbox</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">discriminateHyperplan</span><span class="p">(</span><span class="n">bestDimension</span><span class="p">,</span><span class="w"> </span><span class="n">indexBestHyp</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">nbIt</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hyperspace</span><span class="o">-&gt;</span><span class="n">getHyperbox</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">getFidelity</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// Compute rule accuracy</span>
+
+<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">ruleAccuracy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hyperspace</span><span class="o">-&gt;</span><span class="n">computeRuleAccuracy</span><span class="p">(</span><span class="n">trainPreds</span><span class="p">,</span><span class="w"> </span><span class="n">trainTrueClass</span><span class="p">);</span><span class="w"> </span><span class="c1">// Percentage of correct model prediction on samples covered by the rule</span>
+<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">ruleConfidence</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hasConfidence</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ruleConfidence</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hyperspace</span><span class="o">-&gt;</span><span class="n">computeRuleConfidence</span><span class="p">(</span><span class="n">trainOutputValuesPredictions</span><span class="p">,</span><span class="w"> </span><span class="n">mainSamplePred</span><span class="p">);</span><span class="w"> </span><span class="c1">// Mean output value of prediction of class chosen by the rule for the covered samples</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ruleConfidence</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">rule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hyperspace</span><span class="o">-&gt;</span><span class="n">ruleExtraction</span><span class="p">(</span><span class="n">mainSampleValues</span><span class="p">,</span><span class="w"> </span><span class="n">mainSamplePred</span><span class="p">,</span><span class="w"> </span><span class="n">ruleAccuracy</span><span class="p">,</span><span class="w"> </span><span class="n">ruleConfidence</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/*</span>
+
+<span class="cm">    #include &lt;Windows.h&gt;</span>
+
+<span class="cm">    LARGE_INTEGER frequency2;        ticks per second</span>
+<span class="cm">    LARGE_INTEGER g1, g2;           ticks</span>
+<span class="cm">    double elapsedTime2;</span>
+
+<span class="cm">    get ticks per second</span>
+<span class="cm">    QueryPerformanceFrequency(&amp;frequency2);</span>
+
+<span class="cm">    start timer</span>
+<span class="cm">    QueryPerformanceCounter(&amp;g1);</span>
+
+<span class="cm">    stop timer</span>
+<span class="cm">    QueryPerformanceCounter(&amp;g2);</span>
+
+<span class="cm">    compute and print the elapsed time in millisec</span>
+<span class="cm">    elapsedTime2 = (g2.QuadPart - g1.QuadPart) * 1000.0 / frequency2.QuadPart;</span>
+
+<span class="cm">    */</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_stairObj.cpp:
+
+Program Listing for File stairObj.cpp
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_stairObj.cpp>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/stairObj.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #include "stairObj.h"
+   
+   
+   void StairObj::InitMemberConstForAnsi()
+   
+   {
+     HiKnot = 5.0;
+     LowKnot = -HiKnot;
+     Dist = HiKnot - LowKnot;
+   }
+   
+   
+   void StairObj::ActivateKnots()
+   
+   {
+     BinWidth = Dist / static_cast<float>(NbBins);
+   
+     Knots.resize(NbKnots);
+     EvalKnots.resize(NbKnots);
+   
+     for (int k = 0; k < NbKnots; k++) {
+       Knots[k] = LowKnot + (BinWidth * static_cast<float>(k));
+       EvalKnots[k] = Activation(Knots[k]);
+     }
+   
+     ValLowKnot = Activation(static_cast<float>(-1111111111.0));
+     ValHighKnot = Activation(HiKnot);
+   }
+   
+   
+   float StairObj::Funct(float x) const
+   
+   {
+     int indBin;
+   
+     if (x < LowKnot)
+       return ValLowKnot;
+     if (x >= HiKnot)
+       return ValHighKnot;
+   
+     indBin = static_cast<int>((x - LowKnot) / BinWidth);
+     return EvalKnots[indBin];
+   }
+   
+   
+   StairObj::StairObj(int nbBins) : NbBins(nbBins), NbKnots(nbBins + 1)
+   
+   {
+     InitMemberConstForAnsi();
+     ActivateKnots();
+   }
+   

@@ -1,0 +1,14 @@
+.. _exhale_function_checkFun_8cpp_1a72adbf0698e29b7b81bf312ed0d68d75:
+
+Function CheckInt(const char \*)
+================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_checkFun.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: CheckInt(const char *)
+   :project: dimlp

@@ -1,0 +1,23 @@
+.. _exhale_struct_structRule_1_1Antecedent:
+
+Struct Rule::Antecedent
+=======================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_rule.h`
+
+
+Nested Relationships
+--------------------
+
+This struct is a nested type of :ref:`exhale_class_classRule`.
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: Rule::Antecedent
+   :project: dimlp
+   :members:
+   :protected-members:
+   :undoc-members:

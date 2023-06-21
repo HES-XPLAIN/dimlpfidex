@@ -1,0 +1,14 @@
+.. _exhale_function_fidexFct_8cpp_1a01c13136d12d9d4d507c879a9670e5ec:
+
+Function fidex(const string&)
+=============================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: fidex(const string&)
+   :project: dimlp

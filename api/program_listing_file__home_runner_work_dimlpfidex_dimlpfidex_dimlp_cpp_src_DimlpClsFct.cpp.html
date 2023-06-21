@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Listing for File DimlpClsFct.cpp &mdash; DimlpFidex 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            DimlpFidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DimlpFidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Program Listing for File DimlpClsFct.cpp</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpClsFct.cpp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="program-listing-for-file-dimlpclsfct-cpp">
+<span id="program-listing-file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-dimlpclsfct-cpp"></span><h1>Program Listing for File DimlpClsFct.cpp<a class="headerlink" href="#program-listing-for-file-dimlpclsfct-cpp" title="Permalink to this headline"></a></h1>
+<p>↰ <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpClsFct.cpp.html#file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-dimlpclsfct-cpp"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/DimlpClsFct.cpp</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;DimlpClsFct.h&quot;</span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">GiveAllParamDimlpCls</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">-------------------------------------------------</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;DimlpCls -T &lt;file of examples(path with respect to specified root folder)&gt; &quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-W &lt;file of weights&gt; &quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-I &lt;number of input neurons&gt; -O &lt;number of output neurons&gt;&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &lt;Options&gt;</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Options are: </span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-S &lt;Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-2 &lt;file of classes&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-p &lt;output prediction file&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w">                 </span><span class="c1">// If we want to specify output prediction file, not to be dimlp.out</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-r &lt;file where you redirect console result&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"> </span><span class="c1">// If we want to redirect console result to file</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-o &lt;output file with test accuracy&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-h &lt;output file with first hidden layer values&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"> </span><span class="c1">// Not to be dimlp.hid</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-H1 &lt;number of neurons in the first hidden layer&gt; &quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;(if not specified this number will be equal to the &quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;number of input neurons)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-Hk &lt;number of neurons in the kth hidden layer&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-q &lt;number of stairs in staircase activation function&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">-------------------------------------------------</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">SaveOutputs</span><span class="p">(</span>
+<span class="w">    </span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Dimlp</span><span class="w"> </span><span class="o">*</span><span class="n">net</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbOut</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbWeightLayers</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">outfile</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="n">filebuf</span><span class="w"> </span><span class="n">buf</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span><span class="w"> </span><span class="n">ios_base</span><span class="o">::</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">errorMsg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Cannot open file for writing&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">WriteError</span><span class="p">(</span><span class="n">errorMsg</span><span class="p">,</span><span class="w"> </span><span class="n">outfile</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Layer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">layer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">net</span><span class="o">-&gt;</span><span class="n">GetLayer</span><span class="p">(</span><span class="n">nbWeightLayers</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">layer</span><span class="o">-&gt;</span><span class="n">GetUp</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span>
+<span class="w">       </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">outfile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;: &quot;</span>
+<span class="w">       </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Writing ...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">ostream</span><span class="w"> </span><span class="n">outFile</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">();</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">net</span><span class="o">-&gt;</span><span class="n">ForwardOneExample1</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbOut</span><span class="p">;</span><span class="w"> </span><span class="n">o</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">outFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">out</span><span class="p">[</span><span class="n">o</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">outFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">outfile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;: &quot;</span>
+<span class="w">       </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Written.</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">SaveFirstHid</span><span class="p">(</span>
+<span class="w">    </span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Dimlp</span><span class="w"> </span><span class="o">*</span><span class="n">net</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbHid</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">outfile</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">firsthidFile</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="n">filebuf</span><span class="w"> </span><span class="n">buf</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">firsthidFile</span><span class="p">,</span><span class="w"> </span><span class="n">ios_base</span><span class="o">::</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">errorMsg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Cannot open file for writing&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">WriteError</span><span class="p">(</span><span class="n">errorMsg</span><span class="p">,</span><span class="w"> </span><span class="n">outfile</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Layer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">layer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">net</span><span class="o">-&gt;</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">hid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">layer</span><span class="o">-&gt;</span><span class="n">GetUp</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span>
+<span class="w">       </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">firsthidFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;: &quot;</span>
+<span class="w">       </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Writing ...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">ostream</span><span class="w"> </span><span class="n">outFile</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">();</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">net</span><span class="o">-&gt;</span><span class="n">ForwardOneExample1</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbHid</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">outFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">hid</span><span class="p">[</span><span class="n">h</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">outFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">firsthidFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;: &quot;</span>
+<span class="w">       </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Written.</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">dimlpCls</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">command</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="c1">// Parsing the command</span>
+<span class="w">  </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">commandList</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">delim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">s</span><span class="p">;</span>
+<span class="w">  </span><span class="n">stringstream</span><span class="w"> </span><span class="n">ss</span><span class="p">(</span><span class="n">command</span><span class="p">);</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">getline</span><span class="p">(</span><span class="n">ss</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">delim</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">commandList</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nbParam</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">commandList</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">DataSet</span><span class="w"> </span><span class="n">Test</span><span class="p">;</span>
+<span class="w">  </span><span class="n">DataSet</span><span class="w"> </span><span class="n">TestClass</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">quant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">testFileTemp</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">testFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">weightFileTemp</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">weightFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">predFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dimlp.out&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">consoleFileTemp</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">consoleFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">accuracyFileTemp</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">accuracyFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">testTarTemp</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">testTarInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">hidFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dimlp.hid&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">rootFolderTemp</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">rootFolderInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbLayers</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbWeightLayers</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vecNbNeurons</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">StringInt</span><span class="w"> </span><span class="n">arch</span><span class="p">;</span>
+<span class="w">  </span><span class="n">StringInt</span><span class="w"> </span><span class="n">archInd</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbParam</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">GiveAllParamDimlpCls</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// We skip &quot;DimlpCls&quot;</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbParam</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">commandList</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;-&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">k</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">nbParam</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Missing something at the end of the command.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="kt">char</span><span class="w"> </span><span class="n">option</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">commandList</span><span class="p">[</span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">];</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">arg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="p">(</span><span class="n">commandList</span><span class="p">[</span><span class="n">k</span><span class="p">])[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">lastArg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="p">(</span><span class="n">commandList</span><span class="p">[</span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">      </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">option</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;q&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">CheckInt</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span>
+<span class="w">          </span><span class="n">quant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">atoi</span><span class="p">(</span><span class="n">arg</span><span class="p">);</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;I&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">CheckInt</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span>
+<span class="w">          </span><span class="n">nbIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">atoi</span><span class="p">(</span><span class="n">arg</span><span class="p">);</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;H&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">CheckInt</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">arch</span><span class="p">.</span><span class="n">Insert</span><span class="p">(</span><span class="n">atoi</span><span class="p">(</span><span class="n">arg</span><span class="p">));</span>
+
+<span class="w">          </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">ptrParam</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lastArg</span><span class="p">;</span>
+
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ptrParam</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">str</span><span class="p">(</span><span class="n">ptrParam</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="w">            </span><span class="n">archInd</span><span class="p">.</span><span class="n">Insert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">atoi</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">c_str</span><span class="p">()));</span>
+<span class="w">          </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Which hidden layer (-H) ?</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span>
+<span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;O&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">CheckInt</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span>
+<span class="w">          </span><span class="n">nbOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">atoi</span><span class="p">(</span><span class="n">arg</span><span class="p">);</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;S&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="n">rootFolderTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rootFolderInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;W&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="n">weightFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span>
+<span class="w">        </span><span class="n">weightFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;p&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="n">predFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;r&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="n">consoleFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span>
+<span class="w">        </span><span class="n">consoleFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;o&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="n">accuracyFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span>
+<span class="w">        </span><span class="n">accuracyFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;h&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="n">hidFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;T&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="n">testFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span>
+<span class="w">        </span><span class="n">testFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;2&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="n">testTarTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span>
+<span class="w">        </span><span class="n">testTarInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">default</span><span class="o">:</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Illegal option: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">lastArg</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Illegal option: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="o">&amp;</span><span class="p">(</span><span class="n">commandList</span><span class="p">[</span><span class="n">k</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">k</span><span class="o">++</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// ----------------------------------------------------------------------</span>
+
+<span class="w">  </span><span class="c1">// create paths with root foler</span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">testFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">weightFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">predFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">consoleFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">accuracyFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">testTar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">hidFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">root</span><span class="p">;</span>
+<span class="cp">#if defined(__unix__) || defined(__APPLE__)</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rootFolderInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;../&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">rootFolderTemp</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;../&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="cp">#elif defined(_WIN32)</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rootFolderInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;..</span><span class="se">\\</span><span class="s">&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">rootFolderTemp</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\\</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;..</span><span class="se">\\</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="cp">#endif</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">testFileInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">testFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">testFileTemp</span><span class="p">;</span>
+<span class="w">    </span><span class="n">testFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">testFileTemp</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">weightFileInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">weightFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">weightFileTemp</span><span class="p">;</span>
+<span class="w">    </span><span class="n">weightFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">weightFileTemp</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">predFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">predFileTemp</span><span class="p">;</span>
+<span class="w">  </span><span class="n">predFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">predFileTemp</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">consoleFileInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">consoleFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">consoleFileTemp</span><span class="p">;</span>
+<span class="w">    </span><span class="n">consoleFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">consoleFileTemp</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">accuracyFileInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">accuracyFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">accuracyFileTemp</span><span class="p">;</span>
+<span class="w">    </span><span class="n">accuracyFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">accuracyFileTemp</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">testTarInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">testTarTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">testTarTemp</span><span class="p">;</span>
+<span class="w">    </span><span class="n">testTar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">testTarTemp</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">hidFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hidFileTemp</span><span class="p">;</span>
+<span class="w">  </span><span class="n">hidFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">hidFileTemp</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+<span class="w">  </span><span class="c1">// ----------------------------------------------------------------------</span>
+<span class="w">  </span><span class="c1">// Get console results to file</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="w"> </span><span class="n">ofs</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">streambuf</span><span class="w"> </span><span class="o">*</span><span class="n">cout_buff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">.</span><span class="n">rdbuf</span><span class="p">();</span><span class="w"> </span><span class="c1">// Save old buf</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">consoleFileInit</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ofs</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">consoleFile</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">.</span><span class="n">rdbuf</span><span class="p">(</span><span class="n">ofs</span><span class="p">.</span><span class="n">rdbuf</span><span class="p">());</span><span class="w"> </span><span class="c1">// redirect std::cout to file</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// ----------------------------------------------------------------------</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">quant</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The number of quantized levels must be greater than 2.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbIn</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The number of input neurons must be given with option -I.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbOut</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;At least two output neurons must be given with option -O.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// ----------------------------------------------------------------------</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">arch</span><span class="p">.</span><span class="n">GetNbEl</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">nbLayers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w">    </span><span class="n">nbWeightLayers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbLayers</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">vecNbNeurons</span><span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="n">nbLayers</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbIn</span><span class="p">;</span>
+<span class="w">    </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbIn</span><span class="p">;</span>
+<span class="w">    </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbOut</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">archInd</span><span class="p">.</span><span class="n">GoToBeg</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">archInd</span><span class="p">.</span><span class="n">GetVal</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">arch</span><span class="p">.</span><span class="n">GoToBeg</span><span class="p">();</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">arch</span><span class="p">.</span><span class="n">GetVal</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">nbIn</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The number of neurons in the first hidden layer must be&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; a multiple of the number of input neurons.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="n">nbLayers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GetNbEl</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">      </span><span class="n">nbWeightLayers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbLayers</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">      </span><span class="n">vecNbNeurons</span><span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="n">nbLayers</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">      </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbIn</span><span class="p">;</span>
+<span class="w">      </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="n">nbLayers</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbOut</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GetNbEl</span><span class="p">();</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GetVal</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The number of neurons must be greater than 0.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">nbLayers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GetNbEl</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w">      </span><span class="n">nbWeightLayers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbLayers</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">      </span><span class="n">vecNbNeurons</span><span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="n">nbLayers</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">      </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbIn</span><span class="p">;</span>
+<span class="w">      </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbIn</span><span class="p">;</span>
+<span class="w">      </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="n">nbLayers</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbOut</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GetNbEl</span><span class="p">();</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="n">k</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GetVal</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="n">k</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The number of neurons must be greater than 0.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="c1">// ----------------------------------------------------------------------</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">testFileInit</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Give a testing file with -T selection please.&quot;</span>
+<span class="w">         </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="c1">// if (testFileInit != false)</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">testTarInit</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">      </span><span class="k">static</span><span class="w"> </span><span class="n">DataSet</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">testFile</span><span class="p">,</span><span class="w"> </span><span class="n">nbIn</span><span class="p">);</span>
+<span class="w">      </span><span class="k">static</span><span class="w"> </span><span class="n">DataSet</span><span class="w"> </span><span class="n">testClass</span><span class="p">(</span><span class="n">testTar</span><span class="p">,</span><span class="w"> </span><span class="n">nbOut</span><span class="p">);</span>
+
+<span class="w">      </span><span class="n">Test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">test</span><span class="p">;</span>
+<span class="w">      </span><span class="n">TestClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">testClass</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">DataSet</span><span class="w"> </span><span class="n">data</span><span class="p">(</span><span class="n">testFile</span><span class="p">,</span><span class="w"> </span><span class="n">nbIn</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">nbOut</span><span class="p">);</span>
+
+<span class="w">      </span><span class="k">static</span><span class="w"> </span><span class="n">DataSet</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">());</span>
+<span class="w">      </span><span class="k">static</span><span class="w"> </span><span class="n">DataSet</span><span class="w"> </span><span class="n">testClass</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">());</span>
+
+<span class="w">      </span><span class="n">data</span><span class="p">.</span><span class="n">ExtractDataAndTarget</span><span class="p">(</span><span class="n">test</span><span class="p">,</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span><span class="w"> </span><span class="n">testClass</span><span class="p">,</span><span class="w"> </span><span class="n">nbOut</span><span class="p">);</span>
+
+<span class="w">      </span><span class="n">Test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">test</span><span class="p">;</span>
+<span class="w">      </span><span class="n">TestClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">testClass</span><span class="p">;</span>
+
+<span class="w">      </span><span class="n">data</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">weightFileInit</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Give a file of weights with -W selection please.&quot;</span>
+<span class="w">         </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">Dimlp</span><span class="w"> </span><span class="n">net</span><span class="p">(</span><span class="n">weightFile</span><span class="p">,</span><span class="w"> </span><span class="n">nbLayers</span><span class="p">,</span><span class="w"> </span><span class="n">vecNbNeurons</span><span class="p">,</span><span class="w"> </span><span class="n">quant</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">acc</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">net</span><span class="p">.</span><span class="n">Error</span><span class="p">(</span><span class="n">Test</span><span class="p">,</span><span class="w"> </span><span class="n">TestClass</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">acc</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">*** SUM SQUARED ERROR = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">err</span><span class="p">;</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">*** ACCURACY = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">acc</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// Output accuracy stats in file</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">accuracyFileInit</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ofstream</span><span class="w"> </span><span class="n">accFile</span><span class="p">(</span><span class="n">accuracyFile</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">accFile</span><span class="p">.</span><span class="n">is_open</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">accFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Sum squared error = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">      </span><span class="n">accFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Accuracy = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">acc</span><span class="p">;</span>
+<span class="w">      </span><span class="n">accFile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Error : could not open accuracy file &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">accuracyFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; not found.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">SaveOutputs</span><span class="p">(</span><span class="n">Test</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">net</span><span class="p">,</span><span class="w"> </span><span class="n">nbOut</span><span class="p">,</span><span class="w"> </span><span class="n">nbWeightLayers</span><span class="p">,</span><span class="w"> </span><span class="n">predFile</span><span class="p">);</span>
+<span class="w">  </span><span class="n">SaveFirstHid</span><span class="p">(</span><span class="n">Test</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">net</span><span class="p">,</span><span class="w"> </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">predFile</span><span class="p">,</span><span class="w"> </span><span class="n">hidFile</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">Test</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">  </span><span class="n">TestClass</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">-------------------------------------------------</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">.</span><span class="n">rdbuf</span><span class="p">(</span><span class="n">cout_buff</span><span class="p">);</span><span class="w"> </span><span class="c1">// reset to standard output again</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/*</span>
+<span class="cm">int main(int nbParam, char** param)</span>
+
+<span class="cm">{</span>
+<span class="cm">    dimlpCls(&quot;DimlpCls -T datanormTest -2 dataclass2Test -W dimlpDatanorm.wts -I 16 -H2 5 -O 2 -q 50 -p dimlpDatanormTest.out -o dimlpDatanormClsStats -r dimlpDatanormClsResult.txt -S dimlp/datafiles&quot;);</span>
+<span class="cm">}*/</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

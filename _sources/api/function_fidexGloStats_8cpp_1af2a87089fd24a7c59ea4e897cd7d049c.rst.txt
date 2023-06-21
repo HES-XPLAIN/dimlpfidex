@@ -1,0 +1,14 @@
+.. _exhale_function_fidexGloStats_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c:
+
+Function main(int, char \*\*)
+=============================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_fidexGloStats.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: main(int, char **)
+   :project: dimlp

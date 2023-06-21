@@ -1,0 +1,66 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_getRulesFun.h:
+
+File getRulesFun.h
+==================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/fidexGlo/cpp/src/getRulesFun.h``)
+---------------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_getRulesFun.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../fidexCommon/cpp/src/checkFun.h``
+
+- ``../../../fidexCommon/cpp/src/errorHandler.h``
+
+- ``fstream``
+
+- ``iostream``
+
+- ``sstream``
+
+- ``string`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_stringI.cpp`)
+
+- ``tuple``
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_fidexGloFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_fidexGloStatsFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_getRulesFun.cpp`
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_getRulesFun_8h_1acaed85a932241e46ede2c153d4d53b89`
+
+- :ref:`exhale_function_getRulesFun_8h_1a3e1a2e4142de0fa83c94a5ee526288e6`
+

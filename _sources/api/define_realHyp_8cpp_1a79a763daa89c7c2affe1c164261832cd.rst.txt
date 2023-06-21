@@ -1,0 +1,14 @@
+.. _exhale_define_realHyp_8cpp_1a79a763daa89c7c2affe1c164261832cd:
+
+Define STRINGINT
+================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp.cpp`
+
+
+Define Documentation
+--------------------
+
+
+.. doxygendefine:: STRINGINT
+   :project: dimlp

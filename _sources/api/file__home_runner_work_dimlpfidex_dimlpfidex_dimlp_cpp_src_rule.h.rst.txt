@@ -1,0 +1,52 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_rule.h:
+
+File rule.h
+===========
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/rule.h``)
+-----------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_rule.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``memory``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_ante.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dataSet.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_rule.cpp`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_struct_structRule_1_1Antecedent`
+
+- :ref:`exhale_class_classRule`
+

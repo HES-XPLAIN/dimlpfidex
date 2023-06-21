@@ -1,0 +1,29 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpClsFct.h:
+
+Program Listing for File DimlpClsFct.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpClsFct.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/DimlpClsFct.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef DIMLPCLSFCT_H
+   #define DIMLPCLSFCT_H
+   
+   #include "checkFun.h"
+   #include "dimlp.h"
+   #include "writeErr.h"
+   #include <fstream>
+   #include <sstream>
+   #include <stdlib.h>
+   #include <string.h>
+   #include <vector>
+   
+   void GiveAllParamDimlpCls();
+   static void SaveOutputs(DataSet &data, Dimlp *net, int nbOut, int nbWeightLayers, const char *outfile);
+   int dimlpCls(const std::string &command);
+   
+   #endif

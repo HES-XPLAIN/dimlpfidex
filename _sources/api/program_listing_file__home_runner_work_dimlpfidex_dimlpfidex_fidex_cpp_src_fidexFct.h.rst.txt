@@ -1,0 +1,37 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.h:
+
+Program Listing for File fidexFct.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/fidexFct.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef FIDEXFCT_H
+   #define FIDEXFCT_H
+   
+   #include "../../../fidexCommon/cpp/src/checkFun.h"
+   #include "../../../fidexCommon/cpp/src/dataSet.h"
+   #include "../../../fidexCommon/cpp/src/errorHandler.h"
+   #include "../../../fidexCommon/cpp/src/hyperLocus.h"
+   #include "hyperspace.h"
+   #include <algorithm>
+   #include <chrono>
+   #include <ctime>
+   #include <fstream>
+   #include <iostream>
+   #include <memory>
+   #include <numeric>
+   #include <random>
+   #include <sstream>
+   #include <time.h>
+   #include <tuple>
+   #include <vector>
+   
+   void showFidexParams();
+   int fidex(const std::string &command);
+   
+   #endif

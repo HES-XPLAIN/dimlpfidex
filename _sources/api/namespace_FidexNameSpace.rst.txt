@@ -1,0 +1,20 @@
+
+.. _namespace_FidexNameSpace:
+
+Namespace FidexNameSpace
+========================
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classFidexNameSpace_1_1Hyperspace`

@@ -1,0 +1,14 @@
+.. _exhale_variable_realHyp_8h_1aa51417ebeae880fdfd421d904dd6f1fe:
+
+Variable RULE
+=============
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp.h`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: RULE
+   :project: dimlp

@@ -1,0 +1,21 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_writeErr.h:
+
+Program Listing for File writeErr.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_writeErr.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/writeErr.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef WRITEERR_H
+   #define WRITEERR_H
+   
+   #include <iostream>
+   #include <stdlib.h>
+   
+   [[noreturn]] void WriteError(const std::string &s1, const std::string &s2);
+   
+   #endif

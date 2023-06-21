@@ -1,0 +1,23 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_getRulesFun.h:
+
+Program Listing for File getRulesFun.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_getRulesFun.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/fidexGlo/cpp/src/getRulesFun.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #include "../../../fidexCommon/cpp/src/checkFun.h"
+   #include "../../../fidexCommon/cpp/src/errorHandler.h"
+   #include <fstream>
+   #include <iostream>
+   #include <sstream>
+   #include <string>
+   #include <tuple>
+   #include <vector>
+   
+   extern void getRules(std::vector<std::tuple<std::vector<std::tuple<int, bool, double>>, int, int, double, double>> &rules, std::vector<std::string> &lines, std::vector<std::string> &stringRules, const char *rulesFile, bool hasAttributeNames, const std::vector<std::string> &attributeNames, bool hasClassNames, const std::vector<std::string> &classNames);
+   extern void getActivatedRules(std::vector<int> &activatedRules, std::vector<std::tuple<std::vector<std::tuple<int, bool, double>>, int, int, double, double>> *rules, std::vector<double> *testValues);

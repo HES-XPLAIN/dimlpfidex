@@ -1,0 +1,52 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_standAct.cpp:
+
+File standAct.cpp
+=================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/standAct.cpp``)
+-----------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_standAct.cpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``math.h``
+
+
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_standAct_8cpp_1a9f297554f48d65d58962e61c25ca3efd`
+
+- :ref:`exhale_function_standAct_8cpp_1a19c73c097e884f68703df5ba97b7b5ff`
+
+- :ref:`exhale_function_standAct_8cpp_1a74f64151d3b4df0a328b46c1085be17e`
+
+- :ref:`exhale_function_standAct_8cpp_1a54ae6086b82e034fd7d5ff24f1771e04`
+
+- :ref:`exhale_function_standAct_8cpp_1a8da017d227e558af4b62641e79971025`
+
+- :ref:`exhale_function_standAct_8cpp_1a24c2455de4ca8a28fa8de88e9c66ebdb`
+
+- :ref:`exhale_function_standAct_8cpp_1ab3cb2bb17b405a04b4d66058158622d3`
+

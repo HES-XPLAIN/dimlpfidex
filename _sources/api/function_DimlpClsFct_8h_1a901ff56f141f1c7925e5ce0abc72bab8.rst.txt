@@ -1,0 +1,14 @@
+.. _exhale_function_DimlpClsFct_8h_1a901ff56f141f1c7925e5ce0abc72bab8:
+
+Function SaveOutputs(DataSet&, Dimlp \*, int, int, const char \*)
+=================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpClsFct.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: SaveOutputs(DataSet&, Dimlp *, int, int, const char *)
+   :project: dimlp

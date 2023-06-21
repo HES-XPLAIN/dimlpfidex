@@ -1,0 +1,11 @@
+.. _dir_fidexGlo:
+
+
+Directory fidexGlo
+==================
+
+
+*Directory path:* ``fidexGlo``
+
+
+

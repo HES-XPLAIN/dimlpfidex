@@ -1,0 +1,33 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_oneVarTD.cpp:
+
+File oneVarTD.cpp
+=================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/oneVarTD.cpp``)
+-----------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_oneVarTD.cpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``oneVarTD.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_oneVarTD.h`)
+
+
+
+
+

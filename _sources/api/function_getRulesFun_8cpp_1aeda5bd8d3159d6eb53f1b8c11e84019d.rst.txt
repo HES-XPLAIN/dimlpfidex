@@ -1,0 +1,14 @@
+.. _exhale_function_getRulesFun_8cpp_1aeda5bd8d3159d6eb53f1b8c11e84019d:
+
+Function getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>>&, vector<string>&, vector<string>&, const char \*, bool, const vector<string>&, bool, const vector<string>&)
+========================================================================================================================================================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_getRulesFun.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>>&, vector<string>&, vector<string>&, const char *, bool, const vector<string>&, bool, const vector<string>&)
+   :project: dimlp

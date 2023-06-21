@@ -1,0 +1,36 @@
+.. _exhale_class_classRule:
+
+Class Rule
+==========
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_rule.h`
+
+
+Nested Relationships
+--------------------
+
+
+Nested Types
+************
+
+- :ref:`exhale_struct_structRule_1_1Antecedent`
+
+
+Inheritance Relationships
+-------------------------
+
+Derived Type
+************
+
+- ``public Ante`` (:ref:`exhale_class_classAnte`)
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: Rule
+   :project: dimlp
+   :members:
+   :protected-members:
+   :undoc-members:

@@ -1,0 +1,14 @@
+.. _exhale_function_DimlpTrnFct_8cpp_1a3826791a4bee2ea6f6442a2d91fa41c0:
+
+Function SaveOutputs(DataSet&, std::shared_ptr<Dimlp>, int, int, const char \*)
+===============================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpTrnFct.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: SaveOutputs(DataSet&, std::shared_ptr<Dimlp>, int, int, const char *)
+   :project: dimlp

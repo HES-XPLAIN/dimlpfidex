@@ -1,0 +1,77 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_CrossValid.cpp:
+
+File CrossValid.cpp
+===================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/CrossValid.cpp``)
+-------------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_CrossValid.cpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../fidex/cpp/src/fidexFct.h``
+
+- ``../../../fidexCommon/cpp/src/errorHandler.h``
+
+- ``../../../fidexGlo/cpp/src/fidexGloRulesFct.h``
+
+- ``../../../fidexGlo/cpp/src/fidexGloStatsFct.h``
+
+- ``DimlpTrnFct.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpTrnFct.h`)
+
+- ``algorithm``
+
+- ``fstream``
+
+- ``iostream``
+
+- ``random``
+
+- ``sys/stat.h``
+
+- ``sys/types.h``
+
+- ``unistd.h``
+
+
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_CrossValid_8cpp_1aa3320b708f53ebfab7c7a30a4d5da189`
+
+- :ref:`exhale_function_CrossValid_8cpp_1ab050f345450a736c70c38732138c9c5e`
+
+- :ref:`exhale_function_CrossValid_8cpp_1a3cc4e4d68f2172cdb350db06f150d12e`
+
+- :ref:`exhale_function_CrossValid_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c`
+
+- :ref:`exhale_function_CrossValid_8cpp_1acfb989738ac426a222441a409d703bff`
+
+
+Defines
+-------
+
+
+- :ref:`exhale_define_CrossValid_8cpp_1afc5e1e156b557ca81bfb1afaa98e2123`
+

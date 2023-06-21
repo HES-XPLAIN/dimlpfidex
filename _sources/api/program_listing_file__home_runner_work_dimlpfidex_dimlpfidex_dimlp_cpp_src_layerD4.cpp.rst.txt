@@ -1,0 +1,31 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerD4.cpp:
+
+Program Listing for File layerD4.cpp
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerD4.cpp>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/layerD4.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #include "layerD4.h"
+   
+   
+   LayerDimlp4::LayerDimlp4(
+       float eta,
+       float mu,
+       float flat,
+       int nbDown,
+       int nbUp,
+       int nbWeights,
+       int nbWeightsForInit,
+       int nbKnots) :
+   
+                      Layer(eta, mu, flat, nbDown, nbUp, nbWeights, nbWeightsForInit),
+                      Stair(std::unique_ptr<StairObj>(new StairObj(nbKnots)))
+   
+   {
+   }
+   

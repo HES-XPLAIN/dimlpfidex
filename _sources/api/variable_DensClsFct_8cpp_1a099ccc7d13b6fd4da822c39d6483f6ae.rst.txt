@@ -1,0 +1,14 @@
+.. _exhale_variable_DensClsFct_8cpp_1a099ccc7d13b6fd4da822c39d6483f6ae:
+
+Variable BPNN
+=============
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DensClsFct.cpp`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: BPNN
+   :project: dimlp

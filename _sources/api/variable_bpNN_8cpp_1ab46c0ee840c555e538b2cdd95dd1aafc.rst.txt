@@ -1,0 +1,14 @@
+.. _exhale_variable_bpNN_8cpp_1ab46c0ee840c555e538b2cdd95dd1aafc:
+
+Variable LLL
+============
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bpNN.cpp`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: LLL
+   :project: dimlp

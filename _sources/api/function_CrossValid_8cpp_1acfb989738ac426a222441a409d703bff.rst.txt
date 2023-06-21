@@ -1,0 +1,14 @@
+.. _exhale_function_CrossValid_8cpp_1acfb989738ac426a222441a409d703bff:
+
+Function removeDirectory
+========================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_CrossValid.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: removeDirectory(const std::string&)
+   :project: dimlp

@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Library API &mdash; DimlpFidex 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Namespace FidexGloNameSpace" href="namespace_FidexGloNameSpace.html" />
+    <link rel="prev" title="Welcome to DimlpFidex’s documentation!" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            DimlpFidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Library API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#full-api">Full API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#namespaces">Namespaces</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="namespace_FidexGloNameSpace.html">Namespace FidexGloNameSpace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="namespace_FidexNameSpace.html">Namespace FidexNameSpace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="namespace_std.html">Namespace std</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#classes-and-structs">Classes and Structs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="structCleanRuleStruct_1_1AssocAnte.html">Struct CleanRuleStruct::AssocAnte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structCleanRuleStruct_1_1CleanRule.html">Struct CleanRuleStruct::CleanRule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structOneVarThresDescr_1_1Elem.html">Struct OneVarThresDescr::Elem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structRule_1_1Antecedent.html">Struct Rule::Antecedent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structRuleInfo.html">Struct RuleInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structRuleProcessing_1_1Saved.html">Struct RuleProcessing::Saved</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structStringInt_1_1Elem.html">Struct StringInt::Elem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAnte.html">Class Ante</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAttrName.html">Class AttrName</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classBagDimlp.html">Class BagDimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classBpNN.html">Class BpNN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCleanRuleStruct.html">Class CleanRuleStruct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDataSet.html">Class DataSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDimlp.html">Class Dimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFidexAlgo.html">Class FidexAlgo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFidexGloNameSpace_1_1Hyperspace.html">Class Hyperspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFidexNameSpace_1_1Hyperspace.html">Class Hyperspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFloatRandomFunction.html">Class FloatRandomFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classIntRandomFunction.html">Class IntRandomFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayer.html">Class Layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp.html">Class LayerDimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp2.html">Class LayerDimlp2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp3.html">Class LayerDimlp3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp4.html">Class LayerDimlp4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerFdimlp.html">Class LayerFdimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerRad.html">Class LayerRad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSD.html">Class LayerSD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP3.html">Class LayerSP3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP4.html">Class LayerSP4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP5.html">Class LayerSP5</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classOneVarThresDescr.html">Class OneVarThresDescr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRealHyp.html">Class RealHyp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRealHyp2.html">Class RealHyp2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRule.html">Class Rule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRuleProcessing.html">Class RuleProcessing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classStairObj.html">Class StairObj</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classStringInt.html">Class StringInt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classThresDescr.html">Class ThresDescr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVectWithRandVal.html">Class VectWithRandVal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVirtualHyp.html">Class VirtualHyp</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="function_misc_8cpp_1a4740003af206bb19a5cb619ae26d4718.html">Function AreSameClass(std::shared_ptr&lt;StringInt&gt;, std::vector&lt;int&gt;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_misc_8h_1a4740003af206bb19a5cb619ae26d4718.html">Function AreSameClass(std::shared_ptr&lt;StringInt&gt;, std::vector&lt;int&gt;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_checkFun_8cpp_1a78dc4e1322da86c268137cc1d0b7b006.html">Function CheckFloat(const char *)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_checkFun_8h_1a78dc4e1322da86c268137cc1d0b7b006.html">Function CheckFloat(const char *)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_checkFun_8cpp_1a72adbf0698e29b7b81bf312ed0d68d75.html">Function CheckInt(const char *)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_checkFun_8h_1a72adbf0698e29b7b81bf312ed0d68d75.html">Function CheckInt(const char *)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_misc_8cpp_1aaa422af68876dc8636fd20729ea1e1ef.html">Function Compare(const void *, const void *)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_misc_8h_1aaa422af68876dc8636fd20729ea1e1ef.html">Function Compare(const void *, const void *)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_CrossValid_8cpp_1aa3320b708f53ebfab7c7a30a4d5da189.html">Function copyFile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_CrossValid_8cpp_1ab050f345450a736c70c38732138c9c5e.html">Function createOrClearDirectory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DensClsFct_8cpp_1a462cb98338ad1cc55ac270a24f6fd704.html">Function densCls(const string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DensClsFct_8h_1a9e55656363fae4a80a7b4c36267214f9.html">Function densCls(const std::string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpBTFct_8cpp_1aeb82b1c41c916f67bb66635ede684378.html">Function dimlpBT(const string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpBTFct_8h_1a2c0a71ea92c4a3d30197d347debc76de.html">Function dimlpBT(const std::string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpClsFct_8cpp_1abfaca1a7855153840e1827179902ab71.html">Function dimlpCls(const string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpClsFct_8h_1ad7a9608f72ff57e6f13bbdd3ed787cb0.html">Function dimlpCls(const std::string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpPredFct_8cpp_1ad0d900316dc5c04e434784711b2c3217.html">Function dimlpPred(const string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpPredFct_8h_1ab8af5e163e0028faaddeecacca3b8a52.html">Function dimlpPred(const std::string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpRulFct_8cpp_1a87a34b94d53977dccc06fb0a63e3c801.html">Function dimlpRul(const string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpRulFct_8h_1a12b794004a488202036b80c9baa4ce35.html">Function dimlpRul(const std::string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpTrnFct_8cpp_1aad56491c9f0971bcf8ef336b12e03148.html">Function dimlpTrn(const string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpTrnFct_8h_1acf0fec72ee1d9e49e0352866f8225a41.html">Function dimlpTrn(const std::string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexFct_8cpp_1a01c13136d12d9d4d507c879a9670e5ec.html">Function fidex(const string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexFct_8h_1a413bb8e6d52f49aa7bc90467e92972e0.html">Function fidex(const std::string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexGloFct_8cpp_1a15dd999030aa516735f545feed66fbbf.html">Function fidexGlo(const string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexGloFct_8h_1a0b941395a2bb93ebfc98c5d4f9e41af0.html">Function fidexGlo(const std::string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexGloRulesFct_8cpp_1ab3a80e91198fb133137e78d73f7435ac.html">Function fidexGloRules(const string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexGloRulesFct_8h_1a90754c35e71df979efeaefd5d30ec761.html">Function fidexGloRules(const std::string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexGloStatsFct_8cpp_1a0b822e48752e42c75daf96850f89e69c.html">Function fidexGloStats(const string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexGloStatsFct_8h_1a12eb8b45a566e7b548448bbd4ee2472e.html">Function fidexGloStats(const std::string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_standAct_8cpp_1a9f297554f48d65d58962e61c25ca3efd.html">Function Gaussian(float)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_standAct_8h_1a9f297554f48d65d58962e61c25ca3efd.html">Function Gaussian(float)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_getRulesFun_8cpp_1ac97811c795ea6a09817a3a0ee86f5cdb.html">Function getActivatedRules(vector&lt;int&gt;&amp;, vector&lt;tuple&lt;vector&lt;tuple&lt;int, bool, double&gt;&gt;, int, int, double, double&gt;&gt; *, vector&lt;double&gt; *)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_getRulesFun_8h_1acaed85a932241e46ede2c153d4d53b89.html">Function getActivatedRules(std::vector&lt;int&gt;&amp;, std::vector&lt;std::tuple&lt;std::vector&lt;std::tuple&lt;int, bool, double&gt;&gt;, int, int, double, double&gt;&gt; *, std::vector&lt;double&gt; *)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_getRulesFun_8cpp_1aeda5bd8d3159d6eb53f1b8c11e84019d.html">Function getRules(vector&lt;tuple&lt;vector&lt;tuple&lt;int, bool, double&gt;&gt;, int, int, double, double&gt;&gt;&amp;, vector&lt;string&gt;&amp;, vector&lt;string&gt;&amp;, const char *, bool, const vector&lt;string&gt;&amp;, bool, const vector&lt;string&gt;&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_getRulesFun_8h_1a3e1a2e4142de0fa83c94a5ee526288e6.html">Function getRules(std::vector&lt;std::tuple&lt;std::vector&lt;std::tuple&lt;int, bool, double&gt;&gt;, int, int, double, double&gt;&gt;&amp;, std::vector&lt;std::string&gt;&amp;, std::vector&lt;std::string&gt;&amp;, const char *, bool, const std::vector&lt;std::string&gt;&amp;, bool, const std::vector&lt;std::string&gt;&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_CrossValid_8cpp_1a3cc4e4d68f2172cdb350db06f150d12e.html">Function GiveAllParam</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DensClsFct_8cpp_1acd80f12e4d8f9e009d6f1fd6e3d3dca9.html">Function GiveAllParamDensCls()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DensClsFct_8h_1acd80f12e4d8f9e009d6f1fd6e3d3dca9.html">Function GiveAllParamDensCls()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpBTFct_8cpp_1a202782fdc10b7b0c67e02da3127aea6d.html">Function GiveAllParamDimlpBT()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpBTFct_8h_1a202782fdc10b7b0c67e02da3127aea6d.html">Function GiveAllParamDimlpBT()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpClsFct_8cpp_1aebb7d8700ea1e3213f146673585290af.html">Function GiveAllParamDimlpCls()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpClsFct_8h_1aebb7d8700ea1e3213f146673585290af.html">Function GiveAllParamDimlpCls()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpRulFct_8cpp_1a8d29cad690d6de0817b968a4edcf0719.html">Function GiveAllParamDimlpRul()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpRulFct_8h_1a8d29cad690d6de0817b968a4edcf0719.html">Function GiveAllParamDimlpRul()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpTrnFct_8cpp_1a8178865b894bfbfaa0c7193df9bee744.html">Function GiveAllParamDimlpTrn()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpTrnFct_8h_1a8178865b894bfbfaa0c7193df9bee744.html">Function GiveAllParamDimlpTrn()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpPredFct_8cpp_1ae7d48c1c9333239f5a49865322c3c91c.html">Function GiveAllParamPred()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpPredFct_8h_1ae7d48c1c9333239f5a49865322c3c91c.html">Function GiveAllParamPred()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_standAct_8cpp_1a19c73c097e884f68703df5ba97b7b5ff.html">Function HyperTang(float)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_standAct_8h_1a19c73c097e884f68703df5ba97b7b5ff.html">Function HyperTang(float)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_standAct_8cpp_1a74f64151d3b4df0a328b46c1085be17e.html">Function Identity(float)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_standAct_8h_1a74f64151d3b4df0a328b46c1085be17e.html">Function Identity(float)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_errFunct_8cpp_1a5ef1a2c8a10f53eb4e334c51c7694c0f.html">Function Lmse(int, std::vector&lt;float&gt;, std::vector&lt;float&gt;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_errFunct_8h_1a5ef1a2c8a10f53eb4e334c51c7694c0f.html">Function Lmse(int, std::vector&lt;float&gt;, std::vector&lt;float&gt;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_CrossValid_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DensCls_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpBT_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpCls_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpPred_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpRul_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpTrn_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidex_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_checkCovSize_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexGlo_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexGloRules_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexGloStats_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_getRulesFun_8cpp_1a60aaf6aef19299e87c6c4e5b78882ac6.html">Function parseRuleLine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_standAct_8cpp_1a54ae6086b82e034fd7d5ff24f1771e04.html">Function Power3(float)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_standAct_8h_1a54ae6086b82e034fd7d5ff24f1771e04.html">Function Power3(float)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_standAct_8cpp_1a8da017d227e558af4b62641e79971025.html">Function Power4(float)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_standAct_8h_1a8da017d227e558af4b62641e79971025.html">Function Power4(float)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_standAct_8cpp_1a24c2455de4ca8a28fa8de88e9c66ebdb.html">Function Power5(float)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_standAct_8h_1a24c2455de4ca8a28fa8de88e9c66ebdb.html">Function Power5(float)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_CrossValid_8cpp_1acfb989738ac426a222441a409d703bff.html">Function removeDirectory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpClsFct_8cpp_1a9e3dbbd0e233a461780df43172b75b1a.html">Function SaveFirstHid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpClsFct_8cpp_1a901ff56f141f1c7925e5ce0abc72bab8.html">Function SaveOutputs(DataSet&amp;, Dimlp *, int, int, const char *)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpClsFct_8h_1a901ff56f141f1c7925e5ce0abc72bab8.html">Function SaveOutputs(DataSet&amp;, Dimlp *, int, int, const char *)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpPredFct_8cpp_1a901ff56f141f1c7925e5ce0abc72bab8.html">Function SaveOutputs(DataSet&amp;, Dimlp *, int, int, const char *)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpPredFct_8h_1a901ff56f141f1c7925e5ce0abc72bab8.html">Function SaveOutputs(DataSet&amp;, Dimlp *, int, int, const char *)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpTrnFct_8cpp_1a3826791a4bee2ea6f6442a2d91fa41c0.html">Function SaveOutputs(DataSet&amp;, std::shared_ptr&lt;Dimlp&gt;, int, int, const char *)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_DimlpTrnFct_8h_1a3826791a4bee2ea6f6442a2d91fa41c0.html">Function SaveOutputs(DataSet&amp;, std::shared_ptr&lt;Dimlp&gt;, int, int, const char *)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexFct_8cpp_1afb3c1683e14a0a8d7273cc282879b303.html">Function showFidexParams()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexFct_8h_1afb3c1683e14a0a8d7273cc282879b303.html">Function showFidexParams()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_checkCovSize_8cpp_1a55c7bf71dd862585b25f8cf1c12e0fd1.html">Function showParams()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexGloFct_8cpp_1a55c7bf71dd862585b25f8cf1c12e0fd1.html">Function showParams()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexGloFct_8h_1a55c7bf71dd862585b25f8cf1c12e0fd1.html">Function showParams()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexGloRulesFct_8cpp_1a8d310f34a80c1a1837657150d763198c.html">Function showRulesParams()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexGloRulesFct_8h_1a8d310f34a80c1a1837657150d763198c.html">Function showRulesParams()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexGloStatsFct_8cpp_1ac902242b0280a2c02dfb72a13378bd9e.html">Function showStatsParams()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_fidexGloStatsFct_8h_1ac902242b0280a2c02dfb72a13378bd9e.html">Function showStatsParams()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_standAct_8cpp_1ab3cb2bb17b405a04b4d66058158622d3.html">Function Sigmoid(float)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_standAct_8h_1ab3cb2bb17b405a04b4d66058158622d3.html">Function Sigmoid(float)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_getRulesFun_8cpp_1aeb2e4898ba6e4ae71103ee342087b553.html">Function splitString</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_writeErr_8cpp_1ac484dcde5a49f1583fb4f0c2afb5d034.html">Function WriteError(const string&amp;, const string&amp;)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_writeErr_8h_1a6ce475b90018467c1d3ab81b9179830d.html">Function WriteError(const std::string&amp;, const std::string&amp;)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#variables">Variables</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="variable_DensClsFct_8cpp_1a099ccc7d13b6fd4da822c39d6483f6ae.html">Variable BPNN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_DimlpBTFct_8cpp_1a099ccc7d13b6fd4da822c39d6483f6ae.html">Variable BPNN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_DimlpRulFct_8cpp_1a099ccc7d13b6fd4da822c39d6483f6ae.html">Variable BPNN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_DimlpTrnFct_8cpp_1a099ccc7d13b6fd4da822c39d6483f6ae.html">Variable BPNN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_realHyp_8h_1a78c44009d8d6c59e1e001a84fac73ad9.html">Variable DATASETS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_layer_8h_1a1280c6c1ed06c39e198fdf0b8b16d4de.html">Variable LAYER</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_bpNN_8h_1a4429f13b0fff2556a90b182206602ea2.html">Variable LD2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_bpNN_8cpp_1a2038801b9efad904c86a7c796856e74f.html">Variable LD3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_bpNN_8cpp_1a381596acf65cdb116eab4eb497e95a5b.html">Variable LD4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_bpNN_8cpp_1ab46c0ee840c555e538b2cdd95dd1aafc.html">Variable LLL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_dimlp_8cpp_1ae527292a2565756ac42ff4bd41fdb47c.html">Variable netType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_realHyp_8h_1aa51417ebeae880fdfd421d904dd6f1fe.html">Variable RULE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_realHyp_8h_1a0044f4b060fc5239a937d6a34e910593.html">Variable STRINGINT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_realHyp_8h_1a8db15e810e0167602a314f3113c28a2d.html">Variable THRESDESCR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variable_bagDimlp_8h_1a3739e3dc14d07ac6155791efa07348c8.html">Variable VIRT</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#defines">Defines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="define_CrossValid_8cpp_1afc5e1e156b557ca81bfb1afaa98e2123.html">Define CREATE_DIRECTORY</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_realHyp_8cpp_1a9308aaa099f69ee221df1639cb66ef3e.html">Define FROMREAL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="define_realHyp_8cpp_1a79a763daa89c7c2affe1c164261832cd.html">Define STRINGINT</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DimlpFidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Library API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/library_root.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="library-api">
+<h1>Library API<a class="headerlink" href="#library-api" title="Permalink to this headline"></a></h1>
+<section id="class-hierarchy">
+<h2>Class Hierarchy<a class="headerlink" href="#class-hierarchy" title="Permalink to this headline"></a></h2>
+<ul class="treeView" id="class-treeView">
+  <li>
+    <ul class="collapsibleList">
+      <li>Namespace <a href="namespace_FidexGloNameSpace.html#namespace-FidexGloNameSpace">FidexGloNameSpace</a><ul><li class="lastChild">Class <a href="classFidexGloNameSpace_1_1Hyperspace.html#exhale-class-classFidexGloNameSpace-1-1Hyperspace">Hyperspace</a></li></ul></li><li>Namespace <a href="namespace_FidexNameSpace.html#namespace-FidexNameSpace">FidexNameSpace</a><ul><li class="lastChild">Class <a href="classFidexNameSpace_1_1Hyperspace.html#exhale-class-classFidexNameSpace-1-1Hyperspace">Hyperspace</a></li></ul></li><li>Struct <a href="structRuleInfo.html#exhale-struct-structRuleInfo">RuleInfo</a></li><li>Class <a href="classAnte.html#exhale-class-classAnte">Ante</a></li><li>Class <a href="classAttrName.html#exhale-class-classAttrName">AttrName</a></li><li>Class <a href="classBagDimlp.html#exhale-class-classBagDimlp">BagDimlp</a></li><li>Class <a href="classBpNN.html#exhale-class-classBpNN">BpNN</a></li><li>Class <a href="classCleanRuleStruct.html#exhale-class-classCleanRuleStruct">CleanRuleStruct</a><ul><li>Struct <a href="structCleanRuleStruct_1_1AssocAnte.html#exhale-struct-structCleanRuleStruct-1-1AssocAnte">CleanRuleStruct::AssocAnte</a></li><li class="lastChild">Struct <a href="structCleanRuleStruct_1_1CleanRule.html#exhale-struct-structCleanRuleStruct-1-1CleanRule">CleanRuleStruct::CleanRule</a></li></ul></li><li>Class <a href="classDataSet.html#exhale-class-classDataSet">DataSet</a></li><li>Class <a href="classDimlp.html#exhale-class-classDimlp">Dimlp</a></li><li>Class <a href="classFidexAlgo.html#exhale-class-classFidexAlgo">FidexAlgo</a></li><li>Class <a href="classFloatRandomFunction.html#exhale-class-classFloatRandomFunction">FloatRandomFunction</a></li><li>Class <a href="classIntRandomFunction.html#exhale-class-classIntRandomFunction">IntRandomFunction</a></li><li>Class <a href="classLayer.html#exhale-class-classLayer">Layer</a></li><li>Class <a href="classLayerDimlp.html#exhale-class-classLayerDimlp">LayerDimlp</a></li><li>Class <a href="classLayerDimlp2.html#exhale-class-classLayerDimlp2">LayerDimlp2</a></li><li>Class <a href="classLayerDimlp3.html#exhale-class-classLayerDimlp3">LayerDimlp3</a></li><li>Class <a href="classLayerDimlp4.html#exhale-class-classLayerDimlp4">LayerDimlp4</a></li><li>Class <a href="classLayerFdimlp.html#exhale-class-classLayerFdimlp">LayerFdimlp</a></li><li>Class <a href="classLayerRad.html#exhale-class-classLayerRad">LayerRad</a></li><li>Class <a href="classLayerSD.html#exhale-class-classLayerSD">LayerSD</a></li><li>Class <a href="classLayerSP3.html#exhale-class-classLayerSP3">LayerSP3</a></li><li>Class <a href="classLayerSP4.html#exhale-class-classLayerSP4">LayerSP4</a></li><li>Class <a href="classLayerSP5.html#exhale-class-classLayerSP5">LayerSP5</a></li><li>Class <a href="classOneVarThresDescr.html#exhale-class-classOneVarThresDescr">OneVarThresDescr</a><ul><li class="lastChild">Struct <a href="structOneVarThresDescr_1_1Elem.html#exhale-struct-structOneVarThresDescr-1-1Elem">OneVarThresDescr::Elem</a></li></ul></li><li>Class <a href="classRealHyp.html#exhale-class-classRealHyp">RealHyp</a></li><li>Class <a href="classRealHyp2.html#exhale-class-classRealHyp2">RealHyp2</a></li><li>Class <a href="classRule.html#exhale-class-classRule">Rule</a><ul><li class="lastChild">Struct <a href="structRule_1_1Antecedent.html#exhale-struct-structRule-1-1Antecedent">Rule::Antecedent</a></li></ul></li><li>Class <a href="classRuleProcessing.html#exhale-class-classRuleProcessing">RuleProcessing</a><ul><li class="lastChild">Struct <a href="structRuleProcessing_1_1Saved.html#exhale-struct-structRuleProcessing-1-1Saved">RuleProcessing::Saved</a></li></ul></li><li>Class <a href="classStairObj.html#exhale-class-classStairObj">StairObj</a></li><li>Class <a href="classStringInt.html#exhale-class-classStringInt">StringInt</a><ul><li class="lastChild">Struct <a href="structStringInt_1_1Elem.html#exhale-struct-structStringInt-1-1Elem">StringInt::Elem</a></li></ul></li><li>Class <a href="classThresDescr.html#exhale-class-classThresDescr">ThresDescr</a></li><li>Class <a href="classVectWithRandVal.html#exhale-class-classVectWithRandVal">VectWithRandVal</a></li><li class="lastChild">Class <a href="classVirtualHyp.html#exhale-class-classVirtualHyp">VirtualHyp</a></li>
+    </ul>
+  </li><!-- only tree view element -->
+</ul><!-- /treeView class-treeView --></section>
+<section id="full-api">
+<h2>Full API<a class="headerlink" href="#full-api" title="Permalink to this headline"></a></h2>
+<section id="namespaces">
+<h3>Namespaces<a class="headerlink" href="#namespaces" title="Permalink to this headline"></a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="namespace_FidexGloNameSpace.html">Namespace FidexGloNameSpace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="namespace_FidexGloNameSpace.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="namespace_FidexNameSpace.html">Namespace FidexNameSpace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="namespace_FidexNameSpace.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="namespace_std.html">Namespace std</a></li>
+</ul>
+</div>
+</section>
+<section id="classes-and-structs">
+<h3>Classes and Structs<a class="headerlink" href="#classes-and-structs" title="Permalink to this headline"></a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="structCleanRuleStruct_1_1AssocAnte.html">Struct CleanRuleStruct::AssocAnte</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="structCleanRuleStruct_1_1AssocAnte.html#nested-relationships">Nested Relationships</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structCleanRuleStruct_1_1AssocAnte.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="structCleanRuleStruct_1_1CleanRule.html">Struct CleanRuleStruct::CleanRule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="structCleanRuleStruct_1_1CleanRule.html#nested-relationships">Nested Relationships</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structCleanRuleStruct_1_1CleanRule.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="structOneVarThresDescr_1_1Elem.html">Struct OneVarThresDescr::Elem</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="structOneVarThresDescr_1_1Elem.html#nested-relationships">Nested Relationships</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structOneVarThresDescr_1_1Elem.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="structRule_1_1Antecedent.html">Struct Rule::Antecedent</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="structRule_1_1Antecedent.html#nested-relationships">Nested Relationships</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structRule_1_1Antecedent.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="structRuleInfo.html">Struct RuleInfo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="structRuleInfo.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="structRuleProcessing_1_1Saved.html">Struct RuleProcessing::Saved</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="structRuleProcessing_1_1Saved.html#nested-relationships">Nested Relationships</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structRuleProcessing_1_1Saved.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="structStringInt_1_1Elem.html">Struct StringInt::Elem</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="structStringInt_1_1Elem.html#nested-relationships">Nested Relationships</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structStringInt_1_1Elem.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classAnte.html">Class Ante</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classAnte.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classAnte.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classAnte.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classAttrName.html">Class AttrName</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classAttrName.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classBagDimlp.html">Class BagDimlp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classBagDimlp.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classBagDimlp.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classBagDimlp.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classBpNN.html">Class BpNN</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classBpNN.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classBpNN.html#derived-type">Derived Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classBpNN.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classCleanRuleStruct.html">Class CleanRuleStruct</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classCleanRuleStruct.html#nested-relationships">Nested Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classCleanRuleStruct.html#nested-types">Nested Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classCleanRuleStruct.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classDataSet.html">Class DataSet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classDataSet.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classDimlp.html">Class Dimlp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classDimlp.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classDimlp.html#base-type">Base Type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classDimlp.html#derived-type">Derived Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classDimlp.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classFidexAlgo.html">Class FidexAlgo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classFidexAlgo.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classFidexGloNameSpace_1_1Hyperspace.html">Class Hyperspace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classFidexGloNameSpace_1_1Hyperspace.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classFidexNameSpace_1_1Hyperspace.html">Class Hyperspace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classFidexNameSpace_1_1Hyperspace.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classFloatRandomFunction.html">Class FloatRandomFunction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classFloatRandomFunction.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classIntRandomFunction.html">Class IntRandomFunction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classIntRandomFunction.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classLayer.html">Class Layer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classLayer.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classLayer.html#derived-types">Derived Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classLayer.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classLayerDimlp.html">Class LayerDimlp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classLayerDimlp.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classLayerDimlp.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classLayerDimlp.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classLayerDimlp2.html">Class LayerDimlp2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classLayerDimlp2.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classLayerDimlp2.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classLayerDimlp2.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classLayerDimlp3.html">Class LayerDimlp3</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classLayerDimlp3.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classLayerDimlp3.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classLayerDimlp3.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classLayerDimlp4.html">Class LayerDimlp4</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classLayerDimlp4.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classLayerDimlp4.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classLayerDimlp4.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classLayerFdimlp.html">Class LayerFdimlp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classLayerFdimlp.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classLayerFdimlp.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classLayerFdimlp.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classLayerRad.html">Class LayerRad</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classLayerRad.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classLayerRad.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classLayerRad.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classLayerSD.html">Class LayerSD</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classLayerSD.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classLayerSD.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classLayerSD.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classLayerSP3.html">Class LayerSP3</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classLayerSP3.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classLayerSP3.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classLayerSP3.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classLayerSP4.html">Class LayerSP4</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classLayerSP4.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classLayerSP4.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classLayerSP4.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classLayerSP5.html">Class LayerSP5</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classLayerSP5.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classLayerSP5.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classLayerSP5.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classOneVarThresDescr.html">Class OneVarThresDescr</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classOneVarThresDescr.html#nested-relationships">Nested Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classOneVarThresDescr.html#nested-types">Nested Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classOneVarThresDescr.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classRealHyp.html">Class RealHyp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classRealHyp.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classRealHyp.html#derived-type">Derived Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classRealHyp.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classRealHyp2.html">Class RealHyp2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classRealHyp2.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classRealHyp2.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classRealHyp2.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classRule.html">Class Rule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classRule.html#nested-relationships">Nested Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classRule.html#nested-types">Nested Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classRule.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classRule.html#derived-type">Derived Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classRule.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classRuleProcessing.html">Class RuleProcessing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classRuleProcessing.html#nested-relationships">Nested Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classRuleProcessing.html#nested-types">Nested Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classRuleProcessing.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classStairObj.html">Class StairObj</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classStairObj.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classStringInt.html">Class StringInt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classStringInt.html#nested-relationships">Nested Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classStringInt.html#nested-types">Nested Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="classStringInt.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classThresDescr.html">Class ThresDescr</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classThresDescr.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classVectWithRandVal.html">Class VectWithRandVal</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classVectWithRandVal.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classVirtualHyp.html">Class VirtualHyp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classVirtualHyp.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline"></a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_misc_8cpp_1a4740003af206bb19a5cb619ae26d4718.html">Function AreSameClass(std::shared_ptr&lt;StringInt&gt;, std::vector&lt;int&gt;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_misc_8cpp_1a4740003af206bb19a5cb619ae26d4718.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_misc_8h_1a4740003af206bb19a5cb619ae26d4718.html">Function AreSameClass(std::shared_ptr&lt;StringInt&gt;, std::vector&lt;int&gt;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_misc_8h_1a4740003af206bb19a5cb619ae26d4718.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_checkFun_8cpp_1a78dc4e1322da86c268137cc1d0b7b006.html">Function CheckFloat(const char *)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_checkFun_8cpp_1a78dc4e1322da86c268137cc1d0b7b006.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_checkFun_8h_1a78dc4e1322da86c268137cc1d0b7b006.html">Function CheckFloat(const char *)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_checkFun_8h_1a78dc4e1322da86c268137cc1d0b7b006.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_checkFun_8cpp_1a72adbf0698e29b7b81bf312ed0d68d75.html">Function CheckInt(const char *)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_checkFun_8cpp_1a72adbf0698e29b7b81bf312ed0d68d75.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_checkFun_8h_1a72adbf0698e29b7b81bf312ed0d68d75.html">Function CheckInt(const char *)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_checkFun_8h_1a72adbf0698e29b7b81bf312ed0d68d75.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_misc_8cpp_1aaa422af68876dc8636fd20729ea1e1ef.html">Function Compare(const void *, const void *)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_misc_8cpp_1aaa422af68876dc8636fd20729ea1e1ef.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_misc_8h_1aaa422af68876dc8636fd20729ea1e1ef.html">Function Compare(const void *, const void *)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_misc_8h_1aaa422af68876dc8636fd20729ea1e1ef.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_CrossValid_8cpp_1aa3320b708f53ebfab7c7a30a4d5da189.html">Function copyFile</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_CrossValid_8cpp_1aa3320b708f53ebfab7c7a30a4d5da189.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_CrossValid_8cpp_1ab050f345450a736c70c38732138c9c5e.html">Function createOrClearDirectory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_CrossValid_8cpp_1ab050f345450a736c70c38732138c9c5e.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DensClsFct_8cpp_1a462cb98338ad1cc55ac270a24f6fd704.html">Function densCls(const string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DensClsFct_8cpp_1a462cb98338ad1cc55ac270a24f6fd704.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DensClsFct_8h_1a9e55656363fae4a80a7b4c36267214f9.html">Function densCls(const std::string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DensClsFct_8h_1a9e55656363fae4a80a7b4c36267214f9.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpBTFct_8cpp_1aeb82b1c41c916f67bb66635ede684378.html">Function dimlpBT(const string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpBTFct_8cpp_1aeb82b1c41c916f67bb66635ede684378.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpBTFct_8h_1a2c0a71ea92c4a3d30197d347debc76de.html">Function dimlpBT(const std::string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpBTFct_8h_1a2c0a71ea92c4a3d30197d347debc76de.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpClsFct_8cpp_1abfaca1a7855153840e1827179902ab71.html">Function dimlpCls(const string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpClsFct_8cpp_1abfaca1a7855153840e1827179902ab71.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpClsFct_8h_1ad7a9608f72ff57e6f13bbdd3ed787cb0.html">Function dimlpCls(const std::string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpClsFct_8h_1ad7a9608f72ff57e6f13bbdd3ed787cb0.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpPredFct_8cpp_1ad0d900316dc5c04e434784711b2c3217.html">Function dimlpPred(const string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpPredFct_8cpp_1ad0d900316dc5c04e434784711b2c3217.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpPredFct_8h_1ab8af5e163e0028faaddeecacca3b8a52.html">Function dimlpPred(const std::string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpPredFct_8h_1ab8af5e163e0028faaddeecacca3b8a52.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpRulFct_8cpp_1a87a34b94d53977dccc06fb0a63e3c801.html">Function dimlpRul(const string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpRulFct_8cpp_1a87a34b94d53977dccc06fb0a63e3c801.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpRulFct_8h_1a12b794004a488202036b80c9baa4ce35.html">Function dimlpRul(const std::string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpRulFct_8h_1a12b794004a488202036b80c9baa4ce35.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpTrnFct_8cpp_1aad56491c9f0971bcf8ef336b12e03148.html">Function dimlpTrn(const string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpTrnFct_8cpp_1aad56491c9f0971bcf8ef336b12e03148.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpTrnFct_8h_1acf0fec72ee1d9e49e0352866f8225a41.html">Function dimlpTrn(const std::string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpTrnFct_8h_1acf0fec72ee1d9e49e0352866f8225a41.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexFct_8cpp_1a01c13136d12d9d4d507c879a9670e5ec.html">Function fidex(const string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexFct_8cpp_1a01c13136d12d9d4d507c879a9670e5ec.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexFct_8h_1a413bb8e6d52f49aa7bc90467e92972e0.html">Function fidex(const std::string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexFct_8h_1a413bb8e6d52f49aa7bc90467e92972e0.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexGloFct_8cpp_1a15dd999030aa516735f545feed66fbbf.html">Function fidexGlo(const string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexGloFct_8cpp_1a15dd999030aa516735f545feed66fbbf.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexGloFct_8h_1a0b941395a2bb93ebfc98c5d4f9e41af0.html">Function fidexGlo(const std::string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexGloFct_8h_1a0b941395a2bb93ebfc98c5d4f9e41af0.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexGloRulesFct_8cpp_1ab3a80e91198fb133137e78d73f7435ac.html">Function fidexGloRules(const string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexGloRulesFct_8cpp_1ab3a80e91198fb133137e78d73f7435ac.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexGloRulesFct_8h_1a90754c35e71df979efeaefd5d30ec761.html">Function fidexGloRules(const std::string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexGloRulesFct_8h_1a90754c35e71df979efeaefd5d30ec761.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexGloStatsFct_8cpp_1a0b822e48752e42c75daf96850f89e69c.html">Function fidexGloStats(const string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexGloStatsFct_8cpp_1a0b822e48752e42c75daf96850f89e69c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexGloStatsFct_8h_1a12eb8b45a566e7b548448bbd4ee2472e.html">Function fidexGloStats(const std::string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexGloStatsFct_8h_1a12eb8b45a566e7b548448bbd4ee2472e.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_standAct_8cpp_1a9f297554f48d65d58962e61c25ca3efd.html">Function Gaussian(float)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_standAct_8cpp_1a9f297554f48d65d58962e61c25ca3efd.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_standAct_8h_1a9f297554f48d65d58962e61c25ca3efd.html">Function Gaussian(float)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_standAct_8h_1a9f297554f48d65d58962e61c25ca3efd.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_getRulesFun_8cpp_1ac97811c795ea6a09817a3a0ee86f5cdb.html">Function getActivatedRules(vector&lt;int&gt;&amp;, vector&lt;tuple&lt;vector&lt;tuple&lt;int, bool, double&gt;&gt;, int, int, double, double&gt;&gt; *, vector&lt;double&gt; *)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_getRulesFun_8cpp_1ac97811c795ea6a09817a3a0ee86f5cdb.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_getRulesFun_8h_1acaed85a932241e46ede2c153d4d53b89.html">Function getActivatedRules(std::vector&lt;int&gt;&amp;, std::vector&lt;std::tuple&lt;std::vector&lt;std::tuple&lt;int, bool, double&gt;&gt;, int, int, double, double&gt;&gt; *, std::vector&lt;double&gt; *)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_getRulesFun_8h_1acaed85a932241e46ede2c153d4d53b89.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_getRulesFun_8cpp_1aeda5bd8d3159d6eb53f1b8c11e84019d.html">Function getRules(vector&lt;tuple&lt;vector&lt;tuple&lt;int, bool, double&gt;&gt;, int, int, double, double&gt;&gt;&amp;, vector&lt;string&gt;&amp;, vector&lt;string&gt;&amp;, const char *, bool, const vector&lt;string&gt;&amp;, bool, const vector&lt;string&gt;&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_getRulesFun_8cpp_1aeda5bd8d3159d6eb53f1b8c11e84019d.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_getRulesFun_8h_1a3e1a2e4142de0fa83c94a5ee526288e6.html">Function getRules(std::vector&lt;std::tuple&lt;std::vector&lt;std::tuple&lt;int, bool, double&gt;&gt;, int, int, double, double&gt;&gt;&amp;, std::vector&lt;std::string&gt;&amp;, std::vector&lt;std::string&gt;&amp;, const char *, bool, const std::vector&lt;std::string&gt;&amp;, bool, const std::vector&lt;std::string&gt;&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_getRulesFun_8h_1a3e1a2e4142de0fa83c94a5ee526288e6.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_CrossValid_8cpp_1a3cc4e4d68f2172cdb350db06f150d12e.html">Function GiveAllParam</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_CrossValid_8cpp_1a3cc4e4d68f2172cdb350db06f150d12e.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DensClsFct_8cpp_1acd80f12e4d8f9e009d6f1fd6e3d3dca9.html">Function GiveAllParamDensCls()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DensClsFct_8cpp_1acd80f12e4d8f9e009d6f1fd6e3d3dca9.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DensClsFct_8h_1acd80f12e4d8f9e009d6f1fd6e3d3dca9.html">Function GiveAllParamDensCls()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DensClsFct_8h_1acd80f12e4d8f9e009d6f1fd6e3d3dca9.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpBTFct_8cpp_1a202782fdc10b7b0c67e02da3127aea6d.html">Function GiveAllParamDimlpBT()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpBTFct_8cpp_1a202782fdc10b7b0c67e02da3127aea6d.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpBTFct_8h_1a202782fdc10b7b0c67e02da3127aea6d.html">Function GiveAllParamDimlpBT()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpBTFct_8h_1a202782fdc10b7b0c67e02da3127aea6d.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpClsFct_8cpp_1aebb7d8700ea1e3213f146673585290af.html">Function GiveAllParamDimlpCls()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpClsFct_8cpp_1aebb7d8700ea1e3213f146673585290af.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpClsFct_8h_1aebb7d8700ea1e3213f146673585290af.html">Function GiveAllParamDimlpCls()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpClsFct_8h_1aebb7d8700ea1e3213f146673585290af.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpRulFct_8cpp_1a8d29cad690d6de0817b968a4edcf0719.html">Function GiveAllParamDimlpRul()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpRulFct_8cpp_1a8d29cad690d6de0817b968a4edcf0719.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpRulFct_8h_1a8d29cad690d6de0817b968a4edcf0719.html">Function GiveAllParamDimlpRul()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpRulFct_8h_1a8d29cad690d6de0817b968a4edcf0719.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpTrnFct_8cpp_1a8178865b894bfbfaa0c7193df9bee744.html">Function GiveAllParamDimlpTrn()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpTrnFct_8cpp_1a8178865b894bfbfaa0c7193df9bee744.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpTrnFct_8h_1a8178865b894bfbfaa0c7193df9bee744.html">Function GiveAllParamDimlpTrn()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpTrnFct_8h_1a8178865b894bfbfaa0c7193df9bee744.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpPredFct_8cpp_1ae7d48c1c9333239f5a49865322c3c91c.html">Function GiveAllParamPred()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpPredFct_8cpp_1ae7d48c1c9333239f5a49865322c3c91c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpPredFct_8h_1ae7d48c1c9333239f5a49865322c3c91c.html">Function GiveAllParamPred()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpPredFct_8h_1ae7d48c1c9333239f5a49865322c3c91c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_standAct_8cpp_1a19c73c097e884f68703df5ba97b7b5ff.html">Function HyperTang(float)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_standAct_8cpp_1a19c73c097e884f68703df5ba97b7b5ff.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_standAct_8h_1a19c73c097e884f68703df5ba97b7b5ff.html">Function HyperTang(float)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_standAct_8h_1a19c73c097e884f68703df5ba97b7b5ff.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_standAct_8cpp_1a74f64151d3b4df0a328b46c1085be17e.html">Function Identity(float)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_standAct_8cpp_1a74f64151d3b4df0a328b46c1085be17e.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_standAct_8h_1a74f64151d3b4df0a328b46c1085be17e.html">Function Identity(float)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_standAct_8h_1a74f64151d3b4df0a328b46c1085be17e.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_errFunct_8cpp_1a5ef1a2c8a10f53eb4e334c51c7694c0f.html">Function Lmse(int, std::vector&lt;float&gt;, std::vector&lt;float&gt;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_errFunct_8cpp_1a5ef1a2c8a10f53eb4e334c51c7694c0f.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_errFunct_8h_1a5ef1a2c8a10f53eb4e334c51c7694c0f.html">Function Lmse(int, std::vector&lt;float&gt;, std::vector&lt;float&gt;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_errFunct_8h_1a5ef1a2c8a10f53eb4e334c51c7694c0f.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_CrossValid_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_CrossValid_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DensCls_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DensCls_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpBT_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpBT_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpCls_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpCls_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpPred_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpPred_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpRul_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpRul_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpTrn_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpTrn_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidex_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidex_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_checkCovSize_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_checkCovSize_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexGlo_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexGlo_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexGloRules_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexGloRules_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexGloStats_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html">Function main(int, char **)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexGloStats_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_getRulesFun_8cpp_1a60aaf6aef19299e87c6c4e5b78882ac6.html">Function parseRuleLine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_getRulesFun_8cpp_1a60aaf6aef19299e87c6c4e5b78882ac6.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_standAct_8cpp_1a54ae6086b82e034fd7d5ff24f1771e04.html">Function Power3(float)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_standAct_8cpp_1a54ae6086b82e034fd7d5ff24f1771e04.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_standAct_8h_1a54ae6086b82e034fd7d5ff24f1771e04.html">Function Power3(float)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_standAct_8h_1a54ae6086b82e034fd7d5ff24f1771e04.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_standAct_8cpp_1a8da017d227e558af4b62641e79971025.html">Function Power4(float)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_standAct_8cpp_1a8da017d227e558af4b62641e79971025.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_standAct_8h_1a8da017d227e558af4b62641e79971025.html">Function Power4(float)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_standAct_8h_1a8da017d227e558af4b62641e79971025.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_standAct_8cpp_1a24c2455de4ca8a28fa8de88e9c66ebdb.html">Function Power5(float)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_standAct_8cpp_1a24c2455de4ca8a28fa8de88e9c66ebdb.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_standAct_8h_1a24c2455de4ca8a28fa8de88e9c66ebdb.html">Function Power5(float)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_standAct_8h_1a24c2455de4ca8a28fa8de88e9c66ebdb.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_CrossValid_8cpp_1acfb989738ac426a222441a409d703bff.html">Function removeDirectory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_CrossValid_8cpp_1acfb989738ac426a222441a409d703bff.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpClsFct_8cpp_1a9e3dbbd0e233a461780df43172b75b1a.html">Function SaveFirstHid</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpClsFct_8cpp_1a9e3dbbd0e233a461780df43172b75b1a.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpClsFct_8cpp_1a901ff56f141f1c7925e5ce0abc72bab8.html">Function SaveOutputs(DataSet&amp;, Dimlp *, int, int, const char *)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpClsFct_8cpp_1a901ff56f141f1c7925e5ce0abc72bab8.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpClsFct_8h_1a901ff56f141f1c7925e5ce0abc72bab8.html">Function SaveOutputs(DataSet&amp;, Dimlp *, int, int, const char *)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpClsFct_8h_1a901ff56f141f1c7925e5ce0abc72bab8.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpPredFct_8cpp_1a901ff56f141f1c7925e5ce0abc72bab8.html">Function SaveOutputs(DataSet&amp;, Dimlp *, int, int, const char *)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpPredFct_8cpp_1a901ff56f141f1c7925e5ce0abc72bab8.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpPredFct_8h_1a901ff56f141f1c7925e5ce0abc72bab8.html">Function SaveOutputs(DataSet&amp;, Dimlp *, int, int, const char *)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpPredFct_8h_1a901ff56f141f1c7925e5ce0abc72bab8.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpTrnFct_8cpp_1a3826791a4bee2ea6f6442a2d91fa41c0.html">Function SaveOutputs(DataSet&amp;, std::shared_ptr&lt;Dimlp&gt;, int, int, const char *)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpTrnFct_8cpp_1a3826791a4bee2ea6f6442a2d91fa41c0.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_DimlpTrnFct_8h_1a3826791a4bee2ea6f6442a2d91fa41c0.html">Function SaveOutputs(DataSet&amp;, std::shared_ptr&lt;Dimlp&gt;, int, int, const char *)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_DimlpTrnFct_8h_1a3826791a4bee2ea6f6442a2d91fa41c0.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexFct_8cpp_1afb3c1683e14a0a8d7273cc282879b303.html">Function showFidexParams()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexFct_8cpp_1afb3c1683e14a0a8d7273cc282879b303.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexFct_8h_1afb3c1683e14a0a8d7273cc282879b303.html">Function showFidexParams()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexFct_8h_1afb3c1683e14a0a8d7273cc282879b303.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_checkCovSize_8cpp_1a55c7bf71dd862585b25f8cf1c12e0fd1.html">Function showParams()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_checkCovSize_8cpp_1a55c7bf71dd862585b25f8cf1c12e0fd1.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexGloFct_8cpp_1a55c7bf71dd862585b25f8cf1c12e0fd1.html">Function showParams()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexGloFct_8cpp_1a55c7bf71dd862585b25f8cf1c12e0fd1.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexGloFct_8h_1a55c7bf71dd862585b25f8cf1c12e0fd1.html">Function showParams()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexGloFct_8h_1a55c7bf71dd862585b25f8cf1c12e0fd1.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexGloRulesFct_8cpp_1a8d310f34a80c1a1837657150d763198c.html">Function showRulesParams()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexGloRulesFct_8cpp_1a8d310f34a80c1a1837657150d763198c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexGloRulesFct_8h_1a8d310f34a80c1a1837657150d763198c.html">Function showRulesParams()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexGloRulesFct_8h_1a8d310f34a80c1a1837657150d763198c.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexGloStatsFct_8cpp_1ac902242b0280a2c02dfb72a13378bd9e.html">Function showStatsParams()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexGloStatsFct_8cpp_1ac902242b0280a2c02dfb72a13378bd9e.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_fidexGloStatsFct_8h_1ac902242b0280a2c02dfb72a13378bd9e.html">Function showStatsParams()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_fidexGloStatsFct_8h_1ac902242b0280a2c02dfb72a13378bd9e.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_standAct_8cpp_1ab3cb2bb17b405a04b4d66058158622d3.html">Function Sigmoid(float)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_standAct_8cpp_1ab3cb2bb17b405a04b4d66058158622d3.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_standAct_8h_1ab3cb2bb17b405a04b4d66058158622d3.html">Function Sigmoid(float)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_standAct_8h_1ab3cb2bb17b405a04b4d66058158622d3.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_getRulesFun_8cpp_1aeb2e4898ba6e4ae71103ee342087b553.html">Function splitString</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_getRulesFun_8cpp_1aeb2e4898ba6e4ae71103ee342087b553.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_writeErr_8cpp_1ac484dcde5a49f1583fb4f0c2afb5d034.html">Function WriteError(const string&amp;, const string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_writeErr_8cpp_1ac484dcde5a49f1583fb4f0c2afb5d034.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_writeErr_8h_1a6ce475b90018467c1d3ab81b9179830d.html">Function WriteError(const std::string&amp;, const std::string&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_writeErr_8h_1a6ce475b90018467c1d3ab81b9179830d.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="variables">
+<h3>Variables<a class="headerlink" href="#variables" title="Permalink to this headline"></a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variable_DensClsFct_8cpp_1a099ccc7d13b6fd4da822c39d6483f6ae.html">Variable BPNN</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_DensClsFct_8cpp_1a099ccc7d13b6fd4da822c39d6483f6ae.html#variable-documentation">Variable Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variable_DimlpBTFct_8cpp_1a099ccc7d13b6fd4da822c39d6483f6ae.html">Variable BPNN</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_DimlpBTFct_8cpp_1a099ccc7d13b6fd4da822c39d6483f6ae.html#variable-documentation">Variable Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variable_DimlpRulFct_8cpp_1a099ccc7d13b6fd4da822c39d6483f6ae.html">Variable BPNN</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_DimlpRulFct_8cpp_1a099ccc7d13b6fd4da822c39d6483f6ae.html#variable-documentation">Variable Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variable_DimlpTrnFct_8cpp_1a099ccc7d13b6fd4da822c39d6483f6ae.html">Variable BPNN</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_DimlpTrnFct_8cpp_1a099ccc7d13b6fd4da822c39d6483f6ae.html#variable-documentation">Variable Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variable_realHyp_8h_1a78c44009d8d6c59e1e001a84fac73ad9.html">Variable DATASETS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_realHyp_8h_1a78c44009d8d6c59e1e001a84fac73ad9.html#variable-documentation">Variable Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variable_layer_8h_1a1280c6c1ed06c39e198fdf0b8b16d4de.html">Variable LAYER</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_layer_8h_1a1280c6c1ed06c39e198fdf0b8b16d4de.html#variable-documentation">Variable Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variable_bpNN_8h_1a4429f13b0fff2556a90b182206602ea2.html">Variable LD2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_bpNN_8h_1a4429f13b0fff2556a90b182206602ea2.html#variable-documentation">Variable Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variable_bpNN_8cpp_1a2038801b9efad904c86a7c796856e74f.html">Variable LD3</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_bpNN_8cpp_1a2038801b9efad904c86a7c796856e74f.html#variable-documentation">Variable Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variable_bpNN_8cpp_1a381596acf65cdb116eab4eb497e95a5b.html">Variable LD4</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_bpNN_8cpp_1a381596acf65cdb116eab4eb497e95a5b.html#variable-documentation">Variable Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variable_bpNN_8cpp_1ab46c0ee840c555e538b2cdd95dd1aafc.html">Variable LLL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_bpNN_8cpp_1ab46c0ee840c555e538b2cdd95dd1aafc.html#variable-documentation">Variable Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variable_dimlp_8cpp_1ae527292a2565756ac42ff4bd41fdb47c.html">Variable netType</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_dimlp_8cpp_1ae527292a2565756ac42ff4bd41fdb47c.html#variable-documentation">Variable Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variable_realHyp_8h_1aa51417ebeae880fdfd421d904dd6f1fe.html">Variable RULE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_realHyp_8h_1aa51417ebeae880fdfd421d904dd6f1fe.html#variable-documentation">Variable Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variable_realHyp_8h_1a0044f4b060fc5239a937d6a34e910593.html">Variable STRINGINT</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_realHyp_8h_1a0044f4b060fc5239a937d6a34e910593.html#variable-documentation">Variable Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variable_realHyp_8h_1a8db15e810e0167602a314f3113c28a2d.html">Variable THRESDESCR</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_realHyp_8h_1a8db15e810e0167602a314f3113c28a2d.html#variable-documentation">Variable Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="variable_bagDimlp_8h_1a3739e3dc14d07ac6155791efa07348c8.html">Variable VIRT</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variable_bagDimlp_8h_1a3739e3dc14d07ac6155791efa07348c8.html#variable-documentation">Variable Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="defines">
+<h3>Defines<a class="headerlink" href="#defines" title="Permalink to this headline"></a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define_CrossValid_8cpp_1afc5e1e156b557ca81bfb1afaa98e2123.html">Define CREATE_DIRECTORY</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define_CrossValid_8cpp_1afc5e1e156b557ca81bfb1afaa98e2123.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define_realHyp_8cpp_1a9308aaa099f69ee221df1639cb66ef3e.html">Define FROMREAL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define_realHyp_8cpp_1a9308aaa099f69ee221df1639cb66ef3e.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define_realHyp_8cpp_1a79a763daa89c7c2affe1c164261832cd.html">Define STRINGINT</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define_realHyp_8cpp_1a79a763daa89c7c2affe1c164261832cd.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to DimlpFidex’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="namespace_FidexGloNameSpace.html" class="btn btn-neutral float-right" title="Namespace FidexGloNameSpace" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

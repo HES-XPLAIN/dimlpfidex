@@ -1,0 +1,14 @@
+.. _exhale_function_DimlpTrnFct_8cpp_1aad56491c9f0971bcf8ef336b12e03148:
+
+Function dimlpTrn(const string&)
+================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpTrnFct.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: dimlpTrn(const string&)
+   :project: dimlp

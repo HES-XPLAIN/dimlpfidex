@@ -1,0 +1,14 @@
+.. _exhale_function_DimlpClsFct_8cpp_1a9e3dbbd0e233a461780df43172b75b1a:
+
+Function SaveFirstHid
+=====================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpClsFct.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: SaveFirstHid(DataSet&, Dimlp *, int, const char *, const char *)
+   :project: dimlp

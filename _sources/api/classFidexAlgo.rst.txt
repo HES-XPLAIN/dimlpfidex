@@ -1,0 +1,17 @@
+.. _exhale_class_classFidexAlgo:
+
+Class FidexAlgo
+===============
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_fidexAlgo.h`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: FidexAlgo
+   :project: dimlp
+   :members:
+   :protected-members:
+   :undoc-members:

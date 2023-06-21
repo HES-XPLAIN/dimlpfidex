@@ -1,0 +1,11 @@
+.. _dir_dimlp:
+
+
+Directory dimlp
+===============
+
+
+*Directory path:* ``dimlp``
+
+
+

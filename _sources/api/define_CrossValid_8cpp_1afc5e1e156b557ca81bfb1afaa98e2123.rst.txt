@@ -1,0 +1,14 @@
+.. _exhale_define_CrossValid_8cpp_1afc5e1e156b557ca81bfb1afaa98e2123:
+
+Define CREATE_DIRECTORY
+=======================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_CrossValid.cpp`
+
+
+Define Documentation
+--------------------
+
+
+.. doxygendefine:: CREATE_DIRECTORY
+   :project: dimlp

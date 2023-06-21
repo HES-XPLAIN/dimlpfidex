@@ -1,0 +1,14 @@
+.. _exhale_function_DensCls_8cpp_1af2a87089fd24a7c59ea4e897cd7d049c:
+
+Function main(int, char \*\*)
+=============================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DensCls.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: main(int, char **)
+   :project: dimlp

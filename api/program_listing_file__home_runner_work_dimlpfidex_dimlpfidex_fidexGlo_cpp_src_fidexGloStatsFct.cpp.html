@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Listing for File fidexGloStatsFct.cpp &mdash; DimlpFidex 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            DimlpFidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DimlpFidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Program Listing for File fidexGloStatsFct.cpp</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_fidexGloStatsFct.cpp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="program-listing-for-file-fidexglostatsfct-cpp">
+<span id="program-listing-file-home-runner-work-dimlpfidex-dimlpfidex-fidexglo-cpp-src-fidexglostatsfct-cpp"></span><h1>Program Listing for File fidexGloStatsFct.cpp<a class="headerlink" href="#program-listing-for-file-fidexglostatsfct-cpp" title="Permalink to this headline"></a></h1>
+<p>↰ <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_fidexGloStatsFct.cpp.html#file-home-runner-work-dimlpfidex-dimlpfidex-fidexglo-cpp-src-fidexglostatsfct-cpp"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">/home/runner/work/dimlpfidex/dimlpfidex/fidexGlo/cpp/src/fidexGloStatsFct.cpp</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;fidexGloStatsFct.h&quot;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">showStatsParams</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">-------------------------------------------------</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Obligatory parameters : </span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;fidexGloStats -T &lt;test data file&gt; -P &lt;test prediction file&gt; -C &lt;test true class file&gt; &quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-R &lt;rules input file&gt; &quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;&lt;Options&gt;</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Options are: </span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-S &lt;Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-A &lt;file of attributes&gt; Mandatory if rules file contains attribute names, if not, do not add it</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-O &lt;stats output file&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-r &lt;file where you redirect console result&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"> </span><span class="c1">// If we want to redirect console result to file</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">-------------------------------------------------</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">fidexGloStats</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">command</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">temps</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">clock_t</span><span class="w"> </span><span class="n">t1</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">clock_t</span><span class="w"> </span><span class="n">t2</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">t1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clock</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Parsing the command</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">commandList</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">delim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">s</span><span class="p">;</span>
+<span class="w">    </span><span class="n">stringstream</span><span class="w"> </span><span class="n">ss</span><span class="p">(</span><span class="n">command</span><span class="p">);</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">getline</span><span class="p">(</span><span class="n">ss</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">delim</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">commandList</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nbParam</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">commandList</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Parameters declaration</span>
+
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">testDataFileTemp</span><span class="p">;</span><span class="w"> </span><span class="c1">// Parameter after -T</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">testDataFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">testDataFilePredTemp</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">testDataFilePredInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">testDataFileTrueClassTemp</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">testDataFileTrueClassInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">rulesFileTemp</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">rulesFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">statsFileTemp</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">statsFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">consoleFileTemp</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">consoleFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">rootFolderTemp</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">rootFolderInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">attributFileTemp</span><span class="p">;</span><span class="w"> </span><span class="c1">// attribut file</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">attributFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Import parameters</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbParam</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">showStatsParams</span><span class="p">();</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// We skip &quot;fidexGlo&quot;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbParam</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">commandList</span><span class="p">[</span><span class="n">p</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;-&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">p</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">nbParam</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Missing something at the end of the command.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">option</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">commandList</span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">];</span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">arg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="p">(</span><span class="n">commandList</span><span class="p">[</span><span class="n">p</span><span class="p">])[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">lastArg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="p">(</span><span class="n">commandList</span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">option</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Get letter after the -</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;T&#39;</span><span class="p">:</span>
+<span class="w">          </span><span class="n">testDataFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span><span class="w"> </span><span class="c1">// Parameter after -T</span>
+<span class="w">          </span><span class="n">testDataFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;P&#39;</span><span class="p">:</span>
+<span class="w">          </span><span class="n">testDataFilePredTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span>
+<span class="w">          </span><span class="n">testDataFilePredInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;C&#39;</span><span class="p">:</span>
+<span class="w">          </span><span class="n">testDataFileTrueClassTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span>
+<span class="w">          </span><span class="n">testDataFileTrueClassInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;R&#39;</span><span class="p">:</span>
+<span class="w">          </span><span class="n">rulesFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span>
+<span class="w">          </span><span class="n">rulesFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;O&#39;</span><span class="p">:</span>
+<span class="w">          </span><span class="n">statsFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span>
+<span class="w">          </span><span class="n">statsFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;r&#39;</span><span class="p">:</span>
+<span class="w">          </span><span class="n">consoleFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span>
+<span class="w">          </span><span class="n">consoleFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">:</span>
+<span class="w">          </span><span class="n">attributFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span>
+<span class="w">          </span><span class="n">attributFileInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;S&#39;</span><span class="p">:</span>
+<span class="w">          </span><span class="n">rootFolderTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span>
+<span class="w">          </span><span class="n">rootFolderInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="c1">// If we put another -X option</span>
+<span class="w">          </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Illegal option : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">string</span><span class="p">(</span><span class="n">lastArg</span><span class="p">));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="n">p</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// ----------------------------------------------------------------------</span>
+<span class="w">    </span><span class="c1">// create paths with root foler</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">testDataFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">testDataFilePred</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">testDataFileTrueClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">rulesFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">statsFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">consoleFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">attributFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">root</span><span class="p">;</span>
+<span class="cp">#if defined(__unix__) || defined(__APPLE__)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rootFolderInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;../&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">rootFolderTemp</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;../&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="cp">#elif defined(_WIN32)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rootFolderInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;..</span><span class="se">\\</span><span class="s">&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">rootFolderTemp</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\\</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;..</span><span class="se">\\</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="cp">#endif</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">testDataFileInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">testDataFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">testDataFileTemp</span><span class="p">;</span>
+<span class="w">      </span><span class="n">testDataFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">testDataFileTemp</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">testDataFilePredInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">testDataFilePredTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">testDataFilePredTemp</span><span class="p">;</span>
+<span class="w">      </span><span class="n">testDataFilePred</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">testDataFilePredTemp</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">testDataFileTrueClassInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">testDataFileTrueClassTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">testDataFileTrueClassTemp</span><span class="p">;</span>
+<span class="w">      </span><span class="n">testDataFileTrueClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">testDataFileTrueClassTemp</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rulesFileInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">rulesFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">rulesFileTemp</span><span class="p">;</span>
+<span class="w">      </span><span class="n">rulesFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rulesFileTemp</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">statsFileInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">statsFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">statsFileTemp</span><span class="p">;</span>
+<span class="w">      </span><span class="n">statsFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">statsFileTemp</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">consoleFileInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">consoleFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">consoleFileTemp</span><span class="p">;</span>
+<span class="w">      </span><span class="n">consoleFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">consoleFileTemp</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">attributFileInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">attributFileTemp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">attributFileTemp</span><span class="p">;</span>
+<span class="w">      </span><span class="n">attributFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">attributFileTemp</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// ----------------------------------------------------------------------</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">testDataFileInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;The test data file has to be given with option -T&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">testDataFilePredInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;The test predictions data file has to be given with option -P&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">testDataFileTrueClassInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;The test true class data file has to be given with option -T&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rulesFileInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;The rules file has to be given with option -R&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// ----------------------------------------------------------------------</span>
+
+<span class="w">    </span><span class="c1">// Get console results to file</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="w"> </span><span class="n">ofs</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">streambuf</span><span class="w"> </span><span class="o">*</span><span class="n">cout_buff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">.</span><span class="n">rdbuf</span><span class="p">();</span><span class="w"> </span><span class="c1">// Save old buf</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">consoleFileInit</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">ofs</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">consoleFile</span><span class="p">);</span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">.</span><span class="n">rdbuf</span><span class="p">(</span><span class="n">ofs</span><span class="p">.</span><span class="n">rdbuf</span><span class="p">());</span><span class="w"> </span><span class="c1">// redirect std::cout to file</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// ----------------------------------------------------------------------</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Import data...&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Get test data</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">DataSetFid</span><span class="o">&gt;</span><span class="w"> </span><span class="n">testDatas</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">DataSetFid</span><span class="p">(</span><span class="n">testDataFile</span><span class="p">,</span><span class="w"> </span><span class="n">testDataFilePred</span><span class="p">,</span><span class="w"> </span><span class="n">testDataFileTrueClass</span><span class="p">));</span>
+
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">testData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">testDatas</span><span class="o">-&gt;</span><span class="n">getDatas</span><span class="p">();</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">testPreds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">testDatas</span><span class="o">-&gt;</span><span class="n">getPredictions</span><span class="p">();</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">testTrueClasses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">testDatas</span><span class="o">-&gt;</span><span class="n">getTrueClasses</span><span class="p">();</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">nbClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">testDatas</span><span class="o">-&gt;</span><span class="n">getNbClasses</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">nbTestData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">((</span><span class="o">*</span><span class="n">testData</span><span class="p">).</span><span class="n">size</span><span class="p">());</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="o">*</span><span class="n">testPreds</span><span class="p">).</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">nbTestData</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">testTrueClasses</span><span class="p">).</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">nbTestData</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="n">FileFormatError</span><span class="p">(</span><span class="s">&quot;All the test files need to have the same amount of datas&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">nbTestAttributs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">((</span><span class="o">*</span><span class="n">testData</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="n">size</span><span class="p">());</span>
+<span class="w">    </span><span class="c1">// Get attributes</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">attributeNames</span><span class="p">;</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">classNames</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">hasClassNames</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">attributFileInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Attribute</span><span class="o">&gt;</span><span class="w"> </span><span class="n">attributesData</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Attribute</span><span class="p">(</span><span class="n">attributFile</span><span class="p">));</span>
+<span class="w">      </span><span class="n">attributeNames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">attributesData</span><span class="o">-&gt;</span><span class="n">getAttributes</span><span class="p">());</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">attributeNames</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbTestAttributs</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">FileContentError</span><span class="p">(</span><span class="s">&quot;Error : in file &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">attributFile</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;, there is not enough attribute names&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">attributeNames</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">nbTestAttributs</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">hasClassNames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">attributeNames</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">nbTestAttributs</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">nbClass</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">FileContentError</span><span class="p">(</span><span class="s">&quot;Error : in file &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">attributFile</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;, there is not the good amount of attribute and class names&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">hasClassNames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">firstEl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">attributeNames</span><span class="p">.</span><span class="n">end</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">nbClass</span><span class="p">;</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">lastEl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">attributeNames</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+<span class="w">        </span><span class="n">classNames</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">classNames</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">firstEl</span><span class="p">,</span><span class="w"> </span><span class="n">lastEl</span><span class="p">);</span>
+<span class="w">        </span><span class="n">attributeNames</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">firstEl</span><span class="p">,</span><span class="w"> </span><span class="n">lastEl</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Get rules</span>
+
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">tuple</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">tuple</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">rules</span><span class="p">;</span><span class="w"> </span><span class="c1">// A rule is on the form : &lt;[X0&lt;0.606994 X15&gt;=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)&gt;</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lines</span><span class="p">;</span><span class="w">                                                            </span><span class="c1">// Lines for the output stats</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">stringRules</span><span class="p">;</span>
+<span class="w">    </span><span class="n">getRules</span><span class="p">(</span><span class="n">rules</span><span class="p">,</span><span class="w"> </span><span class="n">lines</span><span class="p">,</span><span class="w"> </span><span class="n">stringRules</span><span class="p">,</span><span class="w"> </span><span class="n">rulesFile</span><span class="p">,</span><span class="w"> </span><span class="n">attributFileInit</span><span class="p">,</span><span class="w"> </span><span class="n">attributeNames</span><span class="p">,</span><span class="w"> </span><span class="n">hasClassNames</span><span class="p">,</span><span class="w"> </span><span class="n">classNames</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Data imported...&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Compute statistics...&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">fidelity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">       </span><span class="c1">// Global rule fidelity rate (wrong only if there is activated rules but no correct one(with respect to prediction))</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">accuracy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">       </span><span class="c1">// Global rule accuracy (true if there is at least one fidel activated rule and the model is right, or if there is no activated rules and the model is right or if all the activated rules decide the same class and this class is the true one)</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">explainabilityRate</span><span class="p">;</span><span class="w"> </span><span class="c1">// True if there is an activated rule</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">explainabilityTotal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">defaultRuleRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">             </span><span class="c1">// True if there is no activated rule</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">meanNbCorrectActivatedRules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Mean number of correct activated rules per sample</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">meanNbWrongActivatedRules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">   </span><span class="c1">// Mean number of wrong activated rules per sample</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbActivatedRulesAndModelAgree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">accuracyWhenActivatedRulesAndModelAgree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Model accuracy when activated rules and model agree (sample has correct activated rules or no activated rules, then percentage of good predictions on them by the model)</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbFidelRules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">accuracyWhenRulesAndModelAgree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Model accuracy when activated rules and model agree (sample has correct activated rules, then percentage of good predictions on them by the model)</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">modelAccuracy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">testValues</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">testPred</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">testTrueClass</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbTestData</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// For each test value</span>
+<span class="w">      </span><span class="n">testValues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">testData</span><span class="p">)[</span><span class="n">t</span><span class="p">];</span>
+<span class="w">      </span><span class="n">testPred</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">testPreds</span><span class="p">)[</span><span class="n">t</span><span class="p">];</span>
+<span class="w">      </span><span class="n">testTrueClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">testTrueClasses</span><span class="p">)[</span><span class="n">t</span><span class="p">];</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">testPred</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">testTrueClass</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">modelAccuracy</span><span class="o">++</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="c1">// Find rules activated by this sample</span>
+<span class="w">      </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">activatedRules</span><span class="p">;</span>
+<span class="w">      </span><span class="n">getActivatedRules</span><span class="p">(</span><span class="n">activatedRules</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rules</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">testValues</span><span class="p">);</span>
+
+<span class="w">      </span><span class="c1">// Check which rules are correct</span>
+<span class="w">      </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">correctRules</span><span class="p">;</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">activatedRules</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// If there is no activated rule</span>
+<span class="w">        </span><span class="n">defaultRuleRate</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="n">fidelity</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="c1">// It is true to the model because we choose his prediction</span>
+<span class="w">        </span><span class="n">nbFidelRules</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">testPred</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">testTrueClass</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// If the model is right, it&#39;s true for the accuracy</span>
+<span class="w">          </span><span class="n">accuracy</span><span class="o">++</span><span class="p">;</span>
+<span class="w">          </span><span class="n">accuracyWhenRulesAndModelAgree</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// There is some activated rules</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">activatedRules</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rules</span><span class="p">[</span><span class="n">v</span><span class="p">])</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">testPred</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Check if the class of the rule is the predicted one</span>
+<span class="w">            </span><span class="n">correctRules</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">correctRules</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// If there is no correct rule</span>
+<span class="w">          </span><span class="n">meanNbWrongActivatedRules</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">activatedRules</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+
+<span class="w">          </span><span class="kt">int</span><span class="w"> </span><span class="n">ancientClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rules</span><span class="p">[</span><span class="n">activatedRules</span><span class="p">[</span><span class="mi">0</span><span class="p">]]);</span>
+<span class="w">          </span><span class="kt">bool</span><span class="w"> </span><span class="n">allSameClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"> </span><span class="c1">// Check if all the rules choose the same class</span>
+<span class="w">          </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">activatedRules</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rules</span><span class="p">[</span><span class="n">v</span><span class="p">])</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ancientClass</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">              </span><span class="n">allSameClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">              </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">allSameClass</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">explainabilityTotal</span><span class="o">++</span><span class="p">;</span><span class="w">                                   </span><span class="c1">// If all decisions are the same, we have an explanation</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rules</span><span class="p">[</span><span class="n">activatedRules</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">testTrueClass</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// If those decisions are the true class, this is accurate</span>
+<span class="w">              </span><span class="n">accuracy</span><span class="o">++</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">          </span><span class="p">}</span>
+
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// There is an explanation which is caracterised by the correct rules</span>
+
+<span class="w">          </span><span class="n">fidelity</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="c1">// It is true to the model because we found a correct activated rule</span>
+<span class="w">          </span><span class="n">explainabilityTotal</span><span class="o">++</span><span class="p">;</span>
+<span class="w">          </span><span class="n">nbActivatedRulesAndModelAgree</span><span class="o">++</span><span class="p">;</span>
+<span class="w">          </span><span class="n">nbFidelRules</span><span class="o">++</span><span class="p">;</span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">testPred</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">testTrueClass</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">accuracy</span><span class="o">++</span><span class="p">;</span><span class="w">                                </span><span class="c1">// If the model is right, it&#39;s true for the accuracy because we found a fidel rule</span>
+<span class="w">            </span><span class="n">accuracyWhenActivatedRulesAndModelAgree</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="c1">// It is true for the accuracy because prediction is correct</span>
+<span class="w">            </span><span class="n">accuracyWhenRulesAndModelAgree</span><span class="o">++</span><span class="p">;</span><span class="w">          </span><span class="c1">// It is true for the accuracy because prediction is correct</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">          </span><span class="n">meanNbCorrectActivatedRules</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">correctRules</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+<span class="w">          </span><span class="n">meanNbWrongActivatedRules</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">activatedRules</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">correctRules</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">fidelity</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">nbTestData</span><span class="p">;</span>
+<span class="w">    </span><span class="n">accuracy</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">nbTestData</span><span class="p">;</span>
+<span class="w">    </span><span class="n">explainabilityRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">explainabilityTotal</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">nbTestData</span><span class="p">;</span>
+<span class="w">    </span><span class="n">defaultRuleRate</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">nbTestData</span><span class="p">;</span>
+<span class="w">    </span><span class="n">meanNbCorrectActivatedRules</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">nbTestData</span><span class="p">;</span>
+<span class="w">    </span><span class="n">meanNbWrongActivatedRules</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">nbTestData</span><span class="p">;</span>
+<span class="w">    </span><span class="n">modelAccuracy</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">nbTestData</span><span class="p">;</span>
+<span class="w">    </span><span class="n">accuracyWhenRulesAndModelAgree</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">nbFidelRules</span><span class="p">;</span>
+<span class="w">    </span><span class="n">accuracyWhenActivatedRulesAndModelAgree</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">nbActivatedRulesAndModelAgree</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">lines</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;Statistics with a test set of &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">nbTestData</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; samples :</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">lines</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;The global rule fidelity rate is : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">fidelity</span><span class="p">));</span>
+<span class="w">    </span><span class="n">lines</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;The global rule accuracy is : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">accuracy</span><span class="p">));</span>
+<span class="w">    </span><span class="n">lines</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;The explainability rate (when we can find one or more rules, either correct ones or activated ones which all agree on the same class) is : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">explainabilityRate</span><span class="p">));</span>
+<span class="w">    </span><span class="n">lines</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;The default rule rate (when we can&#39;t find any rule activated for a sample) is : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">defaultRuleRate</span><span class="p">));</span>
+<span class="w">    </span><span class="n">lines</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;The mean number of correct(fidel) activated rules per sample is : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">meanNbCorrectActivatedRules</span><span class="p">));</span>
+<span class="w">    </span><span class="n">lines</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;The mean number of wrong(not fidel) activated rules per sample is : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">meanNbWrongActivatedRules</span><span class="p">));</span>
+<span class="w">    </span><span class="n">lines</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;The model test accuracy is : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">modelAccuracy</span><span class="p">));</span>
+<span class="w">    </span><span class="n">lines</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;The model test accuracy when rules and model agree is : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">accuracyWhenRulesAndModelAgree</span><span class="p">));</span>
+<span class="w">    </span><span class="n">lines</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">&quot;The model test accuracy when activated rules and model agree is : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">accuracyWhenActivatedRulesAndModelAgree</span><span class="p">));</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">lines</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Output statistics</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">statsFileInit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">ofstream</span><span class="w"> </span><span class="n">outputFile</span><span class="p">(</span><span class="n">statsFile</span><span class="p">);</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">outputFile</span><span class="p">.</span><span class="n">is_open</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">line</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">lines</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">outputFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">outputFile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">CannotOpenFileError</span><span class="p">(</span><span class="s">&quot;Error : Couldn&#39;t open explanation extraction file &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">statsFile</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">t2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clock</span><span class="p">();</span>
+<span class="w">    </span><span class="n">temps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)(</span><span class="n">t2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">CLOCKS_PER_SEC</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Full execution time = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">temps</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; sec</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">.</span><span class="n">rdbuf</span><span class="p">(</span><span class="n">cout_buff</span><span class="p">);</span><span class="w"> </span><span class="c1">// reset to standard output again</span>
+
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">msg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Exemples pour lancer le code :</span>
+
+<span class="cm">./fidexGloStats -T datanorm -P dimlp.out -C dataclass2 -R globalRules.txt -O stats.txt -S fidexGlo/datafiles</span>
+<span class="cm">./fidexGloStats -T datanormTest -P dimlpDatanormTest.out -C dataclass2Test -R globalRulesDatanorm.txt -O stats.txt -S fidexGlo/datafiles</span>
+<span class="cm">./fidexGloStats -T covidTestData.txt -P covidTestPred.out -C covidTestClass.txt -R globalRulesCovid.txt -O globalStats.txt -S dimlp/datafiles/covidDataset</span>
+<span class="cm">./fidexGloStats -T spamTestData.txt -P spamTestPred.out -C spamTestClass.txt -R globalRulesSpam.txt -O globalStats.txt -S dimlp/datafiles/spamDataset</span>
+<span class="cm">./fidexGloStats -T isoletTestData.txt -P isoletTestPred.out -C isoletTestClass.txt -R globalRulesIsolet.txt -O globalStats.txt -S dimlp/datafiles/isoletDataset</span>
+<span class="cm">./fidexGloStats -T Test/X_test.txt -P Test/pred_testV2.out -C Test/y_test.txt -R globalRulesHAPTV2.txt -O globalStatsV2.txt -S dimlp/datafiles/HAPTDataset</span>
+
+<span class="cm">*/</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

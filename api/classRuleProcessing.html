@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class RuleProcessing &mdash; DimlpFidex 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class StairObj" href="classStairObj.html" />
+    <link rel="prev" title="Class Rule" href="classRule.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            DimlpFidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="structCleanRuleStruct_1_1AssocAnte.html">Struct CleanRuleStruct::AssocAnte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structCleanRuleStruct_1_1CleanRule.html">Struct CleanRuleStruct::CleanRule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structOneVarThresDescr_1_1Elem.html">Struct OneVarThresDescr::Elem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structRule_1_1Antecedent.html">Struct Rule::Antecedent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structRuleInfo.html">Struct RuleInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structRuleProcessing_1_1Saved.html">Struct RuleProcessing::Saved</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structStringInt_1_1Elem.html">Struct StringInt::Elem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAnte.html">Class Ante</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAttrName.html">Class AttrName</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classBagDimlp.html">Class BagDimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classBpNN.html">Class BpNN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCleanRuleStruct.html">Class CleanRuleStruct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDataSet.html">Class DataSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDimlp.html">Class Dimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFidexAlgo.html">Class FidexAlgo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFidexGloNameSpace_1_1Hyperspace.html">Class Hyperspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFidexNameSpace_1_1Hyperspace.html">Class Hyperspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFloatRandomFunction.html">Class FloatRandomFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classIntRandomFunction.html">Class IntRandomFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayer.html">Class Layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp.html">Class LayerDimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp2.html">Class LayerDimlp2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp3.html">Class LayerDimlp3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp4.html">Class LayerDimlp4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerFdimlp.html">Class LayerFdimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerRad.html">Class LayerRad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSD.html">Class LayerSD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP3.html">Class LayerSP3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP4.html">Class LayerSP4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP5.html">Class LayerSP5</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classOneVarThresDescr.html">Class OneVarThresDescr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRealHyp.html">Class RealHyp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRealHyp2.html">Class RealHyp2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRule.html">Class Rule</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Class RuleProcessing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classStairObj.html">Class StairObj</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classStringInt.html">Class StringInt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classThresDescr.html">Class ThresDescr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVectWithRandVal.html">Class VectWithRandVal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVirtualHyp.html">Class VirtualHyp</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#defines">Defines</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DimlpFidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="library_root.html">Library API</a></li>
+      <li class="breadcrumb-item active">Class RuleProcessing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/classRuleProcessing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-ruleprocessing">
+<span id="exhale-class-classruleprocessing"></span><h1>Class RuleProcessing<a class="headerlink" href="#class-ruleprocessing" title="Permalink to this headline"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_rulePro.h.html#file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-rulepro-h"><span class="std std-ref">File rulePro.h</span></a></p></li>
+</ul>
+<section id="nested-relationships">
+<h2>Nested Relationships<a class="headerlink" href="#nested-relationships" title="Permalink to this headline"></a></h2>
+<section id="nested-types">
+<h3>Nested Types<a class="headerlink" href="#nested-types" title="Permalink to this headline"></a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="structRuleProcessing_1_1Saved.html#exhale-struct-structruleprocessing-1-1saved"><span class="std std-ref">Struct RuleProcessing::Saved</span></a></p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv414RuleProcessing">
+<span id="_CPPv314RuleProcessing"></span><span id="_CPPv214RuleProcessing"></span><span id="RuleProcessing"></span><span class="target" id="classRuleProcessing"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RuleProcessing</span></span></span><a class="headerlink" href="#_CPPv414RuleProcessing" title="Permalink to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14RuleProcessing11IsRuleEmptyENSt10shared_ptrI4RuleEE">
+<span id="_CPPv3NK14RuleProcessing11IsRuleEmptyENSt10shared_ptrI4RuleEE"></span><span id="_CPPv2NK14RuleProcessing11IsRuleEmptyENSt10shared_ptrI4RuleEE"></span><span id="RuleProcessing::IsRuleEmpty__std::shared_ptr:Rule:C"></span><span class="target" id="classRuleProcessing_1ae5f57a2532b633954ac766207b17cba0"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsRuleEmpty</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classRule.html#_CPPv44Rule" title="Rule"><span class="n"><span class="pre">Rule</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">rule</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK14RuleProcessing11IsRuleEmptyENSt10shared_ptrI4RuleEE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14RuleProcessing10GetNbRulesEv">
+<span id="_CPPv3NK14RuleProcessing10GetNbRulesEv"></span><span id="_CPPv2NK14RuleProcessing10GetNbRulesEv"></span><span id="RuleProcessing::GetNbRulesC"></span><span class="target" id="classRuleProcessing_1a73bacf9738a2ff2f59acc51c29faa9e9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetNbRules</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK14RuleProcessing10GetNbRulesEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14RuleProcessing7GoToBegEv">
+<span id="_CPPv3N14RuleProcessing7GoToBegEv"></span><span id="_CPPv2N14RuleProcessing7GoToBegEv"></span><span id="RuleProcessing::GoToBeg"></span><span class="target" id="classRuleProcessing_1a5681dc91102a8ed6b92c1865a3da2385"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GoToBeg</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14RuleProcessing7GoToBegEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14RuleProcessing8GoToNextEv">
+<span id="_CPPv3N14RuleProcessing8GoToNextEv"></span><span id="_CPPv2N14RuleProcessing8GoToNextEv"></span><span id="RuleProcessing::GoToNext"></span><span class="target" id="classRuleProcessing_1aed5407b1ca89518768e872944f847407"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GoToNext</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14RuleProcessing8GoToNextEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14RuleProcessing7GetRuleEv">
+<span id="_CPPv3NK14RuleProcessing7GetRuleEv"></span><span id="_CPPv2NK14RuleProcessing7GetRuleEv"></span><span id="RuleProcessing::GetRuleC"></span><span class="target" id="classRuleProcessing_1a4cf510a7af71a7d7c7baa0042fa0a3d7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classRule.html#_CPPv44Rule" title="Rule"><span class="n"><span class="pre">Rule</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetRule</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK14RuleProcessing7GetRuleEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14RuleProcessing4SaveEv">
+<span id="_CPPv3N14RuleProcessing4SaveEv"></span><span id="_CPPv2N14RuleProcessing4SaveEv"></span><span id="RuleProcessing::Save"></span><span class="target" id="classRuleProcessing_1ac81610c2c44f5e1c982ba839646e6b95"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Save</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14RuleProcessing4SaveEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14RuleProcessing8PreviousEv">
+<span id="_CPPv3N14RuleProcessing8PreviousEv"></span><span id="_CPPv2N14RuleProcessing8PreviousEv"></span><span id="RuleProcessing::Previous"></span><span class="target" id="classRuleProcessing_1a4d5e00ff57bd4dd74308d8dceee71e35"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Previous</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14RuleProcessing8PreviousEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14RuleProcessing8CountAntEv">
+<span id="_CPPv3N14RuleProcessing8CountAntEv"></span><span id="_CPPv2N14RuleProcessing8CountAntEv"></span><span id="RuleProcessing::CountAnt"></span><span class="target" id="classRuleProcessing_1aef2873d3950e479955069b6f383c9ffa"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CountAnt</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14RuleProcessing8CountAntEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14RuleProcessing10CountRulesEv">
+<span id="_CPPv3N14RuleProcessing10CountRulesEv"></span><span id="_CPPv2N14RuleProcessing10CountRulesEv"></span><span id="RuleProcessing::CountRules"></span><span class="target" id="classRuleProcessing_1a1c2d904c1485f6526ab3edb06c210a9a"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CountRules</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14RuleProcessing10CountRulesEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14RuleProcessing5CleanEv">
+<span id="_CPPv3N14RuleProcessing5CleanEv"></span><span id="_CPPv2N14RuleProcessing5CleanEv"></span><span id="RuleProcessing::Clean"></span><span class="target" id="classRuleProcessing_1ad9c6117c1b13184d1ed29e4c223633a9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Clean</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14RuleProcessing5CleanEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14RuleProcessing8MixPruneEv">
+<span id="_CPPv3N14RuleProcessing8MixPruneEv"></span><span id="_CPPv2N14RuleProcessing8MixPruneEv"></span><span id="RuleProcessing::MixPrune"></span><span class="target" id="classRuleProcessing_1acf0879ac18cf35743e3dc6ba01079fc8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MixPrune</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14RuleProcessing8MixPruneEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14RuleProcessing15EnlargeAndPruneEv">
+<span id="_CPPv3N14RuleProcessing15EnlargeAndPruneEv"></span><span id="_CPPv2N14RuleProcessing15EnlargeAndPruneEv"></span><span id="RuleProcessing::EnlargeAndPrune"></span><span class="target" id="classRuleProcessing_1a6f70f283850a83b4d08eb53898862ffa"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EnlargeAndPrune</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14RuleProcessing15EnlargeAndPruneEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14RuleProcessing6InsertENSt10shared_ptrI4RuleEE">
+<span id="_CPPv3N14RuleProcessing6InsertENSt10shared_ptrI4RuleEE"></span><span id="_CPPv2N14RuleProcessing6InsertENSt10shared_ptrI4RuleEE"></span><span id="RuleProcessing::Insert__std::shared_ptr:Rule:"></span><span class="target" id="classRuleProcessing_1a18dde43af6e8b04b779ab92839734d9f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Insert</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classRule.html#_CPPv44Rule" title="Rule"><span class="n"><span class="pre">Rule</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14RuleProcessing6InsertENSt10shared_ptrI4RuleEE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14RuleProcessing3DelEv">
+<span id="_CPPv3N14RuleProcessing3DelEv"></span><span id="_CPPv2N14RuleProcessing3DelEv"></span><span id="RuleProcessing::Del"></span><span class="target" id="classRuleProcessing_1a8c4c61611abc728d56cadeb4494e5078"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Del</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14RuleProcessing3DelEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14RuleProcessing14RuleProcessingEii7DataSetRKNSt6vectorIiEENSt10shared_ptrI10ThresDescrEE">
+<span id="_CPPv3N14RuleProcessing14RuleProcessingEii7DataSetRKNSt6vectorIiEENSt10shared_ptrI10ThresDescrEE"></span><span id="_CPPv2N14RuleProcessing14RuleProcessingEii7DataSetRKNSt6vectorIiEENSt10shared_ptrI10ThresDescrEE"></span><span id="RuleProcessing::RuleProcessing__i.i.DataSet.std::vector:i:CR.std::shared_ptr:ThresDescr:"></span><span class="target" id="classRuleProcessing_1a08bfb2bcba12f500c2a17984b543f0e7"></span><span class="sig-name descname"><span class="n"><span class="pre">RuleProcessing</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbVar</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbHyp</span></span>, <a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">data</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">classPatNet</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classThresDescr.html#_CPPv410ThresDescr" title="ThresDescr"><span class="n"><span class="pre">ThresDescr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">descr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14RuleProcessing14RuleProcessingEii7DataSetRKNSt6vectorIiEENSt10shared_ptrI10ThresDescrEE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14RuleProcessing14RuleProcessingEv">
+<span id="_CPPv3N14RuleProcessing14RuleProcessingEv"></span><span id="_CPPv2N14RuleProcessing14RuleProcessingEv"></span><span id="RuleProcessing::RuleProcessing"></span><span class="target" id="classRuleProcessing_1a7c262af281ba5b73c4a9a7512ae8a87e"></span><span class="sig-name descname"><span class="n"><span class="pre">RuleProcessing</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N14RuleProcessing14RuleProcessingEv" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classRule.html" class="btn btn-neutral float-left" title="Class Rule" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classStairObj.html" class="btn btn-neutral float-right" title="Class StairObj" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

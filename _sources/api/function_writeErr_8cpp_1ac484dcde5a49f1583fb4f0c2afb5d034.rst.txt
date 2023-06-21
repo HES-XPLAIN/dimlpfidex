@@ -1,0 +1,14 @@
+.. _exhale_function_writeErr_8cpp_1ac484dcde5a49f1583fb4f0c2afb5d034:
+
+Function WriteError(const string&, const string&)
+=================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_writeErr.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: WriteError(const string&, const string&)
+   :project: dimlp

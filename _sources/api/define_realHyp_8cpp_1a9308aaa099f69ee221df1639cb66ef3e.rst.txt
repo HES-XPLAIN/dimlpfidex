@@ -1,0 +1,14 @@
+.. _exhale_define_realHyp_8cpp_1a9308aaa099f69ee221df1639cb66ef3e:
+
+Define FROMREAL
+===============
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp.cpp`
+
+
+Define Documentation
+--------------------
+
+
+.. doxygendefine:: FROMREAL
+   :project: dimlp

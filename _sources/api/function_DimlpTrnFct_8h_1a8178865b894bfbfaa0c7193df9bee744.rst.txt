@@ -1,0 +1,14 @@
+.. _exhale_function_DimlpTrnFct_8h_1a8178865b894bfbfaa0c7193df9bee744:
+
+Function GiveAllParamDimlpTrn()
+===============================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_DimlpTrnFct.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: GiveAllParamDimlpTrn()
+   :project: dimlp

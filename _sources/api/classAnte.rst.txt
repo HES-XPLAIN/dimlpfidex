@@ -1,0 +1,26 @@
+.. _exhale_class_classAnte:
+
+Class Ante
+==========
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_ante.h`
+
+
+Inheritance Relationships
+-------------------------
+
+Base Type
+*********
+
+- ``public Rule`` (:ref:`exhale_class_classRule`)
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: Ante
+   :project: dimlp
+   :members:
+   :protected-members:
+   :undoc-members:

@@ -1,0 +1,38 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_thresD.cpp:
+
+Program Listing for File thresD.cpp
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_thresD.cpp>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/thresD.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #include "thresD.h"
+   
+   
+   void ThresDescr::ResetAllCountPatDiscr()
+   
+   {
+     for (int v = 0; v < NbVar; v++)
+       Descr[v]->ResetCountPatDiscr();
+   }
+   
+   
+   void ThresDescr::Del()
+   
+   {
+     for (int v = 0; v < NbVar; v++)
+       (Descr[v])->OneVarThresDescr::Del();
+   }
+   
+   
+   ThresDescr::ThresDescr(int nbVar) : Descr(nbVar), NbVar(nbVar)
+   
+   {
+     for (int v = 0; v < NbVar; v++)
+       Descr[v] = std::make_shared<OneVarThresDescr>();
+   }
+   

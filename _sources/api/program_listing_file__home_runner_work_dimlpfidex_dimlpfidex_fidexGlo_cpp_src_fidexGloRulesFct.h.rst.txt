@@ -1,0 +1,33 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_fidexGloRulesFct.h:
+
+Program Listing for File fidexGloRulesFct.h
+===========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_fidexGloRulesFct.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/fidexGlo/cpp/src/fidexGloRulesFct.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef FIDEXGLORULESFCT_H
+   #define FIDEXGLORULESFCT_H
+   
+   #include "../../../fidexCommon/cpp/src/checkFun.h"
+   #include "../../../fidexCommon/cpp/src/dataSet.h"
+   #include "../../../fidexCommon/cpp/src/errorHandler.h"
+   #include "../../../fidexCommon/cpp/src/hyperLocus.h"
+   #include "fidexAlgo.h"
+   #include <algorithm>
+   #include <chrono>
+   #include <limits.h>
+   #include <numeric>
+   #include <random>
+   #include <sstream>
+   #include <string>
+   #include <time.h>
+   
+   void showRulesParams();
+   int fidexGloRules(const std::string &command);
+   
+   #endif

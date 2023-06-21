@@ -1,0 +1,17 @@
+.. _exhale_struct_structRuleInfo:
+
+Struct RuleInfo
+===============
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidexGlo_cpp_src_getRulesFun.cpp`
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: RuleInfo
+   :project: dimlp
+   :members:
+   :protected-members:
+   :undoc-members:

@@ -1,0 +1,42 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_checkFun.cpp:
+
+File checkFun.cpp
+=================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/checkFun.cpp``)
+-----------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_checkFun.cpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``iostream``
+
+
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_checkFun_8cpp_1a78dc4e1322da86c268137cc1d0b7b006`
+
+- :ref:`exhale_function_checkFun_8cpp_1a72adbf0698e29b7b81bf312ed0d68d75`
+
