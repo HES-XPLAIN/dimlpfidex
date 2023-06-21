@@ -103,5 +103,5 @@ if __name__ == "__main__":
     # build(setup_kwargs)
 
     # build with cmake
-    build_package()
-    # build_documentation()
+    # build_package()
+    build_documentation()
