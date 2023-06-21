@@ -3,6 +3,6 @@
 
 #include <vector>
 
-extern float Lmse(int nbTar, std::vector<float> netOut, std::vector<float> target);
+float Lmse(int nbTar, std::vector<float> netOut, std::vector<float> target);
 
 #endif
