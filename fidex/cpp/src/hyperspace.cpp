@@ -47,7 +47,9 @@ void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
   line += " Covering size : " + std::to_string(hyperbox->getCoveredSamples().size());
   line += " Fidelity : " + std::to_string(hyperbox->getFidelity());
   line += " Accuracy : " + std::to_string(ruleAccuracy);
-  line += " Confidence : " + std::to_string(ruleConfidence);
+  if (ruleConfidence != -1) {
+    line += " Confidence : " + std::to_string(ruleConfidence);
+  }
 
   std::cout << "Extracted rule :" << endl;
   std::cout << line << endl

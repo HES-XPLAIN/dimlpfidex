@@ -414,6 +414,7 @@ int fidex(const string &command) {
 
     vector<vector<double>> *trainData = trainDatas->getDatas();
     vector<int> *trainPreds = trainDatas->getPredictions();
+    bool hasConfidence = trainDatas->hasConfidence();
     vector<vector<double>> *trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
     vector<int> *trainTrueClass = trainDatas->getTrueClasses();
 
@@ -837,11 +838,15 @@ int fidex(const string &command) {
 
       int currentSamplePred = mainSamplesPreds[currentSample];
       double currentSamplePredValue = mainSamplesOutputValuesPredictions[currentSample][currentSamplePred];
-      double ruleConfidence = hyperspace.computeRuleConfidence(trainOutputValuesPredictions, currentSamplePred, currentSamplePredValue); // Mean output value of prediction of class chosen by the rule for the covered samples
-
-      meanConfidence += ruleConfidence;
-      std::cout << "Rule confidence : " << ruleConfidence << endl
-                << endl;
+      double ruleConfidence;
+      if (hasConfidence) {
+        ruleConfidence = hyperspace.computeRuleConfidence(trainOutputValuesPredictions, currentSamplePred, currentSamplePredValue); // Mean output value of prediction of class chosen by the rule for the covered samples
+        meanConfidence += ruleConfidence;
+        std::cout << "Rule confidence : " << ruleConfidence << endl
+                  << endl;
+      } else {
+        ruleConfidence = -1;
+      }
 
       meanCovSize += static_cast<double>(hyperspace.getHyperbox()->getCoveredSamples().size());
       meanNbAntecedentsPerRule += static_cast<double>(hyperspace.getHyperbox()->getDiscriminativeHyperplans().size());
@@ -864,7 +869,9 @@ int fidex(const string &command) {
 
     // Stats
     meanFidelity /= static_cast<double>(nbSamples);
-    meanConfidence /= static_cast<double>(nbSamples);
+    if (hasConfidence) {
+      meanConfidence /= static_cast<double>(nbSamples);
+    }
     meanCovSize /= static_cast<double>(nbSamples);
     meanNbAntecedentsPerRule /= static_cast<double>(nbSamples);
     meanAccuracy /= static_cast<double>(nbSamples);
@@ -877,7 +884,9 @@ int fidex(const string &command) {
         outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntecedentsPerRule << "\n";
         outputStatsFile << "The mean rule fidelity rate is : " << meanFidelity << "\n";
         outputStatsFile << "The mean rule accuracy is : " << meanAccuracy << "\n";
-        outputStatsFile << "The mean rule confidence is : " << meanConfidence << "\n";
+        if (hasConfidence) {
+          outputStatsFile << "The mean rule confidence is : " << meanConfidence << "\n";
+        }
         outputStatsFile.close();
       } else {
         throw CannotOpenFileError("Error : Couldn't open stats extraction file " + std::string(statsFile) + ".");
