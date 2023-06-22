@@ -117,7 +117,7 @@ def svmTrn(*args, **kwargs):
             print("degree : polynomial degree (3 by default)")
             print("gamma : scale(default), auto or non negative float")
             print("coef0 : term in kernel function, float (0 by default)")
-            print("shrinking : heuristic, true(default) or false")
+            print("shrinking : heuristic, True(default) or False")
             print("tol : tolerance for stopping criterion (0.001 by default)")
             print("cache_size : kernel cache size (200 MB by default)")
             print("class_weight : class balance, 'balanced' or a dictionary, for exemple with 2 classes : {0:1.2, 1:3.5} (None by default)")
@@ -128,7 +128,7 @@ def svmTrn(*args, **kwargs):
             print("----------------------------")
             print("----------------------------")
             print("Here is an example, keep same parameter names :")
-            print('svmTrn(trainData="trainDataFile.txt", testData="testDataFile.txt")')
+            print('svmTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "svm/weights", stats = "svm/stats.txt", train_pred = "svm/predTrain", test_pred = "svm/predTest", save_folder = "dimlp/datafiles")')
             print("---------------------------------------------------------------------")
         else:
 
@@ -170,52 +170,52 @@ def svmTrn(*args, **kwargs):
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
                 if arg_key not in valid_args:
-                    raise ValueError(f"Argument invalide : {arg_key}")
+                    raise ValueError(f"Invalid argument : {arg_key}")
 
             if not isinstance(save_folder, str):
-                raise ValueError('Error : save folder has to be a name contained in quotation marks "".')
+                raise ValueError('Error : parameter save_folder has to be a name contained in quotation marks "".')
 
             if train_data_file is None :
                 raise ValueError('Error : train data file missing, add it with option train_data="your_train_data_file"')
             elif not isinstance(train_data_file, str):
-                raise ValueError('Error : train data file has to be a name contained in quotation marks "".')
+                raise ValueError('Error : parameter train_data_file has to be a name contained in quotation marks "".')
 
             if train_class_file is None :
                 raise ValueError('Error : train class file missing, add it with option train_class="your_train_class_file"')
             elif not isinstance(train_class_file, str):
-                raise ValueError('Error : train class file has to be a name contained in quotation marks "".')
+                raise ValueError('Error : parameter train_class_file has to be a name contained in quotation marks "".')
 
             if test_data_file is None :
                 raise ValueError('Error : test data file missing, add it with option test_data="your_test_data_file"')
             elif not isinstance(test_data_file, str):
-                raise ValueError('Error : test data file has to be a name contained in quotation marks "".')
+                raise ValueError('Error : parameter test_data_file has to be a name contained in quotation marks "".')
 
             if test_class_file is None :
                 raise ValueError('Error : test class file missing, add it with option test_class="your_test_class_file"')
             elif not isinstance(test_class_file, str):
-                raise ValueError('Error : test class file has to be a name contained in quotation marks "".')
+                raise ValueError('Error : parameter test_class_file has to be a name contained in quotation marks "".')
 
             if train_pred_file is None:
                 train_pred_file = "predTrain"
             elif not isinstance(train_pred_file, str):
-                raise ValueError('Error : train prediction file has to be a name contained in quotation marks "".')
+                raise ValueError('Error : parameter predTrain has to be a name contained in quotation marks "".')
             train_pred_file += ".out"
 
 
             if test_pred_file is None:
                 test_pred_file = "predTest"
             elif not isinstance(test_pred_file, str):
-                raise ValueError('Error : test prediction file has to be a name contained in quotation marks "".')
+                raise ValueError('Error : parameter predTestn has to be a name contained in quotation marks "".')
             test_pred_file += ".out"
 
             if weights_file is None:
                 weights_file = "weights"
             elif not isinstance(weights_file, str):
-                    raise ValueError('Error : weights file has to be a name contained in quotation marks "".')
+                    raise ValueError('Error : parameter weights has to be a name contained in quotation marks "".')
             weights_file += ".wts"
 
             if stats_file is not None and not isinstance(stats_file, str):
-                raise ValueError('Error : stats file has to be a name contained in quotation marks "".')
+                raise ValueError('Error : parameter stats_file has to be a name contained in quotation marks "".')
 
             if K is None:
                 K = 1

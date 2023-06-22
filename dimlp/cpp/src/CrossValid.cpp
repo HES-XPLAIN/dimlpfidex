@@ -525,7 +525,7 @@ int main(int nbParam, char **param)
 
   const size_t nbSamples = learnData.size();
   if (K > nbSamples) {
-    cout << "The number of divisions of the dataset must be less or equal to the number of train samples(" << nbSamples << "), change the option -I.\n";
+    cout << "The number of divisions K of the dataset must be less or equal to the number of train samples(" << nbSamples << ").\n";
     return -1;
   }
 
@@ -541,7 +541,7 @@ int main(int nbParam, char **param)
 
   while (!fileDtaTar.eof()) {
     getline(fileDtaTar, line);
-    if (line.length() != 0) {
+    if (!checkStringEmpty(line)) {
       learnTarData.push_back(line);
     }
   }
