@@ -699,9 +699,9 @@ int main(int nbParam, char **param)
 
   // Loop on N executions of cross-validation
   for (int n = 0; n < N; n++) {
-    cout << "n=" << n << endl;
+    cout << "n=" << n+1 << endl;
 
-// Create folder
+// Create folder for this execution
 #if defined(__unix__) || defined(__APPLE__)
     string folderName = std::string(folder) + "/Execution" + std::to_string(n + 1) + "/";
     mkdir(folderName.c_str(), 0700);
@@ -725,7 +725,7 @@ int main(int nbParam, char **param)
       std::shuffle(indexes.begin(), indexes.end(), g);
     }
 
-    // Vector of eveanly spaced numbers between 1 and nbSammples+1
+    // Vector of evenly spaced numbers between 1 and nbSammples+1
     vector<double> range;
     double delta = static_cast<double>(nbSamples) / static_cast<double>(K);
     for (int i = 0; i < K + 1; i++) {
