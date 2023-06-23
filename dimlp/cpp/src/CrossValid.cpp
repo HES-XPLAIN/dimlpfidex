@@ -644,18 +644,18 @@ int main(int nbParam, char **param)
   double meanTestAccWhenRulesAndModelAgreeAll = 0.0;
   double meanTestAccWhenActivatedRulesAndModelAgreeAll = 0.0;
 
-  double stdNbRulesAll;
-  double stdNbCoverAll;
-  double stdNbAntecedantsAll;
-  double stdFidelGloAll;
-  double stdAccGloAll;
-  double stdExplGloAll;
-  double stdDefaultRateAll;
-  double stdNbFidelActivationsAll;
-  double stdWrongActivationsAll;
-  double stdTestAccGloAll;
-  double stdTestAccWhenRulesAndModelAgreeAll;
-  double stdTestAccWhenActivatedRulesAndModelAgreeAll;
+  double stdNbRulesAll = 0.0;;
+  double stdNbCoverAll = 0.0;;
+  double stdNbAntecedantsAll = 0.0;;
+  double stdFidelGloAll = 0.0;;
+  double stdAccGloAll = 0.0;;
+  double stdExplGloAll = 0.0;;
+  double stdDefaultRateAll = 0.0;;
+  double stdNbFidelActivationsAll = 0.0;;
+  double stdWrongActivationsAll = 0.0;;
+  double stdTestAccGloAll = 0.0;;
+  double stdTestAccWhenRulesAndModelAgreeAll = 0.0;;
+  double stdTestAccWhenActivatedRulesAndModelAgreeAll = 0.0;;
 
   vector<vector<double>> meanFoldValuesFidex;    // each mean value in an entire fold for each fold for fidex
   vector<vector<double>> meanFoldValuesFidexGlo; // each mean value in an entire fold for each fold for fidexGlo

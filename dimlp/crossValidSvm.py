@@ -14,8 +14,6 @@ from dimlpfidex import fidex
 from dimlpfidex import fidexGlo
 from dimlp.svmTrn import svmTrn
 
-
-
 def create_or_clear_directory(folder_name):
     try:
         if not os.path.exists(folder_name):
@@ -105,7 +103,7 @@ def crossValidSvm(*args, **kwargs):
             print("Optional parameters for svm training:")
             print("svm_K : Parameter to improve dynamics (1 by default)")
             print("C : regularization, (1.0 by default)")
-            print("kernel : linear, poly, rbf(default)")
+            print("kernel : linear, poly, rbf(default) or sigmoid")
             print("degree : polynomial degree (3 by default)")
             print("gamma : scale(default), auto or non negative float")
             print("coef0 : term in kernel function, float (0 by default)")
@@ -161,7 +159,7 @@ def crossValidSvm(*args, **kwargs):
             nb_epochs = kwargs.get('nb_epochs')
             show_err = kwargs.get('show_err')
 
-            svm_K = kwargs.get('svm_K')
+            svm_k = kwargs.get('svm_K')
             c_var = kwargs.get('C')
             kernel_var = kwargs.get('kernel')
             degree_var = kwargs.get('degree')
@@ -299,13 +297,39 @@ def crossValidSvm(*args, **kwargs):
                 if show_err is None:
                     show_err = 10
 
-            isFidex = False
-            isFidexGlo = False
+            else:
+                if svm_k is None:
+                    svm_k = 1
+                if c_var is None:
+                    c_var = 1.0
+                if kernel_var is None:
+                    kernel_var = "rbf"
+                if degree_var is None:
+                    degree_var = 3
+                if gamma_var is None:
+                    gamma_var = "scale"
+                if coef0_var is None:
+                    coef0_var = 0
+                if shrinking_var is None:
+                    shrinking_var = True
+                if tol_var is None:
+                    tol_var = 0.001
+                if cache_size_var is None:
+                    cache_size_var = 200
+                if svm_max_iter_var is None:
+                    svm_max_iter_var = -1
+                if decision_function_shape_var is None:
+                    decision_function_shape_var = "ovr"
+                if break_ties_var is None:
+                    break_ties_var = False
+
+            is_fidex = False
+            is_fidexglo = False
             if (algo == "fidex" or algo == "both"):
-                isFidex = True
+                is_fidex = True
 
             if (algo == "fidexGlo" or algo == "both"):
-                isFidexGlo = True
+                is_fidexglo = True
 
             #create paths with root foler
             system = platform.system()
@@ -339,7 +363,145 @@ def crossValidSvm(*args, **kwargs):
             # Create folder if doesn't exist
             create_or_clear_directory(crossval_folder)
 
-        #svmTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "svm/weights", stats = "svm/stats.txt", train_pred = "svm/predTrain", test_pred = "svm/predTest", save_folder = "dimlp/datafiles")
-    
+            # Create temp files for train, test and validation
+            train_file_temp = root + "tempTrain.txt"
+            test_file_temp = root + "tempTest.txt"
+            valid_file_temp = root + "tempValid.txt"
+            train_tar_file_temp = root + "tempTarTrain.txt"
+            test_tar_file_temp = root + "tempTarTest.txt"
+            valid_tar_file_temp = root + "tempTarValid.txt"
+
+            # statistics for Fidex
+            # One execution
+            mean_cov_size_fid = 0.0
+            mean_nb_ant_fid = 0.0
+            mean_fidel_fid = 0.0
+            mean_acc_fid = 0.0
+            mean_confid_fid = 0.0
+
+            # All executions
+            mean_cov_size_fid_all = 0.0
+            mean_nb_ant_fid_all = 0.0
+            mean_fidel_fid_all = 0.0
+            mean_acc_fid_all = 0.0
+            mean_confid_fid_all = 0.0
+
+            std_cov_size_fid_all = 0.0
+            std_nb_ant_fid_all = 0.0
+            std_fidel_fid_all = 0.0
+            std_acc_fid_all = 0.0
+            std_confid_fid_all = 0.0
+            
+            # Statistics for FidexGlo
+            # One execution
+            mean_nb_rules = 0.0
+            mean_nb_cover = 0.0
+            mean_nb_antecedants = 0.0
+            mean_fidel_glo = 0.0
+            mean_acc_glo = 0.0
+            mean_expl_glo = 0.0
+            mean_default_rate = 0.0
+            mean_nb_fidel_activations = 0.0
+            mean_wrong_activations = 0.0
+            mean_test_acc_glo = 0.0
+            mean_test_acc_when_rules_and_model_agree = 0.0
+            mean_test_acc_when_activated_rules_and_model_agree = 0.0
+
+            # All executions
+            mean_nb_rules_all = 0.0
+            mean_nb_cover_all = 0.0
+            mean_nb_antecedants_all = 0.0
+            mean_fidel_glo_all = 0.0
+            mean_acc_glo_all = 0.0
+            mean_expl_glo_all = 0.0
+            mean_default_rate_all = 0.0
+            mean_nb_fidel_activations_all = 0.0
+            mean_wrong_activations_all = 0.0
+            mean_test_acc_glo_all = 0.0
+            mean_test_acc_when_rules_and_model_agree_all = 0.0
+            mean_test_acc_when_activated_rules_and_model_agree_all = 0.0
+
+            std_nb_rules_all = 0.0
+            std_nb_cover_all = 0.0
+            std_nb_antecedants_all = 0.0
+            std_fidel_glo_all = 0.0
+            std_acc_glo_all = 0.0
+            std_expl_glo_all = 0.0
+            std_default_rate_all = 0.0
+            std_nb_fidel_activations_all = 0.0
+            std_wrong_activations_all = 0.0
+            std_test_acc_glo_all = 0.0
+            std_test_acc_when_rules_and_model_agree_all = 0.0
+            std_test_acc_when_activated_rules_and_model_agree_all = 0.0
+
+            # Write parameters on stats file
+
+            try:
+                with open(crossval_stats, "w") as outputStatsFile:
+                    
+                    outputStatsFile.write(f"Parameters for {n} times {k}-Cross validation :\n")
+                    outputStatsFile.write(f"Training with {train_method}\n")
+                    outputStatsFile.write("---------------------------------------------------------\n")
+                    if train_method == "dimlp":
+                        outputStatsFile.write(f"Training with {nb_in} input neurons and {nb_out} output neurons\n")
+                    outputStatsFile.write(f"The number of stairs in staircase activation function is {nb_stairs} and the interval in which hyperplans are contained is [-{hiknot},{hiknot}]\n")
+                    if train_method == "dimlp":
+                        outputStatsFile.write(f"The back-propagation learning parameter (Eta) is {eta}\n")
+                        outputStatsFile.write(f"The back-propagation momentum parameter (Mu) is {mu}\n")
+                        outputStatsFile.write(f"The back-propagation flat spot elimination parameter (Flat) is {flat}\n")
+                        outputStatsFile.write(f"The error threshold is {err_thresh}\n")
+                        outputStatsFile.write(f"The accuracy threshold is {acc_thresh}\n")
+                        outputStatsFile.write(f"The absolute difference error threshold is {delta_err}\n")
+                        outputStatsFile.write(f"The number of train epochs is {nb_epochs}\n")
+                        outputStatsFile.write(f"The number of train epochs to show error is {show_err}\n")
+                    else:
+                        outputStatsFile.write(f"The K parameter to improve dynamics is {svm_k}\n")
+                        outputStatsFile.write(f"The regularization parameter C is {c_var}\n")
+                        outputStatsFile.write(f"The kernel is {kernel_var}\n")
+                        if kernel_var == "poly":
+                            outputStatsFile.write(f"The polynomial degree is {degree_var}\n")
+                        if kernel_var in {"rbf", "poly", "sigmoid"}:
+                            outputStatsFile.write(f"The kernel coefficient gamma is {gamma_var}\n")
+                        if kernel_var in {"poly", "sigmoid"}:
+                            outputStatsFile.write(f"The coef0 term is {coef0_var}\n")
+                        if shrinking_var:
+                            outputStatsFile.write("Using of the shrinking heuristic\n")
+                        else:
+                            outputStatsFile.write("No using of the shrinking heuristic\n")
+                        outputStatsFile.write(f"The tolerance for stopping criterion is {tol_var}\n")
+                        if class_weight_var == None:
+                            outputStatsFile.write("Class weights are unchanged\n")
+                        else:
+                            outputStatsFile.write(f"Class weights are {class_weight_var}\n")
+                        if svm_max_iter_var == -1:
+                            outputStatsFile.write("There is no limit in the number of iterations\n")
+                        else:
+                            outputStatsFile.write(f"The maximal number of iterations is {svm_max_iter_var}\n")
+                        if decision_function_shape_var == "ovr":
+                            outputStatsFile.write("The decision function shape is one-vs-rest\n")
+                            if break_ties_var:
+                                outputStatsFile.write("Using break tie decision\n")
+                        else:
+                            outputStatsFile.write("The decision function shape is one-vs-one\n")
+                        
+                    outputStatsFile.write(f"The max fidex and fidexGlo iteration number is {max_iter}\n")
+                    outputStatsFile.write(f"The minimum fidex and fidexGlo covering number is {min_cov}\n")
+                    if dropout_hyp:
+                        outputStatsFile.write(f"The hyperplan dropout parameter for fidex and fidexGlo is {dropout_hyp}\n")
+                    else:
+                        outputStatsFile.write("There is no hyperplan dropout\n")
+                    if dropout_dim:
+                        outputStatsFile.write(f"The dimension dropout parameter for fidex and fidexGlo is {dropout_dim}\n")
+                    else:
+                        outputStatsFile.write("There is no dimension dropout\n")
+
+                    outputStatsFile.close()
+            except (FileNotFoundError):
+                raise ValueError(f"Error : File {crossval_stats} not found.")
+            except (IOError):
+                raise ValueError(f"Error : Couldn't open file {crossval_stats}.")
+
+                #svmTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "svm/weights", stats = "svm/stats.txt", train_pred = "svm/predTrain", test_pred = "svm/predTest", save_folder = "dimlp/datafiles")
+            
     except ValueError as error:
         print(error)
