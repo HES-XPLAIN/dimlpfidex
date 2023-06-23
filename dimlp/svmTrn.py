@@ -113,7 +113,7 @@ def svmTrn(*args, **kwargs):
             print("----------------------------")
             print("SVM parameters (optional)")
             print("C : regularization, (1.0 by default)")
-            print("kernel : linear, poly, rbf(default)")
+            print("kernel : linear, poly, rbf(default) or sigmoid")
             print("degree : polynomial degree (3 by default)")
             print("gamma : scale(default), auto or non negative float")
             print("coef0 : term in kernel function, float (0 by default)")
