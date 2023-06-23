@@ -644,18 +644,30 @@ int main(int nbParam, char **param)
   double meanTestAccWhenRulesAndModelAgreeAll = 0.0;
   double meanTestAccWhenActivatedRulesAndModelAgreeAll = 0.0;
 
-  double stdNbRulesAll = 0.0;;
-  double stdNbCoverAll = 0.0;;
-  double stdNbAntecedantsAll = 0.0;;
-  double stdFidelGloAll = 0.0;;
-  double stdAccGloAll = 0.0;;
-  double stdExplGloAll = 0.0;;
-  double stdDefaultRateAll = 0.0;;
-  double stdNbFidelActivationsAll = 0.0;;
-  double stdWrongActivationsAll = 0.0;;
-  double stdTestAccGloAll = 0.0;;
-  double stdTestAccWhenRulesAndModelAgreeAll = 0.0;;
-  double stdTestAccWhenActivatedRulesAndModelAgreeAll = 0.0;;
+  double stdNbRulesAll = 0.0;
+  ;
+  double stdNbCoverAll = 0.0;
+  ;
+  double stdNbAntecedantsAll = 0.0;
+  ;
+  double stdFidelGloAll = 0.0;
+  ;
+  double stdAccGloAll = 0.0;
+  ;
+  double stdExplGloAll = 0.0;
+  ;
+  double stdDefaultRateAll = 0.0;
+  ;
+  double stdNbFidelActivationsAll = 0.0;
+  ;
+  double stdWrongActivationsAll = 0.0;
+  ;
+  double stdTestAccGloAll = 0.0;
+  ;
+  double stdTestAccWhenRulesAndModelAgreeAll = 0.0;
+  ;
+  double stdTestAccWhenActivatedRulesAndModelAgreeAll = 0.0;
+  ;
 
   vector<vector<double>> meanFoldValuesFidex;    // each mean value in an entire fold for each fold for fidex
   vector<vector<double>> meanFoldValuesFidexGlo; // each mean value in an entire fold for each fold for fidexGlo
@@ -699,7 +711,7 @@ int main(int nbParam, char **param)
 
   // Loop on N executions of cross-validation
   for (int n = 0; n < N; n++) {
-    cout << "n=" << n+1 << endl;
+    cout << "n=" << n + 1 << endl;
 
 // Create folder for this execution
 #if defined(__unix__) || defined(__APPLE__)
