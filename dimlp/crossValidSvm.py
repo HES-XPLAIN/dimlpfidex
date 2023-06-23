@@ -2,6 +2,7 @@ import os
 import shutil
 import sys
 import platform
+import random
 
 # import modules :
 
@@ -363,6 +364,12 @@ def crossValidSvm(*args, **kwargs):
             # Create folder if doesn't exist
             create_or_clear_directory(crossval_folder)
 
+            # Initialize random seeds
+            if seed != 0: # Not random
+                random.seed(seed)
+                seeds = random.sample(range(10*n), n)
+
+
             # Create temp files for train, test and validation
             train_file_temp = root + "tempTrain.txt"
             test_file_temp = root + "tempTest.txt"
@@ -434,6 +441,9 @@ def crossValidSvm(*args, **kwargs):
             std_test_acc_when_rules_and_model_agree_all = 0.0
             std_test_acc_when_activated_rules_and_model_agree_all = 0.0
 
+            mean_fold_values_fidex = [] # each mean value in an entire fold for each fold for fidex
+            mean_fold_values_fidexglo = [] # each mean value in an entire fold for each fold for fidexGlo
+
             # Write parameters on stats file
 
             try:
@@ -495,11 +505,53 @@ def crossValidSvm(*args, **kwargs):
                     else:
                         outputStatsFile.write("There is no dimension dropout\n")
 
+                    outputStatsFile.write("---------------------------------------------------------\n\n")
+
                     outputStatsFile.close()
             except (FileNotFoundError):
-                raise ValueError(f"Error : File {crossval_stats} not found.")
+                raise ValueError(f"Error : File for stats extraction ({crossval_stats}) not found.")
             except (IOError):
-                raise ValueError(f"Error : Couldn't open file {crossval_stats}.")
+                raise ValueError(f"Error : Couldn't open stats extraction file {crossval_stats}.")
+
+            # Loop on N executions of cross-validation
+            for ni in range(n):
+                print(f"n={ni+1}\n")
+
+                #  Create folder for this execution
+                if system == "Linux" or system == "Darwin":
+                    folder_name = crossval_folder + "/Execution" + str(ni+1) + "/"
+                elif system == "Windows":
+                    folder_name = crossval_folder + "\\Execution" + str(ni+1)
+                try:
+                    os.makedirs(folder_name)
+                except (IOError):
+                    raise ValueError(f"Error : Couldn't create execution folder {folder_name}.")
+
+                
+                # Randomly split data in K sub-parts
+                learn_data_split = []
+                learn_tar_data_split = []
+
+                indexes = list(range(nb_samples))
+                if seed != 0:  # Not random
+                    random.seed(seeds[ni])
+                    random.shuffle(indexes)
+                else:  # Random
+                    random.shuffle(indexes)
+                
+                range_values = [i*(nb_samples/k) for i in range(k + 1)]
+                # Split data evenly in K groups
+                for q in range(len(range_values) - 1):
+                    start = int(range_values[q])
+                    end = int(range_values[q + 1])
+                    temp_vect = [datas[indexes[ind]] for ind in range(start, end)]
+                    temp_vect_tar = [classes[indexes[ind]] for ind in range(start, end)]
+                    learn_data_split.append(temp_vect)
+                    learn_tar_data_split.append(temp_vect_tar)
+
+                
+
+
 
                 #svmTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "svm/weights", stats = "svm/stats.txt", train_pred = "svm/predTrain", test_pred = "svm/predTest", save_folder = "dimlp/datafiles")
             
