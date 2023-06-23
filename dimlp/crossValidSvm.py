@@ -371,12 +371,12 @@ def crossValidSvm(*args, **kwargs):
 
 
             # Create temp files for train, test and validation
-            train_file_temp = root + "tempTrain.txt"
-            test_file_temp = root + "tempTest.txt"
-            valid_file_temp = root + "tempValid.txt"
-            train_tar_file_temp = root + "tempTarTrain.txt"
-            test_tar_file_temp = root + "tempTarTest.txt"
-            valid_tar_file_temp = root + "tempTarValid.txt"
+            temp_train_file= root + "tempTrain.txt"
+            temp_test_file = root + "tempTest.txt"
+            temp_valid_file = root + "tempValid.txt"
+            temp_train_tar_file = root + "tempTarTrain.txt"
+            temp_test_tar_file = root + "tempTarTest.txt"
+            temp_valid_tar_file = root + "tempTarValid.txt"
 
             # statistics for Fidex
             # One execution
@@ -515,7 +515,7 @@ def crossValidSvm(*args, **kwargs):
 
             # Loop on N executions of cross-validation
             for ni in range(n):
-                print(f"n={ni+1}\n")
+                print(f"n={ni+1}")
 
                 #  Create folder for this execution
                 if system == "Linux" or system == "Darwin":
@@ -529,8 +529,8 @@ def crossValidSvm(*args, **kwargs):
 
 
                 # Randomly split data in K sub-parts
-                learn_data_split = []
-                learn_tar_data_split = []
+                data_split = []
+                tar_data_split = []
 
                 indexes = list(range(nb_samples))
                 if seed != 0:  # Not random
@@ -546,12 +546,123 @@ def crossValidSvm(*args, **kwargs):
                     end = int(range_values[q + 1])
                     temp_vect = [datas[indexes[ind]] for ind in range(start, end)]
                     temp_vect_tar = [classes[indexes[ind]] for ind in range(start, end)]
-                    learn_data_split.append(temp_vect)
-                    learn_tar_data_split.append(temp_vect_tar)
+                    data_split.append(temp_vect)
+                    tar_data_split.append(temp_vect_tar)
+
+                for ki in range(k): # K-fold, we shift each time groups by 1.
+                    print("----")
+                    print(f"k={ki+1}")
+
+                    #  Create folder for this fold
+                    folder_path = crossval_folder + separator + "Execution" + str(ni+1) + separator + "Fold" + str(ki+1)
+                    if system == "Linux" or system == "Darwin":
+                        folder_fold_name = folder_path + separator
+                    elif system == "Windows":
+                        folder_fold_name = folder_path
+                    try:
+                        os.makedirs(folder_fold_name)
+                    except (IOError):
+                        raise ValueError(f"Error : Couldn't create fold folder {folder_fold_name}.")
+
+                    # Get group index for test, validation and train
+                    train_idx = []
+                    validation_idx = ki
+                    test_idx = (ki + 1) % k
+                    for m in range(2, k):
+                        train_idx.append((ki + m) % k)
+
+                    # Creation of train, test and validation files (temp files)
+                    try:
+                        with open(temp_train_file, "w") as trn_file:
+                            for id in train_idx:
+                                for line_trn in data_split[id]:
+                                    trn_file.write(f"{line_trn}\n")
+                        trn_file.close()
+
+                    except (IOError):
+                        raise ValueError(f"Error : Couldn't open file {temp_train_file}.")
+
+                    try:
+                        with open(temp_test_file, "w") as tst_file:
+                            for line_tst in data_split[test_idx]:
+                                tst_file.write(f"{line_tst}\n")
+                        tst_file.close()
+
+                    except (IOError):
+                        raise ValueError(f"Error : Couldn't open file {temp_test_file}.")
+
+                    try:
+                        with open(temp_valid_file, "w") as val_file:
+                            for line_val in data_split[validation_idx]:
+                                val_file.write(f"{line_val}\n")
+                        val_file.close()
+
+                    except (IOError):
+                        raise ValueError(f"Error : Couldn't open file {temp_valid_file}.")
+
+                    try:
+                        with open(temp_train_tar_file, "w") as trn_val_file:
+                            for id in train_idx:
+                                for line_trn_tar in tar_data_split[id]:
+                                    trn_val_file.write(f"{line_trn_tar}\n")
+                        trn_val_file.close()
+
+                    except (IOError):
+                        raise ValueError(f"Error : Couldn't open file {temp_train_tar_file}.")
+
+                    try:
+                        with open(temp_test_tar_file, "w") as tst_tar_file:
+                            for line_tst_tar in tar_data_split[test_idx]:
+                                tst_tar_file.write(f"{line_tst_tar}\n")
+                        tst_tar_file.close()
+
+                    except (IOError):
+                        raise ValueError(f"Error : Couldn't open file {temp_test_tar_file}.")
+
+                    try:
+                        with open(temp_valid_tar_file, "w") as val_tar_file:
+                            for line_val_tar in tar_data_split[validation_idx]:
+                                val_tar_file.write(f"{line_val_tar}\n")
+                        val_tar_file.close()
+
+                    except (IOError):
+                        raise ValueError(f"Error : Couldn't open file {temp_valid_tar_file}.")
+
+                    # Get train, test and validation files in folder
+
+                    try:
+                        shutil.copy2(temp_train_file, folder_path + separator + "train.txt")
+                    except IOError:
+                        print("File tempTrain.txt coundn't be copied.")
+
+                    try:
+                        shutil.copy2(temp_test_file, folder_path + separator + "test.txt")
+                    except IOError:
+                        print("File tempTest.txt coundn't be copied.")
+
+                    try:
+                        shutil.copy2(temp_valid_file, folder_path + separator + "valid.txt")
+                    except IOError:
+                        print("File tempValid.txt coundn't be copied.")
+
+                    try:
+                        shutil.copy2(temp_train_tar_file, folder_path + separator + "trainTarget.txt")
+                    except IOError:
+                        print("File tempTarTrain.txt coundn't be copied.")
+
+                    try:
+                        shutil.copy2(temp_test_tar_file, folder_path + separator + "testTarget.txt")
+                    except IOError:
+                        print("File tempTarTest.txt coundn't be copied.")
+
+                    try:
+                        shutil.copy2(temp_valid_tar_file, folder_path + separator + "validTarget.txt")
+                    except IOError:
+                        print("File tempTarValid.txt coundn't be copied.")
 
 
-
-
+                    # Training
+                    folder_path_from_root = str(save_folder) + separator + "Execution" + str(ni + 1) + separator + "Fold" + str(ki + 1)
 
 
                 #svmTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "svm/weights", stats = "svm/stats.txt", train_pred = "svm/predTrain", test_pred = "svm/predTest", save_folder = "dimlp/datafiles")

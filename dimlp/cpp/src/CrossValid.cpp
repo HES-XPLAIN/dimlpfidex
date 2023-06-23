@@ -757,9 +757,9 @@ int main(int nbParam, char **param)
 
     int validationIdx;
     int testIdx;
-    for (int k = 0; k < K; k++) { // K-fold, we shift groups by 1.
+    for (int k = 0; k < K; k++) { // K-fold, we shift each time groups by 1.
       cout << "----" << endl;
-      cout << "k=" << k << endl;
+      cout << "k=" << k + 1 << endl;
       // path to folder
       string folderPath = std::string(folder) + separator + "Execution" + std::to_string(n + 1) + separator + "Fold" + std::to_string(k + 1);
       // Create folder
