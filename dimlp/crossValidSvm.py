@@ -121,7 +121,7 @@ def crossValidSvm(*args, **kwargs):
             print('crossValidSvm(trainData="trainDataFile.txt", testData="testDataFile.txt")')
             print("---------------------------------------------------------------------")
         else:
-            
+
             # Get parameters
             train_method = kwargs.get('train_method')
             algo = kwargs.get('algo')
@@ -172,7 +172,7 @@ def crossValidSvm(*args, **kwargs):
             class_weight_var = kwargs.get('class_weight')
             svm_max_iter_var = kwargs.get('svm_max_iter')
             decision_function_shape_var = kwargs.get('decision_function_shape')
-            break_ties_var = kwargs.get('break_ties')            
+            break_ties_var = kwargs.get('break_ties')
 
             # Check parameters
 
@@ -181,10 +181,10 @@ def crossValidSvm(*args, **kwargs):
 
             optional_args = ['save_folder', 'crossVal_folder', 'K', 'N', 'fidexGlo_heuristic', 'crossVal_stats', 'attr_file', 'hiknot', 'nb_stairs',
                         'max_iter', 'min_cov', 'dropout_dim', 'dropout_hyp', 'seed']
-            
+
             optional_dimlp_args = ['pretrained_weights', 'eta', 'mu', 'flat', 'err_thresh',
                         'acc_thresh', 'delta_err', 'nb_epochs', 'show_err']
-            
+
             optional_svm_args = ['svm_K', 'C', 'kernel', 'degree', 'gamma', 'coef0', 'shrinking',
                         'tol', 'cache_size', 'class_weight', 'svm_max_iter', 'decision_function_shape', 'break_ties']
 
@@ -204,18 +204,18 @@ def crossValidSvm(*args, **kwargs):
                     if (arg_key not in optional_args and arg_key and arg_key not in optional_svm_args and arg_key not in obligatory_args):
                         raise ValueError(f"Invalid argument with dimlp training : {arg_key}")
 
-            
+
             algos = {"fidex", "fidexGlo", "both"}
             if algo is None:
                 raise ValueError('Error : algorithm(s) is missing, add it with option algo="fidex" or "fidexGlo" or "both"')
             elif (algo not in algos):
                 raise ValueError('Error, parameter algo is not fidex, fidexGlo or both')
-            
+
             if data_file is None:
                 raise ValueError('Error : data file is missing, add it with option data_file="your_data_file_name"')
             elif not isinstance(data_file, str):
                 raise ValueError('Error : parameter data_file has to be a name contained in quotation marks "".')
-            
+
             if class_file is None:
                 raise ValueError('Error : class file is missing, add it with option class_file="your_class_file_name"')
             elif not isinstance(class_file, str):
@@ -272,7 +272,7 @@ def crossValidSvm(*args, **kwargs):
                     raise ValueError('Error : the number of input neurons is missing, add it with option nb_in=your_number')
                 elif (not isinstance(nb_in, int) or nb_in<=0):
                     raise ValueError('Error, parameter nb_in is not an strictly positive integer')
-                
+
                 if nb_out is None:
                     raise ValueError('Error : the number of output neurons is missing, add it with option nb_out=your_number')
                 elif (not isinstance(nb_out, int) or nb_out<=0):
@@ -348,7 +348,7 @@ def crossValidSvm(*args, **kwargs):
             class_file = root + class_file
             crossval_folder = root + crossval_folder
             crossval_stats = crossval_folder + separator + crossval_stats
-            
+
             # Get datas in a list
             datas = get_data(data_file)
             nb_samples = len(datas)
@@ -398,7 +398,7 @@ def crossValidSvm(*args, **kwargs):
             std_fidel_fid_all = 0.0
             std_acc_fid_all = 0.0
             std_confid_fid_all = 0.0
-            
+
             # Statistics for FidexGlo
             # One execution
             mean_nb_rules = 0.0
@@ -448,7 +448,7 @@ def crossValidSvm(*args, **kwargs):
 
             try:
                 with open(crossval_stats, "w") as outputStatsFile:
-                    
+
                     outputStatsFile.write(f"Parameters for {n} times {k}-Cross validation :\n")
                     outputStatsFile.write(f"Training with {train_method}\n")
                     outputStatsFile.write("---------------------------------------------------------\n")
@@ -493,7 +493,7 @@ def crossValidSvm(*args, **kwargs):
                                 outputStatsFile.write("Using break tie decision\n")
                         else:
                             outputStatsFile.write("The decision function shape is one-vs-one\n")
-                        
+
                     outputStatsFile.write(f"The max fidex and fidexGlo iteration number is {max_iter}\n")
                     outputStatsFile.write(f"The minimum fidex and fidexGlo covering number is {min_cov}\n")
                     if dropout_hyp:
@@ -527,7 +527,7 @@ def crossValidSvm(*args, **kwargs):
                 except (IOError):
                     raise ValueError(f"Error : Couldn't create execution folder {folder_name}.")
 
-                
+
                 # Randomly split data in K sub-parts
                 learn_data_split = []
                 learn_tar_data_split = []
@@ -538,7 +538,7 @@ def crossValidSvm(*args, **kwargs):
                     random.shuffle(indexes)
                 else:  # Random
                     random.shuffle(indexes)
-                
+
                 range_values = [i*(nb_samples/k) for i in range(k + 1)]
                 # Split data evenly in K groups
                 for q in range(len(range_values) - 1):
@@ -549,11 +549,12 @@ def crossValidSvm(*args, **kwargs):
                     learn_data_split.append(temp_vect)
                     learn_tar_data_split.append(temp_vect_tar)
 
-                
+
+
 
 
 
                 #svmTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "svm/weights", stats = "svm/stats.txt", train_pred = "svm/predTrain", test_pred = "svm/predTest", save_folder = "dimlp/datafiles")
-            
+
     except ValueError as error:
         print(error)
