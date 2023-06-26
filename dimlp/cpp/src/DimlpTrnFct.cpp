@@ -430,21 +430,12 @@ int dimlpTrn(const string &command) {
   const char *validTar = nullptr;
   const char *attrFile = nullptr;
 
-  string root;
 #if defined(__unix__) || defined(__APPLE__)
-  if (rootFolderInit) {
-    root = "../" + rootFolderTemp + "/";
-  } else {
-    root = "../";
-  }
-
+  string root = rootFolderTemp + "/";
 #elif defined(_WIN32)
-  if (rootFolderInit) {
-    root = "..\\" + rootFolderTemp + "\\";
-  } else {
-    root = "..\\";
-  }
+  string root = rootFolderTemp + "\\";
 #endif
+
   if (learnFileInit) {
     learnFileTemp = root + learnFileTemp;
     learnFile = &learnFileTemp[0];

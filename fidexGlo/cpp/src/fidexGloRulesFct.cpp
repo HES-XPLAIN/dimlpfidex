@@ -253,20 +253,10 @@ int fidexGloRules(const string &command) {
     const char *consoleFile = nullptr;
     const char *attributFile = nullptr;
 
-    string root;
 #if defined(__unix__) || defined(__APPLE__)
-    if (rootFolderInit) {
-      root = "../" + rootFolderTemp + "/";
-    } else {
-      root = "../";
-    }
-
+    string root = rootFolderTemp + "/";
 #elif defined(_WIN32)
-    if (rootFolderInit) {
-      root = "..\\" + rootFolderTemp + "\\";
-    } else {
-      root = "..\\";
-    }
+    string root = rootFolderTemp + "\\";
 #endif
 
     if (trainDataFileInit) {
