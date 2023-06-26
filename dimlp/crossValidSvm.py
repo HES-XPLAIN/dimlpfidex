@@ -346,6 +346,7 @@ def crossValidSvm(*args, **kwargs):
 
             data_file = root + data_file
             class_file = root + class_file
+            crossval_folder_temp = crossval_folder
             crossval_folder = root + crossval_folder
             crossval_stats = crossval_folder + separator + crossval_stats
 
@@ -666,7 +667,47 @@ def crossValidSvm(*args, **kwargs):
 
 
                     # Training
-                    folder_path_from_root = str(save_folder) + separator + "Execution" + str(ni + 1) + separator + "Fold" + str(ki + 1)
+                    folder_path_from_root = str(crossval_folder_temp) + separator + "Execution" + str(ni + 1) + separator + "Fold" + str(ki + 1)
+                    if train_method == "dimlp":
+                        dimlpCommand = "dimlpTrn"
+                        dimlpCommand += " -l " + str(eta)
+                        dimlpCommand += " -m " + str(mu)
+                        dimlpCommand += " -f " + str(flat)
+                        dimlpCommand += " -e " + str(err_thresh)
+                        dimlpCommand += " -a " + str(acc_thresh)
+                        dimlpCommand += " -d " + str(delta_err)
+                        dimlpCommand += " -s " + str(show_err)
+                        dimlpCommand += " -i " + str(nb_epochs)
+                        dimlpCommand += " -I " + str(nb_in)
+                        dimlpCommand += " -O " + str(nb_out)
+                        if save_folder is not None:
+                            dimlpCommand += " -S " + save_folder
+                        if attr_file is not None:
+                            dimlpCommand += " -A " + attr_file
+                        if pretrained_weights is not None:
+                            dimlpCommand += " -W " + pretrained_weights
+                        dimlpCommand += " -z " + str(seed)
+                        dimlpCommand += " -q " + str(nb_stairs)
+                        for key, value in hk.items():
+                            dimlpCommand += " -" + key + " " + str(value)
+
+                        dimlpCommand += " -L " + folder_path_from_root + separator + "train.txt "
+                        dimlpCommand += "-T " + folder_path_from_root + separator + "test.txt "
+                        dimlpCommand += "-V " + folder_path_from_root + separator + "valid.txt "
+                        dimlpCommand += "-1 " + folder_path_from_root + separator + "trainTarget.txt "
+                        dimlpCommand += "-2 " + folder_path_from_root + separator + "testTarget.txt "
+                        dimlpCommand += "-3 " + folder_path_from_root + separator + "validTarget.txt "
+
+                        dimlpCommand += "-p " + folder_path_from_root + separator + "train.out "   # Output train pred file
+                        dimlpCommand += "-t " + folder_path_from_root + separator + "test.out "    # Output test pred file
+                        dimlpCommand += "-v " + folder_path_from_root + separator + "valid.out "   # Output validation pred file
+                        dimlpCommand += "-w " + folder_path_from_root + separator + "weights.wts " # Output weight file
+
+                        dimlpCommand += "-r consoleTemp.txt" # To not show console result
+                        print("Enter in DimlpTrn function")
+                        res = dimlp.dimlpTrn(dimlpCommand)
+                        if (res == -1):
+                            return -1 # If there is an error in the Trn
 
 
                 #svmTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "svm/weights", stats = "svm/stats.txt", train_pred = "svm/predTrain", test_pred = "svm/predTest", save_folder = "dimlp/datafiles")

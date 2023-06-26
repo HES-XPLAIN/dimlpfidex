@@ -204,6 +204,12 @@ int main(int nbParam, char **param)
   bool nbOutInit = false;
   const char *ptrParam;
 
+#if defined(__unix__) || defined(__APPLE__)
+  string separator = "/";
+#elif defined(_WIN32)
+  string separator = "\\";
+#endif
+
   if (nbParam <= 1) {
     GiveAllParam();
     return 0;
@@ -302,10 +308,11 @@ int main(int nbParam, char **param)
       case 'S':
         rootFolderTemp = param[p];
         rootFolderInit = true;
-        genericCommand += " -S " + rootFolderTemp;
-        fidexGenericCommand += " -R " + rootFolderTemp;
-        fidexGloGenericCommand += " -S " + rootFolderTemp;
-        fidexGloStatsGenericCommand += " -S " + rootFolderTemp;
+
+        genericCommand += " -S .." + separator + rootFolderTemp;
+        fidexGenericCommand += " -R .." + separator + rootFolderTemp;
+        fidexGloGenericCommand += " -S .." + separator + rootFolderTemp;
+        fidexGloStatsGenericCommand += " -S .." + separator + rootFolderTemp;
         break;
 
       case 'A':
@@ -453,12 +460,6 @@ int main(int nbParam, char **param)
   const char *learnTar = nullptr;
   const char *learnFile = nullptr;
   const char *folder = nullptr;
-
-#if defined(__unix__) || defined(__APPLE__)
-  string separator = "/";
-#elif defined(_WIN32)
-  string separator = "\\";
-#endif
 
   string root;
   if (rootFolderInit) {
@@ -645,29 +646,17 @@ int main(int nbParam, char **param)
   double meanTestAccWhenActivatedRulesAndModelAgreeAll = 0.0;
 
   double stdNbRulesAll = 0.0;
-  ;
   double stdNbCoverAll = 0.0;
-  ;
   double stdNbAntecedantsAll = 0.0;
-  ;
   double stdFidelGloAll = 0.0;
-  ;
   double stdAccGloAll = 0.0;
-  ;
   double stdExplGloAll = 0.0;
-  ;
   double stdDefaultRateAll = 0.0;
-  ;
   double stdNbFidelActivationsAll = 0.0;
-  ;
   double stdWrongActivationsAll = 0.0;
-  ;
   double stdTestAccGloAll = 0.0;
-  ;
   double stdTestAccWhenRulesAndModelAgreeAll = 0.0;
-  ;
   double stdTestAccWhenActivatedRulesAndModelAgreeAll = 0.0;
-  ;
 
   vector<vector<double>> meanFoldValuesFidex;    // each mean value in an entire fold for each fold for fidex
   vector<vector<double>> meanFoldValuesFidexGlo; // each mean value in an entire fold for each fold for fidexGlo
@@ -881,7 +870,6 @@ int main(int nbParam, char **param)
       command += "-w " + folderPathFromRoot + separator + "weights.wts "; // Output weight file
 
       command += "-r consoleTemp.txt"; // To not show console result
-
       cout << "Enter in DimlpTrn function" << endl;
       int res = dimlpTrn(command);
       if (res == -1) {
