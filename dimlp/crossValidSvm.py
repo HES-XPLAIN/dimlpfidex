@@ -570,6 +570,8 @@ def crossValidSvm(*args, **kwargs):
                     test_idx = (ki + 1) % k
                     for m in range(2, k):
                         train_idx.append((ki + m) % k)
+                    if train_method == "svm": # There is no validation to tune hyperparameters in svm
+                        train_idx.append(validation_idx)
 
                     # Creation of train, test and validation files (temp files)
                     try:
@@ -590,15 +592,15 @@ def crossValidSvm(*args, **kwargs):
 
                     except (IOError):
                         raise ValueError(f"Error : Couldn't open file {temp_test_file}.")
+                    if train_method == "dimlp":
+                        try:
+                            with open(temp_valid_file, "w") as val_file:
+                                for line_val in data_split[validation_idx]:
+                                    val_file.write(f"{line_val}\n")
+                            val_file.close()
 
-                    try:
-                        with open(temp_valid_file, "w") as val_file:
-                            for line_val in data_split[validation_idx]:
-                                val_file.write(f"{line_val}\n")
-                        val_file.close()
-
-                    except (IOError):
-                        raise ValueError(f"Error : Couldn't open file {temp_valid_file}.")
+                        except (IOError):
+                            raise ValueError(f"Error : Couldn't open file {temp_valid_file}.")
 
                     try:
                         with open(temp_train_tar_file, "w") as trn_val_file:
@@ -618,15 +620,15 @@ def crossValidSvm(*args, **kwargs):
 
                     except (IOError):
                         raise ValueError(f"Error : Couldn't open file {temp_test_tar_file}.")
+                    if train_method == "dimlp":
+                        try:
+                            with open(temp_valid_tar_file, "w") as val_tar_file:
+                                for line_val_tar in tar_data_split[validation_idx]:
+                                    val_tar_file.write(f"{line_val_tar}\n")
+                            val_tar_file.close()
 
-                    try:
-                        with open(temp_valid_tar_file, "w") as val_tar_file:
-                            for line_val_tar in tar_data_split[validation_idx]:
-                                val_tar_file.write(f"{line_val_tar}\n")
-                        val_tar_file.close()
-
-                    except (IOError):
-                        raise ValueError(f"Error : Couldn't open file {temp_valid_tar_file}.")
+                        except (IOError):
+                            raise ValueError(f"Error : Couldn't open file {temp_valid_tar_file}.")
 
                     # Get train, test and validation files in folder
 
@@ -640,10 +642,11 @@ def crossValidSvm(*args, **kwargs):
                     except IOError:
                         print("File tempTest.txt coundn't be copied.")
 
-                    try:
-                        shutil.copy2(temp_valid_file, folder_path + separator + "valid.txt")
-                    except IOError:
-                        print("File tempValid.txt coundn't be copied.")
+                    if train_method == "dimlp":
+                        try:
+                            shutil.copy2(temp_valid_file, folder_path + separator + "valid.txt")
+                        except IOError:
+                            print("File tempValid.txt coundn't be copied.")
 
                     try:
                         shutil.copy2(temp_train_tar_file, folder_path + separator + "trainTarget.txt")
@@ -655,10 +658,11 @@ def crossValidSvm(*args, **kwargs):
                     except IOError:
                         print("File tempTarTest.txt coundn't be copied.")
 
-                    try:
-                        shutil.copy2(temp_valid_tar_file, folder_path + separator + "validTarget.txt")
-                    except IOError:
-                        print("File tempTarValid.txt coundn't be copied.")
+                    if train_method == "dimlp":
+                        try:
+                            shutil.copy2(temp_valid_tar_file, folder_path + separator + "validTarget.txt")
+                        except IOError:
+                            print("File tempTarValid.txt coundn't be copied.")
 
 
                     # Training
