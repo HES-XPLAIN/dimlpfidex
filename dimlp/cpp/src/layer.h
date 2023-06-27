@@ -91,7 +91,9 @@ public:
   void ForwSpec();
   void ForwSpec2();
   void ForwRadial();
-  virtual void ForwLayer() { ForwFully(); }
+  virtual void ForwLayer() {
+    ForwFully();
+  }
 
   void ForwAndTransf1() {
     ForwLayer();

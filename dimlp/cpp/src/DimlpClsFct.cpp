@@ -460,9 +460,6 @@ int dimlpCls(const string &command) {
   SaveOutputs(Test, &net, nbOut, nbWeightLayers, predFile);
   SaveFirstHid(Test, &net, vecNbNeurons[1], predFile, hidFile);
 
-  Test.Del();
-  TestClass.Del();
-
   cout << "\n-------------------------------------------------\n\n";
 
   std::cout.rdbuf(cout_buff); // reset to standard output again
@@ -470,9 +467,4 @@ int dimlpCls(const string &command) {
   return 0;
 }
 
-/*
-int main(int nbParam, char** param)
-
-{
-    dimlpCls("DimlpCls -T datanormTest -2 dataclass2Test -W dimlpDatanorm.wts -I 16 -H2 5 -O 2 -q 50 -p dimlpDatanormTest.out -o dimlpDatanormClsStats -r dimlpDatanormClsResult.txt -S dimlp/datafiles");
-}*/
+// Exemple to launch the code : dimlpCls("DimlpCls -T datanormTest -2 dataclass2Test -W dimlpDatanorm.wts -I 16 -H2 5 -O 2 -q 50 -p dimlpDatanormTest.out -o dimlpDatanormClsStats -r dimlpDatanormClsResult.txt -S dimlp/datafiles");

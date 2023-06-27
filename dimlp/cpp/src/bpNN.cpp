@@ -232,11 +232,10 @@ void BpNN::Pop() const
 void BpNN::ForwardOneExample1(DataSet &data, int index)
 
 {
-
   VecLayer[0]->SetDown(data.GetExample(index));
-
-  for (int l = 0; l < NbWeightLayers; l++)
+  for (int l = 0; l < NbWeightLayers; l++) {
     VecLayer[l]->ForwAndTransf1();
+  }
 }
 
 ///////////////////////////////////////////////////////////////////

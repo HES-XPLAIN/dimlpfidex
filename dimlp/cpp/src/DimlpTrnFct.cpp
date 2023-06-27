@@ -778,21 +778,6 @@ int dimlpTrn(const string &command) {
     }
   }
 
-  // Train.Del();
-  // TrainClass.Del();
-
-  /*if (Test.GetNbEx() > 0)
-  {
-     Test.Del();
-     TestClass.Del();
-  }
-
-  if (Valid.GetNbEx() > 0)
-  {
-     Valid.Del();
-     ValidClass.Del();
-  }*/
-
   t2 = clock();
   temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
   std::cout << "\nFull execution time = " << temps << " sec\n";

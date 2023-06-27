@@ -286,13 +286,11 @@ void Layer::ForwSpec()
   const float *down = Down;
   const float *weights = Weights.data();
   const float *bias = BiasWeights.data();
-
   for (i = 0, j = 0; i < NbUp; i++, j++, down++, weights++, up++, bias++) {
     if (j == NbDown) {
       down = Down;
       j = 0;
     }
-
     *up = *bias;
     *up += (*down) * (*weights);
   }

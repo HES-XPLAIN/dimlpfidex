@@ -381,7 +381,7 @@ int fidexGloRules(const string &command) {
     // Get attributes
     vector<string> attributeNames;
     vector<string> classNames;
-    bool hasClassNames;
+    bool hasClassNames = false;
     if (attributFileInit) {
       std::unique_ptr<Attribute> attributesData(new Attribute(attributFile));
       attributeNames = (*attributesData->getAttributes());
@@ -768,14 +768,12 @@ int fidexGloRules(const string &command) {
     string inequality;
     string line;
     vector<string> lines;
-
     // Sort the rules(RulesIds) depending of their covering size
     vector<int> RulesIds(nbRules);                          // Rules indexes
     std::iota(std::begin(RulesIds), std::end(RulesIds), 0); // Vector from 0 to nbRules-1
     std::sort(RulesIds.begin(), RulesIds.end(), [&chosenRules](int ruleBest, int ruleWorst) {
       return std::get<1>(chosenRules[ruleWorst]).size() < std::get<1>(chosenRules[ruleBest]).size();
     });
-
     for (int c = 0; c < nbRules; c++) { // each rule
       int r = RulesIds[c];
       meanCovSize += static_cast<double>(get<1>(chosenRules[r]).size());
@@ -795,12 +793,19 @@ int fidexGloRules(const string &command) {
         }
         line += inequality + std::to_string(get<2>(rule)) + " ";
       }
+      cout << "coucou" << endl;
       // class of the rule
       if (hasClassNames) {
+        for (auto i : classNames) {
+          cout << i << endl;
+        }
+        cout << "has" << endl;
         line += "-> " + classNames[std::get<2>(chosenRules[r])];
       } else {
+        cout << "has not" << endl;
         line += "-> class " + std::to_string(std::get<2>(chosenRules[r]));
       }
+      cout << "mok" << endl;
       line += " Covering size : " + std::to_string(std::get<1>(chosenRules[r]).size()); // Covering size
       line += " Fidelity : 1";                                                          // Rule fidelity
       line += " Accuracy : " + std::to_string(std::get<3>(chosenRules[r]));             // Rule accuracy
@@ -856,7 +861,7 @@ int fidexGloRules(const string &command) {
 
 /* Exemples pour lancer le code :
 
-./fidexGloRules -T datanormTrain -P dimlpDatanormTrain.out -C dataclass2Train -W dimlpDatanorm.wts -Q 50 -I 5 -O globalRulesDatanorm.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesResult -S fidexGlo/datafiles/
+./fidexGloRules -T datanormTrain -P dimlpDatanormTrain.out -C dataclass2Train -W dimlpDatanorm.wts -Q 50 -I 5 -O globalRulesDatanorm.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesResult -S fidexGlo/datafiles
 
 ./fidexGloRules -T covidTrainData.txt -P covidTrainPred.out -C covidTrainClass.txt -W covid.wts -Q 50 -I 5 -O globalRulesCovid.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesCovidResult -S dimlp/datafiles/covidDataset
 ./fidexGloRules -T spamTrainData.txt -P spamTrainPred.out -C spamTrainClass.txt -W spam.wts -Q 50 -I 5 -O globalRulesSpam.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesSpamResult -S dimlp/datafiles/spamDataset

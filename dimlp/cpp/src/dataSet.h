@@ -35,7 +35,6 @@ public:
   DataSet(DataSet &data1, DataSet &data2);
 
   void Del();
-  void LightDel() { delete Set; }
 
   float *GetExample(int index) { return *(Set + index); }
   int GetNbEx() const { return NbEx; }

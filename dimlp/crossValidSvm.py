@@ -666,7 +666,7 @@ def crossValidSvm(*args, **kwargs):
                             print("File tempTarValid.txt coundn't be copied.")
 
 
-                    # Training
+                    # Training with dimlp
                     folder_path_from_root = str(crossval_folder_temp) + separator + "Execution" + str(ni + 1) + separator + "Fold" + str(ki + 1)
                     if train_method == "dimlp":
                         dimlpCommand = "dimlpTrn"
@@ -708,6 +708,8 @@ def crossValidSvm(*args, **kwargs):
                         res = dimlp.dimlpTrn(dimlpCommand)
                         if (res == -1):
                             return -1 # If there is an error in the Trn
+
+
 
 
                 #svmTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "svm/weights", stats = "svm/stats.txt", train_pred = "svm/predTrain", test_pred = "svm/predTest", save_folder = "dimlp/datafiles")
