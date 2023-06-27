@@ -959,6 +959,7 @@ int CleanRuleStruct::RandomPruneAnt()
   int pruned;
 
   AssocAnte *ant;
+
   IntRandomFunction randInt(0, NbRules - 1);
 
   ResetSomeFields();

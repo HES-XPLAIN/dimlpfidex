@@ -758,6 +758,8 @@ int dimlpBT(const string &command) {
 
   std::cout.rdbuf(cout_buff); // reset to standard output again
 
+  BpNN::resetInitRandomGen();
+
   return 0;
 }
 
