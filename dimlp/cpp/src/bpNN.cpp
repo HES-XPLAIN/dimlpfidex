@@ -26,10 +26,16 @@ int BpNN::Max(const std::vector<float> &vec) const
 
 ///////////////////////////////////////////////////////////////////
 
+int BpNN::initRandomGen = 0;
+
+void BpNN::resetInitRandomGen() {
+  initRandomGen = 0;
+}
+
 void BpNN::InitRandomGen(int seed) const {
-  static int initRandomGen;
 
   if (initRandomGen == 0) {
+
     IntRandomFunction irf(seed);
     FloatRandomFunction frf(seed);
 

@@ -53,6 +53,8 @@ class BpNN {
 
   std::vector<std::shared_ptr<Layer>> VecLayer;
 
+  static int initRandomGen;
+
   //------------------------------------------------------------------------
 
   void InitRandomGen(int seed = 0) const;
@@ -93,6 +95,7 @@ class BpNN {
   //------------------------------------------------------------------------
 
 public:
+  static void resetInitRandomGen();
   int GetNbLayers() const { return NbLayers; }
   int GetNbWeightLayers() const { return NbWeightLayers; }
   int Max(const std::vector<float> &vec) const;

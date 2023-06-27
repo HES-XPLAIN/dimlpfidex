@@ -10,7 +10,6 @@ std::shared_ptr<StringInt> VectWithRandVal::FillWithUniqueInd(int nbElSub)
   int i;
   int ind;
   auto toRet = std::make_shared<StringInt>();
-
   IntRandomFunction randGen(0, NbElAll - 1);
 
   do {
