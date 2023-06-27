@@ -718,7 +718,38 @@ def crossValidSvm(*args, **kwargs):
                         if (res == -1):
                             return -1 # If there is an error in the Trn
 
-                #svmTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "svm/weights", stats = "svm/stats.txt", train_pred = "svm/predTrain", test_pred = "svm/predTest", save_folder = "dimlp/datafiles")
+                    if is_fidex:
+                        fidexCommand = "fidex"
+                        fidexCommand +=  " -I " + str(hiknot)
+                        if save_folder is not None:
+                            fidexCommand +=  " -R " + save_folder
+                        if attr_file is not None:
+                            fidexCommand +=  " -A " + attr_file
+                        fidexCommand +=  " -i " + str(max_iter)
+                        fidexCommand +=  " -v " + str(min_cov)
+                        if dropout_dim != None:
+                            fidexCommand +=  " -d " + str(dropout_dim)
+                        if dropout_hyp != None:
+                            fidexCommand +=  " -h " + str(dropout_hyp)
+                        fidexCommand +=  " -z " + str(seed)
+
+                        fidexCommand +=  " -Q " + str(nb_stairs)
+                        fidexCommand +=  " -W " + folder_path_from_root + separator + "weights.wts"
+
+                        fidexCommand += " -T " + folder_path_from_root + separator + "train.txt"
+                        fidexCommand += " -P " + folder_path_from_root + separator + "train.out"
+                        fidexCommand += " -C " + folder_path_from_root + separator + "trainTarget.txt"
+                        fidexCommand += " -S " + folder_path_from_root + separator + "test.txt"
+                        fidexCommand += " -p " + folder_path_from_root + separator + "test.out"
+                        fidexCommand += " -c " + folder_path_from_root + separator + "testTarget.txt"
+                        fidexCommand += " -O " + folder_path_from_root + separator + "fidexRule.txt"
+                        fidexCommand += " -s " + folder_path_from_root + separator + "fidexStats.txt"
+                        fidexCommand += " -r " + folder_path_from_root + separator + "fidexResult.txt"
+
+                        print("Enter in fidex function")
+                        res_fid = fidex.fidex(fidexCommand)
+                        if res_fid == -1:
+                            return -1 # If there is an error in fidex
 
     except ValueError as error:
         print(error)
