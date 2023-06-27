@@ -165,7 +165,6 @@ int dimlpTrn(const string &command) {
   string attrFileTemp;
   bool attrFileInit = false;
   string rootFolderTemp;
-  bool rootFolderInit = false;
 
   int flagEp = 0;
 
@@ -318,7 +317,6 @@ int dimlpTrn(const string &command) {
 
       case 'S':
         rootFolderTemp = arg;
-        rootFolderInit = true;
         break;
 
       case 'A':

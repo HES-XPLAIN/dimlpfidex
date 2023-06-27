@@ -143,7 +143,6 @@ int dimlpCls(const string &command) {
   bool testTarInit = false;
   string hidFileTemp = "dimlp.hid";
   string rootFolderTemp;
-  bool rootFolderInit = false;
 
   int nbLayers;
   int nbWeightLayers;
@@ -215,7 +214,6 @@ int dimlpCls(const string &command) {
 
       case 'S':
         rootFolderTemp = arg;
-        rootFolderInit = true;
         break;
 
       case 'W':

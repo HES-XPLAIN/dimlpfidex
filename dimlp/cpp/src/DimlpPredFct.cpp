@@ -94,7 +94,6 @@ int dimlpPred(const string &command) {
   string consoleFileTemp;
   bool consoleFileInit = false;
   string rootFolderTemp;
-  bool rootFolderInit = false;
 
   int nbLayers;
   int nbWeightLayers;
@@ -168,7 +167,6 @@ int dimlpPred(const string &command) {
 
       case 'S':
         rootFolderTemp = arg;
-        rootFolderInit = true;
         break;
 
       case 'W':
