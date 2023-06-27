@@ -12,7 +12,10 @@ class LayerRad : public Layer {
   //----------------------------------------------------------------
 
   float Activation1(float x) override { return Gaussian(x); }
-  void ForwLayer() override { ForwRadial(); }
+  void ForwLayer() override {
+    std::cout << "entre rad" << std::endl;
+    ForwRadial();
+  }
 
   //----------------------------------------------------------------
 

@@ -226,7 +226,7 @@ int fidexGloStats(const string &command) {
     // Get attributes
     vector<string> attributeNames;
     vector<string> classNames;
-    bool hasClassNames;
+    bool hasClassNames = false;
     if (attributFileInit) {
       std::unique_ptr<Attribute> attributesData(new Attribute(attributFile));
       attributeNames = (*attributesData->getAttributes());

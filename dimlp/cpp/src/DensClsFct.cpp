@@ -622,24 +622,6 @@ int densCls(const string &command) {
 
   std::cout.rdbuf(cout_buff); // reset to standard output again
 
-  Train.Del();
-  TrainClass.Del();
-
-  if (Test.GetNbEx() > 0) {
-    Test.Del();
-    TestClass.Del();
-  }
-
-  if (Valid.GetNbEx() > 0) {
-    Valid.Del();
-    ValidClass.Del();
-  }
-
   return 0;
 }
-/*
-int main(int nbParam, char** param)
-{
-    densCls("DensCls -L datanormTrain -1 dataclass2Train -T datanormTest -2 dataclass2Test -I 16 -H2 5 -O 2 -N 2 -W dimlpDatanormBT -R -F dimlpDatanormDensClsRul.rls -p dimlpDatanormDensClsTrain.out -t dimlpDatanormDensClsTest.out -o dimlpDatanormDensClsStats -r dimlpDatanormDensClsResult.txt -S dimlp/datafiles");
-}
-*/
+// Exemple to launch the code : densCls("DensCls -L datanormTrain -1 dataclass2Train -T datanormTest -2 dataclass2Test -I 16 -H2 5 -O 2 -N 2 -W dimlpDatanormBT -R -F dimlpDatanormDensClsRul.rls -p dimlpDatanormDensClsTrain.out -t dimlpDatanormDensClsTest.out -o dimlpDatanormDensClsStats -r dimlpDatanormDensClsResult.txt -S dimlp/datafiles");

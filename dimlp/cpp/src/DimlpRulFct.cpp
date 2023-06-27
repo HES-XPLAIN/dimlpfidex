@@ -580,24 +580,7 @@ int dimlpRul(const string &command) {
 
   std::cout.rdbuf(cout_buff); // reset to standard output again
 
-  TrainClass.Del();
-
-  if (Test.GetNbEx() > 0) {
-    Test.Del();
-    TestClass.Del();
-  }
-
-  if (Valid.GetNbEx() > 0) {
-    Valid.Del();
-    ValidClass.Del();
-  }
-
   return 0;
 }
 
-/*
-int main(int nbParam, char** param)
-{
-    dimlpRul("DimlpRul -L datanormTrain -1 dataclass2Train -W dimlpDatanorm.wts -T datanormTest -2 dataclass2Test -I 16 -H2 5 -O 2 -R dimlpDatanormRul.rls -o dimlpDatanormRulStats -r dimlpDatanormRulResult.txt -S dimlp/datafiles");
-}
-*/
+// Exemple to launch the code : dimlpRul("DimlpRul -L datanormTrain -1 dataclass2Train -W dimlpDatanorm.wts -T datanormTest -2 dataclass2Test -I 16 -H2 5 -O 2 -R dimlpDatanormRul.rls -o dimlpDatanormRulStats -r dimlpDatanormRulResult.txt -S dimlp/datafiles");

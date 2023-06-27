@@ -53,7 +53,6 @@ static void SaveOutputs(
        << "Writing ...\n";
 
   ostream outFile(&buf);
-
   for (int p = 0; p < data.GetNbEx(); p++) {
     net->ForwardOneExample1(data, p);
 
@@ -349,8 +348,6 @@ int dimlpPred(const string &command) {
   Dimlp net(weightFile, nbLayers, vecNbNeurons, quant);
 
   SaveOutputs(Test, &net, nbOut, nbWeightLayers, predFile);
-
-  Test.Del();
 
   cout << "\n-------------------------------------------------\n\n";
 

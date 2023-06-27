@@ -293,7 +293,7 @@ int fidexGlo(const string &command) {
     // Get attributes
     vector<string> attributeNames;
     vector<string> classNames;
-    bool hasClassNames;
+    bool hasClassNames = false;
     if (attributFileInit) {
       std::unique_ptr<Attribute> attributesData(new Attribute(attributFile));
       attributeNames = (*attributesData->getAttributes());
@@ -435,4 +435,4 @@ int fidexGlo(const string &command) {
   return 0;
 }
 
-// Exemple pour lancer le code : ./fidexGlo -S testSampleData -R globalRulesDatanorm.txt -O explanation.txt -F fidexGlo/datafiles/
+// Exemple pour lancer le code : ./fidexGlo -S testSampleData -R globalRulesDatanorm.txt -O explanation.txt -F fidexGlo/datafiles
