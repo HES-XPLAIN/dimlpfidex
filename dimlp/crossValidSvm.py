@@ -669,49 +669,50 @@ def crossValidSvm(*args, **kwargs):
                     # Training with dimlp
                     folder_path_from_root = str(crossval_folder_temp) + separator + "Execution" + str(ni + 1) + separator + "Fold" + str(ki + 1)
                     if train_method == "dimlp":
-                        dimlpCommand = "dimlpTrn"
-                        dimlpCommand += " -l " + str(eta)
-                        dimlpCommand += " -m " + str(mu)
-                        dimlpCommand += " -f " + str(flat)
-                        dimlpCommand += " -e " + str(err_thresh)
-                        dimlpCommand += " -a " + str(acc_thresh)
-                        dimlpCommand += " -d " + str(delta_err)
-                        dimlpCommand += " -s " + str(show_err)
-                        dimlpCommand += " -i " + str(nb_epochs)
-                        dimlpCommand += " -I " + str(nb_in)
-                        dimlpCommand += " -O " + str(nb_out)
+                        dimlp_command = "dimlpTrn"
+                        dimlp_command += " -l " + str(eta)
+                        dimlp_command += " -m " + str(mu)
+                        dimlp_command += " -f " + str(flat)
+                        dimlp_command += " -e " + str(err_thresh)
+                        dimlp_command += " -a " + str(acc_thresh)
+                        dimlp_command += " -d " + str(delta_err)
+                        dimlp_command += " -s " + str(show_err)
+                        dimlp_command += " -i " + str(nb_epochs)
+                        dimlp_command += " -I " + str(nb_in)
+                        dimlp_command += " -O " + str(nb_out)
                         if save_folder is not None:
-                            dimlpCommand += " -S " + save_folder
+                            dimlp_command += " -S " + save_folder
                         if attr_file is not None:
-                            dimlpCommand += " -A " + attr_file
+                            dimlp_command += " -A " + attr_file
                         if pretrained_weights is not None:
-                            dimlpCommand += " -W " + pretrained_weights
-                        dimlpCommand += " -z " + str(seed)
-                        dimlpCommand += " -q " + str(nb_stairs)
+                            dimlp_command += " -W " + pretrained_weights
+                        dimlp_command += " -z " + str(seed)
+                        dimlp_command += " -q " + str(nb_stairs)
                         for key, value in hk.items():
-                            dimlpCommand += " -" + key + " " + str(value)
+                            dimlp_command += " -" + key + " " + str(value)
 
-                        dimlpCommand += " -L " + folder_path_from_root + separator + "train.txt "
-                        dimlpCommand += "-T " + folder_path_from_root + separator + "test.txt "
-                        dimlpCommand += "-V " + folder_path_from_root + separator + "valid.txt "
-                        dimlpCommand += "-1 " + folder_path_from_root + separator + "trainTarget.txt "
-                        dimlpCommand += "-2 " + folder_path_from_root + separator + "testTarget.txt "
-                        dimlpCommand += "-3 " + folder_path_from_root + separator + "validTarget.txt "
+                        dimlp_command += " -L " + folder_path_from_root + separator + "train.txt "
+                        dimlp_command += "-T " + folder_path_from_root + separator + "test.txt "
+                        dimlp_command += "-V " + folder_path_from_root + separator + "valid.txt "
+                        dimlp_command += "-1 " + folder_path_from_root + separator + "trainTarget.txt "
+                        dimlp_command += "-2 " + folder_path_from_root + separator + "testTarget.txt "
+                        dimlp_command += "-3 " + folder_path_from_root + separator + "validTarget.txt "
 
-                        dimlpCommand += "-p " + folder_path_from_root + separator + "train.out "   # Output train pred file
-                        dimlpCommand += "-t " + folder_path_from_root + separator + "test.out "    # Output test pred file
-                        dimlpCommand += "-v " + folder_path_from_root + separator + "valid.out "   # Output validation pred file
-                        dimlpCommand += "-w " + folder_path_from_root + separator + "weights.wts " # Output weight file
+                        dimlp_command += "-p " + folder_path_from_root + separator + "train.out "   # Output train pred file
+                        dimlp_command += "-t " + folder_path_from_root + separator + "test.out "    # Output test pred file
+                        dimlp_command += "-v " + folder_path_from_root + separator + "valid.out "   # Output validation pred file
+                        dimlp_command += "-w " + folder_path_from_root + separator + "weights.wts " # Output weight file
 
-                        dimlpCommand += "-r consoleTemp.txt" # To not show console result
+                        dimlp_command += "-r consoleTemp.txt" # To not show console result
 
                         print("Enter in DimlpTrn function")
-                        res = dimlp.dimlpTrn(dimlpCommand)
+                        res = dimlp.dimlpTrn(dimlp_command)
                         if (res == -1):
                             return -1 # If there is an error in the Trn
 
 
                     else:
+                        # Training with svm
                         print("Enter in svmTrn function")
                         res = svmTrn(train_data=folder_path_from_root + separator + "train.txt",train_class=folder_path_from_root + separator + "trainTarget.txt", test_data=folder_path_from_root + separator + "test.txt",test_class=folder_path_from_root + separator + "testTarget.txt", weights = folder_path_from_root + separator + "weights", stats = folder_path_from_root + separator + "stats.txt", output_file = "consoleTemp.txt", train_pred = folder_path_from_root + separator + "train", test_pred = folder_path_from_root + separator + "test", save_folder = save_folder, nb_stairs = nb_stairs, hiknot = hiknot, K = svm_k, C = c_var, kernel = kernel_var, degree = degree_var, gamma = gamma_var, coef0 = coef0_var, shrinking = shrinking_var, tol = tol_var, cache_size = cache_size_var, class_weight = class_weight_var, max_iter = svm_max_iter_var, decision_function_shape = decision_function_shape_var, break_ties = break_ties_var)
 
@@ -719,37 +720,97 @@ def crossValidSvm(*args, **kwargs):
                             return -1 # If there is an error in the Trn
 
                     if is_fidex:
-                        fidexCommand = "fidex"
-                        fidexCommand +=  " -I " + str(hiknot)
+                        # Compute fidex stats in folder
+                        fidex_command = "fidex"
+                        fidex_command +=  " -I " + str(hiknot)
                         if save_folder is not None:
-                            fidexCommand +=  " -R " + save_folder
+                            fidex_command +=  " -R " + save_folder
                         if attr_file is not None:
-                            fidexCommand +=  " -A " + attr_file
-                        fidexCommand +=  " -i " + str(max_iter)
-                        fidexCommand +=  " -v " + str(min_cov)
+                            fidex_command +=  " -A " + attr_file
+                        fidex_command +=  " -i " + str(max_iter)
+                        fidex_command +=  " -v " + str(min_cov)
                         if dropout_dim != None:
-                            fidexCommand +=  " -d " + str(dropout_dim)
+                            fidex_command +=  " -d " + str(dropout_dim)
                         if dropout_hyp != None:
-                            fidexCommand +=  " -h " + str(dropout_hyp)
-                        fidexCommand +=  " -z " + str(seed)
+                            fidex_command +=  " -h " + str(dropout_hyp)
+                        fidex_command +=  " -z " + str(seed)
 
-                        fidexCommand +=  " -Q " + str(nb_stairs)
-                        fidexCommand +=  " -W " + folder_path_from_root + separator + "weights.wts"
+                        fidex_command +=  " -Q " + str(nb_stairs)
+                        fidex_command +=  " -W " + folder_path_from_root + separator + "weights.wts"
 
-                        fidexCommand += " -T " + folder_path_from_root + separator + "train.txt"
-                        fidexCommand += " -P " + folder_path_from_root + separator + "train.out"
-                        fidexCommand += " -C " + folder_path_from_root + separator + "trainTarget.txt"
-                        fidexCommand += " -S " + folder_path_from_root + separator + "test.txt"
-                        fidexCommand += " -p " + folder_path_from_root + separator + "test.out"
-                        fidexCommand += " -c " + folder_path_from_root + separator + "testTarget.txt"
-                        fidexCommand += " -O " + folder_path_from_root + separator + "fidexRule.txt"
-                        fidexCommand += " -s " + folder_path_from_root + separator + "fidexStats.txt"
-                        fidexCommand += " -r " + folder_path_from_root + separator + "fidexResult.txt"
+                        fidex_command += " -T " + folder_path_from_root + separator + "train.txt"
+                        fidex_command += " -P " + folder_path_from_root + separator + "train.out"
+                        fidex_command += " -C " + folder_path_from_root + separator + "trainTarget.txt"
+                        fidex_command += " -S " + folder_path_from_root + separator + "test.txt"
+                        fidex_command += " -p " + folder_path_from_root + separator + "test.out"
+                        fidex_command += " -c " + folder_path_from_root + separator + "testTarget.txt"
+                        fidex_command += " -O " + folder_path_from_root + separator + "fidexRule.txt"
+                        fidex_command += " -s " + folder_path_from_root + separator + "fidexStats.txt"
+                        fidex_command += " -r " + folder_path_from_root + separator + "fidexResult.txt"
 
                         print("Enter in fidex function")
-                        res_fid = fidex.fidex(fidexCommand)
+                        res_fid = fidex.fidex(fidex_command)
                         if res_fid == -1:
                             return -1 # If there is an error in fidex
+
+                        # Get statistics from fidex
+                        stats_file = folder_path + separator + "fidexStats.txt"
+
+                        try:
+                            with open(stats_file, "r") as my_file:
+                                line = my_file.readline()
+                                line = my_file.readline()
+                                line = my_file.readline()
+                                stat_vals = []
+                                while line:
+                                    line = line.strip()  # Remove the line break at the end of the line
+                                    if line != "":
+                                        elements = line.split()
+                                        stat_vals.append(float(elements[-1]))
+                                    line = my_file.readline()
+                                my_file.close()
+                        except (FileNotFoundError):
+                            raise ValueError(f"Error : Fidex stat file {stats_file} not found.")
+                        except (IOError):
+                            raise ValueError(f"Error : Couldn't open fidex stat file {stats_file}.")
+
+                        mean_cov_size_fid += stat_vals[0]
+                        mean_nb_ant_fid += stat_vals[1]
+                        mean_fidel_fid += stat_vals[2]
+                        mean_acc_fid += stat_vals[3]
+                        hasConfidence = False
+                        if len(stat_vals) == 5:
+                            hasConfidence = True
+                            mean_confid_fid += stat_vals[4]
+
+                    if is_fidexglo:
+                        # Compute fidexGlo rules in folder
+                        fidexglo_rules_command = "fidexGloRules"
+                        fidexglo_rules_command +=  " -I " + str(hiknot)
+                        fidexglo_rules_command +=  " -S " + save_folder
+                        if attr_file is not None:
+                            fidexglo_rules_command +=  " -A " + attr_file
+                        fidexglo_rules_command +=  " -i " + str(max_iter)
+                        fidexglo_rules_command +=  " -v " + str(min_cov)
+                        if dropout_dim != None:
+                            fidexglo_rules_command +=  " -d " + str(dropout_dim)
+                        if dropout_hyp != None:
+                            fidexglo_rules_command +=  " -h " + str(dropout_hyp)
+                        fidexglo_rules_command +=  " -z " + str(seed)
+                        fidexglo_rules_command +=  " -Q " + str(nb_stairs)
+                        fidexglo_rules_command +=  " -W " + folder_path_from_root + separator + "weights.wts"
+
+                        fidexglo_rules_command += " -T " + folder_path_from_root + separator + "train.txt"
+                        fidexglo_rules_command += " -P " + folder_path_from_root + separator + "train.out"
+                        fidexglo_rules_command += " -C " + folder_path_from_root + separator + "trainTarget.txt"
+                        fidexglo_rules_command += " -O " + folder_path_from_root + separator + "fidexGloRules.txt"
+                        fidexglo_rules_command += " -r " + folder_path_from_root + separator + "fidexGloResult.txt"
+                        fidexglo_rules_command += " -M " + str(fidexglo_heuristic)
+
+                        print("Enter in fidexGlo function")
+                        res_fid_glo_rules = fidexGlo.fidexGloRules(fidexglo_rules_command)
+                        if res_fid_glo_rules == -1:
+                            return -1 # If there is an error in fidexGloRules
 
     except ValueError as error:
         print(error)

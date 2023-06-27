@@ -793,19 +793,12 @@ int fidexGloRules(const string &command) {
         }
         line += inequality + std::to_string(get<2>(rule)) + " ";
       }
-      cout << "coucou" << endl;
       // class of the rule
       if (hasClassNames) {
-        for (auto i : classNames) {
-          cout << i << endl;
-        }
-        cout << "has" << endl;
         line += "-> " + classNames[std::get<2>(chosenRules[r])];
       } else {
-        cout << "has not" << endl;
         line += "-> class " + std::to_string(std::get<2>(chosenRules[r]));
       }
-      cout << "mok" << endl;
       line += " Covering size : " + std::to_string(std::get<1>(chosenRules[r]).size()); // Covering size
       line += " Fidelity : 1";                                                          // Rule fidelity
       line += " Accuracy : " + std::to_string(std::get<3>(chosenRules[r]));             // Rule accuracy
