@@ -704,15 +704,22 @@ def crossValidSvm(*args, **kwargs):
                         dimlpCommand += "-w " + folder_path_from_root + separator + "weights.wts " # Output weight file
 
                         dimlpCommand += "-r consoleTemp.txt" # To not show console result
+
                         print("Enter in DimlpTrn function")
                         res = dimlp.dimlpTrn(dimlpCommand)
                         if (res == -1):
                             return -1 # If there is an error in the Trn
 
 
+                    else:
+                        print("Enter in svmTrn function")
+                        res = svmTrn(train_data=folder_path_from_root + separator + "train.txt",train_class=folder_path_from_root + separator + "trainTarget.txt", test_data=folder_path_from_root + separator + "test.txt",test_class=folder_path_from_root + separator + "testTarget.txt", weights = folder_path_from_root + separator + "weights", stats = folder_path_from_root + separator + "stats.txt", output_file = "consoleTemp.txt", train_pred = folder_path_from_root + separator + "train", test_pred = folder_path_from_root + separator + "test", save_folder = save_folder, nb_stairs = nb_stairs, hiknot = hiknot, K = svm_k, C = c_var, kernel = kernel_var, degree = degree_var, gamma = gamma_var, coef0 = coef0_var, shrinking = shrinking_var, tol = tol_var, cache_size = cache_size_var, class_weight = class_weight_var, max_iter = svm_max_iter_var, decision_function_shape = decision_function_shape_var, break_ties = break_ties_var)
 
+                        if (res == -1):
+                            return -1 # If there is an error in the Trn
 
                 #svmTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "svm/weights", stats = "svm/stats.txt", train_pred = "svm/predTrain", test_pred = "svm/predTest", save_folder = "dimlp/datafiles")
 
     except ValueError as error:
         print(error)
+        return -1

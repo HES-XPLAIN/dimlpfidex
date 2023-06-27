@@ -3,6 +3,7 @@ import os
 from .stairObj import StairObj
 from sklearn import svm
 from sklearn import metrics
+import sys
 
 def check_strictly_positive(variable):
     if isinstance(variable, (float,int)) and variable > 0:
@@ -107,6 +108,7 @@ def svmTrn(*args, **kwargs):
             print("test_pred : output test prediction file name without extension(predTest by default)")
             print("weights : output weights file name without extension (weights by default)")
             print("stats : output file name without extension with train and test accuracy")
+            print("output_file : file where you redirect console result")
             print("nb_stairs : number of stairs in staircase activation function (50 by default)")
             print("hiknot : high side of the interval (5 by default)")
             print("K : Parameter to improve dynamics (1 by default)")
@@ -138,6 +140,7 @@ def svmTrn(*args, **kwargs):
             train_class_file = kwargs.get('train_class')
             test_data_file = kwargs.get('test_data')
             test_class_file = kwargs.get('test_class')
+            output_file = kwargs.get('output_file')
 
             train_pred_file = kwargs.get('train_pred')
             test_pred_file = kwargs.get('test_pred')
@@ -161,11 +164,22 @@ def svmTrn(*args, **kwargs):
             decision_function_shape_var = kwargs.get('decision_function_shape')
             break_ties_var = kwargs.get('break_ties')
 
+            # Redirect output in file
+            if output_file != None:
+                try:
+                    if (save_folder is not None):
+                        output_file = save_folder + "/" + output_file
+                    sys.stdout = open(output_file, 'w+')
+                except (FileNotFoundError):
+                    raise ValueError(f"Error : File {output_file} not found.")
+                except (IOError):
+                    raise ValueError(f"Error : Couldn't open file {output_file}.")
+
             # Check parameters
 
             valid_args = ['train_data', 'train_class', 'test_data', 'test_class', 'train_pred', 'test_pred', 'weights',
                         'stats', 'K', 'nb_stairs', 'hiknot', 'C', 'kernel', 'degree', 'gamma', 'coef0', 'shrinking',
-                        'tol', 'cache_size', 'class_weight', 'verbose', 'max_iter', 'decision_function_shape', 'break_ties', 'save_folder']
+                        'tol', 'cache_size', 'class_weight', 'verbose', 'max_iter', 'decision_function_shape', 'break_ties', 'save_folder', 'output_file']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
@@ -355,9 +369,15 @@ def svmTrn(*args, **kwargs):
                 except (IOError):
                     raise ValueError(f"Error : Couldn't open file {stats_file}.")
 
+            # Redirect output to terminal
+            if output_file != None:
+                sys.stdout = sys.__stdout__
+
+            return 0
 
     except ValueError as error:
         print(error)
+        return -1
 
 
 # Exemple : svmTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "weights", stats = "stats.txt", save_folder = "dimlp/datafiles")

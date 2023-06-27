@@ -95,7 +95,6 @@ int densCls(const string &command) {
   string attrFileTemp;
   bool attrFileInit = false;
   string rootFolderTemp;
-  bool rootFolderInit = false;
 
   int nbLayers;
   int nbWeightLayers;
@@ -181,7 +180,6 @@ int densCls(const string &command) {
 
       case 'S':
         rootFolderTemp = arg;
-        rootFolderInit = true;
         break;
 
       case 'A':
