@@ -941,7 +941,7 @@ int main(int nbParam, char **param)
         fidexGloCommand += "-r " + folderPathFromRoot + separator + "fidexGloResult.txt ";
         fidexGloCommand += "-M " + heuristic;
 
-        cout << "Enter in fidexGlo function" << endl;
+        cout << "Enter in fidexGloRules function" << endl;
         int resFidGloRu = fidexGloRules(fidexGloCommand);
         if (resFidGloRu == -1) {
           return -1; // If there is an error in fidexGlo
