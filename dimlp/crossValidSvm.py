@@ -807,10 +807,48 @@ def crossValidSvm(*args, **kwargs):
                         fidexglo_rules_command += " -r " + folder_path_from_root + separator + "fidexGloResult.txt"
                         fidexglo_rules_command += " -M " + str(fidexglo_heuristic)
 
-                        print("Enter in fidexGlo function")
+                        print("Enter in fidexGloRules function")
                         res_fid_glo_rules = fidexGlo.fidexGloRules(fidexglo_rules_command)
                         if res_fid_glo_rules == -1:
                             return -1 # If there is an error in fidexGloRules
+
+                        # Compute fidexGlo statistics in folder
+                        fidexglo_stats_command = "fidexGloStats"
+                        fidexglo_stats_command +=  " -S " + save_folder
+                        fidexglo_stats_command += " -T " + folder_path_from_root + separator + "test.txt"
+                        fidexglo_stats_command += " -P " + folder_path_from_root + separator + "test.out"
+                        fidexglo_stats_command += " -C " + folder_path_from_root + separator + "testTarget.txt"
+                        fidexglo_stats_command += " -R " + folder_path_from_root + separator + "fidexGloRules.txt"
+                        fidexglo_stats_command += " -O " + folder_path_from_root + separator + "fidexGloStats.txt"
+                        fidexglo_stats_command += " -r " + folder_path_from_root + separator + "fidexGloStatsResult.txt"
+
+                        print("Enter in fidexGloStats function")
+                        res_fid_glo_stats = fidexGlo.fidexGloStats(fidexglo_stats_command)
+                        if res_fid_glo_stats == -1:
+                            return -1 # If there is an error in fidexGloStats
+
+                        """
+                        # Get statistics from fidexGlo
+                        stats_glo_file = folder_path + separator + "fidexGloStats.txt"
+
+                        try:
+                            with open(stats_glo_file, "r") as my_file:
+                                line_stats_glo = my_file.readline()
+                                line = my_file.readline()
+                                line = my_file.readline()
+                                stat_vals = []
+                                while line:
+                                    line = line.strip()  # Remove the line break at the end of the line
+                                    if line != "":
+                                        elements = line.split()
+                                        stat_vals.append(float(elements[-1]))
+                                    line = my_file.readline()
+                                my_file.close()
+                        except (FileNotFoundError):
+                            raise ValueError(f"Error : FidexGlo stat file {stats_glo_file} not found.")
+                        except (IOError):
+                            raise ValueError(f"Error : Couldn't open fidexGlo stat file {stats_glo_file}.")
+                            """
 
     except ValueError as error:
         print(error)
