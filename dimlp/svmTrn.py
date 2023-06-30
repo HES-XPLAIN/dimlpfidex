@@ -4,6 +4,7 @@ from .stairObj import StairObj
 from sklearn import svm
 from sklearn import metrics
 import sys
+import time
 
 def check_strictly_positive(variable):
     if isinstance(variable, (float,int)) and variable > 0:
@@ -133,6 +134,8 @@ def svmTrn(*args, **kwargs):
             print('svmTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "svm/weights", stats = "svm/stats.txt", train_pred = "svm/predTrain", test_pred = "svm/predTest", save_folder = "dimlp/datafiles")')
             print("---------------------------------------------------------------------")
         else:
+
+            start_time = time.time()
 
             # Get parameters
             save_folder = kwargs.get('save_folder')
@@ -368,6 +371,13 @@ def svmTrn(*args, **kwargs):
                     raise ValueError(f"Error : File {stats_file} not found.")
                 except (IOError):
                     raise ValueError(f"Error : Couldn't open file {stats_file}.")
+
+
+            end_time = time.time()
+            full_time = end_time - start_time
+            full_time = "{:.6f}".format(full_time).rstrip(".0")
+
+            print(f"\nFull execution time = {full_time} sec")
 
             # Redirect output to terminal
             if output_file != None:
