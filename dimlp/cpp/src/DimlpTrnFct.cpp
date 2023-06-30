@@ -678,6 +678,7 @@ int dimlpTrn(const string &command) {
       data.Del();
     }
   }
+
   if (weightFileInit == false)
     net = std::make_shared<Dimlp>(eta, mu, flat, errThres, accThres, deltaErr,
                                   quant, showErr, epochs, nbLayers, vecNbNeurons, outputWeightFile, seed);

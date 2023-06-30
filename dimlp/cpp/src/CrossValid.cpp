@@ -1082,7 +1082,6 @@ int main(int nbParam, char **param)
     }
 
     // Output and show stats
-    // ofstream outputStatsFile(statFile);
     outputStatsFile.open(statFile, std::ios::app);
     if (outputStatsFile.is_open()) {
 
