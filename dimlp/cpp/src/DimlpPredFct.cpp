@@ -94,6 +94,7 @@ int dimlpPred(const string &command) {
   string consoleFileTemp;
   bool consoleFileInit = false;
   string rootFolderTemp;
+  bool rootFolderInit = false;
 
   int nbLayers;
   int nbWeightLayers;
@@ -167,6 +168,7 @@ int dimlpPred(const string &command) {
 
       case 'S':
         rootFolderTemp = arg;
+        rootFolderInit = true;
         break;
 
       case 'W':
@@ -211,11 +213,14 @@ int dimlpPred(const string &command) {
   const char *predFile = nullptr;
   const char *consoleFile = nullptr;
 
+  string root = "";
+  if (rootFolderInit) {
 #if defined(__unix__) || defined(__APPLE__)
-  string root = rootFolderTemp + "/";
+    root = rootFolderTemp + "/";
 #elif defined(_WIN32)
-  string root = rootFolderTemp + "\\";
+    root = rootFolderTemp + "\\";
 #endif
+  }
 
   predFileTemp = root + predFileTemp;
   predFile = &predFileTemp[0];

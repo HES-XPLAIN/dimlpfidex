@@ -279,11 +279,14 @@ int fidex(const string &command) {
     const char *statsFile = nullptr;
     const char *consoleFile = nullptr;
 
+    string root = "";
+    if (rootFolderInit) {
 #if defined(__unix__) || defined(__APPLE__)
-    string root = rootFolderTemp + "/";
+      root = rootFolderTemp + "/";
 #elif defined(_WIN32)
-    string root = rootFolderTemp + "\\";
+      root = rootFolderTemp + "\\";
 #endif
+    }
 
     if (trainDataFileInit) {
       trainDataFileTemp = root + trainDataFileTemp;

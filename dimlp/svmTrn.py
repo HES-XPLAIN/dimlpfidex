@@ -189,7 +189,7 @@ def svmTrn(*args, **kwargs):
                 if arg_key not in valid_args:
                     raise ValueError(f"Invalid argument : {arg_key}")
 
-            if not isinstance(save_folder, str):
+            if (save_folder is not None and (not isinstance(save_folder, str))):
                 raise ValueError('Error : parameter save_folder has to be a name contained in quotation marks "".')
 
             if train_data_file is None :
