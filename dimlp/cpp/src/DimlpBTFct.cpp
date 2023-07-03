@@ -120,6 +120,7 @@ int dimlpBT(const string &command) {
   string attrFileTemp;
   bool attrFileInit = false;
   string rootFolderTemp;
+  bool rootFolderInit = false;
 
   int flagEp = 0;
 
@@ -288,6 +289,7 @@ int dimlpBT(const string &command) {
 
       case 'S':
         rootFolderTemp = arg;
+        rootFolderInit = true;
         break;
 
       case 'A':
@@ -379,11 +381,14 @@ int dimlpBT(const string &command) {
   const char *validTar = nullptr;
   const char *attrFile = nullptr;
 
+  string root = "";
+  if (rootFolderInit) {
 #if defined(__unix__) || defined(__APPLE__)
-  string root = rootFolderTemp + "/";
+    root = rootFolderTemp + "/";
 #elif defined(_WIN32)
-  string root = rootFolderTemp + "\\";
+    root = rootFolderTemp + "\\";
 #endif
+  }
 
   if (learnFileInit) {
     learnFileTemp = root + learnFileTemp;

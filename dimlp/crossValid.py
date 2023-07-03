@@ -801,7 +801,8 @@ def crossValid(*args, **kwargs):
                         # Compute fidexGlo rules in folder
                         fidexglo_rules_command = "fidexGloRules"
                         fidexglo_rules_command +=  " -I " + str(hiknot)
-                        fidexglo_rules_command +=  " -S " + save_folder
+                        if save_folder is not None:
+                            fidexglo_rules_command +=  " -S " + save_folder
                         if attr_file is not None:
                             fidexglo_rules_command +=  " -A " + attr_file
                         fidexglo_rules_command +=  " -i " + str(max_iter)
@@ -828,7 +829,8 @@ def crossValid(*args, **kwargs):
 
                         # Compute fidexGlo statistics in folder
                         fidexglo_stats_command = "fidexGloStats"
-                        fidexglo_stats_command +=  " -S " + save_folder
+                        if save_folder is not None:
+                            fidexglo_stats_command +=  " -S " + save_folder
                         if attr_file is not None:
                             fidexglo_stats_command +=  " -A " + attr_file
                         fidexglo_stats_command += " -T " + folder_path_from_root + separator + "test.txt"

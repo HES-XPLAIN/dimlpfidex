@@ -138,11 +138,14 @@ int fidexGloStats(const string &command) {
     const char *consoleFile = nullptr;
     const char *attributFile = nullptr;
 
+    string root = "";
+    if (rootFolderInit) {
 #if defined(__unix__) || defined(__APPLE__)
-    string root = rootFolderTemp + "/";
+      root = rootFolderTemp + "/";
 #elif defined(_WIN32)
-    string root = rootFolderTemp + "\\";
+      root = rootFolderTemp + "\\";
 #endif
+    }
 
     if (testDataFileInit) {
       testDataFileTemp = root + testDataFileTemp;
@@ -389,7 +392,7 @@ int fidexGloStats(const string &command) {
 /* Exemples pour lancer le code :
 
 ./fidexGloStats -T datanorm -P dimlp.out -C dataclass2 -R globalRules.txt -O stats.txt -S fidexGlo/datafiles
-./fidexGloStats -T datanormTest -P dimlpDatanormTest.out -C dataclass2Test -R globalRulesDatanorm.txt -O stats.txt -S fidexGlo/datafiles
+./fidexGloStats -T datanormTest -P dimlpDatanormTest.out -C dataclass2Test -R globalRulesDatanorm.txt -O stats.txt -S ../fidexGlo/datafiles
 ./fidexGloStats -T covidTestData.txt -P covidTestPred.out -C covidTestClass.txt -R globalRulesCovid.txt -O globalStats.txt -S dimlp/datafiles/covidDataset
 ./fidexGloStats -T spamTestData.txt -P spamTestPred.out -C spamTestClass.txt -R globalRulesSpam.txt -O globalStats.txt -S dimlp/datafiles/spamDataset
 ./fidexGloStats -T isoletTestData.txt -P isoletTestPred.out -C isoletTestClass.txt -R globalRulesIsolet.txt -O globalStats.txt -S dimlp/datafiles/isoletDataset

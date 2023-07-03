@@ -86,6 +86,7 @@ int dimlpRul(const string &command) {
   string attrFileTemp;
   bool attrFileInit = false;
   string rootFolderTemp;
+  bool rootFolderInit = false;
 
   int nbLayers;
   int nbWeightLayers;
@@ -157,6 +158,7 @@ int dimlpRul(const string &command) {
 
       case 'S':
         rootFolderTemp = arg;
+        rootFolderInit = true;
         break;
 
       case 'A':
@@ -243,11 +245,14 @@ int dimlpRul(const string &command) {
   const char *accuracyFile = nullptr;
   const char *attrFile = nullptr;
 
+  string root = "";
+  if (rootFolderInit) {
 #if defined(__unix__) || defined(__APPLE__)
-  string root = rootFolderTemp + "/";
+    root = rootFolderTemp + "/";
 #elif defined(_WIN32)
-  string root = rootFolderTemp + "\\";
+    root = rootFolderTemp + "\\";
 #endif
+  }
 
   if (learnFileInit) {
     learnFileTemp = root + learnFileTemp;

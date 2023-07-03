@@ -131,11 +131,14 @@ int fidexGlo(const string &command) {
     const char *consoleFile = nullptr;
     const char *attributFile = nullptr;
 
+    string root = "";
+    if (rootFolderInit) {
 #if defined(__unix__) || defined(__APPLE__)
-    string root = rootFolderTemp + "/";
+      root = rootFolderTemp + "/";
 #elif defined(_WIN32)
-    string root = rootFolderTemp + "\\";
+      root = rootFolderTemp + "\\";
 #endif
+    }
 
     if (testSamplesDataFileInit) {
       testSamplesDataFileTemp = root + testSamplesDataFileTemp;

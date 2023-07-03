@@ -466,6 +466,10 @@ int main(int nbParam, char **param)
     root = ".." + separator + rootFolderTemp + separator;
   } else {
     root = ".." + separator;
+    genericCommand += " -S .." + separator;
+    fidexGenericCommand += " -R .." + separator;
+    fidexGloGenericCommand += " -S .." + separator;
+    fidexGloStatsGenericCommand += " -S .." + separator;
   }
 
   if (learnTarInit) {

@@ -143,6 +143,7 @@ int dimlpCls(const string &command) {
   bool testTarInit = false;
   string hidFileTemp = "dimlp.hid";
   string rootFolderTemp;
+  bool rootFolderInit = false;
 
   int nbLayers;
   int nbWeightLayers;
@@ -214,6 +215,7 @@ int dimlpCls(const string &command) {
 
       case 'S':
         rootFolderTemp = arg;
+        rootFolderInit = true;
         break;
 
       case 'W':
@@ -274,11 +276,14 @@ int dimlpCls(const string &command) {
   const char *testTar = nullptr;
   const char *hidFile = nullptr;
 
+  string root = "";
+  if (rootFolderInit) {
 #if defined(__unix__) || defined(__APPLE__)
-  string root = rootFolderTemp + "/";
+    root = rootFolderTemp + "/";
 #elif defined(_WIN32)
-  string root = rootFolderTemp + "\\";
+    root = rootFolderTemp + "\\";
 #endif
+  }
 
   if (testFileInit) {
     testFileTemp = root + testFileTemp;
