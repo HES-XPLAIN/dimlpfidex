@@ -1,10 +1,14 @@
 import numpy as np
 import os
 from .stairObj import StairObj
-from sklearn import svm
+from sklearn.neural_network import MLPClassifier
 from sklearn import metrics
 import sys
 import time
+import warnings
+from sklearn.exceptions import ConvergenceWarning
+
+warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
 def check_strictly_positive(variable):
     if isinstance(variable, (float,int)) and variable > 0:
@@ -43,20 +47,19 @@ def get_data(file_name): # Get data from file
     except (IOError):
         raise ValueError(f"Error : Couldn't open file {file_name}.")
 
-def output_pred(pred, pred_file, nb_classes):
+def output_pred_proba(pred, pred_file):
     try:
-        pred_vector = np.zeros((len(pred), nb_classes), dtype=int)
+        with open(pred_file, "a") as predFile:
+            for var in pred:
+                for val in var:
+                    predFile.write(str(val) + " ")
+                predFile.write("\n")
+            predFile.close()
 
-        for idx, cl in enumerate(pred):
-            pred_vector[idx, cl] = 1 # 1 in the predicted class
-
-        # Écrire le tableau dans un fichier avec des espaces entre les nombres
-        np.savetxt(pred_file, pred_vector, fmt="%d", delimiter=" ")
     except (FileNotFoundError):
         raise ValueError(f"Error : File {pred_file} not found.")
     except (IOError):
         raise ValueError(f"Error : Couldn't open file {pred_file}.")
-
 
 def compute_first_hidden_layer(input_data, k, nb_stairs, hiknot, weights_file):
     mu = np.mean(input_data, axis=0) # mean over variables
@@ -89,7 +92,7 @@ def compute_first_hidden_layer(input_data, k, nb_stairs, hiknot, weights_file):
 
     return output_data
 
-def svmTrn(*args, **kwargs):
+def mlpTrn(*args, **kwargs):
     try:
 
         if args or not kwargs:
@@ -114,25 +117,31 @@ def svmTrn(*args, **kwargs):
             print("hiknot : high side of the interval (5 by default)")
             print("K : Parameter to improve dynamics (1 by default)")
             print("----------------------------")
-            print("SVM parameters (optional)")
-            print("C : regularization, (1.0 by default)")
-            print("kernel : linear, poly, rbf(default) or sigmoid")
-            print("degree : polynomial degree (3 by default)")
-            print("gamma : scale(default), auto or non negative float")
-            print("coef0 : term in kernel function, float (0 by default)")
-            print("shrinking : heuristic, True(default) or False")
-            print("tol : tolerance for stopping criterion (0.001 by default)")
-            print("cache_size : kernel cache size (200 MB by default)")
-            print("class_weight : class balance, 'balanced' or a dictionary, for exemple with 2 classes : {0:1.2, 1:3.5} (None by default)")
+            print("MLP parameters (optional)")
+            print("hidden_layer_sizes : Size of each hidden layers. Array of shape (n_layers-2) ((100,) by default)")
+            print("activation : activation function, identity, logistic, tanh or relu(default)")
+            print("solver : solver for weight optimization, lbfgs, sgd or adam (default)")
+            print("alpha : strength of the L2 regularization term, positive float (0.0001 by default)")
+            print("batch_size : size of minibatches for stochastic optimizers for adam and sgd, auto(default) or positive integer")
+            print("learning_rate : learning rate schedule for weight updates for sgd solver, constant(default), invscaling or adaptive")
+            print("learning_rate_init : initial learning rate for adam and sgd, positive float (0.001 by default)")
+            print("power_t : exponent for inverse scaling learning rate for sgd, positive float (0.5 by default)")
+            print("max_iter : maximum number of iterations, positive integer (200 by default)")
+            print("shuffle : whether to shuffle samples in each iteration for sgd and adam, True(default) or False")
+            print("random_state : positive integer(seed) or None(default) for sgd and adam")
+            print("tol : tolerance for optimization (0.0001 by default)")
             print("verbose : enable verbose output, True or False(default)")
-            print("max_iter : maximal number of iterations (-1 for no limit (default))")
-            print("decision_function_shape : decision function shape, ovo(one-vs-one) or ovr(one-vs-rest, default)")
-            print("break_ties : break tie decision for ovr with more than 2 classes, True or False(default)")
+            print("warm_start : whether to reuse previous solution to fit initialization, True or False(default)")
+            print("momentum : Momentum for gradient descent update for sgd, between 0 and 1 (0.9 by default)")
+
+
             print("----------------------------")
             print("----------------------------")
             print("Here is an example, keep same parameter names :")
-            print('svmTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "svm/weights", stats = "svm/stats.txt", train_pred = "svm/predTrain", test_pred = "svm/predTest", save_folder = "dimlp/datafiles")')
+            print('mlpTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "mlp/weights", stats = "mlp/stats.txt", train_pred = "mlp/predTrain", test_pred = "mlp/predTest", save_folder = "dimlp/datafiles")')
             print("---------------------------------------------------------------------")
+
+
         else:
 
             start_time = time.time()
@@ -153,19 +162,22 @@ def svmTrn(*args, **kwargs):
             K = kwargs.get('K')
             quant = kwargs.get('nb_stairs')
             hiknot = kwargs.get('hiknot')
-            c_var = kwargs.get('C')
-            kernel_var = kwargs.get('kernel')
-            degree_var = kwargs.get('degree')
-            gamma_var = kwargs.get('gamma')
-            coef0_var = kwargs.get('coef0')
-            shrinking_var = kwargs.get('shrinking')
-            tol_var = kwargs.get('tol')
-            cache_size_var = kwargs.get('cache_size')
-            class_weight_var = kwargs.get('class_weight')
-            verbose_var = kwargs.get('verbose')
+
+            hidden_layer_sizes_var = kwargs.get('hidden_layer_sizes')
+            activation_var = kwargs.get('activation')
+            solver_var = kwargs.get('solver')
+            alpha_var = kwargs.get('alpha')
+            batch_size_var = kwargs.get('batch_size')
+            learning_rate_var = kwargs.get('learning_rate')
+            learning_rate_init_var = kwargs.get('learning_rate_init')
+            power_t_var = kwargs.get('power_t')
             max_iter_var = kwargs.get('max_iter')
-            decision_function_shape_var = kwargs.get('decision_function_shape')
-            break_ties_var = kwargs.get('break_ties')
+            shuffle_var = kwargs.get('shuffle')
+            random_state_var = kwargs.get('random_state')
+            tol_var = kwargs.get('tol')
+            verbose_var = kwargs.get('verbose')
+            warm_start_var = kwargs.get('warm_start')
+            momentum_var = kwargs.get('momentum')
 
             # Redirect output in file
             if output_file != None:
@@ -178,11 +190,30 @@ def svmTrn(*args, **kwargs):
                 except (IOError):
                     raise ValueError(f"Error : Couldn't open file {output_file}.")
 
+            if (save_folder is not None):
+                train_data_file = save_folder + "/" + train_data_file
+                train_class_file = save_folder + "/" + train_class_file
+                test_data_file = save_folder + "/" + test_data_file
+                test_class_file = save_folder + "/" + test_class_file
+                train_pred_file = save_folder + "/" + train_pred_file
+                test_pred_file = save_folder + "/" + test_pred_file
+                weights_file = save_folder + "/" + weights_file
+                if (stats_file is not None):
+                    stats_file = save_folder + "/" + stats_file
+
+            # Get data
+            train_data = get_data(train_data_file)
+            train_class = get_data(train_class_file)
+            train_class = [cl.index(max(cl)) for cl in train_class]
+            test_data = get_data(test_data_file)
+            test_class = get_data(test_class_file)
+            test_class = [cl.index(max(cl)) for cl in test_class]
+
             # Check parameters
 
             valid_args = ['train_data', 'train_class', 'test_data', 'test_class', 'train_pred', 'test_pred', 'weights',
-                        'stats', 'K', 'nb_stairs', 'hiknot', 'C', 'kernel', 'degree', 'gamma', 'coef0', 'shrinking',
-                        'tol', 'cache_size', 'class_weight', 'verbose', 'max_iter', 'decision_function_shape', 'break_ties', 'save_folder', 'output_file']
+                        'stats', 'K', 'nb_stairs', 'hiknot', 'save_folder', 'output_file', 'hidden_layer_sizes', 'activation', 'solver', 'alpha', 'batch_size', 'learning_rate',
+                        'learning_rate_init', 'power_t', 'max_iter', 'shuffle', 'random_state', 'tol', 'verbose', 'warm_start', 'momentum']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
@@ -248,117 +279,119 @@ def svmTrn(*args, **kwargs):
             elif not check_int(hiknot):
                 raise ValueError('Error, parameter hiknot is not a number')
 
-            if c_var is None:
-                c_var = 1.0
-            elif not check_strictly_positive(c_var):
-                raise ValueError('Error, parameter C is not a strictly positive number')
+            if hidden_layer_sizes_var is None:
+                hidden_layer_sizes_var = (100,)
+            elif not isinstance(hidden_layer_sizes_var, tuple) and not isinstance(hidden_layer_sizes_var, list) and not check_strictly_positive(hidden_layer_sizes_var):
+                raise ValueError('Error, parameter hidden_layer_sizes is not an array or a strictly positive number')
 
-            if kernel_var is None:
-                kernel_var = "rbf"
+            if activation_var is None:
+                activation_var = "relu"
             else:
-                kernels = {"linear", "poly", "rbf", "sigmoid"}
-                if (kernel_var not in kernels):
-                    raise ValueError('Error, parameter kernel is not linear, poly, rbf or sigmoid')
+                activations = {"identity", "logistic", "tanh", "relu"}
+                if (activation_var not in activations):
+                    raise ValueError('Error, parameter activation is not identity, logistic, tanh or relu')
 
-            if degree_var is None:
-                degree_var = 3
-            elif not check_positive(degree_var) or not check_int(degree_var):
-                raise ValueError('Error, parameter degree is not positive integer')
-
-            if gamma_var is None:
-                gamma_var = "scale"
+            if solver_var is None:
+                solver_var = "adam"
             else:
-                gammas = {"scale", "auto"}
-                if (gamma_var not in gammas and not check_positive(gamma_var)):
-                    raise ValueError('Error, parameter gamma is not scale, auto or positive float')
+                solvers = {"lbfgs", "sgd", "adam"}
+                if (solver_var not in solvers):
+                    raise ValueError('Error, parameter solver is not lbfgs, sgd or adam')
 
-            if coef0_var is None:
-                coef0_var = 0.0
-            if not isinstance(coef0_var, (float,int)):
-                raise ValueError('Error, parameter coef0 is not a float')
+            if alpha_var is None:
+                alpha_var = 0.0001
+            elif not check_positive(alpha_var):
+                raise ValueError('Error, parameter alpha is not a positive number')
 
-            if shrinking_var is None:
-                shrinking_var = True
-            elif not check_bool(shrinking_var):
-                raise ValueError('Error, parameter shrinking is not boolean')
+            if batch_size_var is None:
+                batch_size_var = "auto"
+            elif batch_size_var != "auto" and (not check_strictly_positive(batch_size_var) or not check_int(batch_size_var)):
+                raise ValueError('Error, parameter batch_size is not auto or a strictly positive integer')
+
+            if learning_rate_var is None:
+                learning_rate_var = "constant"
+            else:
+                learning_rates = {"constant", "invscaling", "adaptive"}
+                if (learning_rate_var not in learning_rates):
+                    raise ValueError('Error, parameter learning_rate is not constant, invscaling or adaptive')
+
+            if learning_rate_init_var is None:
+                learning_rate_init_var = 0.001
+            elif not check_strictly_positive(learning_rate_init_var):
+                raise ValueError('Error, parameter learning_rate_init is not a strictly positive number')
+
+            if power_t_var is None:
+                power_t_var = 0.5
+            elif not check_positive(power_t_var):
+                raise ValueError('Error, parameter power_t is not a positive number')
+
+            if max_iter_var is None:
+                max_iter_var = 200
+            elif not check_strictly_positive(max_iter_var) or not check_int(max_iter_var) :
+                raise ValueError('Error, parameter max_iter is not a strictly positive integer')
+
+            if shuffle_var is None:
+                shuffle_var = True
+            elif not check_bool(shuffle_var) :
+                raise ValueError('Error, parameter shuffle is not a boolean')
+
+            if random_state_var is not None and (not check_int(random_state_var) or not check_positive(random_state_var)):
+                raise ValueError('Error, parameter random_state is specified and not a positive integer')
 
             if tol_var is None:
-                tol_var = 0.001
+                tol_var = 0.0001
             elif not check_strictly_positive(tol_var):
-                raise ValueError('Error, parameter tol is not a strictly positive float')
-
-            if cache_size_var is None:
-                cache_size_var = 0.001
-            elif not check_strictly_positive(cache_size_var):
-                raise ValueError('Error, parameter cache_size is not a positive number')
-
-            if class_weight_var is not None and class_weight_var != "balanced" and not isinstance(class_weight_var, dict):
-                raise ValueError('Error, parameter class_weight is not "balanced", a dictionary or None')
+                raise ValueError('Error, parameter tol is not a strictly positive number')
 
             if verbose_var is None:
                 verbose_var = False
             elif not check_bool(verbose_var):
                 raise ValueError('Error, parameter verbose is not boolean')
 
-            if max_iter_var is None:
-                max_iter_var = -1
-            elif (not check_strictly_positive(max_iter_var) or not check_int(max_iter_var)) and max_iter_var != -1:
-                raise ValueError('Error, parameter max_iter is not a strictly positive number or -1')
+            if warm_start_var is None:
+                warm_start_var = False
+            elif not check_bool(warm_start_var):
+                raise ValueError('Error, parameter warm_start is not boolean')
 
-            if decision_function_shape_var is None:
-                decision_function_shape_var = "ovr"
-            else:
-                decision_function_shapes = {"ovo", "ovr"}
-                if decision_function_shape_var not in decision_function_shapes:
-                    raise ValueError('Error, parameter decision_function_shape is not ovo or ovr')
-
-            if break_ties_var is None:
-                break_ties_var = False
-            elif not check_bool(break_ties_var):
-                raise ValueError('Error, parameter break_ties is not boolean')
+            if momentum_var is None:
+                momentum_var = 0.9
+            elif not check_positive(momentum_var) or momentum_var > 1:
+                raise ValueError('Error, parameter momentum is not a number between 0 and 1')
 
 
-            if (save_folder is not None):
-                train_data_file = save_folder + "/" + train_data_file
-                train_class_file = save_folder + "/" + train_class_file
-                test_data_file = save_folder + "/" + test_data_file
-                test_class_file = save_folder + "/" + test_class_file
-                train_pred_file = save_folder + "/" + train_pred_file
-                test_pred_file = save_folder + "/" + test_pred_file
-                weights_file = save_folder + "/" + weights_file
-                if (stats_file is not None):
-                    stats_file = save_folder + "/" + stats_file
 
-            # Get data
-            train_data = get_data(train_data_file)
-            train_class = get_data(train_class_file)
-            train_class = [cl.index(max(cl)) for cl in train_class]
-            test_data = get_data(test_data_file)
-            test_class = get_data(test_class_file)
-            test_class = [cl.index(max(cl)) for cl in test_class]
 
             # Get weights and biais from first hidden layer as well as data transformed in first hidden layer
 
             train_data_h1 = compute_first_hidden_layer(train_data, K, quant, hiknot, weights_file)
             test_data_h1 = compute_first_hidden_layer(test_data, K, quant, hiknot, weights_file)
 
-            # Train svm
-            model = svm.SVC(C = c_var, kernel = kernel_var, degree = degree_var, gamma = gamma_var, coef0 = coef0_var, shrinking = shrinking_var,
-                            tol = tol_var, cache_size = cache_size_var, class_weight = class_weight_var, verbose = verbose_var, max_iter = max_iter_var,
-                            decision_function_shape = decision_function_shape_var, break_ties = break_ties_var) # Create svm Classifier
+            # Train mlp
+            """model = MLPClassifier(hidden_layer_sizes=(100,), activation='relu', solver='adam', alpha=0.0001,
+                      batch_size='auto', learning_rate='constant', learning_rate_init=0.001,
+                      power_t=0.5, max_iter=200, shuffle=True, random_state=None, tol=0.0001,
+                      verbose=False, warm_start=False, momentum=0.9, nesterovs_momentum=True,
+                      early_stopping=False, validation_fraction=0.1, beta_1=0.9, beta_2=0.999,
+                      epsilon=1e-08, n_iter_no_change=10, max_fun=15000)"""
+            model = MLPClassifier(hidden_layer_sizes = hidden_layer_sizes_var, activation = activation_var, solver = solver_var, alpha = alpha_var, batch_size = batch_size_var,
+                                  learning_rate = learning_rate_var, learning_rate_init = learning_rate_init_var, power_t = power_t_var, max_iter = max_iter_var, shuffle = shuffle_var,
+                                  random_state = random_state_var, tol = tol_var, verbose = verbose_var, warm_start = warm_start_var, momentum = momentum_var)
 
-            model.fit(train_data_h1, train_class)   # Train the model using the training sets
-            train_pred = model.predict(train_data_h1)    # Predict the response for train dataset
-            test_pred = model.predict(test_data_h1)    # Predict the response for test dataset
+            model.fit(train_data_h1, train_class)    # Train the model using the training sets
+
+            # Compute predictions
+            train_pred_proba = model.predict_proba(train_data_h1)  # Predict the response for train dataset
+            test_pred_proba = model.predict_proba(test_data_h1)    # Predict the response for test dataset
+            train_pred = model.predict(train_data_h1)
+            test_pred = model.predict(test_data_h1)
 
             # Output predictions
-            nb_classes = len(model.classes_)
-            output_pred(train_pred, train_pred_file, nb_classes)
-            output_pred(test_pred, test_pred_file, nb_classes)
+            output_pred_proba(train_pred_proba, train_pred_file)
+            output_pred_proba(test_pred_proba, test_pred_file)
 
-            # Compute model Accuracy
-            acc_train = metrics.accuracy_score(train_class, train_pred)*100
-            acc_test = metrics.accuracy_score(test_class, test_pred)*100
+            # Calcul de l'exactitude (accuracy) du modèle
+            acc_train = metrics.accuracy_score(train_class, train_pred) * 100
+            acc_test = metrics.accuracy_score(test_class, test_pred) * 100
             print("Training accuracy : {}%.".format(acc_train))
             print("Testing accuracy : {}%.".format(acc_test))
 
@@ -381,7 +414,6 @@ def svmTrn(*args, **kwargs):
 
             print(f"\nFull execution time = {full_time} sec")
 
-
             # Redirect output to terminal
             if output_file != None:
                 sys.stdout = sys.__stdout__
@@ -391,6 +423,3 @@ def svmTrn(*args, **kwargs):
     except ValueError as error:
         print(error)
         return -1
-
-
-# Exemple : svmTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "weights", stats = "stats.txt", save_folder = "dimlp/datafiles")
