@@ -16,6 +16,7 @@ from dimlpfidex import dimlp
 from dimlpfidex import fidex
 from dimlpfidex import fidexGlo
 from dimlp.svmTrn import svmTrn
+from dimlp.mlpTrn import mlpTrn
 
 def create_or_clear_directory(folder_name):
     try:
@@ -61,7 +62,7 @@ def crossValid(*args, **kwargs):
 
             print("----------------------------")
             print("Obligatory parameters :")
-            print("train_method : dimlp or svm")
+            print("train_method : dimlp, svm or mlp")
             print("algo : fidex, fidexGlo or both")
             print("data_file : data file")
             print("class_file : class file")
@@ -111,12 +112,38 @@ def crossValid(*args, **kwargs):
             print("gamma : scale(default), auto or non negative float")
             print("coef0 : term in kernel function, float (0 by default)")
             print("shrinking : heuristic, True(default) or False")
-            print("tol : tolerance for stopping criterion (0.001 by default)")
+            print("svm_tol : tolerance for stopping criterion (0.001 by default)")
             print("cache_size : kernel cache size (200 MB by default)")
             print("class_weight : class balance, 'balanced' or a dictionary, for exemple with 2 classes : {0:1.2, 1:3.5} (None by default)")
             print("svm_max_iter : maximal number of iterations (-1 for no limit (default))")
             print("decision_function_shape : decision function shape, ovo(one-vs-one) or ovr(one-vs-rest, default)")
             print("break_ties : break tie decision for ovr with more than 2 classes, True or False(default)")
+
+            print("----------------------------")
+            print("Optional parameters for mlp training:")
+            print("mlp_K : Parameter to improve dynamics (1 by default)")
+            print("hidden_layer_sizes : Size of each hidden layers. Array of shape (n_layers-2) ((100,) by default)")
+            print("activation : activation function, identity, logistic, tanh or relu(default)")
+            print("solver : solver for weight optimization, lbfgs, sgd or adam (default)")
+            print("alpha : strength of the L2 regularization term, positive float (0.0001 by default)")
+            print("batch_size : size of minibatches for stochastic optimizers for adam and sgd, auto(default) or positive integer")
+            print("learning_rate : learning rate schedule for weight updates for sgd solver, constant(default), invscaling or adaptive")
+            print("learning_rate_init : initial learning rate for adam and sgd, positive float (0.001 by default)")
+            print("power_t : exponent for inverse scaling learning rate for sgd, positive float (0.5 by default)")
+            print("mlp_max_iter : maximum number of iterations, positive integer (200 by default)")
+            print("shuffle : whether to shuffle samples in each iteration for sgd and adam, True(default) or False")
+            print("mlp_tol : tolerance for optimization (0.0001 by default)")
+            print("warm_start : whether to reuse previous solution to fit initialization, True or False(default)")
+            print("momentum : Momentum for gradient descent update for sgd, between 0 and 1 (0.9 by default)")
+            print("nesterovs_momentum : whether to use Nesterov’s momentum for sgd and momentum > 0, True(default) or False")
+            print("early_stopping : whether to use early stopping to terminate training when validation score is not improving for sgd and adam, True or False(default)")
+            print("validation_fraction : proportion of training data to set aside as validation set for early stopping, between 0 and 1 excluded (0.1 by default)")
+            print("beta_1 : exponential decay rate for estimates of first moment vector in adam, between 0 and 1 excluded (0.9 by default)")
+            print("beta_2 : exponential decay rate for estimates of second moment vector in adam, between 0 and 1 excluded (0.999 by default)")
+            print("epsilon : value for numerical stability in adam, positive float (1e-8 by default)")
+            print("n_iter_no_change : maximum number of epochs to not meet tol improvement for sgd and adam, integer >= 1 (10 by default)")
+            print("max_fun : maximum number of loss function calls for lbfgs, integer >= 1 (15000 by default)")
+
             print("----------------------------")
             print("----------------------------")
 
@@ -126,6 +153,9 @@ def crossValid(*args, **kwargs):
             print("----------------------------")
             print("Exemple with SVM :")
             print('crossValid(train_method="svm", algo="both", data_file="datanorm", class_file="dataclass2", save_folder="dimlp/datafiles", crossVal_folder="CrossValidationSVM")')
+            print("----------------------------")
+            print("Exemple with MLP :")
+            print('crossValid(train_method="mlp", algo="both", data_file="datanorm", class_file="dataclass2", save_folder="dimlp/datafiles", crossVal_folder="CrossValidationMLP")')
             print("---------------------------------------------------------------------")
 
             return 0
@@ -179,12 +209,35 @@ def crossValid(*args, **kwargs):
             gamma_var = kwargs.get('gamma')
             coef0_var = kwargs.get('coef0')
             shrinking_var = kwargs.get('shrinking')
-            tol_var = kwargs.get('tol')
+            svm_tol_var = kwargs.get('svm_tol')
             cache_size_var = kwargs.get('cache_size')
             class_weight_var = kwargs.get('class_weight')
             svm_max_iter_var = kwargs.get('svm_max_iter')
             decision_function_shape_var = kwargs.get('decision_function_shape')
             break_ties_var = kwargs.get('break_ties')
+
+            mlp_k = kwargs.get('mlp_K')
+            hidden_layer_sizes_var = kwargs.get('hidden_layer_sizes')
+            activation_var = kwargs.get('activation')
+            solver_var = kwargs.get('solver')
+            alpha_var = kwargs.get('alpha')
+            batch_size_var = kwargs.get('batch_size')
+            learning_rate_var = kwargs.get('learning_rate')
+            learning_rate_init_var = kwargs.get('learning_rate_init')
+            power_t_var = kwargs.get('power_t')
+            mlp_max_iter_var = kwargs.get('mlp_max_iter')
+            shuffle_var = kwargs.get('shuffle')
+            mlp_tol_var = kwargs.get('mlp_tol')
+            warm_start_var = kwargs.get('warm_start')
+            momentum_var = kwargs.get('momentum')
+            nesterovs_momentum_var = kwargs.get('nesterovs_momentum')
+            early_stopping_var = kwargs.get('early_stopping')
+            validation_fraction_var = kwargs.get('validation_fraction')
+            beta_1_var = kwargs.get('beta_1')
+            beta_2_var = kwargs.get('beta_2')
+            epsilon_var = kwargs.get('epsilon')
+            n_iter_no_change_var = kwargs.get('n_iter_no_change')
+            max_fun_var = kwargs.get('max_fun')
 
             # Check parameters
 
@@ -198,23 +251,31 @@ def crossValid(*args, **kwargs):
                         'acc_thresh', 'delta_err', 'nb_epochs', 'show_err']
 
             optional_svm_args = ['svm_K', 'C', 'kernel', 'degree', 'gamma', 'coef0', 'shrinking',
-                        'tol', 'cache_size', 'class_weight', 'svm_max_iter', 'decision_function_shape', 'break_ties']
+                        'svm_tol', 'cache_size', 'class_weight', 'svm_max_iter', 'decision_function_shape', 'break_ties']
+
+            optional_mlp_args = ['mlp_K', 'hidden_layer_sizes', 'activation', 'solver', 'alpha',
+                        'batch_size', 'learning_rate', 'learning_rate_init', 'power_t', 'mlp_max_iter',
+                        'shuffle', 'mlp_tol', 'warm_start', 'momentum', 'nesterovs_momentum',
+                        'early_stopping', 'validation_fraction', 'beta_1', 'beta_2', 'epsilon', 'n_iter_no_change', 'max_fun']
 
             # Check if wrong parameters are given
 
-            train_methods = {"dimlp", "svm"}
+            train_methods = {"dimlp", "svm", "mlp"}
             if train_method is None:
-                raise ValueError('Error : train method is missing, add it with option train_method="dimlp" or "svm"')
+                raise ValueError('Error : train method is missing, add it with option train_method="dimlp", "svm" or "mlp"')
             elif (train_method not in train_methods):
-                raise ValueError('Error, parameter train_method is not dimlp or svm')
+                raise ValueError('Error, parameter train_method is not dimlp, svm or mlp')
 
             for arg_key in kwargs.keys():
                 if (train_method == "dimlp"):
                     if (arg_key not in optional_args and arg_key not in optional_dimlp_args and not(arg_key.startswith('H') and arg_key[1:].isdigit()) and arg_key not in obligatory_args and arg_key not in obligatory_dimlp_args):
                         raise ValueError(f"Invalid argument with dimlp training : {arg_key}")
+                elif (train_method == "svm"):
+                    if (arg_key not in optional_args and arg_key not in optional_svm_args and arg_key not in obligatory_args):
+                        raise ValueError(f"Invalid argument with svm training : {arg_key}")
                 else:
-                    if (arg_key not in optional_args and arg_key and arg_key not in optional_svm_args and arg_key not in obligatory_args):
-                        raise ValueError(f"Invalid argument with dimlp training : {arg_key}")
+                    if (arg_key not in optional_args and arg_key not in optional_mlp_args and arg_key not in obligatory_args):
+                        raise ValueError(f"Invalid argument with mlp training : {arg_key}")
 
 
             algos = {"fidex", "fidexGlo", "both"}
@@ -310,7 +371,7 @@ def crossValid(*args, **kwargs):
                 if show_err is None:
                     show_err = 10
 
-            else:
+            elif train_method == "svm":
                 if svm_k is None:
                     svm_k = 1
                 if c_var is None:
@@ -325,8 +386,8 @@ def crossValid(*args, **kwargs):
                     coef0_var = 0
                 if shrinking_var is None:
                     shrinking_var = True
-                if tol_var is None:
-                    tol_var = 0.001
+                if svm_tol_var is None:
+                    svm_tol_var = 0.001
                 if cache_size_var is None:
                     cache_size_var = 200
                 if svm_max_iter_var is None:
@@ -335,6 +396,53 @@ def crossValid(*args, **kwargs):
                     decision_function_shape_var = "ovr"
                 if break_ties_var is None:
                     break_ties_var = False
+
+            else:
+                if mlp_k is None:
+                    mlp_k = 1
+                if hidden_layer_sizes_var is None:
+                    hidden_layer_sizes_var = (100,)
+                if activation_var is None:
+                    activation_var = "relu"
+                if solver_var is None:
+                    solver_var = "adam"
+                if alpha_var is None:
+                    alpha_var = 0.0001
+                if batch_size_var is None:
+                    batch_size_var = "auto"
+                if learning_rate_var is None:
+                    learning_rate_var = "constant"
+                if learning_rate_init_var is None:
+                    learning_rate_init_var = 0.001
+                if power_t_var is None:
+                    power_t_var = 0.5
+                if mlp_max_iter_var is None:
+                    mlp_max_iter_var = 200
+                if shuffle_var is None:
+                    shuffle_var = True
+                if mlp_tol_var is None:
+                    mlp_tol_var = 0.0001
+                if warm_start_var is None:
+                    warm_start_var = False
+                if momentum_var is None:
+                    momentum_var = 0.9
+                if nesterovs_momentum_var is None:
+                    nesterovs_momentum_var = True
+                if early_stopping_var is None:
+                    early_stopping_var = False
+                if validation_fraction_var is None:
+                    validation_fraction_var = 0.1
+                if beta_1_var is None:
+                    beta_1_var = 0.9
+                if beta_2_var is None:
+                    beta_2_var = 0.999
+                if epsilon_var is None:
+                    epsilon_var = 0.00000001
+                if n_iter_no_change_var is None:
+                    n_iter_no_change_var = 10
+                if max_fun_var is None:
+                    max_fun_var = 15000
+
 
             is_fidex = False
             is_fidexglo = False
@@ -477,7 +585,7 @@ def crossValid(*args, **kwargs):
                         outputStatsFile.write(f"The absolute difference error threshold is {delta_err}\n")
                         outputStatsFile.write(f"The number of train epochs is {nb_epochs}\n")
                         outputStatsFile.write(f"The number of train epochs to show error is {show_err}\n")
-                    else:
+                    elif train_method == "svm":
                         outputStatsFile.write(f"The K parameter to improve dynamics is {svm_k}\n")
                         outputStatsFile.write(f"The regularization parameter C is {c_var}\n")
                         outputStatsFile.write(f"The kernel is {kernel_var}\n")
@@ -491,7 +599,7 @@ def crossValid(*args, **kwargs):
                             outputStatsFile.write("Using of the shrinking heuristic\n")
                         else:
                             outputStatsFile.write("No using of the shrinking heuristic\n")
-                        outputStatsFile.write(f"The tolerance for stopping criterion is {tol_var}\n")
+                        outputStatsFile.write(f"The tolerance for stopping criterion is {svm_tol_var}\n")
                         if class_weight_var == None:
                             outputStatsFile.write("Class weights are unchanged\n")
                         else:
@@ -506,6 +614,41 @@ def crossValid(*args, **kwargs):
                                 outputStatsFile.write("Using break tie decision\n")
                         else:
                             outputStatsFile.write("The decision function shape is one-vs-one\n")
+                    else:
+                        outputStatsFile.write(f"The K parameter to improve dynamics is {mlp_k}\n")
+                        outputStatsFile.write(f"The size of the hidden layers is {hidden_layer_sizes_var}\n")
+                        outputStatsFile.write(f"The activation function is {activation_var}\n")
+                        outputStatsFile.write(f"The solver is {solver_var}\n")
+                        outputStatsFile.write(f"The alpha parameter is {alpha_var}\n")
+                        if solver_var in {"adam", "sgd"}:
+                            outputStatsFile.write(f"The batch size is {alpha_var}\n")
+                        if solver_var =="sgd":
+                            outputStatsFile.write(f"The learning rate is {learning_rate_var}\n")
+                        if solver_var in {"adam", "sgd"}:
+                            outputStatsFile.write(f"The initial learning rate is {learning_rate_init_var}\n")
+                        if solver_var =="sgd":
+                            outputStatsFile.write(f"The power_t exponent for inverse scaling learning rate is {power_t_var}\n")
+                        outputStatsFile.write(f"The maximum number of iterations is {mlp_max_iter_var}\n")
+                        if solver_var in {"adam", "sgd"} and shuffle_var == True:
+                            outputStatsFile.write("Samples are shuffled in each iteration")
+                        outputStatsFile.write(f"The tolerance for optimization is {mlp_tol_var}\n")
+                        if warm_start_var == True:
+                            outputStatsFile.write("Previous solution is reused to fit initialization")
+                        if solver_var =="sgd":
+                            outputStatsFile.write(f"The momentum for gradient descent update is {momentum_var}\n")
+                            if nesterovs_momentum_var == True:
+                                outputStatsFile.write("Using Nesterov’s momentum")
+                        if solver_var in {"adam", "sgd"} and early_stopping_var == True:
+                            outputStatsFile.write("Using early stopping")
+                            outputStatsFile.write(f"The proportion of training data to set aside as validation set is {validation_fraction_var}\n")
+                        if solver_var =="adam":
+                            outputStatsFile.write(f"Exponential decay rate for estimates of first moment vector is {beta_1_var}\n")
+                            outputStatsFile.write(f"For the second moment it's {beta_2_var}\n")
+                            outputStatsFile.write(f"The value for numerical stability is {epsilon_var}\n")
+                        if solver_var in {"adam", "sgd"}:
+                            outputStatsFile.write(f"The maximum number of epochs to not meet tol improvement is {n_iter_no_change_var}\n")
+                        if solver_var =="lbfgs":
+                            outputStatsFile.write(f"The maximum number of loss function calls is {max_fun_var}\n")
 
                     outputStatsFile.write(f"The max fidex and fidexGlo iteration number is {max_iter}\n")
                     outputStatsFile.write(f"The minimum fidex and fidexGlo covering number is {min_cov}\n")
@@ -585,7 +728,7 @@ def crossValid(*args, **kwargs):
                     test_idx = (ki + 1) % k
                     for m in range(2, k):
                         train_idx.append((ki + m) % k)
-                    if train_method == "svm": # There is no validation to tune hyperparameters in svm
+                    if train_method in {"svm", "mlp"}: # There is no validation to tune hyperparameters in svm
                         train_idx.append(validation_idx)
 
                     # Creation of train, test and validation files (temp files)
@@ -725,10 +868,38 @@ def crossValid(*args, **kwargs):
                             return -1 # If there is an error in the Trn
 
 
-                    else:
+                    elif train_method == "svm":
                         # Training with svm
                         print("Enter in svmTrn function")
-                        res = svmTrn(train_data=folder_path_from_root + separator + "train.txt",train_class=folder_path_from_root + separator + "trainTarget.txt", test_data=folder_path_from_root + separator + "test.txt",test_class=folder_path_from_root + separator + "testTarget.txt", weights = folder_path_from_root + separator + "weights", stats = folder_path_from_root + separator + "stats.txt", output_file = "consoleTemp.txt", train_pred = folder_path_from_root + separator + "train", test_pred = folder_path_from_root + separator + "test", save_folder = save_folder, nb_stairs = nb_stairs, hiknot = hiknot, K = svm_k, C = c_var, kernel = kernel_var, degree = degree_var, gamma = gamma_var, coef0 = coef0_var, shrinking = shrinking_var, tol = tol_var, cache_size = cache_size_var, class_weight = class_weight_var, max_iter = svm_max_iter_var, decision_function_shape = decision_function_shape_var, break_ties = break_ties_var)
+                        res = svmTrn(train_data=folder_path_from_root + separator + "train.txt",train_class=folder_path_from_root + separator + "trainTarget.txt",
+                                     test_data=folder_path_from_root + separator + "test.txt",test_class=folder_path_from_root + separator + "testTarget.txt",
+                                     weights = folder_path_from_root + separator + "weights", stats = folder_path_from_root + separator + "stats.txt",
+                                     output_file = "consoleTemp.txt", train_pred = folder_path_from_root + separator + "train",
+                                     test_pred = folder_path_from_root + separator + "test", save_folder = save_folder, nb_stairs = nb_stairs, hiknot = hiknot,
+                                     K = svm_k, C = c_var, kernel = kernel_var, degree = degree_var, gamma = gamma_var, coef0 = coef0_var, shrinking = shrinking_var,
+                                     tol = svm_tol_var, cache_size = cache_size_var, class_weight = class_weight_var, max_iter = svm_max_iter_var,
+                                     decision_function_shape = decision_function_shape_var, break_ties = break_ties_var)
+
+                        if (res == -1):
+                            return -1 # If there is an error in the Trn
+
+                    else:
+                        # Training with mlp
+                        print("Enter in mlpTrn function")
+                        random_state_var = seed
+                        if seed == 0:
+                            random_state_var = None
+                        res = mlpTrn(train_data=folder_path_from_root + separator + "train.txt",train_class=folder_path_from_root + separator + "trainTarget.txt",
+                                     test_data=folder_path_from_root + separator + "test.txt",test_class=folder_path_from_root + separator + "testTarget.txt",
+                                     weights = folder_path_from_root + separator + "weights", stats = folder_path_from_root + separator + "stats.txt",
+                                     output_file = "consoleTemp.txt", train_pred = folder_path_from_root + separator + "train",
+                                     test_pred = folder_path_from_root + separator + "test", save_folder = save_folder, nb_stairs = nb_stairs, hiknot = hiknot,
+                                     K = mlp_k, hidden_layer_sizes = hidden_layer_sizes_var, activation = activation_var, solver = solver_var, alpha = alpha_var,
+                                     batch_size = batch_size_var, learning_rate = learning_rate_var, learning_rate_init = learning_rate_init_var, power_t = power_t_var,
+                                     max_iter = mlp_max_iter_var, shuffle = shuffle_var, tol = mlp_tol_var, warm_start = warm_start_var, momentum = momentum_var,
+                                     nesterovs_momentum = nesterovs_momentum_var, early_stopping = early_stopping_var, validation_fraction = validation_fraction_var,
+                                     beta_1 = beta_1_var, beta_2 = beta_2_var, epsilon = epsilon_var, n_iter_no_change = n_iter_no_change_var, max_fun = max_fun_var,
+                                     random_state = random_state_var)
 
                         if (res == -1):
                             return -1 # If there is an error in the Trn
@@ -1408,3 +1579,4 @@ def crossValid(*args, **kwargs):
 
 # Exemple Dimlp : crossValid(train_method="dimlp", algo="both", data_file="datanorm", class_file="dataclass2", nb_in=16, nb_out=2, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLP", K=3, N=2, seed=33)
 # Exemple SVM : crossValid(train_method="svm", algo="both", data_file="datanorm", class_file="dataclass2", save_folder="dimlp/datafiles", crossVal_folder="CrossValidationSVM", K=3, N=2, seed=33)
+# Exemple MLP : crossValid(train_method="mlp", algo="both", data_file="datanorm", class_file="dataclass2", save_folder="dimlp/datafiles", crossVal_folder="CrossValidationMLP", K=3, N=2, seed=33)
