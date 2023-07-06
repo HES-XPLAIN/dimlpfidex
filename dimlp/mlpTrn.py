@@ -133,8 +133,14 @@ def mlpTrn(*args, **kwargs):
             print("verbose : enable verbose output, True or False(default)")
             print("warm_start : whether to reuse previous solution to fit initialization, True or False(default)")
             print("momentum : Momentum for gradient descent update for sgd, between 0 and 1 (0.9 by default)")
-
-
+            print("nesterovs_momentum : whether to use Nesterov’s momentum for sgd and momentum > 0, True(default) or False")
+            print("early_stopping : whether to use early stopping to terminate training when validation score is not improving for sgd and adam, True or False(default)")
+            print("validation_fraction : proportion of training data to set aside as validation set for early stopping, between 0 and 1 excluded (0.1 by default)")
+            print("beta_1 : exponential decay rate for estimates of first moment vector in adam, between 0 and 1 excluded (0.9 by default)")
+            print("beta_2 : exponential decay rate for estimates of second moment vector in adam, between 0 and 1 excluded (0.999 by default)")
+            print("epsilon : value for numerical stability in adam, positive float (1e-8 by default)")
+            print("n_iter_no_change : maximum number of epochs to not meet tol improvement for sgd and adam, integer >= 1 (10 by default)")
+            print("max_fun : maximum number of loss function calls for lbfgs, integer >= 1 (15000 by default)")
             print("----------------------------")
             print("----------------------------")
             print("Here is an example, keep same parameter names :")
@@ -178,6 +184,14 @@ def mlpTrn(*args, **kwargs):
             verbose_var = kwargs.get('verbose')
             warm_start_var = kwargs.get('warm_start')
             momentum_var = kwargs.get('momentum')
+            nesterovs_momentum_var = kwargs.get('nesterovs_momentum')
+            early_stopping_var = kwargs.get('early_stopping')
+            validation_fraction_var = kwargs.get('validation_fraction')
+            beta_1_var = kwargs.get('beta_1')
+            beta_2_var = kwargs.get('beta_2')
+            epsilon_var = kwargs.get('epsilon')
+            n_iter_no_change_var = kwargs.get('n_iter_no_change')
+            max_fun_var = kwargs.get('max_fun')
 
             # Redirect output in file
             if output_file != None:
@@ -213,7 +227,8 @@ def mlpTrn(*args, **kwargs):
 
             valid_args = ['train_data', 'train_class', 'test_data', 'test_class', 'train_pred', 'test_pred', 'weights',
                         'stats', 'K', 'nb_stairs', 'hiknot', 'save_folder', 'output_file', 'hidden_layer_sizes', 'activation', 'solver', 'alpha', 'batch_size', 'learning_rate',
-                        'learning_rate_init', 'power_t', 'max_iter', 'shuffle', 'random_state', 'tol', 'verbose', 'warm_start', 'momentum']
+                        'learning_rate_init', 'power_t', 'max_iter', 'shuffle', 'random_state', 'tol', 'verbose', 'warm_start', 'momentum', 'nesterovs_momentum', 'early_stopping',
+                        'validation_fraction', 'beta_1', 'beta_2', 'epsilon', 'n_iter_no_change', 'max_fun']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
@@ -358,7 +373,45 @@ def mlpTrn(*args, **kwargs):
             elif not check_positive(momentum_var) or momentum_var > 1:
                 raise ValueError('Error, parameter momentum is not a number between 0 and 1')
 
+            if nesterovs_momentum_var is None:
+                nesterovs_momentum_var = True
+            elif not check_bool(nesterovs_momentum_var):
+                raise ValueError('Error, parameter nesterovs_momentum is not boolean')
 
+            if early_stopping_var is None:
+                early_stopping_var = False
+            elif not check_bool(early_stopping_var):
+                raise ValueError('Error, parameter early_stopping is not boolean')
+
+            if validation_fraction_var is None:
+                validation_fraction_var = 0.1
+            elif not check_positive(validation_fraction_var) or validation_fraction_var >= 1:
+                raise ValueError('Error, parameter validation_fraction is not a number between 0 and 1 excluded')
+
+            if beta_1_var is None:
+                beta_1_var = 0.9
+            elif not check_positive(beta_1_var) or beta_1_var >= 1:
+                raise ValueError('Error, parameter beta_1 is not a number between 0 and 1 excluded')
+
+            if beta_2_var is None:
+                beta_2_var = 0.999
+            elif not check_positive(beta_2_var) or beta_2_var >= 1:
+                raise ValueError('Error, parameter beta_2 is not a number between 0 and 1 excluded')
+
+            if epsilon_var is None:
+                epsilon_var = 0.00000001
+            elif not check_strictly_positive(epsilon_var):
+                raise ValueError('Error, parameter epsilon is not a strictly positive number')
+
+            if n_iter_no_change_var is None:
+                n_iter_no_change_var = 10
+            elif not check_int(n_iter_no_change_var) or n_iter_no_change_var < 1:
+                raise ValueError('Error, parameter n_iter_no_change is not an integer bigger than 0')
+
+            if max_fun_var is None:
+                max_fun_var = 15000
+            elif not check_int(max_fun_var) or max_fun_var < 1:
+                raise ValueError('Error, parameter max_fun is not an integer bigger than 0')
 
 
             # Get weights and biais from first hidden layer as well as data transformed in first hidden layer
@@ -367,15 +420,11 @@ def mlpTrn(*args, **kwargs):
             test_data_h1 = compute_first_hidden_layer(test_data, K, quant, hiknot, weights_file)
 
             # Train mlp
-            """model = MLPClassifier(hidden_layer_sizes=(100,), activation='relu', solver='adam', alpha=0.0001,
-                      batch_size='auto', learning_rate='constant', learning_rate_init=0.001,
-                      power_t=0.5, max_iter=200, shuffle=True, random_state=None, tol=0.0001,
-                      verbose=False, warm_start=False, momentum=0.9, nesterovs_momentum=True,
-                      early_stopping=False, validation_fraction=0.1, beta_1=0.9, beta_2=0.999,
-                      epsilon=1e-08, n_iter_no_change=10, max_fun=15000)"""
             model = MLPClassifier(hidden_layer_sizes = hidden_layer_sizes_var, activation = activation_var, solver = solver_var, alpha = alpha_var, batch_size = batch_size_var,
                                   learning_rate = learning_rate_var, learning_rate_init = learning_rate_init_var, power_t = power_t_var, max_iter = max_iter_var, shuffle = shuffle_var,
-                                  random_state = random_state_var, tol = tol_var, verbose = verbose_var, warm_start = warm_start_var, momentum = momentum_var)
+                                  random_state = random_state_var, tol = tol_var, verbose = verbose_var, warm_start = warm_start_var, momentum = momentum_var, nesterovs_momentum = nesterovs_momentum_var,
+                                  early_stopping = early_stopping_var, validation_fraction = validation_fraction_var, beta_1 = beta_1_var, beta_2 = beta_2_var, epsilon = epsilon_var,
+                                  n_iter_no_change = n_iter_no_change_var, max_fun = max_fun_var)
 
             model.fit(train_data_h1, train_class)    # Train the model using the training sets
 
