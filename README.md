@@ -14,7 +14,7 @@ Install with your package manager:
 
 #### Windows
 
-* Install [MinGW-W64](https://www.mingw-w64.org/) with the [online installer](https://github.com/Vuniverse0/mingwInstaller/releases) (64 bit, POSIX, ucrt)
+* Install [MinGW-W64](https://www.mingw-w64.org/) with the [online installer](https://github.com/Vuniverse0/mingwInstaller/releases) (64 bit, win32, ucrt)
 * Install [CMake](https://cmake.org/):
 
 ```shell
