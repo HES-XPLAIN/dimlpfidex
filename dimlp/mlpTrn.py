@@ -135,7 +135,6 @@ def mlpTrn(*args, **kwargs):
 
             save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, weights_file, stats_file, K, quant, hiknot = check_parameters(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, weights_file, stats_file, K, quant, hiknot)
 
-
             if hidden_layer_sizes_var is None:
                 hidden_layer_sizes_var = (100,)
             elif not isinstance(hidden_layer_sizes_var, tuple) and not isinstance(hidden_layer_sizes_var, list) and not check_strictly_positive(hidden_layer_sizes_var):

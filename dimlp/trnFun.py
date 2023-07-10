@@ -71,6 +71,9 @@ def output_pred_proba(pred, pred_file):
 def compute_first_hidden_layer(input_data, k, nb_stairs, hiknot, weights_file):
     mu = np.mean(input_data, axis=0) # mean over variables
     sigma = np.std(input_data, axis=0)
+    for i in range(len(sigma)):
+        if sigma[i] == 0:
+            sigma[i] = 0.001
     weights = k/sigma
     biais = -k*mu/sigma
 
@@ -112,7 +115,7 @@ def output_stats(stats_file, acc_train, acc_test):
             raise ValueError(f"Error : Couldn't open file {stats_file}.")
 
 
-def check_parameters(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, weights_file, stats_file, K, quant, hiknot):
+def check_parameters(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, weights_file, stats_file, k, quant, hiknot):
     if (save_folder is not None and (not isinstance(save_folder, str))):
         raise ValueError('Error : parameter save_folder has to be a name contained in quotation marks "".')
 
@@ -157,9 +160,9 @@ def check_parameters(save_folder, train_data_file, train_class_file, test_data_f
     if stats_file is not None and not isinstance(stats_file, str):
         raise ValueError('Error : parameter stats_file has to be a name contained in quotation marks "".')
 
-    if K is None:
-        K = 1
-    elif not check_strictly_positive(K):
+    if k is None:
+        k = 1
+    elif not check_strictly_positive(k):
         raise ValueError('Error, parameter K is not a strictly positive number')
 
     if quant is None:
@@ -172,4 +175,4 @@ def check_parameters(save_folder, train_data_file, train_class_file, test_data_f
     elif not check_int(hiknot):
         raise ValueError('Error, parameter hiknot is not a number')
 
-    return save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, weights_file, stats_file, K, quant, hiknot
+    return save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, weights_file, stats_file, k, quant, hiknot
