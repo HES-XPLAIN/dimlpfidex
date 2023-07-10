@@ -492,12 +492,12 @@ def crossValid(*args, **kwargs):
 
 
             # Create temp files for train, test and validation
-            temp_train_file= root + "tempTrain.txt"
-            temp_test_file = root + "tempTest.txt"
-            temp_valid_file = root + "tempValid.txt"
-            temp_train_tar_file = root + "tempTarTrain.txt"
-            temp_test_tar_file = root + "tempTarTest.txt"
-            temp_valid_tar_file = root + "tempTarValid.txt"
+            temp_train_file= crossval_folder + separator + "tempTrain.txt"
+            temp_test_file = crossval_folder + separator + "tempTest.txt"
+            temp_valid_file = crossval_folder + separator + "tempValid.txt"
+            temp_train_tar_file = crossval_folder + separator + "tempTarTrain.txt"
+            temp_test_tar_file = crossval_folder + separator + "tempTarTest.txt"
+            temp_valid_tar_file = crossval_folder + separator + "tempTarValid.txt"
 
             # statistics for Fidex
             # One execution
@@ -860,7 +860,7 @@ def crossValid(*args, **kwargs):
                         dimlp_command += "-v " + folder_path_from_root + separator + "valid.out "   # Output validation pred file
                         dimlp_command += "-w " + folder_path_from_root + separator + "weights.wts " # Output weight file
 
-                        dimlp_command += "-r consoleTemp.txt" # To not show console result
+                        dimlp_command += "-r " + str(crossval_folder_temp) + separator + "consoleTemp.txt" # To not show console result
 
                         print("Enter in DimlpTrn function")
                         res = dimlp.dimlpTrn(dimlp_command)
@@ -874,7 +874,7 @@ def crossValid(*args, **kwargs):
                         res = svmTrn(train_data=folder_path_from_root + separator + "train.txt",train_class=folder_path_from_root + separator + "trainTarget.txt",
                                      test_data=folder_path_from_root + separator + "test.txt",test_class=folder_path_from_root + separator + "testTarget.txt",
                                      weights = folder_path_from_root + separator + "weights", stats = folder_path_from_root + separator + "stats.txt",
-                                     output_file = "consoleTemp.txt", train_pred = folder_path_from_root + separator + "train",
+                                     output_file = crossval_folder_temp + separator + "consoleTemp.txt", train_pred = folder_path_from_root + separator + "train",
                                      test_pred = folder_path_from_root + separator + "test", save_folder = save_folder, nb_stairs = nb_stairs, hiknot = hiknot,
                                      K = svm_k, C = c_var, kernel = kernel_var, degree = degree_var, gamma = gamma_var, coef0 = coef0_var, shrinking = shrinking_var,
                                      tol = svm_tol_var, cache_size = cache_size_var, class_weight = class_weight_var, max_iter = svm_max_iter_var,
@@ -892,7 +892,7 @@ def crossValid(*args, **kwargs):
                         res = mlpTrn(train_data=folder_path_from_root + separator + "train.txt",train_class=folder_path_from_root + separator + "trainTarget.txt",
                                      test_data=folder_path_from_root + separator + "test.txt",test_class=folder_path_from_root + separator + "testTarget.txt",
                                      weights = folder_path_from_root + separator + "weights", stats = folder_path_from_root + separator + "stats.txt",
-                                     output_file = "consoleTemp.txt", train_pred = folder_path_from_root + separator + "train",
+                                     output_file = crossval_folder_temp + separator + "consoleTemp.txt", train_pred = folder_path_from_root + separator + "train",
                                      test_pred = folder_path_from_root + separator + "test", save_folder = save_folder, nb_stairs = nb_stairs, hiknot = hiknot,
                                      K = mlp_k, hidden_layer_sizes = hidden_layer_sizes_var, activation = activation_var, solver = solver_var, alpha = alpha_var,
                                      batch_size = batch_size_var, learning_rate = learning_rate_var, learning_rate_init = learning_rate_init_var, power_t = power_t_var,
@@ -1122,7 +1122,10 @@ def crossValid(*args, **kwargs):
                         if is_fidex:
                             formatted_mean_current_exec_values_fidex = []
                             for i in range(len(mean_current_exec_values_fidex)):
-                                formatted_mean_current_exec_values_fidex.append("{:.6f}".format(mean_current_exec_values_fidex[i]).rstrip(".0"))
+                                formatted_val = "{:.6f}".format(mean_current_exec_values_fidex[i]).rstrip(".0")
+                                if formatted_val == "":
+                                    formatted_val = "0"
+                                formatted_mean_current_exec_values_fidex.append(formatted_val)
                             outputStatsFile.write("Fidex :\n")
                             outputStatsFile.write(f"The mean covering size per rule is: {formatted_mean_current_exec_values_fidex[0]}\n")
                             outputStatsFile.write(f"The mean number of antecedents per rule is: {formatted_mean_current_exec_values_fidex[1]}\n")
@@ -1145,7 +1148,10 @@ def crossValid(*args, **kwargs):
                         if is_fidexglo:
                             formatted_mean_current_exec_values_fidexglo = []
                             for i in range(len(mean_current_exec_values_fidexglo)):
-                                formatted_mean_current_exec_values_fidexglo.append("{:.6f}".format(mean_current_exec_values_fidexglo[i]).rstrip(".0"))
+                                formatted_val = "{:.6f}".format(mean_current_exec_values_fidexglo[i]).rstrip(".0")
+                                if formatted_val == "":
+                                    formatted_val = "0"
+                                formatted_mean_current_exec_values_fidexglo.append(formatted_val)
                             outputStatsFile.write("FidexGlo :\n")
                             outputStatsFile.write(f"The mean number of rules is: {formatted_mean_current_exec_values_fidexglo[0]}\n")
                             outputStatsFile.write(f"The mean sample covering number per rule is: {formatted_mean_current_exec_values_fidexglo[1]}\n")
@@ -1509,7 +1515,7 @@ def crossValid(*args, **kwargs):
 
             # Delete temporary files
             try:
-                console_file = root + "consoleTemp.txt"
+                console_file = crossval_folder + separator + "consoleTemp.txt"
                 os.remove(console_file)
             except FileNotFoundError:
                 print(f"Error : File '{console_file}' not found.")
@@ -1517,7 +1523,7 @@ def crossValid(*args, **kwargs):
                 print(f"Error during delete of file {console_file}")
 
             try:
-                train_file = root + "tempTrain.txt"
+                train_file = crossval_folder + separator + "tempTrain.txt"
                 os.remove(train_file)
             except FileNotFoundError:
                 print(f"Error : File '{train_file}' not found.")
@@ -1525,7 +1531,7 @@ def crossValid(*args, **kwargs):
                 print(f"Error during delete of file {train_file}")
 
             try:
-                test_file = root + "tempTest.txt"
+                test_file = crossval_folder + separator + "tempTest.txt"
                 os.remove(test_file)
             except FileNotFoundError:
                 print(f"Error : File '{test_file}' not found.")
@@ -1533,7 +1539,7 @@ def crossValid(*args, **kwargs):
                 print(f"Error during delete of file {test_file}")
 
             try:
-                tar_train_file = root + "tempTarTrain.txt"
+                tar_train_file = crossval_folder + separator + "tempTarTrain.txt"
                 os.remove(tar_train_file)
             except FileNotFoundError:
                 print(f"Error : File '{tar_train_file}' not found.")
@@ -1541,7 +1547,7 @@ def crossValid(*args, **kwargs):
                 print(f"Error during delete of file {tar_train_file}")
 
             try:
-                tar_test_file = root + "tempTarTest.txt"
+                tar_test_file = crossval_folder + separator + "tempTarTest.txt"
                 os.remove(tar_test_file)
             except FileNotFoundError:
                 print(f"Error : File '{tar_test_file}' not found.")
@@ -1550,7 +1556,7 @@ def crossValid(*args, **kwargs):
 
             if train_method == "dimlp":
                 try:
-                    valid_file = root + "tempValid.txt"
+                    valid_file = crossval_folder + separator + "tempValid.txt"
                     os.remove(valid_file)
                 except FileNotFoundError:
                     print(f"Error : File '{valid_file}' not found.")
@@ -1558,7 +1564,7 @@ def crossValid(*args, **kwargs):
                     print(f"Error during delete of file {valid_file}")
 
                 try:
-                    tar_valid_file = root + "tempTarValid.txt"
+                    tar_valid_file = crossval_folder + separator + "tempTarValid.txt"
                     os.remove(tar_valid_file)
                 except FileNotFoundError:
                     print(f"Error : File '{tar_valid_file}' not found.")
@@ -1570,6 +1576,16 @@ def crossValid(*args, **kwargs):
         full_time = "{:.6f}".format(full_time).rstrip(".0")
 
         print(f"\nFull execution time = {full_time} sec")
+
+        try:
+            with open(crossval_stats, "a") as outputStatsFile:
+                outputStatsFile.write("\n")
+                outputStatsFile.write(f"\nExecution time = {full_time} sec")
+                outputStatsFile.close()
+        except (FileNotFoundError):
+            raise ValueError(f"Error : File for stats extraction ({crossval_stats}) not found.")
+        except (IOError):
+            raise ValueError(f"Error : Couldn't open stats extraction file {crossval_stats}.")
 
         return 0
     except ValueError as error:
