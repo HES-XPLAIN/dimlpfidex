@@ -90,7 +90,7 @@ def crossValid(*args, **kwargs):
             print("seed : 0 = random (default)")
 
             print("----------------------------")
-            print("Optional parameters for dimlp training:")
+            print("Optional parameters for dimlp and dimlpBT training:")
             print("pretrained_weights : file of pretrained weights")
             print("H1 : number of neurons in the first hidden layer. If not specified this number will be equal to the number of input neurons.")
             print("Hk : number of neurons in the kth hidden layer.")
@@ -102,6 +102,11 @@ def crossValid(*args, **kwargs):
             print("delta_err : absolute difference error threshold (0 by default)")
             print("nb_epochs : number of train epochs (1500 by default)")
             print("show_err : number of train epochs to show error (10 by default)")
+
+            print("----------------------------")
+            print("Optional parameters for dimlpBT training:")
+            print("nb_dimlp_nets : number of dimlp networks, integer >= 2 (25 by default)")
+            print("nb_ex_in_one : number of examples for one single network, positive integer, 0 = number of train examples (default)")
 
             print("----------------------------")
             print("Optional parameters for svm training:")
@@ -149,7 +154,10 @@ def crossValid(*args, **kwargs):
 
             print("Here is an example, keep same parameter names :")
             print("Exemple with Dimlp :")
-            print('crossValid(train_method="dimlp", algo="both", data_file="datanorm", class_file="dataclass2", nb_in=16, nb_out=2, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLP")')
+            print('crossValid(train_method="dimlp", algo="both", data_file="datanorm", class_file="dataclass2", nb_in=16, nb_out=2, H2=5, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLP")')
+            print("----------------------------")
+            print("Exemple with DimlpBT :")
+            print('crossValid(train_method="dimlpBT", algo="both", data_file="datanorm", class_file="dataclass2", nb_in=16, nb_out=2, H2=5, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLPBT")')
             print("----------------------------")
             print("Exemple with SVM :")
             print('crossValid(train_method="svm", algo="both", data_file="datanorm", class_file="dataclass2", save_folder="dimlp/datafiles", crossVal_folder="CrossValidationSVM")')
@@ -202,6 +210,9 @@ def crossValid(*args, **kwargs):
             nb_epochs = kwargs.get('nb_epochs')
             show_err = kwargs.get('show_err')
 
+            nb_dimlp_nets = kwargs.get('nb_dimlp_nets')
+            nb_ex_in_one = kwargs.get('nb_ex_in_one')
+
             svm_k = kwargs.get('svm_K')
             c_var = kwargs.get('C')
             kernel_var = kwargs.get('kernel')
@@ -250,6 +261,8 @@ def crossValid(*args, **kwargs):
             optional_dimlp_args = ['pretrained_weights', 'eta', 'mu', 'flat', 'err_thresh',
                         'acc_thresh', 'delta_err', 'nb_epochs', 'show_err']
 
+            optional_dimlpBT_args = ['nb_dimlp_nets', 'nb_ex_in_one']
+
             optional_svm_args = ['svm_K', 'C', 'kernel', 'degree', 'gamma', 'coef0', 'shrinking',
                         'svm_tol', 'cache_size', 'class_weight', 'svm_max_iter', 'decision_function_shape', 'break_ties']
 
@@ -260,16 +273,19 @@ def crossValid(*args, **kwargs):
 
             # Check if wrong parameters are given
 
-            train_methods = {"dimlp", "svm", "mlp"}
+            train_methods = {"dimlp", "dimlpBT", "svm", "mlp"}
             if train_method is None:
-                raise ValueError('Error : train method is missing, add it with option train_method="dimlp", "svm" or "mlp"')
+                raise ValueError('Error : train method is missing, add it with option train_method="dimlp", "dimlpBT", "svm" or "mlp"')
             elif (train_method not in train_methods):
-                raise ValueError('Error, parameter train_method is not dimlp, svm or mlp')
+                raise ValueError('Error, parameter train_method is not dimlp, dimlpBT, svm or mlp')
 
             for arg_key in kwargs.keys():
                 if (train_method == "dimlp"):
                     if (arg_key not in optional_args and arg_key not in optional_dimlp_args and not(arg_key.startswith('H') and arg_key[1:].isdigit()) and arg_key not in obligatory_args and arg_key not in obligatory_dimlp_args):
                         raise ValueError(f"Invalid argument with dimlp training : {arg_key}")
+                elif (train_method == "dimlpBT"):
+                    if (arg_key not in optional_args and arg_key not in optional_dimlp_args and not(arg_key.startswith('H') and arg_key[1:].isdigit()) and arg_key not in obligatory_args and arg_key not in obligatory_dimlp_args and arg_key not in optional_dimlpBT_args):
+                        raise ValueError(f"Invalid argument with dimlpBT training : {arg_key}")
                 elif (train_method == "svm"):
                     if (arg_key not in optional_args and arg_key not in optional_svm_args and arg_key not in obligatory_args):
                         raise ValueError(f"Invalid argument with svm training : {arg_key}")
@@ -339,7 +355,18 @@ def crossValid(*args, **kwargs):
             elif (not isinstance(seed, int) or seed<0):
                 raise ValueError('Error, parameter seed is not an positive integer')
 
-            if train_method == "dimlp":
+            if train_method == "dimlpBT":
+                if nb_dimlp_nets is None:
+                    nb_dimlp_nets = 25
+                elif not isinstance(nb_dimlp_nets, int) or nb_dimlp_nets < 2:
+                    raise ValueError('Error, parameter nb_dimlp_nets is not an integer greater than 1')
+
+                if nb_ex_in_one is None :
+                    nb_ex_in_one = 0
+                elif not isinstance(nb_ex_in_one, int) or nb_ex_in_one < 0:
+                    raise ValueError('Error, parameter nb_ex_in_one is not a positive integer')
+
+            if train_method in {"dimlp", "dimlpBT"}:
 
                 if nb_in is None:
                     raise ValueError('Error : the number of input neurons is missing, add it with option nb_in=your_number')
@@ -573,10 +600,16 @@ def crossValid(*args, **kwargs):
                     outputStatsFile.write(f"Parameters for {n} times {k}-Cross validation :\n")
                     outputStatsFile.write(f"Training with {train_method}\n")
                     outputStatsFile.write("---------------------------------------------------------\n")
-                    if train_method == "dimlp":
+                    if train_method in {"dimlp", "dimlpBT"}:
                         outputStatsFile.write(f"Training with {nb_in} input neurons and {nb_out} output neurons\n")
                     outputStatsFile.write(f"The number of stairs in staircase activation function is {nb_stairs} and the interval in which hyperplans are contained is [-{hiknot},{hiknot}]\n")
-                    if train_method == "dimlp":
+                    if train_method == "dimlpBT":
+                        outputStatsFile.write(f"The number of dimlp networks is {nb_dimlp_nets}\n")
+                        if nb_ex_in_one == 0:
+                            outputStatsFile.write("The number of examples for one single network is the number of train examples\n")
+                        else:
+                            outputStatsFile.write(f"The number of examples for one single network is {nb_ex_in_one} (but not more than the number of train examples)\n")
+                    if train_method in {"dimlp", "dimlpBT"}:
                         outputStatsFile.write(f"The back-propagation learning parameter (Eta) is {eta}\n")
                         outputStatsFile.write(f"The back-propagation momentum parameter (Mu) is {mu}\n")
                         outputStatsFile.write(f"The back-propagation flat spot elimination parameter (Flat) is {flat}\n")
@@ -728,7 +761,7 @@ def crossValid(*args, **kwargs):
                     test_idx = (ki + 1) % k
                     for m in range(2, k):
                         train_idx.append((ki + m) % k)
-                    if train_method in {"svm", "mlp"}: # There is no validation to tune hyperparameters in svm
+                    if train_method in {"dimlpBT", "svm", "mlp"}: # There is no validation to tune hyperparameters in svm
                         train_idx.append(validation_idx)
 
                     # Creation of train, test and validation files (temp files)
@@ -825,8 +858,14 @@ def crossValid(*args, **kwargs):
 
                     # Training with dimlp
                     folder_path_from_root = str(crossval_folder_temp) + separator + "Execution" + str(ni + 1) + separator + "Fold" + str(ki + 1)
-                    if train_method == "dimlp":
-                        dimlp_command = "dimlpTrn"
+                    if train_method in {"dimlp", "dimlpBT"}:
+                        if train_method == "dimlp":
+                            dimlp_command = "dimlpTrn"
+                        else:
+                            dimlp_command = "dimlpBT"
+                            dimlp_command += " -N " + str(nb_dimlp_nets)
+                            dimlp_command += " -n " + str(nb_ex_in_one)
+
                         dimlp_command += " -l " + str(eta)
                         dimlp_command += " -m " + str(mu)
                         dimlp_command += " -f " + str(flat)
@@ -850,20 +889,29 @@ def crossValid(*args, **kwargs):
 
                         dimlp_command += " -L " + folder_path_from_root + separator + "train.txt "
                         dimlp_command += "-T " + folder_path_from_root + separator + "test.txt "
-                        dimlp_command += "-V " + folder_path_from_root + separator + "valid.txt "
                         dimlp_command += "-1 " + folder_path_from_root + separator + "trainTarget.txt "
                         dimlp_command += "-2 " + folder_path_from_root + separator + "testTarget.txt "
-                        dimlp_command += "-3 " + folder_path_from_root + separator + "validTarget.txt "
 
                         dimlp_command += "-p " + folder_path_from_root + separator + "train.out "   # Output train pred file
                         dimlp_command += "-t " + folder_path_from_root + separator + "test.out "    # Output test pred file
-                        dimlp_command += "-v " + folder_path_from_root + separator + "valid.out "   # Output validation pred file
-                        dimlp_command += "-w " + folder_path_from_root + separator + "weights.wts " # Output weight file
+                        dimlp_command += "-o " + folder_path_from_root + separator + "stats.txt "    # Output stats file
+
+                        if train_method == "dimlp":
+                            dimlp_command += "-V " + folder_path_from_root + separator + "valid.txt "
+                            dimlp_command += "-3 " + folder_path_from_root + separator + "validTarget.txt "
+                            dimlp_command += "-v " + folder_path_from_root + separator + "valid.out "   # Output validation pred file
+                            dimlp_command += "-w " + folder_path_from_root + separator + "weights.wts " # Output weight file
+                        else:
+                            dimlp_command += "-w " + folder_path_from_root + separator + "weightsBT " # Output weight generic filename
 
                         dimlp_command += "-r " + str(crossval_folder_temp) + separator + "consoleTemp.txt" # To not show console result
 
-                        print("Enter in DimlpTrn function")
-                        res = dimlp.dimlpTrn(dimlp_command)
+                        if train_method == "dimlp":
+                            print("Enter in DimlpTrn function")
+                            res = dimlp.dimlpTrn(dimlp_command)
+                        else:
+                            print("Enter in DimlpBT function")
+                            res = dimlp.dimlpBT(dimlp_command)
                         if (res == -1):
                             return -1 # If there is an error in the Trn
 
@@ -921,7 +969,11 @@ def crossValid(*args, **kwargs):
                         fidex_command +=  " -z " + str(seed)
 
                         fidex_command +=  " -Q " + str(nb_stairs)
-                        fidex_command +=  " -W " + folder_path_from_root + separator + "weights.wts"
+                        if train_method == "dimlp":
+                            fidex_command +=  " -W " + folder_path_from_root + separator + "weights.wts"
+                        elif train_method == "dimlpBT":
+                            fidex_command +=  " -W " + folder_path_from_root + separator + "weightsBT"
+                            fidex_command +=  " -N " + str(nb_dimlp_nets)
 
                         fidex_command += " -T " + folder_path_from_root + separator + "train.txt"
                         fidex_command += " -P " + folder_path_from_root + separator + "train.out"
@@ -984,7 +1036,11 @@ def crossValid(*args, **kwargs):
                             fidexglo_rules_command +=  " -h " + str(dropout_hyp)
                         fidexglo_rules_command +=  " -z " + str(seed)
                         fidexglo_rules_command +=  " -Q " + str(nb_stairs)
-                        fidexglo_rules_command +=  " -W " + folder_path_from_root + separator + "weights.wts"
+                        if train_method == "dimlp":
+                            fidexglo_rules_command +=  " -W " + folder_path_from_root + separator + "weights.wts"
+                        elif train_method == "dimlpBT":
+                            fidexglo_rules_command +=  " -W " + folder_path_from_root + separator + "weightsBT"
+                            fidexglo_rules_command +=  " -N " + str(nb_dimlp_nets)
 
                         fidexglo_rules_command += " -T " + folder_path_from_root + separator + "train.txt"
                         fidexglo_rules_command += " -P " + folder_path_from_root + separator + "train.out"
@@ -1593,6 +1649,7 @@ def crossValid(*args, **kwargs):
         return -1
 
 
-# Exemple Dimlp : crossValid(train_method="dimlp", algo="both", data_file="datanorm", class_file="dataclass2", nb_in=16, nb_out=2, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLP", K=3, N=2, seed=33)
+# Exemple Dimlp : crossValid(train_method="dimlp", algo="both", data_file="datanorm", class_file="dataclass2", nb_in=16, nb_out=2, H2=5, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLP", K=3, N=2, seed=33)
+# Exemple DimlpBT : crossValid(train_method="dimlpBT", algo="both", data_file="datanorm", class_file="dataclass2", nb_in=16, nb_out=2, H2=5, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLPBT", K=3, N=2, seed=33)
 # Exemple SVM : crossValid(train_method="svm", algo="both", data_file="datanorm", class_file="dataclass2", save_folder="dimlp/datafiles", crossVal_folder="CrossValidationSVM", K=3, N=2, seed=33)
 # Exemple MLP : crossValid(train_method="mlp", algo="both", data_file="datanorm", class_file="dataclass2", save_folder="dimlp/datafiles", crossVal_folder="CrossValidationMLP", K=3, N=2, seed=33)
