@@ -50,7 +50,6 @@ void GiveAllParamDimlpBT()
 ////////////////////////////////////////////////////////////
 
 int dimlpBT(const string &command) {
-
   float temps;
   clock_t t1;
   clock_t t2;
@@ -562,16 +561,16 @@ int dimlpBT(const string &command) {
     return -1;
   }
   if (learnTarInit != false) {
-    static DataSet train(learnFile, nbIn);
-    static DataSet trainClass(learnTar, nbOut);
+    DataSet train(learnFile, nbIn);
+    DataSet trainClass(learnTar, nbOut);
 
     Train = train;
     TrainClass = trainClass;
   } else {
     DataSet data(learnFile, nbIn + nbOut);
 
-    static DataSet train(data.GetNbEx());
-    static DataSet trainClass(data.GetNbEx());
+    DataSet train(data.GetNbEx());
+    DataSet trainClass(data.GetNbEx());
 
     data.ExtractDataAndTarget(train, nbIn, trainClass, nbOut);
 
@@ -583,8 +582,8 @@ int dimlpBT(const string &command) {
 
   if (validFileInit != false) {
     if (validTarInit != false) {
-      static DataSet valid(validFile, nbIn);
-      static DataSet validClass(validTar, nbOut);
+      DataSet valid(validFile, nbIn);
+      DataSet validClass(validTar, nbOut);
 
       Valid = valid;
       ValidClass = validClass;
@@ -593,8 +592,8 @@ int dimlpBT(const string &command) {
     else {
       DataSet data(validFile, nbIn + nbOut);
 
-      static DataSet valid(data.GetNbEx());
-      static DataSet validClass(data.GetNbEx());
+      DataSet valid(data.GetNbEx());
+      DataSet validClass(data.GetNbEx());
 
       data.ExtractDataAndTarget(valid, nbIn, validClass, nbOut);
 
@@ -607,8 +606,8 @@ int dimlpBT(const string &command) {
 
   if (testFileInit != false) {
     if (testTarInit != false) {
-      static DataSet test(testFile, nbIn);
-      static DataSet testClass(testTar, nbOut);
+      DataSet test(testFile, nbIn);
+      DataSet testClass(testTar, nbOut);
 
       Test = test;
       TestClass = testClass;
@@ -617,8 +616,8 @@ int dimlpBT(const string &command) {
     else {
       DataSet data(testFile, nbIn + nbOut);
 
-      static DataSet test(data.GetNbEx());
-      static DataSet testClass(data.GetNbEx());
+      DataSet test(data.GetNbEx());
+      DataSet testClass(data.GetNbEx());
 
       data.ExtractDataAndTarget(test, nbIn, testClass, nbOut);
 
@@ -694,7 +693,7 @@ int dimlpBT(const string &command) {
     }
 
     if (Valid.GetNbEx() > 0) {
-      static DataSet all2(All, Valid);
+      DataSet all2(All, Valid);
       All = all2;
     }
 
