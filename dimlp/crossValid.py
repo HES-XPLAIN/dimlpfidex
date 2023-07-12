@@ -969,9 +969,9 @@ def crossValid(*args, **kwargs):
                         fidex_command +=  " -z " + str(seed)
 
                         fidex_command +=  " -Q " + str(nb_stairs)
-                        if train_method == "dimlp":
+                        if train_method != "dimlpBT":
                             fidex_command +=  " -W " + folder_path_from_root + separator + "weights.wts"
-                        elif train_method == "dimlpBT":
+                        else:
                             fidex_command +=  " -W " + folder_path_from_root + separator + "weightsBT"
                             fidex_command +=  " -N " + str(nb_dimlp_nets)
 
@@ -1036,9 +1036,9 @@ def crossValid(*args, **kwargs):
                             fidexglo_rules_command +=  " -h " + str(dropout_hyp)
                         fidexglo_rules_command +=  " -z " + str(seed)
                         fidexglo_rules_command +=  " -Q " + str(nb_stairs)
-                        if train_method == "dimlp":
+                        if train_method != "dimlpBT":
                             fidexglo_rules_command +=  " -W " + folder_path_from_root + separator + "weights.wts"
-                        elif train_method == "dimlpBT":
+                        else:
                             fidexglo_rules_command +=  " -W " + folder_path_from_root + separator + "weightsBT"
                             fidexglo_rules_command +=  " -N " + str(nb_dimlp_nets)
 
