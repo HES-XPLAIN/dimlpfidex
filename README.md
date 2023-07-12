@@ -57,12 +57,20 @@ poetry.exe --version
 
 ### Compile
 
+Activate the virtual environment:
+
+```shell
+poetry shell
+```
+
 Install python dependencies and compile:
 
 ```shell
 poetry install
 poetry build
 ```
+
+If CMake complains about not finding pybind11, ensure to activate the shell first.
 
 ### Install Pre-commit hooks
 
