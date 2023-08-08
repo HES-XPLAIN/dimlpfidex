@@ -1869,7 +1869,7 @@ void CleanRuleStruct::UnordAccWithDef2(ostream &ruleFile)
   ruleFile << "--- Accuracy of rules on testing set = " << (float)globalAcc / (float)nbEx << "\n";
   ruleFile << "--- Fidelity on testing set (" << fidelity << "/" << nbEx << ") = " << (float)fidelity / (float)nbEx << "\n";
   ruleFile << "--- Accuracy when rules and network agree (" << globalWithout << "/" << fidelity << ") = " << (float)globalWithout / (float)fidelity << "\n\n";
-  ruleFile << "--- Number of default rule activations (network classification) = " << countDef << "\n\n";
+  ruleFile << "--- Default rule activations rate (network classification) = " << (float)countDef / (float)nbEx << "\n\n";
 
   ruleFile << "---------------------------------------------------------\n\n";
 
