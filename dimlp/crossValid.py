@@ -62,7 +62,7 @@ def crossValid(*args, **kwargs):
 
             print("----------------------------")
             print("Obligatory parameters :")
-            print("train_method : dimlp, svm or mlp")
+            print("train_method : dimlp, dimlpBT, svm or mlp")
             print("algo : fidex, fidexGlo or both")
             print("data_file : data file")
             print("class_file : class file")
