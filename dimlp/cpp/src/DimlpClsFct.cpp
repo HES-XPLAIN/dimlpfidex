@@ -411,8 +411,8 @@ int dimlpCls(const string &command) {
   {
     if (testTarInit != false) {
 
-      static DataSet test(testFile, nbIn);
-      static DataSet testClass(testTar, nbOut);
+      DataSet test(testFile, nbIn);
+      DataSet testClass(testTar, nbOut);
 
       Test = test;
       TestClass = testClass;
@@ -421,8 +421,8 @@ int dimlpCls(const string &command) {
     else {
       DataSet data(testFile, nbIn + nbOut);
 
-      static DataSet test(data.GetNbEx());
-      static DataSet testClass(data.GetNbEx());
+      DataSet test(data.GetNbEx());
+      DataSet testClass(data.GetNbEx());
 
       data.ExtractDataAndTarget(test, nbIn, testClass, nbOut);
 
@@ -466,6 +466,8 @@ int dimlpCls(const string &command) {
   cout << "\n-------------------------------------------------\n\n";
 
   std::cout.rdbuf(cout_buff); // reset to standard output again
+
+  BpNN::resetInitRandomGen();
 
   return 0;
 }

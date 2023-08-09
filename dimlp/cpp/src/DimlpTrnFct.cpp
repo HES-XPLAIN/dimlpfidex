@@ -732,7 +732,7 @@ int dimlpTrn(const string &command) {
     }
 
     if (Valid.GetNbEx() > 0) {
-      static DataSet all2(All, Valid);
+      DataSet all2(All, Valid);
       All = all2;
     }
 

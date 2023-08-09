@@ -281,7 +281,7 @@ int dimlpPred(const string &command) {
 
   else // if (testFileInit != false)
   {
-    static DataSet test(testFile, nbIn);
+    DataSet test(testFile, nbIn);
     Test = test;
   }
 
@@ -355,6 +355,8 @@ int dimlpPred(const string &command) {
   cout << "\n-------------------------------------------------\n\n";
 
   std::cout.rdbuf(cout_buff); // reset to standard output again
+
+  BpNN::resetInitRandomGen();
 
   return 0;
 }
