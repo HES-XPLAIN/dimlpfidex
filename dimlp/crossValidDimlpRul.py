@@ -128,7 +128,6 @@ def crossValidDimlpRul(*args, **kwargs):
             K = count_folders(root + "Execution1" + separator, "Fold", False)
             if train_method == "dimlpBT":
                 nb_networks = count_folders(root + "Execution1" + separator + "Fold1" + separator, "weightsBT", True)
-                print(nb_networks)
 
             # Get dimlpRules for each execution and each fold
 
