@@ -47,7 +47,10 @@ def build(setup_kwargs):
         }
     )
 
+
 def build_package():
+    global cpu_count, cmake_command
+
     os.makedirs("build", exist_ok=True)
     os.chdir("build")
 
