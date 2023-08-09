@@ -32,6 +32,38 @@ def count_folders(folder_path, folder_name, is_file):
 
     return n
 
+
+def get_dimlprul_stats(rule_file):
+
+    try:
+        with open(rule_file, "r") as my_file:
+            lines = my_file.readlines()
+            my_file.close()
+
+        # Parcourir les lignes du fichier
+        stats = []
+        in_section = False
+        collect = False
+        for line in lines:
+            line = line.strip()
+            if line.startswith("--- Number of rules ="):
+                in_section = True
+                collect = True
+            elif line.startswith("--- Default rule activations rate"):
+                in_section = False
+            if collect and "=" in line:
+                _, value = line.split("=")
+                stats.append(float(value.strip()))
+            if not in_section:
+                collect = False
+
+    except (FileNotFoundError):
+        raise ValueError(f"Error : FidexGlo stat file {rule_file} not found.")
+    except (IOError):
+        raise ValueError(f"Error : Couldn't open fidexGlo stat file {rule_file}.")
+
+    return stats
+
 def crossValidDimlpRul(*args, **kwargs):
     try:
         if args or not kwargs:
@@ -129,6 +161,37 @@ def crossValidDimlpRul(*args, **kwargs):
             if train_method == "dimlpBT":
                 nb_networks = count_folders(root + "Execution1" + separator + "Fold1" + separator, "weightsBT", True)
 
+
+            # Statistics
+            # One execution
+            mean_nb_rules = 0.0
+            mean_nb_cover = 0.0
+            mean_nb_antecedants = 0.0
+            mean_fidel_glo = 0.0
+            mean_rules_acc_glo = 0.0
+            mean_default_rate = 0.0
+            mean_test_acc_glo = 0.0
+            mean_test_acc_when_rules_and_model_agree = 0.0
+
+            # All executions
+            mean_nb_rules_all = 0.0
+            mean_nb_cover_all = 0.0
+            mean_nb_antecedants_all = 0.0
+            mean_fidel_glo_all = 0.0
+            mean_rules_acc_glo_all = 0.0
+            mean_default_rate_all = 0.0
+            mean_test_acc_glo_all = 0.0
+            mean_test_acc_when_rules_and_model_agree_all = 0.0
+
+            std_nb_rules_all = 0.0
+            std_nb_cover_all = 0.0
+            std_nb_antecedants_all = 0.0
+            std_fidel_glo_all = 0.0
+            std_rules_acc_glo_all = 0.0
+            std_default_rate_all = 0.0
+            std_test_acc_glo_all = 0.0
+            std_test_acc_when_rules_and_model_agree_all = 0.0
+
             # Get dimlpRules for each execution and each fold
 
             for n in range(1, N + 1):
@@ -168,6 +231,11 @@ def crossValidDimlpRul(*args, **kwargs):
                         res = dimlp.densCls(command)
                     if (res == -1):
                         return -1 # If there is an error in the Rul
+
+                    # Get statistics
+
+                    stats = get_dimlprul_stats(fold_folder + separator + "dimlpRules.rls")
+                    print(stats)
 
 
         end_time = time.time()

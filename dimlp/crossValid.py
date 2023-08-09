@@ -531,20 +531,20 @@ def crossValid(*args, **kwargs):
             mean_cov_size_fid = 0.0
             mean_nb_ant_fid = 0.0
             mean_fidel_fid = 0.0
-            mean_acc_fid = 0.0
+            mean_rules_acc_fid = 0.0
             mean_confid_fid = 0.0
 
             # All executions
             mean_cov_size_fid_all = 0.0
             mean_nb_ant_fid_all = 0.0
             mean_fidel_fid_all = 0.0
-            mean_acc_fid_all = 0.0
+            mean_rules_acc_fid_all = 0.0
             mean_confid_fid_all = 0.0
 
             std_cov_size_fid_all = 0.0
             std_nb_ant_fid_all = 0.0
             std_fidel_fid_all = 0.0
-            std_acc_fid_all = 0.0
+            std_rules_acc_fid_all = 0.0
             std_confid_fid_all = 0.0
 
             # Statistics for FidexGlo
@@ -553,7 +553,7 @@ def crossValid(*args, **kwargs):
             mean_nb_cover = 0.0
             mean_nb_antecedants = 0.0
             mean_fidel_glo = 0.0
-            mean_acc_glo = 0.0
+            mean_rules_acc_glo = 0.0
             mean_expl_glo = 0.0
             mean_default_rate = 0.0
             mean_nb_fidel_activations = 0.0
@@ -567,7 +567,7 @@ def crossValid(*args, **kwargs):
             mean_nb_cover_all = 0.0
             mean_nb_antecedants_all = 0.0
             mean_fidel_glo_all = 0.0
-            mean_acc_glo_all = 0.0
+            mean_rules_acc_glo_all = 0.0
             mean_expl_glo_all = 0.0
             mean_default_rate_all = 0.0
             mean_nb_fidel_activations_all = 0.0
@@ -580,7 +580,7 @@ def crossValid(*args, **kwargs):
             std_nb_cover_all = 0.0
             std_nb_antecedants_all = 0.0
             std_fidel_glo_all = 0.0
-            std_acc_glo_all = 0.0
+            std_rules_acc_glo_all = 0.0
             std_expl_glo_all = 0.0
             std_default_rate_all = 0.0
             std_nb_fidel_activations_all = 0.0
@@ -1017,7 +1017,7 @@ def crossValid(*args, **kwargs):
                         mean_cov_size_fid += stat_vals[0]
                         mean_nb_ant_fid += stat_vals[1]
                         mean_fidel_fid += stat_vals[2]
-                        mean_acc_fid += stat_vals[3]
+                        mean_rules_acc_fid += stat_vals[3]
                         if len(stat_vals) == 5:
                             mean_confid_fid += stat_vals[4]
                         else:
@@ -1120,7 +1120,7 @@ def crossValid(*args, **kwargs):
                             raise ValueError(f"Error : Couldn't open fidexGlo stat file {stats_glo_file}.")
 
                         mean_fidel_glo += stat_glo_vals[0]
-                        mean_acc_glo += stat_glo_vals[1]
+                        mean_rules_acc_glo += stat_glo_vals[1]
                         mean_expl_glo += stat_glo_vals[2]
                         mean_default_rate += stat_glo_vals[3]
                         mean_nb_fidel_activations += stat_glo_vals[4]
@@ -1137,8 +1137,8 @@ def crossValid(*args, **kwargs):
                     mean_nb_ant_fid = 0
                     mean_current_exec_values_fidex.append(mean_fidel_fid / k)
                     mean_fidel_fid = 0
-                    mean_current_exec_values_fidex.append(mean_acc_fid / k)
-                    mean_acc_fid = 0
+                    mean_current_exec_values_fidex.append(mean_rules_acc_fid / k)
+                    mean_rules_acc_fid = 0
                     mean_current_exec_values_fidex.append(mean_confid_fid / k)
                     mean_confid_fid = 0
                     mean_fold_values_fidex.append(mean_current_exec_values_fidex)
@@ -1153,8 +1153,8 @@ def crossValid(*args, **kwargs):
                     mean_nb_antecedants = 0
                     mean_current_exec_values_fidexglo.append(mean_fidel_glo / k)
                     mean_fidel_glo = 0
-                    mean_current_exec_values_fidexglo.append(mean_acc_glo / k)
-                    mean_acc_glo = 0
+                    mean_current_exec_values_fidexglo.append(mean_rules_acc_glo / k)
+                    mean_rules_acc_glo = 0
                     mean_current_exec_values_fidexglo.append(mean_expl_glo / k)
                     mean_expl_glo = 0
                     mean_current_exec_values_fidexglo.append(mean_default_rate / k)
@@ -1255,26 +1255,26 @@ def crossValid(*args, **kwargs):
                     mean_cov_size_fid_all += mean_fold_values_fidex[exec][0]
                     mean_nb_ant_fid_all += mean_fold_values_fidex[exec][1]
                     mean_fidel_fid_all += mean_fold_values_fidex[exec][2]
-                    mean_acc_fid_all += mean_fold_values_fidex[exec][3]
+                    mean_rules_acc_fid_all += mean_fold_values_fidex[exec][3]
                     mean_confid_fid_all += mean_fold_values_fidex[exec][4]
 
                 mean_cov_size_fid_all /= n
                 mean_nb_ant_fid_all /= n
                 mean_fidel_fid_all /= n
-                mean_acc_fid_all /= n
+                mean_rules_acc_fid_all /= n
                 mean_confid_fid_all /= n
 
                 for exec in range(n):
                     std_cov_size_fid_all += pow(mean_fold_values_fidex[exec][0] - mean_cov_size_fid_all, 2)
                     std_nb_ant_fid_all += pow(mean_fold_values_fidex[exec][1] - mean_nb_ant_fid_all, 2)
                     std_fidel_fid_all += pow(mean_fold_values_fidex[exec][2] - mean_fidel_fid_all, 2)
-                    std_acc_fid_all += pow(mean_fold_values_fidex[exec][3] - mean_acc_fid_all, 2)
+                    std_rules_acc_fid_all += pow(mean_fold_values_fidex[exec][3] - mean_rules_acc_fid_all, 2)
                     std_confid_fid_all += pow(mean_fold_values_fidex[exec][4] - mean_confid_fid_all, 2)
 
                 std_cov_size_fid_all = math.sqrt(std_cov_size_fid_all / n)
                 std_nb_ant_fid_all = math.sqrt(std_nb_ant_fid_all / n)
                 std_fidel_fid_all = math.sqrt(std_fidel_fid_all / n)
-                std_acc_fid_all = math.sqrt(std_acc_fid_all / n)
+                std_rules_acc_fid_all = math.sqrt(std_rules_acc_fid_all / n)
                 std_confid_fid_all = math.sqrt(std_confid_fid_all / n)
 
             if is_fidexglo: # For FidexGlo
@@ -1283,7 +1283,7 @@ def crossValid(*args, **kwargs):
                     mean_nb_cover_all += mean_fold_values_fidexglo[exec][1]
                     mean_nb_antecedants_all += mean_fold_values_fidexglo[exec][2]
                     mean_fidel_glo_all += mean_fold_values_fidexglo[exec][3]
-                    mean_acc_glo_all += mean_fold_values_fidexglo[exec][4]
+                    mean_rules_acc_glo_all += mean_fold_values_fidexglo[exec][4]
                     mean_expl_glo_all += mean_fold_values_fidexglo[exec][5]
                     mean_default_rate_all += mean_fold_values_fidexglo[exec][6]
                     mean_nb_fidel_activations_all += mean_fold_values_fidexglo[exec][7]
@@ -1296,7 +1296,7 @@ def crossValid(*args, **kwargs):
                 mean_nb_cover_all /= n
                 mean_nb_antecedants_all /= n
                 mean_fidel_glo_all /= n
-                mean_acc_glo_all /= n
+                mean_rules_acc_glo_all /= n
                 mean_expl_glo_all /= n
                 mean_default_rate_all /= n
                 mean_nb_fidel_activations_all /= n
@@ -1310,7 +1310,7 @@ def crossValid(*args, **kwargs):
                     std_nb_cover_all += pow(mean_fold_values_fidexglo[exec][1] - mean_nb_cover_all, 2)
                     std_nb_antecedants_all += pow(mean_fold_values_fidexglo[exec][2] - mean_nb_antecedants_all, 2)
                     std_fidel_glo_all += pow(mean_fold_values_fidexglo[exec][3] - mean_fidel_glo_all, 2)
-                    std_acc_glo_all += pow(mean_fold_values_fidexglo[exec][4] - mean_acc_glo_all, 2)
+                    std_rules_acc_glo_all += pow(mean_fold_values_fidexglo[exec][4] - mean_rules_acc_glo_all, 2)
                     std_expl_glo_all += pow(mean_fold_values_fidexglo[exec][5] - mean_expl_glo_all, 2)
                     std_default_rate_all += pow(mean_fold_values_fidexglo[exec][6] - mean_default_rate_all, 2)
                     std_nb_fidel_activations_all += pow(mean_fold_values_fidexglo[exec][7] - mean_nb_fidel_activations_all, 2)
@@ -1323,7 +1323,7 @@ def crossValid(*args, **kwargs):
                 std_nb_cover_all = math.sqrt(std_nb_cover_all / n)
                 std_nb_antecedants_all = math.sqrt(std_nb_antecedants_all / n)
                 std_fidel_glo_all = math.sqrt(std_fidel_glo_all / n)
-                std_acc_glo_all = math.sqrt(std_acc_glo_all / n)
+                std_rules_acc_glo_all = math.sqrt(std_rules_acc_glo_all / n)
                 std_expl_glo_all = math.sqrt(std_expl_glo_all / n)
                 std_default_rate_all = math.sqrt(std_default_rate_all / n)
                 std_nb_fidel_activations_all = math.sqrt(std_nb_fidel_activations_all / n)
@@ -1365,13 +1365,13 @@ def crossValid(*args, **kwargs):
                         if formatted_std_fidel_fid_all == "":
                             formatted_std_fidel_fid_all = "0"
 
-                        formatted_mean_acc_fid_all = "{:.6f}".format(mean_acc_fid_all).rstrip(".0")
-                        if formatted_mean_acc_fid_all == "":
-                            formatted_mean_acc_fid_all = "0"
+                        formatted_mean_rules_acc_fid_all = "{:.6f}".format(mean_rules_acc_fid_all).rstrip(".0")
+                        if formatted_mean_rules_acc_fid_all == "":
+                            formatted_mean_rules_acc_fid_all = "0"
 
-                        formatted_std_acc_fid_all = "{:.6f}".format(std_acc_fid_all).rstrip(".0")
-                        if formatted_std_acc_fid_all == "":
-                            formatted_std_acc_fid_all = "0"
+                        formatted_std_rules_acc_fid_all = "{:.6f}".format(std_rules_acc_fid_all).rstrip(".0")
+                        if formatted_std_rules_acc_fid_all == "":
+                            formatted_std_rules_acc_fid_all = "0"
 
                         formatted_mean_confid_fid_all = "{:.6f}".format(mean_confid_fid_all).rstrip(".0")
                         if formatted_mean_confid_fid_all == "":
@@ -1388,8 +1388,8 @@ def crossValid(*args, **kwargs):
                         outputStatsFile.write(f"The standard deviation of the number of antecedents per rule is : {formatted_std_nb_ant_fid_all}\n")
                         outputStatsFile.write(f"The mean rule fidelity rate is : {formatted_mean_fidel_fid_all}\n")
                         outputStatsFile.write(f"The standard deviation of the rule fidelity rate is : {formatted_std_fidel_fid_all}\n")
-                        outputStatsFile.write(f"The mean rule accuracy is : {formatted_mean_acc_fid_all}\n")
-                        outputStatsFile.write(f"The standard deviation of the rule accuracy is : {formatted_std_acc_fid_all}\n")
+                        outputStatsFile.write(f"The mean rule accuracy is : {formatted_mean_rules_acc_fid_all}\n")
+                        outputStatsFile.write(f"The standard deviation of the rule accuracy is : {formatted_std_rules_acc_fid_all}\n")
                         if has_confidence:
                             outputStatsFile.write(f"The mean rule confidence is : {formatted_mean_confid_fid_all}\n")
                             outputStatsFile.write(f"The standard deviation of the rule confidence is : {formatted_std_confid_fid_all}\n")
@@ -1400,8 +1400,8 @@ def crossValid(*args, **kwargs):
                         print(f"The standard deviation of the number of antecedents per rule is : {formatted_std_nb_ant_fid_all}")
                         print(f"The mean rule fidelity rate is : {formatted_mean_fidel_fid_all}")
                         print(f"The standard deviation of the rule fidelity rate is : {formatted_std_fidel_fid_all}")
-                        print(f"The mean rule accuracy is : {formatted_mean_acc_fid_all}")
-                        print(f"The standard deviation of the rule accuracy is : {formatted_std_acc_fid_all}")
+                        print(f"The mean rule accuracy is : {formatted_mean_rules_acc_fid_all}")
+                        print(f"The standard deviation of the rule accuracy is : {formatted_std_rules_acc_fid_all}")
                         if has_confidence:
                             print(f"The mean rule confidence is : {formatted_mean_confid_fid_all}")
                             print(f"The standard deviation of the rule confidence is : {formatted_std_confid_fid_all}")
@@ -1446,13 +1446,13 @@ def crossValid(*args, **kwargs):
                         if formatted_std_fidel_glo_all == "":
                             formatted_std_fidel_glo_all = "0"
 
-                        formatted_mean_acc_glo_all = "{:.6f}".format(mean_acc_glo_all).rstrip(".0")
-                        if formatted_mean_acc_glo_all == "":
-                            formatted_mean_acc_glo_all = "0"
+                        formatted_mean_rules_acc_glo_all = "{:.6f}".format(mean_rules_acc_glo_all).rstrip(".0")
+                        if formatted_mean_rules_acc_glo_all == "":
+                            formatted_mean_rules_acc_glo_all = "0"
 
-                        formatted_std_acc_glo_all = "{:.6f}".format(std_acc_glo_all).rstrip(".0")
-                        if formatted_std_acc_glo_all == "":
-                            formatted_std_acc_glo_all = "0"
+                        formatted_std_rules_acc_glo_all = "{:.6f}".format(std_rules_acc_glo_all).rstrip(".0")
+                        if formatted_std_rules_acc_glo_all == "":
+                            formatted_std_rules_acc_glo_all = "0"
 
                         formatted_mean_expl_glo_all = "{:.6f}".format(mean_expl_glo_all).rstrip(".0")
                         if formatted_mean_expl_glo_all == "":
@@ -1519,8 +1519,8 @@ def crossValid(*args, **kwargs):
                         outputStatsFile.write(f"The standard deviation of the number of antecedents per rule is : {formatted_std_nb_antecedants_all}\n")
                         outputStatsFile.write(f"The mean global rule fidelity rate is : {formatted_mean_fidel_glo_all}\n")
                         outputStatsFile.write(f"The standard deviation of the global rule fidelity rate is : {formatted_std_fidel_glo_all}\n")
-                        outputStatsFile.write(f"The mean global rule accuracy is : {formatted_mean_acc_glo_all}\n")
-                        outputStatsFile.write(f"The standard deviation of the global rule accuracy is : {formatted_std_acc_glo_all}\n")
+                        outputStatsFile.write(f"The mean global rule accuracy is : {formatted_mean_rules_acc_glo_all}\n")
+                        outputStatsFile.write(f"The standard deviation of the global rule accuracy is : {formatted_std_rules_acc_glo_all}\n")
                         outputStatsFile.write(f"The mean explainability rate (when we can find a rule) is : {formatted_mean_expl_glo_all}\n")
                         outputStatsFile.write(f"The standard deviation of the explainability rate (when we can find a rule) is : {formatted_std_expl_glo_all}\n")
                         outputStatsFile.write(f"The mean default rule rate (when we can't find a rule) is : {formatted_mean_default_rate_all}\n")
@@ -1544,8 +1544,8 @@ def crossValid(*args, **kwargs):
                         print(f"The standard deviation of the number of antecedents per rule is : {formatted_std_nb_antecedants_all}")
                         print(f"The mean global rule fidelity rate is : {formatted_mean_fidel_glo_all}")
                         print(f"The standard deviation of the global rule fidelity rate is : {formatted_std_fidel_glo_all}")
-                        print(f"The mean global rule accuracy is : {formatted_mean_acc_glo_all}")
-                        print(f"The standard deviation of the global rule accuracy is : {formatted_std_acc_glo_all}")
+                        print(f"The mean global rule accuracy is : {formatted_mean_rules_acc_glo_all}")
+                        print(f"The standard deviation of the global rule accuracy is : {formatted_std_rules_acc_glo_all}")
                         print(f"The mean explainability rate (when we can find a rule) is : {formatted_mean_expl_glo_all}")
                         print(f"The standard deviation of the explainability rate (when we can find a rule) is : {formatted_std_expl_glo_all}")
                         print(f"The mean default rule rate (when we can't find a rule) is : {formatted_mean_default_rate_all}")
