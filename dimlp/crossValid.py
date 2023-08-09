@@ -602,6 +602,9 @@ def crossValid(*args, **kwargs):
                     outputStatsFile.write("---------------------------------------------------------\n")
                     if train_method in {"dimlp", "dimlpBT"}:
                         outputStatsFile.write(f"Training with {nb_in} input neurons and {nb_out} output neurons\n")
+                        for key, value in hk.items():
+                            outputStatsFile.write(f"Layer {key} has {value} neurons\n")
+
                     outputStatsFile.write(f"The number of stairs in staircase activation function is {nb_stairs} and the interval in which hyperplans are contained is [-{hiknot},{hiknot}]\n")
                     if train_method == "dimlpBT":
                         outputStatsFile.write(f"The number of dimlp networks is {nb_dimlp_nets}\n")
