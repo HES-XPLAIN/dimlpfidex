@@ -589,8 +589,8 @@ def crossValid(*args, **kwargs):
             std_test_acc_when_rules_and_model_agree_all = 0.0
             std_test_acc_when_activated_rules_and_model_agree_all = 0.0
 
-            mean_fold_values_fidex = [] # each mean value in an entire fold for each fold for fidex
-            mean_fold_values_fidexglo = [] # each mean value in an entire fold for each fold for fidexGlo
+            mean_exec_values_fidex = [] # each mean value in an entire fold for each fold for fidex
+            mean_exec_values_fidexglo = [] # each mean value in an entire fold for each fold for fidexGlo
 
             # Write parameters on stats file
 
@@ -1128,7 +1128,7 @@ def crossValid(*args, **kwargs):
                         mean_test_acc_glo += stat_glo_vals[6]
                         mean_test_acc_when_rules_and_model_agree += stat_glo_vals[7]
                         mean_test_acc_when_activated_rules_and_model_agree += stat_glo_vals[8]
-                # Compute fold Stats
+                # Compute execution Stats
                 mean_current_exec_values_fidex = []
                 if is_fidex:  # For Fidex
                     mean_current_exec_values_fidex.append(mean_cov_size_fid / k)
@@ -1141,7 +1141,7 @@ def crossValid(*args, **kwargs):
                     mean_rules_acc_fid = 0
                     mean_current_exec_values_fidex.append(mean_confid_fid / k)
                     mean_confid_fid = 0
-                    mean_fold_values_fidex.append(mean_current_exec_values_fidex)
+                    mean_exec_values_fidex.append(mean_current_exec_values_fidex)
 
                 mean_current_exec_values_fidexglo = []
                 if is_fidexglo:  # For FidexGlo
@@ -1169,7 +1169,7 @@ def crossValid(*args, **kwargs):
                     mean_test_acc_when_rules_and_model_agree = 0
                     mean_current_exec_values_fidexglo.append(mean_test_acc_when_activated_rules_and_model_agree / k)
                     mean_test_acc_when_activated_rules_and_model_agree = 0
-                    mean_fold_values_fidexglo.append(mean_current_exec_values_fidexglo)
+                    mean_exec_values_fidexglo.append(mean_current_exec_values_fidexglo)
 
                 # Output and show stats
                 try:
@@ -1252,11 +1252,11 @@ def crossValid(*args, **kwargs):
 
             if is_fidex: # For Fidex
                 for exec in range(n):
-                    mean_cov_size_fid_all += mean_fold_values_fidex[exec][0]
-                    mean_nb_ant_fid_all += mean_fold_values_fidex[exec][1]
-                    mean_fidel_fid_all += mean_fold_values_fidex[exec][2]
-                    mean_rules_acc_fid_all += mean_fold_values_fidex[exec][3]
-                    mean_confid_fid_all += mean_fold_values_fidex[exec][4]
+                    mean_cov_size_fid_all += mean_exec_values_fidex[exec][0]
+                    mean_nb_ant_fid_all += mean_exec_values_fidex[exec][1]
+                    mean_fidel_fid_all += mean_exec_values_fidex[exec][2]
+                    mean_rules_acc_fid_all += mean_exec_values_fidex[exec][3]
+                    mean_confid_fid_all += mean_exec_values_fidex[exec][4]
 
                 mean_cov_size_fid_all /= n
                 mean_nb_ant_fid_all /= n
@@ -1265,11 +1265,11 @@ def crossValid(*args, **kwargs):
                 mean_confid_fid_all /= n
 
                 for exec in range(n):
-                    std_cov_size_fid_all += pow(mean_fold_values_fidex[exec][0] - mean_cov_size_fid_all, 2)
-                    std_nb_ant_fid_all += pow(mean_fold_values_fidex[exec][1] - mean_nb_ant_fid_all, 2)
-                    std_fidel_fid_all += pow(mean_fold_values_fidex[exec][2] - mean_fidel_fid_all, 2)
-                    std_rules_acc_fid_all += pow(mean_fold_values_fidex[exec][3] - mean_rules_acc_fid_all, 2)
-                    std_confid_fid_all += pow(mean_fold_values_fidex[exec][4] - mean_confid_fid_all, 2)
+                    std_cov_size_fid_all += pow(mean_exec_values_fidex[exec][0] - mean_cov_size_fid_all, 2)
+                    std_nb_ant_fid_all += pow(mean_exec_values_fidex[exec][1] - mean_nb_ant_fid_all, 2)
+                    std_fidel_fid_all += pow(mean_exec_values_fidex[exec][2] - mean_fidel_fid_all, 2)
+                    std_rules_acc_fid_all += pow(mean_exec_values_fidex[exec][3] - mean_rules_acc_fid_all, 2)
+                    std_confid_fid_all += pow(mean_exec_values_fidex[exec][4] - mean_confid_fid_all, 2)
 
                 std_cov_size_fid_all = math.sqrt(std_cov_size_fid_all / n)
                 std_nb_ant_fid_all = math.sqrt(std_nb_ant_fid_all / n)
@@ -1279,18 +1279,18 @@ def crossValid(*args, **kwargs):
 
             if is_fidexglo: # For FidexGlo
                 for exec in range(n):
-                    mean_nb_rules_all += mean_fold_values_fidexglo[exec][0]
-                    mean_nb_cover_all += mean_fold_values_fidexglo[exec][1]
-                    mean_nb_antecedants_all += mean_fold_values_fidexglo[exec][2]
-                    mean_fidel_glo_all += mean_fold_values_fidexglo[exec][3]
-                    mean_rules_acc_glo_all += mean_fold_values_fidexglo[exec][4]
-                    mean_expl_glo_all += mean_fold_values_fidexglo[exec][5]
-                    mean_default_rate_all += mean_fold_values_fidexglo[exec][6]
-                    mean_nb_fidel_activations_all += mean_fold_values_fidexglo[exec][7]
-                    mean_wrong_activations_all += mean_fold_values_fidexglo[exec][8]
-                    mean_test_acc_glo_all += mean_fold_values_fidexglo[exec][9]
-                    mean_test_acc_when_rules_and_model_agree_all += mean_fold_values_fidexglo[exec][10]
-                    mean_test_acc_when_activated_rules_and_model_agree_all += mean_fold_values_fidexglo[exec][11]
+                    mean_nb_rules_all += mean_exec_values_fidexglo[exec][0]
+                    mean_nb_cover_all += mean_exec_values_fidexglo[exec][1]
+                    mean_nb_antecedants_all += mean_exec_values_fidexglo[exec][2]
+                    mean_fidel_glo_all += mean_exec_values_fidexglo[exec][3]
+                    mean_rules_acc_glo_all += mean_exec_values_fidexglo[exec][4]
+                    mean_expl_glo_all += mean_exec_values_fidexglo[exec][5]
+                    mean_default_rate_all += mean_exec_values_fidexglo[exec][6]
+                    mean_nb_fidel_activations_all += mean_exec_values_fidexglo[exec][7]
+                    mean_wrong_activations_all += mean_exec_values_fidexglo[exec][8]
+                    mean_test_acc_glo_all += mean_exec_values_fidexglo[exec][9]
+                    mean_test_acc_when_rules_and_model_agree_all += mean_exec_values_fidexglo[exec][10]
+                    mean_test_acc_when_activated_rules_and_model_agree_all += mean_exec_values_fidexglo[exec][11]
 
                 mean_nb_rules_all /= n
                 mean_nb_cover_all /= n
@@ -1306,18 +1306,18 @@ def crossValid(*args, **kwargs):
                 mean_test_acc_when_activated_rules_and_model_agree_all /= n
 
                 for exec in range(n):
-                    std_nb_rules_all += pow(mean_fold_values_fidexglo[exec][0] - mean_nb_rules_all, 2)
-                    std_nb_cover_all += pow(mean_fold_values_fidexglo[exec][1] - mean_nb_cover_all, 2)
-                    std_nb_antecedants_all += pow(mean_fold_values_fidexglo[exec][2] - mean_nb_antecedants_all, 2)
-                    std_fidel_glo_all += pow(mean_fold_values_fidexglo[exec][3] - mean_fidel_glo_all, 2)
-                    std_rules_acc_glo_all += pow(mean_fold_values_fidexglo[exec][4] - mean_rules_acc_glo_all, 2)
-                    std_expl_glo_all += pow(mean_fold_values_fidexglo[exec][5] - mean_expl_glo_all, 2)
-                    std_default_rate_all += pow(mean_fold_values_fidexglo[exec][6] - mean_default_rate_all, 2)
-                    std_nb_fidel_activations_all += pow(mean_fold_values_fidexglo[exec][7] - mean_nb_fidel_activations_all, 2)
-                    std_wrong_activations_all += pow(mean_fold_values_fidexglo[exec][8] - mean_wrong_activations_all, 2)
-                    std_test_acc_glo_all += pow(mean_fold_values_fidexglo[exec][9] - mean_test_acc_glo_all, 2)
-                    std_test_acc_when_rules_and_model_agree_all += pow(mean_fold_values_fidexglo[exec][10] - mean_test_acc_when_rules_and_model_agree_all, 2)
-                    std_test_acc_when_activated_rules_and_model_agree_all += pow(mean_fold_values_fidexglo[exec][11] - mean_test_acc_when_activated_rules_and_model_agree_all, 2)
+                    std_nb_rules_all += pow(mean_exec_values_fidexglo[exec][0] - mean_nb_rules_all, 2)
+                    std_nb_cover_all += pow(mean_exec_values_fidexglo[exec][1] - mean_nb_cover_all, 2)
+                    std_nb_antecedants_all += pow(mean_exec_values_fidexglo[exec][2] - mean_nb_antecedants_all, 2)
+                    std_fidel_glo_all += pow(mean_exec_values_fidexglo[exec][3] - mean_fidel_glo_all, 2)
+                    std_rules_acc_glo_all += pow(mean_exec_values_fidexglo[exec][4] - mean_rules_acc_glo_all, 2)
+                    std_expl_glo_all += pow(mean_exec_values_fidexglo[exec][5] - mean_expl_glo_all, 2)
+                    std_default_rate_all += pow(mean_exec_values_fidexglo[exec][6] - mean_default_rate_all, 2)
+                    std_nb_fidel_activations_all += pow(mean_exec_values_fidexglo[exec][7] - mean_nb_fidel_activations_all, 2)
+                    std_wrong_activations_all += pow(mean_exec_values_fidexglo[exec][8] - mean_wrong_activations_all, 2)
+                    std_test_acc_glo_all += pow(mean_exec_values_fidexglo[exec][9] - mean_test_acc_glo_all, 2)
+                    std_test_acc_when_rules_and_model_agree_all += pow(mean_exec_values_fidexglo[exec][10] - mean_test_acc_when_rules_and_model_agree_all, 2)
+                    std_test_acc_when_activated_rules_and_model_agree_all += pow(mean_exec_values_fidexglo[exec][11] - mean_test_acc_when_activated_rules_and_model_agree_all, 2)
 
                 std_nb_rules_all = math.sqrt(std_nb_rules_all / n)
                 std_nb_cover_all = math.sqrt(std_nb_cover_all / n)
