@@ -58,9 +58,9 @@ def get_dimlprul_stats(rule_file):
                 collect = False
 
     except (FileNotFoundError):
-        raise ValueError(f"Error : FidexGlo stat file {rule_file} not found.")
+        raise ValueError(f"Error : FidexGlo rules {rule_file} not found.")
     except (IOError):
-        raise ValueError(f"Error : Couldn't open fidexGlo stat file {rule_file}.")
+        raise ValueError(f"Error : Couldn't open dimlp rules file {rule_file}.")
 
     return stats
 
@@ -79,9 +79,9 @@ def get_test_acc(stats_file):
                 return float(value.strip())
 
     except (FileNotFoundError):
-        raise ValueError(f"Error : FidexGlo stat file {stats_file} not found.")
+        raise ValueError(f"Error : Train stat file {stats_file} not found.")
     except (IOError):
-        raise ValueError(f"Error : Couldn't open fidexGlo stat file {stats_file}.")
+        raise ValueError(f"Error : Couldn't open train stat file {stats_file}.")
 
 def crossValidDimlpRul(*args, **kwargs):
     try:

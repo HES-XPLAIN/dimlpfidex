@@ -53,6 +53,62 @@ def get_data(file_name): # Get data from file
     except (IOError):
         raise ValueError(f"Error : Couldn't open file {file_name}.")
 
+def get_dimlprul_stats(rule_file):
+
+    try:
+        with open(rule_file, "r") as my_file:
+            lines = my_file.readlines()
+            my_file.close()
+
+        stats = []
+        in_section = False
+        collect = False
+        for line in lines:
+            line = line.strip()
+            if line.startswith("--- Number of rules ="):
+                in_section = True
+                collect = True
+            elif line.startswith("--- Default rule activations rate"):
+                in_section = False
+            if collect and "=" in line:
+                _, value = line.split("=")
+                stats.append(float(value.strip()))
+            if not in_section:
+                collect = False
+
+    except (FileNotFoundError):
+        raise ValueError(f"Error : dimlp rules file {rule_file} not found.")
+    except (IOError):
+        raise ValueError(f"Error : Couldn't open  dimlp rules file {rule_file}.")
+
+    return stats
+
+
+def get_test_acc(stats_file, train_method):
+
+    try:
+        with open(stats_file, "r") as my_file:
+            lines = my_file.readlines()
+            my_file.close()
+
+        for line in lines:
+            line = line.strip()
+            if train_method == "dimlp":
+                if "Accuracy on testing set" in line:
+                    _, value = line.split("=")
+                    return float(value.strip())
+            else:
+                if "Global accuracy on testing set" in line:
+                    _, value = line.split("=")
+                    return float(value.strip())
+
+    except (FileNotFoundError):
+        raise ValueError(f"Error : Train stat file {stats_file} not found.")
+    except (IOError):
+        raise ValueError(f"Error : Couldn't open train stat file {stats_file}.")
+
+
+
 def crossValid(*args, **kwargs):
     try:
         if args or not kwargs:
@@ -71,6 +127,7 @@ def crossValid(*args, **kwargs):
             print("Obligatory parameters if training with dimlp :")
             print("nb_in : number of input neurons")
             print("nb_out : number of output neurons")
+            print("dimlpRul : 1(with dimlpRul, default) or 0")
 
             print("----------------------------")
             print("Optional parameters :")
@@ -154,10 +211,10 @@ def crossValid(*args, **kwargs):
 
             print("Here is an example, keep same parameter names :")
             print("Exemple with Dimlp :")
-            print('crossValid(train_method="dimlp", algo="both", data_file="datanorm", class_file="dataclass2", nb_in=16, nb_out=2, H2=5, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLP")')
+            print('crossValid(train_method="dimlp", algo="both", data_file="datanorm", class_file="dataclass2", dimlpRul=1, nb_in=16, nb_out=2, H2=5, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLP")')
             print("----------------------------")
             print("Exemple with DimlpBT :")
-            print('crossValid(train_method="dimlpBT", algo="both", data_file="datanorm", class_file="dataclass2", nb_in=16, nb_out=2, H2=5, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLPBT")')
+            print('crossValid(train_method="dimlpBT", algo="both", data_file="datanorm", class_file="dataclass2", dimlpRul=1, nb_in=16, nb_out=2, H2=5, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLPBT")')
             print("----------------------------")
             print("Exemple with SVM :")
             print('crossValid(train_method="svm", algo="both", data_file="datanorm", class_file="dataclass2", save_folder="dimlp/datafiles", crossVal_folder="CrossValidationSVM")')
@@ -180,6 +237,7 @@ def crossValid(*args, **kwargs):
 
             nb_in = kwargs.get('nb_in')
             nb_out = kwargs.get('nb_out')
+            dimlprul = kwargs.get('dimlpRul')
 
             save_folder = kwargs.get('save_folder')
             crossval_folder = kwargs.get('crossVal_folder')
@@ -253,7 +311,7 @@ def crossValid(*args, **kwargs):
             # Check parameters
 
             obligatory_args = ['train_method', 'algo', 'data_file', 'class_file']
-            obligatory_dimlp_args = ['nb_in', 'nb_out']
+            obligatory_dimlp_args = ['nb_in', 'nb_out', 'dimlpRul']
 
             optional_args = ['save_folder', 'crossVal_folder', 'K', 'N', 'fidexGlo_heuristic', 'crossVal_stats', 'attr_file', 'hiknot', 'nb_stairs',
                         'max_iter', 'min_cov', 'dropout_dim', 'dropout_hyp', 'seed']
@@ -368,6 +426,11 @@ def crossValid(*args, **kwargs):
 
             if train_method in {"dimlp", "dimlpBT"}:
 
+                if dimlprul is None:
+                    raise ValueError('Error : dimlpRul is missing, add it with option dimlpRul=1 or 0')
+                elif (dimlprul not in {0,1}):
+                    raise ValueError('Error, parameter dimlpRul is not 1 or 0')
+
                 if nb_in is None:
                     raise ValueError('Error : the number of input neurons is missing, add it with option nb_in=your_number')
                 elif (not isinstance(nb_in, int) or nb_in<=0):
@@ -473,11 +536,15 @@ def crossValid(*args, **kwargs):
 
             is_fidex = False
             is_fidexglo = False
+            is_dimlprul = False
             if (algo == "fidex" or algo == "both"):
                 is_fidex = True
 
             if (algo == "fidexGlo" or algo == "both"):
                 is_fidexglo = True
+
+            if train_method in {"dimlp", "dimlpBT"} and dimlprul == 1:
+                is_dimlprul = True
 
             #create paths with root foler
             system = platform.system()
@@ -526,71 +593,110 @@ def crossValid(*args, **kwargs):
             temp_test_tar_file = crossval_folder + separator + "tempTarTest.txt"
             temp_valid_tar_file = crossval_folder + separator + "tempTarValid.txt"
 
-            # statistics for Fidex
-            # One execution
-            mean_cov_size_fid = 0.0
-            mean_nb_ant_fid = 0.0
-            mean_fidel_fid = 0.0
-            mean_rules_acc_fid = 0.0
-            mean_confid_fid = 0.0
+            if is_fidex:
+                # statistics for Fidex
+                # One execution
+                mean_cov_size_fid = 0.0
+                mean_nb_ant_fid = 0.0
+                mean_fidel_fid = 0.0
+                mean_rules_acc_fid = 0.0
+                mean_confid_fid = 0.0
 
-            # All executions
-            mean_cov_size_fid_all = 0.0
-            mean_nb_ant_fid_all = 0.0
-            mean_fidel_fid_all = 0.0
-            mean_rules_acc_fid_all = 0.0
-            mean_confid_fid_all = 0.0
+                # All executions
+                mean_cov_size_fid_all = 0.0
+                mean_nb_ant_fid_all = 0.0
+                mean_fidel_fid_all = 0.0
+                mean_rules_acc_fid_all = 0.0
+                mean_confid_fid_all = 0.0
 
-            std_cov_size_fid_all = 0.0
-            std_nb_ant_fid_all = 0.0
-            std_fidel_fid_all = 0.0
-            std_rules_acc_fid_all = 0.0
-            std_confid_fid_all = 0.0
+                std_cov_size_fid_all = 0.0
+                std_nb_ant_fid_all = 0.0
+                std_fidel_fid_all = 0.0
+                std_rules_acc_fid_all = 0.0
+                std_confid_fid_all = 0.0
 
-            # Statistics for FidexGlo
-            # One execution
-            mean_nb_rules = 0.0
-            mean_nb_cover = 0.0
-            mean_nb_antecedants = 0.0
-            mean_fidel_glo = 0.0
-            mean_rules_acc_glo = 0.0
-            mean_expl_glo = 0.0
-            mean_default_rate = 0.0
-            mean_nb_fidel_activations = 0.0
-            mean_wrong_activations = 0.0
-            mean_test_acc_glo = 0.0
-            mean_test_acc_when_rules_and_model_agree = 0.0
-            mean_test_acc_when_activated_rules_and_model_agree = 0.0
+                mean_exec_values_fidex = [] # each mean value in an entire fold for each fold for fidex
 
-            # All executions
-            mean_nb_rules_all = 0.0
-            mean_nb_cover_all = 0.0
-            mean_nb_antecedants_all = 0.0
-            mean_fidel_glo_all = 0.0
-            mean_rules_acc_glo_all = 0.0
-            mean_expl_glo_all = 0.0
-            mean_default_rate_all = 0.0
-            mean_nb_fidel_activations_all = 0.0
-            mean_wrong_activations_all = 0.0
-            mean_test_acc_glo_all = 0.0
-            mean_test_acc_when_rules_and_model_agree_all = 0.0
-            mean_test_acc_when_activated_rules_and_model_agree_all = 0.0
+            if is_fidexglo:
+                # Statistics for FidexGlo
+                # One execution
+                mean_nb_rules = 0.0
+                mean_nb_cover = 0.0
+                mean_nb_antecedants = 0.0
+                mean_fidel_glo = 0.0
+                mean_rules_acc_glo = 0.0
+                mean_expl_glo = 0.0
+                mean_default_rate = 0.0
+                mean_nb_fidel_activations = 0.0
+                mean_wrong_activations = 0.0
+                mean_test_acc_glo = 0.0
+                mean_test_acc_when_rules_and_model_agree = 0.0
+                mean_test_acc_when_activated_rules_and_model_agree = 0.0
 
-            std_nb_rules_all = 0.0
-            std_nb_cover_all = 0.0
-            std_nb_antecedants_all = 0.0
-            std_fidel_glo_all = 0.0
-            std_rules_acc_glo_all = 0.0
-            std_expl_glo_all = 0.0
-            std_default_rate_all = 0.0
-            std_nb_fidel_activations_all = 0.0
-            std_wrong_activations_all = 0.0
-            std_test_acc_glo_all = 0.0
-            std_test_acc_when_rules_and_model_agree_all = 0.0
-            std_test_acc_when_activated_rules_and_model_agree_all = 0.0
+                # All executions
+                mean_nb_rules_all = 0.0
+                mean_nb_cover_all = 0.0
+                mean_nb_antecedants_all = 0.0
+                mean_fidel_glo_all = 0.0
+                mean_rules_acc_glo_all = 0.0
+                mean_expl_glo_all = 0.0
+                mean_default_rate_all = 0.0
+                mean_nb_fidel_activations_all = 0.0
+                mean_wrong_activations_all = 0.0
+                mean_test_acc_glo_all = 0.0
+                mean_test_acc_when_rules_and_model_agree_all = 0.0
+                mean_test_acc_when_activated_rules_and_model_agree_all = 0.0
 
-            mean_exec_values_fidex = [] # each mean value in an entire fold for each fold for fidex
-            mean_exec_values_fidexglo = [] # each mean value in an entire fold for each fold for fidexGlo
+                std_nb_rules_all = 0.0
+                std_nb_cover_all = 0.0
+                std_nb_antecedants_all = 0.0
+                std_fidel_glo_all = 0.0
+                std_rules_acc_glo_all = 0.0
+                std_expl_glo_all = 0.0
+                std_default_rate_all = 0.0
+                std_nb_fidel_activations_all = 0.0
+                std_wrong_activations_all = 0.0
+                std_test_acc_glo_all = 0.0
+                std_test_acc_when_rules_and_model_agree_all = 0.0
+                std_test_acc_when_activated_rules_and_model_agree_all = 0.0
+
+                mean_exec_values_fidexglo = [] # each mean value in an entire fold for each fold for fidexGlo
+
+            if is_dimlprul:
+                # Statistics for Dimlp Rules
+                # One execution
+                mean_nb_rules_dimlp = 0.0
+                mean_nb_cover_dimlp = 0.0
+                mean_nb_antecedants_dimlp = 0.0
+                mean_fidel_dimlp = 0.0
+                mean_rules_acc_dimlp = 0.0
+                mean_default_rate_dimlp = 0.0
+                mean_test_acc_dimlp = 0.0
+                mean_test_acc_when_rules_and_model_agree_dimlp = 0.0
+
+                # All executions
+                mean_nb_rules_dimlp_all = 0.0
+                mean_nb_cover_dimlp_all = 0.0
+                mean_nb_antecedants_dimlp_all = 0.0
+                mean_fidel_dimlp_all = 0.0
+                mean_rules_acc_dimlp_all = 0.0
+                mean_default_rate_dimlp_all = 0.0
+                mean_test_acc_dimlp_all = 0.0
+                mean_test_acc_when_rules_and_model_agree_dimlp_all = 0.0
+
+                std_nb_rules_dimlp_all = 0.0
+                std_nb_cover_dimlp_all = 0.0
+                std_nb_antecedants_dimlp_all = 0.0
+                std_fidel_dimlp_all = 0.0
+                std_rules_acc_dimlp_all = 0.0
+                std_default_rate_dimlp_all = 0.0
+                std_test_acc_dimlp_all = 0.0
+                std_test_acc_when_rules_and_model_agree_dimlp_all = 0.0
+
+                mean_exec_values_dimlp = []
+
+                nb_no_rules_dimlp = 0.0 # If there is no rule found for a Fold
+
 
             # Write parameters on stats file
 
@@ -742,6 +848,8 @@ def crossValid(*args, **kwargs):
                     temp_vect_tar = [classes[indexes[ind]] for ind in range(start, end)]
                     data_split.append(temp_vect)
                     tar_data_split.append(temp_vect_tar)
+
+                nb_no_rules_current_exec_dimlp = 0.0 # If there is no rule found for a Fold in this execution
 
                 for ki in range(k): # K-fold, we shift each time groups by 1.
                     print("----")
@@ -907,6 +1015,9 @@ def crossValid(*args, **kwargs):
                         else:
                             dimlp_command += "-w " + folder_path_from_root + separator + "weightsBT " # Output weight generic filename
 
+                        if is_dimlprul:
+                            dimlp_command += "-R -F " + folder_path_from_root + separator + "dimlpRules.rls "
+
                         dimlp_command += "-r " + str(crossval_folder_temp) + separator + "consoleTemp.txt" # To not show console result
 
                         if train_method == "dimlp":
@@ -954,6 +1065,26 @@ def crossValid(*args, **kwargs):
 
                         if (res == -1):
                             return -1 # If there is an error in the Trn
+
+                    if is_dimlprul:
+                        folder_path_from_real_root = str(crossval_folder) + separator + "Execution" + str(ni + 1) + separator + "Fold" + str(ki + 1)
+                        # Get statistics from dimlpRul
+                        stats = get_dimlprul_stats(folder_path_from_real_root + separator + "dimlpRules.rls")
+                        test_acc = get_test_acc(folder_path_from_real_root + separator + "stats.txt", train_method)
+
+                        if not stats:
+                            nb_no_rules_current_exec_dimlp += 1
+                            nb_no_rules_dimlp += 1
+                        else:
+                            mean_nb_rules_dimlp += stats[0]
+                            mean_nb_cover_dimlp += stats[3]
+                            mean_nb_antecedants_dimlp += stats[2]
+                            mean_fidel_dimlp += stats[5]
+                            mean_rules_acc_dimlp += stats[4]
+                            mean_default_rate_dimlp += stats[7]
+                            mean_test_acc_when_rules_and_model_agree_dimlp += stats[6]
+                        mean_test_acc_dimlp += test_acc
+
 
                     if is_fidex:
                         # Compute fidex stats in folder
@@ -1129,6 +1260,30 @@ def crossValid(*args, **kwargs):
                         mean_test_acc_when_rules_and_model_agree += stat_glo_vals[7]
                         mean_test_acc_when_activated_rules_and_model_agree += stat_glo_vals[8]
                 # Compute execution Stats
+
+                mean_current_exec_values_dimlp = []
+                if is_dimlprul: # For DimlpRul
+                    nb_fold_with_rules_dimlp = k-nb_no_rules_current_exec_dimlp
+
+                    mean_current_exec_values_dimlp.append(mean_nb_rules_dimlp / nb_fold_with_rules_dimlp)
+                    mean_nb_rules_dimlp = 0
+                    mean_current_exec_values_dimlp.append(mean_nb_cover_dimlp / nb_fold_with_rules_dimlp)
+                    mean_nb_cover_dimlp = 0
+                    mean_current_exec_values_dimlp.append(mean_nb_antecedants_dimlp / nb_fold_with_rules_dimlp)
+                    mean_nb_antecedants_dimlp = 0
+                    mean_current_exec_values_dimlp.append(mean_fidel_dimlp / nb_fold_with_rules_dimlp)
+                    mean_fidel_dimlp = 0
+                    mean_current_exec_values_dimlp.append(mean_rules_acc_dimlp / nb_fold_with_rules_dimlp)
+                    mean_rules_acc_dimlp = 0
+                    mean_current_exec_values_dimlp.append(mean_default_rate_dimlp / nb_fold_with_rules_dimlp)
+                    mean_default_rate_dimlp = 0
+                    mean_current_exec_values_dimlp.append(mean_test_acc_dimlp / k)
+                    mean_test_acc_dimlp = 0
+                    mean_current_exec_values_dimlp.append(mean_test_acc_when_rules_and_model_agree_dimlp / nb_fold_with_rules_dimlp)
+                    mean_test_acc_when_rules_and_model_agree_dimlp = 0
+                    mean_current_exec_values_dimlp.append(nb_no_rules_current_exec_dimlp)
+                    mean_exec_values_dimlp.append(mean_current_exec_values_dimlp)
+
                 mean_current_exec_values_fidex = []
                 if is_fidex:  # For Fidex
                     mean_current_exec_values_fidex.append(mean_cov_size_fid / k)
@@ -1178,6 +1333,45 @@ def crossValid(*args, **kwargs):
                         print("\n---------------------------------------------------------")
                         print("---------------------------------------------------------\n")
                         print(f"Results for execution {ni + 1} of {k}-Cross validation :\n")
+                        if is_dimlprul:
+                            formatted_mean_current_exec_values_dimlp = []
+                            for i in range(len(mean_current_exec_values_dimlp)):
+                                formatted_val = "{:.6f}".format(mean_current_exec_values_dimlp[i]).rstrip(".0")
+                                if formatted_val == "":
+                                    formatted_val = "0"
+                                formatted_mean_current_exec_values_dimlp.append(formatted_val)
+                            outputStatsFile.write("Dimlp :\n")
+                            outputStatsFile.write(f"The mean number of rules is: {formatted_mean_current_exec_values_dimlp[0]}\n")
+                            if nb_no_rules_current_exec_dimlp > 0:
+                                if nb_no_rules_current_exec_dimlp == 1:
+                                    outputStatsFile.write(f"We didn't found any rule {int(nb_no_rules_current_exec_dimlp)} time\n")
+                                else:
+                                    outputStatsFile.write(f"We didn't found any rule {int(nb_no_rules_current_exec_dimlp)} times\n")
+                            outputStatsFile.write(f"The mean sample covering number per rule is: {formatted_mean_current_exec_values_dimlp[1]}\n")
+                            outputStatsFile.write(f"The mean number of antecedents per rule is: {formatted_mean_current_exec_values_dimlp[2]}\n")
+                            outputStatsFile.write(f"The mean global rule fidelity rate is: {formatted_mean_current_exec_values_dimlp[3]}\n")
+                            outputStatsFile.write(f"The mean global rule accuracy is: {formatted_mean_current_exec_values_dimlp[4]}\n")
+                            outputStatsFile.write(f"The mean default rule rate (when we can't find a rule) is: {formatted_mean_current_exec_values_dimlp[5]}\n")
+                            outputStatsFile.write(f"The mean model test accuracy is: {formatted_mean_current_exec_values_dimlp[6]}\n")
+                            outputStatsFile.write(f"The mean model test accuracy when rules and model agree is: {formatted_mean_current_exec_values_dimlp[7]}\n")
+                            print("Dimlp :")
+                            print(f"The mean number of rules is: {formatted_mean_current_exec_values_dimlp[0]}")
+                            if nb_no_rules_current_exec_dimlp > 0:
+                                if nb_no_rules_current_exec_dimlp == 1:
+                                    print(f"We didn't found any rule {int(nb_no_rules_current_exec_dimlp)} time")
+                                else:
+                                    print(f"We didn't found any rule {int(nb_no_rules_current_exec_dimlp)} times")
+                            print(f"The mean sample covering number per rule is: {formatted_mean_current_exec_values_dimlp[1]}")
+                            print(f"The mean number of antecedents per rule is: {formatted_mean_current_exec_values_dimlp[2]}")
+                            print(f"The mean global rule fidelity rate is: {formatted_mean_current_exec_values_dimlp[3]}")
+                            print(f"The mean global rule accuracy is: {formatted_mean_current_exec_values_dimlp[4]}")
+                            print(f"The mean default rule rate (when we can't find a rule) is: {formatted_mean_current_exec_values_dimlp[5]}")
+                            print(f"The mean model test accuracy is: {formatted_mean_current_exec_values_dimlp[6]}")
+                            print(f"The mean model test accuracy when rules and model agree is: {formatted_mean_current_exec_values_dimlp[7]}")
+                            print("\n---------------------------------------------------------")
+                            print("---------------------------------------------------------")
+                            outputStatsFile.write("\n---------------------------------------------------------\n")
+                            print("")
                         if is_fidex:
                             formatted_mean_current_exec_values_fidex = []
                             for i in range(len(mean_current_exec_values_fidex)):
@@ -1249,6 +1443,47 @@ def crossValid(*args, **kwargs):
                     raise ValueError(f"Error : Couldn't open stats extraction file {crossval_stats}.")
 
             # Compute stats on all executions
+
+            if is_dimlprul: # For dimlpRul
+                for exec in range(n):
+                    multiplier = k-mean_exec_values_dimlp[exec][8] # If there is lack of some datas (sometimes we didnt found any rules), we need to take it into account
+                    mean_nb_rules_dimlp_all += multiplier*mean_exec_values_dimlp[exec][0]
+                    mean_nb_cover_dimlp_all += multiplier*mean_exec_values_dimlp[exec][1]
+                    mean_nb_antecedants_dimlp_all += multiplier*mean_exec_values_dimlp[exec][2]
+                    mean_fidel_dimlp_all += multiplier*mean_exec_values_dimlp[exec][3]
+                    mean_rules_acc_dimlp_all += multiplier*mean_exec_values_dimlp[exec][4]
+                    mean_default_rate_dimlp_all += multiplier*mean_exec_values_dimlp[exec][5]
+                    mean_test_acc_dimlp_all += multiplier*mean_exec_values_dimlp[exec][6]
+                    mean_test_acc_when_rules_and_model_agree_dimlp_all += multiplier*mean_exec_values_dimlp[exec][7]
+
+                divider = n*k-nb_no_rules_dimlp
+                mean_nb_rules_dimlp_all /= divider
+                mean_nb_cover_dimlp_all /= divider
+                mean_nb_antecedants_dimlp_all /= divider
+                mean_fidel_dimlp_all /= divider
+                mean_rules_acc_dimlp_all /= divider
+                mean_default_rate_dimlp_all /= divider
+                mean_test_acc_dimlp_all /= divider
+                mean_test_acc_when_rules_and_model_agree_dimlp_all /= divider
+
+                for exec in range(n):
+                    std_nb_rules_dimlp_all += pow(mean_exec_values_dimlp[exec][0] - mean_nb_rules_dimlp_all, 2)
+                    std_nb_cover_dimlp_all += pow(mean_exec_values_dimlp[exec][1] - mean_nb_cover_dimlp_all, 2)
+                    std_nb_antecedants_dimlp_all += pow(mean_exec_values_dimlp[exec][2] - mean_nb_antecedants_dimlp_all, 2)
+                    std_fidel_dimlp_all += pow(mean_exec_values_dimlp[exec][3] - mean_fidel_dimlp_all, 2)
+                    std_rules_acc_dimlp_all += pow(mean_exec_values_dimlp[exec][4] - mean_rules_acc_dimlp_all, 2)
+                    std_default_rate_dimlp_all += pow(mean_exec_values_dimlp[exec][5] - mean_default_rate_dimlp_all, 2)
+                    std_test_acc_dimlp_all += pow(mean_exec_values_dimlp[exec][6] - mean_test_acc_dimlp_all, 2)
+                    std_test_acc_when_rules_and_model_agree_dimlp_all += pow(mean_exec_values_dimlp[exec][7] - mean_test_acc_when_rules_and_model_agree_dimlp_all, 2)
+
+                std_nb_rules_dimlp_all = math.sqrt(std_nb_rules_dimlp_all / n)
+                std_nb_cover_dimlp_all = math.sqrt(std_nb_cover_dimlp_all / n)
+                std_nb_antecedants_dimlp_all = math.sqrt(std_nb_antecedants_dimlp_all / n)
+                std_fidel_dimlp_all = math.sqrt(std_fidel_dimlp_all / n)
+                std_rules_acc_dimlp_all = math.sqrt(std_rules_acc_dimlp_all / n)
+                std_default_rate_dimlp_all = math.sqrt(std_default_rate_dimlp_all / n)
+                std_test_acc_dimlp_all = math.sqrt(std_test_acc_dimlp_all / n)
+                std_test_acc_when_rules_and_model_agree_dimlp_all = math.sqrt(std_test_acc_when_rules_and_model_agree_dimlp_all / n)
 
             if is_fidex: # For Fidex
                 for exec in range(n):
@@ -1339,6 +1574,123 @@ def crossValid(*args, **kwargs):
                     print("\n---------------------------------------------------------")
                     print("---------------------------------------------------------\n")
                     print(f"Results for {n} times {k}-Cross validation :\n")
+                    if is_dimlprul:
+
+                        formatted_mean_nb_rules_dimlp_all = "{:.6f}".format(mean_nb_rules_dimlp_all).rstrip(".0")
+                        if formatted_mean_nb_rules_dimlp_all == "":
+                            formatted_mean_nb_rules_dimlp_all = "0"
+
+                        formatted_std_nb_rules_dimlp_all = "{:.6f}".format(std_nb_rules_dimlp_all).rstrip(".0")
+                        if formatted_std_nb_rules_dimlp_all == "":
+                            formatted_std_nb_rules_dimlp_all = "0"
+
+                        formatted_mean_nb_cover_dimlp_all = "{:.6f}".format(mean_nb_cover_dimlp_all).rstrip(".0")
+                        if formatted_mean_nb_cover_dimlp_all == "":
+                            formatted_mean_nb_cover_dimlp_all = "0"
+
+                        formatted_std_nb_cover_dimlp_all = "{:.6f}".format(std_nb_cover_dimlp_all).rstrip(".0")
+                        if formatted_std_nb_cover_dimlp_all == "":
+                            formatted_std_nb_cover_dimlp_all = "0"
+
+                        formatted_mean_nb_antecedants_dimlp_all = "{:.6f}".format(mean_nb_antecedants_dimlp_all).rstrip(".0")
+                        if formatted_mean_nb_antecedants_dimlp_all == "":
+                            formatted_mean_nb_antecedants_dimlp_all = "0"
+
+                        formatted_std_nb_antecedants_dimlp_all = "{:.6f}".format(std_nb_antecedants_dimlp_all).rstrip(".0")
+                        if formatted_std_nb_antecedants_dimlp_all == "":
+                            formatted_std_nb_antecedants_dimlp_all = "0"
+
+                        formatted_mean_fidel_dimlp_all = "{:.6f}".format(mean_fidel_dimlp_all).rstrip(".0")
+                        if formatted_mean_fidel_dimlp_all == "":
+                            formatted_mean_fidel_dimlp_all = "0"
+
+                        formatted_std_fidel_dimlp_all = "{:.6f}".format(std_fidel_dimlp_all).rstrip(".0")
+                        if formatted_std_fidel_dimlp_all == "":
+                            formatted_std_fidel_dimlp_all = "0"
+
+                        formatted_mean_rules_acc_dimlp_all = "{:.6f}".format(mean_rules_acc_dimlp_all).rstrip(".0")
+                        if formatted_mean_rules_acc_dimlp_all == "":
+                            formatted_mean_rules_acc_dimlp_all = "0"
+
+                        formatted_std_rules_acc_dimlp_all = "{:.6f}".format(std_rules_acc_dimlp_all).rstrip(".0")
+                        if formatted_std_rules_acc_dimlp_all == "":
+                            formatted_std_rules_acc_dimlp_all = "0"
+
+                        formatted_mean_default_rate_dimlp_all = "{:.6f}".format(mean_default_rate_dimlp_all).rstrip(".0")
+                        if formatted_mean_default_rate_dimlp_all == "":
+                            formatted_mean_default_rate_dimlp_all = "0"
+
+                        formatted_std_default_rate_dimlp_all = "{:.6f}".format(std_default_rate_dimlp_all).rstrip(".0")
+                        if formatted_std_default_rate_dimlp_all == "":
+                            formatted_std_default_rate_dimlp_all = "0"
+
+                        formatted_mean_test_acc_dimlp_all = "{:.6f}".format(mean_test_acc_dimlp_all).rstrip(".0")
+                        if formatted_mean_test_acc_dimlp_all == "":
+                            formatted_mean_test_acc_dimlp_all = "0"
+
+                        formatted_std_test_acc_dimlp_all = "{:.6f}".format(std_test_acc_dimlp_all).rstrip(".0")
+                        if formatted_std_test_acc_dimlp_all == "":
+                            formatted_std_test_acc_dimlp_all = "0"
+
+                        formatted_mean_test_acc_when_rules_and_model_agree_dimlp_all = "{:.6f}".format(mean_test_acc_when_rules_and_model_agree_dimlp_all).rstrip(".0")
+                        if formatted_mean_test_acc_when_rules_and_model_agree_dimlp_all == "":
+                            formatted_mean_test_acc_when_rules_and_model_agree_dimlp_all = "0"
+
+                        formatted_std_test_acc_when_rules_and_model_agree_dimlp_all = "{:.6f}".format(std_test_acc_when_rules_and_model_agree_dimlp_all).rstrip(".0")
+                        if formatted_std_test_acc_when_rules_and_model_agree_dimlp_all == "":
+                            formatted_std_test_acc_when_rules_and_model_agree_dimlp_all = "0"
+
+                        outputStatsFile.write("Dimlp :\n")
+                        outputStatsFile.write(f"The mean number of rules is: {formatted_mean_nb_rules_dimlp_all}\n")
+                        if nb_no_rules_dimlp > 0:
+                                if nb_no_rules_dimlp == 1:
+                                    outputStatsFile.write(f"We didn't found any rule {int(nb_no_rules_dimlp)} time\n")
+                                else:
+                                    outputStatsFile.write(f"We didn't found any rule {int(nb_no_rules_dimlp)} times\n")
+
+                        outputStatsFile.write(f"The standard deviation of the number of rules is: {formatted_std_nb_rules_dimlp_all}\n")
+                        outputStatsFile.write(f"The mean sample covering number per rule is: {formatted_mean_nb_cover_dimlp_all}\n")
+                        outputStatsFile.write(f"The standard deviation of the sample covering number per rule is: {formatted_std_nb_cover_dimlp_all}\n")
+                        outputStatsFile.write(f"The mean number of antecedents per rule is: {formatted_mean_nb_antecedants_dimlp_all}\n")
+                        outputStatsFile.write(f"The standard deviation of the number of antecedents per rule is: {formatted_std_nb_antecedants_dimlp_all}\n")
+                        outputStatsFile.write(f"The mean global rule fidelity rate is: {formatted_mean_fidel_dimlp_all}\n")
+                        outputStatsFile.write(f"The standard deviation of the global rule fidelity rate is: {formatted_std_fidel_dimlp_all}\n")
+                        outputStatsFile.write(f"The mean global rule accuracy is: {formatted_mean_rules_acc_dimlp_all}\n")
+                        outputStatsFile.write(f"The standard deviation of the global rule accuracy is: {formatted_std_rules_acc_dimlp_all}\n")
+                        outputStatsFile.write(f"The mean default rule rate (when we can't find a rule) is: {formatted_mean_default_rate_dimlp_all}\n")
+                        outputStatsFile.write(f"The standard deviation of the default rule rate (when we can't find a rule) is: {formatted_std_default_rate_dimlp_all}\n")
+                        outputStatsFile.write(f"The mean model test accuracy is: {formatted_mean_test_acc_dimlp_all}\n")
+                        outputStatsFile.write(f"The standard deviation of the model test accuracy is: {formatted_std_test_acc_dimlp_all}\n")
+                        outputStatsFile.write(f"The mean model test accuracy when rules and model agree is: {formatted_mean_test_acc_when_rules_and_model_agree_dimlp_all}\n")
+                        outputStatsFile.write(f"The standard deviation of the model test accuracy when rules and model agree is: {formatted_std_test_acc_when_rules_and_model_agree_dimlp_all}\n")
+                        print("Dimlp :")
+                        print(f"The mean number of rules is: {formatted_mean_nb_rules_dimlp_all}")
+                        if nb_no_rules_dimlp > 0:
+                                if nb_no_rules_dimlp == 1:
+                                    print(f"We didn't found any rule {int(nb_no_rules_dimlp)} time")
+                                else:
+                                    print(f"We didn't found any rule {int(nb_no_rules_dimlp)} times")
+
+                        print(f"The standard deviation of the number of rules is: {formatted_std_nb_rules_dimlp_all}")
+                        print(f"The mean sample covering number per rule is: {formatted_mean_nb_cover_dimlp_all}")
+                        print(f"The standard deviation of the sample covering number per rule is: {formatted_std_nb_cover_dimlp_all}")
+                        print(f"The mean number of antecedents per rule is: {formatted_mean_nb_antecedants_dimlp_all}")
+                        print(f"The standard deviation of the number of antecedents per rule is: {formatted_std_nb_antecedants_dimlp_all}")
+                        print(f"The mean global rule fidelity rate is: {formatted_mean_fidel_dimlp_all}")
+                        print(f"The standard deviation of the global rule fidelity rate is: {formatted_std_fidel_dimlp_all}")
+                        print(f"The mean global rule accuracy is: {formatted_mean_rules_acc_dimlp_all}")
+                        print(f"The standard deviation of the global rule accuracy is: {formatted_std_rules_acc_dimlp_all}")
+                        print(f"The mean default rule rate (when we can't find a rule) is: {formatted_mean_default_rate_dimlp_all}")
+                        print(f"The standard deviation of the default rule rate (when we can't find a rule) is: {formatted_std_default_rate_dimlp_all}")
+                        print(f"The mean model test accuracy is: {formatted_mean_test_acc_dimlp_all}")
+                        print(f"The standard deviation of the model test accuracy is: {formatted_std_test_acc_dimlp_all}")
+                        print(f"The mean model test accuracy when rules and model agree is: {formatted_mean_test_acc_when_rules_and_model_agree_dimlp_all}")
+                        print(f"The standard deviation of the model test accuracy when rules and model agree is: {formatted_std_test_acc_when_rules_and_model_agree_dimlp_all}")
+                        print("\n---------------------------------------------------------")
+                        print("---------------------------------------------------------")
+                        print("")
+                        outputStatsFile.write("\n---------------------------------------------------------\n\n")
+
                     if is_fidex:
 
                         formatted_mean_cov_size_fid_all = "{:.6f}".format(mean_cov_size_fid_all).rstrip(".0")
