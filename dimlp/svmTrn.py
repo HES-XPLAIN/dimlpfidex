@@ -218,6 +218,8 @@ def svmTrn(*args, **kwargs):
             # Compute model Accuracy
             acc_train = metrics.accuracy_score(train_class, train_pred)*100
             acc_test = metrics.accuracy_score(test_class, test_pred)*100
+            acc_train = "{:.6f}".format(acc_train).rstrip("0").rstrip(".")
+            acc_test = "{:.6f}".format(acc_test).rstrip("0").rstrip(".")
             print("Training accuracy : {}%.".format(acc_train))
             print("Testing accuracy : {}%.".format(acc_test))
 
@@ -226,7 +228,7 @@ def svmTrn(*args, **kwargs):
 
             end_time = time.time()
             full_time = end_time - start_time
-            full_time = "{:.6f}".format(full_time).rstrip(".0")
+            full_time = "{:.6f}".format(full_time).rstrip("0").rstrip(".")
 
             print(f"\nFull execution time = {full_time} sec")
 
