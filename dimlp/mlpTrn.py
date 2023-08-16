@@ -276,8 +276,8 @@ def mlpTrn(*args, **kwargs):
 
             # Get weights and biais from first hidden layer as well as data transformed in first hidden layer
 
-            train_data_h1 = compute_first_hidden_layer(train_data, K, quant, hiknot, weights_file)
-            test_data_h1 = compute_first_hidden_layer(test_data, K, quant, hiknot, weights_file)
+            train_data_h1, mu, sigma = compute_first_hidden_layer("train", train_data, K, quant, hiknot, weights_file)
+            test_data_h1 = compute_first_hidden_layer("test", test_data, K, quant, hiknot, mu=mu, sigma=sigma)
 
             # Train mlp
             model = MLPClassifier(hidden_layer_sizes = hidden_layer_sizes_var, activation = activation_var, solver = solver_var, alpha = alpha_var, batch_size = batch_size_var,
