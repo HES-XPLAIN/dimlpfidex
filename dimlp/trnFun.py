@@ -79,6 +79,7 @@ def compute_first_hidden_layer(input_data, k, nb_stairs, hiknot, weights_file):
 
     # Output weights and biais
     try:
+        print(weights_file)
         with open(weights_file, "w") as my_file:
             for b in biais:
                  my_file.write(str(b))
@@ -115,7 +116,7 @@ def output_stats(stats_file, acc_train, acc_test):
             raise ValueError(f"Error : Couldn't open file {stats_file}.")
 
 
-def check_parameters(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, weights_file, stats_file, k, quant, hiknot):
+def check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file):
     if (save_folder is not None and (not isinstance(save_folder, str))):
         raise ValueError('Error : parameter save_folder has to be a name contained in quotation marks "".')
 
@@ -151,14 +152,18 @@ def check_parameters(save_folder, train_data_file, train_class_file, test_data_f
         raise ValueError('Error : parameter predTestn has to be a name contained in quotation marks "".')
     test_pred_file += ".out"
 
+    if stats_file is not None and not isinstance(stats_file, str):
+        raise ValueError('Error : parameter stats_file has to be a name contained in quotation marks "".')
+
+    return save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file
+
+def check_parameters_dimlp_layer(weights_file, k, quant, hiknot):
+
     if weights_file is None:
         weights_file = "weights"
     elif not isinstance(weights_file, str):
             raise ValueError('Error : parameter weights has to be a name contained in quotation marks "".')
     weights_file += ".wts"
-
-    if stats_file is not None and not isinstance(stats_file, str):
-        raise ValueError('Error : parameter stats_file has to be a name contained in quotation marks "".')
 
     if k is None:
         k = 1
@@ -175,4 +180,4 @@ def check_parameters(save_folder, train_data_file, train_class_file, test_data_f
     elif not check_int(hiknot):
         raise ValueError('Error, parameter hiknot is not a number')
 
-    return save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, weights_file, stats_file, k, quant, hiknot
+    return weights_file, k, quant, hiknot

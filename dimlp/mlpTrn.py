@@ -5,7 +5,7 @@ from sklearn import metrics
 import warnings
 from sklearn.exceptions import ConvergenceWarning
 
-from .trnFun import check_int, check_strictly_positive, check_positive, check_bool, get_data, output_pred_proba, compute_first_hidden_layer, output_stats, check_parameters
+from .trnFun import check_int, check_strictly_positive, check_positive, check_bool, get_data, output_pred_proba, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer
 
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
@@ -133,7 +133,8 @@ def mlpTrn(*args, **kwargs):
                 if arg_key not in valid_args:
                     raise ValueError(f"Invalid argument : {arg_key}")
 
-            save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, weights_file, stats_file, K, quant, hiknot = check_parameters(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, weights_file, stats_file, K, quant, hiknot)
+            save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file)
+            weights_file, K, quant, hiknot = check_parameters_dimlp_layer(weights_file, K, quant, hiknot)
 
             if hidden_layer_sizes_var is None:
                 hidden_layer_sizes_var = (100,)
