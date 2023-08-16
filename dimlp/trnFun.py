@@ -68,40 +68,42 @@ def output_pred_proba(pred, pred_file):
     except (IOError):
         raise ValueError(f"Error : Couldn't open file {pred_file}.")
 
-def compute_first_hidden_layer(input_data, k, nb_stairs, hiknot, weights_file):
-    mu = np.mean(input_data, axis=0) # mean over variables
-    sigma = np.std(input_data, axis=0)
-    for i in range(len(sigma)):
-        if sigma[i] == 0:
-            sigma[i] = 0.001
-    weights = k/sigma
-    biais = -k*mu/sigma
+def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_file=None, mu=None, sigma=None):
 
-    # Output weights and biais
-    try:
-        print(weights_file)
-        with open(weights_file, "w") as my_file:
-            for b in biais:
-                 my_file.write(str(b))
-                 my_file.write(" ")
-            my_file.write("\n")
-            for w in weights:
-                 my_file.write(str(w))
-                 my_file.write(" ")
-            my_file.close()
-    except (FileNotFoundError):
-        raise ValueError(f"Error : File {weights_file} not found.")
-    except (IOError):
-        raise ValueError(f"Error : Couldn't open file {weights_file}.")
+    if step == "train": # Train datas
+        mu = np.mean(input_data, axis=0) # mean over variables
+        sigma = np.std(input_data, axis=0)
+        for i in range(len(sigma)):
+            if sigma[i] == 0:
+                sigma[i] = 0.001
+        weights = k/sigma
+        biais = -k*mu/sigma
 
+        # Output weights and biais
+        try:
+            with open(weights_file, "w") as my_file:
+                for b in biais:
+                    my_file.write(str(b))
+                    my_file.write(" ")
+                my_file.write("\n")
+                for w in weights:
+                    my_file.write(str(w))
+                    my_file.write(" ")
+                my_file.close()
+        except (FileNotFoundError):
+            raise ValueError(f"Error : File {weights_file} not found.")
+        except (IOError):
+            raise ValueError(f"Error : Couldn't open file {weights_file}.")
 
     # Compute new data after first hidden layer
     h = k*(input_data-mu)/sigma # With indices : hij=K*(xij-muj)/sigmaj
     stair = StairObj(nb_stairs, hiknot)
 
     output_data = [[stair.funct(d) for d in row] for row in h]
-
-    return output_data
+    if step == "train": # Train data
+        return output_data, mu, sigma
+    else: # Test data
+        return output_data
 
 def output_stats(stats_file, acc_train, acc_test):
     if stats_file is not None:

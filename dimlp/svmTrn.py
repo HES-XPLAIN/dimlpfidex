@@ -200,8 +200,8 @@ def svmTrn(*args, **kwargs):
 
             # Get weights and biais from first hidden layer as well as data transformed in first hidden layer
 
-            train_data_h1 = compute_first_hidden_layer(train_data, K, quant, hiknot, weights_file)
-            test_data_h1 = compute_first_hidden_layer(test_data, K, quant, hiknot, weights_file)
+            train_data_h1, mu, sigma = compute_first_hidden_layer("train", train_data, K, quant, hiknot, weights_file)
+            test_data_h1 = compute_first_hidden_layer("test", test_data, K, quant, hiknot, mu=mu, sigma=sigma)
 
             # Train svm
             model = svm.SVC(C = c_var, kernel = kernel_var, degree = degree_var, gamma = gamma_var, coef0 = coef0_var, shrinking = shrinking_var,
