@@ -1,7 +1,7 @@
 import time
 import sys
 from sklearn import metrics
-from .trnFun import get_data, output_pred, output_stats, check_parameters_common, check_int, check_strictly_positive
+from .trnFun import get_data, output_pred, output_stats, check_parameters_common, check_int, check_strictly_positive, check_positive, check_bool
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import _tree
 import numpy as np
@@ -71,6 +71,23 @@ def randForestsTrn(*args, **kwargs):
             print("----------------------------")
             print("SVM parameters (optional)")
             print("n_estimators : Number of generated trees in the forest(100 by default)")
+            print("criterion : function to measure split quality, gini(default), entropy or log_loss,")
+            print("max_depth : max depth of the tree, integer (None by default)")
+            print("min_samples_split : minimum number of samples required to split an internal node, if float, it is a fraction of the number of samples (2 by default)")
+            print("min_samples_leaf : minimum number of samples required to be at a leaf node, if float, it is a fraction of the number of samples (1 by default)")
+            print("min_weight_fraction_leaf : minimum weighted fraction of the sum total of input samples weights required to be at a leaf node (0.0 by default)")
+            print('max_features : number of features to consider when looking for the best split, sqrt(default), log2, None(specify "None"), integer or float')
+            print('max_leaf_nodes : grow trees with max_leaf_nodes in best-first fashion, integer (None by default)')
+            print('min_impurity_decrease : a node will be split if this split induces a decrease of the impurity greater than or equal to this value, float (0.0 by default)')
+            print('bootstrap : whether bootstrap samples are used when building trees, True(default) or False (0.0 by default)')
+            print('oob_score : whether to use out-of-bag samples to estimate the generalization score, True, False(default) or callable')
+            print('n_jobs : number of jobs to run in parallel (None by default(1 proc), -1 : all processors)')
+            print('random_state : positive integer(seed) or None(default)')
+            print('verbose : controls the verbosity when fitting and predictin, integer (0 by default)')
+            print('warm_start : whether to reuse previous solution to fit initialization, True or False(default)')
+            print("class_weight : class balance, 'balanced', 'balanced_subsample, or a dictionary, for exemple with 2 classes : {0:1.2, 1:3.5} (None by default)")
+            print("ccp_alpha : complexity parameter used for Minimal Cost-Complexity Pruning, positive float (0.0 by default)")
+            print("max_samples : number of samples to draw from X to train each base estimator for bootstrap, if float, it is a fraction of the number of samples (None by default)")
             print("----------------------------")
             print("----------------------------")
             print("Here is an example, keep same parameter names :")
@@ -94,6 +111,25 @@ def randForestsTrn(*args, **kwargs):
             rules_file = kwargs.get('rules_file')
 
             n_estimators_var = kwargs.get('n_estimators')
+            criterion_var = kwargs.get('criterion')
+            max_depth_var = kwargs.get('max_depth')
+            min_samples_split_var = kwargs.get('min_samples_split')
+            min_samples_leaf_var = kwargs.get('min_samples_leaf')
+            min_weight_fraction_leaf_var = kwargs.get('min_weight_fraction_leaf')
+            max_features_var = kwargs.get('max_features')
+            max_leaf_nodes_var = kwargs.get('max_leaf_nodes')
+            min_impurity_decrease_var = kwargs.get('min_impurity_decrease')
+            bootstrap_var = kwargs.get('bootstrap')
+            oob_score_var = kwargs.get('oob_score')
+            n_jobs_var = kwargs.get('n_jobs')
+            random_state_var = kwargs.get('random_state')
+            verbose_var = kwargs.get('verbose')
+            warm_start_var = kwargs.get('warm_start')
+            class_weight_var = kwargs.get('class_weight')
+            ccp_alpha_var = kwargs.get('ccp_alpha')
+            max_samples_var = kwargs.get('max_samples')
+
+
 
             # Redirect output in file
             if output_file != None:
@@ -109,7 +145,9 @@ def randForestsTrn(*args, **kwargs):
             # Check parameters
 
             valid_args = ['train_data', 'train_class', 'test_data', 'test_class', 'train_pred', 'test_pred',
-                        'stats', 'save_folder', 'output_file', 'rules_file', 'n_estimators']
+                        'stats', 'save_folder', 'output_file', 'rules_file', 'n_estimators', 'criterion', 'max_depth', 'min_samples_split',
+                        'min_samples_leaf', 'min_weight_fraction_leaf', 'max_features', 'max_leaf_nodes', 'min_impurity_decrease', 'bootstrap',
+                        'oob_score', 'n_jobs', 'random_state', 'verbose', 'warm_start', 'class_weight', 'ccp_alpha', 'max_samples']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
@@ -127,7 +165,82 @@ def randForestsTrn(*args, **kwargs):
             if n_estimators_var is None:
                 n_estimators_var = 100
             elif (not check_strictly_positive(n_estimators_var) or not check_int(n_estimators_var)):
-                raise ValueError('Error, parameter n_estimators is not a strictly positive number')
+                raise ValueError('Error, parameter n_estimators is not a strictly positive integer')
+
+            if criterion_var is None:
+                criterion_var = "gini"
+            elif criterion_var not in {"gini", "entropy", "log_loss"}:
+                raise ValueError('Error, parameter criterion is not "gini", "entropy" or "log_loss"')
+
+            if max_depth_var is not None and (not check_int(max_depth_var)or not check_strictly_positive(max_depth_var)):
+                raise ValueError('Error, parameter max_depth is specified and is not a strictly positive integer')
+
+            if min_samples_split_var is None:
+                min_samples_split_var = 2
+            elif ((check_int(min_samples_split_var) and  min_samples_split_var < 2) or (isinstance(min_samples_split_var, float) and ((min_samples_split_var <= 0) or min_samples_split_var > 1.0)) or not check_positive(min_samples_split_var)):
+                raise ValueError('Error, parameter min_samples_split is not an integer bigger than 1 or a float in ]0,1.0]. For 1, put 1.0.')
+
+            if min_samples_leaf_var is None:
+                min_samples_leaf_var = 1
+            elif ((isinstance(min_samples_leaf_var, float) and ((min_samples_leaf_var <= 0) or min_samples_leaf_var >= 1)) or not check_strictly_positive(min_samples_leaf_var)):
+                raise ValueError('Error, parameter min_samples_leaf is not a strictly positive integer or a float in ]0,1[')
+
+            if min_weight_fraction_leaf_var is None:
+                min_weight_fraction_leaf_var = 0.0
+            elif not check_positive(min_weight_fraction_leaf_var) or min_weight_fraction_leaf_var < 0 or min_weight_fraction_leaf_var > 0.5:
+                raise ValueError('Error, parameter min_weight_fraction_leaf is not a float in [0,0.5]')
+
+            if max_features_var is None:
+                max_features_var = "sqrt"
+            elif max_features_var == "None":
+                max_features_var = None
+            elif max_features_var not in {"sqrt", "log2", "None"} and not check_strictly_positive(max_features_var) or (isinstance(max_features_var, float) and max_features_var > 1):
+                raise ValueError('Error, parameter max_features is not "sqrt", "log2", "None", a float in ]0,1] or a strictly positive integer')
+
+            if max_leaf_nodes_var is not None and not check_int(max_leaf_nodes_var) or (check_int(max_leaf_nodes_var) and max_leaf_nodes_var < 2):
+                    raise ValueError('Error, parameter max_leaf_nodes is not an integer bigger than 1')
+
+            if min_impurity_decrease_var is None:
+                min_impurity_decrease_var = 0.0
+            elif not check_positive(min_impurity_decrease_var):
+                raise ValueError('Error, parameter min_impurity_decrease is not a positive float')
+
+            if bootstrap_var is None:
+                bootstrap_var = True
+            elif not check_bool(bootstrap_var):
+                raise ValueError('Error, parameter bootstrap is not a boolean')
+
+            if oob_score_var is None:
+                oob_score_var = False
+            elif not check_bool(oob_score_var):
+                 raise ValueError('Error, parameter oob_score is not a boolean')
+
+            if n_jobs_var is not None and not check_int(n_jobs_var):
+                 raise ValueError('Error, parameter n_jobs is not an integer')
+
+            if random_state_var is not None and (not check_int(random_state_var) or not check_positive(random_state_var)):
+                raise ValueError('Error, parameter random_state is not a positive integer')
+
+            if verbose_var is None:
+                verbose_var = 0
+            elif not ((check_int(verbose_var) and check_positive(verbose_var)) or check_bool(verbose_var)):
+                raise ValueError('Error, parameter verbose is not a positive integer or a boolean')
+
+            if warm_start_var is None:
+                warm_start_var = False
+            elif not check_bool(warm_start_var):
+                raise ValueError('Error, parameter warm_start is not boolean')
+
+            if class_weight_var is not None and not isinstance(class_weight_var, dict) and class_weight_var not in {"balanced", "balanced_subsample"}:
+                raise ValueError('Error, parameter class_weight is not "balanced", "balanced_subsample", a dictionary or None')
+
+            if ccp_alpha_var is None:
+                ccp_alpha_var = 0.0
+            elif not check_positive(ccp_alpha_var):
+                raise ValueError('Error, parameter ccp_alpha is not a positive float')
+
+            if  max_samples_var is not None and ((isinstance(max_samples_var, float) and ((max_samples_var <= 0) or max_samples_var > 1)) or not check_strictly_positive(max_samples_var)):
+                raise ValueError('Error, parameter max_samples is not a strictly positive integer or a float in ]0,1]')
 
             if (save_folder is not None):
                 train_data_file = save_folder + "/" + train_data_file
@@ -149,7 +262,11 @@ def randForestsTrn(*args, **kwargs):
             test_class = [cl.index(max(cl)) for cl in test_class]
 
             # Train RF
-            model = RandomForestClassifier(n_estimators=n_estimators_var, verbose=1, oob_score=False) # Create RF Classifier
+            model = RandomForestClassifier(n_estimators=n_estimators_var, criterion=criterion_var, max_depth=max_depth_var, # Create RF Classifier
+                                            min_samples_split=min_samples_split_var, min_samples_leaf=min_samples_leaf_var, min_weight_fraction_leaf=min_weight_fraction_leaf_var,
+                                            max_features=max_features_var, max_leaf_nodes=max_leaf_nodes_var, min_impurity_decrease=min_impurity_decrease_var, bootstrap=bootstrap_var,
+                                            oob_score=oob_score_var, n_jobs=n_jobs_var, random_state=random_state_var, verbose=verbose_var, warm_start=warm_start_var, class_weight=class_weight_var,
+                                            ccp_alpha=ccp_alpha_var, max_samples=max_samples_var)
 
             model.fit(train_data, train_class)   # Train the model using the training sets
             train_pred = model.predict(train_data)    # Predict the response for train dataset
