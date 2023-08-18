@@ -658,9 +658,7 @@ int fidex(const string &command) {
         matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end());                      // Concatenate hypLocus to matHypLocus
       }
     } else {
-      // matHypLocus = calcHypLocus(inputRulesFile);
-      calcHypLocus(inputRulesFile);
-      return 0;
+      matHypLocus = calcHypLocus(inputRulesFile, nbAttributs);
     }
 
     FidexNameSpace::Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans

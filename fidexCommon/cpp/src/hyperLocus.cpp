@@ -47,7 +47,34 @@ std::vector<std::vector<double>> calcHypLocus(const char *dataFileWeights, int n
   return matHypLocus;
 }
 
-// std::vector<std::vector<double>> calcHypLocus(const char *rulesFile){
-void calcHypLocus(const char *rulesFile) {
-  std::cout << "NICEU" << std::endl;
+std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, int nbAttributes) {
+
+  std::vector<std::vector<double>> matHypLocus(nbAttributes);
+  std::vector<std::set<double>> thresholds(nbAttributes); // Thresholds for each attribute
+  std::ifstream fileDta(rulesFile);
+
+  if (!fileDta) {
+    throw FileNotFoundError("Error : file " + std::string(rulesFile) + " not found");
+  }
+
+  std::string line;
+  while (getline(fileDta, line)) {
+    if (line.find("Rule") == 0) { // Si la ligne commence par "Rule"
+      std::istringstream iss(line);
+      std::string token;
+      while (iss >> token) {
+        if (token.substr(0, 1) == "X") {
+          size_t index = std::stoi(token.substr(1));
+          iss >> token;
+          iss >> token;
+          double value = std::stod(token);
+          std::cout << index << " " << value << std::endl;
+        }
+      }
+    }
+  }
+
+  fileDta.close(); // close data file
+
+  return matHypLocus;
 }
