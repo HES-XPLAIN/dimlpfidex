@@ -7,8 +7,8 @@ void showRulesParams() {
 
   std::cout << "Obligatory parameters : \n\n";
   std::cout << "fidexGloRules -T <train dataset file> -P <train prediction file> -C <train true class file> ";
-  std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> ";
-  std::cout << "-Q <number of stairs in staircase activation function> ";
+  std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> [Not mendatory if a rules file is given with -f] ";
+  std::cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
   std::cout << "-O <Rules output file> ";
   std::cout << "-M <Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo> ";
   std::cout << "<Options>\n\n";
@@ -22,7 +22,8 @@ void showRulesParams() {
   std::cout << "-v <minimum covering number>\n";
   std::cout << "-d <dimension dropout parameter>\n";
   std::cout << "-h <hyperplan dropout parameter>\n";
-  std::cout << "-I <high side of the interval (5 by default)> ";
+  std::cout << "-Q <number of stairs in staircase activation function (50 by default)>\n";
+  std::cout << "-I <high side of the interval (5 by default)>\n";
   std::cout << "-z <seed (0=ranodom)>";
 
   std::cout << "\n-------------------------------------------------\n\n";
@@ -60,6 +61,9 @@ int fidexGloRules(const string &command) {
 
     std::string weightsFileTemp;
     std::vector<std::string> weightsFilesTemp;
+    string inputRulesFileTemp; // Rule file to be converted to hyperlocus, replace weight file
+    bool inputRulesFileInit = false;
+
     bool weightsFileInit = false;
     string rulesFileTemp;
     bool rulesFileInit = false;
@@ -72,9 +76,8 @@ int fidexGloRules(const string &command) {
 
     int nbDimlpNets = 1; // Number of networks. 1 means no bagging
 
-    int nbQuantLevels; // Number of steps of the step function
-    bool nbQuantLevelsInit = false;
-    double hiKnot = 5; // High end of the interval for each dimension, a hyperplan can't be after
+    int nbQuantLevels = 50; // Number of steps of the step function
+    double hiKnot = 5;      // High end of the interval for each dimension, a hyperplan can't be after
 
     int heuristic = -1;
     bool heuristicInit = false;
@@ -129,6 +132,11 @@ int fidexGloRules(const string &command) {
           weightsFileInit = true;
         } break;
 
+        case 'f': {
+          inputRulesFileTemp = arg;
+          inputRulesFileInit = true;
+        } break;
+
         case 'N':
           if (CheckPositiveInt(arg))
             nbDimlpNets = atoi(arg);
@@ -140,7 +148,6 @@ int fidexGloRules(const string &command) {
         case 'Q':
           if (CheckPositiveInt(arg)) {
             nbQuantLevels = atoi(arg);
-            nbQuantLevelsInit = true;
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
           }
@@ -234,11 +241,13 @@ int fidexGloRules(const string &command) {
     }
 
     // Fill weights vector
-    if (nbDimlpNets == 1) {
-      weightsFilesTemp.push_back(weightsFileTemp);
-    } else {
-      for (int n = 0; n < nbDimlpNets; n++) {
-        weightsFilesTemp.push_back(weightsFileTemp + std::to_string(n + 1) + ".wts");
+    if (weightsFileInit) {
+      if (nbDimlpNets == 1) {
+        weightsFilesTemp.push_back(weightsFileTemp);
+      } else {
+        for (int n = 0; n < nbDimlpNets; n++) {
+          weightsFilesTemp.push_back(weightsFileTemp + std::to_string(n + 1) + ".wts");
+        }
       }
     }
 
@@ -250,6 +259,7 @@ int fidexGloRules(const string &command) {
     const char *trainDataFileTrueClass = nullptr;
     const char *rulesFile = nullptr;
     std::vector<const char *> weightsFiles;
+    const char *inputRulesFile = nullptr;
     const char *consoleFile = nullptr;
     const char *attributFile = nullptr;
 
@@ -289,6 +299,11 @@ int fidexGloRules(const string &command) {
       }
     }
 
+    if (inputRulesFileInit) {
+      inputRulesFileTemp = root + inputRulesFileTemp;
+      inputRulesFile = &inputRulesFileTemp[0];
+    }
+
     if (consoleFileInit) {
       consoleFileTemp = root + consoleFileTemp;
       consoleFile = &consoleFileTemp[0];
@@ -310,11 +325,10 @@ int fidexGloRules(const string &command) {
     if (!trainDataFileTrueClassInit) {
       throw CommandArgumentException("The train true classes file has to be given with option -C");
     }
-    if (!weightsFileInit) {
-      throw CommandArgumentException("The weights file(s) have to be given with option -W");
-    }
-    if (!nbQuantLevelsInit) {
-      throw CommandArgumentException("The number of steps in the step function has to be given with option -Q");
+    if (!weightsFileInit && !inputRulesFileInit) {
+      throw CommandArgumentException("A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f");
+    } else if (weightsFileInit && inputRulesFileInit) {
+      throw CommandArgumentException("Do not specify both a weight file(-W) and a rules file(-f). Choose one of them.");
     }
     if (!rulesFileInit) {
       throw CommandArgumentException("The output rules file has to be given with option -O");
@@ -412,9 +426,15 @@ int fidexGloRules(const string &command) {
 
     std::vector<std::vector<double>> matHypLocus;
 
-    for (const auto &weightsFile : weightsFiles) {
-      std::vector<std::vector<double>> hypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
-      matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end());                      // Concatenate hypLocus to matHypLocus
+    if (weightsFileInit) {
+      for (const auto &weightsFile : weightsFiles) {
+        std::vector<std::vector<double>> hypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
+        matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end());                      // Concatenate hypLocus to matHypLocus
+      }
+    } else {
+      // matHypLocus = calcHypLocus(inputRulesFile);
+      calcHypLocus(inputRulesFile);
+      return 0;
     }
 
     FidexGloNameSpace::Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans
