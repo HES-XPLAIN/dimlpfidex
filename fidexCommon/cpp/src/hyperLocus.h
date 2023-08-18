@@ -4,11 +4,12 @@
 #include "checkFun.h"
 #include "dataSet.h"
 #include "errorHandler.h"
+#include <fstream>
+#include <set>
 #include <sstream>
 #include <string.h>
 
 std::vector<std::vector<double>> calcHypLocus(const char *dataFileWeights, int nbQuantLevels, double hiKnot);
-// std::vector<std::vector<double>> calcHypLocus(const char *rulesFile);
-void calcHypLocus(const char *rulesFile);
+std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, int nbAttributes);
 
 #endif
