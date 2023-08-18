@@ -46,3 +46,8 @@ std::vector<std::vector<double>> calcHypLocus(const char *dataFileWeights, int n
 
   return matHypLocus;
 }
+
+// std::vector<std::vector<double>> calcHypLocus(const char *rulesFile){
+void calcHypLocus(const char *rulesFile) {
+  std::cout << "NICEU" << std::endl;
+}

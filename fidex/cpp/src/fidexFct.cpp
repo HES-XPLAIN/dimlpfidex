@@ -8,8 +8,8 @@ void showFidexParams() {
   std::cout << "Obligatory parameters : \n\n";
   std::cout << "fidex -T <train dataset file> -P <train prediction file> -C <train true class file> ";
   std::cout << "-S <test sample(s) data file with data, prediction(if no -p) and true class(if no -c)> ";
-  std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> ";
-  std::cout << "-Q <number of stairs in staircase activation function> ";
+  std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> [Not mendatory if a rules file is given with -f] ";
+  std::cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
   std::cout << "-O <Rule output file>";
   std::cout << "<Options>\n\n";
 
@@ -25,7 +25,8 @@ void showFidexParams() {
   std::cout << "-v <minimum covering number>\n";
   std::cout << "-d <dimension dropout parameter>\n";
   std::cout << "-h <hyperplan dropout parameter>\n";
-  std::cout << "-I <high side of the interval (5 by default)> ";
+  std::cout << "-Q <number of stairs in staircase activation function (50 by default)>\n";
+  std::cout << "-I <high side of the interval (5 by default)>\n";
   std::cout << "-z <seed (0=ranodom)>";
 
   std::cout << "\n-------------------------------------------------\n\n";
@@ -75,6 +76,9 @@ int fidex(const string &command) {
     std::string weightsFileTemp;
     std::vector<std::string> weightsFilesTemp;
     bool weightsFileInit = false;
+    string inputRulesFileTemp; // Rule file to be converted to hyperlocus, replace weight file
+    bool inputRulesFileInit = false;
+
     string ruleFileTemp;
     bool ruleFileInit = false;
     string statsFileTemp;
@@ -86,9 +90,8 @@ int fidex(const string &command) {
 
     int nbDimlpNets = 1; // Number of networks. 1 means no bagging
 
-    int nbQuantLevels; // Number of steps of the step function
-    bool nbQuantLevelsInit = false;
-    double hiKnot = 5; // High end of the interval for each dimension, a hyperplan can't be after
+    int nbQuantLevels = 50; // Number of steps of the step function
+    double hiKnot = 5;      // High end of the interval for each dimension, a hyperplan can't be after
 
     int itMax = 100;         // We stop if we have more than itMax iterations
     int minNbCover = 2;      // Minimum size of covering that we ask
@@ -159,6 +162,11 @@ int fidex(const string &command) {
           weightsFileInit = true;
         } break;
 
+        case 'f': {
+          inputRulesFileTemp = arg;
+          inputRulesFileInit = true;
+        } break;
+
         case 'N':
           if (CheckPositiveInt(arg))
             nbDimlpNets = atoi(arg);
@@ -170,7 +178,6 @@ int fidex(const string &command) {
         case 'Q':
           if (CheckPositiveInt(arg)) {
             nbQuantLevels = atoi(arg);
-            nbQuantLevelsInit = true;
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
           }
@@ -257,11 +264,13 @@ int fidex(const string &command) {
     // ----------------------------------------------------------------------
 
     // Fill weights vector
-    if (nbDimlpNets == 1) {
-      weightsFilesTemp.push_back(weightsFileTemp);
-    } else {
-      for (int n = 0; n < nbDimlpNets; n++) {
-        weightsFilesTemp.push_back(weightsFileTemp + std::to_string(n + 1) + ".wts");
+    if (weightsFileInit) {
+      if (nbDimlpNets == 1) {
+        weightsFilesTemp.push_back(weightsFileTemp);
+      } else {
+        for (int n = 0; n < nbDimlpNets; n++) {
+          weightsFilesTemp.push_back(weightsFileTemp + std::to_string(n + 1) + ".wts");
+        }
       }
     }
 
@@ -275,6 +284,7 @@ int fidex(const string &command) {
     const char *mainSamplesClassFile = nullptr;
     const char *attributFile = nullptr;
     std::vector<const char *> weightsFiles;
+    const char *inputRulesFile = nullptr;
     const char *ruleFile = nullptr;
     const char *statsFile = nullptr;
     const char *consoleFile = nullptr;
@@ -330,6 +340,11 @@ int fidex(const string &command) {
       }
     }
 
+    if (inputRulesFileInit) {
+      inputRulesFileTemp = root + inputRulesFileTemp;
+      inputRulesFile = &inputRulesFileTemp[0];
+    }
+
     if (ruleFileInit) {
       ruleFileTemp = root + ruleFileTemp;
       ruleFile = &ruleFileTemp[0];
@@ -362,11 +377,10 @@ int fidex(const string &command) {
     if (mainSamplesClassFileInit && !mainSamplesPredFileInit) {
       throw CommandArgumentException("The test prediction data file(-p) needs to be specified if the test class data file(-c) is given");
     }
-    if (!weightsFileInit) {
-      throw CommandArgumentException("The weights file has to be given with option -W");
-    }
-    if (!nbQuantLevelsInit) {
-      throw CommandArgumentException("The number of steps in the step function has to be given with option -Q");
+    if (!weightsFileInit && !inputRulesFileInit) {
+      throw CommandArgumentException("A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f");
+    } else if (weightsFileInit && inputRulesFileInit) {
+      throw CommandArgumentException("Do not specify both a weight file(-W) and a rules file(-f). Choose one of them.");
     }
     if (!ruleFileInit) {
       throw CommandArgumentException("The output rule file has to be given with option -O");
@@ -638,10 +652,17 @@ int fidex(const string &command) {
 
     std::vector<std::vector<double>> matHypLocus;
 
-    for (const auto &weightsFile : weightsFiles) {
-      std::vector<std::vector<double>> hypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
-      matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end());                      // Concatenate hypLocus to matHypLocus
+    if (weightsFileInit) {
+      for (const auto &weightsFile : weightsFiles) {
+        std::vector<std::vector<double>> hypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
+        matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end());                      // Concatenate hypLocus to matHypLocus
+      }
+    } else {
+      // matHypLocus = calcHypLocus(inputRulesFile);
+      calcHypLocus(inputRulesFile);
+      return 0;
     }
+
     FidexNameSpace::Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans
 
     const size_t nbIn = hyperspace.getHyperLocus().size(); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
@@ -919,11 +940,11 @@ int fidex(const string &command) {
 
   Exemple pour lancer le code :
 
-  ./fidex -T datanorm -P dimlp.out -C dataclass2 -S testSampleDataCombine -W dimlp.wts -Q 50 -I 5 -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R fidex/datafiles
+  ./fidex -T datanorm -P dimlp.out -C dataclass2 -S testSampleDataCombine -W dimlp.wts -Q 50 -I 5 -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
 
-  ./fidex -T datanorm -P dimlp.out -C dataclass2 -S testData.txt -p testPred.txt -c testClass.txt -W dimlp.wts -Q 50 -I 5 -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R fidex/datafiles
-  ./fidex -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -S isoletTestData.txt -p isoletTestPredV2.out -c isoletTestClass.txt -W isoletV2.wts -Q 50 -I 5 -O ruleFidex.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R dimlp/datafiles/isoletDataset
-  ./fidex -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -S Test/X_test.txt -p Test/pred_testV2.out -c Test/y_test.txt -W HAPTV2.wts -Q 50 -I 5 -O ruleFidexV2.txt -s stats -i 100 -v 2 -d 0.5 -h 0.5 -R dimlp/datafiles/HAPTDataset
+  ./fidex -T datanorm -P dimlp.out -C dataclass2 -S testData.txt -p testPred.txt -c testClass.txt -W dimlp.wts -Q 50 -I 5 -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
+  ./fidex -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -S isoletTestData.txt -p isoletTestPredV2.out -c isoletTestClass.txt -W isoletV2.wts -Q 50 -I 5 -O ruleFidex.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../dimlp/datafiles/isoletDataset
+  ./fidex -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -S Test/X_test.txt -p Test/pred_testV2.out -c Test/y_test.txt -W HAPTV2.wts -Q 50 -I 5 -O ruleFidexV2.txt -s stats -i 100 -v 2 -d 0.5 -h 0.5 -R ../dimlp/datafiles/HAPTDataset
 
 
   #include <profileapi.h>
