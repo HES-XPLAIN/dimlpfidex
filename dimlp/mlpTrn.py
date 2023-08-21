@@ -1,9 +1,9 @@
 import time
 import sys
 from sklearn.neural_network import MLPClassifier
-from sklearn import metrics
 import warnings
 from sklearn.exceptions import ConvergenceWarning
+from sklearn import metrics
 
 from .trnFun import check_int, check_strictly_positive, check_positive, check_bool, get_data, output_pred_proba, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer
 
@@ -297,6 +297,8 @@ def mlpTrn(*args, **kwargs):
             # Output predictions
             output_pred_proba(train_pred_proba, train_pred_file)
             output_pred_proba(test_pred_proba, test_pred_file)
+            train_pred = model.predict(train_data_h1)
+            test_pred = model.predict(test_data_h1)
 
             # Calcul de l'exactitude (accuracy) du modèle
             acc_train = metrics.accuracy_score(train_class, train_pred) * 100

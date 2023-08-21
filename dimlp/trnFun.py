@@ -2,6 +2,7 @@ import numpy as np
 import os
 import sys
 from .stairObj import StairObj
+from sklearn.tree import _tree
 
 def check_strictly_positive(variable):
     if isinstance(variable, (float,int)) and variable > 0:
@@ -183,3 +184,48 @@ def check_parameters_dimlp_layer(weights_file, k, quant, hiknot):
         raise ValueError('Error, parameter hiknot is not a number')
 
     return weights_file, k, quant, hiknot
+
+
+
+def recurse(tree, node, parent_path, feature_names, output_rules_file, k_dict, from_grad_boost): # parent_path : path taken until current node
+    if tree.feature[node] != _tree.TREE_UNDEFINED: # Check if this is a real node
+        feature_name = feature_names[node] # Get node's feature name
+        threshold = tree.threshold[node] # Get node threshold
+        if node == 0:
+            left_path = f"{feature_name} <= {threshold}"
+        else:
+            left_path = f"{parent_path} & {feature_name} <= {threshold}"
+        recurse(tree, tree.children_left[node], left_path, feature_names, output_rules_file, k_dict, from_grad_boost) # Check left child node
+
+        if node == 0:
+            right_path = f"{feature_name} > {threshold}"
+        else:
+            right_path = f"{parent_path} & {feature_name} > {threshold}"
+        recurse(tree, tree.children_right[node], right_path, feature_names, output_rules_file, k_dict, from_grad_boost) # Check right child node
+    else: # If this is a leaf
+        k = k_dict["value"]
+        k += 1
+        k_dict["value"] = k
+        cover_value = tree.value[node] # Get cover values for this rule
+        if from_grad_boost:
+            output_rules_file.write(f"Rule {k}: {parent_path} -> value {tree.value[node][0]}\n") # Write rule
+        else:
+            output_rules_file.write(f"Rule {k}: {parent_path} -> class {np.argmax(cover_value)} Covering: {[int(num) for num in cover_value[0]]}\n") # Write rule
+
+def trees_to_rules(trees, rules_file, from_grad_boost=False):
+    try:
+        with open(rules_file, "w") as output_rules_file:
+            for t in range(len(trees)):
+                output_rules_file.write(f"-------------------\nTree {t + 1}\n-------------------\n")
+                tree_ = trees[t].tree_
+                feature_names = [
+                    "X"+str(i) if i != _tree.TREE_UNDEFINED else "undefined!"
+                    for i in tree_.feature
+                ]
+                k_dict = {"value": 0}
+                recurse(tree_, 0, "", feature_names, output_rules_file, k_dict, from_grad_boost)
+            output_rules_file.close()
+    except FileNotFoundError:
+        raise ValueError(f"Error: File for rules extraction ({rules_file}) not found.")
+    except IOError:
+        raise ValueError(f"Error: Couldn't open rules extraction file {rules_file}.")
