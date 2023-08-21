@@ -58,6 +58,7 @@ std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, int nbAttri
   }
 
   std::string line;
+  // Get thresholds values from rules file
   while (getline(fileDta, line)) {
     if (line.find("Rule") == 0) { // Si la ligne commence par "Rule"
       std::istringstream iss(line);
@@ -68,10 +69,14 @@ std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, int nbAttri
           iss >> token;
           iss >> token;
           double value = std::stod(token);
-          std::cout << index << " " << value << std::endl;
+          thresholds[index].insert(value);
         }
       }
     }
+  }
+
+  for (size_t i = 0; i < thresholds.size(); ++i) {
+    matHypLocus[i].assign(thresholds[i].begin(), thresholds[i].end());
   }
 
   fileDta.close(); // close data file

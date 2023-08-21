@@ -391,11 +391,11 @@ int fidexGloStats(const string &command) {
 
 /* Exemples pour lancer le code :
 
-./fidexGloStats -T datanorm -P dimlp.out -C dataclass2 -R globalRules.txt -O stats.txt -S fidexGlo/datafiles
+./fidexGloStats -T datanorm -P dimlp.out -C dataclass2 -R globalRules.txt -O stats.txt -S ../fidexGlo/datafiles
 ./fidexGloStats -T datanormTest -P dimlpDatanormTest.out -C dataclass2Test -R globalRulesDatanorm.txt -O stats.txt -S ../fidexGlo/datafiles
-./fidexGloStats -T covidTestData.txt -P covidTestPred.out -C covidTestClass.txt -R globalRulesCovid.txt -O globalStats.txt -S dimlp/datafiles/covidDataset
-./fidexGloStats -T spamTestData.txt -P spamTestPred.out -C spamTestClass.txt -R globalRulesSpam.txt -O globalStats.txt -S dimlp/datafiles/spamDataset
-./fidexGloStats -T isoletTestData.txt -P isoletTestPred.out -C isoletTestClass.txt -R globalRulesIsolet.txt -O globalStats.txt -S dimlp/datafiles/isoletDataset
-./fidexGloStats -T Test/X_test.txt -P Test/pred_testV2.out -C Test/y_test.txt -R globalRulesHAPTV2.txt -O globalStatsV2.txt -S dimlp/datafiles/HAPTDataset
+./fidexGloStats -T covidTestData.txt -P covidTestPred.out -C covidTestClass.txt -R globalRulesCovid.txt -O globalStats.txt -S ../dimlp/datafiles/covidDataset
+./fidexGloStats -T spamTestData.txt -P spamTestPred.out -C spamTestClass.txt -R globalRulesSpam.txt -O globalStats.txt -S ../dimlp/datafiles/spamDataset
+./fidexGloStats -T isoletTestData.txt -P isoletTestPred.out -C isoletTestClass.txt -R globalRulesIsolet.txt -O globalStats.txt -S ../dimlp/datafiles/isoletDataset
+./fidexGloStats -T Test/X_test.txt -P Test/pred_testV2.out -C Test/y_test.txt -R globalRulesHAPTV2.txt -O globalStatsV2.txt -S ../dimlp/datafiles/HAPTDataset
 
 */
