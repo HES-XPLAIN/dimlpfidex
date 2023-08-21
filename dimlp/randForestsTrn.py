@@ -1,51 +1,9 @@
 import time
 import sys
-from sklearn import metrics
-from .trnFun import get_data, output_pred, output_stats, check_parameters_common, check_int, check_strictly_positive, check_positive, check_bool
+from .trnFun import get_data, output_pred, output_stats, check_parameters_common, check_int, check_strictly_positive, check_positive, check_bool, trees_to_rules
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.tree import _tree
+from sklearn import metrics
 import numpy as np
-
-
-def recurse(tree, node, parent_path, feature_names, output_rules_file, k_dict): # parent_path : path taken until current node
-    if tree.feature[node] != _tree.TREE_UNDEFINED: # Check if this is a real node
-        feature_name = feature_names[node] # Get node's feature name
-        threshold = tree.threshold[node] # Get node threshold
-        if node == 0:
-            left_path = f"{feature_name} <= {threshold}"
-        else:
-            left_path = f"{parent_path} & {feature_name} <= {threshold}"
-        recurse(tree, tree.children_left[node], left_path, feature_names, output_rules_file, k_dict) # Check left child node
-
-        if node == 0:
-            right_path = f"{feature_name} > {threshold}"
-        else:
-            right_path = f"{parent_path} & {feature_name} > {threshold}"
-        recurse(tree, tree.children_right[node], right_path, feature_names, output_rules_file, k_dict) # Check right child node
-    else: # If this is a leaf
-        k = k_dict["value"]
-        k += 1
-        k_dict["value"] = k
-        cover_value = tree.value[node] # Get cover values for this rule
-        output_rules_file.write(f"Rule {k}: {parent_path} -> class {np.argmax(cover_value)} Covering: {[int(num) for num in cover_value[0]]}\n") # Write rule
-
-def trees_to_rules(trees, rules_file):
-    try:
-        with open(rules_file, "w") as output_rules_file:
-            for t in range(len(trees)):
-                output_rules_file.write(f"-------------------\nTree {t + 1}\n-------------------\n")
-                tree_ = trees[t].tree_
-                feature_names = [
-                    "X"+str(i) if i != _tree.TREE_UNDEFINED else "undefined!"
-                    for i in tree_.feature
-                ]
-                k_dict = {"value": 0}
-                recurse(tree_, 0, "", feature_names, output_rules_file, k_dict)
-            output_rules_file.close()
-    except FileNotFoundError:
-        raise ValueError(f"Error: File for rules extraction ({rules_file}) not found.")
-    except IOError:
-        raise ValueError(f"Error: Couldn't open rules extraction file {rules_file}.")
 
 def randForestsTrn(*args, **kwargs):
     try:
@@ -278,8 +236,8 @@ def randForestsTrn(*args, **kwargs):
             output_pred(test_pred, test_pred_file, nb_classes)
 
             # Compute model Accuracy
-            acc_train = metrics.accuracy_score(train_class, train_pred)*100
-            acc_test = metrics.accuracy_score(test_class, test_pred)*100
+            acc_train = metrics.accuracy_score(train_class, train_pred) * 100
+            acc_test = metrics.accuracy_score(test_class, test_pred) * 100
             acc_train = "{:.6f}".format(acc_train).rstrip("0").rstrip(".")
             acc_test = "{:.6f}".format(acc_test).rstrip("0").rstrip(".")
             print("Training accuracy : {}%.".format(acc_train))
@@ -295,7 +253,6 @@ def randForestsTrn(*args, **kwargs):
 
             print(f"\nFull execution time = {full_time} sec")
 
-
             # Redirect output to terminal
             if output_file != None:
                 sys.stdout = sys.__stdout__
@@ -305,6 +262,3 @@ def randForestsTrn(*args, **kwargs):
     except ValueError as error:
         print(error)
         return -1
-
-
-    # Ajout du .out, et des autres checks de paramètres

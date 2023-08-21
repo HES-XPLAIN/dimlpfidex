@@ -218,8 +218,8 @@ def svmTrn(*args, **kwargs):
             output_pred(test_pred, test_pred_file, nb_classes)
 
             # Compute model Accuracy
-            acc_train = metrics.accuracy_score(train_class, train_pred)*100
-            acc_test = metrics.accuracy_score(test_class, test_pred)*100
+            acc_train = metrics.accuracy_score(train_class, train_pred) * 100
+            acc_test = metrics.accuracy_score(test_class, test_pred) * 100
             acc_train = "{:.6f}".format(acc_train).rstrip("0").rstrip(".")
             acc_test = "{:.6f}".format(acc_test).rstrip("0").rstrip(".")
             print("Training accuracy : {}%.".format(acc_train))
