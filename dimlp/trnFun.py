@@ -185,7 +185,62 @@ def check_parameters_dimlp_layer(weights_file, k, quant, hiknot):
 
     return weights_file, k, quant, hiknot
 
+def check_parameters_decision_trees(n_estimators, min_samples_split, min_samples_leaf, min_weight_fraction_leaf, min_impurity_decrease, random_state, max_features, verbose, max_leaf_nodes, warm_start, ccp_alpha):
 
+    if n_estimators is None:
+        n_estimators = 100
+    elif (not check_strictly_positive(n_estimators) or not check_int(n_estimators)):
+        raise ValueError('Error, parameter n_estimators is not a strictly positive integer')
+
+    if min_samples_split is None:
+        min_samples_split = 2
+    elif ((check_int(min_samples_split) and  min_samples_split < 2) or (isinstance(min_samples_split, float) and ((min_samples_split <= 0) or min_samples_split > 1.0)) or not check_positive(min_samples_split)):
+        raise ValueError('Error, parameter min_samples_split is not an integer bigger than 1 or a float in ]0,1.0]. For 1, put 1.0.')
+
+    if min_samples_leaf is None:
+        min_samples_leaf = 1
+    elif ((isinstance(min_samples_leaf, float) and ((min_samples_leaf <= 0) or min_samples_leaf >= 1)) or not check_strictly_positive(min_samples_leaf)):
+        raise ValueError('Error, parameter min_samples_leaf is not a strictly positive integer or a float in ]0,1[')
+
+    if min_weight_fraction_leaf is None:
+        min_weight_fraction_leaf = 0.0
+    elif not check_positive(min_weight_fraction_leaf) or min_weight_fraction_leaf > 0.5:
+        raise ValueError('Error, parameter min_weight_fraction_leaf is not a float in [0,0.5]')
+
+    if min_impurity_decrease is None:
+        min_impurity_decrease = 0.0
+    elif not check_positive(min_impurity_decrease):
+        raise ValueError('Error, parameter min_impurity_decrease is not a positive float')
+
+    if random_state is not None and (not check_int(random_state) or not check_positive(random_state)):
+        raise ValueError('Error, parameter random_state is not a positive integer')
+
+    if max_features is None:
+        max_features = "sqrt"
+    elif max_features == "None":
+        max_features = None
+    elif max_features not in {"sqrt", "log2", "None"} and not check_strictly_positive(max_features) or (isinstance(max_features, float) and max_features > 1):
+        raise ValueError('Error, parameter max_features is not "sqrt", "log2", "None", a float in ]0,1] or a strictly positive integer')
+
+    if verbose is None:
+        verbose = 0
+    elif not ((check_int(verbose) and check_positive(verbose)) or check_bool(verbose)):
+        raise ValueError('Error, parameter verbose is not a positive integer or a boolean')
+
+    if max_leaf_nodes is not None and not check_int(max_leaf_nodes) or (check_int(max_leaf_nodes) and max_leaf_nodes < 2):
+            raise ValueError('Error, parameter max_leaf_nodes is not an integer bigger than 1')
+
+    if warm_start is None:
+        warm_start = False
+    elif not check_bool(warm_start):
+        raise ValueError('Error, parameter warm_start is not boolean')
+
+    if ccp_alpha is None:
+        ccp_alpha = 0.0
+    elif not check_positive(ccp_alpha):
+        raise ValueError('Error, parameter ccp_alpha is not a positive float')
+
+    return n_estimators, min_samples_split, min_samples_leaf, min_weight_fraction_leaf, min_impurity_decrease, random_state, max_features, verbose, max_leaf_nodes, warm_start, ccp_alpha
 
 def recurse(tree, node, parent_path, feature_names, output_rules_file, k_dict, from_grad_boost): # parent_path : path taken until current node
     if tree.feature[node] != _tree.TREE_UNDEFINED: # Check if this is a real node
