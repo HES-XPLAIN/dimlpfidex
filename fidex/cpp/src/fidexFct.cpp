@@ -664,7 +664,6 @@ int fidex(const string &command) {
     FidexNameSpace::Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans
 
     const size_t nbIn = hyperspace.getHyperLocus().size(); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
-    const size_t nbHyp = hyperspace.getHyperLocus()[0].size();
 
     // Check size of hyperlocus
     if (nbIn == 0 || nbIn % nbAttributs != 0) {
@@ -710,9 +709,8 @@ int fidex(const string &command) {
       int nbIt = 0;
 
       while (hyperspace.getHyperbox()->getFidelity() != 1 && nbIt < itMax) { // While fidelity of our hyperbox is not 100%
-
-        std::unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());    // best hyperbox to choose for next step
-        std::unique_ptr<Hyperbox> currentHyperbox(new Hyperbox()); // best hyperbox to choose for next step
+        std::unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());              // best hyperbox to choose for next step
+        std::unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());           // best hyperbox to choose for next step
         double mainSampleValue;
         int attribut;
         int dimension;
@@ -742,8 +740,12 @@ int fidex(const string &command) {
 
           bool maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
 
-          for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
+          size_t nbHyp = hyperspace.getHyperLocus()[dimension].size();
+          if (nbHyp == 0) {
+            continue; // No data on this dimension
+          }
 
+          for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
             // Test if we dropout this hyperplan
             if (dropoutHyp && dis(gen) < dropoutHypParam) {
               continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
@@ -755,7 +757,6 @@ int fidex(const string &command) {
             // Check if main sample value is on the right of the hyperplan
             currentHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
             currentHyperbox->computeFidelity(mainSamplesPreds[currentSample], trainPreds);
-
             // Compute fidelity
             // If the fidelity is better or is same with better covering but not if covering size is lower than minNbCover
             if (currentHyperbox->getCoveredSamples().size() >= minNbCover && (currentHyperbox->getFidelity() > bestHyperbox->getFidelity() || (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() > bestHyperbox->getCoveredSamples().size()))) {
@@ -791,14 +792,22 @@ int fidex(const string &command) {
             hyperspace.getHyperbox()->setFidelity(bestHyperbox->getFidelity());
             hyperspace.getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
             hyperspace.getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
-          } else if (minNbCover == 1 && dropoutDim == false && dropoutHyp == false) { // If we have a minimum covering of 1 and no dropout, we need to choose randomly a hyperplan, because we are stocked
-            std::unique_ptr<Hyperbox> randomHyperbox(new Hyperbox());                 // best hyperbox to choose for next step
+          } else if (minNbCover == 1 && dropoutDim == false && dropoutHyp == false) {
+            std::cout << "ON ENTRE ICI" << std::endl;                 // If we have a minimum covering of 1 and no dropout, we need to choose randomly a hyperplan, because we are stocked
+            std::unique_ptr<Hyperbox> randomHyperbox(new Hyperbox()); // best hyperbox to choose for next step
 
             std::uniform_int_distribution<int> distribution(0, static_cast<int>(nbIn) - 1);
-            int randomDimension = dimensions[distribution(gen)];
+            int randomDimension;
+            size_t hypSize;
+            do {
+              std::cout << "Dans le do while" << std::endl;
+              randomDimension = dimensions[distribution(gen)];
+              hypSize = hyperspace.getHyperLocus()[randomDimension].size();
+              std::cout << hypSize << std::endl;
+            } while (hypSize == 0);
             attribut = randomDimension % nbAttributs;
             mainSampleValue = mainSamplesValues[currentSample][attribut];
-            std::uniform_int_distribution<int> distributionHyp(0, static_cast<int>(nbHyp) - 1);
+            std::uniform_int_distribution<int> distributionHyp(0, static_cast<int>(hypSize) - 1);
             int indexRandomHyp = dimensions[distributionHyp(gen)];
             double hypValue = hyperspace.getHyperLocus()[randomDimension][indexRandomHyp];
             bool mainSampleGreater = hypValue <= mainSampleValue;

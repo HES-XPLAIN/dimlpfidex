@@ -47,7 +47,7 @@ std::vector<std::vector<double>> calcHypLocus(const char *dataFileWeights, int n
   return matHypLocus;
 }
 
-std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, int nbAttributes) {
+std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, const size_t nbAttributes) {
 
   std::vector<std::vector<double>> matHypLocus(nbAttributes);
   std::vector<std::set<double>> thresholds(nbAttributes); // Thresholds for each attribute
