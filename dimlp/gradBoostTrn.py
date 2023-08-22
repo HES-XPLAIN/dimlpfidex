@@ -97,7 +97,7 @@ def gradBoostTrn(*args, **kwargs):
             test_class = [cl.index(max(cl)) for cl in test_class]
 
             # Train GB
-            model = GradientBoostingClassifier(n_estimators=100, max_depth=3, verbose=2)
+            model = GradientBoostingClassifier(n_estimators=1, max_depth=3, verbose=2)
 
             model.fit(train_data, train_class)
             train_pred = model.predict(train_data)    # Predict the response for train dataset

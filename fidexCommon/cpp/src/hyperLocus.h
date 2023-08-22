@@ -11,6 +11,6 @@
 #include <string.h>
 
 std::vector<std::vector<double>> calcHypLocus(const char *dataFileWeights, int nbQuantLevels, double hiKnot);
-std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, int nbAttributes);
+std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, const size_t nbAttributes);
 
 #endif

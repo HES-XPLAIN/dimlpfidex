@@ -5,7 +5,7 @@ FidexAlgo::FidexAlgo() = default;
 
 // Different mains:
 
-bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> &rule, vector<vector<double>> *trainData, vector<int> *trainPreds, bool hasConfidence, vector<vector<double>> *trainOutputValuesPredictions, vector<int> *trainTrueClass, vector<double> *mainSampleValues, int mainSamplePred, FidexGloNameSpace::Hyperspace *hyperspace, const int nbIn, const int nbAttributs, const int nbHyp, int itMax, int minNbCover, bool dropoutDim, double dropoutDimParam, bool dropoutHyp, double dropoutHypParam, std::mt19937 gen) const {
+bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> &rule, vector<vector<double>> *trainData, vector<int> *trainPreds, bool hasConfidence, vector<vector<double>> *trainOutputValuesPredictions, vector<int> *trainTrueClass, vector<double> *mainSampleValues, int mainSamplePred, FidexGloNameSpace::Hyperspace *hyperspace, const int nbIn, const int nbAttributs, int itMax, int minNbCover, bool dropoutDim, double dropoutDimParam, bool dropoutHyp, double dropoutHypParam, std::mt19937 gen) const {
 
   // Initialize uniform distribution
   std::uniform_real_distribution<double> dis(0.0, 1.0);
@@ -53,7 +53,13 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
       if (dropoutDim && dis(gen) < dropoutDimParam) {
         continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
       }
-      bool maxHypBlocked = true;        // We assure that we can't increase maxHyp index for the current best hyperbox
+      bool maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
+
+      size_t nbHyp = hyperspace->getHyperLocus()[dimension].size();
+      if (nbHyp == 0) {
+        continue; // No data on this dimension
+      }
+
       for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
 
         // Test if we dropout this hyperplan
