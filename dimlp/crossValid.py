@@ -17,6 +17,9 @@ from dimlpfidex import fidex
 from dimlpfidex import fidexGlo
 from dimlp.svmTrn import svmTrn
 from dimlp.mlpTrn import mlpTrn
+from dimlp.randForestsTrn import randForestsTrn
+from dimlp.gradBoostTrn import gradBoostTrn
+
 
 def create_or_clear_directory(folder_name):
     try:
@@ -118,7 +121,7 @@ def crossValid(*args, **kwargs):
 
             print("----------------------------")
             print("Obligatory parameters :")
-            print("train_method : dimlp, dimlpBT, svm or mlp")
+            print("train_method : dimlp, dimlpBT, svm, mlp, randForest or gradBoost")
             print("algo : fidex, fidexGlo or both")
             print("data_file : data file")
             print("class_file : class file")
@@ -138,13 +141,16 @@ def crossValid(*args, **kwargs):
             print("fidexGlo_heuristic : 1: optimal fidexGlo(default), 2: fast fidexGlo 3: very fast fidexGlo")
             print("crossVal_stats : statistics of cross validation (crossValidationStats.txt by default)")
             print("attr_file : file of attributes")
-            print("hiknot : high side of the interval (5 by default)")
-            print("nb_stairs : number of stairs in staircase activation function (50 by default)")
             print("max_iter : maximum fidex and fidexGlo iteration number (100 by default)")
             print("min_cov : minimum fidex and fidexGlo covering number (2 by default)")
             print("dropout_dim : dimension dropout parameter for fidex and fidexGlo")
             print("dropout_hyp : hyperplan dropout parameter for fidex and fidexGlo")
             print("seed : 0 = random (default)")
+
+            print("----------------------------")
+            print("Optional parameters if not training with decision trees :")
+            print("hiknot : high side of the interval (5 by default)")
+            print("nb_stairs : number of stairs in staircase activation function (50 by default)")
 
             print("----------------------------")
             print("Optional parameters for dimlp and dimlpBT training:")
@@ -176,7 +182,7 @@ def crossValid(*args, **kwargs):
             print("shrinking : heuristic, True(default) or False")
             print("svm_tol : tolerance for stopping criterion (0.001 by default)")
             print("cache_size : kernel cache size (200 MB by default)")
-            print("class_weight : class balance, 'balanced' or a dictionary, for exemple with 2 classes : {0:1.2, 1:3.5} (None by default)")
+            print("svm_class_weight : class balance, 'balanced' or a dictionary, for exemple with 2 classes : {0:1.2, 1:3.5} (None by default)")
             print("svm_max_iter : maximal number of iterations (-1 for no limit (default))")
             print("decision_function_shape : decision function shape, ovo(one-vs-one) or ovr(one-vs-rest, default)")
             print("break_ties : break tie decision for ovr with more than 2 classes, True or False(default)")
@@ -189,22 +195,56 @@ def crossValid(*args, **kwargs):
             print("solver : solver for weight optimization, lbfgs, sgd or adam (default)")
             print("alpha : strength of the L2 regularization term, positive float (0.0001 by default)")
             print("batch_size : size of minibatches for stochastic optimizers for adam and sgd, auto(default) or positive integer")
-            print("learning_rate : learning rate schedule for weight updates for sgd solver, constant(default), invscaling or adaptive")
+            print("mlp_learning_rate : learning rate schedule for weight updates for sgd solver, constant(default), invscaling or adaptive")
             print("learning_rate_init : initial learning rate for adam and sgd, positive float (0.001 by default)")
             print("power_t : exponent for inverse scaling learning rate for sgd, positive float (0.5 by default)")
             print("mlp_max_iter : maximum number of iterations, positive integer (200 by default)")
             print("shuffle : whether to shuffle samples in each iteration for sgd and adam, True(default) or False")
             print("mlp_tol : tolerance for optimization (0.0001 by default)")
-            print("warm_start : whether to reuse previous solution to fit initialization, True or False(default)")
+            print("mlp_warm_start : whether to reuse previous solution to fit initialization, True or False(default)")
             print("momentum : Momentum for gradient descent update for sgd, between 0 and 1 (0.9 by default)")
             print("nesterovs_momentum : whether to use Nesterov’s momentum for sgd and momentum > 0, True(default) or False")
             print("early_stopping : whether to use early stopping to terminate training when validation score is not improving for sgd and adam, True or False(default)")
-            print("validation_fraction : proportion of training data to set aside as validation set for early stopping, between 0 and 1 excluded (0.1 by default)")
+            print("mlp_validation_fraction : proportion of training data to set aside as validation set for early stopping, between 0 and 1 excluded (0.1 by default)")
             print("beta_1 : exponential decay rate for estimates of first moment vector in adam, between 0 and 1 excluded (0.9 by default)")
             print("beta_2 : exponential decay rate for estimates of second moment vector in adam, between 0 and 1 excluded (0.999 by default)")
             print("epsilon : value for numerical stability in adam, positive float (1e-8 by default)")
-            print("n_iter_no_change : maximum number of epochs to not meet tol improvement for sgd and adam, integer >= 1 (10 by default)")
+            print("mlp_n_iter_no_change : maximum number of epochs to not meet tol improvement for sgd and adam, integer >= 1 (10 by default)")
             print("max_fun : maximum number of loss function calls for lbfgs, integer >= 1 (15000 by default)")
+
+            print("----------------------------")
+            print("Optional parameters for decision trees (random forests and gradient boosting) training:")
+            print("n_estimators : Number of generated trees in the forest(100 by default)")
+            print("min_samples_split : minimum number of samples required to split an internal node, if float, it is a fraction of the number of samples (2 by default)")
+            print("min_samples_leaf : minimum number of samples required to be at a leaf node, if float, it is a fraction of the number of samples (1 by default)")
+            print("min_weight_fraction_leaf : minimum weighted fraction of the sum total of input samples weights required to be at a leaf node (0.0 by default)")
+            print('max_features : number of features to consider when looking for the best split, sqrt(default), log2, None(specify "None"), integer or float')
+            print('min_impurity_decrease : a node will be split if this split induces a decrease of the impurity greater than or equal to this value, float (0.0 by default)')
+            print('max_leaf_nodes : grow trees with max_leaf_nodes in best-first fashion, integer (None by default)')
+            print('dt_warm_start : whether to reuse the solution of the previous call to fit and add more estimators to the ensemble, True or False(default)')
+            print("ccp_alpha : complexity parameter used for Minimal Cost-Complexity Pruning, positive float (0.0 by default)")
+
+            print("----------------------------")
+            print("Optional parameters for random forests training:")
+            print("rf_criterion : function to measure split quality, gini(default), entropy or log_loss,")
+            print("rf_max_depth : max depth of the tree, integer (None by default)")
+            print('bootstrap : whether bootstrap samples are used when building trees, True(default) or False (0.0 by default)')
+            print('oob_score : whether to use out-of-bag samples to estimate the generalization score, True, False(default) or callable')
+            print('n_jobs : number of jobs to run in parallel (None by default(1 proc), -1 : all processors)')
+            print("rf_class_weight : class balance, 'balanced', 'balanced_subsample, or a dictionary, for exemple with 2 classes : {0:1.2, 1:3.5} (None by default)")
+            print("max_samples : number of samples to draw to train each base estimator for bootstrap, if float, it is a fraction of the number of samples (None by default)")
+
+            print("----------------------------")
+            print("Optional parameters for gradient boosting training:")
+            print("loss : loss function to be optimized, log_loss(default) or exponential")
+            print("gb_learning_rate : shrinks the contribution of each tree, positive float (0.1 by default)")
+            print("subsample : fraction of samples to be used for fitting the individual base learners, float in ]0,1] (1.0 by default)")
+            print("gb_criterion : function to measure split quality, friedman_mse(default) or squared_error,")
+            print('gb_max_depth : maximum depth of the individual regression estimators, strictly positive integer or "None" (3 by default)')
+            print('init : estimator object used to compute the initial predictions, "zero"(None by default)')
+            print('gb_validation_fraction : proportion of training data to set aside as validation set for early stopping, float (0.1 by default)')
+            print("gb_n_iter_no_change : decide if early stopping will be used to terminate training when validation score is not improving, stopping if validation doesn't improve during this number of iterations (None by default)")
+            print("gb_tol : tolerance for the early stopping (0.0001 by default)")
 
             print("----------------------------")
             print("----------------------------")
@@ -221,6 +261,12 @@ def crossValid(*args, **kwargs):
             print("----------------------------")
             print("Exemple with MLP :")
             print('crossValid(train_method="mlp", algo="both", data_file="datanorm", class_file="dataclass2", save_folder="dimlp/datafiles", crossVal_folder="CrossValidationMLP")')
+            print("----------------------------")
+            print("Exemple with Random forests :")
+            print('crossValid(train_method="randForest", algo="both", data_file="datanorm", class_file="dataclass2", save_folder="dimlp/datafiles", crossVal_folder="CrossValidationRF")')
+            print("---------------------------------------------------------------------")
+            print("Exemple with Gradient boosting :")
+            print('crossValid(train_method="gradBoost", algo="both", data_file="datanorm", class_file="dataclass2", save_folder="dimlp/datafiles", crossVal_folder="CrossValidationGB")')
             print("---------------------------------------------------------------------")
 
             return 0
@@ -246,13 +292,14 @@ def crossValid(*args, **kwargs):
             fidexglo_heuristic = kwargs.get('fidexGlo_heuristic')
             crossval_stats = kwargs.get('crossVal_stats')
             attr_file = kwargs.get('attr_file')
-            hiknot = kwargs.get('hiknot')
-            nb_stairs = kwargs.get('nb_stairs')
             max_iter = kwargs.get('max_iter')
             min_cov = kwargs.get('min_cov')
             dropout_dim = kwargs.get('dropout_dim')
             dropout_hyp = kwargs.get('dropout_hyp')
             seed = kwargs.get('seed')
+
+            hiknot = kwargs.get('hiknot')
+            nb_stairs = kwargs.get('nb_stairs')
 
             pretrained_weights = kwargs.get('pretrained_weights')
             hk = {}
@@ -280,7 +327,7 @@ def crossValid(*args, **kwargs):
             shrinking_var = kwargs.get('shrinking')
             svm_tol_var = kwargs.get('svm_tol')
             cache_size_var = kwargs.get('cache_size')
-            class_weight_var = kwargs.get('class_weight')
+            svm_class_weight_var = kwargs.get('svm_class_weight')
             svm_max_iter_var = kwargs.get('svm_max_iter')
             decision_function_shape_var = kwargs.get('decision_function_shape')
             break_ties_var = kwargs.get('break_ties')
@@ -291,30 +338,60 @@ def crossValid(*args, **kwargs):
             solver_var = kwargs.get('solver')
             alpha_var = kwargs.get('alpha')
             batch_size_var = kwargs.get('batch_size')
-            learning_rate_var = kwargs.get('learning_rate')
+            mlp_learning_rate_var = kwargs.get('mlp_learning_rate')
             learning_rate_init_var = kwargs.get('learning_rate_init')
             power_t_var = kwargs.get('power_t')
             mlp_max_iter_var = kwargs.get('mlp_max_iter')
             shuffle_var = kwargs.get('shuffle')
             mlp_tol_var = kwargs.get('mlp_tol')
-            warm_start_var = kwargs.get('warm_start')
+            mlp_warm_start_var = kwargs.get('mlp_warm_start')
             momentum_var = kwargs.get('momentum')
             nesterovs_momentum_var = kwargs.get('nesterovs_momentum')
             early_stopping_var = kwargs.get('early_stopping')
-            validation_fraction_var = kwargs.get('validation_fraction')
+            mlp_validation_fraction_var = kwargs.get('mlp_validation_fraction')
             beta_1_var = kwargs.get('beta_1')
             beta_2_var = kwargs.get('beta_2')
             epsilon_var = kwargs.get('epsilon')
-            n_iter_no_change_var = kwargs.get('n_iter_no_change')
+            mlp_n_iter_no_change_var = kwargs.get('mlp_n_iter_no_change')
             max_fun_var = kwargs.get('max_fun')
+
+            n_estimators_var = kwargs.get('n_estimators')
+            min_samples_split_var = kwargs.get('min_samples_split')
+            min_samples_leaf_var = kwargs.get('min_samples_leaf')
+            min_weight_fraction_leaf_var = kwargs.get('min_weight_fraction_leaf')
+            max_features_var = kwargs.get('max_features')
+            min_impurity_decrease_var = kwargs.get('min_impurity_decrease')
+            max_leaf_nodes_var = kwargs.get('max_leaf_nodes')
+            dt_warm_start_var = kwargs.get('dt_warm_start')
+            ccp_alpha_var = kwargs.get('ccp_alpha')
+
+            rf_criterion_var = kwargs.get('rf_criterion')
+            rf_max_depth_var = kwargs.get('rf_max_depth')
+            bootstrap_var = kwargs.get('bootstrap')
+            oob_score_var = kwargs.get('oob_score')
+            n_jobs_var = kwargs.get('n_jobs')
+            rf_class_weight_var = kwargs.get('rf_class_weight')
+            max_samples_var = kwargs.get('max_samples')
+
+            loss_var = kwargs.get('loss')
+            gb_learning_rate_var = kwargs.get('gb_learning_rate')
+            subsample_var = kwargs.get('subsample')
+            gb_criterion_var = kwargs.get('gb_criterion')
+            gb_max_depth_var = kwargs.get('gb_max_depth')
+            init_var = kwargs.get('init')
+            gb_validation_fraction_var = kwargs.get('gb_validation_fraction')
+            gb_n_iter_no_change_var = kwargs.get('gb_n_iter_no_change')
+            gb_tol_var = kwargs.get('gb_tol')
 
             # Check parameters
 
             obligatory_args = ['train_method', 'algo', 'data_file', 'class_file']
             obligatory_dimlp_args = ['nb_in', 'nb_out', 'dimlpRul']
 
-            optional_args = ['save_folder', 'crossVal_folder', 'K', 'N', 'fidexGlo_heuristic', 'crossVal_stats', 'attr_file', 'hiknot', 'nb_stairs',
+            optional_args = ['save_folder', 'crossVal_folder', 'K', 'N', 'fidexGlo_heuristic', 'crossVal_stats', 'attr_file',
                         'max_iter', 'min_cov', 'dropout_dim', 'dropout_hyp', 'seed']
+
+            optional_non_dt_args = ['hiknot', 'nb_stairs']
 
             optional_dimlp_args = ['pretrained_weights', 'eta', 'mu', 'flat', 'err_thresh',
                         'acc_thresh', 'delta_err', 'nb_epochs', 'show_err']
@@ -322,34 +399,48 @@ def crossValid(*args, **kwargs):
             optional_dimlpBT_args = ['nb_dimlp_nets', 'nb_ex_in_one']
 
             optional_svm_args = ['svm_K', 'C', 'kernel', 'degree', 'gamma', 'coef0', 'shrinking',
-                        'svm_tol', 'cache_size', 'class_weight', 'svm_max_iter', 'decision_function_shape', 'break_ties']
+                        'svm_tol', 'cache_size', 'svm_class_weight', 'svm_max_iter', 'decision_function_shape', 'break_ties']
 
             optional_mlp_args = ['mlp_K', 'hidden_layer_sizes', 'activation', 'solver', 'alpha',
-                        'batch_size', 'learning_rate', 'learning_rate_init', 'power_t', 'mlp_max_iter',
-                        'shuffle', 'mlp_tol', 'warm_start', 'momentum', 'nesterovs_momentum',
-                        'early_stopping', 'validation_fraction', 'beta_1', 'beta_2', 'epsilon', 'n_iter_no_change', 'max_fun']
+                        'batch_size', 'mlp_learning_rate', 'learning_rate_init', 'power_t', 'mlp_max_iter',
+                        'shuffle', 'mlp_tol', 'mlp_warm_start', 'momentum', 'nesterovs_momentum',
+                        'early_stopping', 'mlp_validation_fraction', 'beta_1', 'beta_2', 'epsilon', 'mlp_n_iter_no_change', 'max_fun']
+
+            optional_dt_args = ['n_estimators', 'min_samples_split', 'min_samples_leaf', 'min_weight_fraction_leaf',
+                                            'max_features', 'min_impurity_decrease', 'max_leaf_nodes', 'dt_warm_start', 'ccp_alpha']
+
+            optional_rf_args = ['rf_criterion', 'rf_max_depth', 'bootstrap', 'oob_score', 'n_jobs', 'rf_class_weight', 'max_samples']
+
+            optional_gb_args = ['loss', 'gb_learning_rate', 'subsample', 'gb_criterion', 'gb_max_depth', 'init'
+                                , 'gb_validation_fraction', 'gb_n_iter_no_change', 'gb_tol']
 
             # Check if wrong parameters are given
 
-            train_methods = {"dimlp", "dimlpBT", "svm", "mlp"}
+            train_methods = {"dimlp", "dimlpBT", "svm", "mlp", "randForest", "gradBoost"}
             if train_method is None:
-                raise ValueError('Error : train method is missing, add it with option train_method="dimlp", "dimlpBT", "svm" or "mlp"')
+                raise ValueError('Error : train method is missing, add it with option train_method="dimlp", "dimlpBT", "svm", "mlp", randForest or gradBoost')
             elif (train_method not in train_methods):
-                raise ValueError('Error, parameter train_method is not dimlp, dimlpBT, svm or mlp')
+                raise ValueError('Error, parameter train_method is not "dimlp", "dimlpBT", "svm", "mlp", "randForest" or "gradBoost"')
 
             for arg_key in kwargs.keys():
                 if (train_method == "dimlp"):
-                    if (arg_key not in optional_args and arg_key not in optional_dimlp_args and not(arg_key.startswith('H') and arg_key[1:].isdigit()) and arg_key not in obligatory_args and arg_key not in obligatory_dimlp_args):
+                    if (arg_key not in optional_args and arg_key not in optional_non_dt_args and arg_key not in optional_dimlp_args and not(arg_key.startswith('H') and arg_key[1:].isdigit()) and arg_key not in obligatory_args and arg_key not in obligatory_dimlp_args):
                         raise ValueError(f"Invalid argument with dimlp training : {arg_key}")
                 elif (train_method == "dimlpBT"):
-                    if (arg_key not in optional_args and arg_key not in optional_dimlp_args and not(arg_key.startswith('H') and arg_key[1:].isdigit()) and arg_key not in obligatory_args and arg_key not in obligatory_dimlp_args and arg_key not in optional_dimlpBT_args):
+                    if (arg_key not in optional_args and arg_key not in optional_non_dt_args and arg_key  not in optional_dimlp_args and not(arg_key.startswith('H') and arg_key[1:].isdigit()) and arg_key not in obligatory_args and arg_key not in obligatory_dimlp_args and arg_key not in optional_dimlpBT_args):
                         raise ValueError(f"Invalid argument with dimlpBT training : {arg_key}")
                 elif (train_method == "svm"):
-                    if (arg_key not in optional_args and arg_key not in optional_svm_args and arg_key not in obligatory_args):
+                    if (arg_key not in optional_args and arg_key not in optional_non_dt_args and arg_key not in optional_svm_args and arg_key not in obligatory_args):
                         raise ValueError(f"Invalid argument with svm training : {arg_key}")
-                else:
-                    if (arg_key not in optional_args and arg_key not in optional_mlp_args and arg_key not in obligatory_args):
+                elif (train_method == "mlp"):
+                    if (arg_key not in optional_args and arg_key not in optional_non_dt_args and arg_key not in optional_mlp_args and arg_key not in obligatory_args):
                         raise ValueError(f"Invalid argument with mlp training : {arg_key}")
+                elif (train_method == "randForest"):
+                    if (arg_key not in optional_args and arg_key not in optional_dt_args and arg_key not in optional_rf_args and arg_key not in obligatory_args):
+                        raise ValueError(f"Invalid argument with random forest training : {arg_key}")
+                else:
+                    if (arg_key not in optional_args and arg_key not in optional_dt_args and arg_key not in optional_gb_args and arg_key not in obligatory_args):
+                        raise ValueError(f"Invalid argument with gradient boosting training : {arg_key}")
 
 
             algos = {"fidex", "fidexGlo", "both"}
@@ -399,10 +490,12 @@ def crossValid(*args, **kwargs):
             if (attr_file is not None and (not isinstance(attr_file, str))):
                 raise ValueError('Error, parameter attr_file has to be a name contained in quotation marks "".')
 
-            if hiknot is None:
-                hiknot = 5
-            if nb_stairs is None:
-                nb_stairs = 50
+            if train_method not in {"randForest", "gradBoost"}:
+                if hiknot is None:
+                    hiknot = 5
+                if nb_stairs is None:
+                    nb_stairs = 50
+
             if max_iter is None:
                 max_iter = 100
             if min_cov is None:
@@ -487,7 +580,7 @@ def crossValid(*args, **kwargs):
                 if break_ties_var is None:
                     break_ties_var = False
 
-            else:
+            elif train_method == "mlp":
                 if mlp_k is None:
                     mlp_k = 1
                 if hidden_layer_sizes_var is None:
@@ -500,8 +593,8 @@ def crossValid(*args, **kwargs):
                     alpha_var = 0.0001
                 if batch_size_var is None:
                     batch_size_var = "auto"
-                if learning_rate_var is None:
-                    learning_rate_var = "constant"
+                if mlp_learning_rate_var is None:
+                    mlp_learning_rate_var = "constant"
                 if learning_rate_init_var is None:
                     learning_rate_init_var = 0.001
                 if power_t_var is None:
@@ -512,27 +605,83 @@ def crossValid(*args, **kwargs):
                     shuffle_var = True
                 if mlp_tol_var is None:
                     mlp_tol_var = 0.0001
-                if warm_start_var is None:
-                    warm_start_var = False
+                if mlp_warm_start_var is None:
+                    mlp_warm_start_var = False
                 if momentum_var is None:
                     momentum_var = 0.9
                 if nesterovs_momentum_var is None:
                     nesterovs_momentum_var = True
                 if early_stopping_var is None:
                     early_stopping_var = False
-                if validation_fraction_var is None:
-                    validation_fraction_var = 0.1
+                if mlp_validation_fraction_var is None:
+                    mlp_validation_fraction_var = 0.1
                 if beta_1_var is None:
                     beta_1_var = 0.9
                 if beta_2_var is None:
                     beta_2_var = 0.999
                 if epsilon_var is None:
                     epsilon_var = 0.00000001
-                if n_iter_no_change_var is None:
-                    n_iter_no_change_var = 10
+                if mlp_n_iter_no_change_var is None:
+                    mlp_n_iter_no_change_var = 10
                 if max_fun_var is None:
                     max_fun_var = 15000
 
+            else:
+                if n_estimators_var is None:
+                    n_estimators_var = 100
+
+                if min_samples_split_var is None:
+                    min_samples_split_var = 2
+
+                if min_samples_leaf_var is None:
+                    min_samples_leaf_var = 1
+
+                if min_weight_fraction_leaf_var is None:
+                    min_weight_fraction_leaf_var = 0.0
+
+                if min_impurity_decrease_var is None:
+                    min_impurity_decrease_var = 0.0
+
+                if max_features_var is None:
+                    max_features_var = "sqrt"
+
+                if dt_warm_start_var is None:
+                    dt_warm_start_var = False
+
+                if ccp_alpha_var is None:
+                    ccp_alpha_var = 0.0
+
+                if train_method == "randForest":
+                    if rf_criterion_var is None:
+                        rf_criterion_var = "gini"
+
+                    if bootstrap_var is None:
+                        bootstrap_var = True
+
+                    if oob_score_var is None:
+                        oob_score_var = False
+
+                else:
+                    if loss_var is None:
+                        loss_var = "log_loss"
+
+                    if gb_learning_rate_var is None:
+                        gb_learning_rate_var = 0.1
+
+                    if subsample_var is None:
+                        subsample_var = 1.0
+
+                    if gb_criterion_var is None:
+                        gb_criterion_var = "friedman_mse"
+
+                    if gb_max_depth_var is None:
+                        gb_max_depth_var = 3
+
+                    if gb_validation_fraction_var is None:
+                        gb_validation_fraction_var = 0.1
+
+                    if gb_tol_var is None:
+                        gb_tol_var = 0.0001
 
             is_fidex = False
             is_fidexglo = False
@@ -710,8 +859,8 @@ def crossValid(*args, **kwargs):
                         outputStatsFile.write(f"Training with {nb_in} input neurons and {nb_out} output neurons\n")
                         for key, value in hk.items():
                             outputStatsFile.write(f"Layer {key} has {value} neurons\n")
-
-                    outputStatsFile.write(f"The number of stairs in staircase activation function is {nb_stairs} and the interval in which hyperplans are contained is [-{hiknot},{hiknot}]\n")
+                    if train_method not in {"randForest", "gradBoost"}:
+                        outputStatsFile.write(f"The number of stairs in staircase activation function is {nb_stairs} and the interval in which hyperplans are contained is [-{hiknot},{hiknot}]\n")
                     if train_method == "dimlpBT":
                         outputStatsFile.write(f"The number of dimlp networks is {nb_dimlp_nets}\n")
                         if nb_ex_in_one == 0:
@@ -742,10 +891,10 @@ def crossValid(*args, **kwargs):
                         else:
                             outputStatsFile.write("No using of the shrinking heuristic\n")
                         outputStatsFile.write(f"The tolerance for stopping criterion is {svm_tol_var}\n")
-                        if class_weight_var == None:
+                        if svm_class_weight_var == None:
                             outputStatsFile.write("Class weights are unchanged\n")
                         else:
-                            outputStatsFile.write(f"Class weights are {class_weight_var}\n")
+                            outputStatsFile.write(f"Class weights are {svm_class_weight_var}\n")
                         if svm_max_iter_var == -1:
                             outputStatsFile.write("There is no limit in the number of iterations\n")
                         else:
@@ -756,7 +905,7 @@ def crossValid(*args, **kwargs):
                                 outputStatsFile.write("Using break tie decision\n")
                         else:
                             outputStatsFile.write("The decision function shape is one-vs-one\n")
-                    else:
+                    elif train_method == "mlp":
                         outputStatsFile.write(f"The K parameter to improve dynamics is {mlp_k}\n")
                         outputStatsFile.write(f"The size of the hidden layers is {hidden_layer_sizes_var}\n")
                         outputStatsFile.write(f"The activation function is {activation_var}\n")
@@ -765,7 +914,7 @@ def crossValid(*args, **kwargs):
                         if solver_var in {"adam", "sgd"}:
                             outputStatsFile.write(f"The batch size is {alpha_var}\n")
                         if solver_var =="sgd":
-                            outputStatsFile.write(f"The learning rate is {learning_rate_var}\n")
+                            outputStatsFile.write(f"The learning rate is {mlp_learning_rate_var}\n")
                         if solver_var in {"adam", "sgd"}:
                             outputStatsFile.write(f"The initial learning rate is {learning_rate_init_var}\n")
                         if solver_var =="sgd":
@@ -774,7 +923,7 @@ def crossValid(*args, **kwargs):
                         if solver_var in {"adam", "sgd"} and shuffle_var == True:
                             outputStatsFile.write("Samples are shuffled in each iteration")
                         outputStatsFile.write(f"The tolerance for optimization is {mlp_tol_var}\n")
-                        if warm_start_var == True:
+                        if mlp_warm_start_var == True:
                             outputStatsFile.write("Previous solution is reused to fit initialization")
                         if solver_var =="sgd":
                             outputStatsFile.write(f"The momentum for gradient descent update is {momentum_var}\n")
@@ -782,18 +931,95 @@ def crossValid(*args, **kwargs):
                                 outputStatsFile.write("Using Nesterov’s momentum")
                         if solver_var in {"adam", "sgd"} and early_stopping_var == True:
                             outputStatsFile.write("Using early stopping")
-                            outputStatsFile.write(f"The proportion of training data to set aside as validation set is {validation_fraction_var}\n")
+                            outputStatsFile.write(f"The proportion of training data to set aside as validation set is {mlp_validation_fraction_var}\n")
                         if solver_var =="adam":
                             outputStatsFile.write(f"Exponential decay rate for estimates of first moment vector is {beta_1_var}\n")
                             outputStatsFile.write(f"For the second moment it's {beta_2_var}\n")
                             outputStatsFile.write(f"The value for numerical stability is {epsilon_var}\n")
                         if solver_var in {"adam", "sgd"}:
-                            outputStatsFile.write(f"The maximum number of epochs to not meet tol improvement is {n_iter_no_change_var}\n")
+                            outputStatsFile.write(f"The maximum number of epochs to not meet tol improvement is {mlp_n_iter_no_change_var}\n")
                         if solver_var =="lbfgs":
                             outputStatsFile.write(f"The maximum number of loss function calls is {max_fun_var}\n")
-
+                    else:
+                        outputStatsFile.write(f"The number of generated trees in the forest is {n_estimators_var}\n")
+                        if min_samples_split_var <= 1:
+                            outputStatsFile.write(f"The minimum number of samples required to split an internal node is {min_samples_split_var*100}% of the number of samples\n")
+                        else:
+                            outputStatsFile.write(f"The minimum number of samples required to split an internal node is {min_samples_split_var}\n")
+                        if min_samples_leaf_var < 1:
+                            outputStatsFile.write(f"The minimum number of samples required to be at a leaf node is {min_samples_leaf_var*100}% of the number of samples\n")
+                        else:
+                            outputStatsFile.write(f"The minimum number of samples required to be at a leaf node is {min_samples_leaf_var}\n")
+                        outputStatsFile.write(f"The minimum weighted fraction of the sum total of input samples weights required to be at a leaf node is {min_weight_fraction_leaf_var}\n")
+                        if max_features_var == "None":
+                            outputStatsFile.write("All features are considered  when looking for the best split\n")
+                        elif max_features_var == "sqrt":
+                            outputStatsFile.write("The number of features to consider when looking for the best split is computed as the square root of the number of features\n")
+                        elif max_features_var == "log2":
+                            outputStatsFile.write("The number of features to consider when looking for the best split is computed as log2 of the number of features\n")
+                        elif max_features_var < 1:
+                            outputStatsFile.write(f"The number of features to consider when looking for the best split is {max_features_var*100}% of the number of features\n")
+                        else:
+                            outputStatsFile.write(f"The number of features to consider when looking for the best split is {max_features_var}\n")
+                        outputStatsFile.write(f"A node will be split if this split induces a decrease of the impurity greater than or equal to {min_impurity_decrease_var}\n")
+                        if max_leaf_nodes_var is None:
+                            outputStatsFile.write("Trees grow with unlimited number of leaf nodes in best-first fashion\n")
+                        else:
+                            outputStatsFile.write(f"Trees grow with {max_leaf_nodes_var} leaf nodes in best-first fashion\n")
+                        if dt_warm_start_var == True:
+                            outputStatsFile.write("The solution of the previous call is reused to fit and add more estimators to the ensemble\n")
+                        else:
+                            outputStatsFile.write("The solution of the previous call is not reused to fit and to add more estimators to the ensemble\n")
+                        outputStatsFile.write(f"The complexity parameter used for Minimal Cost-Complexity Pruning is {ccp_alpha_var}\n")
+                        if train_method == "randForest":
+                            outputStatsFile.write(f"The function used to measure split quality is {rf_criterion_var}\n")
+                            if rf_max_depth_var is None:
+                                outputStatsFile.write("The depth of the tree is unlimited\n")
+                            else:
+                                outputStatsFile.write(f"The maximum depth of the tree is {rf_max_depth_var}\n")
+                            if bootstrap_var == True:
+                                outputStatsFile.write("Bootstrap samples are used when building trees\n")
+                                if oob_score_var == True:
+                                    outputStatsFile.write("Using out-of-bag samples to estimate the generalization score\n")
+                                if max_samples_var is None:
+                                    outputStatsFile.write("Every sample is used to train each base estimator for bootstrap\n")
+                                elif max_samples_var < 1:
+                                    outputStatsFile.write(f"The number of samples to draw to train each base estimator for bootstrap is {max_samples_var*100}% of the number of samples\n")
+                                else:
+                                    outputStatsFile.write(f"The number of samples to draw to train each base estimator for bootstrap is {max_samples_var}\n")
+                            if n_jobs_var is None:
+                                outputStatsFile.write("The jobs are not runned in parallel\n")
+                            elif n_jobs_var == -1:
+                                outputStatsFile.write("The jobs are runned using all processors\n")
+                            else:
+                                outputStatsFile.write(f"The number of jobs to run in parallel is {n_jobs_var}\n")
+                            if rf_class_weight_var is None:
+                                outputStatsFile.write("Class weights are unchanged\n")
+                            elif rf_class_weight_var == "balanced_subsample":
+                                outputStatsFile.write("Class weights are balanced based on the bootstrap sample\n")
+                            else:
+                                outputStatsFile.write(f"Class weights are {rf_class_weight_var}\n")
+                        else:
+                            outputStatsFile.write(f"The loss function to be optimized is {loss_var}\n")
+                            outputStatsFile.write(f"The learning rate shrinking the contribution of each tree is {gb_learning_rate_var}\n")
+                            outputStatsFile.write(f"The fraction of samples to be used for fitting the individual base learners is {subsample_var}\n")
+                            outputStatsFile.write(f"The function used to measure split quality is {gb_criterion_var}\n")
+                            if gb_max_depth_var == "None":
+                                outputStatsFile.write("The depth of the tree is unlimited\n")
+                            else:
+                                outputStatsFile.write(f"The maximum depth of the tree is {gb_max_depth_var}\n")
+                            if init_var =="zero":
+                                outputStatsFile.write("Special zero estimator is used\n")
+                            if gb_n_iter_no_change_var is None:
+                                outputStatsFile.write("Early stopping is disabled\n")
+                            else:
+                                outputStatsFile.write(f"Stopping if validation score doesn't improve during {gb_n_iter_no_change_var} iterations\n")
+                                outputStatsFile.write(f"The proportion of training data to set aside as validation set for early stopping is {gb_validation_fraction_var} \n")
+                                outputStatsFile.write(f"The tolerance for the early stopping is {gb_tol_var} \n")
                     outputStatsFile.write(f"The max fidex and fidexGlo iteration number is {max_iter}\n")
                     outputStatsFile.write(f"The minimum fidex and fidexGlo covering number is {min_cov}\n")
+                    if is_fidexglo:
+                        outputStatsFile.write(f"The fidexGlo heuristic is {fidexglo_heuristic}\n")
                     if dropout_hyp:
                         outputStatsFile.write(f"The hyperplan dropout parameter for fidex and fidexGlo is {dropout_hyp}\n")
                     else:
@@ -872,7 +1098,7 @@ def crossValid(*args, **kwargs):
                     test_idx = (ki + 1) % k
                     for m in range(2, k):
                         train_idx.append((ki + m) % k)
-                    if train_method in {"dimlpBT", "svm", "mlp"}: # There is no validation to tune hyperparameters in svm
+                    if train_method in {"dimlpBT", "svm", "mlp", "randForest", "gradBoost"}: # There is no validation data to be provided to tune hyperparameters
                         train_idx.append(validation_idx)
 
                     # Creation of train, test and validation files (temp files)
@@ -1029,9 +1255,8 @@ def crossValid(*args, **kwargs):
                         if (res == -1):
                             return -1 # If there is an error in the Trn
 
-
+                    # Training with svm
                     elif train_method == "svm":
-                        # Training with svm
                         print("Enter in svmTrn function")
                         res = svmTrn(train_data=folder_path_from_root + separator + "train.txt",train_class=folder_path_from_root + separator + "trainTarget.txt",
                                      test_data=folder_path_from_root + separator + "test.txt",test_class=folder_path_from_root + separator + "testTarget.txt",
@@ -1039,14 +1264,14 @@ def crossValid(*args, **kwargs):
                                      output_file = crossval_folder_temp + separator + "consoleTemp.txt", train_pred = folder_path_from_root + separator + "train",
                                      test_pred = folder_path_from_root + separator + "test", save_folder = save_folder, nb_stairs = nb_stairs, hiknot = hiknot,
                                      K = svm_k, C = c_var, kernel = kernel_var, degree = degree_var, gamma = gamma_var, coef0 = coef0_var, shrinking = shrinking_var,
-                                     tol = svm_tol_var, cache_size = cache_size_var, class_weight = class_weight_var, max_iter = svm_max_iter_var,
+                                     tol = svm_tol_var, cache_size = cache_size_var, class_weight = svm_class_weight_var, max_iter = svm_max_iter_var,
                                      decision_function_shape = decision_function_shape_var, break_ties = break_ties_var)
 
                         if (res == -1):
                             return -1 # If there is an error in the Trn
 
-                    else:
-                        # Training with mlp
+                    # Training with mlp
+                    elif train_method == "mlp":
                         print("Enter in mlpTrn function")
                         random_state_var = seed
                         if seed == 0:
@@ -1057,10 +1282,51 @@ def crossValid(*args, **kwargs):
                                      output_file = crossval_folder_temp + separator + "consoleTemp.txt", train_pred = folder_path_from_root + separator + "train",
                                      test_pred = folder_path_from_root + separator + "test", save_folder = save_folder, nb_stairs = nb_stairs, hiknot = hiknot,
                                      K = mlp_k, hidden_layer_sizes = hidden_layer_sizes_var, activation = activation_var, solver = solver_var, alpha = alpha_var,
-                                     batch_size = batch_size_var, learning_rate = learning_rate_var, learning_rate_init = learning_rate_init_var, power_t = power_t_var,
-                                     max_iter = mlp_max_iter_var, shuffle = shuffle_var, tol = mlp_tol_var, warm_start = warm_start_var, momentum = momentum_var,
-                                     nesterovs_momentum = nesterovs_momentum_var, early_stopping = early_stopping_var, validation_fraction = validation_fraction_var,
-                                     beta_1 = beta_1_var, beta_2 = beta_2_var, epsilon = epsilon_var, n_iter_no_change = n_iter_no_change_var, max_fun = max_fun_var,
+                                     batch_size = batch_size_var, learning_rate = mlp_learning_rate_var, learning_rate_init = learning_rate_init_var, power_t = power_t_var,
+                                     max_iter = mlp_max_iter_var, shuffle = shuffle_var, tol = mlp_tol_var, warm_start = mlp_warm_start_var, momentum = momentum_var,
+                                     nesterovs_momentum = nesterovs_momentum_var, early_stopping = early_stopping_var, validation_fraction = mlp_validation_fraction_var,
+                                     beta_1 = beta_1_var, beta_2 = beta_2_var, epsilon = epsilon_var, n_iter_no_change = mlp_n_iter_no_change_var, max_fun = max_fun_var,
+                                     random_state = random_state_var)
+
+                        if (res == -1):
+                            return -1 # If there is an error in the Trn
+
+                    # Training with random forests
+                    elif train_method == "randForest":
+                        print("Enter in randForestsTrn function")
+                        random_state_var = seed
+                        if seed == 0:
+                            random_state_var = None
+                        res = randForestsTrn(train_data=folder_path_from_root + separator + "train.txt",train_class=folder_path_from_root + separator + "trainTarget.txt",
+                                     test_data=folder_path_from_root + separator + "test.txt",test_class=folder_path_from_root + separator + "testTarget.txt",
+                                     stats = folder_path_from_root + separator + "stats.txt", output_file = crossval_folder_temp + separator + "consoleTemp.txt",
+                                     train_pred = folder_path_from_root + separator + "train", test_pred = folder_path_from_root + separator + "test",
+                                     rules_file = folder_path_from_root + separator + "treesRules", save_folder = save_folder, n_estimators = n_estimators_var,
+                                     min_samples_split = min_samples_split_var, min_samples_leaf = min_samples_leaf_var, min_weight_fraction_leaf = min_weight_fraction_leaf_var,
+                                     max_features = max_features_var, min_impurity_decrease = min_impurity_decrease_var, max_leaf_nodes = max_leaf_nodes_var,
+                                     warm_start = dt_warm_start_var, ccp_alpha = ccp_alpha_var, criterion = rf_criterion_var, max_depth = rf_max_depth_var,
+                                     bootstrap = bootstrap_var, oob_score = oob_score_var, n_jobs = n_jobs_var, class_weight = rf_class_weight_var,
+                                     max_samples = max_samples_var, random_state = random_state_var)
+
+                        if (res == -1):
+                            return -1 # If there is an error in the Trn
+
+                    # Training with gradient boosting
+                    else:
+                        print("Enter in gradBoostTrn function")
+                        random_state_var = seed
+                        if seed == 0:
+                            random_state_var = None
+                        res = gradBoostTrn(train_data=folder_path_from_root + separator + "train.txt",train_class=folder_path_from_root + separator + "trainTarget.txt",
+                                     test_data=folder_path_from_root + separator + "test.txt",test_class=folder_path_from_root + separator + "testTarget.txt",
+                                     stats = folder_path_from_root + separator + "stats.txt", output_file = crossval_folder_temp + separator + "consoleTemp.txt",
+                                     train_pred = folder_path_from_root + separator + "train", test_pred = folder_path_from_root + separator + "test",
+                                     rules_file = folder_path_from_root + separator + "treesRules", save_folder = save_folder, n_estimators = n_estimators_var,
+                                     min_samples_split = min_samples_split_var, min_samples_leaf = min_samples_leaf_var, min_weight_fraction_leaf = min_weight_fraction_leaf_var,
+                                     max_features = max_features_var, min_impurity_decrease = min_impurity_decrease_var, max_leaf_nodes = max_leaf_nodes_var,
+                                     warm_start = dt_warm_start_var, ccp_alpha = ccp_alpha_var, loss = loss_var, learning_rate = gb_learning_rate_var,
+                                     subsample = subsample_var, criterion = gb_criterion_var, max_depth = gb_max_depth_var, init = init_var,
+                                     validation_fraction = gb_validation_fraction_var, n_iter_no_change = gb_n_iter_no_change_var, tol = gb_tol_var,
                                      random_state = random_state_var)
 
                         if (res == -1):
@@ -1089,7 +1355,9 @@ def crossValid(*args, **kwargs):
                     if is_fidex:
                         # Compute fidex stats in folder
                         fidex_command = "fidex"
-                        fidex_command +=  " -I " + str(hiknot)
+                        if train_method in {"dimlp", "dimlpBT", "svm", "mlp"}:
+                            fidex_command +=  " -I " + str(hiknot)
+                            fidex_command +=  " -Q " + str(nb_stairs)
                         if save_folder is not None:
                             fidex_command +=  " -R " + save_folder
                         if attr_file is not None:
@@ -1102,12 +1370,13 @@ def crossValid(*args, **kwargs):
                             fidex_command +=  " -h " + str(dropout_hyp)
                         fidex_command +=  " -z " + str(seed)
 
-                        fidex_command +=  " -Q " + str(nb_stairs)
-                        if train_method != "dimlpBT":
+                        if train_method in {"dimlp", "svm", "mlp"}:
                             fidex_command +=  " -W " + folder_path_from_root + separator + "weights.wts"
-                        else:
+                        elif train_method == "dimlpBT":
                             fidex_command +=  " -W " + folder_path_from_root + separator + "weightsBT"
                             fidex_command +=  " -N " + str(nb_dimlp_nets)
+                        else:
+                            fidex_command += " -f " + folder_path_from_root + separator + "treesRules.rls"
 
                         fidex_command += " -T " + folder_path_from_root + separator + "train.txt"
                         fidex_command += " -P " + folder_path_from_root + separator + "train.out"
@@ -1157,7 +1426,9 @@ def crossValid(*args, **kwargs):
                     if is_fidexglo:
                         # Compute fidexGlo rules in folder
                         fidexglo_rules_command = "fidexGloRules"
-                        fidexglo_rules_command +=  " -I " + str(hiknot)
+                        if train_method in {"dimlp", "dimlpBT", "svm", "mlp"}:
+                            fidexglo_rules_command +=  " -I " + str(hiknot)
+                            fidexglo_rules_command +=  " -Q " + str(nb_stairs)
                         if save_folder is not None:
                             fidexglo_rules_command +=  " -S " + save_folder
                         if attr_file is not None:
@@ -1169,12 +1440,13 @@ def crossValid(*args, **kwargs):
                         if dropout_hyp != None:
                             fidexglo_rules_command +=  " -h " + str(dropout_hyp)
                         fidexglo_rules_command +=  " -z " + str(seed)
-                        fidexglo_rules_command +=  " -Q " + str(nb_stairs)
-                        if train_method != "dimlpBT":
+                        if train_method in {"dimlp", "svm", "mlp"}:
                             fidexglo_rules_command +=  " -W " + folder_path_from_root + separator + "weights.wts"
-                        else:
+                        elif train_method == "dimlpBT":
                             fidexglo_rules_command +=  " -W " + folder_path_from_root + separator + "weightsBT"
                             fidexglo_rules_command +=  " -N " + str(nb_dimlp_nets)
+                        else:
+                            fidexglo_rules_command += " -f " + folder_path_from_root + separator + "treesRules.rls"
 
                         fidexglo_rules_command += " -T " + folder_path_from_root + separator + "train.txt"
                         fidexglo_rules_command += " -P " + folder_path_from_root + separator + "train.out"

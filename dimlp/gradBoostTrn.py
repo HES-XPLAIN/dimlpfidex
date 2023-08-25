@@ -25,7 +25,7 @@ def gradBoostTrn(*args, **kwargs):
             print("test_pred : output test prediction file name without extension (predTest by default)")
             print("stats : output file name without extension with train and test accuracy")
             print("output_file : file where you redirect console result")
-            print("rules_file : random forests rules file without extension (GB_rules.rls by default)")
+            print("rules_file : output gradient boosting rules file without extension (GB_rules.rls by default)")
             print("----------------------------")
             print("Gradient boosting parameters (optional)")
             print("n_estimators : number of generated trees in the forest (100 by default)")
