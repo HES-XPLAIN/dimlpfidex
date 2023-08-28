@@ -69,11 +69,12 @@ exclude = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9, <3.11"
 pybind11 = "^2.10.4"
 pybind11-global = "^2.10.4"
 numpy = "^1.24.3"
 scikit-learn = "^1.2.2"
+tensorflow = "^2.13.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.3.2"
