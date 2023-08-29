@@ -70,7 +70,6 @@ def output_pred_proba(pred, pred_file):
         raise ValueError(f"Error : Couldn't open file {pred_file}.")
 
 def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_file=None, mu=None, sigma=None):
-
     if step == "train": # Train datas
         mu = np.mean(input_data, axis=0) # mean over variables
         sigma = np.std(input_data, axis=0)
@@ -95,7 +94,6 @@ def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_f
             raise ValueError(f"Error : File {weights_file} not found.")
         except (IOError):
             raise ValueError(f"Error : Couldn't open file {weights_file}.")
-
     # Compute new data after first hidden layer
     h = k*(input_data-mu)/sigma # With indices : hij=K*(xij-muj)/sigmaj
     stair = StairObj(nb_stairs, hiknot)
