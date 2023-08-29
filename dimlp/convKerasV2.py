@@ -41,15 +41,21 @@ print("Loading data...")
 
 (X_train, Y_train), (X_test, Y_test) = mnist.load_data()
 
-X_train_h1 = (X_train.astype('float32') / 255) * 10 - 5
+X_train = (X_train.astype('float32') / 255) * 10 - 5
 
+
+X_train_flattened = X_train.reshape(X_train.shape[0], -1)
+Y_train_flattened = Y_train.reshape(Y_train.shape[0], -1)
+print(X_train_flattened.shape)
 K = 1
 quant = 50
 hiknot = 5
-weights_file = "weights.wts"
-X_train_h1, mu, sigma = compute_first_hidden_layer("train", X_train, K, quant, hiknot, weights_file)
-Y_train_h1 = compute_first_hidden_layer("test", Y_train, K, quant, hiknot, mu=mu, sigma=sigma)
-
+weights_file = "dimlp/weights.wts"
+X_train_h1, mu, sigma = compute_first_hidden_layer("train", X_train_flattened, K, quant, hiknot, weights_file)
+print(X_train_h1.shape)
+X_train_h1 = X_train_h1.reshape(X_train.shape)
+Y_train_h1 = compute_first_hidden_layer("test", Y_train_flattened, K, quant, hiknot, mu=mu, sigma=sigma)
+Y_train_h1 = Y_train_h1.reshape(Y_train.shape)
 
 #train   = np.loadtxt("trainMnist784WC")
 
