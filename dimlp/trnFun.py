@@ -3,6 +3,7 @@ import os
 import sys
 from .stairObj import StairObj
 from sklearn.tree import _tree
+import time
 
 def check_strictly_positive(variable):
     if isinstance(variable, (float,int)) and variable > 0:
@@ -70,12 +71,11 @@ def output_pred_proba(pred, pred_file):
         raise ValueError(f"Error : Couldn't open file {pred_file}.")
 
 def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_file=None, mu=None, sigma=None):
+    input_data = np.array(input_data)
     if step == "train": # Train datas
         mu = np.mean(input_data, axis=0) # mean over variables
         sigma = np.std(input_data, axis=0)
-        for i in range(len(sigma)):
-            if sigma[i] == 0:
-                sigma[i] = 0.001
+        sigma[sigma == 0] = 0.001
         weights = k/sigma
         biais = -k*mu/sigma
 
@@ -97,8 +97,8 @@ def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_f
     # Compute new data after first hidden layer
     h = k*(input_data-mu)/sigma # With indices : hij=K*(xij-muj)/sigmaj
     stair = StairObj(nb_stairs, hiknot)
+    output_data = np.vectorize(stair.funct)(h)
 
-    output_data = [[stair.funct(d) for d in row] for row in h]
     if step == "train": # Train data
         return output_data, mu, sigma
     else: # Test data
