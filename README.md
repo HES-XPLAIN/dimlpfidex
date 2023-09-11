@@ -41,7 +41,7 @@ Use your package manager to install:
 * Install [Python](https://www.python.org/)
 
 ```shell
-winget install Python.Python.3.11
+winget install Python.Python.3.10
 ```
 
 * Install [poetry](https://python-poetry.org/docs/#installation) and add it to your PATH.
