@@ -23,7 +23,7 @@ def gradBoostTrn(*args, **kwargs):
             print("save_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
             print("train_pred : output train prediction file name without extension (predTrain by default)")
             print("test_pred : output test prediction file name without extension (predTest by default)")
-            print("stats : output file name without extension with train and test accuracy")
+            print("stats : output file name with train and test accuracy (stats.txt by default)")
             print("output_file : file where you redirect console result")
             print("rules_file : output gradient boosting rules file without extension (GB_rules.rls by default)")
             print("----------------------------")

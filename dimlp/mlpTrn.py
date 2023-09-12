@@ -28,7 +28,7 @@ def mlpTrn(*args, **kwargs):
             print("train_pred : output train prediction file name without extension(predTrain by default)")
             print("test_pred : output test prediction file name without extension(predTest by default)")
             print("weights : output weights file name without extension (weights by default)")
-            print("stats : output file name without extension with train and test accuracy")
+            print("stats : output file name with train and test accuracy (stats.txt by default)")
             print("output_file : file where you redirect console result")
             print("nb_stairs : number of stairs in staircase activation function (50 by default)")
             print("hiknot : high side of the interval (5 by default)")
