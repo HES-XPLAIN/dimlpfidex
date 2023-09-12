@@ -27,7 +27,7 @@ from keras.datasets import mnist
 from keras.datasets import cifar100
 
 
-from .trnFun import compute_first_hidden_layer, output_stats, check_parameters_dimlp_layer
+from .trnFun import compute_first_hidden_layer, output_stats, check_parameters_dimlp_layer, check_parameters_common, get_data
 
 def output_pred(pred, pred_file):
     try:
@@ -48,6 +48,11 @@ def convKeras(*args, **kwargs):
         if args or not kwargs:
             print("Obligatory parameters :")
             print("dataset : mnist or cifar")
+            print("train_data : train data file")
+            print("train_class : train class file")
+            print("test_data : test data file")
+            print("test_class : test class file")
+            print("----------------------------")
             print("Optional parameters :")
             print("save_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
             print("train_pred : output train prediction file name without extension(predTrain by default)")
@@ -65,6 +70,10 @@ def convKeras(*args, **kwargs):
             # Get parameters
             dataset = kwargs.get('dataset')
             save_folder = kwargs.get('save_folder')
+            train_data_file = kwargs.get('train_data')
+            train_class_file = kwargs.get('train_class')
+            test_data_file = kwargs.get('test_data')
+            test_class_file = kwargs.get('test_class')
             output_file = kwargs.get('output_file')
             train_pred_file = kwargs.get('train_pred')
             test_pred_file = kwargs.get('test_pred')
@@ -85,47 +94,34 @@ def convKeras(*args, **kwargs):
                 except (IOError):
                     raise ValueError(f"Error : Couldn't open file {output_file}.")
 
-            valid_args = ['dataset', 'save_folder', 'output_file', 'train_pred', 'test_pred', 'weights', 'stats', 'K', 'nb_stairs', 'hiknot']
+            valid_args = ['dataset', 'train_data', 'train_class', 'test_data', 'test_class', 'save_folder', 'output_file', 'train_pred', 'test_pred', 'weights', 'stats', 'K', 'nb_stairs', 'hiknot']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
                 if arg_key not in valid_args:
                     raise ValueError(f"Invalid argument : {arg_key}")
 
+            save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file  = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file)
+
             if dataset is None :
                 raise ValueError('Error : dataset name missing, add it with option dataset and choose "mnist" or "cifar".')
             elif dataset not in {"mnist", "cifar"}:
                 raise ValueError('Error : parameter dataset is not "mnist" or "cifar".')
 
-            if (save_folder is not None and (not isinstance(save_folder, str))):
-                raise ValueError('Error : parameter save_folder has to be a name contained in quotation marks "".')
-
-            if train_pred_file is None:
-                train_pred_file = "predTrain"
-            elif not isinstance(train_pred_file, str):
-                raise ValueError('Error : parameter predTrain has to be a name contained in quotation marks "".')
-            train_pred_file += ".out"
-
-            if test_pred_file is None:
-                test_pred_file = "predTest"
-            elif not isinstance(test_pred_file, str):
-                raise ValueError('Error : parameter predTestn has to be a name contained in quotation marks "".')
-            test_pred_file += ".out"
-
-            if stats_file is None:
-                stats_file = "stats.txt"
-            elif stats_file is not None and not isinstance(stats_file, str):
-                raise ValueError('Error : parameter stats_file has to be a name contained in quotation marks "".')
-
             weights_file, K, quant, hiknot = check_parameters_dimlp_layer(weights_file, K, quant, hiknot)
 
+            model_checkpoint_weights = "weights.hdf5"
             if (save_folder is not None):
+                train_data_file = save_folder + "/" + train_data_file
+                train_class_file = save_folder + "/" + train_class_file
+                test_data_file = save_folder + "/" + test_data_file
+                test_class_file = save_folder + "/" + test_class_file
                 train_pred_file = save_folder + "/" + train_pred_file
                 test_pred_file = save_folder + "/" + test_pred_file
                 weights_file = save_folder + "/" + weights_file
                 if (stats_file is not None):
                     stats_file = save_folder + "/" + stats_file
-                model_checkpoint_weights = save_folder + "/weights.hdf5"
+                model_checkpoint_weights = save_folder + "/" + model_checkpoint_weights
 
             ###############################################################
 
@@ -135,8 +131,9 @@ def convKeras(*args, **kwargs):
 
             print("Loading data...")
 
+
             if dataset == "mnist":
-                (x_train, y_train), (x_test, y_test) = mnist.load_data()
+                #(x_train, y_train), (x_test, y_test) = mnist.load_data()
 
                 #x_train = x_train[0:1000]
                 #y_train = y_train[0:1000]
@@ -144,9 +141,11 @@ def convKeras(*args, **kwargs):
                 #y_test = y_test[0:300]
 
                 nb_classes = 10
+                size1d = 28
+                nb_chanels = 1
 
             elif dataset == "cifar":
-                (x_train, y_train), (x_test, y_test) = cifar100.load_data(label_mode="fine")
+                #(x_train, y_train), (x_test, y_test) = cifar100.load_data(label_mode="fine")
 
                 #x_train = x_train[0:1000]
                 #y_train = y_train[0:1000]
@@ -154,21 +153,24 @@ def convKeras(*args, **kwargs):
                 #y_test = y_test[0:300]
 
                 nb_classes = 100
+                size1d = 32
+                nb_chanels = 3
 
-            size1d = x_train.shape[1] # Size of image is size1d x size1d (Ex Mnist : 28x28)
-            nb_chanels = x_train.shape[3]
+
+            # Get data
+            x_train = np.array(get_data(train_data_file))
+            y_train = get_data(train_class_file)
+            y_train = np.array([cl.index(max(cl)) for cl in y_train])
+            x_test = np.array(get_data(test_data_file))
+            y_test = get_data(test_class_file)
+            y_test = np.array([cl.index(max(cl)) for cl in y_test])
 
             x_train = (x_train.astype('float32') / 255) * 10 - 5
             x_test = (x_test.astype('float32') / 255) * 10 - 5
 
-            x_train_flattened = x_train.reshape(x_train.shape[0], -1)
-            x_test_flattened = x_test.reshape(x_test.shape[0], -1)
+            x_train_h1, mu, sigma = compute_first_hidden_layer("train", x_train, K, quant, hiknot, weights_file)
 
-            x_train_h1, mu, sigma = compute_first_hidden_layer("train", x_train_flattened, K, quant, hiknot, weights_file)
-            x_train_h1 = x_train_h1.reshape(x_train.shape)
-
-            x_test_h1 = compute_first_hidden_layer("test", x_test_flattened, K, quant, hiknot, mu=mu, sigma=sigma)
-            x_test_h1 = x_test_h1.reshape(x_test.shape)
+            x_test_h1 = compute_first_hidden_layer("test", x_test, K, quant, hiknot, mu=mu, sigma=sigma)
 
             #y_train_h1 = compute_first_hidden_layer("test", y_train_flattened, K, quant, hiknot, mu=mu, sigma=sigma)
             #print("change Ytrain to array")
@@ -199,13 +201,13 @@ def convKeras(*args, **kwargs):
 
             if dataset == "mnist":
                 x_val   = x_train_h1[50000:]
-                x_train = x_train_h1[0:50000]
+                x_train_h1 = x_train_h1[0:50000]
                 y_val   = y_train[50000:]
                 y_train = y_train[0:50000]
 
             elif dataset == "cifar":
                 x_val   = x_train_h1[40000:]
-                x_train = x_train_h1[0:40000]
+                x_train_h1 = x_train_h1[0:40000]
                 y_val   = y_train[40000:]
                 y_train = y_train[0:40000]
 
@@ -247,14 +249,14 @@ def convKeras(*args, **kwargs):
 
             checkpointer = ModelCheckpoint(filepath=model_checkpoint_weights, verbose=1, save_best_only=True)
 
-            model.fit(x_train, y_train, batch_size=32, epochs=nb_it, validation_data=(x_val, y_val), callbacks=[checkpointer], verbose=2)
+            model.fit(x_train_h1, y_train, batch_size=32, epochs=nb_it, validation_data=(x_val, y_val), callbacks=[checkpointer], verbose=2)
             #model.fit(x_train_h1, y_train, batch_size=32, epochs=nb_it, validation_data=(x_test_h1, y_test), callbacks=[checkpointer], verbose=2)
 
             ##############################################################################
 
             model_best = load_model(model_checkpoint_weights)
 
-            train_pred = model_best.predict(x_train)    # Predict the response for train dataset
+            train_pred = model_best.predict(x_train_h1)    # Predict the response for train dataset
             test_pred = model_best.predict(x_test_h1)    # Predict the response for test dataset
 
             # Output predictions
@@ -265,7 +267,7 @@ def convKeras(*args, **kwargs):
 
             print("\nResult :")
 
-            score = model.evaluate(x_train, y_train)
+            score = model.evaluate(x_train_h1, y_train)
             print("Train score : ", score)
 
             score = model.evaluate(x_test_h1, y_test)
@@ -275,13 +277,13 @@ def convKeras(*args, **kwargs):
 
             print("\nBest result :")
 
-            score = model_best.evaluate(x_train, y_train)
+            score = model_best.evaluate(x_train_h1, y_train)
             print("Train score : ", score)
 
             score = model_best.evaluate(x_test_h1, y_test)
             print("Test score : ", score)
 
-            acc_train = model_best.evaluate(x_train, y_train, verbose=0)[1]
+            acc_train = model_best.evaluate(x_train_h1, y_train, verbose=0)[1]
             acc_test = model_best.evaluate(x_test_h1, y_test, verbose=0)[1]
 
             formatted_acc_train = "{:.6f}".format(acc_train*100)
