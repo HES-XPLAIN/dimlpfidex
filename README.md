@@ -72,6 +72,16 @@ poetry build
 
 If CMake complains about not finding pybind11, ensure to activate the shell first.
 
+**Note**: If you still have an issue on Windows, try the following commands to
+build manually:
+
+```shell
+mkdir build && cd build
+$path = (poetry env info | Select-String -Pattern 'Path:\s+(.*)').Matches.Groups[1].Value
+cmake.exe -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH="$path" ..
+cmake.exe --build .
+```
+
 ### Install Pre-commit hooks
 
 Git hooks are used to ensure quality checks are run by all developers every time
