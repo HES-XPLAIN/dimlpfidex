@@ -52,6 +52,8 @@ def convKeras(*args, **kwargs):
             print("train_class : train class file")
             print("test_data : test data file")
             print("test_class : test class file")
+            print("valid_data : validation data file")
+            print("valid_class : validation class file")
             print("----------------------------")
             print("Optional parameters :")
             print("save_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
@@ -74,6 +76,8 @@ def convKeras(*args, **kwargs):
             train_class_file = kwargs.get('train_class')
             test_data_file = kwargs.get('test_data')
             test_class_file = kwargs.get('test_class')
+            valid_data_file = kwargs.get('valid_data')
+            valid_class_file = kwargs.get('valid_class')
             output_file = kwargs.get('output_file')
             train_pred_file = kwargs.get('train_pred')
             test_pred_file = kwargs.get('test_pred')
@@ -94,7 +98,7 @@ def convKeras(*args, **kwargs):
                 except (IOError):
                     raise ValueError(f"Error : Couldn't open file {output_file}.")
 
-            valid_args = ['dataset', 'train_data', 'train_class', 'test_data', 'test_class', 'save_folder', 'output_file', 'train_pred', 'test_pred', 'weights', 'stats', 'K', 'nb_stairs', 'hiknot']
+            valid_args = ['dataset', 'train_data', 'train_class', 'test_data', 'test_class', 'valid_data', 'valid_class', 'save_folder', 'output_file', 'train_pred', 'test_pred', 'weights', 'stats', 'K', 'nb_stairs', 'hiknot']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
@@ -102,6 +106,16 @@ def convKeras(*args, **kwargs):
                     raise ValueError(f"Invalid argument : {arg_key}")
 
             save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file  = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file)
+
+            if valid_data_file is None :
+                raise ValueError('Error : validation data file missing, add it with option valid_data="your_validation_data_file"')
+            elif not isinstance(valid_data_file, str):
+                raise ValueError('Error : parameter valid_data has to be a name contained in quotation marks "".')
+
+            if valid_class_file is None :
+                raise ValueError('Error : validation class file missing, add it with option valid_class="your_validation_class_file"')
+            elif not isinstance(valid_class_file, str):
+                raise ValueError('Error : parameter valid_class has to be a name contained in quotation marks "".')
 
             if dataset is None :
                 raise ValueError('Error : dataset name missing, add it with option dataset and choose "mnist" or "cifar".')
@@ -116,6 +130,8 @@ def convKeras(*args, **kwargs):
                 train_class_file = save_folder + "/" + train_class_file
                 test_data_file = save_folder + "/" + test_data_file
                 test_class_file = save_folder + "/" + test_class_file
+                valid_data_file = save_folder + "/" + valid_data_file
+                valid_class_file = save_folder + "/" + valid_class_file
                 train_pred_file = save_folder + "/" + train_pred_file
                 test_pred_file = save_folder + "/" + test_pred_file
                 weights_file = save_folder + "/" + weights_file
@@ -164,6 +180,9 @@ def convKeras(*args, **kwargs):
             x_test = np.array(get_data(test_data_file))
             y_test = get_data(test_class_file)
             y_test = np.array([cl.index(max(cl)) for cl in y_test])
+            x_val = np.array(get_data(valid_data_file))
+            y_val = get_data(valid_class_file)
+            y_val = np.array([cl.index(max(cl)) for cl in y_val])
 
             x_train = (x_train.astype('float32') / 255) * 10 - 5
             x_test = (x_test.astype('float32') / 255) * 10 - 5
@@ -171,6 +190,7 @@ def convKeras(*args, **kwargs):
             x_train_h1, mu, sigma = compute_first_hidden_layer("train", x_train, K, quant, hiknot, weights_file)
 
             x_test_h1 = compute_first_hidden_layer("test", x_test, K, quant, hiknot, mu=mu, sigma=sigma)
+            x_val_h1 = compute_first_hidden_layer("test", x_val, K, quant, hiknot, mu=mu, sigma=sigma)
 
             #y_train_h1 = compute_first_hidden_layer("test", y_train_flattened, K, quant, hiknot, mu=mu, sigma=sigma)
             #print("change Ytrain to array")
@@ -188,29 +208,35 @@ def convKeras(*args, **kwargs):
             # x_test = test.reshape(test.shape[0], 1, size1d, size1d)
             x_test_h1 = x_test_h1.reshape(x_test_h1.shape[0], size1d, size1d, nb_chanels)
 
+            x_val_h1 = x_val_h1.reshape(x_val_h1.shape[0], size1d, size1d, nb_chanels)
+
             #y_train = np.loadtxt("mnistTrainClass")
             y_train = y_train.astype('int32')
 
             #y_test  = np.loadtxt("mnistTestClass")
             y_test  = y_test.astype('int32')
 
+            y_val = y_val.astype('int32')
+
 
             y_train = keras.utils.to_categorical(y_train, nb_classes)
             y_test = keras.utils.to_categorical(y_test, nb_classes)
+            y_val = keras.utils.to_categorical(y_val, nb_classes)
             ##############################################################################
 
+            """
             if dataset == "mnist":
                 x_val   = x_train_h1[50000:]
-                x_train_h1 = x_train_h1[0:50000]
+                x_train_h1_train = x_train_h1[0:50000]
                 y_val   = y_train[50000:]
                 y_train = y_train[0:50000]
 
             elif dataset == "cifar":
                 x_val   = x_train_h1[40000:]
-                x_train_h1 = x_train_h1[0:40000]
+                x_train_h1_train = x_train_h1[0:40000]
                 y_val   = y_train[40000:]
                 y_train = y_train[0:40000]
-
+            """
             ##############################################################################
 
             model = Sequential()
@@ -249,8 +275,8 @@ def convKeras(*args, **kwargs):
 
             checkpointer = ModelCheckpoint(filepath=model_checkpoint_weights, verbose=1, save_best_only=True)
 
-            model.fit(x_train_h1, y_train, batch_size=32, epochs=nb_it, validation_data=(x_val, y_val), callbacks=[checkpointer], verbose=2)
-            #model.fit(x_train_h1, y_train, batch_size=32, epochs=nb_it, validation_data=(x_test_h1, y_test), callbacks=[checkpointer], verbose=2)
+            model.fit(x_train_h1, y_train, batch_size=32, epochs=nb_it, validation_data=(x_val_h1, y_val), callbacks=[checkpointer], verbose=2)
+            #model.fit(x_train_h1_train, y_train, batch_size=32, epochs=nb_it, validation_data=(x_test_h1, y_test), callbacks=[checkpointer], verbose=2)
 
             ##############################################################################
 

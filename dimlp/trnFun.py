@@ -124,22 +124,22 @@ def check_parameters_common(save_folder, train_data_file, train_class_file, test
     if train_data_file is None :
         raise ValueError('Error : train data file missing, add it with option train_data="your_train_data_file"')
     elif not isinstance(train_data_file, str):
-        raise ValueError('Error : parameter train_data_file has to be a name contained in quotation marks "".')
+        raise ValueError('Error : parameter train_data has to be a name contained in quotation marks "".')
 
     if train_class_file is None :
         raise ValueError('Error : train class file missing, add it with option train_class="your_train_class_file"')
     elif not isinstance(train_class_file, str):
-        raise ValueError('Error : parameter train_class_file has to be a name contained in quotation marks "".')
+        raise ValueError('Error : parameter train_class has to be a name contained in quotation marks "".')
 
     if test_data_file is None :
         raise ValueError('Error : test data file missing, add it with option test_data="your_test_data_file"')
     elif not isinstance(test_data_file, str):
-        raise ValueError('Error : parameter test_data_file has to be a name contained in quotation marks "".')
+        raise ValueError('Error : parameter test_data has to be a name contained in quotation marks "".')
 
     if test_class_file is None :
         raise ValueError('Error : test class file missing, add it with option test_class="your_test_class_file"')
     elif not isinstance(test_class_file, str):
-        raise ValueError('Error : parameter test_class_file has to be a name contained in quotation marks "".')
+        raise ValueError('Error : parameter test_class has to be a name contained in quotation marks "".')
 
     if train_pred_file is None:
         train_pred_file = "predTrain"
