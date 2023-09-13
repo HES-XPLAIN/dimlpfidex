@@ -186,6 +186,7 @@ def convKeras(*args, **kwargs):
 
             x_train = (x_train.astype('float32') / 255) * 10 - 5
             x_test = (x_test.astype('float32') / 255) * 10 - 5
+            x_val = (x_val.astype('float32') / 255) * 10 - 5
 
             x_train_h1, mu, sigma = compute_first_hidden_layer("train", x_train, K, quant, hiknot, weights_file)
 
