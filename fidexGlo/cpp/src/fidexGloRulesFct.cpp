@@ -387,9 +387,6 @@ int fidexGloRules(const string &command) {
     const auto nbDatas = static_cast<int>((*trainData).size());
     const auto nbAttributs = static_cast<int>((*trainData)[0].size());
     const auto nbClass = trainDatas->getNbClasses();
-    cout << nbDatas << endl;
-    cout << (*trainPreds).size() << endl;
-    cout << (*trainTrueClass).size() << endl;
     if ((*trainPreds).size() != nbDatas || (*trainTrueClass).size() != nbDatas) {
       throw FileFormatError("All the train files need to have the same amount of datas");
     }
