@@ -14,7 +14,8 @@ void showStatsParams() {
   std::cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
   std::cout << "-A <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it\n";
   std::cout << "-O <stats output file>\n";
-  std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
+  std::cout << "-r <file where you redirect console result>\n";                                                                                // If we want to redirect console result to file
+  std::cout << "-p <index of positive class sample to compute true/false positive/negative rates (None by default, put 0 for first class)>\n"; // If we want to compute TP, FP, TN, FN
 
   std::cout << "\n-------------------------------------------------\n\n";
 }
@@ -58,6 +59,8 @@ int fidexGloStats(const string &command) {
     bool rootFolderInit = false;
     string attributFileTemp; // attribut file
     bool attributFileInit = false;
+
+    int indexPositiveClass = -1;
 
     // Import parameters
 
@@ -117,6 +120,13 @@ int fidexGloStats(const string &command) {
         case 'S':
           rootFolderTemp = arg;
           rootFolderInit = true;
+          break;
+
+        case 'p':
+          if (CheckPositiveInt(arg))
+            indexPositiveClass = atoi(arg);
+          else
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
           break;
 
         default: // If we put another -X option
@@ -225,6 +235,9 @@ int fidexGloStats(const string &command) {
     if ((*testPreds).size() != nbTestData || (*testTrueClasses).size() != nbTestData) {
       throw FileFormatError("All the test files need to have the same amount of datas");
     }
+    if (indexPositiveClass != -1 && indexPositiveClass >= nbClass) {
+      throw CommandArgumentException("Error : The index of positive class cannot be greater or equal to the number of classes (" + to_string(nbClass) + ")");
+    }
     auto nbTestAttributs = static_cast<int>((*testData)[0].size());
     // Get attributes
     vector<string> attributeNames;
@@ -275,6 +288,12 @@ int fidexGloStats(const string &command) {
     vector<double> testValues;
     int testPred;
     int testTrueClass;
+    int nbTruePositive = 0;  // Correct positive prediction
+    int nbTrueNegative = 0;  // Correct negative prediction
+    int nbFalsePositive = 0; // Wrong positive prediction
+    int nbFalseNegative = 0; // Wrong negative prediction
+    int nbPositive = 0;
+    int nbNegative = 0;
 
     for (int t = 0; t < nbTestData; t++) { // For each test value
       testValues = (*testData)[t];
@@ -282,6 +301,23 @@ int fidexGloStats(const string &command) {
       testTrueClass = (*testTrueClasses)[t];
       if (testPred == testTrueClass) {
         modelAccuracy++;
+      }
+      if (indexPositiveClass != -1) {
+        if (testPred == indexPositiveClass) { // Positive prediction
+          nbPositive += 1;
+          if (testPred == testTrueClass) {
+            nbTruePositive += 1;
+          } else {
+            nbFalsePositive += 1;
+          }
+        } else { // Negative prediction
+          nbNegative += 1;
+          if (testTrueClass == indexPositiveClass) {
+            nbFalseNegative += 1;
+          } else {
+            nbTrueNegative += 1;
+          }
+        }
       }
 
       // Find rules activated by this sample
@@ -358,6 +394,22 @@ int fidexGloStats(const string &command) {
     lines.push_back("The model test accuracy is : " + std::to_string(modelAccuracy));
     lines.push_back("The model test accuracy when rules and model agree is : " + std::to_string(accuracyWhenRulesAndModelAgree));
     lines.push_back("The model test accuracy when activated rules and model agree is : " + std::to_string(accuracyWhenActivatedRulesAndModelAgree));
+
+    if (indexPositiveClass != -1) {
+      if (hasClassNames) {
+        lines.push_back("\nWith positive class " + classNames[indexPositiveClass] + " :");
+      } else {
+        lines.push_back("\nWith positive class " + std::to_string(indexPositiveClass) + " :");
+      }
+      lines.push_back("The number of true positive test samples is : " + std::to_string(nbTruePositive));
+      lines.push_back("The number of false positive test samples is : " + std::to_string(nbFalsePositive));
+      lines.push_back("The number of true negative test samples is : " + std::to_string(nbTrueNegative));
+      lines.push_back("The number of false negative test samples is : " + std::to_string(nbFalseNegative));
+      lines.push_back("The false positive rate is : " + std::to_string(float(nbFalsePositive) / nbNegative));
+      lines.push_back("The false negative rate is : " + std::to_string(float(nbFalseNegative) / nbPositive));
+      lines.push_back("The precision is : " + std::to_string(float(nbTruePositive) / (nbTruePositive + nbFalsePositive)));
+      lines.push_back("The recall is : " + std::to_string(float(nbTruePositive) / (nbTruePositive + nbFalseNegative)));
+    }
 
     for (string l : lines) {
       cout << l << endl;

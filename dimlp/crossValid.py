@@ -130,7 +130,7 @@ def crossValid(*args, **kwargs):
             print("Obligatory parameters if training with dimlp :")
             print("nb_in : number of input neurons")
             print("nb_out : number of output neurons")
-            print("dimlpRul : 1(with dimlpRul, default) or 0")
+            print("dimlpRul : 1(with dimlpRul) or 0")
 
             print("----------------------------")
             print("Optional parameters :")
@@ -145,6 +145,7 @@ def crossValid(*args, **kwargs):
             print("min_cov : minimum fidex and fidexGlo covering number (2 by default)")
             print("dropout_dim : dimension dropout parameter for fidex and fidexGlo")
             print("dropout_hyp : hyperplan dropout parameter for fidex and fidexGlo")
+            print("positive_class_index <index of positive class sample to compute true/false positive/negative rates (None by default, put 0 for first class)")
             print("seed : 0 = random (default)")
 
             print("----------------------------")
@@ -296,6 +297,7 @@ def crossValid(*args, **kwargs):
             min_cov = kwargs.get('min_cov')
             dropout_dim = kwargs.get('dropout_dim')
             dropout_hyp = kwargs.get('dropout_hyp')
+            positive_class_index = kwargs.get('positive_class_index')
             seed = kwargs.get('seed')
 
             hiknot = kwargs.get('hiknot')
@@ -389,7 +391,7 @@ def crossValid(*args, **kwargs):
             obligatory_dimlp_args = ['nb_in', 'nb_out', 'dimlpRul']
 
             optional_args = ['save_folder', 'crossVal_folder', 'K', 'N', 'fidexGlo_heuristic', 'crossVal_stats', 'attr_file',
-                        'max_iter', 'min_cov', 'dropout_dim', 'dropout_hyp', 'seed']
+                        'max_iter', 'min_cov', 'dropout_dim', 'dropout_hyp', 'positive_class_index', 'seed']
 
             optional_non_dt_args = ['hiknot', 'nb_stairs']
 
@@ -781,6 +783,10 @@ def crossValid(*args, **kwargs):
                 mean_test_acc_glo = 0.0
                 mean_test_acc_when_rules_and_model_agree = 0.0
                 mean_test_acc_when_activated_rules_and_model_agree = 0.0
+                mean_nb_true_positive = 0
+                mean_nb_false_positive = 0
+                mean_nb_true_negative = 0
+                mean_nb_false_negative = 0
 
                 # All executions
                 mean_nb_rules_all = 0.0
@@ -795,6 +801,11 @@ def crossValid(*args, **kwargs):
                 mean_test_acc_glo_all = 0.0
                 mean_test_acc_when_rules_and_model_agree_all = 0.0
                 mean_test_acc_when_activated_rules_and_model_agree_all = 0.0
+                mean_nb_true_positive_all = 0.0
+                mean_nb_false_positive_all = 0.0
+                mean_nb_true_negative_all = 0.0
+                mean_nb_false_negative_all = 0.0
+
 
                 std_nb_rules_all = 0.0
                 std_nb_cover_all = 0.0
@@ -808,6 +819,10 @@ def crossValid(*args, **kwargs):
                 std_test_acc_glo_all = 0.0
                 std_test_acc_when_rules_and_model_agree_all = 0.0
                 std_test_acc_when_activated_rules_and_model_agree_all = 0.0
+                std_nb_true_positive_all = 0.0
+                std_nb_false_positive_all = 0.0
+                std_nb_true_negative_all = 0.0
+                std_nb_false_negative_all = 0.0
 
                 mean_exec_values_fidexglo = [] # each mean value in an entire fold for each fold for fidexGlo
 
@@ -822,6 +837,10 @@ def crossValid(*args, **kwargs):
                 mean_default_rate_dimlp = 0.0
                 mean_test_acc_dimlp = 0.0
                 mean_test_acc_when_rules_and_model_agree_dimlp = 0.0
+                mean_false_positive_rate = 0.0
+                mean_false_negative_rate = 0.0
+                mean_precision = 0.0
+                mean_recall = 0.0
 
                 # All executions
                 mean_nb_rules_dimlp_all = 0.0
@@ -832,6 +851,10 @@ def crossValid(*args, **kwargs):
                 mean_default_rate_dimlp_all = 0.0
                 mean_test_acc_dimlp_all = 0.0
                 mean_test_acc_when_rules_and_model_agree_dimlp_all = 0.0
+                mean_false_positive_rate_all = 0.0
+                mean_false_negative_rate_all = 0.0
+                mean_precision_all = 0.0
+                mean_recall_all = 0.0
 
                 std_nb_rules_dimlp_all = 0.0
                 std_nb_cover_dimlp_all = 0.0
@@ -841,6 +864,10 @@ def crossValid(*args, **kwargs):
                 std_default_rate_dimlp_all = 0.0
                 std_test_acc_dimlp_all = 0.0
                 std_test_acc_when_rules_and_model_agree_dimlp_all = 0.0
+                std_false_positive_rate_all = 0.0
+                std_false_negative_rate_all = 0.0
+                std_precision_all = 0.0
+                std_recall_all = 0.0
 
                 mean_exec_values_dimlp = []
 
@@ -1472,6 +1499,8 @@ def crossValid(*args, **kwargs):
                         fidexglo_stats_command += " -R " + folder_path_from_root + separator + "fidexGloRules.txt"
                         fidexglo_stats_command += " -O " + folder_path_from_root + separator + "fidexGloStats.txt"
                         fidexglo_stats_command += " -r " + folder_path_from_root + separator + "fidexGloStatsResult.txt"
+                        if positive_class_index is not None:
+                            fidexglo_stats_command += " -p " + str(positive_class_index)
 
                         print("Enter in fidexGloStats function")
                         res_fid_glo_stats = fidexGlo.fidexGloStats(fidexglo_stats_command)
@@ -1509,7 +1538,10 @@ def crossValid(*args, **kwargs):
                                 line_stats_glo = my_file.readline()
                                 line_stats_glo = my_file.readline()
                                 stat_glo_vals = []
+
                                 while line_stats_glo:
+                                    if line_stats_glo.startswith("With positive"):
+                                        line_stats_glo = my_file.readline()
                                     line_stats_glo = line_stats_glo.strip()  # Remove the line break at the end of the line
                                     if line_stats_glo != "":
                                         elements = line_stats_glo.split()
@@ -1531,6 +1563,15 @@ def crossValid(*args, **kwargs):
                         mean_test_acc_glo += stat_glo_vals[6]
                         mean_test_acc_when_rules_and_model_agree += stat_glo_vals[7]
                         mean_test_acc_when_activated_rules_and_model_agree += stat_glo_vals[8]
+                        if positive_class_index is not None:
+                            mean_nb_true_positive += stat_glo_vals[9]
+                            mean_nb_false_positive += stat_glo_vals[10]
+                            mean_nb_true_negative += stat_glo_vals[11]
+                            mean_nb_false_negative += stat_glo_vals[12]
+                            mean_false_positive_rate += stat_glo_vals[13]
+                            mean_false_negative_rate += stat_glo_vals[14]
+                            mean_precision += stat_glo_vals[15]
+                            mean_recall += stat_glo_vals[16]
                 # Compute execution Stats
 
                 mean_current_exec_values_dimlp = []
@@ -1596,6 +1637,23 @@ def crossValid(*args, **kwargs):
                     mean_test_acc_when_rules_and_model_agree = 0
                     mean_current_exec_values_fidexglo.append(mean_test_acc_when_activated_rules_and_model_agree / k)
                     mean_test_acc_when_activated_rules_and_model_agree = 0
+                    if positive_class_index is not None:
+                        mean_current_exec_values_fidexglo.append(mean_nb_true_positive / k)
+                        mean_nb_true_positive = 0
+                        mean_current_exec_values_fidexglo.append(mean_nb_false_positive / k)
+                        mean_nb_false_positive = 0
+                        mean_current_exec_values_fidexglo.append(mean_nb_true_negative / k)
+                        mean_nb_true_negative = 0
+                        mean_current_exec_values_fidexglo.append(mean_nb_false_negative / k)
+                        mean_nb_false_negative = 0
+                        mean_current_exec_values_fidexglo.append(mean_false_positive_rate / k)
+                        mean_false_positive_rate = 0
+                        mean_current_exec_values_fidexglo.append(mean_false_negative_rate / k)
+                        mean_false_negative_rate = 0
+                        mean_current_exec_values_fidexglo.append(mean_precision / k)
+                        mean_precision = 0
+                        mean_current_exec_values_fidexglo.append(mean_recall / k)
+                        mean_recall = 0
                     mean_exec_values_fidexglo.append(mean_current_exec_values_fidexglo)
 
                 # Output and show stats
@@ -1690,6 +1748,15 @@ def crossValid(*args, **kwargs):
                             outputStatsFile.write(f"The mean model test accuracy is: {formatted_mean_current_exec_values_fidexglo[9]}\n")
                             outputStatsFile.write(f"The mean model test accuracy when rules and model agree is: {formatted_mean_current_exec_values_fidexglo[10]}\n")
                             outputStatsFile.write(f"The mean model test accuracy when activated rules and model agree is: {formatted_mean_current_exec_values_fidexglo[11]}\n")
+                            if positive_class_index is not None:
+                                outputStatsFile.write(f"The mean number of true positive test samples is : {formatted_mean_current_exec_values_fidexglo[12]}\n")
+                                outputStatsFile.write(f"The mean number of false positive test samples is : {formatted_mean_current_exec_values_fidexglo[13]}\n")
+                                outputStatsFile.write(f"The mean number of true negative test samples is : {formatted_mean_current_exec_values_fidexglo[14]}\n")
+                                outputStatsFile.write(f"The mean number of false negative test samples is : {formatted_mean_current_exec_values_fidexglo[15]}\n")
+                                outputStatsFile.write(f"The mean false positive rate is : {formatted_mean_current_exec_values_fidexglo[16]}\n")
+                                outputStatsFile.write(f"The mean false negative rate is : {formatted_mean_current_exec_values_fidexglo[17]}\n")
+                                outputStatsFile.write(f"The mean precision is : {formatted_mean_current_exec_values_fidexglo[18]}\n")
+                                outputStatsFile.write(f"The mean recall is : {formatted_mean_current_exec_values_fidexglo[19]}\n")
                             print("FidexGlo :")
                             print(f"The mean number of rules is: {formatted_mean_current_exec_values_fidexglo[0]}")
                             print(f"The mean sample covering number per rule is: {formatted_mean_current_exec_values_fidexglo[1]}")
@@ -1703,6 +1770,15 @@ def crossValid(*args, **kwargs):
                             print(f"The mean model test accuracy is: {formatted_mean_current_exec_values_fidexglo[9]}")
                             print(f"The mean model test accuracy when rules and model agree is: {formatted_mean_current_exec_values_fidexglo[10]}")
                             print(f"The mean model test accuracy when activated rules and model agree is: {formatted_mean_current_exec_values_fidexglo[11]}")
+                            if positive_class_index is not None:
+                                print(f"The mean number of true positive test samples is : {formatted_mean_current_exec_values_fidexglo[12]}")
+                                print(f"The mean number of false positive test samples is : {formatted_mean_current_exec_values_fidexglo[13]}")
+                                print(f"The mean number of true negative test samples is : {formatted_mean_current_exec_values_fidexglo[14]}")
+                                print(f"The mean number of false negative test samples is : {formatted_mean_current_exec_values_fidexglo[15]}")
+                                print(f"The mean false positive rate is : {formatted_mean_current_exec_values_fidexglo[16]}")
+                                print(f"The mean false negative rate is : {formatted_mean_current_exec_values_fidexglo[17]}")
+                                print(f"The mean precision is : {formatted_mean_current_exec_values_fidexglo[18]}")
+                                print(f"The mean recall is : {formatted_mean_current_exec_values_fidexglo[19]}")
                             print("\n---------------------------------------------------------")
                             print("---------------------------------------------------------")
                         outputStatsFile.write("\n---------------------------------------------------------\n")
@@ -1798,6 +1874,15 @@ def crossValid(*args, **kwargs):
                     mean_test_acc_glo_all += mean_exec_values_fidexglo[exec][9]
                     mean_test_acc_when_rules_and_model_agree_all += mean_exec_values_fidexglo[exec][10]
                     mean_test_acc_when_activated_rules_and_model_agree_all += mean_exec_values_fidexglo[exec][11]
+                    if positive_class_index is not None:
+                        mean_nb_true_positive_all += mean_exec_values_fidexglo[exec][12]
+                        mean_nb_false_positive_all += mean_exec_values_fidexglo[exec][13]
+                        mean_nb_true_negative_all += mean_exec_values_fidexglo[exec][14]
+                        mean_nb_false_negative_all += mean_exec_values_fidexglo[exec][15]
+                        mean_false_positive_rate_all += mean_exec_values_fidexglo[exec][16]
+                        mean_false_negative_rate_all += mean_exec_values_fidexglo[exec][17]
+                        mean_precision_all += mean_exec_values_fidexglo[exec][18]
+                        mean_recall_all += mean_exec_values_fidexglo[exec][19]
 
                 mean_nb_rules_all /= n
                 mean_nb_cover_all /= n
@@ -1811,6 +1896,15 @@ def crossValid(*args, **kwargs):
                 mean_test_acc_glo_all /= n
                 mean_test_acc_when_rules_and_model_agree_all /= n
                 mean_test_acc_when_activated_rules_and_model_agree_all /= n
+                if positive_class_index is not None:
+                    mean_nb_true_positive_all /= n
+                    mean_nb_false_positive_all /= n
+                    mean_nb_true_negative_all /= n
+                    mean_nb_false_negative_all /= n
+                    mean_false_positive_rate_all /= n
+                    mean_false_negative_rate_all /= n
+                    mean_precision_all /= n
+                    mean_recall_all /= n
 
                 for exec in range(n):
                     std_nb_rules_all += pow(mean_exec_values_fidexglo[exec][0] - mean_nb_rules_all, 2)
@@ -1825,6 +1919,15 @@ def crossValid(*args, **kwargs):
                     std_test_acc_glo_all += pow(mean_exec_values_fidexglo[exec][9] - mean_test_acc_glo_all, 2)
                     std_test_acc_when_rules_and_model_agree_all += pow(mean_exec_values_fidexglo[exec][10] - mean_test_acc_when_rules_and_model_agree_all, 2)
                     std_test_acc_when_activated_rules_and_model_agree_all += pow(mean_exec_values_fidexglo[exec][11] - mean_test_acc_when_activated_rules_and_model_agree_all, 2)
+                    if positive_class_index is not None:
+                        std_nb_true_positive_all += pow(mean_exec_values_fidexglo[exec][12] - mean_nb_true_positive_all, 2)
+                        std_nb_false_positive_all += pow(mean_exec_values_fidexglo[exec][13] - mean_nb_false_positive_all, 2)
+                        std_nb_true_negative_all += pow(mean_exec_values_fidexglo[exec][14] - mean_nb_true_negative_all, 2)
+                        std_nb_false_negative_all += pow(mean_exec_values_fidexglo[exec][15] - mean_nb_false_negative_all, 2)
+                        std_false_positive_rate_all += pow(mean_exec_values_fidexglo[exec][16] - mean_false_positive_rate_all, 2)
+                        std_false_negative_rate_all += pow(mean_exec_values_fidexglo[exec][17] - mean_false_negative_rate_all, 2)
+                        std_precision_all += pow(mean_exec_values_fidexglo[exec][18] - mean_precision_all, 2)
+                        std_recall_all += pow(mean_exec_values_fidexglo[exec][19] - mean_recall_all, 2)
 
                 std_nb_rules_all = math.sqrt(std_nb_rules_all / n)
                 std_nb_cover_all = math.sqrt(std_nb_cover_all / n)
@@ -1838,6 +1941,15 @@ def crossValid(*args, **kwargs):
                 std_test_acc_glo_all = math.sqrt(std_test_acc_glo_all / n)
                 std_test_acc_when_rules_and_model_agree_all = math.sqrt(std_test_acc_when_rules_and_model_agree_all / n)
                 std_test_acc_when_activated_rules_and_model_agree_all = math.sqrt(std_test_acc_when_activated_rules_and_model_agree_all / n)
+                if positive_class_index is not None:
+                    std_nb_true_positive_all = math.sqrt(std_nb_true_positive_all)
+                    std_nb_false_positive_all = math.sqrt(std_nb_false_positive_all)
+                    std_nb_true_negative_all = math.sqrt(std_nb_true_negative_all)
+                    std_nb_false_negative_all = math.sqrt(std_nb_false_negative_all)
+                    std_false_positive_rate_all = math.sqrt(std_false_positive_rate_all)
+                    std_false_negative_rate_all = math.sqrt(std_false_negative_rate_all)
+                    std_precision_all = math.sqrt(std_precision_all)
+                    std_recall_all = math.sqrt(std_recall_all)
 
             # Show and save results
             try:
@@ -2134,6 +2246,72 @@ def crossValid(*args, **kwargs):
                         if formatted_std_test_acc_when_activated_rules_and_model_agree_all == "":
                             formatted_std_test_acc_when_activated_rules_and_model_agree_all = "0"
 
+                        if positive_class_index is not None:
+
+                            formatted_mean_nb_true_positive_all = "{:.6f}".format(mean_nb_true_positive_all).rstrip(".0")
+                            if formatted_mean_nb_true_positive_all == "":
+                                formatted_mean_nb_true_positive_all = "0"
+
+                            formatted_std_nb_true_positive_all = "{:.6f}".format(std_nb_true_positive_all).rstrip(".0")
+                            if formatted_std_nb_true_positive_all == "":
+                                formatted_std_nb_true_positive_all = "0"
+
+                            formatted_mean_nb_false_positive_all = "{:.6f}".format(mean_nb_false_positive_all).rstrip(".0")
+                            if formatted_mean_nb_false_positive_all == "":
+                                formatted_mean_nb_false_positive_all = "0"
+
+                            formatted_std_nb_false_positive_all = "{:.6f}".format(std_nb_false_positive_all).rstrip(".0")
+                            if formatted_std_nb_false_positive_all == "":
+                                formatted_std_nb_false_positive_all = "0"
+
+                            formatted_mean_nb_true_negative_all = "{:.6f}".format(mean_nb_true_negative_all).rstrip(".0")
+                            if formatted_mean_nb_true_negative_all == "":
+                                formatted_mean_nb_true_negative_all = "0"
+
+                            formatted_std_nb_true_negative_all = "{:.6f}".format(std_nb_true_negative_all).rstrip(".0")
+                            if formatted_std_nb_true_negative_all == "":
+                                formatted_std_nb_true_negative_all = "0"
+
+                            formatted_mean_nb_false_negative_all = "{:.6f}".format(mean_nb_false_negative_all).rstrip(".0")
+                            if formatted_mean_nb_false_negative_all == "":
+                                formatted_mean_nb_false_negative_all = "0"
+
+                            formatted_std_nb_false_negative_all = "{:.6f}".format(std_nb_false_negative_all).rstrip(".0")
+                            if formatted_std_nb_false_negative_all == "":
+                                formatted_std_nb_false_negative_all = "0"
+
+                            formatted_mean_false_positive_rate_all = "{:.6f}".format(mean_false_positive_rate_all).rstrip(".0")
+                            if formatted_mean_false_positive_rate_all == "":
+                                formatted_mean_false_positive_rate_all = "0"
+
+                            formatted_std_false_positive_rate_all = "{:.6f}".format(std_false_positive_rate_all).rstrip(".0")
+                            if formatted_std_false_positive_rate_all == "":
+                                formatted_std_false_positive_rate_all = "0"
+
+                            formatted_mean_false_negative_rate_all = "{:.6f}".format(mean_false_negative_rate_all).rstrip(".0")
+                            if formatted_mean_false_negative_rate_all == "":
+                                formatted_mean_false_negative_rate_all = "0"
+
+                            formatted_std_false_negative_rate_all = "{:.6f}".format(std_false_negative_rate_all).rstrip(".0")
+                            if formatted_std_false_negative_rate_all == "":
+                                formatted_std_false_negative_rate_all = "0"
+
+                            formatted_mean_precision_all = "{:.6f}".format(mean_precision_all).rstrip(".0")
+                            if formatted_mean_precision_all == "":
+                                formatted_mean_precision_all = "0"
+
+                            formatted_std_precision_all = "{:.6f}".format(std_precision_all).rstrip(".0")
+                            if formatted_std_precision_all == "":
+                                formatted_std_precision_all = "0"
+
+                            formatted_mean_recall_all = "{:.6f}".format(mean_recall_all).rstrip(".0")
+                            if formatted_mean_recall_all == "":
+                                formatted_mean_recall_all = "0"
+
+                            formatted_std_recall_all = "{:.6f}".format(std_recall_all).rstrip(".0")
+                            if formatted_std_recall_all == "":
+                                formatted_std_recall_all = "0"
+
                         outputStatsFile.write("FidexGlo :\n")
                         outputStatsFile.write(f"The mean number of rules is : {formatted_mean_nb_rules_all}\n")
                         outputStatsFile.write(f"The standard deviation of the number of rules is : {formatted_std_nb_rules_all}\n")
@@ -2159,6 +2337,23 @@ def crossValid(*args, **kwargs):
                         outputStatsFile.write(f"The standard deviation of the model test accuracy when rules and model agree is : {formatted_std_test_acc_when_rules_and_model_agree_all}\n")
                         outputStatsFile.write(f"The mean model test accuracy when activated rules and model agree is : {formatted_mean_test_acc_when_activated_rules_and_model_agree_all}\n")
                         outputStatsFile.write(f"The standard deviation of the model test accuracy when activated rules and model agree is : {formatted_std_test_acc_when_activated_rules_and_model_agree_all}\n")
+                        if positive_class_index is not None:
+                            outputStatsFile.write(f"The mean number of true positive test samples is : {formatted_mean_nb_true_positive_all}\n")
+                            outputStatsFile.write(f"The standard deviation number of true positive test samples is : {formatted_std_nb_true_positive_all}\n")
+                            outputStatsFile.write(f"The mean number of false positive test samples is : {formatted_mean_nb_false_positive_all}\n")
+                            outputStatsFile.write(f"The standard deviation number of false positive test samples is : {formatted_std_nb_false_positive_all}\n")
+                            outputStatsFile.write(f"The mean number of true negative test samples is : {formatted_mean_nb_true_negative_all}\n")
+                            outputStatsFile.write(f"The standard deviation number of true negative test samples is : {formatted_std_nb_true_negative_all}\n")
+                            outputStatsFile.write(f"The mean number of false negative test samples is : {formatted_mean_nb_false_negative_all}\n")
+                            outputStatsFile.write(f"The standard deviation number of false negative test samples is : {formatted_std_nb_false_negative_all}\n")
+                            outputStatsFile.write(f"The mean false positive rate is : {formatted_mean_false_positive_rate_all}\n")
+                            outputStatsFile.write(f"The standard deviation false positive rate is : {formatted_std_false_positive_rate_all}\n")
+                            outputStatsFile.write(f"The mean false negative rate is : {formatted_mean_false_negative_rate_all}\n")
+                            outputStatsFile.write(f"The standard deviation false negative rate is : {formatted_std_false_negative_rate_all}\n")
+                            outputStatsFile.write(f"The mean precision is : {formatted_mean_precision_all}\n")
+                            outputStatsFile.write(f"The standard deviation precision is : {formatted_std_precision_all}\n")
+                            outputStatsFile.write(f"The mean recall is : {formatted_mean_recall_all}\n")
+                            outputStatsFile.write(f"The standard deviation recall is : {formatted_std_recall_all}\n")
                         print("FidexGlo :")
                         print(f"The mean number of rules is : {formatted_mean_nb_rules_all}")
                         print(f"The standard deviation of the number of rules is : {formatted_std_nb_rules_all}")
@@ -2184,6 +2379,23 @@ def crossValid(*args, **kwargs):
                         print(f"The standard deviation of the model test accuracy when rules and model agree is : {formatted_std_test_acc_when_rules_and_model_agree_all}")
                         print(f"The mean model test accuracy when activated rules and model agree is : {formatted_mean_test_acc_when_activated_rules_and_model_agree_all}")
                         print(f"The standard deviation of the model test accuracy when activated rules and model agree is : {formatted_std_test_acc_when_activated_rules_and_model_agree_all}")
+                        if positive_class_index is not None:
+                            print(f"The mean number of true positive test samples is : {formatted_mean_nb_true_positive_all}")
+                            print(f"The standard deviation number of true positive test samples is : {formatted_std_nb_true_positive_all}")
+                            print(f"The mean number of false positive test samples is : {formatted_mean_nb_false_positive_all}")
+                            print(f"The standard deviation number of false positive test samples is : {formatted_std_nb_false_positive_all}")
+                            print(f"The mean number of true negative test samples is : {formatted_mean_nb_true_negative_all}")
+                            print(f"The standard deviation number of true negative test samples is : {formatted_std_nb_true_negative_all}")
+                            print(f"The mean number of false negative test samples is : {formatted_mean_nb_false_negative_all}")
+                            print(f"The standard deviation number of false negative test samples is : {formatted_std_nb_false_negative_all}")
+                            print(f"The mean false positive rate is : {formatted_mean_false_positive_rate_all}")
+                            print(f"The standard deviation false positive rate is : {formatted_std_false_positive_rate_all}")
+                            print(f"The mean false negative rate is : {formatted_mean_false_negative_rate_all}")
+                            print(f"The standard deviation false negative rate is : {formatted_std_false_negative_rate_all}")
+                            print(f"The mean precision is : {formatted_mean_precision_all}")
+                            print(f"The standard deviation precision is : {formatted_std_precision_all}")
+                            print(f"The mean recall is : {formatted_mean_recall_all}")
+                            print(f"The standard deviation recall is : {formatted_std_recall_all}")
                         print("\n---------------------------------------------------------")
                         print("---------------------------------------------------------")
 
@@ -2276,7 +2488,7 @@ def crossValid(*args, **kwargs):
         return -1
 
 
-# Exemple Dimlp : crossValid(train_method="dimlp", algo="both", data_file="datanorm", class_file="dataclass2", nb_in=16, nb_out=2, H2=5, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLP", K=3, N=2, seed=33)
-# Exemple DimlpBT : crossValid(train_method="dimlpBT", algo="both", data_file="datanorm", class_file="dataclass2", nb_in=16, nb_out=2, H2=5, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLPBT", K=3, N=2, seed=33)
-# Exemple SVM : crossValid(train_method="svm", algo="both", data_file="datanorm", class_file="dataclass2", save_folder="dimlp/datafiles", crossVal_folder="CrossValidationSVM", K=3, N=2, seed=33)
-# Exemple MLP : crossValid(train_method="mlp", algo="both", data_file="datanorm", class_file="dataclass2", save_folder="dimlp/datafiles", crossVal_folder="CrossValidationMLP", K=3, N=2, seed=33)
+# Exemple Dimlp : crossValid(train_method="dimlp", algo="both", data_file="datanorm", class_file="dataclass2", dimlpRul=1, nb_in=16, nb_out=2, H2=5, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLP", K=3, N=2, seed=33)
+# Exemple DimlpBT : crossValid(train_method="dimlpBT", algo="both", data_file="datanorm", class_file="dataclass2", dimlpRul=1, nb_in=16, nb_out=2, H2=5, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLPBT", K=3, N=2, seed=33)
+# Exemple SVM : crossValid(train_method="svm", algo="both", data_file="datanorm", class_file="dataclass2", dimlpRul=1, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationSVM", K=3, N=2, seed=33)
+# Exemple MLP : crossValid(train_method="mlp", algo="both", data_file="datanorm", class_file="dataclass2", dimlpRul=1, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationMLP", K=3, N=2, seed=33)
