@@ -707,7 +707,7 @@ int fidexGloRules(const string &command) {
       int currentMinNbCov;
       int nbProblems = 0;
       int nbRulesNotFound = 0;
-      tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> rule; // Ex: ([X2<3.5 X3>=4], covering, class)
+      tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> rule; // Ex: ([X2<3.5 X3>=4], covering, class, accuracy, confidence)
       auto exp = FidexAlgo();
 
       std::cout << "Computing rules..." << endl
