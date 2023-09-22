@@ -787,6 +787,10 @@ def crossValid(*args, **kwargs):
                 mean_nb_false_positive = 0
                 mean_nb_true_negative = 0
                 mean_nb_false_negative = 0
+                mean_false_positive_rate = 0.0
+                mean_false_negative_rate = 0.0
+                mean_precision = 0.0
+                mean_recall = 0.0
 
                 # All executions
                 mean_nb_rules_all = 0.0
@@ -805,7 +809,10 @@ def crossValid(*args, **kwargs):
                 mean_nb_false_positive_all = 0.0
                 mean_nb_true_negative_all = 0.0
                 mean_nb_false_negative_all = 0.0
-
+                mean_false_positive_rate_all = 0.0
+                mean_false_negative_rate_all = 0.0
+                mean_precision_all = 0.0
+                mean_recall_all = 0.0
 
                 std_nb_rules_all = 0.0
                 std_nb_cover_all = 0.0
@@ -823,6 +830,10 @@ def crossValid(*args, **kwargs):
                 std_nb_false_positive_all = 0.0
                 std_nb_true_negative_all = 0.0
                 std_nb_false_negative_all = 0.0
+                std_false_positive_rate_all = 0.0
+                std_false_negative_rate_all = 0.0
+                std_precision_all = 0.0
+                std_recall_all = 0.0
 
                 mean_exec_values_fidexglo = [] # each mean value in an entire fold for each fold for fidexGlo
 
@@ -837,10 +848,6 @@ def crossValid(*args, **kwargs):
                 mean_default_rate_dimlp = 0.0
                 mean_test_acc_dimlp = 0.0
                 mean_test_acc_when_rules_and_model_agree_dimlp = 0.0
-                mean_false_positive_rate = 0.0
-                mean_false_negative_rate = 0.0
-                mean_precision = 0.0
-                mean_recall = 0.0
 
                 # All executions
                 mean_nb_rules_dimlp_all = 0.0
@@ -851,10 +858,6 @@ def crossValid(*args, **kwargs):
                 mean_default_rate_dimlp_all = 0.0
                 mean_test_acc_dimlp_all = 0.0
                 mean_test_acc_when_rules_and_model_agree_dimlp_all = 0.0
-                mean_false_positive_rate_all = 0.0
-                mean_false_negative_rate_all = 0.0
-                mean_precision_all = 0.0
-                mean_recall_all = 0.0
 
                 std_nb_rules_dimlp_all = 0.0
                 std_nb_cover_dimlp_all = 0.0
@@ -864,10 +867,6 @@ def crossValid(*args, **kwargs):
                 std_default_rate_dimlp_all = 0.0
                 std_test_acc_dimlp_all = 0.0
                 std_test_acc_when_rules_and_model_agree_dimlp_all = 0.0
-                std_false_positive_rate_all = 0.0
-                std_false_negative_rate_all = 0.0
-                std_precision_all = 0.0
-                std_recall_all = 0.0
 
                 mean_exec_values_dimlp = []
 

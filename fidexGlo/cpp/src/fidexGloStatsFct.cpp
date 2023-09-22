@@ -299,19 +299,23 @@ int fidexGloStats(const string &command) {
       testValues = (*testData)[t];
       testPred = (*testPreds)[t];
       testTrueClass = (*testTrueClasses)[t];
+      if (testTrueClass == indexPositiveClass) {
+        nbPositive += 1;
+      } else {
+        nbNegative += 1;
+      }
+
       if (testPred == testTrueClass) {
         modelAccuracy++;
       }
       if (indexPositiveClass != -1) {
         if (testPred == indexPositiveClass) { // Positive prediction
-          nbPositive += 1;
           if (testPred == testTrueClass) {
             nbTruePositive += 1;
           } else {
             nbFalsePositive += 1;
           }
         } else { // Negative prediction
-          nbNegative += 1;
           if (testTrueClass == indexPositiveClass) {
             nbFalseNegative += 1;
           } else {

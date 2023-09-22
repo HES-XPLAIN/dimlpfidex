@@ -793,7 +793,7 @@ int fidex(const string &command) {
             hyperspace.getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
             hyperspace.getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
           } else if (minNbCover == 1 && dropoutDim == false && dropoutHyp == false) {
-            std::cout << "ON ENTRE ICI" << std::endl;                 // If we have a minimum covering of 1 and no dropout, we need to choose randomly a hyperplan, because we are stocked
+            // If we have a minimum covering of 1 and no dropout, we need to choose randomly a hyperplan, because we are stocked
             std::unique_ptr<Hyperbox> randomHyperbox(new Hyperbox()); // best hyperbox to choose for next step
 
             std::uniform_int_distribution<int> distribution(0, static_cast<int>(nbIn) - 1);
