@@ -228,6 +228,8 @@ def svmTrn(*args, **kwargs):
             # Output accuracy statistics
             output_stats(stats_file, acc_train, acc_test)
 
+            print("Weights : ", model.class_weight_)
+
             end_time = time.time()
             full_time = end_time - start_time
             full_time = "{:.6f}".format(full_time).rstrip("0").rstrip(".")
