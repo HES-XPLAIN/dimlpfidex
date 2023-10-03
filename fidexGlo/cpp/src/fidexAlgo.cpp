@@ -100,7 +100,7 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
       if (maxHyp != -1) {
         indexBestHyp = (maxHyp + minHyp) / 2;
       }
-      // Rule is not added if fidelity and covering size did not increase
+      // antecedant is not added if fidelity and covering size did not increase
       if (bestHyperbox->getFidelity() > hyperspace->getHyperbox()->getFidelity() || (bestHyperbox->getFidelity() == hyperspace->getHyperbox()->getFidelity() && bestHyperbox->getCoveredSamples().size() > hyperspace->getHyperbox()->getCoveredSamples().size())) {
         hyperspace->getHyperbox()->setFidelity(bestHyperbox->getFidelity());
         hyperspace->getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
