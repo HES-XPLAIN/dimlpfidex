@@ -14,10 +14,35 @@ void showStatsParams() {
   std::cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
   std::cout << "-A <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it\n";
   std::cout << "-O <stats output file>\n";
+  std::cout << "-F <global rules output file with stats on test set> If you want to ccompute statistics of global rules on tests set\n";
   std::cout << "-r <file where you redirect console result>\n";                                                                                // If we want to redirect console result to file
   std::cout << "-p <index of positive class sample to compute true/false positive/negative rates (None by default, put 0 for first class)>\n"; // If we want to compute TP, FP, TN, FN
 
   std::cout << "\n-------------------------------------------------\n\n";
+}
+
+void getCovering(vector<int> &sampleIds, tuple<vector<tuple<int, bool, double>>, int, int, double, double> *rule, vector<vector<double>> *testValues) {
+  // Get covering index samples
+  int attr;
+  bool ineq;
+  double val;
+  for (int id = 0; id < (*testValues).size(); id++) {
+    bool notCovered = false;
+    for (const auto &antecedent : get<0>(*rule)) { // For each antecedant
+      attr = get<0>(antecedent);
+      ineq = get<1>(antecedent);
+      val = get<2>(antecedent);
+      if (ineq == 0 && (*testValues)[id][attr] >= val) { // If the inequality is not verified
+        notCovered = true;
+      }
+      if (ineq == 1 && (*testValues)[id][attr] < val) {
+        notCovered = true;
+      }
+    }
+    if (!notCovered) {
+      sampleIds.push_back(id);
+    }
+  }
 }
 
 int fidexGloStats(const string &command) {
@@ -59,6 +84,8 @@ int fidexGloStats(const string &command) {
     bool rootFolderInit = false;
     string attributFileTemp; // attribut file
     bool attributFileInit = false;
+    bool globalRulesStatsFileInit = false;
+    string globalRulesStatsFileTemp;
 
     int indexPositiveClass = -1;
 
@@ -107,6 +134,11 @@ int fidexGloStats(const string &command) {
           statsFileInit = true;
           break;
 
+        case 'F':
+          globalRulesStatsFileTemp = arg;
+          globalRulesStatsFileInit = true;
+          break;
+
         case 'r':
           consoleFileTemp = arg;
           consoleFileInit = true;
@@ -145,6 +177,7 @@ int fidexGloStats(const string &command) {
     const char *testDataFileTrueClass = nullptr;
     const char *rulesFile = nullptr;
     const char *statsFile = nullptr;
+    const char *globalRulesStatsFile = nullptr;
     const char *consoleFile = nullptr;
     const char *attributFile = nullptr;
 
@@ -180,6 +213,11 @@ int fidexGloStats(const string &command) {
     if (statsFileInit) {
       statsFileTemp = root + statsFileTemp;
       statsFile = &statsFileTemp[0];
+    }
+
+    if (globalRulesStatsFileInit) {
+      globalRulesStatsFileTemp = root + globalRulesStatsFileTemp;
+      globalRulesStatsFile = &globalRulesStatsFileTemp[0];
     }
 
     if (consoleFileInit) {
@@ -229,6 +267,7 @@ int fidexGloStats(const string &command) {
     vector<vector<double>> *testData = testDatas->getDatas();
     vector<int> *testPreds = testDatas->getPredictions();
     vector<int> *testTrueClasses = testDatas->getTrueClasses();
+    vector<vector<double>> *testOutputValuesPredictions = testDatas->getOutputValuesPredictions();
     const auto nbClass = testDatas->getNbClasses();
 
     const auto nbTestData = static_cast<int>((*testData).size());
@@ -270,6 +309,8 @@ int fidexGloStats(const string &command) {
 
     std::cout << "Data imported..." << endl
               << endl;
+
+    // Compute global statistics on test set
 
     std::cout << "Compute statistics..." << endl
               << endl;
@@ -409,10 +450,10 @@ int fidexGloStats(const string &command) {
       lines.push_back("The number of false positive test samples is : " + std::to_string(nbFalsePositive));
       lines.push_back("The number of true negative test samples is : " + std::to_string(nbTrueNegative));
       lines.push_back("The number of false negative test samples is : " + std::to_string(nbFalseNegative));
-      lines.push_back("The false positive rate is : " + std::to_string(float(nbFalsePositive) / nbNegative));
-      lines.push_back("The false negative rate is : " + std::to_string(float(nbFalseNegative) / nbPositive));
-      lines.push_back("The precision is : " + std::to_string(float(nbTruePositive) / (nbTruePositive + nbFalsePositive)));
-      lines.push_back("The recall is : " + std::to_string(float(nbTruePositive) / (nbTruePositive + nbFalseNegative)));
+      lines.push_back("The false positive rate is : " + std::to_string(float(nbFalsePositive) / static_cast<float>(nbNegative)));
+      lines.push_back("The false negative rate is : " + std::to_string(float(nbFalseNegative) / static_cast<float>(nbPositive)));
+      lines.push_back("The precision is : " + std::to_string(float(nbTruePositive) / static_cast<float>(nbTruePositive + nbFalsePositive)));
+      lines.push_back("The recall is : " + std::to_string(float(nbTruePositive) / static_cast<float>(nbTruePositive + nbFalseNegative)));
     }
 
     for (string l : lines) {
@@ -425,6 +466,49 @@ int fidexGloStats(const string &command) {
       if (outputFile.is_open()) {
         for (const string &line : lines) {
           outputFile << line + "\n";
+        }
+        outputFile.close();
+      } else {
+        throw CannotOpenFileError("Error : Couldn't open explanation extraction file " + std::string(statsFile) + ".");
+      }
+    }
+
+    // Compute rules statistics on test set
+    if (globalRulesStatsFileInit) {
+      ofstream outputFile(globalRulesStatsFile);
+      if (outputFile.is_open()) {
+        for (int r = 0; r < rules.size(); r++) { // For each rule
+          vector<int> sampleIds;
+          getCovering(sampleIds, &rules[r], testData);
+          size_t coverSize = sampleIds.size();
+          double ruleFidelity = 0;   // porcentage of correct covered samples predictions with respect to the rule prediction
+          double ruleAccuracy = 0;   // porcentage of correct covered samples predictions with respect to the samples true class
+          double ruleConfidence = 0; // mean output prediction score of covered samples
+          for (int sampleId : sampleIds) {
+            int samplePred = (*testPreds)[sampleId];
+            double sampleOutputPred = (*testOutputValuesPredictions)[sampleId][samplePred];
+            int rulePred = get<2>(rules[r]);
+            int trueClass = (*testTrueClasses)[sampleId];
+            if (samplePred == rulePred) {
+              ruleFidelity += 1;
+            }
+            if (samplePred == trueClass) {
+              ruleAccuracy += 1;
+            }
+            ruleConfidence += sampleOutputPred;
+          }
+          if (coverSize != 0) {
+            ruleFidelity /= static_cast<double>(coverSize);
+            ruleAccuracy /= static_cast<double>(coverSize);
+            ruleConfidence /= static_cast<double>(coverSize);
+          }
+
+          outputFile << stringRules[r] << " Test Covering size : " << coverSize;
+          if (coverSize == 0) {
+            outputFile << "\n";
+          } else {
+            outputFile << " Test Fidelity : " << ruleFidelity << " Test Accuracy : " << ruleAccuracy << " Test Confidence : " << ruleConfidence << "\n";
+          }
         }
         outputFile.close();
       } else {
