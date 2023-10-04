@@ -794,14 +794,14 @@ int fidexGloRules(const string &command) {
     std::sort(RulesIds.begin(), RulesIds.end(), [&chosenRules](int ruleBest, int ruleWorst) {
       return std::get<1>(chosenRules[ruleWorst]).size() < std::get<1>(chosenRules[ruleBest]).size();
     });
+    lines.emplace_back("\n");
     for (int c = 0; c < nbRules; c++) { // each rule
       int r = RulesIds[c];
       meanCovSize += static_cast<double>(get<1>(chosenRules[r]).size());
       meanNbAntecedents += static_cast<double>(get<0>(chosenRules[r]).size());
       line = "Rule " + std::to_string(c + 1) + ": ";
-      line += std::to_string(get<0>(chosenRules[r]).size()) + " : "; // If we need to specify the antecedant number
-      for (const auto &rule : get<0>(chosenRules[r])) {              // each antecedant
-        if (get<1>(rule) == 1) {                                     // check inequality
+      for (const auto &rule : get<0>(chosenRules[r])) { // each antecedant
+        if (get<1>(rule) == 1) {                        // check inequality
           inequality = ">=";
         } else {
           inequality = "<";
@@ -819,15 +819,21 @@ int fidexGloRules(const string &command) {
       } else {
         line += "-> class " + std::to_string(std::get<2>(chosenRules[r]));
       }
-      line += " Covering size : " + std::to_string(std::get<1>(chosenRules[r]).size()); // Covering size
-      line += " Fidelity : 1";                                                          // Rule fidelity
-      line += " Accuracy : " + std::to_string(std::get<3>(chosenRules[r]));             // Rule accuracy
+      line += "\n";
+      lines.push_back(line);
+      line = "Train Covering size : " + std::to_string(std::get<1>(chosenRules[r]).size()) + "\n"; // Covering size
+      lines.push_back(line);
+      line = "Train Fidelity : 1\n"; // Rule fidelity
+      lines.push_back(line);
+      line = "Train Accuracy : " + std::to_string(std::get<3>(chosenRules[r])) + "\n"; // Rule accuracy
+      lines.push_back(line);
       if (hasConfidence) {
-        line += " Confidence : " + std::to_string(std::get<4>(chosenRules[r])) + "\n"; // Rule confidence
+        line = "Train Confidence : " + std::to_string(std::get<4>(chosenRules[r])) + "\n"; // Rule confidence
       } else {
-        line += "\n";
+        line = "\n";
       }
       lines.push_back(line);
+      lines.emplace_back("\n");
     }
 
     meanCovSize /= nbRules;
