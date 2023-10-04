@@ -198,6 +198,8 @@ int fidexGlo(const string &command) {
     vector<vector<double>> testSamplesValues;
     vector<vector<double>> testSamplesOutputValuesPredictions;
 
+    bool hasConfidence = false;
+
     if (!testSamplesPredFileInit) { // If we have only one test data file with data and prediction
 
       vector<double> testSampleValues;
@@ -226,7 +228,6 @@ int fidexGlo(const string &command) {
           while (!testData.eof()) {
             getline(testData, line);
             if (!checkStringEmpty(line)) {
-              cout << line << endl;
               throw FileFormatError("Error : file " + std::string(testSamplesDataFile) + " is not on good format, there is more than one empty line between 2 samples");
             }
           }
@@ -242,6 +243,9 @@ int fidexGlo(const string &command) {
           testSampleOutputValuesPredictions.clear();
           while (myLine >> value) {
             testSampleOutputValuesPredictions.push_back(value);
+            if (value != 1 && value != 0) {
+              hasConfidence = true;
+            }
           }
           testSamplesOutputValuesPredictions.push_back(testSampleOutputValuesPredictions);
           testSamplePred = static_cast<int>(std::max_element(testSampleOutputValuesPredictions.begin(), testSampleOutputValuesPredictions.end()) - testSampleOutputValuesPredictions.begin());
@@ -269,6 +273,9 @@ int fidexGlo(const string &command) {
       std::unique_ptr<DataSetFid> testDatas(new DataSetFid(testSamplesDataFile, testSamplesPredFile));
       testSamplesValues = (*testDatas->getDatas());
       testSamplesPreds = (*testDatas->getPredictions());
+      if (testDatas->hasConfidence()) {
+        hasConfidence = true;
+      }
       testSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
 
       // Check if there is good number of lines
@@ -318,9 +325,10 @@ int fidexGlo(const string &command) {
     // Get rules
 
     vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
-    vector<string> lines;                                                            // Lines for the output stats
+    vector<string> lines;
+    lines.emplace_back("Global statistics of the rule set : ");
     vector<string> stringRules;
-    getRules(rules, lines, stringRules, rulesFile, attributFileInit, attributeNames, hasClassNames, classNames);
+    getRules(rules, lines, stringRules, rulesFile, attributFileInit, attributeNames, hasClassNames, classNames, hasConfidence);
 
     std::cout << "Files imported" << endl
               << endl;
@@ -331,13 +339,11 @@ int fidexGlo(const string &command) {
     // we search explanation for each sample
 
     for (int currentSample = 0; currentSample < nbSamples; currentSample++) {
-
       lines.push_back("Explanation for sample " + std::to_string(currentSample) + " :\n");
 
       // Find rules activated by this sample
       vector<int> activatedRules;
       getActivatedRules(activatedRules, &rules, &testSamplesValues[currentSample]);
-
       // Check which rules are correct
       vector<int> correctRules;
       vector<int> notcorrectRules;

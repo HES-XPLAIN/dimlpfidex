@@ -22,69 +22,25 @@ std::vector<std::string> splitString(const std::string &str, const std::string &
   return tokens;
 }
 
-RuleInfo parseRuleLine(const std::string &line, bool attributsInFile, vector<string> attributeNames, bool hasClassNames, vector<string> classNames) {
-  RuleInfo ruleInfo;
-
+void getAntecedents(vector<tuple<int, bool, double>> &antecedents, int &ruleClass, const std::string &line, bool attributsInFile, vector<string> attributeNames, bool hasClassNames, vector<string> classNames) {
   std::vector<std::string> tokens = splitString(line, " ");
-
-  // Parsing antecedents
-  size_t antecedentStartIndex = 0;
-  size_t antecedentEndIndex = 0;
-  size_t antecedentsEndIndex = 0;
-
-  // Find the antecedant start index
-  antecedentStartIndex = 0;
-  while (antecedentStartIndex < tokens.size()) {
-    if (tokens[antecedentStartIndex] == ":") {
-      antecedentStartIndex = 4;
-      break;
-    }
-    if (tokens[antecedentStartIndex] == "->") {
-      antecedentStartIndex = 2;
-      break;
-    }
-    ++antecedentStartIndex;
-  }
-
-  // Find the end index of antecedents part
-  for (antecedentsEndIndex = antecedentStartIndex; antecedentsEndIndex < tokens.size(); ++antecedentsEndIndex) {
-    if (tokens[antecedentsEndIndex] == "->") {
-      break;
-    }
-  }
-
-  while (antecedentStartIndex < tokens.size() && antecedentStartIndex < antecedentsEndIndex) {
+  int id = 2;
+  while (tokens[id] != "->") {
     bool ineq;
     int attr;
     double val;
     std::string attributeName;
     int attributeIdx;
-    // Find the end index of the current antecedent
-    for (antecedentEndIndex = antecedentStartIndex; antecedentEndIndex < tokens.size(); ++antecedentEndIndex) {
-      if (tokens[antecedentEndIndex].find("<") != std::string::npos || tokens[antecedentEndIndex].find(">=") != std::string::npos) {
-        break;
-      }
-    }
-    // Extract the attribute name, inequality and value
-    for (size_t i = antecedentStartIndex; i < antecedentEndIndex + 1; ++i) {
-      if (i > antecedentStartIndex) {
-        attributeName += " ";
-      }
-      if (i == antecedentEndIndex) {
-        if (tokens[i].find("<") != std::string::npos) {
-          ineq = false;
-          std::vector<std::string> antToken = splitString(tokens[i], "<");
-          attributeName += antToken[0];
-          val = std::stod(antToken[1]);
-        } else {
-          ineq = true;
-          std::vector<std::string> antToken = splitString(tokens[i], ">=");
-          attributeName += antToken[0];
-          val = std::stod(antToken[1]);
-        }
-      } else {
-        attributeName += tokens[i];
-      }
+    if (tokens[id].find("<") != std::string::npos) {
+      ineq = false;
+      std::vector<std::string> antToken = splitString(tokens[id], "<");
+      attributeName += antToken[0];
+      val = std::stod(antToken[1]);
+    } else {
+      ineq = true;
+      std::vector<std::string> antToken = splitString(tokens[id], ">=");
+      attributeName += antToken[0];
+      val = std::stod(antToken[1]);
     }
 
     if (attributsInFile) {
@@ -103,35 +59,15 @@ RuleInfo parseRuleLine(const std::string &line, bool attributsInFile, vector<str
     } else {
       attr = stoi(attributeName.substr(1));
     }
-    ruleInfo.antecedents.push_back(make_tuple(attr, ineq, val));
+    antecedents.push_back(make_tuple(attr, ineq, val));
 
-    // Move to the next antecedent
-    antecedentStartIndex = antecedentEndIndex + 1;
+    id++;
   }
-  // Parsing rule class
-  size_t classStartIndex = antecedentsEndIndex + 1;
-  size_t classEndIndex = 0;
-
-  // Find the end index of the class
-  for (classEndIndex = classStartIndex; classEndIndex < tokens.size(); ++classEndIndex) {
-    if (tokens[classEndIndex] == "Covering") {
-      break;
-    }
-  }
-  string className;
-  int classIdx;
-  for (size_t i = classStartIndex; i < classEndIndex; ++i) {
-    if (i > classStartIndex) {
-      className += " ";
-    }
-    className += tokens[i];
-  }
-
   if (hasClassNames) {
     bool foundClassName = false;
     for (size_t idAtr = 0; idAtr < classNames.size(); idAtr++) {
-      if (classNames[idAtr] == className) {
-        classIdx = static_cast<int>(idAtr); // Match found, return the index
+      if (classNames[idAtr] == tokens[id + 1]) {
+        ruleClass = static_cast<int>(idAtr); // Match found, return the index
         foundClassName = true;
         break;
       }
@@ -139,28 +75,15 @@ RuleInfo parseRuleLine(const std::string &line, bool attributsInFile, vector<str
     if (!foundClassName) {
       throw FileContentError("Error : class name found in Rules file is not contained into attribute file.");
     }
-    ruleInfo.ruleClass = classIdx;
+
   } else {
-    ruleInfo.ruleClass = stoi(splitString(className, " ")[1]);
+    ruleClass = stoi(tokens[id + 2]);
   }
-
-  // Parsing covering size
-  std::string covSizeToken = tokens[classEndIndex + 3];
-  ruleInfo.covSize = std::stoi(covSizeToken);
-  // Parsing rule fidelity
-  std::string fidelityToken = tokens[classEndIndex + 6];
-  ruleInfo.ruleFidelity = std::stod(fidelityToken);
-
-  // Parsing rule accuracy
-  std::string accuracyToken = tokens[classEndIndex + 9];
-  ruleInfo.ruleAccuracy = std::stod(accuracyToken);
-
-  return ruleInfo;
 }
 
 ////////////////////////////////////////////////////////
 
-void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> &rules, vector<string> &lines, vector<string> &stringRules, const char *rulesFile, bool hasAttributeNames, const vector<string> &attributeNames, bool hasClassNames, const vector<string> &classNames) {
+void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> &rules, vector<string> &statsLines, vector<string> &stringRules, const char *rulesFile, bool hasAttributeNames, const vector<string> &attributeNames, bool hasClassNames, const vector<string> &classNames, bool hasConfidence) {
 
   tuple<vector<tuple<int, bool, double>>, int, int, double, double> rule; // <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
 
@@ -170,12 +93,10 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
     throw FileNotFoundError("Error : file " + std::string(rulesFile) + " not found");
   }
 
-  lines.emplace_back("Global statistics of the rule set : ");
-
   string line;
-  getline(rulesData, line);     // Skip first line;
-  lines.push_back(line + "\n"); // Add global statistics to output file
-  getline(rulesData, line);     // Skip second line
+  getline(rulesData, line);          // Skip first line;
+  statsLines.push_back(line + "\n"); // Add global statistics to output file
+  getline(rulesData, line);          // Skip second line
   bool attributsInFile = true;
   bool classesInFile = false;
   if (line.find("not") != std::string::npos) {
@@ -189,13 +110,30 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
   if (classesInFile && !hasClassNames) {
     throw CommandArgumentException("The class names have to be given in attribut file");
   }
-
-  while (getline(rulesData, line)) {
+  string strRule;
+  while (getline(rulesData, line)) { // New rule
     if (!checkStringEmpty(line)) {
-      stringRules.push_back(line);
-      RuleInfo ruleInfo = parseRuleLine(line, attributsInFile, attributeNames, classesInFile, classNames);
-      rule = make_tuple(ruleInfo.antecedents, ruleInfo.covSize, ruleInfo.ruleClass, ruleInfo.ruleFidelity, ruleInfo.ruleAccuracy);
+      strRule = line;
+      vector<tuple<int, bool, double>> antecedents;
+      int ruleClass;
+      getAntecedents(antecedents, ruleClass, line, attributsInFile, attributeNames, classesInFile, classNames);
+      getline(rulesData, line); // Cov size
+      strRule += "\n" + line;
+      int covSize = stoi(splitString(line, " ")[4]);
+      getline(rulesData, line); // Fddelity
+      strRule += "\n" + line;
+      int ruleFidelity = stoi(splitString(line, " ")[3]);
+      getline(rulesData, line); // Accuracy
+      strRule += "\n" + line;
+      double ruleAccuracy = stod(splitString(line, " ")[3]);
+      rule = make_tuple(antecedents, covSize, ruleClass, ruleFidelity, ruleAccuracy);
       rules.push_back(rule);
+      if (hasConfidence) {
+        getline(rulesData, line);
+        strRule += "\n" + line;
+      }
+      strRule += "\n";
+      stringRules.emplace_back(strRule);
     }
   }
 

@@ -267,7 +267,15 @@ int fidexGloStats(const string &command) {
     vector<vector<double>> *testData = testDatas->getDatas();
     vector<int> *testPreds = testDatas->getPredictions();
     vector<int> *testTrueClasses = testDatas->getTrueClasses();
-    vector<vector<double>> *testOutputValuesPredictions = testDatas->getOutputValuesPredictions();
+
+    vector<vector<double>> *testOutputValuesPredictions = nullptr;
+    bool hasConfidence;
+    if (testDatas->hasConfidence()) {
+      testOutputValuesPredictions = testDatas->getOutputValuesPredictions();
+      hasConfidence = true;
+    } else {
+      hasConfidence = false;
+    }
     const auto nbClass = testDatas->getNbClasses();
 
     const auto nbTestData = static_cast<int>((*testData).size());
@@ -278,6 +286,7 @@ int fidexGloStats(const string &command) {
       throw CommandArgumentException("Error : The index of positive class cannot be greater or equal to the number of classes (" + to_string(nbClass) + ")");
     }
     auto nbTestAttributs = static_cast<int>((*testData)[0].size());
+
     // Get attributes
     vector<string> attributeNames;
     vector<string> classNames;
@@ -304,9 +313,14 @@ int fidexGloStats(const string &command) {
 
     vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
     vector<string> lines;                                                            // Lines for the output stats
+    vector<string> statsLines;
+    lines.emplace_back("Global statistics of the rule set : "); // Lines for the output stats
     vector<string> stringRules;
-    getRules(rules, lines, stringRules, rulesFile, attributFileInit, attributeNames, hasClassNames, classNames);
 
+    getRules(rules, statsLines, stringRules, rulesFile, attributFileInit, attributeNames, hasClassNames, classNames, hasConfidence);
+    for (auto l : statsLines) {
+      lines.emplace_back(l);
+    }
     std::cout << "Data imported..." << endl
               << endl;
 
@@ -477,6 +491,17 @@ int fidexGloStats(const string &command) {
     if (globalRulesStatsFileInit) {
       ofstream outputFile(globalRulesStatsFile);
       if (outputFile.is_open()) {
+        for (string l : statsLines) {
+          outputFile << l;
+        }
+        if (!attributFileInit) {
+          outputFile << "The name of the attributes and classes are not specified\n";
+        } else if (!hasClassNames) {
+          outputFile << "The name of the attributes is specified\n";
+        } else {
+          outputFile << "The name of the attributes and classes are specified\n";
+        }
+
         for (int r = 0; r < rules.size(); r++) { // For each rule
           vector<int> sampleIds;
           getCovering(sampleIds, &rules[r], testData);
@@ -486,7 +511,10 @@ int fidexGloStats(const string &command) {
           double ruleConfidence = 0; // mean output prediction score of covered samples
           for (int sampleId : sampleIds) {
             int samplePred = (*testPreds)[sampleId];
-            double sampleOutputPred = (*testOutputValuesPredictions)[sampleId][samplePred];
+            double sampleOutputPred = 0.0;
+            if (hasConfidence) {
+              sampleOutputPred = (*testOutputValuesPredictions)[sampleId][samplePred];
+            }
             int rulePred = get<2>(rules[r]);
             int trueClass = (*testTrueClasses)[sampleId];
             if (samplePred == rulePred) {
@@ -502,12 +530,19 @@ int fidexGloStats(const string &command) {
             ruleAccuracy /= static_cast<double>(coverSize);
             ruleConfidence /= static_cast<double>(coverSize);
           }
-
-          outputFile << stringRules[r] << " Test Covering size : " << coverSize;
+          vector<string> trainStats = splitString(stringRules[r], "\n");
+          outputFile << "\n"
+                     << trainStats[0] << "\n";
+          outputFile << trainStats[1] << " --- Test Covering size : " << coverSize << "\n";
           if (coverSize == 0) {
-            outputFile << "\n";
+            outputFile << "\n\n";
           } else {
-            outputFile << " Test Fidelity : " << ruleFidelity << " Test Accuracy : " << ruleAccuracy << " Test Confidence : " << ruleConfidence << "\n";
+            outputFile << trainStats[2] << " --- Test Fidelity : " << ruleFidelity << "\n";
+            outputFile << trainStats[3] << " --- Test Accuracy : " << ruleAccuracy << "\n";
+            if (hasConfidence) {
+              outputFile << trainStats[4] << " --- Test Confidence : " << ruleConfidence << "\n";
+            }
+            outputFile << "\n";
           }
         }
         outputFile.close();
