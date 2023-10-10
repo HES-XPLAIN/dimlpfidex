@@ -2,6 +2,8 @@ import time
 import sys
 from sklearn import svm
 from sklearn import metrics
+from sklearn.metrics import RocCurveDisplay
+from sklearn.metrics import roc_auc_score
 
 from .trnFun import check_int, check_strictly_positive, check_positive, check_bool, get_data, output_pred, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer
 
@@ -18,6 +20,7 @@ def svmTrn(*args, **kwargs):
             print("train_class : train class file")
             print("test_data : test data file")
             print("test_class : test class file")
+            print("positive_index : index of positive class (0 for first one)")
             print("----------------------------")
             print("Optional parameters :")
             print("save_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
@@ -26,6 +29,7 @@ def svmTrn(*args, **kwargs):
             print("weights : output weights file name without extension (weights by default)")
             print("stats : output file name with train and test accuracy (stats.txt by default)")
             print("output_file : file where you redirect console result")
+            print("output_roc : output ROC curve without extension(roc_curve.png by default)")
             print("nb_stairs : number of stairs in staircase activation function (50 by default)")
             print("hiknot : high side of the interval (5 by default)")
             print("K : Parameter to improve dynamics (1 by default)")
@@ -60,11 +64,13 @@ def svmTrn(*args, **kwargs):
             test_data_file = kwargs.get('test_data')
             test_class_file = kwargs.get('test_class')
             output_file = kwargs.get('output_file')
+            positive_index = kwargs.get('positive_index')
 
             train_pred_file = kwargs.get('train_pred')
             test_pred_file = kwargs.get('test_pred')
             weights_file = kwargs.get('weights')
             stats_file = kwargs.get('stats')
+            output_roc = kwargs.get('output_roc')
 
             K = kwargs.get('K')
             quant = kwargs.get('nb_stairs')
@@ -96,8 +102,8 @@ def svmTrn(*args, **kwargs):
 
             # Check parameters
 
-            valid_args = ['train_data', 'train_class', 'test_data', 'test_class', 'train_pred', 'test_pred', 'weights',
-                        'stats', 'K', 'nb_stairs', 'hiknot', 'C', 'kernel', 'degree', 'gamma', 'coef0', 'shrinking',
+            valid_args = ['train_data', 'train_class', 'test_data', 'test_class', 'positive_index', 'train_pred', 'test_pred', 'weights',
+                        'stats', 'output_roc', 'K', 'nb_stairs', 'hiknot', 'C', 'kernel', 'degree', 'gamma', 'coef0', 'shrinking',
                         'tol', 'cache_size', 'class_weight', 'verbose', 'max_iter', 'decision_function_shape', 'break_ties', 'save_folder', 'output_file']
 
             # Check if wrong parameters are given
@@ -108,6 +114,11 @@ def svmTrn(*args, **kwargs):
             save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file  = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file)
             weights_file, K, quant, hiknot = check_parameters_dimlp_layer(weights_file, K, quant, hiknot)
 
+            if output_roc is None:
+                output_roc = "roc_curve"
+            elif not isinstance(output_roc, str):
+                raise ValueError('Error : parameter output_roc has to be a name contained in quotation marks "".')
+            output_roc += ".png"
 
             if c_var is None:
                 c_var = 1.0
@@ -187,6 +198,7 @@ def svmTrn(*args, **kwargs):
                 train_pred_file = save_folder + "/" + train_pred_file
                 test_pred_file = save_folder + "/" + test_pred_file
                 weights_file = save_folder + "/" + weights_file
+                output_roc = save_folder + "/" + output_roc
                 if (stats_file is not None):
                     stats_file = save_folder + "/" + stats_file
 
@@ -196,7 +208,14 @@ def svmTrn(*args, **kwargs):
             train_class = [cl.index(max(cl)) for cl in train_class]
             test_data = get_data(test_data_file)
             test_class = get_data(test_class_file)
+
+            if positive_index is None:
+                raise ValueError('Error : positive class index missing, add it with option positive_index="your_positive_class_index"')
+            elif not isinstance(positive_index, int) or positive_index < 0 or positive_index >= len(test_class[0]):
+                raise ValueError(f'Error : parameter positive_index has to be a positive integer smaller than {len(test_class[0])}.')
+
             test_class = [cl.index(max(cl)) for cl in test_class]
+
 
             # Get weights and biais from first hidden layer as well as data transformed in first hidden layer
 
@@ -206,7 +225,7 @@ def svmTrn(*args, **kwargs):
             # Train svm
             model = svm.SVC(C = c_var, kernel = kernel_var, degree = degree_var, gamma = gamma_var, coef0 = coef0_var, shrinking = shrinking_var,
                             tol = tol_var, cache_size = cache_size_var, class_weight = class_weight_var, verbose = verbose_var, max_iter = max_iter_var,
-                            decision_function_shape = decision_function_shape_var, break_ties = break_ties_var) # Create svm Classifier
+                            decision_function_shape = decision_function_shape_var, break_ties = break_ties_var, probability=True) # Create svm Classifier
 
             model.fit(train_data_h1, train_class)   # Train the model using the training sets
             train_pred = model.predict(train_data_h1)    # Predict the response for train dataset
@@ -229,6 +248,13 @@ def svmTrn(*args, **kwargs):
             output_stats(stats_file, acc_train, acc_test)
 
             print("Weights : ", model.class_weight_)
+
+            viz = RocCurveDisplay.from_estimator(model, test_data_h1, test_class, pos_label=positive_index).plot(color="darkorange", plot_chance_level=True)
+            viz.figure_.savefig(output_roc)
+            auc_score = roc_auc_score(test_class, model.predict_proba(test_data_h1)[:, positive_index])
+            # Save AUC in stats file
+            with open(stats_file, 'a') as file:
+                file.write(f"\nAUC score on testing set : {auc_score}")
 
             end_time = time.time()
             full_time = end_time - start_time

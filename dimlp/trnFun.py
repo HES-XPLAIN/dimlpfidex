@@ -144,13 +144,13 @@ def check_parameters_common(save_folder, train_data_file, train_class_file, test
     if train_pred_file is None:
         train_pred_file = "predTrain"
     elif not isinstance(train_pred_file, str):
-        raise ValueError('Error : parameter predTrain has to be a name contained in quotation marks "".')
+        raise ValueError('Error : parameter train_pred has to be a name contained in quotation marks "".')
     train_pred_file += ".out"
 
     if test_pred_file is None:
         test_pred_file = "predTest"
     elif not isinstance(test_pred_file, str):
-        raise ValueError('Error : parameter predTestn has to be a name contained in quotation marks "".')
+        raise ValueError('Error : parameter test_pred has to be a name contained in quotation marks "".')
     test_pred_file += ".out"
 
     if stats_file is None:
