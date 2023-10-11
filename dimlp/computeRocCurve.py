@@ -1,5 +1,6 @@
 from sklearn.metrics import roc_curve, auc, RocCurveDisplay
 from .trnFun import get_data
+import numpy as np
 
 def computeRocCurve(*args, **kwargs):
     try:
@@ -90,7 +91,11 @@ def computeRocCurve(*args, **kwargs):
                 with open(stats_file, 'a') as file:
                     file.write(f"AUC score on testing set : {auc_score}")
 
-
+            # Interpolation to get 1000 points (necessary for crossValidation)
+            fpr_interp = np.linspace(0, 1, 1000)
+            tpr_interp = np.interp(fpr_interp, fpr, tpr)
+            tpr_interp[0] = 0
+            return [fpr_interp, tpr_interp, auc_score]
 
 
 
