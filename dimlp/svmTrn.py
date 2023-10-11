@@ -3,7 +3,8 @@ import sys
 from sklearn import svm
 from sklearn import metrics
 from sklearn.metrics import RocCurveDisplay
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score, roc_curve, auc
+import numpy as np
 
 from .trnFun import check_int, check_strictly_positive, check_positive, check_bool, get_data, output_pred, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer
 
@@ -33,6 +34,7 @@ def svmTrn(*args, **kwargs):
             print("nb_stairs : number of stairs in staircase activation function (50 by default)")
             print("hiknot : high side of the interval (5 by default)")
             print("K : Parameter to improve dynamics (1 by default)")
+            print("return_roc : whether to return ROC statistics (False by default)")
             print("----------------------------")
             print("SVM parameters (optional)")
             print("C : regularization, (1.0 by default)")
@@ -88,6 +90,7 @@ def svmTrn(*args, **kwargs):
             max_iter_var = kwargs.get('max_iter')
             decision_function_shape_var = kwargs.get('decision_function_shape')
             break_ties_var = kwargs.get('break_ties')
+            return_roc = kwargs.get('return_roc')
 
             # Redirect output in file
             if output_file != None:
@@ -104,7 +107,7 @@ def svmTrn(*args, **kwargs):
 
             valid_args = ['train_data', 'train_class', 'test_data', 'test_class', 'positive_index', 'train_pred', 'test_pred', 'weights',
                         'stats', 'output_roc', 'K', 'nb_stairs', 'hiknot', 'C', 'kernel', 'degree', 'gamma', 'coef0', 'shrinking',
-                        'tol', 'cache_size', 'class_weight', 'verbose', 'max_iter', 'decision_function_shape', 'break_ties', 'save_folder', 'output_file']
+                        'tol', 'cache_size', 'class_weight', 'verbose', 'max_iter', 'decision_function_shape', 'break_ties', 'save_folder', 'output_file', 'return_roc']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
@@ -189,6 +192,10 @@ def svmTrn(*args, **kwargs):
             elif not check_bool(break_ties_var):
                 raise ValueError('Error, parameter break_ties is not boolean')
 
+            if return_roc is None:
+                return_roc = False
+            elif not check_bool(return_roc):
+                raise ValueError('Error, parameter return_roc is not boolean')
 
             if (save_folder is not None):
                 train_data_file = save_folder + "/" + train_data_file
@@ -251,7 +258,9 @@ def svmTrn(*args, **kwargs):
 
             viz = RocCurveDisplay.from_estimator(model, test_data_h1, test_class, pos_label=positive_index).plot(color="darkorange", plot_chance_level=True)
             viz.figure_.savefig(output_roc)
-            auc_score = roc_auc_score(test_class, model.predict_proba(test_data_h1)[:, positive_index])
+            fpr, tpr, thresholds = roc_curve(test_class, model.predict_proba(test_data_h1)[:, positive_index])
+            auc_score = auc(fpr, tpr)
+
             # Save AUC in stats file
             with open(stats_file, 'a') as file:
                 file.write(f"\nAUC score on testing set : {auc_score}")
@@ -266,6 +275,13 @@ def svmTrn(*args, **kwargs):
             # Redirect output to terminal
             if output_file != None:
                 sys.stdout = sys.__stdout__
+
+            if return_roc:
+                # Interpolation to get 1000 points (necessary for crossValidation)
+                fpr_interp = np.linspace(0, 1, 1000)
+                tpr_interp = np.interp(fpr_interp, fpr, tpr)
+                tpr_interp[0] = 0
+                return [fpr_interp, tpr_interp, auc_score]
 
             return 0
 
