@@ -1,6 +1,7 @@
 from sklearn.metrics import roc_curve, auc, RocCurveDisplay
 from .trnFun import get_data
 import numpy as np
+import matplotlib.pyplot as plt
 
 def computeRocCurve(*args, **kwargs):
     try:
@@ -86,6 +87,7 @@ def computeRocCurve(*args, **kwargs):
                                   estimator_name=estimator).plot(color="darkorange", plot_chance_level=True)
 
             viz.figure_.savefig(output_roc)
+            plt.close(viz.figure_)
             # Save AUC result in stats file
             if stats_file is not None:
                 with open(stats_file, 'a') as file:

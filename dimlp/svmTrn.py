@@ -5,6 +5,7 @@ from sklearn import metrics
 from sklearn.metrics import RocCurveDisplay
 from sklearn.metrics import roc_auc_score, roc_curve, auc
 import numpy as np
+import matplotlib.pyplot as plt
 
 from .trnFun import check_int, check_strictly_positive, check_positive, check_bool, get_data, output_pred, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer
 
@@ -258,6 +259,7 @@ def svmTrn(*args, **kwargs):
 
             viz = RocCurveDisplay.from_estimator(model, test_data_h1, test_class, pos_label=positive_index).plot(color="darkorange", plot_chance_level=True)
             viz.figure_.savefig(output_roc)
+            plt.close(viz.figure_)
             fpr, tpr, thresholds = roc_curve(test_class, model.predict_proba(test_data_h1)[:, positive_index])
             auc_score = auc(fpr, tpr)
 
