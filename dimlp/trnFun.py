@@ -1,7 +1,7 @@
 import numpy as np
 import os
 import sys
-from stairObj import StairObj
+from .stairObj import StairObj
 from sklearn.tree import _tree
 import time
 

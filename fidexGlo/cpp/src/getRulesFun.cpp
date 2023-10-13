@@ -84,21 +84,19 @@ void getAntecedents(vector<tuple<int, bool, double>> &antecedents, int &ruleClas
 ////////////////////////////////////////////////////////
 
 void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> &rules, vector<string> &statsLines, vector<string> &stringRules, const char *rulesFile, bool hasAttributeNames, const vector<string> &attributeNames, bool hasClassNames, const vector<string> &classNames, bool hasConfidence) {
-
   tuple<vector<tuple<int, bool, double>>, int, int, double, double> rule; // <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
-
   fstream rulesData;
   rulesData.open(rulesFile, ios::in); // Read data file
   if (rulesData.fail()) {
     throw FileNotFoundError("Error : file " + std::string(rulesFile) + " not found");
   }
-
   string line;
   getline(rulesData, line);          // Skip first line;
   statsLines.push_back(line + "\n"); // Add global statistics to output file
   getline(rulesData, line);          // Skip second line
   bool attributsInFile = true;
   bool classesInFile = false;
+
   if (line.find("not") != std::string::npos) {
     attributsInFile = false;
   } else if (line.find("and") != std::string::npos) {
@@ -120,7 +118,7 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
       getline(rulesData, line); // Cov size
       strRule += "\n" + line;
       int covSize = stoi(splitString(line, " ")[4]);
-      getline(rulesData, line); // Fddelity
+      getline(rulesData, line); // Fidelity
       strRule += "\n" + line;
       int ruleFidelity = stoi(splitString(line, " ")[3]);
       getline(rulesData, line); // Accuracy
@@ -136,7 +134,6 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
       stringRules.emplace_back(strRule);
     }
   }
-
   rulesData.close(); // close data file
 }
 
