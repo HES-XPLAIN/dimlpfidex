@@ -14,7 +14,7 @@ void showStatsParams() {
   std::cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
   std::cout << "-A <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it\n";
   std::cout << "-O <stats output file>\n";
-  std::cout << "-F <global rules output file with stats on test set> If you want to ccompute statistics of global rules on tests set\n";
+  std::cout << "-F <global rules output file with stats on test set> If you want to compute statistics of global rules on tests set\n";
   std::cout << "-r <file where you redirect console result>\n";                                                                                // If we want to redirect console result to file
   std::cout << "-p <index of positive class sample to compute true/false positive/negative rates (None by default, put 0 for first class)>\n"; // If we want to compute TP, FP, TN, FN
 
@@ -277,7 +277,6 @@ int fidexGloStats(const string &command) {
       hasConfidence = false;
     }
     const auto nbClass = testDatas->getNbClasses();
-
     const auto nbTestData = static_cast<int>((*testData).size());
     if ((*testPreds).size() != nbTestData || (*testTrueClasses).size() != nbTestData) {
       throw FileFormatError("All the test files need to have the same amount of datas");
@@ -286,7 +285,6 @@ int fidexGloStats(const string &command) {
       throw CommandArgumentException("Error : The index of positive class cannot be greater or equal to the number of classes (" + to_string(nbClass) + ")");
     }
     auto nbTestAttributs = static_cast<int>((*testData)[0].size());
-
     // Get attributes
     vector<string> attributeNames;
     vector<string> classNames;
@@ -308,7 +306,6 @@ int fidexGloStats(const string &command) {
         attributeNames.erase(firstEl, lastEl);
       }
     }
-
     // Get rules
 
     vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
@@ -316,7 +313,6 @@ int fidexGloStats(const string &command) {
     vector<string> statsLines;
     lines.emplace_back("Global statistics of the rule set : "); // Lines for the output stats
     vector<string> stringRules;
-
     getRules(rules, statsLines, stringRules, rulesFile, attributFileInit, attributeNames, hasClassNames, classNames, hasConfidence);
     for (auto l : statsLines) {
       lines.emplace_back(l);
@@ -535,7 +531,12 @@ int fidexGloStats(const string &command) {
                      << trainStats[0] << "\n";
           outputFile << trainStats[1] << " --- Test Covering size : " << coverSize << "\n";
           if (coverSize == 0) {
-            outputFile << "\n\n";
+            outputFile << trainStats[2] << "\n";
+            outputFile << trainStats[3] << "\n";
+            if (hasConfidence) {
+              outputFile << trainStats[4] << "\n";
+            }
+            outputFile << "\n";
           } else {
             outputFile << trainStats[2] << " --- Test Fidelity : " << ruleFidelity << "\n";
             outputFile << trainStats[3] << " --- Test Accuracy : " << ruleAccuracy << "\n";

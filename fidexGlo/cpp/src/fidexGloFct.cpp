@@ -199,7 +199,6 @@ int fidexGlo(const string &command) {
     vector<vector<double>> testSamplesOutputValuesPredictions;
 
     bool hasConfidence = false;
-
     if (!testSamplesPredFileInit) { // If we have only one test data file with data and prediction
 
       vector<double> testSampleValues;
@@ -323,11 +322,11 @@ int fidexGlo(const string &command) {
     }
 
     // Get rules
-
     vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
     vector<string> lines;
     lines.emplace_back("Global statistics of the rule set : ");
     vector<string> stringRules;
+
     getRules(rules, lines, stringRules, rulesFile, attributFileInit, attributeNames, hasClassNames, classNames, hasConfidence);
 
     std::cout << "Files imported" << endl

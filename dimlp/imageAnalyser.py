@@ -3,20 +3,17 @@ import re
 from PIL import Image
 import numpy as np
 
-
 from dimlpfidex import fidex, fidexGlo
-from trnFun import get_data
+from .trnFun import get_data
 
 def output_data(datas, file, type=""):
     try:
         with open(file, "w") as myFile:
-            for data in datas:
-                for val in data:
-                    if type=="itg":
-                        myFile.write(str(int(val)) + " ")
-                    else:
-                        myFile.write(str(val) + " ")
-                myFile.write("\n")
+            for val in datas:
+                if type=="itg":
+                    myFile.write(str(int(val)) + " ")
+                else:
+                    myFile.write(str(val) + " ")
             myFile.close()
 
     except (FileNotFoundError):
@@ -24,151 +21,135 @@ def output_data(datas, file, type=""):
     except (IOError):
         raise ValueError(f"Error : Couldn't open file {file}.")
 
-def image_analyser():
+def imageAnalyser():
     try:
-
         start_time = time.time()
 
-        id_samples = [0,2]
+        id_samples = range(0,10)
         show_images = False
-        image_folder_from_base = "../dimlp/datafiles/Mnist"
-        image_folder = "datafiles/Mnist"
+        image_folder_from_base = "dimlp/datafiles/Mnist"
         test_data_file = image_folder_from_base + "/mnistTestData.txt"
         test_class_file = image_folder_from_base + "/mnistTestClass.txt"
         test_pred_file = image_folder_from_base + "/withValid/predTest.out"
+        global_rules = "withValid/globalRulesWithTestStats.rls"
 
         train_data_file = "mnistTrainData.txt"
         train_class_file = "mnistTrainClass.txt"
         train_pred_file = "withValid/predTrain.out"
-        weights_file = "withValid/predTrain.out"
-
-        image_save_folder = image_folder + "/images"
+        weights_file = "withValid/weights.wts"
+        image_save_folder = image_folder_from_base + "/imagesTest"
 
         test_data = get_data(test_data_file)
         test_class = get_data(test_class_file)
         test_pred = get_data(test_pred_file)
-
-
-        test_samples_data = [test_data[i] if 0 <= i < len(test_data) else None for i in id_samples]
-        test_samples_class = [test_class[i] if 0 <= i < len(test_class) else None for i in id_samples]
-        test_samples_pred = [test_pred[i] if 0 <= i < len(test_pred) else None for i in id_samples]
-
-        output_data(test_samples_data, image_folder + "/testSampleData.txt", "itg")
-        output_data(test_samples_class, image_folder + "/testSampleClass.txt", "itg")
-        output_data(test_samples_pred, image_folder + "/testSamplePred.txt")
-
-
-
-
-        fidexglo_command = "fidexGlo -S testSampleData.txt -p testSamplePred.txt -R withValid/globalRules.txt -O explanation.txt -F " + image_folder_from_base + " -r imgExplanationResult.txt"
-        res_fid_glo = fidexGlo.fidexGlo(fidexglo_command)
-        if res_fid_glo == -1:
-            return -1
-
         no_rule_found_sentence = "We couldn't find any global explanation for this sample."
-        new_sample_sentence = "Explanation for sample"
-        sample_count = -1
-        explanation_file = image_folder + "/explanation.txt"
-        rule = False
-        has_global_rule = 0
+        pattern = r'X(\d+)\s*([<>]=?)\s*([\d.]+)' # Regular expression pattern to match antecedants
+        explanation_file = image_folder_from_base + "/explanation.txt"
+        test_sample_data_file = image_folder_from_base + "/testSampleData.txt"
+        test_sample_pred_file = image_folder_from_base + "/testSamplePred.txt"
+        test_sample_class_file = image_folder_from_base + "/testSampleClass.txt"
+        img_fidex_file = image_folder_from_base + "/imgFidexrule.txt"
 
-        pattern = r'X(\d+)\s*([<>]=?)\s*([\d.]+)'   # Regular expression pattern to match antecedants
-        base_images = []
-        with open (image_folder + "/testSampleData.txt", "r") as my_file:
-            for line in my_file:
-                line = line.strip()
-                base_images.append(line.split(" "))
-            my_file.close()
+        nb_fidex = 0 # Number of times it needs to use Fidex
 
-        go = False
-        with open(explanation_file, "r") as my_file:
-            for line in my_file:
-                if new_sample_sentence in line.strip():
-                    rule = False
-                    has_global_rule = 0
-                    sample_count += 1
-                    print("\n---- Sample ", id_samples[sample_count], " ----")
-                    go = True
-                #if line.strip() == no_rule_found_sentence:
-                if go:
-                    has_global_rule = -1
-                    print("No global rule found. We launch Fidex.")
-                    fidex_command = "fidex -T " + train_data_file + " -P " + train_pred_file + " -C " + train_class_file
-                    fidex_command += " -S testSampleData.txt -c testSampleClass.txt -p testSamplePred.txt -W "
-                    fidex_command += weights_file + " -O imgFidexrule.txt -s imgFidexStats.txt -Q 50 -I 5 -i 100 -v 2 -d 0.5 -h 0.5 -R " +  image_folder_from_base
-                    #res_fid = fidex.fidex(fidex_command)
-                    res_fid = fidex.fidex("fidex -T mnistTrainData.txt -P withValid/predTrain.out -C mnistTrainClass.txt -S testSampleData.txt -c testSampleClass.txt -p testSamplePred.txt -W withValid/weights.wts -O imgFidexrule.txt -s imgFidexStats.txt -Q 50 -I 5 -i 100 -v 2 -d 0.5 -h 0.5 -R ../dimlp/datafiles/Mnist")
+        for id_sample in id_samples:
 
-                    if res_fid == -1:
-                        return -1
+            print("\n---- Sample ", id_sample, " ----")
 
-                    img_fidex_file = image_folder + "/imgFidexrule.txt"
-                    with open(img_fidex_file, "r") as my_fidex_file:
-                        for line in my_fidex_file:
-                            if "->" in line:
-                                rule = line.strip()
-                                break
-                        my_fidex_file.close()
-                    print("Computation of result for this rule")
-                    go = False
-                """
-                elif "->" in line and has_global_rule == 0:
-                    has_global_rule = 1
-                    rule = line.strip()
-                    print("Computation of result for rule :")
-                    print(rule)
+            test_sample_data = test_data[id_sample] if 0 <= id_sample < len(test_data) else None
+            test_sample_class = test_class[id_sample] if 0 <= id_sample < len(test_class) else None
+            test_sample_pred = test_pred[id_sample] if 0 <= id_sample < len(test_pred) else None
 
-                if has_global_rule == 1:
-                    # Get rule antecedants
-                    antecedants = []
+            output_data(test_sample_data, test_sample_data_file, "itg")
+            output_data(test_sample_class, test_sample_class_file, "itg")
+            output_data(test_sample_pred, test_sample_pred_file)
 
-                    # Find all matches in the input string
-                    matches = re.findall(pattern, rule)
+            fidexglo_command = "fidexGlo -S testSampleData.txt -p testSamplePred.txt -R " + global_rules + " -O explanation.txt -F " + image_folder_from_base# + " -r imgExplanationResult.txt"
+            res_fid_glo = fidexGlo.fidexGlo(fidexglo_command)
+            if res_fid_glo == -1:
+                return -1
 
-                    # List to store antecedants
-                    antecedants = []
-                    # Process each match and store in antecedants
-                    for match in matches:
-                        attribute, inequality, value = match
-                        antecedant = {
-                            "attribute": int(attribute),
-                            "inequality": inequality,
-                            "value": float(value)
-                        }
-                        antecedants.append(antecedant)
+            has_global_rule = True
+            rule = ""
+            with open(explanation_file, "r") as my_file:
+                for line in my_file:
+                    if line.strip() == no_rule_found_sentence:
+                        rule = False
+                        has_global_rule = False
+                        break
+                    elif "->" in line:
+                        rule = line.strip()
+                        break
 
-                    # Convertir la liste en un tableau NumPy de forme (28, 28)
-                    image_array = np.array(base_images[sample_count]).reshape(28, 28)
-                    # Créer une image à partir du tableau NumPy
-                    image = Image.fromarray(image_array.astype('uint8'))
-                    # Save and show image
-                    base_image_path = image_save_folder + '/img_'+ str(id_samples[sample_count]) + '_in.png'
-                    image.save(base_image_path)
-                    if show_images:
-                        image.show()
-                    colorimage = [[v,v,v] for v in base_images[sample_count]]
+                my_file.close()
 
-                    for antecedant in antecedants:
-                        if antecedant["inequality"] == "<":
-                            colorimage[antecedant["attribute"]]=[255,0,0]
-                        else:
-                            colorimage[antecedant["attribute"]]=[0,255,0]
-                    colorimage_array = np.array(colorimage).reshape(28, 28, 3)
-                    colorimage = Image.fromarray(colorimage_array.astype('uint8'))
-                    image_path = image_save_folder + '/img_'+ str(id_samples[sample_count]) + '_out.png'
-                    colorimage.save(image_path)
-                    if show_images:
-                        colorimage.show()
+            if has_global_rule:
+                print("Computation of result for rule :")
+                print(rule)
+            else:
+                nb_fidex += 1
+                print("No rule global rule found. We launch Fidex.")
+                fidex_command = "fidex -T " + train_data_file + " -P " + train_pred_file + " -C " + train_class_file
+                fidex_command += " -S testSampleData.txt -c testSampleClass.txt -p testSamplePred.txt -W "
+                fidex_command += weights_file + " -O imgFidexrule.txt -s imgFidexStats.txt -Q 50 -I 5 -i 100 -v 2 -d 0.5 -h 0.5 -R " +  image_folder_from_base
+                res_fid = fidex.fidex(fidex_command)
+                if res_fid == -1:
+                    return -1
 
-                    has_global_rule = -1
-"""
-            my_file.close()
+                with open(img_fidex_file, "r") as my_file:
+                    for line in my_file:
+                        if "->" in line:
+                            rule = line.strip()
+                            break
+                    my_file.close()
 
+                print("Computation of result for this rule")
 
+            # Get rule antecedants
+            antecedants = []
 
+            # Find all matches in the input string
+            matches = re.findall(pattern, rule)
 
+            # List to store antecedants
+            antecedants = []
 
+            # Process each match and store in antecedants
+            for match in matches:
+                attribute, inequality, value = match
+                antecedant = {
+                    "attribute": int(attribute),
+                    "inequality": inequality,
+                    "value": float(value)
+                }
+                antecedants.append(antecedant)
 
+            with open (test_sample_data_file, "r") as my_file:
+                line = my_file.readline().strip()
+                baseimage = line.split(" ")
+                my_file.close()
+
+            colorimage = [[v,v,v] for v in baseimage]
+
+            for antecedant in antecedants:
+                if antecedant["inequality"] == "<":
+                    colorimage[antecedant["attribute"]]=[255,0,0]
+                else:
+                    colorimage[antecedant["attribute"]]=[0,255,0]
+
+            colorimage_array = np.array(colorimage).reshape(28, 28, 3)
+            colorimage = Image.fromarray(colorimage_array.astype('uint8'))
+
+            image_path = image_save_folder + '/img_'+ str(id_sample) + '_out.png'
+            colorimage.save(image_path)
+            if show_images:
+                colorimage.show()
+        if nb_fidex == 0:
+            fidex_mean = 0
+        else:
+            fidex_mean = nb_fidex/len(id_samples)*100
+
+        print(f"\nFidex is used for {fidex_mean}% of images.")
 
         end_time = time.time()
         full_time = end_time - start_time
@@ -183,4 +164,4 @@ def image_analyser():
         return -1
 
 
-image_analyser()
+imageAnalyser()
