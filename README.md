@@ -33,7 +33,7 @@ cmake.exe --version
 
 Use your package manager to install:
 
-* python
+* python3 and python3-dev
 * poetry
 
 #### Windows
