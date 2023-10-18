@@ -76,6 +76,7 @@ numpy = ">=1.22, <=1.24.3"
 scikit-learn = "^1.2.2"
 tensorflow = "^2.13.0"
 tensorflow-io-gcs-filesystem = "0.31.0"
+matplotlib = "^3.8.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.3.2"
