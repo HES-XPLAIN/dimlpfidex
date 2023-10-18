@@ -1,6 +1,6 @@
 import time
 import sys
-from .trnFun import get_data, output_pred, output_stats, trees_to_rules, check_parameters_common, check_int, check_strictly_positive, check_positive, check_bool, check_parameters_decision_trees
+from .trnFun import get_data, output_pred_proba, output_stats, trees_to_rules, check_parameters_common, check_int, check_strictly_positive, check_positive, check_bool, check_parameters_decision_trees
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import metrics
 from sklearn.tree import export_text
@@ -196,13 +196,16 @@ def gradBoostTrn(*args, **kwargs):
                                                n_iter_no_change=n_iter_no_change_var, tol=tol_var, ccp_alpha=ccp_alpha_var)
 
             model.fit(train_data, train_class)
+
+            # Compute predictions
+            train_pred_proba = model.predict_proba(train_data)  # Predict the response for train dataset
+            test_pred_proba = model.predict_proba(test_data)    # Predict the response for test dataset
             train_pred = model.predict(train_data)    # Predict the response for train dataset
             test_pred = model.predict(test_data)    # Predict the response for test dataset
 
             # Output predictions
-            nb_classes = len(model.classes_)
-            output_pred(train_pred, train_pred_file, nb_classes)
-            output_pred(test_pred, test_pred_file, nb_classes)
+            output_pred_proba(train_pred_proba, train_pred_file)
+            output_pred_proba(test_pred_proba, test_pred_file)
 
             # Compute model Accuracy
             acc_train = metrics.accuracy_score(train_class, train_pred) * 100

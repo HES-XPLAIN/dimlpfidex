@@ -297,8 +297,6 @@ def mlpTrn(*args, **kwargs):
             # Output predictions
             output_pred_proba(train_pred_proba, train_pred_file)
             output_pred_proba(test_pred_proba, test_pred_file)
-            train_pred = model.predict(train_data_h1)
-            test_pred = model.predict(test_data_h1)
 
             # Calcul de l'exactitude (accuracy) du modèle
             acc_train = metrics.accuracy_score(train_class, train_pred) * 100
