@@ -417,6 +417,12 @@ int fidex(const string &command) {
 
     std::cout << "Import files..." << endl;
 
+    float importTime;
+    clock_t impt1;
+    clock_t impt2;
+
+    impt1 = clock();
+
     std::unique_ptr<DataSetFid> trainDatas(new DataSetFid(trainDataFile, trainDataFilePred, trainDataFileTrueClass));
 
     vector<vector<double>> *trainData = trainDatas->getDatas();
@@ -624,6 +630,11 @@ int fidex(const string &command) {
       }
     }
 
+    impt2 = clock();
+    importTime = (float)(impt2 - impt1) / CLOCKS_PER_SEC;
+
+    std::cout << "\nImport time = " << importTime << " sec\n";
+
     std::cout << "Files imported" << endl
               << endl;
     std::cout << "----------------------------------------------" << endl
@@ -680,8 +691,14 @@ int fidex(const string &command) {
     double meanNbAntecedentsPerRule = 0;
     double meanAccuracy = 0;
 
+    /*float sampleTime;
+    clock_t samplet1;
+    clock_t samplet2;*/
+
     // We compute rule for each test sample
     for (int currentSample = 0; currentSample < nbSamples; currentSample++) {
+
+      // samplet1 = clock();
 
       lines.push_back("Rule for sample " + std::to_string(currentSample) + " :\n");
       if (nbSamples > 1) {
@@ -709,8 +726,9 @@ int fidex(const string &command) {
       int nbIt = 0;
 
       while (hyperspace.getHyperbox()->getFidelity() != 1 && nbIt < itMax) { // While fidelity of our hyperbox is not 100%
-        std::unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());              // best hyperbox to choose for next step
-        std::unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());           // best hyperbox to choose for next step
+        // std::cout << "New iteration : " << nbIt << std::endl;
+        std::unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());    // best hyperbox to choose for next step
+        std::unique_ptr<Hyperbox> currentHyperbox(new Hyperbox()); // best hyperbox to choose for next step
         double mainSampleValue;
         int attribut;
         int dimension;
@@ -724,8 +742,11 @@ int fidex(const string &command) {
         std::shuffle(std::begin(dimensions), std::end(dimensions), gen);
         vector<int> currentCovSamp;
 
+        /*float itTime;
+        clock_t itt1;
+        clock_t itt2;
+        itt1 = clock();*/
         for (int d = 0; d < nbIn; d++) { // Loop on all dimensions
-
           if (bestHyperbox->getFidelity() == 1) {
             break;
           }
@@ -744,9 +765,11 @@ int fidex(const string &command) {
           if (nbHyp == 0) {
             continue; // No data on this dimension
           }
-
+          // std::cout << std::endl;
+          // std::cout << "NEW DIM" << d << std::endl;
           for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
-            // Test if we dropout this hyperplan
+            // std::cout << "\rNEW hyp: " << k+1 << "/" << nbHyp << std::flush;
+            //  Test if we dropout this hyperplan
             if (dropoutHyp && dis(gen) < dropoutHypParam) {
               continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
             }
@@ -789,21 +812,23 @@ int fidex(const string &command) {
           }
           // Rule is not added if fidelity and covering size did not increase
           if (bestHyperbox->getFidelity() > hyperspace.getHyperbox()->getFidelity() || (bestHyperbox->getFidelity() == hyperspace.getHyperbox()->getFidelity() && bestHyperbox->getCoveredSamples().size() > hyperspace.getHyperbox()->getCoveredSamples().size())) {
+            // std::cout << "Found new best" << std::endl;
+            // std::cout << "Fidelity : " << bestHyperbox->getFidelity() << std::endl;
+            // std::cout << "Cov size :" << bestHyperbox->getCoveredSamples().size() << endl;
             hyperspace.getHyperbox()->setFidelity(bestHyperbox->getFidelity());
             hyperspace.getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
             hyperspace.getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
           } else if (minNbCover == 1 && dropoutDim == false && dropoutHyp == false) {
-            // If we have a minimum covering of 1 and no dropout, we need to choose randomly a hyperplan, because we are stocked
+            // std::cout << "Choosing randomly" << std::endl;
+            //  If we have a minimum covering of 1 and no dropout, we need to choose randomly a hyperplan, because we are stocked
             std::unique_ptr<Hyperbox> randomHyperbox(new Hyperbox()); // best hyperbox to choose for next step
 
             std::uniform_int_distribution<int> distribution(0, static_cast<int>(nbIn) - 1);
             int randomDimension;
             size_t hypSize;
             do {
-              std::cout << "Dans le do while" << std::endl;
               randomDimension = dimensions[distribution(gen)];
               hypSize = hyperspace.getHyperLocus()[randomDimension].size();
-              std::cout << hypSize << std::endl;
             } while (hypSize == 0);
             attribut = randomDimension % nbAttributs;
             mainSampleValue = mainSamplesValues[currentSample][attribut];
@@ -821,7 +846,10 @@ int fidex(const string &command) {
             hyperspace.getHyperbox()->discriminateHyperplan(randomDimension, indexRandomHyp);
           }
         }
+        /*itt2 = clock();
+        itTime = (float)(itt2 - itt1) / CLOCKS_PER_SEC;
 
+        std::cout << "\n Iteration time = " << itTime << " sec\n";*/
         nbIt += 1;
       }
 
@@ -875,6 +903,11 @@ int fidex(const string &command) {
       hyperspace.ruleExtraction(&mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, attributFileInit, &attributeNames, hasClassNames, &classNames);
 
       std::cout << "Result found after " << nbIt << " iterations." << endl;
+
+      /*samplet2 = clock();
+      sampleTime = (float)(samplet2 - samplet1) / CLOCKS_PER_SEC;
+
+      std::cout << "\n Computation time = " << sampleTime << " sec\n";*/
 
       std::cout << "-------------------------------------------------" << endl;
 

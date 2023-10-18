@@ -58,7 +58,7 @@ def output_pred(pred, pred_file, nb_classes):
 
 def output_pred_proba(pred, pred_file):
     try:
-        with open(pred_file, "a") as predFile:
+        with open(pred_file, "w") as predFile:
             for var in pred:
                 for val in var:
                     predFile.write(str(val) + " ")
