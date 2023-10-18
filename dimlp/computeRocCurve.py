@@ -76,9 +76,9 @@ def computeRocCurve(*args, **kwargs):
                 raise ValueError('Error : positive class index missing, add it with option positive_index="your_positive_class_index"')
             elif not isinstance(positive_index, int) or positive_index < 0 or positive_index >= len(test_pred[0]):
                 raise ValueError(f'Error : parameter positive_index has to be a positive integer smaller than {len(test_pred[0])}.')
-            test_class = [1 if cl.index(max(cl)) == positive_index else 0 for cl in test_class]
+            test_class_roc = [1 if cl.index(max(cl)) == positive_index else 0 for cl in test_class]
             test_pred = [p[positive_index] for p in test_pred]
-            fpr, tpr, tresholds = roc_curve(test_class, test_pred)
+            fpr, tpr, tresholds = roc_curve(test_class_roc, test_pred)
             auc_score = auc(fpr, tpr)
 
             viz = RocCurveDisplay(fpr=fpr,
