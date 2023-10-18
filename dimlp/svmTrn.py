@@ -256,12 +256,19 @@ def svmTrn(*args, **kwargs):
             output_stats(stats_file, acc_train, acc_test)
 
             print("Weights : ", model.class_weight_)
+            test_class_roc = [1 if cl == positive_index else 0 for cl in test_class]
 
-            viz = RocCurveDisplay.from_estimator(model, test_data_h1, test_class, pos_label=positive_index).plot(color="darkorange", plot_chance_level=True)
+            #viz = RocCurveDisplay.from_estimator(model, test_data_h1, test_class_roc, pos_label=1).plot(color="darkorange", plot_chance_level=True)
+            #viz.figure_.savefig(output_roc)
+            #plt.close(viz.figure_)
+            fpr, tpr, thresholds = roc_curve(test_class_roc, model.predict_proba(test_data_h1)[:, positive_index])
+            auc_score = auc(fpr, tpr)
+            viz = RocCurveDisplay(fpr=fpr,
+                                  tpr=tpr,
+                                  roc_auc=auc_score).plot(color="darkorange", plot_chance_level=True)
+
             viz.figure_.savefig(output_roc)
             plt.close(viz.figure_)
-            fpr, tpr, thresholds = roc_curve(test_class, model.predict_proba(test_data_h1)[:, positive_index])
-            auc_score = auc(fpr, tpr)
 
             # Save AUC in stats file
             with open(stats_file, 'a') as file:
