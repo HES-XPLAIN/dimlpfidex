@@ -1,4 +1,4 @@
-# dimlpfidex
+# dimlpfidex ![build](https://github.com/HES-XPLAIN/dimlpfidex/actions/workflows/build.yml/badge.svg)
 Discretized Interpretable Multi Layer Perceptron (DIMLP) and related algorithms
 
 ## Contribution
