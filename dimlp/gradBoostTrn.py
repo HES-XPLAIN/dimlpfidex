@@ -181,11 +181,15 @@ def gradBoostTrn(*args, **kwargs):
             # Get data
             train_data = get_data(train_data_file)
             train_class = get_data(train_class_file)
+            nb_classes = len(train_class[0])
+            classes = set(range(nb_classes))
+
             train_class = [cl.index(max(cl)) for cl in train_class]
+            miss_train_classes = classes - set(train_class) # Check if a class is not represented
+
             test_data = get_data(test_data_file)
             test_class = get_data(test_class_file)
             test_class = [cl.index(max(cl)) for cl in test_class]
-
             # Train GB
             model = GradientBoostingClassifier(n_estimators=n_estimators_var, loss=loss_var, learning_rate=learning_rate_var, # Create GB Classifier
                                                subsample=subsample_var, criterion=criterion_var, min_samples_split=min_samples_split_var,
@@ -202,6 +206,16 @@ def gradBoostTrn(*args, **kwargs):
             test_pred_proba = model.predict_proba(test_data)    # Predict the response for test dataset
             train_pred = model.predict(train_data)    # Predict the response for train dataset
             test_pred = model.predict(test_data)    # Predict the response for test dataset
+
+            # If a class is missing, we adapt predictions
+            if len(miss_train_classes)!=0:
+                miss_train_classes = sorted(list(miss_train_classes))
+                train_pred_proba = [pred.tolist() for pred in train_pred_proba]
+                test_pred_proba = [pred.tolist() for pred in test_pred_proba]
+                for train_pred_list in [train_pred_proba, test_pred_proba]:
+                    for pred in train_pred_list:
+                        for classe in miss_train_classes:
+                            pred.insert(classe, 0.0) # Prediction 0 for the missing class
 
             # Output predictions
             output_pred_proba(train_pred_proba, train_pred_file)

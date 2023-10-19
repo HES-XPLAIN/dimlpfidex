@@ -213,6 +213,7 @@ def svmTrn(*args, **kwargs):
             # Get data
             train_data = get_data(train_data_file)
             train_class = get_data(train_class_file)
+            nb_classes = len(train_class[0])
             train_class = [cl.index(max(cl)) for cl in train_class]
             test_data = get_data(test_data_file)
             test_class = get_data(test_class_file)
@@ -240,7 +241,6 @@ def svmTrn(*args, **kwargs):
             test_pred = model.predict(test_data_h1)    # Predict the response for test dataset
 
             # Output predictions
-            nb_classes = len(model.classes_)
             output_pred(train_pred, train_pred_file, nb_classes)
             output_pred(test_pred, test_pred_file, nb_classes)
 
