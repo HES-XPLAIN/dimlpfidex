@@ -56,19 +56,19 @@ def output_pred(pred, pred_file, nb_classes):
     except (IOError):
         raise ValueError(f"Error : Couldn't open file {pred_file}.")
 
-def output_pred_proba(pred, pred_file):
+def output_data(data, data_file):
     try:
-        with open(pred_file, "w") as predFile:
-            for var in pred:
+        with open(data_file, "w") as predFile:
+            for var in data:
                 for val in var:
                     predFile.write(str(val) + " ")
                 predFile.write("\n")
             predFile.close()
 
     except (FileNotFoundError):
-        raise ValueError(f"Error : File {pred_file} not found.")
+        raise ValueError(f"Error : File {data_file} not found.")
     except (IOError):
-        raise ValueError(f"Error : Couldn't open file {pred_file}.")
+        raise ValueError(f"Error : Couldn't open file {data_file}.")
 
 def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_file=None, mu=None, sigma=None):
     input_data = np.array(input_data)
