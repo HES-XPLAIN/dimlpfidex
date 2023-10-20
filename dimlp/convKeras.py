@@ -25,6 +25,7 @@ from keras.models     import load_model
 from keras.callbacks  import ModelCheckpoint
 from keras.datasets import mnist
 from keras.datasets import cifar100
+from keras.datasets import cifar10
 
 
 from .trnFun import compute_first_hidden_layer, output_stats, check_parameters_dimlp_layer, check_parameters_common, get_data, check_strictly_positive, check_int
@@ -47,16 +48,17 @@ def convKeras(*args, **kwargs):
     try:
         if args or not kwargs:
             print("Obligatory parameters :")
-            print("dataset : mnist or cifar")
+            print("dataset : mnist, cifar100 or cifar10")
             print("train_data : train data file")
             print("train_class : train class file")
             print("test_data : test data file")
             print("test_class : test class file")
-            print("valid_ratio : porcentage(]0,1[) of train data taken for validation (0.1 by default if no valid data)")
             print("----------------------------")
             print("Optional parameters :")
+            print("valid_ratio : porcentage(]0,1[) of train data taken for validation (0.1 by default if no valid data)")
             print("valid_data : validation data file")
             print("valid_class : validation class file")
+            print("BE CAREFUL if there is validation files, and you want to use fidex algorithms you have to use both train and validation datas for train datas ")
             print("save_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
             print("nb_epochs : number of epochs during training(80 by default)")
             print("train_valid_pred : output train and validation (in this order) prediction file name without extension(predTrain by default)")
@@ -129,9 +131,9 @@ def convKeras(*args, **kwargs):
                 raise ValueError('Error : parameter valid_class has to be a name contained in quotation marks "".')
 
             if dataset is None :
-                raise ValueError('Error : dataset name missing, add it with option dataset and choose "mnist" or "cifar".')
-            elif dataset not in {"mnist", "cifar"}:
-                raise ValueError('Error : parameter dataset is not "mnist" or "cifar".')
+                raise ValueError('Error : dataset name missing, add it with option dataset and choose "mnist" or "cifar100" or "cifar10".')
+            elif dataset not in {"mnist", "cifar100", "cifar10"}:
+                raise ValueError('Error : parameter dataset is not "mnist" or "cifar100" or "cifar10".')
 
             if nb_epochs is None:
                 nb_epochs = 80
@@ -171,9 +173,9 @@ def convKeras(*args, **kwargs):
 
                 nb_classes = 10
                 size1d = 28
-                nb_chanels = 1
+                nb_channels = 1
 
-            elif dataset == "cifar":
+            elif dataset == "cifar100":
                 #(x_train, y_train), (x_test, y_test) = cifar100.load_data(label_mode="fine")
 
                 #x_train = x_train[0:1000]
@@ -183,8 +185,12 @@ def convKeras(*args, **kwargs):
 
                 nb_classes = 100
                 size1d = 32
-                nb_chanels = 3
+                nb_channels = 3
 
+            elif dataset == "cifar10":
+                nb_classes = 10
+                size1d = 32
+                nb_channels = 3
 
             # Get data
             x_train_full = np.array(get_data(train_data_file))
@@ -225,14 +231,14 @@ def convKeras(*args, **kwargs):
             #train   = np.loadtxt("trainMnist784WC")
 
             # x_train = train.reshape(train.shape[0], 1, size1d, size1d)
-            x_train_h1 = x_train_h1.reshape(x_train_h1.shape[0], size1d, size1d, nb_chanels)
+            x_train_h1 = x_train_h1.reshape(x_train_h1.shape[0], size1d, size1d, nb_channels)
 
             #test   = np.loadtxt("testMnist2")
 
             # x_test = test.reshape(test.shape[0], 1, size1d, size1d)
-            x_test_h1 = x_test_h1.reshape(x_test_h1.shape[0], size1d, size1d, nb_chanels)
+            x_test_h1 = x_test_h1.reshape(x_test_h1.shape[0], size1d, size1d, nb_channels)
 
-            x_val_h1 = x_val_h1.reshape(x_val_h1.shape[0], size1d, size1d, nb_chanels)
+            x_val_h1 = x_val_h1.reshape(x_val_h1.shape[0], size1d, size1d, nb_channels)
 
             #y_train = np.loadtxt("mnistTrainClass")
             y_train = y_train.astype('int32')
@@ -273,7 +279,7 @@ def convKeras(*args, **kwargs):
             # model.add(DepthwiseConv2D((5, 5), data_format="channels_first", activation='relu'))
             # model.add(MaxPooling2D(pool_size=(2, 2), data_format="channels_first"))
 
-            model.add(Convolution2D(32, (5, 5), activation='relu', input_shape=(size1d, size1d, nb_chanels)))
+            model.add(Convolution2D(32, (5, 5), activation='relu', input_shape=(size1d, size1d, nb_channels)))
             model.add(Dropout(0.3))
             model.add(MaxPooling2D(pool_size=(2, 2)))
 
@@ -310,7 +316,7 @@ def convKeras(*args, **kwargs):
             train_pred = model_best.predict(x_train_h1)    # Predict the response for train dataset
             test_pred = model_best.predict(x_test_h1)    # Predict the response for test dataset
             valid_pred = model_best.predict(x_val_h1)   # Predict the response for validation dataset
-            train_valid_pred = np.concatenate((train_pred,valid_pred))
+            train_valid_pred = np.concatenate((train_pred,valid_pred)) # We output predictions of both validation and training sets
 
             # Output predictions
             output_pred(train_valid_pred, train_valid_pred_file)

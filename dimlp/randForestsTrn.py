@@ -1,6 +1,6 @@
 import time
 import sys
-from .trnFun import get_data, output_pred_proba, output_stats, check_parameters_common, check_int, check_strictly_positive, check_positive, check_bool, trees_to_rules, check_parameters_decision_trees
+from .trnFun import get_data, output_data, output_stats, check_parameters_common, check_int, check_strictly_positive, check_positive, check_bool, trees_to_rules, check_parameters_decision_trees
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 import numpy as np
@@ -197,8 +197,8 @@ def randForestsTrn(*args, **kwargs):
                             pred.insert(classe, 0.0) # Prediction 0 for the missing class
 
             # Output predictions
-            output_pred_proba(train_pred_proba, train_pred_file)
-            output_pred_proba(test_pred_proba, test_pred_file)
+            output_data(train_pred_proba, train_pred_file)
+            output_data(test_pred_proba, test_pred_file)
 
             # Compute model Accuracy
             acc_train = metrics.accuracy_score(train_class, train_pred) * 100

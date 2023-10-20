@@ -5,7 +5,7 @@ import warnings
 from sklearn.exceptions import ConvergenceWarning
 from sklearn import metrics
 
-from .trnFun import check_int, check_strictly_positive, check_positive, check_bool, get_data, output_pred_proba, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer
+from .trnFun import check_int, check_strictly_positive, check_positive, check_bool, get_data, output_data, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer
 
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
@@ -308,8 +308,8 @@ def mlpTrn(*args, **kwargs):
                             pred.insert(classe, 0.0) # Prediction 0 for the missing class
 
             # Output predictions
-            output_pred_proba(train_pred_proba, train_pred_file)
-            output_pred_proba(test_pred_proba, test_pred_file)
+            output_data(train_pred_proba, train_pred_file)
+            output_data(test_pred_proba, test_pred_file)
 
             # Calcul de l'exactitude (accuracy) du modèle
             acc_train = metrics.accuracy_score(train_class, train_pred) * 100
