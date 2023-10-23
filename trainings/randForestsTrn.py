@@ -225,5 +225,8 @@ def randForestsTrn(*args, **kwargs):
             return 0
 
     except ValueError as error:
+        # Redirect output to terminal
+        if output_file != None:
+            sys.stdout = sys.__stdout__
         print(error)
         return -1
