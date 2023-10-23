@@ -4,7 +4,23 @@ from PIL import Image
 import numpy as np
 
 from dimlpfidex import fidex, fidexGlo
-from .trnFun import get_data
+
+def get_data(file_name): # Get data from file
+    try:
+        with open(file_name, "r") as my_file:
+            data = []
+            line = my_file.readline()
+            while line:
+                line = line.strip()  # Remove the line break at the end of the line
+                di = [float(elt) for elt in line.split(" ")]
+                data.append(di)
+                line = my_file.readline()
+            my_file.close()
+        return data
+    except (FileNotFoundError):
+        raise ValueError(f"Error : File {file_name} not found.")
+    except (IOError):
+        raise ValueError(f"Error : Couldn't open file {file_name}.")
 
 def output_data(datas, file, type=""):
     try:
