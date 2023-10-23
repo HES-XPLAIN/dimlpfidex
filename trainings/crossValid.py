@@ -17,11 +17,11 @@ if sys.platform == 'win32':
 from dimlpfidex import dimlp
 from dimlpfidex import fidex
 from dimlpfidex import fidexGlo
-from dimlp.svmTrn import svmTrn
-from dimlp.mlpTrn import mlpTrn
-from dimlp.randForestsTrn import randForestsTrn
-from dimlp.gradBoostTrn import gradBoostTrn
-from dimlp.computeRocCurve import computeRocCurve
+from trainings.svmTrn import svmTrn
+from trainings.mlpTrn import mlpTrn
+from trainings.randForestsTrn import randForestsTrn
+from trainings.gradBoostTrn import gradBoostTrn
+from trainings.computeRocCurve import computeRocCurve
 
 
 def create_or_clear_directory(folder_name):
@@ -2526,7 +2526,7 @@ def crossValid(*args, **kwargs):
         return -1
 
 
-# Exemple Dimlp : crossValid(train_method="dimlp", algo="both", data_file="datanorm", class_file="dataclass2", dimlpRul=1, nb_in=16, nb_out=2, H2=5, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLP", K=3, N=2, seed=33)
-# Exemple DimlpBT : crossValid(train_method="dimlpBT", algo="both", data_file="datanorm", class_file="dataclass2", dimlpRul=1, nb_in=16, nb_out=2, H2=5, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLPBT", K=3, N=2, seed=33)
-# Exemple SVM : crossValid(train_method="svm", algo="both", data_file="datanorm", class_file="dataclass2", dimlpRul=1, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationSVM", K=3, N=2, seed=33)
-# Exemple MLP : crossValid(train_method="mlp", algo="both", data_file="datanorm", class_file="dataclass2", dimlpRul=1, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationMLP", K=3, N=2, seed=33)
+# Exemple Dimlp : crossValid(train_method="dimlp", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, dimlpRul=1, nb_in=16, nb_out=2, H2=5, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLP", K=3, N=2, seed=33)
+# Exemple DimlpBT : crossValid(train_method="dimlpBT", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, dimlpRul=1, nb_in=16, nb_out=2, H2=5, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLPBT", K=3, N=2, seed=33)
+# Exemple SVM : crossValid(train_method="svm", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationSVM", K=3, N=2, seed=33)
+# Exemple MLP : crossValid(train_method="mlp", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, save_folder="dimlp/datafiles", crossVal_folder="CrossValidationMLP", K=3, N=2, seed=33)

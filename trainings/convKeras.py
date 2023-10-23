@@ -193,7 +193,12 @@ def convKeras(*args, **kwargs):
                 nb_channels = 3
 
             # Get data
-            x_train_full = np.array(get_data(train_data_file))
+            print("1")
+            x_train_full_temp = get_data(train_data_file)
+            print("2")
+            x_train_full = np.array(x_train_full_temp)
+            del x_train_full_temp
+            print("3")
             y_train_full = get_data(train_class_file)
             y_train_full = np.array([cl.index(max(cl)) for cl in y_train_full])
             x_test = np.array(get_data(test_data_file))
@@ -211,14 +216,12 @@ def convKeras(*args, **kwargs):
                 x_val   = x_train_full[cut_off:]
                 y_train = y_train_full[:cut_off]
                 y_val   = y_train_full[cut_off:]
-
-
+            print("Data loaded")
             x_train = (x_train.astype('float32') / 255) * 10 - 5
             x_test = (x_test.astype('float32') / 255) * 10 - 5
             x_val = (x_val.astype('float32') / 255) * 10 - 5
 
             x_train_h1, mu, sigma = compute_first_hidden_layer("train", x_train, K, quant, hiknot, weights_file)
-
             x_test_h1 = compute_first_hidden_layer("test", x_test, K, quant, hiknot, mu=mu, sigma=sigma)
             x_val_h1 = compute_first_hidden_layer("test", x_val, K, quant, hiknot, mu=mu, sigma=sigma)
 
@@ -237,7 +240,6 @@ def convKeras(*args, **kwargs):
 
             # x_test = test.reshape(test.shape[0], 1, size1d, size1d)
             x_test_h1 = x_test_h1.reshape(x_test_h1.shape[0], size1d, size1d, nb_channels)
-
             x_val_h1 = x_val_h1.reshape(x_val_h1.shape[0], size1d, size1d, nb_channels)
 
             #y_train = np.loadtxt("mnistTrainClass")
@@ -269,7 +271,7 @@ def convKeras(*args, **kwargs):
                 y_train = y_train[0:40000]
             """
             ##############################################################################
-
+            print("Training model...")
             model = Sequential()
 
             # model.add(Convolution2D(32, (5, 5), activation='relu', data_format="channels_first", input_shape=(1, size1d, size1d)))
@@ -312,6 +314,8 @@ def convKeras(*args, **kwargs):
             ##############################################################################
 
             model_best = load_model(model_checkpoint_weights)
+
+            print("model trained")
 
             train_pred = model_best.predict(x_train_h1)    # Predict the response for train dataset
             test_pred = model_best.predict(x_test_h1)    # Predict the response for test dataset
