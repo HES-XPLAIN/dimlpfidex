@@ -34,6 +34,10 @@ void showFidexParams() {
 
 int fidex(const string &command) {
 
+  // Save buffer where we output results
+  std::ofstream ofs;
+  std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
+
   try {
     float temps;
     clock_t t1;
@@ -389,8 +393,6 @@ int fidex(const string &command) {
     // ----------------------------------------------------------------------
 
     // Get console results to file
-    std::ofstream ofs;
-    std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
     if (consoleFileInit != false) {
       ofs.open(consoleFile);
       std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
@@ -969,6 +971,7 @@ int fidex(const string &command) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
 
   } catch (const char *msg) {
+    std::cout.rdbuf(cout_buff); // reset to standard output again
     cerr << msg << endl;
     return -1;
   }

@@ -22,7 +22,6 @@ def svmTrn(*args, **kwargs):
             print("train_class : train class file")
             print("test_data : test data file")
             print("test_class : test class file")
-            print("positive_index : index of positive class (0 for first one)")
             print("----------------------------")
             print("Optional parameters :")
             print("save_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
@@ -35,7 +34,9 @@ def svmTrn(*args, **kwargs):
             print("nb_stairs : number of stairs in staircase activation function (50 by default)")
             print("hiknot : high side of the interval (5 by default)")
             print("K : Parameter to improve dynamics (1 by default)")
+            print("positive_index : index of positive class (0 for first one)")
             print("return_roc : whether to return ROC statistics (False by default)")
+
             print("----------------------------")
             print("SVM parameters (optional)")
             print("C : regularization, (1.0 by default)")
@@ -217,9 +218,9 @@ def svmTrn(*args, **kwargs):
             train_class = [cl.index(max(cl)) for cl in train_class]
             test_data = get_data(test_data_file)
             test_class = get_data(test_class_file)
-
+            with_roc = True
             if positive_index is None:
-                raise ValueError('Error : positive class index missing, add it with option positive_index="your_positive_class_index"')
+                with_roc = False
             elif not isinstance(positive_index, int) or positive_index < 0 or positive_index >= len(test_class[0]):
                 raise ValueError(f'Error : parameter positive_index has to be a positive integer smaller than {len(test_class[0])}.')
 
@@ -256,23 +257,24 @@ def svmTrn(*args, **kwargs):
             output_stats(stats_file, acc_train, acc_test)
 
             print("Weights : ", model.class_weight_)
-            test_class_roc = [1 if cl == positive_index else 0 for cl in test_class]
+            if with_roc:
+                test_class_roc = [1 if cl == positive_index else 0 for cl in test_class]
 
-            #viz = RocCurveDisplay.from_estimator(model, test_data_h1, test_class_roc, pos_label=1).plot(color="darkorange", plot_chance_level=True)
-            #viz.figure_.savefig(output_roc)
-            #plt.close(viz.figure_)
-            fpr, tpr, thresholds = roc_curve(test_class_roc, model.predict_proba(test_data_h1)[:, positive_index])
-            auc_score = auc(fpr, tpr)
-            viz = RocCurveDisplay(fpr=fpr,
-                                  tpr=tpr,
-                                  roc_auc=auc_score).plot(color="darkorange", plot_chance_level=True)
+                #viz = RocCurveDisplay.from_estimator(model, test_data_h1, test_class_roc, pos_label=1).plot(color="darkorange", plot_chance_level=True)
+                #viz.figure_.savefig(output_roc)
+                #plt.close(viz.figure_)
+                fpr, tpr, _ = roc_curve(test_class_roc, model.predict_proba(test_data_h1)[:, positive_index])
+                auc_score = auc(fpr, tpr)
+                viz = RocCurveDisplay(fpr=fpr,
+                                    tpr=tpr,
+                                    roc_auc=auc_score).plot(color="darkorange", plot_chance_level=True)
 
-            viz.figure_.savefig(output_roc)
-            plt.close(viz.figure_)
+                viz.figure_.savefig(output_roc)
+                plt.close(viz.figure_)
 
-            # Save AUC in stats file
-            with open(stats_file, 'a') as file:
-                file.write(f"\nAUC score on testing set : {auc_score}")
+                # Save AUC in stats file
+                with open(stats_file, 'a') as file:
+                    file.write(f"\nAUC score on testing set : {auc_score}")
 
             end_time = time.time()
             full_time = end_time - start_time
@@ -285,7 +287,7 @@ def svmTrn(*args, **kwargs):
             if output_file != None:
                 sys.stdout = sys.__stdout__
 
-            if return_roc:
+            if with_roc and return_roc:
                 # Interpolation to get 1000 points (necessary for crossValidation)
                 fpr_interp = np.linspace(0, 1, 1000)
                 tpr_interp = np.interp(fpr_interp, fpr, tpr)
@@ -295,6 +297,9 @@ def svmTrn(*args, **kwargs):
             return 0
 
     except ValueError as error:
+        # Redirect output to terminal
+        if output_file != None:
+            sys.stdout = sys.__stdout__
         print(error)
         return -1
 
