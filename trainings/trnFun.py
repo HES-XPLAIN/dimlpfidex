@@ -4,6 +4,8 @@ import sys
 from .stairObj import StairObj
 from sklearn.tree import _tree
 import time
+import matplotlib.pyplot as plt
+from sklearn.metrics import roc_curve, auc, RocCurveDisplay
 
 def check_strictly_positive(variable):
     if isinstance(variable, (float,int)) and variable > 0:
@@ -284,3 +286,18 @@ def trees_to_rules(trees, rules_file, from_grad_boost=False):
         raise ValueError(f"Error: File for rules extraction ({rules_file}) not found.")
     except IOError:
         raise ValueError(f"Error: Couldn't open rules extraction file {rules_file}.")
+
+def compute_roc(estimator, output_roc, *args): #test_class, test_pred
+    test_class = args[0]
+    test_pred = args[1]
+    fpr, tpr, _ = roc_curve(test_class, test_pred)
+    auc_score = auc(fpr, tpr)
+
+    viz = RocCurveDisplay(fpr=fpr,
+                            tpr=tpr,
+                            roc_auc=auc_score,
+                            estimator_name=estimator).plot(color="darkorange", plot_chance_level=True)
+
+    viz.figure_.savefig(output_roc)
+    plt.close(viz.figure_)
+    return [fpr, tpr, auc_score]

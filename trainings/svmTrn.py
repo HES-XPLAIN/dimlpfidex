@@ -2,12 +2,10 @@ import time
 import sys
 from sklearn import svm
 from sklearn import metrics
-from sklearn.metrics import RocCurveDisplay
-from sklearn.metrics import roc_auc_score, roc_curve, auc
 import numpy as np
 import matplotlib.pyplot as plt
 
-from .trnFun import check_int, check_strictly_positive, check_positive, check_bool, get_data, output_pred, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer
+from .trnFun import check_int, check_strictly_positive, check_positive, check_bool, get_data, output_pred, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer, compute_roc
 
 def svmTrn(*args, **kwargs):
     try:
@@ -34,8 +32,11 @@ def svmTrn(*args, **kwargs):
             print("nb_stairs : number of stairs in staircase activation function (50 by default)")
             print("hiknot : high side of the interval (5 by default)")
             print("K : Parameter to improve dynamics (1 by default)")
-            print("positive_index : index of positive class (0 for first one)")
+            print("positive_index : index of positive class (0 for first one, None by default, if None, no roc calculation)")
             print("return_roc : whether to return ROC statistics (False by default)")
+            print("with_decision_threshold : Boolean, whether to compute decision threshold (only if roc curve is computed, False by default)")
+            print("test_class_threshold : new test class file with the new threshold (test_class_threshold.txt by default)")
+            print("train_class_threshold : new train class file with the new threshold (train_class_threshold.txt by default)")
 
             print("----------------------------")
             print("SVM parameters (optional)")
@@ -93,6 +94,9 @@ def svmTrn(*args, **kwargs):
             decision_function_shape_var = kwargs.get('decision_function_shape')
             break_ties_var = kwargs.get('break_ties')
             return_roc = kwargs.get('return_roc')
+            with_decision_threshold = kwargs.get('with_decision_threshold')
+            test_class_threshold = kwargs.get('test_class_threshold')
+            train_class_threshold = kwargs.get('train_class_threshold')
 
             # Redirect output in file
             if output_file != None:
@@ -109,14 +113,15 @@ def svmTrn(*args, **kwargs):
 
             valid_args = ['train_data', 'train_class', 'test_data', 'test_class', 'positive_index', 'train_pred', 'test_pred', 'weights',
                         'stats', 'output_roc', 'K', 'nb_stairs', 'hiknot', 'C', 'kernel', 'degree', 'gamma', 'coef0', 'shrinking',
-                        'tol', 'cache_size', 'class_weight', 'verbose', 'max_iter', 'decision_function_shape', 'break_ties', 'save_folder', 'output_file', 'return_roc']
+                        'tol', 'cache_size', 'class_weight', 'verbose', 'max_iter', 'decision_function_shape', 'break_ties', 'save_folder', 'output_file', 'return_roc',
+                        'with_decision_threshold', 'test_class_threshold', 'train_class_threshold']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
                 if arg_key not in valid_args:
                     raise ValueError(f"Invalid argument : {arg_key}")
 
-            save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file  = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file)
+            save_folder, train_data_file, train_class_file_init, test_data_file, test_class_file_init, train_pred_file, test_pred_file, stats_file  = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file)
             weights_file, K, quant, hiknot = check_parameters_dimlp_layer(weights_file, K, quant, hiknot)
 
             if output_roc is None:
@@ -199,11 +204,16 @@ def svmTrn(*args, **kwargs):
             elif not check_bool(return_roc):
                 raise ValueError('Error, parameter return_roc is not boolean')
 
+            if with_decision_threshold is None:
+                with_decision_threshold = False
+            elif not check_bool(with_decision_threshold):
+                raise ValueError('Error, parameter with_decision_threshold is not boolean')
+
             if (save_folder is not None):
                 train_data_file = save_folder + "/" + train_data_file
-                train_class_file = save_folder + "/" + train_class_file
+                train_class_file = save_folder + "/" + train_class_file_init
                 test_data_file = save_folder + "/" + test_data_file
-                test_class_file = save_folder + "/" + test_class_file
+                test_class_file = save_folder + "/" + test_class_file_init
                 train_pred_file = save_folder + "/" + train_pred_file
                 test_pred_file = save_folder + "/" + test_pred_file
                 weights_file = save_folder + "/" + weights_file
@@ -259,18 +269,9 @@ def svmTrn(*args, **kwargs):
             print("Weights : ", model.class_weight_)
             if with_roc:
                 test_class_roc = [1 if cl == positive_index else 0 for cl in test_class]
-
-                #viz = RocCurveDisplay.from_estimator(model, test_data_h1, test_class_roc, pos_label=1).plot(color="darkorange", plot_chance_level=True)
-                #viz.figure_.savefig(output_roc)
-                #plt.close(viz.figure_)
-                fpr, tpr, _ = roc_curve(test_class_roc, model.predict_proba(test_data_h1)[:, positive_index])
-                auc_score = auc(fpr, tpr)
-                viz = RocCurveDisplay(fpr=fpr,
-                                    tpr=tpr,
-                                    roc_auc=auc_score).plot(color="darkorange", plot_chance_level=True)
-
-                viz.figure_.savefig(output_roc)
-                plt.close(viz.figure_)
+                test_pred_proba = model.predict_proba(test_data_h1)
+                test_pred_roc = test_pred_proba[:, positive_index]
+                fpr, tpr, auc_score = compute_roc("svm", output_roc, test_class_roc, test_pred_roc)
 
                 # Save AUC in stats file
                 with open(stats_file, 'a') as file:
@@ -281,6 +282,13 @@ def svmTrn(*args, **kwargs):
             full_time = "{:.6f}".format(full_time).rstrip("0").rstrip(".")
 
             print(f"\nFull execution time = {full_time} sec")
+
+
+            if with_roc and with_decision_threshold:
+                train_pred_proba =  model.predict_proba(train_data_h1)
+                from trainings.decisionThreshold import decisionThreshold
+                decisionThreshold(with_roc_computation = False, test_class = test_class_file_init, test_pred = test_pred_proba.tolist(), train_pred = train_pred_proba.tolist(),
+                                  train_class_threshold = train_class_threshold, test_class_threshold = test_class_threshold, positive_index=positive_index, fpr=fpr.tolist(), tpr=tpr.tolist(), auc_score=auc_score, save_folder = save_folder)
 
 
             # Redirect output to terminal
