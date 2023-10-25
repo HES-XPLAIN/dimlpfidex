@@ -162,6 +162,32 @@ def convKeras(*args, **kwargs):
 
             print("Loading data...")
 
+            with_normalization = True
+            mu = None
+            sigma = None
+
+            # Get data
+            x_train_full_temp = get_data(train_data_file)
+            x_train_full = np.array(x_train_full_temp)
+            del x_train_full_temp
+            y_train_full = get_data(train_class_file)
+            y_train_full = np.array([cl.index(max(cl)) for cl in y_train_full])
+            x_test = np.array(get_data(test_data_file))
+            y_test = get_data(test_class_file)
+            y_test = np.array([cl.index(max(cl)) for cl in y_test])
+            if valid_ratio is None:
+                x_train = x_train_full
+                y_train = y_train_full
+                x_val = np.array(get_data(valid_data_file))
+                y_val = get_data(valid_class_file)
+                y_val = np.array([cl.index(max(cl)) for cl in y_val])
+            else:
+                cut_off = int(len(x_train_full)*(1-valid_ratio))
+                x_train = x_train_full[:cut_off]
+                x_val   = x_train_full[cut_off:]
+                y_train = y_train_full[:cut_off]
+                y_val   = y_train_full[cut_off:]
+
 
             if dataset == "mnist":
                 #(x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -191,35 +217,21 @@ def convKeras(*args, **kwargs):
                 nb_classes = 10
                 size1d = 32
                 nb_channels = 3
+                with_normalization = False
+                nb_var = len(x_train[0])
+                mu = np.full(nb_var, 127.5)
+                sigma = np.full(nb_var, 25.5)
 
-            # Get data
-            print("1")
-            x_train_full_temp = get_data(train_data_file)
-            print("2")
-            x_train_full = np.array(x_train_full_temp)
-            del x_train_full_temp
-            print("3")
-            y_train_full = get_data(train_class_file)
-            y_train_full = np.array([cl.index(max(cl)) for cl in y_train_full])
-            x_test = np.array(get_data(test_data_file))
-            y_test = get_data(test_class_file)
-            y_test = np.array([cl.index(max(cl)) for cl in y_test])
-            if valid_ratio is None:
-                x_train = x_train_full
-                y_train = y_train_full
-                x_val = np.array(get_data(valid_data_file))
-                y_val = get_data(valid_class_file)
-                y_val = np.array([cl.index(max(cl)) for cl in y_val])
-            else:
-                cut_off = int(len(x_train_full)*(1-valid_ratio))
-                x_train = x_train_full[:cut_off]
-                x_val   = x_train_full[cut_off:]
-                y_train = y_train_full[:cut_off]
-                y_val   = y_train_full[cut_off:]
+
             print("Data loaded")
-            x_train = (x_train.astype('float32') / 255) * 10 - 5
-            x_test = (x_test.astype('float32') / 255) * 10 - 5
-            x_val = (x_val.astype('float32') / 255) * 10 - 5
+
+
+
+
+            if with_normalization:
+                x_train = (x_train.astype('float32') / 255) * 10 - 5
+                x_test = (x_test.astype('float32') / 255) * 10 - 5
+                x_val = (x_val.astype('float32') / 255) * 10 - 5
 
             x_train_h1, mu, sigma = compute_first_hidden_layer("train", x_train, K, quant, hiknot, weights_file)
             x_test_h1 = compute_first_hidden_layer("test", x_test, K, quant, hiknot, mu=mu, sigma=sigma)

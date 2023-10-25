@@ -75,9 +75,12 @@ def output_data(data, data_file):
 def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_file=None, mu=None, sigma=None):
     input_data = np.array(input_data)
     if step == "train": # Train datas
-        mu = np.mean(input_data, axis=0) # mean over variables
-        sigma = np.std(input_data, axis=0)
-        sigma[sigma == 0] = 0.001
+        if mu is None:
+            mu = np.mean(input_data, axis=0) # mean over variables
+        if sigma is None:
+            sigma = np.std(input_data, axis=0)
+            sigma[sigma == 0] = 0.001
+
         weights = k/sigma
         biais = -k*mu/sigma
 
