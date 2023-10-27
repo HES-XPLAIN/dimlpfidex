@@ -24,6 +24,8 @@ void showRulesParams() {
   std::cout << "-h <hyperplan dropout parameter>\n";
   std::cout << "-Q <number of stairs in staircase activation function (50 by default)>\n";
   std::cout << "-I <high side of the interval (5 by default)>\n";
+  std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>\n";
+  std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>\n";
   std::cout << "-z <seed (0=ranodom)>";
 
   std::cout << "\n-------------------------------------------------\n\n";
@@ -92,6 +94,11 @@ int fidexGloRules(const string &command) {
     double dropoutHypParam = 0.5;
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
     double dropoutDimParam = 0.5;
+
+    bool hasDecisionThreshold = false;
+    double decisionThreshold = -1;
+    bool hasIndexPositiveClass = false;
+    int indexPositiveClass = -1;
 
     int nbRules; // Number of rules created
 
@@ -228,6 +235,24 @@ int fidexGloRules(const string &command) {
           }
           break;
 
+        case 't':
+          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+            hasDecisionThreshold = true;
+            decisionThreshold = atof(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+          }
+          break;
+
+        case 'x':
+          if (CheckPositiveInt(arg)) {
+            hasIndexPositiveClass = true;
+            indexPositiveClass = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
+          }
+          break;
+
         case 'z':
           if (CheckPositiveInt(arg))
             seed = atoi(arg);
@@ -318,6 +343,10 @@ int fidexGloRules(const string &command) {
       attributFile = &attributFileTemp[0];
     }
 
+    if (hasDecisionThreshold && !hasIndexPositiveClass) {
+      throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t)");
+    }
+
     // ----------------------------------------------------------------------
 
     if (!trainDataFileInit) {
@@ -371,7 +400,7 @@ int fidexGloRules(const string &command) {
 
     std::cout << "Import files..." << endl;
 
-    std::unique_ptr<DataSetFid> trainDatas(new DataSetFid(trainDataFile, trainDataFilePred, trainDataFileTrueClass));
+    std::unique_ptr<DataSetFid> trainDatas(new DataSetFid(trainDataFile, trainDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
 
     vector<vector<double>> *trainData = trainDatas->getDatas();
     vector<int> *trainPreds = trainDatas->getPredictions();
@@ -389,6 +418,11 @@ int fidexGloRules(const string &command) {
     const auto nbDatas = static_cast<int>((*trainData).size());
     const auto nbAttributs = static_cast<int>((*trainData)[0].size());
     const auto nbClass = trainDatas->getNbClasses();
+
+    if (indexPositiveClass >= nbClass) {
+      throw CommandArgumentException("Error : parameter positive_index(-x) has to be a positive integer smaller than " + to_string(nbClass));
+    }
+
     if ((*trainPreds).size() != nbDatas || (*trainTrueClass).size() != nbDatas) {
       throw FileFormatError("All the train files need to have the same amount of datas");
     }

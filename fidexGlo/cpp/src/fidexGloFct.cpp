@@ -17,6 +17,8 @@ void showParams() {
   std::cout << "-p <test prediction file>, -S needs to have only test datas\n";
   std::cout << "-O <Rule output file>\n";
   std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
+  std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>\n";
+  std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>\n";
 
   std::cout << "\n-------------------------------------------------\n\n";
 }
@@ -60,6 +62,11 @@ int fidexGlo(const string &command) {
     string attributFileTemp; // attribut file
     bool attributFileInit = false;
 
+    bool hasDecisionThreshold = false;
+    double decisionThreshold = -1;
+    bool hasIndexPositiveClass = false;
+    int indexPositiveClass = -1;
+
     // Import parameters
 
     if (nbParam <= 1) {
@@ -78,6 +85,7 @@ int fidexGlo(const string &command) {
 
         char option = commandList[p - 1][1];
         const char *arg = &(commandList[p])[0];
+        const char *lastArg = &(commandList[p - 1])[0];
 
         switch (option) { // Get letter after the -
         case 'S':
@@ -113,6 +121,24 @@ int fidexGlo(const string &command) {
         case 'F':
           rootFolderTemp = arg;
           rootFolderInit = true;
+          break;
+
+        case 't':
+          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+            hasDecisionThreshold = true;
+            decisionThreshold = atof(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+          }
+          break;
+
+        case 'x':
+          if (CheckPositiveInt(arg)) {
+            hasIndexPositiveClass = true;
+            indexPositiveClass = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
+          }
           break;
 
         default: // If we put another -X option
@@ -170,6 +196,10 @@ int fidexGlo(const string &command) {
     if (attributFileInit) {
       attributFileTemp = root + attributFileTemp;
       attributFile = &attributFileTemp[0];
+    }
+
+    if (hasDecisionThreshold && !hasIndexPositiveClass) {
+      throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t)");
     }
 
     // ----------------------------------------------------------------------
@@ -247,7 +277,16 @@ int fidexGlo(const string &command) {
             }
           }
           testSamplesOutputValuesPredictions.push_back(testSampleOutputValuesPredictions);
-          testSamplePred = static_cast<int>(std::max_element(testSampleOutputValuesPredictions.begin(), testSampleOutputValuesPredictions.end()) - testSampleOutputValuesPredictions.begin());
+
+          if (indexPositiveClass >= static_cast<int>(testSampleOutputValuesPredictions.size())) {
+            throw CommandArgumentException("Error : parameter positive_index(-x) has to be a positive integer smaller than " + to_string(testSampleOutputValuesPredictions.size()));
+          }
+
+          if (hasDecisionThreshold && testSampleOutputValuesPredictions[indexPositiveClass] >= decisionThreshold) {
+            testSamplePred = indexPositiveClass;
+          } else {
+            testSamplePred = static_cast<int>(std::max_element(testSampleOutputValuesPredictions.begin(), testSampleOutputValuesPredictions.end()) - testSampleOutputValuesPredictions.begin());
+          }
           testSamplesPreds.push_back(testSamplePred);
 
         } else {
@@ -269,7 +308,7 @@ int fidexGlo(const string &command) {
       }
       testData.close(); // close data file
     } else {            // We have a different file for test predictions
-      std::unique_ptr<DataSetFid> testDatas(new DataSetFid(testSamplesDataFile, testSamplesPredFile));
+      std::unique_ptr<DataSetFid> testDatas(new DataSetFid(testSamplesDataFile, testSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
       testSamplesValues = (*testDatas->getDatas());
       testSamplesPreds = (*testDatas->getPredictions());
       if (testDatas->hasConfidence()) {
@@ -286,6 +325,10 @@ int fidexGlo(const string &command) {
     size_t nbSamples = testSamplesValues.size();
     size_t nbTestAttributs = testSamplesValues[0].size();
     size_t nbClass = testSamplesOutputValuesPredictions[0].size();
+
+    if (indexPositiveClass >= static_cast<int>(nbClass)) {
+      throw CommandArgumentException("Error : parameter positive_index(-x) has to be a positive integer smaller than " + to_string(nbClass));
+    }
 
     for (int spl = 0; spl < nbSamples; spl++) {
       if (testSamplesValues[spl].size() != nbTestAttributs) {
@@ -348,7 +391,7 @@ int fidexGlo(const string &command) {
       vector<int> notcorrectRules;
       bool notShowUncorrectRules = false;
       if (activatedRules.empty()) { // If there is no activated rule
-        cout << "\nThere is no class activated" << endl;
+        cout << "\nThere is no rule activated" << endl;
         lines.emplace_back("We couldn't find any global explanation for this sample."); // There is no explanation, we choose the model decision
         lines.emplace_back("We choose the model prediction.");
         lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));

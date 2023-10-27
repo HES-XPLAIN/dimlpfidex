@@ -15,8 +15,9 @@ void showStatsParams() {
   std::cout << "-A <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it\n";
   std::cout << "-O <stats output file>\n";
   std::cout << "-F <global rules output file with stats on test set> If you want to compute statistics of global rules on tests set\n";
-  std::cout << "-r <file where you redirect console result>\n";                                                                                // If we want to redirect console result to file
-  std::cout << "-p <index of positive class sample to compute true/false positive/negative rates (None by default, put 0 for first class)>\n"; // If we want to compute TP, FP, TN, FN
+  std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
+  std::cout << "-t <decision threshold for predictions, use if it was used in FidexGlo, need to specify the index of positive class if you want to use it (None by default)>\n";
+  std::cout << "-x <index of positive class sample to compute true/false positive/negative rates (None by default, put 0 for first class)>\n"; // If we want to compute TP, FP, TN, FN
 
   std::cout << "\n-------------------------------------------------\n\n";
 }
@@ -89,6 +90,9 @@ int fidexGloStats(const string &command) {
     bool globalRulesStatsFileInit = false;
     string globalRulesStatsFileTemp;
 
+    bool hasDecisionThreshold = false;
+    double decisionThreshold = -1;
+    bool hasIndexPositiveClass = false;
     int indexPositiveClass = -1;
 
     // Import parameters
@@ -156,11 +160,22 @@ int fidexGloStats(const string &command) {
           rootFolderInit = true;
           break;
 
-        case 'p':
-          if (CheckPositiveInt(arg))
+        case 't':
+          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+            hasDecisionThreshold = true;
+            decisionThreshold = atof(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+          }
+          break;
+
+        case 'x':
+          if (CheckPositiveInt(arg)) {
+            hasIndexPositiveClass = true;
             indexPositiveClass = atoi(arg);
-          else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
+          }
           break;
 
         default: // If we put another -X option
@@ -232,6 +247,10 @@ int fidexGloStats(const string &command) {
       attributFile = &attributFileTemp[0];
     }
 
+    if (hasDecisionThreshold && !hasIndexPositiveClass) {
+      throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t)");
+    }
+
     // ----------------------------------------------------------------------
 
     if (!testDataFileInit) {
@@ -262,7 +281,7 @@ int fidexGloStats(const string &command) {
 
     // Get test data
 
-    std::unique_ptr<DataSetFid> testDatas(new DataSetFid(testDataFile, testDataFilePred, testDataFileTrueClass));
+    std::unique_ptr<DataSetFid> testDatas(new DataSetFid(testDataFile, testDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, testDataFileTrueClass));
 
     vector<vector<double>> *testData = testDatas->getDatas();
     vector<int> *testPreds = testDatas->getPredictions();
@@ -281,7 +300,7 @@ int fidexGloStats(const string &command) {
     if ((*testPreds).size() != nbTestData || (*testTrueClasses).size() != nbTestData) {
       throw FileFormatError("All the test files need to have the same amount of datas");
     }
-    if (indexPositiveClass != -1 && indexPositiveClass >= nbClass) {
+    if (hasIndexPositiveClass && indexPositiveClass >= nbClass) {
       throw CommandArgumentException("Error : The index of positive class cannot be greater or equal to the number of classes (" + to_string(nbClass) + ")");
     }
     auto nbTestAttributs = static_cast<int>((*testData)[0].size());
@@ -350,7 +369,7 @@ int fidexGloStats(const string &command) {
       testValues = (*testData)[t];
       testPred = (*testPreds)[t];
       testTrueClass = (*testTrueClasses)[t];
-      if (indexPositiveClass != -1) {
+      if (hasIndexPositiveClass) {
         if (testTrueClass == indexPositiveClass) {
           nbPositive += 1;
         } else {
@@ -361,7 +380,7 @@ int fidexGloStats(const string &command) {
       if (testPred == testTrueClass) {
         modelAccuracy++;
       }
-      if (indexPositiveClass != -1) {
+      if (hasIndexPositiveClass) {
         if (testPred == indexPositiveClass) { // Positive prediction
           if (testPred == testTrueClass) {
             nbTruePositive += 1;
@@ -452,7 +471,7 @@ int fidexGloStats(const string &command) {
     lines.push_back("The model test accuracy when rules and model agree is : " + std::to_string(accuracyWhenRulesAndModelAgree));
     lines.push_back("The model test accuracy when activated rules and model agree is : " + std::to_string(accuracyWhenActivatedRulesAndModelAgree));
 
-    if (indexPositiveClass != -1) {
+    if (hasIndexPositiveClass) {
       if (hasClassNames) {
         lines.push_back("\nWith positive class " + classNames[indexPositiveClass] + " :");
       } else {

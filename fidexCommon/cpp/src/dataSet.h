@@ -24,7 +24,7 @@ class DataSetFid {
 
 public:
   DataSetFid();
-  DataSetFid(const char *dataFile, const char *predFile, const char *trueClassFile = nullptr);
+  DataSetFid(const char *dataFile, const char *predFile, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *trueClassFile = nullptr);
   explicit DataSetFid(const char *weightFile);
 
   std::vector<std::vector<double>> *getDatas();

@@ -167,7 +167,7 @@ def decisionThreshold(*args, **kwargs):
 
             # Get threshold
             threshold = 0.3
-
+            """
             # Modification of train_class and test_class with the new Threshold
             new_train_class = []
             new_test_class = []
@@ -187,8 +187,8 @@ def decisionThreshold(*args, **kwargs):
             #Output new class files
             output_data(new_train_class, train_class_threshold_file)
             output_data(new_test_class, test_class_threshold_file)
-
-            return 0
+            """
+            return threshold
 
 
 
