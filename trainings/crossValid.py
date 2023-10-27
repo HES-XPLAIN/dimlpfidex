@@ -1552,7 +1552,7 @@ def crossValid(*args, **kwargs):
                         fidexglo_stats_command += " -O " + folder_path_from_root + separator + "fidexGloStats.txt"
                         fidexglo_stats_command += " -r " + folder_path_from_root + separator + "fidexGloStatsResult.txt"
                         if with_roc:
-                            fidexglo_stats_command += " -p " + str(positive_class_index)
+                            fidexglo_stats_command += " -x " + str(positive_class_index)
 
                         print("Enter in fidexGloStats function")
                         res_fid_glo_stats = fidexGlo.fidexGloStats(fidexglo_stats_command)
