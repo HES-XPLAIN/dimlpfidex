@@ -1,7 +1,7 @@
 #include "dataSet.h"
 using namespace std;
 
-DataSetFid::DataSetFid(const char *dataFile, const char *predFile, const char *trueClassFile) : hasDatas(true) {
+DataSetFid::DataSetFid(const char *dataFile, const char *predFile, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *trueClassFile) : hasDatas(true) {
   int i; // iterator
   string line;
 
@@ -82,7 +82,16 @@ DataSetFid::DataSetFid(const char *dataFile, const char *predFile, const char *t
         values.push_back(value);
       }
       outputValuesPredictions.push_back(values);
-      predictions.push_back(static_cast<int>(std::max_element(values.begin(), values.end()) - values.begin()));
+
+      if (indexPositiveClass >= static_cast<int>(values.size())) {
+        throw CommandArgumentException("Error : parameter positive_index(-x) has to be a positive integer smaller than " + to_string(values.size()));
+      }
+
+      if (hasDecisionThreshold && values[indexPositiveClass] >= decisionThreshold) {
+        predictions.push_back(indexPositiveClass);
+      } else {
+        predictions.push_back(static_cast<int>(std::max_element(values.begin(), values.end()) - values.begin()));
+      }
     }
   }
 
