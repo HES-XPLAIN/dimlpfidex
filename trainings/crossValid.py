@@ -1551,6 +1551,7 @@ def crossValid(*args, **kwargs):
                         fidexglo_stats_command += " -R " + folder_path_from_root + separator + "fidexGloRules.txt"
                         fidexglo_stats_command += " -O " + folder_path_from_root + separator + "fidexGloStats.txt"
                         fidexglo_stats_command += " -r " + folder_path_from_root + separator + "fidexGloStatsResult.txt"
+                        fidexglo_stats_command += " -F " + folder_path_from_root + separator + "fidexGloRules.txt"
                         if with_roc:
                             fidexglo_stats_command += " -x " + str(positive_class_index)
 
