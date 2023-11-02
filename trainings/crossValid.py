@@ -151,6 +151,7 @@ def crossValid(*args, **kwargs):
             print("dropout_hyp : hyperplan dropout parameter for fidex and fidexGlo")
             print("seed : 0 = random (default)")
             print("positive_class_index <index of positive class sample to compute true/false positive/negative rates and ROC curve (None by default, put 0 for first class)")
+            print("decision_threshold <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>")
 
             print("----------------------------")
             print("Optional parameters if not training with decision trees :")
@@ -302,6 +303,7 @@ def crossValid(*args, **kwargs):
             dropout_dim = kwargs.get('dropout_dim')
             dropout_hyp = kwargs.get('dropout_hyp')
             positive_class_index = kwargs.get('positive_class_index')
+            decision_threshold = kwargs.get('decision_threshold')
             seed = kwargs.get('seed')
 
             hiknot = kwargs.get('hiknot')
@@ -395,7 +397,7 @@ def crossValid(*args, **kwargs):
             obligatory_dimlp_args = ['nb_in', 'nb_out', 'dimlpRul']
 
             optional_args = ['save_folder', 'crossVal_folder', 'K', 'N', 'fidexGlo_heuristic', 'crossVal_stats', 'attr_file',
-                        'max_iter', 'min_cov', 'dropout_dim', 'dropout_hyp', 'seed', 'positive_class_index']
+                        'max_iter', 'min_cov', 'dropout_dim', 'dropout_hyp', 'seed', 'positive_class_index', 'decision_threshold']
 
             optional_non_dt_args = ['hiknot', 'nb_stairs']
 
@@ -1088,6 +1090,8 @@ def crossValid(*args, **kwargs):
                         outputStatsFile.write(f"The dimension dropout parameter for fidex and fidexGlo is {dropout_dim}\n")
                     else:
                         outputStatsFile.write("There is no dimension dropout\n")
+                    if decision_threshold is not None :
+                        outputStatsFile.write(f"We use a decision threshold of {decision_threshold} with positive class of index {positive_class_index}\n")
 
                     outputStatsFile.write("---------------------------------------------------------\n\n")
 
@@ -1466,6 +1470,10 @@ def crossValid(*args, **kwargs):
                         fidex_command += " -O " + folder_path_from_root + separator + "fidexRule.txt"
                         fidex_command += " -s " + folder_path_from_root + separator + "fidexStats.txt"
                         fidex_command += " -r " + folder_path_from_root + separator + "fidexResult.txt"
+                        if with_roc:
+                            fidex_command += " -x " + str(positive_class_index)
+                        if decision_threshold is not None:
+                            fidex_command += " -t " + str(decision_threshold)
 
                         print("Enter in fidex function")
                         res_fid = fidex.fidex(fidex_command)
@@ -1533,6 +1541,10 @@ def crossValid(*args, **kwargs):
                         fidexglo_rules_command += " -O " + folder_path_from_root + separator + "fidexGloRules.txt"
                         fidexglo_rules_command += " -r " + folder_path_from_root + separator + "fidexGloResult.txt"
                         fidexglo_rules_command += " -M " + str(fidexglo_heuristic)
+                        if with_roc:
+                            fidexglo_rules_command += " -x " + str(positive_class_index)
+                        if decision_threshold is not None:
+                            fidexglo_rules_command += " -t " + str(decision_threshold)
 
                         print("Enter in fidexGloRules function")
                         res_fid_glo_rules = fidexGlo.fidexGloRules(fidexglo_rules_command)
@@ -1552,6 +1564,8 @@ def crossValid(*args, **kwargs):
                         fidexglo_stats_command += " -O " + folder_path_from_root + separator + "fidexGloStats.txt"
                         fidexglo_stats_command += " -r " + folder_path_from_root + separator + "fidexGloStatsResult.txt"
                         fidexglo_stats_command += " -F " + folder_path_from_root + separator + "fidexGloRules.txt"
+                        if decision_threshold is not None:
+                            fidexglo_stats_command += " -t " + str(decision_threshold)
                         if with_roc:
                             fidexglo_stats_command += " -x " + str(positive_class_index)
 
