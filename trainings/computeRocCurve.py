@@ -104,7 +104,7 @@ def computeRocCurve(*args, **kwargs):
                 if last_line.startswith("AUC score on testing set"):
                     lines[-1] = f"AUC score on testing set : {auc_score}" # Replace the line
                 else:
-                    lines.append(f"AUC score on testing set : {auc_score}")# Add new line
+                    lines.append(f"\nAUC score on testing set : {auc_score}")# Add new line
 
                 with open(stats_file, "w") as file:
                     file.writelines(lines)
