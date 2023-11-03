@@ -51,7 +51,7 @@ void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
     line += " Confidence : " + std::to_string(ruleConfidence);
   }
 
-  std::cout << "Extracted rule :" << endl;
+  std::cout << "Extracted rule :" << std::endl;
   std::cout << line << endl
             << endl;
   lines.push_back(line);

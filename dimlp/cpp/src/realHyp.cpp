@@ -52,7 +52,8 @@ void RealHyp::SetConfirmedVirt(DataSet &data)
   int indVirt;
   const float *pat;
 
-  cout << "\n\n*** EXCLUDING UNRELEVANT HYPER-PLANES ...\n\n";
+  cout << "\n\n*** EXCLUDING UNRELEVANT HYPER-PLANES ...\n"
+       << std::endl;
 
   for (v = 0; v < NbIn; v++) {
     ConfBefFirstHyp[v] = 0;
@@ -74,7 +75,8 @@ void RealHyp::SetConfirmedVirt(DataSet &data)
       else if (indVirt == -1)
         ConfBefFirstHyp[v] = 1;
       else
-        cout << "*** ELSE WARNING !\n\n";
+        cout << "*** ELSE WARNING !\n"
+             << std::endl;
     }
   }
 
@@ -88,7 +90,8 @@ void RealHyp::SetConfirmedVirt(DataSet &data)
         count++;
   }
 
-  cout << "*** RELEVANT VIRTUAL HYPER-PLANES = " << count << "\n\n";
+  cout << "*** RELEVANT VIRTUAL HYPER-PLANES = " << count << "\n"
+       << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -108,7 +111,8 @@ void RealHyp::SetConfirmedVirt2()
   int nbAnt;
   float val;
 
-  cout << "\n\n*** EXCLUDING UNRELEVANT HYPER-PLANES FROM RULES ...\n\n";
+  cout << "\n\n*** EXCLUDING UNRELEVANT HYPER-PLANES FROM RULES ...\n"
+       << std::endl;
 
   for (v = 0; v < NbIn; v++) {
     hyp = ConfirmedVirt[v].data();
@@ -133,7 +137,7 @@ void RealHyp::SetConfirmedVirt2()
         indVirt = Virt->GetInd(var, val);
 
         if (indVirt == -1) {
-          cout << "Warning ... " << var << " " << val << "\n";
+          cout << "Warning ... " << var << " " << val << "" << std::endl;
         }
 
         else
@@ -152,7 +156,8 @@ void RealHyp::SetConfirmedVirt2()
         count++;
   }
 
-  cout << "*** RELEVANT VIRTUAL HYPER-PLANES = " << count << "\n\n";
+  cout << "*** RELEVANT VIRTUAL HYPER-PLANES = " << count << "\n"
+       << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -356,7 +361,8 @@ void RealHyp::SetRealHyp(DataSet &data)
     OneExRealHyp(data, p);
   }
 
-  cout << p << "\n\n\n";
+  cout << p << "\n\n"
+       << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -683,7 +689,8 @@ void RealHyp::RuleExtraction(
   DeepSearch(data, std::make_shared<Rule>(empty), listAll);
   listAll->Del();
   if (Aborted) {
-    cout << "*** TREE ABORTED !\n\n";
+    cout << "*** TREE ABORTED !\n"
+         << std::endl;
     cout << "*** TRYING AN ALTERNATIVE ALGORITHM \n"
          << endl;
 
@@ -696,18 +703,20 @@ void RealHyp::RuleExtraction(
   SavedRules->Clean();
 
   if (SavedRules->CountAnt() == 0) {
-    cout << "*** NO RULES !\n\n";
-    cout << "--- Number of rules = 0\n";
-    cout << "--- Number of antecedents = 0\n";
-    cout << "--- Number of antecedents per rule = 0\n";
-    cout << "--- Number of examples per rule = 0\n";
+    cout << "*** NO RULES !\n"
+         << std::endl;
+    cout << "--- Number of rules = 0" << std::endl;
+    cout << "--- Number of antecedents = 0" << std::endl;
+    cout << "--- Number of antecedents per rule = 0" << std::endl;
+    cout << "--- Number of examples per rule = 0" << std::endl;
 
-    cout << "*** NO RULES !\n\n";
+    cout << "*** NO RULES !\n"
+         << std::endl;
 
-    cout << "--- Number of rules = 0\n";
-    cout << "--- Number of antecedents = 0\n";
-    cout << "--- Number of antecedents per rule = 0\n";
-    cout << "--- Number of examples per rule = 0" << endl;
+    cout << "--- Number of rules = 0" << std::endl;
+    cout << "--- Number of antecedents = 0" << std::endl;
+    cout << "--- Number of antecedents per rule = 0" << std::endl;
+    cout << "--- Number of examples per rule = 0" << std::endl;
 
     SavedRules->Del();
 
@@ -745,7 +754,8 @@ void RealHyp::RuleExtraction(
   listAll->Del();
 
   if (Aborted) {
-    cout << "*** TREE ABORTED !\n\n";
+    cout << "*** TREE ABORTED !\n"
+         << std::endl;
     Aborted = 0;
     goto A;
   }
@@ -763,7 +773,7 @@ void RealHyp::RuleExtraction(
   nbAnt2 = SavedRules->CountAnt();
   if (nbAnt2 < nbAnt1) {
     cout << "\n\n*** RULE SET IMPROVED BY " << nbAnt1 - nbAnt2;
-    cout << " ANTECEDENTS" << endl;
+    cout << " ANTECEDENTS" << std::endl;
 
     clean.Del();
     CleanRuleStruct clean2(data, train, trainClass,
@@ -783,11 +793,12 @@ void RealHyp::RuleExtraction(
   }
 
   else {
-    cout << "\n\n*** RULE SET DOES NOT IMPROVE (" << nbAnt1 - nbAnt2 << ")\n";
+    cout << "\n\n*** RULE SET DOES NOT IMPROVE (" << nbAnt1 - nbAnt2 << ")" << std::endl;
   A:
-    cout << "\n    (WRITING PREVIOUS ONE)\n";
+    cout << "\n    (WRITING PREVIOUS ONE)" << std::endl;
 
-    cout << "\n\n*** WRITING IF-THEN RULES ...\n\n";
+    cout << "\n\n*** WRITING IF-THEN RULES ...\n"
+         << std::endl;
 
     if (attr.IsFileAttr()) {
       clean.SetAttr(attr.GetListAttr());

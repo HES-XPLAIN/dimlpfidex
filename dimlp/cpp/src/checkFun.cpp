@@ -14,7 +14,7 @@ int CheckInt(const char *str)
 
     if ((ch > '9') || (ch < '0')) {
       cout << "Problem with integer argument (" << str;
-      cout << ") or with previous argument.\n";
+      cout << ") or with previous argument." << std::endl;
 
       return 0;
     }
@@ -37,7 +37,7 @@ int CheckFloat(const char *str)
 
     if ((ch > '9' || ch < '0') && (ch != '.' && ch != '-')) {
       cout << "Problem with float argument (" << str;
-      cout << ") or with previous argument.\n";
+      cout << ") or with previous argument." << std::endl;
       return 0;
     }
   }
@@ -52,7 +52,7 @@ int CheckFloat(const char *str)
 
   if ((countDot > 1) || (countMinus > 1)) {
     cout << "Problem with float argument (" << str;
-    cout << ") or with previous argument.\n";
+    cout << ") or with previous argument." << std::endl;
     return 0;
   }
 

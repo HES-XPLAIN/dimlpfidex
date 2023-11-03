@@ -20,7 +20,8 @@ int DataSet::FirstLecture(const char nameFile[]) const
   filebuf buf;
   int count;
   float x;
-  cout << "\n----------------------------------------------------------\n\n";
+  cout << "\n----------------------------------------------------------\n"
+       << std::endl;
   if (buf.open(nameFile, ios_base::in) == nullptr) {
     string errorMsg = "Cannot open input file";
     WriteError(errorMsg, nameFile);
@@ -29,7 +30,7 @@ int DataSet::FirstLecture(const char nameFile[]) const
   istream inFile(&buf);
 
   cout << nameFile << ": "
-       << "Reading ..." << endl;
+       << "Reading ..." << std::endl;
 
   count = 0;
   while (inFile >> x) {
@@ -61,7 +62,7 @@ void DataSet::SecondLecture(const char nameFile[]) {
   std::vector<float> oneExample;
 
   cout << nameFile << ": "
-       << "Creating dataset structures ..." << endl;
+       << "Creating dataset structures ..." << std::endl;
 
   buf.open(nameFile, ios_base::in);
   istream inFile(&buf);
@@ -76,7 +77,7 @@ void DataSet::SecondLecture(const char nameFile[]) {
   }
 
   cout << nameFile << ": "
-       << "Dataset structures created." << endl;
+       << "Dataset structures created." << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////

@@ -6,27 +6,31 @@ using namespace std;
 void GiveAllParamDimlpCls()
 
 {
-  cout << "\n-------------------------------------------------\n\n";
+  cout << "\n-------------------------------------------------\n"
+       << std::endl;
 
   cout << "DimlpCls -T <file of examples(path with respect to specified root folder)> ";
   cout << "-W <file of weights> ";
   cout << "-I <number of input neurons> -O <number of output neurons>";
-  cout << " <Options>\n\n";
+  cout << " <Options>\n"
+       << std::endl;
 
-  cout << "Options are: \n\n";
-  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
-  cout << "-2 <file of classes>\n";
-  cout << "-p <output prediction file>\n";                 // If we want to specify output prediction file, not to be dimlp.out
-  cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
-  cout << "-o <output file with test accuracy>\n";
-  cout << "-h <output file with first hidden layer values>\n"; // Not to be dimlp.hid
+  cout << "Options are: \n"
+       << std::endl;
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  cout << "-2 <file of classes>" << std::endl;
+  cout << "-p <output prediction file>" << std::endl;                 // If we want to specify output prediction file, not to be dimlp.out
+  cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  cout << "-o <output file with test accuracy>" << std::endl;
+  cout << "-h <output file with first hidden layer values>" << std::endl; // Not to be dimlp.hid
   cout << "-H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
-  cout << "number of input neurons)\n";
-  cout << "-Hk <number of neurons in the kth hidden layer>\n";
-  cout << "-q <number of stairs in staircase activation function>\n";
+  cout << "number of input neurons)" << std::endl;
+  cout << "-Hk <number of neurons in the kth hidden layer>" << std::endl;
+  cout << "-q <number of stairs in staircase activation function>" << std::endl;
 
-  cout << "\n-------------------------------------------------\n\n";
+  cout << "\n-------------------------------------------------\n"
+       << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
@@ -51,7 +55,7 @@ static void SaveOutputs(
 
   cout << "\n\n"
        << outfile << ": "
-       << "Writing ...\n";
+       << "Writing ..." << std::endl;
 
   ostream outFile(&buf);
 
@@ -62,11 +66,12 @@ static void SaveOutputs(
       outFile << out[o] << " ";
     }
 
-    outFile << "\n";
+    outFile << "" << std::endl;
   }
 
   cout << outfile << ": "
-       << "Written.\n\n";
+       << "Written.\n"
+       << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
@@ -91,7 +96,7 @@ void SaveFirstHid(
 
   cout << "\n\n"
        << firsthidFile << ": "
-       << "Writing ...\n";
+       << "Writing ..." << std::endl;
 
   ostream outFile(&buf);
 
@@ -102,11 +107,12 @@ void SaveFirstHid(
       outFile << hid[h] << " ";
     }
 
-    outFile << "\n";
+    outFile << "" << std::endl;
   }
 
   cout << firsthidFile << ": "
-       << "Written.\n\n";
+       << "Written.\n"
+       << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
@@ -167,7 +173,7 @@ int dimlpCls(const string &command) {
         k++;
 
         if (k >= nbParam) {
-          cout << "Missing something at the end of the command.\n";
+          cout << "Missing something at the end of the command." << std::endl;
           return -1;
         }
 
@@ -201,7 +207,7 @@ int dimlpCls(const string &command) {
               std::string str(ptrParam + 2);
               archInd.Insert(std::atoi(str.c_str()));
             } else {
-              cout << "Which hidden layer (-H) ?\n";
+              cout << "Which hidden layer (-H) ?" << std::endl;
               return -1;
             }
           } else
@@ -256,13 +262,13 @@ int dimlpCls(const string &command) {
           break;
 
         default:
-          cout << "Illegal option: " << lastArg << "\n";
+          cout << "Illegal option: " << lastArg << "" << std::endl;
           return -1;
         }
       }
 
       else {
-        cout << "Illegal option: " << &(commandList[k])[0] << "\n";
+        cout << "Illegal option: " << &(commandList[k])[0] << "" << std::endl;
         return -1;
       }
       k++;
@@ -330,17 +336,17 @@ int dimlpCls(const string &command) {
     // ----------------------------------------------------------------------
 
     if (quant <= 2) {
-      cout << "The number of quantized levels must be greater than 2.\n";
+      cout << "The number of quantized levels must be greater than 2." << std::endl;
       return -1;
     }
 
     if (nbIn == 0) {
-      cout << "The number of input neurons must be given with option -I.\n";
+      cout << "The number of input neurons must be given with option -I." << std::endl;
       return -1;
     }
 
     if (nbOut <= 1) {
-      cout << "At least two output neurons must be given with option -O.\n";
+      cout << "At least two output neurons must be given with option -O." << std::endl;
       return -1;
     }
 
@@ -361,7 +367,7 @@ int dimlpCls(const string &command) {
 
         if (arch.GetVal() % nbIn != 0) {
           cout << "The number of neurons in the first hidden layer must be";
-          cout << " a multiple of the number of input neurons.\n";
+          cout << " a multiple of the number of input neurons." << std::endl;
           return -1;
         }
 
@@ -376,7 +382,7 @@ int dimlpCls(const string &command) {
           vecNbNeurons[k] = arch.GetVal();
 
           if (vecNbNeurons[k] == 0) {
-            cout << "The number of neurons must be greater than 0.\n";
+            cout << "The number of neurons must be greater than 0." << std::endl;
             return -1;
           }
         }
@@ -395,7 +401,7 @@ int dimlpCls(const string &command) {
           vecNbNeurons[k + 1] = arch.GetVal();
 
           if (vecNbNeurons[k + 1] == 0) {
-            cout << "The number of neurons must be greater than 0.\n";
+            cout << "The number of neurons must be greater than 0." << std::endl;
             return -1;
           }
         }
@@ -405,7 +411,7 @@ int dimlpCls(const string &command) {
 
     if (testFileInit == false) {
       cout << "Give a testing file with -T selection please."
-           << "\n";
+           << "" << std::endl;
       return -1;
     }
 
@@ -436,7 +442,7 @@ int dimlpCls(const string &command) {
     }
     if (weightFileInit == false) {
       cout << "Give a file of weights with -W selection please."
-           << "\n";
+           << "" << std::endl;
       return -1;
     }
 
@@ -447,17 +453,17 @@ int dimlpCls(const string &command) {
     float err = net.Error(Test, TestClass, &acc);
 
     cout << "\n\n*** SUM SQUARED ERROR = " << err;
-    cout << "\n\n*** ACCURACY = " << acc << "\n";
+    cout << "\n\n*** ACCURACY = " << acc << "" << std::endl;
 
     // Output accuracy stats in file
     if (accuracyFileInit != false) {
       ofstream accFile(accuracyFile);
       if (accFile.is_open()) {
-        accFile << "Sum squared error = " << err << "\n";
+        accFile << "Sum squared error = " << err << "" << std::endl;
         accFile << "Accuracy = " << acc;
         accFile.close();
       } else {
-        cout << "Error : could not open accuracy file " << accuracyFile << " not found.\n";
+        cout << "Error : could not open accuracy file " << accuracyFile << " not found." << std::endl;
         return -1;
       }
     }
@@ -465,7 +471,8 @@ int dimlpCls(const string &command) {
     SaveOutputs(Test, &net, nbOut, nbWeightLayers, predFile);
     SaveFirstHid(Test, &net, vecNbNeurons[1], predFile, hidFile);
 
-    cout << "\n-------------------------------------------------\n\n";
+    cout << "\n-------------------------------------------------\n"
+         << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
 

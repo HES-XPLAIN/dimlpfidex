@@ -219,11 +219,11 @@ void Layer::WriteWeights(ostream &outFile)
 
   for (w = 0, ptrW = BiasWeights.data(); w < NbUp; w++, ptrW++)
     outFile << *ptrW << " ";
-  outFile << "\n";
+  outFile << "" << std::endl;
 
   for (w = 0, ptrW = Weights.data(); w < NbWeights; w++, ptrW++)
     outFile << *ptrW << " ";
-  outFile << "\n";
+  outFile << "" << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////

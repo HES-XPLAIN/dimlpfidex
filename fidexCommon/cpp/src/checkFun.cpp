@@ -33,7 +33,7 @@ int CheckFloatFid(const char *str)
 
     if (((ch > '9') || (ch < '0')) && (ch != '.') && (ch != '-')) {
       std::cout << "Problem with float argument (" << str;
-      std::cout << ") or with the previous argument.\n";
+      std::cout << ") or with the previous argument." << std::endl;
       return 0;
     }
   }
@@ -48,7 +48,7 @@ int CheckFloatFid(const char *str)
 
   if ((countDot > 1) || (countMinus > 1)) {
     std::cout << "Problem with float argument (" << str;
-    std::cout << ") or with previous argument.\n";
+    std::cout << ") or with previous argument." << std::endl;
     return 0;
   }
 

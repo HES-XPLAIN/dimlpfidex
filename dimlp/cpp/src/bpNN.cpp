@@ -41,7 +41,8 @@ void BpNN::InitRandomGen(int seed) const {
 
     initRandomGen++;
 
-    cout << "\nRandom number generator initialized.\n\n";
+    cout << "\nRandom number generator initialized.\n"
+         << std::endl;
   }
 }
 
@@ -83,7 +84,8 @@ void BpNN::WriteArchParam() const
 
   for (l = 0; l < NbLayers - 1; l++)
     cout << NbNeurons[l] << "-";
-  cout << NbNeurons[l] << "\n\n";
+  cout << NbNeurons[l] << "\n"
+       << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -118,27 +120,28 @@ void BpNN::AssignParam(
 ///////////////////////////////////////////////////////////////////
 
 void BpNN::WriteParam() const {
-  cout << "Parameters:\n\n";
+  cout << "Parameters:\n"
+       << std::endl;
 
-  cout << "Eta                   = " << Eta << "\n";
-  cout << "Mu                    = " << Mu << "\n";
-  cout << "Flat                  = " << Flat << "\n";
+  cout << "Eta                   = " << Eta << "" << std::endl;
+  cout << "Mu                    = " << Mu << "" << std::endl;
+  cout << "Flat                  = " << Flat << "" << std::endl;
 
   if (ErrParam >= 0)
-    cout << "Error Threshold       = " << ErrParam << "\n";
+    cout << "Error Threshold       = " << ErrParam << "" << std::endl;
 
   if (AccuracyParam <= 1)
-    cout << "Accuracy Threshold    = " << AccuracyParam << "\n";
+    cout << "Accuracy Threshold    = " << AccuracyParam << "" << std::endl;
 
   if (DeltaErrParam != 0)
-    cout << "Delta Error Threshold = " << DeltaErrParam << "\n";
+    cout << "Delta Error Threshold = " << DeltaErrParam << "" << std::endl;
 
-  cout << "Show Error            = " << ShowErrParam << "\n";
+  cout << "Show Error            = " << ShowErrParam << "" << std::endl;
 
   if (NbEpochsParam < 1000000000)
-    cout << "Epochs                = " << NbEpochsParam << "\n";
+    cout << "Epochs                = " << NbEpochsParam << "" << std::endl;
 
-  cout << "\n";
+  cout << "" << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -157,13 +160,14 @@ void BpNN::SaveWeights() const
 
   cout << "\n\n"
        << SaveFile << ": "
-       << "Writing ...\n";
+       << "Writing ..." << std::endl;
 
   for (int n = 0; n < NbWeightLayers; n++)
     VecLayer[n]->WriteWeights(outFile);
 
   cout << SaveFile << ": "
-       << "Written.\n\n";
+       << "Written.\n"
+       << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -181,13 +185,14 @@ void BpNN::SaveWeights(const char *strSave) const
 
   cout << "\n\n"
        << strSave << ": "
-       << "Writing ...\n";
+       << "Writing ..." << std::endl;
 
   for (int n = 0; n < NbWeightLayers; n++)
     VecLayer[n]->WriteWeights(outFile);
 
   cout << strSave << ": "
-       << "Written.\n\n";
+       << "Written.\n"
+       << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -206,13 +211,14 @@ void BpNN::ReadWeights() const
 
   cout << "\n\n"
        << ReadFile << ": "
-       << "Reading ...\n";
+       << "Reading ..." << std::endl;
 
   for (int n = 0; n < NbLayers - 1; n++)
     VecLayer[n]->ReadWeights(inFile);
 
   cout << ReadFile << ": "
-       << "Read.\n\n";
+       << "Read.\n"
+       << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -637,7 +643,8 @@ void BpNN::TrainPhase(
 
     cout << "Validation set: ";
     std::ostringstream ossVal;
-    ossVal << " SSE = " << std::setprecision(12) << prevValidErr << "    ACC = " << std::setprecision(8) << accValid << "\n\n";
+    ossVal << " SSE = " << std::setprecision(12) << prevValidErr << "    ACC = " << std::setprecision(8) << accValid << "\n"
+           << std::endl;
     temp = ossVal.str();
     std::cout << temp;
 
@@ -646,19 +653,22 @@ void BpNN::TrainPhase(
 
   if (acc >= AccuracyParam) {
     cout << "\n\n*** REACHED ACCURACY THRESHOLD";
-    cout << " (" << AccuracyParam << ")\n\n";
+    cout << " (" << AccuracyParam << ")\n"
+         << std::endl;
     return;
   }
 
   if (err < ErrParam) {
     cout << "\n\n*** REACHED ERROR THRESHOLD";
-    cout << " (" << ErrParam << ")\n\n";
+    cout << " (" << ErrParam << ")\n"
+         << std::endl;
     return;
   }
 
   if (fabs(oldErr - specErr) < DeltaErrParam) {
     cout << "\n\n*** REACHED VARIATION CRITERION THRESHOLD";
-    cout << " (" << DeltaErrParam << ")\n\n";
+    cout << " (" << DeltaErrParam << ")\n"
+         << std::endl;
     return;
   }
 
@@ -681,7 +691,8 @@ void BpNN::TrainPhase(
 
         cout << "Validation set: ";
         std::ostringstream ossVal2;
-        ossVal2 << " SSE = " << std::setprecision(12) << validErr << "    ACC = " << std::setprecision(8) << accValid << "\n\n";
+        ossVal2 << " SSE = " << std::setprecision(12) << validErr << "    ACC = " << std::setprecision(8) << accValid << "\n"
+                << std::endl;
         temp = ossVal2.str();
         std::cout << temp;
 
@@ -697,19 +708,22 @@ void BpNN::TrainPhase(
 
       if (acc >= AccuracyParam) {
         cout << "\n\n*** REACHED ACCURACY THRESHOLD";
-        cout << " (" << AccuracyParam << ")\n\n";
+        cout << " (" << AccuracyParam << ")\n"
+             << std::endl;
         break;
       }
 
       if (err < ErrParam) {
         cout << "\n\n*** REACHED ERROR THRESHOLD";
-        cout << " (" << ErrParam << ")\n\n";
+        cout << " (" << ErrParam << ")\n"
+             << std::endl;
         break;
       }
 
       if (fabs(oldErr - specErr) < DeltaErrParam) {
         cout << "\n\n*** REACHED VARIATION CRITERION THRESHOLD";
-        cout << " (" << DeltaErrParam << ")\n\n";
+        cout << " (" << DeltaErrParam << ")\n"
+             << std::endl;
         break;
       }
 
@@ -720,34 +734,38 @@ void BpNN::TrainPhase(
   err = ComputeError(train, trainTar, &acc);
 
   cout << "\n\n*** SUM SQUARED ERROR ON TRAINING SET = " << err;
-  cout << "\n\n*** ACCURACY ON TRAINING SET = " << acc << "\n\n";
+  cout << "\n\n*** ACCURACY ON TRAINING SET = " << acc << "\n"
+       << std::endl;
   if (valid.GetNbEx() != 0) {
     Pop(); // Get the right weights from best validation error
     validErr = ComputeError(valid, validTar, &accValid);
 
     cout << "\n\n*** SUM SQUARED ERROR ON VALIDATION SET = " << validErr;
-    cout << "\n\n*** ACCURACY ON VALIDATION SET = " << accValid << "\n";
+    cout << "\n\n*** ACCURACY ON VALIDATION SET = " << accValid << "" << std::endl;
   }
 
   if (test.GetNbEx() != 0) {
     testErr = ComputeError(test, testTar, &accTest);
 
     cout << "\n\n*** SUM SQUARED ERROR ON TESTING SET = " << testErr;
-    cout << "\n\n*** ACCURACY ON TESTING SET = " << accTest << "\n";
+    cout << "\n\n*** ACCURACY ON TESTING SET = " << accTest << "" << std::endl;
   }
   // Output accuracy stats in file
   if (accuracyFile != nullptr) {
     ofstream accFile(accuracyFile, ios::app);
     if (accFile.is_open()) {
-      accFile << "Sum squared error on training set = " << err << "\n";
-      accFile << "Accuracy on training set = " << acc << "\n\n";
+      accFile << "Sum squared error on training set = " << err << "" << std::endl;
+      accFile << "Accuracy on training set = " << acc << "\n"
+              << std::endl;
       if (valid.GetNbEx() > 0) {
-        accFile << "Sum squared error on validation set = " << validErr << "\n";
-        accFile << "Accuracy on validation set = " << accValid << "\n\n";
+        accFile << "Sum squared error on validation set = " << validErr << "" << std::endl;
+        accFile << "Accuracy on validation set = " << accValid << "\n"
+                << std::endl;
       }
       if (test.GetNbEx() > 0) {
-        accFile << "Sum squared error on testing set = " << testErr << "\n";
-        accFile << "Accuracy on testing set = " << accTest << "\n\n";
+        accFile << "Sum squared error on testing set = " << testErr << "" << std::endl;
+        accFile << "Accuracy on testing set = " << accTest << "\n"
+                << std::endl;
       }
       accFile.close();
     } else {
@@ -794,9 +812,11 @@ BpNN::BpNN(
   WriteArchParam();
   WriteParam();
 
-  cout << printNetType << " network created.\n\n";
+  cout << printNetType << " network created.\n"
+       << std::endl;
   cout << "\n\n-----------------------------------------";
-  cout << "-------------------------------------\n\n";
+  cout << "-------------------------------------\n"
+       << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -817,9 +837,11 @@ BpNN::BpNN(
 
   WriteArchParam();
 
-  cout << printNetType << " network created.\n\n";
+  cout << printNetType << " network created.\n"
+       << std::endl;
   cout << "\n\n-----------------------------------------";
-  cout << "-------------------------------------\n\n";
+  cout << "-------------------------------------\n"
+       << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -855,9 +877,11 @@ BpNN::BpNN(
   WriteArchParam();
   WriteParam();
 
-  cout << printNetType << " network created.\n\n";
+  cout << printNetType << " network created.\n"
+       << std::endl;
   cout << "\n\n-----------------------------------------";
-  cout << "-------------------------------------\n\n";
+  cout << "-------------------------------------\n"
+       << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////

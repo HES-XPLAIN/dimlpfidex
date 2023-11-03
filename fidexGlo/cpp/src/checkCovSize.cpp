@@ -11,13 +11,16 @@ File to check if cover size is right for each rule.
 using namespace std;
 
 void showParams() {
-  std::cout << "\n-------------------------------------------------\n\n";
+  std::cout << "\n-------------------------------------------------\n"
+            << std::endl;
 
-  std::cout << "Obligatory parameters : \n\n";
+  std::cout << "Obligatory parameters : \n"
+            << std::endl;
   std::cout << "fidex -T <train dataset file> ";
   std::cout << "-R <rules data file> ";
 
-  std::cout << "\n-------------------------------------------------\n\n";
+  std::cout << "\n-------------------------------------------------\n"
+            << std::endl;
 }
 
 int main(int nbParam, char **param) {

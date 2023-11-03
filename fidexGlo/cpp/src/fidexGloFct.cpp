@@ -3,24 +3,29 @@
 using namespace std;
 
 void showParams() {
-  std::cout << "\n-------------------------------------------------\n\n";
+  std::cout << "\n-------------------------------------------------\n"
+            << std::endl;
 
-  std::cout << "Obligatory parameters : \n\n";
+  std::cout << "Obligatory parameters : \n"
+            << std::endl;
 
   std::cout << "fidexGlo -S <test sample(s) data file with data and prediction(if no -p)> ";
   std::cout << "-R <rules input file> ";
-  std::cout << "<Options>\n\n";
+  std::cout << "<Options>\n"
+            << std::endl;
 
-  std::cout << "Options are: \n\n";
-  std::cout << "-F <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
-  std::cout << "-A <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it\n";
-  std::cout << "-p <test prediction file>, -S needs to have only test datas\n";
-  std::cout << "-O <Rule output file>\n";
-  std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
-  std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>\n";
-  std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>\n";
+  std::cout << "Options are: \n"
+            << std::endl;
+  std::cout << "-F <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  std::cout << "-A <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it" << std::endl;
+  std::cout << "-p <test prediction file>, -S needs to have only test datas" << std::endl;
+  std::cout << "-O <Rule output file>" << std::endl;
+  std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
+  std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
 
-  std::cout << "\n-------------------------------------------------\n\n";
+  std::cout << "\n-------------------------------------------------\n"
+            << std::endl;
 }
 
 int fidexGlo(const string &command) {
@@ -391,7 +396,7 @@ int fidexGlo(const string &command) {
       vector<int> notcorrectRules;
       bool notShowUncorrectRules = false;
       if (activatedRules.empty()) { // If there is no activated rule
-        cout << "\nThere is no rule activated" << endl;
+        cout << "\nThere is no rule activated" << std::endl;
         lines.emplace_back("We couldn't find any global explanation for this sample."); // There is no explanation, we choose the model decision
         lines.emplace_back("We choose the model prediction.");
         lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
@@ -423,7 +428,7 @@ int fidexGlo(const string &command) {
               lines.emplace_back("R" + std::to_string(v + 1) + ": " + stringRules[activatedRules[v]]);
             }
           } else {
-            cout << "\nThere is no correct rule for this sample." << endl;
+            cout << "\nThere is no correct rule for this sample." << std::endl;
             lines.emplace_back("We couldn't find any global explanation for this sample."); // There is no explanation, we choose the model decision
             lines.emplace_back("We choose the model prediction.");
             lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
@@ -464,7 +469,7 @@ int fidexGlo(const string &command) {
       ofstream outputFile(explanationFile);
       if (outputFile.is_open()) {
         for (const auto &line : lines) {
-          outputFile << line << "\n";
+          outputFile << line << "" << std::endl;
         }
         outputFile.close();
       } else {
@@ -474,7 +479,7 @@ int fidexGlo(const string &command) {
 
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
-    std::cout << "\nFull execution time = " << temps << " sec\n";
+    std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
 

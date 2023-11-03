@@ -94,44 +94,48 @@ bool createOrClearDirectory(const std::string &path) {
 static void GiveAllParam()
 
 {
-  cout << "\n-------------------------------------------------\n\n";
+  cout << "\n-------------------------------------------------\n"
+       << std::endl;
 
   cout << "crossValid -C <choose the algorithms by giving : fidex fidexGlo or both>";
   cout << "-L <training set file(path with respect to specified root folder)> -1 <file of train classes> ";
   cout << "-h <high side of the interval> "; // Ex: 5
   cout << "-I <number of input neurons> -O <number of output neurons>";
 
-  cout << " <Options>\n\n";
+  cout << " <Options>\n"
+       << std::endl;
 
-  cout << "Options are: \n\n";
-  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
-  cout << "-K <K-fold cross-validation>\n";                                                        // Not to be 10
-  cout << "-N <number of times we do the cross-validation>\n";                                     // Not to be 10
-  cout << "-F <Folder where to save crossValidation data>\n";                                      // Not to be CrossValidation
-  cout << "-M <FidexGlo heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo>\n"; // not to be 1
-  cout << "-o <output statistic file name, saved in specific crossValidation folder>\n";           // Not to be crossValidationStats.txt
-  cout << "-A <file of attributes>\n";
-  cout << "-W <file of pretrained weights>\n";
+  cout << "Options are: \n"
+       << std::endl;
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  cout << "-K <K-fold cross-validation>" << std::endl;                                                        // Not to be 10
+  cout << "-N <number of times we do the cross-validation>" << std::endl;                                     // Not to be 10
+  cout << "-F <Folder where to save crossValidation data>" << std::endl;                                      // Not to be CrossValidation
+  cout << "-M <FidexGlo heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo>" << std::endl; // not to be 1
+  cout << "-o <output statistic file name, saved in specific crossValidation folder>" << std::endl;           // Not to be crossValidationStats.txt
+  cout << "-A <file of attributes>" << std::endl;
+  cout << "-W <file of pretrained weights>" << std::endl;
   cout << "-H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
-  cout << "number of input neurons)\n";
-  cout << "-Hk <number of neurons in the kth hidden layer>\n";
-  cout << "-Q <number of stairs in staircase activation function> ";        // Not to be 50
-  cout << "-l <back-propagation learning parameter (Eta)>\n";               // Not to be 0.1
-  cout << "-m <back-propagation momentum parameter (Mu)>\n";                // Not to be 0.6
-  cout << "-f <back-propagation flat spot elimination parameter (Flat)>\n"; // Not to be 0.01
-  cout << "-e <error threshold>\n";                                         // Not to be -1111111111.0
-  cout << "-a <accuracy threshold>\n";                                      // Not to be 11111111111111.0
-  cout << "-d <absolute difference error threshold>\n";                     // Not to be 0
-  cout << "-i <number of train epochs>\n";                                  // Not to be 1500
-  cout << "-s <number of train epochs to show error>\n";                    // Not to be 10
-  cout << "-n <max fidex and fidexGlo iteration number>\n";                 // Not to be 100
-  cout << "-v <minimum fidex and fidexGlo covering number>\n";              // Not to be 2
-  cout << "-x <dimension dropout parameter for fidex and fidexGlo>\n";
-  cout << "-y <hyperplan dropout parameter for fidex and fidexGlo>\n";
+  cout << "number of input neurons)" << std::endl;
+  cout << "-Hk <number of neurons in the kth hidden layer>" << std::endl;
+  cout << "-Q <number of stairs in staircase activation function> ";                   // Not to be 50
+  cout << "-l <back-propagation learning parameter (Eta)>" << std::endl;               // Not to be 0.1
+  cout << "-m <back-propagation momentum parameter (Mu)>" << std::endl;                // Not to be 0.6
+  cout << "-f <back-propagation flat spot elimination parameter (Flat)>" << std::endl; // Not to be 0.01
+  cout << "-e <error threshold>" << std::endl;                                         // Not to be -1111111111.0
+  cout << "-a <accuracy threshold>" << std::endl;                                      // Not to be 11111111111111.0
+  cout << "-d <absolute difference error threshold>" << std::endl;                     // Not to be 0
+  cout << "-i <number of train epochs>" << std::endl;                                  // Not to be 1500
+  cout << "-s <number of train epochs to show error>" << std::endl;                    // Not to be 10
+  cout << "-n <max fidex and fidexGlo iteration number>" << std::endl;                 // Not to be 100
+  cout << "-v <minimum fidex and fidexGlo covering number>" << std::endl;              // Not to be 2
+  cout << "-x <dimension dropout parameter for fidex and fidexGlo>" << std::endl;
+  cout << "-y <hyperplan dropout parameter for fidex and fidexGlo>" << std::endl;
   cout << "-z <seed (0=random)>"; // Not to be 0
 
-  cout << "\n-------------------------------------------------\n\n";
+  cout << "\n-------------------------------------------------\n"
+       << std::endl;
 }
 
 // copy in binary mode
@@ -221,7 +225,7 @@ int main(int nbParam, char **param)
       p++;
 
       if (p >= nbParam && *(param[p - 1] + 1) != 'R') {
-        cout << "Missing something at the end of the command.\n";
+        cout << "Missing something at the end of the command." << std::endl;
         return -1;
       }
 
@@ -293,7 +297,7 @@ int main(int nbParam, char **param)
           arch2 = ptrParam[2];
           genericCommand += " -H" + arch2 + " " + arch;
         } else {
-          cout << "Which hidden layer (-H) ?\n";
+          cout << "Which hidden layer (-H) ?" << std::endl;
           return -1;
         }
 
@@ -408,13 +412,13 @@ int main(int nbParam, char **param)
         break;
 
       default:
-        cout << "Illegal option: " << param[p - 1] << "\n";
+        cout << "Illegal option: " << param[p - 1] << "" << std::endl;
         return -1;
       }
     }
 
     else {
-      cout << "Illegal option: " << param[p] << "\n";
+      cout << "Illegal option: " << param[p] << "" << std::endl;
       return -1;
     }
 
@@ -425,13 +429,13 @@ int main(int nbParam, char **param)
 
   if (algorithmInit == false) {
     cout << "Give a algorithm with -C selection please. You can give fidex, fidexGlo or both."
-         << "\n";
+         << "" << std::endl;
     return -1;
   }
 
   if (algorithm != "fidex" && algorithm != "fidexGlo" && algorithm != "both") {
     cout << "Give a correct algorithm with -C selection please. You can give fidex, fidexGlo or both."
-         << "\n";
+         << "" << std::endl;
     return -1;
   }
 
@@ -445,13 +449,13 @@ int main(int nbParam, char **param)
 
   if (nbInInit == false) {
     cout << "Give the number of input neurons with option with -I selection please."
-         << "\n";
+         << "" << std::endl;
     return -1;
   }
 
   if (nbOutInit == false) {
     cout << "Give the number of output neurons with option with -O selection please."
-         << "\n";
+         << "" << std::endl;
     return -1;
   }
 
@@ -490,24 +494,24 @@ int main(int nbParam, char **param)
   // ----------------------------------------------------------------------
 
   if (N <= 0) {
-    cout << "The number of times we do cross-validation must be at least 1, change the option N.\n";
+    cout << "The number of times we do cross-validation must be at least 1, change the option N." << std::endl;
     return -1;
   }
 
   if (K <= 2) {
-    cout << "The number of divisions of the dataset must be at least 3, change the option -I.\n";
+    cout << "The number of divisions of the dataset must be at least 3, change the option -I." << std::endl;
     return -1;
   }
 
   if (learnFileInit == false) {
     cout << "Give the training file with -L selection please."
-         << "\n";
+         << "" << std::endl;
     return -1;
   }
 
   if (learnTarInit == false) {
     cout << "Give the training target file with -1 selection please."
-         << "\n";
+         << "" << std::endl;
     return -1;
   }
 
@@ -530,7 +534,7 @@ int main(int nbParam, char **param)
 
   const size_t nbSamples = learnData.size();
   if (K > nbSamples) {
-    cout << "The number of divisions K of the dataset must be less or equal to the number of train samples(" << nbSamples << ").\n";
+    cout << "The number of divisions K of the dataset must be less or equal to the number of train samples(" << nbSamples << ")." << std::endl;
     return -1;
   }
 
@@ -553,7 +557,7 @@ int main(int nbParam, char **param)
   fileDtaTar.close(); // close data file
 
   if (learnTarData.size() != nbSamples) {
-    cout << "The number of samples in each learn files need to be the same.\n";
+    cout << "The number of samples in each learn files need to be the same." << std::endl;
     return -1;
   }
 
@@ -671,32 +675,33 @@ int main(int nbParam, char **param)
   outputStatsFile.open(statFile, std::ios::app);
   if (outputStatsFile.is_open()) {
 
-    outputStatsFile << "Parameters for " << N << " times " << K << "-Cross validation :\n";
-    outputStatsFile << "---------------------------------------------------------\n";
-    outputStatsFile << "Training of dimlp with " << nbIn << " input neurons and " << nbOut << " output neurons\n";
-    outputStatsFile << "The number of stairs in staircase activation function is " << quant << " and the interval in which hyperplans are contained is [-" << hiKnot << "," << hiKnot << "]\n";
-    outputStatsFile << "The back-propagation learning parameter (Eta) is " << eta << "\n";
-    outputStatsFile << "The back-propagation momentum parameter (Mu) is " << mu << "\n";
-    outputStatsFile << "The back-propagation flat spot elimination parameter (Flat) is " << flat << "\n";
-    outputStatsFile << "The error threshold is " << errThres << "\n";
-    outputStatsFile << "The accuracy threshold is " << accThres << "\n";
-    outputStatsFile << "The absolute difference error threshold is " << deltaErr << "\n";
-    outputStatsFile << "The number of train epochs is " << epochs << "\n";
-    outputStatsFile << "The number of train epochs to show error is " << showErr << "\n";
-    outputStatsFile << "The max fidex and fidexGlo iteration number is " << itMax << "\n";
-    outputStatsFile << "The minimum fidex and fidexGlo covering number is " << minNbCover << "\n";
+    outputStatsFile << "Parameters for " << N << " times " << K << "-Cross validation :" << std::endl;
+    outputStatsFile << "---------------------------------------------------------" << std::endl;
+    outputStatsFile << "Training of dimlp with " << nbIn << " input neurons and " << nbOut << " output neurons" << std::endl;
+    outputStatsFile << "The number of stairs in staircase activation function is " << quant << " and the interval in which hyperplans are contained is [-" << hiKnot << "," << hiKnot << "]" << std::endl;
+    outputStatsFile << "The back-propagation learning parameter (Eta) is " << eta << "" << std::endl;
+    outputStatsFile << "The back-propagation momentum parameter (Mu) is " << mu << "" << std::endl;
+    outputStatsFile << "The back-propagation flat spot elimination parameter (Flat) is " << flat << "" << std::endl;
+    outputStatsFile << "The error threshold is " << errThres << "" << std::endl;
+    outputStatsFile << "The accuracy threshold is " << accThres << "" << std::endl;
+    outputStatsFile << "The absolute difference error threshold is " << deltaErr << "" << std::endl;
+    outputStatsFile << "The number of train epochs is " << epochs << "" << std::endl;
+    outputStatsFile << "The number of train epochs to show error is " << showErr << "" << std::endl;
+    outputStatsFile << "The max fidex and fidexGlo iteration number is " << itMax << "" << std::endl;
+    outputStatsFile << "The minimum fidex and fidexGlo covering number is " << minNbCover << "" << std::endl;
     if (dropoutHyp) {
-      outputStatsFile << "The hyperplan dropout parameter for fidex and fidexGlo is " << dropoutHypParam << "\n";
+      outputStatsFile << "The hyperplan dropout parameter for fidex and fidexGlo is " << dropoutHypParam << "" << std::endl;
     } else {
-      outputStatsFile << "There is no hyperplan dropout\n";
+      outputStatsFile << "There is no hyperplan dropout" << std::endl;
     }
     if (dropoutDim) {
-      outputStatsFile << "The dimension dropout parameter for fidex and fidexGlo is " << dropoutDimParam << "\n";
+      outputStatsFile << "The dimension dropout parameter for fidex and fidexGlo is " << dropoutDimParam << "" << std::endl;
     } else {
-      outputStatsFile << "There is no dimension dropout\n";
+      outputStatsFile << "There is no dimension dropout" << std::endl;
     }
 
-    outputStatsFile << "---------------------------------------------------------\n\n";
+    outputStatsFile << "---------------------------------------------------------\n"
+                    << std::endl;
     outputStatsFile.close();
   } else {
     throw CannotOpenFileError("Error : Couldn't open stats extraction file " + std::string(statFile) + ".");
@@ -751,7 +756,7 @@ int main(int nbParam, char **param)
     int validationIdx;
     int testIdx;
     for (int k = 0; k < K; k++) { // K-fold, we shift each time groups by 1.
-      cout << "----" << endl;
+      cout << "----" << std::endl;
       cout << "k=" << k + 1 << endl;
       // path to folder
       string folderPath = std::string(folder) + separator + "Execution" + std::to_string(n + 1) + separator + "Fold" + std::to_string(k + 1);
@@ -832,27 +837,27 @@ int main(int nbParam, char **param)
       // Get train, test and validation files in folder
 
       if (!copyFile(trainFileStr, (folderPath + separator + "train.txt").c_str())) {
-        cout << "File tempTrain.txt coundn't be copied.\n";
+        cout << "File tempTrain.txt coundn't be copied." << std::endl;
         return -1;
       }
       if (!copyFile(testFileStr, (folderPath + separator + "test.txt").c_str())) {
-        cout << "File tempTest.txt coundn't be copied.\n";
+        cout << "File tempTest.txt coundn't be copied." << std::endl;
         return -1;
       }
       if (!copyFile(validFileStr, (folderPath + separator + "valid.txt").c_str())) {
-        cout << "File tempValid.txt coundn't be copied.\n";
+        cout << "File tempValid.txt coundn't be copied." << std::endl;
         return -1;
       }
       if (!copyFile(trainTarFileStr, (folderPath + separator + "trainTarget.txt").c_str())) {
-        cout << "File tempTarTrain.txt coundn't be copied.\n";
+        cout << "File tempTarTrain.txt coundn't be copied." << std::endl;
         return -1;
       }
       if (!copyFile(testTarFileStr, (folderPath + separator + "testTarget.txt").c_str())) {
-        cout << "File tempTarTest.txt coundn't be copied.\n";
+        cout << "File tempTarTest.txt coundn't be copied." << std::endl;
         return -1;
       }
       if (!copyFile(validTarFileStr, (folderPath + separator + "validTarget.txt").c_str())) {
-        cout << "File tempTarValid.txt coundn't be copied.\n";
+        cout << "File tempTarValid.txt coundn't be copied." << std::endl;
         return -1;
       }
 
@@ -874,7 +879,7 @@ int main(int nbParam, char **param)
       command += "-w " + folderPathFromRoot + separator + "weights.wts "; // Output weight file
 
       command += "-r consoleTemp.txt"; // To not show console result
-      cout << "Enter in DimlpTrn function" << endl;
+      cout << "Enter in DimlpTrn function" << std::endl;
       int res = dimlpTrn(command);
       if (res == -1) {
         return -1; // If there is an error in the Trn
@@ -899,7 +904,7 @@ int main(int nbParam, char **param)
         fidexCommand += "-s " + folderPathFromRoot + separator + "fidexStats.txt ";
         fidexCommand += "-r " + folderPathFromRoot + separator + "fidexResult.txt ";
 
-        cout << "Enter in fidex function" << endl;
+        cout << "Enter in fidex function" << std::endl;
         int resFid = fidex(fidexCommand);
         if (resFid == -1) {
           return -1; // If there is an error in fidex
@@ -945,7 +950,7 @@ int main(int nbParam, char **param)
         fidexGloCommand += "-r " + folderPathFromRoot + separator + "fidexGloResult.txt ";
         fidexGloCommand += "-M " + heuristic;
 
-        cout << "Enter in fidexGloRules function" << endl;
+        cout << "Enter in fidexGloRules function" << std::endl;
         int resFidGloRu = fidexGloRules(fidexGloCommand);
         if (resFidGloRu == -1) {
           return -1; // If there is an error in fidexGlo
@@ -961,7 +966,7 @@ int main(int nbParam, char **param)
         fidexGloStatsCommand += "-O " + folderPathFromRoot + separator + "fidexGloStats.txt ";
         fidexGloStatsCommand += "-r " + folderPathFromRoot + separator + "fidexGloStatsResult.txt ";
 
-        cout << "Enter in fidexGloStats function" << endl;
+        cout << "Enter in fidexGloStats function" << std::endl;
         int resFidGloSt = fidexGloStats(fidexGloStatsCommand);
         if (resFidGloSt == -1) {
           return -1; // If there is an error in fidexGloStats
@@ -1089,47 +1094,49 @@ int main(int nbParam, char **param)
     outputStatsFile.open(statFile, std::ios::app);
     if (outputStatsFile.is_open()) {
 
-      outputStatsFile << "Results for execution " << n + 1 << " of " << K << "-Cross validation :\n\n";
-      cout << "\n---------------------------------------------------------" << endl;
+      outputStatsFile << "Results for execution " << n + 1 << " of " << K << "-Cross validation :\n"
+                      << std::endl;
+      cout << "\n---------------------------------------------------------" << std::endl;
       cout << "---------------------------------------------------------" << endl
            << endl;
       cout << "Results for execution " << n + 1 << " of " << K << "-Cross validation :" << endl
            << endl;
       if (isFidex) {
-        outputStatsFile << "Fidex :\n";
-        outputStatsFile << "The mean covering size per rule is : " << meanCurrentExecValuesFidex[0] << "\n";
-        outputStatsFile << "The mean number of antecedents per rule is : " << meanCurrentExecValuesFidex[1] << "\n";
-        outputStatsFile << "The mean rule fidelity rate is : " << meanCurrentExecValuesFidex[2] << "\n";
-        outputStatsFile << "The mean rule accuracy is : " << meanCurrentExecValuesFidex[3] << "\n";
-        outputStatsFile << "The mean rule confidence is : " << meanCurrentExecValuesFidex[4] << "\n";
-        cout << "Fidex :" << endl;
+        outputStatsFile << "Fidex :" << std::endl;
+        outputStatsFile << "The mean covering size per rule is : " << meanCurrentExecValuesFidex[0] << "" << std::endl;
+        outputStatsFile << "The mean number of antecedents per rule is : " << meanCurrentExecValuesFidex[1] << "" << std::endl;
+        outputStatsFile << "The mean rule fidelity rate is : " << meanCurrentExecValuesFidex[2] << "" << std::endl;
+        outputStatsFile << "The mean rule accuracy is : " << meanCurrentExecValuesFidex[3] << "" << std::endl;
+        outputStatsFile << "The mean rule confidence is : " << meanCurrentExecValuesFidex[4] << "" << std::endl;
+        cout << "Fidex :" << std::endl;
         cout << "The mean covering size per rule is : " << meanCurrentExecValuesFidex[0] << endl;
         cout << "The mean number of antecedents per rule is : " << meanCurrentExecValuesFidex[1] << endl;
         cout << "The mean rule fidelity rate is : " << meanCurrentExecValuesFidex[2] << endl;
         cout << "The mean rule accuracy is : " << meanCurrentExecValuesFidex[3] << endl;
         cout << "The mean rule confidence is : " << meanCurrentExecValuesFidex[4] << endl;
-        cout << "\n---------------------------------------------------------" << endl;
-        cout << "---------------------------------------------------------" << endl;
+        cout << "\n---------------------------------------------------------" << std::endl;
+        cout << "---------------------------------------------------------" << std::endl;
       }
       if (isFidex && isFidexGlo) {
-        outputStatsFile << "\n---------------------------------------------------------\n\n";
+        outputStatsFile << "\n---------------------------------------------------------\n"
+                        << std::endl;
         cout << endl;
       }
       if (isFidexGlo) {
-        outputStatsFile << "FidexGlo :\n";
-        outputStatsFile << "The mean number of rules is : " << meanCurrentExecValuesFidexGlo[0] << "\n";
-        outputStatsFile << "The mean sample covering number per rule is : " << meanCurrentExecValuesFidexGlo[1] << "\n";
-        outputStatsFile << "The mean number of antecedents per rule is : " << meanCurrentExecValuesFidexGlo[2] << "\n";
-        outputStatsFile << "The mean global rule fidelity rate is : " << meanCurrentExecValuesFidexGlo[3] << "\n";
-        outputStatsFile << "The mean global rule accuracy is : " << meanCurrentExecValuesFidexGlo[4] << "\n";
-        outputStatsFile << "The mean explainability rate (when we can find a rule) is : " << meanCurrentExecValuesFidexGlo[5] << "\n";
-        outputStatsFile << "The mean default rule rate (when we can't find a rule) is : " << meanCurrentExecValuesFidexGlo[6] << "\n";
-        outputStatsFile << "The mean number of correct(fidel) activated rules per sample is : " << meanCurrentExecValuesFidexGlo[7] << "\n";
-        outputStatsFile << "The mean number of wrong(not fidel) activated rules per sample is : " << meanCurrentExecValuesFidexGlo[8] << "\n";
-        outputStatsFile << "The mean model test accuracy is : " << meanCurrentExecValuesFidexGlo[9] << "\n";
-        outputStatsFile << "The mean model test accuracy when rules and model agree is : " << meanCurrentExecValuesFidexGlo[10] << "\n";
-        outputStatsFile << "The mean model test accuracy when activated rules and model agree is : " << meanCurrentExecValuesFidexGlo[11] << "\n";
-        cout << "FidexGlo :" << endl;
+        outputStatsFile << "FidexGlo :" << std::endl;
+        outputStatsFile << "The mean number of rules is : " << meanCurrentExecValuesFidexGlo[0] << "" << std::endl;
+        outputStatsFile << "The mean sample covering number per rule is : " << meanCurrentExecValuesFidexGlo[1] << "" << std::endl;
+        outputStatsFile << "The mean number of antecedents per rule is : " << meanCurrentExecValuesFidexGlo[2] << "" << std::endl;
+        outputStatsFile << "The mean global rule fidelity rate is : " << meanCurrentExecValuesFidexGlo[3] << "" << std::endl;
+        outputStatsFile << "The mean global rule accuracy is : " << meanCurrentExecValuesFidexGlo[4] << "" << std::endl;
+        outputStatsFile << "The mean explainability rate (when we can find a rule) is : " << meanCurrentExecValuesFidexGlo[5] << "" << std::endl;
+        outputStatsFile << "The mean default rule rate (when we can't find a rule) is : " << meanCurrentExecValuesFidexGlo[6] << "" << std::endl;
+        outputStatsFile << "The mean number of correct(fidel) activated rules per sample is : " << meanCurrentExecValuesFidexGlo[7] << "" << std::endl;
+        outputStatsFile << "The mean number of wrong(not fidel) activated rules per sample is : " << meanCurrentExecValuesFidexGlo[8] << "" << std::endl;
+        outputStatsFile << "The mean model test accuracy is : " << meanCurrentExecValuesFidexGlo[9] << "" << std::endl;
+        outputStatsFile << "The mean model test accuracy when rules and model agree is : " << meanCurrentExecValuesFidexGlo[10] << "" << std::endl;
+        outputStatsFile << "The mean model test accuracy when activated rules and model agree is : " << meanCurrentExecValuesFidexGlo[11] << "" << std::endl;
+        cout << "FidexGlo :" << std::endl;
         cout << "The mean number of rules is : " << meanCurrentExecValuesFidexGlo[0] << endl;
         cout << "The mean sample covering number per rule is : " << meanCurrentExecValuesFidexGlo[1] << endl;
         cout << "The mean number of antecedents per rule is : " << meanCurrentExecValuesFidexGlo[2] << endl;
@@ -1142,11 +1149,12 @@ int main(int nbParam, char **param)
         cout << "The mean model test accuracy is : " << meanCurrentExecValuesFidexGlo[9] << endl;
         cout << "The mean model test accuracy when rules and model agree is : " << meanCurrentExecValuesFidexGlo[10] << endl;
         cout << "The mean model test accuracy when activated rules and model agree is : " << meanCurrentExecValuesFidexGlo[11] << endl;
-        cout << "\n---------------------------------------------------------" << endl;
-        cout << "---------------------------------------------------------" << endl;
+        cout << "\n---------------------------------------------------------" << std::endl;
+        cout << "---------------------------------------------------------" << std::endl;
       }
-      outputStatsFile << "\n---------------------------------------------------------\n";
-      outputStatsFile << "---------------------------------------------------------\n\n";
+      outputStatsFile << "\n---------------------------------------------------------" << std::endl;
+      outputStatsFile << "---------------------------------------------------------\n"
+                      << std::endl;
       outputStatsFile.close();
     } else {
       throw CannotOpenFileError("Error : Couldn't open stats extraction file " + std::string(statFile) + ".");
@@ -1245,25 +1253,26 @@ int main(int nbParam, char **param)
   outputStatsFile.open(statFile, std::ios::app);
   if (outputStatsFile.is_open()) {
 
-    outputStatsFile << "Results for " << N << " times " << K << "-Cross validation :\n\n";
-    cout << "\n---------------------------------------------------------" << endl;
+    outputStatsFile << "Results for " << N << " times " << K << "-Cross validation :\n"
+                    << std::endl;
+    cout << "\n---------------------------------------------------------" << std::endl;
     cout << "---------------------------------------------------------" << endl
          << endl;
     cout << "Results for " << N << " times " << K << "-Cross validation :" << endl
          << endl;
     if (isFidex) {
-      outputStatsFile << "Fidex :\n";
-      outputStatsFile << "The mean covering size per rule is : " << meanCovSizeFidAll << "\n";
-      outputStatsFile << "The standard deviation of the covering size per rule is : " << stdCovSizeFidAll << "\n";
-      outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntFidAll << "\n";
-      outputStatsFile << "The standard deviation of the number of antecedents per rule is : " << stdNbAntFidAll << "\n";
-      outputStatsFile << "The mean rule fidelity rate is : " << meanFidelFidAll << "\n";
-      outputStatsFile << "The standard deviation of the rule fidelity rate is : " << stdFidelFidAll << "\n";
-      outputStatsFile << "The mean rule accuracy is : " << meanAccFidAll << "\n";
-      outputStatsFile << "The standard deviation of the rule accuracy is : " << stdAccFidAll << "\n";
-      outputStatsFile << "The mean rule confidence is : " << meanConfidFidAll << "\n";
-      outputStatsFile << "The standard deviation of the rule confidence is : " << stdConfidFidAll << "\n";
-      cout << "Fidex :" << endl;
+      outputStatsFile << "Fidex :" << std::endl;
+      outputStatsFile << "The mean covering size per rule is : " << meanCovSizeFidAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the covering size per rule is : " << stdCovSizeFidAll << "" << std::endl;
+      outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntFidAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the number of antecedents per rule is : " << stdNbAntFidAll << "" << std::endl;
+      outputStatsFile << "The mean rule fidelity rate is : " << meanFidelFidAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the rule fidelity rate is : " << stdFidelFidAll << "" << std::endl;
+      outputStatsFile << "The mean rule accuracy is : " << meanAccFidAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the rule accuracy is : " << stdAccFidAll << "" << std::endl;
+      outputStatsFile << "The mean rule confidence is : " << meanConfidFidAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the rule confidence is : " << stdConfidFidAll << "" << std::endl;
+      cout << "Fidex :" << std::endl;
       cout << "The mean covering size per rule is : " << meanCovSizeFidAll << endl;
       cout << "The standard deviation of the covering size per rule is : " << stdCovSizeFidAll << endl;
       cout << "The mean number of antecedents per rule is : " << meanNbAntFidAll << endl;
@@ -1274,40 +1283,41 @@ int main(int nbParam, char **param)
       cout << "The standard deviation of the rule accuracy is : " << stdAccFidAll << endl;
       cout << "The mean rule confidence is : " << meanConfidFidAll << endl;
       cout << "The standard deviation of the rule confidence is : " << stdConfidFidAll << endl;
-      cout << "\n---------------------------------------------------------" << endl;
-      cout << "---------------------------------------------------------" << endl;
+      cout << "\n---------------------------------------------------------" << std::endl;
+      cout << "---------------------------------------------------------" << std::endl;
     }
     if (isFidex && isFidexGlo) {
       cout << endl;
-      outputStatsFile << "\n---------------------------------------------------------\n\n";
+      outputStatsFile << "\n---------------------------------------------------------\n"
+                      << std::endl;
     }
     if (isFidexGlo) {
-      outputStatsFile << "FidexGlo :\n";
-      outputStatsFile << "The mean number of rules is : " << meanNbRulesAll << "\n";
-      outputStatsFile << "The standard deviation of the number of rules is : " << stdNbRulesAll << "\n";
-      outputStatsFile << "The mean sample covering number per rule is : " << meanNbCoverAll << "\n";
-      outputStatsFile << "The standard deviation of the sample covering number per rule is : " << stdNbCoverAll << "\n";
-      outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntecedantsAll << "\n";
-      outputStatsFile << "The standard deviation of the number of antecedents per rule is : " << stdNbAntecedantsAll << "\n";
-      outputStatsFile << "The mean global rule fidelity rate is : " << meanFidelGloAll << "\n";
-      outputStatsFile << "The standard deviation of the global rule fidelity rate is : " << stdFidelGloAll << "\n";
-      outputStatsFile << "The mean global rule accuracy is : " << meanAccGloAll << "\n";
-      outputStatsFile << "The standard deviation of the global rule accuracy is : " << stdAccGloAll << "\n";
-      outputStatsFile << "The mean explainability rate (when we can find a rule) is : " << meanExplGloAll << "\n";
-      outputStatsFile << "The standard deviation of the explainability rate (when we can find a rule) is : " << stdExplGloAll << "\n";
-      outputStatsFile << "The mean default rule rate (when we can't find a rule) is : " << meanDefaultRateAll << "\n";
-      outputStatsFile << "The standard deviation of the default rule rate (when we can't find a rule) is : " << stdDefaultRateAll << "\n";
-      outputStatsFile << "The mean number of correct(fidel) activated rules per sample is : " << meanNbFidelActivationsAll << "\n";
-      outputStatsFile << "The standard deviation of the number of correct(fidel) activated rules per sample is : " << stdNbFidelActivationsAll << "\n";
-      outputStatsFile << "The mean number of wrong(not fidel) activated rules per sample is : " << meanWrongActivationsAll << "\n";
-      outputStatsFile << "The standard deviation of the number of wrong(not fidel) activated rules per sample is : " << stdWrongActivationsAll << "\n";
-      outputStatsFile << "The mean model test accuracy is : " << meanTestAccGloAll << "\n";
-      outputStatsFile << "The standard deviation of the model test accuracy is : " << stdTestAccGloAll << "\n";
-      outputStatsFile << "The mean model test accuracy when rules and model agree is : " << meanTestAccWhenRulesAndModelAgreeAll << "\n";
-      outputStatsFile << "The standard deviation of the model test accuracy when rules and model agree is : " << stdTestAccWhenRulesAndModelAgreeAll << "\n";
-      outputStatsFile << "The mean model test accuracy when activated rules and model agree is : " << meanTestAccWhenActivatedRulesAndModelAgreeAll << "\n";
-      outputStatsFile << "The standard deviation of the model test accuracy when activated rules and model agree is : " << stdTestAccWhenActivatedRulesAndModelAgreeAll << "\n";
-      cout << "FidexGlo :" << endl;
+      outputStatsFile << "FidexGlo :" << std::endl;
+      outputStatsFile << "The mean number of rules is : " << meanNbRulesAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the number of rules is : " << stdNbRulesAll << "" << std::endl;
+      outputStatsFile << "The mean sample covering number per rule is : " << meanNbCoverAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the sample covering number per rule is : " << stdNbCoverAll << "" << std::endl;
+      outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntecedantsAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the number of antecedents per rule is : " << stdNbAntecedantsAll << "" << std::endl;
+      outputStatsFile << "The mean global rule fidelity rate is : " << meanFidelGloAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the global rule fidelity rate is : " << stdFidelGloAll << "" << std::endl;
+      outputStatsFile << "The mean global rule accuracy is : " << meanAccGloAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the global rule accuracy is : " << stdAccGloAll << "" << std::endl;
+      outputStatsFile << "The mean explainability rate (when we can find a rule) is : " << meanExplGloAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the explainability rate (when we can find a rule) is : " << stdExplGloAll << "" << std::endl;
+      outputStatsFile << "The mean default rule rate (when we can't find a rule) is : " << meanDefaultRateAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the default rule rate (when we can't find a rule) is : " << stdDefaultRateAll << "" << std::endl;
+      outputStatsFile << "The mean number of correct(fidel) activated rules per sample is : " << meanNbFidelActivationsAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the number of correct(fidel) activated rules per sample is : " << stdNbFidelActivationsAll << "" << std::endl;
+      outputStatsFile << "The mean number of wrong(not fidel) activated rules per sample is : " << meanWrongActivationsAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the number of wrong(not fidel) activated rules per sample is : " << stdWrongActivationsAll << "" << std::endl;
+      outputStatsFile << "The mean model test accuracy is : " << meanTestAccGloAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the model test accuracy is : " << stdTestAccGloAll << "" << std::endl;
+      outputStatsFile << "The mean model test accuracy when rules and model agree is : " << meanTestAccWhenRulesAndModelAgreeAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the model test accuracy when rules and model agree is : " << stdTestAccWhenRulesAndModelAgreeAll << "" << std::endl;
+      outputStatsFile << "The mean model test accuracy when activated rules and model agree is : " << meanTestAccWhenActivatedRulesAndModelAgreeAll << "" << std::endl;
+      outputStatsFile << "The standard deviation of the model test accuracy when activated rules and model agree is : " << stdTestAccWhenActivatedRulesAndModelAgreeAll << "" << std::endl;
+      cout << "FidexGlo :" << std::endl;
       cout << "The mean number of rules is : " << meanNbRulesAll << endl;
       cout << "The standard deviation of the number of rules is : " << stdNbRulesAll << endl;
       cout << "The mean sample covering number per rule is : " << meanNbCoverAll << endl;
@@ -1332,8 +1342,8 @@ int main(int nbParam, char **param)
       cout << "The standard deviation of the model test accuracy when rules and model agree is : " << stdTestAccWhenRulesAndModelAgreeAll << endl;
       cout << "The mean model test accuracy when activated rules and model agree is : " << meanTestAccWhenActivatedRulesAndModelAgreeAll << endl;
       cout << "The standard deviation of the model test accuracy when activated rules and model agree is : " << stdTestAccWhenActivatedRulesAndModelAgreeAll << endl;
-      cout << "\n---------------------------------------------------------" << endl;
-      cout << "---------------------------------------------------------" << endl;
+      cout << "\n---------------------------------------------------------" << std::endl;
+      cout << "---------------------------------------------------------" << std::endl;
     }
     outputStatsFile.close();
   } else {
@@ -1380,7 +1390,7 @@ int main(int nbParam, char **param)
 
   t2 = clock();
   temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
-  std::cout << "\nFull execution time = " << temps << " sec\n";
+  std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
 }
 
 // ./CrossValid -L datanorm -1 dataclass2 -K 3 -N 2 -I 16 -H2 5 -O 2 -F CrossValidation -S dimlp/datafiles -h 5 -v 25 -x 0.5 -y 0.5 -C both
