@@ -3,23 +3,28 @@
 using namespace std;
 
 void showStatsParams() {
-  std::cout << "\n-------------------------------------------------\n\n";
+  std::cout << "\n-------------------------------------------------\n"
+            << std::endl;
 
-  std::cout << "Obligatory parameters : \n\n";
+  std::cout << "Obligatory parameters : \n"
+            << std::endl;
   std::cout << "fidexGloStats -T <test data file> -P <test prediction file> -C <test true class file> ";
   std::cout << "-R <rules input file> ";
-  std::cout << "<Options>\n\n";
+  std::cout << "<Options>\n"
+            << std::endl;
 
-  std::cout << "Options are: \n\n";
-  std::cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
-  std::cout << "-A <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it\n";
-  std::cout << "-O <stats output file>\n";
-  std::cout << "-F <global rules output file with stats on test set> If you want to compute statistics of global rules on tests set\n";
-  std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
-  std::cout << "-t <decision threshold for predictions, use if it was used in FidexGlo, need to specify the index of positive class if you want to use it (None by default)>\n";
-  std::cout << "-x <index of positive class sample to compute true/false positive/negative rates (None by default, put 0 for first class)>\n"; // If we want to compute TP, FP, TN, FN
+  std::cout << "Options are: \n"
+            << std::endl;
+  std::cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  std::cout << "-A <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it" << std::endl;
+  std::cout << "-O <stats output file>" << std::endl;
+  std::cout << "-F <global rules output file with stats on test set> If you want to compute statistics of global rules on tests set" << std::endl;
+  std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  std::cout << "-t <decision threshold for predictions, use if it was used in FidexGlo, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
+  std::cout << "-x <index of positive class sample to compute true/false positive/negative rates (None by default, put 0 for first class)>" << std::endl; // If we want to compute TP, FP, TN, FN
 
-  std::cout << "\n-------------------------------------------------\n\n";
+  std::cout << "\n-------------------------------------------------\n"
+            << std::endl;
 }
 
 void getCovering(vector<int> &sampleIds, tuple<vector<tuple<int, bool, double>>, int, int, double, double> *rule, vector<vector<double>> *testValues) {
@@ -496,7 +501,7 @@ int fidexGloStats(const string &command) {
       ofstream outputFile(statsFile);
       if (outputFile.is_open()) {
         for (const string &line : lines) {
-          outputFile << line + "\n";
+          outputFile << line + "" << std::endl;
         }
         outputFile.close();
       } else {
@@ -512,11 +517,11 @@ int fidexGloStats(const string &command) {
           outputFile << l;
         }
         if (!attributFileInit) {
-          outputFile << "The name of the attributes and classes are not specified\n";
+          outputFile << "The name of the attributes and classes are not specified" << std::endl;
         } else if (!hasClassNames) {
-          outputFile << "The name of the attributes is specified\n";
+          outputFile << "The name of the attributes is specified" << std::endl;
         } else {
-          outputFile << "The name of the attributes and classes are specified\n";
+          outputFile << "The name of the attributes and classes are specified" << std::endl;
         }
 
         for (int r = 0; r < rules.size(); r++) { // For each rule
@@ -549,22 +554,22 @@ int fidexGloStats(const string &command) {
           }
           vector<string> trainStats = splitString(stringRules[r], "\n");
           outputFile << "\n"
-                     << trainStats[0] << "\n";
-          outputFile << trainStats[1] << " --- Test Covering size : " << coverSize << "\n";
+                     << trainStats[0] << "" << std::endl;
+          outputFile << trainStats[1] << " --- Test Covering size : " << coverSize << "" << std::endl;
           if (coverSize == 0) {
-            outputFile << trainStats[2] << "\n";
-            outputFile << trainStats[3] << "\n";
+            outputFile << trainStats[2] << "" << std::endl;
+            outputFile << trainStats[3] << "" << std::endl;
             if (hasConfidence) {
-              outputFile << trainStats[4] << "\n";
+              outputFile << trainStats[4] << "" << std::endl;
             }
-            outputFile << "\n";
+            outputFile << "" << std::endl;
           } else {
-            outputFile << trainStats[2] << " --- Test Fidelity : " << ruleFidelity << "\n";
-            outputFile << trainStats[3] << " --- Test Accuracy : " << ruleAccuracy << "\n";
+            outputFile << trainStats[2] << " --- Test Fidelity : " << ruleFidelity << "" << std::endl;
+            outputFile << trainStats[3] << " --- Test Accuracy : " << ruleAccuracy << "" << std::endl;
             if (hasConfidence) {
-              outputFile << trainStats[4] << " --- Test Confidence : " << ruleConfidence << "\n";
+              outputFile << trainStats[4] << " --- Test Confidence : " << ruleConfidence << "" << std::endl;
             }
-            outputFile << "\n";
+            outputFile << "" << std::endl;
           }
         }
         outputFile.close();
@@ -575,7 +580,7 @@ int fidexGloStats(const string &command) {
 
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
-    std::cout << "\nFull execution time = " << temps << " sec\n";
+    std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
 

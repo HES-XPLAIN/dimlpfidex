@@ -4,7 +4,8 @@ std::vector<std::vector<double>> calcHypLocus(const char *dataFileWeights, int n
 
   double lowKnot = -hiKnot;
 
-  std::cout << "\nParameters of hyperLocus :\n\n";
+  std::cout << "\nParameters of hyperLocus :\n"
+            << std::endl;
   std::cout << "- Number of stairs " << nbQuantLevels << std::endl;
   std::cout << "- Interval : [" << lowKnot << "," << hiKnot << "]" << std::endl
             << std::endl;

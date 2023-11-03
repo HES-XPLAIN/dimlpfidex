@@ -3,35 +3,40 @@
 using namespace std;
 
 void showFidexParams() {
-  std::cout << "\n-------------------------------------------------\n\n";
+  std::cout << "\n-------------------------------------------------\n"
+            << std::endl;
 
-  std::cout << "Obligatory parameters : \n\n";
+  std::cout << "Obligatory parameters : \n"
+            << std::endl;
   std::cout << "fidex -T <train dataset file> -P <train prediction file> -C <train true class file> ";
   std::cout << "-S <test sample(s) data file with data, prediction(if no -p) and true class(if no -c, with only the index of the true class)> ";
   std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> [Not mendatory if a rules file is given with -f] ";
   std::cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
   std::cout << "-O <Rule output file>";
-  std::cout << "<Options>\n\n";
+  std::cout << "<Options>\n"
+            << std::endl;
 
-  std::cout << "Options are: \n\n";
-  std::cout << "-R <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
+  std::cout << "Options are: \n"
+            << std::endl;
+  std::cout << "-R <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging>";
   std::cout << "-p <test prediction file> ";
-  std::cout << "-c <test true class file> If at least -p is specified, -S needs to have only test datas\n";
-  std::cout << "-A <file of attributes>\n";
-  std::cout << "-s <output statistic file>\n";
-  std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
-  std::cout << "-i <max iteration number>\n";
-  std::cout << "-v <minimum covering number>\n";
-  std::cout << "-d <dimension dropout parameter>\n";
-  std::cout << "-h <hyperplan dropout parameter>\n";
-  std::cout << "-Q <number of stairs in staircase activation function (50 by default)>\n";
-  std::cout << "-I <high side of the interval (5 by default)>\n";
-  std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>\n";
-  std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>\n";
+  std::cout << "-c <test true class file> If at least -p is specified, -S needs to have only test datas" << std::endl;
+  std::cout << "-A <file of attributes>" << std::endl;
+  std::cout << "-s <output statistic file>" << std::endl;
+  std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  std::cout << "-i <max iteration number>" << std::endl;
+  std::cout << "-v <minimum covering number>" << std::endl;
+  std::cout << "-d <dimension dropout parameter>" << std::endl;
+  std::cout << "-h <hyperplan dropout parameter>" << std::endl;
+  std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
+  std::cout << "-I <high side of the interval (5 by default)>" << std::endl;
+  std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
+  std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
   std::cout << "-z <seed (0=ranodom)>";
 
-  std::cout << "\n-------------------------------------------------\n\n";
+  std::cout << "\n-------------------------------------------------\n"
+            << std::endl;
 }
 
 int fidex(const string &command) {
@@ -429,24 +434,25 @@ int fidex(const string &command) {
 
     // ----------------------------------------------------------------------
 
-    std::cout << "\nParameters :\n\n";
+    std::cout << "\nParameters :\n"
+              << std::endl;
     std::cout << "- Max iteration number : " << itMax << endl;
     std::cout << "- Min size of covering : " << minNbCover << endl;
     if (dropoutDim) {
       std::cout << "- We use a dimension dropout of " << dropoutDimParam << endl;
     } else {
-      std::cout << "- We don't use dimension dropout\n";
+      std::cout << "- We don't use dimension dropout" << std::endl;
     }
     if (dropoutHyp) {
       std::cout << "- We use a hyperplan dropout of " << dropoutHypParam << endl;
     } else {
-      std::cout << "- We don't use hyperplan dropout\n";
+      std::cout << "- We don't use hyperplan dropout" << std::endl;
     }
     std::cout << endl;
 
     // Import files
 
-    std::cout << "Import files..." << endl;
+    std::cout << "Import files..." << std::endl;
 
     float importTime;
     clock_t impt1;
@@ -676,7 +682,7 @@ int fidex(const string &command) {
     impt2 = clock();
     importTime = (float)(impt2 - impt1) / CLOCKS_PER_SEC;
 
-    std::cout << "\nImport time = " << importTime << " sec\n";
+    std::cout << "\nImport time = " << importTime << " sec" << std::endl;
 
     std::cout << "Files imported" << endl
               << endl;
@@ -702,7 +708,7 @@ int fidex(const string &command) {
     std::uniform_real_distribution<double> dis(0.0, 1.0);
 
     // compute hyperspace
-    std::cout << "Creation of hyperspace..." << endl;
+    std::cout << "Creation of hyperspace..." << std::endl;
 
     std::vector<std::vector<double>> matHypLocus;
 
@@ -750,7 +756,7 @@ int fidex(const string &command) {
       }
 
       if (nbSamples == 1) {
-        std::cout << "Searching for discriminating hyperplans..." << endl;
+        std::cout << "Searching for discriminating hyperplans..." << std::endl;
       }
 
       // Compute initial covering
@@ -892,16 +898,16 @@ int fidex(const string &command) {
         /*itt2 = clock();
         itTime = (float)(itt2 - itt1) / CLOCKS_PER_SEC;
 
-        std::cout << "\n Iteration time = " << itTime << " sec\n";*/
+        std::cout << "\n Iteration time = " << itTime << " sec" << std::endl;*/
         nbIt += 1;
       }
 
       meanFidelity += hyperspace.getHyperbox()->getFidelity();
       std::cout << "Final fidelity : " << hyperspace.getHyperbox()->getFidelity() << endl;
       if (hyperspace.getHyperbox()->getFidelity() != 1) {
-        std::cout << "WARNING Fidelity is not maximum! You may want to try again." << endl;
-        std::cout << "If you can't find a maximal fidelity, try a lowest minimal covering" << endl;
-        std::cout << "If this is not enough, put the min covering to 1 and do not use dropout." << endl;
+        std::cout << "WARNING Fidelity is not maximum! You may want to try again." << std::endl;
+        std::cout << "If you can't find a maximal fidelity, try a lowest minimal covering" << std::endl;
+        std::cout << "If this is not enough, put the min covering to 1 and do not use dropout." << std::endl;
       } else {
         std::cout << endl;
       }
@@ -945,14 +951,14 @@ int fidex(const string &command) {
       // Extract rules
       hyperspace.ruleExtraction(&mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, attributFileInit, &attributeNames, hasClassNames, &classNames);
 
-      std::cout << "Result found after " << nbIt << " iterations." << endl;
+      std::cout << "Result found after " << nbIt << " iterations." << std::endl;
 
       /*samplet2 = clock();
       sampleTime = (float)(samplet2 - samplet1) / CLOCKS_PER_SEC;
 
-      std::cout << "\n Computation time = " << sampleTime << " sec\n";*/
+      std::cout << "\n Computation time = " << sampleTime << " sec" << std::endl;*/
 
-      std::cout << "-------------------------------------------------" << endl;
+      std::cout << "-------------------------------------------------" << std::endl;
 
       if (nbSamples > 1) {
         lines.emplace_back("-------------------------------------------------\n");
@@ -976,13 +982,14 @@ int fidex(const string &command) {
     if (statsFileInit) {
       ofstream outputStatsFile(statsFile);
       if (outputStatsFile.is_open()) {
-        outputStatsFile << "Statistics with a test set of " << nbSamples << " samples :\n\n";
-        outputStatsFile << "The mean covering size per rule is : " << meanCovSize << "\n";
-        outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntecedentsPerRule << "\n";
-        outputStatsFile << "The mean rule fidelity rate is : " << meanFidelity << "\n";
-        outputStatsFile << "The mean rule accuracy is : " << meanAccuracy << "\n";
+        outputStatsFile << "Statistics with a test set of " << nbSamples << " samples :\n"
+                        << std::endl;
+        outputStatsFile << "The mean covering size per rule is : " << meanCovSize << "" << std::endl;
+        outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntecedentsPerRule << "" << std::endl;
+        outputStatsFile << "The mean rule fidelity rate is : " << meanFidelity << "" << std::endl;
+        outputStatsFile << "The mean rule accuracy is : " << meanAccuracy << "" << std::endl;
         if (hasConfidence) {
-          outputStatsFile << "The mean rule confidence is : " << meanConfidence << "\n";
+          outputStatsFile << "The mean rule confidence is : " << meanConfidence << "" << std::endl;
         }
         outputStatsFile.close();
       } else {
@@ -993,7 +1000,7 @@ int fidex(const string &command) {
     ofstream outputFile(ruleFile);
     if (outputFile.is_open()) {
       for (const auto &line : lines) {
-        outputFile << line << "\n";
+        outputFile << line << "" << std::endl;
       }
       outputFile.close();
     } else {
@@ -1003,11 +1010,11 @@ int fidex(const string &command) {
     d2 = clock();
     temps2 = (float)(d2 - d1) / CLOCKS_PER_SEC;
 
-    std::cout << "\nTime without data import = " << temps2 << " sec\n";
+    std::cout << "\nTime without data import = " << temps2 << " sec" << std::endl;
 
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
-    std::cout << "\nFull execution time = " << temps << " sec\n";
+    std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
 

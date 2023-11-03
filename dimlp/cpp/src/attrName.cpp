@@ -28,7 +28,8 @@ int AttrName::FirstLect() const
     return 1;
 
   cout << FileAttr;
-  cout << ": Problem with number of attributes or number of classes.\n\n";
+  cout << ": Problem with number of attributes or number of classes.\n"
+       << std::endl;
   return 0;
 }
 

@@ -8,33 +8,37 @@ const int BPNN = 1;
 void GiveAllParamDensCls()
 
 {
-  cout << "\n-------------------------------------------------\n\n";
+  cout << "\n-------------------------------------------------\n"
+       << std::endl;
 
   cout << "DensCls -L <training set file(path with respect to specified root folder)> ";
   cout << "-W <Prefix of file of weights> (for instance give DimlpBT) ";
   cout << "-I <number of input neurons> -O <number of output neurons> ";
   cout << "-N <number of networks>";
-  cout << " <Options>\n\n";
+  cout << " <Options>\n"
+       << std::endl;
 
-  cout << "Options are: \n\n";
-  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
-  cout << "-A <file of attributes>\n";
-  cout << "-T <testing set file>\n";
-  cout << "-1 <file of train classes>\n";
-  cout << "-2 <file of test classes>\n";
-  cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
-  cout << "-p <output train prediction file>\n";           // If we want to specify output train prediction file, not to be densCls.out
-  cout << "-t <output test prediction file>\n";            // If we want to specify output test prediction file, not to be densClsTest.out
-  cout << "-o <output file with global train and test accuracy>\n";
+  cout << "Options are: \n"
+       << std::endl;
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  cout << "-A <file of attributes>" << std::endl;
+  cout << "-T <testing set file>" << std::endl;
+  cout << "-1 <file of train classes>" << std::endl;
+  cout << "-2 <file of test classes>" << std::endl;
+  cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  cout << "-p <output train prediction file>" << std::endl;           // If we want to specify output train prediction file, not to be densCls.out
+  cout << "-t <output test prediction file>" << std::endl;            // If we want to specify output test prediction file, not to be densClsTest.out
+  cout << "-o <output file with global train and test accuracy>" << std::endl;
   cout << "-H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
-  cout << "number of input neurons)\n";
-  cout << "-Hk <number of neurons in the kth hidden layer>\n";
-  cout << "-R (RULE EXTRACTION)\n";
-  cout << "-F <extraction ruleFile>\n"; // If we want to extract rules in a rulesFile instead of console
-  cout << "-q <number of stairs in staircase activation function>\n";
+  cout << "number of input neurons)" << std::endl;
+  cout << "-Hk <number of neurons in the kth hidden layer>" << std::endl;
+  cout << "-R (RULE EXTRACTION)" << std::endl;
+  cout << "-F <extraction ruleFile>" << std::endl; // If we want to extract rules in a rulesFile instead of console
+  cout << "-q <number of stairs in staircase activation function>" << std::endl;
 
-  cout << "\n-------------------------------------------------\n\n";
+  cout << "\n-------------------------------------------------\n"
+       << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
@@ -120,7 +124,7 @@ int densCls(const string &command) {
         k++;
 
         if (k >= nbParam && commandList[k - 1][1] != 'R') {
-          cout << "Missing something at the end of the command.\n";
+          cout << "Missing something at the end of the command." << std::endl;
           return -1;
         }
 
@@ -168,7 +172,7 @@ int densCls(const string &command) {
               std::string str(ptrParam + 2);
               archInd.Insert(std::atoi(str.c_str()));
             } else {
-              cout << "Which hidden layer (-H) ?\n";
+              cout << "Which hidden layer (-H) ?" << std::endl;
               return -1;
             }
           } else
@@ -243,13 +247,13 @@ int densCls(const string &command) {
           break;
 
         default:
-          cout << "Illegal option: " << lastArg << "\n";
+          cout << "Illegal option: " << lastArg << "" << std::endl;
           return -1;
         }
       }
 
       else {
-        cout << "Illegal option: " << &(commandList[k])[0] << "\n";
+        cout << "Illegal option: " << &(commandList[k])[0] << "" << std::endl;
         return -1;
       }
       k++;
@@ -357,29 +361,29 @@ int densCls(const string &command) {
     // ----------------------------------------------------------------------
 
     if (quant == 0) {
-      cout << "The number of quantized levels must be greater than 0.\n";
+      cout << "The number of quantized levels must be greater than 0." << std::endl;
       return -1;
     }
 
     if (nbIn == 0) {
-      cout << "The number of input neurons must be given with option -I.\n";
+      cout << "The number of input neurons must be given with option -I." << std::endl;
       return -1;
     }
 
     if (nbOut == 0) {
-      cout << "The number of output neurons must be given with option -O.\n";
+      cout << "The number of output neurons must be given with option -O." << std::endl;
       return -1;
     }
 
     if (weightFileInit == false) {
       cout << "Give a file of weights with -W selection please."
-           << "\n";
+           << "" << std::endl;
       return -1;
     }
 
     if (nbDimlpNets == 0) {
       cout << "Give the number of networks with -W selection please."
-           << "\n";
+           << "" << std::endl;
       return -1;
     }
 
@@ -403,7 +407,7 @@ int densCls(const string &command) {
 
         if (arch.GetVal() % nbIn != 0) {
           cout << "The number of neurons in the first hidden layer must be";
-          cout << " a multiple of the number of input neurons.\n";
+          cout << " a multiple of the number of input neurons." << std::endl;
           return -1;
         }
 
@@ -418,7 +422,7 @@ int densCls(const string &command) {
           vecNbNeurons[k] = arch.GetVal();
 
           if (vecNbNeurons[k] == 0) {
-            cout << "The number of neurons must be greater than 0.\n";
+            cout << "The number of neurons must be greater than 0." << std::endl;
             return -1;
           }
         }
@@ -437,7 +441,7 @@ int densCls(const string &command) {
           vecNbNeurons[k + 1] = arch.GetVal();
 
           if (vecNbNeurons[k + 1] == 0) {
-            cout << "The number of neurons must be greater than 0.\n";
+            cout << "The number of neurons must be greater than 0." << std::endl;
             return -1;
           }
         }
@@ -448,7 +452,7 @@ int densCls(const string &command) {
 
     if (learnFileInit == false) {
       cout << "Give the training file with -L selection please."
-           << "\n";
+           << "" << std::endl;
       return -1;
     }
 
@@ -528,24 +532,25 @@ int densCls(const string &command) {
     float accTest;
 
     net->ComputeAcc(Train, TrainClass, &acc, 1, predTrainFile);
-    cout << "\n\n*** GLOBAL ACCURACY ON TRAINING SET = " << acc << "\n\n";
+    cout << "\n\n*** GLOBAL ACCURACY ON TRAINING SET = " << acc << "\n"
+         << std::endl;
 
     if (Test.GetNbEx() != 0) {
       net->ComputeAcc(Test, TestClass, &accTest, 1, predTestFile);
-      cout << "*** GLOBAL ACCURACY ON TESTING SET = " << accTest << "\n";
+      cout << "*** GLOBAL ACCURACY ON TESTING SET = " << accTest << "" << std::endl;
     }
 
     // Output accuracy stats in file
     if (accuracyFileInit != false) {
       ofstream accFile(accuracyFile);
       if (accFile.is_open()) {
-        accFile << "Global accuracy on training set = " << acc << "\n";
+        accFile << "Global accuracy on training set = " << acc << "" << std::endl;
         if (Test.GetNbEx() != 0) {
           accFile << "Global accuracy on testing set = " << accTest;
         }
         accFile.close();
       } else {
-        cout << "Error : could not open accuracy file " << accuracyFile << " not found.\n";
+        cout << "Error : could not open accuracy file " << accuracyFile << " not found." << std::endl;
         return -1;
       }
     }
@@ -556,7 +561,8 @@ int densCls(const string &command) {
 
         if (attr.ReadAttr())
           cout << "\n\n"
-               << attrFile << ": Read file of attributes.\n\n";
+               << attrFile << ": Read file of attributes.\n"
+               << std::endl;
 
         Attr = attr;
       }
@@ -568,8 +574,9 @@ int densCls(const string &command) {
         All = all2;
       }
 
-      cout << "\n\n****************************************************\n\n";
-      cout << "*** RULE EXTRACTION\n";
+      cout << "\n\n****************************************************\n"
+           << std::endl;
+      cout << "*** RULE EXTRACTION" << std::endl;
 
       std::shared_ptr<VirtualHyp> globVirt = net->MakeGlobalVirt(quant, nbIn,
                                                                  vecNbNeurons[1] / nbIn);
@@ -605,7 +612,8 @@ int densCls(const string &command) {
 
         cout << "\n\n"
              << rulesFile << ": "
-             << "Written.\n\n";
+             << "Written.\n"
+             << std::endl;
       } else {
         ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                            Test, TestClass, Attr, cout);

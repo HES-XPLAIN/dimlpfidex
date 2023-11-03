@@ -9,45 +9,49 @@ const int BPNN = 1;
 void GiveAllParamDimlpTrn()
 
 {
-  cout << "\n-------------------------------------------------\n\n";
+  cout << "\n-------------------------------------------------\n"
+       << std::endl;
 
   cout << "DimlpTrn -L <training set file(path with respect to specified root folder)> ";
   cout << "-I <number of input neurons> -O <number of output neurons>";
-  cout << " <Options>\n\n";
+  cout << " <Options>\n"
+       << std::endl;
 
-  cout << "Options are: \n\n";
-  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
-  cout << "-A <file of attributes>\n";
-  cout << "-V <validation set file>\n";
-  cout << "-T <testing set file>\n";
-  cout << "-W <file of pretrained weights>\n";
-  cout << "-1 <file of train classes>\n";
-  cout << "-2 <file of test classes>\n";
-  cout << "-3 <file of validation classes>\n";
-  cout << "-w <output weight file>\n";                     // If we want to specify weight output file, not to be weights.wts
-  cout << "-p <output train prediction file>\n";           // If we want to specify output train prediction file, not to be dimlp.out
-  cout << "-t <output test prediction file>\n";            // If we want to specify output test prediction file, not to be dimlpTest.out
-  cout << "-v <output validation prediction file>\n";      // If we want to specify output validation prediction file, not to be dimlpValidation.out
-  cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
-  cout << "-o <output file with train, test and validation accuracy>\n";
+  cout << "Options are: \n"
+       << std::endl;
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  cout << "-A <file of attributes>" << std::endl;
+  cout << "-V <validation set file>" << std::endl;
+  cout << "-T <testing set file>" << std::endl;
+  cout << "-W <file of pretrained weights>" << std::endl;
+  cout << "-1 <file of train classes>" << std::endl;
+  cout << "-2 <file of test classes>" << std::endl;
+  cout << "-3 <file of validation classes>" << std::endl;
+  cout << "-w <output weight file>" << std::endl;                     // If we want to specify weight output file, not to be weights.wts
+  cout << "-p <output train prediction file>" << std::endl;           // If we want to specify output train prediction file, not to be dimlp.out
+  cout << "-t <output test prediction file>" << std::endl;            // If we want to specify output test prediction file, not to be dimlpTest.out
+  cout << "-v <output validation prediction file>" << std::endl;      // If we want to specify output validation prediction file, not to be dimlpValidation.out
+  cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  cout << "-o <output file with train, test and validation accuracy>" << std::endl;
   cout << "-H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
-  cout << "number of input neurons)\n";
-  cout << "-Hk <number of neurons in the kth hidden layer>\n";
-  cout << "-R (RULE EXTRACTION)\n";
-  cout << "-F <extraction ruleFile>\n"; // If we want to extract rules in a rulesFile instead of console
-  cout << "-l <back-propagation learning parameter (Eta)>\n";
-  cout << "-m <back-propagation momentum parameter (Mu)>\n";
-  cout << "-f <back-propagation flat spot elimination parameter (Flat)>\n";
-  cout << "-q <number of stairs in staircase activation function>\n";
-  cout << "-e <error threshold>\n";
-  cout << "-a <accuracy threshold>\n";
-  cout << "-d <absolute difference error threshold>\n";
-  cout << "-i <number of epochs>\n";
-  cout << "-s <number of epochs to show error>\n";
+  cout << "number of input neurons)" << std::endl;
+  cout << "-Hk <number of neurons in the kth hidden layer>" << std::endl;
+  cout << "-R (RULE EXTRACTION)" << std::endl;
+  cout << "-F <extraction ruleFile>" << std::endl; // If we want to extract rules in a rulesFile instead of console
+  cout << "-l <back-propagation learning parameter (Eta)>" << std::endl;
+  cout << "-m <back-propagation momentum parameter (Mu)>" << std::endl;
+  cout << "-f <back-propagation flat spot elimination parameter (Flat)>" << std::endl;
+  cout << "-q <number of stairs in staircase activation function>" << std::endl;
+  cout << "-e <error threshold>" << std::endl;
+  cout << "-a <accuracy threshold>" << std::endl;
+  cout << "-d <absolute difference error threshold>" << std::endl;
+  cout << "-i <number of epochs>" << std::endl;
+  cout << "-s <number of epochs to show error>" << std::endl;
   cout << "-z <seed (0=ranodom)>";
 
-  cout << "\n-------------------------------------------------\n\n";
+  cout << "\n-------------------------------------------------\n"
+       << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
@@ -72,7 +76,7 @@ static void SaveOutputs(
 
   cout << "\n\n"
        << outfile << ": "
-       << "Writing ...\n";
+       << "Writing ..." << std::endl;
 
   ostream outFile(&buf);
 
@@ -83,11 +87,12 @@ static void SaveOutputs(
       outFile << out[o] << " ";
     }
 
-    outFile << "\n";
+    outFile << "" << std::endl;
   }
 
   cout << outfile << ": "
-       << "Written.\n\n";
+       << "Written.\n"
+       << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
@@ -192,7 +197,7 @@ int dimlpTrn(const string &command) {
         k++;
 
         if (k >= nbParam && *(&(commandList[k - 1])[0] + 1) != 'R') {
-          cout << "Missing something at the end of the command.\n";
+          cout << "Missing something at the end of the command." << std::endl;
           return -1;
         }
 
@@ -297,7 +302,7 @@ int dimlpTrn(const string &command) {
               std::string str(ptrParam + 2);
               archInd.Insert(std::atoi(str.c_str()));
             } else {
-              cout << "Which hidden layer (-H) ?\n";
+              cout << "Which hidden layer (-H) ?" << std::endl;
               return -1;
             }
           } else
@@ -403,13 +408,13 @@ int dimlpTrn(const string &command) {
           break;
 
         default:
-          cout << "Illegal option: " << lastArg << "\n";
+          cout << "Illegal option: " << lastArg << "" << std::endl;
           return -1;
         }
       }
 
       else {
-        cout << "Illegal option: " << &(commandList[k])[0] << "\n";
+        cout << "Illegal option: " << &(commandList[k])[0] << "" << std::endl;
         return -1;
       }
 
@@ -522,32 +527,32 @@ int dimlpTrn(const string &command) {
     // ----------------------------------------------------------------------
 
     if (eta <= 0) {
-      cout << "The learning parameter must be greater than 0.\n";
+      cout << "The learning parameter must be greater than 0." << std::endl;
       return -1;
     }
 
     if (mu < 0) {
-      cout << "The momentum parameter must be greater or equal to 0.\n";
+      cout << "The momentum parameter must be greater or equal to 0." << std::endl;
       return -1;
     }
 
     if (showErr == 0) {
-      cout << "The number of epochs must be greater than 0.\n";
+      cout << "The number of epochs must be greater than 0." << std::endl;
       return -1;
     }
 
     if (quant <= 2) {
-      cout << "The number of quantized levels must be greater than 2.\n";
+      cout << "The number of quantized levels must be greater than 2." << std::endl;
       return -1;
     }
 
     if (nbIn == 0) {
-      cout << "The number of input neurons must be given with option -I.\n";
+      cout << "The number of input neurons must be given with option -I." << std::endl;
       return -1;
     }
 
     if (nbOut <= 1) {
-      cout << "At least two output neurons must be given with option -O.\n";
+      cout << "At least two output neurons must be given with option -O." << std::endl;
       return -1;
     }
 
@@ -571,7 +576,7 @@ int dimlpTrn(const string &command) {
 
         if (arch.GetVal() % nbIn != 0) {
           cout << "The number of neurons in the first hidden layer must be";
-          cout << " a multiple of the number of input neurons.\n";
+          cout << " a multiple of the number of input neurons." << std::endl;
           return -1;
         }
 
@@ -586,7 +591,7 @@ int dimlpTrn(const string &command) {
           vecNbNeurons[k] = arch.GetVal();
 
           if (vecNbNeurons[k] == 0) {
-            cout << "The number of neurons must be greater than 0.\n";
+            cout << "The number of neurons must be greater than 0." << std::endl;
             return -1;
           }
         }
@@ -605,7 +610,7 @@ int dimlpTrn(const string &command) {
           vecNbNeurons[k + 1] = arch.GetVal();
 
           if (vecNbNeurons[k + 1] == 0) {
-            cout << "The number of neurons must be greater than 0.\n";
+            cout << "The number of neurons must be greater than 0." << std::endl;
             return -1;
           }
         }
@@ -616,7 +621,7 @@ int dimlpTrn(const string &command) {
 
     if (learnFileInit == false) {
       cout << "Give the training file with -L selection please."
-           << "\n";
+           << "" << std::endl;
       return -1;
     }
 
@@ -699,7 +704,8 @@ int dimlpTrn(const string &command) {
     if (accuracyFileInit != false) {
       ofstream accFile(accuracyFile);
       if (accFile.is_open()) {
-        accFile << "Accuracy : \n\n";
+        accFile << "Accuracy : \n"
+                << std::endl;
         accFile.close();
       } else {
         string errorMsg = "Cannot open file for writing";
@@ -724,14 +730,15 @@ int dimlpTrn(const string &command) {
 
         if (attr.ReadAttr())
           cout << "\n\n"
-               << attrFile << ": Read file of attributes.\n\n";
+               << attrFile << ": Read file of attributes.\n"
+               << std::endl;
 
         Attr = attr;
       }
 
       All = Train;
       if (rulesFileInit != false) {
-        cout << "Extraction Part :: " << endl;
+        cout << "Extraction Part :: " << std::endl;
       }
 
       if (Valid.GetNbEx() > 0) {
@@ -741,7 +748,7 @@ int dimlpTrn(const string &command) {
 
       cout << "\n\n****************************************************\n"
            << endl;
-      cout << "*** RULE EXTRACTION" << endl;
+      cout << "*** RULE EXTRACTION" << std::endl;
       RealHyp ryp1(All, net, quant, nbIn,
                    vecNbNeurons[1] / nbIn, nbWeightLayers);
       if (rulesFileInit != false) {
@@ -767,7 +774,8 @@ int dimlpTrn(const string &command) {
 
           cout << "\n\n"
                << rulesFile << ": "
-               << "Written.\n\n";
+               << "Written.\n"
+               << std::endl;
       }
 
       else {
@@ -787,7 +795,7 @@ int dimlpTrn(const string &command) {
 
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
-    std::cout << "\nFull execution time = " << temps << " sec\n";
+    std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
 

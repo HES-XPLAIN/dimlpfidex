@@ -6,7 +6,7 @@ using namespace std;
 [[noreturn]] void WriteError(const string &s1, const string &s2)
 
 {
-  cerr << s1 << " " << s2 << ".\n";
+  cerr << s1 << " " << s2 << "." << std::endl;
   exit(1);
 }
 
