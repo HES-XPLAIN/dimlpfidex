@@ -379,14 +379,23 @@ int fidexGlo(const string &command) {
 
     std::cout << "Files imported" << endl
               << endl;
-
-    std::cout << "Find explanation for each sample..." << endl
-              << endl;
+    if (nbSamples > 1) {
+      std::cout << "Find explanation for each sample..." << endl
+                << endl;
+    }
 
     // we search explanation for each sample
-
+    if (nbSamples == 1) {
+      lines.push_back("Explanation for the sample :\n");
+      std::cout << "Explanation for the sample :" << std::endl
+                << std::endl;
+    }
     for (int currentSample = 0; currentSample < nbSamples; currentSample++) {
-      lines.push_back("Explanation for sample " + std::to_string(currentSample) + " :\n");
+      if (nbSamples > 1) {
+        lines.push_back("Explanation for sample " + std::to_string(currentSample) + " :\n");
+        std::cout << "Explanation for sample " << std::to_string(currentSample) << " :" << std::endl
+                  << std::endl;
+      }
 
       // Find rules activated by this sample
       vector<int> activatedRules;
@@ -396,7 +405,10 @@ int fidexGlo(const string &command) {
       vector<int> notcorrectRules;
       bool notShowUncorrectRules = false;
       if (activatedRules.empty()) { // If there is no activated rule
-        cout << "\nThere is no rule activated" << std::endl;
+        std::cout << "\nThere is no rule activated" << std::endl;
+        std::cout << "We couldn't find any global explanation for this sample." << std::endl; // There is no explanation, we choose the model decision
+        std::cout << "We choose the model prediction." << std::endl;
+        std::cout << "The predicted class is " << std::to_string(testSamplesPreds[currentSample]) << std::endl;
         lines.emplace_back("We couldn't find any global explanation for this sample."); // There is no explanation, we choose the model decision
         lines.emplace_back("We choose the model prediction.");
         lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
@@ -421,14 +433,22 @@ int fidexGlo(const string &command) {
             notShowUncorrectRules = true;
             if (activatedRules.size() > 1) {
               lines.emplace_back("We didn't found any rule with same prediction as the model (class " + std::to_string(testSamplesPreds[currentSample]) + "), but we found " + std::to_string(activatedRules.size()) + " rules with class " + std::to_string(ancientClass) + " :\n");
+              std::cout << "We didn't found any rule with same prediction as the model (class " << std::to_string(testSamplesPreds[currentSample]) << "), but we found " << std::to_string(activatedRules.size()) << " rules with class " << std::to_string(ancientClass) << " :" << std::endl
+                        << std::endl;
             } else {
               lines.emplace_back("We didn't found any rule with same prediction as the model (class " + std::to_string(testSamplesPreds[currentSample]) + "), but we found 1 rule with class " + std::to_string(ancientClass) + " :\n");
+              std::cout << "We didn't found any rule with same prediction as the model (class " << std::to_string(testSamplesPreds[currentSample]) << "), but we found 1 rule with class " << std::to_string(ancientClass) << " :" << std::endl
+                        << std::endl;
             }
             for (int v = 0; v < activatedRules.size(); v++) {
               lines.emplace_back("R" + std::to_string(v + 1) + ": " + stringRules[activatedRules[v]]);
+              std::cout << "R" << std::to_string(v + 1) << ": " << stringRules[activatedRules[v]] << std::endl;
             }
           } else {
-            cout << "\nThere is no correct rule for this sample." << std::endl;
+            std::cout << "\nThere is no correct rule for this sample." << std::endl;
+            std::cout << "We couldn't find any global explanation for this sample." << std::endl; // There is no explanation, we choose the model decision
+            std::cout << "We choose the model prediction." << std::endl;
+            std::cout << "The predicted class is " << std::to_string(testSamplesPreds[currentSample]) << std::endl;
             lines.emplace_back("We couldn't find any global explanation for this sample."); // There is no explanation, we choose the model decision
             lines.emplace_back("We choose the model prediction.");
             lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
@@ -437,31 +457,35 @@ int fidexGlo(const string &command) {
         } else { // There is an explanation which is caracterised by the correct rules
           if (correctRules.size() > 1) {
             lines.emplace_back("We have found " + std::to_string(correctRules.size()) + " global rules explaining the model prediction :\n"); // There is no explanation, we choose the model decision
+            std::cout << "We have found " << std::to_string(correctRules.size()) << " global rules explaining the model prediction :" << std::endl
+                      << std::endl; // There is no explanation, we choose the model decision
           } else {
             lines.emplace_back("We have found 1 global rule explaining the model prediction :\n"); // There is no explanation, we choose the model decision
+            std::cout << "We have found 1 global rule explaining the model prediction :" << std::endl
+                      << std::endl; // There is no explanation, we choose the model decision
           }
           for (int c = 0; c < correctRules.size(); c++) {
             lines.emplace_back("R" + std::to_string(c + 1) + ": " + stringRules[correctRules[c]]);
+            std::cout << "R" << std::to_string(c + 1) << ": " << stringRules[correctRules[c]] << std::endl;
           }
         }
       }
       if (!notShowUncorrectRules) {
         if (!notcorrectRules.empty()) {
           lines.emplace_back("\nActivated rules without correct decision class :");
+          std::cout << "\nActivated rules without correct decision class :" << std::endl;
           for (int n = 0; n < notcorrectRules.size(); n++) {
             lines.emplace_back("F" + std::to_string(n + 1) + ": " + stringRules[notcorrectRules[n]]);
+            std::cout << "F" << std::to_string(n + 1) + ": " << stringRules[notcorrectRules[n]] << std::endl;
           }
         } else {
           lines.emplace_back("\nThere is no uncorrect rules.");
+          std::cout << "\nThere is no uncorrect rules." << std::endl;
         }
       }
 
       lines.emplace_back("\n--------------------------------------------------------------------\n");
-    }
-
-    // Show result on consol
-    for (string l : lines) {
-      cout << l << endl;
+      std::cout << "\n--------------------------------------------------------------------" << std::endl;
     }
 
     // Output global explanation result
