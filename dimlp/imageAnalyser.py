@@ -61,11 +61,11 @@ def imageAnalyser(dataSet):
             size1d = 28
             nb_channels = 1
         elif dataSet == "Cifar10":
-            image_folder_from_base = "dimlp/datafiles/Cifar10"
+            image_folder_from_base = "dimlp/datafiles/Cifar10/with_09_dropout"
             test_data_file = image_folder_from_base + "/testData.txt"
             test_class_file = image_folder_from_base + "/testClass.txt"
             test_pred_file = image_folder_from_base + "/predTest.out"
-            global_rules = "globalRulesBigDropout.txt"
+            global_rules = "globalRules.txt"
 
             train_data_file = "trainData.txt"
             train_class_file = "trainClass.txt"

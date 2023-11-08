@@ -81,6 +81,5 @@ std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, const size_
   }
 
   fileDta.close(); // close data file
-
   return matHypLocus;
 }
