@@ -26,9 +26,11 @@ from keras.callbacks  import ModelCheckpoint
 from keras.datasets import mnist
 from keras.datasets import cifar100
 from keras.datasets import cifar10
+import colorsys
 
 
-from .trnFun import compute_first_hidden_layer, output_stats, check_parameters_dimlp_layer, check_parameters_common, get_data, check_strictly_positive, check_int
+
+from .trnFun import compute_first_hidden_layer, output_stats,  output_data, check_parameters_dimlp_layer, check_parameters_common, get_data, check_strictly_positive, check_int, check_bool
 
 def output_pred(pred, pred_file):
     try:
@@ -42,6 +44,7 @@ def output_pred(pred, pred_file):
         raise ValueError(f"Error : File {pred_file} not found.")
     except (IOError):
         raise ValueError(f"Error : Couldn't open file {pred_file}.")
+
 
 def convKeras(*args, **kwargs):
 
@@ -69,6 +72,7 @@ def convKeras(*args, **kwargs):
             print("nb_stairs : number of stairs in staircase activation function (50 by default)")
             print("hiknot : high side of the interval (5 by default)")
             print("K : Parameter to improve dynamics (1 by default)")
+            print("with_hsl : If you want to change 3-channels data from RGB to HSL format (False by default)")
         else:
 
             start_time = time.time()
@@ -92,6 +96,7 @@ def convKeras(*args, **kwargs):
             quant = kwargs.get('nb_stairs')
             hiknot = kwargs.get('hiknot')
             nb_epochs = kwargs.get('nb_epochs')
+            with_hsl = kwargs.get('with_hsl')
 
             # Redirect output in file
             if output_file != None:
@@ -105,7 +110,7 @@ def convKeras(*args, **kwargs):
                     raise ValueError(f"Error : Couldn't open file {output_file}.")
 
             valid_args = ['dataset', 'train_data', 'train_class', 'test_data', 'test_class', 'valid_ratio', 'valid_data', 'valid_class', 'save_folder', 'output_file', 'train_valid_pred', 'test_pred', 'weights',
-                          'stats', 'K', 'nb_stairs', 'hiknot', 'nb_epochs']
+                          'stats', 'K', 'nb_stairs', 'hiknot', 'nb_epochs', 'with_hsl']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
@@ -140,6 +145,10 @@ def convKeras(*args, **kwargs):
             elif not check_int(nb_epochs) or not check_strictly_positive(nb_epochs):
                 raise ValueError('Error : parameter nb_epochs is not a strictly positive integer.')
 
+            if with_hsl is None:
+                with_hsl = False
+            elif not check_bool(with_hsl):
+                raise ValueError('Error, parameter with_hsl is not a boolean')
             weights_file, K, quant, hiknot = check_parameters_dimlp_layer(weights_file, K, quant, hiknot)
 
             model_checkpoint_weights = "weights.hdf5"
@@ -219,19 +228,38 @@ def convKeras(*args, **kwargs):
                 nb_channels = 3
                 with_normalization = False
                 nb_var = len(x_train[0])
-                mu = np.full(nb_var, 127.5)
-                sigma = np.full(nb_var, 25.5)
-
+                # (x-mu)/sigma entre -5 et 5
+                if with_hsl:
+                    mu_val = 0.5
+                    sigma_val = (1-0.5)/hiknot
+                    mu = np.full(nb_var, mu_val)
+                    sigma = np.full(nb_var, sigma_val)
+                else:
+                    mu_val = 127.5
+                    sigma_val = (255-127.5)/hiknot
+                    mu = np.full(nb_var, mu_val)
+                    sigma = np.full(nb_var, sigma_val)
 
             print("Data loaded")
 
-
-
-
-            if with_normalization:
+            """if with_normalization and not with_hsl:
                 x_train = (x_train.astype('float32') / 255) * 10 - 5
                 x_test = (x_test.astype('float32') / 255) * 10 - 5
                 x_val = (x_val.astype('float32') / 255) * 10 - 5
+
+            if with_normalization and with_hsl:
+                x_train = x_train.astype('float32') * 10 - 5
+                x_test = x_test.astype('float32') * 10 - 5
+                x_val = x_val.astype('float32') * 10 - 5
+
+            # Output normalized data
+            if with_normalization or with_hsl:
+                if with_normalization:
+                    test_data_file_normalized = test_data_file + "_normalized"
+                    train_data_file_normalized = train_data_file + "_normalized"
+                    if valid_ratio is None:
+                        valid_data_file_normalized =
+                output_data()"""
 
             x_train_h1, mu, sigma = compute_first_hidden_layer("train", x_train, K, quant, hiknot, weights_file, mu=mu, sigma=sigma)
             x_test_h1 = compute_first_hidden_layer("test", x_test, K, quant, hiknot, mu=mu, sigma=sigma)
