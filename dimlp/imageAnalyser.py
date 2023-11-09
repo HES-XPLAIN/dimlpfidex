@@ -44,22 +44,22 @@ def imageAnalyser(dataSet):
         id_samples = range(0,100)
         show_images = False
         if dataSet == "Mnist":
-            image_folder_from_base = "dimlp/datafiles/Mnist"
+            image_folder_from_base = "dimlp/datafiles/Mnist/Mnist09"
             test_data_file = image_folder_from_base + "/mnistTestData.txt"
             test_class_file = image_folder_from_base + "/mnistTestClass.txt"
-            test_pred_file = image_folder_from_base + "/withValid/predTest.out"
-            global_rules = "withValid/globalRulesWithTestStats.rls"
+            test_pred_file = image_folder_from_base + "/predTest.out"
+            global_rules = "globalRules.txt"
 
             train_data_file = "mnistTrainData.txt"
             train_class_file = "mnistTrainClass.txt"
-            train_pred_file = "withValid/predTrain.out"
-            weights_file = "withValid/weights.wts"
-            image_save_folder = image_folder_from_base + "/imagesTest"
+            train_pred_file = "predTrain.out"
+            weights_file = "weights.wts"
 
-            dropout_dim = 0.5
-            dropout_hyp = 0.5
+            dropout_dim = 0.9
+            dropout_hyp = 0.9
             size1d = 28
             nb_channels = 1
+            with_hls = False
         elif dataSet == "Cifar10":
             image_folder_from_base = "dimlp/datafiles/Cifar10/with_09_dropout"
             test_data_file = image_folder_from_base + "/testData.txt"
@@ -76,6 +76,7 @@ def imageAnalyser(dataSet):
             dropout_hyp = 0.9
             size1d = 32
             nb_channels = 3
+            with_hls = True
 
         image_save_folder = image_folder_from_base + "/images"
         test_data = get_data(test_data_file)
@@ -99,7 +100,10 @@ def imageAnalyser(dataSet):
             test_sample_class = test_class[id_sample] if 0 <= id_sample < len(test_class) else None
             test_sample_pred = test_pred[id_sample] if 0 <= id_sample < len(test_pred) else None
 
-            output_data(test_sample_data, test_sample_data_file, "itg")
+            if with_hls:
+                output_data(test_sample_data, test_sample_data_file)
+            else:
+                output_data(test_sample_data, test_sample_data_file, "itg")
             output_data(test_sample_class, test_sample_class_file, "itg")
             output_data(test_sample_pred, test_sample_pred_file)
 
@@ -217,6 +221,6 @@ def imageAnalyser(dataSet):
         print(error)
         return -1
 
-#dataSet = "Mnist"
-dataSet = "Cifar10"
+dataSet = "Mnist"
+#dataSet = "Cifar10"
 imageAnalyser(dataSet)
