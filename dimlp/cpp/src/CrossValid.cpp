@@ -99,7 +99,6 @@ static void GiveAllParam()
 
   cout << "crossValid -C <choose the algorithms by giving : fidex fidexGlo or both>";
   cout << "-L <training set file(path with respect to specified root folder)> -1 <file of train classes> ";
-  cout << "-h <high side of the interval> "; // Ex: 5
   cout << "-I <number of input neurons> -O <number of output neurons>";
 
   cout << " <Options>\n"
@@ -275,12 +274,6 @@ int main(int nbParam, char **param)
 
       case 'Q':
         quant = param[p];
-        break;
-
-      case 'h':
-        hiKnot = param[p];
-        fidexGenericCommand += " -I " + hiKnot;
-        fidexGloGenericCommand += " -I " + hiKnot;
         break;
 
       case 'I':
@@ -1393,4 +1386,4 @@ int main(int nbParam, char **param)
   std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
 }
 
-// ./CrossValid -L datanorm -1 dataclass2 -K 3 -N 2 -I 16 -H2 5 -O 2 -F CrossValidation -S dimlp/datafiles -h 5 -v 25 -x 0.5 -y 0.5 -C both
+// ./CrossValid -L datanorm -1 dataclass2 -K 3 -N 2 -I 16 -H2 5 -O 2 -F CrossValidation -S dimlp/datafiles -v 25 -x 0.5 -y 0.5 -C both

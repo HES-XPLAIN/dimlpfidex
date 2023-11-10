@@ -30,7 +30,6 @@ def svmTrn(*args, **kwargs):
             print("output_file : file where you redirect console result")
             print("output_roc : output ROC curve without extension(roc_curve.png by default)")
             print("nb_stairs : number of stairs in staircase activation function (50 by default)")
-            print("hiknot : high side of the interval (5 by default)")
             print("K : Parameter to improve dynamics (1 by default)")
             print("positive_index : index of positive class (0 for first one, None by default, if None, no roc calculation)")
             print("return_roc : whether to return ROC statistics (False by default)")
@@ -79,7 +78,7 @@ def svmTrn(*args, **kwargs):
 
             K = kwargs.get('K')
             quant = kwargs.get('nb_stairs')
-            hiknot = kwargs.get('hiknot')
+            hiknot = 5
             c_var = kwargs.get('C')
             kernel_var = kwargs.get('kernel')
             degree_var = kwargs.get('degree')
@@ -112,7 +111,7 @@ def svmTrn(*args, **kwargs):
             # Check parameters
 
             valid_args = ['train_data', 'train_class', 'test_data', 'test_class', 'positive_index', 'train_pred', 'test_pred', 'weights',
-                        'stats', 'output_roc', 'K', 'nb_stairs', 'hiknot', 'C', 'kernel', 'degree', 'gamma', 'coef0', 'shrinking',
+                        'stats', 'output_roc', 'K', 'nb_stairs', 'C', 'kernel', 'degree', 'gamma', 'coef0', 'shrinking',
                         'tol', 'cache_size', 'class_weight', 'verbose', 'max_iter', 'decision_function_shape', 'break_ties', 'save_folder', 'output_file', 'return_roc',
                         'with_decision_threshold', 'test_class_threshold', 'train_class_threshold']
 
@@ -122,7 +121,7 @@ def svmTrn(*args, **kwargs):
                     raise ValueError(f"Invalid argument : {arg_key}")
 
             save_folder, train_data_file, train_class_file_init, test_data_file, test_class_file_init, train_pred_file, test_pred_file, stats_file  = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file)
-            weights_file, K, quant, hiknot = check_parameters_dimlp_layer(weights_file, K, quant, hiknot)
+            weights_file, K, quant = check_parameters_dimlp_layer(weights_file, K, quant)
 
             if output_roc is None:
                 output_roc = "roc_curve"
