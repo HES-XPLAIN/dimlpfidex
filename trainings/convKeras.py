@@ -22,7 +22,7 @@ from keras.models     import Sequential
 from keras.layers     import Dense, Dropout, Activation, Flatten, BatchNormalization, Lambda
 from keras.layers     import Convolution2D, DepthwiseConv2D, LocallyConnected2D, MaxPooling2D, GlobalAveragePooling2D
 from keras.models     import load_model, Model
-from keras.applications import ResNet50
+from keras.applications import ResNet50, VGG16
 
 from keras.callbacks  import ModelCheckpoint
 from keras.datasets import mnist
@@ -75,6 +75,7 @@ def convKeras(*args, **kwargs):
             print("K : Parameter to improve dynamics (1 by default)")
             print("with_hsl : If you want to change 3-channels data from RGB to HSL format (False by default)")
             print("with_resnet : Training with ResNet (False by default)")
+            print("with_vgg : Training with ResNet (False by default)")
         else:
 
             start_time = time.time()
@@ -99,6 +100,7 @@ def convKeras(*args, **kwargs):
             nb_epochs = kwargs.get('nb_epochs')
             with_hsl = kwargs.get('with_hsl')
             with_resnet = kwargs.get('with_resnet')
+            with_vgg = kwargs.get('with_vgg')
             hiknot = 5
             # Redirect output in file
             if output_file != None:
@@ -112,7 +114,7 @@ def convKeras(*args, **kwargs):
                     raise ValueError(f"Error : Couldn't open file {output_file}.")
 
             valid_args = ['dataset', 'train_data', 'train_class', 'test_data', 'test_class', 'valid_ratio', 'valid_data', 'valid_class', 'save_folder', 'output_file', 'train_valid_pred', 'test_pred', 'weights',
-                          'stats', 'K', 'nb_stairs', 'nb_epochs', 'with_hsl', 'with_resnet']
+                          'stats', 'K', 'nb_stairs', 'nb_epochs', 'with_hsl', 'with_resnet', 'with_vgg']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
@@ -150,11 +152,17 @@ def convKeras(*args, **kwargs):
             if with_hsl is None:
                 with_hsl = False
             elif not check_bool(with_hsl):
-                raise ValueError('Error, parameter with_hsl is not a boolean')
+                raise ValueError('Error, parameter with_hsl is not a boolean.')
             if with_resnet is None:
                 with_resnet = False
             elif not check_bool(with_resnet):
-                raise ValueError('Error, parameter with_resnet is not a boolean')
+                raise ValueError('Error, parameter with_resnet is not a boolean.')
+            if with_vgg is None:
+                with_vgg = False
+            elif not check_bool(with_vgg):
+                raise ValueError('Error, parameter with_vgg is not a boolean.')
+            if with_vgg == True and with_resnet == True:
+                raise ValueError('Error, parameter with_resnet and with_vgg are both True, choose one.')
 
             weights_file, K, quant = check_parameters_dimlp_layer(weights_file, K, quant)
 
@@ -336,6 +344,26 @@ def convKeras(*args, **kwargs):
                 model.summary()
 
                 model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])"""
+
+            elif with_vgg:
+                # charge pre-trained model vgg with imageNet weights
+                base_model = VGG16(weights='imagenet', include_top=False)
+
+                x = base_model.output
+                x = GlobalAveragePooling2D()(x)
+                x = Dense(256, activation='relu')(x)
+                x = Dropout(0.3)(x)
+                predictions = Dense(nb_classes, activation='softmax')(x)
+
+                model = Model(inputs=base_model.input, outputs=predictions)
+
+                # Frees layers of Resnet
+                for layer in base_model.layers:
+                    layer.trainable = False
+
+                model.summary()
+
+                model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['acc'])
 
 
             else:
