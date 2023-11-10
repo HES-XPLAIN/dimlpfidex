@@ -45,7 +45,7 @@ void GiveAllParamDimlpBT()
   cout << "-i <number of epochs>" << std::endl;
   cout << "-s <number of epochs to show error>" << std::endl;
   cout << "-n <number of examples for one single network>" << std::endl;
-  cout << "-z <seed (0=ranodom)>";
+  cout << "-z <seed (0=random)>";
 
   cout << "\n-------------------------------------------------\n"
        << std::endl;
