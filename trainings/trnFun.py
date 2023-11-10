@@ -165,7 +165,7 @@ def check_parameters_common(save_folder, train_data_file, train_class_file, test
 
     return save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file
 
-def check_parameters_dimlp_layer(weights_file, k, quant, hiknot):
+def check_parameters_dimlp_layer(weights_file, k, quant):
 
     if weights_file is None:
         weights_file = "weights"
@@ -183,12 +183,7 @@ def check_parameters_dimlp_layer(weights_file, k, quant, hiknot):
     elif not check_strictly_positive(quant):
         raise ValueError('Error, parameter quant is not a strictly positive number')
 
-    if hiknot is None:
-        hiknot = 5
-    elif not check_int(hiknot):
-        raise ValueError('Error, parameter hiknot is not a number')
-
-    return weights_file, k, quant, hiknot
+    return weights_file, k, quant
 
 def check_parameters_decision_trees(n_estimators, min_samples_split, min_samples_leaf, min_weight_fraction_leaf, min_impurity_decrease, random_state, max_features, verbose, max_leaf_nodes, warm_start, ccp_alpha):
 

@@ -30,7 +30,6 @@ void showFidexParams() {
   std::cout << "-d <dimension dropout parameter>" << std::endl;
   std::cout << "-h <hyperplan dropout parameter>" << std::endl;
   std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
-  std::cout << "-I <high side of the interval (5 by default)>" << std::endl;
   std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
   std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
   std::cout << "-z <seed (0=ranodom)>";
@@ -196,14 +195,6 @@ int fidex(const string &command) {
             nbQuantLevels = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
-          }
-          break;
-
-        case 'I':
-          if (CheckFloatFid(arg) && atof(arg) > 0) {
-            hiKnot = atof(arg);
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", strictly positive float requested");
           }
           break;
 
@@ -1031,11 +1022,11 @@ int fidex(const string &command) {
 
   Exemple pour lancer le code :
 
-  ./fidex -T datanorm -P dimlp.out -C dataclass2 -S testSampleDataCombine -W dimlp.wts -Q 50 -I 5 -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
+  ./fidex -T datanorm -P dimlp.out -C dataclass2 -S testSampleDataCombine -W dimlp.wts -Q 50 -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
 
-  ./fidex -T datanorm -P dimlp.out -C dataclass2 -S testData.txt -p testPred.txt -c testClass.txt -W dimlp.wts -Q 50 -I 5 -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
-  ./fidex -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -S isoletTestData.txt -p isoletTestPredV2.out -c isoletTestClass.txt -W isoletV2.wts -Q 50 -I 5 -O ruleFidex.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../dimlp/datafiles/isoletDataset
-  ./fidex -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -S Test/X_test.txt -p Test/pred_testV2.out -c Test/y_test.txt -W HAPTV2.wts -Q 50 -I 5 -O ruleFidexV2.txt -s stats -i 100 -v 2 -d 0.5 -h 0.5 -R ../dimlp/datafiles/HAPTDataset
+  ./fidex -T datanorm -P dimlp.out -C dataclass2 -S testData.txt -p testPred.txt -c testClass.txt -W dimlp.wts -Q 50 -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
+  ./fidex -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -S isoletTestData.txt -p isoletTestPredV2.out -c isoletTestClass.txt -W isoletV2.wts -Q 50 -O ruleFidex.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../dimlp/datafiles/isoletDataset
+  ./fidex -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -S Test/X_test.txt -p Test/pred_testV2.out -c Test/y_test.txt -W HAPTV2.wts -Q 50 -O ruleFidexV2.txt -s stats -i 100 -v 2 -d 0.5 -h 0.5 -R ../dimlp/datafiles/HAPTDataset
 
 
   #include <profileapi.h>

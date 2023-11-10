@@ -155,7 +155,6 @@ def crossValid(*args, **kwargs):
 
             print("----------------------------")
             print("Optional parameters if not training with decision trees :")
-            print("hiknot : high side of the interval (5 by default)")
             print("nb_stairs : number of stairs in staircase activation function (50 by default)")
 
             print("----------------------------")
@@ -306,7 +305,7 @@ def crossValid(*args, **kwargs):
             decision_threshold = kwargs.get('decision_threshold')
             seed = kwargs.get('seed')
 
-            hiknot = kwargs.get('hiknot')
+            hiknot = 5
             nb_stairs = kwargs.get('nb_stairs')
 
             pretrained_weights = kwargs.get('pretrained_weights')
@@ -399,7 +398,7 @@ def crossValid(*args, **kwargs):
             optional_args = ['save_folder', 'crossVal_folder', 'K', 'N', 'fidexGlo_heuristic', 'crossVal_stats', 'attr_file',
                         'max_iter', 'min_cov', 'dropout_dim', 'dropout_hyp', 'seed', 'positive_class_index', 'decision_threshold']
 
-            optional_non_dt_args = ['hiknot', 'nb_stairs']
+            optional_non_dt_args = ['nb_stairs']
 
             optional_dimlp_args = ['pretrained_weights', 'eta', 'mu', 'flat', 'err_thresh',
                         'acc_thresh', 'delta_err', 'nb_epochs', 'show_err']
@@ -505,8 +504,6 @@ def crossValid(*args, **kwargs):
                 with_roc = False
 
             if train_method not in {"randForest", "gradBoost"}:
-                if hiknot is None:
-                    hiknot = 5
                 if nb_stairs is None:
                     nb_stairs = 50
 
@@ -1330,7 +1327,7 @@ def crossValid(*args, **kwargs):
                                      weights = folder_path_from_root + separator + "weights", stats = folder_path_from_root + separator + "stats.txt",
                                      output_file = crossval_folder_temp + separator + "consoleTemp.txt", train_pred = folder_path_from_root + separator + "train",
                                      test_pred = folder_path_from_root + separator + "test", positive_index=positive_class_index,
-                                     output_roc=folder_path_from_root + separator + "rocCurve", save_folder = save_folder, nb_stairs = nb_stairs, hiknot = hiknot,
+                                     output_roc=folder_path_from_root + separator + "rocCurve", save_folder = save_folder, nb_stairs = nb_stairs,
                                      K = svm_k, C = c_var, kernel = kernel_var, degree = degree_var, gamma = gamma_var, coef0 = coef0_var, shrinking = shrinking_var,
                                      tol = svm_tol_var, cache_size = cache_size_var, class_weight = svm_class_weight_var, max_iter = svm_max_iter_var,
                                      decision_function_shape = decision_function_shape_var, break_ties = break_ties_var, return_roc = return_roc_var)
@@ -1352,7 +1349,7 @@ def crossValid(*args, **kwargs):
                                      test_data=folder_path_from_root + separator + "test.txt",test_class=folder_path_from_root + separator + "testTarget.txt",
                                      weights = folder_path_from_root + separator + "weights", stats = folder_path_from_root + separator + "stats.txt",
                                      output_file = crossval_folder_temp + separator + "consoleTemp.txt", train_pred = folder_path_from_root + separator + "train",
-                                     test_pred = folder_path_from_root + separator + "test", save_folder = save_folder, nb_stairs = nb_stairs, hiknot = hiknot,
+                                     test_pred = folder_path_from_root + separator + "test", save_folder = save_folder, nb_stairs = nb_stairs,
                                      K = mlp_k, hidden_layer_sizes = hidden_layer_sizes_var, activation = activation_var, solver = solver_var, alpha = alpha_var,
                                      batch_size = batch_size_var, learning_rate = mlp_learning_rate_var, learning_rate_init = learning_rate_init_var, power_t = power_t_var,
                                      max_iter = mlp_max_iter_var, shuffle = shuffle_var, tol = mlp_tol_var, warm_start = mlp_warm_start_var, momentum = momentum_var,
@@ -1439,7 +1436,6 @@ def crossValid(*args, **kwargs):
                         # Compute fidex stats in folder
                         fidex_command = "fidex"
                         if train_method in {"dimlp", "dimlpBT", "svm", "mlp"}:
-                            fidex_command +=  " -I " + str(hiknot)
                             fidex_command +=  " -Q " + str(nb_stairs)
                         if save_folder is not None:
                             fidex_command +=  " -R " + save_folder
@@ -1514,7 +1510,6 @@ def crossValid(*args, **kwargs):
                         # Compute fidexGlo rules in folder
                         fidexglo_rules_command = "fidexGloRules"
                         if train_method in {"dimlp", "dimlpBT", "svm", "mlp"}:
-                            fidexglo_rules_command +=  " -I " + str(hiknot)
                             fidexglo_rules_command +=  " -Q " + str(nb_stairs)
                         if save_folder is not None:
                             fidexglo_rules_command +=  " -S " + save_folder

@@ -31,7 +31,6 @@ def mlpTrn(*args, **kwargs):
             print("stats : output file name with train and test accuracy (stats.txt by default)")
             print("output_file : file where you redirect console result")
             print("nb_stairs : number of stairs in staircase activation function (50 by default)")
-            print("hiknot : high side of the interval (5 by default)")
             print("K : Parameter to improve dynamics (1 by default)")
             print("----------------------------")
             print("MLP parameters (optional)")
@@ -84,7 +83,7 @@ def mlpTrn(*args, **kwargs):
 
             K = kwargs.get('K')
             quant = kwargs.get('nb_stairs')
-            hiknot = kwargs.get('hiknot')
+            hiknot = 5
 
             hidden_layer_sizes_var = kwargs.get('hidden_layer_sizes')
             activation_var = kwargs.get('activation')
@@ -124,7 +123,7 @@ def mlpTrn(*args, **kwargs):
             # Check parameters
 
             valid_args = ['train_data', 'train_class', 'test_data', 'test_class', 'train_pred', 'test_pred', 'weights',
-                        'stats', 'K', 'nb_stairs', 'hiknot', 'save_folder', 'output_file', 'hidden_layer_sizes', 'activation', 'solver', 'alpha', 'batch_size', 'learning_rate',
+                        'stats', 'K', 'nb_stairs', 'save_folder', 'output_file', 'hidden_layer_sizes', 'activation', 'solver', 'alpha', 'batch_size', 'learning_rate',
                         'learning_rate_init', 'power_t', 'max_iter', 'shuffle', 'random_state', 'tol', 'verbose', 'warm_start', 'momentum', 'nesterovs_momentum', 'early_stopping',
                         'validation_fraction', 'beta_1', 'beta_2', 'epsilon', 'n_iter_no_change', 'max_fun']
 
@@ -134,7 +133,7 @@ def mlpTrn(*args, **kwargs):
                     raise ValueError(f"Invalid argument : {arg_key}")
 
             save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file)
-            weights_file, K, quant, hiknot = check_parameters_dimlp_layer(weights_file, K, quant, hiknot)
+            weights_file, K, quant = check_parameters_dimlp_layer(weights_file, K, quant)
 
             if hidden_layer_sizes_var is None:
                 hidden_layer_sizes_var = (100,)

@@ -72,7 +72,6 @@ def convKeras(*args, **kwargs):
             print("stats : output file name with train and test accuracy (stats.txt by default)")
             print("output_file : file where you redirect console result")
             print("nb_stairs : number of stairs in staircase activation function (50 by default)")
-            print("hiknot : high side of the interval (5 by default)")
             print("K : Parameter to improve dynamics (1 by default)")
             print("with_hsl : If you want to change 3-channels data from RGB to HSL format (False by default)")
             print("with_resnet : Training with ResNet (False by default)")
@@ -97,11 +96,10 @@ def convKeras(*args, **kwargs):
             stats_file = kwargs.get('stats')
             K = kwargs.get('K')
             quant = kwargs.get('nb_stairs')
-            hiknot = kwargs.get('hiknot')
             nb_epochs = kwargs.get('nb_epochs')
             with_hsl = kwargs.get('with_hsl')
             with_resnet = kwargs.get('with_resnet')
-
+            hiknot = 5
             # Redirect output in file
             if output_file != None:
                 try:
@@ -114,7 +112,7 @@ def convKeras(*args, **kwargs):
                     raise ValueError(f"Error : Couldn't open file {output_file}.")
 
             valid_args = ['dataset', 'train_data', 'train_class', 'test_data', 'test_class', 'valid_ratio', 'valid_data', 'valid_class', 'save_folder', 'output_file', 'train_valid_pred', 'test_pred', 'weights',
-                          'stats', 'K', 'nb_stairs', 'hiknot', 'nb_epochs', 'with_hsl', 'with_resnet']
+                          'stats', 'K', 'nb_stairs', 'nb_epochs', 'with_hsl', 'with_resnet']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
@@ -158,7 +156,7 @@ def convKeras(*args, **kwargs):
             elif not check_bool(with_resnet):
                 raise ValueError('Error, parameter with_resnet is not a boolean')
 
-            weights_file, K, quant, hiknot = check_parameters_dimlp_layer(weights_file, K, quant, hiknot)
+            weights_file, K, quant = check_parameters_dimlp_layer(weights_file, K, quant)
 
             model_checkpoint_weights = "weights.hdf5"
             if (save_folder is not None):
