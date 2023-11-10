@@ -29,7 +29,7 @@ void showRulesParams() {
   std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
   std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
   std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
-  std::cout << "-z <seed (0=ranodom)>";
+  std::cout << "-z <seed (0=random)>";
 
   std::cout << "\n-------------------------------------------------\n"
             << std::endl;
