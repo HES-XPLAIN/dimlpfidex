@@ -185,8 +185,9 @@ int fidex(const string &command) {
         case 'N':
           if (CheckPositiveInt(arg))
             nbDimlpNets = atoi(arg);
-          else
-            return -1;
+          else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
+          }
 
           break;
 

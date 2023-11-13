@@ -115,8 +115,7 @@ int dimlpRul(const string &command) {
         k++;
 
         if (k >= nbParam) {
-          cout << "Missing something at the end of the command." << std::endl;
-          return -1;
+          throw CommandArgumentException("Missing something at the end of the command.");
         }
 
         char option = commandList[k - 1][1];
@@ -127,7 +126,7 @@ int dimlpRul(const string &command) {
           if (CheckInt(arg))
             quant = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -135,7 +134,7 @@ int dimlpRul(const string &command) {
           if (CheckInt(arg))
             nbIn = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -149,11 +148,10 @@ int dimlpRul(const string &command) {
               std::string str(ptrParam + 2);
               archInd.Insert(std::atoi(str.c_str()));
             } else {
-              cout << "Which hidden layer (-H) ?" << std::endl;
-              return -1;
+              throw CommandArgumentException("Error : Which hidden layer (-H) ?");
             }
           } else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -161,7 +159,7 @@ int dimlpRul(const string &command) {
           if (CheckInt(arg))
             nbOut = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -226,14 +224,12 @@ int dimlpRul(const string &command) {
           break;
 
         default:
-          cout << "Illegal option: " << lastArg << "" << std::endl;
-          return -1;
+          throw CommandArgumentException("Illegal option : " + string(lastArg));
         }
       }
 
       else {
-        cout << "Illegal option: " << &(commandList[k])[0] << "" << std::endl;
-        return -1;
+        throw CommandArgumentException("Illegal option : " + string(&(commandList[k])[0]));
       }
       k++;
     }
@@ -327,24 +323,19 @@ int dimlpRul(const string &command) {
     // ----------------------------------------------------------------------
 
     if (weightFileInit == false) {
-      cout << "Give a file of weights with -W selection please."
-           << "" << std::endl;
-      return -1;
+      throw CommandArgumentException("Give a file of weights with -W selection please.");
     }
 
     if (quant <= 2) {
-      cout << "The number of quantized levels must be greater than 2." << std::endl;
-      return -1;
+      throw CommandArgumentException("The number of quantized levels must be greater than 2.");
     }
 
     if (nbIn == 0) {
-      cout << "The number of input neurons must be given with option -I." << std::endl;
-      return -1;
+      throw CommandArgumentException("The number of input neurons must be given with option -I.");
     }
 
     if (nbOut <= 1) {
-      cout << "At least two output neurons must be given with option -O." << std::endl;
-      return -1;
+      throw CommandArgumentException("At least two output neurons must be given with option -O.");
     }
 
     // ----------------------------------------------------------------------
@@ -366,9 +357,7 @@ int dimlpRul(const string &command) {
         arch.GoToBeg();
 
         if (arch.GetVal() % nbIn != 0) {
-          cout << "The number of neurons in the first hidden layer must be";
-          cout << " a multiple of the number of input neurons." << std::endl;
-          return -1;
+          throw InternalError("The number of neurons in the first hidden layer must be a multiple of the number of input neurons.");
         }
 
         nbLayers = arch.GetNbEl() + 2;
@@ -382,8 +371,7 @@ int dimlpRul(const string &command) {
           vecNbNeurons[k] = arch.GetVal();
 
           if (vecNbNeurons[k] == 0) {
-            cout << "The number of neurons must be greater than 0." << std::endl;
-            return -1;
+            throw InternalError("The number of neurons must be greater than 0.");
           }
         }
       }
@@ -401,8 +389,7 @@ int dimlpRul(const string &command) {
           vecNbNeurons[k + 1] = arch.GetVal();
 
           if (vecNbNeurons[k + 1] == 0) {
-            cout << "The number of neurons must be greater than 0." << std::endl;
-            return -1;
+            throw InternalError("The number of neurons must be greater than 0.");
           }
         }
       }
@@ -411,9 +398,7 @@ int dimlpRul(const string &command) {
     // ----------------------------------------------------------------------
 
     if (learnFileInit == false) {
-      cout << "Give the training file with -L selection please."
-           << "" << std::endl;
-      return -1;
+      throw CommandArgumentException("Give the training file with -L selection please.");
     }
 
     if (learnTarInit != false) {
@@ -533,8 +518,7 @@ int dimlpRul(const string &command) {
         }
         accFile.close();
       } else {
-        cout << "Error : could not open accuracy file " << accuracyFile << " not found." << std::endl;
-        return -1;
+        throw CannotOpenFileError("Error : could not open accuracy file " + std::string(accuracyFile));
       }
     }
 
@@ -573,8 +557,7 @@ int dimlpRul(const string &command) {
     filebuf buf;
 
     if (buf.open(rulesFile, ios_base::out) == nullptr) {
-      string errorMsg = "Cannot open file for writing";
-      WriteError(errorMsg, rulesFile);
+      throw CannotOpenFileError("Error : Cannot open rules file " + std::string(rulesFile));
     }
 
     ostream rulesFileost(&buf);

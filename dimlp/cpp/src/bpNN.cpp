@@ -152,8 +152,7 @@ void BpNN::SaveWeights() const
   filebuf buf;
 
   if (buf.open(SaveFile, ios_base::out) == nullptr) {
-    string errorMsg = "Cannot open file for writing";
-    WriteError(errorMsg, SaveFile);
+    throw CannotOpenFileError("Error : Cannot open save file " + std::string(SaveFile));
   }
 
   ostream outFile(&buf);
@@ -178,8 +177,7 @@ void BpNN::SaveWeights(const char *strSave) const
   filebuf buf;
 
   if (buf.open(strSave, ios_base::out) == nullptr) {
-    string errorMsg = "Cannot open file for writing";
-    WriteError(errorMsg, strSave);
+    throw CannotOpenFileError("Error : Cannot open save file " + std::string(strSave));
   }
   ostream outFile(&buf);
 
@@ -203,8 +201,7 @@ void BpNN::ReadWeights() const
   filebuf buf;
 
   if (buf.open(ReadFile, ios_base::in) == nullptr) {
-    string errorMsg = "Cannot open input file ";
-    WriteError(errorMsg, ReadFile);
+    throw CannotOpenFileError("Cannot open input file " + std::string(ReadFile));
   }
 
   istream inFile(&buf);
@@ -769,8 +766,7 @@ void BpNN::TrainPhase(
       }
       accFile.close();
     } else {
-      string errorMsg = "Cannot open file for writing";
-      WriteError(errorMsg, accuracyFile);
+      throw CannotOpenFileError("Error : Cannot open accuracy file " + std::string(accuracyFile));
     }
   }
 

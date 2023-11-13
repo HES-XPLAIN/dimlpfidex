@@ -3,7 +3,6 @@
 
 #include "checkFun.h"
 #include "dimlp.h"
-#include "writeErr.h"
 #include <fstream>
 #include <sstream>
 #include <stdlib.h>

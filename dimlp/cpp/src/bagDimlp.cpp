@@ -1,5 +1,4 @@
 #ifndef BAG
-#include "writeErr.h"
 #include <stdio.h>
 #include <string.h>
 #endif
@@ -84,8 +83,7 @@ void BagDimlp::TrainAll(
                 << std::endl;
         accFile.close();
       } else {
-        string errorMsg = "Cannot open file for writing";
-        WriteError(errorMsg, accuracyFile);
+        throw CannotOpenFileError("Error : Cannot open accuracy file " + std::string(accuracyFile));
       }
     }
 
