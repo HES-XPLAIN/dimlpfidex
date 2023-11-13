@@ -44,7 +44,7 @@ def imageAnalyser(dataSet):
         id_samples = range(0,100)
         show_images = False
         if dataSet == "Mnist":
-            image_folder_from_base = "dimlp/datafiles/Mnist/Mnist09"
+            image_folder_from_base = "dimlp/datafiles/Mnist"
             test_data_file = image_folder_from_base + "/mnistTestData.txt"
             test_class_file = image_folder_from_base + "/mnistTestClass.txt"
             test_pred_file = image_folder_from_base + "/predTest.out"

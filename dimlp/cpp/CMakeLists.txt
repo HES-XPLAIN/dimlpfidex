@@ -21,8 +21,6 @@ FILE(GLOB COMMON_SRC
     src/standAct.h
     src/stringI.cpp
     src/stringI.h
-    src/writeErr.cpp
-    src/writeErr.h
 )
 
 FILE(GLOB DIMLP_TRN_SRC

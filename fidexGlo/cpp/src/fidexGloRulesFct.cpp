@@ -156,7 +156,7 @@ int fidexGloRules(const string &command) {
           if (CheckPositiveInt(arg))
             nbDimlpNets = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
 
           break;
 

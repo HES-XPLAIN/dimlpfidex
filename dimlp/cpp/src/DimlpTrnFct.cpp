@@ -67,8 +67,7 @@ static void SaveOutputs(
   filebuf buf;
 
   if (buf.open(outfile, ios_base::out) == nullptr) {
-    string errorMsg = "Cannot open file for writing";
-    WriteError(errorMsg, outfile);
+    throw CannotOpenFileError("Error : Cannot open output file " + std::string(outfile));
   }
 
   std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
@@ -98,720 +97,709 @@ static void SaveOutputs(
 ////////////////////////////////////////////////////////////
 
 int dimlpTrn(const string &command) {
+  // Save buffer where we output results
+  std::ofstream ofs;
+  std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
   try {
 
-    // Save buffer where we output results
-    std::ofstream ofs;
-    std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
-    try {
-
-      float temps;
-      clock_t t1;
-      clock_t t2;
-
-      t1 = clock();
-
-      // Parsing the command
-      vector<string> commandList;
-      const char delim = ' ';
-      string s;
-      stringstream ss(command);
-      while (std::getline(ss, s, delim)) {
-        commandList.push_back(s);
-      }
-      size_t nbParam = commandList.size();
-
-      DataSet Train;
-      DataSet Test;
-      DataSet TrainClass;
-      DataSet TestClass;
-      DataSet Valid;
-      DataSet ValidClass;
-      DataSet All;
-
-      AttrName Attr;
-
-      std::shared_ptr<Dimlp> net;
-
-      float eta = 0.1f;
-      float mu = 0.6f;
-      float flat = 0.01f;
-      float errThres = -1111111111.0f;
-      float accThres = 11111111111111.0f;
-      float deltaErr = 0;
-      int showErr = 10;
-      int epochs = 1500;
-      int quant = 50;
-
-      int ruleExtr = 0;
-
-      int nbIn = 0;
-      int nbOut = 0;
-      int seed = 0;
-
-      string learnFileTemp;
-      bool learnFileInit = false;
-      string testFileTemp;
-      bool testFileInit = false;
-      string validFileTemp;
-      bool validFileInit = false;
-      string weightFileTemp;
-      bool weightFileInit = false;
-      string outputWeightFileTemp = "dimlp.wts";
-      string predTrainFileTemp = "dimlp.out";
-      string predTestFileTemp = "dimlpTest.out";
-      string predValidationFileTemp = "dimlpValidation.out";
-      string rulesFileTemp;
-      bool rulesFileInit = false;
-      string consoleFileTemp;
-      bool consoleFileInit = false;
-      string accuracyFileTemp;
-      bool accuracyFileInit = false;
-      string learnTarTemp;
-      bool learnTarInit = false;
-      string testTarTemp;
-      bool testTarInit = false;
-      string validTarTemp;
-      bool validTarInit = false;
-      string attrFileTemp;
-      bool attrFileInit = false;
-      string rootFolderTemp;
-      bool rootFolderInit = false;
-
-      int flagEp = 0;
-
-      int nbLayers;
-      int nbWeightLayers;
-      std::vector<int> vecNbNeurons;
-
-      StringInt arch;
-      StringInt archInd;
-
-      if (nbParam <= 1) {
-        GiveAllParamDimlpTrn();
-        return 0;
-      }
-
-      int k = 1; // We skip "DimlpTrn"
-      while (k < nbParam) {
-        if (commandList[k][0] == '-') {
-          k++;
-
-          if (k >= nbParam && *(&(commandList[k - 1])[0] + 1) != 'R') {
-            cout << "Missing something at the end of the command." << std::endl;
-            return -1;
-          }
-
-          char option = commandList[k - 1][1];
-          const char *arg = &(commandList[k])[0];
-          const char *lastArg = &(commandList[k - 1])[0];
-          switch (option) {
-          case 'l':
-            if (CheckFloat(arg))
-              eta = static_cast<float>(atof(arg));
-            else
-              return -1;
-
-            break;
-
-          case 'm':
-            if (CheckFloat(arg))
-              mu = static_cast<float>(atof(arg));
-            else
-              return -1;
-
-            break;
-
-          case 'f':
-            if (CheckFloat(arg))
-              flat = static_cast<float>(atof(arg));
-            else
-              return -1;
-
-            break;
-
-          case 'e':
-            if (CheckFloat(arg))
-              errThres = static_cast<float>(atof(arg));
-            else
-              return -1;
-
-            if (flagEp == 0)
-              epochs = 2000000000;
-            break;
-
-          case 'a':
-            if (CheckFloat(arg))
-              accThres = static_cast<float>(atof(arg));
-            else
-              return -1;
-
-            if (flagEp == 0)
-              epochs = 2000000000;
-            break;
-
-          case 'd':
-            if (CheckFloat(arg))
-              deltaErr = static_cast<float>(atof(arg));
-            else
-              return -1;
-
-            if (flagEp == 0)
-              epochs = 2000000000;
-            break;
-
-          case 's':
-            if (CheckInt(arg))
-              showErr = atoi(arg);
-            else
-              return -1;
-
-            break;
-
-          case 'i':
-            if (CheckInt(arg)) {
-              epochs = atoi(arg);
-              flagEp = 1;
-            } else
-              return -1;
-
-            break;
-
-          case 'q':
-            if (CheckInt(arg))
-              quant = atoi(arg);
-            else
-              return -1;
-
-            break;
-
-          case 'I':
-            if (CheckInt(arg))
-              nbIn = atoi(arg);
-            else
-              return -1;
-
-            break;
-
-          case 'H':
-            if (CheckInt(arg)) {
-              arch.Insert(atoi(arg));
-
-              const char *ptrParam = lastArg;
-
-              if (ptrParam[2] != '\0') {
-                std::string str(ptrParam + 2);
-                archInd.Insert(std::atoi(str.c_str()));
-              } else {
-                cout << "Which hidden layer (-H) ?" << std::endl;
-                return -1;
-              }
-            } else
-              return -1;
-
-            break;
-
-          case 'O':
-            if (CheckInt(arg))
-              nbOut = atoi(arg);
-            else
-              return -1;
-
-            break;
-
-          case 'z':
-            if (CheckInt(arg))
-              seed = atoi(arg);
-            else
-              return -1;
-
-            break;
-
-          case 'S':
-            rootFolderTemp = arg;
-            rootFolderInit = true;
-            break;
-
-          case 'A':
-            attrFileTemp = arg;
-            attrFileInit = true;
-            break;
-
-          case 'W':
-            weightFileTemp = arg;
-            weightFileInit = true;
-            break;
-
-          case 'w':
-            outputWeightFileTemp = arg;
-            break;
-
-          case 'p':
-            predTrainFileTemp = arg;
-            break;
-
-          case 't':
-            predTestFileTemp = arg;
-            break;
-
-          case 'v':
-            predValidationFileTemp = arg;
-            break;
-
-          case 'r':
-            consoleFileTemp = arg;
-            consoleFileInit = true;
-            break;
-
-          case 'o':
-            accuracyFileTemp = arg;
-            accuracyFileInit = true;
-            break;
-
-          case 'L':
-            learnFileTemp = arg;
-            learnFileInit = true;
-            break;
-
-          case 'T':
-            testFileTemp = arg;
-            testFileInit = true;
-            break;
-
-          case 'V':
-            validFileTemp = arg;
-            validFileInit = true;
-            break;
-
-          case '1':
-            learnTarTemp = arg;
-            learnTarInit = true;
-            break;
-
-          case '2':
-            testTarTemp = arg;
-            testTarInit = true;
-            break;
-
-          case '3':
-            validTarTemp = arg;
-            validTarInit = true;
-            break;
-
-          case 'R':
-            ruleExtr = 1;
-            k--;
-            break;
-
-          case 'F':
-            rulesFileTemp = arg;
-            rulesFileInit = true;
-            break;
-
-          default:
-            throw std::runtime_error(std::string("Illegal option: ") + lastArg);
-          }
-        }
-
-        else {
-          cout << "Illegal option: " << &(commandList[k])[0] << "" << std::endl;
-          return -1;
-        }
-
+    float temps;
+    clock_t t1;
+    clock_t t2;
+
+    t1 = clock();
+
+    // Parsing the command
+    vector<string> commandList;
+    const char delim = ' ';
+    string s;
+    stringstream ss(command);
+    while (std::getline(ss, s, delim)) {
+      commandList.push_back(s);
+    }
+    size_t nbParam = commandList.size();
+
+    DataSet Train;
+    DataSet Test;
+    DataSet TrainClass;
+    DataSet TestClass;
+    DataSet Valid;
+    DataSet ValidClass;
+    DataSet All;
+
+    AttrName Attr;
+
+    std::shared_ptr<Dimlp> net;
+
+    float eta = 0.1f;
+    float mu = 0.6f;
+    float flat = 0.01f;
+    float errThres = -1111111111.0f;
+    float accThres = 11111111111111.0f;
+    float deltaErr = 0;
+    int showErr = 10;
+    int epochs = 1500;
+    int quant = 50;
+
+    int ruleExtr = 0;
+
+    int nbIn = 0;
+    int nbOut = 0;
+    int seed = 0;
+
+    string learnFileTemp;
+    bool learnFileInit = false;
+    string testFileTemp;
+    bool testFileInit = false;
+    string validFileTemp;
+    bool validFileInit = false;
+    string weightFileTemp;
+    bool weightFileInit = false;
+    string outputWeightFileTemp = "dimlp.wts";
+    string predTrainFileTemp = "dimlp.out";
+    string predTestFileTemp = "dimlpTest.out";
+    string predValidationFileTemp = "dimlpValidation.out";
+    string rulesFileTemp;
+    bool rulesFileInit = false;
+    string consoleFileTemp;
+    bool consoleFileInit = false;
+    string accuracyFileTemp;
+    bool accuracyFileInit = false;
+    string learnTarTemp;
+    bool learnTarInit = false;
+    string testTarTemp;
+    bool testTarInit = false;
+    string validTarTemp;
+    bool validTarInit = false;
+    string attrFileTemp;
+    bool attrFileInit = false;
+    string rootFolderTemp;
+    bool rootFolderInit = false;
+
+    int flagEp = 0;
+
+    int nbLayers;
+    int nbWeightLayers;
+    std::vector<int> vecNbNeurons;
+
+    StringInt arch;
+    StringInt archInd;
+
+    if (nbParam <= 1) {
+      GiveAllParamDimlpTrn();
+      return 0;
+    }
+
+    int k = 1; // We skip "DimlpTrn"
+    while (k < nbParam) {
+      if (commandList[k][0] == '-') {
         k++;
+
+        if (k >= nbParam && *(&(commandList[k - 1])[0] + 1) != 'R') {
+          throw CommandArgumentException("Missing something at the end of the command.");
+        }
+
+        char option = commandList[k - 1][1];
+        const char *arg = &(commandList[k])[0];
+        const char *lastArg = &(commandList[k - 1])[0];
+        switch (option) {
+        case 'l':
+          if (CheckFloat(arg)) {
+            eta = static_cast<float>(atof(arg));
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+          }
+
+          break;
+
+        case 'm':
+          if (CheckFloat(arg)) {
+            mu = static_cast<float>(atof(arg));
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+          }
+
+          break;
+
+        case 'f':
+          if (CheckFloat(arg)) {
+            flat = static_cast<float>(atof(arg));
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+          }
+
+          break;
+
+        case 'e':
+          if (CheckFloat(arg)) {
+            errThres = static_cast<float>(atof(arg));
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+          }
+
+          if (flagEp == 0)
+            epochs = 2000000000;
+          break;
+
+        case 'a':
+          if (CheckFloat(arg)) {
+            accThres = static_cast<float>(atof(arg));
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+          }
+
+          if (flagEp == 0)
+            epochs = 2000000000;
+          break;
+
+        case 'd':
+          if (CheckFloat(arg)) {
+            deltaErr = static_cast<float>(atof(arg));
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+          }
+
+          if (flagEp == 0)
+            epochs = 2000000000;
+          break;
+
+        case 's':
+          if (CheckInt(arg)) {
+            showErr = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+          }
+
+          break;
+
+        case 'i':
+          if (CheckInt(arg)) {
+            epochs = atoi(arg);
+            flagEp = 1;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+          }
+
+          break;
+
+        case 'q':
+          if (CheckInt(arg)) {
+            quant = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+          }
+
+          break;
+
+        case 'I':
+          if (CheckInt(arg)) {
+            nbIn = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+          }
+
+          break;
+
+        case 'H':
+          if (CheckInt(arg)) {
+            arch.Insert(atoi(arg));
+
+            const char *ptrParam = lastArg;
+
+            if (ptrParam[2] != '\0') {
+              std::string str(ptrParam + 2);
+              archInd.Insert(std::atoi(str.c_str()));
+            } else {
+              throw CommandArgumentException("Error : Which hidden layer (-H) ?");
+            }
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+          }
+
+          break;
+
+        case 'O':
+          if (CheckInt(arg)) {
+            nbOut = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+          }
+
+          break;
+
+        case 'z':
+          if (CheckInt(arg)) {
+            seed = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+          }
+
+          break;
+
+        case 'S':
+          rootFolderTemp = arg;
+          rootFolderInit = true;
+          break;
+
+        case 'A':
+          attrFileTemp = arg;
+          attrFileInit = true;
+          break;
+
+        case 'W':
+          weightFileTemp = arg;
+          weightFileInit = true;
+          break;
+
+        case 'w':
+          outputWeightFileTemp = arg;
+          break;
+
+        case 'p':
+          predTrainFileTemp = arg;
+          break;
+
+        case 't':
+          predTestFileTemp = arg;
+          break;
+
+        case 'v':
+          predValidationFileTemp = arg;
+          break;
+
+        case 'r':
+          consoleFileTemp = arg;
+          consoleFileInit = true;
+          break;
+
+        case 'o':
+          accuracyFileTemp = arg;
+          accuracyFileInit = true;
+          break;
+
+        case 'L':
+          learnFileTemp = arg;
+          learnFileInit = true;
+          break;
+
+        case 'T':
+          testFileTemp = arg;
+          testFileInit = true;
+          break;
+
+        case 'V':
+          validFileTemp = arg;
+          validFileInit = true;
+          break;
+
+        case '1':
+          learnTarTemp = arg;
+          learnTarInit = true;
+          break;
+
+        case '2':
+          testTarTemp = arg;
+          testTarInit = true;
+          break;
+
+        case '3':
+          validTarTemp = arg;
+          validTarInit = true;
+          break;
+
+        case 'R':
+          ruleExtr = 1;
+          k--;
+          break;
+
+        case 'F':
+          rulesFileTemp = arg;
+          rulesFileInit = true;
+          break;
+
+        default:
+          throw CommandArgumentException("Illegal option : " + string(lastArg));
+        }
       }
 
-      // ----------------------------------------------------------------------
-      // create paths with root foler
+      else {
+        throw CommandArgumentException("Illegal option : " + string(&(commandList[k])[0]));
+      }
 
-      const char *learnFile = nullptr;
-      const char *testFile = nullptr;
-      const char *validFile = nullptr;
-      const char *weightFile = nullptr;
-      const char *outputWeightFile = nullptr;
-      const char *predTrainFile = nullptr;
-      const char *predTestFile = nullptr;
-      const char *predValidationFile = nullptr;
-      const char *rulesFile = nullptr;
-      const char *consoleFile = nullptr;
-      const char *accuracyFile = nullptr;
-      const char *learnTar = nullptr;
-      const char *testTar = nullptr;
-      const char *validTar = nullptr;
-      const char *attrFile = nullptr;
+      k++;
+    }
 
-      string root = "";
-      if (rootFolderInit) {
+    // ----------------------------------------------------------------------
+    // create paths with root foler
+
+    const char *learnFile = nullptr;
+    const char *testFile = nullptr;
+    const char *validFile = nullptr;
+    const char *weightFile = nullptr;
+    const char *outputWeightFile = nullptr;
+    const char *predTrainFile = nullptr;
+    const char *predTestFile = nullptr;
+    const char *predValidationFile = nullptr;
+    const char *rulesFile = nullptr;
+    const char *consoleFile = nullptr;
+    const char *accuracyFile = nullptr;
+    const char *learnTar = nullptr;
+    const char *testTar = nullptr;
+    const char *validTar = nullptr;
+    const char *attrFile = nullptr;
+
+    string root = "";
+    if (rootFolderInit) {
 #if defined(__unix__) || defined(__APPLE__)
-        root = rootFolderTemp + "/";
+      root = rootFolderTemp + "/";
 #elif defined(_WIN32)
-        root = rootFolderTemp + "\\";
+      root = rootFolderTemp + "\\";
 #endif
+    }
+
+    if (learnFileInit) {
+      learnFileTemp = root + learnFileTemp;
+      learnFile = &learnFileTemp[0];
+    }
+
+    if (testFileInit) {
+      testFileTemp = root + testFileTemp;
+      testFile = &testFileTemp[0];
+    }
+
+    if (validFileInit) {
+      validFileTemp = root + validFileTemp;
+      validFile = &validFileTemp[0];
+    }
+
+    if (weightFileInit) {
+      weightFileTemp = root + weightFileTemp;
+      weightFile = &weightFileTemp[0];
+    }
+
+    outputWeightFileTemp = root + outputWeightFileTemp;
+    outputWeightFile = &outputWeightFileTemp[0];
+
+    predTrainFileTemp = root + predTrainFileTemp;
+    predTrainFile = &predTrainFileTemp[0];
+
+    predTestFileTemp = root + predTestFileTemp;
+    predTestFile = &predTestFileTemp[0];
+
+    predValidationFileTemp = root + predValidationFileTemp;
+    predValidationFile = &predValidationFileTemp[0];
+
+    if (rulesFileInit) {
+      rulesFileTemp = root + rulesFileTemp;
+      rulesFile = &rulesFileTemp[0];
+    }
+
+    if (consoleFileInit) {
+      consoleFileTemp = root + consoleFileTemp;
+      consoleFile = &consoleFileTemp[0];
+    }
+
+    if (accuracyFileInit) {
+      accuracyFileTemp = root + accuracyFileTemp;
+      accuracyFile = &accuracyFileTemp[0];
+    }
+
+    if (learnTarInit) {
+      learnTarTemp = root + learnTarTemp;
+      learnTar = &learnTarTemp[0];
+    }
+
+    if (testTarInit) {
+      testTarTemp = root + testTarTemp;
+      testTar = &testTarTemp[0];
+    }
+
+    if (validTarInit) {
+      validTarTemp = root + validTarTemp;
+      validTar = &validTarTemp[0];
+    }
+
+    if (attrFileInit) {
+      attrFileTemp = root + attrFileTemp;
+      attrFile = &attrFileTemp[0];
+    }
+
+    // ----------------------------------------------------------------------
+
+    // Get console results to file
+    if (consoleFileInit != false) {
+      ofs.open(consoleFile);
+      std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
+    }
+
+    // ----------------------------------------------------------------------
+
+    if (eta <= 0) {
+      throw CommandArgumentException("The learning parameter must be greater than 0.");
+    }
+
+    if (mu < 0) {
+      throw CommandArgumentException("The momentum parameter must be greater or equal to 0.");
+    }
+
+    if (showErr == 0) {
+      throw CommandArgumentException("The number of epochs must be greater than 0.");
+    }
+
+    if (quant <= 2) {
+      throw CommandArgumentException("The number of quantized levels must be greater than 2.");
+    }
+
+    if (nbIn == 0) {
+      throw CommandArgumentException("The number of input neurons must be given with option -I.");
+    }
+
+    if (nbOut <= 1) {
+      throw CommandArgumentException("At least two output neurons must be given with option -O.");
+    }
+
+    // ----------------------------------------------------------------------
+
+    if (arch.GetNbEl() == 0) {
+      nbLayers = 3;
+      nbWeightLayers = nbLayers - 1;
+
+      vecNbNeurons.assign(nbLayers, 0);
+      vecNbNeurons[0] = nbIn;
+      vecNbNeurons[1] = nbIn;
+      vecNbNeurons[2] = nbOut;
+    }
+
+    else {
+      archInd.GoToBeg();
+
+      if (archInd.GetVal() == 1) {
+        arch.GoToBeg();
+
+        if (arch.GetVal() % nbIn != 0) {
+          throw InternalError("The number of neurons in the first hidden layer must be a multiple of the number of input neurons.");
+        }
+
+        nbLayers = arch.GetNbEl() + 2;
+        nbWeightLayers = nbLayers - 1;
+
+        vecNbNeurons.assign(nbLayers, 0);
+        vecNbNeurons[0] = nbIn;
+        vecNbNeurons[nbLayers - 1] = nbOut;
+
+        for (k = 1, arch.GoToBeg(); k <= arch.GetNbEl(); k++, arch.GoToNext()) {
+          vecNbNeurons[k] = arch.GetVal();
+
+          if (vecNbNeurons[k] == 0) {
+            throw InternalError("The number of neurons must be greater than 0.");
+          }
+        }
       }
 
-      if (learnFileInit) {
-        learnFileTemp = root + learnFileTemp;
-        learnFile = &learnFileTemp[0];
-      }
-
-      if (testFileInit) {
-        testFileTemp = root + testFileTemp;
-        testFile = &testFileTemp[0];
-      }
-
-      if (validFileInit) {
-        validFileTemp = root + validFileTemp;
-        validFile = &validFileTemp[0];
-      }
-
-      if (weightFileInit) {
-        weightFileTemp = root + weightFileTemp;
-        weightFile = &weightFileTemp[0];
-      }
-
-      outputWeightFileTemp = root + outputWeightFileTemp;
-      outputWeightFile = &outputWeightFileTemp[0];
-
-      predTrainFileTemp = root + predTrainFileTemp;
-      predTrainFile = &predTrainFileTemp[0];
-
-      predTestFileTemp = root + predTestFileTemp;
-      predTestFile = &predTestFileTemp[0];
-
-      predValidationFileTemp = root + predValidationFileTemp;
-      predValidationFile = &predValidationFileTemp[0];
-
-      if (rulesFileInit) {
-        rulesFileTemp = root + rulesFileTemp;
-        rulesFile = &rulesFileTemp[0];
-      }
-
-      if (consoleFileInit) {
-        consoleFileTemp = root + consoleFileTemp;
-        consoleFile = &consoleFileTemp[0];
-      }
-
-      if (accuracyFileInit) {
-        accuracyFileTemp = root + accuracyFileTemp;
-        accuracyFile = &accuracyFileTemp[0];
-      }
-
-      if (learnTarInit) {
-        learnTarTemp = root + learnTarTemp;
-        learnTar = &learnTarTemp[0];
-      }
-
-      if (testTarInit) {
-        testTarTemp = root + testTarTemp;
-        testTar = &testTarTemp[0];
-      }
-
-      if (validTarInit) {
-        validTarTemp = root + validTarTemp;
-        validTar = &validTarTemp[0];
-      }
-
-      if (attrFileInit) {
-        attrFileTemp = root + attrFileTemp;
-        attrFile = &attrFileTemp[0];
-      }
-
-      // ----------------------------------------------------------------------
-
-      // Get console results to file
-      if (consoleFileInit != false) {
-        ofs.open(consoleFile);
-        std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
-      }
-
-      // ----------------------------------------------------------------------
-
-      if (eta <= 0) {
-        cout << "The learning parameter must be greater than 0." << std::endl;
-        return -1;
-      }
-
-      if (mu < 0) {
-        cout << "The momentum parameter must be greater or equal to 0." << std::endl;
-        return -1;
-      }
-
-      if (showErr == 0) {
-        cout << "The number of epochs must be greater than 0." << std::endl;
-        return -1;
-      }
-
-      if (quant <= 2) {
-        cout << "The number of quantized levels must be greater than 2." << std::endl;
-        return -1;
-      }
-
-      if (nbIn == 0) {
-        cout << "The number of input neurons must be given with option -I." << std::endl;
-        return -1;
-      }
-
-      if (nbOut <= 1) {
-        cout << "At least two output neurons must be given with option -O." << std::endl;
-        return -1;
-      }
-
-      // ----------------------------------------------------------------------
-
-      if (arch.GetNbEl() == 0) {
-        nbLayers = 3;
+      else {
+        nbLayers = arch.GetNbEl() + 3;
         nbWeightLayers = nbLayers - 1;
 
         vecNbNeurons.assign(nbLayers, 0);
         vecNbNeurons[0] = nbIn;
         vecNbNeurons[1] = nbIn;
-        vecNbNeurons[2] = nbOut;
+        vecNbNeurons[nbLayers - 1] = nbOut;
+
+        for (k = 1, arch.GoToBeg(); k <= arch.GetNbEl(); k++, arch.GoToNext()) {
+          vecNbNeurons[k + 1] = arch.GetVal();
+
+          if (vecNbNeurons[k + 1] == 0) {
+            throw InternalError("The number of neurons must be greater than 0.");
+          }
+        }
+      }
+    }
+
+    // ----------------------------------------------------------------------
+
+    if (learnFileInit == false) {
+      throw CommandArgumentException("Give the training file with -L selection please.");
+    }
+
+    if (learnTarInit != false) {
+      DataSet train(learnFile, nbIn);
+      DataSet trainClass(learnTar, nbOut);
+
+      Train = train;
+      TrainClass = trainClass;
+    } else {
+      DataSet data(learnFile, nbIn + nbOut);
+
+      DataSet train(data.GetNbEx());
+      DataSet trainClass(data.GetNbEx());
+
+      data.ExtractDataAndTarget(train, nbIn, trainClass, nbOut);
+
+      Train = train;
+      TrainClass = trainClass;
+
+      data.Del();
+    }
+    if (validFileInit != false) {
+      if (validTarInit != false) {
+        DataSet valid(validFile, nbIn);
+        DataSet validClass(validTar, nbOut);
+
+        Valid = valid;
+        ValidClass = validClass;
       }
 
       else {
-        archInd.GoToBeg();
+        DataSet data(validFile, nbIn + nbOut);
 
-        if (archInd.GetVal() == 1) {
-          arch.GoToBeg();
+        DataSet valid(data.GetNbEx());
+        DataSet validClass(data.GetNbEx());
 
-          if (arch.GetVal() % nbIn != 0) {
-            cout << "The number of neurons in the first hidden layer must be";
-            cout << " a multiple of the number of input neurons." << std::endl;
-            return -1;
-          }
+        data.ExtractDataAndTarget(valid, nbIn, validClass, nbOut);
 
-          nbLayers = arch.GetNbEl() + 2;
-          nbWeightLayers = nbLayers - 1;
-
-          vecNbNeurons.assign(nbLayers, 0);
-          vecNbNeurons[0] = nbIn;
-          vecNbNeurons[nbLayers - 1] = nbOut;
-
-          for (k = 1, arch.GoToBeg(); k <= arch.GetNbEl(); k++, arch.GoToNext()) {
-            vecNbNeurons[k] = arch.GetVal();
-
-            if (vecNbNeurons[k] == 0) {
-              cout << "The number of neurons must be greater than 0." << std::endl;
-              return -1;
-            }
-          }
-        }
-
-        else {
-          nbLayers = arch.GetNbEl() + 3;
-          nbWeightLayers = nbLayers - 1;
-
-          vecNbNeurons.assign(nbLayers, 0);
-          vecNbNeurons[0] = nbIn;
-          vecNbNeurons[1] = nbIn;
-          vecNbNeurons[nbLayers - 1] = nbOut;
-
-          for (k = 1, arch.GoToBeg(); k <= arch.GetNbEl(); k++, arch.GoToNext()) {
-            vecNbNeurons[k + 1] = arch.GetVal();
-
-            if (vecNbNeurons[k + 1] == 0) {
-              cout << "The number of neurons must be greater than 0." << std::endl;
-              return -1;
-            }
-          }
-        }
-      }
-
-      // ----------------------------------------------------------------------
-
-      if (learnFileInit == false) {
-        cout << "Give the training file with -L selection please."
-             << "" << std::endl;
-        return -1;
-      }
-
-      if (learnTarInit != false) {
-        DataSet train(learnFile, nbIn);
-        DataSet trainClass(learnTar, nbOut);
-
-        Train = train;
-        TrainClass = trainClass;
-      } else {
-        DataSet data(learnFile, nbIn + nbOut);
-
-        DataSet train(data.GetNbEx());
-        DataSet trainClass(data.GetNbEx());
-
-        data.ExtractDataAndTarget(train, nbIn, trainClass, nbOut);
-
-        Train = train;
-        TrainClass = trainClass;
+        Valid = valid;
+        ValidClass = validClass;
 
         data.Del();
       }
-      if (validFileInit != false) {
-        if (validTarInit != false) {
-          DataSet valid(validFile, nbIn);
-          DataSet validClass(validTar, nbOut);
-
-          Valid = valid;
-          ValidClass = validClass;
-        }
-
-        else {
-          DataSet data(validFile, nbIn + nbOut);
-
-          DataSet valid(data.GetNbEx());
-          DataSet validClass(data.GetNbEx());
-
-          data.ExtractDataAndTarget(valid, nbIn, validClass, nbOut);
-
-          Valid = valid;
-          ValidClass = validClass;
-
-          data.Del();
-        }
-      }
-
-      if (testFileInit != false) {
-        if (testTarInit != false) {
-          DataSet test(testFile, nbIn);
-          DataSet testClass(testTar, nbOut);
-
-          Test = test;
-          TestClass = testClass;
-        }
-
-        else {
-          DataSet data(testFile, nbIn + nbOut);
-
-          DataSet test(data.GetNbEx());
-          DataSet testClass(data.GetNbEx());
-
-          data.ExtractDataAndTarget(test, nbIn, testClass, nbOut);
-
-          Test = test;
-          TestClass = testClass;
-
-          data.Del();
-        }
-      }
-
-      if (weightFileInit == false)
-        net = std::make_shared<Dimlp>(eta, mu, flat, errThres, accThres, deltaErr,
-                                      quant, showErr, epochs, nbLayers, vecNbNeurons, outputWeightFile, seed);
-
-      else
-        net = std::make_shared<Dimlp>(weightFile, eta, mu, flat, errThres, accThres,
-                                      deltaErr, quant, showErr, epochs,
-                                      nbLayers, vecNbNeurons, outputWeightFile, seed);
-
-      if (accuracyFileInit != false) {
-        ofstream accFile(accuracyFile);
-        if (accFile.is_open()) {
-          accFile << "Accuracy : \n"
-                  << std::endl;
-          accFile.close();
-        } else {
-          string errorMsg = "Cannot open file for writing";
-          WriteError(errorMsg, accuracyFile);
-        }
-      }
-
-      net->Train(Train, TrainClass, Test, TestClass, Valid, ValidClass, accuracyFile);
-
-      SaveOutputs(Train, net, nbOut, nbWeightLayers, predTrainFile); // Get train predictions
-      if (testFileInit != false) {
-        SaveOutputs(Test, net, nbOut, nbWeightLayers, predTestFile); // Get test predictions
-      }
-      if (validFileInit != false) {
-        SaveOutputs(Valid, net, nbOut, nbWeightLayers, predValidationFile); // Get validation predictions
-      }
-
-      if (ruleExtr) {
-
-        if (attrFileInit != false) {
-          AttrName attr(attrFile, nbIn, nbOut);
-
-          if (attr.ReadAttr())
-            cout << "\n\n"
-                 << attrFile << ": Read file of attributes.\n"
-                 << std::endl;
-
-          Attr = attr;
-        }
-
-        All = Train;
-        if (rulesFileInit != false) {
-          cout << "Extraction Part :: " << std::endl;
-        }
-
-        if (Valid.GetNbEx() > 0) {
-          DataSet all2(All, Valid);
-          All = all2;
-        }
-
-        cout << "\n\n****************************************************\n"
-             << endl;
-        cout << "*** RULE EXTRACTION" << std::endl;
-        RealHyp ryp1(All, net, quant, nbIn,
-                     vecNbNeurons[1] / nbIn, nbWeightLayers);
-        if (rulesFileInit != false) {
-          filebuf buf;
-
-          if (buf.open(rulesFile, ios_base::out) == nullptr) {
-            string errorMsg = "Cannot open file for writing";
-            WriteError(errorMsg, rulesFile);
-          }
-          ostream rulesFileost(&buf);
-          ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                              Test, TestClass, Attr, rulesFileost);
-
-          if (ryp1.TreeAborted()) {
-
-            RealHyp2 ryp2(All, net, quant, nbIn,
-                          vecNbNeurons[1] / nbIn, nbWeightLayers);
-
-            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                                Test, TestClass, Attr, rulesFileost);
-
-          } else
-
-            cout << "\n\n"
-                 << rulesFile << ": "
-                 << "Written.\n"
-                 << std::endl;
-        }
-
-        else {
-          ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                              Test, TestClass, Attr, cout);
-
-          if (ryp1.TreeAborted()) {
-
-            RealHyp2 ryp2(All, net, quant, nbIn,
-                          vecNbNeurons[1] / nbIn, nbWeightLayers);
-
-            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                                Test, TestClass, Attr, cout);
-          }
-        }
-      }
-
-      t2 = clock();
-      temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
-      std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
-
-      std::cout.rdbuf(cout_buff); // reset to standard output again
-
-      BpNN::resetInitRandomGen();
-    } catch (const char *msg) {
-      std::cout.rdbuf(cout_buff); // reset to standard output again
-      cerr << msg << endl;
-      return -1;
     }
 
-    return 0;
+    if (testFileInit != false) {
+      if (testTarInit != false) {
+        DataSet test(testFile, nbIn);
+        DataSet testClass(testTar, nbOut);
 
-  } catch (const std::exception &e) {
-    std::cerr << "Caught an exception: " << e.what() << std::endl;
+        Test = test;
+        TestClass = testClass;
+      }
+
+      else {
+        DataSet data(testFile, nbIn + nbOut);
+
+        DataSet test(data.GetNbEx());
+        DataSet testClass(data.GetNbEx());
+
+        data.ExtractDataAndTarget(test, nbIn, testClass, nbOut);
+
+        Test = test;
+        TestClass = testClass;
+
+        data.Del();
+      }
+    }
+
+    if (weightFileInit == false)
+      net = std::make_shared<Dimlp>(eta, mu, flat, errThres, accThres, deltaErr,
+                                    quant, showErr, epochs, nbLayers, vecNbNeurons, outputWeightFile, seed);
+
+    else
+      net = std::make_shared<Dimlp>(weightFile, eta, mu, flat, errThres, accThres,
+                                    deltaErr, quant, showErr, epochs,
+                                    nbLayers, vecNbNeurons, outputWeightFile, seed);
+
+    if (accuracyFileInit != false) {
+      ofstream accFile(accuracyFile);
+      if (accFile.is_open()) {
+        accFile << "Accuracy : \n"
+                << std::endl;
+        accFile.close();
+      } else {
+        throw CannotOpenFileError("Error : Cannot open accuracy file " + std::string(accuracyFile));
+      }
+    }
+
+    net->Train(Train, TrainClass, Test, TestClass, Valid, ValidClass, accuracyFile);
+
+    SaveOutputs(Train, net, nbOut, nbWeightLayers, predTrainFile); // Get train predictions
+    if (testFileInit != false) {
+      SaveOutputs(Test, net, nbOut, nbWeightLayers, predTestFile); // Get test predictions
+    }
+    if (validFileInit != false) {
+      SaveOutputs(Valid, net, nbOut, nbWeightLayers, predValidationFile); // Get validation predictions
+    }
+
+    if (ruleExtr) {
+
+      if (attrFileInit != false) {
+        AttrName attr(attrFile, nbIn, nbOut);
+
+        if (attr.ReadAttr())
+          cout << "\n\n"
+               << attrFile << ": Read file of attributes.\n"
+               << std::endl;
+
+        Attr = attr;
+      }
+
+      All = Train;
+      if (rulesFileInit != false) {
+        cout << "Extraction Part :: " << std::endl;
+      }
+
+      if (Valid.GetNbEx() > 0) {
+        DataSet all2(All, Valid);
+        All = all2;
+      }
+
+      cout << "\n\n****************************************************\n"
+           << endl;
+      cout << "*** RULE EXTRACTION" << std::endl;
+      RealHyp ryp1(All, net, quant, nbIn,
+                   vecNbNeurons[1] / nbIn, nbWeightLayers);
+      if (rulesFileInit != false) {
+        filebuf buf;
+
+        if (buf.open(rulesFile, ios_base::out) == nullptr) {
+          throw CannotOpenFileError("Error : Cannot open rules file " + std::string(rulesFile));
+        }
+        ostream rulesFileost(&buf);
+        ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                            Test, TestClass, Attr, rulesFileost);
+
+        if (ryp1.TreeAborted()) {
+
+          RealHyp2 ryp2(All, net, quant, nbIn,
+                        vecNbNeurons[1] / nbIn, nbWeightLayers);
+
+          ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                              Test, TestClass, Attr, rulesFileost);
+
+        } else
+
+          cout << "\n\n"
+               << rulesFile << ": "
+               << "Written.\n"
+               << std::endl;
+      }
+
+      else {
+        ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                            Test, TestClass, Attr, cout);
+
+        if (ryp1.TreeAborted()) {
+
+          RealHyp2 ryp2(All, net, quant, nbIn,
+                        vecNbNeurons[1] / nbIn, nbWeightLayers);
+
+          ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                              Test, TestClass, Attr, cout);
+        }
+      }
+    }
+
+    t2 = clock();
+    temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
+    std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
+
+    std::cout.rdbuf(cout_buff); // reset to standard output again
+
+    BpNN::resetInitRandomGen();
+  } catch (const char *msg) {
+    std::cout.rdbuf(cout_buff); // reset to standard output again
+    cerr << msg << endl;
     return -1;
   }
+
+  return 0;
 }
 
 /* Exemples to launch the code :

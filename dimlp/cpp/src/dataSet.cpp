@@ -23,8 +23,7 @@ int DataSet::FirstLecture(const char nameFile[]) const
   cout << "\n----------------------------------------------------------\n"
        << std::endl;
   if (buf.open(nameFile, ios_base::in) == nullptr) {
-    string errorMsg = "Cannot open input file";
-    WriteError(errorMsg, nameFile);
+    throw CannotOpenFileError("Error : Cannot open input file " + std::string(nameFile));
   }
 
   istream inFile(&buf);
@@ -38,14 +37,11 @@ int DataSet::FirstLecture(const char nameFile[]) const
   }
 
   if ((inFile.rdstate() == ifstream::badbit) || (inFile.rdstate() == ifstream::failbit)) {
-    cerr << "File position " << count + 1 << ": ";
-    string errorMsg = "problem in input file";
-    WriteError(errorMsg, nameFile);
+    throw FileContentError("Error : File position " + to_string(count + 1) + ": problem in input file " + std::string(nameFile));
   }
 
   if (count % NbAttr != 0) {
-    string errorMsg = "Possible wrong number of attributes in file";
-    WriteError(errorMsg, nameFile);
+    throw FileContentError("Error : Possible wrong number of attributes in file " + std::string(nameFile));
   }
 
   cout << nameFile << ": "

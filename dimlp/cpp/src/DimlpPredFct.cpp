@@ -45,8 +45,7 @@ static void SaveOutputs(
   filebuf buf;
 
   if (buf.open(outfile, ios_base::out) == nullptr) {
-    string errorMsg = "Cannot open file for writing";
-    WriteError(errorMsg, outfile);
+    throw CannotOpenFileError("Error : Cannot open output file " + std::string(outfile));
   }
 
   std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
@@ -126,8 +125,7 @@ int dimlpPred(const string &command) {
         k++;
 
         if (k >= nbParam) {
-          cout << "Missing something at the end of the command." << std::endl;
-          return -1;
+          throw CommandArgumentException("Missing something at the end of the command.");
         }
 
         char option = commandList[k - 1][1];
@@ -138,7 +136,7 @@ int dimlpPred(const string &command) {
           if (CheckInt(arg))
             quant = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -146,7 +144,7 @@ int dimlpPred(const string &command) {
           if (CheckInt(arg))
             nbIn = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -160,11 +158,10 @@ int dimlpPred(const string &command) {
               std::string str(ptrParam + 2);
               archInd.Insert(std::atoi(str.c_str()));
             } else {
-              cout << "Which hidden layer (-H) ?" << std::endl;
-              return -1;
+              throw CommandArgumentException("Error : Which hidden layer (-H) ?");
             }
           } else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -172,7 +169,7 @@ int dimlpPred(const string &command) {
           if (CheckInt(arg))
             nbOut = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -201,14 +198,12 @@ int dimlpPred(const string &command) {
           break;
 
         default:
-          cout << "Illegal option: " << lastArg << "" << std::endl;
-          return -1;
+          throw CommandArgumentException("Illegal option : " + string(lastArg));
         }
       }
 
       else {
-        cout << "Illegal option: " << &(commandList[k])[0] << "" << std::endl;
-        return -1;
+        throw CommandArgumentException("Illegal option : " + string(&(commandList[k])[0]));
       }
 
       k++;
@@ -261,30 +256,23 @@ int dimlpPred(const string &command) {
     // ----------------------------------------------------------------------
 
     if (quant <= 2) {
-      cout << "The number of quantized levels must be greater than 2." << std::endl;
-      return -1;
+      throw CommandArgumentException("The number of quantized levels must be greater than 2.");
     }
 
     if (nbIn == 0) {
-      cout << "The number of input neurons must be given with option -I." << std::endl;
-      return -1;
+      throw CommandArgumentException("The number of input neurons must be given with option -I.");
     }
 
     if (nbOut <= 1) {
-      cout << "At least two output neurons must be given with option -O." << std::endl;
-      return -1;
+      throw CommandArgumentException("At least two output neurons must be given with option -O.");
     }
 
     if (weightFileInit == false) {
-      cout << "Give a file of weights with -W selection please."
-           << "" << std::endl;
-      return -1;
+      throw CommandArgumentException("Give a file of weights with -W selection please.");
     }
 
     if (testFileInit == false) {
-      cout << "Give a testing file with -T selection please."
-           << "" << std::endl;
-      return -1;
+      throw CommandArgumentException("Give a testing file with -T selection please.");
     }
 
     else // if (testFileInit != false)
@@ -312,9 +300,7 @@ int dimlpPred(const string &command) {
         arch.GoToBeg();
 
         if (arch.GetVal() % nbIn != 0) {
-          cout << "The number of neurons in the first hidden layer must be";
-          cout << " a multiple of the number of input neurons." << std::endl;
-          return -1;
+          throw InternalError("The number of neurons in the first hidden layer must be a multiple of the number of input neurons.");
         }
 
         nbLayers = arch.GetNbEl() + 2;
@@ -328,8 +314,7 @@ int dimlpPred(const string &command) {
           vecNbNeurons[k] = arch.GetVal();
 
           if (vecNbNeurons[k] == 0) {
-            cout << "The number of neurons must be greater than 0." << std::endl;
-            return -1;
+            throw InternalError("The number of neurons must be greater than 0.");
           }
         }
       }
@@ -347,8 +332,7 @@ int dimlpPred(const string &command) {
           vecNbNeurons[k + 1] = arch.GetVal();
 
           if (vecNbNeurons[k + 1] == 0) {
-            cout << "The number of neurons must be greater than 0." << std::endl;
-            return -1;
+            throw InternalError("The number of neurons must be greater than 0.");
           }
         }
       }
