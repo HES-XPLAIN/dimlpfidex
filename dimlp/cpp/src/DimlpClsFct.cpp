@@ -19,15 +19,15 @@ void GiveAllParamDimlpCls()
        << std::endl;
   cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   cout << "-2 <file of classes>" << std::endl;
-  cout << "-p <output prediction file>" << std::endl;                 // If we want to specify output prediction file, not to be dimlp.out
+  cout << "-p <output prediction file (dimlp.out by default)>" << std::endl;
   cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
   cout << "-o <output file with test accuracy>" << std::endl;
-  cout << "-h <output file with first hidden layer values>" << std::endl; // Not to be dimlp.hid
+  cout << "-h <output file with first hidden layer values (dimlp.hid by default)>" << std::endl;
   cout << "-H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
   cout << "number of input neurons)" << std::endl;
   cout << "-Hk <number of neurons in the kth hidden layer>" << std::endl;
-  cout << "-q <number of stairs in staircase activation function>" << std::endl;
+  cout << "-q <number of stairs in staircase activation function (50 by default)>" << std::endl;
 
   cout << "\n-------------------------------------------------\n"
        << std::endl;

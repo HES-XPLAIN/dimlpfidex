@@ -27,14 +27,14 @@ void GiveAllParamDimlpRul()
   cout << "-1 <file of train classes>" << std::endl;
   cout << "-2 <file of test classes>" << std::endl;
   cout << "-3 <file of validation classes>" << std::endl;
-  cout << "-R <rulesFile>" << std::endl;                              // If you want to specify the rulesFile not being dimlp.rls
+  cout << "-R <rulesFile (dimlp.rls by default)>" << std::endl;
   cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
   cout << "-o <output file with train, test and validation accuracy>" << std::endl;
   cout << "-H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
   cout << "number of input neurons)" << std::endl;
   cout << "-Hk <number of neurons in the kth hidden layer>" << std::endl;
-  cout << "-q <number of stairs in staircase activation function>" << std::endl;
+  cout << "-q <number of stairs in staircase activation function (50 by default)>" << std::endl;
 
   cout << "\n-------------------------------------------------\n"
        << std::endl;

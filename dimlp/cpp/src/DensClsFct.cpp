@@ -26,8 +26,8 @@ void GiveAllParamDensCls()
   cout << "-1 <file of train classes>" << std::endl;
   cout << "-2 <file of test classes>" << std::endl;
   cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
-  cout << "-p <output train prediction file>" << std::endl;           // If we want to specify output train prediction file, not to be densCls.out
-  cout << "-t <output test prediction file>" << std::endl;            // If we want to specify output test prediction file, not to be densClsTest.out
+  cout << "-p <output train prediction file (densCls.out by default)>" << std::endl;
+  cout << "-t <output test prediction file (densClsTest.out by default)>" << std::endl;
   cout << "-o <output file with global train and test accuracy>" << std::endl;
   cout << "-H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
@@ -35,7 +35,7 @@ void GiveAllParamDensCls()
   cout << "-Hk <number of neurons in the kth hidden layer>" << std::endl;
   cout << "-R (RULE EXTRACTION)" << std::endl;
   cout << "-F <extraction ruleFile>" << std::endl; // If we want to extract rules in a rulesFile instead of console
-  cout << "-q <number of stairs in staircase activation function>" << std::endl;
+  cout << "-q <number of stairs in staircase activation function (50 by default)>" << std::endl;
 
   cout << "\n-------------------------------------------------\n"
        << std::endl;
