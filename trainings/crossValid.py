@@ -1314,7 +1314,7 @@ def crossValid(*args, **kwargs):
                             print("Enter in DimlpBT function")
                             res = dimlp.dimlpBT(dimlp_command)
                         if (res == -1):
-                            return -1 # If there is an error in the Trn
+                            raise ValueError('Error during training with Dimlp or DimlpBT')
 
                     # Training with svm
                     elif train_method == "svm":
@@ -1333,7 +1333,7 @@ def crossValid(*args, **kwargs):
                                      decision_function_shape = decision_function_shape_var, break_ties = break_ties_var, return_roc = return_roc_var)
 
                         if (res == -1):
-                            return -1 # If there is an error in the Trn
+                            raise ValueError('Error during training with SVM')
                         elif with_roc:
                             fprs.append(res[0])
                             tprs.append(res[1])
@@ -1358,7 +1358,7 @@ def crossValid(*args, **kwargs):
                                      random_state = random_state_var)
 
                         if (res == -1):
-                            return -1 # If there is an error in the Trn
+                            raise ValueError('Error during training with MLP')
 
                     # Training with random forests
                     elif train_method == "randForest":
@@ -1378,7 +1378,7 @@ def crossValid(*args, **kwargs):
                                      max_samples = max_samples_var, random_state = random_state_var)
 
                         if (res == -1):
-                            return -1 # If there is an error in the Trn
+                            raise ValueError('Error during training with Random Forests')
 
                     # Training with gradient boosting
                     else:
@@ -1399,14 +1399,14 @@ def crossValid(*args, **kwargs):
                                      random_state = random_state_var)
 
                         if (res == -1):
-                            return -1 # If there is an error in the Trn
+                            raise ValueError('Error during training with Gradient Boosting')
 
                     if train_method != "svm" and with_roc:
                         res = computeRocCurve(test_class=folder_path_from_root + separator + "testTarget.txt", test_pred = folder_path_from_root + separator + "test.out",
                                               positive_index=positive_class_index, output_roc=folder_path_from_root + separator + "rocCurve",
                                               stats_file=folder_path_from_root + separator + "stats.txt", save_folder = save_folder)
                         if (res == -1):
-                            return -1 # If there is an error in the computation of the ROC curve
+                            raise ValueError('Error during computation of ROC curve')
                         else:
                             fprs.append(res[0])
                             tprs.append(res[1])
@@ -1474,7 +1474,7 @@ def crossValid(*args, **kwargs):
                         print("Enter in fidex function")
                         res_fid = fidex.fidex(fidex_command)
                         if res_fid == -1:
-                            return -1 # If there is an error in fidex
+                            raise ValueError('Error during execution of Fidex')
 
                         # Get statistics from fidex
                         stats_file = folder_path + separator + "fidexStats.txt"
@@ -1544,7 +1544,7 @@ def crossValid(*args, **kwargs):
                         print("Enter in fidexGloRules function")
                         res_fid_glo_rules = fidexGlo.fidexGloRules(fidexglo_rules_command)
                         if res_fid_glo_rules == -1:
-                            return -1 # If there is an error in fidexGloRules
+                            raise ValueError('Error during execution of FidexGloRules')
 
                         # Compute fidexGlo statistics in folder
                         fidexglo_stats_command = "fidexGloStats"
@@ -1567,7 +1567,7 @@ def crossValid(*args, **kwargs):
                         print("Enter in fidexGloStats function")
                         res_fid_glo_stats = fidexGlo.fidexGloStats(fidexglo_stats_command)
                         if res_fid_glo_stats == -1:
-                            return -1 # If there is an error in fidexGloStats
+                            raise ValueError('Error during execution of FidexGloStats')
 
                         # Get statistics from fidexGlo
                         stats_glo_file = folder_path + separator + "fidexGloStats.txt"
