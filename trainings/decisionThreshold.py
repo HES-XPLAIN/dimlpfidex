@@ -138,7 +138,7 @@ def decisionThreshold(*args, **kwargs):
                 res = computeRocCurve(test_class = test_class, test_pred = test_pred, positive_index = positive_index_var, output_roc=output_roc_file,
                                 estimator = estimator_var, stats_file=stats_file, save_folder = save_folder)
                 if (res == -1):
-                    return -1 # If there is an error in the computation of the ROC curve
+                    raise ValueError('Error during computation of ROC curve')
                 else:
                     fpr = res[0]
                     tpr = res[1]

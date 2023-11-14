@@ -258,7 +258,7 @@ def crossValidDimlpRul(*args, **kwargs):
                         print("Enter in DensCls function")
                         res = dimlp.densCls(command)
                     if (res == -1):
-                        return -1 # If there is an error in the Rul
+                        raise ValueError('Error during computation of rules')
 
                     # Get statistics
 

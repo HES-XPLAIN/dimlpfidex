@@ -110,7 +110,7 @@ def imageAnalyser(dataSet):
             fidexglo_command = "fidexGlo -S testSampleData.txt -p testSamplePred.txt -R " + global_rules + " -O explanation.txt -F " + image_folder_from_base# + " -r imgExplanationResult.txt"
             res_fid_glo = fidexGlo.fidexGlo(fidexglo_command)
             if res_fid_glo == -1:
-                return -1
+                raise ValueError('Error during execution of FidexGlo')
 
             has_global_rule = True
             rule = ""
@@ -138,7 +138,7 @@ def imageAnalyser(dataSet):
                 fidex_command += " -d " + str(dropout_dim) + " -h " + str(dropout_hyp)
                 res_fid = fidex.fidex(fidex_command)
                 if res_fid == -1:
-                    return -1
+                    raise ValueError('Error during execution of Fidex')
 
                 with open(img_fidex_file, "r") as my_file:
                     for line in my_file:
