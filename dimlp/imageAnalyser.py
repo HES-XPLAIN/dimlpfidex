@@ -2,6 +2,8 @@ import time
 import re
 from PIL import Image
 import numpy as np
+import colorsys
+
 
 from dimlpfidex import fidex, fidexGlo
 
@@ -37,6 +39,18 @@ def output_data(datas, file, type=""):
     except (IOError):
         raise ValueError(f"Error : Couldn't open file {file}.")
 
+def hsl_to_rgb(data):
+    rgb_data = np.apply_along_axis(hsl_to_rgb_fun, -1, data)
+    return rgb_data
+
+def hsl_to_rgb_fun(hsl):
+    h, s, l = [float(x) for x in hsl]
+    r, g, b = colorsys.hls_to_rgb(h, l, s)
+    r, g, b = int(r*255), int(g*255), int(b*255)
+    return (r, g, b)
+
+
+
 def imageAnalyser(dataSet):
     try:
         start_time = time.time()
@@ -59,15 +73,17 @@ def imageAnalyser(dataSet):
             dropout_hyp = 0.9
             size1d = 28
             nb_channels = 1
-            with_hls = False
+            with_hsl = False
         elif dataSet == "Cifar10":
-            image_folder_from_base = "dimlp/datafiles/Cifar10/with_09_dropout"
-            test_data_file = image_folder_from_base + "/testData.txt"
+            with_hsl = True
+
+            image_folder_from_base = "dimlp/datafiles/Cifar10/Cifar10HSL"
+            test_data_file = image_folder_from_base + "/testDataHSL.txt"
             test_class_file = image_folder_from_base + "/testClass.txt"
             test_pred_file = image_folder_from_base + "/predTest.out"
             global_rules = "globalRules.txt"
 
-            train_data_file = "trainData.txt"
+            train_data_file = "trainDataHSL.txt"
             train_class_file = "trainClass.txt"
             train_pred_file = "predTrain.out"
             weights_file = "weights.wts"
@@ -76,7 +92,6 @@ def imageAnalyser(dataSet):
             dropout_hyp = 0.9
             size1d = 32
             nb_channels = 3
-            with_hls = True
 
         image_save_folder = image_folder_from_base + "/images"
         test_data = get_data(test_data_file)
@@ -100,7 +115,7 @@ def imageAnalyser(dataSet):
             test_sample_class = test_class[id_sample] if 0 <= id_sample < len(test_class) else None
             test_sample_pred = test_pred[id_sample] if 0 <= id_sample < len(test_pred) else None
 
-            if with_hls:
+            if with_hsl:
                 output_data(test_sample_data, test_sample_data_file)
             else:
                 output_data(test_sample_data, test_sample_data_file, "itg")
@@ -134,7 +149,7 @@ def imageAnalyser(dataSet):
                 print("No rule global rule found. We launch Fidex.")
                 fidex_command = "fidex -T " + train_data_file + " -P " + train_pred_file + " -C " + train_class_file
                 fidex_command += " -S testSampleData.txt -c testSampleClass.txt -p testSamplePred.txt -W "
-                fidex_command += weights_file + " -O imgFidexrule.txt -s imgFidexStats.txt -Q 50 -I 5 -i 100 -v 2 -R " +  image_folder_from_base
+                fidex_command += weights_file + " -O imgFidexrule.txt -s imgFidexStats.txt -Q 50 -i 100 -v 2 -R " +  image_folder_from_base
                 fidex_command += " -d " + str(dropout_dim) + " -h " + str(dropout_hyp)
                 res_fid = fidex.fidex(fidex_command)
                 if res_fid == -1:
@@ -154,9 +169,6 @@ def imageAnalyser(dataSet):
 
             # Find all matches in the input string
             matches = re.findall(pattern, rule)
-
-            # List to store antecedants
-            antecedants = []
 
             # Process each match and store in antecedants
             for match in matches:
@@ -178,6 +190,12 @@ def imageAnalyser(dataSet):
                 colorimage = [[v,v,v] for v in baseimage]
             else:
                 colorimage = baseimage
+                if with_hsl:
+                    #Image back to RGB
+                    colorimage = np.array(colorimage)
+                    colorimage = colorimage.reshape(size1d, size1d, nb_channels)
+                    colorimage = hsl_to_rgb(colorimage)
+                    colorimage = colorimage.reshape(size1d*size1d*nb_channels)
 
             for antecedant in antecedants:
                 if antecedant["inequality"] == "<":
@@ -221,6 +239,6 @@ def imageAnalyser(dataSet):
         print(error)
         return -1
 
-dataSet = "Mnist"
-#dataSet = "Cifar10"
+#dataSet = "Mnist"
+dataSet = "Cifar10"
 imageAnalyser(dataSet)
