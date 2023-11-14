@@ -19,15 +19,15 @@ void GiveAllParamDimlpBT()
   cout << "Options are: \n"
        << std::endl;
   cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  cout << "-N <number of networks>" << std::endl;
+  cout << "-N <number of networks (25 by default)>" << std::endl;
   cout << "-A <file of attributes>" << std::endl;
   cout << "-T <testing set file>" << std::endl;
   cout << "-1 <file of train classes>" << std::endl;
   cout << "-2 <file of test classes>" << std::endl;
-  cout << "-r <file where you redirect console result>" << std::endl;         // If we want to redirect console result to file
-  cout << "-w <output weights generic name file(without .wts)>" << std::endl; // If we want to specify weights output generic file name, not to be dimlpBTx.wts
-  cout << "-p <output train prediction file>" << std::endl;                   // If we want to specify output train prediction file, not to be dimlpBT.out
-  cout << "-t <output test prediction file>" << std::endl;                    // If we want to specify output test prediction file, not to be dimlpBTTest.out
+  cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  cout << "-w <output weights generic name file(without .wts, dimlpBT by default)>" << std::endl;
+  cout << "-p <output train prediction file (dimlpBT.out by default)>" << std::endl;
+  cout << "-t <output test prediction file (dimlpBTTest.out by default)>" << std::endl;
   cout << "-o <output file with train, test and validation accuracy and with the global accuracy for train and test>" << std::endl;
   cout << "-H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
@@ -35,17 +35,17 @@ void GiveAllParamDimlpBT()
   cout << "-Hk <number of neurons in the kth hidden layer>" << std::endl;
   cout << "-R (RULE EXTRACTION)" << std::endl;
   cout << "-F <extraction ruleFile>" << std::endl; // If we want to extract rules in a rulesFile instead of console
-  cout << "-l <back-propagation learning parameter (Eta)>" << std::endl;
-  cout << "-m <back-propagation momentum parameter (Mu)>" << std::endl;
-  cout << "-f <back-propagation flat spot elimination parameter (Flat)>" << std::endl;
-  cout << "-q <number of stairs in staircase activation function>" << std::endl;
-  cout << "-e <error threshold>" << std::endl;
-  cout << "-a <accuracy threshold>" << std::endl;
+  cout << "-l <back-propagation learning parameter (Eta, 0.1 by default)>" << std::endl;
+  cout << "-m <back-propagation momentum parameter (Mu, 0.6 by default)>" << std::endl;
+  cout << "-f <back-propagation flat spot elimination parameter (Flat, 0.01 by default)>" << std::endl;
+  cout << "-q <number of stairs in staircase activation function (50 by default)>" << std::endl;
+  cout << "-e <error threshold (-1111111111 by default)>" << std::endl;
+  cout << "-a <accuracy threshold (11111111111111 by default)>" << std::endl;
   cout << "-d <absolute difference error threshold>" << std::endl;
-  cout << "-i <number of epochs>" << std::endl;
-  cout << "-s <number of epochs to show error>" << std::endl;
-  cout << "-n <number of examples for one single network>" << std::endl;
-  cout << "-z <seed (0=random)>";
+  cout << "-i <number of epochs (0 by default)>" << std::endl;
+  cout << "-s <number of epochs to show error (1500 by default)>" << std::endl;
+  cout << "-n <number of examples for one single network (10 by default)>" << std::endl;
+  cout << "-z <seed (0=random, default)>";
 
   cout << "\n-------------------------------------------------\n"
        << std::endl;

@@ -27,10 +27,10 @@ void GiveAllParamDimlpTrn()
   cout << "-1 <file of train classes>" << std::endl;
   cout << "-2 <file of test classes>" << std::endl;
   cout << "-3 <file of validation classes>" << std::endl;
-  cout << "-w <output weight file>" << std::endl;                     // If we want to specify weight output file, not to be weights.wts
-  cout << "-p <output train prediction file>" << std::endl;           // If we want to specify output train prediction file, not to be dimlp.out
-  cout << "-t <output test prediction file>" << std::endl;            // If we want to specify output test prediction file, not to be dimlpTest.out
-  cout << "-v <output validation prediction file>" << std::endl;      // If we want to specify output validation prediction file, not to be dimlpValidation.out
+  cout << "-w <output weight file (weights.wts by default)>" << std::endl;
+  cout << "-p <output train prediction file (dimlp.out by default)>" << std::endl;
+  cout << "-t <output test prediction file (dimlpTest.out by default)>" << std::endl;
+  cout << "-v <output validation prediction file (dimlpValidation.out by default)>" << std::endl;
   cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
   cout << "-o <output file with train, test and validation accuracy>" << std::endl;
   cout << "-H1 <number of neurons in the first hidden layer> ";
@@ -39,16 +39,16 @@ void GiveAllParamDimlpTrn()
   cout << "-Hk <number of neurons in the kth hidden layer>" << std::endl;
   cout << "-R (RULE EXTRACTION)" << std::endl;
   cout << "-F <extraction ruleFile>" << std::endl; // If we want to extract rules in a rulesFile instead of console
-  cout << "-l <back-propagation learning parameter (Eta)>" << std::endl;
-  cout << "-m <back-propagation momentum parameter (Mu)>" << std::endl;
-  cout << "-f <back-propagation flat spot elimination parameter (Flat)>" << std::endl;
-  cout << "-q <number of stairs in staircase activation function>" << std::endl;
-  cout << "-e <error threshold>" << std::endl;
-  cout << "-a <accuracy threshold>" << std::endl;
-  cout << "-d <absolute difference error threshold>" << std::endl;
-  cout << "-i <number of epochs>" << std::endl;
-  cout << "-s <number of epochs to show error>" << std::endl;
-  cout << "-z <seed (0=random)>";
+  cout << "-l <back-propagation learning parameter (Eta, 0.1 by default)>" << std::endl;
+  cout << "-m <back-propagation momentum parameter (Mu, 0.6 by default)>" << std::endl;
+  cout << "-f <back-propagation flat spot elimination parameter (Flat, 0.01 by default)>" << std::endl;
+  cout << "-q <number of stairs in staircase activation function (50 by default)>" << std::endl;
+  cout << "-e <error threshold (-1111111111 by default)>" << std::endl;
+  cout << "-a <accuracy threshold (11111111111111 by default)>" << std::endl;
+  cout << "-d <absolute difference error threshold (0 by default)>" << std::endl;
+  cout << "-i <number of epochs (1500 by default)>" << std::endl;
+  cout << "-s <number of epochs to show error (10 by default)>" << std::endl;
+  cout << "-z <seed (0=random, default)>";
 
   cout << "\n-------------------------------------------------\n"
        << std::endl;
