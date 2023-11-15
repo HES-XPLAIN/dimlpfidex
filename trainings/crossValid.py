@@ -131,7 +131,7 @@ def crossValid(*args, **kwargs):
             print("class_file : class file")
 
             print("----------------------------")
-            print("Obligatory parameters if training with dimlp :")
+            print("Obligatory parameters if training with dimlp and DimlpBT :")
             print("nb_in : number of input neurons")
             print("nb_out : number of output neurons")
             print("dimlpRul : 1(with dimlpRul) or 0")
