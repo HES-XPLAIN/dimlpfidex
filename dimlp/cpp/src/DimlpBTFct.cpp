@@ -752,7 +752,6 @@ int dimlpBT(const string &command) {
     std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
-
     BpNN::resetInitRandomGen();
 
   } catch (const char *msg) {

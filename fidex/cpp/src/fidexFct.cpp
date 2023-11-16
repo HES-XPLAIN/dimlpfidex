@@ -705,9 +705,26 @@ int fidex(const string &command) {
     std::vector<std::vector<double>> matHypLocus;
 
     if (weightsFileInit) {
+      if (nbDimlpNets > 1) {
+        std::cout << "\nParameters of hyperLocus :\n"
+                  << std::endl;
+        std::cout << "- Number of stairs " << nbQuantLevels << std::endl;
+        std::cout << "- Interval : [-" << hiKnot << "," << hiKnot << "]" << std::endl
+                  << std::endl;
+        std::cout << "Computation of all hyperlocus" << std::endl;
+      }
       for (const auto &weightsFile : weightsFiles) {
-        std::vector<std::vector<double>> hypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
-        matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end());                      // Concatenate hypLocus to matHypLocus
+        std::vector<std::vector<double>> hypLocus;
+        if (nbDimlpNets > 1) {
+          hypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot, false); // Get hyperlocus
+        } else {
+          hypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
+        }
+
+        matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end()); // Concatenate hypLocus to matHypLocus
+      }
+      if (nbDimlpNets > 1) {
+        std::cout << "All hyperlocus created" << std::endl;
       }
     } else {
       matHypLocus = calcHypLocus(inputRulesFile, nbAttributs);
