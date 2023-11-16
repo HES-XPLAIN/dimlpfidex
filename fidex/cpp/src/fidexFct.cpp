@@ -523,7 +523,6 @@ int fidex(const string &command) {
             mainSamplePred = static_cast<int>(std::max_element(mainSampleOutputValuesPredictions.begin(), mainSampleOutputValuesPredictions.end()) - mainSampleOutputValuesPredictions.begin());
           }
 
-          mainSamplePred = static_cast<int>(std::max_element(mainSampleOutputValuesPredictions.begin(), mainSampleOutputValuesPredictions.end()) - mainSampleOutputValuesPredictions.begin());
           mainSamplesPreds.push_back(mainSamplePred);
         } else {
           while (!testData.eof()) {
@@ -543,22 +542,40 @@ int fidex(const string &command) {
           hasTrueClass.push_back(false);
           mainSamplesTrueClass.push_back(-1);
         } else {
-          // Check if true class is integer
+          // Check if true class is on the form 0 1 0 0...
           while (std::isspace(line.back())) {
             line.pop_back();
           }
           while (std::isspace(line.front())) {
             line.erase(line.begin());
           }
-          const char *trueClassTest = strdup(line.c_str());
-          if (!CheckPositiveInt(trueClassTest)) {
-            std::cout << trueClassTest << std::endl;
-            throw FileContentError("Error : in file " + std::string(mainSamplesDataFile) + ", true classes need to be positive integers");
+          std::istringstream iss(line);
+          std::vector<std::string> tokens;
+          std::string token;
+
+          while (std::getline(iss, token, ' ')) {
+            tokens.push_back(token);
           }
+          if (tokens.size() != mainSampleOutputValuesPredictions.size()) {
+            throw FileContentError("Error : in file " + std::string(mainSamplesDataFile) + ", true classes and predictions need to have the same amount of data");
+          }
+          bool classFound = false;
+          int classNum = -1;
+          for (const auto &t : tokens) {
+            if (!classFound) {
+              const char *tokenChars = t.c_str();
+              if (!(strcmp(tokenChars, "0") == 0 || strcmp(tokenChars, "1") == 0)) {
+                throw FileContentError("Error : in file " + std::string(mainSamplesDataFile) + ", true classes need to be 0 or 1");
+              }
+              if (strcmp(tokenChars, "1") == 0) {
+                classFound = true;
+              }
+              classNum += 1;
+            }
+          }
+
           hasTrueClass.push_back(true);
-          std::stringstream myLine(line);
-          myLine >> mainSampleTrueClass;
-          mainSamplesTrueClass.push_back(mainSampleTrueClass);
+          mainSamplesTrueClass.push_back(classNum);
           if (!testData.eof()) {
             getline(testData, line);
             if (!checkStringEmpty(line)) {
