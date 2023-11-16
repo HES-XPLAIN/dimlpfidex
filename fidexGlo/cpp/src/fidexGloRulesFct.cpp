@@ -19,7 +19,7 @@ void showRulesParams() {
   std::cout << "Options are: \n"
             << std::endl;
   std::cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>";
+  std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
   std::cout << "-A <file of attributes>" << std::endl;
   std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
   std::cout << "-i <max iteration number (100 by default)>" << std::endl;
