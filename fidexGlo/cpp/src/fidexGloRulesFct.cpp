@@ -19,17 +19,17 @@ void showRulesParams() {
   std::cout << "Options are: \n"
             << std::endl;
   std::cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging>";
+  std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>";
   std::cout << "-A <file of attributes>" << std::endl;
   std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
-  std::cout << "-i <max iteration number>" << std::endl;
-  std::cout << "-v <minimum covering number>" << std::endl;
+  std::cout << "-i <max iteration number (100 by default)>" << std::endl;
+  std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
   std::cout << "-d <dimension dropout parameter>" << std::endl;
   std::cout << "-h <hyperplan dropout parameter>" << std::endl;
   std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
   std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
   std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
-  std::cout << "-z <seed (0=random)>";
+  std::cout << "-z <seed (0=random, default)>";
 
   std::cout << "\n-------------------------------------------------\n"
             << std::endl;
