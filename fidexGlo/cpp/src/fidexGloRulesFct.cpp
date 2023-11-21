@@ -26,6 +26,7 @@ void showRulesParams() {
   std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
   std::cout << "-d <dimension dropout parameter>" << std::endl;
   std::cout << "-h <hyperplan dropout parameter>" << std::endl;
+  std::cout << "-m <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
   std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
   std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
   std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
@@ -98,6 +99,7 @@ int fidexGloRules(const string &command) {
     double dropoutHypParam = 0.5;
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
     double dropoutDimParam = 0.5;
+    int maxFailedAttempts = 30;
 
     bool hasDecisionThreshold = false;
     double decisionThreshold = -1;
@@ -228,6 +230,14 @@ int fidexGloRules(const string &command) {
             dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+          }
+          break;
+
+        case 'm':
+          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+            maxFailedAttempts = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
           }
           break;
 
@@ -554,7 +564,7 @@ int fidexGloRules(const string &command) {
           } else {
             counterFailed += 1;
           }
-          if (counterFailed >= 30) {
+          if (counterFailed >= maxFailedAttempts) {
             nbRulesNotFound += 1;
             auto it = std::find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
             if (it != notCoveredSamples.end()) {
@@ -666,7 +676,7 @@ int fidexGloRules(const string &command) {
           } else {
             counterFailed += 1;
           }
-          if (counterFailed >= 30) {
+          if (counterFailed >= maxFailedAttempts) {
             nbRulesNotFound += 1;
             auto it = std::find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
             if (it != notCoveredSamples.end()) {
@@ -785,7 +795,7 @@ int fidexGloRules(const string &command) {
           } else {
             counterFailed += 1;
           }
-          if (counterFailed >= 30) {
+          if (counterFailed >= maxFailedAttempts) {
             nbRulesNotFound += 1;
             break;
           }
