@@ -407,7 +407,7 @@ int fidexGloStats(const string &command) {
 
       // Check which rules are correct
       vector<int> correctRules;
-      if (activatedRules.empty()) { // If there is no activated rule
+      if (activatedRules.empty()) { // If there is no activated rule -> we would launch Fidex and so it will be fidel
         defaultRuleRate++;
         fidelity++; // It is true to the model because we choose his prediction
         nbFidelRules++;

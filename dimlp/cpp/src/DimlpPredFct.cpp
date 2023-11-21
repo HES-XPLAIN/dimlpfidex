@@ -10,7 +10,7 @@ void GiveAllParamPred()
   cout << "\n-------------------------------------------------\n"
        << std::endl;
 
-  cout << "DimlpPred -T <file of examples(path with respect to specified root folder)> ";
+  cout << "DimlpPred -T <test set file (path with respect to specified root folder)> ";
   cout << "-W <file of weights> ";
   cout << "-I <number of input neurons> -O <number of output neurons>";
 

@@ -9,7 +9,7 @@ void GiveAllParamDimlpCls()
   cout << "\n-------------------------------------------------\n"
        << std::endl;
 
-  cout << "DimlpCls -T <file of examples(path with respect to specified root folder)> ";
+  cout << "DimlpCls -T <test set file (path with respect to specified root folder)> ";
   cout << "-W <file of weights> ";
   cout << "-I <number of input neurons> -O <number of output neurons>";
   cout << " <Options>\n"

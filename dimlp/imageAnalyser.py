@@ -75,15 +75,15 @@ def imageAnalyser(dataSet):
             nb_channels = 1
             with_hsl = False
         elif dataSet == "Cifar10":
-            with_hsl = True
+            with_hsl = False
 
-            image_folder_from_base = "dimlp/datafiles/Cifar10/Cifar10HSL"
-            test_data_file = image_folder_from_base + "/testDataHSL.txt"
+            image_folder_from_base = "dimlp/datafiles/Cifar10/Cifar10Resnet"
+            test_data_file = image_folder_from_base + "/testData.txt"
             test_class_file = image_folder_from_base + "/testClass.txt"
             test_pred_file = image_folder_from_base + "/predTest.out"
-            global_rules = "globalRules.txt"
+            global_rules = "globalRulesWithTestStats.txt"
 
-            train_data_file = "trainDataHSL.txt"
+            train_data_file = "trainData.txt"
             train_class_file = "trainClass.txt"
             train_pred_file = "predTrain.out"
             weights_file = "weights.wts"
