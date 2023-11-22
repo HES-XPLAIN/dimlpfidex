@@ -51,6 +51,22 @@ void getCovering(vector<int> &sampleIds, tuple<vector<tuple<int, bool, double>>,
   }
 }
 
+void computeTFPN(int decision, int indexPositiveClass, int testTrueClass, int &nbTruePositive, int &nbFalsePositive, int &nbTrueNegative, int &nbFalseNegative) {
+  if (decision == indexPositiveClass) { // Positive prediction
+    if (decision == testTrueClass) {
+      nbTruePositive += 1;
+    } else {
+      nbFalsePositive += 1;
+    }
+  } else { // Negative prediction
+    if (testTrueClass == indexPositiveClass) {
+      nbFalseNegative += 1;
+    } else {
+      nbTrueNegative += 1;
+    }
+  }
+}
+
 int fidexGloStats(const string &command) {
   // Save buffer where we output results
   std::ofstream ofs;
@@ -392,19 +408,7 @@ int fidexGloStats(const string &command) {
         modelAccuracy++;
       }
       if (hasIndexPositiveClass) {
-        if (testPred == indexPositiveClass) { // Positive prediction
-          if (testPred == testTrueClass) {
-            nbTruePositive += 1;
-          } else {
-            nbFalsePositive += 1;
-          }
-        } else { // Negative prediction
-          if (testTrueClass == indexPositiveClass) {
-            nbFalseNegative += 1;
-          } else {
-            nbTrueNegative += 1;
-          }
-        }
+        computeTFPN(testPred, indexPositiveClass, testTrueClass, nbTruePositive, nbFalsePositive, nbTrueNegative, nbFalseNegative);
       }
 
       // Find rules activated by this sample
@@ -448,19 +452,7 @@ int fidexGloStats(const string &command) {
             // The rules' decision is different from the model's
             noCorrectRuleWithAllSameClass = true;
             if (hasIndexPositiveClass) {
-              if (decision == indexPositiveClass) { // Positive prediction
-                if (decision == testTrueClass) {
-                  nbTruePositiveRules += 1;
-                } else {
-                  nbFalsePositiveRules += 1;
-                }
-              } else { // Negative prediction
-                if (testTrueClass == indexPositiveClass) {
-                  nbFalseNegativeRules += 1;
-                } else {
-                  nbTrueNegativeRules += 1;
-                }
-              }
+              computeTFPN(decision, indexPositiveClass, testTrueClass, nbTruePositiveRules, nbFalsePositiveRules, nbTrueNegativeRules, nbFalseNegativeRules);
             }
           }
 
@@ -480,20 +472,8 @@ int fidexGloStats(const string &command) {
         }
       }
 
-      if (!noCorrectRuleWithAllSameClass && hasIndexPositiveClass) { // The rules' decision is the same as the model's
-        if (testPred == indexPositiveClass) {                        // Positive prediction
-          if (testPred == testTrueClass) {
-            nbTruePositiveRules += 1;
-          } else {
-            nbFalsePositiveRules += 1;
-          }
-        } else { // Negative prediction
-          if (testTrueClass == indexPositiveClass) {
-            nbFalseNegativeRules += 1;
-          } else {
-            nbTrueNegativeRules += 1;
-          }
-        }
+      if (!noCorrectRuleWithAllSameClass && hasIndexPositiveClass) { // The rules' decision is the same as the model's, if we can find a correct rule or if we need to compute Fidex
+        computeTFPN(testPred, indexPositiveClass, testTrueClass, nbTruePositiveRules, nbFalsePositiveRules, nbTrueNegativeRules, nbFalseNegativeRules);
       }
     }
 
