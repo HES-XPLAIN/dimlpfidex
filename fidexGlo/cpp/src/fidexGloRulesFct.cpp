@@ -493,7 +493,11 @@ int fidexGloRules(const string &command) {
         std::cout << "All hyperlocus created" << std::endl;
       }
     } else {
-      matHypLocus = calcHypLocus(inputRulesFile, nbAttributs);
+      if (attributFileInit) {
+        matHypLocus = calcHypLocus(inputRulesFile, nbAttributs, attributeNames);
+      } else {
+        matHypLocus = calcHypLocus(inputRulesFile, nbAttributs);
+      }
     }
 
     FidexGloNameSpace::Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans

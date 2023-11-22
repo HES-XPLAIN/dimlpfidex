@@ -1,4 +1,5 @@
 #include "hyperLocus.h"
+#include <regex>
 
 std::vector<std::vector<double>> calcHypLocus(const char *dataFileWeights, int nbQuantLevels, double hiKnot, bool display) {
 
@@ -51,7 +52,25 @@ std::vector<std::vector<double>> calcHypLocus(const char *dataFileWeights, int n
   return matHypLocus;
 }
 
-std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, const size_t nbAttributes) {
+std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, const size_t nbAttributes, const std::vector<std::string> &attributeNames) {
+
+  std::string line;
+  std::regex Xpattern("X(\\d+)([<>]=?)([\\d.]+)");
+  std::regex attributesPattern;
+  std::regex pattern;
+
+  // Check if attribute names are provided
+  if (!attributeNames.empty()) {
+    // Create attribute names pattern
+    std::string attrPattern;
+    for (const auto &attr : attributeNames) {
+      if (!attrPattern.empty()) {
+        attrPattern += "|";
+      }
+      attrPattern += attr;
+    }
+    attributesPattern = std::regex("(" + attrPattern + ")([<>]=?)([\\d.]+)");
+  }
 
   std::vector<std::vector<double>> matHypLocus(nbAttributes);
   std::vector<std::set<double>> thresholds(nbAttributes); // Thresholds for each attribute
@@ -61,19 +80,58 @@ std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, const size_
     throw FileNotFoundError("Error : file " + std::string(rulesFile) + " not found");
   }
 
-  std::string line;
+  // Check if the file follows the X[nb_attr] pattern or the attribute names pattern
+  bool isXPatternFound = false;
+  bool isAttributeNamesPatternFound = false;
+  while (getline(fileDta, line)) {
+    if (std::regex_search(line, Xpattern)) {
+      isXPatternFound = true;
+      break;
+    } else if (std::regex_search(line, attributesPattern)) {
+      isAttributeNamesPatternFound = true;
+      break;
+    }
+  }
+  if (!isXPatternFound && !isAttributeNamesPatternFound) {
+    throw FileContentError("Error : in file " + std::string(rulesFile) + ", antecedant of rule not in good format, it should be in the form X3<=45.3 or in the form SMOKING>0");
+  } else if (isXPatternFound) {
+    pattern = Xpattern;
+  } else {
+    pattern = attributesPattern;
+  }
+
+  // Return to the beginning of the file
+  fileDta.clear();
+  fileDta.seekg(0, std::ios::beg);
+
   // Get thresholds values from rules file
   while (getline(fileDta, line)) {
-    if (line.find("Rule") == 0) { // Si la ligne commence par "Rule"
+    if (line.find("Rule") == 0) { // If line begins with "Rule"
       std::istringstream iss(line);
       std::string token;
+      iss >> token; // "Rule"
+      iss >> token; // "1:"
       while (iss >> token) {
-        if (token.substr(0, 1) == "X") {
-          size_t index = std::stoi(token.substr(1));
-          iss >> token;
-          iss >> token;
-          double value = std::stod(token);
+        std::smatch match;
+        if (std::regex_match(token, match, pattern)) {
+          int index;
+          if (isXPatternFound) {
+            index = std::stoi(match[1]);
+          } else {
+            auto it = std::find(attributeNames.begin(), attributeNames.end(), match[1]);
+            if (it != attributeNames.end()) {
+              index = static_cast<int>(std::distance(attributeNames.begin(), it));
+            } else {
+              throw FileContentError("Error: in file " + std::string(rulesFile) + ", attribute not found in attributeNames vector, got " + token);
+            }
+          }
+          double value = std::stod(match[3]);
           thresholds[index].insert(value);
+
+        } else if (token == "->") { // end of rule
+          break;
+        } else {
+          throw FileContentError("Error : in file " + std::string(rulesFile) + ", antecedant of rule not in good format, got " + token);
         }
       }
     }

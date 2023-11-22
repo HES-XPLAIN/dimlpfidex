@@ -247,15 +247,15 @@ def recurse(tree, node, parent_path, feature_names, output_rules_file, k_dict, f
         feature_name = feature_names[node] # Get node's feature name
         threshold = tree.threshold[node] # Get node threshold
         if node == 0:
-            left_path = f"{feature_name} <= {threshold}"
+            left_path = f"{feature_name}<={threshold}"
         else:
-            left_path = f"{parent_path} & {feature_name} <= {threshold}"
+            left_path = f"{parent_path} {feature_name}<={threshold}"
         recurse(tree, tree.children_left[node], left_path, feature_names, output_rules_file, k_dict, from_grad_boost) # Check left child node
 
         if node == 0:
-            right_path = f"{feature_name} > {threshold}"
+            right_path = f"{feature_name}>{threshold}"
         else:
-            right_path = f"{parent_path} & {feature_name} > {threshold}"
+            right_path = f"{parent_path} {feature_name}>{threshold}"
         recurse(tree, tree.children_right[node], right_path, feature_names, output_rules_file, k_dict, from_grad_boost) # Check right child node
     else: # If this is a leaf
         k = k_dict["value"]
