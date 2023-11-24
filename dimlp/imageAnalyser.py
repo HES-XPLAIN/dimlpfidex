@@ -58,15 +58,18 @@ def imageAnalyser(dataSet):
         id_samples = range(0,100)
         show_images = False
         if dataSet == "Mnist":
-            image_folder_from_base = "dimlp/datafiles/Mnist"
+            image_folder_from_base = "dimlp/datafiles/Mnist/Mnist09"
             test_data_file = image_folder_from_base + "/mnistTestData.txt"
             test_class_file = image_folder_from_base + "/mnistTestClass.txt"
             test_pred_file = image_folder_from_base + "/predTest.out"
-            global_rules = "globalRules.txt"
+            global_rules = "globalRulesIt2.rls"
 
             train_data_file = "mnistTrainData.txt"
             train_class_file = "mnistTrainClass.txt"
             train_pred_file = "predTrain.out"
+
+            with_file = True
+            rules_file = "globalRules.txt"
             weights_file = "weights.wts"
 
             dropout_dim = 0.9
@@ -81,11 +84,14 @@ def imageAnalyser(dataSet):
             test_data_file = image_folder_from_base + "/testData.txt"
             test_class_file = image_folder_from_base + "/testClass.txt"
             test_pred_file = image_folder_from_base + "/predTest.out"
-            global_rules = "globalRulesWithTestStats.txt"
+            global_rules = "globalRulesWithTestStatsIt2.txt"
 
             train_data_file = "trainData.txt"
             train_class_file = "trainClass.txt"
             train_pred_file = "predTrain.out"
+
+            with_file = True
+            rules_file = "globalRules.txt"
             weights_file = "weights.wts"
 
             dropout_dim = 0.9
@@ -93,7 +99,7 @@ def imageAnalyser(dataSet):
             size1d = 32
             nb_channels = 3
 
-        image_save_folder = image_folder_from_base + "/images"
+        image_save_folder = image_folder_from_base + "/imagesIt2"
         test_data = get_data(test_data_file)
         test_class = get_data(test_class_file)
         test_pred = get_data(test_pred_file)
@@ -148,8 +154,12 @@ def imageAnalyser(dataSet):
                 nb_fidex += 1
                 print("No rule global rule found. We launch Fidex.")
                 fidex_command = "fidex -T " + train_data_file + " -P " + train_pred_file + " -C " + train_class_file
-                fidex_command += " -S testSampleData.txt -c testSampleClass.txt -p testSamplePred.txt -W "
-                fidex_command += weights_file + " -O imgFidexrule.txt -s imgFidexStats.txt -Q 50 -i 100 -v 2 -R " +  image_folder_from_base
+                fidex_command += " -S testSampleData.txt -c testSampleClass.txt -p testSamplePred.txt "
+                if with_file:
+                    fidex_command += "-f " + rules_file
+                else:
+                    fidex_command += "-W " + weights_file
+                fidex_command += " -O imgFidexrule.txt -s imgFidexStats.txt -Q 50 -i 100 -v 2 -R " +  image_folder_from_base
                 fidex_command += " -d " + str(dropout_dim) + " -h " + str(dropout_hyp)
                 res_fid = fidex.fidex(fidex_command)
                 if res_fid == -1:
