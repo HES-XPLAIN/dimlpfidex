@@ -114,7 +114,11 @@ def get_test_acc(stats_file, train_method):
     except (IOError):
         raise ValueError(f"Error : Couldn't open train stat file {stats_file}.")
 
-
+def formatting(number):
+    formatted_number = "{:.6f}".format(number).rstrip(".0")
+    if formatted_number == "":
+        formatted_number = "0"
+    return formatted_number
 
 def crossValid(*args, **kwargs):
     try:
@@ -1777,10 +1781,7 @@ def crossValid(*args, **kwargs):
                         if is_dimlprul:
                             formatted_mean_current_exec_values_dimlp = []
                             for i in range(len(mean_current_exec_values_dimlp)):
-                                formatted_val = "{:.6f}".format(mean_current_exec_values_dimlp[i]).rstrip(".0")
-                                if formatted_val == "":
-                                    formatted_val = "0"
-                                formatted_mean_current_exec_values_dimlp.append(formatted_val)
+                                formatted_mean_current_exec_values_dimlp.append(formatting(mean_current_exec_values_dimlp[i]))
                             outputStatsFile.write("Dimlp :\n")
                             outputStatsFile.write(f"The mean number of rules is: {formatted_mean_current_exec_values_dimlp[0]}\n")
                             if nb_no_rules_current_exec_dimlp > 0:
@@ -1816,10 +1817,7 @@ def crossValid(*args, **kwargs):
                         if is_fidex:
                             formatted_mean_current_exec_values_fidex = []
                             for i in range(len(mean_current_exec_values_fidex)):
-                                formatted_val = "{:.6f}".format(mean_current_exec_values_fidex[i]).rstrip(".0")
-                                if formatted_val == "":
-                                    formatted_val = "0"
-                                formatted_mean_current_exec_values_fidex.append(formatted_val)
+                                formatted_mean_current_exec_values_fidex.append(formatting(mean_current_exec_values_fidex[i]))
                             outputStatsFile.write("Fidex :\n")
                             outputStatsFile.write(f"The mean covering size per rule is: {formatted_mean_current_exec_values_fidex[0]}\n")
                             outputStatsFile.write(f"The mean number of antecedents per rule is: {formatted_mean_current_exec_values_fidex[1]}\n")
@@ -1842,10 +1840,7 @@ def crossValid(*args, **kwargs):
                         if is_fidexglo:
                             formatted_mean_current_exec_values_fidexglo = []
                             for i in range(len(mean_current_exec_values_fidexglo)):
-                                formatted_val = "{:.6f}".format(mean_current_exec_values_fidexglo[i]).rstrip(".0")
-                                if formatted_val == "":
-                                    formatted_val = "0"
-                                formatted_mean_current_exec_values_fidexglo.append(formatted_val)
+                                formatted_mean_current_exec_values_fidexglo.append(formatting(mean_current_exec_values_fidexglo[i]))
                             outputStatsFile.write("FidexGlo :\n")
                             outputStatsFile.write(f"The mean number of rules is: {formatted_mean_current_exec_values_fidexglo[0]}\n")
                             outputStatsFile.write(f"The mean sample covering number per rule is: {formatted_mean_current_exec_values_fidexglo[1]}\n")
@@ -1940,17 +1935,13 @@ def crossValid(*args, **kwargs):
                 viz.figure_.savefig(crossval_folder + separator + "ROC_curve.png")
                 plt.close(viz.figure_)
 
-                formatted_mean_auc = "{:.6f}".format(mean_auc).rstrip(".0")
-                if formatted_mean_auc == "":
-                    formatted_mean_auc = "0"
-
-                formatted_std_auc = "{:.6f}".format(std_auc).rstrip(".0")
-                if formatted_std_auc == "":
-                    formatted_std_auc = "0"
+                formatted_mean_auc = formatting(mean_auc)
+                formatted_std_auc = formatting(std_auc)
 
 
             if is_dimlprul: # For dimlpRul
                 for exec in range(n):
+                    print(mean_exec_values_dimlp[exec][8])
                     multiplier = k-mean_exec_values_dimlp[exec][8] # If there is lack of some datas (sometimes we didnt found any rules), we need to take it into account
                     mean_nb_rules_dimlp_all += multiplier*mean_exec_values_dimlp[exec][0]
                     mean_nb_cover_dimlp_all += multiplier*mean_exec_values_dimlp[exec][1]
@@ -2158,70 +2149,22 @@ def crossValid(*args, **kwargs):
 
                     if is_dimlprul:
 
-                        formatted_mean_nb_rules_dimlp_all = "{:.6f}".format(mean_nb_rules_dimlp_all).rstrip(".0")
-                        if formatted_mean_nb_rules_dimlp_all == "":
-                            formatted_mean_nb_rules_dimlp_all = "0"
-
-                        formatted_std_nb_rules_dimlp_all = "{:.6f}".format(std_nb_rules_dimlp_all).rstrip(".0")
-                        if formatted_std_nb_rules_dimlp_all == "":
-                            formatted_std_nb_rules_dimlp_all = "0"
-
-                        formatted_mean_nb_cover_dimlp_all = "{:.6f}".format(mean_nb_cover_dimlp_all).rstrip(".0")
-                        if formatted_mean_nb_cover_dimlp_all == "":
-                            formatted_mean_nb_cover_dimlp_all = "0"
-
-                        formatted_std_nb_cover_dimlp_all = "{:.6f}".format(std_nb_cover_dimlp_all).rstrip(".0")
-                        if formatted_std_nb_cover_dimlp_all == "":
-                            formatted_std_nb_cover_dimlp_all = "0"
-
-                        formatted_mean_nb_antecedants_dimlp_all = "{:.6f}".format(mean_nb_antecedants_dimlp_all).rstrip(".0")
-                        if formatted_mean_nb_antecedants_dimlp_all == "":
-                            formatted_mean_nb_antecedants_dimlp_all = "0"
-
-                        formatted_std_nb_antecedants_dimlp_all = "{:.6f}".format(std_nb_antecedants_dimlp_all).rstrip(".0")
-                        if formatted_std_nb_antecedants_dimlp_all == "":
-                            formatted_std_nb_antecedants_dimlp_all = "0"
-
-                        formatted_mean_fidel_dimlp_all = "{:.6f}".format(mean_fidel_dimlp_all).rstrip(".0")
-                        if formatted_mean_fidel_dimlp_all == "":
-                            formatted_mean_fidel_dimlp_all = "0"
-
-                        formatted_std_fidel_dimlp_all = "{:.6f}".format(std_fidel_dimlp_all).rstrip(".0")
-                        if formatted_std_fidel_dimlp_all == "":
-                            formatted_std_fidel_dimlp_all = "0"
-
-                        formatted_mean_rules_acc_dimlp_all = "{:.6f}".format(mean_rules_acc_dimlp_all).rstrip(".0")
-                        if formatted_mean_rules_acc_dimlp_all == "":
-                            formatted_mean_rules_acc_dimlp_all = "0"
-
-                        formatted_std_rules_acc_dimlp_all = "{:.6f}".format(std_rules_acc_dimlp_all).rstrip(".0")
-                        if formatted_std_rules_acc_dimlp_all == "":
-                            formatted_std_rules_acc_dimlp_all = "0"
-
-                        formatted_mean_default_rate_dimlp_all = "{:.6f}".format(mean_default_rate_dimlp_all).rstrip(".0")
-                        if formatted_mean_default_rate_dimlp_all == "":
-                            formatted_mean_default_rate_dimlp_all = "0"
-
-                        formatted_std_default_rate_dimlp_all = "{:.6f}".format(std_default_rate_dimlp_all).rstrip(".0")
-                        if formatted_std_default_rate_dimlp_all == "":
-                            formatted_std_default_rate_dimlp_all = "0"
-
-                        formatted_mean_test_acc_dimlp_all = "{:.6f}".format(mean_test_acc_dimlp_all).rstrip(".0")
-                        if formatted_mean_test_acc_dimlp_all == "":
-                            formatted_mean_test_acc_dimlp_all = "0"
-
-                        formatted_std_test_acc_dimlp_all = "{:.6f}".format(std_test_acc_dimlp_all).rstrip(".0")
-                        if formatted_std_test_acc_dimlp_all == "":
-                            formatted_std_test_acc_dimlp_all = "0"
-
-                        formatted_mean_test_acc_when_rules_and_model_agree_dimlp_all = "{:.6f}".format(mean_test_acc_when_rules_and_model_agree_dimlp_all).rstrip(".0")
-                        if formatted_mean_test_acc_when_rules_and_model_agree_dimlp_all == "":
-                            formatted_mean_test_acc_when_rules_and_model_agree_dimlp_all = "0"
-
-                        formatted_std_test_acc_when_rules_and_model_agree_dimlp_all = "{:.6f}".format(std_test_acc_when_rules_and_model_agree_dimlp_all).rstrip(".0")
-                        if formatted_std_test_acc_when_rules_and_model_agree_dimlp_all == "":
-                            formatted_std_test_acc_when_rules_and_model_agree_dimlp_all = "0"
-
+                        formatted_mean_nb_rules_dimlp_all = formatting(mean_nb_rules_dimlp_all)
+                        formatted_std_nb_rules_dimlp_all = formatting(std_nb_rules_dimlp_all)
+                        formatted_mean_nb_cover_dimlp_all = formatting(mean_nb_cover_dimlp_all)
+                        formatted_std_nb_cover_dimlp_all = formatting(std_nb_cover_dimlp_all)
+                        formatted_mean_nb_antecedants_dimlp_all = formatting(mean_nb_antecedants_dimlp_all)
+                        formatted_std_nb_antecedants_dimlp_all = formatting(std_nb_antecedants_dimlp_all)
+                        formatted_mean_fidel_dimlp_all = formatting(mean_fidel_dimlp_all)
+                        formatted_std_fidel_dimlp_all = formatting(std_fidel_dimlp_all)
+                        formatted_mean_rules_acc_dimlp_all = formatting(mean_rules_acc_dimlp_all)
+                        formatted_std_rules_acc_dimlp_all = formatting(std_rules_acc_dimlp_all)
+                        formatted_mean_default_rate_dimlp_all = formatting(mean_default_rate_dimlp_all)
+                        formatted_std_default_rate_dimlp_all = formatting(std_default_rate_dimlp_all)
+                        formatted_mean_test_acc_dimlp_all = formatting(mean_test_acc_dimlp_all)
+                        formatted_std_test_acc_dimlp_all = formatting(std_test_acc_dimlp_all)
+                        formatted_mean_test_acc_when_rules_and_model_agree_dimlp_all = formatting(mean_test_acc_when_rules_and_model_agree_dimlp_all)
+                        formatted_std_test_acc_when_rules_and_model_agree_dimlp_all = formatting(std_test_acc_when_rules_and_model_agree_dimlp_all)
                         outputStatsFile.write("Dimlp :\n")
                         outputStatsFile.write(f"The mean number of rules is: {formatted_mean_nb_rules_dimlp_all}\n")
                         if nb_no_rules_dimlp > 0:
@@ -2275,45 +2218,16 @@ def crossValid(*args, **kwargs):
 
                     if is_fidex:
 
-                        formatted_mean_cov_size_fid_all = "{:.6f}".format(mean_cov_size_fid_all).rstrip(".0")
-                        if formatted_mean_cov_size_fid_all == "":
-                            formatted_mean_cov_size_fid_all = "0"
-
-                        formatted_std_cov_size_fid_all = "{:.6f}".format(std_cov_size_fid_all).rstrip(".0")
-                        if formatted_std_cov_size_fid_all == "":
-                            formatted_std_cov_size_fid_all = "0"
-
-                        formatted_mean_nb_ant_fid_all = "{:.6f}".format(mean_nb_ant_fid_all).rstrip(".0")
-                        if formatted_mean_nb_ant_fid_all == "":
-                            formatted_mean_nb_ant_fid_all = "0"
-
-                        formatted_std_nb_ant_fid_all = "{:.6f}".format(std_nb_ant_fid_all).rstrip(".0")
-                        if formatted_std_nb_ant_fid_all == "":
-                            formatted_std_nb_ant_fid_all = "0"
-
-                        formatted_mean_fidel_fid_all = "{:.6f}".format(mean_fidel_fid_all).rstrip(".0")
-                        if formatted_mean_fidel_fid_all == "":
-                            formatted_mean_fidel_fid_all = "0"
-
-                        formatted_std_fidel_fid_all = "{:.6f}".format(std_fidel_fid_all).rstrip(".0")
-                        if formatted_std_fidel_fid_all == "":
-                            formatted_std_fidel_fid_all = "0"
-
-                        formatted_mean_rules_acc_fid_all = "{:.6f}".format(mean_rules_acc_fid_all).rstrip(".0")
-                        if formatted_mean_rules_acc_fid_all == "":
-                            formatted_mean_rules_acc_fid_all = "0"
-
-                        formatted_std_rules_acc_fid_all = "{:.6f}".format(std_rules_acc_fid_all).rstrip(".0")
-                        if formatted_std_rules_acc_fid_all == "":
-                            formatted_std_rules_acc_fid_all = "0"
-
-                        formatted_mean_confid_fid_all = "{:.6f}".format(mean_confid_fid_all).rstrip(".0")
-                        if formatted_mean_confid_fid_all == "":
-                            formatted_mean_confid_fid_all = "0"
-
-                        formatted_std_confid_fid_all = "{:.6f}".format(std_confid_fid_all).rstrip(".0")
-                        if formatted_std_confid_fid_all == "":
-                            formatted_std_confid_fid_all = "0"
+                        formatted_mean_cov_size_fid_all = formatting(mean_cov_size_fid_all)
+                        formatted_std_cov_size_fid_all = formatting(std_cov_size_fid_all)
+                        formatted_mean_nb_ant_fid_all = formatting(mean_nb_ant_fid_all)
+                        formatted_std_nb_ant_fid_all = formatting(std_nb_ant_fid_all)
+                        formatted_mean_fidel_fid_all = formatting(mean_fidel_fid_all)
+                        formatted_std_fidel_fid_all = formatting(std_fidel_fid_all)
+                        formatted_mean_rules_acc_fid_all = formatting(mean_rules_acc_fid_all)
+                        formatted_std_rules_acc_fid_all = formatting(std_rules_acc_fid_all)
+                        formatted_mean_confid_fid_all = formatting(mean_confid_fid_all)
+                        formatted_std_confid_fid_all = formatting(std_confid_fid_all)
 
                         outputStatsFile.write("Fidex :\n")
                         outputStatsFile.write(f"The mean covering size per rule is : {formatted_mean_cov_size_fid_all}\n")
@@ -2348,231 +2262,65 @@ def crossValid(*args, **kwargs):
 
                     if is_fidexglo:
 
-                        formatted_mean_nb_rules_all = "{:.6f}".format(mean_nb_rules_all).rstrip(".0")
-                        if formatted_mean_nb_rules_all == "":
-                            formatted_mean_nb_rules_all = "0"
-
-                        formatted_std_nb_rules_all = "{:.6f}".format(std_nb_rules_all).rstrip(".0")
-                        if formatted_std_nb_rules_all == "":
-                            formatted_std_nb_rules_all = "0"
-
-                        formatted_mean_nb_cover_all = "{:.6f}".format(mean_nb_cover_all).rstrip(".0")
-                        if formatted_mean_nb_cover_all == "":
-                            formatted_mean_nb_cover_all = "0"
-
-                        formatted_std_nb_cover_all = "{:.6f}".format(std_nb_cover_all).rstrip(".0")
-                        if formatted_std_nb_cover_all == "":
-                            formatted_std_nb_cover_all = "0"
-
-                        formatted_mean_nb_antecedants_all = "{:.6f}".format(mean_nb_antecedants_all).rstrip(".0")
-                        if formatted_mean_nb_antecedants_all == "":
-                            formatted_mean_nb_antecedants_all = "0"
-
-                        formatted_std_nb_antecedants_all = "{:.6f}".format(std_nb_antecedants_all).rstrip(".0")
-                        if formatted_std_nb_antecedants_all == "":
-                            formatted_std_nb_antecedants_all = "0"
-
-                        formatted_mean_fidel_glo_all = "{:.6f}".format(mean_fidel_glo_all).rstrip(".0")
-                        if formatted_mean_fidel_glo_all == "":
-                            formatted_mean_fidel_glo_all = "0"
-
-                        formatted_std_fidel_glo_all = "{:.6f}".format(std_fidel_glo_all).rstrip(".0")
-                        if formatted_std_fidel_glo_all == "":
-                            formatted_std_fidel_glo_all = "0"
-
-                        formatted_mean_rules_acc_glo_all = "{:.6f}".format(mean_rules_acc_glo_all).rstrip(".0")
-                        if formatted_mean_rules_acc_glo_all == "":
-                            formatted_mean_rules_acc_glo_all = "0"
-
-                        formatted_std_rules_acc_glo_all = "{:.6f}".format(std_rules_acc_glo_all).rstrip(".0")
-                        if formatted_std_rules_acc_glo_all == "":
-                            formatted_std_rules_acc_glo_all = "0"
-
-                        formatted_mean_expl_glo_all = "{:.6f}".format(mean_expl_glo_all).rstrip(".0")
-                        if formatted_mean_expl_glo_all == "":
-                            formatted_mean_expl_glo_all = "0"
-
-                        formatted_std_expl_glo_all = "{:.6f}".format(std_expl_glo_all).rstrip(".0")
-                        if formatted_std_expl_glo_all == "":
-                            formatted_std_expl_glo_all = "0"
-
-                        formatted_mean_default_rate_all = "{:.6f}".format(mean_default_rate_all).rstrip(".0")
-                        if formatted_mean_default_rate_all == "":
-                            formatted_mean_default_rate_all = "0"
-
-                        formatted_std_default_rate_all = "{:.6f}".format(std_default_rate_all).rstrip(".0")
-                        if formatted_std_default_rate_all == "":
-                            formatted_std_default_rate_all = "0"
-
-                        formatted_mean_nb_fidel_activations_all = "{:.6f}".format(mean_nb_fidel_activations_all).rstrip(".0")
-                        if formatted_mean_nb_fidel_activations_all == "":
-                            formatted_mean_nb_fidel_activations_all = "0"
-
-                        formatted_std_nb_fidel_activations_all = "{:.6f}".format(std_nb_fidel_activations_all).rstrip(".0")
-                        if formatted_std_nb_fidel_activations_all == "":
-                            formatted_std_nb_fidel_activations_all = "0"
-
-                        formatted_mean_wrong_activations_all = "{:.6f}".format(mean_wrong_activations_all).rstrip(".0")
-                        if formatted_mean_wrong_activations_all == "":
-                            formatted_mean_wrong_activations_all = "0"
-
-                        formatted_std_wrong_activations_all = "{:.6f}".format(std_wrong_activations_all).rstrip(".0")
-                        if formatted_std_wrong_activations_all == "":
-                            formatted_std_wrong_activations_all = "0"
-
-                        formatted_mean_test_acc_glo_all = "{:.6f}".format(mean_test_acc_glo_all).rstrip(".0")
-                        if formatted_mean_test_acc_glo_all == "":
-                            formatted_mean_test_acc_glo_all = "0"
-
-                        formatted_std_test_acc_glo_all = "{:.6f}".format(std_test_acc_glo_all).rstrip(".0")
-                        if formatted_std_test_acc_glo_all == "":
-                            formatted_std_test_acc_glo_all = "0"
-
-                        formatted_mean_test_acc_when_rules_and_model_agree_all = "{:.6f}".format(mean_test_acc_when_rules_and_model_agree_all).rstrip(".0")
-                        if formatted_mean_test_acc_when_rules_and_model_agree_all == "":
-                            formatted_mean_test_acc_when_rules_and_model_agree_all = "0"
-
-                        formatted_std_test_acc_when_rules_and_model_agree_all = "{:.6f}".format(std_test_acc_when_rules_and_model_agree_all).rstrip(".0")
-                        if formatted_std_test_acc_when_rules_and_model_agree_all == "":
-                            formatted_std_test_acc_when_rules_and_model_agree_all = "0"
-
-                        formatted_mean_test_acc_when_activated_rules_and_model_agree_all = "{:.6f}".format(mean_test_acc_when_activated_rules_and_model_agree_all).rstrip(".0")
-                        if formatted_mean_test_acc_when_activated_rules_and_model_agree_all == "":
-                            formatted_mean_test_acc_when_activated_rules_and_model_agree_all = "0"
-
-                        formatted_std_test_acc_when_activated_rules_and_model_agree_all = "{:.6f}".format(std_test_acc_when_activated_rules_and_model_agree_all).rstrip(".0")
-                        if formatted_std_test_acc_when_activated_rules_and_model_agree_all == "":
-                            formatted_std_test_acc_when_activated_rules_and_model_agree_all = "0"
+                        formatted_mean_nb_rules_all = formatting(mean_nb_rules_all)
+                        formatted_std_nb_rules_all = formatting(std_nb_rules_all)
+                        formatted_mean_nb_cover_all = formatting(mean_nb_cover_all)
+                        formatted_std_nb_cover_all = formatting(std_nb_cover_all)
+                        formatted_mean_nb_antecedants_all = formatting(mean_nb_antecedants_all)
+                        formatted_std_nb_antecedants_all = formatting(std_nb_antecedants_all)
+                        formatted_mean_fidel_glo_all = formatting(mean_fidel_glo_all)
+                        formatted_std_fidel_glo_all = formatting(std_fidel_glo_all)
+                        formatted_mean_rules_acc_glo_all = formatting(mean_rules_acc_glo_all)
+                        formatted_std_rules_acc_glo_all = formatting(std_rules_acc_glo_all)
+                        formatted_mean_expl_glo_all = formatting(mean_expl_glo_all)
+                        formatted_std_expl_glo_all = formatting(std_expl_glo_all)
+                        formatted_mean_default_rate_all = formatting(mean_default_rate_all)
+                        formatted_std_default_rate_all = formatting(std_default_rate_all)
+                        formatted_mean_nb_fidel_activations_all = formatting(mean_nb_fidel_activations_all)
+                        formatted_std_nb_fidel_activations_all = formatting(std_nb_fidel_activations_all)
+                        formatted_mean_wrong_activations_all = formatting(mean_wrong_activations_all)
+                        formatted_std_wrong_activations_all = formatting(std_wrong_activations_all)
+                        formatted_mean_test_acc_glo_all = formatting(mean_test_acc_glo_all)
+                        formatted_std_test_acc_glo_all = formatting(std_test_acc_glo_all)
+                        formatted_mean_test_acc_when_rules_and_model_agree_all = formatting(mean_test_acc_when_rules_and_model_agree_all)
+                        formatted_std_test_acc_when_rules_and_model_agree_all = formatting(std_test_acc_when_rules_and_model_agree_all)
+                        formatted_mean_test_acc_when_activated_rules_and_model_agree_all = formatting(mean_test_acc_when_activated_rules_and_model_agree_all)
+                        formatted_std_test_acc_when_activated_rules_and_model_agree_all = formatting(std_test_acc_when_activated_rules_and_model_agree_all)
 
                         if with_roc:
 
-                            formatted_mean_nb_true_positive_all = "{:.6f}".format(mean_nb_true_positive_all).rstrip(".0")
-                            if formatted_mean_nb_true_positive_all == "":
-                                formatted_mean_nb_true_positive_all = "0"
-
-                            formatted_std_nb_true_positive_all = "{:.6f}".format(std_nb_true_positive_all).rstrip(".0")
-                            if formatted_std_nb_true_positive_all == "":
-                                formatted_std_nb_true_positive_all = "0"
-
-                            formatted_mean_nb_false_positive_all = "{:.6f}".format(mean_nb_false_positive_all).rstrip(".0")
-                            if formatted_mean_nb_false_positive_all == "":
-                                formatted_mean_nb_false_positive_all = "0"
-
-                            formatted_std_nb_false_positive_all = "{:.6f}".format(std_nb_false_positive_all).rstrip(".0")
-                            if formatted_std_nb_false_positive_all == "":
-                                formatted_std_nb_false_positive_all = "0"
-
-                            formatted_mean_nb_true_negative_all = "{:.6f}".format(mean_nb_true_negative_all).rstrip(".0")
-                            if formatted_mean_nb_true_negative_all == "":
-                                formatted_mean_nb_true_negative_all = "0"
-
-                            formatted_std_nb_true_negative_all = "{:.6f}".format(std_nb_true_negative_all).rstrip(".0")
-                            if formatted_std_nb_true_negative_all == "":
-                                formatted_std_nb_true_negative_all = "0"
-
-                            formatted_mean_nb_false_negative_all = "{:.6f}".format(mean_nb_false_negative_all).rstrip(".0")
-                            if formatted_mean_nb_false_negative_all == "":
-                                formatted_mean_nb_false_negative_all = "0"
-
-                            formatted_std_nb_false_negative_all = "{:.6f}".format(std_nb_false_negative_all).rstrip(".0")
-                            if formatted_std_nb_false_negative_all == "":
-                                formatted_std_nb_false_negative_all = "0"
-
-                            formatted_mean_false_positive_rate_all = "{:.6f}".format(mean_false_positive_rate_all).rstrip(".0")
-                            if formatted_mean_false_positive_rate_all == "":
-                                formatted_mean_false_positive_rate_all = "0"
-
-                            formatted_std_false_positive_rate_all = "{:.6f}".format(std_false_positive_rate_all).rstrip(".0")
-                            if formatted_std_false_positive_rate_all == "":
-                                formatted_std_false_positive_rate_all = "0"
-
-                            formatted_mean_false_negative_rate_all = "{:.6f}".format(mean_false_negative_rate_all).rstrip(".0")
-                            if formatted_mean_false_negative_rate_all == "":
-                                formatted_mean_false_negative_rate_all = "0"
-
-                            formatted_std_false_negative_rate_all = "{:.6f}".format(std_false_negative_rate_all).rstrip(".0")
-                            if formatted_std_false_negative_rate_all == "":
-                                formatted_std_false_negative_rate_all = "0"
-
-                            formatted_mean_precision_all = "{:.6f}".format(mean_precision_all).rstrip(".0")
-                            if formatted_mean_precision_all == "":
-                                formatted_mean_precision_all = "0"
-
-                            formatted_std_precision_all = "{:.6f}".format(std_precision_all).rstrip(".0")
-                            if formatted_std_precision_all == "":
-                                formatted_std_precision_all = "0"
-
-                            formatted_mean_recall_all = "{:.6f}".format(mean_recall_all).rstrip(".0")
-                            if formatted_mean_recall_all == "":
-                                formatted_mean_recall_all = "0"
-
-                            formatted_std_recall_all = "{:.6f}".format(std_recall_all).rstrip(".0")
-                            if formatted_std_recall_all == "":
-                                formatted_std_recall_all = "0"
-
-                            formatted_mean_nb_true_positive_rule_all = "{:.6f}".format(mean_nb_true_positive_rule_all).rstrip(".0")
-                            if formatted_mean_nb_true_positive_rule_all == "":
-                                formatted_mean_nb_true_positive_rule_all = "0"
-
-                            formatted_std_nb_true_positive_rule_all = "{:.6f}".format(std_nb_true_positive_rule_all).rstrip(".0")
-                            if formatted_std_nb_true_positive_rule_all == "":
-                                formatted_std_nb_true_positive_rule_all = "0"
-
-                            formatted_mean_nb_false_positive_rule_all = "{:.6f}".format(mean_nb_false_positive_rule_all).rstrip(".0")
-                            if formatted_mean_nb_false_positive_rule_all == "":
-                                formatted_mean_nb_false_positive_rule_all = "0"
-
-                            formatted_std_nb_false_positive_rule_all = "{:.6f}".format(std_nb_false_positive_rule_all).rstrip(".0")
-                            if formatted_std_nb_false_positive_rule_all == "":
-                                formatted_std_nb_false_positive_rule_all = "0"
-
-                            formatted_mean_nb_true_negative_rule_all = "{:.6f}".format(mean_nb_true_negative_rule_all).rstrip(".0")
-                            if formatted_mean_nb_true_negative_rule_all == "":
-                                formatted_mean_nb_true_negative_rule_all = "0"
-
-                            formatted_std_nb_true_negative_rule_all = "{:.6f}".format(std_nb_true_negative_rule_all).rstrip(".0")
-                            if formatted_std_nb_true_negative_rule_all == "":
-                                formatted_std_nb_true_negative_rule_all = "0"
-
-                            formatted_mean_nb_false_negative_rule_all = "{:.6f}".format(mean_nb_false_negative_rule_all).rstrip(".0")
-                            if formatted_mean_nb_false_negative_rule_all == "":
-                                formatted_mean_nb_false_negative_rule_all = "0"
-
-                            formatted_std_nb_false_negative_rule_all = "{:.6f}".format(std_nb_false_negative_rule_all).rstrip(".0")
-                            if formatted_std_nb_false_negative_rule_all == "":
-                                formatted_std_nb_false_negative_rule_all = "0"
-
-                            formatted_mean_false_positive_rate_rule_all = "{:.6f}".format(mean_false_positive_rate_rule_all).rstrip(".0")
-                            if formatted_mean_false_positive_rate_rule_all == "":
-                                formatted_mean_false_positive_rate_rule_all = "0"
-
-                            formatted_std_false_positive_rate_rule_all = "{:.6f}".format(std_false_positive_rate_rule_all).rstrip(".0")
-                            if formatted_std_false_positive_rate_rule_all == "":
-                                formatted_std_false_positive_rate_rule_all = "0"
-
-                            formatted_mean_false_negative_rate_rule_all = "{:.6f}".format(mean_false_negative_rate_rule_all).rstrip(".0")
-                            if formatted_mean_false_negative_rate_rule_all == "":
-                                formatted_mean_false_negative_rate_rule_all = "0"
-
-                            formatted_std_false_negative_rate_rule_all = "{:.6f}".format(std_false_negative_rate_rule_all).rstrip(".0")
-                            if formatted_std_false_negative_rate_rule_all == "":
-                                formatted_std_false_negative_rate_rule_all = "0"
-
-                            formatted_mean_precision_rule_all = "{:.6f}".format(mean_precision_rule_all).rstrip(".0")
-                            if formatted_mean_precision_rule_all == "":
-                                formatted_mean_precision_rule_all = "0"
-
-                            formatted_std_precision_rule_all = "{:.6f}".format(std_precision_rule_all).rstrip(".0")
-                            if formatted_std_precision_rule_all == "":
-                                formatted_std_precision_rule_all = "0"
-
-                            formatted_mean_recall_rule_all = "{:.6f}".format(mean_recall_rule_all).rstrip(".0")
-                            if formatted_mean_recall_rule_all == "":
-                                formatted_mean_recall_rule_all = "0"
-
-                            formatted_std_recall_rule_all = "{:.6f}".format(std_recall_rule_all).rstrip(".0")
-                            if formatted_std_recall_rule_all == "":
-                                formatted_std_recall_rule_all = "0"
+                            formatted_mean_nb_true_positive_all = formatting(mean_nb_true_positive_all)
+                            formatted_std_nb_true_positive_all = formatting(std_nb_true_positive_all)
+                            formatted_mean_nb_false_positive_all = formatting(mean_nb_false_positive_all)
+                            formatted_std_nb_false_positive_all = formatting(std_nb_false_positive_all)
+                            formatted_mean_nb_true_negative_all = formatting(mean_nb_true_negative_all)
+                            formatted_std_nb_true_negative_all = formatting(std_nb_true_negative_all)
+                            formatted_mean_nb_false_negative_all = formatting(mean_nb_false_negative_all)
+                            formatted_std_nb_false_negative_all = formatting(std_nb_false_negative_all)
+                            formatted_mean_false_positive_rate_all = formatting(mean_false_positive_rate_all)
+                            formatted_std_false_positive_rate_all = formatting(std_false_positive_rate_all)
+                            formatted_mean_false_negative_rate_all = formatting(mean_false_negative_rate_all)
+                            formatted_std_false_negative_rate_all = formatting(std_false_negative_rate_all)
+                            formatted_mean_precision_all = formatting(mean_precision_all)
+                            formatted_std_precision_all = formatting(std_precision_all)
+                            formatted_mean_recall_all = formatting(mean_recall_all)
+                            formatted_std_recall_all = formatting(std_recall_all)
+                            formatted_mean_nb_true_positive_rule_all = formatting(mean_nb_true_positive_rule_all)
+                            formatted_std_nb_true_positive_rule_all = formatting(std_nb_true_positive_rule_all)
+                            formatted_mean_nb_false_positive_rule_all = formatting(mean_nb_false_positive_rule_all)
+                            formatted_std_nb_false_positive_rule_all = formatting(std_nb_false_positive_rule_all)
+                            formatted_mean_nb_true_negative_rule_all = formatting(mean_nb_true_negative_rule_all)
+                            formatted_std_nb_true_negative_rule_all = formatting(std_nb_true_negative_rule_all)
+                            formatted_mean_nb_false_negative_rule_all = formatting(mean_nb_false_negative_rule_all)
+                            formatted_std_nb_false_negative_rule_all = formatting(std_nb_false_negative_rule_all)
+                            formatted_mean_false_positive_rate_rule_all = formatting(mean_false_positive_rate_rule_all)
+                            formatted_std_false_positive_rate_rule_all = formatting(std_false_positive_rate_rule_all)
+                            formatted_mean_false_negative_rate_rule_all = formatting(mean_false_negative_rate_rule_all)
+                            formatted_std_false_negative_rate_rule_all = formatting(std_false_negative_rate_rule_all)
+                            formatted_mean_precision_rule_all = formatting(mean_precision_rule_all)
+                            formatted_std_precision_rule_all = formatting(std_precision_rule_all)
+                            formatted_mean_recall_rule_all = formatting(mean_recall_rule_all)
+                            formatted_std_recall_rule_all = formatting(std_recall_rule_all)
 
                         outputStatsFile.write("FidexGlo :\n")
                         outputStatsFile.write(f"The mean number of rules is : {formatted_mean_nb_rules_all}\n")
