@@ -46,9 +46,9 @@ DataSetFid::DataSetFid(const char *dataFile, const char *predFile, bool hasDecis
       getline(fileCl, line);
       if (!checkStringEmpty(line)) {
         std::stringstream myLine(line);
-        int value;
+        float value;
         while (myLine >> value) {
-          if (value == 1) {
+          if (value == 1.0f) {
             trueClasses.push_back(i);
             break;
           }
