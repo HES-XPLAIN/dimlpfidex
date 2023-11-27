@@ -3,7 +3,7 @@ import re
 from PIL import Image
 import numpy as np
 import colorsys
-
+import os
 
 from dimlpfidex import fidex, fidexGlo
 
@@ -49,7 +49,13 @@ def hsl_to_rgb_fun(hsl):
     r, g, b = int(r*255), int(g*255), int(b*255)
     return (r, g, b)
 
-
+def delete_file(file):
+    try:
+        os.remove(file)
+    except FileNotFoundError:
+        print(f"Error : File '{file}' not found.")
+    except Exception:
+        print(f"Error during delete of file {file}")
 
 def imageAnalyser(dataSet):
     try:
@@ -78,19 +84,19 @@ def imageAnalyser(dataSet):
             nb_channels = 1
             with_hsl = False
         elif dataSet == "Cifar10":
-            with_hsl = False
+            with_hsl = True
 
-            image_folder_from_base = "dimlp/datafiles/Cifar10/Cifar10Resnet"
-            test_data_file = image_folder_from_base + "/testData.txt"
+            image_folder_from_base = "dimlp/datafiles/Cifar10/Cifar10HSLResnet"
+            test_data_file = image_folder_from_base + "/testDataHSL.txt"
             test_class_file = image_folder_from_base + "/testClass.txt"
             test_pred_file = image_folder_from_base + "/predTest.out"
-            global_rules = "globalRulesWithTestStatsIt2.txt"
+            global_rules = "globalRulesWithTestStats.txt"
 
-            train_data_file = "trainData.txt"
+            train_data_file = "trainDataHSL.txt"
             train_class_file = "trainClass.txt"
             train_pred_file = "predTrain.out"
 
-            with_file = True
+            with_file = False #Using of rule file or of weights to launch Fidex
             rules_file = "globalRules.txt"
             weights_file = "weights.wts"
 
@@ -99,7 +105,7 @@ def imageAnalyser(dataSet):
             size1d = 32
             nb_channels = 3
 
-        image_save_folder = image_folder_from_base + "/imagesIt2"
+        image_save_folder = image_folder_from_base + "/images"
         test_data = get_data(test_data_file)
         test_class = get_data(test_class_file)
         test_pred = get_data(test_pred_file)
@@ -236,6 +242,14 @@ def imageAnalyser(dataSet):
             fidex_mean = nb_fidex/len(id_samples)*100
 
         print(f"\nFidex is used for {fidex_mean}% of images.")
+
+
+        # Delete temporary files
+        delete_file(explanation_file)
+        delete_file(test_sample_data_file)
+        delete_file(test_sample_pred_file)
+        delete_file(test_sample_class_file)
+        delete_file(img_fidex_file)
 
         end_time = time.time()
         full_time = end_time - start_time

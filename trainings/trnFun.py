@@ -27,6 +27,14 @@ def check_bool(variable):
         return True
     return False
 
+def delete_file(file):
+    try:
+        os.remove(file)
+    except FileNotFoundError:
+        print(f"Error : File '{file}' not found.")
+    except Exception:
+        print(f"Error during delete of file {file}")
+
 def get_data(file_name): # Get data from file
     try:
         with open(file_name, "r") as my_file:

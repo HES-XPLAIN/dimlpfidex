@@ -23,7 +23,7 @@ from trainings.mlpTrn import mlpTrn
 from trainings.randForestsTrn import randForestsTrn
 from trainings.gradBoostTrn import gradBoostTrn
 from trainings.computeRocCurve import computeRocCurve
-
+from trainings.trnFun import delete_file
 
 def create_or_clear_directory(folder_name):
     try:
@@ -1568,10 +1568,8 @@ def crossValid(*args, **kwargs):
                         res_fid_glo_stats = fidexGlo.fidexGloStats(fidexglo_stats_command)
                         if res_fid_glo_stats == -1:
                             raise ValueError('Error during execution of FidexGloStats')
-
                         # Get statistics from fidexGlo
                         stats_glo_file = folder_path + separator + "fidexGloStats.txt"
-
                         try:
                             with open(stats_glo_file, "r") as my_file:
                                 line_stats_glo = my_file.readline()
@@ -1594,13 +1592,11 @@ def crossValid(*args, **kwargs):
 
                                 else:
                                     raise ValueError("Error in second line of fidexGlo stat file.")
-
                                 line_stats_glo = my_file.readline()
                                 line_stats_glo = my_file.readline()
                                 line_stats_glo = my_file.readline()
                                 line_stats_glo = my_file.readline()
                                 stat_glo_vals = []
-
                                 while line_stats_glo:
                                     if line_stats_glo.startswith("With positive"):
                                         line_stats_glo = my_file.readline()
@@ -2036,7 +2032,6 @@ def crossValid(*args, **kwargs):
                     std_false_negative_rate_all = math.sqrt(std_false_negative_rate_all)
                     std_precision_all = math.sqrt(std_precision_all)
                     std_recall_all = math.sqrt(std_recall_all)
-
             # Show and save results
             try:
                 with open(crossval_stats, "a") as outputStatsFile:
@@ -2501,62 +2496,14 @@ def crossValid(*args, **kwargs):
 
 
             # Delete temporary files
-            try:
-                console_file = crossval_folder + separator + "consoleTemp.txt"
-                os.remove(console_file)
-            except FileNotFoundError:
-                print(f"Error : File '{console_file}' not found.")
-            except Exception:
-                print(f"Error during delete of file {console_file}")
-
-            try:
-                train_file = crossval_folder + separator + "tempTrain.txt"
-                os.remove(train_file)
-            except FileNotFoundError:
-                print(f"Error : File '{train_file}' not found.")
-            except Exception:
-                print(f"Error during delete of file {train_file}")
-
-            try:
-                test_file = crossval_folder + separator + "tempTest.txt"
-                os.remove(test_file)
-            except FileNotFoundError:
-                print(f"Error : File '{test_file}' not found.")
-            except Exception:
-                print(f"Error during delete of file {test_file}")
-
-            try:
-                tar_train_file = crossval_folder + separator + "tempTarTrain.txt"
-                os.remove(tar_train_file)
-            except FileNotFoundError:
-                print(f"Error : File '{tar_train_file}' not found.")
-            except Exception:
-                print(f"Error during delete of file {tar_train_file}")
-
-            try:
-                tar_test_file = crossval_folder + separator + "tempTarTest.txt"
-                os.remove(tar_test_file)
-            except FileNotFoundError:
-                print(f"Error : File '{tar_test_file}' not found.")
-            except Exception:
-                print(f"Error during delete of file {tar_test_file}")
-
+            delete_file(crossval_folder + separator + "consoleTemp.txt")
+            delete_file(crossval_folder + separator + "tempTrain.txt")
+            delete_file(crossval_folder + separator + "tempTest.txt")
+            delete_file(crossval_folder + separator + "tempTarTrain.txt")
+            delete_file(crossval_folder + separator + "tempTarTest.txt")
             if train_method == "dimlp":
-                try:
-                    valid_file = crossval_folder + separator + "tempValid.txt"
-                    os.remove(valid_file)
-                except FileNotFoundError:
-                    print(f"Error : File '{valid_file}' not found.")
-                except Exception:
-                    print(f"Error during delete of file {valid_file}")
-
-                try:
-                    tar_valid_file = crossval_folder + separator + "tempTarValid.txt"
-                    os.remove(tar_valid_file)
-                except FileNotFoundError:
-                    print(f"Error : File '{tar_valid_file}' not found.")
-                except Exception:
-                    print(f"Error during delete of file {tar_valid_file}")
+                delete_file(crossval_folder + separator + "tempValid.txt")
+                delete_file(crossval_folder + separator + "tempTarValid.txt")
 
         end_time = time.time()
         full_time = end_time - start_time
