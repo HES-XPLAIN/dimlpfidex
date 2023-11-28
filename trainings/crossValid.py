@@ -779,25 +779,16 @@ def crossValid(*args, **kwargs):
 
             if is_fidex:
                 # statistics for Fidex
-                # One execution
                 mean_cov_size_fid = 0.0
                 mean_nb_ant_fid = 0.0
                 mean_fidel_fid = 0.0
                 mean_rules_acc_fid = 0.0
                 mean_confid_fid = 0.0
 
-                # All executions
-                mean_cov_size_fid_all = 0.0
-                mean_nb_ant_fid_all = 0.0
-                mean_fidel_fid_all = 0.0
-                mean_rules_acc_fid_all = 0.0
-                mean_confid_fid_all = 0.0
-
                 mean_exec_values_fidex = [] # each mean value in an entire fold for each fold for fidex
 
             if is_fidexglo:
                 # Statistics for FidexGlo
-                # One execution
                 mean_nb_rules = 0.0
                 mean_nb_cover = 0.0
                 mean_nb_antecedants = 0.0
@@ -829,69 +820,6 @@ def crossValid(*args, **kwargs):
                     mean_false_negative_rate_rule = 0.0
                     mean_precision_rule = 0.0
                     mean_recall_rule = 0.0
-
-                # All executions
-                mean_nb_rules_all = 0.0
-                mean_nb_cover_all = 0.0
-                mean_nb_antecedants_all = 0.0
-                mean_fidel_glo_all = 0.0
-                mean_rules_acc_glo_all = 0.0
-                mean_expl_glo_all = 0.0
-                mean_default_rate_all = 0.0
-                mean_nb_fidel_activations_all = 0.0
-                mean_wrong_activations_all = 0.0
-                mean_test_acc_glo_all = 0.0
-                mean_test_acc_when_rules_and_model_agree_all = 0.0
-                mean_test_acc_when_activated_rules_and_model_agree_all = 0.0
-                if with_roc:
-                    mean_nb_true_positive_all = 0.0
-                    mean_nb_false_positive_all = 0.0
-                    mean_nb_true_negative_all = 0.0
-                    mean_nb_false_negative_all = 0.0
-                    mean_false_positive_rate_all = 0.0
-                    mean_false_negative_rate_all = 0.0
-                    mean_precision_all = 0.0
-                    mean_recall_all = 0.0
-
-                    mean_nb_true_positive_rule_all = 0.0
-                    mean_nb_false_positive_rule_all = 0.0
-                    mean_nb_true_negative_rule_all = 0.0
-                    mean_nb_false_negative_rule_all = 0.0
-                    mean_false_positive_rate_rule_all = 0.0
-                    mean_false_negative_rate_rule_all = 0.0
-                    mean_precision_rule_all = 0.0
-                    mean_recall_rule_all = 0.0
-
-                std_nb_rules_all = 0.0
-                std_nb_cover_all = 0.0
-                std_nb_antecedants_all = 0.0
-                std_fidel_glo_all = 0.0
-                std_rules_acc_glo_all = 0.0
-                std_expl_glo_all = 0.0
-                std_default_rate_all = 0.0
-                std_nb_fidel_activations_all = 0.0
-                std_wrong_activations_all = 0.0
-                std_test_acc_glo_all = 0.0
-                std_test_acc_when_rules_and_model_agree_all = 0.0
-                std_test_acc_when_activated_rules_and_model_agree_all = 0.0
-                if with_roc:
-                    std_nb_true_positive_all = 0.0
-                    std_nb_false_positive_all = 0.0
-                    std_nb_true_negative_all = 0.0
-                    std_nb_false_negative_all = 0.0
-                    std_false_positive_rate_all = 0.0
-                    std_false_negative_rate_all = 0.0
-                    std_precision_all = 0.0
-                    std_recall_all = 0.0
-
-                    std_nb_true_positive_rule_all = 0.0
-                    std_nb_false_positive_rule_all = 0.0
-                    std_nb_true_negative_rule_all = 0.0
-                    std_nb_false_negative_rule_all = 0.0
-                    std_false_positive_rate_rule_all = 0.0
-                    std_false_negative_rate_rule_all = 0.0
-                    std_precision_rule_all = 0.0
-                    std_recall_rule_all = 0.0
 
                 mean_exec_values_fidexglo = [] # each mean value in an entire fold for each fold for fidexGlo
 
@@ -1956,18 +1884,12 @@ def crossValid(*args, **kwargs):
                 std_test_acc_when_rules_and_model_agree_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,7])
 
             if is_fidex: # For Fidex
-                for exec in range(n):
-                    mean_cov_size_fid_all += mean_exec_values_fidex[exec][0]
-                    mean_nb_ant_fid_all += mean_exec_values_fidex[exec][1]
-                    mean_fidel_fid_all += mean_exec_values_fidex[exec][2]
-                    mean_rules_acc_fid_all += mean_exec_values_fidex[exec][3]
-                    mean_confid_fid_all += mean_exec_values_fidex[exec][4]
 
-                mean_cov_size_fid_all /= n
-                mean_nb_ant_fid_all /= n
-                mean_fidel_fid_all /= n
-                mean_rules_acc_fid_all /= n
-                mean_confid_fid_all /= n
+                mean_cov_size_fid_all = np.mean(np.array(mean_exec_values_fidex)[:,0])
+                mean_nb_ant_fid_all = np.mean(np.array(mean_exec_values_fidex)[:,1])
+                mean_fidel_fid_all = np.mean(np.array(mean_exec_values_fidex)[:,2])
+                mean_rules_acc_fid_all = np.mean(np.array(mean_exec_values_fidex)[:,3])
+                mean_confid_fid_all = np.mean(np.array(mean_exec_values_fidex)[:,4])
 
                 std_cov_size_fid_all = np.std(np.array(mean_exec_values_fidex)[:,0])
                 std_nb_ant_fid_all = np.std(np.array(mean_exec_values_fidex)[:,1])
@@ -1976,68 +1898,37 @@ def crossValid(*args, **kwargs):
                 std_confid_fid_all = np.std(np.array(mean_exec_values_fidex)[:,4])
 
             if is_fidexglo: # For FidexGlo
-                for exec in range(n):
-                    mean_nb_rules_all += mean_exec_values_fidexglo[exec][0]
-                    mean_nb_cover_all += mean_exec_values_fidexglo[exec][1]
-                    mean_nb_antecedants_all += mean_exec_values_fidexglo[exec][2]
-                    mean_fidel_glo_all += mean_exec_values_fidexglo[exec][3]
-                    mean_rules_acc_glo_all += mean_exec_values_fidexglo[exec][4]
-                    mean_expl_glo_all += mean_exec_values_fidexglo[exec][5]
-                    mean_default_rate_all += mean_exec_values_fidexglo[exec][6]
-                    mean_nb_fidel_activations_all += mean_exec_values_fidexglo[exec][7]
-                    mean_wrong_activations_all += mean_exec_values_fidexglo[exec][8]
-                    mean_test_acc_glo_all += mean_exec_values_fidexglo[exec][9]
-                    mean_test_acc_when_rules_and_model_agree_all += mean_exec_values_fidexglo[exec][10]
-                    mean_test_acc_when_activated_rules_and_model_agree_all += mean_exec_values_fidexglo[exec][11]
-                    if with_roc:
-                        mean_nb_true_positive_all += mean_exec_values_fidexglo[exec][12]
-                        mean_nb_false_positive_all += mean_exec_values_fidexglo[exec][13]
-                        mean_nb_true_negative_all += mean_exec_values_fidexglo[exec][14]
-                        mean_nb_false_negative_all += mean_exec_values_fidexglo[exec][15]
-                        mean_false_positive_rate_all += mean_exec_values_fidexglo[exec][16]
-                        mean_false_negative_rate_all += mean_exec_values_fidexglo[exec][17]
-                        mean_precision_all += mean_exec_values_fidexglo[exec][18]
-                        mean_recall_all += mean_exec_values_fidexglo[exec][19]
+                mean_nb_rules_all = np.mean(np.array(mean_exec_values_fidexglo)[:,0])
+                mean_nb_cover_all = np.mean(np.array(mean_exec_values_fidexglo)[:,1])
+                mean_nb_antecedants_all = np.mean(np.array(mean_exec_values_fidexglo)[:,2])
+                mean_fidel_glo_all = np.mean(np.array(mean_exec_values_fidexglo)[:,3])
+                mean_rules_acc_glo_all = np.mean(np.array(mean_exec_values_fidexglo)[:,4])
+                mean_expl_glo_all = np.mean(np.array(mean_exec_values_fidexglo)[:,5])
+                mean_default_rate_all = np.mean(np.array(mean_exec_values_fidexglo)[:,6])
+                mean_nb_fidel_activations_all = np.mean(np.array(mean_exec_values_fidexglo)[:,7])
+                mean_wrong_activations_all = np.mean(np.array(mean_exec_values_fidexglo)[:,8])
+                mean_test_acc_glo_all = np.mean(np.array(mean_exec_values_fidexglo)[:,9])
+                mean_test_acc_when_rules_and_model_agree_all = np.mean(np.array(mean_exec_values_fidexglo)[:,10])
+                mean_test_acc_when_activated_rules_and_model_agree_all = np.mean(np.array(mean_exec_values_fidexglo)[:,11])
 
-                        mean_nb_true_positive_rule_all += mean_exec_values_fidexglo[exec][20]
-                        mean_nb_false_positive_rule_all += mean_exec_values_fidexglo[exec][21]
-                        mean_nb_true_negative_rule_all += mean_exec_values_fidexglo[exec][22]
-                        mean_nb_false_negative_rule_all += mean_exec_values_fidexglo[exec][23]
-                        mean_false_positive_rate_rule_all += mean_exec_values_fidexglo[exec][24]
-                        mean_false_negative_rate_rule_all += mean_exec_values_fidexglo[exec][25]
-                        mean_precision_rule_all += mean_exec_values_fidexglo[exec][26]
-                        mean_recall_rule_all += mean_exec_values_fidexglo[exec][27]
-
-                mean_nb_rules_all /= n
-                mean_nb_cover_all /= n
-                mean_nb_antecedants_all /= n
-                mean_fidel_glo_all /= n
-                mean_rules_acc_glo_all /= n
-                mean_expl_glo_all /= n
-                mean_default_rate_all /= n
-                mean_nb_fidel_activations_all /= n
-                mean_wrong_activations_all /= n
-                mean_test_acc_glo_all /= n
-                mean_test_acc_when_rules_and_model_agree_all /= n
-                mean_test_acc_when_activated_rules_and_model_agree_all /= n
                 if with_roc:
-                    mean_nb_true_positive_all /= n
-                    mean_nb_false_positive_all /= n
-                    mean_nb_true_negative_all /= n
-                    mean_nb_false_negative_all /= n
-                    mean_false_positive_rate_all /= n
-                    mean_false_negative_rate_all /= n
-                    mean_precision_all /= n
-                    mean_recall_all /= n
+                    mean_nb_true_positive_all = np.mean(np.array(mean_exec_values_fidexglo)[:,12])
+                    mean_nb_false_positive_all = np.mean(np.array(mean_exec_values_fidexglo)[:,13])
+                    mean_nb_true_negative_all = np.mean(np.array(mean_exec_values_fidexglo)[:,14])
+                    mean_nb_false_negative_all = np.mean(np.array(mean_exec_values_fidexglo)[:,15])
+                    mean_false_positive_rate_all = np.mean(np.array(mean_exec_values_fidexglo)[:,16])
+                    mean_false_negative_rate_all = np.mean(np.array(mean_exec_values_fidexglo)[:,17])
+                    mean_precision_all = np.mean(np.array(mean_exec_values_fidexglo)[:,18])
+                    mean_recall_all = np.mean(np.array(mean_exec_values_fidexglo)[:,19])
 
-                    mean_nb_true_positive_rule_all /= n
-                    mean_nb_false_positive_rule_all /= n
-                    mean_nb_true_negative_rule_all /= n
-                    mean_nb_false_negative_rule_all /= n
-                    mean_false_positive_rate_rule_all /= n
-                    mean_false_negative_rate_rule_all /= n
-                    mean_precision_rule_all /= n
-                    mean_recall_rule_all /= n
+                    mean_nb_true_positive_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,20])
+                    mean_nb_false_positive_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,21])
+                    mean_nb_true_negative_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,22])
+                    mean_nb_false_negative_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,23])
+                    mean_false_positive_rate_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,24])
+                    mean_false_negative_rate_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,25])
+                    mean_precision_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,26])
+                    mean_recall_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,27])
 
                 std_nb_rules_all = np.std(np.array(mean_exec_values_fidexglo)[:,0])
                 std_nb_cover_all = np.std(np.array(mean_exec_values_fidexglo)[:,1])
