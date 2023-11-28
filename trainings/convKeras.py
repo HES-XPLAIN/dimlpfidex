@@ -16,19 +16,23 @@ os.environ["CUDA_VISIBLE_DEVICES"] = ""
 import numpy as np
 np.random.seed(seed=None)
 
+import tensorflow as tf
 from tensorflow import keras
 from keras.models     import Sequential
-from keras.layers     import Dense, Dropout, Activation, Flatten
-from keras.layers     import Convolution2D, DepthwiseConv2D, LocallyConnected2D, MaxPooling2D
-from keras.models     import load_model
+from keras.layers     import Dense, Dropout, Activation, Flatten, BatchNormalization, Lambda
+from keras.layers     import Convolution2D, DepthwiseConv2D, LocallyConnected2D, MaxPooling2D, GlobalAveragePooling2D
+from keras.models     import load_model, Model
+from keras.applications import ResNet50, VGG16
 
 from keras.callbacks  import ModelCheckpoint
 from keras.datasets import mnist
 from keras.datasets import cifar100
 from keras.datasets import cifar10
+import colorsys
 
 
-from .trnFun import compute_first_hidden_layer, output_stats, check_parameters_dimlp_layer, check_parameters_common, get_data, check_strictly_positive, check_int
+
+from .trnFun import compute_first_hidden_layer, output_stats,  output_data, check_parameters_dimlp_layer, check_parameters_common, get_data, check_strictly_positive, check_int, check_bool
 
 def output_pred(pred, pred_file):
     try:
@@ -42,6 +46,7 @@ def output_pred(pred, pred_file):
         raise ValueError(f"Error : File {pred_file} not found.")
     except (IOError):
         raise ValueError(f"Error : Couldn't open file {pred_file}.")
+
 
 def convKeras(*args, **kwargs):
 
@@ -67,8 +72,10 @@ def convKeras(*args, **kwargs):
             print("stats : output file name with train and test accuracy (stats.txt by default)")
             print("output_file : file where you redirect console result")
             print("nb_stairs : number of stairs in staircase activation function (50 by default)")
-            print("hiknot : high side of the interval (5 by default)")
             print("K : Parameter to improve dynamics (1 by default)")
+            print("with_hsl : If you want to change 3-channels data from RGB to HSL format (False by default)")
+            print("with_resnet : Training with ResNet (False by default)")
+            print("with_vgg : Training with ResNet (False by default)")
         else:
 
             start_time = time.time()
@@ -90,9 +97,11 @@ def convKeras(*args, **kwargs):
             stats_file = kwargs.get('stats')
             K = kwargs.get('K')
             quant = kwargs.get('nb_stairs')
-            hiknot = kwargs.get('hiknot')
             nb_epochs = kwargs.get('nb_epochs')
-
+            with_hsl = kwargs.get('with_hsl')
+            with_resnet = kwargs.get('with_resnet')
+            with_vgg = kwargs.get('with_vgg')
+            hiknot = 5
             # Redirect output in file
             if output_file != None:
                 try:
@@ -105,7 +114,7 @@ def convKeras(*args, **kwargs):
                     raise ValueError(f"Error : Couldn't open file {output_file}.")
 
             valid_args = ['dataset', 'train_data', 'train_class', 'test_data', 'test_class', 'valid_ratio', 'valid_data', 'valid_class', 'save_folder', 'output_file', 'train_valid_pred', 'test_pred', 'weights',
-                          'stats', 'K', 'nb_stairs', 'hiknot', 'nb_epochs']
+                          'stats', 'K', 'nb_stairs', 'nb_epochs', 'with_hsl', 'with_resnet', 'with_vgg']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
@@ -140,7 +149,22 @@ def convKeras(*args, **kwargs):
             elif not check_int(nb_epochs) or not check_strictly_positive(nb_epochs):
                 raise ValueError('Error : parameter nb_epochs is not a strictly positive integer.')
 
-            weights_file, K, quant, hiknot = check_parameters_dimlp_layer(weights_file, K, quant, hiknot)
+            if with_hsl is None:
+                with_hsl = False
+            elif not check_bool(with_hsl):
+                raise ValueError('Error, parameter with_hsl is not a boolean.')
+            if with_resnet is None:
+                with_resnet = False
+            elif not check_bool(with_resnet):
+                raise ValueError('Error, parameter with_resnet is not a boolean.')
+            if with_vgg is None:
+                with_vgg = False
+            elif not check_bool(with_vgg):
+                raise ValueError('Error, parameter with_vgg is not a boolean.')
+            if with_vgg == True and with_resnet == True:
+                raise ValueError('Error, parameter with_resnet and with_vgg are both True, choose one.')
+
+            weights_file, K, quant = check_parameters_dimlp_layer(weights_file, K, quant)
 
             model_checkpoint_weights = "weights.hdf5"
             if (save_folder is not None):
@@ -162,7 +186,6 @@ def convKeras(*args, **kwargs):
 
             print("Loading data...")
 
-            with_normalization = True
             mu = None
             sigma = None
 
@@ -217,21 +240,20 @@ def convKeras(*args, **kwargs):
                 nb_classes = 10
                 size1d = 32
                 nb_channels = 3
-                with_normalization = False
                 nb_var = len(x_train[0])
-                mu = np.full(nb_var, 127.5)
-                sigma = np.full(nb_var, 25.5)
-
+                # (x-mu)/sigma entre -5 et 5
+                if with_hsl:
+                    mu_val = 0.5
+                    sigma_val = (1-0.5)/hiknot
+                    mu = np.full(nb_var, mu_val)
+                    sigma = np.full(nb_var, sigma_val)
+                else:
+                    mu_val = 127.5
+                    sigma_val = (255-127.5)/hiknot
+                    mu = np.full(nb_var, mu_val)
+                    sigma = np.full(nb_var, sigma_val)
 
             print("Data loaded")
-
-
-
-
-            if with_normalization:
-                x_train = (x_train.astype('float32') / 255) * 10 - 5
-                x_test = (x_test.astype('float32') / 255) * 10 - 5
-                x_val = (x_val.astype('float32') / 255) * 10 - 5
 
             x_train_h1, mu, sigma = compute_first_hidden_layer("train", x_train, K, quant, hiknot, weights_file, mu=mu, sigma=sigma)
             x_test_h1 = compute_first_hidden_layer("test", x_test, K, quant, hiknot, mu=mu, sigma=sigma)
@@ -284,42 +306,105 @@ def convKeras(*args, **kwargs):
             """
             ##############################################################################
             print("Training model...")
-            model = Sequential()
 
-            # model.add(Convolution2D(32, (5, 5), activation='relu', data_format="channels_first", input_shape=(1, size1d, size1d)))
-            # model.add(MaxPooling2D(pool_size=(2, 2), data_format="channels_first"))
+            if with_resnet:
 
-            # # model.add(Convolution2D(32, (3, 3), activation='sigmoid'))
-            # model.add(DepthwiseConv2D((5, 5), data_format="channels_first", activation='relu'))
-            # model.add(MaxPooling2D(pool_size=(2, 2), data_format="channels_first"))
+                input_tensor = keras.Input(shape=(224, 224, 3))
+                target_size = (224, 224)
+                model_base = ResNet50(include_top=False, weights="imagenet", input_tensor=input_tensor)
+                model = Sequential()
+                model.add(Lambda(lambda image: tf.image.resize(image, target_size)))
+                model.add(model_base)
+                model.add(keras.layers.Flatten())
+                model.add(Dropout(0.5))
+                model.add(BatchNormalization())
+                model.add(Dense(nb_classes, activation='softmax'))
 
-            model.add(Convolution2D(32, (5, 5), activation='relu', input_shape=(size1d, size1d, nb_channels)))
-            model.add(Dropout(0.3))
-            model.add(MaxPooling2D(pool_size=(2, 2)))
+                model.build((None, size1d, size1d, nb_channels))  # Build the model with the input shape
 
-            model.add(DepthwiseConv2D((5, 5), activation='relu'))
-            model.add(Dropout(0.3))
-            model.add(MaxPooling2D(pool_size=(2, 2)))
+                model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.00001), loss='categorical_crossentropy', metrics=['acc'])
+                model.summary()
 
 
-            # model.add(Convolution2D(32, (3, 3), activation='relu'))
+                """# charge pre-trained model ResNet50 with imageNet weights
+                base_model = ResNet50(weights='imagenet', include_top=False, input_shape=(size1d, size1d, nb_channels))
 
-            model.add(Flatten())
+                x = base_model.output
+                x = GlobalAveragePooling2D()(x)
+                x = Dense(256, activation='relu')(x)
+                x = Dropout(0.3)(x)
+                predictions = Dense(nb_classes, activation='softmax')(x)
 
-            model.add(Dense(256, activation='sigmoid'))
-            model.add(Dropout(0.3))
-            # model.add(Dense(128, activation='sigmoid'))
+                model = Model(inputs=base_model.input, outputs=predictions)
 
-            model.add(Dense(nb_classes, activation='sigmoid'))
+                # Frees layers of Resnet
+                for layer in base_model.layers:
+                    layer.trainable = False
 
-            model.summary()
+                model.summary()
 
-            model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
+                model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])"""
+
+            elif with_vgg:
+                # charge pre-trained model vgg with imageNet weights
+                base_model = VGG16(weights='imagenet', include_top=False)
+
+                x = base_model.output
+                x = GlobalAveragePooling2D()(x)
+                x = Dense(256, activation='relu')(x)
+                x = Dropout(0.3)(x)
+                predictions = Dense(nb_classes, activation='softmax')(x)
+
+                model = Model(inputs=base_model.input, outputs=predictions)
+
+                # Frees layers of Resnet
+                for layer in base_model.layers:
+                    layer.trainable = False
+
+                model.summary()
+
+                model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['acc'])
+
+
+            else:
+
+                model = Sequential()
+
+                # model.add(Convolution2D(32, (5, 5), activation='relu', data_format="channels_first", input_shape=(1, size1d, size1d)))
+                # model.add(MaxPooling2D(pool_size=(2, 2), data_format="channels_first"))
+
+                # # model.add(Convolution2D(32, (3, 3), activation='sigmoid'))
+                # model.add(DepthwiseConv2D((5, 5), data_format="channels_first", activation='relu'))
+                # model.add(MaxPooling2D(pool_size=(2, 2), data_format="channels_first"))
+
+                model.add(Convolution2D(32, (5, 5), activation='relu', input_shape=(size1d, size1d, nb_channels)))
+                model.add(Dropout(0.3))
+                model.add(MaxPooling2D(pool_size=(2, 2)))
+
+                model.add(DepthwiseConv2D((5, 5), activation='relu'))
+                model.add(Dropout(0.3))
+                model.add(MaxPooling2D(pool_size=(2, 2)))
+
+
+                # model.add(Convolution2D(32, (3, 3), activation='relu'))
+
+                model.add(Flatten())
+
+                model.add(Dense(256, activation='sigmoid'))
+                model.add(Dropout(0.3))
+                # model.add(Dense(128, activation='sigmoid'))
+
+                model.add(Dense(nb_classes, activation='sigmoid'))
+
+                model.summary()
+
+                model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
 
             ##############################################################################
 
             checkpointer = ModelCheckpoint(filepath=model_checkpoint_weights, verbose=1, save_best_only=True)
-
+            #x_train_h1 = keras.applications.resnet50.preprocess_input(x_train_h1)
+            #x_val_h1 = keras.applications.resnet50.preprocess_input(x_val_h1)
             model.fit(x_train_h1, y_train, batch_size=32, epochs=nb_epochs, validation_data=(x_val_h1, y_val), callbacks=[checkpointer], verbose=2)
             #model.fit(x_train_h1_train, y_train, batch_size=32, epochs=nb_epochs, validation_data=(x_test_h1, y_test), callbacks=[checkpointer], verbose=2)
 

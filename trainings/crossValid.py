@@ -131,7 +131,7 @@ def crossValid(*args, **kwargs):
             print("class_file : class file")
 
             print("----------------------------")
-            print("Obligatory parameters if training with dimlp :")
+            print("Obligatory parameters if training with dimlp and DimlpBT :")
             print("nb_in : number of input neurons")
             print("nb_out : number of output neurons")
             print("dimlpRul : 1(with dimlpRul) or 0")
@@ -151,10 +151,10 @@ def crossValid(*args, **kwargs):
             print("dropout_hyp : hyperplan dropout parameter for fidex and fidexGlo")
             print("seed : 0 = random (default)")
             print("positive_class_index <index of positive class sample to compute true/false positive/negative rates and ROC curve (None by default, put 0 for first class)")
+            print("decision_threshold <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>")
 
             print("----------------------------")
             print("Optional parameters if not training with decision trees :")
-            print("hiknot : high side of the interval (5 by default)")
             print("nb_stairs : number of stairs in staircase activation function (50 by default)")
 
             print("----------------------------")
@@ -302,9 +302,10 @@ def crossValid(*args, **kwargs):
             dropout_dim = kwargs.get('dropout_dim')
             dropout_hyp = kwargs.get('dropout_hyp')
             positive_class_index = kwargs.get('positive_class_index')
+            decision_threshold = kwargs.get('decision_threshold')
             seed = kwargs.get('seed')
 
-            hiknot = kwargs.get('hiknot')
+            hiknot = 5
             nb_stairs = kwargs.get('nb_stairs')
 
             pretrained_weights = kwargs.get('pretrained_weights')
@@ -395,9 +396,9 @@ def crossValid(*args, **kwargs):
             obligatory_dimlp_args = ['nb_in', 'nb_out', 'dimlpRul']
 
             optional_args = ['save_folder', 'crossVal_folder', 'K', 'N', 'fidexGlo_heuristic', 'crossVal_stats', 'attr_file',
-                        'max_iter', 'min_cov', 'dropout_dim', 'dropout_hyp', 'seed', 'positive_class_index']
+                        'max_iter', 'min_cov', 'dropout_dim', 'dropout_hyp', 'seed', 'positive_class_index', 'decision_threshold']
 
-            optional_non_dt_args = ['hiknot', 'nb_stairs']
+            optional_non_dt_args = ['nb_stairs']
 
             optional_dimlp_args = ['pretrained_weights', 'eta', 'mu', 'flat', 'err_thresh',
                         'acc_thresh', 'delta_err', 'nb_epochs', 'show_err']
@@ -503,8 +504,6 @@ def crossValid(*args, **kwargs):
                 with_roc = False
 
             if train_method not in {"randForest", "gradBoost"}:
-                if hiknot is None:
-                    hiknot = 5
                 if nb_stairs is None:
                     nb_stairs = 50
 
@@ -1088,6 +1087,8 @@ def crossValid(*args, **kwargs):
                         outputStatsFile.write(f"The dimension dropout parameter for fidex and fidexGlo is {dropout_dim}\n")
                     else:
                         outputStatsFile.write("There is no dimension dropout\n")
+                    if decision_threshold is not None :
+                        outputStatsFile.write(f"We use a decision threshold of {decision_threshold} with positive class of index {positive_class_index}\n")
 
                     outputStatsFile.write("---------------------------------------------------------\n\n")
 
@@ -1313,7 +1314,7 @@ def crossValid(*args, **kwargs):
                             print("Enter in DimlpBT function")
                             res = dimlp.dimlpBT(dimlp_command)
                         if (res == -1):
-                            return -1 # If there is an error in the Trn
+                            raise ValueError('Error during training with Dimlp or DimlpBT')
 
                     # Training with svm
                     elif train_method == "svm":
@@ -1326,13 +1327,13 @@ def crossValid(*args, **kwargs):
                                      weights = folder_path_from_root + separator + "weights", stats = folder_path_from_root + separator + "stats.txt",
                                      output_file = crossval_folder_temp + separator + "consoleTemp.txt", train_pred = folder_path_from_root + separator + "train",
                                      test_pred = folder_path_from_root + separator + "test", positive_index=positive_class_index,
-                                     output_roc=folder_path_from_root + separator + "rocCurve", save_folder = save_folder, nb_stairs = nb_stairs, hiknot = hiknot,
+                                     output_roc=folder_path_from_root + separator + "rocCurve", save_folder = save_folder, nb_stairs = nb_stairs,
                                      K = svm_k, C = c_var, kernel = kernel_var, degree = degree_var, gamma = gamma_var, coef0 = coef0_var, shrinking = shrinking_var,
                                      tol = svm_tol_var, cache_size = cache_size_var, class_weight = svm_class_weight_var, max_iter = svm_max_iter_var,
                                      decision_function_shape = decision_function_shape_var, break_ties = break_ties_var, return_roc = return_roc_var)
 
                         if (res == -1):
-                            return -1 # If there is an error in the Trn
+                            raise ValueError('Error during training with SVM')
                         elif with_roc:
                             fprs.append(res[0])
                             tprs.append(res[1])
@@ -1348,7 +1349,7 @@ def crossValid(*args, **kwargs):
                                      test_data=folder_path_from_root + separator + "test.txt",test_class=folder_path_from_root + separator + "testTarget.txt",
                                      weights = folder_path_from_root + separator + "weights", stats = folder_path_from_root + separator + "stats.txt",
                                      output_file = crossval_folder_temp + separator + "consoleTemp.txt", train_pred = folder_path_from_root + separator + "train",
-                                     test_pred = folder_path_from_root + separator + "test", save_folder = save_folder, nb_stairs = nb_stairs, hiknot = hiknot,
+                                     test_pred = folder_path_from_root + separator + "test", save_folder = save_folder, nb_stairs = nb_stairs,
                                      K = mlp_k, hidden_layer_sizes = hidden_layer_sizes_var, activation = activation_var, solver = solver_var, alpha = alpha_var,
                                      batch_size = batch_size_var, learning_rate = mlp_learning_rate_var, learning_rate_init = learning_rate_init_var, power_t = power_t_var,
                                      max_iter = mlp_max_iter_var, shuffle = shuffle_var, tol = mlp_tol_var, warm_start = mlp_warm_start_var, momentum = momentum_var,
@@ -1357,7 +1358,7 @@ def crossValid(*args, **kwargs):
                                      random_state = random_state_var)
 
                         if (res == -1):
-                            return -1 # If there is an error in the Trn
+                            raise ValueError('Error during training with MLP')
 
                     # Training with random forests
                     elif train_method == "randForest":
@@ -1377,7 +1378,7 @@ def crossValid(*args, **kwargs):
                                      max_samples = max_samples_var, random_state = random_state_var)
 
                         if (res == -1):
-                            return -1 # If there is an error in the Trn
+                            raise ValueError('Error during training with Random Forests')
 
                     # Training with gradient boosting
                     else:
@@ -1398,14 +1399,14 @@ def crossValid(*args, **kwargs):
                                      random_state = random_state_var)
 
                         if (res == -1):
-                            return -1 # If there is an error in the Trn
+                            raise ValueError('Error during training with Gradient Boosting')
 
                     if train_method != "svm" and with_roc:
                         res = computeRocCurve(test_class=folder_path_from_root + separator + "testTarget.txt", test_pred = folder_path_from_root + separator + "test.out",
                                               positive_index=positive_class_index, output_roc=folder_path_from_root + separator + "rocCurve",
                                               stats_file=folder_path_from_root + separator + "stats.txt", save_folder = save_folder)
                         if (res == -1):
-                            return -1 # If there is an error in the computation of the ROC curve
+                            raise ValueError('Error during computation of ROC curve')
                         else:
                             fprs.append(res[0])
                             tprs.append(res[1])
@@ -1435,7 +1436,6 @@ def crossValid(*args, **kwargs):
                         # Compute fidex stats in folder
                         fidex_command = "fidex"
                         if train_method in {"dimlp", "dimlpBT", "svm", "mlp"}:
-                            fidex_command +=  " -I " + str(hiknot)
                             fidex_command +=  " -Q " + str(nb_stairs)
                         if save_folder is not None:
                             fidex_command +=  " -R " + save_folder
@@ -1466,11 +1466,15 @@ def crossValid(*args, **kwargs):
                         fidex_command += " -O " + folder_path_from_root + separator + "fidexRule.txt"
                         fidex_command += " -s " + folder_path_from_root + separator + "fidexStats.txt"
                         fidex_command += " -r " + folder_path_from_root + separator + "fidexResult.txt"
+                        if with_roc:
+                            fidex_command += " -x " + str(positive_class_index)
+                        if decision_threshold is not None:
+                            fidex_command += " -t " + str(decision_threshold)
 
                         print("Enter in fidex function")
                         res_fid = fidex.fidex(fidex_command)
                         if res_fid == -1:
-                            return -1 # If there is an error in fidex
+                            raise ValueError('Error during execution of Fidex')
 
                         # Get statistics from fidex
                         stats_file = folder_path + separator + "fidexStats.txt"
@@ -1506,7 +1510,6 @@ def crossValid(*args, **kwargs):
                         # Compute fidexGlo rules in folder
                         fidexglo_rules_command = "fidexGloRules"
                         if train_method in {"dimlp", "dimlpBT", "svm", "mlp"}:
-                            fidexglo_rules_command +=  " -I " + str(hiknot)
                             fidexglo_rules_command +=  " -Q " + str(nb_stairs)
                         if save_folder is not None:
                             fidexglo_rules_command +=  " -S " + save_folder
@@ -1533,11 +1536,15 @@ def crossValid(*args, **kwargs):
                         fidexglo_rules_command += " -O " + folder_path_from_root + separator + "fidexGloRules.txt"
                         fidexglo_rules_command += " -r " + folder_path_from_root + separator + "fidexGloResult.txt"
                         fidexglo_rules_command += " -M " + str(fidexglo_heuristic)
+                        if with_roc:
+                            fidexglo_rules_command += " -x " + str(positive_class_index)
+                        if decision_threshold is not None:
+                            fidexglo_rules_command += " -t " + str(decision_threshold)
 
                         print("Enter in fidexGloRules function")
                         res_fid_glo_rules = fidexGlo.fidexGloRules(fidexglo_rules_command)
                         if res_fid_glo_rules == -1:
-                            return -1 # If there is an error in fidexGloRules
+                            raise ValueError('Error during execution of FidexGloRules')
 
                         # Compute fidexGlo statistics in folder
                         fidexglo_stats_command = "fidexGloStats"
@@ -1551,13 +1558,16 @@ def crossValid(*args, **kwargs):
                         fidexglo_stats_command += " -R " + folder_path_from_root + separator + "fidexGloRules.txt"
                         fidexglo_stats_command += " -O " + folder_path_from_root + separator + "fidexGloStats.txt"
                         fidexglo_stats_command += " -r " + folder_path_from_root + separator + "fidexGloStatsResult.txt"
+                        fidexglo_stats_command += " -F " + folder_path_from_root + separator + "fidexGloRules.txt"
+                        if decision_threshold is not None:
+                            fidexglo_stats_command += " -t " + str(decision_threshold)
                         if with_roc:
                             fidexglo_stats_command += " -x " + str(positive_class_index)
 
                         print("Enter in fidexGloStats function")
                         res_fid_glo_stats = fidexGlo.fidexGloStats(fidexglo_stats_command)
                         if res_fid_glo_stats == -1:
-                            return -1 # If there is an error in fidexGloStats
+                            raise ValueError('Error during execution of FidexGloStats')
 
                         # Get statistics from fidexGlo
                         stats_glo_file = folder_path + separator + "fidexGloStats.txt"

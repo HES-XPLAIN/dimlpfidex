@@ -1,15 +1,17 @@
 #include "hyperLocus.h"
 
-std::vector<std::vector<double>> calcHypLocus(const char *dataFileWeights, int nbQuantLevels, double hiKnot) {
+std::vector<std::vector<double>> calcHypLocus(const char *dataFileWeights, int nbQuantLevels, double hiKnot, bool display) {
 
   double lowKnot = -hiKnot;
+  if (display) {
+    std::cout << "\nParameters of hyperLocus :\n"
+              << std::endl;
+    std::cout << "- Number of stairs " << nbQuantLevels << std::endl;
+    std::cout << "- Interval : [" << lowKnot << "," << hiKnot << "]" << std::endl
+              << std::endl;
 
-  std::cout << "\nParameters of hyperLocus :\n\n";
-  std::cout << "- Number of stairs " << nbQuantLevels << std::endl;
-  std::cout << "- Interval : [" << lowKnot << "," << hiKnot << "]" << std::endl
-            << std::endl;
-
-  std::cout << "Import weight file..." << std::endl;
+    std::cout << "Import weight file..." << std::endl;
+  }
 
   DataSetFid weightDatas(dataFileWeights);
 
@@ -17,10 +19,12 @@ std::vector<std::vector<double>> calcHypLocus(const char *dataFileWeights, int n
   std::vector<double> biais = weightDatas.getInBiais();
   std::vector<double> weights = weightDatas.getInWeights();
 
-  std::cout << "Weight file imported" << std::endl
-            << std::endl;
+  if (display) {
+    std::cout << "Weight file imported" << std::endl
+              << std::endl;
 
-  std::cout << "computation of hyperLocus" << std::endl;
+    std::cout << "computation of hyperLocus" << std::endl;
+  }
 
   size_t nbIn = biais.size();      // Number of neurons in the first hidden layer (May be the number of input variables)
   int nbKnots = nbQuantLevels + 1; // Number of separations per dimension
@@ -40,10 +44,10 @@ std::vector<std::vector<double>> calcHypLocus(const char *dataFileWeights, int n
       matHypLocus[i][j] = (knots[j] - biais[i]) / weights[i]; // Placement of the hyperplan
     }
   }
-
-  std::cout << "HyperLocus computed" << std::endl
-            << std::endl;
-
+  if (display) {
+    std::cout << "HyperLocus computed" << std::endl
+              << std::endl;
+  }
   return matHypLocus;
 }
 
@@ -80,6 +84,5 @@ std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, const size_
   }
 
   fileDta.close(); // close data file
-
   return matHypLocus;
 }

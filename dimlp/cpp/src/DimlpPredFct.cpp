@@ -7,25 +7,29 @@ using namespace std;
 void GiveAllParamPred()
 
 {
-  cout << "\n-------------------------------------------------\n\n";
+  cout << "\n-------------------------------------------------\n"
+       << std::endl;
 
-  cout << "DimlpPred -T <file of examples(path with respect to specified root folder)> ";
+  cout << "DimlpPred -T <test set file (path with respect to specified root folder)> ";
   cout << "-W <file of weights> ";
   cout << "-I <number of input neurons> -O <number of output neurons>";
 
-  cout << " <Options>\n\n";
+  cout << " <Options>\n"
+       << std::endl;
 
-  cout << "Options are: \n\n";
-  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
-  cout << "-p <output prediction file>";                 // If we want to specify output prediction file, not to be dimlp.out
+  cout << "Options are: \n"
+       << std::endl;
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  cout << "-p <output prediction file (dimlp.out by default)>";
   cout << "-r <file where you redirect console result>"; // If we want to redirect console result to file
   cout << "-H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
-  cout << "number of input neurons)\n";
-  cout << "-Hk <number of neurons in the kth hidden layer>\n";
-  cout << "-q <number of stairs in staircase activation function>\n";
+  cout << "number of input neurons)" << std::endl;
+  cout << "-Hk <number of neurons in the kth hidden layer>" << std::endl;
+  cout << "-q <number of stairs in staircase activation function (50 by default)>" << std::endl;
 
-  cout << "\n-------------------------------------------------\n\n";
+  cout << "\n-------------------------------------------------\n"
+       << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
@@ -41,8 +45,7 @@ static void SaveOutputs(
   filebuf buf;
 
   if (buf.open(outfile, ios_base::out) == nullptr) {
-    string errorMsg = "Cannot open file for writing";
-    WriteError(errorMsg, outfile);
+    throw CannotOpenFileError("Error : Cannot open output file " + std::string(outfile));
   }
 
   std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
@@ -50,7 +53,7 @@ static void SaveOutputs(
 
   cout << "\n\n"
        << outfile << ": "
-       << "Writing ...\n";
+       << "Writing ..." << std::endl;
 
   ostream outFile(&buf);
   for (int p = 0; p < data.GetNbEx(); p++) {
@@ -60,11 +63,12 @@ static void SaveOutputs(
       outFile << out[o] << " ";
     }
 
-    outFile << "\n";
+    outFile << "" << std::endl;
   }
 
   cout << outfile << ": "
-       << "Written.\n\n";
+       << "Written.\n"
+       << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
@@ -121,8 +125,7 @@ int dimlpPred(const string &command) {
         k++;
 
         if (k >= nbParam) {
-          cout << "Missing something at the end of the command.\n";
-          return -1;
+          throw CommandArgumentException("Missing something at the end of the command.");
         }
 
         char option = commandList[k - 1][1];
@@ -133,7 +136,7 @@ int dimlpPred(const string &command) {
           if (CheckInt(arg))
             quant = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -141,7 +144,7 @@ int dimlpPred(const string &command) {
           if (CheckInt(arg))
             nbIn = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -155,11 +158,10 @@ int dimlpPred(const string &command) {
               std::string str(ptrParam + 2);
               archInd.Insert(std::atoi(str.c_str()));
             } else {
-              cout << "Which hidden layer (-H) ?\n";
-              return -1;
+              throw CommandArgumentException("Error : Which hidden layer (-H) ?");
             }
           } else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -167,7 +169,7 @@ int dimlpPred(const string &command) {
           if (CheckInt(arg))
             nbOut = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -196,14 +198,12 @@ int dimlpPred(const string &command) {
           break;
 
         default:
-          cout << "Illegal option: " << lastArg << "\n";
-          return -1;
+          throw CommandArgumentException("Illegal option : " + string(lastArg));
         }
       }
 
       else {
-        cout << "Illegal option: " << &(commandList[k])[0] << "\n";
-        return -1;
+        throw CommandArgumentException("Illegal option : " + string(&(commandList[k])[0]));
       }
 
       k++;
@@ -256,30 +256,23 @@ int dimlpPred(const string &command) {
     // ----------------------------------------------------------------------
 
     if (quant <= 2) {
-      cout << "The number of quantized levels must be greater than 2.\n";
-      return -1;
+      throw CommandArgumentException("The number of quantized levels must be greater than 2.");
     }
 
     if (nbIn == 0) {
-      cout << "The number of input neurons must be given with option -I.\n";
-      return -1;
+      throw CommandArgumentException("The number of input neurons must be given with option -I.");
     }
 
     if (nbOut <= 1) {
-      cout << "At least two output neurons must be given with option -O.\n";
-      return -1;
+      throw CommandArgumentException("At least two output neurons must be given with option -O.");
     }
 
     if (weightFileInit == false) {
-      cout << "Give a file of weights with -W selection please."
-           << "\n";
-      return -1;
+      throw CommandArgumentException("Give a file of weights with -W selection please.");
     }
 
     if (testFileInit == false) {
-      cout << "Give a testing file with -T selection please."
-           << "\n";
-      return -1;
+      throw CommandArgumentException("Give a testing file with -T selection please.");
     }
 
     else // if (testFileInit != false)
@@ -307,9 +300,7 @@ int dimlpPred(const string &command) {
         arch.GoToBeg();
 
         if (arch.GetVal() % nbIn != 0) {
-          cout << "The number of neurons in the first hidden layer must be";
-          cout << " a multiple of the number of input neurons.\n";
-          return -1;
+          throw InternalError("The number of neurons in the first hidden layer must be a multiple of the number of input neurons.");
         }
 
         nbLayers = arch.GetNbEl() + 2;
@@ -323,8 +314,7 @@ int dimlpPred(const string &command) {
           vecNbNeurons[k] = arch.GetVal();
 
           if (vecNbNeurons[k] == 0) {
-            cout << "The number of neurons must be greater than 0.\n";
-            return -1;
+            throw InternalError("The number of neurons must be greater than 0.");
           }
         }
       }
@@ -342,8 +332,7 @@ int dimlpPred(const string &command) {
           vecNbNeurons[k + 1] = arch.GetVal();
 
           if (vecNbNeurons[k + 1] == 0) {
-            cout << "The number of neurons must be greater than 0.\n";
-            return -1;
+            throw InternalError("The number of neurons must be greater than 0.");
           }
         }
       }
@@ -355,7 +344,8 @@ int dimlpPred(const string &command) {
 
     SaveOutputs(Test, &net, nbOut, nbWeightLayers, predFile);
 
-    cout << "\n-------------------------------------------------\n\n";
+    cout << "\n-------------------------------------------------\n"
+         << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
 

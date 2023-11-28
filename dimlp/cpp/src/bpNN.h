@@ -12,7 +12,6 @@
 #include "layerD2.h"
 #include "layerDmp.h"
 
-#include "writeErr.h"
 #include <math.h>
 
 #include "layerD3.h"

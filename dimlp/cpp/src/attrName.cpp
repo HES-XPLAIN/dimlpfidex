@@ -11,8 +11,7 @@ int AttrName::FirstLect() const
   int k;
 
   if (buf.open(FileAttr, ios_base::in) == nullptr) {
-    string errorMsg = "Cannot open file of attribute names";
-    WriteError(errorMsg, FileAttr);
+    throw CannotOpenFileError("Cannot open file of attribute names " + std::string(FileAttr));
   }
 
   istream inFile(&buf);
@@ -28,7 +27,8 @@ int AttrName::FirstLect() const
     return 1;
 
   cout << FileAttr;
-  cout << ": Problem with number of attributes or number of classes.\n\n";
+  cout << ": Problem with number of attributes or number of classes.\n"
+       << std::endl;
   return 0;
 }
 
@@ -40,8 +40,7 @@ void AttrName::SecondLect()
   filebuf buf;
 
   if (buf.open(FileAttr, ios_base::in) == nullptr) {
-    string errorMsg = "Cannot open file of attribute names";
-    WriteError(errorMsg, FileAttr);
+    throw CannotOpenFileError("Cannot open file of attribute names " + std::string(FileAttr));
   }
 
   istream inFile(&buf);

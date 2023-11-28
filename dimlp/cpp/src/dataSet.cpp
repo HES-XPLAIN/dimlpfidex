@@ -20,16 +20,16 @@ int DataSet::FirstLecture(const char nameFile[]) const
   filebuf buf;
   int count;
   float x;
-  cout << "\n----------------------------------------------------------\n\n";
+  cout << "\n----------------------------------------------------------\n"
+       << std::endl;
   if (buf.open(nameFile, ios_base::in) == nullptr) {
-    string errorMsg = "Cannot open input file";
-    WriteError(errorMsg, nameFile);
+    throw CannotOpenFileError("Error : Cannot open input file " + std::string(nameFile));
   }
 
   istream inFile(&buf);
 
   cout << nameFile << ": "
-       << "Reading ..." << endl;
+       << "Reading ..." << std::endl;
 
   count = 0;
   while (inFile >> x) {
@@ -37,14 +37,11 @@ int DataSet::FirstLecture(const char nameFile[]) const
   }
 
   if ((inFile.rdstate() == ifstream::badbit) || (inFile.rdstate() == ifstream::failbit)) {
-    cerr << "File position " << count + 1 << ": ";
-    string errorMsg = "problem in input file";
-    WriteError(errorMsg, nameFile);
+    throw FileContentError("Error : File position " + to_string(count + 1) + ": problem in input file " + std::string(nameFile));
   }
 
   if (count % NbAttr != 0) {
-    string errorMsg = "Possible wrong number of attributes in file";
-    WriteError(errorMsg, nameFile);
+    throw FileContentError("Error : Possible wrong number of attributes in file " + std::string(nameFile));
   }
 
   cout << nameFile << ": "
@@ -61,7 +58,7 @@ void DataSet::SecondLecture(const char nameFile[]) {
   std::vector<float> oneExample;
 
   cout << nameFile << ": "
-       << "Creating dataset structures ..." << endl;
+       << "Creating dataset structures ..." << std::endl;
 
   buf.open(nameFile, ios_base::in);
   istream inFile(&buf);
@@ -76,7 +73,7 @@ void DataSet::SecondLecture(const char nameFile[]) {
   }
 
   cout << nameFile << ": "
-       << "Dataset structures created." << endl;
+       << "Dataset structures created." << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////

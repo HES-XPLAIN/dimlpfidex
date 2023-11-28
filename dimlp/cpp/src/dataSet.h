@@ -1,9 +1,9 @@
 #ifndef DATASET_H
 #define DATASET_H
 
+#include "../../../fidexCommon/cpp/src/errorHandler.h"
 #include "rule.h"
 #include "stringI.h"
-#include "writeErr.h"
 #include <fstream>
 #include <iostream>
 #include <vector>

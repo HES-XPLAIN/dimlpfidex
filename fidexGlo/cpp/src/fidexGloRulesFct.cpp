@@ -3,32 +3,36 @@
 using namespace std;
 
 void showRulesParams() {
-  std::cout << "\n-------------------------------------------------\n\n";
+  std::cout << "\n-------------------------------------------------\n"
+            << std::endl;
 
-  std::cout << "Obligatory parameters : \n\n";
+  std::cout << "Obligatory parameters : \n"
+            << std::endl;
   std::cout << "fidexGloRules -T <train dataset file> -P <train prediction file> -C <train true class file> ";
   std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> [Not mendatory if a rules file is given with -f] ";
   std::cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
   std::cout << "-O <Rules output file> ";
   std::cout << "-M <Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo> ";
-  std::cout << "<Options>\n\n";
+  std::cout << "<Options>\n"
+            << std::endl;
 
-  std::cout << "Options are: \n\n";
-  std::cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
-  std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging>";
-  std::cout << "-A <file of attributes>\n";
-  std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
-  std::cout << "-i <max iteration number>\n";
-  std::cout << "-v <minimum covering number>\n";
-  std::cout << "-d <dimension dropout parameter>\n";
-  std::cout << "-h <hyperplan dropout parameter>\n";
-  std::cout << "-Q <number of stairs in staircase activation function (50 by default)>\n";
-  std::cout << "-I <high side of the interval (5 by default)>\n";
-  std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>\n";
-  std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>\n";
-  std::cout << "-z <seed (0=ranodom)>";
+  std::cout << "Options are: \n"
+            << std::endl;
+  std::cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
+  std::cout << "-A <file of attributes>" << std::endl;
+  std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  std::cout << "-i <max iteration number (100 by default)>" << std::endl;
+  std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
+  std::cout << "-d <dimension dropout parameter>" << std::endl;
+  std::cout << "-h <hyperplan dropout parameter>" << std::endl;
+  std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
+  std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
+  std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
+  std::cout << "-z <seed (0=random, default)>";
 
-  std::cout << "\n-------------------------------------------------\n\n";
+  std::cout << "\n-------------------------------------------------\n"
+            << std::endl;
 }
 
 int fidexGloRules(const string &command) {
@@ -152,7 +156,7 @@ int fidexGloRules(const string &command) {
           if (CheckPositiveInt(arg))
             nbDimlpNets = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
 
           break;
 
@@ -161,14 +165,6 @@ int fidexGloRules(const string &command) {
             nbQuantLevels = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
-          }
-          break;
-
-        case 'I':
-          if (CheckFloatFid(arg) && atof(arg) > 0) {
-            hiKnot = atof(arg);
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", strictly positive float requested");
           }
           break;
 
@@ -380,25 +376,28 @@ int fidexGloRules(const string &command) {
 
     // ----------------------------------------------------------------------
 
-    std::cout << "\nParameters :\n\n";
+    std::cout << "\nParameters :\n"
+              << std::endl;
     std::cout << "- Max iteration number : " << itMax << endl;
     std::cout << "- Min size of covering : " << minNbCover << endl;
     if (dropoutDim) {
       std::cout << "- We use a dimension dropout of " << dropoutDimParam << endl
                 << endl;
     } else {
-      std::cout << "- We don't use dimension dropout\n\n";
+      std::cout << "- We don't use dimension dropout\n"
+                << std::endl;
     }
     if (dropoutHyp) {
       std::cout << "- We use a hyperplan dropout of " << dropoutHypParam << endl
                 << endl;
     } else {
-      std::cout << "- We don't use hyperplan dropout\n\n";
+      std::cout << "- We don't use hyperplan dropout\n"
+                << std::endl;
     }
 
     // Import files
 
-    std::cout << "Import files..." << endl;
+    std::cout << "Import files..." << std::endl;
 
     std::unique_ptr<DataSetFid> trainDatas(new DataSetFid(trainDataFile, trainDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
 
@@ -458,14 +457,30 @@ int fidexGloRules(const string &command) {
 
     // compute hyperspace
 
-    std::cout << "Creation of hyperspace..." << endl;
+    std::cout << "Creation of hyperspace..." << std::endl;
 
     std::vector<std::vector<double>> matHypLocus;
 
     if (weightsFileInit) {
+      if (nbDimlpNets > 1) {
+        std::cout << "\nParameters of hyperLocus :\n"
+                  << std::endl;
+        std::cout << "- Number of stairs " << nbQuantLevels << std::endl;
+        std::cout << "- Interval : [-" << hiKnot << "," << hiKnot << "]" << std::endl
+                  << std::endl;
+        std::cout << "Computation of all hyperlocus" << std::endl;
+      }
       for (const auto &weightsFile : weightsFiles) {
-        std::vector<std::vector<double>> hypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
-        matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end());                      // Concatenate hypLocus to matHypLocus
+        std::vector<std::vector<double>> hypLocus;
+        if (nbDimlpNets > 1) {
+          hypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot, false); // Get hyperlocus
+        } else {
+          hypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
+        }
+        matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end()); // Concatenate hypLocus to matHypLocus
+      }
+      if (nbDimlpNets > 1) {
+        std::cout << "All hyperlocus created" << std::endl;
       }
     } else {
       matHypLocus = calcHypLocus(inputRulesFile, nbAttributs);
@@ -607,7 +622,8 @@ int fidexGloRules(const string &command) {
 
       c2 = clock();
       temps1 = (float)(c2 - c1) / CLOCKS_PER_SEC;
-      std::cout << "\nTime first heuristic = " << temps1 << " sec\n\n";
+      std::cout << "\nTime first heuristic = " << temps1 << " sec\n"
+                << std::endl;
     }
 
     //--------------------------------------------------------------------------------------------------------------------
@@ -717,7 +733,8 @@ int fidexGloRules(const string &command) {
 
       d2 = clock();
       temps2 = (float)(d2 - d1) / CLOCKS_PER_SEC;
-      std::cout << "\nTime second heuristic = " << temps2 << " sec\n\n";
+      std::cout << "\nTime second heuristic = " << temps2 << " sec\n"
+                << std::endl;
     }
 
     //--------------------------------------------------------------------------------------------------------------------
@@ -808,7 +825,8 @@ int fidexGloRules(const string &command) {
 
       e2 = clock();
       temps3 = (float)(e2 - e1) / CLOCKS_PER_SEC;
-      std::cout << "\nTime third heuristic = " << temps3 << " sec\n\n";
+      std::cout << "\nTime third heuristic = " << temps3 << " sec\n"
+                << std::endl;
     }
 
     //--------------------------------------------------------------------------------------------------------------------
@@ -903,7 +921,7 @@ int fidexGloRules(const string &command) {
 
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
-    std::cout << "\nFull execution time = " << temps << " sec\n";
+    std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
 
@@ -918,11 +936,11 @@ int fidexGloRules(const string &command) {
 
 /* Exemples pour lancer le code :
 
-./fidexGloRules -T datanormTrain -P dimlpDatanormTrain.out -C dataclass2Train -W dimlpDatanorm.wts -Q 50 -I 5 -O globalRulesDatanorm.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesResult -S ../fidexGlo/datafiles
+./fidexGloRules -T datanormTrain -P dimlpDatanormTrain.out -C dataclass2Train -W dimlpDatanorm.wts -Q 50 -O globalRulesDatanorm.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesResult -S ../fidexGlo/datafiles
 
-./fidexGloRules -T covidTrainData.txt -P covidTrainPred.out -C covidTrainClass.txt -W covid.wts -Q 50 -I 5 -O globalRulesCovid.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesCovidResult -S ../dimlp/datafiles/covidDataset
-./fidexGloRules -T spamTrainData.txt -P spamTrainPred.out -C spamTrainClass.txt -W spam.wts -Q 50 -I 5 -O globalRulesSpam.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesSpamResult -S ../dimlp/datafiles/spamDataset
-./fidexGloRules -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -W isoletV2.wts -Q 50 -I 5 -O globalRulesIsoletV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesIsoletResultV2 -S ../dimlp/datafiles/isoletDataset
-./fidexGloRules -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -W HAPTV2.wts -Q 50 -I 5 -O globalRulesHAPTV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesHAPTResultV2 -S ../dimlp/datafiles/HAPTDataset
+./fidexGloRules -T covidTrainData.txt -P covidTrainPred.out -C covidTrainClass.txt -W covid.wts -Q 50 -O globalRulesCovid.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesCovidResult -S ../dimlp/datafiles/covidDataset
+./fidexGloRules -T spamTrainData.txt -P spamTrainPred.out -C spamTrainClass.txt -W spam.wts -Q 50 -O globalRulesSpam.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesSpamResult -S ../dimlp/datafiles/spamDataset
+./fidexGloRules -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -W isoletV2.wts -Q 50 5 -O globalRulesIsoletV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesIsoletResultV2 -S ../dimlp/datafiles/isoletDataset
+./fidexGloRules -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -W HAPTV2.wts -Q 50 5 -O globalRulesHAPTV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesHAPTResultV2 -S ../dimlp/datafiles/HAPTDataset
 
 */

@@ -1,7 +1,7 @@
 #ifndef ATTRNAME_H
 #define ATTRNAME_H
 
-#include "writeErr.h"
+#include "../../../fidexCommon/cpp/src/errorHandler.h"
 #include <fstream>
 #include <iostream>
 #include <string.h>

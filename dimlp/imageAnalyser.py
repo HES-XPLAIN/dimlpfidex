@@ -2,6 +2,8 @@ import time
 import re
 from PIL import Image
 import numpy as np
+import colorsys
+
 
 from dimlpfidex import fidex, fidexGlo
 
@@ -37,24 +39,61 @@ def output_data(datas, file, type=""):
     except (IOError):
         raise ValueError(f"Error : Couldn't open file {file}.")
 
-def imageAnalyser():
+def hsl_to_rgb(data):
+    rgb_data = np.apply_along_axis(hsl_to_rgb_fun, -1, data)
+    return rgb_data
+
+def hsl_to_rgb_fun(hsl):
+    h, s, l = [float(x) for x in hsl]
+    r, g, b = colorsys.hls_to_rgb(h, l, s)
+    r, g, b = int(r*255), int(g*255), int(b*255)
+    return (r, g, b)
+
+
+
+def imageAnalyser(dataSet):
     try:
         start_time = time.time()
 
-        id_samples = range(0,10)
+        id_samples = range(0,100)
         show_images = False
-        image_folder_from_base = "dimlp/datafiles/Mnist"
-        test_data_file = image_folder_from_base + "/mnistTestData.txt"
-        test_class_file = image_folder_from_base + "/mnistTestClass.txt"
-        test_pred_file = image_folder_from_base + "/withValid/predTest.out"
-        global_rules = "withValid/globalRulesWithTestStats.rls"
+        if dataSet == "Mnist":
+            image_folder_from_base = "dimlp/datafiles/Mnist"
+            test_data_file = image_folder_from_base + "/mnistTestData.txt"
+            test_class_file = image_folder_from_base + "/mnistTestClass.txt"
+            test_pred_file = image_folder_from_base + "/predTest.out"
+            global_rules = "globalRules.txt"
 
-        train_data_file = "mnistTrainData.txt"
-        train_class_file = "mnistTrainClass.txt"
-        train_pred_file = "withValid/predTrain.out"
-        weights_file = "withValid/weights.wts"
-        image_save_folder = image_folder_from_base + "/imagesTest"
+            train_data_file = "mnistTrainData.txt"
+            train_class_file = "mnistTrainClass.txt"
+            train_pred_file = "predTrain.out"
+            weights_file = "weights.wts"
 
+            dropout_dim = 0.9
+            dropout_hyp = 0.9
+            size1d = 28
+            nb_channels = 1
+            with_hsl = False
+        elif dataSet == "Cifar10":
+            with_hsl = False
+
+            image_folder_from_base = "dimlp/datafiles/Cifar10/Cifar10Resnet"
+            test_data_file = image_folder_from_base + "/testData.txt"
+            test_class_file = image_folder_from_base + "/testClass.txt"
+            test_pred_file = image_folder_from_base + "/predTest.out"
+            global_rules = "globalRulesWithTestStats.txt"
+
+            train_data_file = "trainData.txt"
+            train_class_file = "trainClass.txt"
+            train_pred_file = "predTrain.out"
+            weights_file = "weights.wts"
+
+            dropout_dim = 0.9
+            dropout_hyp = 0.9
+            size1d = 32
+            nb_channels = 3
+
+        image_save_folder = image_folder_from_base + "/images"
         test_data = get_data(test_data_file)
         test_class = get_data(test_class_file)
         test_pred = get_data(test_pred_file)
@@ -76,14 +115,17 @@ def imageAnalyser():
             test_sample_class = test_class[id_sample] if 0 <= id_sample < len(test_class) else None
             test_sample_pred = test_pred[id_sample] if 0 <= id_sample < len(test_pred) else None
 
-            output_data(test_sample_data, test_sample_data_file, "itg")
+            if with_hsl:
+                output_data(test_sample_data, test_sample_data_file)
+            else:
+                output_data(test_sample_data, test_sample_data_file, "itg")
             output_data(test_sample_class, test_sample_class_file, "itg")
             output_data(test_sample_pred, test_sample_pred_file)
 
             fidexglo_command = "fidexGlo -S testSampleData.txt -p testSamplePred.txt -R " + global_rules + " -O explanation.txt -F " + image_folder_from_base# + " -r imgExplanationResult.txt"
             res_fid_glo = fidexGlo.fidexGlo(fidexglo_command)
             if res_fid_glo == -1:
-                return -1
+                raise ValueError('Error during execution of FidexGlo')
 
             has_global_rule = True
             rule = ""
@@ -107,10 +149,11 @@ def imageAnalyser():
                 print("No rule global rule found. We launch Fidex.")
                 fidex_command = "fidex -T " + train_data_file + " -P " + train_pred_file + " -C " + train_class_file
                 fidex_command += " -S testSampleData.txt -c testSampleClass.txt -p testSamplePred.txt -W "
-                fidex_command += weights_file + " -O imgFidexrule.txt -s imgFidexStats.txt -Q 50 -I 5 -i 100 -v 2 -d 0.5 -h 0.5 -R " +  image_folder_from_base
+                fidex_command += weights_file + " -O imgFidexrule.txt -s imgFidexStats.txt -Q 50 -i 100 -v 2 -R " +  image_folder_from_base
+                fidex_command += " -d " + str(dropout_dim) + " -h " + str(dropout_hyp)
                 res_fid = fidex.fidex(fidex_command)
                 if res_fid == -1:
-                    return -1
+                    raise ValueError('Error during execution of Fidex')
 
                 with open(img_fidex_file, "r") as my_file:
                     for line in my_file:
@@ -127,9 +170,6 @@ def imageAnalyser():
             # Find all matches in the input string
             matches = re.findall(pattern, rule)
 
-            # List to store antecedants
-            antecedants = []
-
             # Process each match and store in antecedants
             for match in matches:
                 attribute, inequality, value = match
@@ -145,15 +185,35 @@ def imageAnalyser():
                 baseimage = line.split(" ")
                 my_file.close()
 
-            colorimage = [[v,v,v] for v in baseimage]
+            if nb_channels == 1:
+
+                colorimage = [[v,v,v] for v in baseimage]
+            else:
+                colorimage = baseimage
+                if with_hsl:
+                    #Image back to RGB
+                    colorimage = np.array(colorimage)
+                    colorimage = colorimage.reshape(size1d, size1d, nb_channels)
+                    colorimage = hsl_to_rgb(colorimage)
+                    colorimage = colorimage.reshape(size1d*size1d*nb_channels)
 
             for antecedant in antecedants:
                 if antecedant["inequality"] == "<":
-                    colorimage[antecedant["attribute"]]=[255,0,0]
+                    if nb_channels == 1:
+                        colorimage[antecedant["attribute"]]=[255,0,0]
+                    else:
+                        colorimage[antecedant["attribute"] - (antecedant["attribute"] % 3)]=255
+                        colorimage[antecedant["attribute"] - (antecedant["attribute"] % 3)+1]=0
+                        colorimage[antecedant["attribute"] - (antecedant["attribute"] % 3)+2]=0
                 else:
-                    colorimage[antecedant["attribute"]]=[0,255,0]
+                    if nb_channels == 1:
+                        colorimage[antecedant["attribute"]]=[0,255,0]
+                    else:
+                        colorimage[antecedant["attribute"] - (antecedant["attribute"] % 3)]=0
+                        colorimage[antecedant["attribute"] - (antecedant["attribute"] % 3)+1]=255
+                        colorimage[antecedant["attribute"] - (antecedant["attribute"] % 3)+2]=0
 
-            colorimage_array = np.array(colorimage).reshape(28, 28, 3)
+            colorimage_array = np.array(colorimage).reshape(size1d, size1d, 3)
             colorimage = Image.fromarray(colorimage_array.astype('uint8'))
 
             image_path = image_save_folder + '/img_'+ str(id_sample) + '_out.png'
@@ -179,5 +239,6 @@ def imageAnalyser():
         print(error)
         return -1
 
-
-imageAnalyser()
+#dataSet = "Mnist"
+dataSet = "Cifar10"
+imageAnalyser(dataSet)

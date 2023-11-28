@@ -3,24 +3,29 @@
 using namespace std;
 
 void showParams() {
-  std::cout << "\n-------------------------------------------------\n\n";
+  std::cout << "\n-------------------------------------------------\n"
+            << std::endl;
 
-  std::cout << "Obligatory parameters : \n\n";
+  std::cout << "Obligatory parameters : \n"
+            << std::endl;
 
   std::cout << "fidexGlo -S <test sample(s) data file with data and prediction(if no -p)> ";
   std::cout << "-R <rules input file> ";
-  std::cout << "<Options>\n\n";
+  std::cout << "<Options>\n"
+            << std::endl;
 
-  std::cout << "Options are: \n\n";
-  std::cout << "-F <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
-  std::cout << "-A <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it\n";
-  std::cout << "-p <test prediction file>, -S needs to have only test datas\n";
-  std::cout << "-O <Rule output file>\n";
-  std::cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
-  std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>\n";
-  std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>\n";
+  std::cout << "Options are: \n"
+            << std::endl;
+  std::cout << "-F <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  std::cout << "-A <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it" << std::endl;
+  std::cout << "-p <test prediction file>, -S needs to have only test datas" << std::endl;
+  std::cout << "-O <Rule output file>" << std::endl;
+  std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
+  std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
 
-  std::cout << "\n-------------------------------------------------\n\n";
+  std::cout << "\n-------------------------------------------------\n"
+            << std::endl;
 }
 
 int fidexGlo(const string &command) {
@@ -374,14 +379,23 @@ int fidexGlo(const string &command) {
 
     std::cout << "Files imported" << endl
               << endl;
-
-    std::cout << "Find explanation for each sample..." << endl
-              << endl;
+    if (nbSamples > 1) {
+      std::cout << "Find explanation for each sample..." << endl
+                << endl;
+    }
 
     // we search explanation for each sample
-
+    if (nbSamples == 1) {
+      lines.push_back("Explanation for the sample :\n");
+      std::cout << "Explanation for the sample :" << std::endl
+                << std::endl;
+    }
     for (int currentSample = 0; currentSample < nbSamples; currentSample++) {
-      lines.push_back("Explanation for sample " + std::to_string(currentSample) + " :\n");
+      if (nbSamples > 1) {
+        lines.push_back("Explanation for sample " + std::to_string(currentSample) + " :\n");
+        std::cout << "Explanation for sample " << std::to_string(currentSample) << " :" << std::endl
+                  << std::endl;
+      }
 
       // Find rules activated by this sample
       vector<int> activatedRules;
@@ -391,7 +405,10 @@ int fidexGlo(const string &command) {
       vector<int> notcorrectRules;
       bool notShowUncorrectRules = false;
       if (activatedRules.empty()) { // If there is no activated rule
-        cout << "\nThere is no rule activated" << endl;
+        std::cout << "\nThere is no rule activated" << std::endl;
+        std::cout << "We couldn't find any global explanation for this sample." << std::endl; // There is no explanation, we choose the model decision
+        std::cout << "We choose the model prediction." << std::endl;
+        std::cout << "The predicted class is " << std::to_string(testSamplesPreds[currentSample]) << std::endl;
         lines.emplace_back("We couldn't find any global explanation for this sample."); // There is no explanation, we choose the model decision
         lines.emplace_back("We choose the model prediction.");
         lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
@@ -416,14 +433,22 @@ int fidexGlo(const string &command) {
             notShowUncorrectRules = true;
             if (activatedRules.size() > 1) {
               lines.emplace_back("We didn't found any rule with same prediction as the model (class " + std::to_string(testSamplesPreds[currentSample]) + "), but we found " + std::to_string(activatedRules.size()) + " rules with class " + std::to_string(ancientClass) + " :\n");
+              std::cout << "We didn't found any rule with same prediction as the model (class " << std::to_string(testSamplesPreds[currentSample]) << "), but we found " << std::to_string(activatedRules.size()) << " rules with class " << std::to_string(ancientClass) << " :" << std::endl
+                        << std::endl;
             } else {
               lines.emplace_back("We didn't found any rule with same prediction as the model (class " + std::to_string(testSamplesPreds[currentSample]) + "), but we found 1 rule with class " + std::to_string(ancientClass) + " :\n");
+              std::cout << "We didn't found any rule with same prediction as the model (class " << std::to_string(testSamplesPreds[currentSample]) << "), but we found 1 rule with class " << std::to_string(ancientClass) << " :" << std::endl
+                        << std::endl;
             }
             for (int v = 0; v < activatedRules.size(); v++) {
               lines.emplace_back("R" + std::to_string(v + 1) + ": " + stringRules[activatedRules[v]]);
+              std::cout << "R" << std::to_string(v + 1) << ": " << stringRules[activatedRules[v]] << std::endl;
             }
           } else {
-            cout << "\nThere is no correct rule for this sample." << endl;
+            std::cout << "\nThere is no correct rule for this sample." << std::endl;
+            std::cout << "We couldn't find any global explanation for this sample." << std::endl; // There is no explanation, we choose the model decision
+            std::cout << "We choose the model prediction." << std::endl;
+            std::cout << "The predicted class is " << std::to_string(testSamplesPreds[currentSample]) << std::endl;
             lines.emplace_back("We couldn't find any global explanation for this sample."); // There is no explanation, we choose the model decision
             lines.emplace_back("We choose the model prediction.");
             lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
@@ -432,31 +457,35 @@ int fidexGlo(const string &command) {
         } else { // There is an explanation which is caracterised by the correct rules
           if (correctRules.size() > 1) {
             lines.emplace_back("We have found " + std::to_string(correctRules.size()) + " global rules explaining the model prediction :\n"); // There is no explanation, we choose the model decision
+            std::cout << "We have found " << std::to_string(correctRules.size()) << " global rules explaining the model prediction :" << std::endl
+                      << std::endl; // There is no explanation, we choose the model decision
           } else {
             lines.emplace_back("We have found 1 global rule explaining the model prediction :\n"); // There is no explanation, we choose the model decision
+            std::cout << "We have found 1 global rule explaining the model prediction :" << std::endl
+                      << std::endl; // There is no explanation, we choose the model decision
           }
           for (int c = 0; c < correctRules.size(); c++) {
             lines.emplace_back("R" + std::to_string(c + 1) + ": " + stringRules[correctRules[c]]);
+            std::cout << "R" << std::to_string(c + 1) << ": " << stringRules[correctRules[c]] << std::endl;
           }
         }
       }
       if (!notShowUncorrectRules) {
         if (!notcorrectRules.empty()) {
           lines.emplace_back("\nActivated rules without correct decision class :");
+          std::cout << "\nActivated rules without correct decision class :" << std::endl;
           for (int n = 0; n < notcorrectRules.size(); n++) {
             lines.emplace_back("F" + std::to_string(n + 1) + ": " + stringRules[notcorrectRules[n]]);
+            std::cout << "F" << std::to_string(n + 1) + ": " << stringRules[notcorrectRules[n]] << std::endl;
           }
         } else {
           lines.emplace_back("\nThere is no uncorrect rules.");
+          std::cout << "\nThere is no uncorrect rules." << std::endl;
         }
       }
 
       lines.emplace_back("\n--------------------------------------------------------------------\n");
-    }
-
-    // Show result on consol
-    for (string l : lines) {
-      cout << l << endl;
+      std::cout << "\n--------------------------------------------------------------------" << std::endl;
     }
 
     // Output global explanation result
@@ -464,7 +493,7 @@ int fidexGlo(const string &command) {
       ofstream outputFile(explanationFile);
       if (outputFile.is_open()) {
         for (const auto &line : lines) {
-          outputFile << line << "\n";
+          outputFile << line << "" << std::endl;
         }
         outputFile.close();
       } else {
@@ -474,7 +503,7 @@ int fidexGlo(const string &command) {
 
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
-    std::cout << "\nFull execution time = " << temps << " sec\n";
+    std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
 

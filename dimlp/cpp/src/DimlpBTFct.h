@@ -4,7 +4,6 @@
 #include "bagDimlp.h"
 #include "checkFun.h"
 #include "realHyp2.h"
-#include "writeErr.h"
 #include <fstream>
 #include <sstream>
 #include <stdlib.h>

@@ -9,45 +9,49 @@ const int BPNN = 1;
 void GiveAllParamDimlpTrn()
 
 {
-  cout << "\n-------------------------------------------------\n\n";
+  cout << "\n-------------------------------------------------\n"
+       << std::endl;
 
   cout << "DimlpTrn -L <training set file(path with respect to specified root folder)> ";
   cout << "-I <number of input neurons> -O <number of output neurons>";
-  cout << " <Options>\n\n";
+  cout << " <Options>\n"
+       << std::endl;
 
-  cout << "Options are: \n\n";
-  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
-  cout << "-A <file of attributes>\n";
-  cout << "-V <validation set file>\n";
-  cout << "-T <testing set file>\n";
-  cout << "-W <file of pretrained weights>\n";
-  cout << "-1 <file of train classes>\n";
-  cout << "-2 <file of test classes>\n";
-  cout << "-3 <file of validation classes>\n";
-  cout << "-w <output weight file>\n";                     // If we want to specify weight output file, not to be weights.wts
-  cout << "-p <output train prediction file>\n";           // If we want to specify output train prediction file, not to be dimlp.out
-  cout << "-t <output test prediction file>\n";            // If we want to specify output test prediction file, not to be dimlpTest.out
-  cout << "-v <output validation prediction file>\n";      // If we want to specify output validation prediction file, not to be dimlpValidation.out
-  cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
-  cout << "-o <output file with train, test and validation accuracy>\n";
+  cout << "Options are: \n"
+       << std::endl;
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  cout << "-A <file of attributes>" << std::endl;
+  cout << "-V <validation set file>" << std::endl;
+  cout << "-T <testing set file>" << std::endl;
+  cout << "-W <file of pretrained weights>" << std::endl;
+  cout << "-1 <file of train classes>" << std::endl;
+  cout << "-2 <file of test classes>" << std::endl;
+  cout << "-3 <file of validation classes>" << std::endl;
+  cout << "-w <output weight file (weights.wts by default)>" << std::endl;
+  cout << "-p <output train prediction file (dimlp.out by default)>" << std::endl;
+  cout << "-t <output test prediction file (dimlpTest.out by default)>" << std::endl;
+  cout << "-v <output validation prediction file (dimlpValidation.out by default)>" << std::endl;
+  cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  cout << "-o <output file with train, test and validation accuracy>" << std::endl;
   cout << "-H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
-  cout << "number of input neurons)\n";
-  cout << "-Hk <number of neurons in the kth hidden layer>\n";
-  cout << "-R (RULE EXTRACTION)\n";
-  cout << "-F <extraction ruleFile>\n"; // If we want to extract rules in a rulesFile instead of console
-  cout << "-l <back-propagation learning parameter (Eta)>\n";
-  cout << "-m <back-propagation momentum parameter (Mu)>\n";
-  cout << "-f <back-propagation flat spot elimination parameter (Flat)>\n";
-  cout << "-q <number of stairs in staircase activation function>\n";
-  cout << "-e <error threshold>\n";
-  cout << "-a <accuracy threshold>\n";
-  cout << "-d <absolute difference error threshold>\n";
-  cout << "-i <number of epochs>\n";
-  cout << "-s <number of epochs to show error>\n";
-  cout << "-z <seed (0=ranodom)>";
+  cout << "number of input neurons)" << std::endl;
+  cout << "-Hk <number of neurons in the kth hidden layer>" << std::endl;
+  cout << "-R (RULE EXTRACTION)" << std::endl;
+  cout << "-F <extraction ruleFile>" << std::endl; // If we want to extract rules in a rulesFile instead of console
+  cout << "-l <back-propagation learning parameter (Eta, 0.1 by default)>" << std::endl;
+  cout << "-m <back-propagation momentum parameter (Mu, 0.6 by default)>" << std::endl;
+  cout << "-f <back-propagation flat spot elimination parameter (Flat, 0.01 by default)>" << std::endl;
+  cout << "-q <number of stairs in staircase activation function (50 by default)>" << std::endl;
+  cout << "-e <error threshold (-1111111111 by default)>" << std::endl;
+  cout << "-a <accuracy threshold (11111111111111 by default)>" << std::endl;
+  cout << "-d <absolute difference error threshold (0 by default)>" << std::endl;
+  cout << "-i <number of epochs (1500 by default)>" << std::endl;
+  cout << "-s <number of epochs to show error (10 by default)>" << std::endl;
+  cout << "-z <seed (0=random, default)>";
 
-  cout << "\n-------------------------------------------------\n\n";
+  cout << "\n-------------------------------------------------\n"
+       << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
@@ -63,8 +67,7 @@ static void SaveOutputs(
   filebuf buf;
 
   if (buf.open(outfile, ios_base::out) == nullptr) {
-    string errorMsg = "Cannot open file for writing";
-    WriteError(errorMsg, outfile);
+    throw CannotOpenFileError("Error : Cannot open output file " + std::string(outfile));
   }
 
   std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
@@ -72,7 +75,7 @@ static void SaveOutputs(
 
   cout << "\n\n"
        << outfile << ": "
-       << "Writing ...\n";
+       << "Writing ..." << std::endl;
 
   ostream outFile(&buf);
 
@@ -83,17 +86,17 @@ static void SaveOutputs(
       outFile << out[o] << " ";
     }
 
-    outFile << "\n";
+    outFile << "" << std::endl;
   }
 
   cout << outfile << ": "
-       << "Written.\n\n";
+       << "Written.\n"
+       << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
 
 int dimlpTrn(const string &command) {
-
   // Save buffer where we output results
   std::ofstream ofs;
   std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
@@ -192,8 +195,7 @@ int dimlpTrn(const string &command) {
         k++;
 
         if (k >= nbParam && *(&(commandList[k - 1])[0] + 1) != 'R') {
-          cout << "Missing something at the end of the command.\n";
-          return -1;
+          throw CommandArgumentException("Missing something at the end of the command.");
         }
 
         char option = commandList[k - 1][1];
@@ -201,64 +203,71 @@ int dimlpTrn(const string &command) {
         const char *lastArg = &(commandList[k - 1])[0];
         switch (option) {
         case 'l':
-          if (CheckFloat(arg))
+          if (CheckFloat(arg)) {
             eta = static_cast<float>(atof(arg));
-          else
-            return -1;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+          }
 
           break;
 
         case 'm':
-          if (CheckFloat(arg))
+          if (CheckFloat(arg)) {
             mu = static_cast<float>(atof(arg));
-          else
-            return -1;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+          }
 
           break;
 
         case 'f':
-          if (CheckFloat(arg))
+          if (CheckFloat(arg)) {
             flat = static_cast<float>(atof(arg));
-          else
-            return -1;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+          }
 
           break;
 
         case 'e':
-          if (CheckFloat(arg))
+          if (CheckFloat(arg)) {
             errThres = static_cast<float>(atof(arg));
-          else
-            return -1;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+          }
 
           if (flagEp == 0)
             epochs = 2000000000;
           break;
 
         case 'a':
-          if (CheckFloat(arg))
+          if (CheckFloat(arg)) {
             accThres = static_cast<float>(atof(arg));
-          else
-            return -1;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+          }
 
           if (flagEp == 0)
             epochs = 2000000000;
           break;
 
         case 'd':
-          if (CheckFloat(arg))
+          if (CheckFloat(arg)) {
             deltaErr = static_cast<float>(atof(arg));
-          else
-            return -1;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+          }
 
           if (flagEp == 0)
             epochs = 2000000000;
           break;
 
         case 's':
-          if (CheckInt(arg))
+          if (CheckInt(arg)) {
             showErr = atoi(arg);
-          else
-            return -1;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+          }
 
           break;
 
@@ -266,24 +275,27 @@ int dimlpTrn(const string &command) {
           if (CheckInt(arg)) {
             epochs = atoi(arg);
             flagEp = 1;
-          } else
-            return -1;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+          }
 
           break;
 
         case 'q':
-          if (CheckInt(arg))
+          if (CheckInt(arg)) {
             quant = atoi(arg);
-          else
-            return -1;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+          }
 
           break;
 
         case 'I':
-          if (CheckInt(arg))
+          if (CheckInt(arg)) {
             nbIn = atoi(arg);
-          else
-            return -1;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+          }
 
           break;
 
@@ -297,27 +309,29 @@ int dimlpTrn(const string &command) {
               std::string str(ptrParam + 2);
               archInd.Insert(std::atoi(str.c_str()));
             } else {
-              cout << "Which hidden layer (-H) ?\n";
-              return -1;
+              throw CommandArgumentException("Error : Which hidden layer (-H) ?");
             }
-          } else
-            return -1;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+          }
 
           break;
 
         case 'O':
-          if (CheckInt(arg))
+          if (CheckInt(arg)) {
             nbOut = atoi(arg);
-          else
-            return -1;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+          }
 
           break;
 
         case 'z':
-          if (CheckInt(arg))
+          if (CheckInt(arg)) {
             seed = atoi(arg);
-          else
-            return -1;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+          }
 
           break;
 
@@ -403,14 +417,12 @@ int dimlpTrn(const string &command) {
           break;
 
         default:
-          cout << "Illegal option: " << lastArg << "\n";
-          return -1;
+          throw CommandArgumentException("Illegal option : " + string(lastArg));
         }
       }
 
       else {
-        cout << "Illegal option: " << &(commandList[k])[0] << "\n";
-        return -1;
+        throw CommandArgumentException("Illegal option : " + string(&(commandList[k])[0]));
       }
 
       k++;
@@ -522,33 +534,27 @@ int dimlpTrn(const string &command) {
     // ----------------------------------------------------------------------
 
     if (eta <= 0) {
-      cout << "The learning parameter must be greater than 0.\n";
-      return -1;
+      throw CommandArgumentException("The learning parameter must be greater than 0.");
     }
 
     if (mu < 0) {
-      cout << "The momentum parameter must be greater or equal to 0.\n";
-      return -1;
+      throw CommandArgumentException("The momentum parameter must be greater or equal to 0.");
     }
 
     if (showErr == 0) {
-      cout << "The number of epochs must be greater than 0.\n";
-      return -1;
+      throw CommandArgumentException("The number of epochs must be greater than 0.");
     }
 
     if (quant <= 2) {
-      cout << "The number of quantized levels must be greater than 2.\n";
-      return -1;
+      throw CommandArgumentException("The number of quantized levels must be greater than 2.");
     }
 
     if (nbIn == 0) {
-      cout << "The number of input neurons must be given with option -I.\n";
-      return -1;
+      throw CommandArgumentException("The number of input neurons must be given with option -I.");
     }
 
     if (nbOut <= 1) {
-      cout << "At least two output neurons must be given with option -O.\n";
-      return -1;
+      throw CommandArgumentException("At least two output neurons must be given with option -O.");
     }
 
     // ----------------------------------------------------------------------
@@ -570,9 +576,7 @@ int dimlpTrn(const string &command) {
         arch.GoToBeg();
 
         if (arch.GetVal() % nbIn != 0) {
-          cout << "The number of neurons in the first hidden layer must be";
-          cout << " a multiple of the number of input neurons.\n";
-          return -1;
+          throw InternalError("The number of neurons in the first hidden layer must be a multiple of the number of input neurons.");
         }
 
         nbLayers = arch.GetNbEl() + 2;
@@ -586,8 +590,7 @@ int dimlpTrn(const string &command) {
           vecNbNeurons[k] = arch.GetVal();
 
           if (vecNbNeurons[k] == 0) {
-            cout << "The number of neurons must be greater than 0.\n";
-            return -1;
+            throw InternalError("The number of neurons must be greater than 0.");
           }
         }
       }
@@ -605,8 +608,7 @@ int dimlpTrn(const string &command) {
           vecNbNeurons[k + 1] = arch.GetVal();
 
           if (vecNbNeurons[k + 1] == 0) {
-            cout << "The number of neurons must be greater than 0.\n";
-            return -1;
+            throw InternalError("The number of neurons must be greater than 0.");
           }
         }
       }
@@ -615,9 +617,7 @@ int dimlpTrn(const string &command) {
     // ----------------------------------------------------------------------
 
     if (learnFileInit == false) {
-      cout << "Give the training file with -L selection please."
-           << "\n";
-      return -1;
+      throw CommandArgumentException("Give the training file with -L selection please.");
     }
 
     if (learnTarInit != false) {
@@ -699,11 +699,11 @@ int dimlpTrn(const string &command) {
     if (accuracyFileInit != false) {
       ofstream accFile(accuracyFile);
       if (accFile.is_open()) {
-        accFile << "Accuracy : \n\n";
+        accFile << "Accuracy : \n"
+                << std::endl;
         accFile.close();
       } else {
-        string errorMsg = "Cannot open file for writing";
-        WriteError(errorMsg, accuracyFile);
+        throw CannotOpenFileError("Error : Cannot open accuracy file " + std::string(accuracyFile));
       }
     }
 
@@ -724,14 +724,15 @@ int dimlpTrn(const string &command) {
 
         if (attr.ReadAttr())
           cout << "\n\n"
-               << attrFile << ": Read file of attributes.\n\n";
+               << attrFile << ": Read file of attributes.\n"
+               << std::endl;
 
         Attr = attr;
       }
 
       All = Train;
       if (rulesFileInit != false) {
-        cout << "Extraction Part :: " << endl;
+        cout << "Extraction Part :: " << std::endl;
       }
 
       if (Valid.GetNbEx() > 0) {
@@ -741,15 +742,14 @@ int dimlpTrn(const string &command) {
 
       cout << "\n\n****************************************************\n"
            << endl;
-      cout << "*** RULE EXTRACTION" << endl;
+      cout << "*** RULE EXTRACTION" << std::endl;
       RealHyp ryp1(All, net, quant, nbIn,
                    vecNbNeurons[1] / nbIn, nbWeightLayers);
       if (rulesFileInit != false) {
         filebuf buf;
 
         if (buf.open(rulesFile, ios_base::out) == nullptr) {
-          string errorMsg = "Cannot open file for writing";
-          WriteError(errorMsg, rulesFile);
+          throw CannotOpenFileError("Error : Cannot open rules file " + std::string(rulesFile));
         }
         ostream rulesFileost(&buf);
         ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
@@ -767,7 +767,8 @@ int dimlpTrn(const string &command) {
 
           cout << "\n\n"
                << rulesFile << ": "
-               << "Written.\n\n";
+               << "Written.\n"
+               << std::endl;
       }
 
       else {
@@ -787,7 +788,7 @@ int dimlpTrn(const string &command) {
 
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
-    std::cout << "\nFull execution time = " << temps << " sec\n";
+    std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
 

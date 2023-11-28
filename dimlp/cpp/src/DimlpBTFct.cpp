@@ -7,44 +7,48 @@ using namespace std;
 void GiveAllParamDimlpBT()
 
 {
-  cout << "\n-------------------------------------------------\n\n";
+  cout << "\n-------------------------------------------------\n"
+       << std::endl;
 
   cout << "DimlpBT -L <training set file(path with respect to specified root folder)> ";
   cout << "-I <number of input neurons> -O <number of output neurons>";
 
-  cout << " <Options>\n\n";
+  cout << " <Options>\n"
+       << std::endl;
 
-  cout << "Options are: \n\n";
-  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
-  cout << "-N <number of networks>\n";
-  cout << "-A <file of attributes>\n";
-  cout << "-T <testing set file>\n";
-  cout << "-1 <file of train classes>\n";
-  cout << "-2 <file of test classes>\n";
-  cout << "-r <file where you redirect console result>\n";         // If we want to redirect console result to file
-  cout << "-w <output weights generic name file(without .wts)>\n"; // If we want to specify weights output generic file name, not to be dimlpBTx.wts
-  cout << "-p <output train prediction file>\n";                   // If we want to specify output train prediction file, not to be dimlpBT.out
-  cout << "-t <output test prediction file>\n";                    // If we want to specify output test prediction file, not to be dimlpBTTest.out
-  cout << "-o <output file with train, test and validation accuracy and with the global accuracy for train and test>\n";
+  cout << "Options are: \n"
+       << std::endl;
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  cout << "-N <number of networks (25 by default)>" << std::endl;
+  cout << "-A <file of attributes>" << std::endl;
+  cout << "-T <testing set file>" << std::endl;
+  cout << "-1 <file of train classes>" << std::endl;
+  cout << "-2 <file of test classes>" << std::endl;
+  cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  cout << "-w <output weights generic name file(without .wts, dimlpBT by default)>" << std::endl;
+  cout << "-p <output train prediction file (dimlpBT.out by default)>" << std::endl;
+  cout << "-t <output test prediction file (dimlpBTTest.out by default)>" << std::endl;
+  cout << "-o <output file with train, test and validation accuracy and with the global accuracy for train and test>" << std::endl;
   cout << "-H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
-  cout << "number of input neurons)\n";
-  cout << "-Hk <number of neurons in the kth hidden layer>\n";
-  cout << "-R (RULE EXTRACTION)\n";
-  cout << "-F <extraction ruleFile>\n"; // If we want to extract rules in a rulesFile instead of console
-  cout << "-l <back-propagation learning parameter (Eta)>\n";
-  cout << "-m <back-propagation momentum parameter (Mu)>\n";
-  cout << "-f <back-propagation flat spot elimination parameter (Flat)>\n";
-  cout << "-q <number of stairs in staircase activation function>\n";
-  cout << "-e <error threshold>\n";
-  cout << "-a <accuracy threshold>\n";
-  cout << "-d <absolute difference error threshold>\n";
-  cout << "-i <number of epochs>\n";
-  cout << "-s <number of epochs to show error>\n";
-  cout << "-n <number of examples for one single network>\n";
-  cout << "-z <seed (0=ranodom)>";
+  cout << "number of input neurons)" << std::endl;
+  cout << "-Hk <number of neurons in the kth hidden layer>" << std::endl;
+  cout << "-R (RULE EXTRACTION)" << std::endl;
+  cout << "-F <extraction ruleFile>" << std::endl; // If we want to extract rules in a rulesFile instead of console
+  cout << "-l <back-propagation learning parameter (Eta, 0.1 by default)>" << std::endl;
+  cout << "-m <back-propagation momentum parameter (Mu, 0.6 by default)>" << std::endl;
+  cout << "-f <back-propagation flat spot elimination parameter (Flat, 0.01 by default)>" << std::endl;
+  cout << "-q <number of stairs in staircase activation function (50 by default)>" << std::endl;
+  cout << "-e <error threshold (-1111111111 by default)>" << std::endl;
+  cout << "-a <accuracy threshold (11111111111111 by default)>" << std::endl;
+  cout << "-d <absolute difference error threshold>" << std::endl;
+  cout << "-i <number of epochs (0 by default)>" << std::endl;
+  cout << "-s <number of epochs to show error (1500 by default)>" << std::endl;
+  cout << "-n <number of examples for one single network (10 by default)>" << std::endl;
+  cout << "-z <seed (0=random, default)>";
 
-  cout << "\n-------------------------------------------------\n\n";
+  cout << "\n-------------------------------------------------\n"
+       << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
@@ -145,8 +149,7 @@ int dimlpBT(const string &command) {
         k++;
 
         if (k >= nbParam && commandList[k - 1][1] != 'R') {
-          cout << "Missing something at the end of the command.\n";
-          return -1;
+          throw CommandArgumentException("Missing something at the end of the command.");
         }
 
         char option = commandList[k - 1][1];
@@ -157,7 +160,7 @@ int dimlpBT(const string &command) {
           if (CheckFloat(arg))
             eta = static_cast<float>(atof(arg));
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
 
           break;
 
@@ -165,7 +168,7 @@ int dimlpBT(const string &command) {
           if (CheckFloat(arg))
             mu = static_cast<float>(atof(arg));
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
 
           break;
 
@@ -173,7 +176,7 @@ int dimlpBT(const string &command) {
           if (CheckFloat(arg))
             flat = static_cast<float>(atof(arg));
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
 
           break;
 
@@ -181,7 +184,7 @@ int dimlpBT(const string &command) {
           if (CheckFloat(arg))
             errThres = static_cast<float>(atof(arg));
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
 
           if (flagEp == 0)
             epochs = 2000000000;
@@ -191,7 +194,7 @@ int dimlpBT(const string &command) {
           if (CheckFloat(arg))
             accThres = static_cast<float>(atof(arg));
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
 
           if (flagEp == 0)
             epochs = 2000000000;
@@ -201,7 +204,7 @@ int dimlpBT(const string &command) {
           if (CheckFloat(arg))
             deltaErr = static_cast<float>(atof(arg));
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
 
           if (flagEp == 0)
             epochs = 2000000000;
@@ -211,7 +214,7 @@ int dimlpBT(const string &command) {
           if (CheckInt(arg))
             showErr = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -220,7 +223,7 @@ int dimlpBT(const string &command) {
             epochs = atoi(arg);
             flagEp = 1;
           } else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -228,7 +231,7 @@ int dimlpBT(const string &command) {
           if (CheckInt(arg))
             quant = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -236,7 +239,7 @@ int dimlpBT(const string &command) {
           if (CheckInt(arg))
             nbExInOne = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -244,7 +247,7 @@ int dimlpBT(const string &command) {
           if (CheckInt(arg))
             nbDimlpNets = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -252,7 +255,7 @@ int dimlpBT(const string &command) {
           if (CheckInt(arg))
             nbIn = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -266,11 +269,10 @@ int dimlpBT(const string &command) {
               std::string str(ptrParam + 2);
               archInd.Insert(std::atoi(str.c_str()));
             } else {
-              cout << "Which hidden layer (-H) ?\n";
-              return -1;
+              throw CommandArgumentException("Error : Which hidden layer (-H) ?");
             }
           } else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -278,7 +280,7 @@ int dimlpBT(const string &command) {
           if (CheckInt(arg))
             nbOut = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -286,7 +288,7 @@ int dimlpBT(const string &command) {
           if (CheckInt(arg))
             seed = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -353,14 +355,12 @@ int dimlpBT(const string &command) {
           break;
 
         default:
-          cout << "Illegal option: " << lastArg << "\n";
-          return -1;
+          throw CommandArgumentException("Illegal option : " + string(lastArg));
         }
       }
 
       else {
-        cout << "Illegal option: " << &(commandList[k])[0] << "\n";
-        return -1;
+        throw CommandArgumentException("Illegal option : " + string(&(commandList[k])[0]));
       }
       k++;
     }
@@ -466,33 +466,27 @@ int dimlpBT(const string &command) {
     // ----------------------------------------------------------------------
 
     if (eta <= 0) {
-      cout << "The learning parameter must be greater than 0.\n";
-      return -1;
+      throw CommandArgumentException("The learning parameter must be greater than 0.");
     }
 
     if (mu < 0) {
-      cout << "The momentum parameter must be greater or equal to 0.\n";
-      return -1;
+      throw CommandArgumentException("The momentum parameter must be greater or equal to 0.");
     }
 
     if (showErr == 0) {
-      cout << "The number of epochs must be greater than 0.\n";
-      return -1;
+      throw CommandArgumentException("The number of epochs must be greater than 0.");
     }
 
     if (quant == 0) {
-      cout << "The number of quantized levels must be greater than 0.\n";
-      return -1;
+      throw CommandArgumentException("The number of quantized levels must be greater than 0.");
     }
 
     if (nbIn == 0) {
-      cout << "The number of input neurons must be given with option -I.\n";
-      return -1;
+      throw CommandArgumentException("The number of input neurons must be given with option -I.");
     }
 
     if (nbOut == 0) {
-      cout << "The number of output neurons must be given with option -O.\n";
-      return -1;
+      throw CommandArgumentException("The number of output neurons must be given with option -O.");
     }
 
     // ----------------------------------------------------------------------
@@ -514,9 +508,7 @@ int dimlpBT(const string &command) {
         arch.GoToBeg();
 
         if (arch.GetVal() % nbIn != 0) {
-          cout << "The number of neurons in the first hidden layer must be";
-          cout << " a multiple of the number of input neurons.\n";
-          return -1;
+          throw InternalError("The number of neurons in the first hidden layer must be a multiple of the number of input neurons.");
         }
 
         nbLayers = arch.GetNbEl() + 2;
@@ -530,8 +522,7 @@ int dimlpBT(const string &command) {
           vecNbNeurons[k] = arch.GetVal();
 
           if (vecNbNeurons[k] == 0) {
-            cout << "The number of neurons must be greater than 0.\n";
-            return -1;
+            throw InternalError("The number of neurons must be greater than 0.");
           }
         }
       }
@@ -549,8 +540,7 @@ int dimlpBT(const string &command) {
           vecNbNeurons[k + 1] = arch.GetVal();
 
           if (vecNbNeurons[k + 1] == 0) {
-            cout << "The number of neurons must be greater than 0.\n";
-            return -1;
+            throw InternalError("The number of neurons must be greater than 0.");
           }
         }
       }
@@ -558,9 +548,7 @@ int dimlpBT(const string &command) {
 
     // ----------------------------------------------------------------------
     if (learnFileInit == false) {
-      cout << "Give the training file with -L selection please."
-           << "\n";
-      return -1;
+      throw CommandArgumentException("Give the training file with -L selection please.");
     }
     if (learnTarInit != false) {
       DataSet train(learnFile, nbIn);
@@ -642,11 +630,11 @@ int dimlpBT(const string &command) {
     if (accuracyFileInit != false) {
       ofstream accFile(accuracyFile);
       if (accFile.is_open()) {
-        accFile << "Accuracy for Bag training : \n\n";
+        accFile << "Accuracy for Bag training : \n"
+                << std::endl;
         accFile.close();
       } else {
-        string errorMsg = "Cannot open file for writing";
-        WriteError(errorMsg, accuracyFile);
+        throw CannotOpenFileError("Error : Cannot open accuracy file " + std::string(accuracyFile));
       }
     }
     net->TrainAll(Test, TestClass, genericWeightsFile, accuracyFile, seed);
@@ -654,27 +642,28 @@ int dimlpBT(const string &command) {
     float accTest;
 
     net->ComputeAcc(Train, TrainClass, &acc, 1, predTrainFile);
-    cout << "\n\n*** GLOBAL ACCURACY ON TRAINING SET = " << acc << "\n\n";
+    cout << "\n\n*** GLOBAL ACCURACY ON TRAINING SET = " << acc << "\n"
+         << std::endl;
 
     if (Test.GetNbEx() != 0) {
       net->ComputeAcc(Test, TestClass, &accTest, 1, predTestFile);
-      cout << "*** GLOBAL ACCURACY ON TESTING SET = " << accTest << "\n";
+      cout << "*** GLOBAL ACCURACY ON TESTING SET = " << accTest << "" << std::endl;
     }
 
     // Output accuracy stats in file
     if (accuracyFileInit != false) {
       ofstream accFile(accuracyFile, ios::app);
       if (accFile.is_open()) {
-        accFile << "-------------------------------------------------------\n";
-        accFile << "-------------------------------------------------------\n\n";
-        accFile << "Global accuracy on training set = " << acc << "\n";
+        accFile << "-------------------------------------------------------" << std::endl;
+        accFile << "-------------------------------------------------------\n"
+                << std::endl;
+        accFile << "Global accuracy on training set = " << acc << "" << std::endl;
         if (Test.GetNbEx() != 0) {
           accFile << "Global accuracy on testing set = " << accTest;
         }
         accFile.close();
       } else {
-        cout << "Error : could not open accuracy file " << accuracyFile << " not found.\n";
-        return -1;
+        throw CannotOpenFileError("Error : could not open accuracy file " + std::string(accuracyFile));
       }
     }
 
@@ -684,14 +673,15 @@ int dimlpBT(const string &command) {
 
         if (attr.ReadAttr())
           cout << "\n\n"
-               << attrFile << ": Read file of attributes.\n\n";
+               << attrFile << ": Read file of attributes.\n"
+               << std::endl;
 
         Attr = attr;
       }
 
       All = Train;
       if (rulesFileInit != false) {
-        cout << "Extraction Part :: " << endl;
+        cout << "Extraction Part :: " << std::endl;
       }
 
       if (Valid.GetNbEx() > 0) {
@@ -699,8 +689,9 @@ int dimlpBT(const string &command) {
         All = all2;
       }
 
-      cout << "\n\n****************************************************\n\n";
-      cout << "*** RULE EXTRACTION\n";
+      cout << "\n\n****************************************************\n"
+           << std::endl;
+      cout << "*** RULE EXTRACTION" << std::endl;
 
       std::shared_ptr<VirtualHyp> globVirt = net->MakeGlobalVirt(quant, nbIn,
                                                                  vecNbNeurons[1] / nbIn);
@@ -713,8 +704,7 @@ int dimlpBT(const string &command) {
         filebuf buf;
 
         if (buf.open(rulesFile, ios_base::out) == nullptr) {
-          string errorMsg = "Cannot open file for writing";
-          WriteError(errorMsg, rulesFile);
+          throw CannotOpenFileError("Error : Cannot open rules file " + std::string(rulesFile));
         }
 
         ostream rulesFileost(&buf);
@@ -736,7 +726,8 @@ int dimlpBT(const string &command) {
 
         cout << "\n\n"
              << rulesFile << ": "
-             << "Written.\n\n";
+             << "Written.\n"
+             << std::endl;
       } else {
         ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                            Test, TestClass, Attr, cout);
@@ -758,10 +749,9 @@ int dimlpBT(const string &command) {
 
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
-    std::cout << "\nFull execution time = " << temps << " sec\n";
+    std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
-
     BpNN::resetInitRandomGen();
 
   } catch (const char *msg) {

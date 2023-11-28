@@ -9,31 +9,35 @@ const int BPNN = 1;
 void GiveAllParamDimlpRul()
 
 {
-  cout << "\n-------------------------------------------------\n\n";
+  cout << "\n-------------------------------------------------\n"
+       << std::endl;
 
   cout << "DimlpRul -L <training set file(path with respect to specified root folder)> ";
   cout << "-W <file of weights> ";
   cout << "-I <number of input neurons> -O <number of output neurons>";
-  cout << " <Options>\n\n";
+  cout << " <Options>\n"
+       << std::endl;
 
-  cout << "Options are: \n\n";
-  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>\n";
-  cout << "-A <file of attributes>\n";
-  cout << "-V <validation set file>\n";
-  cout << "-T <testing set file>\n";
-  cout << "-1 <file of train classes>\n";
-  cout << "-2 <file of test classes>\n";
-  cout << "-3 <file of validation classes>\n";
-  cout << "-R <rulesFile>\n";                              // If you want to specify the rulesFile not being dimlp.rls
-  cout << "-r <file where you redirect console result>\n"; // If we want to redirect console result to file
-  cout << "-o <output file with train, test and validation accuracy>\n";
+  cout << "Options are: \n"
+       << std::endl;
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  cout << "-A <file of attributes>" << std::endl;
+  cout << "-V <validation set file>" << std::endl;
+  cout << "-T <testing set file>" << std::endl;
+  cout << "-1 <file of train classes>" << std::endl;
+  cout << "-2 <file of test classes>" << std::endl;
+  cout << "-3 <file of validation classes>" << std::endl;
+  cout << "-R <rulesFile (dimlp.rls by default)>" << std::endl;
+  cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  cout << "-o <output file with train, test and validation accuracy>" << std::endl;
   cout << "-H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
-  cout << "number of input neurons)\n";
-  cout << "-Hk <number of neurons in the kth hidden layer>\n";
-  cout << "-q <number of stairs in staircase activation function>\n";
+  cout << "number of input neurons)" << std::endl;
+  cout << "-Hk <number of neurons in the kth hidden layer>" << std::endl;
+  cout << "-q <number of stairs in staircase activation function (50 by default)>" << std::endl;
 
-  cout << "\n-------------------------------------------------\n\n";
+  cout << "\n-------------------------------------------------\n"
+       << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
@@ -111,8 +115,7 @@ int dimlpRul(const string &command) {
         k++;
 
         if (k >= nbParam) {
-          cout << "Missing something at the end of the command.\n";
-          return -1;
+          throw CommandArgumentException("Missing something at the end of the command.");
         }
 
         char option = commandList[k - 1][1];
@@ -123,7 +126,7 @@ int dimlpRul(const string &command) {
           if (CheckInt(arg))
             quant = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -131,7 +134,7 @@ int dimlpRul(const string &command) {
           if (CheckInt(arg))
             nbIn = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -145,11 +148,10 @@ int dimlpRul(const string &command) {
               std::string str(ptrParam + 2);
               archInd.Insert(std::atoi(str.c_str()));
             } else {
-              cout << "Which hidden layer (-H) ?\n";
-              return -1;
+              throw CommandArgumentException("Error : Which hidden layer (-H) ?");
             }
           } else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -157,7 +159,7 @@ int dimlpRul(const string &command) {
           if (CheckInt(arg))
             nbOut = atoi(arg);
           else
-            return -1;
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
 
           break;
 
@@ -222,14 +224,12 @@ int dimlpRul(const string &command) {
           break;
 
         default:
-          cout << "Illegal option: " << lastArg << "\n";
-          return -1;
+          throw CommandArgumentException("Illegal option : " + string(lastArg));
         }
       }
 
       else {
-        cout << "Illegal option: " << &(commandList[k])[0] << "\n";
-        return -1;
+        throw CommandArgumentException("Illegal option : " + string(&(commandList[k])[0]));
       }
       k++;
     }
@@ -323,24 +323,19 @@ int dimlpRul(const string &command) {
     // ----------------------------------------------------------------------
 
     if (weightFileInit == false) {
-      cout << "Give a file of weights with -W selection please."
-           << "\n";
-      return -1;
+      throw CommandArgumentException("Give a file of weights with -W selection please.");
     }
 
     if (quant <= 2) {
-      cout << "The number of quantized levels must be greater than 2.\n";
-      return -1;
+      throw CommandArgumentException("The number of quantized levels must be greater than 2.");
     }
 
     if (nbIn == 0) {
-      cout << "The number of input neurons must be given with option -I.\n";
-      return -1;
+      throw CommandArgumentException("The number of input neurons must be given with option -I.");
     }
 
     if (nbOut <= 1) {
-      cout << "At least two output neurons must be given with option -O.\n";
-      return -1;
+      throw CommandArgumentException("At least two output neurons must be given with option -O.");
     }
 
     // ----------------------------------------------------------------------
@@ -362,9 +357,7 @@ int dimlpRul(const string &command) {
         arch.GoToBeg();
 
         if (arch.GetVal() % nbIn != 0) {
-          cout << "The number of neurons in the first hidden layer must be";
-          cout << " a multiple of the number of input neurons.\n";
-          return -1;
+          throw InternalError("The number of neurons in the first hidden layer must be a multiple of the number of input neurons.");
         }
 
         nbLayers = arch.GetNbEl() + 2;
@@ -378,8 +371,7 @@ int dimlpRul(const string &command) {
           vecNbNeurons[k] = arch.GetVal();
 
           if (vecNbNeurons[k] == 0) {
-            cout << "The number of neurons must be greater than 0.\n";
-            return -1;
+            throw InternalError("The number of neurons must be greater than 0.");
           }
         }
       }
@@ -397,8 +389,7 @@ int dimlpRul(const string &command) {
           vecNbNeurons[k + 1] = arch.GetVal();
 
           if (vecNbNeurons[k + 1] == 0) {
-            cout << "The number of neurons must be greater than 0.\n";
-            return -1;
+            throw InternalError("The number of neurons must be greater than 0.");
           }
         }
       }
@@ -407,9 +398,7 @@ int dimlpRul(const string &command) {
     // ----------------------------------------------------------------------
 
     if (learnFileInit == false) {
-      cout << "Give the training file with -L selection please."
-           << "\n";
-      return -1;
+      throw CommandArgumentException("Give the training file with -L selection please.");
     }
 
     if (learnTarInit != false) {
@@ -494,65 +483,70 @@ int dimlpRul(const string &command) {
     errTrain = net->Error(Train, TrainClass, &accTrain);
 
     cout << "\n\n*** SUM SQUARED ERROR ON TRAINING SET = " << errTrain;
-    cout << "\n\n*** ACCURACY ON TRAINING SET = " << accTrain << "\n";
+    cout << "\n\n*** ACCURACY ON TRAINING SET = " << accTrain << "" << std::endl;
 
     if (Valid.GetNbEx() > 0) {
       errValid = net->Error(Valid, ValidClass, &accValid);
 
       cout << "\n\n*** SUM SQUARED ERROR ON VALIDATION SET = " << errValid;
-      cout << "\n\n*** ACCURACY ON VALIDATION SET = " << accValid << "\n";
+      cout << "\n\n*** ACCURACY ON VALIDATION SET = " << accValid << "" << std::endl;
     }
 
     if (Test.GetNbEx() > 0) {
       errTest = net->Error(Test, TestClass, &accTest);
 
       cout << "\n\n*** SUM SQUARED ERROR ON TESTING SET = " << errTest;
-      cout << "\n\n*** ACCURACY ON TESTING SET = " << accTest << "\n";
+      cout << "\n\n*** ACCURACY ON TESTING SET = " << accTest << "" << std::endl;
     }
 
     // Output accuracy stats in file
     if (accuracyFileInit != false) {
       ofstream accFile(accuracyFile);
       if (accFile.is_open()) {
-        accFile << "Sum squared error on training set = " << errTrain << "\n";
-        accFile << "Accuracy on training set = " << accTrain << "\n\n";
+        accFile << "Sum squared error on training set = " << errTrain << "" << std::endl;
+        accFile << "Accuracy on training set = " << accTrain << "\n"
+                << std::endl;
         if (Valid.GetNbEx() > 0) {
-          accFile << "Sum squared error on validation set = " << errValid << "\n";
-          accFile << "Accuracy on validation set = " << accValid << "\n\n";
+          accFile << "Sum squared error on validation set = " << errValid << "" << std::endl;
+          accFile << "Accuracy on validation set = " << accValid << "\n"
+                  << std::endl;
         }
         if (Test.GetNbEx() > 0) {
-          accFile << "Sum squared error on testing set = " << errTest << "\n";
-          accFile << "Accuracy on testing set = " << accTest << "\n\n";
+          accFile << "Sum squared error on testing set = " << errTest << "" << std::endl;
+          accFile << "Accuracy on testing set = " << accTest << "\n"
+                  << std::endl;
         }
         accFile.close();
       } else {
-        cout << "Error : could not open accuracy file " << accuracyFile << " not found.\n";
-        return -1;
+        throw CannotOpenFileError("Error : could not open accuracy file " + std::string(accuracyFile));
       }
     }
 
-    cout << "\n-------------------------------------------------\n\n";
+    cout << "\n-------------------------------------------------\n"
+         << std::endl;
 
     // ----------------------------------------------------------------------
 
     All = Train;
 
-    cout << "Extraction Part :: " << endl;
+    cout << "Extraction Part :: " << std::endl;
 
     if (Valid.GetNbEx() > 0) {
       DataSet all2(All, Valid);
       All = all2;
     }
 
-    cout << "\n\n****************************************************\n\n";
-    cout << "*** RULE EXTRACTION\n";
+    cout << "\n\n****************************************************\n"
+         << std::endl;
+    cout << "*** RULE EXTRACTION" << std::endl;
 
     if (attrFileInit != false) {
       AttrName attr(attrFile, nbIn, nbOut);
 
       if (attr.ReadAttr())
         cout << "\n\n"
-             << attrFile << ": Read file of attributes.\n\n";
+             << attrFile << ": Read file of attributes.\n"
+             << std::endl;
 
       Attr = attr;
     }
@@ -563,8 +557,7 @@ int dimlpRul(const string &command) {
     filebuf buf;
 
     if (buf.open(rulesFile, ios_base::out) == nullptr) {
-      string errorMsg = "Cannot open file for writing";
-      WriteError(errorMsg, rulesFile);
+      throw CannotOpenFileError("Error : Cannot open rules file " + std::string(rulesFile));
     }
 
     ostream rulesFileost(&buf);
@@ -582,7 +575,8 @@ int dimlpRul(const string &command) {
 
     cout << "\n\n"
          << rulesFile << ": "
-         << "Written.\n\n";
+         << "Written.\n"
+         << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
 
