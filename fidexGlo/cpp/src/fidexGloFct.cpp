@@ -10,7 +10,7 @@ void showParams() {
             << std::endl;
 
   std::cout << "fidexGlo -S <test sample(s) data file with data and prediction(if no -p)> ";
-  std::cout << "-R <rules input file> ";
+  std::cout << "-R <ruleset input file> ";
   std::cout << "<Options>\n"
             << std::endl;
 
@@ -23,9 +23,33 @@ void showParams() {
   std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
   std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
   std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
+  std::cout << "-w <with Fidex if not rule is given (False by default)>" << std::endl
+            << std::endl;
+  std::cout << "If using fidex :" << std::endl;
+  std::cout << "Obligatory :" << std::endl;
+  std::cout << "-T <train dataset file>" << std::endl;
+  std::cout << "-P <train prediction file>" << std::endl;
+  std::cout << "-C <train true class file>" << std::endl;
+  std::cout << "-c <test true class file>" << std::endl;
+  std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> [Not mendatory if a rules file is given with -f] " << std::endl;
+  std::cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] " << std::endl;
+  std::cout << "Options :" << std::endl;
+  std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
+  std::cout << "-i <max iteration number (100 by default)>" << std::endl;
+  std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
+  std::cout << "-d <dimension dropout parameter (None by default)>" << std::endl;
+  std::cout << "-h <hyperplan dropout parameter (None by default)>" << std::endl;
+  std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
+  std::cout << "-z <seed (0=random, default)>";
 
   std::cout << "\n-------------------------------------------------\n"
             << std::endl;
+}
+
+void launchFidex(std::vector<std::string> &lines, std::string fidexCommand) {
+  std::cout << "We launch Fidex." << std::endl;
+  lines.emplace_back("We launch Fidex.");
+  fidex(fidexCommand);
 }
 
 int fidexGlo(const string &command) {
@@ -71,6 +95,38 @@ int fidexGlo(const string &command) {
     double decisionThreshold = -1;
     bool hasIndexPositiveClass = false;
     int indexPositiveClass = -1;
+
+    // Fidex parameters
+    bool withFidex = false;
+
+    string trainDataFile; // Train data
+    bool trainDataFileInit = false;
+    string trainDataFilePred; // Train class predictions from dimlp
+    bool trainDataFilePredInit = false;
+    string trainDataFileTrueClass; // Train true classes
+    bool trainDataFileTrueClassInit = false;
+    string testTrueClassFileTemp; // Test true classes
+    bool testTrueClassFileInit = false;
+
+    std::string weightsFile;
+    bool weightsFileInit = false;
+    string inputRulesFile; // Rule file to be converted to hyperlocus, replace weight file
+    bool inputRulesFileInit = false;
+
+    int seed;
+    bool seedInit = false;
+    int itMax; // We stop if we have more than itMax iterations
+    bool itMaxInit = false;
+    int minNbCover; // Minimum size of covering that we ask
+    bool minNbCoverInit = false;
+    bool dropoutHyp = false; // We dropout a bunch of hyperplans each iteration (could accelerate the processus)
+    double dropoutHypParam;
+    bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
+    double dropoutDimParam;
+    int nbDimlpNets;
+    bool nbDimlpNetsInit = false;
+    int nbQuantLevels;
+    bool nbQuantLevels = false;
 
     // Import parameters
 
@@ -144,6 +200,105 @@ int fidexGlo(const string &command) {
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
           }
+          break;
+
+        case 'w':
+          if (std::strcmp(arg, "true") == 0 || std::strcmp(arg, "True") == 0 || std::strcmp(arg, "1") == 0) {
+            withFidex = true;
+          } else if (std::strcmp(arg, "false") == 0 || std::strcmp(arg, "False") == 0 || std::strcmp(arg, "0") == 0) {
+            withFidex = false;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested");
+          }
+          break;
+
+        case 'T':
+          trainDataFile = arg; // Parameter after -T
+          trainDataFileInit = true;
+          break;
+
+        case 'P':
+          trainDataFilePred = arg;
+          trainDataFilePredInit = true;
+          break;
+
+        case 'C':
+          trainDataFileTrueClass = arg;
+          trainDataFileTrueClassInit = true;
+          break;
+
+        case 'c':
+          testTrueClassFileTemp = arg;
+          testTrueClassFileInit = true;
+          break;
+
+        case 'W': {
+          weightsFile = arg;
+          weightsFileInit = true;
+        } break;
+
+        case 'f': {
+          inputRulesFile = arg;
+          inputRulesFileInit = true;
+        } break;
+
+        case 'N':
+          if (CheckPositiveInt(arg))
+            nbDimlpNets = atoi(arg);
+          else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
+          }
+
+          break;
+
+        case 'Q':
+          if (CheckPositiveInt(arg)) {
+            nbQuantLevels = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
+          }
+          break;
+
+        case 'i':
+          if (CheckPositiveInt(arg)) {
+            itMax = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
+          }
+          break;
+
+        case 'v':
+          if (CheckPositiveInt(arg) && atoi(arg) >= 1) {
+            minNbCover = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
+          }
+          break;
+
+        case 'd':
+          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+            dropoutDimParam = atof(arg);
+            dropoutDim = true; // We dropout a bunch of dimensions each iteration (accelerate the processus)
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+          }
+          break;
+
+        case 'h':
+          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+            dropoutHypParam = atof(arg);
+            dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+          }
+          break;
+
+        case 'z':
+          if (CheckPositiveInt(arg))
+            seed = atoi(arg);
+          else
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
+
           break;
 
         default: // If we put another -X option
@@ -306,7 +461,7 @@ int fidexGlo(const string &command) {
         if (!testData.eof()) {
           getline(testData, line);
           if (!checkStringEmpty(line)) {
-            throw FileFormatError("Error : in file " + std::string(testSamplesDataFile) + ", you need to have empty lines between samples");
+            throw FileFormatError("Error : in file " + std::string(testSamplesDataFile) + ", you need to have empty lines between samples. You have chosen to give data and predictions in one file. If you want to separate them, use -p");
           }
         }
         firstLine = false;
@@ -369,6 +524,44 @@ int fidexGlo(const string &command) {
       }
     }
 
+    // If we use Fidex, we generate fidex command
+
+    if (withFidex) {
+      // Check if we have the obligatory parameters
+      const char *testTrueClassFile = nullptr;
+      if (testTrueClassFileInit) {
+        testTrueClassFileTemp = root + testTrueClassFileTemp;
+        testTrueClassFile = &testTrueClassFileTemp[0];
+      }
+      if (!trainDataFileInit) {
+        throw CommandArgumentException("You specified that you wanted to use Fidex (-w). The train data file has to be given with option -T");
+      }
+      if (!trainDataFilePredInit) {
+        throw CommandArgumentException("You specified that you wanted to use Fidex (-w). The train prediction file has to be given with option -P");
+      }
+      if (!trainDataFileTrueClassInit) {
+        throw CommandArgumentException("You specified that you wanted to use Fidex (-w). The train true classes file has to be given with option -C");
+      }
+      if (!testTrueClassFileInit) {
+        throw CommandArgumentException("You specified that you wanted to use Fidex (-w). The test true classes file has to be given with option -c");
+      }
+      if (!weightsFileInit && !inputRulesFileInit) {
+        throw CommandArgumentException("You specified that you wanted to use Fidex (-w). A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f");
+      } else if (weightsFileInit && inputRulesFileInit) {
+        throw CommandArgumentException("You specified that you wanted to use Fidex (-w). Do not specify both a weight file(-W) and a rules file(-f). Choose one of them.");
+      }
+      /*
+      std::string fidexCommand = "fidex -T " + trainDataFile + " -P " + trainPredFile + " -C " + trainClassFile;
+      if with_file:
+          fidexCommand += "-f " + rulesFile
+      else:
+          fidexCommand += "-W " + weightsFile
+      fidexCommand += " -O fidexrule.txt -Q 50 -i 100 -v 2 -R " +  image_folder_from_base
+      fidexCommand += " -d " + str(dropout_dim) + " -h " + str(dropout_hyp) -t -x -z -N*/
+      // A ajouter à chaque fois en bas : fidexCommand += " -S testSampleData.txt -c testSampleClass.txt -p testSamplePred.txt "
+      // Supprimer les fichiers temporaires à la fin
+    }
+
     // Get rules
     vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
     vector<string> lines;
@@ -412,6 +605,10 @@ int fidexGlo(const string &command) {
         lines.emplace_back("We couldn't find any global explanation for this sample."); // There is no explanation, we choose the model decision
         lines.emplace_back("We choose the model prediction.");
         lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
+        if (withFidex) {
+          launchFidex(lines, "");
+        }
+
       } else { // There is some activated rules
         for (int v : activatedRules) {
           if (get<2>(rules[v]) == testSamplesPreds[currentSample]) { // Check if the class of the rule is the predicted one
@@ -452,6 +649,9 @@ int fidexGlo(const string &command) {
             lines.emplace_back("We couldn't find any global explanation for this sample."); // There is no explanation, we choose the model decision
             lines.emplace_back("We choose the model prediction.");
             lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
+            if (withFidex) {
+              launchFidex(lines, "");
+            }
           }
 
         } else { // There is an explanation which is caracterised by the correct rules
