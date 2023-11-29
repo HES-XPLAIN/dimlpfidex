@@ -2,6 +2,7 @@
 #include <omp.h>
 
 using namespace std;
+using namespace FidexGloNameSpace;
 
 void showRulesParams() {
   cout << "\n-------------------------------------------------\n"
@@ -487,10 +488,8 @@ int fidexGloRules(const string &command) {
       matHypLocus = calcHypLocus(inputRulesFile, nbAttributs);
     }
 
-    // FidexGloNameSpace::Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans
-
-    const auto nbIn = static_cast<int>(matHypLocus.size()); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
-    // const auto nbIn = static_cast<int>(hyperspace.getHyperLocus().size()); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
+    // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
+    const auto nbIn = static_cast<int>(matHypLocus.size());
 
     // Check size of hyperlocus
     if (nbIn == 0 || nbIn % nbAttributs != 0) {
@@ -543,8 +542,9 @@ int fidexGloRules(const string &command) {
         // declaring thread internal variables
         vector<vector<double>> localTrainData;
         vector<double> localTrainPreds;
+        vector<double> localTrainTrueClass;
         tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> rule; // Ex: ([X2<3.5 X3>=4], covering, class)
-        FidexGloNameSpace::Hyperspace hyperspace(matHypLocus);
+        Hyperspace hyperspace(matHypLocus);
         auto exp = FidexAlgo();
         bool ruleCreated;
         int currentMinNbCov;
@@ -653,7 +653,7 @@ int fidexGloRules(const string &command) {
     float temps2;
     clock_t d1;
     clock_t d2;
-    FidexGloNameSpace::Hyperspace hyperspace(matHypLocus);
+    Hyperspace hyperspace(matHypLocus);
 
     d1 = clock();
     if (heuristic == 2) {
