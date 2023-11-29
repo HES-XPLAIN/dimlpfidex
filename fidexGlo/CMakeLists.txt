@@ -7,9 +7,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
-
-set(CMAKE_CXX_FLAGS "-O3")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+# -Wall -Wextra -Wpedantic
+set(CMAKE_CXX_FLAGS "-O3 -fopenmp -fsanitize=address -fsanitize=leak -fsanitize=undefined")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fopenmp -fsanitize=address -fsanitize=leak -fsanitize=undefined")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Enable static compilation for MingW

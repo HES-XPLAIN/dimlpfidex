@@ -414,6 +414,7 @@ int fidexGloRules(const string &command) {
     } else {
       hasConfidence = false;
     }
+
     vector<int> *trainTrueClass = trainDatas->getTrueClasses();
 
     const auto nbDatas = static_cast<int>((*trainData).size());
@@ -530,41 +531,83 @@ int fidexGloRules(const string &command) {
       vector<tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double>> rules;
       int nbProblems = 0;
       int nbRulesNotFound = 0;
+      int nbThreads = omp_get_num_procs();
 
       // Get the rule for each data sample from fidex
       cout << "Computing fidex rules..." << endl
            << endl;
-      cout << omp_get_num_procs() << " CPU cores available" << endl
+      cout << nbThreads << " CPU cores available" << endl
            << endl;
 
 #pragma omp parallel
       {
         // declaring thread internal variables
-        vector<vector<double>> localTrainData;
-        vector<double> localTrainPreds;
-        vector<double> localTrainTrueClass;
+        int threadId = omp_get_thread_num();
+        int startIndex = (nbDatas / nbThreads) * threadId;
+        int endIndex = (threadId + 1) < nbThreads ? startIndex + nbDatas / nbThreads : nbDatas - 1;
+
+        // creating subvectors of data, in order to avoid concurent access
+        vector<vector<double>> localTrainData(trainData->begin() + startIndex, trainData->begin() + endIndex);
+        vector<int> localTrainPreds(trainPreds->begin() + startIndex, trainPreds->begin() + endIndex);
+        vector<int> localTrainTrueClass(trainTrueClass->begin() + startIndex, trainTrueClass->begin() + endIndex);
+
+#pragma omp critical
+        {
+          cout << "Thread #" << threadId << " working on " << (endIndex - startIndex) << " values. Interval is [" << startIndex << ":" << endIndex << "]" << endl;
+          cout << "Local vector size check:" << endl;
+          cout << "   localTrainData size:      " << localTrainData.size() << endl;
+          cout << "   localTrainPreds size:     " << localTrainPreds.size() << endl;
+          cout << "   localTrainTrueClass size: " << localTrainTrueClass.size() << endl
+               << endl;
+        }
+
+        // shouldn't we create a structure for this ?
         tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> rule; // Ex: ([X2<3.5 X3>=4], covering, class)
         Hyperspace hyperspace(matHypLocus);
         auto exp = FidexAlgo();
         bool ruleCreated;
-        int currentMinNbCov;
+        int currentMinNbCov = minNbCover;
+        int localNbRulesNotFound = 0;
+        int localNbDatas = nbDatas;
+        int localNbProblems = 0;
+        int localMinNbCover = 0;
 
 #pragma omp for
-        for (int idSample = 0; idSample < nbDatas; idSample++) {
+        for (int idSample = 0; idSample < localNbDatas; idSample++) {
 
-          if (int(nbDatas / 100) != 0 && idSample % int(nbDatas / 100) == 0 && consoleFileInit == false) {
-            cout << "Processing : " << int((double(idSample) / nbDatas) * 100) << "%\r";
-            cout.flush();
-          }
+          // #pragma atomic
+          // {
+          //   if (int(localNbDatas / 100) != 0 && idSample % int(localNbDatas / 100) == 0 && consoleFileInit == false) {
+          //     cout << "Processing (thread #" << threadId << ") : " << int((double(idSample) / localNbDatas) * 100) << "%" << endl;;
+          //     cout.flush();
+          //   }
+          // }
 
-          currentMinNbCov = minNbCover;
           ruleCreated = false;
           int counterFailed = 0; // If we can't find a good rule after a lot of tries
 
           while (!ruleCreated) {
 
-            // there's a concurrent access thath produces a double free in some cases
-            ruleCreated = exp.fidex(rule, trainData, trainPreds, hasConfidence, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
+            // TODO: localize shared variables
+            ruleCreated = exp.fidex(
+                rule,
+                &localTrainData,
+                &localTrainPreds,
+                hasConfidence,
+                trainOutputValuesPredictions,
+                &localTrainTrueClass,
+                &(*trainData)[idSample],
+                (*trainPreds)[idSample],
+                &hyperspace,
+                nbIn,
+                nbAttributs,
+                itMax,
+                currentMinNbCov,
+                dropoutDim,
+                dropoutDimParam,
+                dropoutHyp,
+                dropoutHypParam,
+                gen);
 
             if (currentMinNbCov >= 2) {
               currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
@@ -573,41 +616,53 @@ int fidexGloRules(const string &command) {
             }
 
             if (counterFailed >= 30) {
-              nbRulesNotFound += 1;
-              auto it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
-              if (it != notCoveredSamples.end()) {
-                notCoveredSamples.erase(it);
+              localNbRulesNotFound += 1;
+
+// notCoveredSamples is shared
+#pragma omp critical
+              {
+                auto it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
+                if (it != notCoveredSamples.end()) {
+
+                  notCoveredSamples.erase(it);
+                }
               }
               break;
             }
           }
 
           if (currentMinNbCov + 1 < minNbCover) {
-            nbProblems += 1;
+            localNbProblems += 1;
           }
 
           rules.push_back(rule);
         }
-      }
+
+// gathering local data to main process
+#pragma atomic
+        {
+          nbProblems += localNbProblems;
+          nbRulesNotFound += localNbRulesNotFound;
+          cout << "Thread #" << threadId << " done" << endl;
+        }
+      } // end of parallel section
 
       cout << "\nNumber of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
       if (nbRulesNotFound > 0) {
         cout << "Number of rules not found : " << nbRulesNotFound << endl;
       }
 
-      cout << "Fidex rules computed" << endl
-           << endl;
-
-      cout << "Computing global ruleset..." << endl
-           << endl;
+      cout << "Fidex rules computed" << endl;
+      cout << "Computing global ruleset..." << endl;
 
       nbRules = 0;
 
       // While there is some not covered samples
       tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> currentRule;
-      vector<int>::iterator ite;
+      std::vector<int>::iterator ite;
       vector<int> newNotCoveredSamples;
       vector<int> bestNewNotCoveredSamples;
+
       while (!notCoveredSamples.empty()) {
 
         // Get rule that covers the most new samples
@@ -617,7 +672,7 @@ int fidexGloRules(const string &command) {
         for (int r = 0; r < rules.size(); r++) {
           newNotCoveredSamples = notCoveredSamples;
           // Remove samples that are in current covering
-          ite = set_difference(newNotCoveredSamples.begin(), newNotCoveredSamples.end(), get<1>(rules[r]).begin(), get<1>(rules[r]).end(), newNotCoveredSamples.begin()); // vectors have to be sorted
+          ite = std::set_difference(newNotCoveredSamples.begin(), newNotCoveredSamples.end(), get<1>(rules[r]).begin(), get<1>(rules[r]).end(), newNotCoveredSamples.begin()); // vectors have to be sorted
           newNotCoveredSamples.resize(ite - newNotCoveredSamples.begin());
           currentCovering = static_cast<int>(newNotCoveredSamples.size());
 
@@ -945,7 +1000,6 @@ int fidexGloRules(const string &command) {
     cout << "\nFull execution time = " << temps << " sec" << endl;
 
     cout.rdbuf(cout_buff); // reset to standard output again
-
   } catch (const char *msg) {
     cout.rdbuf(cout_buff);
     cerr << msg << endl;
