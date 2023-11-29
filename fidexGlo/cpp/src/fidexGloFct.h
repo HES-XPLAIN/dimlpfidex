@@ -1,6 +1,7 @@
 #ifndef FIDEXGLOFCT_H
 #define FIDEXGLOFCT_H
 
+#include "../../../fidex/cpp/src/fidexFct.h"
 #include "../../../fidexCommon/cpp/src/dataSet.h"
 #include "../../../fidexCommon/cpp/src/errorHandler.h"
 #include "getRulesFun.h"
@@ -15,6 +16,7 @@
 #include <vector>
 
 void showParams();
+void launchFidex(std::vector<std::string> &lines, std::string fidexCommand);
 int fidexGlo(const std::string &command);
 
 #endif

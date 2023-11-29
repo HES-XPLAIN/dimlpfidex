@@ -24,8 +24,8 @@ void showRulesParams() {
   std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
   std::cout << "-i <max iteration number (100 by default)>" << std::endl;
   std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
-  std::cout << "-d <dimension dropout parameter>" << std::endl;
-  std::cout << "-h <hyperplan dropout parameter>" << std::endl;
+  std::cout << "-d <dimension dropout parameter (None by default)>" << std::endl;
+  std::cout << "-h <hyperplan dropout parameter (None by default)>" << std::endl;
   std::cout << "-m <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
   std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
   std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;

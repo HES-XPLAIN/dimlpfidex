@@ -19,16 +19,16 @@ void showFidexParams() {
   std::cout << "Options are: \n"
             << std::endl;
   std::cout << "-R <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>";
-  std::cout << "-p <test prediction file> ";
+  std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
+  std::cout << "-p <test prediction file> " << std::endl;
   std::cout << "-c <test true class file> If at least -p is specified, -S needs to have only test datas" << std::endl;
   std::cout << "-A <file of attributes>" << std::endl;
   std::cout << "-s <output statistic file>" << std::endl;
   std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
   std::cout << "-i <max iteration number (100 by default)>" << std::endl;
   std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
-  std::cout << "-d <dimension dropout parameter>" << std::endl;
-  std::cout << "-h <hyperplan dropout parameter>" << std::endl;
+  std::cout << "-d <dimension dropout parameter (None by default)>" << std::endl;
+  std::cout << "-h <hyperplan dropout parameter (None by default)>" << std::endl;
   std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
   std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
   std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
@@ -579,7 +579,7 @@ int fidex(const string &command) {
           if (!testData.eof()) {
             getline(testData, line);
             if (!checkStringEmpty(line)) {
-              throw FileFormatError("Error : in file " + std::string(mainSamplesDataFile) + ", you need to have empty lines between samples");
+              throw FileFormatError("Error : in file " + std::string(mainSamplesDataFile) + ", you need to have empty lines between samples. You have chosen to give data, predictions and classes in one file. If you want to separate them, use -p and -c");
             }
           }
         }
