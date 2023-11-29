@@ -1,11 +1,31 @@
 #include "fidexAlgo.h"
+#include <omp.h>
 
 using namespace std;
 FidexAlgo::FidexAlgo() = default;
 
 // Different mains:
 
-bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> &rule, vector<vector<double>> *trainData, vector<int> *trainPreds, bool hasConfidence, vector<vector<double>> *trainOutputValuesPredictions, vector<int> *trainTrueClass, vector<double> *mainSampleValues, int mainSamplePred, FidexGloNameSpace::Hyperspace *hyperspace, const int nbIn, const int nbAttributs, int itMax, int minNbCover, bool dropoutDim, double dropoutDimParam, bool dropoutHyp, double dropoutHypParam, std::mt19937 gen) const {
+// OPENMP: hyperspace is a shared ressource that might produce concurrency errors
+bool FidexAlgo::fidex(
+    std::tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> &rule,
+    vector<vector<double>> *trainData,
+    vector<int> *trainPreds,
+    bool hasConfidence,
+    vector<vector<double>> *trainOutputValuesPredictions,
+    vector<int> *trainTrueClass,
+    vector<double> *mainSampleValues,
+    int mainSamplePred,
+    FidexGloNameSpace::Hyperspace *hyperspace,
+    const int nbIn,
+    const int nbAttributs,
+    int itMax,
+    int minNbCover,
+    bool dropoutDim,
+    double dropoutDimParam,
+    bool dropoutHyp,
+    double dropoutHypParam,
+    std::mt19937 gen) const {
 
   // Initialize uniform distribution
   std::uniform_real_distribution<double> dis(0.0, 1.0);
@@ -17,7 +37,6 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
   // Store covering and compute initial fidelty
   hyperspace->getHyperbox()->setCoveredSamples(coveredSamples);
   hyperspace->getHyperbox()->computeFidelity(mainSamplePred, trainPreds); // Compute fidelity of initial hyperbox
-
   // If we come from fidexGlo, we reset hyperbox discriminativeHyperplans
   hyperspace->getHyperbox()->resetDiscriminativeHyperplans();
 
@@ -115,7 +134,6 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
   }
 
   // Compute rule accuracy
-
   double ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass); // Percentage of correct model prediction on samples covered by the rule
   double ruleConfidence;
   if (hasConfidence) {
