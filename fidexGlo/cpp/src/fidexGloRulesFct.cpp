@@ -552,7 +552,7 @@ int fidexGloRules(const string &command) {
         vector<int> localTrainTrueClass(trainTrueClass->begin() + startIndex, trainTrueClass->begin() + endIndex);
         vector<tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double>> localRules;
 
-        #pragma omp critical
+#pragma omp critical
         {
           cout << "Thread #" << threadId << " working on " << (endIndex - startIndex) << " values. Interval is [" << startIndex << ":" << endIndex << "]" << endl;
           cout << "Local vector size check:" << endl;
@@ -574,7 +574,6 @@ int fidexGloRules(const string &command) {
         int localNbDatas = endIndex - startIndex;
         int localNbProblems = 0;
         int localMinNbCover = 0;
-
 
 #pragma omp for
         for (int idSample = 0; idSample < localNbDatas; idSample++) {
@@ -650,7 +649,7 @@ int fidexGloRules(const string &command) {
           nbRulesNotFound += localNbRulesNotFound;
         }
 
-        cout << "Thread #" << threadId << " is done."<< endl;
+        cout << "Thread #" << threadId << " is done." << endl;
       } // end of parallel section
 
       cout << "\nNumber of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
