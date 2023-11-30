@@ -567,13 +567,15 @@ int fidexGloRules(const string &command) {
 
         // some more internal variables
         Hyperspace hyperspace(matHypLocus);
-        auto exp = FidexAlgo();
+        FidexAlgo exp = FidexAlgo();
         bool ruleCreated;
+        int counterFailed;
         int currentMinNbCov = minNbCover;
         int localNbRulesNotFound = 0;
         int localNbDatas = endIndex - startIndex;
         int localNbProblems = 0;
         int localMinNbCover = 0;
+        vector<int>::iterator it;
 
 #pragma omp for
         for (int idSample = 0; idSample < localNbDatas; idSample++) {
@@ -588,7 +590,7 @@ int fidexGloRules(const string &command) {
           // }
 
           ruleCreated = false;
-          int counterFailed = 0; // If we can't find a good rule after a lot of tries
+          counterFailed = 0; // If we can't find a good rule after a lot of tries
 
           while (!ruleCreated) {
 
@@ -624,9 +626,8 @@ int fidexGloRules(const string &command) {
 // notCoveredSamples is shared data -> critical region needed
 #pragma omp critical
               {
-                auto it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
+                it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
                 if (it != notCoveredSamples.end()) {
-
                   notCoveredSamples.erase(it);
                 }
               }
