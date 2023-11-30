@@ -44,17 +44,24 @@ void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
   } else {
     line += "-> class " + std::to_string(mainSamplePred);
   }
-  line += " Covering size : " + std::to_string(hyperbox->getCoveredSamples().size());
-  line += " Fidelity : " + std::to_string(hyperbox->getFidelity());
-  line += " Accuracy : " + std::to_string(ruleAccuracy);
-  if (ruleConfidence != -1) {
-    line += " Confidence : " + std::to_string(ruleConfidence);
-  }
-
   std::cout << "Extracted rule :" << std::endl;
-  std::cout << line << endl
-            << endl;
+  std::cout << line << endl;
   lines.push_back(line);
+  line = "Train Covering size : " + std::to_string(hyperbox->getCoveredSamples().size());
+  std::cout << line << endl;
+  lines.push_back(line);
+  line = "Train Fidelity : " + std::to_string(hyperbox->getFidelity());
+  std::cout << line << endl;
+  lines.push_back(line);
+  line = "Train Accuracy : " + std::to_string(ruleAccuracy);
+  std::cout << line << endl;
+  lines.push_back(line);
+  if (ruleConfidence != -1) {
+    line = "Train Confidence : " + std::to_string(ruleConfidence);
+    std::cout << line << endl;
+    lines.push_back(line);
+  }
+  std::cout << std::endl;
 }
 
 double Hyperspace::computeRuleAccuracy(vector<int> *trainPreds, vector<int> *trainTrueClass, bool mainSampleCorrect) const { // Percentage of correct model prediction on samples covered by the rule

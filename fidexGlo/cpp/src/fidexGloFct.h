@@ -16,7 +16,7 @@
 #include <vector>
 
 void showParams();
-void launchFidex(std::vector<std::string> &lines, std::string fidexCommand);
+void launchFidex(std::vector<std::string> &lines, const std::string &fidexCommand, const std::string &ruleFile);
 int fidexGlo(const std::string &command);
 
 #endif

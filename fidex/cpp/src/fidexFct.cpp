@@ -766,10 +766,6 @@ int fidex(const string &command) {
     double meanNbAntecedentsPerRule = 0;
     double meanAccuracy = 0;
 
-    /*float sampleTime;
-    clock_t samplet1;
-    clock_t samplet2;*/
-
     // We compute rule for each test sample
     for (int currentSample = 0; currentSample < nbSamples; currentSample++) {
 
@@ -817,10 +813,6 @@ int fidex(const string &command) {
         std::shuffle(std::begin(dimensions), std::end(dimensions), gen);
         vector<int> currentCovSamp;
 
-        /*float itTime;
-        clock_t itt1;
-        clock_t itt2;
-        itt1 = clock();*/
         for (int d = 0; d < nbIn; d++) { // Loop on all dimensions
           if (bestHyperbox->getFidelity() == 1) {
             break;
@@ -978,11 +970,6 @@ int fidex(const string &command) {
       hyperspace.ruleExtraction(&mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, attributFileInit, &attributeNames, hasClassNames, &classNames);
 
       std::cout << "Result found after " << nbIt << " iterations." << std::endl;
-
-      /*samplet2 = clock();
-      sampleTime = (float)(samplet2 - samplet1) / CLOCKS_PER_SEC;
-
-      std::cout << "\n Computation time = " << sampleTime << " sec" << std::endl;*/
 
       std::cout << "-------------------------------------------------" << std::endl;
 
