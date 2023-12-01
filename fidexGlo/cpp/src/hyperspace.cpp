@@ -16,29 +16,26 @@ std::shared_ptr<Hyperbox> Hyperspace::getHyperbox() const {
   return hyperbox;
 }
 
-tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence) {
-
-  tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> rule;
-
+// MODIFIED WHITH NEW STRUCTURE
+Rule Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence) {
   double hypValue;
   int attribut;
   bool inequalityBool;
+  vector<Antecedant> antecedants;
 
-  vector<tuple<int, bool, double>> antecedants;
   for (int k = 0; k < hyperbox->getDiscriminativeHyperplans().size(); k++) {
     attribut = hyperbox->getDiscriminativeHyperplans()[k].first % (*mainSampleData).size();
     hypValue = hyperLocus[hyperbox->getDiscriminativeHyperplans()[k].first][hyperbox->getDiscriminativeHyperplans()[k].second];
     double mainSampleValue = (*mainSampleData)[attribut];
+
     if (hypValue <= mainSampleValue) {
       inequalityBool = true;
     } else {
       inequalityBool = false;
     }
-    antecedants.push_back(make_tuple(attribut, inequalityBool, hypValue));
+    antecedants.push_back(Antecedant(attribut, inequalityBool, hypValue));
   }
-  rule = make_tuple(antecedants, hyperbox->getCoveredSamples(), mainSamplePred, ruleAccuracy, ruleConfidence);
-
-  return rule;
+  return Rule(antecedants, hyperbox->getCoveredSamples(), mainSamplePred, ruleAccuracy, ruleConfidence);
 }
 
 double Hyperspace::computeRuleAccuracy(vector<int> *trainPreds, vector<int> *trainTrueClass) const { // Percentage of correct model prediction on samples covered by the rule

@@ -504,7 +504,7 @@ int fidexGloRules(const string &command) {
     vector<int> notCoveredSamples(nbDatas);
     iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
 
-    vector<tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double>> chosenRules; // antecedents, cover vector, class, rule accuracy, rule confidence
+    vector<Rule> chosenRules; // antecedents, cover vector, class, rule accuracy, rule confidence
 
     //--------------------------------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------------------------------
@@ -528,7 +528,7 @@ int fidexGloRules(const string &command) {
       cout << "Optimal FidexGlo" << endl
            << endl;
 
-      vector<tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double>> rules;
+      vector<Rule> rules;
       int nbProblems = 0;
       int nbRulesNotFound = 0;
       int nbThreads = omp_get_num_procs();
@@ -544,7 +544,7 @@ int fidexGloRules(const string &command) {
         // declaring thread internal variables
         int threadId = omp_get_thread_num();
         int startIndex = (nbDatas / nbThreads) * threadId;
-        int endIndex = (threadId + 1) < nbThreads ? startIndex + nbDatas / nbThreads : nbDatas - 1;
+        int endIndex = (threadId + 1) < nbThreads ? startIndex + nbDatas / nbThreads - 1 : nbDatas - 1;
 
         // creating subvectors of data, in order to avoid concurent access
         vector<vector<double>> localTrainData(trainData->begin() + startIndex, trainData->begin() + endIndex);
@@ -562,13 +562,13 @@ int fidexGloRules(const string &command) {
         }
 
         // shouldn't we create a structure for this ?
-        tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> rule; // Ex: ([X2<3.5 X3>=4], covering, class)
-        Hyperspace hyperspace(matHypLocus);
+        Rule rule; // Ex: ([X2<3.5 X3>=4], covering, class)
+        Hyperspace localHyperspace(matHypLocus);
         auto exp = FidexAlgo();
         bool ruleCreated;
         int currentMinNbCov = minNbCover;
         int localNbRulesNotFound = 0;
-        int localNbDatas = nbDatas;
+        int localNbDatas = endIndex - startIndex;
         int localNbProblems = 0;
         int localMinNbCover = 0;
 
@@ -588,17 +588,16 @@ int fidexGloRules(const string &command) {
 
           while (!ruleCreated) {
 
-            // TODO: localize shared variables
             ruleCreated = exp.fidex(
                 rule,
                 &localTrainData,
                 &localTrainPreds,
                 hasConfidence,
-                trainOutputValuesPredictions,
+                trainOutputValuesPredictions, // shared
                 &localTrainTrueClass,
-                &(*trainData)[idSample],
-                (*trainPreds)[idSample],
-                &hyperspace,
+                &localTrainData[idSample],
+                localTrainPreds[idSample],
+                &localHyperspace,
                 nbIn,
                 nbAttributs,
                 itMax,
@@ -618,7 +617,7 @@ int fidexGloRules(const string &command) {
             if (counterFailed >= 30) {
               localNbRulesNotFound += 1;
 
-// notCoveredSamples is shared
+              // notCoveredSamples is shared
 #pragma omp critical
               {
                 auto it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
@@ -639,7 +638,7 @@ int fidexGloRules(const string &command) {
         }
 
 // gathering local data to main process
-#pragma atomic
+#pragma omp critical
         {
           nbProblems += localNbProblems;
           nbRulesNotFound += localNbRulesNotFound;
@@ -658,8 +657,8 @@ int fidexGloRules(const string &command) {
       nbRules = 0;
 
       // While there is some not covered samples
-      tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> currentRule;
-      std::vector<int>::iterator ite;
+      Rule currentRule;
+      vector<int>::iterator ite;
       vector<int> newNotCoveredSamples;
       vector<int> bestNewNotCoveredSamples;
 
@@ -672,7 +671,7 @@ int fidexGloRules(const string &command) {
         for (int r = 0; r < rules.size(); r++) {
           newNotCoveredSamples = notCoveredSamples;
           // Remove samples that are in current covering
-          ite = std::set_difference(newNotCoveredSamples.begin(), newNotCoveredSamples.end(), get<1>(rules[r]).begin(), get<1>(rules[r]).end(), newNotCoveredSamples.begin()); // vectors have to be sorted
+          ite = set_difference(newNotCoveredSamples.begin(), newNotCoveredSamples.end(), rules[r].getCoveredSamples().begin(), rules[r].getCoveredSamples().end(), newNotCoveredSamples.begin()); // vectors have to be sorted
           newNotCoveredSamples.resize(ite - newNotCoveredSamples.begin());
           currentCovering = static_cast<int>(newNotCoveredSamples.size());
 
@@ -715,12 +714,12 @@ int fidexGloRules(const string &command) {
       cout << "Fast FidexGlo" << endl
            << endl;
 
-      vector<tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double>> rules;
+      vector<Rule> rules;
       bool ruleCreated;
       int nbProblems = 0;
       int nbRulesNotFound = 0;
       int currentMinNbCov;
-      tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> rule; // Ex: ([X2<3.5 X3>=4], covering, class)
+      Rule rule; // Ex: ([X2<3.5 X3>=4], covering, class)
       auto exp = FidexAlgo();
 
       // Get the rule for each data sample from fidex
@@ -773,13 +772,13 @@ int fidexGloRules(const string &command) {
       // Sort the rules(dataIds) depending of their covering size
       vector<int> dataIds = notCoveredSamples;
       sort(dataIds.begin(), dataIds.end(), [&rules](int ruleBest, int ruleWorst) {
-        return get<1>(rules[ruleWorst]).size() < get<1>(rules[ruleBest]).size();
+        return rules[ruleWorst].getCoveredSamples().size() < rules[ruleBest].getCoveredSamples().size();
       });
 
       nbRules = 0;
 
       // While there is some not covered samples
-      tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> currentRule;
+      Rule currentRule;
       auto ancienNotCoveringSize = static_cast<int>(notCoveredSamples.size());
       int dataId = 0;
 
@@ -788,7 +787,7 @@ int fidexGloRules(const string &command) {
         currentRule = rules[dataIds[dataId]];
 
         // Delete covered samples
-        ite = set_difference(notCoveredSamples.begin(), notCoveredSamples.end(), get<1>(currentRule).begin(), get<1>(currentRule).end(), notCoveredSamples.begin()); // vectors have to be sorted
+        ite = set_difference(notCoveredSamples.begin(), notCoveredSamples.end(), currentRule.getCoveredSamples().begin(), currentRule.getCoveredSamples().end(), notCoveredSamples.begin()); // vectors have to be sorted
         notCoveredSamples.resize(ite - notCoveredSamples.begin());
 
         // If the rule coveres a new sample
@@ -836,7 +835,7 @@ int fidexGloRules(const string &command) {
       int currentMinNbCov;
       int nbProblems = 0;
       int nbRulesNotFound = 0;
-      tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> rule; // Ex: ([X2<3.5 X3>=4], covering, class, accuracy, confidence)
+      Rule rule; // Ex: ([X2<3.5 X3>=4], covering, class, accuracy, confidence)
       auto exp = FidexAlgo();
 
       cout << "Computing rules..." << endl
@@ -877,7 +876,7 @@ int fidexGloRules(const string &command) {
           notCoveredSamples.erase(
               remove_if(
                   notCoveredSamples.begin(), notCoveredSamples.end(), [&rule](int x) {
-                    return find(get<1>(rule).begin(), get<1>(rule).end(), x) != get<1>(rule).end();
+                    return find(rule.getCoveredSamples().begin(), rule.getCoveredSamples().end(), x) != rule.getCoveredSamples().end();
                     // find index of coveredSamples which is x (x is element of notCoveredSamples), find returns last if x not found
                     // -> Removes x if it appears on coveredSamples (found before the end of coveredSamples)
                   }),
@@ -922,43 +921,43 @@ int fidexGloRules(const string &command) {
     vector<int> RulesIds(nbRules);           // Rules indexes
     iota(begin(RulesIds), end(RulesIds), 0); // Vector from 0 to nbRules-1
     sort(RulesIds.begin(), RulesIds.end(), [&chosenRules](int ruleBest, int ruleWorst) {
-      return get<1>(chosenRules[ruleWorst]).size() < get<1>(chosenRules[ruleBest]).size();
+      return chosenRules[ruleWorst].getCoveredSamples().size() < chosenRules[ruleBest].getCoveredSamples().size();
     });
     lines.emplace_back("\n");
     for (int c = 0; c < nbRules; c++) { // each rule
       int r = RulesIds[c];
-      meanCovSize += static_cast<double>(get<1>(chosenRules[r]).size());
-      meanNbAntecedents += static_cast<double>(get<0>(chosenRules[r]).size());
+      meanCovSize += chosenRules[r].getCoveredSamples().size();
+      meanNbAntecedents += chosenRules[r].getAntecedants().size();
       line = "Rule " + to_string(c + 1) + ": ";
-      for (const auto &rule : get<0>(chosenRules[r])) { // each antecedant
-        if (get<1>(rule) == 1) {                        // check inequality
+      for (Antecedant a : chosenRules[r].getAntecedants()) { // each antecedant
+        if (a.getInequality()) {                             // check inequality
           inequality = ">=";
         } else {
           inequality = "<";
         }
         if (attributFileInit) {
-          line += attributeNames[get<0>(rule)];
+          line += attributeNames[a.getAttribute()];
         } else {
-          line += "X" + to_string(get<0>(rule));
+          line += "X" + to_string(a.getAttribute());
         }
-        line += inequality + to_string(get<2>(rule)) + " ";
+        line += inequality + to_string(a.gethyperlocus()) + " ";
       }
       // class of the rule
       if (hasClassNames) {
-        line += "-> " + classNames[get<2>(chosenRules[r])];
+        line += "-> " + classNames[chosenRules[r].getOutputClass()];
       } else {
-        line += "-> class " + to_string(get<2>(chosenRules[r]));
+        line += "-> class " + to_string(chosenRules[r].getOutputClass());
       }
       line += "\n";
       lines.push_back(line);
-      line = "Train Covering size : " + to_string(get<1>(chosenRules[r]).size()) + "\n"; // Covering size
+      line = "Train Covering size : " + to_string(chosenRules[r].getCoveredSamples().size()) + "\n"; // Covering size
       lines.push_back(line);
       line = "Train Fidelity : 1\n"; // Rule fidelity
       lines.push_back(line);
-      line = "Train Accuracy : " + to_string(get<3>(chosenRules[r])) + "\n"; // Rule accuracy
+      line = "Train Accuracy : " + to_string(chosenRules[r].getAccuracy()) + "\n"; // Rule accuracy
       lines.push_back(line);
       if (hasConfidence) {
-        line = "Train Confidence : " + to_string(get<4>(chosenRules[r])) + "\n"; // Rule confidence
+        line = "Train Confidence : " + to_string(chosenRules[r].getConfidence()) + "\n"; // Rule confidence
       } else {
         line = "\n";
       }

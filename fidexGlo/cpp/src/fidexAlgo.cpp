@@ -10,7 +10,7 @@ FidexAlgo::FidexAlgo() = default;
 
 // OPENMP: hyperspace is a shared ressource that might produce concurrency errors
 bool FidexAlgo::fidex(
-    tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> &rule,
+    Rule &rule,
     vector<vector<double>> *trainData,
     vector<int> *trainPreds,
     bool hasConfidence,
