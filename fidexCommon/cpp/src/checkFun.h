@@ -3,10 +3,12 @@
 
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 int CheckPositiveInt(const char *str);
 int CheckFloatFid(const char *str);
+bool checkBool(std::string input);
 bool checkStringEmpty(std::string line);
 
 #endif
