@@ -180,3 +180,4 @@ dmypy.json
 
 autoexe.sh
 data/obesity
+compile_commands.json
