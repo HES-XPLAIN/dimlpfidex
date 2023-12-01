@@ -510,7 +510,6 @@ int fidexGloRules(const string &command) {
     //--------------------------------------------------------------------------------------------------------------------
 
     // Initialize random number generator
-
     if (seed == 0) {
       auto currentTime = chrono::high_resolution_clock::now();
       auto seedValue = currentTime.time_since_epoch().count();
@@ -541,15 +540,17 @@ int fidexGloRules(const string &command) {
 
 #pragma omp parallel
       {
+
         // declaring thread internal variables
         int threadId = omp_get_thread_num();
         int startIndex = (nbDatas / nbThreads) * threadId;
         int endIndex = (threadId + 1) < nbThreads ? startIndex + nbDatas / nbThreads - 1 : nbDatas - 1;
 
-        // creating subvectors of data, in order to avoid concurent access
+        // creating subvectors of data, in order to avoid concurrent accesses with shared memory data
         vector<vector<double>> localTrainData(trainData->begin() + startIndex, trainData->begin() + endIndex);
         vector<int> localTrainPreds(trainPreds->begin() + startIndex, trainPreds->begin() + endIndex);
         vector<int> localTrainTrueClass(trainTrueClass->begin() + startIndex, trainTrueClass->begin() + endIndex);
+        vector<Rule> localRules;
 
 #pragma omp critical
         {
@@ -566,15 +567,18 @@ int fidexGloRules(const string &command) {
         Hyperspace localHyperspace(matHypLocus);
         auto exp = FidexAlgo();
         bool ruleCreated;
+        int counterFailed;
         int currentMinNbCov = minNbCover;
         int localNbRulesNotFound = 0;
         int localNbDatas = endIndex - startIndex;
         int localNbProblems = 0;
         int localMinNbCover = 0;
+        vector<int>::iterator it;
 
 #pragma omp for
         for (int idSample = 0; idSample < localNbDatas; idSample++) {
 
+          // this display is broken when using threads so I'm not uisng it.
           // #pragma atomic
           // {
           //   if (int(localNbDatas / 100) != 0 && idSample % int(localNbDatas / 100) == 0 && consoleFileInit == false) {
@@ -584,7 +588,7 @@ int fidexGloRules(const string &command) {
           // }
 
           ruleCreated = false;
-          int counterFailed = 0; // If we can't find a good rule after a lot of tries
+          counterFailed = 0; // If we can't find a good rule after a lot of tries
 
           while (!ruleCreated) {
 
@@ -620,9 +624,8 @@ int fidexGloRules(const string &command) {
               // notCoveredSamples is shared
 #pragma omp critical
               {
-                auto it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
+                it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
                 if (it != notCoveredSamples.end()) {
-
                   notCoveredSamples.erase(it);
                 }
               }
@@ -634,16 +637,18 @@ int fidexGloRules(const string &command) {
             localNbProblems += 1;
           }
 
-          rules.push_back(rule);
+          localRules.push_back(rule);
         }
 
 // gathering local data to main process
 #pragma omp critical
         {
+          rules.insert(rules.end(), localRules.begin(), localRules.end());
           nbProblems += localNbProblems;
           nbRulesNotFound += localNbRulesNotFound;
-          cout << "Thread #" << threadId << " done" << endl;
         }
+
+        cout << "Thread #" << threadId << " is done." << endl;
       } // end of parallel section
 
       cout << "\nNumber of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
@@ -669,6 +674,7 @@ int fidexGloRules(const string &command) {
         int bestCovering = INT_MAX;
         int currentCovering; // Size of new covering if we choose this rule
         for (int r = 0; r < rules.size(); r++) {
+
           newNotCoveredSamples = notCoveredSamples;
           // Remove samples that are in current covering
           ite = set_difference(newNotCoveredSamples.begin(), newNotCoveredSamples.end(), rules[r].getCoveredSamples().begin(), rules[r].getCoveredSamples().end(), newNotCoveredSamples.begin()); // vectors have to be sorted
@@ -681,11 +687,14 @@ int fidexGloRules(const string &command) {
             bestNewNotCoveredSamples = newNotCoveredSamples;
           }
         }
+
         currentRule = rules[bestRule];
         notCoveredSamples = bestNewNotCoveredSamples; // Delete new covered samples
         nbRules += 1;
         chosenRules.push_back(currentRule);    // add best rule with maximum covering
         rules.erase(rules.begin() + bestRule); // Remove this rule
+        if (rules.size() < 1)
+          break;
       }
 
       cout << "Global ruleset Computed" << endl
