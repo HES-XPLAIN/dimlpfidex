@@ -188,6 +188,7 @@ int fidexGlo(const string &command) {
         char option = commandList[p - 1][1];
         const char *arg = &(commandList[p])[0];
         const char *lastArg = &(commandList[p - 1])[0];
+        string stringArg = arg;
 
         switch (option) { // Get letter after the -
         case 'S':
@@ -244,20 +245,20 @@ int fidexGlo(const string &command) {
           break;
 
         case 'w':
-          if (std::strcmp(arg, "true") == 0 || std::strcmp(arg, "True") == 0 || std::strcmp(arg, "1") == 0) {
-            withFidex = true;
-          } else if (std::strcmp(arg, "false") == 0 || std::strcmp(arg, "False") == 0 || std::strcmp(arg, "0") == 0) {
-            withFidex = false;
+          if (checkBool(arg)) {
+            std::transform(stringArg.begin(), stringArg.end(), stringArg.begin(),
+                           [](unsigned char c) { return std::tolower(c); });
+            withFidex = (stringArg == "true" || stringArg == "1") ? true : false;
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested");
           }
           break;
 
         case 'M':
-          if (std::strcmp(arg, "true") == 0 || std::strcmp(arg, "True") == 0 || std::strcmp(arg, "1") == 0) {
-            minimalVersion = true;
-          } else if (std::strcmp(arg, "false") == 0 || std::strcmp(arg, "False") == 0 || std::strcmp(arg, "0") == 0) {
-            minimalVersion = false;
+          if (checkBool(arg)) {
+            std::transform(stringArg.begin(), stringArg.end(), stringArg.begin(),
+                           [](unsigned char c) { return std::tolower(c); });
+            minimalVersion = (stringArg == "true" || stringArg == "1") ? true : false;
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested");
           }
