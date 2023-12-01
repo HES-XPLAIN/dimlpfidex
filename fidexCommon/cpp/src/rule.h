@@ -22,7 +22,7 @@ private:
   void setCoveredSamples(vector<int> coveredSamples) { _coveredSamples = coveredSamples; };
 
 public:
-  Rule();
+  Rule() = default;
   Rule(vector<Antecedant> antecedants,
        vector<int> coveredSamples,
        int out_class,
@@ -46,5 +46,17 @@ public:
   void addCoveredSample(int sampleId) { _coveredSamples.push_back(sampleId); };
   // void writeToFile(char *file_path);
 };
+
+// OPERATOR OVERLOAD TO EASE PRINTING PURPOSES
+inline ostream &operator<<(ostream &stream, const Rule &rule) {
+  for (Antecedant a : rule.getAntecedants())
+    stream << a;
+  stream << endl;
+  stream << "   Confidence: " << rule.getConfidence() << endl
+         << "   Accuracy:   " << rule.getAccuracy() << endl
+         << "   Covering:   " << rule.getCoveredSamples().size() << endl;
+
+  return stream;
+}
 
 #endif
