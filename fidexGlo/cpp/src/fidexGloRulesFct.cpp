@@ -1,5 +1,4 @@
 #include "fidexGloRulesFct.h"
-#include <omp.h>
 
 using namespace std;
 using namespace FidexGloNameSpace;
@@ -503,8 +502,7 @@ int fidexGloRules(const string &command) {
     // Samples not yet covered by any rules
     vector<int> notCoveredSamples(nbDatas);
     iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
-
-    vector<Rule> chosenRules; // antecedents, cover vector, class, rule accuracy, rule confidence
+    vector<Rule> chosenRules;                                  // antecedents, cover vector, class, rule accuracy, rule confidence
 
     //--------------------------------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------------------------------
@@ -562,7 +560,6 @@ int fidexGloRules(const string &command) {
                << endl;
         }
 
-        // shouldn't we create a structure for this ?
         Rule rule; // Ex: ([X2<3.5 X3>=4], covering, class)
         Hyperspace localHyperspace(matHypLocus);
         auto exp = FidexAlgo();
@@ -574,30 +571,20 @@ int fidexGloRules(const string &command) {
         int localNbProblems = 0;
         int localMinNbCover = 0;
         vector<int>::iterator it;
+        Antecedant a;
 
 #pragma omp for
         for (int idSample = 0; idSample < localNbDatas; idSample++) {
-
-          // this display is broken when using threads so I'm not uisng it.
-          // #pragma atomic
-          // {
-          //   if (int(localNbDatas / 100) != 0 && idSample % int(localNbDatas / 100) == 0 && consoleFileInit == false) {
-          //     cout << "Processing (thread #" << threadId << ") : " << int((double(idSample) / localNbDatas) * 100) << "%" << endl;;
-          //     cout.flush();
-          //   }
-          // }
-
           ruleCreated = false;
           counterFailed = 0; // If we can't find a good rule after a lot of tries
 
           while (!ruleCreated) {
-
             ruleCreated = exp.fidex(
                 rule,
                 &localTrainData,
                 &localTrainPreds,
                 hasConfidence,
-                trainOutputValuesPredictions, // shared
+                trainOutputValuesPredictions,
                 &localTrainTrueClass,
                 &localTrainData[idSample],
                 localTrainPreds[idSample],
@@ -612,6 +599,7 @@ int fidexGloRules(const string &command) {
                 dropoutHypParam,
                 gen);
 
+            cout << "Rule: " << rule << endl;
             if (currentMinNbCov >= 2) {
               currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
             } else {
@@ -668,18 +656,30 @@ int fidexGloRules(const string &command) {
       vector<int> bestNewNotCoveredSamples;
 
       while (!notCoveredSamples.empty()) {
+        cout << notCoveredSamples.size() << " not covered samples left" << endl;
 
         // Get rule that covers the most new samples
         int bestRule = -1;
         int bestCovering = INT_MAX;
         int currentCovering; // Size of new covering if we choose this rule
         for (int r = 0; r < rules.size(); r++) {
-
+          cout << "Rules size: " << rules.size() << "r: " << r << endl;
           newNotCoveredSamples = notCoveredSamples;
           // Remove samples that are in current covering
-          ite = set_difference(newNotCoveredSamples.begin(), newNotCoveredSamples.end(), rules[r].getCoveredSamples().begin(), rules[r].getCoveredSamples().end(), newNotCoveredSamples.begin()); // vectors have to be sorted
+          cout << "checkpoint 1" << endl;
+
+          ite = set_difference(newNotCoveredSamples.begin(),
+                               newNotCoveredSamples.end(),
+                               rules[r].getCoveredSamples().begin(),
+                               rules[r].getCoveredSamples().end(),
+                               newNotCoveredSamples.begin()); // vectors have to be sorted
+
+          cout << "checkpoint 2" << endl;
+
           newNotCoveredSamples.resize(ite - newNotCoveredSamples.begin());
-          currentCovering = static_cast<int>(newNotCoveredSamples.size());
+          currentCovering = newNotCoveredSamples.size();
+
+          cout << "checkpoint 3" << endl;
 
           if (currentCovering < bestCovering) {
             bestRule = r;
@@ -688,6 +688,7 @@ int fidexGloRules(const string &command) {
           }
         }
 
+        cout << "Best rule id: " << bestRule << endl;
         currentRule = rules[bestRule];
         notCoveredSamples = bestNewNotCoveredSamples; // Delete new covered samples
         nbRules += 1;
@@ -978,6 +979,7 @@ int fidexGloRules(const string &command) {
     meanNbAntecedents /= nbRules;
 
     ofstream file2(rulesFile);
+
     if (file2.is_open()) {
       // We add to the file the number of rules, the mean covering per rule and the mean number of antecedents per rule
       string startLine = "Number of rules : " + to_string(nbRules) + ", mean sample covering number per rule : " + to_string(meanCovSize) + ", mean number of antecedents per rule : " + to_string(meanNbAntecedents) + "\n";

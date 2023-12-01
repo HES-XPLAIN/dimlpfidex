@@ -1,7 +1,6 @@
 #ifndef FIDEXGLORULESFCT_H
 #define FIDEXGLORULESFCT_H
 
-#include "../../../fidexCommon/cpp/src/antecedant.h"
 #include "../../../fidexCommon/cpp/src/checkFun.h"
 #include "../../../fidexCommon/cpp/src/dataSet.h"
 #include "../../../fidexCommon/cpp/src/errorHandler.h"
@@ -12,6 +11,7 @@
 #include <chrono>
 #include <limits.h>
 #include <numeric>
+#include <omp.h>
 #include <random>
 #include <sstream>
 #include <string>

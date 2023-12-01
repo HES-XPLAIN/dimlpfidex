@@ -1,7 +1,5 @@
 #ifndef FIDEXALGO_H
 #define FIDEXALGO_H
-#include "../../../fidexCommon/cpp/src/antecedant.h"
-#include "../../../fidexCommon/cpp/src/rule.h"
 #include "hyperspace.h"
 #include <algorithm>
 #include <chrono>
