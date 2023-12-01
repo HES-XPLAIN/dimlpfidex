@@ -23,7 +23,8 @@ void showParams() {
   std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
   std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
   std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
-  std::cout << "-w <with Fidex if not rule is given (False by default)>" << std::endl
+  std::cout << "-w <with Fidex if not rule is given (False by default)>" << std::endl;
+  std::cout << "-M <minimal version, only correct activated rules, launch Fidex when no such rule is found(if with fidex) (False by default)>" << std::endl
             << std::endl;
   std::cout << "If using fidex :" << std::endl;
   std::cout << "Obligatory :" << std::endl;
@@ -37,6 +38,8 @@ void showParams() {
   std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
   std::cout << "-i <max iteration number (100 by default)>" << std::endl;
   std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
+  std::cout << "-y <decrement by 1 the min covering number each time the minimal covering size is not reached (False by default)>" << std::endl;
+  std::cout << "-m <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
   std::cout << "-d <dimension dropout parameter (None by default)>" << std::endl;
   std::cout << "-h <hyperplan dropout parameter (None by default)>" << std::endl;
   std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
@@ -131,6 +134,7 @@ int fidexGlo(const string &command) {
 
     // Fidex parameters
     bool withFidex = false;
+    bool minimalVersion = false;
 
     string trainDataFile; // Train data
     bool trainDataFileInit = false;
@@ -152,6 +156,10 @@ int fidexGlo(const string &command) {
     bool itMaxInit = false;
     int minNbCover; // Minimum size of covering that we ask
     bool minNbCoverInit = false;
+    bool minCoverStrategy = false; // Decresase by 1 the minNbCover each time maximal fidelity is not achieved
+    bool minCoverStrategyInit = false;
+    int maxFailedAttempts = 30; // Maxamum number of attemps when minNbCover = 1
+    bool maxFailedAttemptsInit = false;
     bool dropoutHyp = false; // We dropout a bunch of hyperplans each iteration (could accelerate the processus)
     double dropoutHypParam;
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
@@ -245,6 +253,16 @@ int fidexGlo(const string &command) {
           }
           break;
 
+        case 'M':
+          if (std::strcmp(arg, "true") == 0 || std::strcmp(arg, "True") == 0 || std::strcmp(arg, "1") == 0) {
+            minimalVersion = true;
+          } else if (std::strcmp(arg, "false") == 0 || std::strcmp(arg, "False") == 0 || std::strcmp(arg, "0") == 0) {
+            minimalVersion = false;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested");
+          }
+          break;
+
         case 'T':
           trainDataFile = arg; // Parameter after -T
           trainDataFileInit = true;
@@ -310,6 +328,26 @@ int fidexGlo(const string &command) {
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
           }
+          break;
+
+        case 'y':
+          if (std::strcmp(arg, "true") == 0 || std::strcmp(arg, "True") == 0 || std::strcmp(arg, "1") == 0) {
+            minCoverStrategy = true;
+          } else if (std::strcmp(arg, "false") == 0 || std::strcmp(arg, "False") == 0 || std::strcmp(arg, "0") == 0) {
+            minCoverStrategy = false;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested");
+          }
+          minCoverStrategyInit = true;
+          break;
+
+        case 'm':
+          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+            maxFailedAttempts = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
+          }
+          maxFailedAttemptsInit = true;
           break;
 
         case 'd':
@@ -638,6 +676,12 @@ int fidexGlo(const string &command) {
       if (minNbCoverInit) {
         fidexCommand += " -v " + std::to_string(minNbCover);
       }
+      if (minCoverStrategyInit) {
+        fidexCommand += " -y " + std::to_string(minCoverStrategy);
+      }
+      if (maxFailedAttemptsInit) {
+        fidexCommand += " -m " + std::to_string(maxFailedAttempts);
+      }
       if (seedInit) {
         fidexCommand += " -z " + std::to_string(seed);
       }
@@ -734,7 +778,7 @@ int fidexGlo(const string &command) {
               break;
             }
           }
-          if (allSameClass) {
+          if (allSameClass && !minimalVersion) {
             notShowUncorrectRules = true;
             if (activatedRules.size() > 1) {
               lines.emplace_back("We didn't found any rule with same prediction as the model (class " + std::to_string(testSamplesPreds[currentSample]) + "), but we found " + std::to_string(activatedRules.size()) + " rules with class " + std::to_string(ancientClass) + " :\n");
@@ -750,7 +794,12 @@ int fidexGlo(const string &command) {
               std::cout << "R" << std::to_string(v + 1) << ": " << stringRules[activatedRules[v]] << std::endl;
             }
           } else {
-            std::cout << "\nThere is no correct rule for this sample." << std::endl;
+            if (minimalVersion) {
+              std::cout << "\nThere is no correct activated rule for this sample." << std::endl;
+            } else {
+              std::cout << "\nThere is no correct rule for this sample." << std::endl;
+            }
+
             std::cout << "We couldn't find any global explanation for this sample." << std::endl; // There is no explanation, we choose the model decision
             std::cout << "We choose the model prediction." << std::endl;
             std::cout << "The predicted class is " << std::to_string(testSamplesPreds[currentSample]) << std::endl;
@@ -780,6 +829,9 @@ int fidexGlo(const string &command) {
             std::cout << "R" << std::to_string(c + 1) << ": " << stringRules[correctRules[c]] << std::endl;
           }
         }
+      }
+      if (minimalVersion) {
+        notShowUncorrectRules = true;
       }
       if (!notShowUncorrectRules) {
         if (!notcorrectRules.empty()) {

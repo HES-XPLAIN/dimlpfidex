@@ -27,6 +27,8 @@ void showFidexParams() {
   std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
   std::cout << "-i <max iteration number (100 by default)>" << std::endl;
   std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
+  std::cout << "-y <decrement by 1 the min covering number each time the minimal covering size is not reached (False by default)>" << std::endl;
+  std::cout << "-m <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
   std::cout << "-d <dimension dropout parameter (None by default)>" << std::endl;
   std::cout << "-h <hyperplan dropout parameter (None by default)>" << std::endl;
   std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
@@ -103,9 +105,11 @@ int fidex(const string &command) {
     int nbQuantLevels = 50; // Number of steps of the step function
     double hiKnot = 5;      // High end of the interval for each dimension, a hyperplan can't be after
 
-    int itMax = 100;         // We stop if we have more than itMax iterations
-    int minNbCover = 2;      // Minimum size of covering that we ask
-    bool dropoutHyp = false; // We dropout a bunch of hyperplans each iteration (could accelerate the processus)
+    int itMax = 100;               // We stop if we have more than itMax iterations
+    int minNbCover = 2;            // Minimum size of covering that we ask
+    bool minCoverStrategy = false; // Decresase by 1 the minNbCover each time maximal fidelity is not achieved
+    int maxFailedAttempts = 30;    // Maxamum number of attemps when minNbCover = 1
+    bool dropoutHyp = false;       // We dropout a bunch of hyperplans each iteration (could accelerate the processus)
     double dropoutHypParam = 0.5;
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
     double dropoutDimParam = 0.5;
@@ -230,6 +234,24 @@ int fidex(const string &command) {
         case 'v':
           if (CheckPositiveInt(arg) && atoi(arg) >= 1) {
             minNbCover = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
+          }
+          break;
+
+        case 'y':
+          if (std::strcmp(arg, "true") == 0 || std::strcmp(arg, "True") == 0 || std::strcmp(arg, "1") == 0) {
+            minCoverStrategy = true;
+          } else if (std::strcmp(arg, "false") == 0 || std::strcmp(arg, "False") == 0 || std::strcmp(arg, "0") == 0) {
+            minCoverStrategy = false;
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested");
+          }
+          break;
+
+        case 'm':
+          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+            maxFailedAttempts = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
           }
@@ -704,8 +726,6 @@ int fidex(const string &command) {
 
     d1 = clock();
 
-    vector<string> lines;
-
     // Initialize random number generator
 
     if (seed == 0) {
@@ -716,6 +736,7 @@ int fidex(const string &command) {
     std::mt19937 gen(seed);
     std::uniform_real_distribution<double> dis(0.0, 1.0);
 
+    vector<string> lines;
     // compute hyperspace
     std::cout << "Creation of hyperspace..." << std::endl;
 
@@ -766,169 +787,194 @@ int fidex(const string &command) {
     double meanNbAntecedentsPerRule = 0;
     double meanAccuracy = 0;
 
+    int nbIt;
     // We compute rule for each test sample
     for (int currentSample = 0; currentSample < nbSamples; currentSample++) {
-
-      // samplet1 = clock();
-
+      int counterFailed = 0; // Number of times we failed to find a rule with maximal fidexlity when minNbCover is 1
+      int currentMinNbCover = minNbCover;
       lines.push_back("Rule for sample " + std::to_string(currentSample) + " :\n");
-      if (nbSamples > 1) {
-        std::cout << "Computation of rule for sample " << currentSample << " : " << endl
-                  << endl;
-      }
 
-      if (nbSamples == 1) {
-        std::cout << "Searching for discriminating hyperplans..." << std::endl;
-      }
+      do {
+        hyperspace.getHyperbox()->resetDiscriminativeHyperplans(); // Reinitialize discriminativeHyperplans for next sample
 
-      // Compute initial covering
-      vector<int> coveredSamples((*trainData).size());                    // Samples covered by the hyperbox
-      std::iota(std::begin(coveredSamples), std::end(coveredSamples), 0); // Vector from 0 to len(coveredSamples)-1
+        // samplet1 = clock();
 
-      // Store covering and compute initial fidelty
-      hyperspace.getHyperbox()->setCoveredSamples(coveredSamples);
-      hyperspace.getHyperbox()->computeFidelity(mainSamplesPreds[currentSample], trainPreds); // Compute fidelity of initial hyperbox
+        if (nbSamples > 1 && currentMinNbCover == minNbCover) {
+          std::cout << "Computation of rule for sample " << currentSample << " : " << endl
+                    << endl;
+        }
 
-      if (nbSamples == 1) {
-        std::cout << "Initial fidelity : " << hyperspace.getHyperbox()->getFidelity() << endl
-                  << endl;
-      }
+        if (nbSamples == 1 && currentMinNbCover == minNbCover) {
+          std::cout << "Searching for discriminating hyperplans..." << std::endl;
+        }
 
-      int nbIt = 0;
+        // Compute initial covering
+        vector<int> coveredSamples((*trainData).size());                    // Samples covered by the hyperbox
+        std::iota(std::begin(coveredSamples), std::end(coveredSamples), 0); // Vector from 0 to len(coveredSamples)-1
 
-      while (hyperspace.getHyperbox()->getFidelity() != 1 && nbIt < itMax) { // While fidelity of our hyperbox is not 100%
-        // std::cout << "New iteration : " << nbIt << std::endl;
-        std::unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());    // best hyperbox to choose for next step
-        std::unique_ptr<Hyperbox> currentHyperbox(new Hyperbox()); // best hyperbox to choose for next step
-        double mainSampleValue;
-        int attribut;
-        int dimension;
-        int indexBestHyp = -1;
-        int bestDimension = -1;
-        int minHyp = -1; // Index of first hyperplan without any change of the best hyperplan
-        int maxHyp = -1;
-        // Randomize dimensions
-        vector<int> dimensions(nbIn);
-        std::iota(std::begin(dimensions), std::end(dimensions), 0); // Vector from 0 to nbIn-1
-        std::shuffle(std::begin(dimensions), std::end(dimensions), gen);
-        vector<int> currentCovSamp;
+        // Store covering and compute initial fidelty
+        hyperspace.getHyperbox()->setCoveredSamples(coveredSamples);
+        hyperspace.getHyperbox()->computeFidelity(mainSamplesPreds[currentSample], trainPreds); // Compute fidelity of initial hyperbox
 
-        for (int d = 0; d < nbIn; d++) { // Loop on all dimensions
-          if (bestHyperbox->getFidelity() == 1) {
-            break;
-          }
-          dimension = dimensions[d];
-          attribut = dimension % nbAttributs;
-          mainSampleValue = mainSamplesValues[currentSample][attribut];
-          // Test if we dropout this dimension
+        if (nbSamples == 1 && currentMinNbCover == minNbCover) {
+          std::cout << "Initial fidelity : " << hyperspace.getHyperbox()->getFidelity() << endl;
+        }
 
-          if (dropoutDim && dis(gen) < dropoutDimParam) {
-            continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
-          }
+        nbIt = 0;
 
-          bool maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
+        while (hyperspace.getHyperbox()->getFidelity() != 1 && nbIt < itMax) { // While fidelity of our hyperbox is not 100%
+          // std::cout << "New iteration : " << nbIt << std::endl;
+          std::unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());    // best hyperbox to choose for next step
+          std::unique_ptr<Hyperbox> currentHyperbox(new Hyperbox()); // best hyperbox to choose for next step
+          double mainSampleValue;
+          int attribut;
+          int dimension;
+          int indexBestHyp = -1;
+          int bestDimension = -1;
+          int minHyp = -1; // Index of first hyperplan without any change of the best hyperplan
+          int maxHyp = -1;
+          // Randomize dimensions
+          vector<int> dimensions(nbIn);
+          std::iota(std::begin(dimensions), std::end(dimensions), 0); // Vector from 0 to nbIn-1
+          std::shuffle(std::begin(dimensions), std::end(dimensions), gen);
+          vector<int> currentCovSamp;
 
-          size_t nbHyp = hyperspace.getHyperLocus()[dimension].size();
-          if (nbHyp == 0) {
-            continue; // No data on this dimension
-          }
-          // std::cout << std::endl;
-          // std::cout << "NEW DIM" << d << std::endl;
-          for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
-            // std::cout << "\rNEW hyp: " << k+1 << "/" << nbHyp << std::flush;
-            //  Test if we dropout this hyperplan
-            if (dropoutHyp && dis(gen) < dropoutHypParam) {
-              continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
-            }
-
-            double hypValue = hyperspace.getHyperLocus()[dimension][k];
-            bool mainSampleGreater = hypValue <= mainSampleValue;
-
-            // Check if main sample value is on the right of the hyperplan
-            currentHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
-            currentHyperbox->computeFidelity(mainSamplesPreds[currentSample], trainPreds);
-            // Compute fidelity
-            // If the fidelity is better or is same with better covering but not if covering size is lower than minNbCover
-            if (currentHyperbox->getCoveredSamples().size() >= minNbCover && (currentHyperbox->getFidelity() > bestHyperbox->getFidelity() || (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() > bestHyperbox->getCoveredSamples().size()))) {
-              bestHyperbox->setFidelity(currentHyperbox->getFidelity()); // Update best hyperbox
-              bestHyperbox->setCoveredSamples(currentHyperbox->getCoveredSamples());
-              indexBestHyp = k;
-              minHyp = k; // New best
-              maxHyp = -1;
-              maxHypBlocked = false; // We can increase maxHyp if next is the same
-              bestDimension = dimension;
-            } else if (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() == bestHyperbox->getCoveredSamples().size()) {
-              if (!maxHypBlocked) {
-                maxHyp = k; // Index of last (for now) hyperplan which is equal to the best.
-              }
-
-            } else {
-              maxHypBlocked = true; // we can't increase maxHyp anymore for this best hyperplan
-            }
-
+          for (int d = 0; d < nbIn; d++) { // Loop on all dimensions
             if (bestHyperbox->getFidelity() == 1) {
               break;
             }
-          }
-        }
-
-        // Modication of our hyperbox with the best at this iteration and modify discriminative hyperplans
-        if (indexBestHyp != -1 && bestDimension != -1) { // If we found any good dimension with good hyperplan (with enough covering)
-          if (maxHyp != -1) {
-            indexBestHyp = (maxHyp + minHyp) / 2;
-          }
-          // Rule is not added if fidelity and covering size did not increase
-          if (bestHyperbox->getFidelity() > hyperspace.getHyperbox()->getFidelity() || (bestHyperbox->getFidelity() == hyperspace.getHyperbox()->getFidelity() && bestHyperbox->getCoveredSamples().size() > hyperspace.getHyperbox()->getCoveredSamples().size())) {
-            // std::cout << "Found new best" << std::endl;
-            // std::cout << "Fidelity : " << bestHyperbox->getFidelity() << std::endl;
-            // std::cout << "Cov size :" << bestHyperbox->getCoveredSamples().size() << endl;
-            hyperspace.getHyperbox()->setFidelity(bestHyperbox->getFidelity());
-            hyperspace.getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
-            hyperspace.getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
-          } else if (minNbCover == 1 && dropoutDim == false && dropoutHyp == false) {
-            // std::cout << "Choosing randomly" << std::endl;
-            //  If we have a minimum covering of 1 and no dropout, we need to choose randomly a hyperplan, because we are stocked
-            std::unique_ptr<Hyperbox> randomHyperbox(new Hyperbox()); // best hyperbox to choose for next step
-
-            std::uniform_int_distribution<int> distribution(0, static_cast<int>(nbIn) - 1);
-            int randomDimension;
-            size_t hypSize;
-            do {
-              randomDimension = dimensions[distribution(gen)];
-              hypSize = hyperspace.getHyperLocus()[randomDimension].size();
-            } while (hypSize == 0);
-            attribut = randomDimension % nbAttributs;
+            dimension = dimensions[d];
+            attribut = dimension % nbAttributs;
             mainSampleValue = mainSamplesValues[currentSample][attribut];
-            std::uniform_int_distribution<int> distributionHyp(0, static_cast<int>(hypSize) - 1);
-            int indexRandomHyp = dimensions[distributionHyp(gen)];
-            double hypValue = hyperspace.getHyperLocus()[randomDimension][indexRandomHyp];
-            bool mainSampleGreater = hypValue <= mainSampleValue;
+            // Test if we dropout this dimension
 
-            // Check if main sample value is on the right of the hyperplan
-            randomHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
-            randomHyperbox->computeFidelity(mainSamplesPreds[currentSample], trainPreds);
+            if (dropoutDim && dis(gen) < dropoutDimParam) {
+              continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
+            }
 
-            hyperspace.getHyperbox()->setFidelity(randomHyperbox->getFidelity());
-            hyperspace.getHyperbox()->setCoveredSamples(randomHyperbox->getCoveredSamples());
-            hyperspace.getHyperbox()->discriminateHyperplan(randomDimension, indexRandomHyp);
+            bool maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
+
+            size_t nbHyp = hyperspace.getHyperLocus()[dimension].size();
+            if (nbHyp == 0) {
+              continue; // No data on this dimension
+            }
+            // std::cout << std::endl;
+            // std::cout << "NEW DIM" << d << std::endl;
+            for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
+              // std::cout << "\rNEW hyp: " << k+1 << "/" << nbHyp << std::flush;
+              //  Test if we dropout this hyperplan
+              if (dropoutHyp && dis(gen) < dropoutHypParam) {
+                continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
+              }
+
+              double hypValue = hyperspace.getHyperLocus()[dimension][k];
+              bool mainSampleGreater = hypValue <= mainSampleValue;
+
+              // Check if main sample value is on the right of the hyperplan
+              currentHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
+              currentHyperbox->computeFidelity(mainSamplesPreds[currentSample], trainPreds);
+              // Compute fidelity
+              // If the fidelity is better or is same with better covering but not if covering size is lower than minNbCover
+              if (currentHyperbox->getCoveredSamples().size() >= currentMinNbCover && (currentHyperbox->getFidelity() > bestHyperbox->getFidelity() || (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() > bestHyperbox->getCoveredSamples().size()))) {
+                bestHyperbox->setFidelity(currentHyperbox->getFidelity()); // Update best hyperbox
+                bestHyperbox->setCoveredSamples(currentHyperbox->getCoveredSamples());
+                indexBestHyp = k;
+                minHyp = k; // New best
+                maxHyp = -1;
+                maxHypBlocked = false; // We can increase maxHyp if next is the same
+                bestDimension = dimension;
+              } else if (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() == bestHyperbox->getCoveredSamples().size()) {
+                if (!maxHypBlocked) {
+                  maxHyp = k; // Index of last (for now) hyperplan which is equal to the best.
+                }
+
+              } else {
+                maxHypBlocked = true; // we can't increase maxHyp anymore for this best hyperplan
+              }
+
+              if (bestHyperbox->getFidelity() == 1) {
+                break;
+              }
+            }
           }
+
+          // Modication of our hyperbox with the best at this iteration and modify discriminative hyperplans
+          if (indexBestHyp != -1 && bestDimension != -1) { // If we found any good dimension with good hyperplan (with enough covering)
+            if (maxHyp != -1) {
+              indexBestHyp = (maxHyp + minHyp) / 2;
+            }
+            // Rule is not added if fidelity and covering size did not increase
+            if (bestHyperbox->getFidelity() > hyperspace.getHyperbox()->getFidelity() || (bestHyperbox->getFidelity() == hyperspace.getHyperbox()->getFidelity() && bestHyperbox->getCoveredSamples().size() > hyperspace.getHyperbox()->getCoveredSamples().size())) {
+              // std::cout << "Found new best" << std::endl;
+              // std::cout << "Fidelity : " << bestHyperbox->getFidelity() << std::endl;
+              // std::cout << "Cov size :" << bestHyperbox->getCoveredSamples().size() << endl;
+              hyperspace.getHyperbox()->setFidelity(bestHyperbox->getFidelity());
+              hyperspace.getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
+              hyperspace.getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
+            } else if (currentMinNbCover == 1 && dropoutDim == false && dropoutHyp == false) {
+              // std::cout << "Choosing randomly" << std::endl;
+              //  If we have a minimum covering of 1 and no dropout, we need to choose randomly a hyperplan, because we are stocked
+              std::unique_ptr<Hyperbox> randomHyperbox(new Hyperbox()); // best hyperbox to choose for next step
+
+              std::uniform_int_distribution<int> distribution(0, static_cast<int>(nbIn) - 1);
+              int randomDimension;
+              size_t hypSize;
+              do {
+                randomDimension = dimensions[distribution(gen)];
+                hypSize = hyperspace.getHyperLocus()[randomDimension].size();
+              } while (hypSize == 0);
+              attribut = randomDimension % nbAttributs;
+              mainSampleValue = mainSamplesValues[currentSample][attribut];
+              std::uniform_int_distribution<int> distributionHyp(0, static_cast<int>(hypSize) - 1);
+              int indexRandomHyp = dimensions[distributionHyp(gen)];
+              double hypValue = hyperspace.getHyperLocus()[randomDimension][indexRandomHyp];
+              bool mainSampleGreater = hypValue <= mainSampleValue;
+
+              // Check if main sample value is on the right of the hyperplan
+              randomHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
+              randomHyperbox->computeFidelity(mainSamplesPreds[currentSample], trainPreds);
+
+              hyperspace.getHyperbox()->setFidelity(randomHyperbox->getFidelity());
+              hyperspace.getHyperbox()->setCoveredSamples(randomHyperbox->getCoveredSamples());
+              hyperspace.getHyperbox()->discriminateHyperplan(randomDimension, indexRandomHyp);
+            }
+          }
+          /*itt2 = clock();
+          itTime = (float)(itt2 - itt1) / CLOCKS_PER_SEC;
+
+          std::cout << "\n Iteration time = " << itTime << " sec" << std::endl;*/
+          nbIt += 1;
         }
-        /*itt2 = clock();
-        itTime = (float)(itt2 - itt1) / CLOCKS_PER_SEC;
 
-        std::cout << "\n Iteration time = " << itTime << " sec" << std::endl;*/
-        nbIt += 1;
-      }
+        meanFidelity += hyperspace.getHyperbox()->getFidelity();
+        std::cout << "Final fidelity : " << hyperspace.getHyperbox()->getFidelity() << endl;
+        if (hyperspace.getHyperbox()->getFidelity() != 1) {
+          if (minCoverStrategy) {
+            if (currentMinNbCover >= 2) {
+              currentMinNbCover -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
+              std::cout << "Fidelity is not maximum. Restarting fidex with a minimum covering of " << currentMinNbCover << std::endl;
+            } else {
+              counterFailed += 1;
+              std::cout << "Fidelity is not maximum. Restarting fidex with a minimum covering of " << currentMinNbCover << std::endl;
+            }
+            if (counterFailed >= maxFailedAttempts) {
+              std::cout << "WARNING Fidelity is not maximum after trying " << std::to_string(maxFailedAttempts) << "times to with a minimum covering of 1! You may want to try again." << std::endl;
+              if (dropoutDim || dropoutHyp) {
+                std::cout << "Try to not use dropout." << std::endl;
+              }
+            }
+          } else {
+            std::cout << "WARNING Fidelity is not maximum! You may want to try again." << std::endl;
+            std::cout << "If you can't find a maximal fidelity, try a lowest minimal covering" << std::endl;
+            std::cout << "You can also try to use the min cover strategy (-y)" << std::endl;
+            std::cout << "If this is not enough, put the min covering to 1 and do not use dropout." << std::endl;
+          }
+        } else {
+          std::cout << endl;
+        }
 
-      meanFidelity += hyperspace.getHyperbox()->getFidelity();
-      std::cout << "Final fidelity : " << hyperspace.getHyperbox()->getFidelity() << endl;
-      if (hyperspace.getHyperbox()->getFidelity() != 1) {
-        std::cout << "WARNING Fidelity is not maximum! You may want to try again." << std::endl;
-        std::cout << "If you can't find a maximal fidelity, try a lowest minimal covering" << std::endl;
-        std::cout << "If this is not enough, put the min covering to 1 and do not use dropout." << std::endl;
-      } else {
-        std::cout << endl;
-      }
+      } while (hyperspace.getHyperbox()->getFidelity() != 1 && minCoverStrategy && counterFailed < maxFailedAttempts); // Restart Fidex if we use the strategy and fidelity is not maximum
+
       if (nbSamples == 1) {
         std::cout << "Discriminating hyperplans generated." << endl
                   << endl;
@@ -969,17 +1015,15 @@ int fidex(const string &command) {
       // Extract rules
       hyperspace.ruleExtraction(&mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, attributFileInit, &attributeNames, hasClassNames, &classNames);
 
+      if (hyperspace.getHyperbox()->getCoveredSamples().size() < minNbCover) {
+        std::cout << "The minimum covering of " << minNbCover << " is not achieved." << std::endl;
+      }
       std::cout << "Result found after " << nbIt << " iterations." << std::endl;
 
       std::cout << "-------------------------------------------------" << std::endl;
 
       if (nbSamples > 1) {
         lines.emplace_back("-------------------------------------------------\n");
-      }
-
-      // Reinitialize discriminativeHyperplans for next sample
-      if (nbSamples > 1) {
-        hyperspace.getHyperbox()->resetDiscriminativeHyperplans();
       }
     }
 
