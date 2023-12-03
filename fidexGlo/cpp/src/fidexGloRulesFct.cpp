@@ -599,7 +599,6 @@ int fidexGloRules(const string &command) {
                 dropoutHypParam,
                 gen);
 
-            cout << "Rule: " << rule << endl;
             if (currentMinNbCov >= 2) {
               currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
             } else {
@@ -652,34 +651,30 @@ int fidexGloRules(const string &command) {
       // While there is some not covered samples
       Rule currentRule;
       vector<int>::iterator ite;
+      vector<int> currentRuleSamples;
       vector<int> newNotCoveredSamples;
       vector<int> bestNewNotCoveredSamples;
 
       while (!notCoveredSamples.empty()) {
-        cout << notCoveredSamples.size() << " not covered samples left" << endl;
-
         // Get rule that covers the most new samples
         int bestRule = -1;
         int bestCovering = INT_MAX;
         int currentCovering; // Size of new covering if we choose this rule
+
         for (int r = 0; r < rules.size(); r++) {
-          cout << "Rules size: " << rules.size() << "r: " << r << endl;
           newNotCoveredSamples = notCoveredSamples;
           // Remove samples that are in current covering
-          cout << "checkpoint 1" << endl;
+
+          currentRuleSamples = rules[r].getCoveredSamples();
 
           ite = set_difference(newNotCoveredSamples.begin(),
                                newNotCoveredSamples.end(),
-                               rules[r].getCoveredSamples().begin(),
-                               rules[r].getCoveredSamples().end(),
+                               currentRuleSamples.begin(),
+                               currentRuleSamples.end(),
                                newNotCoveredSamples.begin()); // vectors have to be sorted
-
-          cout << "checkpoint 2" << endl;
 
           newNotCoveredSamples.resize(ite - newNotCoveredSamples.begin());
           currentCovering = newNotCoveredSamples.size();
-
-          cout << "checkpoint 3" << endl;
 
           if (currentCovering < bestCovering) {
             bestRule = r;
@@ -688,7 +683,6 @@ int fidexGloRules(const string &command) {
           }
         }
 
-        cout << "Best rule id: " << bestRule << endl;
         currentRule = rules[bestRule];
         notCoveredSamples = bestNewNotCoveredSamples; // Delete new covered samples
         nbRules += 1;
