@@ -580,7 +580,20 @@ int fidex(const string &command) {
             tokens.push_back(token);
           }
           if (tokens.size() != mainSampleOutputValuesPredictions.size()) {
-            throw FileContentError("Error : in file " + std::string(mainSamplesDataFile) + ", true classes and predictions need to have the same amount of data");
+            if (tokens.size() == 1 && tokens[0] == "-1") {
+              hasTrueClass.push_back(false);
+              mainSamplesTrueClass.push_back(-1);
+              firstLine = false;
+              if (!testData.eof()) {
+                getline(testData, line);
+                if (!checkStringEmpty(line)) {
+                  throw FileFormatError("Error : in file " + std::string(mainSamplesDataFile) + ", you need to have empty lines between samples. You have chosen to give data, predictions and classes in one file. If you want to separate them, use -p and -c");
+                }
+              }
+              continue;
+            } else {
+              throw FileContentError("Error : in file " + std::string(mainSamplesDataFile) + ", true classes and predictions need to have the same amount of data, or classes need to be -1 to express that there is no class.");
+            }
           }
           bool classFound = false;
           int classNum = -1;
@@ -611,59 +624,26 @@ int fidex(const string &command) {
 
       testData.close(); // close data file
     } else {            // We have different files for test predictions and test classes
-      std::unique_ptr<DataSetFid> testDatas(new DataSetFid(mainSamplesDataFile, mainSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
+
+      std::unique_ptr<DataSetFid> testDatas;
+      if (mainSamplesClassFileInit) {
+        testDatas.reset(new DataSetFid(mainSamplesDataFile, mainSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass, mainSamplesClassFile));
+      } else {
+        testDatas.reset(new DataSetFid(mainSamplesDataFile, mainSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
+      }
       mainSamplesValues = (*testDatas->getDatas());
       mainSamplesPreds = (*testDatas->getPredictions());
       mainSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
 
       // Check if there is good number of lines
       if (mainSamplesPreds.size() != mainSamplesValues.size()) {
-        throw FileContentError("Error : in file " + std::string(mainSamplesPredFile) + ", you need to specify as many predictions as there is datas");
+        throw FileContentError("Error : in file " + std::string(mainSamplesPredFile) + ", you need to specify as many predictions as there are datas");
       }
 
       // Classes :
       if (mainSamplesClassFileInit) {
-        fstream classData;
-        classData.open(mainSamplesClassFile, ios::in); // Read data file
-        if (classData.fail()) {
-          throw FileNotFoundError("Error : file " + std::string(mainSamplesClassFile) + " not found");
-        }
-        string line;
-        int mainSampleTrueClass;
-        while (!classData.eof()) {
-          int ind = 0;
-          getline(classData, line);
-          if (!checkStringEmpty(line)) {
-
-            std::stringstream myLine(line);
-            string tempTest;
-            bool found = false;
-            while (myLine >> tempTest && !found) {
-              if (tempTest != "-1" && tempTest != "0" && tempTest != "1") {
-                throw FileContentError("Error : in file " + std::string(mainSamplesClassFile) + ", true classes need to be 0, 1 or -1(no class)");
-              }
-              mainSampleTrueClass = stoi(tempTest);
-              if (mainSampleTrueClass == 1) {
-                mainSamplesTrueClass.push_back(ind);
-                hasTrueClass.push_back(true);
-                found = true;
-              } else if (mainSampleTrueClass == -1) {
-                mainSamplesTrueClass.push_back(-1);
-                hasTrueClass.push_back(false);
-                found = true;
-              }
-              ind++;
-            }
-            if (!found) {
-              throw FileContentError("Error : in file " + std::string(mainSamplesClassFile) + ", true classes need to be have at least a 1 or -1(no class) in each line");
-            }
-          }
-        }
-
-        // Check if there is good number of lines
-        if (mainSamplesTrueClass.size() != mainSamplesValues.size()) {
-          throw FileContentError("Error : in file " + std::string(mainSamplesClassFile) + ", you need to specify as many true classes as there is datas (-1 if no true class)");
-        }
+        hasTrueClass = (*testDatas->getHasTrueClasses());
+        mainSamplesTrueClass = (*testDatas->getTrueClasses());
       } else {
         hasTrueClass.resize(mainSamplesValues.size(), false);
       }

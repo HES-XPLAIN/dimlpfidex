@@ -50,7 +50,11 @@ DataSetFid::DataSetFid(const char *dataFile, const char *predFile, bool hasDecis
         while (myLine >> value) {
           if (value == 1.0f) {
             trueClasses.push_back(i);
+            hasTrueClasses.push_back(true);
             break;
+          } else if (value == -1.0f) {
+            trueClasses.push_back(-1);
+            hasTrueClasses.push_back(false);
           }
           i++;
         }
@@ -136,6 +140,14 @@ vector<vector<double>> *DataSetFid::getDatas() {
 vector<int> *DataSetFid::getTrueClasses() {
   if (hasClasses) {
     return &trueClasses;
+  } else {
+    throw CommandArgumentException("Error : dataClass file not specified for this dataset");
+  }
+}
+
+vector<bool> *DataSetFid::getHasTrueClasses() {
+  if (hasClasses) {
+    return &hasTrueClasses;
   } else {
     throw CommandArgumentException("Error : dataClass file not specified for this dataset");
   }
