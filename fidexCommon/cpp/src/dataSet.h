@@ -42,14 +42,17 @@ public:
 
 class Attribute {
 
-  std::vector<std::string> attributes;
+  std::vector<std::string> attributeNames;
+  std::vector<std::string> classNames;
   bool hasAttributes = true;
+  bool hasClassNames = false;
 
 public:
   Attribute();
-  explicit Attribute(const char *attributFile);
+  explicit Attribute(const char *attributFile, int nbAttrbuts, int nbClass);
 
-  std::vector<std::string> *getAttributes();
+  std::vector<std::string> *getAttributeNames();
+  std::vector<std::string> *getClassNames();
 };
 
 #endif

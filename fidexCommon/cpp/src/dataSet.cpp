@@ -55,6 +55,7 @@ DataSetFid::DataSetFid(const char *dataFile, const char *predFile, bool hasDecis
           } else if (value == -1.0f) {
             trueClasses.push_back(-1);
             hasTrueClasses.push_back(false);
+            break;
           }
           i++;
         }
@@ -205,7 +206,7 @@ vector<double> DataSetFid::getInWeights() const {
   }
 }
 
-Attribute::Attribute(const char *attributeFile) {
+Attribute::Attribute(const char *attributeFile, int nbAttributs, int nbClass) {
 
   // Get attributes
   fstream fileAttr;
@@ -228,16 +229,35 @@ Attribute::Attribute(const char *attributeFile) {
     if (!checkStringEmpty(line)) {
       std::stringstream myLine(line);
       string attr = myLine.str();
-      attributes.push_back(attr);
+      attributeNames.push_back(attr);
     }
   }
+  hasClassNames = false;
+  if (attributeNames.size() < nbAttributs) {
+    throw FileContentError("Error : in file " + std::string(attributeFile) + ", there is not enough attribute names");
+  } else if (attributeNames.size() == nbAttributs) {
+    hasClassNames = false;
+  } else if (attributeNames.size() != nbAttributs + nbClass) {
+    throw FileContentError("Error : in file " + std::string(attributeFile) + ", there is not the good amount of attribute and class names");
+  } else {
+    hasClassNames = true;
+    auto firstEl = attributeNames.end() - nbClass;
+    auto lastEl = attributeNames.end();
+    classNames.insert(classNames.end(), firstEl, lastEl);
+    attributeNames.erase(firstEl, lastEl);
+  }
+
   fileAttr.close(); // close file
 }
 
-vector<string> *Attribute::getAttributes() {
+vector<string> *Attribute::getAttributeNames() {
   if (hasAttributes) {
-    return &attributes;
+    return &attributeNames;
   } else {
     throw CommandArgumentException("Error : attribute file not specified for this dataset");
   }
+}
+
+vector<string> *Attribute::getClassNames() {
+  return &classNames;
 }
