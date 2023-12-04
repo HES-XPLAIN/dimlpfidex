@@ -37,7 +37,7 @@ void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
     } else {
       line += "X" + std::to_string(attribut);
     }
-    line += inequality + std::to_string(hypValue) + " ";
+    line += inequality + formattingDoubleToString(hypValue) + " ";
   }
   if (hasClassNames) {
     line += "-> " + (*classNames)[mainSamplePred];
@@ -50,14 +50,14 @@ void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
   line = "Train Covering size : " + std::to_string(hyperbox->getCoveredSamples().size());
   std::cout << line << endl;
   lines.push_back(line);
-  line = "Train Fidelity : " + std::to_string(hyperbox->getFidelity());
+  line = "Train Fidelity : " + formattingDoubleToString(hyperbox->getFidelity());
   std::cout << line << endl;
   lines.push_back(line);
-  line = "Train Accuracy : " + std::to_string(ruleAccuracy);
+  line = "Train Accuracy : " + formattingDoubleToString(ruleAccuracy);
   std::cout << line << endl;
   lines.push_back(line);
   if (ruleConfidence != -1) {
-    line = "Train Confidence : " + std::to_string(ruleConfidence);
+    line = "Train Confidence : " + formattingDoubleToString(ruleConfidence);
     std::cout << line << endl;
     lines.push_back(line);
   }
