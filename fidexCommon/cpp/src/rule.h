@@ -52,7 +52,9 @@ inline ostream &operator<<(ostream &stream, const Rule &rule) {
   for (Antecedant a : rule.getAntecedants())
     stream << a;
   stream << endl;
-  stream << "   Confidence: " << rule.getConfidence() << endl
+  stream << "   #Antecedants: " << rule.getAntecedants().size() << endl
+         << "   #Covered samples: " << rule.getCoveredSamples().size() << endl
+         << "   Confidence: " << rule.getConfidence() << endl
          << "   Accuracy:   " << rule.getAccuracy() << endl
          << "   Covering:   " << rule.getCoveredSamples().size() << endl;
 

@@ -24,6 +24,7 @@ Rule Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
   vector<Antecedant> antecedants;
 
   for (int k = 0; k < hyperbox->getDiscriminativeHyperplans().size(); k++) {
+
     attribut = hyperbox->getDiscriminativeHyperplans()[k].first % (*mainSampleData).size();
     hypValue = hyperLocus[hyperbox->getDiscriminativeHyperplans()[k].first][hyperbox->getDiscriminativeHyperplans()[k].second];
     double mainSampleValue = (*mainSampleData)[attribut];
@@ -35,31 +36,57 @@ Rule Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
     }
     antecedants.push_back(Antecedant(attribut, inequalityBool, hypValue));
   }
+
   return Rule(antecedants, hyperbox->getCoveredSamples(), mainSamplePred, ruleAccuracy, ruleConfidence);
 }
 
-double Hyperspace::computeRuleAccuracy(vector<int> *trainPreds, vector<int> *trainTrueClass) const { // Percentage of correct model prediction on samples covered by the rule
+double Hyperspace::computeRuleAccuracy(vector<int> *trainPreds, int startIndex, vector<int> *trainTrueClass) const { // Percentage of correct model prediction on samples covered by the rule
   int idSample;
   int total = 0; // Number of indexes predicted good
-  for (int i = 0; i < hyperbox->getCoveredSamples().size(); i++) {
-    idSample = hyperbox->getCoveredSamples()[i];
+  vector<int> coveredSamples = hyperbox->getCoveredSamples();
+
+  // cout << "HYPERBOX Covered samples: (size=" << coveredSamples.size() << ")" << endl;
+  // for (int i : coveredSamples) {
+  //   cout << i << ", ";
+  // }
+  // cout << endl;
+
+  for (int i = 0; i < coveredSamples.size(); i++) {
+    idSample = coveredSamples[i] - startIndex;
+    // cout << "trainPreds[" << idSample << "] == trainTrueClass[" << idSample << "]" << endl;
+    // cout << (*trainPreds)[idSample] << " == " << (*trainTrueClass)[idSample] << endl
+    //      << endl;
+
     if ((*trainPreds)[idSample] == (*trainTrueClass)[idSample]) {
       total += 1;
     }
   }
-  size_t nbCovered = hyperbox->getCoveredSamples().size();
-  return float(total) / static_cast<double>(nbCovered);
+
+  int nbCovered = coveredSamples.size();
+  return float(total) / float(nbCovered);
 }
 
-double Hyperspace::computeRuleConfidence(vector<vector<double>> *trainOutputValuesPredictions, const int mainSamplePred) const { // Mean output value of prediction of class chosen by the rule for the covered samples
+double Hyperspace::computeRuleConfidence(vector<vector<double>> *trainOutputValuesPredictions, int startIndex, const int mainSamplePred) const { // Mean output value of prediction of class chosen by the rule for the covered samples
   int idSample;
   double total = 0; // Number of indexes predicted good
-  for (int i = 0; i < hyperbox->getCoveredSamples().size(); i++) {
-    idSample = hyperbox->getCoveredSamples()[i];
+  vector<int> coveredSamples = hyperbox->getCoveredSamples();
+
+  // cout << "TOVP: (size=" << coveredSamples.size() << ")" << endl;
+  // for (vector<double> i : *trainOutputValuesPredictions) {
+  //   for (double j : i) {
+  //     cout << j << ", ";
+  //   }
+  //   cout << endl;
+  // }
+  // cout << endl << endl;
+
+  for (int i = 0; i < coveredSamples.size(); i++) {
+    idSample = coveredSamples[i] - startIndex;
+    // cout << "id sample: " << idSample << endl;
     total += (*trainOutputValuesPredictions)[idSample][mainSamplePred]; // Value of output prediction for class mainSamplePred(rule class)
   }
 
-  size_t nbCovered = hyperbox->getCoveredSamples().size();
-  return float(total) / static_cast<double>(nbCovered);
+  size_t nbCovered = coveredSamples.size();
+  return float(total) / float(nbCovered);
 }
 } // namespace FidexGloNameSpace

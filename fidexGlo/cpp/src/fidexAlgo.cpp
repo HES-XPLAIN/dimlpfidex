@@ -11,6 +11,7 @@ FidexAlgo::FidexAlgo() = default;
 // OPENMP: hyperspace is a shared ressource that might produce concurrency errors
 bool FidexAlgo::fidex(
     Rule &rule,
+    int startIndex,
     vector<vector<double>> *trainData,
     vector<int> *trainPreds,
     bool hasConfidence,
@@ -33,20 +34,18 @@ bool FidexAlgo::fidex(
   uniform_real_distribution<double> dis(0.0, 1.0);
 
   // Compute initial covering
-  vector<int> coveredSamples((*trainData).size());     // Samples covered by the hyperbox
-  iota(begin(coveredSamples), end(coveredSamples), 0); // Vector from 0 to len(coveredSamples)-1
+  vector<int> coveredSamples((*trainData).size());              // Samples covered by the hyperbox
+  iota(begin(coveredSamples), end(coveredSamples), startIndex); // Vector from 0 to len(coveredSamples)-1
 
   // Store covering and compute initial fidelty
   hyperspace->getHyperbox()->setCoveredSamples(coveredSamples);
   hyperspace->getHyperbox()->computeFidelity(mainSamplePred, trainPreds); // Compute fidelity of initial hyperbox
   // If we come from fidexGlo, we reset hyperbox discriminativeHyperplans
   hyperspace->getHyperbox()->resetDiscriminativeHyperplans();
-
   int nbIt = 0;
 
   while (hyperspace->getHyperbox()->getFidelity() != 1 && nbIt < itMax) { // While fidelity of our hyperbox is not 100%
-
-    unique_ptr<Hyperbox> bestHyperbox(new Hyperbox()); // best hyperbox to choose for next step
+    unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                    // best hyperbox to choose for next step
     unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());
     double mainSampleValue;
     int attribut;
@@ -61,11 +60,11 @@ bool FidexAlgo::fidex(
     shuffle(begin(dimensions), end(dimensions), gen);
 
     vector<int> currentCovSamp;
-
     for (int d = 0; d < nbIn; d++) {
       if (bestHyperbox->getFidelity() == 1) {
         break;
       }
+
       dimension = dimensions[d];
       attribut = dimension % nbAttributs;
       mainSampleValue = (*mainSampleValues)[attribut];
@@ -80,7 +79,6 @@ bool FidexAlgo::fidex(
       if (nbHyp == 0) {
         continue; // No data on this dimension
       }
-
       for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
 
         // Test if we dropout this hyperplan
@@ -89,10 +87,9 @@ bool FidexAlgo::fidex(
         }
 
         double hypValue = hyperspace->getHyperLocus()[dimension][k];
-        bool mainSampleGreater = hypValue <= mainSampleValue;                                                                                     // Check if main sample value is on the right of the hyperplan
-        currentHyperbox->computeCoveredSamples(hyperspace->getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
-        currentHyperbox->computeFidelity(mainSamplePred, trainPreds);                                                                             // Compute fidelity
-
+        bool mainSampleGreater = hypValue <= mainSampleValue;                                                                                                 // Check if main sample value is on the right of the hyperplan
+        currentHyperbox->computeCoveredSamples(hyperspace->getHyperbox()->getCoveredSamples(), attribut, trainData, startIndex, mainSampleGreater, hypValue); // Compute new cover samples
+        currentHyperbox->computeFidelity(mainSamplePred, trainPreds);                                                                                         // Compute fidelity
         // If the fidelity is better or is same with better covering but not if covering size is lower than minNbCover
         if (currentHyperbox->getCoveredSamples().size() >= minNbCover && (currentHyperbox->getFidelity() > bestHyperbox->getFidelity() || (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() > bestHyperbox->getCoveredSamples().size()))) {
           bestHyperbox->setFidelity(currentHyperbox->getFidelity()); // Update best hyperbox
@@ -136,13 +133,25 @@ bool FidexAlgo::fidex(
   }
 
   // Compute rule accuracy
-  double ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass); // Percentage of correct model prediction on samples covered by the rule
+  double ruleAccuracy;
+  // #pragma omp critical
+  // {
+  //   for (int i : *trainTrueClass) {
+  //     cout << i << ", ";
+  //   }
+  //   cout << endl << "trainPreds size: " << trainPreds->size() << " trainTrueClass size: " << trainTrueClass->size() << endl;
+  // }
+
+  ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, startIndex, trainTrueClass); // Percentage of correct model prediction on samples covered by the rule
+
   double ruleConfidence;
+
   if (hasConfidence) {
-    ruleConfidence = hyperspace->computeRuleConfidence(trainOutputValuesPredictions, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples
+    ruleConfidence = hyperspace->computeRuleConfidence(trainOutputValuesPredictions, startIndex, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples
   } else {
     ruleConfidence = -1;
   }
+#pragma omp critical
   rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence);
 
   return true;

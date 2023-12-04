@@ -529,6 +529,7 @@ int fidexGloRules(const string &command) {
       int nbProblems = 0;
       int nbRulesNotFound = 0;
       int nbThreads = omp_get_num_procs();
+      int usedThreads = nbThreads;
 
       // Get the rule for each data sample from fidex
       cout << "Computing fidex rules..." << endl
@@ -536,18 +537,22 @@ int fidexGloRules(const string &command) {
       cout << nbThreads << " CPU cores available" << endl
            << endl;
 
-#pragma omp parallel
+#pragma omp parallel num_threads(usedThreads)
       {
 
         // declaring thread internal variables
         int threadId = omp_get_thread_num();
-        int startIndex = (nbDatas / nbThreads) * threadId;
-        int endIndex = (threadId + 1) < nbThreads ? startIndex + nbDatas / nbThreads - 1 : nbDatas - 1;
+        int startIndex = (nbDatas / usedThreads) * threadId;
+        int endIndex = (threadId + 1) < usedThreads ? startIndex + nbDatas / usedThreads : nbDatas;
 
         // creating subvectors of data, in order to avoid concurrent accesses with shared memory data
         vector<vector<double>> localTrainData(trainData->begin() + startIndex, trainData->begin() + endIndex);
         vector<int> localTrainPreds(trainPreds->begin() + startIndex, trainPreds->begin() + endIndex);
         vector<int> localTrainTrueClass(trainTrueClass->begin() + startIndex, trainTrueClass->begin() + endIndex);
+        // vector<vector<double>> localTrainData = *trainData;
+        // vector<int> localTrainPreds = *trainPreds;
+        // vector<int> localTrainTrueClass = *trainTrueClass;
+
         vector<Rule> localRules;
 
 #pragma omp critical
@@ -581,6 +586,7 @@ int fidexGloRules(const string &command) {
           while (!ruleCreated) {
             ruleCreated = exp.fidex(
                 rule,
+                startIndex,
                 &localTrainData,
                 &localTrainPreds,
                 hasConfidence,
@@ -623,7 +629,7 @@ int fidexGloRules(const string &command) {
           if (currentMinNbCov + 1 < minNbCover) {
             localNbProblems += 1;
           }
-
+          // cout << rule << endl;
           localRules.push_back(rule);
         }
 
@@ -667,19 +673,24 @@ int fidexGloRules(const string &command) {
 
           currentRuleSamples = rules[r].getCoveredSamples();
 
-          ite = set_difference(newNotCoveredSamples.begin(),
-                               newNotCoveredSamples.end(),
-                               currentRuleSamples.begin(),
-                               currentRuleSamples.end(),
-                               newNotCoveredSamples.begin()); // vectors have to be sorted
+          set_difference(newNotCoveredSamples.begin(),
+                         newNotCoveredSamples.end(),
+                         currentRuleSamples.begin(),
+                         currentRuleSamples.end(),
+                         newNotCoveredSamples.begin()); // vectors have to be sorted
 
           newNotCoveredSamples.resize(ite - newNotCoveredSamples.begin());
-          currentCovering = newNotCoveredSamples.size();
+          currentCovering = static_cast<int>(newNotCoveredSamples.size());
 
+          cout << "New not covered samples size: " << currentCovering << endl;
+
+          cout << currentCovering << " <? " << bestCovering << endl;
           if (currentCovering < bestCovering) {
             bestRule = r;
             bestCovering = currentCovering;
             bestNewNotCoveredSamples = newNotCoveredSamples;
+            cout << "\033[1;31m"
+                 << "Best rule: " << bestRule << " best covering: " << bestCovering << " new NCS size: " << bestNewNotCoveredSamples.size() << "\033[0m" << endl;
           }
         }
 
@@ -723,7 +734,7 @@ int fidexGloRules(const string &command) {
       int nbProblems = 0;
       int nbRulesNotFound = 0;
       int currentMinNbCov;
-      Rule rule; // Ex: ([X2<3.5 X3>=4], covering, class)
+      Rule rule;
       auto exp = FidexAlgo();
 
       // Get the rule for each data sample from fidex
@@ -739,7 +750,7 @@ int fidexGloRules(const string &command) {
         ruleCreated = false;
         int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, hasConfidence, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
+          ruleCreated = exp.fidex(rule, 0, trainData, trainPreds, hasConfidence, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           } else {
@@ -858,7 +869,7 @@ int fidexGloRules(const string &command) {
         ruleCreated = false;
         int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, hasConfidence, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
+          ruleCreated = exp.fidex(rule, 0, trainData, trainPreds, hasConfidence, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           } else {
@@ -927,12 +938,14 @@ int fidexGloRules(const string &command) {
     sort(RulesIds.begin(), RulesIds.end(), [&chosenRules](int ruleBest, int ruleWorst) {
       return chosenRules[ruleWorst].getCoveredSamples().size() < chosenRules[ruleBest].getCoveredSamples().size();
     });
+
     lines.emplace_back("\n");
     for (int c = 0; c < nbRules; c++) { // each rule
       int r = RulesIds[c];
       meanCovSize += chosenRules[r].getCoveredSamples().size();
       meanNbAntecedents += chosenRules[r].getAntecedants().size();
       line = "Rule " + to_string(c + 1) + ": ";
+
       for (Antecedant a : chosenRules[r].getAntecedants()) { // each antecedant
         if (a.getInequality()) {                             // check inequality
           inequality = ">=";
@@ -946,12 +959,14 @@ int fidexGloRules(const string &command) {
         }
         line += inequality + to_string(a.gethyperlocus()) + " ";
       }
+
       // class of the rule
       if (hasClassNames) {
         line += "-> " + classNames[chosenRules[r].getOutputClass()];
       } else {
         line += "-> class " + to_string(chosenRules[r].getOutputClass());
       }
+
       line += "\n";
       lines.push_back(line);
       line = "Train Covering size : " + to_string(chosenRules[r].getCoveredSamples().size()) + "\n"; // Covering size
@@ -960,11 +975,13 @@ int fidexGloRules(const string &command) {
       lines.push_back(line);
       line = "Train Accuracy : " + to_string(chosenRules[r].getAccuracy()) + "\n"; // Rule accuracy
       lines.push_back(line);
+
       if (hasConfidence) {
         line = "Train Confidence : " + to_string(chosenRules[r].getConfidence()) + "\n"; // Rule confidence
       } else {
         line = "\n";
       }
+
       lines.push_back(line);
       lines.emplace_back("\n");
     }

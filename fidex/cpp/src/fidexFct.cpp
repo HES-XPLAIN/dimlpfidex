@@ -853,7 +853,7 @@ int fidex(const string &command) {
             bool mainSampleGreater = hypValue <= mainSampleValue;
 
             // Check if main sample value is on the right of the hyperplan
-            currentHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
+            currentHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, 0, mainSampleGreater, hypValue); // Compute new cover samples
             currentHyperbox->computeFidelity(mainSamplesPreds[currentSample], trainPreds);
             // Compute fidelity
             // If the fidelity is better or is same with better covering but not if covering size is lower than minNbCover
@@ -913,7 +913,7 @@ int fidex(const string &command) {
             bool mainSampleGreater = hypValue <= mainSampleValue;
 
             // Check if main sample value is on the right of the hyperplan
-            randomHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
+            randomHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, 0, mainSampleGreater, hypValue); // Compute new cover samples
             randomHyperbox->computeFidelity(mainSamplesPreds[currentSample], trainPreds);
 
             hyperspace.getHyperbox()->setFidelity(randomHyperbox->getFidelity());
