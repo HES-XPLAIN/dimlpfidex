@@ -560,7 +560,7 @@ int fidexGlo(const string &command) {
 
       // Check if there is good number of lines
       if (testSamplesPreds.size() != testSamplesValues.size()) {
-        throw FileContentError("Error : in file " + std::string(testSamplesPredFile) + ", you need to specify as many predictions as there is datas");
+        throw FileContentError("Error : in file " + std::string(testSamplesPredFile) + ", you need to specify as many predictions as there are datas");
       }
     }
 
