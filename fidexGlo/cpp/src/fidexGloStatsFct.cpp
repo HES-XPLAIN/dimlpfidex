@@ -330,20 +330,11 @@ int fidexGloStats(const string &command) {
     vector<string> classNames;
     bool hasClassNames = false;
     if (attributFileInit) {
-      std::unique_ptr<Attribute> attributesData(new Attribute(attributFile));
-      attributeNames = (*attributesData->getAttributes());
-      if (attributeNames.size() < nbTestAttributs) {
-        throw FileContentError("Error : in file " + std::string(attributFile) + ", there is not enough attribute names");
-      } else if (attributeNames.size() == nbTestAttributs) {
-        hasClassNames = false;
-      } else if (attributeNames.size() != nbTestAttributs + nbClass) {
-        throw FileContentError("Error : in file " + std::string(attributFile) + ", there is not the good amount of attribute and class names");
-      } else {
+      std::unique_ptr<Attribute> attributesData(new Attribute(attributFile, static_cast<int>(nbTestAttributs), static_cast<int>(nbClass)));
+      attributeNames = (*attributesData->getAttributeNames());
+      classNames = (*attributesData->getClassNames());
+      if (!classNames.empty()) {
         hasClassNames = true;
-        auto firstEl = attributeNames.end() - nbClass;
-        auto lastEl = attributeNames.end();
-        classNames.insert(classNames.end(), firstEl, lastEl);
-        attributeNames.erase(firstEl, lastEl);
       }
     }
     // Get rules
