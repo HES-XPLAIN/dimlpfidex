@@ -597,10 +597,10 @@ int fidexGloStats(const string &command) {
             }
             outputFile << "" << std::endl;
           } else {
-            outputFile << trainStats[2] << " --- Test Fidelity : " << ruleFidelity << "" << std::endl;
-            outputFile << trainStats[3] << " --- Test Accuracy : " << ruleAccuracy << "" << std::endl;
+            outputFile << trainStats[2] << " --- Test Fidelity : " << formattingDoubleToString(ruleFidelity) << "" << std::endl;
+            outputFile << trainStats[3] << " --- Test Accuracy : " << formattingDoubleToString(ruleAccuracy) << "" << std::endl;
             if (hasConfidence) {
-              outputFile << trainStats[4] << " --- Test Confidence : " << ruleConfidence << "" << std::endl;
+              outputFile << trainStats[4] << " --- Test Confidence : " << formattingDoubleToString(ruleConfidence) << "" << std::endl;
             }
             outputFile << "" << std::endl;
           }

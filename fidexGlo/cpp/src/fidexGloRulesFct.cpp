@@ -879,7 +879,7 @@ int fidexGloRules(const string &command) {
         } else {
           line += "X" + std::to_string(get<0>(rule));
         }
-        line += inequality + std::to_string(get<2>(rule)) + " ";
+        line += inequality + formattingDoubleToString(get<2>(rule)) + " ";
       }
       // class of the rule
       if (hasClassNames) {
@@ -893,10 +893,10 @@ int fidexGloRules(const string &command) {
       lines.push_back(line);
       line = "Train Fidelity : 1\n"; // Rule fidelity
       lines.push_back(line);
-      line = "Train Accuracy : " + std::to_string(std::get<3>(chosenRules[r])) + "\n"; // Rule accuracy
+      line = "Train Accuracy : " + formattingDoubleToString(std::get<3>(chosenRules[r])) + "\n"; // Rule accuracy
       lines.push_back(line);
       if (hasConfidence) {
-        line = "Train Confidence : " + std::to_string(std::get<4>(chosenRules[r])) + "\n"; // Rule confidence
+        line = "Train Confidence : " + formattingDoubleToString(std::get<4>(chosenRules[r])) + "\n"; // Rule confidence
       } else {
         line = "\n";
       }

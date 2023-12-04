@@ -722,6 +722,19 @@ int fidexGlo(const string &command) {
                 << endl;
     }
 
+    if (hasDecisionThreshold) {
+      std::string classDecision;
+      if (attributFileInit) {
+        classDecision = classNames[indexPositiveClass];
+      } else {
+        classDecision = std::to_string(indexPositiveClass);
+      }
+      lines.emplace_back("Using a decision threshold of " + formattingDoubleToString(decisionThreshold) + " for class " + classDecision + "\n");
+    }
+
+    lines.emplace_back("\n--------------------------------------------------------------------\n");
+    std::cout << "\n--------------------------------------------------------------------" << std::endl;
+
     // we search explanation for each sample
 
     std::string testSampleDataFile = "testSampleData.txt";
@@ -739,7 +752,16 @@ int fidexGlo(const string &command) {
         std::cout << "Explanation for sample " << std::to_string(currentSample) << " :" << std::endl
                   << std::endl;
       }
-
+      int currentPredId = testSamplesPreds[currentSample];
+      std::string currentPred;
+      if (attributFileInit) {
+        currentPred = classNames[currentPredId];
+      } else {
+        currentPred = std::to_string(currentPredId);
+      }
+      lines.emplace_back("The model predict class " + currentPred + " with probability " + std::to_string(testSamplesOutputValuesPredictions[currentSample][currentPredId]) + "\n");
+      std::cout << "The model predict class " << currentPred << " with probability " << std::to_string(testSamplesOutputValuesPredictions[currentSample][currentPredId]) << std::endl
+                << std::endl;
       // Find rules activated by this sample
       vector<int> activatedRules;
       getActivatedRules(activatedRules, &rules, &testSamplesValues[currentSample]);
@@ -748,7 +770,7 @@ int fidexGlo(const string &command) {
       vector<int> notcorrectRules;
       bool notShowUncorrectRules = false;
       if (activatedRules.empty()) { // If there is no activated rule
-        std::cout << "\nThere is no rule activated" << std::endl;
+        std::cout << "There is no rule activated" << std::endl;
         std::cout << "We couldn't find any global explanation for this sample." << std::endl; // There is no explanation, we choose the model decision
         std::cout << "We choose the model prediction." << std::endl;
         std::cout << "The predicted class is " << std::to_string(testSamplesPreds[currentSample]) << std::endl;
@@ -796,9 +818,9 @@ int fidexGlo(const string &command) {
             }
           } else {
             if (minimalVersion) {
-              std::cout << "\nThere is no correct activated rule for this sample." << std::endl;
+              std::cout << "There is no correct activated rule for this sample." << std::endl;
             } else {
-              std::cout << "\nThere is no correct rule for this sample." << std::endl;
+              std::cout << "There is no correct rule for this sample." << std::endl;
             }
 
             std::cout << "We couldn't find any global explanation for this sample." << std::endl; // There is no explanation, we choose the model decision
