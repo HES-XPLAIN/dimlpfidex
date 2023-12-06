@@ -15,7 +15,6 @@ class DataSetFid {
 private:
   std::vector<std::vector<double>> datas;
   std::vector<int> trueClasses;
-  std::vector<bool> hasTrueClassesVect; // Maybe sometimes we have a file with samples with classes and samples without classes
   std::vector<int> predictions;
   std::vector<std::vector<double>> outputValuesPredictions;
   std::vector<std::vector<double>> weights;
@@ -37,7 +36,6 @@ public:
   std::vector<std::vector<double>> *getDatas();
   std::vector<int> *getTrueClasses();
   bool hasClasses() const;
-  std::vector<bool> *gethasTrueClassesVect();
   std::vector<int> *getPredictions();
   std::vector<std::vector<double>> *getOutputValuesPredictions();
   bool hasConfidence() const;

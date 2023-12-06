@@ -83,7 +83,7 @@ int fidex(const string &command) {
     string attributFileTemp; // attribut file
     bool attributFileInit = false;
 
-    vector<bool> hasTrueClass; // Check if we have the true classes
+    bool hasTrueClasses; // Check if we have the true classes
 
     std::string weightsFileTemp;
     std::vector<std::string> weightsFilesTemp;
@@ -498,8 +498,10 @@ int fidex(const string &command) {
       mainSamplesValues = (*testDatas->getDatas());
       mainSamplesPreds = (*testDatas->getPredictions());
       mainSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
-      hasTrueClass = (*testDatas->gethasTrueClassesVect());
-      mainSamplesTrueClass = (*testDatas->getTrueClasses());
+      hasTrueClasses = testDatas->hasClasses();
+      if (hasTrueClasses) {
+        mainSamplesTrueClass = (*testDatas->getTrueClasses());
+      }
 
     } else { // We have different files for test predictions and test classes
 
@@ -519,10 +521,10 @@ int fidex(const string &command) {
 
       // Classes :
       if (mainSamplesClassFileInit) {
-        hasTrueClass = (*testDatas->gethasTrueClassesVect());
+        hasTrueClasses = true;
         mainSamplesTrueClass = (*testDatas->getTrueClasses());
       } else {
-        hasTrueClass.resize(mainSamplesValues.size(), false);
+        hasTrueClasses = false;
       }
     }
 
@@ -838,7 +840,7 @@ int fidex(const string &command) {
 
       // Compute rule accuracy and confidence
       double ruleAccuracy;
-      if (hasTrueClass[currentSample]) {
+      if (hasTrueClasses) {
         bool mainSampleCorrect = mainSamplesPreds[currentSample] == mainSamplesTrueClass[currentSample];
         ruleAccuracy = hyperspace.computeRuleAccuracy(trainPreds, trainTrueClass, mainSampleCorrect); // Percentage of correct model prediction on samples covered by the rule
       } else {
