@@ -17,20 +17,21 @@ void showRulesParams() {
   cout << "<Options>\n"
        << endl;
 
-  cout << "Options are: \n"
-       << endl;
-  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << endl;
-  cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << endl;
-  cout << "-A <file of attributes>" << endl;
-  cout << "-r <file where you redirect console result>" << endl; // If we want to redirect console result to file
-  cout << "-i <max iteration number (100 by default)>" << endl;
-  cout << "-v <minimum covering number (2 by default)>" << endl;
-  cout << "-d <dimension dropout parameter>" << endl;
-  cout << "-h <hyperplan dropout parameter>" << endl;
-  cout << "-Q <number of stairs in staircase activation function (50 by default)>" << endl;
-  cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << endl;
-  cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << endl;
-  cout << "-z <seed (0=random, default)>";
+  std::cout << "Options are: \n"
+            << std::endl;
+  std::cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
+  std::cout << "-A <file of attributes>" << std::endl;
+  std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  std::cout << "-i <max iteration number (100 by default)>" << std::endl;
+  std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
+  std::cout << "-d <dimension dropout parameter>" << std::endl;
+  std::cout << "-h <hyperplan dropout parameter>" << std::endl;
+  std::cout << "-m <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
+  std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
+  std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
+  std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
+  std::cout << "-z <seed (0=random, default)>";
 
   cout << "\n-------------------------------------------------\n"
        << endl;
@@ -99,6 +100,7 @@ int fidexGloRules(const string &command) {
     double dropoutHypParam = 0.5;
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
     double dropoutDimParam = 0.5;
+    int maxFailedAttempts = 30;
 
     bool hasDecisionThreshold = false;
     double decisionThreshold = -1;
@@ -229,6 +231,14 @@ int fidexGloRules(const string &command) {
             dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+          }
+          break;
+
+        case 'm':
+          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+            maxFailedAttempts = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
           }
           break;
 
@@ -485,7 +495,11 @@ int fidexGloRules(const string &command) {
         cout << "All hyperlocus created" << endl;
       }
     } else {
-      matHypLocus = calcHypLocus(inputRulesFile, nbAttributs);
+      if (attributFileInit) {
+        matHypLocus = calcHypLocus(inputRulesFile, nbAttributs, attributeNames);
+      } else {
+        matHypLocus = calcHypLocus(inputRulesFile, nbAttributs);
+      }
     }
 
     // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
@@ -545,19 +559,9 @@ int fidexGloRules(const string &command) {
         int startIndex = (nbDatas / usedThreads) * threadId;
         int endIndex = ((threadId + 1) < usedThreads ? startIndex + nbDatas / usedThreads : nbDatas);
 
-        // creating subvectors of data, in order to avoid concurrent accesses with shared memory data
-        // vector<vector<double>> localTrainData(trainData->begin() + startIndex, trainData->begin() + endIndex);
-        // vector<int> localTrainPreds(trainPreds->begin() + startIndex, trainPreds->begin() + endIndex);
-        // vector<int> localTrainTrueClass(trainTrueClass->begin() + startIndex, trainTrueClass->begin() + endIndex);
-
 #pragma omp critical
         {
           cout << "Thread #" << threadId << " working on " << (endIndex - startIndex) << " values. Interval is [" << startIndex << ":" << endIndex << "]" << endl;
-          // cout << "Local vector size check:" << endl;
-          // cout << "   localTrainData size:      " << localTrainData.size() << endl;
-          // cout << "   localTrainPreds size:     " << localTrainPreds.size() << endl;
-          // cout << "   localTrainTrueClass size: " << localTrainTrueClass.size() << endl
-          //  << endl;
         }
 
         Rule rule; // Ex: ([X2<3.5 X3>=4], covering, class)
@@ -581,12 +585,6 @@ int fidexGloRules(const string &command) {
 
 #pragma omp for
         for (idSample = 0; idSample < nbDatas; idSample++) {
-          // #pragma omp critical
-          //           {
-          //             // cout << "T" << threadId << " [" << startIndex << " to " << endIndex << "]" << endl;
-          //             cout << "T" << threadId << " " << idSample << endl;
-          //           }
-
           ruleCreated = false;
           counterFailed = 0; // If we can't find a good rule after a lot of tries
 
@@ -617,10 +615,9 @@ int fidexGloRules(const string &command) {
               counterFailed += 1;
             }
 
-            if (counterFailed >= 10) {
+            if (counterFailed >= maxFailedAttempts) {
               localNbRulesNotFound += 1;
 
-              // notCoveredSamples is shared
 #pragma omp critical
               {
                 it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
@@ -628,7 +625,6 @@ int fidexGloRules(const string &command) {
                   notCoveredSamples.erase(it);
                 }
               }
-              cout << "break" << endl;
               break;
             }
           }
@@ -689,7 +685,6 @@ int fidexGloRules(const string &command) {
         int bestCovering = INT_MAX;
         int currentCovering; // Size of new covering if we choose this rule
         for (int r = 0; r < rules.size(); r++) {
-          // cout << "r: " << r << " rules.size(): " << rules.size() << endl;
           newNotCoveredSamples = notCoveredSamples;
           // Remove samples that are in current covering
 
@@ -704,15 +699,10 @@ int fidexGloRules(const string &command) {
           newNotCoveredSamples.resize(ite - newNotCoveredSamples.begin());
           currentCovering = static_cast<int>(newNotCoveredSamples.size());
 
-          // cout << "New not covered samples size: " << currentCovering << endl;
-          // cout << currentCovering << " <? " << bestCovering << endl;
-
           if (currentCovering < bestCovering) {
             bestRule = r;
             bestCovering = currentCovering;
             bestNewNotCoveredSamples = newNotCoveredSamples;
-            // cout << "\033[1;31m"
-            //  << "Best rule: " << bestRule << " best covering: " << bestCovering << " new NCS size: " << bestNewNotCoveredSamples.size() << "\033[0m" << endl;
           }
         }
 
@@ -778,7 +768,7 @@ int fidexGloRules(const string &command) {
           } else {
             counterFailed += 1;
           }
-          if (counterFailed >= 30) {
+          if (counterFailed >= maxFailedAttempts) {
             nbRulesNotFound += 1;
             auto it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
             if (it != notCoveredSamples.end()) {
@@ -897,7 +887,7 @@ int fidexGloRules(const string &command) {
           } else {
             counterFailed += 1;
           }
-          if (counterFailed >= 30) {
+          if (counterFailed >= maxFailedAttempts) {
             nbRulesNotFound += 1;
             break;
           }

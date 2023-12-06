@@ -18,8 +18,8 @@ void showParams() {
             << std::endl;
   std::cout << "-F <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   std::cout << "-A <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it" << std::endl;
-  std::cout << "-p <test prediction file>, -S needs to have only test datas" << std::endl;
-  std::cout << "-O <Rule output file>" << std::endl;
+  std::cout << "-p <test prediction file> if given, -S needs to have only test datas" << std::endl;
+  std::cout << "-O <Explanation(s) output file>" << std::endl;
   std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
   std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
   std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;

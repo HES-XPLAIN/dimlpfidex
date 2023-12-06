@@ -3,7 +3,7 @@ import re
 from PIL import Image
 import numpy as np
 import colorsys
-
+import os
 
 from dimlpfidex import fidex, fidexGlo
 
@@ -49,7 +49,13 @@ def hsl_to_rgb_fun(hsl):
     r, g, b = int(r*255), int(g*255), int(b*255)
     return (r, g, b)
 
-
+def delete_file(file):
+    try:
+        os.remove(file)
+    except FileNotFoundError:
+        print(f"Error : File '{file}' not found.")
+    except Exception:
+        print(f"Error during delete of file {file}")
 
 def imageAnalyser(dataSet):
     try:
@@ -58,15 +64,18 @@ def imageAnalyser(dataSet):
         id_samples = range(0,100)
         show_images = False
         if dataSet == "Mnist":
-            image_folder_from_base = "dimlp/datafiles/Mnist"
+            image_folder_from_base = "dimlp/datafiles/Mnist/Mnist09"
             test_data_file = image_folder_from_base + "/mnistTestData.txt"
             test_class_file = image_folder_from_base + "/mnistTestClass.txt"
             test_pred_file = image_folder_from_base + "/predTest.out"
-            global_rules = "globalRules.txt"
+            global_rules = "globalRulesIt2.rls"
 
             train_data_file = "mnistTrainData.txt"
             train_class_file = "mnistTrainClass.txt"
             train_pred_file = "predTrain.out"
+
+            with_file = True
+            rules_file = "globalRules.txt"
             weights_file = "weights.wts"
 
             dropout_dim = 0.9
@@ -75,17 +84,20 @@ def imageAnalyser(dataSet):
             nb_channels = 1
             with_hsl = False
         elif dataSet == "Cifar10":
-            with_hsl = False
+            with_hsl = True
 
-            image_folder_from_base = "dimlp/datafiles/Cifar10/Cifar10Resnet"
-            test_data_file = image_folder_from_base + "/testData.txt"
+            image_folder_from_base = "dimlp/datafiles/Cifar10/Cifar10HSLResnet"
+            test_data_file = image_folder_from_base + "/testDataHSL.txt"
             test_class_file = image_folder_from_base + "/testClass.txt"
             test_pred_file = image_folder_from_base + "/predTest.out"
             global_rules = "globalRulesWithTestStats.txt"
 
-            train_data_file = "trainData.txt"
+            train_data_file = "trainDataHSL.txt"
             train_class_file = "trainClass.txt"
             train_pred_file = "predTrain.out"
+
+            with_file = False #Using of rule file or of weights to launch Fidex
+            rules_file = "globalRules.txt"
             weights_file = "weights.wts"
 
             dropout_dim = 0.9
@@ -148,8 +160,12 @@ def imageAnalyser(dataSet):
                 nb_fidex += 1
                 print("No rule global rule found. We launch Fidex.")
                 fidex_command = "fidex -T " + train_data_file + " -P " + train_pred_file + " -C " + train_class_file
-                fidex_command += " -S testSampleData.txt -c testSampleClass.txt -p testSamplePred.txt -W "
-                fidex_command += weights_file + " -O imgFidexrule.txt -s imgFidexStats.txt -Q 50 -i 100 -v 2 -R " +  image_folder_from_base
+                fidex_command += " -S testSampleData.txt -c testSampleClass.txt -p testSamplePred.txt "
+                if with_file:
+                    fidex_command += "-f " + rules_file
+                else:
+                    fidex_command += "-W " + weights_file
+                fidex_command += " -O imgFidexrule.txt -s imgFidexStats.txt -Q 50 -i 100 -v 2 -R " +  image_folder_from_base
                 fidex_command += " -d " + str(dropout_dim) + " -h " + str(dropout_hyp)
                 res_fid = fidex.fidex(fidex_command)
                 if res_fid == -1:
@@ -226,6 +242,14 @@ def imageAnalyser(dataSet):
             fidex_mean = nb_fidex/len(id_samples)*100
 
         print(f"\nFidex is used for {fidex_mean}% of images.")
+
+
+        # Delete temporary files
+        delete_file(explanation_file)
+        delete_file(test_sample_data_file)
+        delete_file(test_sample_pred_file)
+        delete_file(test_sample_class_file)
+        delete_file(img_fidex_file)
 
         end_time = time.time()
         full_time = end_time - start_time

@@ -63,7 +63,7 @@ def convKeras(*args, **kwargs):
             print("valid_ratio : porcentage(]0,1[) of train data taken for validation (0.1 by default if no valid data)")
             print("valid_data : validation data file")
             print("valid_class : validation class file")
-            print("BE CAREFUL if there is validation files, and you want to use fidex algorithms you have to use both train and validation datas for train datas ")
+            print("BE CAREFUL if there is validation files, and you want to use fidex algorithms you have to use both train and validation datas for train datas and classes")
             print("save_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
             print("nb_epochs : number of epochs during training(80 by default)")
             print("train_valid_pred : output train and validation (in this order) prediction file name without extension(predTrain by default)")

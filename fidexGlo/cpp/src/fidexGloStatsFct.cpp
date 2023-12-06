@@ -51,6 +51,22 @@ void getCovering(vector<int> &sampleIds, tuple<vector<tuple<int, bool, double>>,
   }
 }
 
+void computeTFPN(int decision, int indexPositiveClass, int testTrueClass, int &nbTruePositive, int &nbFalsePositive, int &nbTrueNegative, int &nbFalseNegative) {
+  if (decision == indexPositiveClass) { // Positive prediction
+    if (decision == testTrueClass) {
+      nbTruePositive += 1;
+    } else {
+      nbFalsePositive += 1;
+    }
+  } else { // Negative prediction
+    if (testTrueClass == indexPositiveClass) {
+      nbFalseNegative += 1;
+    } else {
+      nbTrueNegative += 1;
+    }
+  }
+}
+
 int fidexGloStats(const string &command) {
   // Save buffer where we output results
   std::ofstream ofs;
@@ -363,12 +379,18 @@ int fidexGloStats(const string &command) {
     vector<double> testValues;
     int testPred;
     int testTrueClass;
+
     int nbTruePositive = 0;  // Correct positive prediction
     int nbTrueNegative = 0;  // Correct negative prediction
     int nbFalsePositive = 0; // Wrong positive prediction
     int nbFalseNegative = 0; // Wrong negative prediction
     int nbPositive = 0;
     int nbNegative = 0;
+
+    int nbTruePositiveRules = 0;  // Correct positive rule prediction
+    int nbTrueNegativeRules = 0;  // Correct negative rule prediction
+    int nbFalsePositiveRules = 0; // Wrong positive rule prediction
+    int nbFalseNegativeRules = 0; // Wrong negative rule prediction
 
     for (int t = 0; t < nbTestData; t++) { // For each test value
       testValues = (*testData)[t];
@@ -386,22 +408,11 @@ int fidexGloStats(const string &command) {
         modelAccuracy++;
       }
       if (hasIndexPositiveClass) {
-        if (testPred == indexPositiveClass) { // Positive prediction
-          if (testPred == testTrueClass) {
-            nbTruePositive += 1;
-          } else {
-            nbFalsePositive += 1;
-          }
-        } else { // Negative prediction
-          if (testTrueClass == indexPositiveClass) {
-            nbFalseNegative += 1;
-          } else {
-            nbTrueNegative += 1;
-          }
-        }
+        computeTFPN(testPred, indexPositiveClass, testTrueClass, nbTruePositive, nbFalsePositive, nbTrueNegative, nbFalseNegative);
       }
 
       // Find rules activated by this sample
+      bool noCorrectRuleWithAllSameClass = false; // If there is no correct rule activated but all rules have same class
       vector<int> activatedRules;
       getActivatedRules(activatedRules, &rules, &testValues);
 
@@ -433,9 +444,15 @@ int fidexGloStats(const string &command) {
             }
           }
           if (allSameClass) {
-            explainabilityTotal++;                                   // If all decisions are the same, we have an explanation
-            if (get<2>(rules[activatedRules[0]]) == testTrueClass) { // If those decisions are the true class, this is accurate
+            explainabilityTotal++; // If all decisions are the same, we have an explanation
+            int decision = get<2>(rules[activatedRules[0]]);
+            if (decision == testTrueClass) { // If those decisions are the true class, this is accurate
               accuracy++;
+            }
+            // The rules' decision is different from the model's
+            noCorrectRuleWithAllSameClass = true;
+            if (hasIndexPositiveClass) {
+              computeTFPN(decision, indexPositiveClass, testTrueClass, nbTruePositiveRules, nbFalsePositiveRules, nbTrueNegativeRules, nbFalseNegativeRules);
             }
           }
 
@@ -454,7 +471,12 @@ int fidexGloStats(const string &command) {
           meanNbWrongActivatedRules += static_cast<double>(activatedRules.size() - correctRules.size());
         }
       }
+
+      if (!noCorrectRuleWithAllSameClass && hasIndexPositiveClass) { // The rules' decision is the same as the model's, if we can find a correct rule or if we need to compute Fidex
+        computeTFPN(testPred, indexPositiveClass, testTrueClass, nbTruePositiveRules, nbFalsePositiveRules, nbTrueNegativeRules, nbFalseNegativeRules);
+      }
     }
+
     fidelity /= nbTestData;
     accuracy /= nbTestData;
     explainabilityRate = explainabilityTotal / nbTestData;
@@ -482,6 +504,7 @@ int fidexGloStats(const string &command) {
       } else {
         lines.push_back("\nWith positive class " + std::to_string(indexPositiveClass) + " :");
       }
+      lines.emplace_back("\nComputation with model decision :");
       lines.push_back("The number of true positive test samples is : " + std::to_string(nbTruePositive));
       lines.push_back("The number of false positive test samples is : " + std::to_string(nbFalsePositive));
       lines.push_back("The number of true negative test samples is : " + std::to_string(nbTrueNegative));
@@ -490,6 +513,16 @@ int fidexGloStats(const string &command) {
       lines.push_back("The false negative rate is : " + std::to_string(float(nbFalseNegative) / static_cast<float>(nbPositive)));
       lines.push_back("The precision is : " + std::to_string(float(nbTruePositive) / static_cast<float>(nbTruePositive + nbFalsePositive)));
       lines.push_back("The recall is : " + std::to_string(float(nbTruePositive) / static_cast<float>(nbTruePositive + nbFalseNegative)));
+
+      lines.emplace_back("\nComputation with rules decision :");
+      lines.push_back("The number of true positive test samples is : " + std::to_string(nbTruePositiveRules));
+      lines.push_back("The number of false positive test samples is : " + std::to_string(nbFalsePositiveRules));
+      lines.push_back("The number of true negative test samples is : " + std::to_string(nbTrueNegativeRules));
+      lines.push_back("The number of false negative test samples is : " + std::to_string(nbFalseNegativeRules));
+      lines.push_back("The false positive rate is : " + std::to_string(float(nbFalsePositiveRules) / static_cast<float>(nbNegative)));
+      lines.push_back("The false negative rate is : " + std::to_string(float(nbFalseNegativeRules) / static_cast<float>(nbPositive)));
+      lines.push_back("The precision is : " + std::to_string(float(nbTruePositiveRules) / static_cast<float>(nbTruePositiveRules + nbFalsePositiveRules)));
+      lines.push_back("The recall is : " + std::to_string(float(nbTruePositiveRules) / static_cast<float>(nbTruePositiveRules + nbFalseNegativeRules)));
     }
 
     for (string l : lines) {
