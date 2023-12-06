@@ -20,7 +20,7 @@ void showFidexParams() {
             << std::endl;
   std::cout << "-R <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
-  std::cout << "-p <test prediction file> " << std::endl;
+  std::cout << "-p <test prediction file> ";
   std::cout << "-c <test true class file> If at least -p is specified, -S needs to have only test datas" << std::endl;
   std::cout << "-A <file of attributes>" << std::endl;
   std::cout << "-s <output statistic file>" << std::endl;
@@ -492,140 +492,17 @@ int fidex(const string &command) {
     vector<int> mainSamplesTrueClass;
     vector<vector<double>> mainSamplesValues;
     vector<vector<double>> mainSamplesOutputValuesPredictions;
-
+    std::unique_ptr<DataSetFid> testDatas;
     if (!mainSamplesPredFileInit) { // If we have only one test data file with data, pred and class
+      testDatas.reset(new DataSetFid(mainSamplesDataFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
+      mainSamplesValues = (*testDatas->getDatas());
+      mainSamplesPreds = (*testDatas->getPredictions());
+      mainSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
+      hasTrueClass = (*testDatas->gethasTrueClassesVect());
+      mainSamplesTrueClass = (*testDatas->getTrueClasses());
 
-      vector<double> mainSampleValues;
-      vector<double> mainSampleOutputValuesPredictions;
-      int mainSamplePred;
-      int mainSampleTrueClass;
-      fstream testData;
-      testData.open(mainSamplesDataFile, ios::in); // Read data file
-      if (testData.fail()) {
-        throw FileNotFoundError("Error : file " + std::string(mainSamplesDataFile) + " not found");
-      }
-      string line;
-      bool firstLine = true;
-      while (!testData.eof()) {
-        getline(testData, line);
-        if (!checkStringEmpty(line)) {
-          std::stringstream myLine(line);
-          double value;
-          mainSampleValues.clear();
-          while (myLine >> value) {
-            mainSampleValues.push_back(value);
-          }
-          mainSamplesValues.push_back(mainSampleValues);
-        } else if (firstLine) {
-          throw FileFormatError("Error : in file " + std::string(mainSamplesDataFile) + ", first line is empty");
-        } else {
-          while (!testData.eof()) {
-            getline(testData, line);
-            if (!checkStringEmpty(line)) {
-              throw FileFormatError("Error : file " + std::string(mainSamplesDataFile) + " is not on good format, there is more than one empty line between 2 samples");
-            }
-          }
-          break; // There is just empty lines at the end of the file
-        }
-        if (testData.eof()) {
-          throw FileContentError("Error : file " + std::string(mainSamplesDataFile) + " has not enough prediction data");
-        }
-        getline(testData, line);
-        if (!checkStringEmpty(line)) {
-          std::stringstream myLine(line);
-          double value;
-          mainSampleOutputValuesPredictions.clear();
-          while (myLine >> value) {
-            mainSampleOutputValuesPredictions.push_back(value);
-          }
-          mainSamplesOutputValuesPredictions.push_back(mainSampleOutputValuesPredictions);
+    } else { // We have different files for test predictions and test classes
 
-          if (hasDecisionThreshold && mainSampleOutputValuesPredictions[indexPositiveClass] >= decisionThreshold) {
-            mainSamplePred = indexPositiveClass;
-          } else {
-            mainSamplePred = static_cast<int>(std::max_element(mainSampleOutputValuesPredictions.begin(), mainSampleOutputValuesPredictions.end()) - mainSampleOutputValuesPredictions.begin());
-          }
-
-          mainSamplesPreds.push_back(mainSamplePred);
-        } else {
-          while (!testData.eof()) {
-            getline(testData, line);
-            if (!checkStringEmpty(line)) {
-              throw FileFormatError("Error : file " + std::string(mainSamplesDataFile) + " is not on good format, there is empty lines inbetween data");
-            }
-          }
-          throw FileContentError("Error : file " + std::string(mainSamplesDataFile) + " has not enough prediction data");
-        }
-        bool endOfLine = false;
-        if (testData.eof()) {
-          endOfLine = true;
-        }
-        getline(testData, line);
-        if (endOfLine || checkStringEmpty(line)) {
-          hasTrueClass.push_back(false);
-          mainSamplesTrueClass.push_back(-1);
-        } else {
-          // Check if true class is on the form 0 1 0 0...
-          while (std::isspace(line.back())) {
-            line.pop_back();
-          }
-          while (std::isspace(line.front())) {
-            line.erase(line.begin());
-          }
-          std::istringstream iss(line);
-          std::vector<std::string> tokens;
-          std::string token;
-
-          while (std::getline(iss, token, ' ')) {
-            tokens.push_back(token);
-          }
-          if (tokens.size() != mainSampleOutputValuesPredictions.size()) {
-            if (tokens.size() == 1 && tokens[0] == "-1") {
-              hasTrueClass.push_back(false);
-              mainSamplesTrueClass.push_back(-1);
-              firstLine = false;
-              if (!testData.eof()) {
-                getline(testData, line);
-                if (!checkStringEmpty(line)) {
-                  throw FileFormatError("Error : in file " + std::string(mainSamplesDataFile) + ", you need to have empty lines between samples. You have chosen to give data, predictions and classes in one file. If you want to separate them, use -p and -c");
-                }
-              }
-              continue;
-            } else {
-              throw FileContentError("Error : in file " + std::string(mainSamplesDataFile) + ", true classes and predictions need to have the same amount of data, or classes need to be -1 to express that there is no class.");
-            }
-          }
-          bool classFound = false;
-          int classNum = -1;
-          for (const auto &t : tokens) {
-            if (!classFound) {
-              const char *tokenChars = t.c_str();
-              if (!(strcmp(tokenChars, "0") == 0 || strcmp(tokenChars, "1") == 0)) {
-                throw FileContentError("Error : in file " + std::string(mainSamplesDataFile) + ", true classes need to be 0 or 1");
-              }
-              if (strcmp(tokenChars, "1") == 0) {
-                classFound = true;
-              }
-              classNum += 1;
-            }
-          }
-
-          hasTrueClass.push_back(true);
-          mainSamplesTrueClass.push_back(classNum);
-          if (!testData.eof()) {
-            getline(testData, line);
-            if (!checkStringEmpty(line)) {
-              throw FileFormatError("Error : in file " + std::string(mainSamplesDataFile) + ", you need to have empty lines between samples. You have chosen to give data, predictions and classes in one file. If you want to separate them, use -p and -c");
-            }
-          }
-        }
-        firstLine = false;
-      }
-
-      testData.close(); // close data file
-    } else {            // We have different files for test predictions and test classes
-
-      std::unique_ptr<DataSetFid> testDatas;
       if (mainSamplesClassFileInit) {
         testDatas.reset(new DataSetFid(mainSamplesDataFile, mainSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass, mainSamplesClassFile));
       } else {
@@ -642,7 +519,7 @@ int fidex(const string &command) {
 
       // Classes :
       if (mainSamplesClassFileInit) {
-        hasTrueClass = (*testDatas->getHasTrueClasses());
+        hasTrueClass = (*testDatas->gethasTrueClassesVect());
         mainSamplesTrueClass = (*testDatas->getTrueClasses());
       } else {
         hasTrueClass.resize(mainSamplesValues.size(), false);
