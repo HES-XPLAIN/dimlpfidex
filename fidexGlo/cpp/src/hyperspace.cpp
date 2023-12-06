@@ -2,29 +2,29 @@
 using namespace std;
 
 namespace FidexGloNameSpace {
-Hyperspace::Hyperspace(const std::vector<std::vector<double>> &matHypLocus) : hyperLocus(matHypLocus) {
+Hyperspace::Hyperspace(const vector<vector<double>> &matHypLocus) : hyperLocus(matHypLocus) {
 
   vector<pair<int, int>> discriminativeHyperplans;
-  hyperbox = std::make_shared<Hyperbox>(discriminativeHyperplans);
+  hyperbox = make_shared<Hyperbox>(discriminativeHyperplans);
 }
 
 vector<vector<double>> Hyperspace::getHyperLocus() const {
   return hyperLocus;
 }
 
-std::shared_ptr<Hyperbox> Hyperspace::getHyperbox() const {
+shared_ptr<Hyperbox> Hyperspace::getHyperbox() const {
   return hyperbox;
 }
 
-tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence) {
+Rule Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence) {
 
-  tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> rule;
+  Rule rule;
 
   double hypValue;
   int attribut;
   bool inequalityBool;
 
-  vector<tuple<int, bool, double>> antecedants;
+  vector<Antecedant> antecedants;
   for (int k = 0; k < hyperbox->getDiscriminativeHyperplans().size(); k++) {
     attribut = hyperbox->getDiscriminativeHyperplans()[k].first % (*mainSampleData).size();
     hypValue = hyperLocus[hyperbox->getDiscriminativeHyperplans()[k].first][hyperbox->getDiscriminativeHyperplans()[k].second];
@@ -34,9 +34,9 @@ tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> Hypers
     } else {
       inequalityBool = false;
     }
-    antecedants.push_back(make_tuple(attribut, inequalityBool, hypValue));
+    antecedants.push_back(Antecedant(attribut, inequalityBool, hypValue));
   }
-  rule = make_tuple(antecedants, hyperbox->getCoveredSamples(), mainSamplePred, ruleAccuracy, ruleConfidence);
+  rule = Rule(antecedants, hyperbox->getCoveredSamples(), mainSamplePred, ruleAccuracy, ruleConfidence);
 
   return rule;
 }

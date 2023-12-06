@@ -5,14 +5,31 @@ FidexAlgo::FidexAlgo() = default;
 
 // Different mains:
 
-bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> &rule, vector<vector<double>> *trainData, vector<int> *trainPreds, bool hasConfidence, vector<vector<double>> *trainOutputValuesPredictions, vector<int> *trainTrueClass, vector<double> *mainSampleValues, int mainSamplePred, FidexGloNameSpace::Hyperspace *hyperspace, const int nbIn, const int nbAttributs, int itMax, int minNbCover, bool dropoutDim, double dropoutDimParam, bool dropoutHyp, double dropoutHypParam, std::mt19937 gen) const {
+bool FidexAlgo::fidex(Rule &rule,
+                      vector<vector<double>> *trainData,
+                      vector<int> *trainPreds,
+                      bool hasConfidence,
+                      vector<vector<double>> *trainOutputValuesPredictions,
+                      vector<int> *trainTrueClass,
+                      vector<double> *mainSampleValues,
+                      int mainSamplePred,
+                      Hyperspace *hyperspace, // TODO: shouldn't we remove this and create a new one inside the function ?
+                      int nbIn,
+                      int nbAttributs,
+                      int itMax,
+                      int minNbCover,
+                      bool dropoutDim,
+                      double dropoutDimParam,
+                      bool dropoutHyp,
+                      double dropoutHypParam,
+                      mt19937 gen) const {
 
   // Initialize uniform distribution
-  std::uniform_real_distribution<double> dis(0.0, 1.0);
+  uniform_real_distribution<double> dis(0.0, 1.0);
 
   // Compute initial covering
-  vector<int> coveredSamples((*trainData).size());                    // Samples covered by the hyperbox
-  std::iota(std::begin(coveredSamples), std::end(coveredSamples), 0); // Vector from 0 to len(coveredSamples)-1
+  vector<int> coveredSamples((*trainData).size());     // Samples covered by the hyperbox
+  iota(begin(coveredSamples), end(coveredSamples), 0); // Vector from 0 to len(coveredSamples)-1
 
   // Store covering and compute initial fidelty
   hyperspace->getHyperbox()->setCoveredSamples(coveredSamples);
@@ -25,8 +42,8 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
 
   while (hyperspace->getHyperbox()->getFidelity() != 1 && nbIt < itMax) { // While fidelity of our hyperbox is not 100%
 
-    std::unique_ptr<Hyperbox> bestHyperbox(new Hyperbox()); // best hyperbox to choose for next step
-    std::unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());
+    unique_ptr<Hyperbox> bestHyperbox(new Hyperbox()); // best hyperbox to choose for next step
+    unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());
     double mainSampleValue;
     int attribut;
     int dimension;
@@ -36,8 +53,8 @@ bool FidexAlgo::fidex(std::tuple<vector<tuple<int, bool, double>>, vector<int>, 
     int maxHyp = -1;
     // Randomize dimensions
     vector<int> dimensions(nbIn);
-    std::iota(std::begin(dimensions), std::end(dimensions), 0); // Vector from 0 to nbIn-1
-    std::shuffle(std::begin(dimensions), std::end(dimensions), gen);
+    iota(begin(dimensions), end(dimensions), 0); // Vector from 0 to nbIn-1
+    shuffle(begin(dimensions), end(dimensions), gen);
 
     vector<int> currentCovSamp;
 
