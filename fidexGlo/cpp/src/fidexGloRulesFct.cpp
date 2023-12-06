@@ -37,6 +37,55 @@ void showRulesParams() {
        << endl;
 }
 
+tuple<int, int> writeRulesFile(string filename, const vector<Rule> rules, bool hasConfidence, const vector<string> *attributes = NULL, const vector<string> *classes = NULL) {
+  int counter = 1;
+  int nbRules = rules.size();
+  double meanCovSize = 0;
+  double meanNbAntecedents = 0;
+  stringstream stream;
+  ofstream file(filename);
+
+  for (Rule r : rules) { // each rule
+    meanCovSize += r.getCoveredSamples().size();
+    meanNbAntecedents += r.getAntecedants().size();
+    stream << "Rule " << counter++ << ": " << r.toString(hasConfidence, attributes, classes); // TODO check for NULL case
+    stream << endl;
+  }
+
+  meanCovSize /= nbRules;
+  meanNbAntecedents /= nbRules;
+
+  if (file.is_open()) {
+    file << "Number of rules : " << nbRules
+         << ", mean sample covering number per rule : " << meanCovSize
+         << ", mean number of antecedents per rule : " << meanNbAntecedents
+         << endl;
+
+    if (attributes) {
+      file << "Attributes name are specified.";
+    } else {
+      file << "Attributes name are not specified.";
+    }
+
+    if (classes) {
+      file << "Classes name are specified.";
+    } else {
+      file << "Classes name are not specified.";
+    }
+
+    file << endl
+         << endl
+         << stream.str();
+
+    file.close();
+
+  } else {
+    throw CannotOpenFileError("Error : Couldn't open rules extraction file \"" + filename + "\".");
+  }
+
+  return make_tuple(meanCovSize, meanNbAntecedents);
+}
+
 int fidexGloRules(const string &command) {
   // Save buffer where we output results
   ofstream ofs;
@@ -557,7 +606,7 @@ int fidexGloRules(const string &command) {
         // declaring thread internal variables
         int threadId = omp_get_thread_num();
         int startIndex = (nbDatas / usedThreads) * threadId;
-        int endIndex = ((threadId + 1) < usedThreads ? startIndex + nbDatas / usedThreads : nbDatas);
+        int endIndex = ((threadId + 1) < usedThreads ? startIndex + nbDatas / usedThreads : nbDatas) - 1;
 
 #pragma omp critical
         {
@@ -576,15 +625,15 @@ int fidexGloRules(const string &command) {
         int localNbDatas = endIndex - startIndex;
         int localNbProblems = 0;
         int localMinNbCover = 0;
+        int cnt = 0;
         vector<int>::iterator it;
         Antecedant a;
-        double t1;
-        double t2;
 
         t1 = omp_get_wtime();
 
 #pragma omp for
         for (idSample = 0; idSample < nbDatas; idSample++) {
+          cnt += 1;
           ruleCreated = false;
           counterFailed = 0; // If we can't find a good rule after a lot of tries
 
@@ -632,32 +681,21 @@ int fidexGloRules(const string &command) {
           if (currentMinNbCov + 1 < minNbCover) {
             localNbProblems += 1;
           }
-          // cout << rule << endl;
           localRules.push_back(rule);
-          // cout << "Done" << endl;
-          if (idSample > nbDatas - 2)
-            t2 = omp_get_wtime();
         }
 
+        t2 = omp_get_wtime();
 // gathering local data to main process
 #pragma omp critical
         {
-          cout << "T" << threadId << " ended in " << (t2 - t1) << " seconds." << endl;
+          cout << "T" << threadId << " ended " << cnt << " iterations in " << (t2 - t1) << " seconds." << endl;
           cout << "Local rule size: (#T" << threadId << ") " << localRules.size() << endl;
-          for (Rule r : localRules) {
-            cout << r << endl;
-            for (int cs : r.getCoveredSamples()) {
-              cout << cs << ", ";
-            }
-            cout << endl
-                 << "-----------------------" << endl;
-          }
-          cout << endl;
           rules.insert(rules.end(), localRules.begin(), localRules.end());
-          cout << "Current rules size: " << rules.size() << endl;
+
+          cout << "Current total rules size: " << rules.size() << endl
+               << endl;
           nbProblems += localNbProblems;
           nbRulesNotFound += localNbRulesNotFound;
-          cout << "Thread #" << threadId << " is done." << endl;
         }
       } // end of parallel section
 
@@ -934,99 +972,19 @@ int fidexGloRules(const string &command) {
     //--------------------------------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------------------------------
 
-    cout << "Rules extraction..." << endl
+    cout << "Rules extraction..."
+         << endl
          << endl;
 
-    double meanCovSize = 0;
-    double meanNbAntecedents = 0;
-
-    // Export rules
-    string inequality;
-    string line;
-    vector<string> lines;
-    // Sort the rules(RulesIds) depending of their covering size
-    vector<int> RulesIds(nbRules);           // Rules indexes
-    iota(begin(RulesIds), end(RulesIds), 0); // Vector from 0 to nbRules-1
-    sort(RulesIds.begin(), RulesIds.end(), [&chosenRules](int ruleBest, int ruleWorst) {
-      return chosenRules[ruleWorst].getCoveredSamples().size() < chosenRules[ruleBest].getCoveredSamples().size();
+    // TODO check if this works
+    sort(chosenRules.begin(), chosenRules.end(), [&chosenRules](Rule r1, Rule r2) {
+      return r1.getCoveredSamples().size() > r2.getCoveredSamples().size();
     });
 
-    lines.emplace_back("\n");
-    for (int c = 0; c < nbRules; c++) { // each rule
-      int r = RulesIds[c];
-      meanCovSize += chosenRules[r].getCoveredSamples().size();
-      meanNbAntecedents += chosenRules[r].getAntecedants().size();
-      line = "Rule " + to_string(c + 1) + ": ";
+    tuple<int, int> stats = writeRulesFile(rulesFile, chosenRules, hasConfidence, &attributeNames, &classNames);
 
-      for (Antecedant a : chosenRules[r].getAntecedants()) { // each antecedant
-        if (a.getInequality()) {                             // check inequality
-          inequality = ">=";
-        } else {
-          inequality = "<";
-        }
-        if (attributFileInit) {
-          line += attributeNames[a.getAttribute()];
-        } else {
-          line += "X" + to_string(a.getAttribute());
-        }
-        line += inequality + to_string(a.gethyperlocus()) + " ";
-      }
-
-      // class of the rule
-      if (hasClassNames) {
-        line += "-> " + classNames[chosenRules[r].getOutputClass()];
-      } else {
-        line += "-> class " + to_string(chosenRules[r].getOutputClass());
-      }
-
-      line += "\n";
-      lines.push_back(line);
-      line = "Train Covering size : " + to_string(chosenRules[r].getCoveredSamples().size()) + "\n"; // Covering size
-      lines.push_back(line);
-      line = "Train Fidelity : 1\n"; // Rule fidelity
-      lines.push_back(line);
-      line = "Train Accuracy : " + to_string(chosenRules[r].getAccuracy()) + "\n"; // Rule accuracy
-      lines.push_back(line);
-
-      if (hasConfidence) {
-        line = "Train Confidence : " + to_string(chosenRules[r].getConfidence()) + "\n"; // Rule confidence
-      } else {
-        line = "\n";
-      }
-
-      lines.push_back(line);
-      lines.emplace_back("\n");
-    }
-
-    meanCovSize /= nbRules;
-    meanNbAntecedents /= nbRules;
-
-    ofstream file2(rulesFile);
-
-    if (file2.is_open()) {
-      // We add to the file the number of rules, the mean covering per rule and the mean number of antecedents per rule
-      string startLine = "Number of rules : " + to_string(nbRules) + ", mean sample covering number per rule : " + to_string(meanCovSize) + ", mean number of antecedents per rule : " + to_string(meanNbAntecedents) + "\n";
-      file2 << startLine;
-      string secondLine = "The name of the attributes and classes are not specified\n";
-      if (attributFileInit) {
-        secondLine = "The name of the attributes is specified\n";
-        if (hasClassNames) {
-          secondLine = "The name of the attributes and classes are specified\n";
-        }
-      }
-      file2 << secondLine;
-      for (const auto &l : lines) {
-        file2 << l;
-      }
-
-      file2.close();
-
-    } else {
-      throw CannotOpenFileError("Error : Couldn't open rules extraction file " + string(rulesFile) + ".");
-    }
-
-    cout << "Mean covering size per rule : " << meanCovSize << endl;
-    cout << "Mean number of antecedents per rule : " << meanNbAntecedents << endl;
+    cout << "Mean covering size per rule : " << get<0>(stats) << endl;
+    cout << "Mean number of antecedents per rule : " << get<1>(stats) << endl;
 
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
