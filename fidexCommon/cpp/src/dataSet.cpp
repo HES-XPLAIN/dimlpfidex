@@ -36,7 +36,6 @@ DataSetFid::DataSetFid(const char *dataFile, const char *predFile, bool hasDecis
 
     while (!fileCl.eof()) {
       int nbClasses = 0;
-
       getline(fileCl, line);
       if (!checkStringEmpty(line)) {
         getClassLine(line, dataFile, nbClasses);
@@ -113,16 +112,12 @@ DataSetFid::DataSetFid(const char *dataFile, bool hasDecisionThreshold, double d
     }
     // Get classes
     getline(fileDta, line);
-    if (endOfFile || checkStringEmpty(line)) {
-      hasTrueClassesVect.push_back(false);
-      trueClasses.push_back(-1);
-    } else {
-
+    if (!endOfFile && !checkStringEmpty(line)) {
       int nbClasses = 0;
       getClassLine(line, dataFile, nbClasses);
-      if (nbClasses != valuesPred.size() && trueClasses[0] != -1) {
+      if (nbClasses != valuesPred.size()) {
         std::cout << trueClasses[0] << std::endl;
-        throw FileContentError("Error : in file " + std::string(dataFile) + ", true classes and predictions need to have the same amount of data, or classes need to be -1 to express that there is no class.");
+        throw FileContentError("Error : in file " + std::string(dataFile) + ", true classes and predictions need to have the same amount of data.");
       }
 
       if (!fileDta.eof()) {
@@ -134,12 +129,12 @@ DataSetFid::DataSetFid(const char *dataFile, bool hasDecisionThreshold, double d
     }
     firstLine = false;
   }
-  bool noElement = std::all_of(trueClasses.begin(), trueClasses.end(), [](int element) {
-    return element == -1;
-  });
 
-  if (!noElement) {
+  if (!trueClasses.empty()) {
     hasClassesAttr = true;
+    if (trueClasses.size() != datas.size()) {
+      throw FileContentError("Error : in file " + std::string(dataFile) + ", you need a class for each data.");
+    }
   }
 
   fileDta.close(); // close data file
@@ -231,34 +226,22 @@ void DataSetFid::getClassLine(const string &line, const char *dataFile, int &nbC
     }
     myLine >> valueClass;
     if (myLine.fail()) {
-      throw FileContentError("Error : in file " + std::string(dataFile) + ", true classes need to be 0, 1, 0.0, 1.0 or -1 if we haven't the class");
+      throw FileContentError("Error : in file " + std::string(dataFile) + ", true classes need to be 0, 1, 0.0 or 1.0");
     }
     if (valueClass == 1.0f) {
       trueClasses.push_back(nbClasses);
-      hasTrueClassesVect.push_back(true);
       if (!classFound) {
         classFound = true;
       } else {
-        throw FileContentError("Error : in file " + std::string(dataFile) + ", there is multiple 1's and -1's in a class line");
-      }
-    } else if (valueClass == -1.0f) {
-      trueClasses.push_back(-1);
-      hasTrueClassesVect.push_back(false);
-      if (!classFound) {
-        classFound = true;
-      } else {
-        throw FileContentError("Error : in file " + std::string(dataFile) + ", there is multiple 1's and -1's in a class line");
+        throw FileContentError("Error : in file " + std::string(dataFile) + ", there is multiple 1's in a class line");
       }
     } else if (valueClass != 0.0f) {
-      throw FileContentError("Error : in file " + std::string(dataFile) + ", true classes need to be 0, 1, 0.0, 1.0 or -1 if we haven't the class");
+      throw FileContentError("Error : in file " + std::string(dataFile) + ", true classes need to be 0, 1, 0.0 or 1.0");
     }
     nbClasses++;
   }
   if (!classFound) {
-    throw FileContentError("Error : in file " + std::string(dataFile) + ", a 1 or 1.0 is required to express the true class, or -1 if we haven't the class");
-  }
-  if ((trueClasses.back() == -1) && (nbClasses != 1)) {
-    throw FileContentError("Error : in file " + std::string(dataFile) + ", -1 is given for class but other numbers are given, write only -1 if we don't know the class");
+    throw FileContentError("Error : in file " + std::string(dataFile) + ", a 1 or 1.0 is required to express the true class");
   }
 }
 
@@ -280,14 +263,6 @@ vector<int> *DataSetFid::getTrueClasses() {
 
 bool DataSetFid::hasClasses() const {
   return hasClassesAttr;
-}
-
-vector<bool> *DataSetFid::gethasTrueClassesVect() {
-  if (hasClassesAttr) {
-    return &hasTrueClassesVect;
-  } else {
-    throw CommandArgumentException("Error : dataClass file not specified for this dataset");
-  }
 }
 
 vector<int> *DataSetFid::getPredictions() {
