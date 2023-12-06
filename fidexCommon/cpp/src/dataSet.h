@@ -12,25 +12,32 @@
 
 class DataSetFid {
 
+private:
   std::vector<std::vector<double>> datas;
   std::vector<int> trueClasses;
-  std::vector<bool> hasTrueClasses; // Maybe sometimes we have a file with samples with classes and samples without classes
+  std::vector<bool> hasTrueClassesVect; // Maybe sometimes we have a file with samples with classes and samples without classes
   std::vector<int> predictions;
   std::vector<std::vector<double>> outputValuesPredictions;
   std::vector<std::vector<double>> weights;
   bool hasDatas = false;
-  bool hasClasses = false;
+  bool hasClassesAttr = false;
   bool hasWeights = false;
   bool everyPredIsBool = true; // If every prediction is boolean, then there is no interest in computing confidence, it will always be 1
+
+  void getDataLine(const std::string &line, const char *dataFile);
+  void getPredLine(const std::string &line, std::vector<double> &valuesPred, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *dataFile);
+  void getClassLine(const std::string &line, const char *dataFile, int &nbClasses);
 
 public:
   DataSetFid();
   DataSetFid(const char *dataFile, const char *predFile, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *trueClassFile = nullptr);
+  DataSetFid(const char *dataFile, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass); // dataFile with data, predictions and maybe classes
   explicit DataSetFid(const char *weightFile);
 
   std::vector<std::vector<double>> *getDatas();
   std::vector<int> *getTrueClasses();
-  std::vector<bool> *getHasTrueClasses();
+  bool hasClasses() const;
+  std::vector<bool> *gethasTrueClassesVect();
   std::vector<int> *getPredictions();
   std::vector<std::vector<double>> *getOutputValuesPredictions();
   bool hasConfidence() const;
