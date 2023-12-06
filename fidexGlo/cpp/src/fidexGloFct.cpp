@@ -471,86 +471,18 @@ int fidexGlo(const string &command) {
     vector<vector<double>> testSamplesOutputValuesPredictions;
 
     bool hasConfidence = false;
+    std::unique_ptr<DataSetFid> testDatas;
     if (!testSamplesPredFileInit) { // If we have only one test data file with data and prediction
-
-      vector<double> testSampleValues;
-      vector<double> testSampleOutputValuesPredictions;
-      int testSamplePred;
-      fstream testData;
-      testData.open(testSamplesDataFile, ios::in); // Read data file
-      if (testData.fail()) {
-        throw FileNotFoundError("Error : file " + std::string(testSamplesDataFile) + " not found");
+      testDatas.reset(new DataSetFid(testSamplesDataFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
+      testSamplesValues = (*testDatas->getDatas());
+      testSamplesPreds = (*testDatas->getPredictions());
+      if (testDatas->hasConfidence()) {
+        hasConfidence = true;
       }
-      string line;
-      bool firstLine = true;
-      while (!testData.eof()) {
-        getline(testData, line);
-        if (!checkStringEmpty(line)) {
-          std::stringstream myLine(line);
-          double value;
-          testSampleValues.clear();
-          while (myLine >> value) {
-            testSampleValues.push_back(value);
-          }
-          testSamplesValues.push_back(testSampleValues);
-        } else if (firstLine) {
-          throw FileFormatError("Error : in file " + std::string(testSamplesDataFile) + ", first line is empty");
-        } else {
-          while (!testData.eof()) {
-            getline(testData, line);
-            if (!checkStringEmpty(line)) {
-              throw FileFormatError("Error : file " + std::string(testSamplesDataFile) + " is not on good format, there is more than one empty line between 2 samples");
-            }
-          }
-          break; // If there is just an empty line at the end of the file
-        }
-        if (testData.eof()) {
-          throw FileContentError("Error : file " + std::string(testSamplesDataFile) + " has not enough prediction data");
-        }
-        getline(testData, line);
-        if (!checkStringEmpty(line)) {
-          std::stringstream myLine(line);
-          double value;
-          testSampleOutputValuesPredictions.clear();
-          while (myLine >> value) {
-            testSampleOutputValuesPredictions.push_back(value);
-            if (value != 1 && value != 0) {
-              hasConfidence = true;
-            }
-          }
-          testSamplesOutputValuesPredictions.push_back(testSampleOutputValuesPredictions);
+      testSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
 
-          if (indexPositiveClass >= static_cast<int>(testSampleOutputValuesPredictions.size())) {
-            throw CommandArgumentException("Error : parameter positive_index(-x) has to be a positive integer smaller than " + to_string(testSampleOutputValuesPredictions.size()));
-          }
-
-          if (hasDecisionThreshold && testSampleOutputValuesPredictions[indexPositiveClass] >= decisionThreshold) {
-            testSamplePred = indexPositiveClass;
-          } else {
-            testSamplePred = static_cast<int>(std::max_element(testSampleOutputValuesPredictions.begin(), testSampleOutputValuesPredictions.end()) - testSampleOutputValuesPredictions.begin());
-          }
-          testSamplesPreds.push_back(testSamplePred);
-
-        } else {
-          while (!testData.eof()) {
-            getline(testData, line);
-            if (!checkStringEmpty(line)) {
-              throw FileFormatError("Error : file " + std::string(testSamplesDataFile) + " is not on good format, there is empty lines inbetween data");
-            }
-          }
-          throw FileContentError("Error : file " + std::string(testSamplesDataFile) + " has not enough prediction data");
-        }
-        if (!testData.eof()) {
-          getline(testData, line);
-          if (!checkStringEmpty(line)) {
-            throw FileFormatError("Error : in file " + std::string(testSamplesDataFile) + ", you need to have empty lines between samples. You have chosen to give data and predictions in one file. If you want to separate them, use -p");
-          }
-        }
-        firstLine = false;
-      }
-      testData.close(); // close data file
-    } else {            // We have a different file for test predictions
-      std::unique_ptr<DataSetFid> testDatas(new DataSetFid(testSamplesDataFile, testSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
+    } else { // We have a different file for test predictions
+      testDatas.reset(new DataSetFid(testSamplesDataFile, testSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
       testSamplesValues = (*testDatas->getDatas());
       testSamplesPreds = (*testDatas->getPredictions());
       if (testDatas->hasConfidence()) {
