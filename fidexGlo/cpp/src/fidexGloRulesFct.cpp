@@ -422,7 +422,7 @@ int fidexGloRules(const string &command) {
     } else {
       hasConfidence = false;
     }
-    vector<int> *trainTrueClass = trainDatas->getTrueClasses();
+    vector<int> *trainTrueClass = trainDatas->getClasses();
 
     const auto nbDatas = static_cast<int>((*trainData).size());
     const auto nbAttributs = static_cast<int>((*trainData)[0].size());

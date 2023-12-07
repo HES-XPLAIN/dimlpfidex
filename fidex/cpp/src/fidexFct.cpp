@@ -481,7 +481,7 @@ int fidex(const string &command) {
     vector<int> *trainPreds = trainDatas->getPredictions();
     bool hasConfidence = trainDatas->hasConfidence();
     vector<vector<double>> *trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
-    vector<int> *trainTrueClass = trainDatas->getTrueClasses();
+    vector<int> *trainTrueClass = trainDatas->getClasses();
 
     if (minNbCover > ((*trainData).size())) {
       throw CommandArgumentException("Error : invalide type for parameter -c, strictly positive integer smaller or equal than the number of data sample requested");
@@ -500,7 +500,7 @@ int fidex(const string &command) {
       mainSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
       hasTrueClasses = testDatas->hasClasses();
       if (hasTrueClasses) {
-        mainSamplesTrueClass = (*testDatas->getTrueClasses());
+        mainSamplesTrueClass = (*testDatas->getClasses());
       }
 
     } else { // We have different files for test predictions and test classes
@@ -522,7 +522,7 @@ int fidex(const string &command) {
       // Classes :
       if (mainSamplesClassFileInit) {
         hasTrueClasses = true;
-        mainSamplesTrueClass = (*testDatas->getTrueClasses());
+        mainSamplesTrueClass = (*testDatas->getClasses());
       } else {
         hasTrueClasses = false;
       }
