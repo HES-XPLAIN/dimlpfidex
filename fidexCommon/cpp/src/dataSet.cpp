@@ -1,6 +1,9 @@
 #include "dataSet.h"
 using namespace std;
 
+/*
+Creates dataset using 3 separate datafiles : data, predictions and classes(not mendatory)
+*/
 DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *predFile, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *trueClassFile) : datasetName(name) {
 
   // Get data
@@ -15,7 +18,9 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *pre
   checkDatas();
 }
 
-// One dataFile with data, predictions and (maybe) classes
+/*
+Creates dataset using 1 datafiles containing datas, predictions and classes(not mendatory)
+*/
 DataSetFid::DataSetFid(const string &name, const char *dataFile, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass) : datasetName(name), hasDatas(true), hasPreds(true) {
   fstream fileDta;
   fileDta.open(dataFile, ios::in); // Read data file
@@ -86,6 +91,9 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, bool hasDecisio
   checkDatas();
 }
 
+/*
+Creates dataset using 1 a weights file
+*/
 DataSetFid::DataSetFid(const std::string &name, const char *weightFile) : datasetName(name), hasWeights(true) {
 
   // Get weights
@@ -113,6 +121,9 @@ DataSetFid::DataSetFid(const std::string &name, const char *weightFile) : datase
   fileWts.close(); // close file
 }
 
+/*
+Add datas from dataFile in the dataset
+*/
 void DataSetFid::setDataFromFile(const char *dataFile) {
   hasDatas = true;
   string line;
@@ -135,6 +146,9 @@ void DataSetFid::setDataFromFile(const char *dataFile) {
   checkDatas();
 }
 
+/*
+Add predictions from predFile in the dataset
+*/
 void DataSetFid::setPredFromFile(bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *predFile) {
   hasPreds = true;
   string line;
@@ -157,6 +171,9 @@ void DataSetFid::setPredFromFile(bool hasDecisionThreshold, double decisionThres
   checkDatas();
 }
 
+/*
+Add classes from classFile in the dataset
+*/
 void DataSetFid::setClassFromFile(const char *classFile) {
   hasClasses = true;
   string line;
@@ -179,6 +196,9 @@ void DataSetFid::setClassFromFile(const char *classFile) {
   checkDatas();
 }
 
+/*
+Read data line from dataFile and save it in datas
+*/
 void DataSetFid::getDataLine(const string &line, const char *dataFile) {
   std::stringstream myLine(line);
   double valueData;
@@ -204,7 +224,10 @@ void DataSetFid::getDataLine(const string &line, const char *dataFile) {
   datas.push_back(valuesData);
 }
 
-void DataSetFid::getPredLine(const string &line, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *dataFile) {
+/*
+Read prediction line from predFile and save it in predictions
+*/
+void DataSetFid::getPredLine(const string &line, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *predFile) {
 
   std::stringstream myLine(line);
   double valuePred;
@@ -215,7 +238,7 @@ void DataSetFid::getPredLine(const string &line, bool hasDecisionThreshold, doub
     }
     myLine >> valuePred;
     if (myLine.fail()) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", a number is required");
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(predFile) + ", a number is required");
     }
     if (valuePred != 1 && valuePred != 0) {
       everyPredIsBool = false;
@@ -228,7 +251,7 @@ void DataSetFid::getPredLine(const string &line, bool hasDecisionThreshold, doub
   }
 
   if (static_cast<int>(valuesPred.size()) != nbPreds) {
-    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", there are not the same number of predictions for each sample.");
+    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(predFile) + ", there are not the same number of predictions for each sample.");
   }
 
   if (hasDecisionThreshold && indexPositiveClass >= nbPreds) {
@@ -242,7 +265,10 @@ void DataSetFid::getPredLine(const string &line, bool hasDecisionThreshold, doub
   }
 }
 
-void DataSetFid::getClassLine(const string &line, const char *dataFile) {
+/*
+Read class line from classFile and save it in trueClasses
+*/
+void DataSetFid::getClassLine(const string &line, const char *classFile) {
   std::stringstream myLine(line);
   float valueClass;
   int nbClassesLine = 0;
@@ -253,31 +279,34 @@ void DataSetFid::getClassLine(const string &line, const char *dataFile) {
     }
     myLine >> valueClass;
     if (myLine.fail()) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", true classes need to be 0, 1, 0.0 or 1.0");
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", true classes need to be 0, 1, 0.0 or 1.0");
     }
     if (valueClass == 1.0f) {
       trueClasses.push_back(nbClassesLine);
       if (!classFound) {
         classFound = true;
       } else {
-        throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", there is multiple 1's in a class line");
+        throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", there is multiple 1's in a class line");
       }
     } else if (valueClass != 0.0f) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", true classes need to be 0, 1, 0.0 or 1.0");
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", true classes need to be 0, 1, 0.0 or 1.0");
     }
     nbClassesLine++;
   }
   if (!classFound) {
-    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", a 1 or 1.0 is required to express the true class");
+    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", a 1 or 1.0 is required to express the true class");
   }
   if (nbClasses == -1) {
     nbClasses = nbClassesLine;
   }
   if (nbClasses != nbClassesLine) {
-    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", there are not the same number of classes for each sample.");
+    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", there are not the same number of classes for each sample.");
   }
 }
 
+/*
+Return datas
+*/
 vector<vector<double>> *DataSetFid::getDatas() {
   if (hasDatas) {
     return &datas;
@@ -286,6 +315,9 @@ vector<vector<double>> *DataSetFid::getDatas() {
   }
 }
 
+/*
+Return classes
+*/
 vector<int> *DataSetFid::getClasses() {
   if (hasClasses) {
     return &trueClasses;
@@ -294,10 +326,16 @@ vector<int> *DataSetFid::getClasses() {
   }
 }
 
+/*
+Return whether the dataset contains classes
+*/
 bool DataSetFid::getHasClasses() const {
   return hasClasses;
 }
 
+/*
+Return predictions
+*/
 vector<int> *DataSetFid::getPredictions() {
   if (hasPreds) {
     return &predictions;
@@ -306,6 +344,9 @@ vector<int> *DataSetFid::getPredictions() {
   }
 }
 
+/*
+Return prediction output values
+*/
 vector<vector<double>> *DataSetFid::getOutputValuesPredictions() {
   if (hasPreds) {
     return &outputValuesPredictions;
@@ -314,6 +355,9 @@ vector<vector<double>> *DataSetFid::getOutputValuesPredictions() {
   }
 }
 
+/*
+Return whether the dataset contains confidence scores
+*/
 bool DataSetFid::hasConfidence() const {
   if (everyPredIsBool) {
     return false;
@@ -322,6 +366,9 @@ bool DataSetFid::hasConfidence() const {
   }
 }
 
+/*
+Return the number of classes in the dataset
+*/
 int DataSetFid::getNbClasses() const {
   if (hasClasses) {
     return nbClasses;
@@ -330,6 +377,9 @@ int DataSetFid::getNbClasses() const {
   }
 }
 
+/*
+Return the number of attributes in the dataset
+*/
 int DataSetFid::getNbAttributes() const {
   if (hasDatas) {
     return nbAttributes;
@@ -338,6 +388,9 @@ int DataSetFid::getNbAttributes() const {
   }
 }
 
+/*
+Return the number of samples in the dataset
+*/
 int DataSetFid::getNbSamples() const {
   if (hasDatas) {
     return nbSamples;
@@ -346,6 +399,9 @@ int DataSetFid::getNbSamples() const {
   }
 }
 
+/*
+Return weights
+*/
 vector<vector<double>> DataSetFid::getWeights() const {
   if (hasWeights) {
     return weights;
@@ -354,6 +410,9 @@ vector<vector<double>> DataSetFid::getWeights() const {
   }
 }
 
+/*
+Return biais of first layer
+*/
 vector<double> DataSetFid::getInBiais() const {
   if (hasWeights) {
     return weights[0];
@@ -362,6 +421,9 @@ vector<double> DataSetFid::getInBiais() const {
   }
 }
 
+/*
+Return weights of first layer
+*/
 vector<double> DataSetFid::getInWeights() const {
   if (hasWeights) {
     return weights[1];
@@ -370,7 +432,9 @@ vector<double> DataSetFid::getInWeights() const {
   }
 }
 
-// Check if there are errors in dataSet
+/*
+Check for errors in the dataset
+*/
 void DataSetFid::checkDatas() const {
   if (hasDatas && nbSamples < 1) {
     throw FileContentError("Error in dataset " + datasetName + " : There is no data samples.");
@@ -406,6 +470,9 @@ void DataSetFid::checkDatas() const {
   }
 }
 
+/*
+Add attributes from attributeFile in the dataset
+*/
 void DataSetFid::setAttribute(const char *attributeFile) {
   hasAttributes = true;
   // Get attributes
@@ -461,6 +528,9 @@ void DataSetFid::setAttribute(const char *attributeFile) {
   fileAttr.close(); // close file
 }
 
+/*
+Return attribute names
+*/
 vector<string> *DataSetFid::getAttributeNames() {
   if (hasAttributes) {
     return &attributeNames;
@@ -469,6 +539,9 @@ vector<string> *DataSetFid::getAttributeNames() {
   }
 }
 
+/*
+Return class names
+*/
 vector<string> *DataSetFid::getClassNames() {
   if (hasClassNames) {
     return &classNames;
@@ -477,6 +550,9 @@ vector<string> *DataSetFid::getClassNames() {
   }
 }
 
+/*
+Return whether the dataset contains classNames
+*/
 bool DataSetFid::getHasClassNames() const {
   return hasClassNames;
 }
