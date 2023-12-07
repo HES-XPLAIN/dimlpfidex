@@ -302,7 +302,7 @@ int fidexGloStats(const string &command) {
 
     // Get test data
 
-    std::unique_ptr<DataSetFid> testDatas(new DataSetFid(testDataFile, testDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, testDataFileTrueClass));
+    std::unique_ptr<DataSetFid> testDatas(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, testDataFileTrueClass));
 
     vector<vector<double>> *testData = testDatas->getDatas();
     vector<int> *testPreds = testDatas->getPredictions();
@@ -316,25 +316,17 @@ int fidexGloStats(const string &command) {
     } else {
       hasConfidence = false;
     }
-    const auto nbClass = testDatas->getNbClasses();
-    const auto nbTestData = static_cast<int>((*testData).size());
-    if ((*testPreds).size() != nbTestData || (*testTrueClasses).size() != nbTestData) {
-      throw FileFormatError("All the test files need to have the same amount of datas");
-    }
-    if (hasIndexPositiveClass && indexPositiveClass >= nbClass) {
-      throw CommandArgumentException("Error : The index of positive class cannot be greater or equal to the number of classes (" + to_string(nbClass) + ")");
-    }
-    auto nbTestAttributs = static_cast<int>((*testData)[0].size());
+    int nbTestData = testDatas->getNbSamples();
     // Get attributes
     vector<string> attributeNames;
     vector<string> classNames;
     bool hasClassNames = false;
     if (attributFileInit) {
-      std::unique_ptr<Attribute> attributesData(new Attribute(attributFile, static_cast<int>(nbTestAttributs), static_cast<int>(nbClass)));
-      attributeNames = (*attributesData->getAttributeNames());
-      classNames = (*attributesData->getClassNames());
-      if (!classNames.empty()) {
-        hasClassNames = true;
+      testDatas->setAttribute(attributFile);
+      attributeNames = (*testDatas->getAttributeNames());
+      hasClassNames = testDatas->getHasClassNames();
+      if (hasClassNames) {
+        classNames = (*testDatas->getClassNames());
       }
     }
     // Get rules

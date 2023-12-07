@@ -475,7 +475,7 @@ int fidexGlo(const string &command) {
     bool hasConfidence = false;
     std::unique_ptr<DataSetFid> testDatas;
     if (!testSamplesPredFileInit) { // If we have only one test data file with data and prediction
-      testDatas.reset(new DataSetFid(testSamplesDataFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
+      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
       testSamplesValues = (*testDatas->getDatas());
       testSamplesPreds = (*testDatas->getPredictions());
       if (testDatas->hasConfidence()) {
@@ -484,50 +484,28 @@ int fidexGlo(const string &command) {
       testSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
 
     } else { // We have a different file for test predictions
-      testDatas.reset(new DataSetFid(testSamplesDataFile, testSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
+      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, testSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
       testSamplesValues = (*testDatas->getDatas());
       testSamplesPreds = (*testDatas->getPredictions());
       if (testDatas->hasConfidence()) {
         hasConfidence = true;
       }
       testSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
-
-      // Check if there is good number of lines
-      if (testSamplesPreds.size() != testSamplesValues.size()) {
-        throw FileContentError("Error : in file " + std::string(testSamplesPredFile) + ", you need to specify as many predictions as there are datas");
-      }
     }
 
-    size_t nbSamples = testSamplesValues.size();
-    size_t nbTestAttributs = testSamplesValues[0].size();
-    size_t nbClass = testSamplesOutputValuesPredictions[0].size();
-
-    if (indexPositiveClass >= static_cast<int>(nbClass)) {
-      throw CommandArgumentException("Error : parameter positive_index(-x) has to be a positive integer smaller than " + to_string(nbClass));
-    }
-
-    for (int spl = 0; spl < nbSamples; spl++) {
-      if (testSamplesValues[spl].size() != nbTestAttributs) {
-        throw FileContentError("Error : in file " + std::string(testSamplesDataFile) + ", all test datas need to have the same number of variables");
-      }
-    }
-
-    for (int spl = 0; spl < nbSamples; spl++) {
-      if (testSamplesOutputValuesPredictions[spl].size() != nbClass) {
-        throw FileContentError("Error : in file " + std::string(testSamplesDataFile) + ", all test datas need to have the same number of prediction values");
-      }
-    }
+    int nbSamples = testDatas->getNbSamples();
+    int nbClass = testDatas->getNbClasses();
 
     // Get attributes
     vector<string> attributeNames;
     vector<string> classNames;
     bool hasClassNames = false;
     if (attributFileInit) {
-      std::unique_ptr<Attribute> attributesData(new Attribute(attributFile, static_cast<int>(nbTestAttributs), static_cast<int>(nbClass)));
-      attributeNames = (*attributesData->getAttributeNames());
-      classNames = (*attributesData->getClassNames());
-      if (!classNames.empty()) {
-        hasClassNames = true;
+      testDatas->setAttribute(attributFile);
+      attributeNames = (*testDatas->getAttributeNames());
+      hasClassNames = testDatas->getHasClassNames();
+      if (hasClassNames) {
+        classNames = (*testDatas->getClassNames());
       }
     }
 
@@ -556,7 +534,7 @@ int fidexGlo(const string &command) {
       }
 
       // Get test class data :
-      (testDatas->getClassFromFile(testTrueClassFile));
+      (testDatas->setClassFromFile(testTrueClassFile));
       testSamplesClasses = (*testDatas->getClasses());
 
       fidexCommand += "fidex -T " + trainDataFile + " -P " + trainDataFilePred + " -C " + trainDataFileTrueClass;

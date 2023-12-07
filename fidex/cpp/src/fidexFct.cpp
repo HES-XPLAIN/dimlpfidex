@@ -475,7 +475,7 @@ int fidex(const string &command) {
 
     impt1 = clock();
 
-    std::unique_ptr<DataSetFid> trainDatas(new DataSetFid(trainDataFile, trainDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
+    std::unique_ptr<DataSetFid> trainDatas(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
 
     vector<vector<double>> *trainData = trainDatas->getDatas();
     vector<int> *trainPreds = trainDatas->getPredictions();
@@ -494,11 +494,11 @@ int fidex(const string &command) {
     vector<vector<double>> mainSamplesOutputValuesPredictions;
     std::unique_ptr<DataSetFid> testDatas;
     if (!mainSamplesPredFileInit) { // If we have only one test data file with data, pred and class
-      testDatas.reset(new DataSetFid(mainSamplesDataFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
+      testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
       mainSamplesValues = (*testDatas->getDatas());
       mainSamplesPreds = (*testDatas->getPredictions());
       mainSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
-      hasTrueClasses = testDatas->hasClasses();
+      hasTrueClasses = testDatas->getHasClasses();
       if (hasTrueClasses) {
         mainSamplesTrueClass = (*testDatas->getClasses());
       }
@@ -506,18 +506,13 @@ int fidex(const string &command) {
     } else { // We have different files for test predictions and test classes
 
       if (mainSamplesClassFileInit) {
-        testDatas.reset(new DataSetFid(mainSamplesDataFile, mainSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass, mainSamplesClassFile));
+        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass, mainSamplesClassFile));
       } else {
-        testDatas.reset(new DataSetFid(mainSamplesDataFile, mainSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
+        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
       }
       mainSamplesValues = (*testDatas->getDatas());
       mainSamplesPreds = (*testDatas->getPredictions());
       mainSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
-
-      // Check if there is good number of lines
-      if (mainSamplesPreds.size() != mainSamplesValues.size()) {
-        throw FileContentError("Error : in file " + std::string(mainSamplesPredFile) + ", you need to specify as many predictions as there are datas");
-      }
 
       // Classes :
       if (mainSamplesClassFileInit) {
@@ -528,38 +523,19 @@ int fidex(const string &command) {
       }
     }
 
-    const size_t nbSamples = mainSamplesValues.size();
-    const size_t nbAttributs = mainSamplesValues[0].size();
-    const size_t nbClass = mainSamplesOutputValuesPredictions[0].size();
-
-    if (indexPositiveClass >= static_cast<int>(nbClass)) {
-      throw CommandArgumentException("Error : parameter positive_index(-x) has to be a positive integer smaller than " + to_string(nbClass));
-    }
-
-    for (int spl = 0; spl < nbSamples; spl++) {
-      if (mainSamplesValues[spl].size() != nbAttributs) {
-        throw FileContentError("Error : in file " + std::string(mainSamplesDataFile) + ", all test datas need to have the same number of variables");
-      }
-    }
-
-    for (int spl = 0; spl < nbSamples; spl++) {
-      if (mainSamplesOutputValuesPredictions[spl].size() != nbClass) {
-        throw FileContentError("Error : in file " + std::string(mainSamplesDataFile) + ", all test datas need to have the same number of prediction values");
-      }
-    }
+    int nbSamples = testDatas->getNbSamples();
+    int nbAttributs = testDatas->getNbAttributes();
 
     // Get attributes
     vector<string> attributeNames;
     vector<string> classNames;
     bool hasClassNames = false;
     if (attributFileInit) {
-      std::unique_ptr<Attribute> attributesData(new Attribute(attributFile, static_cast<int>(nbAttributs), static_cast<int>(nbClass)));
-      attributeNames = (*attributesData->getAttributeNames());
-      classNames = (*attributesData->getClassNames());
-      if (!classNames.empty()) {
-        hasClassNames = true;
-      } else {
-        std::cout << "Pas de className" << std::endl;
+      testDatas->setAttribute(attributFile);
+      attributeNames = (*testDatas->getAttributeNames());
+      hasClassNames = testDatas->getHasClassNames();
+      if (hasClassNames) {
+        classNames = (*testDatas->getClassNames());
       }
     }
 
