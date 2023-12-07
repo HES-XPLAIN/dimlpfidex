@@ -70,7 +70,7 @@ void launchFidex(std::vector<std::string> &lines, const std::string &fidexComman
   ruleF.close();
 }
 
-void outputDataSample(const std::string &outFile, const std::vector<double> &data, const std::vector<double> &prediction, const std::string &classe) {
+void outputDataSample(const std::string &outFile, const std::vector<double> &data, const std::vector<double> &prediction, int classe, int nbClass) {
   ofstream outputFile(outFile);
   if (outputFile.is_open()) {
     for (const auto &d : data) {
@@ -81,7 +81,9 @@ void outputDataSample(const std::string &outFile, const std::vector<double> &dat
       outputFile << p << " ";
     }
     outputFile << std::endl;
-    outputFile << classe;
+    for (int i = 0; i < nbClass; i++) {
+      outputFile << (i == classe ? "1 " : "0 ");
+    }
     outputFile.close();
   } else {
     throw CannotOpenFileError("Error : Couldn't open dataSample file " + std::string(outFile) + ".");
@@ -531,7 +533,7 @@ int fidexGlo(const string &command) {
 
     // If we use Fidex, we generate fidex command
     std::string fidexCommand = "";
-    std::vector<std::string> testSamplesClasses;
+    std::vector<int> testSamplesClasses;
     std::string fidexRuleFile = "fidexRule.txt";
     if (withFidex) {
       // Check if we have the obligatory parameters
@@ -554,36 +556,8 @@ int fidexGlo(const string &command) {
       }
 
       // Get test class data :
-      fstream fileCl;
-
-      fileCl.open(testTrueClassFile, ios::in); // read true dataclass file
-      if (fileCl.fail()) {
-        throw FileNotFoundError("Error : file " + std::string(testTrueClassFile) + " not found");
-      }
-      std::string line;
-      while (!fileCl.eof()) {
-        getline(fileCl, line);
-        if (!checkStringEmpty(line)) {
-          std::stringstream myLine(line);
-          std::string value;
-          bool hasOne = false;
-          while (myLine >> value) {
-            if (value == "1" || value == "1.0") {
-              if (hasOne == true) {
-                throw FileContentError("Error in file " + std::string(testTrueClassFile) + ", there are two ones for a single sample.");
-              }
-              hasOne = true;
-            } else if (value != "0" && value != "0.0") {
-              throw FileFormatError("Error in file " + std::string(testTrueClassFile) + ", in each row you must put only ones (for the class index) and zeros with spaces inbetween");
-            }
-          }
-          if (hasOne == false) {
-            throw FileContentError("Error in file " + std::string(testTrueClassFile) + ", there are only zeros in row, a one is needed.");
-          }
-          testSamplesClasses.push_back(line);
-        }
-      }
-      fileCl.close(); // close file
+      (testDatas->getClassFromFile(testTrueClassFile));
+      testSamplesClasses = (*testDatas->getClasses());
 
       fidexCommand += "fidex -T " + trainDataFile + " -P " + trainDataFilePred + " -C " + trainDataFileTrueClass;
       if (inputRulesFileInit) {
@@ -701,7 +675,7 @@ int fidexGlo(const string &command) {
         lines.emplace_back("We choose the model prediction.");
         lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
         if (withFidex) {
-          outputDataSample(root + testSampleDataFile, testSamplesValues[currentSample], testSamplesOutputValuesPredictions[currentSample], testSamplesClasses[currentSample]);
+          outputDataSample(root + testSampleDataFile, testSamplesValues[currentSample], testSamplesOutputValuesPredictions[currentSample], testSamplesClasses[currentSample], nbClass);
           fidexCommand += " -S " + testSampleDataFile;
           launchingFidex = true;
           nb_fidex += 1;
@@ -753,7 +727,7 @@ int fidexGlo(const string &command) {
             lines.emplace_back("We choose the model prediction.");
             lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
             if (withFidex) {
-              outputDataSample(testSampleDataFile, testSamplesValues[currentSample], testSamplesOutputValuesPredictions[currentSample], testSamplesClasses[currentSample]);
+              outputDataSample(testSampleDataFile, testSamplesValues[currentSample], testSamplesOutputValuesPredictions[currentSample], testSamplesClasses[currentSample], nbClass);
               fidexCommand += " -S " + testSampleDataFile;
               launchingFidex = true;
               nb_fidex += 1;
@@ -845,4 +819,4 @@ int fidexGlo(const string &command) {
   return 0;
 }
 
-// Exemple pour lancer le code : ./fidexGlo -S testSampleData -R globalRulesDatanorm.txt -O explanation.txt -F fidexGlo/datafiles
+// Exemple pour lancer le code : ./fidexGlo -S datanormTest -p predTest.out -R globalRulesDatanorm.txt -O explanation.txt -F ../fidexGlo/datafiles -w true -T datanormTrain -P predTrain.out -C dataclass2Train -c dataclass2Test -W weights.wts

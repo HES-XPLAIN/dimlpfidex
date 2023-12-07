@@ -2,67 +2,15 @@
 using namespace std;
 
 DataSetFid::DataSetFid(const char *dataFile, const char *predFile, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *trueClassFile) : hasDatas(true) {
-  string line;
 
   // Get data
-
-  fstream fileDta;
-
-  fileDta.open(dataFile, ios::in); // Read data file
-  if (fileDta.fail()) {
-    throw FileNotFoundError("Error : file " + std::string(dataFile) + " not found");
-  }
-
-  while (!fileDta.eof()) {
-    getline(fileDta, line);
-    if (!checkStringEmpty(line)) {
-      getDataLine(line, dataFile);
-    }
-  }
-
-  fileDta.close(); // close data file
-
+  getDataFromFile(dataFile);
   // Get data class
-
   if (trueClassFile != nullptr) {
-
-    hasClassesAttr = true;
-    fstream fileCl;
-
-    fileCl.open(trueClassFile, ios::in); // read true dataclass file
-    if (fileCl.fail()) {
-      throw FileNotFoundError("Error : file " + std::string(trueClassFile) + " not found");
-    }
-
-    while (!fileCl.eof()) {
-      int nbClasses = 0;
-      getline(fileCl, line);
-      if (!checkStringEmpty(line)) {
-        getClassLine(line, dataFile, nbClasses);
-      }
-    }
-
-    fileCl.close(); // close file
+    getClassFromFile(trueClassFile);
   }
-
   // Get predictions
-
-  fstream filePrd;
-
-  filePrd.open(predFile, ios::in); // read predictions data file
-  if (filePrd.fail()) {
-    throw FileNotFoundError("Error : file " + std::string(predFile) + " not found");
-  }
-
-  while (!filePrd.eof()) {
-    getline(filePrd, line);
-    if (!checkStringEmpty(line)) {
-      vector<double> valuesPred;
-      getPredLine(line, valuesPred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, dataFile);
-    }
-  }
-
-  filePrd.close(); // close file
+  getPredFromFile(hasDecisionThreshold, decisionThreshold, indexPositiveClass, predFile);
 }
 
 // One dataFile with data, predictions and (maybe) classes
@@ -167,6 +115,68 @@ DataSetFid::DataSetFid(const char *weightFile) : hasWeights(true) {
   fileWts.close(); // close file
 }
 
+void DataSetFid::getDataFromFile(const char *dataFile) {
+
+  string line;
+  fstream fileDta;
+
+  fileDta.open(dataFile, ios::in); // Read data file
+  if (fileDta.fail()) {
+    throw FileNotFoundError("Error : file " + std::string(dataFile) + " not found");
+  }
+
+  while (!fileDta.eof()) {
+    getline(fileDta, line);
+    if (!checkStringEmpty(line)) {
+      getDataLine(line, dataFile);
+    }
+  }
+
+  fileDta.close(); // close data file
+}
+
+void DataSetFid::getPredFromFile(bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *predFile) {
+
+  string line;
+  fstream filePrd;
+
+  filePrd.open(predFile, ios::in); // read predictions data file
+  if (filePrd.fail()) {
+    throw FileNotFoundError("Error : file " + std::string(predFile) + " not found");
+  }
+
+  while (!filePrd.eof()) {
+    getline(filePrd, line);
+    if (!checkStringEmpty(line)) {
+      vector<double> valuesPred;
+      getPredLine(line, valuesPred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, predFile);
+    }
+  }
+
+  filePrd.close(); // close file
+}
+
+void DataSetFid::getClassFromFile(const char *classFile) {
+  string line;
+  hasClassesAttr = true;
+  fstream fileCl;
+
+  fileCl.open(classFile, ios::in); // read true dataclass file
+  if (fileCl.fail()) {
+    throw FileNotFoundError("Error : file " + std::string(classFile) + " not found");
+  }
+
+  while (!fileCl.eof()) {
+    int nbClasses = 0;
+    getline(fileCl, line);
+    if (!checkStringEmpty(line)) {
+      getClassLine(line, classFile, nbClasses);
+    }
+  }
+
+  fileCl.close(); // close file
+}
+
 void DataSetFid::getDataLine(const string &line, const char *dataFile) {
   std::stringstream myLine(line);
   double valueData;
@@ -253,7 +263,7 @@ vector<vector<double>> *DataSetFid::getDatas() {
   }
 }
 
-vector<int> *DataSetFid::getTrueClasses() {
+vector<int> *DataSetFid::getClasses() {
   if (hasClassesAttr) {
     return &trueClasses;
   } else {

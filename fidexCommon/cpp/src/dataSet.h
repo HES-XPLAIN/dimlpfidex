@@ -33,8 +33,12 @@ public:
   DataSetFid(const char *dataFile, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass); // dataFile with data, predictions and maybe classes
   explicit DataSetFid(const char *weightFile);
 
+  void getDataFromFile(const char *dataFile);
+  void getPredFromFile(bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *predFile);
+  void getClassFromFile(const char *classFile);
+
   std::vector<std::vector<double>> *getDatas();
-  std::vector<int> *getTrueClasses();
+  std::vector<int> *getClasses();
   bool hasClasses() const;
   std::vector<int> *getPredictions();
   std::vector<std::vector<double>> *getOutputValuesPredictions();

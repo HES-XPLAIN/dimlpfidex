@@ -306,7 +306,7 @@ int fidexGloStats(const string &command) {
 
     vector<vector<double>> *testData = testDatas->getDatas();
     vector<int> *testPreds = testDatas->getPredictions();
-    vector<int> *testTrueClasses = testDatas->getTrueClasses();
+    vector<int> *testTrueClasses = testDatas->getClasses();
 
     vector<vector<double>> *testOutputValuesPredictions = nullptr;
     bool hasConfidence;
