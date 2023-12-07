@@ -409,7 +409,7 @@ int fidexGloRules(const string &command) {
 
     std::cout << "Import files..." << std::endl;
 
-    std::unique_ptr<DataSetFid> trainDatas(new DataSetFid(trainDataFile, trainDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
+    std::unique_ptr<DataSetFid> trainDatas(new DataSetFid("trainDatas from FidexGloRules", trainDataFile, trainDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
 
     vector<vector<double>> *trainData = trainDatas->getDatas();
     vector<int> *trainPreds = trainDatas->getPredictions();
@@ -424,17 +424,8 @@ int fidexGloRules(const string &command) {
     }
     vector<int> *trainTrueClass = trainDatas->getClasses();
 
-    const auto nbDatas = static_cast<int>((*trainData).size());
-    const auto nbAttributs = static_cast<int>((*trainData)[0].size());
-    const auto nbClass = trainDatas->getNbClasses();
-
-    if (indexPositiveClass >= nbClass) {
-      throw CommandArgumentException("Error : parameter positive_index(-x) has to be a positive integer smaller than " + to_string(nbClass));
-    }
-
-    if ((*trainPreds).size() != nbDatas || (*trainTrueClass).size() != nbDatas) {
-      throw FileFormatError("All the train files need to have the same amount of datas");
-    }
+    int nbDatas = trainDatas->getNbSamples();
+    int nbAttributs = trainDatas->getNbAttributes();
 
     if (minNbCover > nbDatas) {
       throw CommandArgumentException("Error : invalide type for parameter -c, strictly positive integer smaller or equal than the number of data sample requested");
@@ -445,11 +436,11 @@ int fidexGloRules(const string &command) {
     vector<string> classNames;
     bool hasClassNames = false;
     if (attributFileInit) {
-      std::unique_ptr<Attribute> attributesData(new Attribute(attributFile, static_cast<int>(nbAttributs), static_cast<int>(nbClass)));
-      attributeNames = (*attributesData->getAttributeNames());
-      classNames = (*attributesData->getClassNames());
-      if (!classNames.empty()) {
-        hasClassNames = true;
+      trainDatas->setAttribute(attributFile);
+      attributeNames = (*trainDatas->getAttributeNames());
+      hasClassNames = trainDatas->getHasClassNames();
+      if (hasClassNames) {
+        classNames = (*trainDatas->getClassNames());
       }
     }
 
