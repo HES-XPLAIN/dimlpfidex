@@ -472,24 +472,17 @@ int fidexGlo(const string &command) {
     vector<vector<double>> testSamplesValues;
     vector<vector<double>> testSamplesOutputValuesPredictions;
 
-    bool hasConfidence = false;
     std::unique_ptr<DataSetFid> testDatas;
     if (!testSamplesPredFileInit) { // If we have only one test data file with data and prediction
       testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
       testSamplesValues = (*testDatas->getDatas());
       testSamplesPreds = (*testDatas->getPredictions());
-      if (testDatas->hasConfidence()) {
-        hasConfidence = true;
-      }
       testSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
 
     } else { // We have a different file for test predictions
       testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, testSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
       testSamplesValues = (*testDatas->getDatas());
       testSamplesPreds = (*testDatas->getPredictions());
-      if (testDatas->hasConfidence()) {
-        hasConfidence = true;
-      }
       testSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
     }
 
@@ -588,7 +581,7 @@ int fidexGlo(const string &command) {
     lines.emplace_back("Global statistics of the rule set : ");
     vector<string> stringRules;
 
-    getRules(rules, lines, stringRules, rulesFile, attributFileInit, attributeNames, hasClassNames, classNames, hasConfidence);
+    getRules(rules, lines, stringRules, rulesFile, attributFileInit, attributeNames, hasClassNames, classNames);
 
     std::cout << "Files imported" << endl
               << endl;

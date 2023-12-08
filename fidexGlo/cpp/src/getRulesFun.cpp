@@ -83,7 +83,7 @@ void getAntecedents(vector<tuple<int, bool, double>> &antecedents, int &ruleClas
 
 ////////////////////////////////////////////////////////
 
-void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> &rules, vector<string> &statsLines, vector<string> &stringRules, const char *rulesFile, bool hasAttributeNames, const vector<string> &attributeNames, bool hasClassNames, const vector<string> &classNames, bool hasConfidence) {
+void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> &rules, vector<string> &statsLines, vector<string> &stringRules, const char *rulesFile, bool hasAttributeNames, const vector<string> &attributeNames, bool hasClassNames, const vector<string> &classNames) {
   tuple<vector<tuple<int, bool, double>>, int, int, double, double> rule; // <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
   fstream rulesData;
   rulesData.open(rulesFile, ios::in); // Read data file
@@ -126,10 +126,8 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
       double ruleAccuracy = stod(splitString(line, " ")[3]);
       rule = make_tuple(antecedents, covSize, ruleClass, ruleFidelity, ruleAccuracy);
       rules.push_back(rule);
-      if (hasConfidence) {
-        getline(rulesData, line);
-        strRule += "\n" + line;
-      }
+      getline(rulesData, line);
+      strRule += "\n" + line;
       strRule += "\n";
       stringRules.emplace_back(strRule);
     }

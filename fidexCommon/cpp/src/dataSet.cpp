@@ -240,9 +240,6 @@ void DataSetFid::getPredLine(const string &line, bool hasDecisionThreshold, doub
     if (myLine.fail()) {
       throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(predFile) + ", a number is required");
     }
-    if (valuePred != 1 && valuePred != 0) {
-      everyPredIsBool = false;
-    }
     valuesPred.push_back(valuePred);
   }
   outputValuesPredictions.push_back(valuesPred);
@@ -352,17 +349,6 @@ vector<vector<double>> *DataSetFid::getOutputValuesPredictions() {
     return &outputValuesPredictions;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : prediction file not specified for this dataset");
-  }
-}
-
-/*
-Return whether the dataset contains confidence scores
-*/
-bool DataSetFid::hasConfidence() const {
-  if (everyPredIsBool) {
-    return false;
-  } else {
-    return true;
   }
 }
 
