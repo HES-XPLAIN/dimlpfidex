@@ -10,44 +10,46 @@
 #include <sstream>
 #include <vector>
 
+using namespace std;
+
 class DataSetFid {
 
-  std::vector<std::vector<double>> datas;
-  std::vector<int> trueClasses;
-  std::vector<int> predictions;
-  std::vector<std::vector<double>> outputValuesPredictions;
-  std::vector<std::vector<double>> weights;
+  vector<vector<double>> datas;
+  vector<int> trueClasses;
+  vector<int> predictions;
+  vector<vector<double>> outputValuesPredictions;
+  vector<vector<double>> weights;
   bool hasDatas = false;
   bool hasClasses = false;
   bool hasWeights = false;
   bool everyPredIsBool = true; // If every prediction is boolean, then there is no interest in computing confidence, it will always be 1
 
 public:
-  DataSetFid();
+  DataSetFid() = default;
   DataSetFid(const char *dataFile, const char *predFile, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *trueClassFile = nullptr);
   explicit DataSetFid(const char *weightFile);
 
-  std::vector<std::vector<double>> *getDatas();
-  std::vector<int> *getTrueClasses();
-  std::vector<int> *getPredictions();
-  std::vector<std::vector<double>> *getOutputValuesPredictions();
+  vector<vector<double>> *getDatas();
+  vector<int> *getTrueClasses();
+  vector<int> *getPredictions();
+  vector<vector<double>> *getOutputValuesPredictions();
   bool hasConfidence() const;
   int getNbClasses() const;
-  std::vector<std::vector<double>> getWeights() const;
-  std::vector<double> getInBiais() const;
-  std::vector<double> getInWeights() const;
+  vector<vector<double>> getWeights() const;
+  vector<double> getInBiais() const;
+  vector<double> getInWeights() const;
 };
 
 class Attribute {
 
-  std::vector<std::string> attributes;
+  vector<string> attributes;
   bool hasAttributes = true;
 
 public:
   Attribute();
   explicit Attribute(const char *attributFile);
 
-  std::vector<std::string> *getAttributes();
+  vector<string> *getAttributes();
 };
 
 #endif

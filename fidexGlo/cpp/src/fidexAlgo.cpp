@@ -6,14 +6,9 @@ FidexAlgo::FidexAlgo() = default;
 // Different mains:
 
 bool FidexAlgo::fidex(Rule &rule,
-                      vector<vector<double>> *trainData,
-                      vector<int> *trainPreds,
-                      bool hasConfidence,
-                      vector<vector<double>> *trainOutputValuesPredictions,
-                      vector<int> *trainTrueClass,
-                      vector<double> *mainSampleValues,
-                      int mainSamplePred,
+                      DataSetFid dataset,
                       Hyperspace *hyperspace, // TODO: shouldn't we remove this and create a new one inside the function ?
+                      int idSample,
                       int nbIn,
                       int nbAttributs,
                       int itMax,
@@ -26,6 +21,20 @@ bool FidexAlgo::fidex(Rule &rule,
 
   // Initialize uniform distribution
   uniform_real_distribution<double> dis(0.0, 1.0);
+  vector<vector<double>> *trainData = dataset.getDatas();
+  vector<int> *trainPreds = dataset.getPredictions();
+  vector<vector<double>> *trainOutputValuesPredictions = nullptr;
+  vector<int> *trainTrueClass = dataset.getTrueClasses();
+  vector<double> *mainSampleValues = &(*trainData)[idSample];
+  int mainSamplePred = (*trainPreds)[idSample];
+  bool hasConfidence;
+
+  if (dataset.hasConfidence()) {
+    trainOutputValuesPredictions = dataset.getOutputValuesPredictions();
+    hasConfidence = true;
+  } else {
+    hasConfidence = false;
+  }
 
   // Compute initial covering
   vector<int> coveredSamples((*trainData).size());     // Samples covered by the hyperbox

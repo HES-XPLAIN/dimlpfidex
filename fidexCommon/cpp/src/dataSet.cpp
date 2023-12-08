@@ -1,5 +1,4 @@
 #include "dataSet.h"
-using namespace std;
 
 DataSetFid::DataSetFid(const char *dataFile, const char *predFile, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *trueClassFile) : hasDatas(true) {
   int i; // iterator

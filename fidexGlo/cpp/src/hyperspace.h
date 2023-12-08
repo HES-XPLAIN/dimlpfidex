@@ -16,7 +16,6 @@ using namespace std;
 
 namespace FidexGloNameSpace {
 class Hyperspace {
-
   vector<vector<double>> hyperLocus; // All the possible hyperplans
   shared_ptr<Hyperbox> hyperbox;
 

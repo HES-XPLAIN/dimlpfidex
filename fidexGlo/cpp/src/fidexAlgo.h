@@ -1,5 +1,6 @@
 #ifndef FIDEXALGO_H
 #define FIDEXALGO_H
+#include "../../../fidexCommon/cpp/src/dataSet.h"
 #include "hyperspace.h"
 #include <algorithm>
 #include <chrono>
@@ -23,14 +24,9 @@ public:
   //  Méthodes:
 
   bool fidex(Rule &rule,
-             vector<vector<double>> *trainData,
-             vector<int> *trainPreds,
-             bool hasConfidence,
-             vector<vector<double>> *trainOutputValuesPredictions,
-             vector<int> *trainTrueClass,
-             vector<double> *mainSampleValues,
-             int mainSamplePred,
+             DataSetFid dataset,
              Hyperspace *hyperspace,
+             int idSample,
              int nbIn,
              int nbAttributs,
              int itMax,
