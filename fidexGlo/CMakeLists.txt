@@ -8,8 +8,11 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 # -Wall -Wextra -Wpedantic
-set(CMAKE_CXX_FLAGS "-O3 -fopenmp -fsanitize=address -fsanitize=leak -fsanitize=undefined")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fopenmp -fsanitize=address -fsanitize=leak -fsanitize=undefined")
+# set(CMAKE_CXX_FLAGS "-O3 -fopenmp -fsanitize=address -fsanitize=leak -fsanitize=undefined")
+# set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fopenmp -fsanitize=address -fsanitize=leak -fsanitize=undefined")
+
+set(CMAKE_CXX_FLAGS "-O3 -fopenmp")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fopenmp")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Enable static compilation for MingW

@@ -591,6 +591,7 @@ int fidexGloRules(const string &command) {
       vector<Rule> rules;
       int nbProblems = 0;
       int nbRulesNotFound = 0;
+      vector<int> samplesNotFound;
       int nbThreads = omp_get_num_procs();
       int usedThreads = nbThreads;
 
@@ -626,7 +627,8 @@ int fidexGloRules(const string &command) {
         int localNbProblems = 0;
         int localMinNbCover = 0;
         int cnt = 0;
-        vector<int>::iterator it;
+        // vector<int>::iterator it;
+        vector<int> localSamplesNotFound;
         Antecedant a;
 
         t1 = omp_get_wtime();
@@ -634,53 +636,32 @@ int fidexGloRules(const string &command) {
 #pragma omp for
         for (idSample = 0; idSample < nbDatas; idSample++) {
           cnt += 1;
-          ruleCreated = false;
           counterFailed = 0; // If we can't find a good rule after a lot of tries
 
-          while (!ruleCreated) {
-            ruleCreated = exp.fidex(
-                rule,
-                trainData,
-                trainPreds,
-                hasConfidence,
-                trainOutputValuesPredictions,
-                trainTrueClass,
-                &(*trainData)[idSample],
-                (*trainPreds)[idSample],
-                &localHyperspace,
-                nbIn,
-                nbAttributs,
-                itMax,
-                currentMinNbCov,
-                dropoutDim,
-                dropoutDimParam,
-                dropoutHyp,
-                dropoutHypParam,
-                gen);
+          ruleCreated = exp.fidex(
+              rule,
+              trainData,
+              trainPreds,
+              hasConfidence,
+              trainOutputValuesPredictions,
+              trainTrueClass,
+              &(*trainData)[idSample],
+              (*trainPreds)[idSample],
+              &localHyperspace,
+              nbIn,
+              nbAttributs,
+              itMax,
+              currentMinNbCov,
+              dropoutDim,
+              dropoutDimParam,
+              dropoutHyp,
+              dropoutHypParam,
+              gen);
 
-            if (currentMinNbCov >= 2) {
-              currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
-            } else {
-              counterFailed += 1;
-            }
-
-            if (counterFailed >= maxFailedAttempts) {
-              localNbRulesNotFound += 1;
-
-#pragma omp critical
-              {
-                it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
-                if (it != notCoveredSamples.end()) {
-                  notCoveredSamples.erase(it);
-                }
-              }
-              break;
-            }
+          if (!ruleCreated) {
+            localSamplesNotFound.push_back(idSample);
           }
 
-          if (currentMinNbCov + 1 < minNbCover) {
-            localNbProblems += 1;
-          }
           localRules.push_back(rule);
         }
 
@@ -691,6 +672,7 @@ int fidexGloRules(const string &command) {
           cout << "T" << threadId << " ended " << cnt << " iterations in " << (t2 - t1) << " seconds." << endl;
           cout << "Local rule size: (#T" << threadId << ") " << localRules.size() << endl;
           rules.insert(rules.end(), localRules.begin(), localRules.end());
+          samplesNotFound.insert(samplesNotFound.end(), localSamplesNotFound.begin(), localSamplesNotFound.end());
 
           cout << "Current total rules size: " << rules.size() << endl
                << endl;
@@ -698,6 +680,64 @@ int fidexGloRules(const string &command) {
           nbRulesNotFound += localNbRulesNotFound;
         }
       } // end of parallel section
+
+      // This is the loop that take care of the samples that have not been covered yet
+      auto exp = FidexAlgo();
+      Rule rule;
+      bool ruleCreated;
+      int counterFailed;
+      Hyperspace h(matHypLocus);
+      int currentMinNbCov = minNbCover;
+      vector<int>::iterator it;
+
+      for (int sample : samplesNotFound) {
+        ruleCreated = false;
+        counterFailed = 0; // If we can't find a good rule after a lot of tries
+
+        while (!ruleCreated) {
+          ruleCreated = exp.fidex(
+              rule,
+              trainData,
+              trainPreds,
+              hasConfidence,
+              trainOutputValuesPredictions,
+              trainTrueClass,
+              &(*trainData)[sample],
+              (*trainPreds)[sample],
+              &h,
+              nbIn,
+              nbAttributs,
+              itMax,
+              currentMinNbCov,
+              dropoutDim,
+              dropoutDimParam,
+              dropoutHyp,
+              dropoutHypParam,
+              gen);
+
+          if (currentMinNbCov >= 2) {
+            currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
+          } else {
+            counterFailed += 1;
+          }
+
+          if (counterFailed >= maxFailedAttempts) {
+            nbRulesNotFound += 1;
+
+            it = find(notCoveredSamples.begin(), notCoveredSamples.end(), sample);
+            if (it != notCoveredSamples.end()) {
+              notCoveredSamples.erase(it);
+            }
+
+            break;
+          }
+        }
+
+        if (currentMinNbCov + 1 < minNbCover) {
+          nbProblems += 1;
+        }
+        rules.push_back(rule);
+      }
 
       cout << "Total rules size: " << rules.size() << endl;
       cout << "\nNumber of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
