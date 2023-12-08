@@ -317,6 +317,7 @@ int fidexGloStats(const string &command) {
       hasConfidence = false;
     }
     int nbTestData = testDatas->getNbSamples();
+
     // Get attributes
     vector<string> attributeNames;
     vector<string> classNames;
@@ -551,7 +552,8 @@ int fidexGloStats(const string &command) {
             int samplePred = (*testPreds)[sampleId];
             double sampleOutputPred = 0.0;
             if (hasConfidence) {
-              sampleOutputPred = (*testOutputValuesPredictions)[sampleId][samplePred];
+              int classRule = get<2>(rules[r]);
+              sampleOutputPred = (*testOutputValuesPredictions)[sampleId][classRule];
             }
             int rulePred = get<2>(rules[r]);
             int trueClass = (*testTrueClasses)[sampleId];

@@ -54,12 +54,12 @@ double Hyperspace::computeRuleAccuracy(vector<int> *trainPreds, vector<int> *tra
   return float(total) / static_cast<double>(nbCovered);
 }
 
-double Hyperspace::computeRuleConfidence(vector<vector<double>> *trainOutputValuesPredictions, const int mainSamplePred) const { // Mean output value of prediction of class chosen by the rule for the covered samples
+double Hyperspace::computeRuleConfidence(vector<vector<double>> *trainOutputValuesPredictions, const int rulePred) const { // Mean output value of prediction of class chosen by the rule(which is the main sample prediction) for the covered samples
   int idSample;
   double total = 0; // Number of indexes predicted good
   for (int i = 0; i < hyperbox->getCoveredSamples().size(); i++) {
     idSample = hyperbox->getCoveredSamples()[i];
-    total += (*trainOutputValuesPredictions)[idSample][mainSamplePred]; // Value of output prediction for class mainSamplePred(rule class)
+    total += (*trainOutputValuesPredictions)[idSample][rulePred]; // Value of output prediction for class rulePred(rule class)
   }
 
   size_t nbCovered = hyperbox->getCoveredSamples().size();
