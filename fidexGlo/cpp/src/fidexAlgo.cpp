@@ -6,7 +6,7 @@ FidexAlgo::FidexAlgo() = default;
 // Different mains:
 
 bool FidexAlgo::fidex(Rule &rule,
-                      DataSetFid dataset,
+                      DataSetFid *dataset,
                       Hyperspace *hyperspace, // TODO: shouldn't we remove this and create a new one inside the function ?
                       int idSample,
                       int nbIn,
@@ -21,19 +21,17 @@ bool FidexAlgo::fidex(Rule &rule,
 
   // Initialize uniform distribution
   uniform_real_distribution<double> dis(0.0, 1.0);
-  vector<vector<double>> *trainData = dataset.getDatas();
-  vector<int> *trainPreds = dataset.getPredictions();
-  vector<vector<double>> *trainOutputValuesPredictions = nullptr;
-  vector<int> *trainTrueClass = dataset.getTrueClasses();
-  vector<double> *mainSampleValues = &(*trainData)[idSample];
-  int mainSamplePred = (*trainPreds)[idSample];
-  bool hasConfidence;
 
-  if (dataset.hasConfidence()) {
-    trainOutputValuesPredictions = dataset.getOutputValuesPredictions();
-    hasConfidence = true;
-  } else {
-    hasConfidence = false;
+  vector<vector<double>> *trainData = dataset->getDatas();
+  vector<vector<double>> *trainOutputValuesPredictions = nullptr;
+  vector<double> *mainSampleValues = &(*trainData)[idSample];
+  vector<int> *trainPreds = dataset->getPredictions();
+  vector<int> *trainTrueClass = dataset->getTrueClasses();
+  int mainSamplePred = (*trainPreds)[idSample];
+  bool hasConfidence = dataset->hasConfidence();
+
+  if (hasConfidence) {
+    trainOutputValuesPredictions = dataset->getOutputValuesPredictions();
   }
 
   // Compute initial covering

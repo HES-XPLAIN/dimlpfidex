@@ -377,7 +377,7 @@ int fidexGloRules(const string &command) {
     }
 
     if (weightsFileInit) {
-      for (int i; i < weightsFilesTemp.size(); i++) {
+      for (int i = 0; i < weightsFilesTemp.size(); i++) {
         weightsFilesTemp[i] = root + weightsFilesTemp[i];
         weightsFiles.push_back(&weightsFilesTemp[i][0]);
       }
@@ -458,31 +458,27 @@ int fidexGloRules(const string &command) {
 
     cout << "Import files..." << endl;
 
-    unique_ptr<DataSetFid> trainDatas(new DataSetFid(trainDataFile, trainDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
+    unique_ptr<DataSetFid> trainDatas(new DataSetFid(
+        trainDataFile,
+        trainDataFilePred,
+        hasDecisionThreshold,
+        decisionThreshold,
+        indexPositiveClass,
+        trainDataFileTrueClass));
 
     vector<vector<double>> *trainData = trainDatas->getDatas();
-    vector<int> *trainPreds = trainDatas->getPredictions();
-
-    vector<vector<double>> *trainOutputValuesPredictions = nullptr;
-    bool hasConfidence;
-
-    if (trainDatas->hasConfidence()) {
-      trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
-      hasConfidence = true;
-    } else {
-      hasConfidence = false;
-    }
-    vector<int> *trainTrueClass = trainDatas->getTrueClasses();
-
-    const auto nbDatas = static_cast<int>((*trainData).size());
-    const auto nbAttributs = static_cast<int>((*trainData)[0].size());
-    const auto nbClass = trainDatas->getNbClasses();
+    int trainPredictionsSize = trainDatas->getPredictions()->size();
+    int trainTrueClassSize = trainDatas->getTrueClasses()->size();
+    int nbDatas = trainData->size();
+    int nbAttributs = (*trainData)[0].size();
+    int nbClass = trainDatas->getNbClasses();
+    bool hasConfidence = trainDatas->hasConfidence();
 
     if (indexPositiveClass >= nbClass) {
       throw CommandArgumentException("Error : parameter positive_index(-x) has to be a positive integer smaller than " + to_string(nbClass));
     }
 
-    if ((*trainPreds).size() != nbDatas || (*trainTrueClass).size() != nbDatas) {
+    if (trainPredictionsSize != nbDatas || trainTrueClassSize != nbDatas) {
       throw FileFormatError("All the train files need to have the same amount of datas");
     }
 
@@ -612,7 +608,7 @@ int fidexGloRules(const string &command) {
         ruleCreated = false;
         int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, *trainDatas, &hyperspace, idSample, nbIn, nbAttributs, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
+          ruleCreated = exp.fidex(rule, trainDatas.get(), &hyperspace, idSample, nbIn, nbAttributs, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           } else {
@@ -732,7 +728,21 @@ int fidexGloRules(const string &command) {
         ruleCreated = false;
         int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, *trainDatas, &hyperspace, idSample, nbIn, nbAttributs, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
+          ruleCreated = exp.fidex(
+              rule,
+              trainDatas.get(),
+              &hyperspace,
+              idSample,
+              nbIn,
+              nbAttributs,
+              itMax,
+              currentMinNbCov,
+              dropoutDim,
+              dropoutDimParam,
+              dropoutHyp,
+              dropoutHypParam,
+              gen);
+
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           } else {
@@ -857,7 +867,21 @@ int fidexGloRules(const string &command) {
         ruleCreated = false;
         int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, *trainDatas, &hyperspace, idSample, nbIn, nbAttributs, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
+          ruleCreated = exp.fidex(
+              rule,
+              trainDatas.get(),
+              &hyperspace,
+              idSample,
+              nbIn,
+              nbAttributs,
+              itMax,
+              currentMinNbCov,
+              dropoutDim,
+              dropoutDimParam,
+              dropoutHyp,
+              dropoutHypParam,
+              gen);
+
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           } else {

@@ -24,7 +24,7 @@ public:
   //  Méthodes:
 
   bool fidex(Rule &rule,
-             DataSetFid dataset,
+             DataSetFid *dataset,
              Hyperspace *hyperspace,
              int idSample,
              int nbIn,
