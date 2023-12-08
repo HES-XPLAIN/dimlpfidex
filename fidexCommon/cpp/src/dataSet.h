@@ -23,7 +23,6 @@ private:
   bool hasPreds = false;
   bool hasClasses = false;
   bool hasWeights = false;
-  bool everyPredIsBool = true; // If every prediction is boolean, then there is no interest in computing confidence, it will always be 1
 
   int nbClasses = -1;
   int nbPreds = -1;
@@ -61,7 +60,6 @@ public:
   int getNbClasses() const;
   int getNbAttributes() const;
   int getNbSamples() const;
-  bool hasConfidence() const;
 
   void setAttribute(const char *attributFile);
   std::vector<std::string> *getAttributeNames();

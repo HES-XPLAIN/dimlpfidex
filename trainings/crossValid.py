@@ -1042,8 +1042,6 @@ def crossValid(*args, **kwargs):
             except (IOError):
                 raise ValueError(f"Error : Couldn't open stats extraction file {crossval_stats}.")
 
-            has_confidence = True # Check if we have confidence statistics
-
             # Loop on N executions of cross-validation
             for ni in range(n):
                 print(f"n={ni+1}")
@@ -1445,10 +1443,7 @@ def crossValid(*args, **kwargs):
                         mean_nb_ant_fid += stat_vals[1]
                         mean_fidel_fid += stat_vals[2]
                         mean_rules_acc_fid += stat_vals[3]
-                        if len(stat_vals) == 5:
-                            mean_confid_fid += stat_vals[4]
-                        else:
-                            has_confidence = False
+                        mean_confid_fid += stat_vals[4]
 
                     if is_fidexglo:
                         # Compute fidexGlo rules in folder
@@ -1736,15 +1731,13 @@ def crossValid(*args, **kwargs):
                             outputStatsFile.write(f"The mean number of antecedents per rule is: {formatted_mean_current_exec_values_fidex[1]}\n")
                             outputStatsFile.write(f"The mean rule fidelity rate is: {formatted_mean_current_exec_values_fidex[2]}\n")
                             outputStatsFile.write(f"The mean rule accuracy is: {formatted_mean_current_exec_values_fidex[3]}\n")
-                            if has_confidence:
-                                outputStatsFile.write(f"The mean rule confidence is: {formatted_mean_current_exec_values_fidex[4]}\n")
+                            outputStatsFile.write(f"The mean rule confidence is: {formatted_mean_current_exec_values_fidex[4]}\n")
                             print("Fidex :")
                             print(f"The mean covering size per rule is: {formatted_mean_current_exec_values_fidex[0]}")
                             print(f"The mean number of antecedents per rule is: {formatted_mean_current_exec_values_fidex[1]}")
                             print(f"The mean rule fidelity rate is: {formatted_mean_current_exec_values_fidex[2]}")
                             print(f"The mean rule accuracy is: {formatted_mean_current_exec_values_fidex[3]}")
-                            if has_confidence:
-                                print(f"The mean rule confidence is: {formatted_mean_current_exec_values_fidex[4]}")
+                            print(f"The mean rule confidence is: {formatted_mean_current_exec_values_fidex[4]}")
                             print("\n---------------------------------------------------------")
                             print("---------------------------------------------------------")
                         if is_fidex and is_fidexglo:
@@ -2064,9 +2057,8 @@ def crossValid(*args, **kwargs):
                         outputStatsFile.write(f"The standard deviation of the rule fidelity rate is : {formatted_std_fidel_fid_all}\n")
                         outputStatsFile.write(f"The mean rule accuracy is : {formatted_mean_rules_acc_fid_all}\n")
                         outputStatsFile.write(f"The standard deviation of the rule accuracy is : {formatted_std_rules_acc_fid_all}\n")
-                        if has_confidence:
-                            outputStatsFile.write(f"The mean rule confidence is : {formatted_mean_confid_fid_all}\n")
-                            outputStatsFile.write(f"The standard deviation of the rule confidence is : {formatted_std_confid_fid_all}\n")
+                        outputStatsFile.write(f"The mean rule confidence is : {formatted_mean_confid_fid_all}\n")
+                        outputStatsFile.write(f"The standard deviation of the rule confidence is : {formatted_std_confid_fid_all}\n")
                         print("Fidex :")
                         print(f"The mean covering size per rule is : {formatted_mean_cov_size_fid_all}")
                         print(f"The standard deviation of the covering size per rule is : {formatted_std_cov_size_fid_all}")
@@ -2076,9 +2068,8 @@ def crossValid(*args, **kwargs):
                         print(f"The standard deviation of the rule fidelity rate is : {formatted_std_fidel_fid_all}")
                         print(f"The mean rule accuracy is : {formatted_mean_rules_acc_fid_all}")
                         print(f"The standard deviation of the rule accuracy is : {formatted_std_rules_acc_fid_all}")
-                        if has_confidence:
-                            print(f"The mean rule confidence is : {formatted_mean_confid_fid_all}")
-                            print(f"The standard deviation of the rule confidence is : {formatted_std_confid_fid_all}")
+                        print(f"The mean rule confidence is : {formatted_mean_confid_fid_all}")
+                        print(f"The standard deviation of the rule confidence is : {formatted_std_confid_fid_all}")
                         print("\n---------------------------------------------------------")
                         print("---------------------------------------------------------")
 

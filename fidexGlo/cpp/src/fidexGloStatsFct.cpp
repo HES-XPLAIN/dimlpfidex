@@ -309,13 +309,7 @@ int fidexGloStats(const string &command) {
     vector<int> *testTrueClasses = testDatas->getClasses();
 
     vector<vector<double>> *testOutputValuesPredictions = nullptr;
-    bool hasConfidence;
-    if (testDatas->hasConfidence()) {
-      testOutputValuesPredictions = testDatas->getOutputValuesPredictions();
-      hasConfidence = true;
-    } else {
-      hasConfidence = false;
-    }
+    testOutputValuesPredictions = testDatas->getOutputValuesPredictions();
     int nbTestData = testDatas->getNbSamples();
 
     // Get attributes
@@ -337,7 +331,7 @@ int fidexGloStats(const string &command) {
     vector<string> statsLines;
     lines.emplace_back("Global statistics of the rule set : "); // Lines for the output stats
     vector<string> stringRules;
-    getRules(rules, statsLines, stringRules, rulesFile, attributFileInit, attributeNames, hasClassNames, classNames, hasConfidence);
+    getRules(rules, statsLines, stringRules, rulesFile, attributFileInit, attributeNames, hasClassNames, classNames);
     for (auto l : statsLines) {
       lines.emplace_back(l);
     }
@@ -551,10 +545,8 @@ int fidexGloStats(const string &command) {
           for (int sampleId : sampleIds) {
             int samplePred = (*testPreds)[sampleId];
             double sampleOutputPred = 0.0;
-            if (hasConfidence) {
-              int classRule = get<2>(rules[r]);
-              sampleOutputPred = (*testOutputValuesPredictions)[sampleId][classRule];
-            }
+            int classRule = get<2>(rules[r]);
+            sampleOutputPred = (*testOutputValuesPredictions)[sampleId][classRule];
             int rulePred = get<2>(rules[r]);
             int trueClass = (*testTrueClasses)[sampleId];
             if (samplePred == rulePred) {
@@ -577,16 +569,12 @@ int fidexGloStats(const string &command) {
           if (coverSize == 0) {
             outputFile << trainStats[2] << "" << std::endl;
             outputFile << trainStats[3] << "" << std::endl;
-            if (hasConfidence) {
-              outputFile << trainStats[4] << "" << std::endl;
-            }
+            outputFile << trainStats[4] << "" << std::endl;
             outputFile << "" << std::endl;
           } else {
             outputFile << trainStats[2] << " --- Test Fidelity : " << formattingDoubleToString(ruleFidelity) << "" << std::endl;
             outputFile << trainStats[3] << " --- Test Accuracy : " << formattingDoubleToString(ruleAccuracy) << "" << std::endl;
-            if (hasConfidence) {
-              outputFile << trainStats[4] << " --- Test Confidence : " << formattingDoubleToString(ruleConfidence) << "" << std::endl;
-            }
+            outputFile << trainStats[4] << " --- Test Confidence : " << formattingDoubleToString(ruleConfidence) << "" << std::endl;
             outputFile << "" << std::endl;
           }
         }
