@@ -487,20 +487,20 @@ int fidexGloStats(const string &command) {
       lines.push_back("The number of false positive test samples is : " + std::to_string(nbFalsePositive));
       lines.push_back("The number of true negative test samples is : " + std::to_string(nbTrueNegative));
       lines.push_back("The number of false negative test samples is : " + std::to_string(nbFalseNegative));
-      lines.push_back("The false positive rate is : " + std::to_string(float(nbFalsePositive) / static_cast<float>(nbNegative)));
-      lines.push_back("The false negative rate is : " + std::to_string(float(nbFalseNegative) / static_cast<float>(nbPositive)));
-      lines.push_back("The precision is : " + std::to_string(float(nbTruePositive) / static_cast<float>(nbTruePositive + nbFalsePositive)));
-      lines.push_back("The recall is : " + std::to_string(float(nbTruePositive) / static_cast<float>(nbTruePositive + nbFalseNegative)));
+      lines.push_back("The false positive rate is : " + ((nbNegative != 0) ? std::to_string(float(nbFalsePositive) / static_cast<float>(nbNegative)) : "N/A"));
+      lines.push_back("The false negative rate is : " + ((nbPositive != 0) ? std::to_string(float(nbFalseNegative) / static_cast<float>(nbPositive)) : "N/A"));
+      lines.push_back("The precision is : " + ((nbTruePositive + nbFalsePositive != 0) ? std::to_string(float(nbTruePositive) / static_cast<float>(nbTruePositive + nbFalsePositive)) : "N/A"));
+      lines.push_back("The recall is : " + ((nbTruePositive + nbFalseNegative != 0) ? std::to_string(float(nbTruePositive) / static_cast<float>(nbTruePositive + nbFalseNegative)) : "N/A"));
 
       lines.emplace_back("\nComputation with rules decision :");
       lines.push_back("The number of true positive test samples is : " + std::to_string(nbTruePositiveRules));
       lines.push_back("The number of false positive test samples is : " + std::to_string(nbFalsePositiveRules));
       lines.push_back("The number of true negative test samples is : " + std::to_string(nbTrueNegativeRules));
       lines.push_back("The number of false negative test samples is : " + std::to_string(nbFalseNegativeRules));
-      lines.push_back("The false positive rate is : " + std::to_string(float(nbFalsePositiveRules) / static_cast<float>(nbNegative)));
-      lines.push_back("The false negative rate is : " + std::to_string(float(nbFalseNegativeRules) / static_cast<float>(nbPositive)));
-      lines.push_back("The precision is : " + std::to_string(float(nbTruePositiveRules) / static_cast<float>(nbTruePositiveRules + nbFalsePositiveRules)));
-      lines.push_back("The recall is : " + std::to_string(float(nbTruePositiveRules) / static_cast<float>(nbTruePositiveRules + nbFalseNegativeRules)));
+      lines.push_back("The false positive rate is : " + ((nbNegative != 0) ? std::to_string(float(nbFalsePositiveRules) / static_cast<float>(nbNegative)) : "N/A"));
+      lines.push_back("The false negative rate is : " + ((nbPositive != 0) ? std::to_string(float(nbFalseNegativeRules) / static_cast<float>(nbPositive)) : "N/A"));
+      lines.push_back("The precision is : " + ((nbTruePositiveRules + nbFalsePositiveRules != 0) ? std::to_string(float(nbTruePositiveRules) / static_cast<float>(nbTruePositiveRules + nbFalsePositiveRules)) : "N/A"));
+      lines.push_back("The recall is : " + ((nbTruePositiveRules + nbFalseNegativeRules != 0) ? std::to_string(float(nbTruePositiveRules) / static_cast<float>(nbTruePositiveRules + nbFalseNegativeRules)) : "N/A"));
     }
 
     for (string l : lines) {
