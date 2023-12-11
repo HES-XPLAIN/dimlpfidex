@@ -22,7 +22,7 @@ void showRulesParams() {
   std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
   std::cout << "-A <file of attributes>" << std::endl;
   std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
-  std::cout << "-i <max iteration number (100 by default)>" << std::endl;
+  std::cout << "-i <max iteration number also the max possible number of attributs in a rule (10 by default, should put 25 if working with images)>" << std::endl;
   std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
   std::cout << "-d <dimension dropout parameter (None by default)>" << std::endl;
   std::cout << "-h <hyperplan dropout parameter (None by default)>" << std::endl;
@@ -93,7 +93,7 @@ int fidexGloRules(const string &command) {
     int heuristic = -1;
     bool heuristicInit = false;
 
-    int itMax = 100;         // We stop if we have more than itMax iterations
+    int itMax = 10;          // We stop if we have more than itMax iterations (impossible to have a rule with more than itMax antecedents)
     int minNbCover = 2;      // Minimum size of covering that we ask
     bool dropoutHyp = false; // We dropout a bunch of hyperplans each iteration (could accelerate the processus)
     double dropoutHypParam = 0.5;
