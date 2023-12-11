@@ -17,7 +17,11 @@
 #include <string>
 #include <time.h>
 
+using namespace std;
+using namespace FidexGloNameSpace;
+using namespace std::chrono;
+
 void showRulesParams();
-int fidexGloRules(const std::string &command);
+int fidexGloRules(const string &command);
 
 #endif

@@ -1,8 +1,5 @@
 #include "fidexGloRulesFct.h"
 
-using namespace std;
-using namespace FidexGloNameSpace;
-
 void showRulesParams() {
   cout << "\n-------------------------------------------------\n"
        << endl;
@@ -17,21 +14,21 @@ void showRulesParams() {
   cout << "<Options>\n"
        << endl;
 
-  std::cout << "Options are: \n"
-            << std::endl;
-  std::cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
-  std::cout << "-A <file of attributes>" << std::endl;
-  std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
-  std::cout << "-i <max iteration number (100 by default)>" << std::endl;
-  std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
-  std::cout << "-d <dimension dropout parameter>" << std::endl;
-  std::cout << "-h <hyperplan dropout parameter>" << std::endl;
-  std::cout << "-m <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
-  std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
-  std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
-  std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
-  std::cout << "-z <seed (0=random, default)>";
+  cout << "Options are: \n"
+       << endl;
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << endl;
+  cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << endl;
+  cout << "-A <file of attributes>" << endl;
+  cout << "-r <file where you redirect console result>" << endl; // If we want to redirect console result to file
+  cout << "-i <max iteration number (100 by default)>" << endl;
+  cout << "-v <minimum covering number (2 by default)>" << endl;
+  cout << "-d <dimension dropout parameter>" << endl;
+  cout << "-h <hyperplan dropout parameter>" << endl;
+  cout << "-m <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << endl;
+  cout << "-Q <number of stairs in staircase activation function (50 by default)>" << endl;
+  cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << endl;
+  cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << endl;
+  cout << "-z <seed (0=random, default)>";
 
   cout << "\n-------------------------------------------------\n"
        << endl;
@@ -150,6 +147,7 @@ int fidexGloRules(const string &command) {
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
     double dropoutDimParam = 0.5;
     int maxFailedAttempts = 30;
+    int nbThreadsUsed = omp_get_num_procs();
 
     bool hasDecisionThreshold = false;
     double decisionThreshold = -1;
@@ -262,6 +260,16 @@ int fidexGloRules(const string &command) {
             minNbCover = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
+          }
+          break;
+
+        case 'p':
+          if (CheckPositiveInt(arg) && atoi(arg) >= 1) {
+            if (atoi(arg) < nbThreadsUsed) {
+              nbThreadsUsed = atoi(arg);
+            }
+          } else {
+            throw CommandArgumentException("Error : invalid type for parameter " + string(lastArg) + ", strictly positive integer requested");
           }
           break;
 
@@ -579,11 +587,8 @@ int fidexGloRules(const string &command) {
     mt19937 gen(seed);
 
     // First heuristic : optimal (slower)
-    float temps1;
-    clock_t c1;
-    clock_t c2;
 
-    c1 = clock();
+    const auto start = high_resolution_clock::now();
     if (heuristic == 1) {
       cout << "Optimal FidexGlo" << endl
            << endl;
@@ -593,7 +598,6 @@ int fidexGloRules(const string &command) {
       int nbRulesNotFound = 0;
       vector<int> samplesNotFound;
       int nbThreads = omp_get_num_procs();
-      int usedThreads = nbThreads;
 
       // Get the rule for each data sample from fidex
       cout << "Computing fidex rules..." << endl
@@ -601,13 +605,13 @@ int fidexGloRules(const string &command) {
       cout << nbThreads << " CPU cores available" << endl
            << endl;
 
-#pragma omp parallel num_threads(usedThreads)
+#pragma omp parallel num_threads(nbThreadsUsed)
       {
 
         // declaring thread internal variables
         int threadId = omp_get_thread_num();
-        int startIndex = (nbDatas / usedThreads) * threadId;
-        int endIndex = ((threadId + 1) < usedThreads ? startIndex + nbDatas / usedThreads : nbDatas) - 1;
+        int startIndex = (nbDatas / nbThreadsUsed) * threadId;
+        int endIndex = ((threadId + 1) < nbThreadsUsed ? startIndex + nbDatas / nbThreadsUsed : nbDatas) - 1;
 
 #pragma omp critical
         {
@@ -799,9 +803,10 @@ int fidexGloRules(const string &command) {
       cout << "We created " << nbRules << " rules." << endl
            << endl;
 
-      c2 = clock();
-      temps1 = (float)(c2 - c1) / CLOCKS_PER_SEC;
-      cout << "\nTime first heuristic = " << temps1 << " sec\n"
+      const auto end_h1 = high_resolution_clock::now();
+      const duration<double> diff = end_h1 - start;
+
+      cout << "\nTime first heuristic = " << diff.count() << " sec\n"
            << endl;
     }
 
@@ -1026,9 +1031,9 @@ int fidexGloRules(const string &command) {
     cout << "Mean covering size per rule : " << get<0>(stats) << endl;
     cout << "Mean number of antecedents per rule : " << get<1>(stats) << endl;
 
-    t2 = clock();
-    temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
-    cout << "\nFull execution time = " << temps << " sec" << endl;
+    const auto end = high_resolution_clock::now();
+    duration<double> diff = end - start;
+    cout << "\nFull execution time = " << diff.count() << " sec" << endl;
 
     cout.rdbuf(cout_buff); // reset to standard output again
   } catch (const char *msg) {
