@@ -25,7 +25,7 @@ void showFidexParams() {
   std::cout << "-A <file of attributes>" << std::endl;
   std::cout << "-s <output statistic file>" << std::endl;
   std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
-  std::cout << "-i <max iteration number (100 by default)>" << std::endl;
+  std::cout << "-i <max iteration number, also the max possible number of attributs in a rule (10 by default, should put 25 if working with images)>" << std::endl;
   std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
   std::cout << "-y <decrement by 1 the min covering number each time the minimal covering size is not reached (False by default)>" << std::endl;
   std::cout << "-m <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
@@ -105,10 +105,10 @@ int fidex(const string &command) {
     int nbQuantLevels = 50; // Number of steps of the step function
     double hiKnot = 5;      // High end of the interval for each dimension, a hyperplan can't be after
 
-    int itMax = 100;               // We stop if we have more than itMax iterations
+    int itMax = 10;                // We stop if we have more than itMax iterations (impossible to have a rule with more than itMax antecedents)
     int minNbCover = 2;            // Minimum size of covering that we ask
     bool minCoverStrategy = false; // Decresase by 1 the minNbCover each time maximal fidelity is not achieved
-    int maxFailedAttempts = 30;    // Maxamum number of attemps when minNbCover = 1
+    int maxFailedAttempts = 30;    // Maximum number of attemps when minNbCover = 1
     bool dropoutHyp = false;       // We dropout a bunch of hyperplans each iteration (could accelerate the processus)
     double dropoutHypParam = 0.5;
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
@@ -739,33 +739,33 @@ int fidex(const string &command) {
               hyperspace.getHyperbox()->setFidelity(bestHyperbox->getFidelity());
               hyperspace.getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
               hyperspace.getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
-            } else if (currentMinNbCover == 1 && dropoutDim == false && dropoutHyp == false) {
-              // std::cout << "Choosing randomly" << std::endl;
-              //  If we have a minimum covering of 1 and no dropout, we need to choose randomly a hyperplan, because we are stocked
-              std::unique_ptr<Hyperbox> randomHyperbox(new Hyperbox()); // best hyperbox to choose for next step
-
-              std::uniform_int_distribution<int> distribution(0, static_cast<int>(nbIn) - 1);
-              int randomDimension;
-              size_t hypSize;
-              do {
-                randomDimension = dimensions[distribution(gen)];
-                hypSize = hyperspace.getHyperLocus()[randomDimension].size();
-              } while (hypSize == 0);
-              attribut = randomDimension % nbAttributs;
-              mainSampleValue = mainSamplesValues[currentSample][attribut];
-              std::uniform_int_distribution<int> distributionHyp(0, static_cast<int>(hypSize) - 1);
-              int indexRandomHyp = dimensions[distributionHyp(gen)];
-              double hypValue = hyperspace.getHyperLocus()[randomDimension][indexRandomHyp];
-              bool mainSampleGreater = hypValue <= mainSampleValue;
-
-              // Check if main sample value is on the right of the hyperplan
-              randomHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
-              randomHyperbox->computeFidelity(mainSamplesPreds[currentSample], trainPreds);
-
-              hyperspace.getHyperbox()->setFidelity(randomHyperbox->getFidelity());
-              hyperspace.getHyperbox()->setCoveredSamples(randomHyperbox->getCoveredSamples());
-              hyperspace.getHyperbox()->discriminateHyperplan(randomDimension, indexRandomHyp);
             }
+          } else if (currentMinNbCover == 1 && dropoutDim == false && dropoutHyp == false) {
+            // std::cout << "Choosing randomly" << std::endl;
+            //  If we have a minimum covering of 1 and no dropout, we need to choose randomly a hyperplan, because we are stocked
+            std::unique_ptr<Hyperbox> randomHyperbox(new Hyperbox()); // best hyperbox to choose for next step
+
+            std::uniform_int_distribution<int> distribution(0, static_cast<int>(nbIn) - 1);
+            int randomDimension;
+            size_t hypSize;
+            do {
+              randomDimension = dimensions[distribution(gen)];
+              hypSize = hyperspace.getHyperLocus()[randomDimension].size();
+            } while (hypSize == 0);
+            attribut = randomDimension % nbAttributs;
+            mainSampleValue = mainSamplesValues[currentSample][attribut];
+            std::uniform_int_distribution<int> distributionHyp(0, static_cast<int>(hypSize) - 1);
+            int indexRandomHyp = dimensions[distributionHyp(gen)];
+            double hypValue = hyperspace.getHyperLocus()[randomDimension][indexRandomHyp];
+            bool mainSampleGreater = hypValue <= mainSampleValue;
+
+            // Check if main sample value is on the right of the hyperplan
+            randomHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
+            randomHyperbox->computeFidelity(mainSamplesPreds[currentSample], trainPreds);
+
+            hyperspace.getHyperbox()->setFidelity(randomHyperbox->getFidelity());
+            hyperspace.getHyperbox()->setCoveredSamples(randomHyperbox->getCoveredSamples());
+            hyperspace.getHyperbox()->discriminateHyperplan(randomDimension, indexRandomHyp);
           }
           /*itt2 = clock();
           itTime = (float)(itt2 - itt1) / CLOCKS_PER_SEC;
@@ -786,7 +786,7 @@ int fidex(const string &command) {
               std::cout << "Fidelity is not maximum. Restarting fidex with a minimum covering of " << currentMinNbCover << std::endl;
             }
             if (counterFailed >= maxFailedAttempts) {
-              std::cout << "WARNING Fidelity is not maximum after trying " << std::to_string(maxFailedAttempts) << "times to with a minimum covering of 1! You may want to try again." << std::endl;
+              std::cout << "WARNING Fidelity is not maximum after trying " << std::to_string(maxFailedAttempts) << "times with a minimum covering of 1! You may want to try again." << std::endl;
               if (dropoutDim || dropoutHyp) {
                 std::cout << "Try to not use dropout." << std::endl;
               }

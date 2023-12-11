@@ -158,7 +158,15 @@ def imageAnalyser(dataSet):
             output_data(test_sample_class, test_sample_class_file, "itg")
             output_data(test_sample_pred, test_sample_pred_file)
 
-            fidexglo_command = "fidexGlo -S testSampleData.txt -p testSamplePred.txt -R " + global_rules + " -O explanation.txt -F " + image_folder_from_base# + " -r imgExplanationResult.txt"
+            fidexglo_command = "fidexGlo -S testSampleData.txt -p testSamplePred.txt -R " + global_rules + " -O explanation.txt -F " + image_folder_from_base # + " -r imgExplanationResult.txt "
+            """ fidexglo_command += " -w true -T " + train_data_file + " -P " + train_pred_file + " -C " + train_class_file + " -c testSampleClass.txt "
+            if with_file:
+                fidexglo_command += "-f " + rules_file
+            else:
+                fidexglo_command += "-W " + weights_file
+            fidexglo_command += " -Q 100 -i 100 -v 2 "
+            fidexglo_command += " -d " + str(dropout_dim) + " -h " + str(dropout_hyp) """
+
             res_fid_glo = fidexGlo.fidexGlo(fidexglo_command)
             if res_fid_glo == -1:
                 raise ValueError('Error during execution of FidexGlo')
