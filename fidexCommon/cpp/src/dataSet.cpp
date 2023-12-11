@@ -358,6 +358,8 @@ Return the number of classes in the dataset
 int DataSetFid::getNbClasses() const {
   if (hasClasses) {
     return nbClasses;
+  } else if (hasPreds) {
+    return nbPreds;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : classes not specified for this dataset");
   }
