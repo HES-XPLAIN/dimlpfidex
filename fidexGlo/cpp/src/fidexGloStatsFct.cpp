@@ -335,7 +335,7 @@ int fidexGloStats(const string &command) {
     for (auto l : statsLines) {
       lines.emplace_back(l);
     }
-    std::cout << "Data imported..." << endl
+    std::cout << "Data imported." << endl
               << endl;
 
     // Compute global statistics on test set
