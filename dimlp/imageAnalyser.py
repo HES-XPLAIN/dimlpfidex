@@ -61,7 +61,7 @@ def imageAnalyser(dataSet):
     try:
         start_time = time.time()
 
-        id_samples = range(0,100)
+        id_samples = range(100,200)
         show_images = False
         if dataSet == "Mnist":
             image_folder_from_base = "dimlp/datafiles/Mnist/Mnist09"

@@ -664,6 +664,7 @@ int fidexGloRules(const string &command) {
                 nbAttributs,
                 itMax,
                 currentMinNbCov,
+                0.9,
                 dropoutDim,
                 dropoutDimParam,
                 dropoutHyp,
@@ -808,7 +809,7 @@ int fidexGloRules(const string &command) {
         ruleCreated = false;
         int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
+          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, itMax, currentMinNbCov, 1, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           } else {
@@ -927,7 +928,7 @@ int fidexGloRules(const string &command) {
         ruleCreated = false;
         int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
+          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, itMax, currentMinNbCov, 1, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           } else {

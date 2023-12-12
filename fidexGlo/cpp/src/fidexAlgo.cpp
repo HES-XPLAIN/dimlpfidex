@@ -19,6 +19,7 @@ bool FidexAlgo::fidex(
     const int nbAttributs,
     int itMax,
     int minNbCover,
+    double minFidelity,
     bool dropoutDim,
     double dropoutDimParam,
     bool dropoutHyp,
@@ -39,8 +40,8 @@ bool FidexAlgo::fidex(
   hyperspace->getHyperbox()->resetDiscriminativeHyperplans();
   int nbIt = 0;
 
-  while (hyperspace->getHyperbox()->getFidelity() != 1 && nbIt < itMax) { // While fidelity of our hyperbox is not 100%
-    unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                    // best hyperbox to choose for next step
+  while (hyperspace->getHyperbox()->getFidelity() < minFidelity && nbIt < itMax) { // While fidelity of our hyperbox is not high enough
+    unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                             // best hyperbox to choose for next step
     unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());
     double mainSampleValue;
     int attribut;
@@ -56,7 +57,7 @@ bool FidexAlgo::fidex(
 
     vector<int> currentCovSamp;
     for (int d = 0; d < nbIn; d++) {
-      if (bestHyperbox->getFidelity() == 1) {
+      if (bestHyperbox->getFidelity() >= minFidelity) {
         break;
       }
 
@@ -102,7 +103,7 @@ bool FidexAlgo::fidex(
           maxHypBlocked = true; // we can't increase maxHyp anymmore for this best hyperplan
         }
 
-        if (bestHyperbox->getFidelity() == 1) {
+        if (bestHyperbox->getFidelity() >= minFidelity) {
           break;
         }
       }
@@ -123,7 +124,7 @@ bool FidexAlgo::fidex(
     nbIt += 1;
   }
 
-  if (hyperspace->getHyperbox()->getFidelity() != 1) {
+  if (hyperspace->getHyperbox()->getFidelity() < minFidelity) {
     return false;
   }
 
