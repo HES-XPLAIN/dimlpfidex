@@ -740,32 +740,6 @@ int fidex(const string &command) {
               hyperspace.getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
               hyperspace.getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
             }
-          } else if (currentMinNbCover == 1 && dropoutDim == false && dropoutHyp == false) {
-            // std::cout << "Choosing randomly" << std::endl;
-            //  If we have a minimum covering of 1 and no dropout, we need to choose randomly a hyperplan, because we are stocked
-            std::unique_ptr<Hyperbox> randomHyperbox(new Hyperbox()); // best hyperbox to choose for next step
-
-            std::uniform_int_distribution<int> distribution(0, static_cast<int>(nbIn) - 1);
-            int randomDimension;
-            size_t hypSize;
-            do {
-              randomDimension = dimensions[distribution(gen)];
-              hypSize = hyperspace.getHyperLocus()[randomDimension].size();
-            } while (hypSize == 0);
-            attribut = randomDimension % nbAttributs;
-            mainSampleValue = mainSamplesValues[currentSample][attribut];
-            std::uniform_int_distribution<int> distributionHyp(0, static_cast<int>(hypSize) - 1);
-            int indexRandomHyp = dimensions[distributionHyp(gen)];
-            double hypValue = hyperspace.getHyperLocus()[randomDimension][indexRandomHyp];
-            bool mainSampleGreater = hypValue <= mainSampleValue;
-
-            // Check if main sample value is on the right of the hyperplan
-            randomHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
-            randomHyperbox->computeFidelity(mainSamplesPreds[currentSample], trainPreds);
-
-            hyperspace.getHyperbox()->setFidelity(randomHyperbox->getFidelity());
-            hyperspace.getHyperbox()->setCoveredSamples(randomHyperbox->getCoveredSamples());
-            hyperspace.getHyperbox()->discriminateHyperplan(randomDimension, indexRandomHyp);
           }
           /*itt2 = clock();
           itTime = (float)(itt2 - itt1) / CLOCKS_PER_SEC;
