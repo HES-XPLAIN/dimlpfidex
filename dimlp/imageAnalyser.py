@@ -83,8 +83,10 @@ def imageAnalyser(dataSet):
             size1d = 28
             nb_channels = 1
             with_hsl = False
+            normalized = False
         elif dataSet == "Cifar10":
             with_hsl = True
+            normalized = True #True by default ...jsp
 
             image_folder_from_base = "dimlp/datafiles/Cifar10/Cifar10HSLResnet"
             test_data_file = image_folder_from_base + "/testDataHSL.txt"
@@ -104,8 +106,30 @@ def imageAnalyser(dataSet):
             dropout_hyp = 0.9
             size1d = 32
             nb_channels = 3
+        elif dataSet == "fer":
+            normalized = True # Data between 0 and 1
+            with_hsl = False
 
-        image_save_folder = image_folder_from_base + "/images"
+            image_folder_from_base = "/mnt/d/dimlpfidex/FER"
+            test_data_file = image_folder_from_base + "/testData.txt"
+            test_class_file = image_folder_from_base + "/testClass.txt"
+            test_pred_file = image_folder_from_base + "/predTest.out"
+            global_rules = "globalRulesWithTestStats.txt"
+
+            train_data_file = "trainData.txt"
+            train_class_file = "trainClass.txt"
+            train_pred_file = "predTrain.out"
+
+            with_file = False #Using of rule file or of weights to launch Fidex
+            rules_file = "globalRules.txt"
+            weights_file = "weights.wts"
+
+            dropout_dim = 0.9
+            dropout_hyp = 0.9
+            size1d = 48
+            nb_channels = 1
+
+        image_save_folder = image_folder_from_base + "/images2"
         test_data = get_data(test_data_file)
         test_class = get_data(test_class_file)
         test_pred = get_data(test_pred_file)
@@ -127,14 +151,22 @@ def imageAnalyser(dataSet):
             test_sample_class = test_class[id_sample] if 0 <= id_sample < len(test_class) else None
             test_sample_pred = test_pred[id_sample] if 0 <= id_sample < len(test_pred) else None
 
-            if with_hsl:
+            if with_hsl or normalized:
                 output_data(test_sample_data, test_sample_data_file)
             else:
                 output_data(test_sample_data, test_sample_data_file, "itg")
             output_data(test_sample_class, test_sample_class_file, "itg")
             output_data(test_sample_pred, test_sample_pred_file)
 
-            fidexglo_command = "fidexGlo -S testSampleData.txt -p testSamplePred.txt -R " + global_rules + " -O explanation.txt -F " + image_folder_from_base# + " -r imgExplanationResult.txt"
+            fidexglo_command = "fidexGlo -S testSampleData.txt -p testSamplePred.txt -R " + global_rules + " -O explanation.txt -F " + image_folder_from_base # + " -r imgExplanationResult.txt "
+            """ fidexglo_command += " -w true -T " + train_data_file + " -P " + train_pred_file + " -C " + train_class_file + " -c testSampleClass.txt "
+            if with_file:
+                fidexglo_command += "-f " + rules_file
+            else:
+                fidexglo_command += "-W " + weights_file
+            fidexglo_command += " -Q 100 -i 100 -v 2 "
+            fidexglo_command += " -d " + str(dropout_dim) + " -h " + str(dropout_hyp) """
+
             res_fid_glo = fidexGlo.fidexGlo(fidexglo_command)
             if res_fid_glo == -1:
                 raise ValueError('Error during execution of FidexGlo')
@@ -202,8 +234,10 @@ def imageAnalyser(dataSet):
                 my_file.close()
 
             if nb_channels == 1:
-
-                colorimage = [[v,v,v] for v in baseimage]
+                if normalized:
+                   colorimage = [[int(255*float(v)),int(255*float(v)),int(255*float(v))] for v in baseimage]
+                else:
+                    colorimage = [[v,v,v] for v in baseimage]
             else:
                 colorimage = baseimage
                 if with_hsl:
@@ -212,6 +246,8 @@ def imageAnalyser(dataSet):
                     colorimage = colorimage.reshape(size1d, size1d, nb_channels)
                     colorimage = hsl_to_rgb(colorimage)
                     colorimage = colorimage.reshape(size1d*size1d*nb_channels)
+                elif normalized:
+                    colorimage = [int(float(v) * 255) for v in colorimage]
 
             for antecedant in antecedants:
                 if antecedant["inequality"] == "<":
@@ -264,5 +300,6 @@ def imageAnalyser(dataSet):
         return -1
 
 #dataSet = "Mnist"
-dataSet = "Cifar10"
+#dataSet = "Cifar10"
+dataSet = "fer"
 imageAnalyser(dataSet)

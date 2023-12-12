@@ -1,9 +1,6 @@
 #include "fidexAlgo.h"
 #include <omp.h>
 
-using namespace std;
-using namespace FidexGloNameSpace;
-
 FidexAlgo::FidexAlgo() = default;
 
 // Different mains:
@@ -13,7 +10,6 @@ bool FidexAlgo::fidex(
     Rule &rule,
     vector<vector<double>> *trainData,
     vector<int> *trainPreds,
-    bool hasConfidence,
     vector<vector<double>> *trainOutputValuesPredictions,
     vector<int> *trainTrueClass,
     vector<double> *mainSampleValues,
@@ -144,13 +140,7 @@ bool FidexAlgo::fidex(
   ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass); // Percentage of correct model prediction on samples covered by the rule
 
   double ruleConfidence;
-
-  if (hasConfidence) {
-    ruleConfidence = hyperspace->computeRuleConfidence(trainOutputValuesPredictions, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples
-  } else {
-    ruleConfidence = -1;
-  }
-#pragma omp critical
+  ruleConfidence = hyperspace->computeRuleConfidence(trainOutputValuesPredictions, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples
   rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence);
 
   return true;

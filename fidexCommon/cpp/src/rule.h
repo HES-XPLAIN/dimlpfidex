@@ -44,7 +44,7 @@ public:
   // UTILITIES
   void addAntecedant(Antecedant antecedant) { _antecedants.push_back(antecedant); };
   void addCoveredSample(int sampleId) { _coveredSamples.push_back(sampleId); };
-  string toString(bool hasConfidence, const vector<string> *attributes = NULL, const vector<string> *classes = NULL);
+  string toString(const vector<string> *attributes = NULL, const vector<string> *classes = NULL);
 };
 
 // OPERATOR OVERLOAD TO EASE PRINTING PURPOSES

@@ -302,48 +302,26 @@ int fidexGloStats(const string &command) {
 
     // Get test data
 
-    std::unique_ptr<DataSetFid> testDatas(new DataSetFid(testDataFile, testDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, testDataFileTrueClass));
+    std::unique_ptr<DataSetFid> testDatas(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, testDataFileTrueClass));
 
     vector<vector<double>> *testData = testDatas->getDatas();
     vector<int> *testPreds = testDatas->getPredictions();
-    vector<int> *testTrueClasses = testDatas->getTrueClasses();
+    vector<int> *testTrueClasses = testDatas->getClasses();
 
     vector<vector<double>> *testOutputValuesPredictions = nullptr;
-    bool hasConfidence;
-    if (testDatas->hasConfidence()) {
-      testOutputValuesPredictions = testDatas->getOutputValuesPredictions();
-      hasConfidence = true;
-    } else {
-      hasConfidence = false;
-    }
-    const auto nbClass = testDatas->getNbClasses();
-    const auto nbTestData = static_cast<int>((*testData).size());
-    if ((*testPreds).size() != nbTestData || (*testTrueClasses).size() != nbTestData) {
-      throw FileFormatError("All the test files need to have the same amount of datas");
-    }
-    if (hasIndexPositiveClass && indexPositiveClass >= nbClass) {
-      throw CommandArgumentException("Error : The index of positive class cannot be greater or equal to the number of classes (" + to_string(nbClass) + ")");
-    }
-    auto nbTestAttributs = static_cast<int>((*testData)[0].size());
+    testOutputValuesPredictions = testDatas->getOutputValuesPredictions();
+    int nbTestData = testDatas->getNbSamples();
+
     // Get attributes
     vector<string> attributeNames;
     vector<string> classNames;
     bool hasClassNames = false;
     if (attributFileInit) {
-      std::unique_ptr<Attribute> attributesData(new Attribute(attributFile));
-      attributeNames = (*attributesData->getAttributes());
-      if (attributeNames.size() < nbTestAttributs) {
-        throw FileContentError("Error : in file " + std::string(attributFile) + ", there is not enough attribute names");
-      } else if (attributeNames.size() == nbTestAttributs) {
-        hasClassNames = false;
-      } else if (attributeNames.size() != nbTestAttributs + nbClass) {
-        throw FileContentError("Error : in file " + std::string(attributFile) + ", there is not the good amount of attribute and class names");
-      } else {
-        hasClassNames = true;
-        auto firstEl = attributeNames.end() - nbClass;
-        auto lastEl = attributeNames.end();
-        classNames.insert(classNames.end(), firstEl, lastEl);
-        attributeNames.erase(firstEl, lastEl);
+      testDatas->setAttribute(attributFile);
+      attributeNames = (*testDatas->getAttributeNames());
+      hasClassNames = testDatas->getHasClassNames();
+      if (hasClassNames) {
+        classNames = (*testDatas->getClassNames());
       }
     }
     // Get rules
@@ -353,11 +331,11 @@ int fidexGloStats(const string &command) {
     vector<string> statsLines;
     lines.emplace_back("Global statistics of the rule set : "); // Lines for the output stats
     vector<string> stringRules;
-    getRules(rules, statsLines, stringRules, rulesFile, attributFileInit, attributeNames, hasClassNames, classNames, hasConfidence);
+    getRules(rules, statsLines, stringRules, rulesFile, attributFileInit, attributeNames, hasClassNames, classNames);
     for (auto l : statsLines) {
       lines.emplace_back(l);
     }
-    std::cout << "Data imported..." << endl
+    std::cout << "Data imported." << endl
               << endl;
 
     // Compute global statistics on test set
@@ -509,20 +487,20 @@ int fidexGloStats(const string &command) {
       lines.push_back("The number of false positive test samples is : " + std::to_string(nbFalsePositive));
       lines.push_back("The number of true negative test samples is : " + std::to_string(nbTrueNegative));
       lines.push_back("The number of false negative test samples is : " + std::to_string(nbFalseNegative));
-      lines.push_back("The false positive rate is : " + std::to_string(float(nbFalsePositive) / static_cast<float>(nbNegative)));
-      lines.push_back("The false negative rate is : " + std::to_string(float(nbFalseNegative) / static_cast<float>(nbPositive)));
-      lines.push_back("The precision is : " + std::to_string(float(nbTruePositive) / static_cast<float>(nbTruePositive + nbFalsePositive)));
-      lines.push_back("The recall is : " + std::to_string(float(nbTruePositive) / static_cast<float>(nbTruePositive + nbFalseNegative)));
+      lines.push_back("The false positive rate is : " + ((nbNegative != 0) ? std::to_string(float(nbFalsePositive) / static_cast<float>(nbNegative)) : "N/A"));
+      lines.push_back("The false negative rate is : " + ((nbPositive != 0) ? std::to_string(float(nbFalseNegative) / static_cast<float>(nbPositive)) : "N/A"));
+      lines.push_back("The precision is : " + ((nbTruePositive + nbFalsePositive != 0) ? std::to_string(float(nbTruePositive) / static_cast<float>(nbTruePositive + nbFalsePositive)) : "N/A"));
+      lines.push_back("The recall is : " + ((nbTruePositive + nbFalseNegative != 0) ? std::to_string(float(nbTruePositive) / static_cast<float>(nbTruePositive + nbFalseNegative)) : "N/A"));
 
       lines.emplace_back("\nComputation with rules decision :");
       lines.push_back("The number of true positive test samples is : " + std::to_string(nbTruePositiveRules));
       lines.push_back("The number of false positive test samples is : " + std::to_string(nbFalsePositiveRules));
       lines.push_back("The number of true negative test samples is : " + std::to_string(nbTrueNegativeRules));
       lines.push_back("The number of false negative test samples is : " + std::to_string(nbFalseNegativeRules));
-      lines.push_back("The false positive rate is : " + std::to_string(float(nbFalsePositiveRules) / static_cast<float>(nbNegative)));
-      lines.push_back("The false negative rate is : " + std::to_string(float(nbFalseNegativeRules) / static_cast<float>(nbPositive)));
-      lines.push_back("The precision is : " + std::to_string(float(nbTruePositiveRules) / static_cast<float>(nbTruePositiveRules + nbFalsePositiveRules)));
-      lines.push_back("The recall is : " + std::to_string(float(nbTruePositiveRules) / static_cast<float>(nbTruePositiveRules + nbFalseNegativeRules)));
+      lines.push_back("The false positive rate is : " + ((nbNegative != 0) ? std::to_string(float(nbFalsePositiveRules) / static_cast<float>(nbNegative)) : "N/A"));
+      lines.push_back("The false negative rate is : " + ((nbPositive != 0) ? std::to_string(float(nbFalseNegativeRules) / static_cast<float>(nbPositive)) : "N/A"));
+      lines.push_back("The precision is : " + ((nbTruePositiveRules + nbFalsePositiveRules != 0) ? std::to_string(float(nbTruePositiveRules) / static_cast<float>(nbTruePositiveRules + nbFalsePositiveRules)) : "N/A"));
+      lines.push_back("The recall is : " + ((nbTruePositiveRules + nbFalseNegativeRules != 0) ? std::to_string(float(nbTruePositiveRules) / static_cast<float>(nbTruePositiveRules + nbFalseNegativeRules)) : "N/A"));
     }
 
     for (string l : lines) {
@@ -567,9 +545,8 @@ int fidexGloStats(const string &command) {
           for (int sampleId : sampleIds) {
             int samplePred = (*testPreds)[sampleId];
             double sampleOutputPred = 0.0;
-            if (hasConfidence) {
-              sampleOutputPred = (*testOutputValuesPredictions)[sampleId][samplePred];
-            }
+            int classRule = get<2>(rules[r]);
+            sampleOutputPred = (*testOutputValuesPredictions)[sampleId][classRule];
             int rulePred = get<2>(rules[r]);
             int trueClass = (*testTrueClasses)[sampleId];
             if (samplePred == rulePred) {
@@ -592,16 +569,12 @@ int fidexGloStats(const string &command) {
           if (coverSize == 0) {
             outputFile << trainStats[2] << "" << std::endl;
             outputFile << trainStats[3] << "" << std::endl;
-            if (hasConfidence) {
-              outputFile << trainStats[4] << "" << std::endl;
-            }
+            outputFile << trainStats[4] << "" << std::endl;
             outputFile << "" << std::endl;
           } else {
-            outputFile << trainStats[2] << " --- Test Fidelity : " << ruleFidelity << "" << std::endl;
-            outputFile << trainStats[3] << " --- Test Accuracy : " << ruleAccuracy << "" << std::endl;
-            if (hasConfidence) {
-              outputFile << trainStats[4] << " --- Test Confidence : " << ruleConfidence << "" << std::endl;
-            }
+            outputFile << trainStats[2] << " --- Test Fidelity : " << formattingDoubleToString(ruleFidelity) << "" << std::endl;
+            outputFile << trainStats[3] << " --- Test Accuracy : " << formattingDoubleToString(ruleAccuracy) << "" << std::endl;
+            outputFile << trainStats[4] << " --- Test Confidence : " << formattingDoubleToString(ruleConfidence) << "" << std::endl;
             outputFile << "" << std::endl;
           }
         }

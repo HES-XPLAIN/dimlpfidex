@@ -25,7 +25,7 @@ Rule::Rule(vector<Antecedant> antecedants, vector<int> coveredSamples, int out_c
  * @param classes optional vector of string containing all class names, useful to print class name instead of an integer.
  * @return string
  */
-string Rule::toString(bool hasConfidence, const vector<string> *attributes, const vector<string> *classes) {
+string Rule::toString(const vector<string> *attributes, const vector<string> *classes) {
   stringstream result;
   int outputClass = getOutputClass();
   int nbCoveredSamples = getCoveredSamples().size();
@@ -53,19 +53,14 @@ string Rule::toString(bool hasConfidence, const vector<string> *attributes, cons
   } else {
     result << "-> class " << outputClass << endl;
   }
-
+  // TODO pretty print double values with formattingDoubleToString()
   result << "   Train Covering size : " << nbCoveredSamples
          << endl
          << "   Train Fidelity : 1" // TODO: compute this value instead of hardcoding it.
          << endl
          << "   Train Accuracy : " << accuracy
-         << endl;
-
-  if (hasConfidence) {
-    result << "   Train Confidence : " << confidence;
-  }
-
-  result << endl;
+         << endl
+         << "   Train Confidence : " << confidence << endl;
 
   return result.str();
 }

@@ -27,7 +27,7 @@ public:
   std::vector<std::vector<double>> getHyperLocus() const;
   Rule ruleExtraction(std::vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence);
   double computeRuleAccuracy(std::vector<int> *trainPreds, std::vector<int> *trainTrueClass) const;
-  double computeRuleConfidence(std::vector<std::vector<double>> *trainOutputValuesPredictions, const int mainSamplePred) const;
+  double computeRuleConfidence(std::vector<std::vector<double>> *trainOutputValuesPredictions, const int rulePred) const;
 };
 } // namespace FidexGloNameSpace
 

@@ -14,7 +14,7 @@ std::vector<std::vector<double>> calcHypLocus(const char *dataFileWeights, int n
     std::cout << "Import weight file..." << std::endl;
   }
 
-  DataSetFid weightDatas(dataFileWeights);
+  DataSetFid weightDatas("weight datas", dataFileWeights);
 
   std::vector<std::vector<double>> allWeights = weightDatas.getWeights();
   std::vector<double> biais = weightDatas.getInBiais();
@@ -52,10 +52,10 @@ std::vector<std::vector<double>> calcHypLocus(const char *dataFileWeights, int n
   return matHypLocus;
 }
 
-std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, const size_t nbAttributes, const std::vector<std::string> &attributeNames) {
+std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, const int nbAttributes, const std::vector<std::string> &attributeNames) {
 
   std::string line;
-  std::regex Xpattern("X(\\d+)([<>]=?)([\\d.]+)");
+  std::regex Xpattern("X(\\d+)([<>]=?)(-?[\\d.]+)");
   std::regex attributesPattern;
   std::regex pattern;
 
@@ -69,7 +69,7 @@ std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, const size_
       }
       attrPattern += attr;
     }
-    attributesPattern = std::regex("(" + attrPattern + ")([<>]=?)([\\d.]+)");
+    attributesPattern = std::regex("(" + attrPattern + ")([<>]=?)(-?[\\d.]+)");
   }
 
   std::vector<std::vector<double>> matHypLocus(nbAttributes);

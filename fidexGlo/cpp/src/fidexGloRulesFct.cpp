@@ -49,7 +49,7 @@ void showRulesParams() {
  * @param classes list of class names, used to write Rule's class with class explicit name instead of its numerical representation.
  * @return tuple<int, int>
  */
-tuple<int, int> writeRulesFile(string filename, const vector<Rule> rules, bool hasConfidence, const vector<string> *attributes, const vector<string> *classes) {
+tuple<int, int> writeRulesFile(string filename, const vector<Rule> rules, const vector<string> *attributes, const vector<string> *classes) {
   // TODO error check
   int counter = 1;
   int nbRules = rules.size();
@@ -66,7 +66,7 @@ tuple<int, int> writeRulesFile(string filename, const vector<Rule> rules, bool h
   for (Rule r : rules) { // each rule
     meanCovSize += r.getCoveredSamples().size();
     meanNbAntecedents += r.getAntecedants().size();
-    stream << "Rule " << counter++ << ": " << r.toString(hasConfidence, attributes, classes); // TODO check for NULL case
+    stream << "Rule " << counter++ << ": " << r.toString(attributes, classes); // TODO check for NULL case
     stream << endl;
   }
 
@@ -167,7 +167,7 @@ int fidexGloRules(const string &command) {
     int heuristic = -1;
     bool heuristicInit = false;
 
-    int itMax = 100;         // We stop if we have more than itMax iterations
+    int itMax = 10;          // We stop if we have more than itMax iterations (impossible to have a rule with more than itMax antecedents)
     int minNbCover = 2;      // Minimum size of covering that we ask
     bool dropoutHyp = false; // We dropout a bunch of hyperplans each iteration (could accelerate the processus)
     double dropoutHypParam = 0.5;
@@ -494,33 +494,18 @@ int fidexGloRules(const string &command) {
 
     cout << "Import files..." << endl;
 
-    unique_ptr<DataSetFid> trainDatas(new DataSetFid(trainDataFile, trainDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
+    std::unique_ptr<DataSetFid> trainDatas(new DataSetFid("trainDatas from FidexGloRules", trainDataFile, trainDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
 
     vector<vector<double>> *trainData = trainDatas->getDatas();
     vector<int> *trainPreds = trainDatas->getPredictions();
 
     vector<vector<double>> *trainOutputValuesPredictions = nullptr;
-    bool hasConfidence;
-    if (trainDatas->hasConfidence()) {
-      trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
-      hasConfidence = true;
-    } else {
-      hasConfidence = false;
-    }
+    trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
 
-    vector<int> *trainTrueClass = trainDatas->getTrueClasses();
+    vector<int> *trainTrueClass = trainDatas->getClasses();
 
-    const auto nbDatas = static_cast<int>((*trainData).size());
-    const auto nbAttributs = static_cast<int>((*trainData)[0].size());
-    const auto nbClass = trainDatas->getNbClasses();
-
-    if (indexPositiveClass >= nbClass) {
-      throw CommandArgumentException("Error : parameter positive_index(-x) has to be a positive integer smaller than " + to_string(nbClass));
-    }
-
-    if ((*trainPreds).size() != nbDatas || (*trainTrueClass).size() != nbDatas) {
-      throw FileFormatError("All the train files need to have the same amount of datas");
-    }
+    int nbDatas = trainDatas->getNbSamples();
+    int nbAttributs = trainDatas->getNbAttributes();
 
     if (minNbCover > nbDatas) {
       throw CommandArgumentException("Error : invalide type for parameter -c, strictly positive integer smaller or equal than the number of data sample requested");
@@ -531,20 +516,11 @@ int fidexGloRules(const string &command) {
     vector<string> classNames;
     bool hasClassNames = false;
     if (attributFileInit) {
-      unique_ptr<Attribute> attributesData(new Attribute(attributFile));
-      attributeNames = (*attributesData->getAttributes());
-      if (attributeNames.size() < nbAttributs) {
-        throw FileContentError("Error : in file " + string(attributFile) + ", there is not enough attribute names");
-      } else if (attributeNames.size() == nbAttributs) {
-        hasClassNames = false;
-      } else if (attributeNames.size() != nbAttributs + nbClass) {
-        throw FileContentError("Error : in file " + string(attributFile) + ", there is not the good amount of attribute and class names");
-      } else {
-        hasClassNames = true;
-        auto firstEl = attributeNames.end() - nbClass;
-        auto lastEl = attributeNames.end();
-        classNames.insert(classNames.end(), firstEl, lastEl);
-        attributeNames.erase(firstEl, lastEl);
+      trainDatas->setAttribute(attributFile);
+      attributeNames = (*trainDatas->getAttributeNames());
+      hasClassNames = trainDatas->getHasClassNames();
+      if (hasClassNames) {
+        classNames = (*trainDatas->getClassNames());
       }
     }
 
@@ -677,7 +653,6 @@ int fidexGloRules(const string &command) {
                 rule,
                 trainData,
                 trainPreds,
-                hasConfidence,
                 trainOutputValuesPredictions,
                 trainTrueClass,
                 &(*trainData)[idSample],
@@ -831,7 +806,7 @@ int fidexGloRules(const string &command) {
         ruleCreated = false;
         int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, hasConfidence, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
+          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           } else {
@@ -950,7 +925,7 @@ int fidexGloRules(const string &command) {
         ruleCreated = false;
         int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, hasConfidence, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
+          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           } else {
@@ -1011,7 +986,7 @@ int fidexGloRules(const string &command) {
       return r1.getCoveredSamples().size() > r2.getCoveredSamples().size();
     });
 
-    tuple<int, int> stats = writeRulesFile(rulesFile, chosenRules, hasConfidence, &attributeNames, &classNames);
+    tuple<int, int> stats = writeRulesFile(rulesFile, chosenRules, &attributeNames, &classNames);
 
     cout << "Mean covering size per rule : " << get<0>(stats) << endl;
     cout << "Mean number of antecedents per rule : " << get<1>(stats) << endl;
