@@ -29,6 +29,7 @@ void showFidexParams() {
   std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
   std::cout << "-y <decrement by 1 the min covering number each time the minimal covering size is not reached (False by default)>" << std::endl;
   std::cout << "-m <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
+  std::cout << "-M <minimum Fidelity to obtain when computing a rule (1 by default)>" << std::endl;
   std::cout << "-d <dimension dropout parameter (None by default)>" << std::endl;
   std::cout << "-h <hyperplan dropout parameter (None by default)>" << std::endl;
   std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
@@ -109,6 +110,7 @@ int fidex(const string &command) {
     int minNbCover = 2;            // Minimum size of covering that we ask
     bool minCoverStrategy = false; // Decresase by 1 the minNbCover each time maximal fidelity is not achieved
     int maxFailedAttempts = 30;    // Maximum number of attemps when minNbCover = 1
+    double minFidelity = 1;        // Minimum Fidelity to obtain when computing a rule
     bool dropoutHyp = false;       // We dropout a bunch of hyperplans each iteration (could accelerate the processus)
     double dropoutHypParam = 0.5;
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
@@ -255,6 +257,14 @@ int fidex(const string &command) {
             maxFailedAttempts = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
+          }
+          break;
+
+        case 'M':
+          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+            minFidelity = atof(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
           }
           break;
 
@@ -650,7 +660,7 @@ int fidex(const string &command) {
 
         nbIt = 0;
 
-        while (hyperspace.getHyperbox()->getFidelity() != 1 && nbIt < itMax) { // While fidelity of our hyperbox is not 100%
+        while (hyperspace.getHyperbox()->getFidelity() < minFidelity && nbIt < itMax) { // While fidelity of our hyperbox is not high enough
           // std::cout << "New iteration : " << nbIt << std::endl;
           std::unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());    // best hyperbox to choose for next step
           std::unique_ptr<Hyperbox> currentHyperbox(new Hyperbox()); // best hyperbox to choose for next step
@@ -668,7 +678,7 @@ int fidex(const string &command) {
           vector<int> currentCovSamp;
 
           for (int d = 0; d < nbIn; d++) { // Loop on all dimensions
-            if (bestHyperbox->getFidelity() == 1) {
+            if (bestHyperbox->getFidelity() >= minFidelity) {
               break;
             }
             dimension = dimensions[d];
@@ -720,7 +730,7 @@ int fidex(const string &command) {
                 maxHypBlocked = true; // we can't increase maxHyp anymore for this best hyperplan
               }
 
-              if (bestHyperbox->getFidelity() == 1) {
+              if (bestHyperbox->getFidelity() >= minFidelity) {
                 break;
               }
             }
@@ -750,24 +760,24 @@ int fidex(const string &command) {
 
         meanFidelity += hyperspace.getHyperbox()->getFidelity();
         std::cout << "Final fidelity : " << hyperspace.getHyperbox()->getFidelity() << endl;
-        if (hyperspace.getHyperbox()->getFidelity() != 1) {
+        if (hyperspace.getHyperbox()->getFidelity() < minFidelity) {
           if (minCoverStrategy) {
             if (currentMinNbCover >= 2) {
               currentMinNbCover -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
-              std::cout << "Fidelity is not maximum. Restarting fidex with a minimum covering of " << currentMinNbCover << std::endl;
+              std::cout << "Fidelity is too low. Restarting fidex with a minimum covering of " << currentMinNbCover << std::endl;
             } else {
               counterFailed += 1;
-              std::cout << "Fidelity is not maximum. Restarting fidex with a minimum covering of " << currentMinNbCover << std::endl;
+              std::cout << "Fidelity is too low. Restarting fidex with a minimum covering of " << currentMinNbCover << std::endl;
             }
             if (counterFailed >= maxFailedAttempts) {
-              std::cout << "WARNING Fidelity is not maximum after trying " << std::to_string(maxFailedAttempts) << "times with a minimum covering of 1! You may want to try again." << std::endl;
+              std::cout << "WARNING Fidelity is too low after trying " << std::to_string(maxFailedAttempts) << "times with a minimum covering of 1! You may want to try again." << std::endl;
               if (dropoutDim || dropoutHyp) {
                 std::cout << "Try to not use dropout." << std::endl;
               }
             }
           } else {
-            std::cout << "WARNING Fidelity is not maximum! You may want to try again." << std::endl;
-            std::cout << "If you can't find a maximal fidelity, try a lowest minimal covering" << std::endl;
+            std::cout << "WARNING Fidelity is too low! You may want to try again." << std::endl;
+            std::cout << "If you can't find a rule with the wanted fidelity, try a lowest minimal covering or a lower fidelity" << std::endl;
             std::cout << "You can also try to use the min cover strategy (-y)" << std::endl;
             std::cout << "If this is not enough, put the min covering to 1 and do not use dropout." << std::endl;
           }
@@ -775,7 +785,7 @@ int fidex(const string &command) {
           std::cout << endl;
         }
 
-      } while (hyperspace.getHyperbox()->getFidelity() != 1 && minCoverStrategy && counterFailed < maxFailedAttempts); // Restart Fidex if we use the strategy and fidelity is not maximum
+      } while (hyperspace.getHyperbox()->getFidelity() < minFidelity && minCoverStrategy && counterFailed < maxFailedAttempts); // Restart Fidex if we use the strategy and fidelity is not high enough
 
       if (nbSamples == 1) {
         std::cout << "Discriminating hyperplans generated." << endl
