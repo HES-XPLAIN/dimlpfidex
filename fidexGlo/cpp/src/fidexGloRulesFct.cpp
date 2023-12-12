@@ -587,6 +587,8 @@ int fidexGloRules(const string &command) {
       auto seedValue = currentTime.time_since_epoch().count();
       seed = static_cast<unsigned int>(seedValue);
     }
+    cout << "Seed used: " << seed << endl
+         << endl;
     mt19937 gen(seed);
 
     // First heuristic : optimal (slower)
