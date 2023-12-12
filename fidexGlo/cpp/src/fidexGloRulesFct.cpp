@@ -1,45 +1,119 @@
 #include "fidexGloRulesFct.h"
 
-using namespace std;
-
+/**
+ * @brief shows all program arguments and details into the terminal.
+ *
+ */
 void showRulesParams() {
-  std::cout << "\n-------------------------------------------------\n"
-            << std::endl;
+  cout << "\n-------------------------------------------------\n"
+       << endl;
 
-  std::cout << "Obligatory parameters : \n"
-            << std::endl;
-  std::cout << "fidexGloRules -T <train dataset file> -P <train prediction file> -C <train true class file> ";
-  std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> [Not mendatory if a rules file is given with -f] ";
-  std::cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
-  std::cout << "-O <Rules output file> ";
-  std::cout << "-M <Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo> ";
-  std::cout << "<Options>\n"
-            << std::endl;
+  cout << "Obligatory parameters : \n"
+       << endl;
+  cout << "fidexGloRules -T <train dataset file> -P <train prediction file> -C <train true class file> ";
+  cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> [Not mendatory if a rules file is given with -f] ";
+  cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
+  cout << "-O <Rules output file> ";
+  cout << "-M <Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo> ";
+  cout << "<Options>\n"
+       << endl;
 
-  std::cout << "Options are: \n"
-            << std::endl;
-  std::cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
-  std::cout << "-A <file of attributes>" << std::endl;
-  std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
-  std::cout << "-i <max iteration number also the max possible number of attributs in a rule (10 by default, should put 25 if working with images)>" << std::endl;
-  std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
-  std::cout << "-d <dimension dropout parameter (None by default)>" << std::endl;
-  std::cout << "-h <hyperplan dropout parameter (None by default)>" << std::endl;
-  std::cout << "-m <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
-  std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
-  std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
-  std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
-  std::cout << "-z <seed (0=random, default)>";
+  cout << "Options are: \n"
+       << endl;
+  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << endl;
+  cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << endl;
+  cout << "-A <file of attributes>" << endl;
+  cout << "-r <file where you redirect console result>" << endl; // If we want to redirect console result to file
+  cout << "-i <max iteration number (100 by default)>" << endl;
+  cout << "-v <minimum covering number (2 by default)>" << endl;
+  cout << "-d <dimension dropout parameter>" << endl;
+  cout << "-h <hyperplan dropout parameter>" << endl;
+  cout << "-m <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << endl;
+  cout << "-Q <number of stairs in staircase activation function (50 by default)>" << endl;
+  cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << endl;
+  cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << endl;
+  cout << "-p <number of threads used for computing the algorithm (default=1, this means by default its a sequential execution)>" << endl;
+  cout << "-z <seed (0=random, default)>";
 
-  std::cout << "\n-------------------------------------------------\n"
-            << std::endl;
+  cout << "\n-------------------------------------------------\n"
+       << endl;
 }
 
+/**
+ * @brief writes a list of rules into a given file. Returns tuple of two integers representing the mean covering size and the mean number of antecedants.
+ *
+ * @param filename name of the file to be written/overwritten.
+ * @param rules list of Rules object to be written in "filename".
+ * @param hasConfidence whether or not Rule's confidence is written in file.
+ * @param attributes list of the attributes names, used to write Rules's Antecedants with attributes explicit name instead of a "X" variable.
+ * @param classes list of class names, used to write Rule's class with class explicit name instead of its numerical representation.
+ * @return tuple<int, int>
+ */
+tuple<int, int> writeRulesFile(string filename, const vector<Rule> rules, const vector<string> *attributes, const vector<string> *classes) {
+  // TODO error check
+  int counter = 1;
+  int nbRules = rules.size();
+  double meanCovSize = 0;
+  double meanNbAntecedents = 0;
+  stringstream stream;
+  ofstream file(filename);
+
+  if (nbRules < 1) {
+    cout << "Cannot write to file, no rules to be written.";
+    return make_tuple(0, 0);
+  }
+
+  for (Rule r : rules) { // each rule
+    meanCovSize += r.getCoveredSamples().size();
+    meanNbAntecedents += r.getAntecedants().size();
+    stream << "Rule " << counter++ << ": " << r.toString(attributes, classes); // TODO check for NULL case
+    stream << endl;
+  }
+
+  meanCovSize /= nbRules;
+  meanNbAntecedents /= nbRules;
+
+  if (file.is_open()) {
+    file << "Number of rules : " << nbRules
+         << ", mean sample covering number per rule : " << meanCovSize
+         << ", mean number of antecedents per rule : " << meanNbAntecedents
+         << endl;
+
+    if (attributes) {
+      file << "Attributes name are specified.";
+    } else {
+      file << "Attributes name are not specified.";
+    }
+
+    if (classes) {
+      file << "Classes name are specified.";
+    } else {
+      file << "Classes name are not specified.";
+    }
+
+    file << endl
+         << endl
+         << stream.str();
+
+    file.close();
+
+  } else {
+    throw CannotOpenFileError("Error : Couldn't open rules extraction file \"" + filename + "\".");
+  }
+
+  return make_tuple(meanCovSize, meanNbAntecedents);
+}
+
+/**
+ * @brief Computes the fidex global algorithm.
+ *
+ * @param command list of arguments included by the user.
+ * @return int
+ */
 int fidexGloRules(const string &command) {
   // Save buffer where we output results
-  std::ofstream ofs;
-  std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
+  ofstream ofs;
+  streambuf *cout_buff = cout.rdbuf(); // Save old buf
 
   try {
 
@@ -54,7 +128,7 @@ int fidexGloRules(const string &command) {
     const char delim = ' ';
     string s;
     stringstream ss(command);
-    while (std::getline(ss, s, delim)) {
+    while (getline(ss, s, delim)) {
       commandList.push_back(s);
     }
     size_t nbParam = commandList.size();
@@ -70,8 +144,8 @@ int fidexGloRules(const string &command) {
     string trainDataFileTrueClassTemp; // Train true classes
     bool trainDataFileTrueClassInit = false;
 
-    std::string weightsFileTemp;
-    std::vector<std::string> weightsFilesTemp;
+    string weightsFileTemp;
+    vector<string> weightsFilesTemp;
     string inputRulesFileTemp; // Rule file to be converted to hyperlocus, replace weight file
     bool inputRulesFileInit = false;
 
@@ -100,6 +174,7 @@ int fidexGloRules(const string &command) {
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
     double dropoutDimParam = 0.5;
     int maxFailedAttempts = 30;
+    int nbThreadsUsed = 1;
 
     bool hasDecisionThreshold = false;
     double decisionThreshold = -1;
@@ -158,7 +233,7 @@ int fidexGloRules(const string &command) {
           if (CheckPositiveInt(arg))
             nbDimlpNets = atoi(arg);
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
 
           break;
 
@@ -166,7 +241,7 @@ int fidexGloRules(const string &command) {
           if (CheckPositiveInt(arg)) {
             nbQuantLevels = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
           }
           break;
 
@@ -212,6 +287,16 @@ int fidexGloRules(const string &command) {
             minNbCover = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
+          }
+          break;
+
+        case 'p':
+          if (CheckPositiveInt(arg) && atoi(arg) >= 1) {
+            if (atoi(arg) <= omp_get_num_procs()) {
+              nbThreadsUsed = atoi(arg);
+            }
+          } else {
+            throw CommandArgumentException("Error : invalid type for parameter " + string(lastArg) + ", strictly positive integer requested");
           }
           break;
 
@@ -281,7 +366,7 @@ int fidexGloRules(const string &command) {
         weightsFilesTemp.push_back(weightsFileTemp);
       } else {
         for (int n = 0; n < nbDimlpNets; n++) {
-          weightsFilesTemp.push_back(weightsFileTemp + std::to_string(n + 1) + ".wts");
+          weightsFilesTemp.push_back(weightsFileTemp + to_string(n + 1) + ".wts");
         }
       }
     }
@@ -293,7 +378,7 @@ int fidexGloRules(const string &command) {
     const char *trainDataFilePred = nullptr;
     const char *trainDataFileTrueClass = nullptr;
     const char *rulesFile = nullptr;
-    std::vector<const char *> weightsFiles;
+    vector<const char *> weightsFiles;
     const char *inputRulesFile = nullptr;
     const char *consoleFile = nullptr;
     const char *attributFile = nullptr;
@@ -381,33 +466,33 @@ int fidexGloRules(const string &command) {
     // Get console results to file
     if (consoleFileInit != false) {
       ofs.open(consoleFile);
-      std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
+      cout.rdbuf(ofs.rdbuf()); // redirect cout to file
     }
 
     // ----------------------------------------------------------------------
 
-    std::cout << "\nParameters :\n"
-              << std::endl;
-    std::cout << "- Max iteration number : " << itMax << endl;
-    std::cout << "- Min size of covering : " << minNbCover << endl;
+    cout << "\nParameters :\n"
+         << endl;
+    cout << "- Max iteration number : " << itMax << endl;
+    cout << "- Min size of covering : " << minNbCover << endl;
     if (dropoutDim) {
-      std::cout << "- We use a dimension dropout of " << dropoutDimParam << endl
-                << endl;
+      cout << "- We use a dimension dropout of " << dropoutDimParam << endl
+           << endl;
     } else {
-      std::cout << "- We don't use dimension dropout\n"
-                << std::endl;
+      cout << "- We don't use dimension dropout\n"
+           << endl;
     }
     if (dropoutHyp) {
-      std::cout << "- We use a hyperplan dropout of " << dropoutHypParam << endl
-                << endl;
+      cout << "- We use a hyperplan dropout of " << dropoutHypParam << endl
+           << endl;
     } else {
-      std::cout << "- We don't use hyperplan dropout\n"
-                << std::endl;
+      cout << "- We don't use hyperplan dropout\n"
+           << endl;
     }
 
     // Import files
 
-    std::cout << "Import files..." << std::endl;
+    cout << "Import files..." << endl;
 
     std::unique_ptr<DataSetFid> trainDatas(new DataSetFid("trainDatas from FidexGloRules", trainDataFile, trainDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
 
@@ -439,26 +524,26 @@ int fidexGloRules(const string &command) {
       }
     }
 
-    std::cout << "Files imported" << endl
-              << endl;
+    cout << "Files imported" << endl
+         << endl;
 
     // compute hyperspace
 
-    std::cout << "Creation of hyperspace..." << std::endl;
+    cout << "Creation of hyperspace..." << endl;
 
-    std::vector<std::vector<double>> matHypLocus;
+    vector<vector<double>> matHypLocus;
 
     if (weightsFileInit) {
       if (nbDimlpNets > 1) {
-        std::cout << "\nParameters of hyperLocus :\n"
-                  << std::endl;
-        std::cout << "- Number of stairs " << nbQuantLevels << std::endl;
-        std::cout << "- Interval : [-" << hiKnot << "," << hiKnot << "]" << std::endl
-                  << std::endl;
-        std::cout << "Computation of all hyperlocus" << std::endl;
+        cout << "\nParameters of hyperLocus :\n"
+             << endl;
+        cout << "- Number of stairs " << nbQuantLevels << endl;
+        cout << "- Interval : [-" << hiKnot << "," << hiKnot << "]" << endl
+             << endl;
+        cout << "Computation of all hyperlocus" << endl;
       }
       for (const auto &weightsFile : weightsFiles) {
-        std::vector<std::vector<double>> hypLocus;
+        vector<vector<double>> hypLocus;
         if (nbDimlpNets > 1) {
           hypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot, false); // Get hyperlocus
         } else {
@@ -467,7 +552,7 @@ int fidexGloRules(const string &command) {
         matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end()); // Concatenate hypLocus to matHypLocus
       }
       if (nbDimlpNets > 1) {
-        std::cout << "All hyperlocus created" << std::endl;
+        cout << "All hyperlocus created" << endl;
       }
     } else {
       if (attributFileInit) {
@@ -477,110 +562,169 @@ int fidexGloRules(const string &command) {
       }
     }
 
-    FidexGloNameSpace::Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans
-
-    const auto nbIn = static_cast<int>(hyperspace.getHyperLocus().size()); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
+    // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
+    const auto nbIn = static_cast<int>(matHypLocus.size());
 
     // Check size of hyperlocus
     if (nbIn == 0 || nbIn % nbAttributs != 0) {
-      throw InternalError("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributs - " + std::to_string(nbAttributs));
+      throw InternalError("Error : the size of hyperLocus - " + to_string(nbIn) + " is not a multiple of the number of attributs - " + to_string(nbAttributs));
     }
 
-    std::cout << "Hyperspace created" << endl
-              << endl;
+    cout << "Hyperspace created" << endl
+         << endl;
 
     // Samples not yet covered by any rules
     vector<int> notCoveredSamples(nbDatas);
-    std::iota(std::begin(notCoveredSamples), std::end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
-
-    vector<tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double>> chosenRules; // antecedents, cover vector, class, rule accuracy, rule confidence
+    iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
+    vector<Rule> chosenRules;                                  // antecedents, cover vector, class, rule accuracy, rule confidence
 
     //--------------------------------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------------------------------
 
     // Initialize random number generator
-
     if (seed == 0) {
-      auto currentTime = std::chrono::high_resolution_clock::now();
+      auto currentTime = high_resolution_clock::now();
       auto seedValue = currentTime.time_since_epoch().count();
       seed = static_cast<unsigned int>(seedValue);
     }
-    std::mt19937 gen(seed);
+    cout << "Seed used: " << seed << endl
+         << endl;
+    mt19937 gen(seed);
 
     // First heuristic : optimal (slower)
-    float temps1;
-    clock_t c1;
-    clock_t c2;
 
-    c1 = clock();
+    const auto start = high_resolution_clock::now();
     if (heuristic == 1) {
-      std::cout << "Optimal FidexGlo" << endl
-                << endl;
+      cout << "Optimal FidexGlo" << endl
+           << endl;
 
-      vector<tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double>> rules;
-      bool ruleCreated;
-      int nbProblems = 0;
-      int nbRulesNotFound = 0;
-      int currentMinNbCov;
-      tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> rule; // Ex: ([X2<3.5 X3>=4], covering, class)
-      auto exp = FidexAlgo();
+      int nbThreads = omp_get_num_procs();
 
       // Get the rule for each data sample from fidex
-      std::cout << "Computing fidex rules..." << endl
-                << endl;
+      cout << "Computing fidex rules..." << endl
+           << endl;
+      cout << nbThreads << " CPU cores available" << endl
+           << endl;
 
-      for (int idSample = 0; idSample < nbDatas; idSample++) {
+      vector<Rule> rules;
+      int nbProblems = 0;
+      int nbRulesNotFound = 0;
+      vector<int> samplesNotFound;
 
-        if (int(nbDatas / 100) != 0 && idSample % int(nbDatas / 100) == 0 && consoleFileInit == false) {
-          cout << "Processing : " << int((double(idSample) / nbDatas) * 100) << "%\r";
-          std::cout.flush();
-        }
-        currentMinNbCov = minNbCover;
-        ruleCreated = false;
-        int counterFailed = 0; // If we can't find a good rule after a lot of tries
-        while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, itMax, currentMinNbCov, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
-          if (currentMinNbCov >= 2) {
-            currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
-          } else {
-            counterFailed += 1;
+#pragma omp parallel num_threads(nbThreadsUsed)
+      {
+
+        // declaring thread internal variables
+        int threadId = omp_get_thread_num();
+        int startIndex = (nbDatas / nbThreadsUsed) * threadId;
+        int endIndex = ((threadId + 1) < nbThreadsUsed ? startIndex + nbDatas / nbThreadsUsed : nbDatas) - 1;
+
+#pragma omp critical
+        cout << "Thread #" << threadId << " initialized, please wait for it to be done." << endl;
+
+        Rule rule;
+        vector<Rule> localRules;
+        Hyperspace localHyperspace(matHypLocus);
+        auto exp = FidexAlgo();
+        bool ruleCreated;
+        int counterFailed;
+        int idSample;
+        int currentMinNbCov = minNbCover;
+        int localNbRulesNotFound = 0;
+        int localNbProblems = 0;
+        int localMinNbCover = 0;
+        int cnt = 0;
+        vector<int>::iterator it;
+        Antecedant a;
+
+        t1 = omp_get_wtime();
+
+#pragma omp for
+        for (idSample = 0; idSample < nbDatas; idSample++) {
+          ruleCreated = false;
+          counterFailed = 0; // If we can't find a good rule after a lot of tries
+          cnt += 1;
+
+          if (omp_get_thread_num() == 0 && ((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && !consoleFileInit) {
+            cout << "Processing : " << int((double(idSample) / (nbDatas / nbThreadsUsed)) * 100) << "%\r";
+            std::cout.flush();
           }
-          if (counterFailed >= maxFailedAttempts) {
-            nbRulesNotFound += 1;
-            auto it = std::find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
-            if (it != notCoveredSamples.end()) {
-              notCoveredSamples.erase(it);
+
+          while (!ruleCreated) {
+            ruleCreated = exp.fidex(
+                rule,
+                trainData,
+                trainPreds,
+                trainOutputValuesPredictions,
+                trainTrueClass,
+                &(*trainData)[idSample],
+                (*trainPreds)[idSample],
+                &localHyperspace,
+                nbIn,
+                nbAttributs,
+                itMax,
+                currentMinNbCov,
+                dropoutDim,
+                dropoutDimParam,
+                dropoutHyp,
+                dropoutHypParam,
+                gen);
+
+            if (currentMinNbCov >= 2) {
+              currentMinNbCov -= 1;
+            } else {
+              counterFailed += 1;
             }
-            break;
+
+            if (counterFailed >= 10) {
+              localNbRulesNotFound += 1;
+
+#pragma omp critical
+              {
+                it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
+                if (it != notCoveredSamples.end()) {
+                  notCoveredSamples.erase(it);
+                }
+              }
+              break;
+            }
           }
+
+          if (currentMinNbCov + 1 < minNbCover) {
+            localNbProblems += 1;
+          }
+          localRules.push_back(rule);
+
+          if (idSample == nbDatas - 1)
+            t2 = omp_get_wtime();
         }
-        if (currentMinNbCov + 1 < minNbCover) {
-          nbProblems += 1;
+
+// gathering local data to main process
+#pragma omp critical
+        {
+          cout << "Thread #" << threadId << " ended " << cnt << " iterations in " << (t2 - t1) << " seconds." << endl;
+          rules.insert(rules.end(), localRules.begin(), localRules.end());
+          nbProblems += localNbProblems;
+          nbRulesNotFound += localNbRulesNotFound;
         }
+      } // end of parallel section
 
-        rules.push_back(rule);
-      }
-
-      std::cout << "\nNumber of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
-      if (nbRulesNotFound > 0) {
-        std::cout << "Number of rules not found : " << nbRulesNotFound << endl;
-      }
-
-      std::cout << "Fidex rules computed" << endl
-                << endl;
-
-      std::cout << "Computing global ruleset..." << endl
-                << endl;
+      cout << rules.size() << " rules created." << endl;
+      cout << "Number of sample with lower covering than " << minNbCover << " is " << nbProblems << endl;
+      cout << "Number of rules not found is " << nbRulesNotFound << endl;
+      cout << "Fidex rules computed" << endl;
+      cout << "Computing global ruleset..." << endl;
 
       nbRules = 0;
 
       // While there is some not covered samples
-      tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> currentRule;
-      std::vector<int>::iterator ite;
+      Rule currentRule;
+      vector<int>::iterator it;
+      vector<int> currentRuleSamples;
       vector<int> newNotCoveredSamples;
       vector<int> bestNewNotCoveredSamples;
-      while (!notCoveredSamples.empty()) {
 
+      while (!notCoveredSamples.empty()) {
         // Get rule that covers the most new samples
         int bestRule = -1;
         int bestCovering = INT_MAX;
@@ -588,8 +732,16 @@ int fidexGloRules(const string &command) {
         for (int r = 0; r < rules.size(); r++) {
           newNotCoveredSamples = notCoveredSamples;
           // Remove samples that are in current covering
-          ite = std::set_difference(newNotCoveredSamples.begin(), newNotCoveredSamples.end(), get<1>(rules[r]).begin(), get<1>(rules[r]).end(), newNotCoveredSamples.begin()); // vectors have to be sorted
-          newNotCoveredSamples.resize(ite - newNotCoveredSamples.begin());
+
+          currentRuleSamples = rules[r].getCoveredSamples();
+
+          it = set_difference(newNotCoveredSamples.begin(),
+                              newNotCoveredSamples.end(),
+                              currentRuleSamples.begin(),
+                              currentRuleSamples.end(),
+                              newNotCoveredSamples.begin()); // vectors have to be sorted
+
+          newNotCoveredSamples.resize(it - newNotCoveredSamples.begin());
           currentCovering = static_cast<int>(newNotCoveredSamples.size());
 
           if (currentCovering < bestCovering) {
@@ -598,23 +750,27 @@ int fidexGloRules(const string &command) {
             bestNewNotCoveredSamples = newNotCoveredSamples;
           }
         }
+
         currentRule = rules[bestRule];
         notCoveredSamples = bestNewNotCoveredSamples; // Delete new covered samples
         nbRules += 1;
         chosenRules.push_back(currentRule);    // add best rule with maximum covering
         rules.erase(rules.begin() + bestRule); // Remove this rule
+        if (rules.size() < 1)
+          break;
       }
 
-      std::cout << "Global ruleset Computed" << endl
-                << endl;
+      cout << "Global ruleset Computed" << endl
+           << endl;
 
-      std::cout << "We created " << nbRules << " rules." << endl
-                << endl;
+      cout << "We created " << nbRules << " rules." << endl
+           << endl;
 
-      c2 = clock();
-      temps1 = (float)(c2 - c1) / CLOCKS_PER_SEC;
-      std::cout << "\nTime first heuristic = " << temps1 << " sec\n"
-                << std::endl;
+      const auto end_h1 = high_resolution_clock::now();
+      const duration<double> diff = end_h1 - start;
+
+      cout << "\nTime first heuristic = " << diff.count() << " sec\n"
+           << endl;
     }
 
     //--------------------------------------------------------------------------------------------------------------------
@@ -624,28 +780,29 @@ int fidexGloRules(const string &command) {
     float temps2;
     clock_t d1;
     clock_t d2;
+    Hyperspace hyperspace(matHypLocus);
 
     d1 = clock();
     if (heuristic == 2) {
-      std::cout << "Fast FidexGlo" << endl
-                << endl;
+      cout << "Fast FidexGlo" << endl
+           << endl;
 
-      vector<tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double>> rules;
+      vector<Rule> rules;
       bool ruleCreated;
       int nbProblems = 0;
       int nbRulesNotFound = 0;
       int currentMinNbCov;
-      tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> rule; // Ex: ([X2<3.5 X3>=4], covering, class)
+      Rule rule;
       auto exp = FidexAlgo();
 
       // Get the rule for each data sample from fidex
-      std::cout << "Computing fidex rules..." << endl
-                << endl;
+      cout << "Computing fidex rules..." << endl
+           << endl;
       for (int idSample = 0; idSample < nbDatas; idSample++) {
 
         if (int(nbDatas / 100) != 0 && idSample % int(nbDatas / 100) == 0 && consoleFileInit == false) {
           cout << "Processing : " << int((double(idSample) / nbDatas) * 100) << "%\r";
-          std::cout.flush();
+          cout.flush();
         }
         currentMinNbCov = minNbCover;
         ruleCreated = false;
@@ -659,7 +816,7 @@ int fidexGloRules(const string &command) {
           }
           if (counterFailed >= maxFailedAttempts) {
             nbRulesNotFound += 1;
-            auto it = std::find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
+            auto it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
             if (it != notCoveredSamples.end()) {
               notCoveredSamples.erase(it);
             }
@@ -674,36 +831,36 @@ int fidexGloRules(const string &command) {
         }
       }
 
-      std::cout << "\nNumber of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
+      cout << "\nNumber of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
       if (nbRulesNotFound > 0) {
-        std::cout << "Number of rules not found : " << nbRulesNotFound << endl;
+        cout << "Number of rules not found : " << nbRulesNotFound << endl;
       }
 
-      std::cout << "Fidex rules computed" << endl
-                << endl;
+      cout << "Fidex rules computed" << endl
+           << endl;
 
-      std::cout << "Computing global ruleset..." << endl
-                << endl;
+      cout << "Computing global ruleset..." << endl
+           << endl;
 
       // Sort the rules(dataIds) depending of their covering size
       vector<int> dataIds = notCoveredSamples;
-      std::sort(dataIds.begin(), dataIds.end(), [&rules](int ruleBest, int ruleWorst) {
-        return std::get<1>(rules[ruleWorst]).size() < std::get<1>(rules[ruleBest]).size();
+      sort(dataIds.begin(), dataIds.end(), [&rules](int ruleBest, int ruleWorst) {
+        return rules[ruleWorst].getCoveredSamples().size() < rules[ruleBest].getCoveredSamples().size();
       });
 
       nbRules = 0;
 
       // While there is some not covered samples
-      tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> currentRule;
+      Rule currentRule;
       auto ancienNotCoveringSize = static_cast<int>(notCoveredSamples.size());
       int dataId = 0;
 
-      std::vector<int>::iterator ite;
+      vector<int>::iterator ite;
       while (!notCoveredSamples.empty()) {
         currentRule = rules[dataIds[dataId]];
 
         // Delete covered samples
-        ite = std::set_difference(notCoveredSamples.begin(), notCoveredSamples.end(), get<1>(currentRule).begin(), get<1>(currentRule).end(), notCoveredSamples.begin()); // vectors have to be sorted
+        ite = set_difference(notCoveredSamples.begin(), notCoveredSamples.end(), currentRule.getCoveredSamples().begin(), currentRule.getCoveredSamples().end(), notCoveredSamples.begin()); // vectors have to be sorted
         notCoveredSamples.resize(ite - notCoveredSamples.begin());
 
         // If the rule coveres a new sample
@@ -716,16 +873,16 @@ int fidexGloRules(const string &command) {
         dataId += 1;
       }
 
-      std::cout << "Global ruleset Computed" << endl
-                << endl;
+      cout << "Global ruleset Computed" << endl
+           << endl;
 
-      std::cout << "We created " << nbRules << " rules." << endl
-                << endl;
+      cout << "We created " << nbRules << " rules." << endl
+           << endl;
 
       d2 = clock();
       temps2 = (float)(d2 - d1) / CLOCKS_PER_SEC;
-      std::cout << "\nTime second heuristic = " << temps2 << " sec\n"
-                << std::endl;
+      cout << "\nTime second heuristic = " << temps2 << " sec\n"
+           << endl;
     }
 
     //--------------------------------------------------------------------------------------------------------------------
@@ -739,11 +896,11 @@ int fidexGloRules(const string &command) {
     e1 = clock();
 
     if (heuristic == 3) {
-      std::cout << "Very fast FidexGlo" << endl
-                << endl;
+      cout << "Very fast FidexGlo" << endl
+           << endl;
 
       //  Sort data randomly
-      std::shuffle(std::begin(notCoveredSamples), std::end(notCoveredSamples), gen);
+      shuffle(begin(notCoveredSamples), end(notCoveredSamples), gen);
 
       nbRules = 0;
       int idSample;
@@ -751,18 +908,18 @@ int fidexGloRules(const string &command) {
       int currentMinNbCov;
       int nbProblems = 0;
       int nbRulesNotFound = 0;
-      tuple<vector<tuple<int, bool, double>>, vector<int>, int, double, double> rule; // Ex: ([X2<3.5 X3>=4], covering, class, accuracy, confidence)
+      Rule rule; // Ex: ([X2<3.5 X3>=4], covering, class, accuracy, confidence)
       auto exp = FidexAlgo();
 
-      std::cout << "Computing rules..." << endl
-                << endl;
+      cout << "Computing rules..." << endl
+           << endl;
 
       // While there is some not covered samples
       while (!notCoveredSamples.empty()) {
 
         if (int(nbDatas / 100) != 0 && (nbDatas - notCoveredSamples.size()) % int(nbDatas / 100) == 0 && consoleFileInit == false) {
           cout << "Processing : " << int((double(nbDatas - notCoveredSamples.size()) / nbDatas) * 100) << "%r";
-          std::cout.flush();
+          cout.flush();
         }
 
         idSample = notCoveredSamples[0];
@@ -790,10 +947,10 @@ int fidexGloRules(const string &command) {
 
           // Delete covered samples
           notCoveredSamples.erase(
-              std::remove_if(
+              remove_if(
                   notCoveredSamples.begin(), notCoveredSamples.end(), [&rule](int x) {
-                    return std::find(get<1>(rule).begin(), get<1>(rule).end(), x) != get<1>(rule).end();
-                    // find index of coveredSamples which is x (x is element of notCoveredSamples), std::find returns last if x not found
+                    return find(rule.getCoveredSamples().begin(), rule.getCoveredSamples().end(), x) != rule.getCoveredSamples().end();
+                    // find index of coveredSamples which is x (x is element of notCoveredSamples), find returns last if x not found
                     // -> Removes x if it appears on coveredSamples (found before the end of coveredSamples)
                   }),
               notCoveredSamples.end());
@@ -804,117 +961,45 @@ int fidexGloRules(const string &command) {
         }
       }
 
-      std::cout << endl;
+      cout << endl;
 
-      std::cout << "Number of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
+      cout << "Number of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
       if (nbRulesNotFound > 0) {
-        std::cout << "Number of rules not found : " << nbRulesNotFound << endl;
+        cout << "Number of rules not found : " << nbRulesNotFound << endl;
       }
 
-      std::cout << "We created " << nbRules << " rules." << endl
-                << endl;
+      cout << "We created " << nbRules << " rules." << endl
+           << endl;
 
       e2 = clock();
       temps3 = (float)(e2 - e1) / CLOCKS_PER_SEC;
-      std::cout << "\nTime third heuristic = " << temps3 << " sec\n"
-                << std::endl;
+      cout << "\nTime third heuristic = " << temps3 << " sec\n"
+           << endl;
     }
 
     //--------------------------------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------------------------------
 
-    std::cout << "Rules extraction..." << endl
-              << endl;
+    cout << "Rules extraction..."
+         << endl
+         << endl;
 
-    double meanCovSize = 0;
-    double meanNbAntecedents = 0;
-
-    // Export rules
-    string inequality;
-    string line;
-    vector<string> lines;
-    // Sort the rules(RulesIds) depending of their covering size
-    vector<int> RulesIds(nbRules);                          // Rules indexes
-    std::iota(std::begin(RulesIds), std::end(RulesIds), 0); // Vector from 0 to nbRules-1
-    std::sort(RulesIds.begin(), RulesIds.end(), [&chosenRules](int ruleBest, int ruleWorst) {
-      return std::get<1>(chosenRules[ruleWorst]).size() < std::get<1>(chosenRules[ruleBest]).size();
+    sort(chosenRules.begin(), chosenRules.end(), [&chosenRules](Rule r1, Rule r2) {
+      return r1.getCoveredSamples().size() > r2.getCoveredSamples().size();
     });
-    lines.emplace_back("\n");
-    for (int c = 0; c < nbRules; c++) { // each rule
-      int r = RulesIds[c];
-      meanCovSize += static_cast<double>(get<1>(chosenRules[r]).size());
-      meanNbAntecedents += static_cast<double>(get<0>(chosenRules[r]).size());
-      line = "Rule " + std::to_string(c + 1) + ": ";
-      for (const auto &rule : get<0>(chosenRules[r])) { // each antecedant
-        if (get<1>(rule) == 1) {                        // check inequality
-          inequality = ">=";
-        } else {
-          inequality = "<";
-        }
-        if (attributFileInit) {
-          line += attributeNames[get<0>(rule)];
-        } else {
-          line += "X" + std::to_string(get<0>(rule));
-        }
-        line += inequality + formattingDoubleToString(get<2>(rule)) + " ";
-      }
-      // class of the rule
-      if (hasClassNames) {
-        line += "-> " + classNames[std::get<2>(chosenRules[r])];
-      } else {
-        line += "-> class " + std::to_string(std::get<2>(chosenRules[r]));
-      }
-      line += "\n";
-      lines.push_back(line);
-      line = "Train Covering size : " + std::to_string(std::get<1>(chosenRules[r]).size()) + "\n"; // Covering size
-      lines.push_back(line);
-      line = "Train Fidelity : 1\n"; // Rule fidelity
-      lines.push_back(line);
-      line = "Train Accuracy : " + formattingDoubleToString(std::get<3>(chosenRules[r])) + "\n"; // Rule accuracy
-      lines.push_back(line);
-      line = "Train Confidence : " + formattingDoubleToString(std::get<4>(chosenRules[r])) + "\n"; // Rule confidence
 
-      lines.push_back(line);
-      lines.emplace_back("\n");
-    }
+    tuple<int, int> stats = writeRulesFile(rulesFile, chosenRules, &attributeNames, &classNames);
 
-    meanCovSize /= nbRules;
-    meanNbAntecedents /= nbRules;
+    cout << "Mean covering size per rule : " << get<0>(stats) << endl;
+    cout << "Mean number of antecedents per rule : " << get<1>(stats) << endl;
 
-    ofstream file2(rulesFile);
-    if (file2.is_open()) {
-      // We add to the file the number of rules, the mean covering per rule and the mean number of antecedents per rule
-      string startLine = "Number of rules : " + std::to_string(nbRules) + ", mean sample covering number per rule : " + std::to_string(meanCovSize) + ", mean number of antecedents per rule : " + std::to_string(meanNbAntecedents) + "\n";
-      file2 << startLine;
-      string secondLine = "The name of the attributes and classes are not specified\n";
-      if (attributFileInit) {
-        secondLine = "The name of the attributes is specified\n";
-        if (hasClassNames) {
-          secondLine = "The name of the attributes and classes are specified\n";
-        }
-      }
-      file2 << secondLine;
-      for (const auto &l : lines) {
-        file2 << l;
-      }
+    const auto end = high_resolution_clock::now();
+    duration<double> diff = end - start;
+    cout << "\nFull execution time = " << diff.count() << " sec" << endl;
 
-      file2.close();
-
-    } else {
-      throw CannotOpenFileError("Error : Couldn't open rules extraction file " + std::string(rulesFile) + ".");
-    }
-
-    std::cout << "Mean covering size per rule : " << meanCovSize << endl;
-    std::cout << "Mean number of antecedents per rule : " << meanNbAntecedents << endl;
-
-    t2 = clock();
-    temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
-    std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
-
-    std::cout.rdbuf(cout_buff); // reset to standard output again
-
+    cout.rdbuf(cout_buff); // reset to standard output again
   } catch (const char *msg) {
-    std::cout.rdbuf(cout_buff);
+    cout.rdbuf(cout_buff);
     cerr << msg << endl;
     return -1;
   }
