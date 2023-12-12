@@ -863,7 +863,7 @@ int fidexGloRules(const string &command) {
         ite = set_difference(notCoveredSamples.begin(), notCoveredSamples.end(), currentRule.getCoveredSamples().begin(), currentRule.getCoveredSamples().end(), notCoveredSamples.begin()); // vectors have to be sorted
         notCoveredSamples.resize(ite - notCoveredSamples.begin());
 
-        // If the rule coveres a new sample
+        // If the rule covers a new sample
         if (ancienNotCoveringSize > notCoveredSamples.size()) {
           nbRules += 1;
           chosenRules.push_back(currentRule); // add best rule with maximum covering
