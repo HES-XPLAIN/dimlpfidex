@@ -1,5 +1,9 @@
 #include "fidexGloRulesFct.h"
 
+/**
+ * @brief shows all program arguments and details into the terminal.
+ *
+ */
 void showRulesParams() {
   cout << "\n-------------------------------------------------\n"
        << endl;
@@ -28,13 +32,24 @@ void showRulesParams() {
   cout << "-Q <number of stairs in staircase activation function (50 by default)>" << endl;
   cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << endl;
   cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << endl;
+  cout << "-p <number of threads used for computing the algorithm (default=1, this means by default its a sequential execution)>" << endl;
   cout << "-z <seed (0=random, default)>";
 
   cout << "\n-------------------------------------------------\n"
        << endl;
 }
 
-tuple<int, int> writeRulesFile(string filename, const vector<Rule> rules, bool hasConfidence, const vector<string> *attributes = NULL, const vector<string> *classes = NULL) {
+/**
+ * @brief writes a list of rules into a given file. Returns tuple of two integers representing the mean covering size and the mean number of antecedants.
+ *
+ * @param filename name of the file to be written/overwritten.
+ * @param rules list of Rules object to be written in "filename".
+ * @param hasConfidence whether or not Rule's confidence is written in file.
+ * @param attributes list of the attributes names, used to write Rules's Antecedants with attributes explicit name instead of a "X" variable.
+ * @param classes list of class names, used to write Rule's class with class explicit name instead of its numerical representation.
+ * @return tuple<int, int>
+ */
+tuple<int, int> writeRulesFile(string filename, const vector<Rule> rules, bool hasConfidence, const vector<string> *attributes, const vector<string> *classes) {
   // TODO error check
   int counter = 1;
   int nbRules = rules.size();
@@ -89,6 +104,12 @@ tuple<int, int> writeRulesFile(string filename, const vector<Rule> rules, bool h
   return make_tuple(meanCovSize, meanNbAntecedents);
 }
 
+/**
+ * @brief Computes the fidex global algorithm.
+ *
+ * @param command list of arguments included by the user.
+ * @return int
+ */
 int fidexGloRules(const string &command) {
   // Save buffer where we output results
   ofstream ofs;
@@ -153,7 +174,7 @@ int fidexGloRules(const string &command) {
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
     double dropoutDimParam = 0.5;
     int maxFailedAttempts = 30;
-    int nbThreadsUsed = omp_get_num_procs();
+    int nbThreadsUsed = 1;
 
     bool hasDecisionThreshold = false;
     double decisionThreshold = -1;
@@ -271,7 +292,7 @@ int fidexGloRules(const string &command) {
 
         case 'p':
           if (CheckPositiveInt(arg) && atoi(arg) >= 1) {
-            if (atoi(arg) < nbThreadsUsed) {
+            if (atoi(arg) <= omp_get_num_procs()) {
               nbThreadsUsed = atoi(arg);
             }
           } else {
@@ -645,6 +666,11 @@ int fidexGloRules(const string &command) {
           ruleCreated = false;
           counterFailed = 0; // If we can't find a good rule after a lot of tries
           cnt += 1;
+
+          if (omp_get_thread_num() == 0 && ((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && !consoleFileInit) {
+            cout << "Processing : " << int((double(idSample) / (nbDatas / nbThreadsUsed)) * 100) << "%\r";
+            std::cout.flush();
+          }
 
           while (!ruleCreated) {
             ruleCreated = exp.fidex(
