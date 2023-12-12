@@ -37,7 +37,7 @@ Rule Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
     antecedants.push_back(Antecedant(attribut, inequalityBool, hypValue));
   }
 
-  return Rule(antecedants, hyperbox->getCoveredSamples(), mainSamplePred, ruleAccuracy, ruleConfidence);
+  return Rule(antecedants, hyperbox->getCoveredSamples(), mainSamplePred, hyperbox->getFidelity(), ruleAccuracy, ruleConfidence);
 }
 
 double Hyperspace::computeRuleAccuracy(vector<int> *trainPreds, vector<int> *trainTrueClass) const { // Percentage of correct model prediction on samples covered by the rule
