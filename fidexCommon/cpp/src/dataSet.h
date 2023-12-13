@@ -4,6 +4,7 @@
 #include "checkFun.h"
 #include "errorHandler.h"
 #include <algorithm>
+#include <cmath>
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -24,6 +25,9 @@ private:
   bool hasClasses = false;
   bool hasWeights = false;
 
+  double decisionThreshold = -1;
+  int indexPositiveClass = -1;
+
   int nbClasses = -1;
   int nbPreds = -1;
   int nbAttributes = -1;
@@ -32,7 +36,7 @@ private:
   int nbPredData = -1;
 
   void setDataLine(const std::string &line, const char *dataFile);
-  void setPredLine(const std::string &line, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *dataFile);
+  void setPredLine(const std::string &line, const char *dataFile);
   void setClassLine(const std::string &line, const char *dataFile);
 
   void checkDatas() const;
@@ -44,12 +48,12 @@ private:
 
 public:
   explicit DataSetFid(const std::string &name) : datasetName(name){};
-  DataSetFid(const std::string &name, const char *dataFile, const char *predFile, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *trueClassFile = nullptr);
-  DataSetFid(const std::string &name, const char *dataFile, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass); // dataFile with data, predictions and maybe classes
+  DataSetFid(const std::string &name, const char *dataFile, const char *predFile, double decisionThresh, int indexPositiveCl, const char *trueClassFile = nullptr);
+  DataSetFid(const std::string &name, const char *dataFile, double decisionThresh, int indexPositiveCl); // dataFile with data, predictions and maybe classes
   explicit DataSetFid(const std::string &name, const char *weightFile);
 
   void setDataFromFile(const char *dataFile);
-  void setPredFromFile(bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *predFile);
+  void setPredFromFile(double decisionThreshold, int indexPositiveClass, const char *predFile);
   void setClassFromFile(const char *classFile);
 
   std::vector<std::vector<double>> *getDatas();

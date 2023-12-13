@@ -486,13 +486,13 @@ int fidexGlo(const string &command) {
 
     std::unique_ptr<DataSetFid> testDatas;
     if (!testSamplesPredFileInit) { // If we have only one test data file with data and prediction
-      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
+      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, decisionThreshold, indexPositiveClass));
       testSamplesValues = (*testDatas->getDatas());
       testSamplesPreds = (*testDatas->getPredictions());
       testSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
 
     } else { // We have a different file for test predictions
-      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, testSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
+      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, testSamplesPredFile, decisionThreshold, indexPositiveClass));
       testSamplesValues = (*testDatas->getDatas());
       testSamplesPreds = (*testDatas->getPredictions());
       testSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());

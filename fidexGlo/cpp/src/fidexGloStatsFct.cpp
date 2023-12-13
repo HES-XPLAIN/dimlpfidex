@@ -302,7 +302,7 @@ int fidexGloStats(const string &command) {
 
     // Get test data
 
-    std::unique_ptr<DataSetFid> testDatas(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, testDataFileTrueClass));
+    std::unique_ptr<DataSetFid> testDatas(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, decisionThreshold, indexPositiveClass, testDataFileTrueClass));
 
     vector<vector<double>> *testData = testDatas->getDatas();
     vector<int> *testPreds = testDatas->getPredictions();
