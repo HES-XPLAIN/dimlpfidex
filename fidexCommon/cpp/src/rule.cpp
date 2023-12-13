@@ -47,7 +47,7 @@ string Rule::toString(const vector<string> *attributes, const vector<string> *cl
       result << "<";
     }
 
-    result << to_string(a.gethyperlocus()) << " ";
+    result << to_string(a.getValue()) << " ";
   }
 
   if (classes && !classes->empty()) {

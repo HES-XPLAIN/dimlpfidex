@@ -7,27 +7,27 @@ using namespace std;
 class Antecedant {
 private:
   int _attribute;
-  bool _inequality;
-  double _hyperlocus;
+  bool _inequality; // true if attribute >= value false if attribute < value
+  double _value;
 
   // PRIVATE SETTERS
   void setAttribute(int attribute) { _attribute = attribute; }
   void setInequality(bool inequality) { _inequality = inequality; }
-  void setHyperlocus(double hyperlocus) { _hyperlocus = hyperlocus; }
+  void setHyperlocus(double value) { _value = value; }
 
 public:
   Antecedant() = default;
-  Antecedant(int attribute, bool inequality, double hyperlocus);
+  Antecedant(int attribute, bool inequality, double value);
 
   // GETTERS
   int getAttribute() const { return _attribute; }
   bool getInequality() const { return _inequality; }
-  double gethyperlocus() const { return _hyperlocus; }
+  double getValue() const { return _value; }
 };
 
 // OPERATOR OVERLOAD TO EASE PRINTING PURPOSES
 inline ostream &operator<<(ostream &stream, const Antecedant &antecedant) {
-  return stream << " " << antecedant.getAttribute() << " " << antecedant.getInequality() << " " << antecedant.gethyperlocus() << " ";
+  return stream << " " << antecedant.getAttribute() << " " << antecedant.getInequality() << " " << antecedant.getValue() << " ";
 }
 
 #endif
