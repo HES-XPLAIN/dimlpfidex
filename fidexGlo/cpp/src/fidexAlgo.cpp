@@ -1,30 +1,31 @@
 #include "fidexAlgo.h"
-#include <omp.h>
 
 FidexAlgo::FidexAlgo() = default;
 
 // Different mains:
 
 // OPENMP: hyperspace is a shared ressource that might produce concurrency errors
-bool FidexAlgo::fidex(
-    Rule &rule,
-    vector<vector<double>> *trainData,
-    vector<int> *trainPreds,
-    vector<vector<double>> *trainOutputValuesPredictions,
-    vector<int> *trainTrueClass,
-    vector<double> *mainSampleValues,
-    int mainSamplePred,
-    Hyperspace *hyperspace,
-    const int nbIn,
-    const int nbAttributs,
-    int itMax,
-    int minNbCover,
-    double minFidelity,
-    bool dropoutDim,
-    double dropoutDimParam,
-    bool dropoutHyp,
-    double dropoutHypParam,
-    mt19937 gen) const {
+bool FidexAlgo::fidex(Rule &rule,
+                      DataSetFid *dataset,
+                      Hyperspace *hyperspace,
+                      int idSample,
+                      const int nbInputs,
+                      int itMax,
+                      int minNbCover,
+                      double minFidelity,
+                      double dropoutDim,
+                      double dropoutHyp,
+                      mt19937 gen) const {
+
+  // Get diverse elements of the provided dataset
+  int nbDatas = dataset->getNbSamples();
+  int nbAttributes = dataset->getNbAttributes();
+  vector<vector<double>> *trainData = dataset->getDatas();
+  vector<int> *trainPreds = dataset->getPredictions();
+  vector<vector<double>> *trainOutputValuesPredictions = dataset->getOutputValuesPredictions();
+  vector<int> *trainTrueClass = dataset->getClasses();
+  vector<double> *mainSampleValues = &(*trainData)[idSample];
+  int mainSamplePred = (*trainPreds)[idSample];
 
   // Initialize uniform distribution
   uniform_real_distribution<double> dis(0.0, 1.0);
@@ -51,22 +52,22 @@ bool FidexAlgo::fidex(
     int minHyp = -1; // Index of first hyperplan without any change of the best hyperplan
     int maxHyp = -1;
     // Randomize dimensions
-    vector<int> dimensions(nbIn);
+    vector<int> dimensions(nbInputs);
     iota(begin(dimensions), end(dimensions), 0); // Vector from 0 to nbIn-1
     shuffle(begin(dimensions), end(dimensions), gen);
 
     vector<int> currentCovSamp;
-    for (int d = 0; d < nbIn; d++) {
+    for (int d = 0; d < nbInputs; d++) {
       if (bestHyperbox->getFidelity() >= minFidelity) {
         break;
       }
 
       dimension = dimensions[d];
-      attribut = dimension % nbAttributs;
+      attribut = dimension % nbAttributes;
       mainSampleValue = (*mainSampleValues)[attribut];
 
       // Test if we dropout this dimension
-      if (dropoutDim && dis(gen) < dropoutDimParam) {
+      if (dropoutDim > 0.0f && dis(gen) < dropoutDim) {
         continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
       }
       bool maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
@@ -78,7 +79,7 @@ bool FidexAlgo::fidex(
       for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
 
         // Test if we dropout this hyperplan
-        if (dropoutHyp && dis(gen) < dropoutHypParam) {
+        if (dropoutHyp > 0.0f && dis(gen) < dropoutHyp) {
           continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
         }
 
@@ -130,13 +131,6 @@ bool FidexAlgo::fidex(
 
   // Compute rule accuracy
   double ruleAccuracy;
-  // #pragma omp critical
-  // {
-  //   for (int i : *trainTrueClass) {
-  //     cout << i << ", ";
-  //   }
-  //   cout << endl << "trainPreds size: " << trainPreds->size() << " trainTrueClass size: " << trainTrueClass->size() << endl;
-  // }
 
   ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass); // Percentage of correct model prediction on samples covered by the rule
 
