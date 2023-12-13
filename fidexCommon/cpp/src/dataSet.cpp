@@ -1,9 +1,17 @@
 #include "dataSet.h"
 using namespace std;
 
-/*
-Creates dataset using 3 separate datafiles : data, predictions and classes(not mendatory)
-*/
+/**
+ * @brief Construct a new DataSetFid object using three separate datafiles : datas, predictions and maybe classes(not mendatory)
+ *
+ * @param name string containing the name of the dataSet
+ * @param dataFile const char* data file name
+ * @param predFile const char* predicion file name
+ * @param hasDecisionThreshold boolean that checks if a decision threshold is given
+ * @param decisionThreshold double indicating the decision threshold, useful when choosing the decision
+ * @param indexPositiveClass integer corresponding to the index of the positive class for which we have the decision threshold
+ * @param trueClassFile const char* class file name
+ */
 DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *predFile, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *trueClassFile) : datasetName(name) {
 
   // Get data
@@ -18,9 +26,15 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *pre
   checkDatas();
 }
 
-/*
-Creates dataset using 1 datafiles containing datas, predictions and classes(not mendatory)
-*/
+/**
+ * @brief Construct a new DataSetFid object using a datafile containing datas, predictions and maybe classes(not mendatory)
+ *
+ * @param name string containing the name of the dataSet
+ * @param dataFile const char* data file name containing datas, predictions and maybe classes(not mendatory)
+ * @param hasDecisionThreshold boolean that checks if a decision threshold is given
+ * @param decisionThreshold double indicating the decision threshold, useful when choosing the decision
+ * @param indexPositiveClass integer corresponding to the index of the positive class for which we have the decision threshold
+ */
 DataSetFid::DataSetFid(const string &name, const char *dataFile, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass) : datasetName(name), hasDatas(true), hasPreds(true) {
   fstream fileDta;
   fileDta.open(dataFile, ios::in); // Read data file
@@ -91,9 +105,12 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, bool hasDecisio
   checkDatas();
 }
 
-/*
-Creates dataset using 1 a weights file
-*/
+/**
+ * @brief Construct a new DataSetFid object using a weights file
+ *
+ * @param name string containing the name of the dataSet
+ * @param weightFile const char* weight file name
+ */
 DataSetFid::DataSetFid(const std::string &name, const char *weightFile) : datasetName(name), hasWeights(true) {
 
   // Get weights
@@ -121,9 +138,11 @@ DataSetFid::DataSetFid(const std::string &name, const char *weightFile) : datase
   fileWts.close(); // close file
 }
 
-/*
-Add datas from dataFile in the dataset
-*/
+/**
+ * @brief Add datas from dataFile in the dataset
+ *
+ * @param dataFile const char* data file name
+ */
 void DataSetFid::setDataFromFile(const char *dataFile) {
   hasDatas = true;
   string line;
@@ -146,9 +165,14 @@ void DataSetFid::setDataFromFile(const char *dataFile) {
   checkDatas();
 }
 
-/*
-Add predictions from predFile in the dataset
-*/
+/**
+ * @brief Add predictions in the dataset using a prediction file
+ *
+ * @param hasDecisionThreshold boolean that checks if a decision threshold is given
+ * @param decisionThreshold double indicating the decision threshold, useful when choosing the decision
+ * @param indexPositiveClass integer corresponding to the index of the positive class for which we have the decision threshold
+ * @param predFile const char* prediction file name
+ */
 void DataSetFid::setPredFromFile(bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *predFile) {
   hasPreds = true;
   string line;
@@ -171,9 +195,11 @@ void DataSetFid::setPredFromFile(bool hasDecisionThreshold, double decisionThres
   checkDatas();
 }
 
-/*
-Add classes from classFile in the dataset
-*/
+/**
+ * @brief Add classes from classFile in the dataset
+ *
+ * @param classFile const char* file name containing classes in one hot format
+ */
 void DataSetFid::setClassFromFile(const char *classFile) {
   hasClasses = true;
   string line;
@@ -196,9 +222,12 @@ void DataSetFid::setClassFromFile(const char *classFile) {
   checkDatas();
 }
 
-/*
-Read data line from dataFile and save it in datas
-*/
+/**
+ * @brief Read data line from data file and save it in datas
+ *
+ * @param line string containing one line of the data file
+ * @param dataFile const char* data file name
+ */
 void DataSetFid::getDataLine(const string &line, const char *dataFile) {
   std::stringstream myLine(line);
   double valueData;
@@ -224,9 +253,15 @@ void DataSetFid::getDataLine(const string &line, const char *dataFile) {
   datas.push_back(valuesData);
 }
 
-/*
-Read prediction line from predFile and save it in predictions
-*/
+/**
+ * @brief Read prediction line from prediction file and save it in predictions
+ *
+ * @param line string containing one line of the prediction file
+ * @param hasDecisionThreshold boolean that checks if a decision threshold is given
+ * @param decisionThreshold double indicating the decision threshold, useful when choosing the decision
+ * @param indexPositiveClass integer corresponding to the index of the positive class for which we have the decision threshold
+ * @param predFile const char* prediction file name
+ */
 void DataSetFid::getPredLine(const string &line, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *predFile) {
 
   std::stringstream myLine(line);
@@ -262,9 +297,12 @@ void DataSetFid::getPredLine(const string &line, bool hasDecisionThreshold, doub
   }
 }
 
-/*
-Read class line from classFile and save it in trueClasses
-*/
+/**
+ * @brief Read class line from classFile and save it in trueClasses
+ *
+ * @param line string containing one line of the class file
+ * @param classFile const char* class file name containing classes in one hot format
+ */
 void DataSetFid::getClassLine(const string &line, const char *classFile) {
   std::stringstream myLine(line);
   float valueClass;
@@ -301,9 +339,11 @@ void DataSetFid::getClassLine(const string &line, const char *classFile) {
   }
 }
 
-/*
-Return datas
-*/
+/**
+ * @brief Return the samples' data
+ *
+ * @return vector<vector<double>>*
+ */
 vector<vector<double>> *DataSetFid::getDatas() {
   if (hasDatas) {
     return &datas;
@@ -312,9 +352,11 @@ vector<vector<double>> *DataSetFid::getDatas() {
   }
 }
 
-/*
-Return classes
-*/
+/**
+ * @brief Return the classes of the samples
+ *
+ * @return vector<int>*
+ */
 vector<int> *DataSetFid::getClasses() {
   if (hasClasses) {
     return &trueClasses;
@@ -323,16 +365,21 @@ vector<int> *DataSetFid::getClasses() {
   }
 }
 
-/*
-Return whether the dataset contains classes
-*/
+/**
+ * @brief Return whether the dataset contains classes
+ *
+ * @return true
+ * @return false
+ */
 bool DataSetFid::getHasClasses() const {
   return hasClasses;
 }
 
-/*
-Return predictions
-*/
+/**
+ * @brief Return the predictions of the samples
+ *
+ * @return vector<int>*
+ */
 vector<int> *DataSetFid::getPredictions() {
   if (hasPreds) {
     return &predictions;
@@ -341,9 +388,11 @@ vector<int> *DataSetFid::getPredictions() {
   }
 }
 
-/*
-Return prediction output values
-*/
+/**
+ * @brief Return the prediction output values of the samples
+ *
+ * @return vector<vector<double>>*
+ */
 vector<vector<double>> *DataSetFid::getOutputValuesPredictions() {
   if (hasPreds) {
     return &outputValuesPredictions;
@@ -352,9 +401,11 @@ vector<vector<double>> *DataSetFid::getOutputValuesPredictions() {
   }
 }
 
-/*
-Return the number of classes in the dataset
-*/
+/**
+ * @brief Return the number of classes in the dataset
+ *
+ * @return int
+ */
 int DataSetFid::getNbClasses() const {
   if (hasClasses) {
     return nbClasses;
@@ -365,9 +416,11 @@ int DataSetFid::getNbClasses() const {
   }
 }
 
-/*
-Return the number of attributes in the dataset
-*/
+/**
+ * @brief Return the number of attributes in the dataset
+ *
+ * @return int
+ */
 int DataSetFid::getNbAttributes() const {
   if (hasDatas) {
     return nbAttributes;
@@ -376,9 +429,11 @@ int DataSetFid::getNbAttributes() const {
   }
 }
 
-/*
-Return the number of samples in the dataset
-*/
+/**
+ * @brief Return the number of samples in the dataset
+ *
+ * @return int
+ */
 int DataSetFid::getNbSamples() const {
   if (hasDatas) {
     return nbSamples;
@@ -387,9 +442,11 @@ int DataSetFid::getNbSamples() const {
   }
 }
 
-/*
-Return weights
-*/
+/**
+ * @brief Return the weights
+ *
+ * @return vector<vector<double>>
+ */
 vector<vector<double>> DataSetFid::getWeights() const {
   if (hasWeights) {
     return weights;
@@ -398,9 +455,11 @@ vector<vector<double>> DataSetFid::getWeights() const {
   }
 }
 
-/*
-Return biais of first layer
-*/
+/**
+ * @brief Return the biais of first layer
+ *
+ * @return vector<double>
+ */
 vector<double> DataSetFid::getInBiais() const {
   if (hasWeights) {
     return weights[0];
@@ -409,9 +468,11 @@ vector<double> DataSetFid::getInBiais() const {
   }
 }
 
-/*
-Return weights of first layer
-*/
+/**
+ * @brief Return the weights of first layer
+ *
+ * @return vector<double>
+ */
 vector<double> DataSetFid::getInWeights() const {
   if (hasWeights) {
     return weights[1];
@@ -420,9 +481,10 @@ vector<double> DataSetFid::getInWeights() const {
   }
 }
 
-/*
-Check for errors in the dataset
-*/
+/**
+ * @brief Check for errors in the dataset
+ *
+ */
 void DataSetFid::checkDatas() const {
   if (hasDatas && nbSamples < 1) {
     throw FileContentError("Error in dataset " + datasetName + " : There is no data samples.");
@@ -458,9 +520,11 @@ void DataSetFid::checkDatas() const {
   }
 }
 
-/*
-Add attributes from attributeFile in the dataset
-*/
+/**
+ * @brief Add attributes and eventually classes from attribute file in the dataset
+ *
+ * @param attributeFile const char* attribute file name
+ */
 void DataSetFid::setAttribute(const char *attributeFile) {
   hasAttributes = true;
   // Get attributes
@@ -516,9 +580,11 @@ void DataSetFid::setAttribute(const char *attributeFile) {
   fileAttr.close(); // close file
 }
 
-/*
-Return attribute names
-*/
+/**
+ * @brief Return attribute names
+ *
+ * @return vector<string>*
+ */
 vector<string> *DataSetFid::getAttributeNames() {
   if (hasAttributes) {
     return &attributeNames;
@@ -527,9 +593,11 @@ vector<string> *DataSetFid::getAttributeNames() {
   }
 }
 
-/*
-Return class names
-*/
+/**
+ * @brief Return class names
+ *
+ * @return vector<string>*
+ */
 vector<string> *DataSetFid::getClassNames() {
   if (hasClassNames) {
     return &classNames;
@@ -538,9 +606,12 @@ vector<string> *DataSetFid::getClassNames() {
   }
 }
 
-/*
-Return whether the dataset contains classNames
-*/
+/**
+ * @brief Return whether the dataset contains classNames
+ *
+ * @return true
+ * @return false
+ */
 bool DataSetFid::getHasClassNames() const {
   return hasClassNames;
 }
