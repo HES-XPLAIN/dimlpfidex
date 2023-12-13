@@ -1,5 +1,4 @@
 #include "fidexAlgo.h"
-#include <omp.h>
 
 FidexAlgo::FidexAlgo() = default;
 
