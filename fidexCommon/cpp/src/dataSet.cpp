@@ -7,12 +7,18 @@ using namespace std;
  * @param name string containing the name of the dataSet
  * @param dataFile const char* data file name
  * @param predFile const char* predicion file name
- * @param hasDecisionThreshold boolean that checks if a decision threshold is given
- * @param decisionThreshold double indicating the decision threshold, useful when choosing the decision
+ * @param decisionThresh double indicating the decision threshold, useful when choosing the decision
  * @param indexPositiveClass integer corresponding to the index of the positive class for which we have the decision threshold
  * @param trueClassFile const char* class file name
  */
-DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *predFile, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *trueClassFile) : datasetName(name) {
+DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *predFile, double decisionThresh, int indexPositiveCl, const char *trueClassFile) : datasetName(name) {
+
+  if (decisionThresh != -1 && !std::isnan(decisionThresh)) {
+    decisionThreshold = decisionThresh;
+  }
+  if (indexPositiveCl != -1 && !std::isnan(indexPositiveCl)) {
+    indexPositiveClass = indexPositiveCl;
+  }
 
   // Get data
   setDataFromFile(dataFile);
@@ -21,7 +27,7 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *pre
     setClassFromFile(trueClassFile);
   }
   // Get predictions
-  setPredFromFile(hasDecisionThreshold, decisionThreshold, indexPositiveClass, predFile);
+  setPredFromFile(decisionThreshold, indexPositiveClass, predFile);
 
   checkDatas();
 }
@@ -31,11 +37,17 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *pre
  *
  * @param name string containing the name of the dataSet
  * @param dataFile const char* data file name containing datas, predictions and maybe classes(not mendatory)
- * @param hasDecisionThreshold boolean that checks if a decision threshold is given
- * @param decisionThreshold double indicating the decision threshold, useful when choosing the decision
+ * @param decisionThres double indicating the decision threshold, useful when choosing the decision
  * @param indexPositiveClass integer corresponding to the index of the positive class for which we have the decision threshold
  */
-DataSetFid::DataSetFid(const string &name, const char *dataFile, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass) : datasetName(name), hasDatas(true), hasPreds(true) {
+DataSetFid::DataSetFid(const string &name, const char *dataFile, double decisionThresh, int indexPositiveCl) : datasetName(name), hasDatas(true), hasPreds(true) {
+  if (decisionThresh != -1 && !std::isnan(decisionThresh)) {
+    decisionThreshold = decisionThresh;
+  }
+  if (indexPositiveCl != -1 && !std::isnan(indexPositiveCl)) {
+    indexPositiveClass = indexPositiveCl;
+  }
+
   fstream fileDta;
   fileDta.open(dataFile, ios::in); // Read data file
   if (fileDta.fail()) {
@@ -64,7 +76,7 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, bool hasDecisio
     // Get predictions
     getline(fileDta, line);
     if (!checkStringEmpty(line)) {
-      setPredLine(line, hasDecisionThreshold, decisionThreshold, indexPositiveClass, dataFile);
+      setPredLine(line, dataFile);
     } else {
       while (!fileDta.eof()) {
         getline(fileDta, line);
@@ -171,12 +183,27 @@ void DataSetFid::setDataFromFile(const char *dataFile) {
 /**
  * @brief Add predictions in the dataset using a prediction file
  *
- * @param hasDecisionThreshold boolean that checks if a decision threshold is given
- * @param decisionThreshold double indicating the decision threshold, useful when choosing the decision
+ * @param decisionThresh double indicating the decision threshold, useful when choosing the decision
  * @param indexPositiveClass integer corresponding to the index of the positive class for which we have the decision threshold
  * @param predFile const char* prediction file name
  */
-void DataSetFid::setPredFromFile(bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *predFile) {
+void DataSetFid::setPredFromFile(double decisionThresh, int indexPositiveCl, const char *predFile) {
+
+  if (decisionThresh != -1 && !std::isnan(decisionThresh)) {
+    if (decisionThreshold != -1) {
+      decisionThreshold = decisionThresh;
+    } else {
+      throw InternalError("Error in dataset " + datasetName + " : decision threshold has already been given to this dataset, impossible to add again");
+    }
+  }
+  if (indexPositiveCl != -1 && !std::isnan(indexPositiveCl)) {
+    if (indexPositiveClass != -1) {
+      indexPositiveClass = indexPositiveCl;
+    } else {
+      throw InternalError("Error in dataset " + datasetName + " : index of positive class has already been given to this dataset, impossible to add again");
+    }
+  }
+
   if (hasPreds == true) {
     throw InternalError("Error in dataset " + datasetName + " : predictions have already been given to this dataset, impossible to add again");
   }
@@ -192,7 +219,7 @@ void DataSetFid::setPredFromFile(bool hasDecisionThreshold, double decisionThres
   while (!filePrd.eof()) {
     getline(filePrd, line);
     if (!checkStringEmpty(line)) {
-      setPredLine(line, hasDecisionThreshold, decisionThreshold, indexPositiveClass, predFile);
+      setPredLine(line, predFile);
     }
   }
 
@@ -266,12 +293,9 @@ void DataSetFid::setDataLine(const string &line, const char *dataFile) {
  * @brief Read prediction line from prediction file and save it in predictions
  *
  * @param line string containing one line of the prediction file
- * @param hasDecisionThreshold boolean that checks if a decision threshold is given
- * @param decisionThreshold double indicating the decision threshold, useful when choosing the decision
- * @param indexPositiveClass integer corresponding to the index of the positive class for which we have the decision threshold
  * @param predFile const char* prediction file name
  */
-void DataSetFid::setPredLine(const string &line, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *predFile) {
+void DataSetFid::setPredLine(const string &line, const char *predFile) {
 
   std::stringstream myLine(line);
   double valuePred;
@@ -295,11 +319,11 @@ void DataSetFid::setPredLine(const string &line, bool hasDecisionThreshold, doub
     throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(predFile) + ", there are not the same number of predictions for each sample.");
   }
 
-  if (hasDecisionThreshold && indexPositiveClass >= nbPreds) {
+  if (decisionThreshold >= 0 && indexPositiveClass >= nbPreds) {
     throw CommandArgumentException("Error in dataset " + datasetName + " : The index of positive class cannot be greater or equal to the number of classes (" + to_string(nbPreds) + ")");
   }
 
-  if (hasDecisionThreshold && valuesPred[indexPositiveClass] >= decisionThreshold) {
+  if (decisionThreshold >= 0 && valuesPred[indexPositiveClass] >= decisionThreshold) {
     predictions.push_back(indexPositiveClass);
   } else {
     predictions.push_back(static_cast<int>(std::max_element(valuesPred.begin(), valuesPred.end()) - valuesPred.begin()));

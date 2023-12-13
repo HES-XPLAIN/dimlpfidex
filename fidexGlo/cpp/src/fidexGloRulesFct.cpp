@@ -494,7 +494,7 @@ int fidexGloRules(const string &command) {
 
     cout << "Import files..." << endl;
 
-    std::unique_ptr<DataSetFid> trainDatas(new DataSetFid("trainDatas from FidexGloRules", trainDataFile, trainDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
+    std::unique_ptr<DataSetFid> trainDatas(new DataSetFid("trainDatas from FidexGloRules", trainDataFile, trainDataFilePred, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
 
     vector<vector<double>> *trainData = trainDatas->getDatas();
     vector<int> *trainPreds = trainDatas->getPredictions();
