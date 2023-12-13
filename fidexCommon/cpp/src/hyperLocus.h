@@ -11,9 +11,7 @@
 #include <sstream>
 #include <string.h>
 
-using namespace std;
-
-vector<vector<double>> calcHypLocus(const char *dataFileWeights, int nbQuantLevels, double hiKnot, bool display = true);
-vector<vector<double>> calcHypLocus(const char *rulesFile, const size_t nbAttributes, const vector<string> &attributeNames = {});
+std::vector<std::vector<double>> calcHypLocus(const char *dataFileWeights, int nbQuantLevels, double hiKnot, bool display = true);
+std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, const int nbAttributes, const std::vector<std::string> &attributeNames = {});
 
 #endif

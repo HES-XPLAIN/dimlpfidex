@@ -56,6 +56,13 @@ int CheckFloatFid(const char *str)
 }
 
 ////////////////////////////////////////////////////////
+bool checkBool(std::string input) {
+  std::transform(input.begin(), input.end(), input.begin(),
+                 [](unsigned char c) { return std::tolower(c); });
+  return (input == "true" || input == "false" || input == "0" || input == "1");
+}
+
+////////////////////////////////////////////////////////
 
 bool checkStringEmpty(std::string line) {
   if (line.length() == 0) {
@@ -66,4 +73,13 @@ bool checkStringEmpty(std::string line) {
     }
     return true;
   }
+}
+
+///////////////////////////////////////////////////////
+
+std::string formattingDoubleToString(double number) {
+  std::string str = std::to_string(number);
+  str.erase(str.find_last_not_of('0') + 1, std::string::npos);
+  str.erase(str.find_last_not_of('.') + 1, std::string::npos);
+  return str;
 }

@@ -1,6 +1,7 @@
 #ifndef HYPERSPACEGLO_H
 #define HYPERSPACEGLO_H
 
+// #include "../../../fidexCommon/cpp/src/antecedant.h"
 #include "../../../fidexCommon/cpp/src/errorHandler.h"
 #include "../../../fidexCommon/cpp/src/hyperbox.h"
 #include "../../../fidexCommon/cpp/src/rule.h"

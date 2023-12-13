@@ -32,7 +32,7 @@ import colorsys
 
 
 
-from .trnFun import compute_first_hidden_layer, output_stats,  output_data, check_parameters_dimlp_layer, check_parameters_common, get_data, check_strictly_positive, check_int, check_bool
+from .trnFun import compute_first_hidden_layer, output_stats, check_parameters_dimlp_layer, check_parameters_common, get_data, check_strictly_positive, check_int, check_bool
 
 def output_pred(pred, pred_file):
     try:
@@ -53,7 +53,7 @@ def convKeras(*args, **kwargs):
     try:
         if args or not kwargs:
             print("Obligatory parameters :")
-            print("dataset : mnist, cifar100 or cifar10")
+            print("dataset : mnist, cifar100, cifar10 or fer")
             print("train_data : train data file")
             print("train_class : train class file")
             print("test_data : test data file")
@@ -64,6 +64,7 @@ def convKeras(*args, **kwargs):
             print("valid_data : validation data file")
             print("valid_class : validation class file")
             print("BE CAREFUL if there is validation files, and you want to use fidex algorithms you have to use both train and validation datas for train datas and classes")
+            print("normalized : whether image datas are normalized between 0 and 1 (false by default, true if with_hsl)")
             print("save_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
             print("nb_epochs : number of epochs during training(80 by default)")
             print("train_valid_pred : output train and validation (in this order) prediction file name without extension(predTrain by default)")
@@ -90,6 +91,7 @@ def convKeras(*args, **kwargs):
             valid_ratio = kwargs.get('valid_ratio')
             valid_data_file = kwargs.get('valid_data')
             valid_class_file = kwargs.get('valid_class')
+            normalized = kwargs.get('normalized')
             output_file = kwargs.get('output_file')
             train_valid_pred_file = kwargs.get('train_valid_pred')
             test_pred_file = kwargs.get('test_pred')
@@ -113,7 +115,7 @@ def convKeras(*args, **kwargs):
                 except (IOError):
                     raise ValueError(f"Error : Couldn't open file {output_file}.")
 
-            valid_args = ['dataset', 'train_data', 'train_class', 'test_data', 'test_class', 'valid_ratio', 'valid_data', 'valid_class', 'save_folder', 'output_file', 'train_valid_pred', 'test_pred', 'weights',
+            valid_args = ['dataset', 'train_data', 'train_class', 'test_data', 'test_class', 'valid_ratio', 'valid_data', 'valid_class', 'normalized', 'save_folder', 'output_file', 'train_valid_pred', 'test_pred', 'weights',
                           'stats', 'K', 'nb_stairs', 'nb_epochs', 'with_hsl', 'with_resnet', 'with_vgg']
 
             # Check if wrong parameters are given
@@ -141,7 +143,7 @@ def convKeras(*args, **kwargs):
 
             if dataset is None :
                 raise ValueError('Error : dataset name missing, add it with option dataset and choose "mnist" or "cifar100" or "cifar10".')
-            elif dataset not in {"mnist", "cifar100", "cifar10"}:
+            elif dataset not in {"mnist", "cifar100", "cifar10", "fer"}:
                 raise ValueError('Error : parameter dataset is not "mnist" or "cifar100" or "cifar10".')
 
             if nb_epochs is None:
@@ -149,14 +151,23 @@ def convKeras(*args, **kwargs):
             elif not check_int(nb_epochs) or not check_strictly_positive(nb_epochs):
                 raise ValueError('Error : parameter nb_epochs is not a strictly positive integer.')
 
+            if normalized is None:
+                normalized = False
+            elif not check_bool(normalized):
+                raise ValueError('Error, parameter normalized is not a boolean.')
+
             if with_hsl is None:
                 with_hsl = False
             elif not check_bool(with_hsl):
                 raise ValueError('Error, parameter with_hsl is not a boolean.')
+            if with_hsl:
+                normalized = True
+
             if with_resnet is None:
                 with_resnet = False
             elif not check_bool(with_resnet):
                 raise ValueError('Error, parameter with_resnet is not a boolean.')
+
             if with_vgg is None:
                 with_vgg = False
             elif not check_bool(with_vgg):
@@ -240,9 +251,17 @@ def convKeras(*args, **kwargs):
                 nb_classes = 10
                 size1d = 32
                 nb_channels = 3
+
+
+            elif dataset == "fer":
+                nb_classes = 7
+                size1d = 48
+                nb_channels = 1
+
+            if dataset in {"fer", "cifar10"}:
                 nb_var = len(x_train[0])
                 # (x-mu)/sigma entre -5 et 5
-                if with_hsl:
+                if normalized:
                     mu_val = 0.5
                     sigma_val = (1-0.5)/hiknot
                     mu = np.full(nb_var, mu_val)
@@ -365,6 +384,63 @@ def convKeras(*args, **kwargs):
 
                 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['acc'])
 
+            elif dataset == "fer":
+                # Define the model architecture
+                model = Sequential()
+
+                # Add a convolutional layer with 32 filters, 3x3 kernel size, and relu activation function
+                model.add(Convolution2D(32, kernel_size=(3, 3), activation='relu', input_shape=(48,48,1)))
+                # Add a batch normalization layer
+                model.add(BatchNormalization())
+                # Add a second convolutional layer with 64 filters, 3x3 kernel size, and relu activation function
+                model.add(Convolution2D(64, kernel_size=(3, 3), activation='relu'))
+                # Add a second batch normalization layer
+                model.add(BatchNormalization())
+                # Add a max pooling layer with 2x2 pool size
+                model.add(MaxPooling2D(pool_size=(2, 2)))
+                # Add a dropout layer with 0.25 dropout rate
+                model.add(Dropout(0.25))
+
+                # Add a third convolutional layer with 128 filters, 3x3 kernel size, and relu activation function
+                model.add(Convolution2D(128, kernel_size=(3, 3), activation='relu'))
+                # Add a third batch normalization layer
+                model.add(BatchNormalization())
+                # Add a fourth convolutional layer with 128 filters, 3x3 kernel size, and relu activation function
+                model.add(Convolution2D(128, kernel_size=(3, 3), activation='relu'))
+                # Add a fourth batch normalization layer
+                model.add(BatchNormalization())
+                # Add a max pooling layer with 2x2 pool size
+                model.add(MaxPooling2D(pool_size=(2, 2)))
+                # Add a dropout layer with 0.25 dropout rate
+                model.add(Dropout(0.25))
+
+                # Add a fifth convolutional layer with 256 filters, 3x3 kernel size, and relu activation function
+                model.add(Convolution2D(256, kernel_size=(3, 3), activation='relu'))
+                # Add a fifth batch normalization layer
+                model.add(BatchNormalization())
+                # Add a sixth convolutional layer with 256 filters, 3x3 kernel size, and relu activation function
+                model.add(Convolution2D(256, kernel_size=(3, 3), activation='relu'))
+                # Add a sixth batch normalization layer
+                model.add(BatchNormalization())
+                # Add a max pooling layer with 2x2 pool size
+                model.add(MaxPooling2D(pool_size=(2, 2)))
+                # Add a dropout layer with 0.25 dropout rate
+                model.add(Dropout(0.25))
+
+                # Flatten the output of the convolutional layers
+                model.add(Flatten())
+                # Add a dense layer with 256 neurons and relu activation function
+                model.add(Dense(256, activation='relu'))
+                # Add a seventh batch normalization layer
+                model.add(BatchNormalization())
+                # Add a dropout layer with 0.5 dropout rate
+                model.add(Dropout(0.5))
+                # Add a dense layer with 7 neurons (one for each class) and softmax activation function
+                model.add(Dense(7, activation='softmax'))
+
+                model.summary()
+                # Compile the model with categorical cross-entropy loss, adam optimizer, and accuracy metric
+                model.compile(loss="categorical_crossentropy", optimizer= tf.keras.optimizers.Adam(learning_rate=0.0001), metrics=['accuracy'])
 
             else:
 

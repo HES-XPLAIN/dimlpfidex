@@ -1,6 +1,7 @@
 #ifndef HYPERSPACE_H
 #define HYPERSPACE_H
 
+#include "../../../fidexCommon/cpp/src/checkFun.h"
 #include "../../../fidexCommon/cpp/src/errorHandler.h"
 #include "../../../fidexCommon/cpp/src/hyperbox.h"
 #include <cstring>
@@ -25,7 +26,7 @@ public:
   std::vector<std::vector<double>> getHyperLocus() const;
   void ruleExtraction(std::vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, std::vector<std::string> &lines, bool hasAttributeNames, std::vector<std::string> *attributeNames, bool hasClassNames, std::vector<std::string> *classNames);
   double computeRuleAccuracy(std::vector<int> *trainPreds, std::vector<int> *trainTrueClass, bool mainSampleCorrect = false) const;
-  double computeRuleConfidence(std::vector<std::vector<double>> *trainOutputValuesPredictions, const int mainSamplePred, double mainSamplePredValue) const;
+  double computeRuleConfidence(std::vector<std::vector<double>> *trainOutputValuesPredictions, const int rulePred, double mainSamplePredValueOnRulePred) const;
 };
 } // namespace FidexNameSpace
 

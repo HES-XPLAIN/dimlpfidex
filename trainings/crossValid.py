@@ -115,10 +115,13 @@ def get_test_acc(stats_file, train_method):
         raise ValueError(f"Error : Couldn't open train stat file {stats_file}.")
 
 def formatting(number):
-    formatted_number = "{:.6f}".format(number).rstrip(".0")
-    if formatted_number == "":
-        formatted_number = "0"
-    return formatted_number
+    if number == "N/A":
+        return number
+    else:
+        formatted_number = "{:.6f}".format(number).rstrip(".0")
+        if formatted_number == "":
+            formatted_number = "0"
+        return formatted_number
 
 def crossValid(*args, **kwargs):
     try:
@@ -811,6 +814,10 @@ def crossValid(*args, **kwargs):
                     mean_false_negative_rate = 0.0
                     mean_precision = 0.0
                     mean_recall = 0.0
+                    nb_no_false_positive_rate = 0.0
+                    nb_no_false_negative_rate = 0.0
+                    nb_no_precision = 0.0
+                    nb_no_recall = 0.0
 
                     mean_nb_true_positive_rule = 0
                     mean_nb_false_positive_rule = 0
@@ -820,6 +827,10 @@ def crossValid(*args, **kwargs):
                     mean_false_negative_rate_rule = 0.0
                     mean_precision_rule = 0.0
                     mean_recall_rule = 0.0
+                    nb_no_false_positive_rate_rule = 0.0
+                    nb_no_false_negative_rate_rule = 0.0
+                    nb_no_precision_rule = 0.0
+                    nb_no_recall_rule = 0.0
 
                 mean_exec_values_fidexglo = [] # each mean value in an entire fold for each fold for fidexGlo
 
@@ -1041,8 +1052,6 @@ def crossValid(*args, **kwargs):
                 raise ValueError(f"Error : File for stats extraction ({crossval_stats}) not found.")
             except (IOError):
                 raise ValueError(f"Error : Couldn't open stats extraction file {crossval_stats}.")
-
-            has_confidence = True # Check if we have confidence statistics
 
             # Loop on N executions of cross-validation
             for ni in range(n):
@@ -1445,10 +1454,7 @@ def crossValid(*args, **kwargs):
                         mean_nb_ant_fid += stat_vals[1]
                         mean_fidel_fid += stat_vals[2]
                         mean_rules_acc_fid += stat_vals[3]
-                        if len(stat_vals) == 5:
-                            mean_confid_fid += stat_vals[4]
-                        else:
-                            has_confidence = False
+                        mean_confid_fid += stat_vals[4]
 
                     if is_fidexglo:
                         # Compute fidexGlo rules in folder
@@ -1547,7 +1553,10 @@ def crossValid(*args, **kwargs):
                                     line_stats_glo = line_stats_glo.strip()  # Remove the line break at the end of the line
                                     if line_stats_glo != "":
                                         elements = line_stats_glo.split()
-                                        stat_glo_vals.append(float(elements[-1]))
+                                        if elements[-1] == "N/A":
+                                            stat_glo_vals.append("N/A")
+                                        else:
+                                            stat_glo_vals.append(float(elements[-1]))
                                     line_stats_glo = my_file.readline()
 
                                 my_file.close()
@@ -1570,19 +1579,43 @@ def crossValid(*args, **kwargs):
                             mean_nb_false_positive += stat_glo_vals[10]
                             mean_nb_true_negative += stat_glo_vals[11]
                             mean_nb_false_negative += stat_glo_vals[12]
-                            mean_false_positive_rate += stat_glo_vals[13]
-                            mean_false_negative_rate += stat_glo_vals[14]
-                            mean_precision += stat_glo_vals[15]
-                            mean_recall += stat_glo_vals[16]
+                            if stat_glo_vals[13] == "N/A":
+                                nb_no_false_positive_rate += 1
+                            else:
+                                mean_false_positive_rate += stat_glo_vals[13]
+                            if stat_glo_vals[14] == "N/A":
+                                nb_no_false_negative_rate += 1
+                            else:
+                                mean_false_negative_rate += stat_glo_vals[14]
+                            if stat_glo_vals[15] == "N/A":
+                                nb_no_precision += 1
+                            else:
+                                mean_precision += stat_glo_vals[15]
+                            if stat_glo_vals[16] == "N/A":
+                                nb_no_recall += 1
+                            else:
+                                mean_recall += stat_glo_vals[16]
 
                             mean_nb_true_positive_rule += stat_glo_vals[17]
                             mean_nb_false_positive_rule += stat_glo_vals[18]
                             mean_nb_true_negative_rule += stat_glo_vals[19]
                             mean_nb_false_negative_rule += stat_glo_vals[20]
-                            mean_false_positive_rate_rule += stat_glo_vals[21]
-                            mean_false_negative_rate_rule += stat_glo_vals[22]
-                            mean_precision_rule += stat_glo_vals[23]
-                            mean_recall_rule += stat_glo_vals[24]
+                            if stat_glo_vals[21] == "N/A":
+                                nb_no_false_positive_rate_rule += 1
+                            else:
+                                mean_false_positive_rate_rule += stat_glo_vals[21]
+                            if stat_glo_vals[22] == "N/A":
+                                nb_no_false_negative_rate_rule += 1
+                            else:
+                                mean_false_negative_rate_rule += stat_glo_vals[22]
+                            if stat_glo_vals[23] == "N/A":
+                                nb_no_precision_rule += 1
+                            else:
+                                mean_precision_rule += stat_glo_vals[23]
+                            if stat_glo_vals[24] == "N/A":
+                                nb_no_recall_rule += 1
+                            else:
+                                mean_recall_rule += stat_glo_vals[24]
                 # Compute execution Stats
 
                 mean_current_exec_values_dimlp = []
@@ -1657,14 +1690,30 @@ def crossValid(*args, **kwargs):
                         mean_nb_true_negative = 0
                         mean_current_exec_values_fidexglo.append(mean_nb_false_negative / k)
                         mean_nb_false_negative = 0
-                        mean_current_exec_values_fidexglo.append(mean_false_positive_rate / k)
+                        if nb_no_false_positive_rate == k:
+                            mean_current_exec_values_fidexglo.append("N/A")
+                        else:
+                            mean_current_exec_values_fidexglo.append(mean_false_positive_rate / (k-nb_no_false_positive_rate))
                         mean_false_positive_rate = 0
-                        mean_current_exec_values_fidexglo.append(mean_false_negative_rate / k)
+                        nb_no_false_positive_rate = 0
+                        if nb_no_false_negative_rate == k:
+                            mean_current_exec_values_fidexglo.append("N/A")
+                        else:
+                            mean_current_exec_values_fidexglo.append(mean_false_negative_rate / (k-nb_no_false_negative_rate))
                         mean_false_negative_rate = 0
-                        mean_current_exec_values_fidexglo.append(mean_precision / k)
+                        nb_no_false_negative_rate = 0
+                        if nb_no_precision == k:
+                            mean_current_exec_values_fidexglo.append("N/A")
+                        else:
+                            mean_current_exec_values_fidexglo.append(mean_precision / (k-nb_no_precision))
                         mean_precision = 0
-                        mean_current_exec_values_fidexglo.append(mean_recall / k)
+                        nb_no_precision = 0
+                        if nb_no_recall == k:
+                            mean_current_exec_values_fidexglo.append("N/A")
+                        else:
+                            mean_current_exec_values_fidexglo.append(mean_recall / (k-nb_no_recall))
                         mean_recall = 0
+                        nb_no_recall = 0
 
                         mean_current_exec_values_fidexglo.append(mean_nb_true_positive_rule / k)
                         mean_nb_true_positive_rule = 0
@@ -1674,14 +1723,30 @@ def crossValid(*args, **kwargs):
                         mean_nb_true_negative_rule = 0
                         mean_current_exec_values_fidexglo.append(mean_nb_false_negative_rule / k)
                         mean_nb_false_negative_rule = 0
-                        mean_current_exec_values_fidexglo.append(mean_false_positive_rate_rule / k)
+                        if nb_no_false_positive_rate_rule == k:
+                            mean_current_exec_values_fidexglo.append("N/A")
+                        else:
+                            mean_current_exec_values_fidexglo.append(mean_false_positive_rate_rule / (k-nb_no_false_positive_rate_rule))
                         mean_false_positive_rate_rule = 0
-                        mean_current_exec_values_fidexglo.append(mean_false_negative_rate_rule / k)
+                        nb_no_false_positive_rate_rule = 0
+                        if nb_no_false_negative_rate_rule == k:
+                            mean_current_exec_values_fidexglo.append("N/A")
+                        else:
+                            mean_current_exec_values_fidexglo.append(mean_false_negative_rate_rule / (k-nb_no_false_negative_rate_rule))
                         mean_false_negative_rate_rule = 0
-                        mean_current_exec_values_fidexglo.append(mean_precision_rule / k)
+                        nb_no_false_negative_rate_rule = 0
+                        if nb_no_precision_rule == k:
+                            mean_current_exec_values_fidexglo.append("N/A")
+                        else:
+                            mean_current_exec_values_fidexglo.append(mean_precision_rule / (k-nb_no_precision_rule))
                         mean_precision_rule = 0
-                        mean_current_exec_values_fidexglo.append(mean_recall_rule / k)
+                        nb_no_precision_rule = 0
+                        if nb_no_recall_rule == k:
+                            mean_current_exec_values_fidexglo.append("N/A")
+                        else:
+                            mean_current_exec_values_fidexglo.append(mean_recall_rule / (k-nb_no_recall_rule))
                         mean_recall_rule = 0
+                        nb_no_recall_rule = 0
                     mean_exec_values_fidexglo.append(mean_current_exec_values_fidexglo)
 
                 # Output and show stats
@@ -1736,15 +1801,13 @@ def crossValid(*args, **kwargs):
                             outputStatsFile.write(f"The mean number of antecedents per rule is: {formatted_mean_current_exec_values_fidex[1]}\n")
                             outputStatsFile.write(f"The mean rule fidelity rate is: {formatted_mean_current_exec_values_fidex[2]}\n")
                             outputStatsFile.write(f"The mean rule accuracy is: {formatted_mean_current_exec_values_fidex[3]}\n")
-                            if has_confidence:
-                                outputStatsFile.write(f"The mean rule confidence is: {formatted_mean_current_exec_values_fidex[4]}\n")
+                            outputStatsFile.write(f"The mean rule confidence is: {formatted_mean_current_exec_values_fidex[4]}\n")
                             print("Fidex :")
                             print(f"The mean covering size per rule is: {formatted_mean_current_exec_values_fidex[0]}")
                             print(f"The mean number of antecedents per rule is: {formatted_mean_current_exec_values_fidex[1]}")
                             print(f"The mean rule fidelity rate is: {formatted_mean_current_exec_values_fidex[2]}")
                             print(f"The mean rule accuracy is: {formatted_mean_current_exec_values_fidex[3]}")
-                            if has_confidence:
-                                print(f"The mean rule confidence is: {formatted_mean_current_exec_values_fidex[4]}")
+                            print(f"The mean rule confidence is: {formatted_mean_current_exec_values_fidex[4]}")
                             print("\n---------------------------------------------------------")
                             print("---------------------------------------------------------")
                         if is_fidex and is_fidexglo:
@@ -1916,19 +1979,67 @@ def crossValid(*args, **kwargs):
                     mean_nb_false_positive_all = np.mean(np.array(mean_exec_values_fidexglo)[:,13])
                     mean_nb_true_negative_all = np.mean(np.array(mean_exec_values_fidexglo)[:,14])
                     mean_nb_false_negative_all = np.mean(np.array(mean_exec_values_fidexglo)[:,15])
-                    mean_false_positive_rate_all = np.mean(np.array(mean_exec_values_fidexglo)[:,16])
-                    mean_false_negative_rate_all = np.mean(np.array(mean_exec_values_fidexglo)[:,17])
-                    mean_precision_all = np.mean(np.array(mean_exec_values_fidexglo)[:,18])
-                    mean_recall_all = np.mean(np.array(mean_exec_values_fidexglo)[:,19])
+                    false_positive_rate_exec_temp = [v for v in mean_exec_values_fidexglo[:,16] if v != "N/A"]
+                    false_negative_rate_exec_temp = [v for v in mean_exec_values_fidexglo[:,17] if v != "N/A"]
+                    precision_exec_temp = [v for v in mean_exec_values_fidexglo[:,18] if v != "N/A"]
+                    recall_exec_temp = [v for v in mean_exec_values_fidexglo[:,19] if v != "N/A"]
+                    if len(false_positive_rate_exec_temp) == 0:
+                           mean_false_positive_rate_all = "N/A"
+                           std_false_positive_rate_all = "N/A"
+                    else:
+                        mean_false_positive_rate_all = np.mean(np.array(false_positive_rate_exec_temp))
+                        std_false_positive_rate_all = np.std(np.array(false_positive_rate_exec_temp))
+                    if len(false_negative_rate_exec_temp) == 0:
+                           mean_false_negative_rate_all = "N/A"
+                           std_false_negative_rate_all = "N/A"
+                    else:
+                        mean_false_negative_rate_all = np.mean(np.array(false_negative_rate_exec_temp))
+                        std_false_negative_rate_all = np.mean(np.array(false_negative_rate_exec_temp))
+                    if len(precision_exec_temp) == 0:
+                           mean_precision_all = "N/A"
+                           std_precision_all = "N/A"
+                    else:
+                        mean_precision_all = np.mean(np.array(precision_exec_temp))
+                        std_precision_all = np.mean(np.array(precision_exec_temp))
+                    if len(recall_exec_temp) == 0:
+                           mean_recall_all = "N/A"
+                           std_recall_all = "N/A"
+                    else:
+                        mean_recall_all = np.mean(np.array(recall_exec_temp))
+                        std_auc_recall_all = np.mean(np.array(recall_exec_temp))
 
                     mean_nb_true_positive_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,20])
                     mean_nb_false_positive_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,21])
                     mean_nb_true_negative_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,22])
                     mean_nb_false_negative_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,23])
-                    mean_false_positive_rate_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,24])
-                    mean_false_negative_rate_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,25])
-                    mean_precision_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,26])
-                    mean_recall_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,27])
+                    false_positive_rate_exec_rule_temp = [v for v in mean_exec_values_fidexglo[:,24] if v != "N/A"]
+                    false_negative_rate_exec_rule_temp = [v for v in mean_exec_values_fidexglo[:,25] if v != "N/A"]
+                    precision_exec_rule_temp = [v for v in mean_exec_values_fidexglo[:,26] if v != "N/A"]
+                    recall_exec_rule_temp = [v for v in mean_exec_values_fidexglo[:,27] if v != "N/A"]
+                    if len(false_positive_rate_exec_rule_temp) == 0:
+                           mean_false_positive_rate_rule_all = "N/A"
+                           std_false_positive_rate_rule_all = "N/A"
+                    else:
+                        mean_false_positive_rate_rule_all = np.mean(np.array(false_positive_rate_exec_rule_temp))
+                        std_false_positive_rate_rule_all = np.std(np.array(false_positive_rate_exec_rule_temp))
+                    if len(false_negative_rate_exec_rule_temp) == 0:
+                           mean_false_negative_rate_rule_all = "N/A"
+                           std_false_negative_rate_rule_all = "N/A"
+                    else:
+                        mean_false_negative_rate_rule_all = np.mean(np.array(false_negative_rate_exec_rule_temp))
+                        std_false_negative_rate_rule_all = np.mean(np.array(false_negative_rate_exec_rule_temp))
+                    if len(precision_exec_rule_temp) == 0:
+                           mean_precision_rule_all = "N/A"
+                           std_precision_rule_all = "N/A"
+                    else:
+                        mean_precision_rule_all = np.mean(np.array(precision_exec_rule_temp))
+                        std_precision_rule_all = np.mean(np.array(precision_exec_rule_temp))
+                    if len(recall_exec_rule_temp) == 0:
+                           mean_recall_rule_all = "N/A"
+                           std_recall_rule_all = "N/A"
+                    else:
+                        mean_recall_rule_all = np.mean(np.array(recall_exec_rule_temp))
+                        std_auc_recall_rule_all = np.mean(np.array(recall_exec_rule_temp))
 
                 std_nb_rules_all = np.std(np.array(mean_exec_values_fidexglo)[:,0])
                 std_nb_cover_all = np.std(np.array(mean_exec_values_fidexglo)[:,1])
@@ -1947,19 +2058,12 @@ def crossValid(*args, **kwargs):
                     std_nb_false_positive_all = np.std(np.array(mean_exec_values_fidexglo)[:,13])
                     std_nb_true_negative_all = np.std(np.array(mean_exec_values_fidexglo)[:,14])
                     std_nb_false_negative_all = np.std(np.array(mean_exec_values_fidexglo)[:,15])
-                    std_false_positive_rate_all = np.std(np.array(mean_exec_values_fidexglo)[:,16])
-                    std_false_negative_rate_all = np.std(np.array(mean_exec_values_fidexglo)[:,17])
-                    std_precision_all = np.std(np.array(mean_exec_values_fidexglo)[:,18])
-                    std_recall_all = np.std(np.array(mean_exec_values_fidexglo)[:,19])
 
                     std_nb_true_positive_rule_all = np.std(np.array(mean_exec_values_fidexglo)[:,20])
                     std_nb_false_positive_rule_all = np.std(np.array(mean_exec_values_fidexglo)[:,21])
                     std_nb_true_negative_rule_all = np.std(np.array(mean_exec_values_fidexglo)[:,22])
                     std_nb_false_negative_rule_all = np.std(np.array(mean_exec_values_fidexglo)[:,23])
-                    std_false_positive_rate_rule_all = np.std(np.array(mean_exec_values_fidexglo)[:,24])
-                    std_false_negative_rate_rule_all = np.std(np.array(mean_exec_values_fidexglo)[:,25])
-                    std_precision_rule_all = np.std(np.array(mean_exec_values_fidexglo)[:,26])
-                    std_recall_rule_all = np.std(np.array(mean_exec_values_fidexglo)[:,27])
+
             # Show and save results
             try:
                 with open(crossval_stats, "a") as outputStatsFile:
@@ -2064,9 +2168,8 @@ def crossValid(*args, **kwargs):
                         outputStatsFile.write(f"The standard deviation of the rule fidelity rate is : {formatted_std_fidel_fid_all}\n")
                         outputStatsFile.write(f"The mean rule accuracy is : {formatted_mean_rules_acc_fid_all}\n")
                         outputStatsFile.write(f"The standard deviation of the rule accuracy is : {formatted_std_rules_acc_fid_all}\n")
-                        if has_confidence:
-                            outputStatsFile.write(f"The mean rule confidence is : {formatted_mean_confid_fid_all}\n")
-                            outputStatsFile.write(f"The standard deviation of the rule confidence is : {formatted_std_confid_fid_all}\n")
+                        outputStatsFile.write(f"The mean rule confidence is : {formatted_mean_confid_fid_all}\n")
+                        outputStatsFile.write(f"The standard deviation of the rule confidence is : {formatted_std_confid_fid_all}\n")
                         print("Fidex :")
                         print(f"The mean covering size per rule is : {formatted_mean_cov_size_fid_all}")
                         print(f"The standard deviation of the covering size per rule is : {formatted_std_cov_size_fid_all}")
@@ -2076,9 +2179,8 @@ def crossValid(*args, **kwargs):
                         print(f"The standard deviation of the rule fidelity rate is : {formatted_std_fidel_fid_all}")
                         print(f"The mean rule accuracy is : {formatted_mean_rules_acc_fid_all}")
                         print(f"The standard deviation of the rule accuracy is : {formatted_std_rules_acc_fid_all}")
-                        if has_confidence:
-                            print(f"The mean rule confidence is : {formatted_mean_confid_fid_all}")
-                            print(f"The standard deviation of the rule confidence is : {formatted_std_confid_fid_all}")
+                        print(f"The mean rule confidence is : {formatted_mean_confid_fid_all}")
+                        print(f"The standard deviation of the rule confidence is : {formatted_std_confid_fid_all}")
                         print("\n---------------------------------------------------------")
                         print("---------------------------------------------------------")
 

@@ -9,10 +9,11 @@
  * @param accuracy double indicating the accuracy of the rule.
  * @param confidence double indicating the confidence of the rule.
  */
-Rule::Rule(vector<Antecedant> antecedants, vector<int> coveredSamples, int out_class, double accuracy, double confidence) {
+Rule::Rule(vector<Antecedant> antecedants, vector<int> coveredSamples, int out_class, double fidelity, double accuracy, double confidence) {
   setAntecedants(antecedants);
   setCoveredSamples(coveredSamples);
   setOutputClass(out_class);
+  setFidelity(fidelity);
   setAccuracy(accuracy);
   setConfidence(confidence);
 }
@@ -25,15 +26,16 @@ Rule::Rule(vector<Antecedant> antecedants, vector<int> coveredSamples, int out_c
  * @param classes optional vector of string containing all class names, useful to print class name instead of an integer.
  * @return string
  */
-string Rule::toString(bool hasConfidence, const vector<string> *attributes, const vector<string> *classes) {
+string Rule::toString(const vector<string> *attributes, const vector<string> *classes) {
   stringstream result;
   int outputClass = getOutputClass();
   int nbCoveredSamples = getCoveredSamples().size();
+  double fidelity = getFidelity();
   double accuracy = getAccuracy();
   double confidence = getConfidence();
 
   for (Antecedant a : getAntecedants()) {
-    if (attributes) {
+    if (attributes && !attributes->empty()) {
       result << (*attributes)[a.getAttribute()];
     } else {
       result << "X" + to_string(a.getAttribute());
@@ -48,24 +50,19 @@ string Rule::toString(bool hasConfidence, const vector<string> *attributes, cons
     result << to_string(a.gethyperlocus()) << " ";
   }
 
-  if (classes) {
+  if (classes && !classes->empty()) {
     result << "-> " << (*classes)[outputClass] << endl;
   } else {
     result << "-> class " << outputClass << endl;
   }
-
+  // TODO pretty print double values with formattingDoubleToString()
   result << "   Train Covering size : " << nbCoveredSamples
          << endl
-         << "   Train Fidelity : 1" // TODO: compute this value instead of hardcoding it.
+         << "   Train Fidelity : " << fidelity
          << endl
          << "   Train Accuracy : " << accuracy
-         << endl;
-
-  if (hasConfidence) {
-    result << "   Train Confidence : " << confidence;
-  }
-
-  result << endl;
+         << endl
+         << "   Train Confidence : " << confidence << endl;
 
   return result.str();
 }

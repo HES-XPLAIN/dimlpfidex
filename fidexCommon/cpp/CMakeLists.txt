@@ -16,10 +16,17 @@ FILE(GLOB COMMON_SRC_FIDEX
     src/hyperbox.h
     src/hyperLocus.cpp
     src/hyperLocus.h
+<<<<<<< HEAD
     src/antecedant.cpp
     src/antecedant.h
     src/rule.cpp
     src/rule.h
+=======
+    src/rule.cpp
+    src/rule.h
+    src/antecedant.cpp
+    src/antecedant.h
+>>>>>>> 426dcd1e90c099507550d139344f9804831d0746
 )
 
 # make variables visible to external CMakeLists.txt
