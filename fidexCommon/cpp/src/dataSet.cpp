@@ -46,7 +46,7 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, bool hasDecisio
   while (!fileDta.eof()) {
     getline(fileDta, line);
     if (!checkStringEmpty(line)) {
-      getDataLine(line, dataFile);
+      setDataLine(line, dataFile);
     } else if (firstLine) {
       throw FileFormatError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", first line is empty");
     } else {
@@ -64,7 +64,7 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, bool hasDecisio
     // Get predictions
     getline(fileDta, line);
     if (!checkStringEmpty(line)) {
-      getPredLine(line, hasDecisionThreshold, decisionThreshold, indexPositiveClass, dataFile);
+      setPredLine(line, hasDecisionThreshold, decisionThreshold, indexPositiveClass, dataFile);
     } else {
       while (!fileDta.eof()) {
         getline(fileDta, line);
@@ -81,7 +81,7 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, bool hasDecisio
     // Get classes
     getline(fileDta, line);
     if (!endOfFile && !checkStringEmpty(line)) {
-      getClassLine(line, dataFile);
+      setClassLine(line, dataFile);
 
       if (!fileDta.eof()) {
         getline(fileDta, line);
@@ -144,6 +144,9 @@ DataSetFid::DataSetFid(const std::string &name, const char *weightFile) : datase
  * @param dataFile const char* data file name
  */
 void DataSetFid::setDataFromFile(const char *dataFile) {
+  if (hasDatas == true) {
+    throw InternalError("Error in dataset " + datasetName + " : datas have already been given to this dataset, impossible to add again");
+  }
   hasDatas = true;
   string line;
   fstream fileDta;
@@ -156,7 +159,7 @@ void DataSetFid::setDataFromFile(const char *dataFile) {
   while (!fileDta.eof()) {
     getline(fileDta, line);
     if (!checkStringEmpty(line)) {
-      getDataLine(line, dataFile);
+      setDataLine(line, dataFile);
     }
   }
 
@@ -174,6 +177,9 @@ void DataSetFid::setDataFromFile(const char *dataFile) {
  * @param predFile const char* prediction file name
  */
 void DataSetFid::setPredFromFile(bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *predFile) {
+  if (hasPreds == true) {
+    throw InternalError("Error in dataset " + datasetName + " : predictions have already been given to this dataset, impossible to add again");
+  }
   hasPreds = true;
   string line;
   fstream filePrd;
@@ -186,7 +192,7 @@ void DataSetFid::setPredFromFile(bool hasDecisionThreshold, double decisionThres
   while (!filePrd.eof()) {
     getline(filePrd, line);
     if (!checkStringEmpty(line)) {
-      getPredLine(line, hasDecisionThreshold, decisionThreshold, indexPositiveClass, predFile);
+      setPredLine(line, hasDecisionThreshold, decisionThreshold, indexPositiveClass, predFile);
     }
   }
 
@@ -201,6 +207,9 @@ void DataSetFid::setPredFromFile(bool hasDecisionThreshold, double decisionThres
  * @param classFile const char* file name containing classes in one hot format
  */
 void DataSetFid::setClassFromFile(const char *classFile) {
+  if (hasClasses == true) {
+    throw InternalError("Error in dataset " + datasetName + " : classes have already been given to this dataset, impossible to add again");
+  }
   hasClasses = true;
   string line;
   fstream fileCl;
@@ -213,7 +222,7 @@ void DataSetFid::setClassFromFile(const char *classFile) {
   while (!fileCl.eof()) {
     getline(fileCl, line);
     if (!checkStringEmpty(line)) {
-      getClassLine(line, classFile);
+      setClassLine(line, classFile);
     }
   }
 
@@ -228,7 +237,7 @@ void DataSetFid::setClassFromFile(const char *classFile) {
  * @param line string containing one line of the data file
  * @param dataFile const char* data file name
  */
-void DataSetFid::getDataLine(const string &line, const char *dataFile) {
+void DataSetFid::setDataLine(const string &line, const char *dataFile) {
   std::stringstream myLine(line);
   double valueData;
   vector<double> valuesData;
@@ -262,7 +271,7 @@ void DataSetFid::getDataLine(const string &line, const char *dataFile) {
  * @param indexPositiveClass integer corresponding to the index of the positive class for which we have the decision threshold
  * @param predFile const char* prediction file name
  */
-void DataSetFid::getPredLine(const string &line, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *predFile) {
+void DataSetFid::setPredLine(const string &line, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *predFile) {
 
   std::stringstream myLine(line);
   double valuePred;
@@ -303,7 +312,7 @@ void DataSetFid::getPredLine(const string &line, bool hasDecisionThreshold, doub
  * @param line string containing one line of the class file
  * @param classFile const char* class file name containing classes in one hot format
  */
-void DataSetFid::getClassLine(const string &line, const char *classFile) {
+void DataSetFid::setClassLine(const string &line, const char *classFile) {
   std::stringstream myLine(line);
   float valueClass;
   int nbClassesLine = 0;
