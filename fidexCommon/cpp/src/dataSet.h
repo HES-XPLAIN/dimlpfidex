@@ -31,9 +31,9 @@ private:
   int nbClassData = -1;
   int nbPredData = -1;
 
-  void getDataLine(const std::string &line, const char *dataFile);
-  void getPredLine(const std::string &line, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *dataFile);
-  void getClassLine(const std::string &line, const char *dataFile);
+  void setDataLine(const std::string &line, const char *dataFile);
+  void setPredLine(const std::string &line, bool hasDecisionThreshold, double decisionThreshold, int indexPositiveClass, const char *dataFile);
+  void setClassLine(const std::string &line, const char *dataFile);
 
   void checkDatas() const;
 
