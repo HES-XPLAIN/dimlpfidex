@@ -40,6 +40,7 @@ void showParams() {
   std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
   std::cout << "-y <decrement by 1 the min covering number each time the minimal covering size is not reached (False by default)>" << std::endl;
   std::cout << "-m <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
+  std::cout << "-q <minimum Fidelity to obtain when computing a rule (1 by default)>" << std::endl;
   std::cout << "-d <dimension dropout parameter (None by default)>" << std::endl;
   std::cout << "-h <hyperplan dropout parameter (None by default)>" << std::endl;
   std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
@@ -162,6 +163,8 @@ int fidexGlo(const string &command) {
     bool minCoverStrategyInit = false;
     int maxFailedAttempts = 30; // Maxamum number of attemps when minNbCover = 1
     bool maxFailedAttemptsInit = false;
+    double minFidelity = 1; // Minimum Fidelity to obtain when computing a rule
+    bool minFidelityInit = false;
     bool dropoutHyp = false; // We dropout a bunch of hyperplans each iteration (could accelerate the processus)
     double dropoutHypParam;
     bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
@@ -351,6 +354,15 @@ int fidexGlo(const string &command) {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
           }
           maxFailedAttemptsInit = true;
+          break;
+
+        case 'q':
+          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+            minFidelity = atof(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+          }
+          minFidelityInit = true;
           break;
 
         case 'd':
@@ -550,6 +562,9 @@ int fidexGlo(const string &command) {
       }
       if (maxFailedAttemptsInit) {
         fidexCommand += " -m " + std::to_string(maxFailedAttempts);
+      }
+      if (minFidelityInit) {
+        fidexCommand += " -M " + std::to_string(minFidelity);
       }
       if (seedInit) {
         fidexCommand += " -z " + std::to_string(seed);

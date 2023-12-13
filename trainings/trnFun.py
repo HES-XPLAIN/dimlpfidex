@@ -42,8 +42,9 @@ def get_data(file_name): # Get data from file
             line = my_file.readline()
             while line:
                 line = line.strip()  # Remove the line break at the end of the line
-                di = [float(elt) for elt in line.split(" ")]
-                data.append(di)
+                if line.strip():
+                    di = [float(elt) for elt in line.split(" ")]
+                    data.append(di)
                 line = my_file.readline()
             my_file.close()
         return data
