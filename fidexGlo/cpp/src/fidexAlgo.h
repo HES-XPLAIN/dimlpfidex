@@ -1,6 +1,7 @@
 #ifndef FIDEXALGO_H
 #define FIDEXALGO_H
 #include "../../../fidexCommon/cpp/src/dataSet.h"
+#include "../../../fidexCommon/cpp/src/parameters.h"
 #include "hyperspace.h"
 #include <algorithm>
 #include <chrono>
@@ -25,14 +26,9 @@ public:
 
   bool fidex(Rule &rule,
              DataSetFid *dataset,
-             Hyperspace *hyperspace,
+             Parameters *p,
+             vector<vector<double>> *hyperlocus,
              int idSample,
-             const int nbInputs,
-             int itMax,
-             int minNbCover,
-             double minFidelity,
-             double dropoutDim,
-             double dropoutHyp,
              mt19937 gen) const;
 };
 

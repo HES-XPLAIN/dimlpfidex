@@ -7,14 +7,9 @@ FidexAlgo::FidexAlgo() = default;
 // OPENMP: hyperspace is a shared ressource that might produce concurrency errors
 bool FidexAlgo::fidex(Rule &rule,
                       DataSetFid *dataset,
-                      Hyperspace *hyperspace,
+                      Parameters *p,
+                      vector<vector<double>> *hyperlocus,
                       int idSample,
-                      const int nbInputs,
-                      int itMax,
-                      int minNbCover,
-                      double minFidelity,
-                      double dropoutDim,
-                      double dropoutHyp,
                       mt19937 gen) const {
 
   // Get diverse elements of the provided dataset
@@ -26,6 +21,14 @@ bool FidexAlgo::fidex(Rule &rule,
   vector<int> *trainTrueClass = dataset->getClasses();
   vector<double> *mainSampleValues = &(*trainData)[idSample];
   int mainSamplePred = (*trainPreds)[idSample];
+
+  int nbInputs = hyperlocus->size();
+  int itMax = p->getItMax();
+  int minNbCover = p->getMinNbCover();
+  double minFidelity = p->getMinFidelity();
+  double dropoutDim = p->getDropoutDim();
+  double dropoutHyp = p->getDropoutHyp();
+  Hyperspace *hyperspace = new Hyperspace(*hyperlocus);
 
   // Initialize uniform distribution
   uniform_real_distribution<double> dis(0.0, 1.0);
