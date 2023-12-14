@@ -88,7 +88,7 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
   fstream rulesData;
   rulesData.open(rulesFile, ios::in); // Read data file
   if (rulesData.fail()) {
-    throw FileNotFoundError("Error : file " + std::string(rulesFile) + " not found");
+    throw FileNotFoundError("Error : file " + std::string(rulesFile) + " not found.");
   }
   string line;
   getline(rulesData, line);          // Skip first line;
@@ -103,10 +103,10 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
     classesInFile = true;
   }
   if (attributsInFile && !hasAttributeNames) {
-    throw CommandArgumentException("The attribute names file has to be given with option -A");
+    throw CommandArgumentException("The attribute names file has to be given with option -A because there are attributes in the rule file.");
   }
   if (classesInFile && !hasClassNames) {
-    throw CommandArgumentException("The class names have to be given in attribut file");
+    throw CommandArgumentException("The class names have to be given in attribut file because there are class names in the rule file.");
   }
   string strRule;
   while (getline(rulesData, line)) { // New rule
