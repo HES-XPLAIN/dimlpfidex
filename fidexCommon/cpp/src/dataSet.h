@@ -40,6 +40,7 @@ private:
   void setClassLine(const std::string &line, const char *dataFile);
 
   void checkDatas() const;
+  void checkThreshold() const;
 
   std::vector<std::string> attributeNames;
   std::vector<std::string> classNames;
@@ -53,7 +54,7 @@ public:
   explicit DataSetFid(const std::string &name, const char *weightFile);
 
   void setDataFromFile(const char *dataFile);
-  void setPredFromFile(double decisionThreshold, int indexPositiveClass, const char *predFile);
+  void setPredFromFile(const char *predFile, double decisionThreshold = -1, int indexPositiveClass = -1);
   void setClassFromFile(const char *classFile);
 
   std::vector<std::vector<double>> *getDatas();
