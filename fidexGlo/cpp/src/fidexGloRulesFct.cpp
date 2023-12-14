@@ -55,6 +55,15 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   vector<int> notCoveredSamples(nbDatas);
   iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
 
+  // cout << *p;
+
+  // for (vector<double> v : *hyperlocus) {
+  //   for (double d : v) {
+  //     cout << d << ", ";
+  //   }
+  //   cout << endl;
+  // }
+
   cout << nbThreads << " CPU cores available" << endl
        << endl;
 
@@ -602,22 +611,7 @@ int fidexGloRules(const string &command) {
 
     // ----------------------------------------------------------------------
 
-    cout << "\nParameters :" << endl;
-    cout << "\t- Max iteration number : " << params->getItMax() << endl;
-    cout << "\t- Min size of covering : " << params->getMinNbCover() << endl;
-
-    if (params->getDropoutDim() > 0.0001f) {
-      cout << "\t- Dimension dropout of " << params->getDropoutDim() << " is used" << endl;
-    } else {
-      cout << "\t- No dimension dropout used" << endl;
-    }
-
-    if (params->getDropoutHyp() > 0.0001f) {
-      cout << "\t- Hyperplan dropout of " << params->getDropoutHyp() << " is used" << endl;
-    } else {
-      cout << "\t- No hyperplan dropout" << endl;
-    }
-    cout << endl;
+    // cout << *params;
 
     // Import files
     cout << "Importing files..." << endl;
@@ -671,6 +665,7 @@ int fidexGloRules(const string &command) {
              << endl;
         cout << "Computing all hyperlocuses..." << endl;
       }
+
       for (const auto &weightsFile : weightsFiles) {
         vector<vector<double>> hypLocus;
         if (nbDimlpNets > 1) {
@@ -738,6 +733,11 @@ int fidexGloRules(const string &command) {
       return -1;
       break;
     }
+
+    for (Rule r : generatedRules) {
+      cout << r << endl;
+    }
+    cout << endl;
 
     nbRules = generatedRules.size();
 

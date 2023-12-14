@@ -2,7 +2,10 @@
 #define PARAMETERS_H
 #include "checkFun.h"
 #include "errorHandler.h"
+#include <iostream>
 #include <omp.h>
+#include <ostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -79,5 +82,38 @@ public:
   double getMinFidelity() { return _minFidelity; }
   double getDecisionThreshold() { return _decisionThreshold; }
 };
+
+inline ostream &operator<<(ostream &stream, Parameters &p) {
+  stream << "Parameters list:                 " << endl
+         << "   Train data file:              " << p.getTrainDataFile() << endl
+         << "   Train data predictions file:  " << p.getTrainDataFilePred() << endl
+         << "   Train data true classes file: " << p.getTrainDataFileTrueClass() << endl
+         << "   Input rules file:             " << p.getInputRulesFile() << endl
+         << "   Generated rules file:         " << p.getRulesFile() << endl
+         << "   Console file:                 " << p.getConsoleFile() << endl
+         << "   Root path:                    " << p.getRootFolder() << endl
+         << "   Attributes file:              " << p.getAttributFile() << endl
+         << "   Weights file:                 " << p.getWeightsFile() << endl
+         << "   # DIMLP nets:                 " << p.getNbDimlpNets() << endl
+         << "   nbQuantLevels:                " << p.getNbQuantLevels() << endl
+         << "   heuristic:                    " << p.getHeuristic() << endl
+         << "   itMax:                        " << p.getItMax() << endl
+         << "   minNbCover:                   " << p.getMinNbCover() << endl
+         << "   maxFailedAttempts:            " << p.getMaxFailedAttempts() << endl
+         << "   nbThreadsUsed:                " << p.getNbThreadsUsed() << endl
+         << "   indexPositiveClass:           " << p.getIndexPositiveClass() << endl
+         << "   seed:                         " << p.getSeed() << endl
+         << "   heuristicInit:                " << p.getHeuristicInit() << endl
+         << "   hasDecisionThreshold:         " << p.getHasDecisionThreshold() << endl
+         << "   hasIndexPositiveClass:        " << p.getHasIndexPositiveClass() << endl
+         << "   hiKnot:                       " << p.getHiKnot() << endl
+         << "   dropoutHyp:                   " << p.getDropoutHyp() << endl
+         << "   dropoutDim:                   " << p.getDropoutDim() << endl
+         << "   minFidelity:                  " << p.getMinFidelity() << endl
+         << "   decisionThreshold:            " << p.getDecisionThreshold() << endl
+         << endl;
+
+  return stream;
+}
 
 #endif // PARAMETERS_H

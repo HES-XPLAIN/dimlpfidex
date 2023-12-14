@@ -210,12 +210,9 @@ void Parameters::setRootDirectory() {
   _rootFolder += "\\";
 #endif
 
-  cout << _rootFolder << endl;
-
   if (!_trainDataFile.empty()) {
     cout << _trainDataFile << endl;
     _trainDataFile = _rootFolder + _trainDataFile;
-    cout << _trainDataFile << endl;
   }
 
   if (!_trainDataFilePred.empty()) {
