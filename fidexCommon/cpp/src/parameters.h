@@ -54,36 +54,36 @@ public:
   }
 
   // GETTERS
-  string getTrainDataFile() { return _trainDataFile; }
-  string getTrainDataFilePred() { return _trainDataFilePred; }
-  string getTrainDataFileTrueClass() { return _trainDataFileTrueClass; }
-  string getInputRulesFile() { return _inputRulesFile; }
-  string getRulesFile() { return _rulesFile; }
-  string getConsoleFile() { return _consoleFile; }
-  string getRootFolder() { return _rootFolder; }
-  string getAttributFile() { return _attributFile; }
-  string getWeightsFile() { return _weightsFile; }
-  vector<string> getWeightsFiles() { return _weightsFiles; }
-  int getNbDimlpNets() { return _nbDimlpNets; }
-  int getNbQuantLevels() { return _nbQuantLevels; }
-  int getHeuristic() { return _heuristic; }
-  int getItMax() { return _itMax; }
-  int getMinNbCover() { return _minNbCover; }
-  int getMaxFailedAttempts() { return _maxFailedAttempts; }
-  int getNbThreadsUsed() { return _nbThreadsUsed; }
-  int getIndexPositiveClass() { return _indexPositiveClass; }
-  int getSeed() { return _seed; }
-  bool getHeuristicInit() { return _heuristicInit; }
-  bool getHasDecisionThreshold() { return _decisionThreshold; }
-  bool getHasIndexPositiveClass() { return _indexPositiveClass; }
-  double getHiKnot() { return _hiKnot; }
-  double getDropoutHyp() { return _dropoutHyp; }
-  double getDropoutDim() { return _dropoutDim; }
-  double getMinFidelity() { return _minFidelity; }
-  double getDecisionThreshold() { return _decisionThreshold; }
+  string getTrainDataFile() const { return _trainDataFile; }
+  string getTrainDataFilePred() const { return _trainDataFilePred; }
+  string getTrainDataFileTrueClass() const { return _trainDataFileTrueClass; }
+  string getInputRulesFile() const { return _inputRulesFile; }
+  string getRulesFile() const { return _rulesFile; }
+  string getConsoleFile() const { return _consoleFile; }
+  string getRootFolder() const { return _rootFolder; }
+  string getAttributFile() const { return _attributFile; }
+  string getWeightsFile() const { return _weightsFile; }
+  vector<string> getWeightsFiles() const { return _weightsFiles; }
+  int getNbDimlpNets() const { return _nbDimlpNets; }
+  int getNbQuantLevels() const { return _nbQuantLevels; }
+  int getHeuristic() const { return _heuristic; }
+  int getItMax() const { return _itMax; }
+  int getMinNbCover() const { return _minNbCover; }
+  int getMaxFailedAttempts() const { return _maxFailedAttempts; }
+  int getNbThreadsUsed() const { return _nbThreadsUsed; }
+  int getIndexPositiveClass() const { return _indexPositiveClass; }
+  int getSeed() const { return _seed; }
+  bool getHeuristicInit() const { return _heuristicInit; }
+  bool getHasDecisionThreshold() const { return _hasDecisionThreshold; }
+  bool getHasIndexPositiveClass() const { return _indexPositiveClass; }
+  double getHiKnot() const { return _hiKnot; }
+  double getDropoutHyp() const { return _dropoutHyp; }
+  double getDropoutDim() const { return _dropoutDim; }
+  double getMinFidelity() const { return _minFidelity; }
+  double getDecisionThreshold() const { return _decisionThreshold; }
 };
 
-inline ostream &operator<<(ostream &stream, Parameters &p) {
+inline ostream &operator<<(ostream &stream, const Parameters &p) {
   stream << "Parameters list:                 " << endl
          << "   Train data file:              " << p.getTrainDataFile() << endl
          << "   Train data predictions file:  " << p.getTrainDataFilePred() << endl

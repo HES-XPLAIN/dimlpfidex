@@ -55,15 +55,6 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   vector<int> notCoveredSamples(nbDatas);
   iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
 
-  // cout << *p;
-
-  // for (vector<double> v : *hyperlocus) {
-  //   for (double d : v) {
-  //     cout << d << ", ";
-  //   }
-  //   cout << endl;
-  // }
-
   cout << nbThreads << " CPU cores available" << endl
        << endl;
 
@@ -83,7 +74,9 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
     int threadId = omp_get_thread_num();
 
 #pragma omp critical
-    cout << "Thread #" << threadId << " initialized, please wait for it to be done." << endl;
+    {
+      cout << "Thread #" << threadId << " initialized, please wait for it to be done." << endl;
+    }
 
     Rule rule;
     vector<Rule> localRules;
@@ -109,9 +102,14 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
       counterFailed = 0; // If we can't find a good rule after a lot of tries
       cnt += 1;
 
-      if (omp_get_thread_num() == 0 && ((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && p->getConsoleFile().empty()) {
-        cout << "Processing : " << int((double(idSample) / (nbDatas / nbThreadsUsed)) * 100) << "%\r";
-        std::cout.flush();
+      if (omp_get_thread_num() == 0) {
+        if (((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && p->getConsoleFile().empty()) {
+#pragma omp critical
+          {
+            cout << "Processing : " << int((double(idSample) / (nbDatas / nbThreadsUsed)) * 100) << "%\r";
+            std::cout.flush();
+          }
+        }
       }
 
       while (!ruleCreated) {
@@ -210,6 +208,7 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
 }
 
 // TODO: comment this
+// TODO: this is buggy
 vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<double>> *hyperlocus) {
   int nbDatas = dataset->getDatas()->size();
   int nbThreads = omp_get_num_procs();
@@ -460,34 +459,34 @@ vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<doubl
 }
 
 // TODO: comment this
-void checkParameters(Parameters p) {
-  if (!p.getTrainDataFile().empty()) {
+void checkParameters(Parameters *p) {
+  if (!p->getTrainDataFile().empty()) {
     throw CommandArgumentException("The train data file has to be given with option -T");
   }
 
-  if (!p.getTrainDataFilePred().empty()) {
+  if (!p->getTrainDataFilePred().empty()) {
     throw CommandArgumentException("The train prediction file has to be given with option -P");
   }
 
-  if (p.getTrainDataFileTrueClass().empty()) {
+  if (p->getTrainDataFileTrueClass().empty()) {
     throw CommandArgumentException("The train true classes file has to be given with option -C");
   }
 
-  if (p.getRulesFile().empty()) {
+  if (p->getRulesFile().empty()) {
     throw CommandArgumentException("The output rules file has to be given with option -O");
   }
 
-  if (p.getWeightsFile().empty() && p.getInputRulesFile().empty()) {
+  if (p->getWeightsFile().empty() && p->getInputRulesFile().empty()) {
     throw CommandArgumentException("A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f");
-  } else if (!p.getWeightsFile().empty() && !p.getInputRulesFile().empty()) {
+  } else if (!p->getWeightsFile().empty() && !p->getInputRulesFile().empty()) {
     throw CommandArgumentException("Do not specify both a weight file(-W) and a rules file(-f). Choose one of them.");
   }
 
-  if (p.getHasDecisionThreshold() && !p.getHasIndexPositiveClass()) {
+  if (p->getHasDecisionThreshold() && !p->getHasIndexPositiveClass()) {
     throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t)");
   }
 
-  if (!p.getHeuristic()) {
+  if (!p->getHeuristic()) {
     throw CommandArgumentException("The heuristic(1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo) has to be given with option -M");
   }
 }
@@ -598,20 +597,13 @@ int fidexGloRules(const string &command) {
       }
     }
 
-    // ----------------------------------------------------------------------
-    // create paths with root foler
-
-    // ----------------------------------------------------------------------
-
     // Get console results to file
     if (!params->getConsoleFile().empty()) {
       ofs.open(params->getConsoleFile());
       cout.rdbuf(ofs.rdbuf()); // redirect cout to file
     }
 
-    // ----------------------------------------------------------------------
-
-    // cout << *params;
+    cout << *params;
 
     // Import files
     cout << "Importing files..." << endl;
@@ -733,11 +725,6 @@ int fidexGloRules(const string &command) {
       return -1;
       break;
     }
-
-    for (Rule r : generatedRules) {
-      cout << r << endl;
-    }
-    cout << endl;
 
     nbRules = generatedRules.size();
 

@@ -16,7 +16,13 @@ bool FidexAlgo::fidex(Rule &rule,
   int nbDatas = dataset->getNbSamples();
   int nbAttributes = dataset->getNbAttributes();
   vector<vector<double>> *trainData = dataset->getDatas();
-  vector<int> *trainPreds = dataset->getPredictions();
+  vector<int> *trainPreds = dataset->getPredictions(); // bug
+
+  // for (int i : *trainPreds) {
+  //   cout << i << ", ";
+  // }
+  // cout << endl;
+
   vector<vector<double>> *trainOutputValuesPredictions = dataset->getOutputValuesPredictions();
   vector<int> *trainTrueClass = dataset->getClasses();
   vector<double> *mainSampleValues = &(*trainData)[idSample];
