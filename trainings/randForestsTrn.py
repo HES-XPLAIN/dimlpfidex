@@ -18,6 +18,8 @@ def randForestsTrn(*args, **kwargs):
             print("train_class : train class file")
             print("test_data : test data file")
             print("test_class : test class file")
+            print("nb_attributes : number of attributes")
+            print("nb_classes : number of classes")
             print("----------------------------")
             print("Optional parameters :")
             print("save_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
@@ -49,7 +51,7 @@ def randForestsTrn(*args, **kwargs):
             print("----------------------------")
             print("----------------------------")
             print("Here is an example, keep same parameter names :")
-            print('randForestsTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", stats = "rf/stats.txt", train_pred = "rf/predTrain", test_pred = "rf/predTest", rules_file = "rf/RF_rules", save_folder = "dimlp/datafiles")')
+            print('randForestsTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", stats = "rf/stats.txt", train_pred = "rf/predTrain", test_pred = "rf/predTest", nb_attributes=16, nb_classes=2, rules_file = "rf/RF_rules", save_folder = "dimlp/datafiles")')
             print("---------------------------------------------------------------------")
         else:
 
@@ -62,6 +64,8 @@ def randForestsTrn(*args, **kwargs):
             test_data_file = kwargs.get('test_data')
             test_class_file = kwargs.get('test_class')
             output_file = kwargs.get('output_file')
+            nb_attributes = kwargs.get('nb_attributes')
+            nb_classes = kwargs.get('nb_classes')
 
             train_pred_file = kwargs.get('train_pred')
             test_pred_file = kwargs.get('test_pred')
@@ -102,7 +106,7 @@ def randForestsTrn(*args, **kwargs):
 
             # Check parameters
 
-            valid_args = ['train_data', 'train_class', 'test_data', 'test_class', 'train_pred', 'test_pred',
+            valid_args = ['train_data', 'train_class', 'test_data', 'test_class', 'train_pred', 'test_pred', 'nb_attributes', 'nb_classes',
                         'stats', 'save_folder', 'output_file', 'rules_file', 'n_estimators', 'criterion', 'max_depth', 'min_samples_split',
                         'min_samples_leaf', 'min_weight_fraction_leaf', 'max_features', 'max_leaf_nodes', 'min_impurity_decrease', 'bootstrap',
                         'oob_score', 'n_jobs', 'random_state', 'verbose', 'warm_start', 'class_weight', 'ccp_alpha', 'max_samples']
@@ -110,9 +114,9 @@ def randForestsTrn(*args, **kwargs):
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
                 if arg_key not in valid_args:
-                    raise ValueError(f"Invalid argument : {arg_key}")
+                    raise ValueError(f"Invalid argument : {arg_key}.")
 
-            save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file  = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file)
+            save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes  = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
 
             n_estimators_var, min_samples_split_var, min_samples_leaf_var, min_weight_fraction_leaf_var, min_impurity_decrease_var, random_state_var, max_features_var, verbose_var, max_leaf_nodes_var, warm_start_var, ccp_alpha_var = check_parameters_decision_trees(n_estimators_var, min_samples_split_var, min_samples_leaf_var, min_weight_fraction_leaf_var, min_impurity_decrease_var, random_state_var, max_features_var, verbose_var, max_leaf_nodes_var, warm_start_var, ccp_alpha_var)
 
@@ -125,29 +129,29 @@ def randForestsTrn(*args, **kwargs):
             if criterion_var is None:
                 criterion_var = "gini"
             elif criterion_var not in {"gini", "entropy", "log_loss"}:
-                raise ValueError('Error, parameter criterion is not "gini", "entropy" or "log_loss"')
+                raise ValueError('Error, parameter criterion is not "gini", "entropy" or "log_loss".')
 
             if max_depth_var is not None and (not check_int(max_depth_var)or not check_strictly_positive(max_depth_var)):
-                raise ValueError('Error, parameter max_depth is specified and is not a strictly positive integer')
+                raise ValueError('Error, parameter max_depth is specified and is not a strictly positive integer.')
 
             if bootstrap_var is None:
                 bootstrap_var = True
             elif not check_bool(bootstrap_var):
-                raise ValueError('Error, parameter bootstrap is not a boolean')
+                raise ValueError('Error, parameter bootstrap is not a boolean.')
 
             if oob_score_var is None:
                 oob_score_var = False
             elif not check_bool(oob_score_var):
-                 raise ValueError('Error, parameter oob_score is not a boolean')
+                 raise ValueError('Error, parameter oob_score is not a boolean.')
 
             if n_jobs_var is not None and not check_int(n_jobs_var):
-                 raise ValueError('Error, parameter n_jobs is not an integer')
+                 raise ValueError('Error, parameter n_jobs is not an integer.')
 
             if class_weight_var is not None and not isinstance(class_weight_var, dict) and class_weight_var not in {"balanced", "balanced_subsample"}:
-                raise ValueError('Error, parameter class_weight is not "balanced", "balanced_subsample", a dictionary or None')
+                raise ValueError('Error, parameter class_weight is not "balanced", "balanced_subsample", a dictionary or None.')
 
             if  max_samples_var is not None and ((isinstance(max_samples_var, float) and ((max_samples_var <= 0) or max_samples_var > 1)) or not check_strictly_positive(max_samples_var)):
-                raise ValueError('Error, parameter max_samples is not a strictly positive integer or a float in ]0,1]')
+                raise ValueError('Error, parameter max_samples is not a strictly positive integer or a float in ]0,1].')
 
             if (save_folder is not None):
                 train_data_file = save_folder + "/" + train_data_file

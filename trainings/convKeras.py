@@ -58,6 +58,8 @@ def convKeras(*args, **kwargs):
             print("train_class : train class file")
             print("test_data : test data file")
             print("test_class : test class file")
+            print("nb_attributes : number of attributes")
+            print("nb_classes : number of classes")
             print("----------------------------")
             print("Optional parameters :")
             print("valid_ratio : porcentage(]0,1[) of train data taken for validation (0.1 by default if no valid data)")
@@ -88,6 +90,8 @@ def convKeras(*args, **kwargs):
             train_class_file = kwargs.get('train_class')
             test_data_file = kwargs.get('test_data')
             test_class_file = kwargs.get('test_class')
+            nb_attributes = kwargs.get('nb_attributes')
+            nb_classes = kwargs.get('nb_classes')
             valid_ratio = kwargs.get('valid_ratio')
             valid_data_file = kwargs.get('valid_data')
             valid_class_file = kwargs.get('valid_class')
@@ -115,15 +119,15 @@ def convKeras(*args, **kwargs):
                 except (IOError):
                     raise ValueError(f"Error : Couldn't open file {output_file}.")
 
-            valid_args = ['dataset', 'train_data', 'train_class', 'test_data', 'test_class', 'valid_ratio', 'valid_data', 'valid_class', 'normalized', 'save_folder', 'output_file', 'train_valid_pred', 'test_pred', 'weights',
+            valid_args = ['dataset', 'train_data', 'train_class', 'test_data', 'test_class', 'nb_attributes', 'nb_classes', 'valid_ratio', 'valid_data', 'valid_class', 'normalized', 'save_folder', 'output_file', 'train_valid_pred', 'test_pred', 'weights',
                           'stats', 'K', 'nb_stairs', 'nb_epochs', 'with_hsl', 'with_resnet', 'with_vgg']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
                 if arg_key not in valid_args:
-                    raise ValueError(f"Invalid argument : {arg_key}")
+                    raise ValueError(f"Invalid argument : {arg_key}.")
 
-            save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_valid_pred_file, test_pred_file, stats_file  = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_valid_pred_file, test_pred_file, stats_file)
+            save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_valid_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes  = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_valid_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
             if valid_ratio is None:
                 if (valid_data_file is None and valid_class_file is not None) or (valid_data_file is not None and valid_class_file is None):
                     raise ValueError('Error : parameter valid_data_file or parameter valid_class_file missing.')

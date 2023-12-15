@@ -432,44 +432,44 @@ def crossValid(*args, **kwargs):
 
             train_methods = {"dimlp", "dimlpBT", "svm", "mlp", "randForest", "gradBoost"}
             if train_method is None:
-                raise ValueError('Error : train method is missing, add it with option train_method="dimlp", "dimlpBT", "svm", "mlp", randForest or gradBoost')
+                raise ValueError('Error : train method is missing, add it with option train_method="dimlp", "dimlpBT", "svm", "mlp", randForest or gradBoost.')
             elif (train_method not in train_methods):
-                raise ValueError('Error, parameter train_method is not "dimlp", "dimlpBT", "svm", "mlp", "randForest" or "gradBoost"')
+                raise ValueError('Error, parameter train_method is not "dimlp", "dimlpBT", "svm", "mlp", "randForest" or "gradBoost".')
 
             for arg_key in kwargs.keys():
                 if (train_method == "dimlp"):
                     if (arg_key not in optional_args and arg_key not in optional_non_dt_args and arg_key not in optional_dimlp_args and not(arg_key.startswith('H') and arg_key[1:].isdigit()) and arg_key not in obligatory_args and arg_key not in obligatory_dimlp_args):
-                        raise ValueError(f"Invalid argument with dimlp training : {arg_key}")
+                        raise ValueError(f"Invalid argument with dimlp training : {arg_key}.")
                 elif (train_method == "dimlpBT"):
                     if (arg_key not in optional_args and arg_key not in optional_non_dt_args and arg_key  not in optional_dimlp_args and not(arg_key.startswith('H') and arg_key[1:].isdigit()) and arg_key not in obligatory_args and arg_key not in obligatory_dimlp_args and arg_key not in optional_dimlpBT_args):
-                        raise ValueError(f"Invalid argument with dimlpBT training : {arg_key}")
+                        raise ValueError(f"Invalid argument with dimlpBT training : {arg_key}.")
                 elif (train_method == "svm"):
                     if (arg_key not in optional_args and arg_key not in optional_non_dt_args and arg_key not in optional_svm_args and arg_key not in obligatory_args):
-                        raise ValueError(f"Invalid argument with svm training : {arg_key}")
+                        raise ValueError(f"Invalid argument with svm training : {arg_key}.")
                 elif (train_method == "mlp"):
                     if (arg_key not in optional_args and arg_key not in optional_non_dt_args and arg_key not in optional_mlp_args and arg_key not in obligatory_args):
-                        raise ValueError(f"Invalid argument with mlp training : {arg_key}")
+                        raise ValueError(f"Invalid argument with mlp training : {arg_key}.")
                 elif (train_method == "randForest"):
                     if (arg_key not in optional_args and arg_key not in optional_dt_args and arg_key not in optional_rf_args and arg_key not in obligatory_args):
-                        raise ValueError(f"Invalid argument with random forest training : {arg_key}")
+                        raise ValueError(f"Invalid argument with random forest training : {arg_key}.")
                 else:
                     if (arg_key not in optional_args and arg_key not in optional_dt_args and arg_key not in optional_gb_args and arg_key not in obligatory_args):
-                        raise ValueError(f"Invalid argument with gradient boosting training : {arg_key}")
+                        raise ValueError(f"Invalid argument with gradient boosting training : {arg_key}.")
 
 
             algos = {"fidex", "fidexGlo", "both"}
             if algo is None:
-                raise ValueError('Error : algorithm(s) is missing, add it with option algo="fidex" or "fidexGlo" or "both"')
+                raise ValueError('Error : algorithm(s) is missing, add it with option algo="fidex" or "fidexGlo" or "both".')
             elif (algo not in algos):
-                raise ValueError('Error, parameter algo is not fidex, fidexGlo or both')
+                raise ValueError('Error, parameter algo is not fidex, fidexGlo or both.')
 
             if data_file is None:
-                raise ValueError('Error : data file is missing, add it with option data_file="your_data_file_name"')
+                raise ValueError('Error : data file is missing, add it with option data_file="your_data_file_name".')
             elif not isinstance(data_file, str):
                 raise ValueError('Error : parameter data_file has to be a name contained in quotation marks "".')
 
             if class_file is None:
-                raise ValueError('Error : class file is missing, add it with option class_file="your_class_file_name"')
+                raise ValueError('Error : class file is missing, add it with option class_file="your_class_file_name".')
             elif not isinstance(class_file, str):
                 raise ValueError('Error : parameter class_file has to be a name contained in quotation marks "".')
 
@@ -486,17 +486,17 @@ def crossValid(*args, **kwargs):
             if k is None:
                 k = 10
             elif (not isinstance(k, int) or k<3):
-                raise ValueError('Error, parameter K is not an integer greater than 2')
+                raise ValueError('Error, parameter K is not an integer greater than 2.')
 
             if n is None:
                 n = 10
             elif (not isinstance(n, int) or n<1):
-                raise ValueError('Error, parameter n is not an stryctly positive integer')
+                raise ValueError('Error, parameter n is not an stryctly positive integer.')
 
             if fidexglo_heuristic is None:
                 fidexglo_heuristic = 1
             elif (fidexglo_heuristic not in {1,2,3}):
-                raise ValueError('Error, parameter fidexglo_heuristic is not 1, 2 or 3')
+                raise ValueError('Error, parameter fidexglo_heuristic is not 1, 2 or 3.')
 
             if crossval_stats is None:
                 crossval_stats = "crossValidationStats.txt"
@@ -522,7 +522,7 @@ def crossValid(*args, **kwargs):
             if seed is None:
                 seed = 0
             elif (not isinstance(seed, int) or seed<0):
-                raise ValueError('Error, parameter seed is not an positive integer')
+                raise ValueError('Error, parameter seed is not an positive integer.')
 
             # Check dimlpBT parameters
 
@@ -530,31 +530,31 @@ def crossValid(*args, **kwargs):
                 if nb_dimlp_nets is None:
                     nb_dimlp_nets = 25
                 elif not isinstance(nb_dimlp_nets, int) or nb_dimlp_nets < 2:
-                    raise ValueError('Error, parameter nb_dimlp_nets is not an integer greater than 1')
+                    raise ValueError('Error, parameter nb_dimlp_nets is not an integer greater than 1.')
 
                 if nb_ex_in_one is None :
                     nb_ex_in_one = 0
                 elif not isinstance(nb_ex_in_one, int) or nb_ex_in_one < 0:
-                    raise ValueError('Error, parameter nb_ex_in_one is not a positive integer')
+                    raise ValueError('Error, parameter nb_ex_in_one is not a positive integer.')
 
             # Check dimlp and dimlpBT parameters
 
             if train_method in {"dimlp", "dimlpBT"}:
 
                 if dimlprul is None:
-                    raise ValueError('Error : dimlpRul is missing, add it with option dimlpRul=1 or 0')
+                    raise ValueError('Error : dimlpRul is missing, add it with option dimlpRul=1 or 0.')
                 elif (dimlprul not in {0,1}):
-                    raise ValueError('Error, parameter dimlpRul is not 1 or 0')
+                    raise ValueError('Error, parameter dimlpRul is not 1 or 0.')
 
                 if nb_in is None:
-                    raise ValueError('Error : the number of input neurons is missing, add it with option nb_in=your_number')
+                    raise ValueError('Error : the number of input neurons is missing, add it with option nb_in=your_number.')
                 elif (not isinstance(nb_in, int) or nb_in<=0):
-                    raise ValueError('Error, parameter nb_in is not an strictly positive integer')
+                    raise ValueError('Error, parameter nb_in is not an strictly positive integer.')
 
                 if nb_out is None:
-                    raise ValueError('Error : the number of output neurons is missing, add it with option nb_out=your_number')
+                    raise ValueError('Error : the number of output neurons is missing, add it with option nb_out=your_number.')
                 elif (not isinstance(nb_out, int) or nb_out<=0):
-                    raise ValueError('Error, parameter nb_out is not an strictly positive integer')
+                    raise ValueError('Error, parameter nb_out is not an strictly positive integer.')
 
                 if (pretrained_weights is not None and (not isinstance(pretrained_weights, str))):
                     raise ValueError('Error, parameter pretrained_weights has to be a name contained in quotation marks "".')
@@ -1267,7 +1267,7 @@ def crossValid(*args, **kwargs):
                             print("Enter in DimlpBT function")
                             res = dimlp.dimlpBT(dimlp_command)
                         if (res == -1):
-                            raise ValueError('Error during training with Dimlp or DimlpBT')
+                            raise ValueError('Error during training with Dimlp or DimlpBT.')
 
                     # Training with svm
                     elif train_method == "svm":
@@ -1286,7 +1286,7 @@ def crossValid(*args, **kwargs):
                                      decision_function_shape = decision_function_shape_var, break_ties = break_ties_var, return_roc = return_roc_var)
 
                         if (res == -1):
-                            raise ValueError('Error during training with SVM')
+                            raise ValueError('Error during training with SVM.')
                         elif with_roc:
                             fprs.append(res[0])
                             tprs.append(res[1])
@@ -1311,7 +1311,7 @@ def crossValid(*args, **kwargs):
                                      random_state = random_state_var)
 
                         if (res == -1):
-                            raise ValueError('Error during training with MLP')
+                            raise ValueError('Error during training with MLP.')
 
                     # Training with random forests
                     elif train_method == "randForest":
@@ -1331,7 +1331,7 @@ def crossValid(*args, **kwargs):
                                      max_samples = max_samples_var, random_state = random_state_var)
 
                         if (res == -1):
-                            raise ValueError('Error during training with Random Forests')
+                            raise ValueError('Error during training with Random Forests.')
 
                     # Training with gradient boosting
                     else:
@@ -1352,14 +1352,14 @@ def crossValid(*args, **kwargs):
                                      random_state = random_state_var)
 
                         if (res == -1):
-                            raise ValueError('Error during training with Gradient Boosting')
+                            raise ValueError('Error during training with Gradient Boosting.')
 
                     if train_method != "svm" and with_roc:
                         res = computeRocCurve(test_class=folder_path_from_root + separator + "testTarget.txt", test_pred = folder_path_from_root + separator + "test.out",
                                               positive_index=positive_class_index, output_roc=folder_path_from_root + separator + "rocCurve",
                                               stats_file=folder_path_from_root + separator + "stats.txt", save_folder = save_folder)
                         if (res == -1):
-                            raise ValueError('Error during computation of ROC curve')
+                            raise ValueError('Error during computation of ROC curve.')
                         else:
                             fprs.append(res[0])
                             tprs.append(res[1])
@@ -1427,7 +1427,7 @@ def crossValid(*args, **kwargs):
                         print("Enter in fidex function")
                         res_fid = fidex.fidex(fidex_command)
                         if res_fid == -1:
-                            raise ValueError('Error during execution of Fidex')
+                            raise ValueError('Error during execution of Fidex.')
 
                         # Get statistics from fidex
                         stats_file = folder_path + separator + "fidexStats.txt"
@@ -1494,7 +1494,7 @@ def crossValid(*args, **kwargs):
                         print("Enter in fidexGloRules function")
                         res_fid_glo_rules = fidexGlo.fidexGloRules(fidexglo_rules_command)
                         if res_fid_glo_rules == -1:
-                            raise ValueError('Error during execution of FidexGloRules')
+                            raise ValueError('Error during execution of FidexGloRules.')
 
                         # Compute fidexGlo statistics in folder
                         fidexglo_stats_command = "fidexGloStats"
@@ -1517,7 +1517,7 @@ def crossValid(*args, **kwargs):
                         print("Enter in fidexGloStats function")
                         res_fid_glo_stats = fidexGlo.fidexGloStats(fidexglo_stats_command)
                         if res_fid_glo_stats == -1:
-                            raise ValueError('Error during execution of FidexGloStats')
+                            raise ValueError('Error during execution of FidexGloStats.')
                         # Get statistics from fidexGlo
                         stats_glo_file = folder_path + separator + "fidexGloStats.txt"
                         try:
@@ -1530,15 +1530,15 @@ def crossValid(*args, **kwargs):
                                     if "rules" in values:
                                         mean_nb_rules += float(values[values.index("rules") + 2].rstrip(','))
                                     else:
-                                        raise ValueError("Error in second line of fidexGlo stat file, there is not the number of rules")
+                                        raise ValueError("Error in second line of fidexGlo stat file, there is not the number of rules.")
                                     if "sample" in values:
                                         mean_nb_cover += float(values[values.index("sample") + 6].rstrip(','))
                                     else:
-                                        raise ValueError("Error in second line of fidexGlo stat file, there is not the mean sample covering number per rule")
+                                        raise ValueError("Error in second line of fidexGlo stat file, there is not the mean sample covering number per rule.")
                                     if "antecedents" in values:
                                         mean_nb_antecedants += float(values[values.index("antecedents") + 4])
                                     else:
-                                        raise ValueError("Error in second line of fidexGlo stat file, there is not the mean number of antecedents per rule")
+                                        raise ValueError("Error in second line of fidexGlo stat file, there is not the mean number of antecedents per rule.")
 
                                 else:
                                     raise ValueError("Error in second line of fidexGlo stat file.")
@@ -2006,7 +2006,7 @@ def crossValid(*args, **kwargs):
                            std_recall_all = "N/A"
                     else:
                         mean_recall_all = np.mean(np.array(recall_exec_temp))
-                        std_auc_recall_all = np.mean(np.array(recall_exec_temp))
+                        std_recall_all = np.mean(np.array(recall_exec_temp))
 
                     mean_nb_true_positive_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,20])
                     mean_nb_false_positive_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,21])
@@ -2039,7 +2039,7 @@ def crossValid(*args, **kwargs):
                            std_recall_rule_all = "N/A"
                     else:
                         mean_recall_rule_all = np.mean(np.array(recall_exec_rule_temp))
-                        std_auc_recall_rule_all = np.mean(np.array(recall_exec_rule_temp))
+                        std_recall_rule_all = np.mean(np.array(recall_exec_rule_temp))
 
                 std_nb_rules_all = np.std(np.array(mean_exec_values_fidexglo)[:,0])
                 std_nb_cover_all = np.std(np.array(mean_exec_values_fidexglo)[:,1])
