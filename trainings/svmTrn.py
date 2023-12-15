@@ -5,7 +5,7 @@ from sklearn import metrics
 import numpy as np
 import matplotlib.pyplot as plt
 
-from .trnFun import get_data, get_data_class, check_int, check_strictly_positive, check_positive, check_bool, output_pred, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer, compute_roc
+from .trnFun import get_data, get_data_class, check_int, check_strictly_positive, check_positive, check_bool, output_pred, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer, compute_roc, validate_string_param
 
 def svmTrn(*args, **kwargs):
     try:
@@ -17,9 +17,9 @@ def svmTrn(*args, **kwargs):
             print("----------------------------")
             print("Obligatory parameters :")
             print("train_data : train data file")
-            print("train_class : train class file")
+            print("train_class : train class file, not mendatory if classes are specified in train_data")
             print("test_data : test data file")
-            print("test_class : test class file")
+            print("test_class : test class file, not mendatory if classes are specified in test_data")
             print("nb_attributes : number of attributes")
             print("nb_classes : number of classes")
             print("----------------------------")
@@ -124,13 +124,10 @@ def svmTrn(*args, **kwargs):
                 if arg_key not in valid_args:
                     raise ValueError(f"Invalid argument : {arg_key}.")
 
-            save_folder, train_data_file, train_class_file_init, test_data_file, test_class_file_init, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes  = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
+            save_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes  = check_parameters_common(save_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
             weights_file, K, quant = check_parameters_dimlp_layer(weights_file, K, quant)
 
-            if output_roc is None:
-                output_roc = "roc_curve"
-            elif not isinstance(output_roc, str):
-                raise ValueError('Error : parameter output_roc has to be a name contained in quotation marks "".')
+            output_roc = validate_string_param(output_roc, "output_roc", default="roc_curve")
             output_roc += ".png"
 
             if c_var is None:
@@ -214,9 +211,7 @@ def svmTrn(*args, **kwargs):
 
             if (save_folder is not None):
                 train_data_file = save_folder + "/" + train_data_file
-                train_class_file = save_folder + "/" + train_class_file_init
                 test_data_file = save_folder + "/" + test_data_file
-                test_class_file = save_folder + "/" + test_class_file_init
                 train_pred_file = save_folder + "/" + train_pred_file
                 test_pred_file = save_folder + "/" + test_pred_file
                 weights_file = save_folder + "/" + weights_file
@@ -227,12 +222,18 @@ def svmTrn(*args, **kwargs):
             # Get data
             train_data, train_class = get_data(train_data_file, nb_attributes, nb_classes)
             if len(train_class) == 0:
+                train_class_file_init = validate_string_param(train_class_file, "train_class")
+                if (save_folder is not None):
+                    train_class_file = save_folder + "/" + train_class_file_init
                 train_class = get_data_class(train_class_file, nb_classes)
             if len(train_data) != len(train_class):
                 raise ValueError('Error, there is not the same amount of train data and train class.')
 
             test_data, test_class = get_data(test_data_file, nb_attributes, nb_classes)
             if len(test_class) == 0:
+                test_class_file_init = validate_string_param(test_class_file, "test_class")
+                if (save_folder is not None):
+                    test_class_file = save_folder + "/" + test_class_file_init
                 test_class = get_data_class(test_class_file, nb_classes)
             if len(test_data) != len(test_class):
                 raise ValueError('Error, there is not the same amount of test data and test class.')

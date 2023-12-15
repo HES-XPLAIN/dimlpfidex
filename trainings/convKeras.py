@@ -32,7 +32,7 @@ import colorsys
 
 
 
-from .trnFun import compute_first_hidden_layer, output_stats, output_data, check_parameters_dimlp_layer, check_parameters_common, get_data, get_data_class, check_strictly_positive, check_int, check_bool
+from .trnFun import compute_first_hidden_layer, output_stats, output_data, check_parameters_dimlp_layer, check_parameters_common, get_data, get_data_class, check_strictly_positive, check_int, check_bool, validate_string_param
 
 
 def convKeras(*args, **kwargs):
@@ -42,9 +42,9 @@ def convKeras(*args, **kwargs):
             print("Obligatory parameters :")
             print("dataset : mnist, cifar100, cifar10 or fer")
             print("train_data : train data file")
-            print("train_class : train class file")
+            print("train_class : train class file, not mendatory if classes are specified in train_data")
             print("test_data : test data file")
-            print("test_class : test class file")
+            print("test_class : test class file, not mendatory if classes are specified in test_data")
             print("nb_attributes : number of attributes")
             print("nb_classes : number of classes")
             print("----------------------------")
@@ -114,7 +114,8 @@ def convKeras(*args, **kwargs):
                 if arg_key not in valid_args:
                     raise ValueError(f"Invalid argument : {arg_key}.")
 
-            save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_valid_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes  = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_valid_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
+            save_folder, train_data_file, test_data_file, train_valid_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes  = check_parameters_common(save_folder, train_data_file, test_data_file, train_valid_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
+
             if valid_ratio is None:
                 if (valid_data_file is None and valid_class_file is not None) or (valid_data_file is not None and valid_class_file is None):
                     raise ValueError('Error : parameter valid_data_file or parameter valid_class_file missing.')
@@ -126,11 +127,8 @@ def convKeras(*args, **kwargs):
             elif valid_ratio is not None and (valid_ratio <= 0 or valid_ratio >= 1):
                 raise ValueError('Error : parameter valid_ratio has to be strictly bigger than 0 and strictly smaller than 1.')
 
-            if valid_data_file is not None and not isinstance(valid_data_file, str):
-                raise ValueError('Error : parameter valid_data has to be a name contained in quotation marks "".')
-
-            if valid_class_file is not None and not isinstance(valid_class_file, str):
-                raise ValueError('Error : parameter valid_class has to be a name contained in quotation marks "".')
+            valid_data_file = validate_string_param(valid_data_file, "valid_data", allow_none=True)
+            valid_class_file = validate_string_param(valid_class_file, "valid_class", allow_none=True)
 
             if dataset is None :
                 raise ValueError('Error : dataset name missing, add it with option dataset and choose "mnist" or "cifar100" or "cifar10".')
@@ -171,12 +169,9 @@ def convKeras(*args, **kwargs):
             model_checkpoint_weights = "weights.hdf5"
             if (save_folder is not None):
                 train_data_file = save_folder + "/" + train_data_file
-                train_class_file = save_folder + "/" + train_class_file
                 test_data_file = save_folder + "/" + test_data_file
-                test_class_file = save_folder + "/" + test_class_file
                 if valid_ratio is None:
                     valid_data_file = save_folder + "/" + valid_data_file
-                    valid_class_file = save_folder + "/" + valid_class_file
                 train_valid_pred_file = save_folder + "/" + train_valid_pred_file
                 test_pred_file = save_folder + "/" + test_pred_file
                 weights_file = save_folder + "/" + weights_file
@@ -197,6 +192,9 @@ def convKeras(*args, **kwargs):
 
             del x_train_full_temp
             if len(y_train_full_temp) == 0:
+                train_class_file = validate_string_param(train_class_file, "train_class")
+                if (save_folder is not None):
+                    train_class_file = save_folder + "/" + train_class_file
                 y_train_full_temp = get_data_class(train_class_file, nb_classes)
             y_train_full = np.array(y_train_full_temp)
             del y_train_full_temp
@@ -206,6 +204,9 @@ def convKeras(*args, **kwargs):
 
             x_test, y_test = get_data(test_data_file, nb_attributes, nb_classes)
             if len(y_test) == 0:
+                test_class_file = validate_string_param(test_class_file, "test_class")
+                if (save_folder is not None):
+                    test_class_file = save_folder + "/" + test_class_file
                 y_test = get_data_class(test_class_file, nb_classes)
             x_test, y_test = np.array(x_test), np.array(y_test)
 
@@ -217,6 +218,9 @@ def convKeras(*args, **kwargs):
                 y_train = y_train_full
                 x_val, y_val = get_data(valid_data_file, nb_attributes, nb_classes)
                 if len(y_val) == 0:
+                    valid_class_file = validate_string_param(valid_class_file, "valid_class")
+                    if (save_folder is not None):
+                        valid_class_file = save_folder + "/" + valid_class_file
                     y_val = get_data_class(valid_class_file, nb_classes)
                 x_val, y_val = np.array(x_val), np.array(y_val)
 
@@ -224,6 +228,8 @@ def convKeras(*args, **kwargs):
                     raise ValueError('Error, there is not the same amount of validation data and validation class.')
             else:
                 cut_off = int(len(x_train_full)*(1-valid_ratio))
+                if cut_off == 0 or cut_off == len(x_train_full):
+                    raise ValueError('Error, problem during separation of data in train and validation sets. There is maybe not enough train data or a too big or too low validation ratio')
                 x_train = x_train_full[:cut_off]
                 x_val   = x_train_full[cut_off:]
                 y_train = y_train_full[:cut_off]

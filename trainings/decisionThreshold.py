@@ -1,6 +1,6 @@
 # It will work with SVM only if the roc curve results are given, because the process is different to get Roc curve and we can't compute it here for SVM.
 
-from .trnFun import get_data_class, get_data_pred, check_bool, check_positive, output_data, check_int, check_strictly_positive
+from .trnFun import get_data_class, get_data_pred, check_bool, check_positive, output_data, check_int, check_strictly_positive, validate_string_param
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -64,13 +64,9 @@ def decisionThreshold(*args, **kwargs):
                 if arg_key not in valid_args:
                     raise ValueError(f"Invalid argument : {arg_key}.")
 
-            if (save_folder is not None and (not isinstance(save_folder, str))):
-                raise ValueError('Error : parameter save_folder has to be a name contained in quotation marks "".')
+            save_folder = validate_string_param(save_folder, "save_folder", allow_none=True)
 
-            if test_class_file is None :
-                raise ValueError('Error : test class file missing, add it with option test_class="your_test_class_file".')
-            elif not isinstance(test_class_file, str):
-                raise ValueError('Error : parameter test_class has to be a name contained in quotation marks "".')
+            test_class_file = validate_string_param(test_class_file, "test_class")
 
             is_test_pred_list = False
             if test_pred_file is None:
@@ -88,15 +84,9 @@ def decisionThreshold(*args, **kwargs):
             elif isinstance(train_pred_file, list):
                 is_train_pred_list = True
 
-            if train_class_threshold_file is None:
-                train_class_threshold_file = "train_class_threshold.txt"
-            elif not isinstance(train_class_threshold_file, str):
-                raise ValueError('Error : parameter train_class_threshold_file has to be a name contained in quotation marks "".')
+            train_class_threshold_file = validate_string_param(train_class_threshold_file, "train_class_threshold_file", default="train_class_threshold.txt")
+            test_class_threshold_file = validate_string_param(test_class_threshold_file, "test_class_threshold_file", default="test_class_threshold.txt")
 
-            if test_class_threshold_file is None:
-                test_class_threshold_file = "test_class_threshold.txt"
-            elif not isinstance(test_class_threshold_file, str):
-                raise ValueError('Error : parameter test_class_threshold_file has to be a name contained in quotation marks "".')
 
             if with_roc_computation is None:
                 raise ValueError('Error : parameter with_roc_computation is missing, add it with with_roc_computation=True ou with_roc_computation=False.')
@@ -137,7 +127,6 @@ def decisionThreshold(*args, **kwargs):
                 raise ValueError('Error : parameter positive_index is missing, add it with positive_index=your_positive_class_index.')
             elif not isinstance(positive_index_var, int) or positive_index_var < 0 or positive_index_var >= nb_classes:
                 raise ValueError(f'Error : parameter positive_index has to be a positive integer smaller than {nb_classes}.')
-
 
             # Get ROC result
 

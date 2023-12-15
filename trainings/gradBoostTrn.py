@@ -1,6 +1,6 @@
 import time
 import sys
-from .trnFun import get_data, get_data_class, output_data, output_stats, trees_to_rules, check_parameters_common, check_int, check_strictly_positive, check_positive, check_bool, check_parameters_decision_trees
+from .trnFun import get_data, get_data_class, output_data, output_stats, trees_to_rules, check_parameters_common, check_int, check_strictly_positive, check_positive, check_bool, check_parameters_decision_trees, validate_string_param
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import metrics
 from sklearn.tree import export_text
@@ -15,9 +15,9 @@ def gradBoostTrn(*args, **kwargs):
             print("----------------------------")
             print("Obligatory parameters :")
             print("train_data : train data file")
-            print("train_class : train class file")
+            print("train_class : train class file, not mendatory if classes are specified in train_data")
             print("test_data : test data file")
-            print("test_class : test class file")
+            print("test_class : test class file, not mendatory if classes are specified in test_data")
             print("nb_attributes : number of attributes")
             print("nb_classes : number of classes")
             print("----------------------------")
@@ -118,14 +118,11 @@ def gradBoostTrn(*args, **kwargs):
                 if arg_key not in valid_args:
                     raise ValueError(f"Invalid argument : {arg_key}.")
 
-            save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes  = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
+            save_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes  = check_parameters_common(save_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
 
             n_estimators_var, min_samples_split_var, min_samples_leaf_var, min_weight_fraction_leaf_var, min_impurity_decrease_var, random_state_var, max_features_var, verbose_var, max_leaf_nodes_var, warm_start_var, ccp_alpha_var = check_parameters_decision_trees(n_estimators_var, min_samples_split_var, min_samples_leaf_var, min_weight_fraction_leaf_var, min_impurity_decrease_var, random_state_var, max_features_var, verbose_var, max_leaf_nodes_var, warm_start_var, ccp_alpha_var)
 
-            if rules_file is None:
-                rules_file = "GB_rules"
-            elif not isinstance(rules_file, str):
-                raise ValueError('Error : parameter rules_file has to be a name contained in quotation marks "".')
+            rules_file = validate_string_param(rules_file, "rules_file", default="GB_rules")
             rules_file += ".rls"
 
             if loss_var is None:
@@ -173,9 +170,7 @@ def gradBoostTrn(*args, **kwargs):
 
             if (save_folder is not None):
                 train_data_file = save_folder + "/" + train_data_file
-                train_class_file = save_folder + "/" + train_class_file
                 test_data_file = save_folder + "/" + test_data_file
-                test_class_file = save_folder + "/" + test_class_file
                 train_pred_file = save_folder + "/" + train_pred_file
                 test_pred_file = save_folder + "/" + test_pred_file
                 rules_file = save_folder + "/" + rules_file
@@ -185,6 +180,9 @@ def gradBoostTrn(*args, **kwargs):
             # Get data
             train_data, train_class = get_data(train_data_file, nb_attributes, nb_classes)
             if len(train_class) == 0:
+                train_class_file = validate_string_param(train_class_file, "train_class")
+                if (save_folder is not None):
+                    train_class_file = save_folder + "/" + train_class_file
                 train_class = get_data_class(train_class_file, nb_classes)
             if len(train_data) != len(train_class):
                 raise ValueError('Error, there is not the same amount of train data and train class.')
@@ -193,6 +191,9 @@ def gradBoostTrn(*args, **kwargs):
 
             test_data, test_class = get_data(test_data_file, nb_attributes, nb_classes)
             if len(test_class) == 0:
+                test_class_file = validate_string_param(test_class_file, "test_class")
+                if (save_folder is not None):
+                    test_class_file = save_folder + "/" + test_class_file
                 test_class = get_data_class(test_class_file, nb_classes)
             if len(test_data) != len(test_class):
                 raise ValueError('Error, there is not the same amount of test data and test class.')
