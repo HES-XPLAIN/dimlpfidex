@@ -65,7 +65,7 @@ bool FidexAlgo::fidex(Rule &rule,
       mainSampleValue = (*mainSampleValues)[attribut];
 
       // Test if we dropout this dimension
-      if (/*dropoutDim > 0.00f &&*/ dis(gen) < dropoutDim) {
+      if (dis(gen) < dropoutDim) {
         continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
       }
       bool maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
@@ -77,7 +77,7 @@ bool FidexAlgo::fidex(Rule &rule,
       for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
 
         // Test if we dropout this hyperplan
-        if (/*dropoutHyp > 0.00f &&*/ dis(gen) < dropoutHyp) {
+        if (dis(gen) < dropoutHyp) {
           continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
         }
 

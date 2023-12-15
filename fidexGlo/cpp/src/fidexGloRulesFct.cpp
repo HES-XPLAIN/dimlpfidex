@@ -73,7 +73,6 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
 
 #pragma omp parallel num_threads(nbThreadsUsed)
   {
-
     // declaring thread internal variables
     int threadId = omp_get_thread_num();
 
@@ -213,7 +212,7 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
 }
 
 // TODO: comment this
-// TODO: this is buggy
+// TODO: remove duplicated code (merge with heurisitic 1)
 vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<double>> hyperlocus) {
   mt19937 gen;
   int nbDatas = dataset->getDatas()->size();
@@ -240,7 +239,6 @@ vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<doubl
 
 #pragma omp parallel num_threads(nbThreadsUsed)
   {
-
     // declaring thread internal variables
     int threadId = omp_get_thread_num();
 
@@ -254,15 +252,13 @@ vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<doubl
     auto exp = FidexAlgo();
     bool ruleCreated;
     int counterFailed;
-    double t1, t2;
-
     int currentMinNbCov = minNbCover;
     int maxFailedAttempts = p->getMaxFailedAttempts();
     int localNbRulesNotFound = 0;
     int localNbProblems = 0;
     int localMinNbCover = 0;
     int cnt = 0;
-    Antecedant a;
+    double t1, t2;
     Hyperspace hyperspace(hyperlocus);
     vector<int>::iterator it;
 
@@ -272,9 +268,14 @@ vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<doubl
     for (int idSample = 0; idSample < nbDatas; idSample++) {
       cnt += 1;
 
-      if (omp_get_thread_num() == 0 && ((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && p->getConsoleFile().empty()) {
-        cout << "Processing : " << int((double(idSample) / (nbDatas / nbThreadsUsed)) * 100) << "%\r";
-        cout.flush();
+      if (omp_get_thread_num() == 0) {
+        if (((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && p->getConsoleFile().empty()) {
+#pragma omp critical
+          {
+            cout << "Processing : " << int((double(idSample) / (nbDatas / nbThreadsUsed)) * 100) << "%\r";
+            std::cout.flush();
+          }
+        }
       }
 
       currentMinNbCov = minNbCover;
@@ -322,35 +323,26 @@ vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<doubl
        << endl;
   cout << "Number of sample with lower covering than " << minNbCover << " is " << nbProblems << endl;
   cout << "Number of rules not found is " << nbRulesNotFound << endl;
-  cout << "Fidex rules computed" << endl;
+  cout << "Fidex rules computed." << endl;
   cout << "Computing global ruleset..." << endl;
-
-  cout << "\nNumber of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
-  if (nbRulesNotFound > 0) {
-    cout << "Number of rules not found : " << nbRulesNotFound << endl;
-  }
-
-  cout << "Fidex rules computed" << endl
-       << endl;
-
-  cout << "Computing global ruleset..." << endl
-       << endl;
+  cout << "\nNumber of sample with lower covering than " << minNbCover << ": " << nbProblems << endl;
+  cout << "Number of rules not found: " << nbRulesNotFound << endl;
 
   // Sort the rules(dataIds) depending of their covering size
   vector<int> dataIds = notCoveredSamples;
-  sort(dataIds.begin(), dataIds.end(), [&rules](int ruleBest, int ruleWorst) {
-    return rules[ruleWorst].getCoveredSamples().size() < rules[ruleBest].getCoveredSamples().size();
+  sort(rules.begin(), rules.end(), [&rules](Rule r1, Rule r2) {
+    return r1.getCoveredSamples().size() > r2.getCoveredSamples().size();
   });
 
   // While there is some not covered samples
+  int dataId = 0;
   int nbRules = 0;
   Rule currentRule;
-  int ancienNotCoveringSize = static_cast<int>(notCoveredSamples.size());
-  int dataId = 0;
-
   vector<int>::iterator ite;
+  int ancienNotCoveringSize = static_cast<int>(notCoveredSamples.size());
+
   while (!notCoveredSamples.empty()) {
-    currentRule = rules[dataIds[dataId]];
+    currentRule = rules[dataId];
 
     // Delete covered samples
     ite = set_difference(notCoveredSamples.begin(),
@@ -412,7 +404,7 @@ vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   while (!notCoveredSamples.empty()) {
 
     if (int(nbDatas / 100) != 0 && (nbDatas - notCoveredSamples.size()) % int(nbDatas / 100) == 0 && consoleFile.empty()) {
-      cout << "Processing : " << int((double(nbDatas - notCoveredSamples.size()) / nbDatas) * 100) << "%r";
+      cout << "Processing: " << int((double(nbDatas - notCoveredSamples.size()) / nbDatas) * 100) << "%\r";
       cout.flush();
     }
 
