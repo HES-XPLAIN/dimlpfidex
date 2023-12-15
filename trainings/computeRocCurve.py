@@ -1,6 +1,6 @@
 # Not working with SVM because process is different to get Roc curve
 
-from .trnFun import get_data, compute_roc, check_int, check_strictly_positive
+from .trnFun import get_data_class, get_data_pred, compute_roc, check_int, check_strictly_positive
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -14,7 +14,6 @@ def computeRocCurve(*args, **kwargs):
             print("Obligatory parameters :")
             print("test_class : test class file")
             print("test_pred : test prediction file")
-            print("nb_attributes : number of attributes")
             print("nb_classes : number of classes")
             print("positive_index : index of positive class (0 for first one)")
             print("----------------------------")
@@ -29,7 +28,6 @@ def computeRocCurve(*args, **kwargs):
             save_folder = kwargs.get('save_folder')
             test_class_file = kwargs.get('test_class')
             test_pred_file = kwargs.get('test_pred')
-            nb_attributes = kwargs.get('nb_attributes')
             nb_classes = kwargs.get('nb_classes')
             positive_index = kwargs.get('positive_index')
             estimator = kwargs.get('estimator')
@@ -37,7 +35,7 @@ def computeRocCurve(*args, **kwargs):
             stats_file = kwargs.get('stats_file')
 
             # Check parameters
-            valid_args = ['test_class', 'test_pred', 'nb_attributes', 'nb_classes', 'positive_index', 'estimator', 'save_folder', 'output_roc', 'stats_file']
+            valid_args = ['test_class', 'test_pred', 'nb_classes', 'positive_index', 'estimator', 'save_folder', 'output_roc', 'stats_file']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
@@ -63,11 +61,6 @@ def computeRocCurve(*args, **kwargs):
             elif isinstance(test_pred_file, list):
                 is_test_pred_list = True
 
-            if nb_attributes is None:
-                raise ValueError('Error : number of attributes missing, add it with option nb_attributes="your_number_of_attributes".')
-            elif not check_strictly_positive(nb_attributes) or not check_int(nb_attributes):
-                raise ValueError('Error : parameter nb_attributes has to be a strictly positive integer.')
-
             if nb_classes is None:
                 raise ValueError('Error : number of classes missing, add it with option nb_classes="your_number_of_classes".')
             elif not check_strictly_positive(nb_classes) or not check_int(nb_classes):
@@ -91,15 +84,18 @@ def computeRocCurve(*args, **kwargs):
             if is_test_class_list:
                 test_class = test_class_file
             elif save_folder is not None:
-                test_class = get_data(save_folder + "/" + test_class_file)
+                test_class = get_data_class(save_folder + "/" + test_class_file, nb_classes)
             else:
-                test_class = get_data(test_class_file)
+                test_class = get_data_class(test_class_file, nb_classes)
             if is_test_pred_list:
                 test_pred = test_pred_file
             elif save_folder is not None:
-                test_pred = get_data(save_folder + "/" + test_pred_file)
+                test_pred = get_data_pred(save_folder + "/" + test_pred_file, nb_classes)
             else:
-                test_pred = get_data(test_pred_file)
+                test_pred = get_data_pred(test_pred_file, nb_classes)
+
+            if len(test_class) != len(test_pred):
+                raise ValueError('Error, there is not the same amount of test predictions and test class.')
 
             if positive_index is None:
                 raise ValueError('Error : positive class index missing, add it with option positive_index="your_positive_class_index".')

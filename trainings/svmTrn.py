@@ -5,7 +5,7 @@ from sklearn import metrics
 import numpy as np
 import matplotlib.pyplot as plt
 
-from .trnFun import check_int, check_strictly_positive, check_positive, check_bool, get_data, output_pred, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer, compute_roc
+from .trnFun import get_data, get_data_class, check_int, check_strictly_positive, check_positive, check_bool, output_pred, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer, compute_roc
 
 def svmTrn(*args, **kwargs):
     try:
@@ -225,19 +225,23 @@ def svmTrn(*args, **kwargs):
                     stats_file = save_folder + "/" + stats_file
 
             # Get data
-            train_data = get_data(train_data_file)
-            train_class = get_data(train_class_file)
-            nb_classes = len(train_class[0])
-            train_class = [cl.index(max(cl)) for cl in train_class]
-            test_data = get_data(test_data_file)
-            test_class = get_data(test_class_file)
+            train_data, train_class = get_data(train_data_file, nb_attributes, nb_classes)
+            if len(train_class) == 0:
+                train_class = get_data_class(train_class_file, nb_classes)
+            if len(train_data) != len(train_class):
+                raise ValueError('Error, there is not the same amount of train data and train class.')
+
+            test_data, test_class = get_data(test_data_file, nb_attributes, nb_classes)
+            if len(test_class) == 0:
+                test_class = get_data_class(test_class_file, nb_classes)
+            if len(test_data) != len(test_class):
+                raise ValueError('Error, there is not the same amount of test data and test class.')
+
             with_roc = True
             if positive_index is None:
                 with_roc = False
             elif not isinstance(positive_index, int) or positive_index < 0 or positive_index >= len(test_class[0]):
                 raise ValueError(f'Error : parameter positive_index has to be a positive integer smaller than {len(test_class[0])}.')
-
-            test_class = [cl.index(max(cl)) for cl in test_class]
 
 
             # Get weights and biais from first hidden layer as well as data transformed in first hidden layer
