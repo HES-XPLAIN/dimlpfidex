@@ -27,7 +27,7 @@ public:
   bool fidex(Rule &rule,
              DataSetFid *dataset,
              Parameters *p,
-             vector<vector<double>> *hyperlocus,
+             Hyperspace *hyperspace,
              int idSample,
              mt19937 gen) const;
 };

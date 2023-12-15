@@ -1,6 +1,7 @@
 #ifndef RULE_H
 #define RULE_H
 #include "antecedant.h"
+#include "checkFun.h"
 #include <iostream>
 #include <ostream>
 #include <sstream>

@@ -55,14 +55,15 @@ string Rule::toString(const vector<string> *attributes, const vector<string> *cl
   } else {
     result << "-> class " << outputClass << endl;
   }
-  // TODO pretty print double values with formattingDoubleToString()
+
   result << "   Train Covering size : " << nbCoveredSamples
          << endl
-         << "   Train Fidelity : " << fidelity
+         << "   Train Fidelity : " << formattingDoubleToString(fidelity)
          << endl
-         << "   Train Accuracy : " << accuracy
+         << "   Train Accuracy : " << formattingDoubleToString(accuracy)
          << endl
-         << "   Train Confidence : " << confidence << endl;
+         << "   Train Confidence : " << formattingDoubleToString(confidence)
+         << endl;
 
   return result.str();
 }

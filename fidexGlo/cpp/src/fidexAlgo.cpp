@@ -2,13 +2,10 @@
 
 FidexAlgo::FidexAlgo() = default;
 
-// Different mains:
-
-// OPENMP: hyperspace is a shared ressource that might produce concurrency errors
 bool FidexAlgo::fidex(Rule &rule,
                       DataSetFid *dataset,
                       Parameters *p,
-                      vector<vector<double>> *hyperlocus,
+                      Hyperspace *hyperspace,
                       int idSample,
                       mt19937 gen) const {
 
@@ -16,25 +13,17 @@ bool FidexAlgo::fidex(Rule &rule,
   int nbDatas = dataset->getNbSamples();
   int nbAttributes = dataset->getNbAttributes();
   vector<vector<double>> *trainData = dataset->getDatas();
-  vector<int> *trainPreds = dataset->getPredictions(); // bug
-
-  // for (int i : *trainPreds) {
-  //   cout << i << ", ";
-  // }
-  // cout << endl;
-
+  vector<int> *trainPreds = dataset->getPredictions();
   vector<vector<double>> *trainOutputValuesPredictions = dataset->getOutputValuesPredictions();
   vector<int> *trainTrueClass = dataset->getClasses();
   vector<double> *mainSampleValues = &(*trainData)[idSample];
   int mainSamplePred = (*trainPreds)[idSample];
-
-  int nbInputs = hyperlocus->size();
+  int nbInputs = hyperspace->getHyperLocus().size();
   int itMax = p->getItMax();
   int minNbCover = p->getMinNbCover();
   double minFidelity = p->getMinFidelity();
   double dropoutDim = p->getDropoutDim();
   double dropoutHyp = p->getDropoutHyp();
-  Hyperspace *hyperspace = new Hyperspace(*hyperlocus);
 
   // Initialize uniform distribution
   uniform_real_distribution<double> dis(0.0, 1.0);
@@ -76,7 +65,7 @@ bool FidexAlgo::fidex(Rule &rule,
       mainSampleValue = (*mainSampleValues)[attribut];
 
       // Test if we dropout this dimension
-      if (dropoutDim > 0.0f && dis(gen) < dropoutDim) {
+      if (/*dropoutDim > 0.00f &&*/ dis(gen) < dropoutDim) {
         continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
       }
       bool maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
@@ -88,7 +77,7 @@ bool FidexAlgo::fidex(Rule &rule,
       for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
 
         // Test if we dropout this hyperplan
-        if (dropoutHyp > 0.0f && dis(gen) < dropoutHyp) {
+        if (/*dropoutHyp > 0.00f &&*/ dis(gen) < dropoutHyp) {
           continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
         }
 
