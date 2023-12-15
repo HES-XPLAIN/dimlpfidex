@@ -429,7 +429,7 @@ def validate_string_param(param, param_name, default=None, allow_none=False):
         raise ValueError(f'Error: parameter {param_name} has to be a name contained in quotation marks "".')
     return param
 
-def check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes):
+def check_parameters_common(save_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes):
     """
     Validate the common parameters used in a machine learning process.
 
@@ -463,9 +463,7 @@ def check_parameters_common(save_folder, train_data_file, train_class_file, test
     """
     save_folder = validate_string_param(save_folder, "save_folder", allow_none=True)
     train_data_file = validate_string_param(train_data_file, "train_data")
-    train_class_file = validate_string_param(train_class_file, "train_class")
     test_data_file = validate_string_param(test_data_file, "test_data")
-    test_class_file = validate_string_param(test_class_file, "test_class")
     train_pred_file = validate_string_param(train_pred_file, "train_pred", default="predTrain.out")
     test_pred_file = validate_string_param(test_pred_file, "test_pred", default="predTest.out")
     stats_file = validate_string_param(stats_file, "stats_file", default="stats.txt")
@@ -482,7 +480,7 @@ def check_parameters_common(save_folder, train_data_file, train_class_file, test
     elif not check_strictly_positive(nb_classes) or not check_int(nb_classes):
         raise ValueError('Error : parameter nb_classes has to be a strictly positive integer.')
 
-    return save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes
+    return save_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes
 
 def check_parameters_dimlp_layer(weights_file, k, quant):
     """
@@ -502,10 +500,7 @@ def check_parameters_dimlp_layer(weights_file, k, quant):
     :rtype: tuple
     :raises ValueError: If any provided parameter is invalid.
     """
-    if weights_file is None:
-        weights_file = "weights"
-    elif not isinstance(weights_file, str):
-            raise ValueError('Error : parameter weights has to be a name contained in quotation marks "".')
+    weights_file = validate_string_param(weights_file, "weights", default="weights")
     weights_file += ".wts"
 
     if k is None:

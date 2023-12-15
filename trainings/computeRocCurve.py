@@ -1,6 +1,6 @@
 # Not working with SVM because process is different to get Roc curve
 
-from .trnFun import get_data_class, get_data_pred, compute_roc, check_int, check_strictly_positive
+from .trnFun import get_data_class, get_data_pred, compute_roc, check_int, check_strictly_positive, validate_string_param
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -42,8 +42,7 @@ def computeRocCurve(*args, **kwargs):
                 if arg_key not in valid_args:
                     raise ValueError(f"Invalid argument : {arg_key}.")
 
-            if (save_folder is not None and (not isinstance(save_folder, str))):
-                raise ValueError('Error : parameter save_folder has to be a name contained in quotation marks "".')
+            save_folder = validate_string_param(save_folder, "save_folder", allow_none=True)
 
             is_test_class_list = False
             if test_class_file is None :
@@ -66,13 +65,9 @@ def computeRocCurve(*args, **kwargs):
             elif not check_strictly_positive(nb_classes) or not check_int(nb_classes):
                 raise ValueError('Error : parameter nb_classes has to be a strictly positive integer.')
 
-            if stats_file is not None and not isinstance(stats_file, str):
-                raise ValueError('Error : parameter stats_file has to be a name contained in quotation marks "".')
+            stats_file = validate_string_param(stats_file, "stats_file", allow_none=True)
 
-            if output_roc is None:
-                output_roc = "roc_curve"
-            elif not isinstance(output_roc, str):
-                raise ValueError('Error : parameter output_roc has to be a name contained in quotation marks "".')
+            output_roc = validate_string_param(output_roc, "output_roc", default="roc_curve")
             output_roc += ".png"
 
             if (save_folder is not None):
