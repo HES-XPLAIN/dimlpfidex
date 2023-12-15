@@ -73,29 +73,40 @@ def delete_file(file):
     except Exception:
         print(f"Error during delete of file {file}")
 
-def get_data_simple(file_name):
+def get_data_pred(file_name, nb_classes):
     """
-    Get data from file
+    Read prediction data from a file and ensure each line contains 'nb_classes' predictions.
 
-    :param file_name: The name of the file to read data from.
+    This function opens a file, reads its contents line by line, and parses each line into a list of floats.
+    It verifies that each line contains exactly 'nb_classes' numbers.
+
+    :param file_name: The path of the file to read data from.
     :type file_name: str
-    :raises ValueError: file not found.
-    :raises ValueError: couldn't open file.
-    :return: data present in the file
-    :rtype: list<list<float>>
+    :param nb_classes: The expected number of float values per line.
+    :type nb_classes: int
+    :return: Predictions, a list of lists, where each inner list contains float values from one line of the file.
+    :rtype: list[list[float]]
+    :raises ValueError: If the file is not found, cannot be opened, if a line does not contain 'nb_classes' floats,
+                        or if any value in a line is not a float.
     """
     try:
         with open(file_name, "r") as my_file:
             data = []
-            line = my_file.readline()
-            while line:
-                line = line.strip()  # Remove the line break at the end of the line
-                if line.strip():
-                    di = [float(elt) for elt in line.split(" ")]
-                    data.append(di)
-                line = my_file.readline()
-            my_file.close()
-        return data
+            for line in my_file:
+                line = line.strip()
+                if line:
+                    elements = line.split()
+
+                    # Check if all elements are floats and the line has the correct number of predictions
+                    if len(elements) != nb_classes:
+                        raise ValueError(f"Error in {file_name}: Incorrect number of parameters per line.")
+
+                    try:
+                        di = [float(elt) for elt in elements]
+                        data.append(di)
+                    except ValueError:
+                        raise ValueError(f"Error in {file_name}: Non-numeric value found.")
+            return data
     except (FileNotFoundError):
         raise ValueError(f"Error : File {file_name} not found.")
     except (IOError):
@@ -296,12 +307,12 @@ def output_data(data, data_file):
     :raises ValueError: If the specified file cannot be found or opened.
     """
     try:
-        with open(data_file, "w") as predFile:
+        with open(data_file, "w") as file:
             for var in data:
                 for val in var:
-                    predFile.write(str(val) + " ")
-                predFile.write("\n")
-            predFile.close()
+                    file.write(str(val) + " ")
+                file.write("\n")
+            file.close()
 
     except (FileNotFoundError):
         raise ValueError(f"Error : File {data_file} not found.")

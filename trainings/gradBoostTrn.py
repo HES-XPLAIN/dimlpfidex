@@ -1,6 +1,6 @@
 import time
 import sys
-from .trnFun import get_data, output_data, output_stats, trees_to_rules, check_parameters_common, check_int, check_strictly_positive, check_positive, check_bool, check_parameters_decision_trees
+from .trnFun import get_data, get_data_class, output_data, output_stats, trees_to_rules, check_parameters_common, check_int, check_strictly_positive, check_positive, check_bool, check_parameters_decision_trees
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import metrics
 from sklearn.tree import export_text
@@ -183,17 +183,20 @@ def gradBoostTrn(*args, **kwargs):
                     stats_file = save_folder + "/" + stats_file
 
             # Get data
-            train_data = get_data(train_data_file)
-            train_class = get_data(train_class_file)
-            nb_classes = len(train_class[0])
+            train_data, train_class = get_data(train_data_file, nb_attributes, nb_classes)
+            if len(train_class) == 0:
+                train_class = get_data_class(train_class_file, nb_classes)
+            if len(train_data) != len(train_class):
+                raise ValueError('Error, there is not the same amount of train data and train class.')
             classes = set(range(nb_classes))
+            miss_train_classes = classes - set(train_class) # Check if a class is not represented during training
 
-            train_class = [cl.index(max(cl)) for cl in train_class]
-            miss_train_classes = classes - set(train_class) # Check if a class is not represented
+            test_data, test_class = get_data(test_data_file, nb_attributes, nb_classes)
+            if len(test_class) == 0:
+                test_class = get_data_class(test_class_file, nb_classes)
+            if len(test_data) != len(test_class):
+                raise ValueError('Error, there is not the same amount of test data and test class.')
 
-            test_data = get_data(test_data_file)
-            test_class = get_data(test_class_file)
-            test_class = [cl.index(max(cl)) for cl in test_class]
             # Train GB
             model = GradientBoostingClassifier(n_estimators=n_estimators_var, loss=loss_var, learning_rate=learning_rate_var, # Create GB Classifier
                                                subsample=subsample_var, criterion=criterion_var, min_samples_split=min_samples_split_var,

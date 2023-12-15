@@ -1,6 +1,6 @@
 # It will work with SVM only if the roc curve results are given, because the process is different to get Roc curve and we can't compute it here for SVM.
 
-from .trnFun import get_data, check_bool, check_positive, output_data, check_int, check_strictly_positive
+from .trnFun import get_data_class, get_data_pred, check_bool, check_positive, output_data, check_int, check_strictly_positive
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -15,7 +15,6 @@ def decisionThreshold(*args, **kwargs):
             print("test_class : test class file")
             print("test_pred : test prediction file, can also be a list")
             print("train_pred : train prediction file, can also be a list")
-            print("nb_attributes : number of attributes")
             print("nb_classes : number of classes")
             print("positive_index : index of positive class (0 for first one)")
             print("with_roc_computation : Boolean, if we need to compute ROC curve or not")
@@ -44,7 +43,6 @@ def decisionThreshold(*args, **kwargs):
             test_class_file = kwargs.get('test_class')
             test_pred_file = kwargs.get('test_pred')
             train_pred_file = kwargs.get('train_pred')
-            nb_attributes = kwargs.get('nb_attributes')
             nb_classes = kwargs.get('nb_classes')
             with_roc_computation = kwargs.get('with_roc_computation')
             train_class_threshold_file = kwargs.get('train_class_threshold')
@@ -58,7 +56,7 @@ def decisionThreshold(*args, **kwargs):
             stats_file = kwargs.get('stats_file')
 
             # Check parameters
-            valid_args = ['test_class', 'test_pred', 'train_pred', 'nb_attributes', 'nb_classes', 'with_roc_computation', 'save_folder', 'train_class_threshold', 'test_class_threshold',
+            valid_args = ['test_class', 'test_pred', 'train_pred', 'nb_classes', 'with_roc_computation', 'save_folder', 'train_class_threshold', 'test_class_threshold',
                           'fpr', 'tpr', 'auc_score', 'positive_index', 'estimator', 'output_roc', 'stats_file']
 
             # Check if wrong parameters are given
@@ -109,24 +107,22 @@ def decisionThreshold(*args, **kwargs):
             if is_test_pred_list:
                 test_pred = test_pred_file
             elif save_folder is not None:
-                    test_pred = get_data(save_folder + "/" + test_pred_file)
+                    test_pred = get_data_pred(save_folder + "/" + test_pred_file, nb_classes)
             else:
-                test_pred = get_data(test_pred_file)
+                test_pred = get_data_pred(test_pred_file, nb_classes)
             if is_train_pred_list:
                 train_pred = train_pred_file
             elif save_folder is not None:
-                train_pred = get_data(save_folder + "/" + train_pred_file)
+                train_pred = get_data_pred(save_folder + "/" + train_pred_file, nb_classes)
             else:
-                get_data(train_pred_file)
+                get_data_pred(train_pred_file, nb_classes)
             if save_folder is not None:
-                test_class = get_data(save_folder + "/" + test_class_file)
+                test_class = get_data_class(save_folder + "/" + test_class_file, nb_classes)
             else:
-                test_class = get_data(test_class_file)
+                test_class = get_data_class(test_class_file, nb_classes)
 
-            if nb_attributes is None:
-                raise ValueError('Error : number of attributes missing, add it with option nb_attributes="your_number_of_attributes".')
-            elif not check_strictly_positive(nb_attributes) or not check_int(nb_attributes):
-                raise ValueError('Error : parameter nb_attributes has to be a strictly positive integer.')
+            if len(test_class) != len(test_pred):
+                raise ValueError('Error, there is not the same amount of test predictions and test class.')
 
             if nb_classes is None:
                 raise ValueError('Error : number of classes missing, add it with option nb_classes="your_number_of_classes".')
@@ -136,8 +132,6 @@ def decisionThreshold(*args, **kwargs):
             if save_folder is not None:
                 train_class_threshold_file = save_folder + "/" + train_class_threshold_file
                 test_class_threshold_file = save_folder + "/" + test_class_threshold_file
-
-            nb_classes = len(test_pred[0])
 
             if positive_index_var is None:
                 raise ValueError('Error : parameter positive_index is missing, add it with positive_index=your_positive_class_index.')

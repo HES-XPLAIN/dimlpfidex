@@ -32,20 +32,7 @@ import colorsys
 
 
 
-from .trnFun import compute_first_hidden_layer, output_stats, check_parameters_dimlp_layer, check_parameters_common, get_data, check_strictly_positive, check_int, check_bool
-
-def output_pred(pred, pred_file):
-    try:
-        with open(pred_file, 'w') as file:
-            for prediction in pred:
-                # Convertir les prédictions en chaîne de caractères avec des espaces entre les valeurs
-                prediction_str = ' '.join(map(str, prediction))
-                # Écrire la ligne dans le fichier
-                file.write(prediction_str + '\n')
-    except (FileNotFoundError):
-        raise ValueError(f"Error : File {pred_file} not found.")
-    except (IOError):
-        raise ValueError(f"Error : Couldn't open file {pred_file}.")
+from .trnFun import compute_first_hidden_layer, output_stats, output_data, check_parameters_dimlp_layer, check_parameters_common, get_data, get_data_class, check_strictly_positive, check_int, check_bool
 
 
 def convKeras(*args, **kwargs):
@@ -205,26 +192,45 @@ def convKeras(*args, **kwargs):
             sigma = None
 
             # Get data
-            x_train_full_temp = get_data(train_data_file)
+            x_train_full_temp, y_train_full_temp = get_data(train_data_file, nb_attributes, nb_classes)
             x_train_full = np.array(x_train_full_temp)
+
             del x_train_full_temp
-            y_train_full = get_data(train_class_file)
-            y_train_full = np.array([cl.index(max(cl)) for cl in y_train_full])
-            x_test = np.array(get_data(test_data_file))
-            y_test = get_data(test_class_file)
-            y_test = np.array([cl.index(max(cl)) for cl in y_test])
+            if len(y_train_full_temp) == 0:
+                y_train_full_temp = get_data_class(train_class_file, nb_classes)
+            y_train_full = np.array(y_train_full_temp)
+            del y_train_full_temp
+
+            if len(x_train_full) != len(y_train_full):
+                raise ValueError('Error, there is not the same amount of train data and train class.')
+
+            x_test, y_test = get_data(test_data_file, nb_attributes, nb_classes)
+            if len(y_test) == 0:
+                y_test = get_data_class(test_class_file, nb_classes)
+            x_test, y_test = np.array(x_test), np.array(y_test)
+
+            if len(x_test) != len(y_test):
+                raise ValueError('Error, there is not the same amount of test data and test class.')
+
             if valid_ratio is None:
                 x_train = x_train_full
                 y_train = y_train_full
-                x_val = np.array(get_data(valid_data_file))
-                y_val = get_data(valid_class_file)
-                y_val = np.array([cl.index(max(cl)) for cl in y_val])
+                x_val, y_val = get_data(valid_data_file, nb_attributes, nb_classes)
+                if len(y_val) == 0:
+                    y_val = get_data_class(valid_class_file, nb_classes)
+                x_val, y_val = np.array(x_val), np.array(y_val)
+
+                if len(x_val) != len(y_val):
+                    raise ValueError('Error, there is not the same amount of validation data and validation class.')
             else:
                 cut_off = int(len(x_train_full)*(1-valid_ratio))
                 x_train = x_train_full[:cut_off]
                 x_val   = x_train_full[cut_off:]
                 y_train = y_train_full[:cut_off]
                 y_val   = y_train_full[cut_off:]
+
+            classes = set(range(nb_classes))
+            miss_train_classes = classes - set(y_train) # Check if a class is not represented during training
 
 
             if dataset == "mnist":
@@ -235,7 +241,6 @@ def convKeras(*args, **kwargs):
                 #x_test = x_test[0:300]
                 #y_test = y_test[0:300]
 
-                nb_classes = 10
                 size1d = 28
                 nb_channels = 1
 
@@ -247,18 +252,15 @@ def convKeras(*args, **kwargs):
                 #x_test = x_test[0:300]
                 #y_test = y_test[0:300]
 
-                nb_classes = 100
                 size1d = 32
                 nb_channels = 3
 
             elif dataset == "cifar10":
-                nb_classes = 10
                 size1d = 32
                 nb_channels = 3
 
 
             elif dataset == "fer":
-                nb_classes = 7
                 size1d = 48
                 nb_channels = 1
 
@@ -499,9 +501,20 @@ def convKeras(*args, **kwargs):
             valid_pred = model_best.predict(x_val_h1)   # Predict the response for validation dataset
             train_valid_pred = np.concatenate((train_pred,valid_pred)) # We output predictions of both validation and training sets
 
+
+            # If a class is missing, we adapt predictions
+            if len(miss_train_classes)!=0:
+                miss_train_classes = sorted(list(miss_train_classes))
+                train_valid_pred = [pred.tolist() for pred in train_valid_pred]
+                test_pred = [pred.tolist() for pred in test_pred]
+                for train_pred_list in [train_valid_pred, test_pred]:
+                    for pred in train_pred_list:
+                        for classe in miss_train_classes:
+                            pred.insert(classe, 0.0) # Prediction 0 for the missing class
+
             # Output predictions
-            output_pred(train_valid_pred, train_valid_pred_file)
-            output_pred(test_pred, test_pred_file)
+            output_data(train_valid_pred, train_valid_pred_file)
+            output_data(test_pred, test_pred_file)
 
             ##############################################################################
 
