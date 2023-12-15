@@ -1,6 +1,6 @@
 # Not working with SVM because process is different to get Roc curve
 
-from .trnFun import get_data, compute_roc
+from .trnFun import get_data, compute_roc, check_int, check_strictly_positive
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -14,6 +14,8 @@ def computeRocCurve(*args, **kwargs):
             print("Obligatory parameters :")
             print("test_class : test class file")
             print("test_pred : test prediction file")
+            print("nb_attributes : number of attributes")
+            print("nb_classes : number of classes")
             print("positive_index : index of positive class (0 for first one)")
             print("----------------------------")
             print("Optional parameters :")
@@ -27,25 +29,27 @@ def computeRocCurve(*args, **kwargs):
             save_folder = kwargs.get('save_folder')
             test_class_file = kwargs.get('test_class')
             test_pred_file = kwargs.get('test_pred')
+            nb_attributes = kwargs.get('nb_attributes')
+            nb_classes = kwargs.get('nb_classes')
             positive_index = kwargs.get('positive_index')
             estimator = kwargs.get('estimator')
             output_roc = kwargs.get('output_roc')
             stats_file = kwargs.get('stats_file')
 
             # Check parameters
-            valid_args = ['test_class', 'test_pred', 'positive_index', 'estimator', 'save_folder', 'output_roc', 'stats_file']
+            valid_args = ['test_class', 'test_pred', 'nb_attributes', 'nb_classes', 'positive_index', 'estimator', 'save_folder', 'output_roc', 'stats_file']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
                 if arg_key not in valid_args:
-                    raise ValueError(f"Invalid argument : {arg_key}")
+                    raise ValueError(f"Invalid argument : {arg_key}.")
 
             if (save_folder is not None and (not isinstance(save_folder, str))):
                 raise ValueError('Error : parameter save_folder has to be a name contained in quotation marks "".')
 
             is_test_class_list = False
             if test_class_file is None :
-                raise ValueError('Error : test class file missing, add it with option test_class="your_test_class_file" or with a list')
+                raise ValueError('Error : test class file missing, add it with option test_class="your_test_class_file" or with a list.')
             elif not isinstance(test_class_file, str) and not isinstance(test_class_file, list):
                 raise ValueError('Error : parameter test_class has to be a name contained in quotation marks "" or a list.')
             elif isinstance(test_class_file, list):
@@ -53,11 +57,21 @@ def computeRocCurve(*args, **kwargs):
 
             is_test_pred_list = False
             if test_pred_file is None:
-                raise ValueError('Error : prediction data file missing, add it with option test_pred="your_prediction_data_file" or with a list')
+                raise ValueError('Error : prediction data file missing, add it with option test_pred="your_prediction_data_file" or with a list.')
             elif not isinstance(test_pred_file, str) and not isinstance(test_pred_file, list):
                 raise ValueError('Error : parameter test_pred has to be a name contained in quotation marks "" or a list.')
             elif isinstance(test_pred_file, list):
                 is_test_pred_list = True
+
+            if nb_attributes is None:
+                raise ValueError('Error : number of attributes missing, add it with option nb_attributes="your_number_of_attributes".')
+            elif not check_strictly_positive(nb_attributes) or not check_int(nb_attributes):
+                raise ValueError('Error : parameter nb_attributes has to be a strictly positive integer.')
+
+            if nb_classes is None:
+                raise ValueError('Error : number of classes missing, add it with option nb_classes="your_number_of_classes".')
+            elif not check_strictly_positive(nb_classes) or not check_int(nb_classes):
+                raise ValueError('Error : parameter nb_classes has to be a strictly positive integer.')
 
             if stats_file is not None and not isinstance(stats_file, str):
                 raise ValueError('Error : parameter stats_file has to be a name contained in quotation marks "".')
@@ -88,7 +102,7 @@ def computeRocCurve(*args, **kwargs):
                 test_pred = get_data(test_pred_file)
 
             if positive_index is None:
-                raise ValueError('Error : positive class index missing, add it with option positive_index="your_positive_class_index"')
+                raise ValueError('Error : positive class index missing, add it with option positive_index="your_positive_class_index".')
             elif not isinstance(positive_index, int) or positive_index < 0 or positive_index >= len(test_pred[0]):
                 raise ValueError(f'Error : parameter positive_index has to be a positive integer smaller than {len(test_pred[0])}.')
             test_class_roc = [1 if cl.index(max(cl)) == positive_index else 0 for cl in test_class]

@@ -5,7 +5,7 @@ import warnings
 from sklearn.exceptions import ConvergenceWarning
 from sklearn import metrics
 
-from .trnFun import check_int, check_strictly_positive, check_positive, check_bool, get_data, output_data, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer
+from .trnFun import check_int, check_strictly_positive, check_positive, check_bool, get_data, get_data_class, output_data, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer
 
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
@@ -22,6 +22,8 @@ def mlpTrn(*args, **kwargs):
             print("train_class : train class file")
             print("test_data : test data file")
             print("test_class : test class file")
+            print("nb_attributes : number of attributes")
+            print("nb_classes : number of classes")
             print("----------------------------")
             print("Optional parameters :")
             print("save_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
@@ -60,7 +62,7 @@ def mlpTrn(*args, **kwargs):
             print("----------------------------")
             print("----------------------------")
             print("Here is an example, keep same parameter names :")
-            print('mlpTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "mlp/weights", stats = "mlp/stats.txt", train_pred = "mlp/predTrain", test_pred = "mlp/predTest", save_folder = "dimlp/datafiles")')
+            print('mlpTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "mlp/weights", stats = "mlp/stats.txt", train_pred = "mlp/predTrain", test_pred = "mlp/predTest", nb_attributes=16, nb_classes=2, save_folder = "dimlp/datafiles")')
             print("---------------------------------------------------------------------")
 
 
@@ -75,6 +77,8 @@ def mlpTrn(*args, **kwargs):
             test_data_file = kwargs.get('test_data')
             test_class_file = kwargs.get('test_class')
             output_file = kwargs.get('output_file')
+            nb_attributes = kwargs.get('nb_attributes')
+            nb_classes = kwargs.get('nb_classes')
 
             train_pred_file = kwargs.get('train_pred')
             test_pred_file = kwargs.get('test_pred')
@@ -122,7 +126,7 @@ def mlpTrn(*args, **kwargs):
 
             # Check parameters
 
-            valid_args = ['train_data', 'train_class', 'test_data', 'test_class', 'train_pred', 'test_pred', 'weights',
+            valid_args = ['train_data', 'train_class', 'test_data', 'test_class', 'train_pred', 'test_pred', 'nb_attributes', 'nb_classes', 'weights',
                         'stats', 'K', 'nb_stairs', 'save_folder', 'output_file', 'hidden_layer_sizes', 'activation', 'solver', 'alpha', 'batch_size', 'learning_rate',
                         'learning_rate_init', 'power_t', 'max_iter', 'shuffle', 'random_state', 'tol', 'verbose', 'warm_start', 'momentum', 'nesterovs_momentum', 'early_stopping',
                         'validation_fraction', 'beta_1', 'beta_2', 'epsilon', 'n_iter_no_change', 'max_fun']
@@ -130,39 +134,39 @@ def mlpTrn(*args, **kwargs):
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
                 if arg_key not in valid_args:
-                    raise ValueError(f"Invalid argument : {arg_key}")
+                    raise ValueError(f"Invalid argument : {arg_key}.")
 
-            save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file)
+            save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
             weights_file, K, quant = check_parameters_dimlp_layer(weights_file, K, quant)
 
             if hidden_layer_sizes_var is None:
                 hidden_layer_sizes_var = (100,)
             elif not isinstance(hidden_layer_sizes_var, tuple) and not isinstance(hidden_layer_sizes_var, list) and not check_strictly_positive(hidden_layer_sizes_var):
-                raise ValueError('Error, parameter hidden_layer_sizes is not an array or a strictly positive number')
+                raise ValueError('Error, parameter hidden_layer_sizes is not an array or a strictly positive number.')
 
             if activation_var is None:
                 activation_var = "relu"
             else:
                 activations = {"identity", "logistic", "tanh", "relu"}
                 if (activation_var not in activations):
-                    raise ValueError('Error, parameter activation is not identity, logistic, tanh or relu')
+                    raise ValueError('Error, parameter activation is not identity, logistic, tanh or relu.')
 
             if solver_var is None:
                 solver_var = "adam"
             else:
                 solvers = {"lbfgs", "sgd", "adam"}
                 if (solver_var not in solvers):
-                    raise ValueError('Error, parameter solver is not lbfgs, sgd or adam')
+                    raise ValueError('Error, parameter solver is not lbfgs, sgd or adam.')
 
             if alpha_var is None:
                 alpha_var = 0.0001
             elif not check_positive(alpha_var):
-                raise ValueError('Error, parameter alpha is not a positive number')
+                raise ValueError('Error, parameter alpha is not a positive number.')
 
             if batch_size_var is None:
                 batch_size_var = "auto"
             elif batch_size_var != "auto" and (not check_strictly_positive(batch_size_var) or not check_int(batch_size_var)):
-                raise ValueError('Error, parameter batch_size is not auto or a strictly positive integer')
+                raise ValueError('Error, parameter batch_size is not auto or a strictly positive integer.')
 
             if learning_rate_var is None:
                 learning_rate_var = "constant"
@@ -174,85 +178,85 @@ def mlpTrn(*args, **kwargs):
             if learning_rate_init_var is None:
                 learning_rate_init_var = 0.001
             elif not check_strictly_positive(learning_rate_init_var):
-                raise ValueError('Error, parameter learning_rate_init is not a strictly positive number')
+                raise ValueError('Error, parameter learning_rate_init is not a strictly positive number.')
 
             if power_t_var is None:
                 power_t_var = 0.5
             elif not check_positive(power_t_var):
-                raise ValueError('Error, parameter power_t is not a positive number')
+                raise ValueError('Error, parameter power_t is not a positive number.')
 
             if max_iter_var is None:
                 max_iter_var = 200
             elif not check_strictly_positive(max_iter_var) or not check_int(max_iter_var) :
-                raise ValueError('Error, parameter max_iter is not a strictly positive integer')
+                raise ValueError('Error, parameter max_iter is not a strictly positive integer.')
 
             if shuffle_var is None:
                 shuffle_var = True
             elif not check_bool(shuffle_var) :
-                raise ValueError('Error, parameter shuffle is not a boolean')
+                raise ValueError('Error, parameter shuffle is not a boolean.')
 
             if random_state_var is not None and (not check_int(random_state_var) or not check_positive(random_state_var)):
-                raise ValueError('Error, parameter random_state is specified and not a positive integer')
+                raise ValueError('Error, parameter random_state is specified and not a positive integer.')
 
             if tol_var is None:
                 tol_var = 0.0001
             elif not check_strictly_positive(tol_var):
-                raise ValueError('Error, parameter tol is not a strictly positive number')
+                raise ValueError('Error, parameter tol is not a strictly positive number.')
 
             if verbose_var is None:
                 verbose_var = False
             elif not check_bool(verbose_var):
-                raise ValueError('Error, parameter verbose is not boolean')
+                raise ValueError('Error, parameter verbose is not boolean.')
 
             if warm_start_var is None:
                 warm_start_var = False
             elif not check_bool(warm_start_var):
-                raise ValueError('Error, parameter warm_start is not boolean')
+                raise ValueError('Error, parameter warm_start is not boolean.')
 
             if momentum_var is None:
                 momentum_var = 0.9
             elif not check_positive(momentum_var) or momentum_var > 1:
-                raise ValueError('Error, parameter momentum is not a number between 0 and 1')
+                raise ValueError('Error, parameter momentum is not a number between 0 and 1.')
 
             if nesterovs_momentum_var is None:
                 nesterovs_momentum_var = True
             elif not check_bool(nesterovs_momentum_var):
-                raise ValueError('Error, parameter nesterovs_momentum is not boolean')
+                raise ValueError('Error, parameter nesterovs_momentum is not boolean.')
 
             if early_stopping_var is None:
                 early_stopping_var = False
             elif not check_bool(early_stopping_var):
-                raise ValueError('Error, parameter early_stopping is not boolean')
+                raise ValueError('Error, parameter early_stopping is not boolean.')
 
             if validation_fraction_var is None:
                 validation_fraction_var = 0.1
             elif not check_positive(validation_fraction_var) or validation_fraction_var >= 1:
-                raise ValueError('Error, parameter validation_fraction is not a number between 0 and 1 excluded')
+                raise ValueError('Error, parameter validation_fraction is not a number between 0 and 1 excluded.')
 
             if beta_1_var is None:
                 beta_1_var = 0.9
             elif not check_positive(beta_1_var) or beta_1_var >= 1:
-                raise ValueError('Error, parameter beta_1 is not a number between 0 and 1 excluded')
+                raise ValueError('Error, parameter beta_1 is not a number between 0 and 1 excluded.')
 
             if beta_2_var is None:
                 beta_2_var = 0.999
             elif not check_positive(beta_2_var) or beta_2_var >= 1:
-                raise ValueError('Error, parameter beta_2 is not a number between 0 and 1 excluded')
+                raise ValueError('Error, parameter beta_2 is not a number between 0 and 1 excluded.')
 
             if epsilon_var is None:
                 epsilon_var = 0.00000001
             elif not check_strictly_positive(epsilon_var):
-                raise ValueError('Error, parameter epsilon is not a strictly positive number')
+                raise ValueError('Error, parameter epsilon is not a strictly positive number.')
 
             if n_iter_no_change_var is None:
                 n_iter_no_change_var = 10
             elif not check_int(n_iter_no_change_var) or n_iter_no_change_var < 1:
-                raise ValueError('Error, parameter n_iter_no_change is not an integer bigger than 0')
+                raise ValueError('Error, parameter n_iter_no_change is not an integer bigger than 0.')
 
             if max_fun_var is None:
                 max_fun_var = 15000
             elif not check_int(max_fun_var) or max_fun_var < 1:
-                raise ValueError('Error, parameter max_fun is not an integer bigger than 0')
+                raise ValueError('Error, parameter max_fun is not an integer bigger than 0.')
 
             if (save_folder is not None):
                 train_data_file = save_folder + "/" + train_data_file
@@ -266,15 +270,19 @@ def mlpTrn(*args, **kwargs):
                     stats_file = save_folder + "/" + stats_file
 
             # Get data
-            train_data = get_data(train_data_file)
-            train_class = get_data(train_class_file)
-            nb_classes = len(train_class[0])
+            train_data, train_class = get_data(train_data_file, nb_attributes, nb_classes)
+            if len(train_class) == 0:
+                train_class = get_data_class(train_class_file, nb_classes)
+            if len(train_data) != len(train_class):
+                raise ValueError('Error, there is not the same amount of train data and train class.')
             classes = set(range(nb_classes))
-            train_class = [cl.index(max(cl)) for cl in train_class]
-            miss_train_classes = classes - set(train_class) # Check if a class is not represented
-            test_data = get_data(test_data_file)
-            test_class = get_data(test_class_file)
-            test_class = [cl.index(max(cl)) for cl in test_class]
+            miss_train_classes = classes - set(train_class) # Check if a class is not represented during training
+
+            test_data, test_class = get_data(test_data_file, nb_attributes, nb_classes)
+            if len(test_class) == 0:
+                test_class = get_data_class(test_class_file, nb_classes)
+            if len(test_data) != len(test_class):
+                raise ValueError('Error, there is not the same amount of test data and test class.')
 
             # Get weights and biais from first hidden layer as well as data transformed in first hidden layer
 

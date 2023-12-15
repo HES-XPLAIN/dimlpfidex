@@ -1,6 +1,6 @@
-# Works with SVM only if roc curve results are given because process is different to get Roc curve
+# It will work with SVM only if the roc curve results are given, because the process is different to get Roc curve and we can't compute it here for SVM.
 
-from .trnFun import get_data, check_bool, check_positive, output_data
+from .trnFun import get_data, check_bool, check_positive, output_data, check_int, check_strictly_positive
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -14,7 +14,9 @@ def decisionThreshold(*args, **kwargs):
             print("Obligatory parameters :")
             print("test_class : test class file")
             print("test_pred : test prediction file, can also be a list")
-            print("train_pred : test prediction file, can also be a list")
+            print("train_pred : train prediction file, can also be a list")
+            print("nb_attributes : number of attributes")
+            print("nb_classes : number of classes")
             print("positive_index : index of positive class (0 for first one)")
             print("with_roc_computation : Boolean, if we need to compute ROC curve or not")
             print("----------------------------")
@@ -42,6 +44,8 @@ def decisionThreshold(*args, **kwargs):
             test_class_file = kwargs.get('test_class')
             test_pred_file = kwargs.get('test_pred')
             train_pred_file = kwargs.get('train_pred')
+            nb_attributes = kwargs.get('nb_attributes')
+            nb_classes = kwargs.get('nb_classes')
             with_roc_computation = kwargs.get('with_roc_computation')
             train_class_threshold_file = kwargs.get('train_class_threshold')
             test_class_threshold_file = kwargs.get('test_class_threshold')
@@ -54,25 +58,25 @@ def decisionThreshold(*args, **kwargs):
             stats_file = kwargs.get('stats_file')
 
             # Check parameters
-            valid_args = ['test_class', 'test_pred', 'train_pred', 'with_roc_computation', 'save_folder', 'train_class_threshold', 'test_class_threshold',
+            valid_args = ['test_class', 'test_pred', 'train_pred', 'nb_attributes', 'nb_classes', 'with_roc_computation', 'save_folder', 'train_class_threshold', 'test_class_threshold',
                           'fpr', 'tpr', 'auc_score', 'positive_index', 'estimator', 'output_roc', 'stats_file']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
                 if arg_key not in valid_args:
-                    raise ValueError(f"Invalid argument : {arg_key}")
+                    raise ValueError(f"Invalid argument : {arg_key}.")
 
             if (save_folder is not None and (not isinstance(save_folder, str))):
                 raise ValueError('Error : parameter save_folder has to be a name contained in quotation marks "".')
 
             if test_class_file is None :
-                raise ValueError('Error : test class file missing, add it with option test_class="your_test_class_file"')
+                raise ValueError('Error : test class file missing, add it with option test_class="your_test_class_file".')
             elif not isinstance(test_class_file, str):
                 raise ValueError('Error : parameter test_class has to be a name contained in quotation marks "".')
 
             is_test_pred_list = False
             if test_pred_file is None:
-                raise ValueError('Error : test prediction data file missing, add it with option test_pred="your_test_prediction_data_file" or with a list')
+                raise ValueError('Error : test prediction data file missing, add it with option test_pred="your_test_prediction_data_file" or with a list.')
             elif not isinstance(test_pred_file, str) and not isinstance(test_pred_file, list):
                 raise ValueError('Error : parameter test_pred has to be a name contained in quotation marks "" or a list.')
             elif isinstance(test_pred_file, list):
@@ -80,7 +84,7 @@ def decisionThreshold(*args, **kwargs):
 
             is_train_pred_list = False
             if train_pred_file is None:
-                raise ValueError('Error : train prediction data file missing, add it with option train_pred="your_train_prediction_data_file" or with a list')
+                raise ValueError('Error : train prediction data file missing, add it with option train_pred="your_train_prediction_data_file" or with a list.')
             elif not isinstance(train_pred_file, str) and not isinstance(train_pred_file, list):
                 raise ValueError('Error : parameter train_pred has to be a name contained in quotation marks "" or a list.')
             elif isinstance(train_pred_file, list):
@@ -97,9 +101,9 @@ def decisionThreshold(*args, **kwargs):
                 raise ValueError('Error : parameter test_class_threshold_file has to be a name contained in quotation marks "".')
 
             if with_roc_computation is None:
-                raise ValueError('Error : parameter with_roc_computation is missing, add it with with_roc_computation=True ou with_roc_computation=False')
+                raise ValueError('Error : parameter with_roc_computation is missing, add it with with_roc_computation=True ou with_roc_computation=False.')
             elif not check_bool(with_roc_computation):
-                raise ValueError('Error, parameter with_roc_computation is not a boolean')
+                raise ValueError('Error, parameter with_roc_computation is not a boolean.')
 
             # Get data
             if is_test_pred_list:
@@ -119,6 +123,16 @@ def decisionThreshold(*args, **kwargs):
             else:
                 test_class = get_data(test_class_file)
 
+            if nb_attributes is None:
+                raise ValueError('Error : number of attributes missing, add it with option nb_attributes="your_number_of_attributes".')
+            elif not check_strictly_positive(nb_attributes) or not check_int(nb_attributes):
+                raise ValueError('Error : parameter nb_attributes has to be a strictly positive integer.')
+
+            if nb_classes is None:
+                raise ValueError('Error : number of classes missing, add it with option nb_classes="your_number_of_classes".')
+            elif not check_strictly_positive(nb_classes) or not check_int(nb_classes):
+                raise ValueError('Error : parameter nb_classes has to be a strictly positive integer.')
+
             if save_folder is not None:
                 train_class_threshold_file = save_folder + "/" + train_class_threshold_file
                 test_class_threshold_file = save_folder + "/" + test_class_threshold_file
@@ -126,7 +140,7 @@ def decisionThreshold(*args, **kwargs):
             nb_classes = len(test_pred[0])
 
             if positive_index_var is None:
-                raise ValueError('Error : parameter positive_index is missing, add it with positive_index=your_positive_class_index')
+                raise ValueError('Error : parameter positive_index is missing, add it with positive_index=your_positive_class_index.')
             elif not isinstance(positive_index_var, int) or positive_index_var < 0 or positive_index_var >= nb_classes:
                 raise ValueError(f'Error : parameter positive_index has to be a positive integer smaller than {nb_classes}.')
 
@@ -138,32 +152,32 @@ def decisionThreshold(*args, **kwargs):
                 res = computeRocCurve(test_class = test_class, test_pred = test_pred, positive_index = positive_index_var, output_roc=output_roc_file,
                                 estimator = estimator_var, stats_file=stats_file, save_folder = save_folder)
                 if (res == -1):
-                    raise ValueError('Error during computation of ROC curve')
+                    raise ValueError('Error during computation of ROC curve.')
                 else:
                     fpr = res[0]
                     tpr = res[1]
                     auc_score = res[2]
             else: # If we don't need to compute roc curve
                 if tpr is None:
-                    raise ValueError('Error : parameter tpr is missing, add it with tpr=your_tpr_list')
+                    raise ValueError('Error : parameter tpr is missing, add it with tpr=your_tpr_list.')
                 elif not isinstance(tpr, list):
-                    raise ValueError('Error, parameter tpr is not a list')
+                    raise ValueError('Error, parameter tpr is not a list.')
                 elif any(isinstance(item, list) for item in tpr):
-                    raise ValueError('Error, parameter tpr is not a list of dimension 1')
+                    raise ValueError('Error, parameter tpr is not a list of dimension 1.')
                 elif any(not (isinstance(item, float) and 0 <= item <= 1) for item in tpr):
-                    raise ValueError('Error, parameter tpr is not a list of floats between 0 and 1')
+                    raise ValueError('Error, parameter tpr is not a list of floats between 0 and 1.')
                 if fpr is None:
-                    raise ValueError('Error : parameter fpr is missing, add it with fpr=your_fpr_list')
+                    raise ValueError('Error : parameter fpr is missing, add it with fpr=your_fpr_list.')
                 elif not isinstance(fpr, list):
-                    raise ValueError('Error, parameter fpr is not a list')
+                    raise ValueError('Error, parameter fpr is not a list.')
                 elif any(isinstance(item, list) for item in fpr):
-                    raise ValueError('Error, parameter fpr is not a list of dimension 1')
+                    raise ValueError('Error, parameter fpr is not a list of dimension 1.')
                 elif any(not (isinstance(item, float) and 0 <= item <= 1) for item in fpr):
-                    raise ValueError('Error, parameter fpr is not a list of floats between 0 and 1')
+                    raise ValueError('Error, parameter fpr is not a list of floats between 0 and 1.')
                 if auc_score is None:
-                    raise ValueError('Error : parameter auc_score is missing, add it with auc_score=your_auc_score')
+                    raise ValueError('Error : parameter auc_score is missing, add it with auc_score=your_auc_score.')
                 elif not check_positive(auc_score):
-                    raise ValueError('Error, parameter auc_score is not a positive float')
+                    raise ValueError('Error, parameter auc_score is not a positive float.')
 
             # Get threshold
             threshold = 0.3

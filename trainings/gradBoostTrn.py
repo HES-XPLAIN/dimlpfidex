@@ -18,6 +18,8 @@ def gradBoostTrn(*args, **kwargs):
             print("train_class : train class file")
             print("test_data : test data file")
             print("test_class : test class file")
+            print("nb_attributes : number of attributes")
+            print("nb_classes : number of classes")
             print("----------------------------")
             print("Optional parameters :")
             print("save_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
@@ -51,7 +53,7 @@ def gradBoostTrn(*args, **kwargs):
             print("----------------------------")
             print("----------------------------")
             print("Here is an example, keep same parameter names :")
-            print('gradBoostTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", stats = "gb/stats.txt", train_pred = "gb/predTrain", test_pred = "gb/predTest", rules_file = "gb/GB_rules", save_folder = "dimlp/datafiles")')
+            print('gradBoostTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", stats = "gb/stats.txt", train_pred = "gb/predTrain", test_pred = "gb/predTest", nb_attributes=16, nb_classes=2, rules_file = "gb/GB_rules", save_folder = "dimlp/datafiles")')
             print("---------------------------------------------------------------------")
         else:
 
@@ -64,6 +66,8 @@ def gradBoostTrn(*args, **kwargs):
             test_data_file = kwargs.get('test_data')
             test_class_file = kwargs.get('test_class')
             output_file = kwargs.get('output_file')
+            nb_attributes = kwargs.get('nb_attributes')
+            nb_classes = kwargs.get('nb_classes')
 
             train_pred_file = kwargs.get('train_pred')
             test_pred_file = kwargs.get('test_pred')
@@ -104,7 +108,7 @@ def gradBoostTrn(*args, **kwargs):
 
             # Check parameters
             valid_args = ['train_data', 'train_class', 'test_data', 'test_class', 'train_pred', 'test_pred',
-                        'stats', 'save_folder', 'output_file', 'rules_file', 'n_estimators', 'loss', 'learning_rate',
+                        'nb_attributes', 'nb_classes', 'stats', 'save_folder', 'output_file', 'rules_file', 'n_estimators', 'loss', 'learning_rate',
                         'subsample', 'criterion', 'min_samples_split', 'min_samples_leaf', 'min_weight_fraction_leaf',
                         'max_depth', 'min_impurity_decrease', 'init', 'random_state', 'max_features', 'verbose', 'max_leaf_nodes',
                         'warm_start', 'validation_fraction', 'n_iter_no_change', 'tol', 'ccp_alpha']
@@ -112,9 +116,9 @@ def gradBoostTrn(*args, **kwargs):
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
                 if arg_key not in valid_args:
-                    raise ValueError(f"Invalid argument : {arg_key}")
+                    raise ValueError(f"Invalid argument : {arg_key}.")
 
-            save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file  = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file)
+            save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes  = check_parameters_common(save_folder, train_data_file, train_class_file, test_data_file, test_class_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
 
             n_estimators_var, min_samples_split_var, min_samples_leaf_var, min_weight_fraction_leaf_var, min_impurity_decrease_var, random_state_var, max_features_var, verbose_var, max_leaf_nodes_var, warm_start_var, ccp_alpha_var = check_parameters_decision_trees(n_estimators_var, min_samples_split_var, min_samples_leaf_var, min_weight_fraction_leaf_var, min_impurity_decrease_var, random_state_var, max_features_var, verbose_var, max_leaf_nodes_var, warm_start_var, ccp_alpha_var)
 
@@ -132,40 +136,40 @@ def gradBoostTrn(*args, **kwargs):
             if learning_rate_var is None:
                 learning_rate_var = 0.1
             elif not check_positive(learning_rate_var):
-                raise ValueError('Error, parameter learning_rate is not a positive float')
+                raise ValueError('Error, parameter learning_rate is not a positive float.')
 
             if subsample_var is None:
                 subsample_var = 1.0
             elif not check_strictly_positive(subsample_var) or subsample_var > 1:
-                raise ValueError('Error, parameter subsample is not  a float in ]0,1]')
+                raise ValueError('Error, parameter subsample is not  a float in ]0,1].')
 
             if criterion_var is None:
                 criterion_var = "friedman_mse"
             elif criterion_var not in {"friedman_mse", "squared_error"}:
-                raise ValueError('Error, parameter criterion is not "friedman_mse" or "squared_error"')
+                raise ValueError('Error, parameter criterion is not "friedman_mse" or "squared_error".')
 
             if max_depth_var is None:
                 max_depth_var = 3
             elif max_depth_var == "None":
                 max_depth_var = None
             elif not check_int(max_depth_var) or not check_strictly_positive(max_depth_var):
-                raise ValueError('Error, parameter max_depth is specified and is not "None" or a strictly positive integer')
+                raise ValueError('Error, parameter max_depth is specified and is not "None" or a strictly positive integer.')
 
             if init_var is not None and init_var != "zero":
-                raise ValueError('Error, parameter init is specified and is not "zero"')
+                raise ValueError('Error, parameter init is specified and is not "zero".')
 
             if validation_fraction_var is None:
                 validation_fraction_var = 0.1
             elif not check_strictly_positive(validation_fraction_var) or validation_fraction_var >= 1:
-                raise ValueError('Error, parameter validation_fraction is not a float in ]0,1[')
+                raise ValueError('Error, parameter validation_fraction is not a float in ]0,1[.')
 
             if n_iter_no_change_var is not None and not (check_int(n_iter_no_change_var) and check_strictly_positive(n_iter_no_change_var)):
-                raise ValueError('Error, parameter n_iter_no_change is not a strictly positive integer')
+                raise ValueError('Error, parameter n_iter_no_change is not a strictly positive integer.')
 
             if tol_var is None:
                 tol_var = 0.0001
             elif not check_positive(tol_var):
-                raise ValueError('Error, parameter tol is not a positive float')
+                raise ValueError('Error, parameter tol is not a positive float.')
 
             if (save_folder is not None):
                 train_data_file = save_folder + "/" + train_data_file
