@@ -133,7 +133,7 @@ def decisionThreshold(*args, **kwargs):
             if with_roc_computation: # If we need to compute roc curve
                 from trainings.computeRocCurve import computeRocCurve
                 res = computeRocCurve(test_class = test_class, test_pred = test_pred, positive_index = positive_index_var, output_roc=output_roc_file,
-                                estimator = estimator_var, stats_file=stats_file, save_folder = save_folder)
+                                estimator = estimator_var, stats_file=stats_file, save_folder = save_folder, nb_classes = nb_classes)
                 if (res == -1):
                     raise ValueError('Error during computation of ROC curve.')
                 else:

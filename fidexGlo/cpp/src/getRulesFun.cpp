@@ -10,15 +10,36 @@ struct RuleInfo {
   double ruleAccuracy;
 };
 
+/**
+ * @brief Splits a given string into a vector of substrings based on a specified delimiter.
+ *
+ * This function takes a string and a delimiter string, then iteratively finds and extracts
+ * substrings separated by the delimiter. Substrings at the start and end of the input string
+ * are handled appropriately to avoid including empty strings in the result.
+ *
+ * @param str The string to be split.
+ * @param delimiter The string used as the delimiter to split the input string.
+ * @return std::vector<std::string> A vector containing the substrings obtained by splitting the input string.
+ */
 std::vector<std::string> splitString(const std::string &str, const std::string &delimiter) {
   std::vector<std::string> tokens;
   size_t start = 0;
-  size_t end = 0;
-  while ((end = str.find(delimiter, start)) != std::string::npos) {
-    tokens.push_back(str.substr(start, end - start));
+  size_t end = str.find(delimiter);
+
+  // Loop to find and add new sub-strings
+  while (end != std::string::npos) {
+    if (start != end) { // Not adding empty strings
+      tokens.push_back(str.substr(start, end - start));
+    }
     start = end + delimiter.length();
+    end = str.find(delimiter, start);
   }
-  tokens.push_back(str.substr(start));
+
+  // Add last string if not empty
+  if (start != str.length()) {
+    tokens.push_back(str.substr(start));
+  }
+
   return tokens;
 }
 
@@ -95,12 +116,14 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
   statsLines.push_back(line + "\n"); // Add global statistics to output file
   getline(rulesData, line);          // Skip second line
   bool attributsInFile = true;
-  bool classesInFile = false;
+  bool classesInFile = true;
 
-  if (line.find("not") != std::string::npos) {
+  if (line.find("Attribute names are not specified.") != std::string::npos) { // TODO : See if we can delete those lines in file and replace by a check to see if we have attribute names or not. cf. patterns in hyperLocus.cpp
     attributsInFile = false;
-  } else if (line.find("and") != std::string::npos) {
-    classesInFile = true;
+  }
+  getline(rulesData, line);
+  if (line.find("Class names are not specified.") != std::string::npos) {
+    classesInFile = false;
   }
   if (attributsInFile && !hasAttributeNames) {
     throw CommandArgumentException("The attribute names file has to be given with option -A because there are attributes in the rule file.");
@@ -109,6 +132,7 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
     throw CommandArgumentException("The class names have to be given in attribut file because there are class names in the rule file.");
   }
   string strRule;
+
   while (getline(rulesData, line)) { // New rule
     if (!checkStringEmpty(line)) {
       strRule = line;
