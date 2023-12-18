@@ -11,6 +11,8 @@ void showParams() {
 
   std::cout << "fidexGlo -S <test sample(s) data file with data and prediction(if no -p)> ";
   std::cout << "-R <ruleset input file> ";
+  std::cout << "-a <number of attributes>";
+  std::cout << "-b <number of classes>";
   std::cout << "<Options>\n"
             << std::endl;
 
@@ -59,7 +61,7 @@ void launchFidex(std::vector<std::string> &lines, const std::string &fidexComman
   fstream ruleF;
   ruleF.open(ruleFile, ios::in); // Read data file
   if (ruleF.fail()) {
-    throw FileNotFoundError("Error : file " + std::string(ruleFile) + " not found");
+    throw FileNotFoundError("Error : file " + std::string(ruleFile) + " not found.");
   }
   string line;
   getline(ruleF, line);
@@ -129,6 +131,9 @@ int fidexGlo(const string &command) {
     bool rootFolderInit = false;
     string attributFileTemp; // attribut file
     bool attributFileInit = false;
+
+    int nb_attributes = -1;
+    int nb_classes = -1;
 
     bool hasDecisionThreshold = false;
     double decisionThreshold = -1;
@@ -211,6 +216,22 @@ int fidexGlo(const string &command) {
           rulesFileInit = true;
           break;
 
+        case 'a':
+          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+            nb_attributes = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
+          }
+          break;
+
+        case 'b':
+          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+            nb_classes = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
+          }
+          break;
+
         case 'O':
           explanationFileTemp = arg;
           explanationFileInit = true;
@@ -236,7 +257,7 @@ int fidexGlo(const string &command) {
             hasDecisionThreshold = true;
             decisionThreshold = atof(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested.");
           }
           break;
 
@@ -245,7 +266,7 @@ int fidexGlo(const string &command) {
             hasIndexPositiveClass = true;
             indexPositiveClass = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested.");
           }
           break;
 
@@ -255,7 +276,7 @@ int fidexGlo(const string &command) {
                            [](unsigned char c) { return std::tolower(c); });
             withFidex = (stringArg == "true" || stringArg == "1") ? true : false;
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested.");
           }
           break;
 
@@ -265,7 +286,7 @@ int fidexGlo(const string &command) {
                            [](unsigned char c) { return std::tolower(c); });
             minimalVersion = (stringArg == "true" || stringArg == "1") ? true : false;
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested.");
           }
           break;
 
@@ -304,7 +325,7 @@ int fidexGlo(const string &command) {
             nbDimlpNets = atoi(arg);
             nbDimlpNetsInit = true;
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested.");
           }
 
           break;
@@ -314,7 +335,7 @@ int fidexGlo(const string &command) {
             nbQuantLevelsInit = true;
             nbQuantLevels = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested.");
           }
           break;
 
@@ -323,7 +344,7 @@ int fidexGlo(const string &command) {
             itMaxInit = true;
             itMax = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested.");
           }
           break;
 
@@ -332,7 +353,7 @@ int fidexGlo(const string &command) {
             minNbCoverInit = true;
             minNbCover = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", integer strictly greater than 1 requested.");
           }
           break;
 
@@ -342,7 +363,7 @@ int fidexGlo(const string &command) {
           } else if (std::strcmp(arg, "false") == 0 || std::strcmp(arg, "False") == 0 || std::strcmp(arg, "0") == 0) {
             minCoverStrategy = false;
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested.");
           }
           minCoverStrategyInit = true;
           break;
@@ -351,7 +372,7 @@ int fidexGlo(const string &command) {
           if (CheckPositiveInt(arg) && atoi(arg) > 0) {
             maxFailedAttempts = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
           }
           maxFailedAttemptsInit = true;
           break;
@@ -360,7 +381,7 @@ int fidexGlo(const string &command) {
           if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             minFidelity = atof(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested.");
           }
           minFidelityInit = true;
           break;
@@ -370,7 +391,7 @@ int fidexGlo(const string &command) {
             dropoutDimParam = atof(arg);
             dropoutDim = true; // We dropout a bunch of dimensions each iteration (accelerate the processus)
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested.");
           }
           break;
 
@@ -379,7 +400,7 @@ int fidexGlo(const string &command) {
             dropoutHypParam = atof(arg);
             dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested.");
           }
           break;
 
@@ -388,12 +409,12 @@ int fidexGlo(const string &command) {
             seed = atoi(arg);
             seedInit = true;
           } else
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested.");
 
           break;
 
         default: // If we put another -X option
-          throw CommandArgumentException("Illegal option: " + std::string(&option, 1));
+          throw CommandArgumentException("Illegal option: " + std::string(&option, 1) + ".");
         }
       }
 
@@ -455,17 +476,22 @@ int fidexGlo(const string &command) {
     }
 
     if (hasDecisionThreshold && !hasIndexPositiveClass) {
-      throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t)");
+      throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t).");
     }
 
     // ----------------------------------------------------------------------
     if (!testSamplesDataFileInit) {
-      throw CommandArgumentException("The test samples data file has to be given with option -S");
+      throw CommandArgumentException("The test samples data file has to be given with option -S.");
     }
     if (!rulesFileInit) {
-      throw CommandArgumentException("The rules file has to be given with option -R");
+      throw CommandArgumentException("The rules file has to be given with option -R.");
     }
-
+    if (nb_attributes == -1) {
+      throw CommandArgumentException("The number of attributes has to be given with option -a.");
+    }
+    if (nb_classes == -1) {
+      throw CommandArgumentException("The number of classes has to be given with option -b.");
+    }
     // ----------------------------------------------------------------------
 
     // Get console results to file
@@ -499,7 +525,6 @@ int fidexGlo(const string &command) {
     }
 
     int nbSamples = testDatas->getNbSamples();
-    int nbClass = testDatas->getNbClasses();
 
     // Get attributes
     vector<string> attributeNames;
@@ -521,19 +546,19 @@ int fidexGlo(const string &command) {
     if (withFidex) {
       // Check if we have the obligatory parameters
       if (!trainDataFileInit) {
-        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). The train data file has to be given with option -T");
+        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). The train data file has to be given with option -T.");
       }
       if (!trainDataFilePredInit) {
-        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). The train prediction file has to be given with option -P");
+        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). The train prediction file has to be given with option -P.");
       }
       if (!trainDataFileTrueClassInit) {
-        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). The train true classes file has to be given with option -C");
+        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). The train true classes file has to be given with option -C.");
       }
       if (!testTrueClassFileInit) {
-        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). The test true classes file has to be given with option -c");
+        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). The test true classes file has to be given with option -c.");
       }
       if (!weightsFileInit && !inputRulesFileInit) {
-        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f");
+        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f.");
       } else if (weightsFileInit && inputRulesFileInit) {
         throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). Do not specify both a weight file(-W) and a rules file(-f). Choose one of them.");
       }
@@ -543,6 +568,7 @@ int fidexGlo(const string &command) {
       testSamplesClasses = (*testDatas->getClasses());
 
       fidexCommand += "fidex -T " + trainDataFile + " -P " + trainDataFilePred + " -C " + trainDataFileTrueClass;
+      fidexCommand += " -a " + std::to_string(nb_attributes) + " -b " + std::to_string(nb_classes);
       if (inputRulesFileInit) {
         fidexCommand += " -f " + inputRulesFile;
       } else {
@@ -661,7 +687,7 @@ int fidexGlo(const string &command) {
         lines.emplace_back("We choose the model prediction.");
         lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
         if (withFidex) {
-          outputDataSample(root + testSampleDataFile, testSamplesValues[currentSample], testSamplesOutputValuesPredictions[currentSample], testSamplesClasses[currentSample], nbClass);
+          outputDataSample(root + testSampleDataFile, testSamplesValues[currentSample], testSamplesOutputValuesPredictions[currentSample], testSamplesClasses[currentSample], nb_classes);
           fidexCommand += " -S " + testSampleDataFile;
           launchingFidex = true;
           nb_fidex += 1;
@@ -713,7 +739,7 @@ int fidexGlo(const string &command) {
             lines.emplace_back("We choose the model prediction.");
             lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
             if (withFidex) {
-              outputDataSample(testSampleDataFile, testSamplesValues[currentSample], testSamplesOutputValuesPredictions[currentSample], testSamplesClasses[currentSample], nbClass);
+              outputDataSample(testSampleDataFile, testSamplesValues[currentSample], testSamplesOutputValuesPredictions[currentSample], testSamplesClasses[currentSample], nb_classes);
               fidexCommand += " -S " + testSampleDataFile;
               launchingFidex = true;
               nb_fidex += 1;
@@ -805,4 +831,4 @@ int fidexGlo(const string &command) {
   return 0;
 }
 
-// Exemple pour lancer le code : ./fidexGlo -S datanormTest -p predTest.out -R globalRulesDatanorm.txt -O explanation.txt -F ../fidexGlo/datafiles -w true -T datanormTrain -P predTrain.out -C dataclass2Train -c dataclass2Test -W weights.wts
+// Exemple pour lancer le code : ./fidexGlo -S datanormTest -p predTest.out -R globalRulesDatanorm.txt -a 16 -b 2 -O explanation.txt -F ../fidexGlo/datafiles -w true -T datanormTrain -P predTrain.out -C dataclass2Train -c dataclass2Test -W weights.wts

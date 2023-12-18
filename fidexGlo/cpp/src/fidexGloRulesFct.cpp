@@ -15,6 +15,8 @@ void showRulesParams() {
   cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
   cout << "-O <Rules output file> ";
   cout << "-M <Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo> ";
+  cout << "-a <number of attributes>";
+  cout << "-b <number of classes>";
   cout << "<Options>\n"
        << endl;
 
@@ -52,7 +54,7 @@ void showRulesParams() {
 tuple<int, int> writeRulesFile(string filename, const vector<Rule> rules, const vector<string> *attributes, const vector<string> *classes) {
   // TODO error check
   int counter = 1;
-  int nbRules = rules.size();
+  int nbRules = static_cast<int>(rules.size());
   double meanCovSize = 0;
   double meanNbAntecedents = 0;
   stringstream stream;
@@ -64,8 +66,8 @@ tuple<int, int> writeRulesFile(string filename, const vector<Rule> rules, const 
   }
 
   for (Rule r : rules) { // each rule
-    meanCovSize += r.getCoveredSamples().size();
-    meanNbAntecedents += r.getAntecedants().size();
+    meanCovSize += static_cast<double>(r.getCoveredSamples().size());
+    meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
     stream << "Rule " << counter++ << ": " << r.toString(attributes, classes); // TODO check for NULL case
     stream << endl;
   }
@@ -145,6 +147,9 @@ int fidexGloRules(const string &command) {
     string trainDataFileTrueClassTemp; // Train true classes
     bool trainDataFileTrueClassInit = false;
 
+    int nb_attributes = -1;
+    int nb_classes = -1;
+
     string weightsFileTemp;
     vector<string> weightsFilesTemp;
     string inputRulesFileTemp; // Rule file to be converted to hyperlocus, replace weight file
@@ -220,6 +225,22 @@ int fidexGloRules(const string &command) {
           trainDataFileTrueClassInit = true;
           break;
 
+        case 'a':
+          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+            nb_attributes = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
+          }
+          break;
+
+        case 'b':
+          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+            nb_classes = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
+          }
+          break;
+
         case 'W': {
           weightsFileTemp = arg;
           weightsFileInit = true;
@@ -287,7 +308,7 @@ int fidexGloRules(const string &command) {
           if (CheckPositiveInt(arg) && atoi(arg) >= 1) {
             minNbCover = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", integer strictly greater than 1 requested.");
           }
           break;
 
@@ -461,6 +482,12 @@ int fidexGloRules(const string &command) {
     if (!heuristicInit) {
       throw CommandArgumentException("The heuristic(1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo) has to be given with option -M");
     }
+    if (nb_attributes == -1) {
+      throw CommandArgumentException("The number of attributes has to be given with option -a.");
+    }
+    if (nb_classes == -1) {
+      throw CommandArgumentException("The number of classes has to be given with option -b.");
+    }
 
     // ----------------------------------------------------------------------
 
@@ -506,7 +533,6 @@ int fidexGloRules(const string &command) {
     vector<int> *trainTrueClass = trainDatas->getClasses();
 
     int nbDatas = trainDatas->getNbSamples();
-    int nbAttributs = trainDatas->getNbAttributes();
 
     if (minNbCover > nbDatas) {
       throw CommandArgumentException("Error : invalide type for parameter -c, strictly positive integer smaller or equal than the number of data sample requested");
@@ -557,9 +583,9 @@ int fidexGloRules(const string &command) {
       }
     } else {
       if (attributFileInit) {
-        matHypLocus = calcHypLocus(inputRulesFile, nbAttributs, attributeNames);
+        matHypLocus = calcHypLocus(inputRulesFile, nb_attributes, attributeNames);
       } else {
-        matHypLocus = calcHypLocus(inputRulesFile, nbAttributs);
+        matHypLocus = calcHypLocus(inputRulesFile, nb_attributes);
       }
     }
 
@@ -567,8 +593,8 @@ int fidexGloRules(const string &command) {
     const auto nbIn = static_cast<int>(matHypLocus.size());
 
     // Check size of hyperlocus
-    if (nbIn == 0 || nbIn % nbAttributs != 0) {
-      throw InternalError("Error : the size of hyperLocus - " + to_string(nbIn) + " is not a multiple of the number of attributs - " + to_string(nbAttributs));
+    if (nbIn == 0 || nbIn % nb_attributes != 0) {
+      throw InternalError("Error : the size of hyperLocus - " + to_string(nbIn) + " is not a multiple of the number of attributs - " + to_string(nb_attributes));
     }
 
     cout << "Hyperspace created" << endl
@@ -662,7 +688,7 @@ int fidexGloRules(const string &command) {
                 (*trainPreds)[idSample],
                 &localHyperspace,
                 nbIn,
-                nbAttributs,
+                nb_attributes,
                 itMax,
                 currentMinNbCov,
                 0.9,
@@ -810,7 +836,7 @@ int fidexGloRules(const string &command) {
         ruleCreated = false;
         int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, itMax, currentMinNbCov, 1, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
+          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nb_attributes, itMax, currentMinNbCov, 1, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           } else {
@@ -929,7 +955,7 @@ int fidexGloRules(const string &command) {
         ruleCreated = false;
         int counterFailed = 0; // If we can't find a good rule after a lot of tries
         while (!ruleCreated) {
-          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nbAttributs, itMax, currentMinNbCov, 1, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
+          ruleCreated = exp.fidex(rule, trainData, trainPreds, trainOutputValuesPredictions, trainTrueClass, &(*trainData)[idSample], (*trainPreds)[idSample], &hyperspace, nbIn, nb_attributes, itMax, currentMinNbCov, 1, dropoutDim, dropoutDimParam, dropoutHyp, dropoutHypParam, gen);
           if (currentMinNbCov >= 2) {
             currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
           } else {
@@ -1011,11 +1037,11 @@ int fidexGloRules(const string &command) {
 
 /* Exemples pour lancer le code :
 
-./fidexGloRules -T datanormTrain -P dimlpDatanormTrain.out -C dataclass2Train -W dimlpDatanorm.wts -Q 50 -O globalRulesDatanorm.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesResult -S ../fidexGlo/datafiles
+./fidexGloRules -T datanormTrain -P dimlpDatanormTrain.out -C dataclass2Train -W dimlpDatanorm.wts -a 16 -b 2 -Q 50 -O globalRulesDatanorm.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesResult -S ../fidexGlo/datafiles
 
-./fidexGloRules -T covidTrainData.txt -P covidTrainPred.out -C covidTrainClass.txt -W covid.wts -Q 50 -O globalRulesCovid.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesCovidResult -S ../dimlp/datafiles/covidDataset
-./fidexGloRules -T spamTrainData.txt -P spamTrainPred.out -C spamTrainClass.txt -W spam.wts -Q 50 -O globalRulesSpam.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesSpamResult -S ../dimlp/datafiles/spamDataset
-./fidexGloRules -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -W isoletV2.wts -Q 50 5 -O globalRulesIsoletV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesIsoletResultV2 -S ../dimlp/datafiles/isoletDataset
-./fidexGloRules -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -W HAPTV2.wts -Q 50 5 -O globalRulesHAPTV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesHAPTResultV2 -S ../dimlp/datafiles/HAPTDataset
+./fidexGloRules -T covidTrainData.txt -P covidTrainPred.out -C covidTrainClass.txt -W covid.wts -a 16 -b 2 -Q 50 -O globalRulesCovid.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesCovidResult -S ../dimlp/datafiles/covidDataset
+./fidexGloRules -T spamTrainData.txt -P spamTrainPred.out -C spamTrainClass.txt -W spam.wts -a 16 -b 2 -Q 50 -O globalRulesSpam.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesSpamResult -S ../dimlp/datafiles/spamDataset
+./fidexGloRules -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -W isoletV2.wts -a 16 -b 2 -Q 50 5 -O globalRulesIsoletV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesIsoletResultV2 -S ../dimlp/datafiles/isoletDataset
+./fidexGloRules -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -W HAPTV2.wts -a 16 -b 2 -Q 50 5 -O globalRulesHAPTV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesHAPTResultV2 -S ../dimlp/datafiles/HAPTDataset
 
 */

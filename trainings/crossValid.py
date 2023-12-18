@@ -1394,6 +1394,8 @@ def crossValid(*args, **kwargs):
                             fidex_command +=  " -Q " + str(nb_stairs)
                         if save_folder is not None:
                             fidex_command +=  " -R " + save_folder
+                        fidex_command += " -a " + str(nb_in)
+                        fidex_command += " -b " + str(nb_out)
                         if attr_file is not None:
                             fidex_command +=  " -A " + attr_file
                         fidex_command +=  " -i " + str(max_iter)
@@ -1465,6 +1467,8 @@ def crossValid(*args, **kwargs):
                             fidexglo_rules_command +=  " -Q " + str(nb_stairs)
                         if save_folder is not None:
                             fidexglo_rules_command +=  " -S " + save_folder
+                        fidexglo_rules_command += " -a " + str(nb_in)
+                        fidexglo_rules_command += " -b " + str(nb_out)
                         if attr_file is not None:
                             fidexglo_rules_command +=  " -A " + attr_file
                         fidexglo_rules_command +=  " -i " + str(max_iter)
@@ -1502,6 +1506,8 @@ def crossValid(*args, **kwargs):
                         fidexglo_stats_command = "fidexGloStats"
                         if save_folder is not None:
                             fidexglo_stats_command +=  " -S " + save_folder
+                        fidexglo_stats_command += " -a " + str(nb_in)
+                        fidexglo_stats_command += " -b " + str(nb_out)
                         if attr_file is not None:
                             fidexglo_stats_command +=  " -A " + attr_file
                         fidexglo_stats_command += " -T " + folder_path_from_root + separator + "test.txt"
