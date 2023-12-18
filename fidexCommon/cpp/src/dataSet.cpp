@@ -567,8 +567,8 @@ void DataSetFid::checkDatas() const {
  */
 void DataSetFid::checkThreshold() const {
 
-  if ((decisionThreshold == -1) != (indexPositiveClass == -1)) { // XOR
-    throw InternalError("Error in dataset " + datasetName + " : decision threshold and index positive class have to be given at the same time.");
+  if (decisionThreshold != -1 && indexPositiveClass == -1) { // XOR
+    throw InternalError("Error in dataset " + datasetName + " : index positive class has to be given when decisionThreshold is given.");
   }
 
   if (decisionThreshold != -1 && (decisionThreshold < 0 || decisionThreshold > 1)) {

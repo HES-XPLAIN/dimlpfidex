@@ -241,8 +241,8 @@ def svmTrn(*args, **kwargs):
             with_roc = True
             if positive_index is None:
                 with_roc = False
-            elif not isinstance(positive_index, int) or positive_index < 0 or positive_index >= len(test_class[0]):
-                raise ValueError(f'Error : parameter positive_index has to be a positive integer smaller than {len(test_class[0])}.')
+            elif not isinstance(positive_index, int) or positive_index < 0 or positive_index >= nb_classes:
+                raise ValueError(f'Error : parameter positive_index has to be a positive integer smaller than {nb_classes}.')
 
 
             # Get weights and biais from first hidden layer as well as data transformed in first hidden layer
@@ -296,7 +296,8 @@ def svmTrn(*args, **kwargs):
                 train_pred_proba =  model.predict_proba(train_data_h1)
                 from trainings.decisionThreshold import decisionThreshold
                 decisionThreshold(with_roc_computation = False, test_class = test_class_file_init, test_pred = test_pred_proba.tolist(), train_pred = train_pred_proba.tolist(),
-                                  train_class_threshold = train_class_threshold, test_class_threshold = test_class_threshold, positive_index=positive_index, fpr=fpr.tolist(), tpr=tpr.tolist(), auc_score=auc_score, save_folder = save_folder)
+                                  train_class_threshold = train_class_threshold, test_class_threshold = test_class_threshold, positive_index = positive_index,
+                                  nb_classes = nb_classes ,fpr = fpr.tolist(), tpr = tpr.tolist(), auc_score = auc_score, save_folder = save_folder)
 
 
             # Redirect output to terminal

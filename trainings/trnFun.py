@@ -447,9 +447,9 @@ def check_parameters_common(save_folder, train_data_file, test_data_file, train_
     :type test_data_file: str
     :param test_class_file: The file name for testing class labels.
     :type test_class_file: str
-    :param train_pred_file: The file name for saving training predictions, defaults to "predTrain.out".
+    :param train_pred_file: The file name for saving training predictions, defaults to "predTrain" and add .out.
     :type train_pred_file: str, optional
-    :param test_pred_file: The file name for saving testing predictions, defaults to "predTest.out".
+    :param test_pred_file: The file name for saving testing predictions, defaults to "predTest" and add .out.
     :type test_pred_file: str, optional
     :param stats_file: The file name for saving statistics, defaults to "stats.txt".
     :type stats_file: str, optional
@@ -464,8 +464,10 @@ def check_parameters_common(save_folder, train_data_file, test_data_file, train_
     save_folder = validate_string_param(save_folder, "save_folder", allow_none=True)
     train_data_file = validate_string_param(train_data_file, "train_data")
     test_data_file = validate_string_param(test_data_file, "test_data")
-    train_pred_file = validate_string_param(train_pred_file, "train_pred", default="predTrain.out")
-    test_pred_file = validate_string_param(test_pred_file, "test_pred", default="predTest.out")
+    train_pred_file = validate_string_param(train_pred_file, "train_pred", default="predTrain")
+    train_pred_file += ".out"
+    test_pred_file = validate_string_param(test_pred_file, "test_pred", default="predTest")
+    test_pred_file += ".out"
     stats_file = validate_string_param(stats_file, "stats_file", default="stats.txt")
 
     # Check nb_attributes and nb_classes

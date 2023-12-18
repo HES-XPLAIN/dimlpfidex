@@ -79,16 +79,17 @@ tuple<int, int> writeRulesFile(string filename, const vector<Rule> rules, const 
          << ", mean number of antecedents per rule : " << meanNbAntecedents
          << endl;
 
-    if (attributes) {
-      file << "Attributes name are specified.";
+    if (attributes && !attributes->empty()) {
+      file << "Attribute names are specified. ";
     } else {
-      file << "Attributes name are not specified.";
+      file << "Attribute names are not specified. "; // TODO : See if we can delete those lines in file and replace by a check to see if we have attribute names or not. cf. patterns in hyperLocus.cpp
     }
+    file << endl;
 
-    if (classes) {
-      file << "Classes name are specified.";
+    if (classes && !classes->empty()) {
+      file << "Class names are specified.";
     } else {
-      file << "Classes name are not specified.";
+      file << "Class names are not specified.";
     }
 
     file << endl
