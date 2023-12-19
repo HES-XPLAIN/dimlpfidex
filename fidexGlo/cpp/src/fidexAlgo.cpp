@@ -7,6 +7,7 @@ bool FidexAlgo::fidex(Rule &rule,
                       Parameters *p,
                       Hyperspace *hyperspace,
                       int idSample,
+                      double minFidelity,
                       mt19937 gen) const {
 
   // Get diverse elements of the provided dataset
@@ -19,11 +20,10 @@ bool FidexAlgo::fidex(Rule &rule,
   vector<double> *mainSampleValues = &(*trainData)[idSample];
   int mainSamplePred = (*trainPreds)[idSample];
   int nbInputs = hyperspace->getHyperLocus().size();
-  int itMax = p->getItMax();
-  int minNbCover = p->getMinNbCover();
-  double minFidelity = p->getMinFidelity();
-  double dropoutDim = p->getDropoutDim();
-  double dropoutHyp = p->getDropoutHyp();
+  int itMax = p->getInt(MAX_ITERATIONS);
+  int minNbCover = p->getInt(MIN_COVERING);
+  double dropoutDim = p->getFloat(DROPOUT_DIM);
+  double dropoutHyp = p->getFloat(DROPOUT_HYP);
 
   // Initialize uniform distribution
   uniform_real_distribution<double> dis(0.0, 1.0);

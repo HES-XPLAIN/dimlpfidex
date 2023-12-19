@@ -6,27 +6,6 @@
  * @param args program arguments
  */
 Parameters::Parameters(vector<string> args) {
-  // setting default values
-  _nbDimlpNets = 1;    // Number of networks. 1 means no baggingu
-  _nbQuantLevels = 50; // Number of steps of the step function
-  _heuristic = -1;
-  _itMax = 10;     // We stop if we have more than itMax iterations (impossible to have a rule with more than itMax antecedents)
-  _minNbCover = 2; // Minimum size of covering that we ask
-  _maxFailedAttempts = 30;
-  _nbThreadsUsed = 1;
-  _indexPositiveClass = -1;
-  _seed = 0;
-  _heuristicInit = false;
-  _hasDecisionThreshold = false;
-  _hasIndexPositiveClass = false;
-  _hiKnot = 5; // High end of the interval for each dimension, a hyperplan can't be after
-  _dropoutHyp = 0.5;
-  _dropoutDim = 0.5;
-  _minFidelity = 1;
-  _decisionThreshold = -1;
-
-  // TODO: I don't think it's apropriate to check for errors here. Should be done wherever it is used instead.
-
   for (int p = 1; p < args.size(); p++) {
     if (args[p][0] == '-') {
       p++;
@@ -42,148 +21,91 @@ Parameters::Parameters(vector<string> args) {
       switch (option) { // Get letter after the -
 
       case 'T':
-        _trainDataFile = arg; // Parameter after -T
+        setString(TRAIN_DATA_FILE, arg); // Parameter after -T
         break;
 
       case 'P':
-        _trainDataFilePred = arg;
+        setString(TRAIN_DATA_PRED_FILE, arg);
         break;
 
       case 'C':
-        _trainDataFileTrueClass = arg;
+        setString(TRAIN_DATA_TRUE_CLASS_FILE, arg);
         break;
 
-      case 'W': {
-        _weightsFile = arg;
-      } break;
+      case 'W':
+        setString(WEIGHTS_FILE, arg);
+        break;
 
-      case 'f': {
-        _inputRulesFile = arg;
-      } break;
+      case 'f':
+        setString(RULES_FILE, arg);
+        break;
 
       case 'N':
-        if (CheckPositiveInt(arg))
-          _nbDimlpNets = atoi(arg);
-        else
-          throw CommandArgumentException("Error : invalid type for parameter " + string(lastArg) + ", positive integer requested");
-
+        setInt(NB_DIMLP_NETS, arg);
         break;
 
       case 'Q':
-        if (CheckPositiveInt(arg)) {
-          _nbQuantLevels = atoi(arg);
-        } else {
-          throw CommandArgumentException("Error : invalid type for parameter " + string(lastArg) + ", positive integer requested");
-        }
+        setInt(NB_QUANT_LEVELS, arg);
         break;
 
       case 'O':
-        _rulesFile = arg;
+        setString(RULES_FILE, arg);
         break;
 
       case 'r':
-        _consoleFile = arg;
+        setString(CONSOLE_FILE, arg);
         break;
 
       case 'A':
-        _attributFile = arg;
+        setString(ATTRIBUTES_FILE, arg);
         break;
 
       case 'S':
-        _rootFolder = arg;
+        setString(ROOT_FOLDER, arg);
         break;
 
       case 'M':
-        if (CheckPositiveInt(arg) && atoi(arg) >= 1 && atoi(arg) <= 3) {
-          _heuristic = atoi(arg);
-          _heuristicInit = true;
-        } else {
-          throw CommandArgumentException("Error : invalid type for parameter " + string(lastArg) + ", heuristic must be an integer between 1 and 3(1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo)");
-        }
+        setInt(HEURISTIC, arg);
         break;
 
       case 'i':
-        if (CheckPositiveInt(arg)) {
-          _itMax = atoi(arg);
-        } else {
-          throw CommandArgumentException("Error : invalid type for parameter " + string(lastArg) + ", positive integer requested");
-        }
+        setInt(MAX_ITERATIONS, arg);
         break;
 
       case 'v':
-        if (CheckPositiveInt(arg) && atoi(arg) >= 1) {
-          _minNbCover = atoi(arg);
-        } else {
-          throw CommandArgumentException("Error : invalid type for parameter " + string(lastArg) + ", strictly positive integer requested");
-        }
+        setInt(MIN_COVERING, arg);
         break;
 
       case 'p':
-        if (CheckPositiveInt(arg) && atoi(arg) >= 1) {
-          if (atoi(arg) <= omp_get_num_procs()) {
-            _nbThreadsUsed = atoi(arg);
-          }
-        } else {
-          throw CommandArgumentException("Error : invalid type for parameter " + string(lastArg) + ", zero or positive integer requested");
-        }
+        setInt(NB_THREADS_USED, arg);
         break;
 
       case 'y':
-        if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
-          _minFidelity = atof(arg);
-        } else {
-          throw CommandArgumentException("Error : invalid type for parameter " + string(lastArg) + ", float included in [0,1] requested");
-        }
+        setFloat(MIN_FIDELITY, arg);
         break;
 
       case 'd':
-        if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
-          _dropoutDim = atof(arg);
-        } else {
-          throw CommandArgumentException("Error : invalid type for parameter " + string(lastArg) + ", float included in [0,1] requested");
-        }
+        setFloat(DROPOUT_DIM, arg);
         break;
 
       case 'h':
-        if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
-          _dropoutHyp = atof(arg);
-        } else {
-          throw CommandArgumentException("Error : invalid type for parameter " + string(lastArg) + ", float included in [0,1] requested");
-        }
+        setFloat(DROPOUT_HYP, arg);
         break;
 
       case 'm':
-        if (CheckPositiveInt(arg) && atoi(arg) > 0) {
-          _maxFailedAttempts = atoi(arg);
-        } else {
-          throw CommandArgumentException("Error : invalid type for parameter " + string(lastArg) + ", strictly positive integer requested");
-        }
+        setInt(MAX_FAILED_ATTEMPTS, arg);
         break;
 
       case 't':
-        if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
-          _hasDecisionThreshold = true;
-          _decisionThreshold = atof(arg);
-        } else {
-          throw CommandArgumentException("Error : invalid type for parameter " + string(lastArg) + ", float included in [0,1] requested");
-        }
+        setFloat(DECISION_THRESHOLD, arg);
         break;
 
       case 'x':
-        if (CheckPositiveInt(arg)) {
-          _hasIndexPositiveClass = true;
-          _indexPositiveClass = atoi(arg);
-        } else {
-          throw CommandArgumentException("Error : invalid type for parameter " + string(lastArg) + ", positive integer requested");
-        }
+        setInt(INDEX_POSITIVE_CLASS, arg);
         break;
 
       case 'z':
-        if (CheckPositiveInt(arg))
-          _seed = atoi(arg);
-        else
-          throw CommandArgumentException("Error : invalid type for parameter " + string(lastArg) + ", positive integer requested");
-
+        setInt(SEED, arg);
         break;
 
       default: // If we put another -X option
@@ -191,60 +113,116 @@ Parameters::Parameters(vector<string> args) {
       }
     }
   }
-
-  setRootDirectory();
-}
-
-/**
- * @brief Sets all root directories of files if root directory has been specified
- *
- */
-void Parameters::setRootDirectory() {
-  if (_rootFolder.empty()) {
-    return;
-  }
-
-#if defined(__unix__) || defined(__APPLE__)
-  _rootFolder += "/";
-#elif defined(_WIN32)
-  _rootFolder += "\\";
-#endif
-
-  if (!_trainDataFile.empty()) {
-    cout << _trainDataFile << endl;
-    _trainDataFile = _rootFolder + _trainDataFile;
-  }
-
-  if (!_trainDataFilePred.empty()) {
-    _trainDataFilePred = _rootFolder + _trainDataFilePred;
-  }
-
-  if (!_trainDataFileTrueClass.empty()) {
-    _trainDataFileTrueClass = _rootFolder + _trainDataFileTrueClass;
-  }
-
-  if (!_rulesFile.empty()) {
-    _rulesFile = _rootFolder + _rulesFile;
-  }
-
-  if (!_weightsFiles.empty()) {
-    for (int i = 0; i < _weightsFiles.size(); i++) {
-      _weightsFiles[i] = _rootFolder + _weightsFiles[i];
-      ;
-    }
-  }
-
-  if (!_inputRulesFile.empty()) {
-    _inputRulesFile = _rootFolder + _inputRulesFile;
-  }
-
-  if (!_attributFile.empty()) {
-    _attributFile = _rootFolder + _attributFile;
-  }
-
-  if (!_weightsFile.empty()) {
-    _weightsFile = _rootFolder + _weightsFile;
-  }
 }
 
 // TODO: Implement Parameters::Parameters(string jsonfile) {}
+
+// private setters
+void Parameters::setInt(ParameterCode id, string value) {
+  if (isIntSet(id)) {
+    throwAlreadySetArgumentException(id, value);
+  }
+
+  if (atoi(value.c_str())) {
+    _intParams[id] = atoi(value.c_str());
+  } else {
+    throwInvalidDataTypeException(id, value, "integer");
+  }
+}
+
+void Parameters::setFloat(ParameterCode id, string value) {
+  if (isFloatSet(id)) {
+    throwAlreadySetArgumentException(id, value);
+  }
+
+  if (atof(value.c_str())) {
+    _floatParams[id] = atof(value.c_str());
+  } else {
+    throwInvalidDataTypeException(id, value, "float");
+  }
+}
+
+// TODO: find better double translation than atof
+void Parameters::setDouble(ParameterCode id, string value) {
+  if (isDoubleSet(id)) {
+    throwAlreadySetArgumentException(id, value);
+  }
+
+  if (atof(value.c_str())) {
+    _doubleParams[id] = atof(value.c_str());
+  } else {
+    throwInvalidDataTypeException(id, value, "double");
+  }
+}
+
+void Parameters::setString(ParameterCode id, string value) {
+  if (isStringSet(id)) {
+    throwAlreadySetArgumentException(id, value);
+  }
+  _stringParams[id] = value;
+}
+
+// TODO: should I check for empty vector ?
+void Parameters::setWeightFiles(vector<string> files) {
+  _weightFiles = files;
+}
+
+// public getters
+int Parameters::getInt(ParameterCode id) {
+  if (_intParams.find(id) == _intParams.end()) {
+    throwArgumentNotFoundException(id);
+  }
+
+  return _intParams[id];
+}
+
+float Parameters::getFloat(ParameterCode id) {
+  if (_floatParams.find(id) == _floatParams.end()) {
+    throwArgumentNotFoundException(id);
+  }
+
+  return _floatParams[id];
+}
+
+double Parameters::getDouble(ParameterCode id) {
+  if (_doubleParams.find(id) == _doubleParams.end()) {
+    throwArgumentNotFoundException(id);
+  }
+
+  return _doubleParams[id];
+}
+
+string Parameters::getString(ParameterCode id) {
+  if (_stringParams.find(id) == _stringParams.end()) {
+    throwArgumentNotFoundException(id);
+  }
+
+  return _stringParams[id];
+}
+
+bool Parameters::isIntSet(ParameterCode id) {
+  return _intParams.find(id) != _intParams.end();
+}
+
+bool Parameters::isFloatSet(ParameterCode id) {
+  return _floatParams.find(id) != _floatParams.end();
+}
+
+bool Parameters::isDoubleSet(ParameterCode id) {
+  return _doubleParams.find(id) != _doubleParams.end();
+}
+
+bool Parameters::isStringSet(ParameterCode id) {
+  return _stringParams.find(id) != _stringParams.end();
+}
+
+// TODO check if empty ?
+vector<string> Parameters::getWeightsFiles() const {
+  return _weightFiles;
+}
+
+// public special operations
+// TODO check for duplicates ?
+void Parameters::addWeightsFile(string file) {
+  _weightFiles.push_back(file);
+}

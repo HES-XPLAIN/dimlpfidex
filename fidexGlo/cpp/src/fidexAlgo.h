@@ -29,6 +29,7 @@ public:
              Parameters *p,
              Hyperspace *hyperspace,
              int idSample,
+             double minFidelity,
              mt19937 gen) const;
 };
 

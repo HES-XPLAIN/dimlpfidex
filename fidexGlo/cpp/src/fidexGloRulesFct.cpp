@@ -54,9 +54,9 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   int nbDatas = dataset->getNbSamples();
   int nbProblems = 0;
   int nbRulesNotFound = 0;
-  int minNbCover = p->getMinNbCover();
-  int nbThreadsUsed = p->getNbThreadsUsed();
-  int seed = p->getSeed();
+  int seed = p->getInt(SEED);
+  int minNbCover = p->getInt(MIN_COVERING);
+  int nbThreadsUsed = p->getInt(NB_THREADS_USED);
   vector<Rule> rules;
   vector<Rule> chosenRules;
   vector<int> notCoveredSamples(nbDatas);
@@ -87,13 +87,14 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
     bool ruleCreated;
     int counterFailed;
     double t1, t2;
+    double minFidelity = p->getFloat(MIN_FIDELITY);
 
     int cnt = 0;
     int localNbRulesNotFound = 0;
     int localNbProblems = 0;
     int localMinNbCover = 0;
     int currentMinNbCov = minNbCover;
-    int maxFailedAttempts = p->getMaxFailedAttempts();
+    int maxFailedAttempts = p->getInt(MAX_FAILED_ATTEMPTS);
     Hyperspace hyperspace(hyperlocus);
     vector<int>::iterator it;
 
@@ -106,7 +107,7 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
       cnt += 1;
 
       if (omp_get_thread_num() == 0) {
-        if (((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && p->getConsoleFile().empty()) {
+        if (((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && !p->isStringSet(CONSOLE_FILE)) {
 #pragma omp critical
           {
             cout << "Processing : " << int((double(idSample) / (nbDatas / nbThreadsUsed)) * 100) << "%\r";
@@ -116,7 +117,7 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
       }
 
       while (!ruleCreated) {
-        ruleCreated = exp.fidex(rule, dataset, p, &hyperspace, idSample, gen);
+        ruleCreated = exp.fidex(rule, dataset, p, &hyperspace, idSample, minFidelity, gen);
 
         if (currentMinNbCov >= 2) {
           currentMinNbCov -= 1;
@@ -219,9 +220,9 @@ vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   int nbThreads = omp_get_num_procs();
   int nbProblems = 0;
   int nbRulesNotFound = 0;
-  int minNbCover = p->getMinNbCover();
-  int nbThreadsUsed = p->getNbThreadsUsed();
-  int seed = p->getSeed();
+  int seed = p->getInt(SEED);
+  int minNbCover = p->getInt(MIN_COVERING);
+  int nbThreadsUsed = p->getInt(NB_THREADS_USED);
   vector<Rule> rules;
   vector<Rule> chosenRules;
   vector<int> samplesNotFound;
@@ -253,12 +254,13 @@ vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<doubl
     bool ruleCreated;
     int counterFailed;
     int currentMinNbCov = minNbCover;
-    int maxFailedAttempts = p->getMaxFailedAttempts();
+    int maxFailedAttempts = p->getInt(MAX_FAILED_ATTEMPTS);
     int localNbRulesNotFound = 0;
     int localNbProblems = 0;
     int localMinNbCover = 0;
     int cnt = 0;
     double t1, t2;
+    float minFidelity = p->getFloat(MIN_FIDELITY);
     Hyperspace hyperspace(hyperlocus);
     vector<int>::iterator it;
 
@@ -269,7 +271,7 @@ vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<doubl
       cnt += 1;
 
       if (omp_get_thread_num() == 0) {
-        if (((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && p->getConsoleFile().empty()) {
+        if (((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && !p->isStringSet(CONSOLE_FILE)) {
 #pragma omp critical
           {
             cout << "Processing : " << int((double(idSample) / (nbDatas / nbThreadsUsed)) * 100) << "%\r";
@@ -283,7 +285,7 @@ vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<doubl
       int counterFailed = 0; // If we can't find a good rule after a lot of tries
 
       while (!ruleCreated) {
-        ruleCreated = exp.fidex(rule, dataset, p, &hyperspace, idSample, gen);
+        ruleCreated = exp.fidex(rule, dataset, p, &hyperspace, idSample, minFidelity, gen);
 
         if (currentMinNbCov >= 2) {
           currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
@@ -370,21 +372,21 @@ vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<doubl
 
 // TODO: comment this
 vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<double>> hyperlocus) {
+  Rule rule;
   mt19937 gen;
-  int nbDatas = dataset->getDatas()->size();
-  int nbProblems = 0;
-  int nbRulesNotFound = 0;
-  int minNbCover = p->getMinNbCover();
-  int seed = p->getSeed();
-  int nbRules = 0;
   int idSample;
   int currentMinNbCov;
-  int maxFailedAttempts = p->getMaxFailedAttempts();
-  Rule rule;
   bool ruleCreated;
   auto exp = FidexAlgo();
+  int nbRules = 0;
+  int nbProblems = 0;
+  int nbRulesNotFound = 0;
+  int seed = p->getInt(SEED);
+  int nbDatas = dataset->getDatas()->size();
+  int minNbCover = p->getInt(MIN_COVERING);
+  int maxFailedAttempts = p->getInt(MAX_FAILED_ATTEMPTS);
+  float minFidelity = p->getFloat(MIN_FIDELITY);
   Hyperspace hyperspace(hyperlocus);
-  string consoleFile = p->getConsoleFile();
   vector<int> notCoveredSamples(nbDatas);
   vector<Rule> chosenRules;
 
@@ -403,7 +405,7 @@ vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   // While there is some not covered samples
   while (!notCoveredSamples.empty()) {
 
-    if (int(nbDatas / 100) != 0 && (nbDatas - notCoveredSamples.size()) % int(nbDatas / 100) == 0 && consoleFile.empty()) {
+    if (int(nbDatas / 100) != 0 && (nbDatas - notCoveredSamples.size()) % int(nbDatas / 100) == 0 && !p->isStringSet(CONSOLE_FILE)) {
       cout << "Processing: " << int((double(nbDatas - notCoveredSamples.size()) / nbDatas) * 100) << "%\r";
       cout.flush();
     }
@@ -413,7 +415,7 @@ vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<doubl
     ruleCreated = false;
     int counterFailed = 0; // If we can't find a good rule after a lot of tries
     while (!ruleCreated) {
-      ruleCreated = exp.fidex(rule, dataset, p, &hyperspace, idSample, gen);
+      ruleCreated = exp.fidex(rule, dataset, p, &hyperspace, idSample, minFidelity, gen);
 
       if (currentMinNbCov >= 2) {
         currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
@@ -450,7 +452,7 @@ vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<doubl
 
   cout << endl;
 
-  cout << "Number of sample with lower covering than " << p->getMinNbCover() << " : " << nbProblems << endl;
+  cout << "Number of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
   if (nbRulesNotFound > 0) {
     cout << "Number of rules not found : " << nbRulesNotFound << endl;
   }
@@ -458,38 +460,38 @@ vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   return chosenRules;
 }
 
-// TODO: comment this
-void checkParameters(Parameters *p) {
-  if (!p->getTrainDataFile().empty()) {
-    throw CommandArgumentException("The train data file has to be given with option -T");
-  }
+// TODO: this is probably not relevant enymore (existing checks are made by the Parameter class, BUT LOGIC CHECKS ARE NOT)
+// void checkParameters(Parameters *p) {
+//   if (!p->getTrainDataFile().empty()) {
+//     throw CommandArgumentException("The train data file has to be given with option -T");
+//   }
 
-  if (!p->getTrainDataFilePred().empty()) {
-    throw CommandArgumentException("The train prediction file has to be given with option -P");
-  }
+//   if (!p->getTrainDataFilePred().empty()) {
+//     throw CommandArgumentException("The train prediction file has to be given with option -P");
+//   }
 
-  if (p->getTrainDataFileTrueClass().empty()) {
-    throw CommandArgumentException("The train true classes file has to be given with option -C");
-  }
+//   if (p->getTrainDataFileTrueClass().empty()) {
+//     throw CommandArgumentException("The train true classes file has to be given with option -C");
+//   }
 
-  if (p->getRulesFile().empty()) {
-    throw CommandArgumentException("The output rules file has to be given with option -O");
-  }
+//   if (p->getRulesFile().empty()) {
+//     throw CommandArgumentException("The output rules file has to be given with option -O");
+//   }
 
-  if (p->getWeightsFile().empty() && p->getInputRulesFile().empty()) {
-    throw CommandArgumentException("A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f");
-  } else if (!p->getWeightsFile().empty() && !p->getInputRulesFile().empty()) {
-    throw CommandArgumentException("Do not specify both a weight file(-W) and a rules file(-f). Choose one of them.");
-  }
+//   if (p->getWeightsFile().empty() && p->getInputRulesFile().empty()) {
+//     throw CommandArgumentException("A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f");
+//   } else if (!p->getWeightsFile().empty() && !p->getInputRulesFile().empty()) {
+//     throw CommandArgumentException("Do not specify both a weight file(-W) and a rules file(-f). Choose one of them.");
+//   }
 
-  if (p->getHasDecisionThreshold() && !p->getHasIndexPositiveClass()) {
-    throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t)");
-  }
+//   if (p->getHasDecisionThreshold() && !p->getHasIndexPositiveClass()) {
+//     throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t)");
+//   }
 
-  if (!p->getHeuristic()) {
-    throw CommandArgumentException("The heuristic(1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo) has to be given with option -M");
-  }
-}
+//   if (!p->getHeuristic()) {
+//     throw CommandArgumentException("The heuristic(1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo) has to be given with option -M");
+//   }
+// }
 
 /**
  * @brief writes a list of rules into a given file. Returns tuple of two integers representing the mean covering size and the mean number of antecedants.
@@ -530,13 +532,13 @@ tuple<int, int> writeRulesFile(string filename, const vector<Rule> rules, const 
          << ", mean number of antecedents per rule : " << meanNbAntecedents
          << endl;
 
-    if (attributes) {
+    if (attributes && !attributes->empty()) {
       file << "Attributes name are specified.";
     } else {
       file << "Attributes name are not specified.";
     }
 
-    if (classes) {
+    if (classes && !classes->empty()) {
       file << "Classes name are specified.";
     } else {
       file << "Classes name are not specified.";
@@ -587,34 +589,35 @@ int fidexGloRules(const string &command) {
     unique_ptr<Parameters> params(new Parameters(commandList));
 
     // Fill weights vector
-    if (!params->getWeightsFile().empty()) {
-      if (params->getNbDimlpNets() == 1) {
-        params->addWeightFile(params->getWeightsFile());
+    if (!params->getWeightsFiles().empty()) {
+      if (params->getInt(NB_DIMLP_NETS) == 1) {
+        params->addWeightsFile(params->getString(WEIGHTS_FILE));
       } else {
-        for (int n = 0; n < params->getNbDimlpNets(); n++) {
-          params->addWeightFile(params->getWeightsFile() + to_string(n + 1) + ".wts");
+        for (int n = 0; n < params->getInt(NB_DIMLP_NETS) == 1; n++) {
+          params->addWeightsFile(params->getString(WEIGHTS_FILE) + to_string(n + 1) + ".wts");
         }
       }
     }
 
     // Get console results to file
-    if (!params->getConsoleFile().empty()) {
-      ofs.open(params->getConsoleFile());
+    if (params->isStringSet(CONSOLE_FILE)) {
+      ofs.open(params->getString(CONSOLE_FILE));
       cout.rdbuf(ofs.rdbuf()); // redirect cout to file
     }
 
-    cout << *params;
+    // cout << *params;
 
     // Import files
     cout << "Importing files..." << endl;
 
+    //! WARNING: if decision threshold is not set, this crashes
     unique_ptr<DataSetFid> trainDatas(new DataSetFid("trainDatas from FidexGloRules",
-                                                     params->getTrainDataFile().c_str(),
-                                                     params->getTrainDataFilePred().c_str(),
-                                                     params->getHasDecisionThreshold(),
-                                                     params->getDecisionThreshold(),
-                                                     params->getIndexPositiveClass(),
-                                                     params->getTrainDataFileTrueClass().c_str()));
+                                                     params->getString(TRAIN_DATA_FILE).c_str(),
+                                                     params->getString(TRAIN_DATA_PRED_FILE).c_str(),
+                                                     params->isFloatSet(DECISION_THRESHOLD),
+                                                     params->getFloat(DECISION_THRESHOLD),
+                                                     params->getInt(INDEX_POSITIVE_CLASS),
+                                                     params->getString(TRAIN_DATA_TRUE_CLASS_FILE).c_str()));
 
     int nbDatas = trainDatas->getNbSamples();
     int nbAttributs = trainDatas->getNbAttributes();
@@ -624,8 +627,8 @@ int fidexGloRules(const string &command) {
     vector<string> classNames;
     bool hasClassNames = false;
 
-    if (!params->getAttributFile().empty()) {
-      trainDatas->setAttribute(params->getAttributFile().c_str());
+    if (!params->getString(ATTRIBUTES_FILE).empty()) {
+      trainDatas->setAttribute(params->getString(ATTRIBUTES_FILE).c_str());
       attributeNames = (*trainDatas->getAttributeNames());
       hasClassNames = trainDatas->getHasClassNames();
       if (hasClassNames) {
@@ -641,13 +644,13 @@ int fidexGloRules(const string &command) {
     cout << "Creation of hyperspace..." << endl;
 
     vector<vector<double>> matHypLocus;
-    string weightsFile = params->getWeightsFile();
-    string attributFile = params->getAttributFile();
-    string inputRulesFile = params->getInputRulesFile();
+    string weightsFile = params->getString(WEIGHTS_FILE);
+    string attributFile = params->getString(ATTRIBUTES_FILE);
+    string inputRulesFile = params->getString(INPUT_RULES_FILE);
     vector<string> weightsFiles = params->getWeightsFiles();
-    int nbDimlpNets = params->getNbDimlpNets();
-    int nbQuantLevels = params->getNbQuantLevels();
-    int hiKnot = params->getHiKnot();
+    int nbDimlpNets = params->getInt(NB_DIMLP_NETS);
+    int nbQuantLevels = params->getInt(NB_QUANT_LEVELS);
+    int hiKnot = params->getInt(HI_KNOT);
 
     if (!weightsFile.empty()) {
       if (nbDimlpNets > 1) {
@@ -700,7 +703,7 @@ int fidexGloRules(const string &command) {
     // Initialize random number generator
 
     const auto start = high_resolution_clock::now();
-    int heuristic = params->getHeuristic();
+    int heuristic = params->getInt(HEURISTIC);
     vector<Rule> generatedRules;
     int nbRules = 0;
 
@@ -749,7 +752,7 @@ int fidexGloRules(const string &command) {
       return r1.getCoveredSamples().size() > r2.getCoveredSamples().size();
     });
 
-    tuple<int, int> stats = writeRulesFile(params->getRulesFile(), generatedRules, &attributeNames, &classNames);
+    tuple<int, int> stats = writeRulesFile(params->getString(RULES_FILE), generatedRules, &attributeNames, &classNames);
 
     cout << "Mean covering size per rule : " << get<0>(stats) << endl;
     cout << "Mean number of antecedents per rule : " << get<1>(stats) << endl;
