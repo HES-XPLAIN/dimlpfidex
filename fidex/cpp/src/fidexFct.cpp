@@ -13,6 +13,8 @@ void showFidexParams() {
   std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> [Not mendatory if a rules file is given with -f] ";
   std::cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
   std::cout << "-O <Rule output file>";
+  std::cout << "-a <number of attributes>";
+  std::cout << "-b <number of classes>";
   std::cout << "<Options>\n"
             << std::endl;
 
@@ -83,6 +85,9 @@ int fidex(const string &command) {
     bool mainSamplesClassFileInit = false;
     string attributFileTemp; // attribut file
     bool attributFileInit = false;
+
+    int nb_attributes = -1;
+    int nb_classes = -1;
 
     bool hasTrueClasses; // Check if we have the true classes
 
@@ -164,6 +169,22 @@ int fidex(const string &command) {
           mainSamplesDataFileInit = true;
           break;
 
+        case 'a':
+          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+            nb_attributes = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
+          }
+          break;
+
+        case 'b':
+          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+            nb_classes = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
+          }
+          break;
+
         case 'p':
           mainSamplesPredFileTemp = arg;
           mainSamplesPredFileInit = true;
@@ -193,7 +214,7 @@ int fidex(const string &command) {
           if (CheckPositiveInt(arg))
             nbDimlpNets = atoi(arg);
           else {
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested.");
           }
 
           break;
@@ -202,7 +223,7 @@ int fidex(const string &command) {
           if (CheckPositiveInt(arg)) {
             nbQuantLevels = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested.");
           }
           break;
 
@@ -230,7 +251,7 @@ int fidex(const string &command) {
           if (CheckPositiveInt(arg)) {
             itMax = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested.");
           }
           break;
 
@@ -238,7 +259,7 @@ int fidex(const string &command) {
           if (CheckPositiveInt(arg) && atoi(arg) >= 1) {
             minNbCover = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", integer strictly greater than 1 requested.");
           }
           break;
 
@@ -248,7 +269,7 @@ int fidex(const string &command) {
                            [](unsigned char c) { return std::tolower(c); });
             minCoverStrategy = (stringArg == "true" || stringArg == "1") ? true : false;
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested.");
           }
           break;
 
@@ -256,7 +277,7 @@ int fidex(const string &command) {
           if (CheckPositiveInt(arg) && atoi(arg) > 0) {
             maxFailedAttempts = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
           }
           break;
 
@@ -264,7 +285,7 @@ int fidex(const string &command) {
           if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             minFidelity = atof(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested.");
           }
           break;
 
@@ -273,7 +294,7 @@ int fidex(const string &command) {
             dropoutDimParam = atof(arg);
             dropoutDim = true; // We dropout a bunch of dimensions each iteration (accelerate the processus)
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested.");
           }
           break;
 
@@ -282,7 +303,7 @@ int fidex(const string &command) {
             dropoutHypParam = atof(arg);
             dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested.");
           }
           break;
 
@@ -291,7 +312,7 @@ int fidex(const string &command) {
             hasDecisionThreshold = true;
             decisionThreshold = atof(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested.");
           }
           break;
 
@@ -300,7 +321,7 @@ int fidex(const string &command) {
             hasIndexPositiveClass = true;
             indexPositiveClass = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested.");
           }
           break;
 
@@ -308,12 +329,12 @@ int fidex(const string &command) {
           if (CheckPositiveInt(arg))
             seed = atoi(arg);
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested.");
 
           break;
 
         default: // If we put another -X option
-          throw CommandArgumentException("Illegal option : " + string(lastArg));
+          throw CommandArgumentException("Illegal option : " + string(lastArg) + ".");
         }
       }
 
@@ -420,33 +441,39 @@ int fidex(const string &command) {
     }
 
     if (hasDecisionThreshold && !hasIndexPositiveClass) {
-      throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t)");
+      throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t).");
     }
 
     // ----------------------------------------------------------------------
 
     if (!trainDataFileInit) {
-      throw CommandArgumentException("The train data file has to be given with option -T");
+      throw CommandArgumentException("The train data file has to be given with option -T.");
     }
     if (!trainDataFilePredInit) {
-      throw CommandArgumentException("The train prediction file has to be given with option -P");
+      throw CommandArgumentException("The train prediction file has to be given with option -P.");
     }
     if (!trainDataFileTrueClassInit) {
-      throw CommandArgumentException("The train true classes file has to be given with option -C");
+      throw CommandArgumentException("The train true classes file has to be given with option -C.");
     }
     if (!mainSamplesDataFileInit) {
-      throw CommandArgumentException("The test samples data file <value, prediction(if no -p), true class(if no -c)> has to be given with option -S");
+      throw CommandArgumentException("The test samples data file <value, prediction(if no -p), true class(if no -c)> has to be given with option -S.");
     }
     if (mainSamplesClassFileInit && !mainSamplesPredFileInit) {
-      throw CommandArgumentException("The test prediction data file(-p) needs to be specified if the test class data file(-c) is given");
+      throw CommandArgumentException("The test prediction data file(-p) needs to be specified if the test class data file(-c) is given.");
     }
     if (!weightsFileInit && !inputRulesFileInit) {
-      throw CommandArgumentException("A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f");
+      throw CommandArgumentException("A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f.");
     } else if (weightsFileInit && inputRulesFileInit) {
       throw CommandArgumentException("Do not specify both a weight file(-W) and a rules file(-f). Choose one of them.");
     }
     if (!ruleFileInit) {
-      throw CommandArgumentException("The output rule file has to be given with option -O");
+      throw CommandArgumentException("The output rule file has to be given with option -O.");
+    }
+    if (nb_attributes == -1) {
+      throw CommandArgumentException("The number of attributes has to be given with option -a.");
+    }
+    if (nb_classes == -1) {
+      throw CommandArgumentException("The number of classes has to be given with option -b.");
     }
 
     // ----------------------------------------------------------------------
@@ -485,15 +512,17 @@ int fidex(const string &command) {
 
     impt1 = clock();
 
-    std::unique_ptr<DataSetFid> trainDatas(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
+    std::unique_ptr<DataSetFid> trainDatas(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
 
     vector<vector<double>> *trainData = trainDatas->getDatas();
     vector<int> *trainPreds = trainDatas->getPredictions();
     vector<vector<double>> *trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
     vector<int> *trainTrueClass = trainDatas->getClasses();
 
-    if (minNbCover > ((*trainData).size())) {
-      throw CommandArgumentException("Error : invalide type for parameter -c, strictly positive integer smaller or equal than the number of data sample requested");
+    int nbTrainSamples = trainDatas->getNbSamples();
+
+    if (minNbCover > nbTrainSamples) {
+      throw CommandArgumentException("Error : invalide type for parameter -c, strictly positive integer smaller or equal than the number of train data samples requested.");
     }
 
     // Get test data
@@ -503,7 +532,7 @@ int fidex(const string &command) {
     vector<vector<double>> mainSamplesOutputValuesPredictions;
     std::unique_ptr<DataSetFid> testDatas;
     if (!mainSamplesPredFileInit) { // If we have only one test data file with data, pred and class
-      testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
+      testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, decisionThreshold, indexPositiveClass));
       mainSamplesValues = (*testDatas->getDatas());
       mainSamplesPreds = (*testDatas->getPredictions());
       mainSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
@@ -515,9 +544,9 @@ int fidex(const string &command) {
     } else { // We have different files for test predictions and test classes
 
       if (mainSamplesClassFileInit) {
-        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass, mainSamplesClassFile));
+        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, decisionThreshold, indexPositiveClass, mainSamplesClassFile));
       } else {
-        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, hasDecisionThreshold, decisionThreshold, indexPositiveClass));
+        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, decisionThreshold, indexPositiveClass));
       }
       mainSamplesValues = (*testDatas->getDatas());
       mainSamplesPreds = (*testDatas->getPredictions());
@@ -532,8 +561,7 @@ int fidex(const string &command) {
       }
     }
 
-    int nbSamples = testDatas->getNbSamples();
-    int nbAttributs = testDatas->getNbAttributes();
+    int nbTestSamples = testDatas->getNbSamples();
 
     // Get attributes
     vector<string> attributeNames;
@@ -603,7 +631,7 @@ int fidex(const string &command) {
         std::cout << "All hyperlocus created" << std::endl;
       }
     } else {
-      matHypLocus = calcHypLocus(inputRulesFile, nbAttributs);
+      matHypLocus = calcHypLocus(inputRulesFile, nb_attributes);
     }
 
     FidexNameSpace::Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans
@@ -611,8 +639,8 @@ int fidex(const string &command) {
     const size_t nbIn = hyperspace.getHyperLocus().size(); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
 
     // Check size of hyperlocus
-    if (nbIn == 0 || nbIn % nbAttributs != 0) {
-      throw InternalError("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributs - " + std::to_string(nbAttributs));
+    if (nbIn == 0 || nbIn % nb_attributes != 0) {
+      throw InternalError("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributs - " + std::to_string(nb_attributes) + ".");
     }
 
     std::cout << "Hyperspace created" << endl
@@ -627,7 +655,7 @@ int fidex(const string &command) {
 
     int nbIt;
     // We compute rule for each test sample
-    for (int currentSample = 0; currentSample < nbSamples; currentSample++) {
+    for (int currentSample = 0; currentSample < nbTestSamples; currentSample++) {
       int counterFailed = 0; // Number of times we failed to find a rule with maximal fidexlity when minNbCover is 1
       int currentMinNbCover = minNbCover;
       lines.push_back("Rule for sample " + std::to_string(currentSample) + " :\n");
@@ -637,24 +665,24 @@ int fidex(const string &command) {
 
         // samplet1 = clock();
 
-        if (nbSamples > 1 && currentMinNbCover == minNbCover) {
+        if (nbTestSamples > 1 && currentMinNbCover == minNbCover) {
           std::cout << "Computation of rule for sample " << currentSample << " : " << endl
                     << endl;
         }
 
-        if (nbSamples == 1 && currentMinNbCover == minNbCover) {
+        if (nbTestSamples == 1 && currentMinNbCover == minNbCover) {
           std::cout << "Searching for discriminating hyperplans..." << std::endl;
         }
 
         // Compute initial covering
-        vector<int> coveredSamples((*trainData).size());                    // Samples covered by the hyperbox
+        vector<int> coveredSamples(nbTrainSamples);                         // Samples covered by the hyperbox
         std::iota(std::begin(coveredSamples), std::end(coveredSamples), 0); // Vector from 0 to len(coveredSamples)-1
 
         // Store covering and compute initial fidelty
         hyperspace.getHyperbox()->setCoveredSamples(coveredSamples);
         hyperspace.getHyperbox()->computeFidelity(mainSamplesPreds[currentSample], trainPreds); // Compute fidelity of initial hyperbox
 
-        if (nbSamples == 1 && currentMinNbCover == minNbCover) {
+        if (nbTestSamples == 1 && currentMinNbCover == minNbCover) {
           std::cout << "Initial fidelity : " << hyperspace.getHyperbox()->getFidelity() << endl;
         }
 
@@ -682,7 +710,7 @@ int fidex(const string &command) {
               break;
             }
             dimension = dimensions[d];
-            attribut = dimension % nbAttributs;
+            attribut = dimension % nb_attributes;
             mainSampleValue = mainSamplesValues[currentSample][attribut];
             // Test if we dropout this dimension
 
@@ -787,12 +815,12 @@ int fidex(const string &command) {
 
       } while (hyperspace.getHyperbox()->getFidelity() < minFidelity && minCoverStrategy && counterFailed < maxFailedAttempts); // Restart Fidex if we use the strategy and fidelity is not high enough
 
-      if (nbSamples == 1) {
+      if (nbTestSamples == 1) {
         std::cout << "Discriminating hyperplans generated." << endl
                   << endl;
       }
       // Rule extraction
-      if (nbSamples == 1) {
+      if (nbTestSamples == 1) {
         std::cout << "Rule extraction" << endl
                   << endl;
       }
@@ -830,22 +858,22 @@ int fidex(const string &command) {
 
       std::cout << "-------------------------------------------------" << std::endl;
 
-      if (nbSamples > 1) {
+      if (nbTestSamples > 1) {
         lines.emplace_back("-------------------------------------------------\n");
       }
     }
 
     // Stats
-    meanFidelity /= static_cast<double>(nbSamples);
-    meanConfidence /= static_cast<double>(nbSamples);
-    meanCovSize /= static_cast<double>(nbSamples);
-    meanNbAntecedentsPerRule /= static_cast<double>(nbSamples);
-    meanAccuracy /= static_cast<double>(nbSamples);
+    meanFidelity /= static_cast<double>(nbTestSamples);
+    meanConfidence /= static_cast<double>(nbTestSamples);
+    meanCovSize /= static_cast<double>(nbTestSamples);
+    meanNbAntecedentsPerRule /= static_cast<double>(nbTestSamples);
+    meanAccuracy /= static_cast<double>(nbTestSamples);
 
     if (statsFileInit) {
       ofstream outputStatsFile(statsFile);
       if (outputStatsFile.is_open()) {
-        outputStatsFile << "Statistics with a test set of " << nbSamples << " samples :\n"
+        outputStatsFile << "Statistics with a test set of " << nbTestSamples << " samples :\n"
                         << std::endl;
         outputStatsFile << "The mean covering size per rule is : " << meanCovSize << "" << std::endl;
         outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntecedentsPerRule << "" << std::endl;
@@ -892,11 +920,11 @@ int fidex(const string &command) {
 
   Exemple pour lancer le code :
 
-  ./fidex -T datanorm -P dimlp.out -C dataclass2 -S testSampleDataCombine -W dimlp.wts -Q 50 -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
+  ./fidex -T datanorm -P dimlp.out -C dataclass2 -S testSampleDataCombine -a 16 -b 2 -W dimlp.wts -Q 50 -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
 
-  ./fidex -T datanorm -P dimlp.out -C dataclass2 -S testData.txt -p testPred.txt -c testClass.txt -W dimlp.wts -Q 50 -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
-  ./fidex -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -S isoletTestData.txt -p isoletTestPredV2.out -c isoletTestClass.txt -W isoletV2.wts -Q 50 -O ruleFidex.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../dimlp/datafiles/isoletDataset
-  ./fidex -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -S Test/X_test.txt -p Test/pred_testV2.out -c Test/y_test.txt -W HAPTV2.wts -Q 50 -O ruleFidexV2.txt -s stats -i 100 -v 2 -d 0.5 -h 0.5 -R ../dimlp/datafiles/HAPTDataset
+  ./fidex -T datanorm -P dimlp.out -C dataclass2 -S testData.txt -a 16 -b 2 -p testPred.txt -c testClass.txt -W dimlp.wts -Q 50 -O rule.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../fidex/datafiles
+  ./fidex -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -S isoletTestData.txt -a 16 -b 2 -p isoletTestPredV2.out -c isoletTestClass.txt -W isoletV2.wts -Q 50 -O ruleFidex.txt -s stats -i 100 -v 25 -d 0.5 -h 0.5 -R ../dimlp/datafiles/isoletDataset
+  ./fidex -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -S Test/X_test.txt -a 16 -b 2 -p Test/pred_testV2.out -c Test/y_test.txt -W HAPTV2.wts -Q 50 -O ruleFidexV2.txt -s stats -i 100 -v 2 -d 0.5 -h 0.5 -R ../dimlp/datafiles/HAPTDataset
 
 
   #include <profileapi.h>

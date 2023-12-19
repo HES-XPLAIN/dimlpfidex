@@ -15,6 +15,8 @@ void showRulesParams() {
   cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
   cout << "-O <Rules output file> ";
   cout << "-M <Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo> ";
+  cout << "-a <number of attributes>";
+  cout << "-b <number of classes>";
   cout << "<Options>\n"
        << endl;
 
@@ -460,38 +462,26 @@ vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   return chosenRules;
 }
 
-// TODO: this is probably not relevant enymore (existing checks are made by the Parameter class, BUT LOGIC CHECKS ARE NOT)
-// void checkParameters(Parameters *p) {
-//   if (!p->getTrainDataFile().empty()) {
-//     throw CommandArgumentException("The train data file has to be given with option -T");
-//   }
+void checkParametersLogicValues(Parameters *p) {
+  // setting default values
+  p->setDefaultString(ROOT_FOLDER, "");
+  p->setDefaultInt(NB_DIMLP_NETS, 1);
+  p->setDefaultString(ATTRIBUTES_FILE, "");
+  p->setDefaultString(CONSOLE_FILE, "");
+  p->setDefaultInt(MAX_ITERATIONS, 100);
+  p->setDefaultInt(MIN_COVERING, 2);
+  p->setDefaultFloat(DROPOUT_DIM, 0.0f);
+  p->setDefaultFloat(DROPOUT_HYP, 0.0f);
+  p->setDefaultInt(MAX_FAILED_ATTEMPTS, 30);
+  p->setDefaultInt(NB_QUANT_LEVELS, 50);
+  p->setDefaultFloat(DECISION_THRESHOLD, -1.0f);
+  p->setDefaultInt(INDEX_POSITIVE_CLASS, 0);
+  p->setDefaultInt(NB_THREADS_USED, 1);
+  p->setDefaultFloat(MIN_FIDELITY, 1.0f);
+  p->setDefaultInt(SEED, 0);
 
-//   if (!p->getTrainDataFilePred().empty()) {
-//     throw CommandArgumentException("The train prediction file has to be given with option -P");
-//   }
-
-//   if (p->getTrainDataFileTrueClass().empty()) {
-//     throw CommandArgumentException("The train true classes file has to be given with option -C");
-//   }
-
-//   if (p->getRulesFile().empty()) {
-//     throw CommandArgumentException("The output rules file has to be given with option -O");
-//   }
-
-//   if (p->getWeightsFile().empty() && p->getInputRulesFile().empty()) {
-//     throw CommandArgumentException("A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f");
-//   } else if (!p->getWeightsFile().empty() && !p->getInputRulesFile().empty()) {
-//     throw CommandArgumentException("Do not specify both a weight file(-W) and a rules file(-f). Choose one of them.");
-//   }
-
-//   if (p->getHasDecisionThreshold() && !p->getHasIndexPositiveClass()) {
-//     throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t)");
-//   }
-
-//   if (!p->getHeuristic()) {
-//     throw CommandArgumentException("The heuristic(1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo) has to be given with option -M");
-//   }
-// }
+  // TODO check for logic values
+}
 
 /**
  * @brief writes a list of rules into a given file. Returns tuple of two integers representing the mean covering size and the mean number of antecedants.
@@ -510,16 +500,16 @@ tuple<int, int> writeRulesFile(string filename, const vector<Rule> rules, const 
   }
 
   int counter = 1;
-  int nbRules = rules.size();
+  int nbRules = static_cast<int>(rules.size());
   double meanCovSize = 0;
   double meanNbAntecedents = 0;
   stringstream stream;
   ofstream file(filename);
 
   for (Rule r : rules) { // each rule
-    meanCovSize += r.getCoveredSamples().size();
-    meanNbAntecedents += r.getAntecedants().size();
-    stream << "Rule " << counter++ << ": " << r.toString(attributes, classes);
+    meanCovSize += static_cast<double>(r.getCoveredSamples().size());
+    meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
+    stream << "Rule " << counter++ << ": " << r.toString(attributes, classes); // TODO check for NULL case
     stream << endl;
   }
 
@@ -533,15 +523,16 @@ tuple<int, int> writeRulesFile(string filename, const vector<Rule> rules, const 
          << endl;
 
     if (attributes && !attributes->empty()) {
-      file << "Attributes name are specified.";
+      file << "Attribute names are specified. ";
     } else {
-      file << "Attributes name are not specified.";
+      file << "Attribute names are not specified. "; // TODO : See if we can delete those lines in file and replace by a check to see if we have attribute names or not. cf. patterns in hyperLocus.cpp
     }
+    file << endl;
 
     if (classes && !classes->empty()) {
-      file << "Classes name are specified.";
+      file << "Class names are specified.";
     } else {
-      file << "Classes name are not specified.";
+      file << "Class names are not specified.";
     }
 
     file << endl
@@ -587,6 +578,7 @@ int fidexGloRules(const string &command) {
 
     // getting all program arguments from CLI
     unique_ptr<Parameters> params(new Parameters(commandList));
+    checkParametersLogicValues(params.get());
 
     // Fill weights vector
     if (!params->getWeightsFiles().empty()) {
@@ -610,17 +602,14 @@ int fidexGloRules(const string &command) {
     // Import files
     cout << "Importing files..." << endl;
 
-    //! WARNING: if decision threshold is not set, this crashes
     unique_ptr<DataSetFid> trainDatas(new DataSetFid("trainDatas from FidexGloRules",
                                                      params->getString(TRAIN_DATA_FILE).c_str(),
                                                      params->getString(TRAIN_DATA_PRED_FILE).c_str(),
-                                                     params->isFloatSet(DECISION_THRESHOLD),
                                                      params->getFloat(DECISION_THRESHOLD),
                                                      params->getInt(INDEX_POSITIVE_CLASS),
                                                      params->getString(TRAIN_DATA_TRUE_CLASS_FILE).c_str()));
 
     int nbDatas = trainDatas->getNbSamples();
-    int nbAttributs = trainDatas->getNbAttributes();
 
     // Get attributes
     vector<string> attributeNames;
@@ -650,6 +639,7 @@ int fidexGloRules(const string &command) {
     vector<string> weightsFiles = params->getWeightsFiles();
     int nbDimlpNets = params->getInt(NB_DIMLP_NETS);
     int nbQuantLevels = params->getInt(NB_QUANT_LEVELS);
+    int nbAttributes = params->getInt(NB_ATTRIBUTES);
     int hiKnot = params->getInt(HI_KNOT);
 
     if (!weightsFile.empty()) {
@@ -675,9 +665,9 @@ int fidexGloRules(const string &command) {
       }
     } else {
       if (!attributFile.empty()) {
-        matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributs, attributeNames);
+        matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes, attributeNames);
       } else {
-        matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributs);
+        matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes);
       }
     }
 
@@ -685,8 +675,8 @@ int fidexGloRules(const string &command) {
     const auto nbIn = static_cast<int>(matHypLocus.size());
 
     // Check size of hyperlocus
-    if (nbIn == 0 || nbIn % nbAttributs != 0) {
-      throw InternalError("Error : the size of hyperLocus - " + to_string(nbIn) + " is not a multiple of the number of attributs - " + to_string(nbAttributs));
+    if (nbIn == 0 || nbIn % nbAttributes != 0) {
+      throw InternalError("Error : the size of hyperLocus - " + to_string(nbIn) + " is not a multiple of the number of attributs - " + to_string(nbAttributes));
     }
 
     cout << "Hyperspace created" << endl
@@ -774,11 +764,11 @@ int fidexGloRules(const string &command) {
 
 /* Exemples pour lancer le code :
 
-./fidexGloRules -T datanormTrain -P dimlpDatanormTrain.out -C dataclass2Train -W dimlpDatanorm.wts -Q 50 -O globalRulesDatanorm.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesResult -S ../fidexGlo/datafiles
+./fidexGloRules -T datanormTrain -P dimlpDatanormTrain.out -C dataclass2Train -W dimlpDatanorm.wts -a 16 -b 2 -Q 50 -O globalRulesDatanorm.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesResult -S ../fidexGlo/datafiles
 
-./fidexGloRules -T covidTrainData.txt -P covidTrainPred.out -C covidTrainClass.txt -W covid.wts -Q 50 -O globalRulesCovid.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesCovidResult -S ../dimlp/datafiles/covidDataset
-./fidexGloRules -T spamTrainData.txt -P spamTrainPred.out -C spamTrainClass.txt -W spam.wts -Q 50 -O globalRulesSpam.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesSpamResult -S ../dimlp/datafiles/spamDataset
-./fidexGloRules -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -W isoletV2.wts -Q 50 5 -O globalRulesIsoletV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesIsoletResultV2 -S ../dimlp/datafiles/isoletDataset
-./fidexGloRules -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -W HAPTV2.wts -Q 50 5 -O globalRulesHAPTV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesHAPTResultV2 -S ../dimlp/datafiles/HAPTDataset
+./fidexGloRules -T covidTrainData.txt -P covidTrainPred.out -C covidTrainClass.txt -W covid.wts -a 16 -b 2 -Q 50 -O globalRulesCovid.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesCovidResult -S ../dimlp/datafiles/covidDataset
+./fidexGloRules -T spamTrainData.txt -P spamTrainPred.out -C spamTrainClass.txt -W spam.wts -a 16 -b 2 -Q 50 -O globalRulesSpam.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesSpamResult -S ../dimlp/datafiles/spamDataset
+./fidexGloRules -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -W isoletV2.wts -a 16 -b 2 -Q 50 5 -O globalRulesIsoletV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesIsoletResultV2 -S ../dimlp/datafiles/isoletDataset
+./fidexGloRules -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -W HAPTV2.wts -a 16 -b 2 -Q 50 5 -O globalRulesHAPTV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesHAPTResultV2 -S ../dimlp/datafiles/HAPTDataset
 
 */

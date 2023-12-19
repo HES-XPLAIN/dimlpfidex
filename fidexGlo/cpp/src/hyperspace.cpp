@@ -16,7 +16,7 @@ shared_ptr<Hyperbox> Hyperspace::getHyperbox() const {
   return hyperbox;
 }
 
-// MODIFIED WHITH NEW STRUCTURE
+// MODIFIED WITH NEW STRUCTURE
 Rule Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence) {
   double hypValue;
   int attribut;

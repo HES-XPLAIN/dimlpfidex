@@ -17,8 +17,6 @@ FILE(GLOB FIDEXGLO_SRC
     src/fidexGloFct.h
     src/getRulesFun.cpp
     src/getRulesFun.h
-    src/dataSet.cpp
-    src/dataSet.h
 )
 
 FILE(GLOB FIDEXGLORULES_SRC
@@ -33,8 +31,6 @@ FILE(GLOB FIDEXGLORULES_SRC
 FILE(GLOB FIDEXGLOSTATS_SRC
     src/fidexGloStatsFct.cpp
     src/fidexGloStatsFct.h
-    src/dataSet.cpp
-    src/dataSet.h
     src/getRulesFun.cpp
     src/getRulesFun.h
 )

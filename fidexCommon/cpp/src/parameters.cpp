@@ -28,6 +28,14 @@ Parameters::Parameters(vector<string> args) {
         setString(TRAIN_DATA_PRED_FILE, arg);
         break;
 
+      case 'a':
+        setInt(NB_ATTRIBUTES, arg);
+        break;
+
+      case 'b':
+        setInt(NB_CLASSES, arg);
+        break;
+
       case 'C':
         setString(TRAIN_DATA_TRUE_CLASS_FILE, arg);
         break;
@@ -130,6 +138,14 @@ void Parameters::setInt(ParameterCode id, string value) {
   }
 }
 
+void Parameters::setInt(ParameterCode id, int value) {
+  if (isIntSet(id)) {
+    throwAlreadySetArgumentException(id, to_string(value));
+  }
+
+  _intParams[id] = value;
+}
+
 void Parameters::setFloat(ParameterCode id, string value) {
   if (isFloatSet(id)) {
     throwAlreadySetArgumentException(id, value);
@@ -140,6 +156,14 @@ void Parameters::setFloat(ParameterCode id, string value) {
   } else {
     throwInvalidDataTypeException(id, value, "float");
   }
+}
+
+void Parameters::setFloat(ParameterCode id, float value) {
+  if (isFloatSet(id)) {
+    throwAlreadySetArgumentException(id, to_string(value));
+  }
+
+  _floatParams[id] = value;
 }
 
 // TODO: find better double translation than atof
@@ -155,11 +179,39 @@ void Parameters::setDouble(ParameterCode id, string value) {
   }
 }
 
+void Parameters::setDouble(ParameterCode id, double value) {
+  if (isDoubleSet(id)) {
+    throwAlreadySetArgumentException(id, to_string(value));
+  }
+
+  _doubleParams[id] = value;
+}
+
 void Parameters::setString(ParameterCode id, string value) {
   if (isStringSet(id)) {
     throwAlreadySetArgumentException(id, value);
   }
   _stringParams[id] = value;
+}
+
+void Parameters::setRootDirectory(ParameterCode id) {
+  // ignore if root or target were not set
+  if (!isStringSet(ROOT_FOLDER) || !isStringSet(id))
+    return;
+
+  string root = getString(ROOT_FOLDER);
+  string target = getString(id);
+  string separator;
+
+  // define separator depending on OS
+#if defined(__unix__) || defined(__APPLE__)
+  separator = "/";
+#elif defined(_WIN32)
+  separator = "\\";
+#endif
+
+  // to avoid Already set errors, why modify the map directly
+  _stringParams[id] = root + separator + target;
 }
 
 // TODO: should I check for empty vector ?
@@ -225,4 +277,25 @@ vector<string> Parameters::getWeightsFiles() const {
 // TODO check for duplicates ?
 void Parameters::addWeightsFile(string file) {
   _weightFiles.push_back(file);
+}
+
+// Default setters
+void Parameters::setDefaultInt(ParameterCode id, int defaultValue) {
+  if (!isIntSet(id))
+    setInt(id, defaultValue);
+}
+
+void Parameters::setDefaultFloat(ParameterCode id, float defaultValue) {
+  if (!isFloatSet(id))
+    setFloat(id, defaultValue);
+}
+
+void Parameters::setDefaultDouble(ParameterCode id, double defaultValue) {
+  if (!isDoubleSet(id))
+    setDouble(id, defaultValue);
+}
+
+void Parameters::setDefaultString(ParameterCode id, string defaultValue) {
+  if (!isStringSet(id))
+    setString(id, defaultValue);
 }

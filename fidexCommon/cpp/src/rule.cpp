@@ -21,7 +21,6 @@ Rule::Rule(vector<Antecedant> antecedants, vector<int> coveredSamples, int out_c
 /**
  * @brief Builds a string presenting every element and value contained by a given rule.
  *
- * @param hasConfidence whether or not to display rule's confidence value.
  * @param attributes optional vector of string containing all attributes names, useful to print attribute names instead of integers.
  * @param classes optional vector of string containing all class names, useful to print class name instead of an integer.
  * @return string
@@ -47,7 +46,7 @@ string Rule::toString(const vector<string> *attributes, const vector<string> *cl
       result << "<";
     }
 
-    result << to_string(a.gethyperlocus()) << " ";
+    result << to_string(a.getValue()) << " ";
   }
 
   if (classes && !classes->empty()) {

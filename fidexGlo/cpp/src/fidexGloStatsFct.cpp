@@ -10,6 +10,8 @@ void showStatsParams() {
             << std::endl;
   std::cout << "fidexGloStats -T <test data file> -P <test prediction file> -C <test true class file> ";
   std::cout << "-R <rules input file> ";
+  std::cout << "-a <number of attributes>";
+  std::cout << "-b <number of classes>";
   std::cout << "<Options>\n"
             << std::endl;
 
@@ -98,6 +100,9 @@ int fidexGloStats(const string &command) {
     string testDataFileTrueClassTemp;
     bool testDataFileTrueClassInit = false;
 
+    int nb_attributes = -1;
+    int nb_classes = -1;
+
     string rulesFileTemp;
     bool rulesFileInit = false;
     string statsFileTemp;
@@ -156,6 +161,22 @@ int fidexGloStats(const string &command) {
           rulesFileInit = true;
           break;
 
+        case 'a':
+          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+            nb_attributes = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
+          }
+          break;
+
+        case 'b':
+          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+            nb_classes = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
+          }
+          break;
+
         case 'O':
           statsFileTemp = arg;
           statsFileInit = true;
@@ -186,7 +207,7 @@ int fidexGloStats(const string &command) {
             hasDecisionThreshold = true;
             decisionThreshold = atof(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested.");
           }
           break;
 
@@ -195,7 +216,7 @@ int fidexGloStats(const string &command) {
             hasIndexPositiveClass = true;
             indexPositiveClass = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested.");
           }
           break;
 
@@ -269,22 +290,28 @@ int fidexGloStats(const string &command) {
     }
 
     if (hasDecisionThreshold && !hasIndexPositiveClass) {
-      throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t)");
+      throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t).");
     }
 
     // ----------------------------------------------------------------------
 
     if (!testDataFileInit) {
-      throw CommandArgumentException("The test data file has to be given with option -T");
+      throw CommandArgumentException("The test data file has to be given with option -T.");
     }
     if (!testDataFilePredInit) {
-      throw CommandArgumentException("The test predictions data file has to be given with option -P");
+      throw CommandArgumentException("The test predictions data file has to be given with option -P.");
     }
     if (!testDataFileTrueClassInit) {
-      throw CommandArgumentException("The test true class data file has to be given with option -T");
+      throw CommandArgumentException("The test true class data file has to be given with option -T.");
     }
     if (!rulesFileInit) {
-      throw CommandArgumentException("The rules file has to be given with option -R");
+      throw CommandArgumentException("The rules file has to be given with option -R.");
+    }
+    if (nb_attributes == -1) {
+      throw CommandArgumentException("The number of attributes has to be given with option -a.");
+    }
+    if (nb_classes == -1) {
+      throw CommandArgumentException("The number of classes has to be given with option -b.");
     }
 
     // ----------------------------------------------------------------------
@@ -302,7 +329,7 @@ int fidexGloStats(const string &command) {
 
     // Get test data
 
-    std::unique_ptr<DataSetFid> testDatas(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, hasDecisionThreshold, decisionThreshold, indexPositiveClass, testDataFileTrueClass));
+    std::unique_ptr<DataSetFid> testDatas(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, decisionThreshold, indexPositiveClass, testDataFileTrueClass));
 
     vector<vector<double>> *testData = testDatas->getDatas();
     vector<int> *testPreds = testDatas->getPredictions();
@@ -601,11 +628,11 @@ int fidexGloStats(const string &command) {
 
 /* Exemples pour lancer le code :
 
-./fidexGloStats -T datanorm -P dimlp.out -C dataclass2 -R globalRules.txt -O stats.txt -S ../fidexGlo/datafiles
-./fidexGloStats -T datanormTest -P dimlpDatanormTest.out -C dataclass2Test -R globalRulesDatanorm.txt -O stats.txt -S ../fidexGlo/datafiles
-./fidexGloStats -T covidTestData.txt -P covidTestPred.out -C covidTestClass.txt -R globalRulesCovid.txt -O globalStats.txt -S ../dimlp/datafiles/covidDataset
-./fidexGloStats -T spamTestData.txt -P spamTestPred.out -C spamTestClass.txt -R globalRulesSpam.txt -O globalStats.txt -S ../dimlp/datafiles/spamDataset
-./fidexGloStats -T isoletTestData.txt -P isoletTestPred.out -C isoletTestClass.txt -R globalRulesIsolet.txt -O globalStats.txt -S ../dimlp/datafiles/isoletDataset
-./fidexGloStats -T Test/X_test.txt -P Test/pred_testV2.out -C Test/y_test.txt -R globalRulesHAPTV2.txt -O globalStatsV2.txt -S ../dimlp/datafiles/HAPTDataset
+./fidexGloStats -T datanorm -P dimlp.out -C dataclass2 -R globalRules.txt -a 16 -b 2 -O stats.txt -S ../fidexGlo/datafiles
+./fidexGloStats -T datanormTest -P dimlpDatanormTest.out -C dataclass2Test -R globalRulesDatanorm.txt -a 16 -b 2 -O stats.txt -S ../fidexGlo/datafiles
+./fidexGloStats -T covidTestData.txt -P covidTestPred.out -C covidTestClass.txt -R globalRulesCovid.txt -a 16 -b 2 -O globalStats.txt -S ../dimlp/datafiles/covidDataset
+./fidexGloStats -T spamTestData.txt -P spamTestPred.out -C spamTestClass.txt -R globalRulesSpam.txt -a 16 -b 2 -O globalStats.txt -S ../dimlp/datafiles/spamDataset
+./fidexGloStats -T isoletTestData.txt -P isoletTestPred.out -C isoletTestClass.txt -R globalRulesIsolet.txt -a 16 -b 2 -O globalStats.txt -S ../dimlp/datafiles/isoletDataset
+./fidexGloStats -T Test/X_test.txt -P Test/pred_testV2.out -C Test/y_test.txt -R globalRulesHAPTV2.txt -a 16 -b 2 -O globalStatsV2.txt -S ../dimlp/datafiles/HAPTDataset
 
 */

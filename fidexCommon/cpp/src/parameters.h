@@ -23,6 +23,8 @@ enum ParameterCode {
   ROOT_FOLDER,
   ATTRIBUTES_FILE,
   WEIGHTS_FILE,
+  NB_ATTRIBUTES,
+  NB_CLASSES,
   NB_DIMLP_NETS,
   NB_QUANT_LEVELS,
   HEURISTIC,
@@ -50,10 +52,14 @@ private:
 
   // setters handle formatting from string argument
   void setInt(ParameterCode id, string value);
+  void setInt(ParameterCode id, int value);
   void setFloat(ParameterCode id, string value);
+  void setFloat(ParameterCode id, float value);
   void setDouble(ParameterCode id, string value);
+  void setDouble(ParameterCode id, double value);
   void setString(ParameterCode id, string value);
   void setWeightFiles(vector<string> files);
+  void setRootDirectory(ParameterCode id);
 
   void throwInvalidDataTypeException(ParameterCode id, string wrongValue, string typeName) {
     throw CommandArgumentException("Parsing error: argument (ID " + to_string(id) + ") with value \"" + wrongValue + "\" is not a valid" + typeName + ".");
@@ -72,6 +78,12 @@ public:
   Parameters() = default;
   Parameters(vector<string> args);
   // TODO Parameters(string jsonfile);
+
+  // default setter if value not set
+  void setDefaultInt(ParameterCode id, int value);
+  void setDefaultFloat(ParameterCode id, float value);
+  void setDefaultDouble(ParameterCode id, double value);
+  void setDefaultString(ParameterCode id, string value);
 
   // getters
   int getInt(ParameterCode id);
