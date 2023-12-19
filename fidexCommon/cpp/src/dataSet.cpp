@@ -7,11 +7,15 @@ using namespace std;
  * @param name string containing the name of the dataSet
  * @param dataFile const char* data file name
  * @param predFile const char* predicion file name
+ * @param _nbAttributes int number of attributes
+ * @param _nbClasses int number of classes
  * @param decisionThresh double indicating the decision threshold, useful when choosing the decision (-1 for no threshold)
  * @param indexPositiveClass integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
  * @param trueClassFile const char* class file name
  */
-DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *predFile, double decisionThresh, int indexPositiveCl, const char *trueClassFile) : datasetName(name) {
+DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *predFile, int _nbAttributes, int _nbClasses, double decisionThresh, int indexPositiveCl, const char *trueClassFile) : datasetName(name) {
+
+  setNbClassAndAttr(_nbClasses, _nbAttributes);
 
   if (decisionThresh != -1 && !std::isnan(decisionThresh)) {
     decisionThreshold = decisionThresh;
@@ -23,13 +27,13 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *pre
   checkThreshold();
 
   // Get data
-  setDataFromFile(dataFile);
+  setDataFromFile(dataFile, _nbAttributes, _nbClasses);
   // Get data class
   if (trueClassFile != nullptr) {
-    setClassFromFile(trueClassFile);
+    setClassFromFile(trueClassFile, _nbClasses);
   }
   // Get predictions
-  setPredFromFile(predFile);
+  setPredFromFile(predFile, _nbClasses);
 
   checkDatas();
 }
@@ -39,10 +43,15 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *pre
  *
  * @param name string containing the name of the dataSet
  * @param dataFile const char* data file name containing datas, predictions and maybe classes(not mendatory)
+ * @param _nbAttributes int number of attributes
+ * @param _nbClasses int number of classes
  * @param decisionThres double indicating the decision threshold, useful when choosing the decision (-1 for no threshold)
  * @param indexPositiveClass integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
  */
-DataSetFid::DataSetFid(const string &name, const char *dataFile, double decisionThresh, int indexPositiveCl) : datasetName(name), hasDatas(true), hasPreds(true) {
+DataSetFid::DataSetFid(const string &name, const char *dataFile, int _nbAttributes, int _nbClasses, double decisionThresh, int indexPositiveCl) : datasetName(name), hasDatas(true), hasPreds(true) {
+
+  setNbClassAndAttr(_nbClasses, _nbAttributes);
+
   if (decisionThresh != -1 && !std::isnan(decisionThresh)) {
     decisionThreshold = decisionThresh;
   }
@@ -158,12 +167,17 @@ DataSetFid::DataSetFid(const std::string &name, const char *weightFile) : datase
  * @brief Add datas from dataFile in the dataset
  *
  * @param dataFile const char* data file name
+ * @param _nbAttributes int number of attributes
+ * @param _nbClasses int number of classes
  */
-void DataSetFid::setDataFromFile(const char *dataFile) {
+void DataSetFid::setDataFromFile(const char *dataFile, int _nbAttributes, int _nbClasses) {
   if (hasDatas == true) {
     throw InternalError("Error in dataset " + datasetName + " : datas have already been given to this dataset, impossible to add again.");
   }
   hasDatas = true;
+
+  setNbClassAndAttr(_nbClasses, _nbAttributes);
+
   string line;
   fstream fileDta;
 
@@ -188,10 +202,13 @@ void DataSetFid::setDataFromFile(const char *dataFile) {
  * @brief Add predictions in the dataset using a prediction file
  *
  * @param predFile const char* prediction file name
+ * @param _nbClasses int number of classes
  * @param decisionThresh optional double indicating the decision threshold, useful when choosing the decision (-1 for no threshold)
  * @param indexPositiveClass optional integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
  */
-void DataSetFid::setPredFromFile(const char *predFile, double decisionThresh, int indexPositiveCl) {
+void DataSetFid::setPredFromFile(const char *predFile, int _nbClasses, double decisionThresh, int indexPositiveCl) {
+
+  setNbClass(_nbClasses);
 
   if (decisionThresh != -1 && !std::isnan(decisionThresh)) {
     if (decisionThreshold != -1) {
@@ -238,12 +255,16 @@ void DataSetFid::setPredFromFile(const char *predFile, double decisionThresh, in
  * @brief Add classes from classFile in the dataset
  *
  * @param classFile const char* file name containing classes in one hot format
+ * @param _nbClasses int number of classes
  */
-void DataSetFid::setClassFromFile(const char *classFile) {
+void DataSetFid::setClassFromFile(const char *classFile, int _nbClasses) {
   if (hasClasses == true) {
     throw InternalError("Error in dataset " + datasetName + " : classes have already been given to this dataset, impossible to add again.");
   }
   hasClasses = true;
+
+  setNbClass(_nbClasses);
+
   string line;
   fstream fileCl;
 
@@ -285,9 +306,6 @@ void DataSetFid::setDataLine(const string &line, const char *dataFile) {
     valuesData.push_back(valueData);
   }
 
-  if (nbAttributes == -1) {
-    nbAttributes = static_cast<int>(valuesData.size());
-  }
   if (nbAttributes != static_cast<int>(valuesData.size())) {
     throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", there are not the same number of attributes for each sample.");
   }
@@ -317,16 +335,13 @@ void DataSetFid::setPredLine(const string &line, const char *predFile) {
     valuesPred.push_back(valuePred);
   }
   outputValuesPredictions.push_back(valuesPred);
-  if (nbPreds == -1) {
-    nbPreds = static_cast<int>(valuesPred.size());
+
+  if (static_cast<int>(valuesPred.size()) != nbClasses) {
+    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(predFile) + ", the number of predictions is not equal to the number of classes for each sample.");
   }
 
-  if (static_cast<int>(valuesPred.size()) != nbPreds) {
-    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(predFile) + ", there are not the same number of predictions for each sample.");
-  }
-
-  if (decisionThreshold >= 0 && indexPositiveClass >= nbPreds) {
-    throw CommandArgumentException("Error in dataset " + datasetName + " : The index of positive class cannot be greater or equal to the number of classes (" + to_string(nbPreds) + ").");
+  if (decisionThreshold >= 0 && indexPositiveClass >= nbClasses) {
+    throw CommandArgumentException("Error in dataset " + datasetName + " : The index of positive class cannot be greater or equal to the number of classes (" + to_string(nbClasses) + ").");
   }
 
   if (decisionThreshold >= 0 && valuesPred[indexPositiveClass] >= decisionThreshold) {
@@ -370,14 +385,60 @@ void DataSetFid::setClassLine(const string &line, const char *classFile) {
   if (!classFound) {
     throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", a 1 or 1.0 is required to express the true class.");
   }
-  if (nbClasses == -1) {
-    nbClasses = nbClassesLine;
-  } else if (hasClassNames && nbClasses != nbClassesLine) {
-    throw FileContentError("Error in dataset " + datasetName + " : attribute file was given before class file, and the number of classes don't match. It can also be the number of attributes in attribute file that is too high.");
-  }
   if (nbClasses != nbClassesLine) {
-    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", there are not the same number of classes for each sample.");
+    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", the number of classes for a sample don't match the given number of classes.");
   }
+}
+
+/**
+ * @brief Set the number of classes for the dataset
+ *
+ * This function sets the number of classes for the dataset.
+ * If the number of classes is already set (not -1), it checks
+ * if the new value matches the existing one. If not, an error is thrown.
+ * If the number is not set yet, it validates that the new value is strictly positive.
+ *
+ * @param _nbClasses The number of classes to set.
+ */
+void DataSetFid::setNbClass(int _nbClasses) {
+  if (nbClasses != -1) {
+    if (nbClasses != _nbClasses) {
+      throw InternalError("Error in dataset " + datasetName + " : the given number of classes (" + to_string(_nbClasses) + ") doesn't match the number given before (" + to_string(nbClasses) + ").");
+    }
+  } else {
+    if (_nbClasses > 0) {
+      nbClasses = _nbClasses;
+    } else {
+      throw InternalError("Error in dataset " + datasetName + " : the number of classes has to be a strictly positive integer.");
+    }
+  }
+}
+
+/**
+ * @brief Set the number of attributes and classes for the dataset
+ *
+ * This function sets the number of attributes and classes for the dataset.
+ * If the number of attributes or classes is already set (not -1), it checks
+ * if the new value matches the existing one. If not, an error is thrown.
+ * If the number is not set yet, it validates that the new value is strictly positive.
+ *
+ * @param _nbAttributes The number of attributes to set.
+ * @param _nbClasses The number of classes to set.
+ */
+void DataSetFid::setNbClassAndAttr(int _nbClasses, int _nbAttributes) {
+  if (nbAttributes != -1) {
+    if (nbAttributes != _nbAttributes) {
+      throw InternalError("Error in dataset " + datasetName + " : the given number of attributes (" + to_string(_nbAttributes) + ") doesn't match the number given before (" + to_string(nbAttributes) + ").");
+    }
+  } else {
+    if (_nbAttributes > 0) {
+      nbAttributes = _nbAttributes;
+    } else {
+      throw InternalError("Error in dataset " + datasetName + " : the number of attributes has to be a strictly positive integer.");
+    }
+  }
+
+  setNbClass(_nbClasses);
 }
 
 /**
@@ -448,12 +509,10 @@ vector<vector<double>> *DataSetFid::getOutputValuesPredictions() {
  * @return int
  */
 int DataSetFid::getNbClasses() const {
-  if (hasClasses) {
+  if (nbClasses != -1) {
     return nbClasses;
-  } else if (hasPreds) {
-    return nbPreds;
   } else {
-    throw CommandArgumentException("Error in dataset " + datasetName + " : classes not specified for this dataset.");
+    throw CommandArgumentException("Error in dataset " + datasetName + " : number of classes not specified for this dataset.");
   }
 }
 
@@ -463,10 +522,10 @@ int DataSetFid::getNbClasses() const {
  * @return int
  */
 int DataSetFid::getNbAttributes() const {
-  if (hasDatas) {
+  if (nbAttributes != -1) {
     return nbAttributes;
   } else {
-    throw CommandArgumentException("Error in dataset " + datasetName + " : data file not specified for this dataset.");
+    throw CommandArgumentException("Error in dataset " + datasetName + " : number of attributes not specified for this dataset.");
   }
 }
 
@@ -526,37 +585,26 @@ vector<double> DataSetFid::getInWeights() const {
  * @brief Check for errors in the dataset
  *
  */
-void DataSetFid::checkDatas() const {
+void DataSetFid::checkDatas() {
   if (hasDatas && nbSamples < 1) {
-    throw FileContentError("Error in dataset " + datasetName + " : There is no data samples.");
+    throw FileContentError("Error in dataset " + datasetName + " : There are no data samples.");
   }
   if (hasPreds && nbPredData < 1) {
-    throw FileContentError("Error in dataset " + datasetName + " : There is no predictions.");
+    throw FileContentError("Error in dataset " + datasetName + " : There are no predictions.");
   }
   if (hasClasses && nbClassData < 1) {
-    throw FileContentError("Error in dataset " + datasetName + " : There is no classes.");
+    throw FileContentError("Error in dataset " + datasetName + " : There are no classes.");
   }
 
   if (hasDatas && hasPreds && nbSamples != nbPredData) {
     throw FileContentError("Error in dataset " + datasetName + " : The number of prediction data does not match the number of samples.");
   }
   if (hasClasses) {
-    if (hasPreds && nbClasses != nbPreds) {
-      throw FileContentError("Error in dataset " + datasetName + " : the number of class data does not match the number of prediction data for a given sample.");
-    }
     if (hasDatas && nbSamples != nbClassData) {
       throw FileContentError("Error in dataset " + datasetName + " : The number of class data does not match the number of samples.");
     }
     if (hasPreds && nbPredData != nbClassData) {
       throw FileContentError("Error in dataset " + datasetName + " : The number of class data does not match the number of prediction data.");
-    }
-  }
-
-  if (hasAttributes && hasDatas) {
-    if (attributeNames.size() < nbAttributes) {
-      throw FileContentError("Error in dataset " + datasetName + " : there is not enough attribute names.");
-    } else if (hasClasses && attributeNames.size() != nbAttributes && attributeNames.size() != nbAttributes + nbClasses) {
-      throw FileContentError("Error in dataset " + datasetName + " :  there is not the good amount of attribute and class names.");
     }
   }
 }
@@ -584,9 +632,17 @@ void DataSetFid::checkThreshold() const {
  * @brief Add attributes and eventually classes from attribute file in the dataset
  *
  * @param attributeFile const char* attribute file name
+ * @param _nbAttributes int number of attributes
+ * @param _nbClasses optional int number of classes
  */
-void DataSetFid::setAttribute(const char *attributeFile) {
+void DataSetFid::setAttributes(const char *attributeFile, int _nbAttributes, int _nbClasses) {
   hasAttributes = true;
+  if (_nbClasses != -1) {
+    setNbClassAndAttr(_nbClasses, _nbAttributes);
+  } else {
+    setNbClass(_nbClasses);
+  }
+
   // Get attributes
   fstream fileAttr;
   string line;
@@ -613,36 +669,24 @@ void DataSetFid::setAttribute(const char *attributeFile) {
 
   hasClassNames = false;
 
-  if (!hasDatas) {
-    std::cout << "WARNING in dataset " + datasetName + " there is no data, so no verification is done on attributes." << std::endl;
-  }
-
-  if (!hasClasses) {
-    std::cout << "WARNING in dataset " + datasetName + " there is no classes, so no verification is done on classNames in attribute file." << std::endl;
-  }
-
-  if (hasDatas && attributeNames.size() < nbAttributes) {
+  if (attributeNames.size() < nbAttributes) { // Not enough attributes
     throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(attributeFile) + ", there is not enough attribute names.");
-  } else if (hasDatas && hasClasses) {
-    if (attributeNames.size() == nbAttributes) {
-      hasClassNames = false;
-    } else if (attributeNames.size() != nbAttributes + nbClasses) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(attributeFile) + ", there is not the good amount of attribute and class names.");
-    } else {
-      hasClassNames = true;
-      auto firstEl = attributeNames.end() - nbClasses;
-      auto lastEl = attributeNames.end();
-      classNames.insert(classNames.end(), firstEl, lastEl);
-      attributeNames.erase(firstEl, lastEl);
+  } else if (attributeNames.size() == nbAttributes) { // Exact correlation, so there is no class names.
+    hasClassNames = false;
+  } else {
+    if (nbClasses != -1) {
+      if (attributeNames.size() != nbAttributes + nbClasses) { // No correlation with the number of attributes and classes
+        throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(attributeFile) + ", there is not the good amount of attribute and class names.");
+      } else { // There is attributes and classes
+        hasClassNames = true;
+        auto firstEl = attributeNames.end() - nbClasses;
+        auto lastEl = attributeNames.end();
+        classNames.insert(classNames.end(), firstEl, lastEl);
+        attributeNames.erase(firstEl, lastEl);
+      }
+    } else { // No class specified and too much attributes
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(attributeFile) + ", there are too much attribute names (no class has been specified, if you have classNames, add the number of classes).");
     }
-  }
-  if (hasDatas && !hasClasses && attributeNames.size() > nbAttributes) {
-    hasClassNames = true;
-    nbClasses = static_cast<int>(attributeNames.size()) - nbAttributes;
-    auto firstEl = attributeNames.end() - nbClasses;
-    auto lastEl = attributeNames.end();
-    classNames.insert(classNames.end(), firstEl, lastEl);
-    attributeNames.erase(firstEl, lastEl);
   }
 
   fileAttr.close(); // close file
