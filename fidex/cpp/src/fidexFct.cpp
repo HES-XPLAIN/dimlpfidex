@@ -512,7 +512,7 @@ int fidex(const string &command) {
 
     impt1 = clock();
 
-    std::unique_ptr<DataSetFid> trainDatas(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
+    std::unique_ptr<DataSetFid> trainDatas(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
 
     vector<vector<double>> *trainData = trainDatas->getDatas();
     vector<int> *trainPreds = trainDatas->getPredictions();
@@ -532,7 +532,7 @@ int fidex(const string &command) {
     vector<vector<double>> mainSamplesOutputValuesPredictions;
     std::unique_ptr<DataSetFid> testDatas;
     if (!mainSamplesPredFileInit) { // If we have only one test data file with data, pred and class
-      testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, decisionThreshold, indexPositiveClass));
+      testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass));
       mainSamplesValues = (*testDatas->getDatas());
       mainSamplesPreds = (*testDatas->getPredictions());
       mainSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
@@ -544,9 +544,9 @@ int fidex(const string &command) {
     } else { // We have different files for test predictions and test classes
 
       if (mainSamplesClassFileInit) {
-        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, decisionThreshold, indexPositiveClass, mainSamplesClassFile));
+        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass, mainSamplesClassFile));
       } else {
-        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, decisionThreshold, indexPositiveClass));
+        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass));
       }
       mainSamplesValues = (*testDatas->getDatas());
       mainSamplesPreds = (*testDatas->getPredictions());
@@ -568,7 +568,7 @@ int fidex(const string &command) {
     vector<string> classNames;
     bool hasClassNames = false;
     if (attributFileInit) {
-      testDatas->setAttribute(attributFile);
+      testDatas->setAttributes(attributFile, nb_attributes, nb_classes);
       attributeNames = (*testDatas->getAttributeNames());
       hasClassNames = testDatas->getHasClassNames();
       if (hasClassNames) {

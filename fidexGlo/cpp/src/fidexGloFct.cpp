@@ -512,13 +512,13 @@ int fidexGlo(const string &command) {
 
     std::unique_ptr<DataSetFid> testDatas;
     if (!testSamplesPredFileInit) { // If we have only one test data file with data and prediction
-      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, decisionThreshold, indexPositiveClass));
+      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass));
       testSamplesValues = (*testDatas->getDatas());
       testSamplesPreds = (*testDatas->getPredictions());
       testSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
 
     } else { // We have a different file for test predictions
-      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, testSamplesPredFile, decisionThreshold, indexPositiveClass));
+      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, testSamplesPredFile, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass));
       testSamplesValues = (*testDatas->getDatas());
       testSamplesPreds = (*testDatas->getPredictions());
       testSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
@@ -531,7 +531,7 @@ int fidexGlo(const string &command) {
     vector<string> classNames;
     bool hasClassNames = false;
     if (attributFileInit) {
-      testDatas->setAttribute(attributFile);
+      testDatas->setAttributes(attributFile, nb_attributes, nb_classes);
       attributeNames = (*testDatas->getAttributeNames());
       hasClassNames = testDatas->getHasClassNames();
       if (hasClassNames) {
@@ -564,7 +564,7 @@ int fidexGlo(const string &command) {
       }
 
       // Get test class data :
-      (testDatas->setClassFromFile(testTrueClassFile));
+      (testDatas->setClassFromFile(testTrueClassFile, nb_classes));
       testSamplesClasses = (*testDatas->getClasses());
 
       fidexCommand += "fidex -T " + trainDataFile + " -P " + trainDataFilePred + " -C " + trainDataFileTrueClass;
