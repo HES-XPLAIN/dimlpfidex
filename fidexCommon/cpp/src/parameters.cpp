@@ -142,8 +142,11 @@ void Parameters::setInt(ParameterCode id, string value) {
     throwAlreadySetArgumentException(id, value);
   }
 
-  if (atoi(value.c_str())) {
-    _intParams[id] = atoi(value.c_str());
+  size_t size = 0;
+  int formattedValue = stoi(value, &size);
+
+  if (value.size() == size) {
+    _intParams[id] = formattedValue;
   } else {
     throwInvalidDataTypeException(id, value, "integer");
   }
@@ -162,8 +165,11 @@ void Parameters::setFloat(ParameterCode id, string value) {
     throwAlreadySetArgumentException(id, value);
   }
 
-  if (atof(value.c_str())) {
-    _floatParams[id] = atof(value.c_str());
+  size_t size = 0;
+  float formattedValue = stof(value, &size);
+
+  if (value.size() == size) {
+    _floatParams[id] = formattedValue;
   } else {
     throwInvalidDataTypeException(id, value, "float");
   }
@@ -177,14 +183,16 @@ void Parameters::setFloat(ParameterCode id, float value) {
   _floatParams[id] = value;
 }
 
-// TODO: find better string to double translation than atof
 void Parameters::setDouble(ParameterCode id, string value) {
   if (isDoubleSet(id)) {
     throwAlreadySetArgumentException(id, value);
   }
 
-  if (atof(value.c_str())) {
-    _doubleParams[id] = atof(value.c_str());
+  size_t size = 0;
+  double formattedValue = stod(value, &size);
+
+  if (value.size() == size) {
+    _doubleParams[id] = formattedValue;
   } else {
     throwInvalidDataTypeException(id, value, "double");
   }
@@ -229,9 +237,27 @@ void Parameters::setRootDirectory(ParameterCode id) {
   _stringParams[id] = root + separator + target;
 }
 
-// TODO: should I check for empty vector ?
-void Parameters::setWeightFiles(vector<string> files) {
-  _weightFiles = files;
+void Parameters::setWeightsFiles() {
+  if (!isIntSet(NB_DIMLP_NETS)) {
+    cout << "Error: cannot create weights files list." << endl;
+    throwArgumentNotFoundException(NB_DIMLP_NETS);
+  }
+
+  if (!isStringSet(WEIGHTS_FILE)) {
+    cout << "Error: cannot create weights files list." << endl;
+    throwArgumentNotFoundException(WEIGHTS_FILE);
+  }
+
+  int dimlpNets = getInt(NB_DIMLP_NETS);
+  string weigthsFile = getString(WEIGHTS_FILE);
+
+  if (dimlpNets == 1) {
+    addWeightsFile(weigthsFile);
+  } else {
+    for (int i = 1; i <= dimlpNets; i += 1) {
+      addWeightsFile(weigthsFile + to_string(i) + ".wts");
+    }
+  }
 }
 
 // public getters
@@ -283,7 +309,6 @@ bool Parameters::isStringSet(ParameterCode id) {
   return _stringParams.find(id) != _stringParams.end();
 }
 
-// TODO check if empty ?
 vector<string> Parameters::getWeightsFiles() const {
   return _weightFiles;
 }

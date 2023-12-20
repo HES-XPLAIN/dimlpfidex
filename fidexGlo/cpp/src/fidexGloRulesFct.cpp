@@ -89,13 +89,14 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
     bool ruleCreated;
     int counterFailed;
     double t1, t2;
-    double minFidelity = p->getFloat(MIN_FIDELITY);
 
     int cnt = 0;
     int localNbRulesNotFound = 0;
     int localNbProblems = 0;
     int localMinNbCover = 0;
     int currentMinNbCov = minNbCover;
+    float minFidelity = p->getFloat(MIN_FIDELITY);
+    string consoleFile = p->getString(CONSOLE_FILE);
     int maxFailedAttempts = p->getInt(MAX_FAILED_ATTEMPTS);
     Hyperspace hyperspace(hyperlocus);
     vector<int>::iterator it;
@@ -109,7 +110,7 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
       cnt += 1;
 
       if (omp_get_thread_num() == 0) {
-        if (((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && !p->isStringSet(CONSOLE_FILE)) {
+        if (((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && consoleFile.empty()) {
 #pragma omp critical
           {
             cout << "Processing : " << int((double(idSample) / (nbDatas / nbThreadsUsed)) * 100) << "%\r";
@@ -481,6 +482,7 @@ void checkParametersLogicValues(Parameters *p) {
   p->setDefaultFloat(MIN_FIDELITY, 1.0f);
   p->setDefaultInt(HI_KNOT, 5);
   p->setDefaultInt(SEED, 0);
+  p->setWeightsFiles(); // must be called to initialize
 
   // TODO check for logic values
 }
@@ -595,8 +597,9 @@ int fidexGloRules(const string &command) {
     }
 
     // Get console results to file
-    if (params->isStringSet(CONSOLE_FILE)) {
-      ofs.open(params->getString(CONSOLE_FILE));
+    string consoleFile = params->getString(CONSOLE_FILE);
+    if (!consoleFile.empty()) {
+      ofs.open(consoleFile);
       cout.rdbuf(ofs.rdbuf()); // redirect cout to file
     }
 
@@ -664,6 +667,7 @@ int fidexGloRules(const string &command) {
       if (nbDimlpNets > 1) {
         cout << "All hyperlocus created" << endl;
       }
+
     } else {
       if (!attributesFile.empty()) {
         matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes, attributeNames);
@@ -673,7 +677,7 @@ int fidexGloRules(const string &command) {
     }
 
     // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
-    const auto nbIn = static_cast<int>(matHypLocus.size());
+    int nbIn = static_cast<int>(matHypLocus.size());
 
     // Check size of hyperlocus
     if (nbIn == 0 || nbIn % nbAttributes != 0) {

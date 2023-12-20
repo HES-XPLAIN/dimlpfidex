@@ -22,8 +22,8 @@ bool FidexAlgo::fidex(Rule &rule,
   int nbInputs = hyperspace->getHyperLocus().size();
   int itMax = p->getInt(MAX_ITERATIONS);
   int minNbCover = p->getInt(MIN_COVERING);
-  double dropoutDim = p->getFloat(DROPOUT_DIM);
-  double dropoutHyp = p->getFloat(DROPOUT_HYP);
+  float dropoutDim = p->getFloat(DROPOUT_DIM);
+  float dropoutHyp = p->getFloat(DROPOUT_HYP);
 
   // Initialize uniform distribution
   uniform_real_distribution<double> dis(0.0, 1.0);
@@ -37,10 +37,9 @@ bool FidexAlgo::fidex(Rule &rule,
   hyperspace->getHyperbox()->computeFidelity(mainSamplePred, trainPreds); // Compute fidelity of initial hyperbox
   // If we come from fidexGlo, we reset hyperbox discriminativeHyperplans
   hyperspace->getHyperbox()->resetDiscriminativeHyperplans();
-  int nbIt = 0;
 
-  while (hyperspace->getHyperbox()->getFidelity() < minFidelity && nbIt < itMax) { // While fidelity of our hyperbox is not high enough
-    unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                             // best hyperbox to choose for next step
+  while (hyperspace->getHyperbox()->getFidelity() < minFidelity && itMax) { // While fidelity of our hyperbox is not high enough
+    unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                      // best hyperbox to choose for next step
     unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());
     double mainSampleValue;
     int attribut;
@@ -120,7 +119,7 @@ bool FidexAlgo::fidex(Rule &rule,
         hyperspace->getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
       }
     }
-    nbIt += 1;
+    itMax -= 1;
   }
 
   if (hyperspace->getHyperbox()->getFidelity() < minFidelity) {
@@ -129,7 +128,6 @@ bool FidexAlgo::fidex(Rule &rule,
 
   // Compute rule accuracy
   double ruleAccuracy;
-
   ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass); // Percentage of correct model prediction on samples covered by the rule
 
   double ruleConfidence;

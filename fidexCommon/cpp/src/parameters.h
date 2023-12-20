@@ -88,19 +88,18 @@ private:
   void setDouble(ParameterCode id, string value);
   void setDouble(ParameterCode id, double value);
   void setString(ParameterCode id, string value);
-  void setWeightFiles(vector<string> files);
   void setRootDirectory(ParameterCode id);
 
   void throwInvalidDataTypeException(ParameterCode id, string wrongValue, string typeName) {
-    throw CommandArgumentException("Parsing error: argument (ID " + to_string(id) + ") with value \"" + wrongValue + "\" is not a valid" + typeName + ".");
+    throw CommandArgumentException("Parsing error: argument (ID " + parameterNames[id] + ") with value \"" + wrongValue + "\" is not a valid " + typeName + ".");
   }
 
   void throwAlreadySetArgumentException(ParameterCode id, string value) {
-    throw CommandArgumentException("Parsing error: argument (ID " + to_string(id) + ") with value \"" + value + "\" is already set, cannot override it.");
+    throw CommandArgumentException("Parsing error: argument (ID " + parameterNames[id] + ") with value \"" + value + "\" is already set, cannot override it.");
   }
 
   void throwArgumentNotFoundException(ParameterCode id) {
-    throw CommandArgumentException("Parameters error: argument (ID " + to_string(id) + ") requested was not found, try to rerun including it.");
+    throw CommandArgumentException("Parameters error: argument (ID " + parameterNames[id] + ") requested was not found, try to rerun including it.");
   }
 
 public:
@@ -133,6 +132,7 @@ public:
   bool isStringSet(ParameterCode id);
 
   // special operations
+  void setWeightsFiles();
   void addWeightsFile(string file);
 };
 
@@ -142,20 +142,27 @@ inline ostream &operator<<(ostream &stream, const Parameters &p) {
          << setfill(' ');
 
   for (auto const &x : p.getAllStrings()) {
-    stream << "   ID " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << x.second << endl;
+    stream << "   - " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << x.second << endl;
   }
 
   for (auto const &x : p.getAllInts()) {
-    stream << "   ID " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
+    stream << "   - " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllFloats()) {
-    stream << "   ID " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
+    stream << "   - " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllDoubles()) {
-    stream << "   ID " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
+    stream << "   - " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
   }
+
+  stream << "  WEIGHTS_FILES (list)" << endl;
+  for (string f : p.getWeightsFiles()) {
+    stream << "   - " << setw(pad) << f << endl;
+  }
+
+  stream << "End of Parameters list." << endl;
 
   return stream;
 }
