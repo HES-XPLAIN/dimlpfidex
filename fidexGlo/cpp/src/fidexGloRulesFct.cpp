@@ -468,6 +468,7 @@ void checkParametersLogicValues(Parameters *p) {
   p->setDefaultInt(NB_DIMLP_NETS, 1);
   p->setDefaultString(ATTRIBUTES_FILE, "");
   p->setDefaultString(CONSOLE_FILE, "");
+  p->setDefaultString(INPUT_RULES_FILE, "");
   p->setDefaultInt(MAX_ITERATIONS, 100);
   p->setDefaultInt(MIN_COVERING, 2);
   p->setDefaultFloat(DROPOUT_DIM, 0.0f);
@@ -478,6 +479,7 @@ void checkParametersLogicValues(Parameters *p) {
   p->setDefaultInt(INDEX_POSITIVE_CLASS, 0);
   p->setDefaultInt(NB_THREADS_USED, 1);
   p->setDefaultFloat(MIN_FIDELITY, 1.0f);
+  p->setDefaultInt(HI_KNOT, 5);
   p->setDefaultInt(SEED, 0);
 
   // TODO check for logic values
@@ -579,6 +581,7 @@ int fidexGloRules(const string &command) {
     // getting all program arguments from CLI
     unique_ptr<Parameters> params(new Parameters(commandList));
     checkParametersLogicValues(params.get());
+    cout << *params;
 
     // Fill weights vector
     if (!params->getWeightsFiles().empty()) {
@@ -596,8 +599,6 @@ int fidexGloRules(const string &command) {
       ofs.open(params->getString(CONSOLE_FILE));
       cout.rdbuf(ofs.rdbuf()); // redirect cout to file
     }
-
-    // cout << *params;
 
     // Import files
     cout << "Importing files..." << endl;
@@ -634,7 +635,7 @@ int fidexGloRules(const string &command) {
 
     vector<vector<double>> matHypLocus;
     string weightsFile = params->getString(WEIGHTS_FILE);
-    string attributFile = params->getString(ATTRIBUTES_FILE);
+    string attributesFile = params->getString(ATTRIBUTES_FILE);
     string inputRulesFile = params->getString(INPUT_RULES_FILE);
     vector<string> weightsFiles = params->getWeightsFiles();
     int nbDimlpNets = params->getInt(NB_DIMLP_NETS);
@@ -664,7 +665,7 @@ int fidexGloRules(const string &command) {
         cout << "All hyperlocus created" << endl;
       }
     } else {
-      if (!attributFile.empty()) {
+      if (!attributesFile.empty()) {
         matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes, attributeNames);
       } else {
         matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes);

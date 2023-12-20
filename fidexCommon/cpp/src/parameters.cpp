@@ -121,6 +121,17 @@ Parameters::Parameters(vector<string> args) {
       }
     }
   }
+
+  // updating paths of files
+  setRootDirectory(TRAIN_DATA_FILE);
+  setRootDirectory(TRAIN_DATA_PRED_FILE);
+  setRootDirectory(TRAIN_DATA_TRUE_CLASS_FILE);
+  setRootDirectory(INPUT_RULES_FILE);
+  setRootDirectory(RULES_FILE);
+  setRootDirectory(CONSOLE_FILE);
+  setRootDirectory(ROOT_FOLDER);
+  setRootDirectory(ATTRIBUTES_FILE);
+  setRootDirectory(WEIGHTS_FILE);
 }
 
 // TODO: Implement Parameters::Parameters(string jsonfile) {}
@@ -166,7 +177,7 @@ void Parameters::setFloat(ParameterCode id, float value) {
   _floatParams[id] = value;
 }
 
-// TODO: find better double translation than atof
+// TODO: find better string to double translation than atof
 void Parameters::setDouble(ParameterCode id, string value) {
   if (isDoubleSet(id)) {
     throwAlreadySetArgumentException(id, value);
@@ -199,6 +210,10 @@ void Parameters::setRootDirectory(ParameterCode id) {
   if (!isStringSet(ROOT_FOLDER) || !isStringSet(id))
     return;
 
+  // avoid duplicating the root path for no reason
+  if (id == ROOT_FOLDER)
+    return;
+
   string root = getString(ROOT_FOLDER);
   string target = getString(id);
   string separator;
@@ -210,7 +225,7 @@ void Parameters::setRootDirectory(ParameterCode id) {
   separator = "\\";
 #endif
 
-  // to avoid Already set errors, why modify the map directly
+  // to avoid AlreadySetException errors thrown by setters, the map is directly midified
   _stringParams[id] = root + separator + target;
 }
 

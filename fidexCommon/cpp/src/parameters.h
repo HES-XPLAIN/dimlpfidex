@@ -2,6 +2,7 @@
 #define PARAMETERS_H
 #include "checkFun.h"
 #include "errorHandler.h"
+#include <iomanip>
 #include <iostream>
 #include <map>
 #include <omp.h>
@@ -12,7 +13,7 @@
 
 using namespace std;
 
-// to add a new parameter, just add a new parameter code
+// to add a new parameter, just add a new parameter code BEFORE "_NB_PARAMETERS"
 enum ParameterCode {
   TRAIN_DATA_FILE,
   TRAIN_DATA_PRED_FILE,
@@ -39,8 +40,37 @@ enum ParameterCode {
   HI_KNOT,
   DROPOUT_HYP,
   DROPOUT_DIM,
-  MIN_FIDELITY
+  MIN_FIDELITY,
+  _NB_PARAMETERS // internal use only, do not consider it as a usable parameter
 };
+
+static const vector<string> parameterNames = {
+    "TRAIN_DATA_FILE",
+    "TRAIN_DATA_PRED_FILE",
+    "TRAIN_DATA_TRUE_CLASS_FILE",
+    "INPUT_RULES_FILE",
+    "RULES_FILE",
+    "CONSOLE_FILE",
+    "ROOT_FOLDER",
+    "ATTRIBUTES_FILE",
+    "WEIGHTS_FILE",
+    "NB_ATTRIBUTES",
+    "NB_CLASSES",
+    "NB_DIMLP_NETS",
+    "NB_QUANT_LEVELS",
+    "HEURISTIC",
+    "MAX_ITERATIONS",
+    "MIN_COVERING",
+    "MAX_FAILED_ATTEMPTS",
+    "NB_THREADS_USED",
+    "INDEX_POSITIVE_CLASS",
+    "SEED",
+    "HEURISITC_INIT",
+    "DECISION_THRESHOLD",
+    "HI_KNOT",
+    "DROPOUT_HYP",
+    "DROPOUT_DIM",
+    "MIN_FIDELITY"};
 
 class Parameters {
 private:
@@ -92,6 +122,11 @@ public:
   string getString(ParameterCode id);
   vector<string> getWeightsFiles() const;
 
+  map<ParameterCode, int> getAllInts() const { return _intParams; }
+  map<ParameterCode, float> getAllFloats() const { return _floatParams; }
+  map<ParameterCode, double> getAllDoubles() const { return _doubleParams; }
+  map<ParameterCode, string> getAllStrings() const { return _stringParams; }
+
   bool isIntSet(ParameterCode id);
   bool isFloatSet(ParameterCode id);
   bool isDoubleSet(ParameterCode id);
@@ -100,5 +135,29 @@ public:
   // special operations
   void addWeightsFile(string file);
 };
+
+inline ostream &operator<<(ostream &stream, const Parameters &p) {
+  int pad = 100;
+  stream << "Parameters list:" << endl
+         << setfill(' ');
+
+  for (auto const &x : p.getAllStrings()) {
+    stream << "   ID " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << x.second << endl;
+  }
+
+  for (auto const &x : p.getAllInts()) {
+    stream << "   ID " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
+  }
+
+  for (auto const &x : p.getAllFloats()) {
+    stream << "   ID " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
+  }
+
+  for (auto const &x : p.getAllDoubles()) {
+    stream << "   ID " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
+  }
+
+  return stream;
+}
 
 #endif // PARAMETERS_H
