@@ -1,9 +1,20 @@
-[tool.poetry]
+[project]
 name = "dimlpfidex"
 version = "0.0.0"
 description = "Discretized Interpretable Multi Layer Perceptron (DIMLP) and related algorithms"
-authors = ["Jean-Marc Boutay <jean-marc.boutay@hesge.ch>", "Guido Bologna <guido.bologna@hesge.ch>"]
-license = "BSD-3-Clause"
+authors = [
+    { name = "Jean-Marc Boutay", email = "jean-marc.boutay@hesge.ch" },
+    { name = "Guido Bologna", email = "guido.bologna@hesge.ch" }
+]
+dependencies = [
+    "pybind11>=2.10.4",
+    "pybind11-global>=2.10.4",
+    "numpy>=1.22",
+    "scikit-learn>=1.2.2",
+    "tensorflow>=2.13",
+    "tensorflow-io-gcs-filesystem>=0.31.0",
+    "matplotlib>=3.7.4",
+]
 readme = "README.md"
 homepage = "https://hes-xplain.github.io/"
 repository = "https://github.com/HES-XPLAIN/dimlpfidex"
@@ -26,65 +37,73 @@ classifiers=[
     'Programming Language :: C++',
     'Programming Language :: Python :: 3',
 ]
-packages = [
-    { include = "example", format = "sdist" },
-    { include = "dimlp" },
-    { include = "fidex" },
-    { include = "fidexGlo" },
-    { include = "trainings" },
-]
-# see python-poetry/poetry/issues/3380
-include = [
-    { path = "example/**/CMakeLists.txt", format = "sdist" },
-    { path = "example/cpp/src/*.cpp", format = "sdist" },
-    { path = "example/cpp/include/*.hpp", format = "sdist" },
-    { path = "example/pybind/*", format = "sdist" },
-    { path = "dimlp/**/CMakeLists.txt", format = "sdist" },
-    { path = "dimlp/cpp/src/*.cpp", format = "sdist" },
-    { path = "dimlp/cpp/src/*.h", format = "sdist" },
-    { path = "dimlp/pybind/*", format = "sdist" },
-    { path = "fidex/**/CMakeLists.txt", format = "sdist" },
-    { path = "fidex/cpp/src/*.cpp", format = "sdist" },
-    { path = "fidex/cpp/src/*.h", format = "sdist" },
-    { path = "fidex/pybind/*", format = "sdist" },
-    { path = "fidexGlo/**/CMakeLists.txt", format = "sdist" },
-    { path = "fidexGlo/cpp/src/*.cpp", format = "sdist" },
-    { path = "fidexGlo/cpp/src/*.h", format = "sdist" },
-    { path = "fidexGlo/pybind/*", format = "sdist" },
-    { path = "**/*.so", format = "wheel" },
-    { path = "**/*.pyd", format = "wheel" },
-]
-exclude = [
-    "example/**/*.cpp",
-    "example/**/*.hpp",
-    "example/**/*.txt",
-    "dimlp/**/*.cpp",
-    "dimlp/**/*.h",
-    "dimlp/**/*.txt",
-    "fidex/**/*.cpp",
-    "fidex/**/*.h",
-    "fidex/**/*.txt",
-    "fidexGlo/**/*.cpp",
-    "fidexGlo/**/*.h",
-    "fidexGlo/**/*.txt",
-]
-
-[tool.poetry.dependencies]
-python = ">=3.9, <3.11"
-pybind11 = "^2.10.4"
-pybind11-global = "^2.10.4"
-numpy = ">=1.22, <=1.24.3"
-scikit-learn = "^1.2.2"
-tensorflow = "^2.13.0"
-tensorflow-io-gcs-filesystem = "0.31.0"
-matplotlib = "^3.8.0"
-
-[tool.poetry.group.dev.dependencies]
-pre-commit = "^3.3.2"
-
-[tool.poetry.build]
-script = "build.py"
+requires-python = ">= 3.8.1"
 
 [build-system]
-requires = ["poetry-core", "pybind11"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling", "pybind11"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "pre-commit>=3.4.0",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+#script = "build.py"
+ignore-vcs = true
+packages = [
+#    "dimlp",
+#    "dimlpfidex",
+#    "fidex",
+#    "fidexCommon",
+#    "fidexGlo",
+    "trainings",
+]
+artifacts = [
+    "dimlpfidex/*.so",
+    "dimlpfidex/*.pyd",
+    "dimlpfidex/*.dll",
+]
+
+[tool.hatch.build.targets.sdist]
+packages = [
+    "dimlp",
+#    "dimlpfidex",
+    "example",
+    "fidex",
+    "fidexCommon",
+    "fidexGlo",
+    "trainings",
+]
+include = [
+    "example/**/CMakeLists.txt",
+    "example/cpp/src/*.cpp",
+    "example/cpp/include/*.hpp",
+    "example/pybind/*",
+    "dimlp/**/CMakeLists.txt",
+    "dimlp/cpp/src/*.cpp",
+    "dimlp/cpp/src/*.h",
+    "dimlp/pybind/*",
+    "fidex/**/CMakeLists.txt",
+    "fidex/cpp/src/*.cpp",
+    "fidex/cpp/src/*.h",
+    "fidex/pybind/*",
+    "fidexGlo/**/CMakeLists.txt",
+    "fidexGlo/cpp/src/*.cpp",
+    "fidexGlo/cpp/src/*.h",
+    "fidexGlo/pybind/*",
+    "*.py",
+    "*.txt",
+]
+
+[tool.hatch.build.targets.sdist.force-include]
+"build.py" = "build.py"
+"example.py" = "example.py"
+"CMakeLists.txt" = "CMakeLists.txt"
+".clang-format" = ".clang-format"
+".editorconfig" = ".editorconfig"
+".pre-commit-config.yaml" = ".pre-commit-config.yaml"
