@@ -2,7 +2,22 @@
 using namespace std;
 
 /**
- * @brief Construct a new DataSetFid object using three separate datafiles : datas, predictions and maybe classes(not mendatory)
+ * @brief Construct a new DataSetFid object using three separate data files: one for data, one for predictions, and optionally one for classes.
+ *        - The data file should contain the attributes of each sample, and optionally, the class information can also be included in this file.
+ *          If class information is included in the data file, there is no need to provide a separate class file.
+ *        - The prediction file should contain the prediction scores for each class per sample.
+ *        - The class file (optional) should be used only if class information is not included in the data file. It should contain either
+ *          a single class ID or a series of integers in a one-hot encoding scheme per sample.
+ *
+ *        Expected file formats:
+ *        - Data file: Each line should contain a series of numerical values representing the attributes of a sample,
+ *          optionally followed by the class information (either as a single integer for class ID or a one-hot encoded vector).
+ *        - Prediction file: Each line should contain a series of numerical values.
+ *        - Class file (optional): Only needed if class information is not included in the data file. Each line should contain either a single class ID
+ *          or a series of integers in a one-hot encoding scheme.
+ *
+ *        Each numbers in a line are separated by a space.
+ *        The number of attributes and classes in the dataset are used to validate the format and content of the data and class files.
  *
  * @param name string containing the name of the dataSet
  * @param dataFile const char* data file name
@@ -39,7 +54,15 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *pre
 }
 
 /**
- * @brief Construct a new DataSetFid object using a datafile containing datas, predictions and maybe classes(not mendatory)
+ * @brief Construct a new DataSetFid object using a data file. The file contains data samples, predictions,
+ *        and optionally classes (not mandatory). The format of each sample in the file is as follows:
+ *        - First Line: Contains data attributes. It may be followed by class information (either as an ID or in one-hot format).
+ *        - Second Line: Contains prediction values.
+ *        - Third Line (optional): Contains class information, only if it was not included in the first line and if present.
+ *        There is a blank line between each sample in the file.
+ *        Each data in a line is separated by a space
+ *
+ *        The presence and format of class data (ID or one-hot) are inferred based on the structure of the lines in the file.
  *
  * @param name string containing the name of the dataSet
  * @param dataFile const char* data file name containing datas, predictions and maybe classes(not mendatory)
@@ -106,6 +129,9 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, int _nbAttribut
     // Get classes
     getline(fileDta, line);
     if (!endOfFile && !checkStringEmpty(line)) {
+      if (classFormat == "one-hot_combined" || classFormat == "id_combined") {
+        throw FileContentError("Error in dataset " + datasetName + " : file " + std::string(dataFile) + " classes were given with attributes and are given again after predictions.");
+      }
       setClassLine(line, dataFile);
 
       if (!fileDta.eof()) {
@@ -155,6 +181,9 @@ DataSetFid::DataSetFid(const std::string &name, const char *weightFile) : datase
       double value;
       vector<double> tempVect;
       while (myLine >> value) {
+        if (myLine.fail()) {
+          throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(weightFile) + ", a number is required.");
+        }
         tempVect.push_back(value);
       }
       weights.push_back(tempVect);
@@ -164,11 +193,17 @@ DataSetFid::DataSetFid(const std::string &name, const char *weightFile) : datase
 }
 
 /**
- * @brief Add datas from dataFile in the dataset
+ * @brief Get data from dataFile and save it in datas and trueClasses if it contains class information.
  *
- * @param dataFile const char* data file name
- * @param _nbAttributes int number of attributes
- * @param _nbClasses int number of classes
+ *            The file should contain one sample per line. Each number in line is separated by a space. Each sample can be in one of the following formats:
+ *            1. Attributes only: Each line contains each float attribute.
+ *            2. Attributes with Class ID: Each line contains all the float attributes followed by an integer class ID.
+ *            3. Attributes with One-Hot Class Encoding: Each line contains all the float attributes followed by a one-hot encoding of the class.
+ *               The number of elements in this encoding should match the total number of classes, with exactly one '1' and the rest '0's.
+ *
+ * @param dataFile const char* representing the name of the data file.. This file should contain data in one of the supported formats.
+ * @param _nbAttributes int specifying the number of attributes
+ * @param _nbClasses int specifying the number of classes
  */
 void DataSetFid::setDataFromFile(const char *dataFile, int _nbAttributes, int _nbClasses) {
   if (hasDatas == true) {
@@ -194,12 +229,26 @@ void DataSetFid::setDataFromFile(const char *dataFile, int _nbAttributes, int _n
   }
 
   fileDta.close(); // close data file
+
+  if (!trueClasses.empty()) {
+    if (hasClasses == true) {
+      throw InternalError("Error in dataset " + datasetName + " : classes have already been given to this dataset, impossible to add again.");
+    }
+    hasClasses = true;
+    nbClassData = static_cast<int>(trueClasses.size());
+  }
+
   nbSamples = static_cast<int>(datas.size());
+
   checkDatas();
 }
 
 /**
- * @brief Add predictions in the dataset using a prediction file
+ * @brief Add predictions to the dataset using a prediction file.
+ *        The prediction file should contain one line per data sample, each line consisting of a series of numerical values separated by spaces
+ *        representing the prediction scores scores for each class.
+ *        The number of values per line should match the specified number of classes.
+ *        If a decision threshold is provided, the function uses it to determine the predicted class based on the threshold.
  *
  * @param predFile const char* prediction file name
  * @param _nbClasses int number of classes
@@ -252,10 +301,18 @@ void DataSetFid::setPredFromFile(const char *predFile, int _nbClasses, double de
 }
 
 /**
- * @brief Add classes from classFile in the dataset
+ * @brief Add classes from a specified file into the dataset.
+ *        The class file can contain lines in different formats:
+ *        1. Class ID format: Each line contains a single integer representing the class ID.
+ *        2. One-hot format: Each line contains a sequence of integers in a one-hot encoding scheme,
+ *           where exactly one value is 1 (indicating the class ID) and all others are 0.
+ *        Each number in a line is separated by a space
  *
- * @param classFile const char* file name containing classes in one hot format
- * @param _nbClasses int number of classes
+ *        The function determines the format of each line based on the '_nbClasses' parameter and the structure of the data in the line.
+ *
+ * @param classFile A const char* representing the name of the class file. This file should contain class data
+ *                  in one of the supported formats (either class ID or one-hot encoded).
+ * @param _nbClasses An int specifying the number of classes.
  */
 void DataSetFid::setClassFromFile(const char *classFile, int _nbClasses) {
   if (hasClasses == true) {
@@ -286,10 +343,17 @@ void DataSetFid::setClassFromFile(const char *classFile, int _nbClasses) {
 }
 
 /**
- * @brief Read data line from data file and save it in datas
+ * @brief Read a data line from a data file and save it in datas and trueClasses if it contains class information.
+ *        This function supports different data formats. It can process lines containing:
+ *        - Only attributes: A sequence of numerical values.
+ *        - Attributes followed by class IDs: A sequence of numerical values followed by an integer representing the class ID.
+ *        - Attributes followed by one-hot encoded classes: A sequence of numerical values followed by a one-hot encoding representing the class.
+ *          The number of elements in this encoding should match the total number of classes, with exactly one '1' and the rest '0's.
+ *        Each data in a line is separated by a space
+ *        The format of the class representation (ID or one-hot encoding) is determined based on the structure of the data in the line.
  *
- * @param line string containing one line of the data file
- * @param dataFile const char* data file name
+ * @param line A string containing one line of the data file. This line can include attribute values and, optionally, class information.
+ * @param dataFile A const char* representing the name of the data file. This file may contain lines of data in any of the supported formats.
  */
 void DataSetFid::setDataLine(const string &line, const char *dataFile) {
   std::stringstream myLine(line);
@@ -305,16 +369,60 @@ void DataSetFid::setDataLine(const string &line, const char *dataFile) {
     }
     valuesData.push_back(valueData);
   }
+  auto lineSize = static_cast<int>(valuesData.size());
 
-  if (nbAttributes != static_cast<int>(valuesData.size())) {
-    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", there are not the same number of attributes for each sample.");
+  // Identify class format (one-hot, id, one-hot_combined, id_combined)
+  if (classFormat.empty()) {
+    if (lineSize == nbAttributes + nbClasses) {
+      classFormat = "one-hot_combined";
+    } else if (lineSize == nbAttributes + 1) {
+      classFormat = "id_combined";
+    } else if (lineSize != nbAttributes) {
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", incorrect number of parameters per line, expected the given number of attributes (" + std::to_string(nbAttributes) + ") or this number plus 1 (classes in id format) or plus the number of classes (one-hot format).");
+    }
   }
 
-  datas.push_back(valuesData);
+  if (classFormat == "one-hot" || classFormat == "id" || classFormat == "") { // No classes with the attributes
+    if (lineSize != nbAttributes) {
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", the number of attributes for a sample don't match the given number of attributes (" + std::to_string(nbAttributes) + "). No class should be given with the data as there was none beforehand.");
+    } else {
+      datas.push_back(valuesData);
+    }
+  } else if (classFormat == "one-hot_combined") { // With classes on one-hot format
+    if (lineSize != nbAttributes + nbClasses) {
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", the number of attributes and classes for a sample don't match the given number of attributes and classes (" + std::to_string(nbAttributes + nbClasses) + "). Classes should be given with datas on one-hot format as they were given like this beforehand.");
+    } else {
+
+      int oneHotIndex;
+      if (isOneHot(valuesData, nbAttributes, oneHotIndex)) {
+        datas.emplace_back(valuesData.begin(), valuesData.begin() + nbAttributes);
+        trueClasses.emplace_back(oneHotIndex);
+      } else {
+        throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", invalid one-hot format for a given sample.");
+      }
+    }
+  } else if (classFormat == "id_combined") { // With classes on id format
+    if (lineSize != nbAttributes + 1) {
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", the number of attributes for a sample don't match the given number of attributes (" + std::to_string(nbAttributes) + "). The id of the class should be given at the end of the line as they were given like this beforehand.");
+    } else {
+      double classId = valuesData.back();
+      if (classId < 0 || classId >= nbClasses || classId != std::floor(classId)) {
+        throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", invalid class ID for a given sample.");
+      }
+      datas.emplace_back(valuesData.begin(), valuesData.begin() + nbAttributes);
+      trueClasses.emplace_back(classId);
+    }
+  } else {
+    throw InternalError("Error in dataset " + datasetName + " : wrong class format.");
+  }
 }
 
 /**
- * @brief Read prediction line from prediction file and save it in predictions
+ * @brief Read a prediction line from the prediction file and save it in predictions.
+ *        Each line in the prediction file should contain a sequence of numerical values representing the prediction scores for each class.
+ *        The number of values in each line must match the number of classes specified for the dataset.
+ *        If a decision threshold is set, the function also determines the predicted class based on this threshold.
+ *        Each line should contain numbers separated by spaces.
  *
  * @param line string containing one line of the prediction file
  * @param predFile const char* prediction file name
@@ -337,7 +445,7 @@ void DataSetFid::setPredLine(const string &line, const char *predFile) {
   outputValuesPredictions.push_back(valuesPred);
 
   if (static_cast<int>(valuesPred.size()) != nbClasses) {
-    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(predFile) + ", the number of predictions is not equal to the number of classes for each sample.");
+    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(predFile) + ", the number of predictions is not equal to the number of classes (" + std::to_string(nbClasses) + ") for each sample.");
   }
 
   if (decisionThreshold >= 0 && indexPositiveClass >= nbClasses) {
@@ -352,41 +460,71 @@ void DataSetFid::setPredLine(const string &line, const char *predFile) {
 }
 
 /**
- * @brief Read class line from classFile and save it in trueClasses
+ * @brief Read a class line from the class file and save it in trueClasses.
+ *        This function is designed to handle two formats of class representation in the file:
+ *        1. Class ID format: The line contains a single integer representing the class ID.
+ *        2. One-hot format: The line contains a sequence of integers in a one-hot encoding scheme,
+ *           where exactly one value is 1 (indicating the class ID) and all others are 0.
+ *        Each data in a line is separated by a space
  *
- * @param line string containing one line of the class file
- * @param classFile const char* class file name containing classes in one hot format
+ *        The function automatically determines the format based on the structure of the data in the line.
+ *
+ * @param line A string containing one line from the class file. This line can either have a single integer (class ID)
+ *             or multiple integers (one-hot encoded vector) representing the class information.
+ * @param classFile A const char* representing the name of the class file. This file should contain lines in one of the
+ *                  supported formats (either class ID or one-hot encoded).
  */
 void DataSetFid::setClassLine(const string &line, const char *classFile) {
   std::stringstream myLine(line);
-  float valueClass;
-  int nbClassesLine = 0;
-  bool classFound = false;
+  double valueData;
+  vector<double> valuesData;
   while (myLine >> std::ws) { // Skip leading whitespaces
     if (myLine.peek() == EOF) {
       break; // Reached the end of the stream
     }
-    myLine >> valueClass;
-    if (myLine.fail()) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", true classes need to be 0, 1, 0.0 or 1.0.");
+    myLine >> valueData;
+    if (myLine.fail() || valueData != std::floor(valueData)) {
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", an integer is required.");
     }
-    if (valueClass == 1.0f) {
-      trueClasses.push_back(nbClassesLine);
-      if (!classFound) {
-        classFound = true;
+    valuesData.push_back(valueData);
+  }
+  auto lineSize = static_cast<int>(valuesData.size());
+
+  if (classFormat == "") {
+    if (lineSize == nbClasses) {
+      classFormat = "one-hot";
+    } else if (lineSize == 1) {
+      classFormat = "id";
+    } else {
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", incorrect number of classes for a given sample.");
+    }
+  }
+
+  if (classFormat == "one-hot") {
+    if (lineSize != nbClasses) {
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", the number of classes for a sample doesn't match the given number of classes (" + std::to_string(nbClasses) + "). Classes should be given with datas on one-hot format as they were given like this beforehand.");
+    } else {
+      int oneHotIndex;
+      if (isOneHot(valuesData, 0, oneHotIndex)) {
+        trueClasses.emplace_back(oneHotIndex);
       } else {
-        throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", there is multiple 1's in a class line.");
+        throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", invalid one-hot format for a given sample.");
       }
-    } else if (valueClass != 0.0f) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", true classes need to be 0, 1, 0.0 or 1.0.");
     }
-    nbClassesLine++;
-  }
-  if (!classFound) {
-    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", a 1 or 1.0 is required to express the true class.");
-  }
-  if (nbClasses != nbClassesLine) {
-    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", the number of classes for a sample don't match the given number of classes.");
+  } else if (classFormat == "id") {
+    if (lineSize != 1) {
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", only the id of the class should be given on the line as classes were given like this beforehand.");
+    } else {
+      double classId = valuesData[0];
+      if (classId < 0 || classId >= nbClasses || classId != std::floor(classId)) {
+        throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", invalid class ID for a given sample.");
+      }
+      trueClasses.emplace_back(classId);
+    }
+  } else if (classFormat == "one-hot_combined" || classFormat == "id_combined") {
+    throw InternalError("Error in dataset " + datasetName + " : classes were already added combined with datas.");
+  } else {
+    throw InternalError("Error in dataset " + datasetName + " : wrong class format.");
   }
 }
 
@@ -439,6 +577,39 @@ void DataSetFid::setNbClassAndAttr(int _nbClasses, int _nbAttributes) {
   }
 
   setNbClass(_nbClasses);
+}
+
+/**
+ * @brief Checks if a portion of a std::vector<double> follows a one-hot encoding scheme.
+ *        In one-hot encoding, all elements must be either 0.0 or 1.0, with exactly one element being 1.0.
+ *
+ * @param values The vector of double values to check for one-hot encoding.
+ * @param start The starting index in 'values' from where to check for one-hot encoding.
+ * @param oneHotIndex Reference to an integer where the index (relative to 'start') of the 1.0 element in one-hot encoding will be stored.
+ *                    This is set only if a valid one-hot encoding is found.
+ * @return true If the portion of the vector starting from 'start' follows a one-hot encoding.
+ * @return false If the portion of the vector does not follow a one-hot encoding,
+ *               either because there's more than one 1.0, or because an element other than 0.0 or 1.0 is found.
+ */
+bool DataSetFid::isOneHot(const std::vector<double> &values, int start, int &oneHotIndex) const {
+  bool foundOne = false; // Flag to indicate if 1.0 has been found in the specified range
+  oneHotIndex = -1;      // Initialize the one-hot index to -1 (not found)
+
+  for (int i = start; i < values.size(); ++i) {
+    if (values[i] == 1.0f) { // Check if the current element is 1.0
+      if (foundOne) {
+        // More than one '1.0' found, not a one-hot format
+        return false;
+      }
+      foundOne = true;         // Mark that we've found a 1.0
+      oneHotIndex = i - start; // Calculate the relative index of the 1.0 element
+    } else if (values[i] != 0.0f) {
+      // An element other than 0.0 or 1.0 found, not a one-hot format
+      return false;
+    }
+  }
+
+  return foundOne; // Return true if a valid one-hot encoding was found
 }
 
 /**
@@ -585,7 +756,7 @@ vector<double> DataSetFid::getInWeights() const {
  * @brief Check for errors in the dataset
  *
  */
-void DataSetFid::checkDatas() {
+void DataSetFid::checkDatas() const {
   if (hasDatas && nbSamples < 1) {
     throw FileContentError("Error in dataset " + datasetName + " : There are no data samples.");
   }

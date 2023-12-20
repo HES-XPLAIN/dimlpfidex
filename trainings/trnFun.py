@@ -73,12 +73,13 @@ def delete_file(file):
     except Exception:
         print(f"Error during delete of file {file}")
 
+
 def get_data_pred(file_name, nb_classes):
     """
-    Read prediction data from a file and ensure each line contains 'nb_classes' predictions.
-
-    This function opens a file, reads its contents line by line, and parses each line into a list of floats.
-    It verifies that each line contains exactly 'nb_classes' numbers.
+    Add predictions to the dataset using a prediction file.
+    The prediction file should contain one line per data sample, each line consisting of a series of numerical values separated by spaces
+    representing the prediction scores scores for each class.
+    The number of values per line should match the specified number of classes.
 
     :param file_name: The path of the file to read data from.
     :type file_name: str
@@ -114,7 +115,7 @@ def get_data_pred(file_name, nb_classes):
 
 def get_data(file_name, nb_attributes, nb_classes=0):
     """
-    Get data from file and separate it into attributes and classes(if there is some classes).
+    Get data from file and separate it into attributes and classes(if there are some classes).
 
     The file should contain one sample per line. Each number in line is separated by a space. Each sample can be in one of the following formats:
     1. Attributes only: Each line contains each float attribute.
@@ -206,6 +207,7 @@ def get_data_class(file_name, nb_classes):
        The class ID must be a non-negative integer less than the number of classes.
     2. One-Hot Encoding format: Each line contains numbers separated by spaces, representing a one-hot encoding of the class.
        The number of elements in each line should match the total number of classes, with exactly one '1' and the rest '0's.
+    Each number in line is separated by a space.
 
     :param file_name: The name of the file to read class data from.
     :type file_name: str
