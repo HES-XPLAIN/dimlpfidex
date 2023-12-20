@@ -27,47 +27,62 @@ Ensure `cmake.exe` is accessible in the `$PATH` environment variable.
 cmake.exe --version
 ```
 
-### Install Python and Poetry
+### Install Python
 
-#### Linux, macOS, Windows/WSL
+Install [Python](https://www.python.org/):
 
-Use your package manager to install:
+#### Manually
 
-* python3 and python3-dev
-* poetry
+* **Linux, macOS, Windows/WSL**: Use your package manager to install `python3` and `python3-dev`
+* **Windows**: `winget install Python.Python.3.11`
 
-#### Windows
+> [!IMPORTANT]
+> On Windows, avoid installing Python through the Microsoft Store as the package has additional permission restrictions.
 
-* Install [Python](https://www.python.org/)
+#### Using Rye
 
-```shell
-winget install Python.Python.3.10
-```
+- Install [Rye](https://rye-up.com/) and [add shims](https://rye-up.com/guide/installation/) to your PATH.
 
-* Install [poetry](https://python-poetry.org/docs/#installation) and add it to your PATH.
+Ensure `rye` is accessible in the `$PATH` environment variable.
+Rye will automatically download the suitable Python toolchain as needed.
 
-Ensure `python.exe` and `poetry.exe` are accessible in the `$PATH` environment variable.
-
-To check the installation, check these commands return an output:
+To check the installation, check the following commands return an output:
 
 ```shell
-python.exe --version
-poetry.exe --version
+rye --version
 ```
+
+### Install Python dependencies
+
+#### Using pip
+
+Install dependencies:
+
+```shell
+python -m venv .venv
+source .venv/bin/activate
+pip install -r .
+```
+
+#### Using Rye
+
+Install python dependencies and activate the virtualenv:
+
+```shell
+rye sync
+rye shell
+```
+
+#### Add dependencies
+
+To add new dependencies to the project, either add them to the `pyproject.toml` file or use `rye add <dependency>`.
 
 ### Compile
 
-Activate the virtual environment:
+Compile:
 
 ```shell
-poetry shell
-```
-
-Install python dependencies and compile:
-
-```shell
-poetry install
-poetry build
+python build.py
 ```
 
 If CMake complains about not finding pybind11, ensure to activate the shell first.
@@ -77,9 +92,19 @@ build manually:
 
 ```shell
 mkdir build && cd build
-$path = (poetry env info | Select-String -Pattern 'Path:\s+(.*)').Matches.Groups[1].Value
+$path = 'C:\\Users\\<Username>\\<path_to>\\.venv\\Lib\\site-packages'
 cmake.exe -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH="$path" ..
 cmake.exe --build .
+```
+
+Adjust the path to the virtual environment accordingly.
+
+### Package
+
+Create archives for distribution:
+
+```shell
+python -m build
 ```
 
 ### Install Pre-commit hooks
@@ -88,7 +113,6 @@ Git hooks are used to ensure quality checks are run by all developers every time
 before a commit.
 
 ```shell
-poetry shell
 pre-commit install
 ```
 
