@@ -9,7 +9,7 @@ void showFidexParams() {
   std::cout << "Obligatory parameters : \n"
             << std::endl;
   std::cout << "fidex -T <train dataset file> -P <train prediction file> -C <train true class file> ";
-  std::cout << "-S <test sample(s) data file with data, prediction(if no -p) and true class(if no -c, with only the index of the true class)> ";
+  std::cout << "-S <test sample(s) data file with data, prediction(if no -p) and true class(if no -c)> ";
   std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> [Not mendatory if a rules file is given with -f] ";
   std::cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
   std::cout << "-O <Rule output file>";
@@ -23,7 +23,7 @@ void showFidexParams() {
   std::cout << "-R <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
   std::cout << "-p <test prediction file> ";
-  std::cout << "-c <test true class file> If at least -p is specified, -S needs to have only test datas" << std::endl;
+  std::cout << "-c <test true class file> If at least -p is specified, -S needs to have only test datas and eventually classes on same line (don't add -c in this case)" << std::endl;
   std::cout << "-A <file of attributes>" << std::endl;
   std::cout << "-s <output statistic file>" << std::endl;
   std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
@@ -522,7 +522,7 @@ int fidex(const string &command) {
     int nbTrainSamples = trainDatas->getNbSamples();
 
     if (minNbCover > nbTrainSamples) {
-      throw CommandArgumentException("Error : invalide type for parameter -c, strictly positive integer smaller or equal than the number of train data samples requested.");
+      throw CommandArgumentException("Error : invalide type for parameter -v, strictly positive integer smaller or equal than the number of train data samples requested.");
     }
 
     // Get test data

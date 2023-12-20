@@ -25,6 +25,8 @@ private:
   bool hasClasses = false;
   bool hasWeights = false;
 
+  std::string classFormat = ""; // one-hot, id, one-hot_combined or id_combined
+
   double decisionThreshold = -1;
   int indexPositiveClass = -1;
 
@@ -41,7 +43,9 @@ private:
   void setNbClass(int nb_classes);
   void setNbClassAndAttr(int _nbClasses, int _nbAttributes);
 
-  void checkDatas();
+  bool isOneHot(const std::vector<double> &values, int start, int &oneHotIndex) const;
+
+  void checkDatas() const;
   void checkThreshold() const;
 
   std::vector<std::string> attributeNames;
