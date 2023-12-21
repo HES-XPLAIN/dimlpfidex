@@ -8,7 +8,7 @@ void showFidexParams() {
 
   std::cout << "Obligatory parameters : \n"
             << std::endl;
-  std::cout << "fidex -T <train dataset file> -P <train prediction file> -C <train true class file> ";
+  std::cout << "fidex -T <train data file> -P <train prediction file> -C <train true class file, not mendatory if classes are specified in train data file> ";
   std::cout << "-S <test sample(s) data file with data, prediction(if no -p) and true class(if no -c)> ";
   std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> [Not mendatory if a rules file is given with -f] ";
   std::cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
@@ -452,9 +452,6 @@ int fidex(const string &command) {
     if (!trainDataFilePredInit) {
       throw CommandArgumentException("The train prediction file has to be given with option -P.");
     }
-    if (!trainDataFileTrueClassInit) {
-      throw CommandArgumentException("The train true classes file has to be given with option -C.");
-    }
     if (!mainSamplesDataFileInit) {
       throw CommandArgumentException("The test samples data file <value, prediction(if no -p), true class(if no -c)> has to be given with option -S.");
     }
@@ -512,7 +509,15 @@ int fidex(const string &command) {
 
     impt1 = clock();
 
-    std::unique_ptr<DataSetFid> trainDatas(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
+    std::unique_ptr<DataSetFid> trainDatas;
+    if (!trainDataFileTrueClassInit) {
+      trainDatas.reset(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass));
+      if (!trainDatas->getHasClasses()) {
+        throw CommandArgumentException("The train true classes file has to be given with option -C or classes have to be given in the train data file.");
+      }
+    } else {
+      trainDatas.reset(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
+    }
 
     vector<vector<double>> *trainData = trainDatas->getDatas();
     vector<int> *trainPreds = trainDatas->getPredictions();

@@ -130,7 +130,7 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, int _nbAttribut
     getline(fileDta, line);
     if (!endOfFile && !checkStringEmpty(line)) {
       if (classFormat == "one-hot_combined" || classFormat == "id_combined") {
-        throw FileContentError("Error in dataset " + datasetName + " : file " + std::string(dataFile) + " classes were given with attributes and are given again after predictions.");
+        throw FileContentError("Error in dataset " + datasetName + " : file " + std::string(dataFile) + " classes are given two times in the file, with attributes and are after predictions.");
       }
       setClassLine(line, dataFile);
 
@@ -207,7 +207,7 @@ DataSetFid::DataSetFid(const std::string &name, const char *weightFile) : datase
  */
 void DataSetFid::setDataFromFile(const char *dataFile, int _nbAttributes, int _nbClasses) {
   if (hasDatas == true) {
-    throw InternalError("Error in dataset " + datasetName + " : datas have already been given to this dataset, impossible to add again.");
+    throw InternalError("Error in dataset " + datasetName + " : datas have been given two times.");
   }
   hasDatas = true;
 
@@ -232,7 +232,7 @@ void DataSetFid::setDataFromFile(const char *dataFile, int _nbAttributes, int _n
 
   if (!trueClasses.empty()) {
     if (hasClasses == true) {
-      throw InternalError("Error in dataset " + datasetName + " : classes have already been given to this dataset, impossible to add again.");
+      throw InternalError("Error in dataset " + datasetName + " : classes have been given two times.");
     }
     hasClasses = true;
     nbClassData = static_cast<int>(trueClasses.size());
@@ -263,21 +263,21 @@ void DataSetFid::setPredFromFile(const char *predFile, int _nbClasses, double de
     if (decisionThreshold != -1) {
       decisionThreshold = decisionThresh;
     } else {
-      throw InternalError("Error in dataset " + datasetName + " : decision threshold has already been given to this dataset, impossible to add again.");
+      throw InternalError("Error in dataset " + datasetName + " : decision threshold has been given two times.");
     }
   }
   if (indexPositiveCl != -1 && !std::isnan(indexPositiveCl)) {
     if (indexPositiveClass != -1) {
       indexPositiveClass = indexPositiveCl;
     } else {
-      throw InternalError("Error in dataset " + datasetName + " : index of positive class has already been given to this dataset, impossible to add again.");
+      throw InternalError("Error in dataset " + datasetName + " : index of positive class has been given two times.");
     }
   }
 
   checkThreshold();
 
   if (hasPreds == true) {
-    throw InternalError("Error in dataset " + datasetName + " : predictions have already been given to this dataset, impossible to add again.");
+    throw InternalError("Error in dataset " + datasetName + " : predictions have been given two times.");
   }
   hasPreds = true;
   string line;
@@ -316,7 +316,7 @@ void DataSetFid::setPredFromFile(const char *predFile, int _nbClasses, double de
  */
 void DataSetFid::setClassFromFile(const char *classFile, int _nbClasses) {
   if (hasClasses == true) {
-    throw InternalError("Error in dataset " + datasetName + " : classes have already been given to this dataset, impossible to add again.");
+    throw InternalError("Error in dataset " + datasetName + " : classes have been given two times.");
   }
   hasClasses = true;
 
