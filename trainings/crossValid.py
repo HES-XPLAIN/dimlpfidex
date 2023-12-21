@@ -23,7 +23,7 @@ from trainings.mlpTrn import mlpTrn
 from trainings.randForestsTrn import randForestsTrn
 from trainings.gradBoostTrn import gradBoostTrn
 from trainings.computeRocCurve import computeRocCurve
-from trainings.trnFun import delete_file
+from trainings.trnFun import delete_file, get_data, get_data_class, validate_string_param
 
 def create_or_clear_directory(folder_name):
     try:
@@ -41,24 +41,6 @@ def create_or_clear_directory(folder_name):
                     shutil.rmtree(file_path)
     except (OSError):
         raise ValueError(f"Error during the creation of the directory {folder_name}.")
-
-
-def get_data(file_name): # Get data from file
-    try:
-        with open(file_name, "r") as my_file:
-            data = []
-            line = my_file.readline()
-            while line:
-                line = line.strip()  # Remove the line break at the end of the line
-                if line.strip():
-                    data.append(line)
-                line = my_file.readline()
-            my_file.close()
-        return data
-    except (FileNotFoundError):
-        raise ValueError(f"Error : File {file_name} not found.")
-    except (IOError):
-        raise ValueError(f"Error : Couldn't open file {file_name}.")
 
 def get_dimlprul_stats(rule_file):
 
@@ -135,7 +117,7 @@ def crossValid(*args, **kwargs):
             print("train_method : dimlp, dimlpBT, svm, mlp, randForest or gradBoost")
             print("algo : fidex, fidexGlo or both")
             print("data_file : data file")
-            print("class_file : class file")
+            print("class_file : class file, not mendatory if classes are specified in train file")
             print("nb_in : number of input neurons")
             print("nb_out : number of output neurons")
 
@@ -399,10 +381,10 @@ def crossValid(*args, **kwargs):
 
             # Check parameters
 
-            obligatory_args = ['train_method', 'algo', 'data_file', 'class_file','nb_in', 'nb_out']
+            obligatory_args = ['train_method', 'algo', 'data_file','nb_in', 'nb_out']
             obligatory_dimlp_args = ['dimlpRul']
 
-            optional_args = ['save_folder', 'crossVal_folder', 'K', 'N', 'fidexGlo_heuristic', 'crossVal_stats', 'attr_file',
+            optional_args = ['class_file', 'save_folder', 'crossVal_folder', 'K', 'N', 'fidexGlo_heuristic', 'crossVal_stats', 'attr_file',
                         'max_iter', 'min_cov', 'dropout_dim', 'dropout_hyp', 'seed', 'positive_class_index', 'decision_threshold']
 
             optional_non_dt_args = ['nb_stairs']
@@ -467,11 +449,6 @@ def crossValid(*args, **kwargs):
                 raise ValueError('Error : data file is missing, add it with option data_file="your_data_file_name".')
             elif not isinstance(data_file, str):
                 raise ValueError('Error : parameter data_file has to be a name contained in quotation marks "".')
-
-            if class_file is None:
-                raise ValueError('Error : class file is missing, add it with option class_file="your_class_file_name".')
-            elif not isinstance(class_file, str):
-                raise ValueError('Error : parameter class_file has to be a name contained in quotation marks "".')
 
             if nb_in is None:
                 raise ValueError('Error : the number of input neurons is missing, add it with option nb_in=your_number.')
@@ -739,18 +716,20 @@ def crossValid(*args, **kwargs):
                 root = ""
 
             data_file = root + data_file
-            class_file = root + class_file
             crossval_folder_temp = crossval_folder
             crossval_folder = root + crossval_folder
             crossval_stats = crossval_folder + separator + crossval_stats
 
             # Get datas in a list
-            datas = get_data(data_file)
+            datas, classes = get_data(data_file, nb_in, nb_out)
+            if len(classes) == 0:
+                test_class_file = validate_string_param(class_file, "classes")
+                class_file = root + class_file
+                classes = get_data_class(class_file, nb_out)
+
             nb_samples = len(datas)
             if k > nb_samples:
                 raise ValueError(f'The number of divisions K of the dataset must be less or equal to the number of train samples({nb_samples}).')
-
-            classes = get_data(class_file)
 
             if len(classes) != nb_samples:
                 raise ValueError('The number of samples in data file and class file need to be the same.')
@@ -1121,8 +1100,10 @@ def crossValid(*args, **kwargs):
                     try:
                         with open(temp_train_file, "w") as trn_file:
                             for id in train_idx:
-                                for line_trn in data_split[id]:
-                                    trn_file.write(f"{line_trn}\n")
+                                for sample_trn in data_split[id]:
+                                    for attr in sample_trn:
+                                        trn_file.write(f"{str(attr)} ")
+                                    trn_file.write("\n")
                         trn_file.close()
 
                     except (IOError):
@@ -1130,8 +1111,10 @@ def crossValid(*args, **kwargs):
 
                     try:
                         with open(temp_test_file, "w") as tst_file:
-                            for line_tst in data_split[test_idx]:
-                                tst_file.write(f"{line_tst}\n")
+                            for sample_tst in data_split[test_idx]:
+                                for attr in sample_tst:
+                                    tst_file.write(f"{str(attr)} ")
+                                tst_file.write("\n")
                         tst_file.close()
 
                     except (IOError):
@@ -1139,8 +1122,10 @@ def crossValid(*args, **kwargs):
                     if train_method == "dimlp":
                         try:
                             with open(temp_valid_file, "w") as val_file:
-                                for line_val in data_split[validation_idx]:
-                                    val_file.write(f"{line_val}\n")
+                                for sample_val in data_split[validation_idx]:
+                                    for attr in sample_val:
+                                        val_file.write(f"{str(attr)} ")
+                                    val_file.write("\n")
                             val_file.close()
 
                         except (IOError):
@@ -1150,7 +1135,7 @@ def crossValid(*args, **kwargs):
                         with open(temp_train_tar_file, "w") as trn_val_file:
                             for id in train_idx:
                                 for line_trn_tar in tar_data_split[id]:
-                                    trn_val_file.write(f"{line_trn_tar}\n")
+                                    trn_val_file.write(f"{int(line_trn_tar)} \n")
                         trn_val_file.close()
 
                     except (IOError):
@@ -1159,7 +1144,7 @@ def crossValid(*args, **kwargs):
                     try:
                         with open(temp_test_tar_file, "w") as tst_tar_file:
                             for line_tst_tar in tar_data_split[test_idx]:
-                                tst_tar_file.write(f"{line_tst_tar}\n")
+                                tst_tar_file.write(f"{int(line_tst_tar)} \n")
                         tst_tar_file.close()
 
                     except (IOError):
@@ -1168,7 +1153,7 @@ def crossValid(*args, **kwargs):
                         try:
                             with open(temp_valid_tar_file, "w") as val_tar_file:
                                 for line_val_tar in tar_data_split[validation_idx]:
-                                    val_tar_file.write(f"{line_val_tar}\n")
+                                    val_tar_file.write(f"{int(line_val_tar)} \n")
                             val_tar_file.close()
 
                         except (IOError):
@@ -1945,48 +1930,48 @@ def crossValid(*args, **kwargs):
                 mean_test_acc_dimlp_all /= divider
                 mean_test_acc_when_rules_and_model_agree_dimlp_all /= divider
 
-                std_nb_rules_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,0])
-                std_nb_cover_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,1])
-                std_nb_antecedants_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,2])
-                std_fidel_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,3])
-                std_rules_acc_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,4])
-                std_default_rate_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,5])
-                std_test_acc_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,6])
-                std_test_acc_when_rules_and_model_agree_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,7])
+                std_nb_rules_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,0].astype(float))
+                std_nb_cover_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,1].astype(float))
+                std_nb_antecedants_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,2].astype(float))
+                std_fidel_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,3].astype(float))
+                std_rules_acc_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,4].astype(float))
+                std_default_rate_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,5].astype(float))
+                std_test_acc_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,6].astype(float))
+                std_test_acc_when_rules_and_model_agree_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,7].astype(float))
 
             if is_fidex: # For Fidex
 
-                mean_cov_size_fid_all = np.mean(np.array(mean_exec_values_fidex)[:,0])
-                mean_nb_ant_fid_all = np.mean(np.array(mean_exec_values_fidex)[:,1])
-                mean_fidel_fid_all = np.mean(np.array(mean_exec_values_fidex)[:,2])
-                mean_rules_acc_fid_all = np.mean(np.array(mean_exec_values_fidex)[:,3])
-                mean_confid_fid_all = np.mean(np.array(mean_exec_values_fidex)[:,4])
+                mean_cov_size_fid_all = np.mean(np.array(mean_exec_values_fidex)[:,0].astype(float))
+                mean_nb_ant_fid_all = np.mean(np.array(mean_exec_values_fidex)[:,1].astype(float))
+                mean_fidel_fid_all = np.mean(np.array(mean_exec_values_fidex)[:,2].astype(float))
+                mean_rules_acc_fid_all = np.mean(np.array(mean_exec_values_fidex)[:,3].astype(float))
+                mean_confid_fid_all = np.mean(np.array(mean_exec_values_fidex)[:,4].astype(float))
 
-                std_cov_size_fid_all = np.std(np.array(mean_exec_values_fidex)[:,0])
-                std_nb_ant_fid_all = np.std(np.array(mean_exec_values_fidex)[:,1])
-                std_fidel_fid_all = np.std(np.array(mean_exec_values_fidex)[:,2])
-                std_rules_acc_fid_all = np.std(np.array(mean_exec_values_fidex)[:,3])
-                std_confid_fid_all = np.std(np.array(mean_exec_values_fidex)[:,4])
+                std_cov_size_fid_all = np.std(np.array(mean_exec_values_fidex)[:,0].astype(float))
+                std_nb_ant_fid_all = np.std(np.array(mean_exec_values_fidex)[:,1].astype(float))
+                std_fidel_fid_all = np.std(np.array(mean_exec_values_fidex)[:,2].astype(float))
+                std_rules_acc_fid_all = np.std(np.array(mean_exec_values_fidex)[:,3].astype(float))
+                std_confid_fid_all = np.std(np.array(mean_exec_values_fidex)[:,4].astype(float))
 
             if is_fidexglo: # For FidexGlo
-                mean_nb_rules_all = np.mean(np.array(mean_exec_values_fidexglo)[:,0])
-                mean_nb_cover_all = np.mean(np.array(mean_exec_values_fidexglo)[:,1])
-                mean_nb_antecedants_all = np.mean(np.array(mean_exec_values_fidexglo)[:,2])
-                mean_fidel_glo_all = np.mean(np.array(mean_exec_values_fidexglo)[:,3])
-                mean_rules_acc_glo_all = np.mean(np.array(mean_exec_values_fidexglo)[:,4])
-                mean_expl_glo_all = np.mean(np.array(mean_exec_values_fidexglo)[:,5])
-                mean_default_rate_all = np.mean(np.array(mean_exec_values_fidexglo)[:,6])
-                mean_nb_fidel_activations_all = np.mean(np.array(mean_exec_values_fidexglo)[:,7])
-                mean_wrong_activations_all = np.mean(np.array(mean_exec_values_fidexglo)[:,8])
-                mean_test_acc_glo_all = np.mean(np.array(mean_exec_values_fidexglo)[:,9])
-                mean_test_acc_when_rules_and_model_agree_all = np.mean(np.array(mean_exec_values_fidexglo)[:,10])
-                mean_test_acc_when_activated_rules_and_model_agree_all = np.mean(np.array(mean_exec_values_fidexglo)[:,11])
+                mean_nb_rules_all = np.mean(np.array(mean_exec_values_fidexglo)[:,0].astype(float))
+                mean_nb_cover_all = np.mean(np.array(mean_exec_values_fidexglo)[:,1].astype(float))
+                mean_nb_antecedants_all = np.mean(np.array(mean_exec_values_fidexglo)[:,2].astype(float))
+                mean_fidel_glo_all = np.mean(np.array(mean_exec_values_fidexglo)[:,3].astype(float))
+                mean_rules_acc_glo_all = np.mean(np.array(mean_exec_values_fidexglo)[:,4].astype(float))
+                mean_expl_glo_all = np.mean(np.array(mean_exec_values_fidexglo)[:,5].astype(float))
+                mean_default_rate_all = np.mean(np.array(mean_exec_values_fidexglo)[:,6].astype(float))
+                mean_nb_fidel_activations_all = np.mean(np.array(mean_exec_values_fidexglo)[:,7].astype(float))
+                mean_wrong_activations_all = np.mean(np.array(mean_exec_values_fidexglo)[:,8].astype(float))
+                mean_test_acc_glo_all = np.mean(np.array(mean_exec_values_fidexglo)[:,9].astype(float))
+                mean_test_acc_when_rules_and_model_agree_all = np.mean(np.array(mean_exec_values_fidexglo)[:,10].astype(float))
+                mean_test_acc_when_activated_rules_and_model_agree_all = np.mean(np.array(mean_exec_values_fidexglo)[:,11].astype(float))
 
                 if with_roc:
-                    mean_nb_true_positive_all = np.mean(np.array(mean_exec_values_fidexglo)[:,12])
-                    mean_nb_false_positive_all = np.mean(np.array(mean_exec_values_fidexglo)[:,13])
-                    mean_nb_true_negative_all = np.mean(np.array(mean_exec_values_fidexglo)[:,14])
-                    mean_nb_false_negative_all = np.mean(np.array(mean_exec_values_fidexglo)[:,15])
+                    mean_nb_true_positive_all = np.mean(np.array(mean_exec_values_fidexglo)[:,12].astype(float))
+                    mean_nb_false_positive_all = np.mean(np.array(mean_exec_values_fidexglo)[:,13].astype(float))
+                    mean_nb_true_negative_all = np.mean(np.array(mean_exec_values_fidexglo)[:,14].astype(float))
+                    mean_nb_false_negative_all = np.mean(np.array(mean_exec_values_fidexglo)[:,15].astype(float))
                     false_positive_rate_exec_temp = [v for v in np.array(mean_exec_values_fidexglo)[:,16] if v != "N/A"]
                     false_negative_rate_exec_temp = [v for v in np.array(mean_exec_values_fidexglo)[:,17] if v != "N/A"]
                     precision_exec_temp = [v for v in np.array(mean_exec_values_fidexglo)[:,18] if v != "N/A"]
@@ -1995,31 +1980,31 @@ def crossValid(*args, **kwargs):
                            mean_false_positive_rate_all = "N/A"
                            std_false_positive_rate_all = "N/A"
                     else:
-                        mean_false_positive_rate_all = np.mean(np.array(false_positive_rate_exec_temp))
-                        std_false_positive_rate_all = np.std(np.array(false_positive_rate_exec_temp))
+                        mean_false_positive_rate_all = np.mean(np.array(false_positive_rate_exec_temp).astype(float))
+                        std_false_positive_rate_all = np.std(np.array(false_positive_rate_exec_temp).astype(float))
                     if len(false_negative_rate_exec_temp) == 0:
                            mean_false_negative_rate_all = "N/A"
                            std_false_negative_rate_all = "N/A"
                     else:
-                        mean_false_negative_rate_all = np.mean(np.array(false_negative_rate_exec_temp))
-                        std_false_negative_rate_all = np.mean(np.array(false_negative_rate_exec_temp))
+                        mean_false_negative_rate_all = np.mean(np.array(false_negative_rate_exec_temp).astype(float))
+                        std_false_negative_rate_all = np.mean(np.array(false_negative_rate_exec_temp).astype(float))
                     if len(precision_exec_temp) == 0:
                            mean_precision_all = "N/A"
                            std_precision_all = "N/A"
                     else:
-                        mean_precision_all = np.mean(np.array(precision_exec_temp))
-                        std_precision_all = np.mean(np.array(precision_exec_temp))
+                        mean_precision_all = np.mean(np.array(precision_exec_temp).astype(float))
+                        std_precision_all = np.mean(np.array(precision_exec_temp).astype(float))
                     if len(recall_exec_temp) == 0:
                            mean_recall_all = "N/A"
                            std_recall_all = "N/A"
                     else:
-                        mean_recall_all = np.mean(np.array(recall_exec_temp))
-                        std_recall_all = np.mean(np.array(recall_exec_temp))
+                        mean_recall_all = np.mean(np.array(recall_exec_temp).astype(float))
+                        std_recall_all = np.mean(np.array(recall_exec_temp).astype(float))
 
-                    mean_nb_true_positive_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,20])
-                    mean_nb_false_positive_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,21])
-                    mean_nb_true_negative_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,22])
-                    mean_nb_false_negative_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,23])
+                    mean_nb_true_positive_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,20].astype(float))
+                    mean_nb_false_positive_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,21].astype(float))
+                    mean_nb_true_negative_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,22].astype(float))
+                    mean_nb_false_negative_rule_all = np.mean(np.array(mean_exec_values_fidexglo)[:,23].astype(float))
                     false_positive_rate_exec_rule_temp = [v for v in np.array(mean_exec_values_fidexglo)[:,24] if v != "N/A"]
                     false_negative_rate_exec_rule_temp = [v for v in np.array(mean_exec_values_fidexglo)[:,25] if v != "N/A"]
                     precision_exec_rule_temp = [v for v in np.array(mean_exec_values_fidexglo)[:,26] if v != "N/A"]
@@ -2028,49 +2013,49 @@ def crossValid(*args, **kwargs):
                            mean_false_positive_rate_rule_all = "N/A"
                            std_false_positive_rate_rule_all = "N/A"
                     else:
-                        mean_false_positive_rate_rule_all = np.mean(np.array(false_positive_rate_exec_rule_temp))
-                        std_false_positive_rate_rule_all = np.std(np.array(false_positive_rate_exec_rule_temp))
+                        mean_false_positive_rate_rule_all = np.mean(np.array(false_positive_rate_exec_rule_temp).astype(float))
+                        std_false_positive_rate_rule_all = np.std(np.array(false_positive_rate_exec_rule_temp).astype(float))
                     if len(false_negative_rate_exec_rule_temp) == 0:
                            mean_false_negative_rate_rule_all = "N/A"
                            std_false_negative_rate_rule_all = "N/A"
                     else:
-                        mean_false_negative_rate_rule_all = np.mean(np.array(false_negative_rate_exec_rule_temp))
-                        std_false_negative_rate_rule_all = np.mean(np.array(false_negative_rate_exec_rule_temp))
+                        mean_false_negative_rate_rule_all = np.mean(np.array(false_negative_rate_exec_rule_temp).astype(float))
+                        std_false_negative_rate_rule_all = np.mean(np.array(false_negative_rate_exec_rule_temp).astype(float))
                     if len(precision_exec_rule_temp) == 0:
                            mean_precision_rule_all = "N/A"
                            std_precision_rule_all = "N/A"
                     else:
-                        mean_precision_rule_all = np.mean(np.array(precision_exec_rule_temp))
-                        std_precision_rule_all = np.mean(np.array(precision_exec_rule_temp))
+                        mean_precision_rule_all = np.mean(np.array(precision_exec_rule_temp).astype(float))
+                        std_precision_rule_all = np.mean(np.array(precision_exec_rule_temp).astype(float))
                     if len(recall_exec_rule_temp) == 0:
                            mean_recall_rule_all = "N/A"
                            std_recall_rule_all = "N/A"
                     else:
-                        mean_recall_rule_all = np.mean(np.array(recall_exec_rule_temp))
-                        std_recall_rule_all = np.mean(np.array(recall_exec_rule_temp))
+                        mean_recall_rule_all = np.mean(np.array(recall_exec_rule_temp).astype(float))
+                        std_recall_rule_all = np.mean(np.array(recall_exec_rule_temp).astype(float))
 
-                std_nb_rules_all = np.std(np.array(mean_exec_values_fidexglo)[:,0])
-                std_nb_cover_all = np.std(np.array(mean_exec_values_fidexglo)[:,1])
-                std_nb_antecedants_all = np.std(np.array(mean_exec_values_fidexglo)[:,2])
-                std_fidel_glo_all = np.std(np.array(mean_exec_values_fidexglo)[:,3])
-                std_rules_acc_glo_all = np.std(np.array(mean_exec_values_fidexglo)[:,4])
-                std_expl_glo_all = np.std(np.array(mean_exec_values_fidexglo)[:,5])
-                std_default_rate_all = np.std(np.array(mean_exec_values_fidexglo)[:,6])
-                std_nb_fidel_activations_all = np.std(np.array(mean_exec_values_fidexglo)[:,7])
-                std_wrong_activations_all = np.std(np.array(mean_exec_values_fidexglo)[:,8])
-                std_test_acc_glo_all = np.std(np.array(mean_exec_values_fidexglo)[:,9])
-                std_test_acc_when_rules_and_model_agree_all = np.std(np.array(mean_exec_values_fidexglo)[:,10])
-                std_test_acc_when_activated_rules_and_model_agree_all = np.std(np.array(mean_exec_values_fidexglo)[:,11])
+                std_nb_rules_all = np.std(np.array(mean_exec_values_fidexglo)[:,0].astype(float))
+                std_nb_cover_all = np.std(np.array(mean_exec_values_fidexglo)[:,1].astype(float))
+                std_nb_antecedants_all = np.std(np.array(mean_exec_values_fidexglo)[:,2].astype(float))
+                std_fidel_glo_all = np.std(np.array(mean_exec_values_fidexglo)[:,3].astype(float))
+                std_rules_acc_glo_all = np.std(np.array(mean_exec_values_fidexglo)[:,4].astype(float))
+                std_expl_glo_all = np.std(np.array(mean_exec_values_fidexglo)[:,5].astype(float))
+                std_default_rate_all = np.std(np.array(mean_exec_values_fidexglo)[:,6].astype(float))
+                std_nb_fidel_activations_all = np.std(np.array(mean_exec_values_fidexglo)[:,7].astype(float))
+                std_wrong_activations_all = np.std(np.array(mean_exec_values_fidexglo)[:,8].astype(float))
+                std_test_acc_glo_all = np.std(np.array(mean_exec_values_fidexglo)[:,9].astype(float))
+                std_test_acc_when_rules_and_model_agree_all = np.std(np.array(mean_exec_values_fidexglo)[:,10].astype(float))
+                std_test_acc_when_activated_rules_and_model_agree_all = np.std(np.array(mean_exec_values_fidexglo)[:,11].astype(float))
                 if with_roc:
-                    std_nb_true_positive_all = np.std(np.array(mean_exec_values_fidexglo)[:,12])
-                    std_nb_false_positive_all = np.std(np.array(mean_exec_values_fidexglo)[:,13])
-                    std_nb_true_negative_all = np.std(np.array(mean_exec_values_fidexglo)[:,14])
-                    std_nb_false_negative_all = np.std(np.array(mean_exec_values_fidexglo)[:,15])
+                    std_nb_true_positive_all = np.std(np.array(mean_exec_values_fidexglo)[:,12].astype(float))
+                    std_nb_false_positive_all = np.std(np.array(mean_exec_values_fidexglo)[:,13].astype(float))
+                    std_nb_true_negative_all = np.std(np.array(mean_exec_values_fidexglo)[:,14].astype(float))
+                    std_nb_false_negative_all = np.std(np.array(mean_exec_values_fidexglo)[:,15].astype(float))
 
-                    std_nb_true_positive_rule_all = np.std(np.array(mean_exec_values_fidexglo)[:,20])
-                    std_nb_false_positive_rule_all = np.std(np.array(mean_exec_values_fidexglo)[:,21])
-                    std_nb_true_negative_rule_all = np.std(np.array(mean_exec_values_fidexglo)[:,22])
-                    std_nb_false_negative_rule_all = np.std(np.array(mean_exec_values_fidexglo)[:,23])
+                    std_nb_true_positive_rule_all = np.std(np.array(mean_exec_values_fidexglo)[:,20].astype(float))
+                    std_nb_false_positive_rule_all = np.std(np.array(mean_exec_values_fidexglo)[:,21].astype(float))
+                    std_nb_true_negative_rule_all = np.std(np.array(mean_exec_values_fidexglo)[:,22].astype(float))
+                    std_nb_false_negative_rule_all = np.std(np.array(mean_exec_values_fidexglo)[:,23].astype(float))
 
             # Show and save results
             try:
