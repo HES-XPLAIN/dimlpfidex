@@ -215,6 +215,122 @@ DataSet::DataSet(const char nameFile[], int nbAttr) : NbAttr(nbAttr)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Initlialize dataset. Reads the data file, determines the number of attributes per sample, and creates the dataset.
+ *        Validates the format of class data based on its length and converts class IDs to one-hot encoding if necessary.
+ *
+ * @param nameFile Path to the data file.
+ * @param nbIn Number of input attributes (attributes).
+ * @param nbOut Number of output attributes (class labels).
+ * @throws FileContentError If there is a problem with the file format or content.
+ */
+DataSet::DataSet(const char nameFile[], int nbIn, int nbOut) {
+  filebuf buf;
+  float x;
+  std::vector<float> lineValues;
+  int nbAttr = 0;
+
+  cout << "\n----------------------------------------------------------\n"
+       << std::endl;
+  if (buf.open(nameFile, ios_base::in) == nullptr) {
+    throw CannotOpenFileError("Error : Cannot open input file " + std::string(nameFile));
+  }
+
+  istream inFile(&buf);
+  cout << nameFile << ": Reading and creating dataset structures ..." << std::endl;
+
+  string line;
+  std::vector<std::vector<float>> tempSet; // Use a temporary vector to store data
+
+  while (getline(inFile, line)) {
+    std::istringstream lineStream(line);
+    lineValues.clear();
+    while (lineStream >> x) {
+      lineValues.push_back(x);
+    }
+
+    auto lineSize = static_cast<int>(lineValues.size());
+
+    if (nbAttr != 0 && lineSize != nbAttr) {
+      throw FileContentError("Error : Inconsistent line lengths in file " + std::string(nameFile));
+    }
+
+    // Apply specific checks based on lineSize
+    if (lineSize == 1) {
+      if (nbAttr == 0) {
+        nbAttr = nbOut;
+      }
+      auto classID = static_cast<int>(lineValues[0]);
+      if (classID < 0 || classID >= nbOut) {
+        throw FileContentError("Error : Class ID out of range in file " + std::string(nameFile));
+      }
+    } else if (lineSize == nbIn + 1) {
+      if (nbAttr == 0) {
+        nbAttr = nbIn + nbOut;
+      }
+      auto classID = static_cast<int>(lineValues.back());
+      if (classID < 0 || classID >= nbOut) {
+        throw FileContentError("Error : Class ID out of range in file " + std::string(nameFile));
+      }
+    } else if (lineSize == nbOut || lineSize == nbIn + nbOut) {
+      if (nbAttr == 0) {
+        nbAttr = lineSize;
+      }
+      auto oneHotCount = static_cast<int>(std::count(lineValues.end() - nbOut, lineValues.end(), 1.0f));
+      if (oneHotCount != 1 || std::count_if(lineValues.end() - nbOut, lineValues.end(), [](float val) { return val != 0.0f && val != 1.0f; }) > 0) {
+        throw FileContentError("Error : Invalid one-hot encoding in file " + std::string(nameFile));
+      }
+    } else if (lineSize == nbIn) {
+      if (nbAttr == 0) {
+        nbAttr = lineSize;
+      }
+    } else {
+      throw FileContentError("Error : Invalid line length in file " + std::string(nameFile));
+    }
+
+    // Convert class ID format to one-hot format if necessary
+    if (lineValues.size() == 1 || lineValues.size() == nbIn + 1) {
+      std::vector<float> oneHot(nbOut, 0.0f);
+      auto classID = static_cast<int>(lineValues.back()); // Obtain class ID
+      oneHot[classID] = 1.0f;
+
+      if (lineValues.size() == nbIn + 1) {
+        lineValues.pop_back();                                             // Remove class ID
+        lineValues.insert(lineValues.end(), oneHot.begin(), oneHot.end()); // Append one-hot vector
+      } else {
+        lineValues = oneHot; // Replace with one-hot vector
+      }
+    }
+
+    tempSet.push_back(lineValues);
+  }
+
+  cout << nameFile << ": Read.\n"
+       << endl;
+
+  // Create the final Set based on the temporary vector
+  NbEx = static_cast<int>(tempSet.size());
+  Set = new float *[NbEx];
+
+  for (int i = 0; i < NbEx; ++i) {
+    Set[i] = new float[nbAttr];
+    std::copy(tempSet[i].begin(), tempSet[i].end(), Set[i]);
+  }
+
+  cout << "Number of patterns in file " << nameFile << ": ";
+  cout << NbEx << endl;
+
+  for (int i = 0; i < NbEx; ++i) {
+    std::cout << "Example " << i << ": ";
+    for (int j = 0; j < nbAttr; ++j) {
+      std::cout << Set[i][j] << " ";
+    }
+    std::cout << std::endl;
+  }
+}
+
+///////////////////////////////////////////////////////////////////
+
 DataSet::DataSet(DataSet &bigData, StringInt *listPat) : NbEx(listPat->GetNbEl()), NbAttr(bigData.GetNbAttr())
 
 {
