@@ -9,7 +9,7 @@ void showParams() {
   std::cout << "Obligatory parameters : \n"
             << std::endl;
 
-  std::cout << "fidexGlo -S <test sample(s) data file with data and prediction(if no -p)> ";
+  std::cout << "fidexGlo -S <test sample(s) data file with data and prediction(if no -p), classes may been added here if launching with fidex(-w)> ";
   std::cout << "-R <ruleset input file> ";
   std::cout << "-a <number of attributes>";
   std::cout << "-b <number of classes>";
@@ -30,10 +30,10 @@ void showParams() {
             << std::endl;
   std::cout << "If using fidex :" << std::endl;
   std::cout << "Obligatory :" << std::endl;
-  std::cout << "-T <train dataset file>" << std::endl;
+  std::cout << "-T <train data file>" << std::endl;
   std::cout << "-P <train prediction file>" << std::endl;
-  std::cout << "-C <train true class file>" << std::endl;
-  std::cout << "-c <test true class file>" << std::endl;
+  std::cout << "-C <train true class file, not mendatory if classes are specified in train data file>" << std::endl;
+  std::cout << "-c <test true class file, not mendatory if classes are specified in test data file>" << std::endl;
   std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> [Not mendatory if a rules file is given with -f] " << std::endl;
   std::cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] " << std::endl;
   std::cout << "Options :" << std::endl;
@@ -551,12 +551,6 @@ int fidexGlo(const string &command) {
       if (!trainDataFilePredInit) {
         throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). The train prediction file has to be given with option -P.");
       }
-      if (!trainDataFileTrueClassInit) {
-        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). The train true classes file has to be given with option -C.");
-      }
-      if (!testTrueClassFileInit) {
-        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). The test true classes file has to be given with option -c.");
-      }
       if (!weightsFileInit && !inputRulesFileInit) {
         throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f.");
       } else if (weightsFileInit && inputRulesFileInit) {
@@ -564,10 +558,20 @@ int fidexGlo(const string &command) {
       }
 
       // Get test class data :
-      (testDatas->setClassFromFile(testTrueClassFile, nb_classes));
+      if (!testTrueClassFileInit) {
+        if (!testDatas->getHasClasses()) {
+          throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). The test true classes file has to be given with option -c or classes have to be given in the test data file.");
+        }
+      } else {
+        testDatas->setClassFromFile(testTrueClassFile, nb_classes);
+      }
+
       testSamplesClasses = (*testDatas->getClasses());
 
-      fidexCommand += "fidex -T " + trainDataFile + " -P " + trainDataFilePred + " -C " + trainDataFileTrueClass;
+      fidexCommand += "fidex -T " + trainDataFile + " -P " + trainDataFilePred;
+      if (trainDataFileTrueClassInit) {
+        fidexCommand += " -C " + trainDataFileTrueClass;
+      }
       fidexCommand += " -a " + std::to_string(nb_attributes) + " -b " + std::to_string(nb_classes);
       if (inputRulesFileInit) {
         fidexCommand += " -f " + inputRulesFile;
