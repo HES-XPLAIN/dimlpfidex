@@ -56,20 +56,20 @@ managed = true
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-#script = "build.py"
+#script = "buildcpp.py"
 ignore-vcs = true
 packages = [
 #    "dimlp",
-#    "dimlpfidex",
+    "dimlpfidex",
 #    "fidex",
 #    "fidexCommon",
 #    "fidexGlo",
     "trainings",
 ]
 artifacts = [
-    "dimlpfidex/*.so",
-    "dimlpfidex/*.pyd",
-    "dimlpfidex/*.dll",
+    "**/*.so",
+    "**/*.pyd",
+    "**/*.dll",
 ]
 
 [tool.hatch.build.targets.sdist]
@@ -104,7 +104,7 @@ include = [
 ]
 
 [tool.hatch.build.targets.sdist.force-include]
-"build.py" = "build.py"
+"buildcpp.py" = "buildcpp.py"
 "example.py" = "example.py"
 "CMakeLists.txt" = "CMakeLists.txt"
 ".clang-format" = ".clang-format"
