@@ -577,7 +577,6 @@ float BpNN::ComputeError(
   vector<float> ptrTar;
   const int nbPat = data.GetNbEx();
   const int nbOut = target.GetNbAttr();
-
   for (p = 0, sum = 0.0, good = 0, bad = 0; p < nbPat; p++) {
     ForwardOneExample1(data, p);
 
@@ -793,6 +792,7 @@ BpNN::BpNN(
     int seed)
 
 {
+
   InitRandomGen(seed);
 
   cout << "\n\n-----------------------------------------";

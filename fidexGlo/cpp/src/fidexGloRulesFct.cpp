@@ -696,7 +696,7 @@ int fidexGloRules(const string &command) {
                 nb_attributes,
                 itMax,
                 currentMinNbCov,
-                0.9,
+                1,
                 dropoutDim,
                 dropoutDimParam,
                 dropoutHyp,
