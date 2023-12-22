@@ -228,7 +228,6 @@ DataSet::DataSet(const char nameFile[], int nbIn, int nbOut) {
   filebuf buf;
   float x;
   std::vector<float> lineValues;
-  int nbAttr = 0;
 
   cout << "\n----------------------------------------------------------\n"
        << std::endl;
@@ -242,47 +241,62 @@ DataSet::DataSet(const char nameFile[], int nbIn, int nbOut) {
   string line;
   std::vector<std::vector<float>> tempSet; // Use a temporary vector to store data
 
+  int lineSize = -1;
+
   while (getline(inFile, line)) {
     std::istringstream lineStream(line);
     lineValues.clear();
     while (lineStream >> x) {
       lineValues.push_back(x);
     }
-
-    auto lineSize = static_cast<int>(lineValues.size());
-
-    if (nbAttr != 0 && lineSize != nbAttr) {
-      throw FileContentError("Error : Inconsistent line lengths in file " + std::string(nameFile));
+    if (lineStream.fail() && !lineStream.eof()) {
+      throw FileContentError("Error : Non number found in file " + std::string(nameFile) + ".");
     }
 
-    // Apply specific checks based on lineSize
-    if (lineSize == 1) {
-      if (nbAttr == 0) {
-        nbAttr = nbOut;
+    auto currentLineSize = static_cast<int>(lineValues.size());
+
+    if (lineSize != -1 && currentLineSize != lineSize) {
+      throw FileContentError("Error : Inconsistent line lengths in file " + std::string(nameFile) + ".");
+    }
+
+    // Apply specific checks based on currentLineSize
+    if (currentLineSize == 1) {
+      if (NbAttr == 0) {
+        NbAttr = nbOut;
+        lineSize = currentLineSize;
+      }
+      if (lineValues.back() != std::floor(lineValues[0])) {
+        throw FileContentError("Error : Class ID is not an integer in file " + std::string(nameFile) + ".");
       }
       auto classID = static_cast<int>(lineValues[0]);
       if (classID < 0 || classID >= nbOut) {
-        throw FileContentError("Error : Class ID out of range in file " + std::string(nameFile));
+        throw FileContentError("Error : Class ID out of range in file " + std::string(nameFile) + ".");
       }
-    } else if (lineSize == nbIn + 1) {
-      if (nbAttr == 0) {
-        nbAttr = nbIn + nbOut;
+    } else if (currentLineSize == nbIn + 1) {
+      if (NbAttr == 0) {
+        NbAttr = nbIn + nbOut;
+        lineSize = currentLineSize;
+      }
+      if (lineValues.back() != std::floor(lineValues.back())) {
+        throw FileContentError("Error : Class ID is not an integer in file " + std::string(nameFile) + ".");
       }
       auto classID = static_cast<int>(lineValues.back());
       if (classID < 0 || classID >= nbOut) {
-        throw FileContentError("Error : Class ID out of range in file " + std::string(nameFile));
+        throw FileContentError("Error : Class ID out of range in file " + std::string(nameFile) + ".");
       }
-    } else if (lineSize == nbOut || lineSize == nbIn + nbOut) {
-      if (nbAttr == 0) {
-        nbAttr = lineSize;
+    } else if (currentLineSize == nbOut || currentLineSize == nbIn + nbOut) {
+      if (NbAttr == 0) {
+        NbAttr = currentLineSize;
+        lineSize = currentLineSize;
       }
       auto oneHotCount = static_cast<int>(std::count(lineValues.end() - nbOut, lineValues.end(), 1.0f));
       if (oneHotCount != 1 || std::count_if(lineValues.end() - nbOut, lineValues.end(), [](float val) { return val != 0.0f && val != 1.0f; }) > 0) {
         throw FileContentError("Error : Invalid one-hot encoding in file " + std::string(nameFile));
       }
-    } else if (lineSize == nbIn) {
-      if (nbAttr == 0) {
-        nbAttr = lineSize;
+    } else if (currentLineSize == nbIn) {
+      if (NbAttr == 0) {
+        NbAttr = currentLineSize;
+        lineSize = currentLineSize;
       }
     } else {
       throw FileContentError("Error : Invalid line length in file " + std::string(nameFile));
@@ -313,20 +327,12 @@ DataSet::DataSet(const char nameFile[], int nbIn, int nbOut) {
   Set = new float *[NbEx];
 
   for (int i = 0; i < NbEx; ++i) {
-    Set[i] = new float[nbAttr];
+    Set[i] = new float[NbAttr];
     std::copy(tempSet[i].begin(), tempSet[i].end(), Set[i]);
   }
 
   cout << "Number of patterns in file " << nameFile << ": ";
   cout << NbEx << endl;
-
-  for (int i = 0; i < NbEx; ++i) {
-    std::cout << "Example " << i << ": ";
-    for (int j = 0; j < nbAttr; ++j) {
-      std::cout << Set[i][j] << " ";
-    }
-    std::cout << std::endl;
-  }
 }
 
 ///////////////////////////////////////////////////////////////////

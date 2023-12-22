@@ -5,6 +5,7 @@
 #include "rule.h"
 #include "stringI.h"
 #include <algorithm>
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <sstream>
