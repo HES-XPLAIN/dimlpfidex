@@ -82,7 +82,7 @@ To add new dependencies to the project, either add them to the `pyproject.toml` 
 Compile:
 
 ```shell
-python build.py
+python buildcpp.py
 ```
 
 If CMake complains about not finding pybind11, ensure to activate the shell first.

@@ -62,7 +62,7 @@ jobs:
           python -m pip install .
 
       - name: Compile
-        run: python build.py
+        run: python buildcpp.py
 
       - name: Build archives
         run: python -m build
