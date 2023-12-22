@@ -404,15 +404,15 @@ int dimlpCls(const string &command) {
     {
       if (testTarInit != false) {
 
-        DataSet test(testFile, nbIn);
-        DataSet testClass(testTar, nbOut);
+        DataSet test(testFile, nbIn, nbOut);
+        DataSet testClass(testTar, nbIn, nbOut);
 
         Test = test;
         TestClass = testClass;
       }
 
       else {
-        DataSet data(testFile, nbIn + nbOut);
+        DataSet data(testFile, nbIn, nbOut);
 
         DataSet test(data.GetNbEx());
         DataSet testClass(data.GetNbEx());

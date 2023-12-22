@@ -551,13 +551,13 @@ int dimlpBT(const string &command) {
       throw CommandArgumentException("Give the training file with -L selection please.");
     }
     if (learnTarInit != false) {
-      DataSet train(learnFile, nbIn);
-      DataSet trainClass(learnTar, nbOut);
+      DataSet train(learnFile, nbIn, nbOut);
+      DataSet trainClass(learnTar, nbIn, nbOut);
 
       Train = train;
       TrainClass = trainClass;
     } else {
-      DataSet data(learnFile, nbIn + nbOut);
+      DataSet data(learnFile, nbIn, nbOut);
 
       DataSet train(data.GetNbEx());
       DataSet trainClass(data.GetNbEx());
@@ -572,15 +572,15 @@ int dimlpBT(const string &command) {
 
     if (validFileInit != false) {
       if (validTarInit != false) {
-        DataSet valid(validFile, nbIn);
-        DataSet validClass(validTar, nbOut);
+        DataSet valid(validFile, nbIn, nbOut);
+        DataSet validClass(validTar, nbIn, nbOut);
 
         Valid = valid;
         ValidClass = validClass;
       }
 
       else {
-        DataSet data(validFile, nbIn + nbOut);
+        DataSet data(validFile, nbIn, nbOut);
 
         DataSet valid(data.GetNbEx());
         DataSet validClass(data.GetNbEx());
@@ -596,15 +596,15 @@ int dimlpBT(const string &command) {
 
     if (testFileInit != false) {
       if (testTarInit != false) {
-        DataSet test(testFile, nbIn);
-        DataSet testClass(testTar, nbOut);
+        DataSet test(testFile, nbIn, nbOut);
+        DataSet testClass(testTar, nbIn, nbOut);
 
         Test = test;
         TestClass = testClass;
       }
 
       else {
-        DataSet data(testFile, nbIn + nbOut);
+        DataSet data(testFile, nbIn, nbOut);
 
         DataSet test(data.GetNbEx());
         DataSet testClass(data.GetNbEx());

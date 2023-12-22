@@ -277,7 +277,7 @@ int dimlpPred(const string &command) {
 
     else // if (testFileInit != false)
     {
-      DataSet test(testFile, nbIn);
+      DataSet test(testFile, nbIn, nbOut);
       Test = test;
     }
 
