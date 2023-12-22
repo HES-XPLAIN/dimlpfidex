@@ -50,10 +50,10 @@ mt19937 generateRandom(int seed) {
   return random;
 }
 
-// TODO: comment this
-vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<double>> hyperlocus) {
+tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *p, vector<vector<double>> hyperlocus) {
   mt19937 gen;
   int nbDatas = dataset->getNbSamples();
+  int nbThreads = omp_get_num_procs();
   int nbProblems = 0;
   int nbRulesNotFound = 0;
   int seed = p->getInt(SEED);
@@ -64,7 +64,7 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   vector<int> notCoveredSamples(nbDatas);
   iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
 
-  cout << omp_get_num_procs() << " CPU cores available" << endl
+  cout << nbThreads << " CPU cores available" << endl
        << endl;
 
   if (seed == 0) {
@@ -93,7 +93,6 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
     int cnt = 0;
     int localNbRulesNotFound = 0;
     int localNbProblems = 0;
-    int localMinNbCover = 0;
     int currentMinNbCov = minNbCover;
     float minFidelity = p->getFloat(MIN_FIDELITY);
     string consoleFile = p->getString(CONSOLE_FILE);
@@ -105,9 +104,10 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
 
 #pragma omp for
     for (int idSample = 0; idSample < nbDatas; idSample++) {
-      ruleCreated = false;
-      counterFailed = 0; // If we can't find a good rule after a lot of tries
       cnt += 1;
+      counterFailed = 0; // If we can't find a good rule after a lot of tries
+      ruleCreated = false;
+      currentMinNbCov = minNbCover;
 
       if (omp_get_thread_num() == 0) {
         if (((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && consoleFile.empty()) {
@@ -159,18 +159,34 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
     }
   } // end of parallel section
 
-  cout << rules.size() << " rules created." << endl
-       << endl;
-  cout << "Number of sample with lower covering than " << minNbCover << " is " << nbProblems << endl;
-  cout << "Number of rules not found is " << nbRulesNotFound << endl;
-  cout << "Fidex rules computed" << endl;
+  cout << endl
+       << rules.size() << " rules created." << endl
+       << "Number of sample with lower covering than " << minNbCover << " is " << nbProblems << endl
+       << "Number of rules not found is " << nbRulesNotFound << endl
+       << "Fidex rules computed" << endl;
+
+  return make_tuple(rules, notCoveredSamples);
+}
+
+// TODO: comment this
+vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<double>> hyperlocus) {
+  tuple<vector<Rule>, vector<int>> results = generateRules(dataset, p, hyperlocus);
+  vector<Rule> chosenRules;
+  vector<Rule> rules = get<0>(results);
+  vector<int> notCoveredSamples = get<1>(results);
+
+  // cout << rules.size() << endl;
+  // cout << notCoveredSamples.size() << endl;
+
   cout << "Computing global ruleset..." << endl;
+
+  //! No difference between first rules generation between heuristic 1 and 2
+  // writeRulesFile("heuristic1.rls", rules, dataset->getAttributeNames(), dataset->getClassNames());
 
   // While there is some not covered samples
   int nbRules = 0;
   Rule currentRule;
   vector<int>::iterator it;
-  vector<int> currentRuleSamples;
   vector<int> newNotCoveredSamples;
   vector<int> bestNewNotCoveredSamples;
 
@@ -179,16 +195,15 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
     int bestRule = -1;
     int bestCovering = INT_MAX;
     int currentCovering; // Size of new covering if we choose this rule
+
     for (int r = 0; r < rules.size(); r++) {
       newNotCoveredSamples = notCoveredSamples;
+      currentRule = rules[r];
       // Remove samples that are in current covering
-
-      currentRuleSamples = rules[r].getCoveredSamples();
-
       it = set_difference(newNotCoveredSamples.begin(),
                           newNotCoveredSamples.end(),
-                          currentRuleSamples.begin(),
-                          currentRuleSamples.end(),
+                          currentRule.getCoveredSamples().begin(),
+                          currentRule.getCoveredSamples().end(),
                           newNotCoveredSamples.begin()); // vectors have to be sorted
 
       newNotCoveredSamples.resize(it - newNotCoveredSamples.begin());
@@ -201,13 +216,10 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
       }
     }
 
-    currentRule = rules[bestRule];
     notCoveredSamples = bestNewNotCoveredSamples; // Delete new covered samples
     nbRules += 1;
-    chosenRules.push_back(currentRule);    // add best rule with maximum covering
-    rules.erase(rules.begin() + bestRule); // Remove this rule
-    if (rules.size() < 1)
-      break;
+    chosenRules.push_back(rules[bestRule]); // add best rule with maximum covering
+    rules.erase(rules.begin() + bestRule);  // Remove this rule
   }
 
   cout << chosenRules.size() << " rules selected." << endl;
@@ -216,122 +228,19 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
 }
 
 // TODO: comment this
-// TODO: remove duplicated code (merge with heurisitic 1)
 vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<double>> hyperlocus) {
-  mt19937 gen;
-  int nbDatas = dataset->getDatas()->size();
-  int nbThreads = omp_get_num_procs();
-  int nbProblems = 0;
-  int nbRulesNotFound = 0;
-  int seed = p->getInt(SEED);
-  int minNbCover = p->getInt(MIN_COVERING);
-  int nbThreadsUsed = p->getInt(NB_THREADS_USED);
-  vector<Rule> rules;
+  tuple<vector<Rule>, vector<int>> results = generateRules(dataset, p, hyperlocus);
   vector<Rule> chosenRules;
-  vector<int> samplesNotFound;
-  vector<int> notCoveredSamples(nbDatas);
-  iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
+  vector<Rule> rules = get<0>(results);
+  vector<int> notCoveredSamples = get<1>(results);
 
-  cout << nbThreads << " CPU cores available" << endl
-       << endl;
+  // cout << rules.size() << endl;
+  // cout << notCoveredSamples.size() << endl;
 
-  if (seed == 0) {
-    gen = generateRandom(seed);
-  } else {
-    gen = mt19937(seed);
-  }
-
-#pragma omp parallel num_threads(nbThreadsUsed)
-  {
-    // declaring thread internal variables
-    int threadId = omp_get_thread_num();
-
-#pragma omp critical
-    {
-      cout << "Thread #" << threadId << " initialized, please wait for it to be done." << endl;
-    }
-
-    Rule rule;
-    vector<Rule> localRules;
-    auto exp = FidexAlgo();
-    bool ruleCreated;
-    int counterFailed;
-    int currentMinNbCov = minNbCover;
-    int maxFailedAttempts = p->getInt(MAX_FAILED_ATTEMPTS);
-    int localNbRulesNotFound = 0;
-    int localNbProblems = 0;
-    int localMinNbCover = 0;
-    int cnt = 0;
-    double t1, t2;
-    float minFidelity = p->getFloat(MIN_FIDELITY);
-    Hyperspace hyperspace(hyperlocus);
-    vector<int>::iterator it;
-
-    t1 = omp_get_wtime();
-
-#pragma omp for
-    for (int idSample = 0; idSample < nbDatas; idSample++) {
-      cnt += 1;
-
-      if (omp_get_thread_num() == 0) {
-        if (((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && !p->isStringSet(CONSOLE_FILE)) {
-#pragma omp critical
-          {
-            cout << "Processing : " << int((double(idSample) / (nbDatas / nbThreadsUsed)) * 100) << "%\r";
-            std::cout.flush();
-          }
-        }
-      }
-
-      currentMinNbCov = minNbCover;
-      ruleCreated = false;
-      int counterFailed = 0; // If we can't find a good rule after a lot of tries
-
-      while (!ruleCreated) {
-        ruleCreated = exp.fidex(rule, dataset, p, &hyperspace, idSample, minFidelity, gen);
-
-        if (currentMinNbCov >= 2) {
-          currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
-        } else {
-          counterFailed += 1;
-        }
-        if (counterFailed >= maxFailedAttempts) {
-          localNbRulesNotFound += 1;
-#pragma omp critical
-          {
-            it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
-            if (it != notCoveredSamples.end()) {
-              notCoveredSamples.erase(it);
-            }
-          }
-          break;
-        }
-      }
-      if (currentMinNbCov + 1 < minNbCover) {
-        localNbProblems += 1;
-      }
-      localRules.push_back(rule);
-    }
-
-    t2 = omp_get_wtime();
-
-#pragma omp critical
-    {
-      cout << "Thread #" << threadId << " ended " << cnt << " iterations in " << (t2 - t1) << " seconds." << endl;
-      rules.insert(rules.end(), localRules.begin(), localRules.end());
-      nbProblems += localNbProblems;
-      nbRulesNotFound += localNbRulesNotFound;
-    }
-  } // end of parallel section
-
-  cout << rules.size() << " rules created." << endl
-       << endl;
-  cout << "Number of sample with lower covering than " << minNbCover << " is " << nbProblems << endl;
-  cout << "Number of rules not found is " << nbRulesNotFound << endl;
-  cout << "Fidex rules computed." << endl;
   cout << "Computing global ruleset..." << endl;
-  cout << "\nNumber of sample with lower covering than " << minNbCover << ": " << nbProblems << endl;
-  cout << "Number of rules not found: " << nbRulesNotFound << endl;
+
+  //! No difference between first rules generation between heuristic 1 and 2
+  // writeRulesFile("heuristic2.rls", rules, dataset->getAttributeNames(), dataset->getClassNames());
 
   // Sort the rules(dataIds) depending of their covering size
   vector<int> dataIds = notCoveredSamples;
@@ -363,8 +272,8 @@ vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<doubl
       nbRules += 1;
       chosenRules.push_back(currentRule); // add best rule with maximum covering
     }
-    ancienNotCoveringSize = static_cast<int>(notCoveredSamples.size());
 
+    ancienNotCoveringSize = static_cast<int>(notCoveredSamples.size());
     dataId += 1;
   }
 
