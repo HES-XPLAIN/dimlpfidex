@@ -42,36 +42,21 @@ void showRulesParams() {
        << endl;
 }
 
-mt19937 generateRandom(int seed) {
-  auto currentTime = high_resolution_clock::now();
-  auto seedValue = currentTime.time_since_epoch().count();
-  mt19937 random(seedValue);
-
-  return random;
-}
-
 tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *p, vector<vector<double>> hyperlocus) {
-  mt19937 gen;
-  int nbDatas = dataset->getNbSamples();
-  int nbThreads = omp_get_num_procs();
   int nbProblems = 0;
+  vector<Rule> rules;
   int nbRulesNotFound = 0;
+  vector<Rule> chosenRules;
   int seed = p->getInt(SEED);
+  int nbThreads = omp_get_num_procs();
+  int nbDatas = dataset->getNbSamples();
+  vector<int> notCoveredSamples(nbDatas);
   int minNbCover = p->getInt(MIN_COVERING);
   int nbThreadsUsed = p->getInt(NB_THREADS_USED);
-  vector<Rule> rules;
-  vector<Rule> chosenRules;
-  vector<int> notCoveredSamples(nbDatas);
   iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
 
   cout << nbThreads << " CPU cores available" << endl
        << endl;
-
-  if (seed == 0) {
-    gen = generateRandom(seed);
-  } else {
-    gen = mt19937(seed);
-  }
 
 #pragma omp parallel num_threads(nbThreadsUsed)
   {
@@ -84,21 +69,21 @@ tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *
     }
 
     Rule rule;
-    vector<Rule> localRules;
-    auto exp = FidexAlgo();
+    double t1, t2;
     bool ruleCreated;
     int counterFailed;
-    double t1, t2;
+    vector<Rule> localRules;
+    vector<int>::iterator it;
 
     int cnt = 0;
-    int localNbRulesNotFound = 0;
     int localNbProblems = 0;
+    int localNbRulesNotFound = 0;
     int currentMinNbCov = minNbCover;
+    Hyperspace hyperspace(hyperlocus);
     float minFidelity = p->getFloat(MIN_FIDELITY);
     string consoleFile = p->getString(CONSOLE_FILE);
     int maxFailedAttempts = p->getInt(MAX_FAILED_ATTEMPTS);
-    Hyperspace hyperspace(hyperlocus);
-    vector<int>::iterator it;
+    Fidex fidex = Fidex(dataset, p, &hyperspace, seed);
 
     t1 = omp_get_wtime();
 
@@ -120,7 +105,7 @@ tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *
       }
 
       while (!ruleCreated) {
-        ruleCreated = exp.fidex(rule, dataset, p, &hyperspace, idSample, minFidelity, gen);
+        ruleCreated = fidex.compute(&rule, idSample, minFidelity);
 
         if (currentMinNbCov >= 2) {
           currentMinNbCov -= 1;
@@ -287,27 +272,20 @@ vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   Rule rule;
   mt19937 gen;
   int idSample;
-  int currentMinNbCov;
-  bool ruleCreated;
-  auto exp = FidexAlgo();
   int nbRules = 0;
+  bool ruleCreated;
   int nbProblems = 0;
+  int currentMinNbCov;
   int nbRulesNotFound = 0;
-  int seed = p->getInt(SEED);
-  int nbDatas = dataset->getDatas()->size();
-  int minNbCover = p->getInt(MIN_COVERING);
-  int maxFailedAttempts = p->getInt(MAX_FAILED_ATTEMPTS);
-  float minFidelity = p->getFloat(MIN_FIDELITY);
-  Hyperspace hyperspace(hyperlocus);
-  vector<int> notCoveredSamples(nbDatas);
   vector<Rule> chosenRules;
-
-  if (seed == 0) {
-    gen = generateRandom(seed);
-  } else {
-    gen = mt19937(seed);
-  }
-
+  int seed = p->getInt(SEED);
+  Hyperspace hyperspace(hyperlocus);
+  int minNbCover = p->getInt(MIN_COVERING);
+  int nbDatas = dataset->getDatas()->size();
+  vector<int> notCoveredSamples(nbDatas);
+  float minFidelity = p->getFloat(MIN_FIDELITY);
+  Fidex fidex = Fidex(dataset, p, &hyperspace, seed);
+  int maxFailedAttempts = p->getInt(MAX_FAILED_ATTEMPTS);
   iota(begin(notCoveredSamples), end(notCoveredSamples), 0);      // Vector from 0 to nbDatas-1
   shuffle(begin(notCoveredSamples), end(notCoveredSamples), gen); //  Sort data randomly
 
@@ -327,7 +305,7 @@ vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<doubl
     ruleCreated = false;
     int counterFailed = 0; // If we can't find a good rule after a lot of tries
     while (!ruleCreated) {
-      ruleCreated = exp.fidex(rule, dataset, p, &hyperspace, idSample, minFidelity, gen);
+      ruleCreated = fidex.compute(&rule, idSample, minFidelity);
 
       if (currentMinNbCov >= 2) {
         currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering

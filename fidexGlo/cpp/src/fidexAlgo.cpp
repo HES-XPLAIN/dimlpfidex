@@ -1,29 +1,39 @@
 #include "fidexAlgo.h"
 
-FidexAlgo::FidexAlgo() = default;
+Fidex::Fidex(DataSetFid *dataset, Parameters *parameters, Hyperspace *hyperspace, int seed) {
+  _dataset = dataset;
+  _parameters = parameters;
+  _hyperspace = hyperspace;
 
-bool FidexAlgo::fidex(Rule &rule,
-                      DataSetFid *dataset,
-                      Parameters *p,
-                      Hyperspace *hyperspace,
-                      int idSample,
-                      double minFidelity,
-                      mt19937 gen) const {
+  if (seed == 0) {
+    _rnd = generateRandom(seed);
+  } else {
+    _rnd = mt19937(seed);
+  }
+}
 
-  // Get diverse elements of the provided dataset
-  int nbDatas = dataset->getNbSamples();
-  int nbAttributes = dataset->getNbAttributes();
-  vector<vector<double>> *trainData = dataset->getDatas();
-  vector<int> *trainPreds = dataset->getPredictions();
-  vector<vector<double>> *trainOutputValuesPredictions = dataset->getOutputValuesPredictions();
-  vector<int> *trainTrueClass = dataset->getClasses();
+mt19937 Fidex::generateRandom(int seed) {
+  auto currentTime = high_resolution_clock::now();
+  auto seedValue = currentTime.time_since_epoch().count();
+  mt19937 random(seedValue);
+
+  return random;
+}
+
+bool Fidex::compute(Rule *rule, int idSample, float minFidelity) {
+  int nbDatas = _dataset->getNbSamples();
+  int nbAttributes = _dataset->getNbAttributes();
+  vector<vector<double>> *trainData = _dataset->getDatas();
+  vector<int> *trainPreds = _dataset->getPredictions();
+  vector<vector<double>> *trainOutputValuesPredictions = _dataset->getOutputValuesPredictions();
+  vector<int> *trainTrueClass = _dataset->getClasses();
   vector<double> *mainSampleValues = &(*trainData)[idSample];
   int mainSamplePred = (*trainPreds)[idSample];
-  int nbInputs = hyperspace->getHyperLocus().size();
-  int itMax = p->getInt(MAX_ITERATIONS);
-  int minNbCover = p->getInt(MIN_COVERING);
-  float dropoutDim = p->getFloat(DROPOUT_DIM);
-  float dropoutHyp = p->getFloat(DROPOUT_HYP);
+  int nbInputs = _hyperspace->getHyperLocus().size();
+  int itMax = _parameters->getInt(MAX_ITERATIONS);
+  int minNbCover = _parameters->getInt(MIN_COVERING);
+  float dropoutDim = _parameters->getFloat(DROPOUT_DIM);
+  float dropoutHyp = _parameters->getFloat(DROPOUT_HYP);
 
   uniform_real_distribution<double> dis(0.0, 1.0);
 
@@ -32,14 +42,14 @@ bool FidexAlgo::fidex(Rule &rule,
   iota(begin(coveredSamples), end(coveredSamples), 0); // Vector from 0 to len(coveredSamples)-1
 
   // Store covering and compute initial fidelty
-  hyperspace->getHyperbox()->setCoveredSamples(coveredSamples);
-  hyperspace->getHyperbox()->computeFidelity(mainSamplePred, trainPreds); // Compute fidelity of initial hyperbox
+  _hyperspace->getHyperbox()->setCoveredSamples(coveredSamples);
+  _hyperspace->getHyperbox()->computeFidelity(mainSamplePred, trainPreds); // Compute fidelity of initial hyperbox
   // If we come from fidexGlo, we reset hyperbox discriminativeHyperplans
-  hyperspace->getHyperbox()->resetDiscriminativeHyperplans();
+  _hyperspace->getHyperbox()->resetDiscriminativeHyperplans();
   int nbIt = 0;
 
-  while (hyperspace->getHyperbox()->getFidelity() != 1 && nbIt < itMax) { // While fidelity of our hyperbox is not 100%
-    unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                    // best hyperbox to choose for next step
+  while (_hyperspace->getHyperbox()->getFidelity() < minFidelity && nbIt < itMax) { // While fidelity of our hyperbox is not high enough
+    unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                              // best hyperbox to choose for next step
     unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());
     double mainSampleValue;
     int attribut;
@@ -51,7 +61,7 @@ bool FidexAlgo::fidex(Rule &rule,
     // Randomize dimensions
     vector<int> dimensions(nbInputs);
     iota(begin(dimensions), end(dimensions), 0); // Vector from 0 to nbIn-1
-    shuffle(begin(dimensions), end(dimensions), gen);
+    shuffle(begin(dimensions), end(dimensions), _rnd);
 
     vector<int> currentCovSamp;
     for (int d = 0; d < nbInputs; d++) {
@@ -64,26 +74,26 @@ bool FidexAlgo::fidex(Rule &rule,
       mainSampleValue = (*mainSampleValues)[attribut];
 
       // Test if we dropout this dimension
-      if (isless(dis(gen), dropoutDim)) {
+      if (isless(dis(_rnd), dropoutDim)) {
         continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
       }
       bool maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
 
-      size_t nbHyp = hyperspace->getHyperLocus()[dimension].size();
+      size_t nbHyp = _hyperspace->getHyperLocus()[dimension].size();
       if (nbHyp == 0) {
         continue; // No data on this dimension
       }
       for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
 
         // Test if we dropout this hyperplan
-        if (isless(dis(gen), dropoutHyp)) {
+        if (isless(dis(_rnd), dropoutHyp)) {
           continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
         }
 
-        double hypValue = hyperspace->getHyperLocus()[dimension][k];
-        bool mainSampleGreater = hypValue <= mainSampleValue;                                                                                     // Check if main sample value is on the right of the hyperplan
-        currentHyperbox->computeCoveredSamples(hyperspace->getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
-        currentHyperbox->computeFidelity(mainSamplePred, trainPreds);                                                                             // Compute fidelity
+        double hypValue = _hyperspace->getHyperLocus()[dimension][k];
+        bool mainSampleGreater = hypValue <= mainSampleValue;                                                                                      // Check if main sample value is on the right of the hyperplan
+        currentHyperbox->computeCoveredSamples(_hyperspace->getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
+        currentHyperbox->computeFidelity(mainSamplePred, trainPreds);                                                                              // Compute fidelity
         // If the fidelity is better or is same with better covering but not if covering size is lower than minNbCover
         if (currentHyperbox->getCoveredSamples().size() >= minNbCover && (currentHyperbox->getFidelity() > bestHyperbox->getFidelity() || (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() > bestHyperbox->getCoveredSamples().size()))) {
           bestHyperbox->setFidelity(currentHyperbox->getFidelity()); // Update best hyperbox
@@ -113,29 +123,164 @@ bool FidexAlgo::fidex(Rule &rule,
         indexBestHyp = (maxHyp + minHyp) / 2;
       }
       // antecedant is not added if fidelity and covering size did not increase
-      if (bestHyperbox->getFidelity() > hyperspace->getHyperbox()->getFidelity() || (bestHyperbox->getFidelity() == hyperspace->getHyperbox()->getFidelity() && bestHyperbox->getCoveredSamples().size() > hyperspace->getHyperbox()->getCoveredSamples().size())) {
-        hyperspace->getHyperbox()->setFidelity(bestHyperbox->getFidelity());
-        hyperspace->getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
-        hyperspace->getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
+      if (bestHyperbox->getFidelity() > _hyperspace->getHyperbox()->getFidelity() || (bestHyperbox->getFidelity() == _hyperspace->getHyperbox()->getFidelity() && bestHyperbox->getCoveredSamples().size() > _hyperspace->getHyperbox()->getCoveredSamples().size())) {
+        _hyperspace->getHyperbox()->setFidelity(bestHyperbox->getFidelity());
+        _hyperspace->getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
+        _hyperspace->getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
       }
     }
     nbIt += 1;
   }
 
-  if (hyperspace->getHyperbox()->getFidelity() != 1) {
+  if (_hyperspace->getHyperbox()->getFidelity() < minFidelity) {
     return false;
   }
 
   // Compute rule accuracy
   double ruleAccuracy;
-  ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass); // Percentage of correct model prediction on samples covered by the rule
+  ruleAccuracy = _hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass); // Percentage of correct model prediction on samples covered by the rule
 
   double ruleConfidence;
-  ruleConfidence = hyperspace->computeRuleConfidence(trainOutputValuesPredictions, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples
-  rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence);
+  ruleConfidence = _hyperspace->computeRuleConfidence(trainOutputValuesPredictions, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples
+  *rule = _hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence);
 
   return true;
 }
+
+// bool FidexAlgo::fidex(Rule &rule,
+//                       DataSetFid *dataset,
+//                       Parameters *p,
+//                       Hyperspace *hyperspace,
+//                       int idSample,
+//                       double minFidelity,
+//                       mt19937 gen) const {
+
+//   // Get diverse elements of the provided dataset
+//   int nbDatas = dataset->getNbSamples();
+//   int nbAttributes = dataset->getNbAttributes();
+//   vector<vector<double>> *trainData = dataset->getDatas();
+//   vector<int> *trainPreds = dataset->getPredictions();
+//   vector<vector<double>> *trainOutputValuesPredictions = dataset->getOutputValuesPredictions();
+//   vector<int> *trainTrueClass = dataset->getClasses();
+//   vector<double> *mainSampleValues = &(*trainData)[idSample];
+//   int mainSamplePred = (*trainPreds)[idSample];
+//   int nbInputs = hyperspace->getHyperLocus().size();
+//   int itMax = p->getInt(MAX_ITERATIONS);
+//   int minNbCover = p->getInt(MIN_COVERING);
+//   float dropoutDim = p->getFloat(DROPOUT_DIM);
+//   float dropoutHyp = p->getFloat(DROPOUT_HYP);
+
+//   // Initialize uniform distribution
+//   uniform_real_distribution<double> dis(0.0, 1.0);
+
+//   // Compute initial covering
+//   vector<int> coveredSamples((*trainData).size());     // Samples covered by the hyperbox
+//   iota(begin(coveredSamples), end(coveredSamples), 0); // Vector from 0 to len(coveredSamples)-1
+
+//   // Store covering and compute initial fidelty
+//   hyperspace->getHyperbox()->setCoveredSamples(coveredSamples);
+//   hyperspace->getHyperbox()->computeFidelity(mainSamplePred, trainPreds); // Compute fidelity of initial hyperbox
+//   // If we come from fidexGlo, we reset hyperbox discriminativeHyperplans
+//   hyperspace->getHyperbox()->resetDiscriminativeHyperplans();
+
+//   while (hyperspace->getHyperbox()->getFidelity() < minFidelity && itMax) { // While fidelity of our hyperbox is not high enough
+//     unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                      // best hyperbox to choose for next step
+//     unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());
+//     double mainSampleValue;
+//     int attribut;
+//     int dimension;
+//     int indexBestHyp = -1;
+//     int bestDimension = -1;
+//     int minHyp = -1; // Index of first hyperplan without any change of the best hyperplan
+//     int maxHyp = -1;
+//     // Randomize dimensions
+//     vector<int> dimensions(nbInputs);
+//     iota(begin(dimensions), end(dimensions), 0); // Vector from 0 to nbIn-1
+//     shuffle(begin(dimensions), end(dimensions), gen);
+
+//     vector<int> currentCovSamp;
+//     for (int d = 0; d < nbInputs; d++) {
+//       if (bestHyperbox->getFidelity() >= minFidelity) {
+//         break;
+//       }
+
+//       dimension = dimensions[d];
+//       attribut = dimension % nbAttributes;
+//       mainSampleValue = (*mainSampleValues)[attribut];
+
+//       // Test if we dropout this dimension
+//       if (dis(gen) < dropoutDim) {
+//         continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
+//       }
+//       bool maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
+
+//       size_t nbHyp = hyperspace->getHyperLocus()[dimension].size();
+//       if (nbHyp == 0) {
+//         continue; // No data on this dimension
+//       }
+//       for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
+
+//         // Test if we dropout this hyperplan
+//         if (dis(gen) < dropoutHyp) {
+//           continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
+//         }
+
+//         double hypValue = hyperspace->getHyperLocus()[dimension][k];
+//         bool mainSampleGreater = hypValue <= mainSampleValue;                                                                                     // Check if main sample value is on the right of the hyperplan
+//         currentHyperbox->computeCoveredSamples(hyperspace->getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
+//         currentHyperbox->computeFidelity(mainSamplePred, trainPreds);                                                                             // Compute fidelity
+//         // If the fidelity is better or is same with better covering but not if covering size is lower than minNbCover
+//         if (currentHyperbox->getCoveredSamples().size() >= minNbCover && (currentHyperbox->getFidelity() > bestHyperbox->getFidelity() || (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() > bestHyperbox->getCoveredSamples().size()))) {
+//           bestHyperbox->setFidelity(currentHyperbox->getFidelity()); // Update best hyperbox
+//           bestHyperbox->setCoveredSamples(currentHyperbox->getCoveredSamples());
+//           indexBestHyp = k;
+//           minHyp = k; // New best
+//           maxHyp = -1;
+//           maxHypBlocked = false; // We can increase maxHyp if next is the same
+//           bestDimension = dimension;
+//         } else if (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() == bestHyperbox->getCoveredSamples().size()) {
+//           if (!maxHypBlocked) {
+//             maxHyp = k; // Index of last (for now) hyperplan which is equal to the best.
+//           }
+//         } else {
+//           maxHypBlocked = true; // we can't increase maxHyp anymmore for this best hyperplan
+//         }
+
+//         if (bestHyperbox->getFidelity() >= minFidelity) {
+//           break;
+//         }
+//       }
+//     }
+
+//     // Modication of our hyperbox with the best at this iteration and modify discriminative hyperplans
+//     if (indexBestHyp != -1 && bestDimension != -1) { // If we found any good dimension with good hyperplan (with enough covering)
+//       if (maxHyp != -1) {
+//         indexBestHyp = (maxHyp + minHyp) / 2;
+//       }
+//       // antecedant is not added if fidelity and covering size did not increase
+//       if (bestHyperbox->getFidelity() > hyperspace->getHyperbox()->getFidelity() || (bestHyperbox->getFidelity() == hyperspace->getHyperbox()->getFidelity() && bestHyperbox->getCoveredSamples().size() > hyperspace->getHyperbox()->getCoveredSamples().size())) {
+//         hyperspace->getHyperbox()->setFidelity(bestHyperbox->getFidelity());
+//         hyperspace->getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
+//         hyperspace->getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
+//       }
+//     }
+//     itMax -= 1;
+//   }
+
+//   if (hyperspace->getHyperbox()->getFidelity() < minFidelity) {
+//     return false;
+//   }
+
+//   // Compute rule accuracy
+//   double ruleAccuracy;
+//   ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass); // Percentage of correct model prediction on samples covered by the rule
+
+//   double ruleConfidence;
+//   ruleConfidence = hyperspace->computeRuleConfidence(trainOutputValuesPredictions, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples
+//   rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence);
+
+//   return true;
+// }
 
 /*
 
