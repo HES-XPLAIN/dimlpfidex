@@ -55,6 +55,5 @@ jobs:
         run: poetry install --no-root
 
       - name: Compile
-        if: runner.os != 'Windows'
         run: |
           poetry build
