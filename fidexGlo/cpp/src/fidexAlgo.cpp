@@ -25,7 +25,6 @@ bool FidexAlgo::fidex(Rule &rule,
   float dropoutDim = p->getFloat(DROPOUT_DIM);
   float dropoutHyp = p->getFloat(DROPOUT_HYP);
 
-  // Initialize uniform distribution
   uniform_real_distribution<double> dis(0.0, 1.0);
 
   // Compute initial covering
@@ -37,9 +36,10 @@ bool FidexAlgo::fidex(Rule &rule,
   hyperspace->getHyperbox()->computeFidelity(mainSamplePred, trainPreds); // Compute fidelity of initial hyperbox
   // If we come from fidexGlo, we reset hyperbox discriminativeHyperplans
   hyperspace->getHyperbox()->resetDiscriminativeHyperplans();
+  int nbIt = 0;
 
-  while (hyperspace->getHyperbox()->getFidelity() < minFidelity && itMax) { // While fidelity of our hyperbox is not high enough
-    unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                      // best hyperbox to choose for next step
+  while (hyperspace->getHyperbox()->getFidelity() != 1 && nbIt < itMax) { // While fidelity of our hyperbox is not 100%
+    unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                    // best hyperbox to choose for next step
     unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());
     double mainSampleValue;
     int attribut;
@@ -55,7 +55,7 @@ bool FidexAlgo::fidex(Rule &rule,
 
     vector<int> currentCovSamp;
     for (int d = 0; d < nbInputs; d++) {
-      if (bestHyperbox->getFidelity() >= minFidelity) {
+      if (bestHyperbox->getFidelity() == 1) {
         break;
       }
 
@@ -64,7 +64,7 @@ bool FidexAlgo::fidex(Rule &rule,
       mainSampleValue = (*mainSampleValues)[attribut];
 
       // Test if we dropout this dimension
-      if (dis(gen) < dropoutDim) {
+      if (isless(dis(gen), dropoutDim)) {
         continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
       }
       bool maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
@@ -76,7 +76,7 @@ bool FidexAlgo::fidex(Rule &rule,
       for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
 
         // Test if we dropout this hyperplan
-        if (dis(gen) < dropoutHyp) {
+        if (isless(dis(gen), dropoutHyp)) {
           continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
         }
 
@@ -101,7 +101,7 @@ bool FidexAlgo::fidex(Rule &rule,
           maxHypBlocked = true; // we can't increase maxHyp anymmore for this best hyperplan
         }
 
-        if (bestHyperbox->getFidelity() >= minFidelity) {
+        if (bestHyperbox->getFidelity() == 1) {
           break;
         }
       }
@@ -119,10 +119,10 @@ bool FidexAlgo::fidex(Rule &rule,
         hyperspace->getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
       }
     }
-    itMax -= 1;
+    nbIt += 1;
   }
 
-  if (hyperspace->getHyperbox()->getFidelity() < minFidelity) {
+  if (hyperspace->getHyperbox()->getFidelity() != 1) {
     return false;
   }
 

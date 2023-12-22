@@ -8,6 +8,7 @@
 #include <ctime>
 #include <fstream>
 #include <iostream>
+#include <math.h>
 #include <numeric>
 #include <random>
 #include <sstream>
