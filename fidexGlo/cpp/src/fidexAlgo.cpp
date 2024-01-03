@@ -23,11 +23,11 @@ mt19937 Fidex::generateRandom(int seed) {
 bool Fidex::compute(Rule *rule, int idSample, float minFidelity) {
   int nbDatas = _dataset->getNbSamples();
   int nbAttributes = _dataset->getNbAttributes();
-  vector<vector<double>> *trainData = _dataset->getDatas();
   vector<int> *trainPreds = _dataset->getPredictions();
-  vector<vector<double>> *trainOutputValuesPredictions = _dataset->getOutputValuesPredictions();
   vector<int> *trainTrueClass = _dataset->getClasses();
+  vector<vector<double>> *trainData = _dataset->getDatas();
   vector<double> *mainSampleValues = &(*trainData)[idSample];
+  vector<vector<double>> *trainOutputValuesPredictions = _dataset->getOutputValuesPredictions();
   int mainSamplePred = (*trainPreds)[idSample];
   int nbInputs = _hyperspace->getHyperLocus().size();
   int itMax = _parameters->getInt(MAX_ITERATIONS);
@@ -44,10 +44,9 @@ bool Fidex::compute(Rule *rule, int idSample, float minFidelity) {
   // Store covering and compute initial fidelty
   _hyperspace->getHyperbox()->setCoveredSamples(coveredSamples);
   _hyperspace->getHyperbox()->computeFidelity(mainSamplePred, trainPreds); // Compute fidelity of initial hyperbox
-  // If we come from fidexGlo, we reset hyperbox discriminativeHyperplans
-  _hyperspace->getHyperbox()->resetDiscriminativeHyperplans();
-  int nbIt = 0;
+  _hyperspace->getHyperbox()->resetDiscriminativeHyperplans();             // If we come from fidexGlo, we reset hyperbox discriminativeHyperplans
 
+  int nbIt = 0;
   while (_hyperspace->getHyperbox()->getFidelity() < minFidelity && nbIt < itMax) { // While fidelity of our hyperbox is not high enough
     unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                              // best hyperbox to choose for next step
     unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());

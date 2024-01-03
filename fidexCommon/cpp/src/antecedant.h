@@ -27,7 +27,10 @@ public:
 
 // OPERATOR OVERLOAD TO EASE PRINTING PURPOSES
 inline ostream &operator<<(ostream &stream, const Antecedant &antecedant) {
-  return stream << " " << antecedant.getAttribute() << " " << antecedant.getInequality() << " " << antecedant.getValue() << " ";
+  return stream << " "
+                << antecedant.getAttribute() << " "
+                << antecedant.getInequality() << " "
+                << antecedant.getValue() << " ";
 }
 
 #endif

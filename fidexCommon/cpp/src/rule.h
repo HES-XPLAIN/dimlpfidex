@@ -2,6 +2,7 @@
 #define RULE_H
 #include "antecedant.h"
 #include "checkFun.h"
+#include <algorithm>
 #include <iostream>
 #include <ostream>
 #include <sstream>

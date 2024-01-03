@@ -42,21 +42,16 @@ void showRulesParams() {
        << endl;
 }
 
+// TODO: comment this
 tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *p, vector<vector<double>> hyperlocus) {
-  int nbProblems = 0;
   vector<Rule> rules;
+  int nbProblems = 0;
   int nbRulesNotFound = 0;
-  vector<Rule> chosenRules;
-  int seed = p->getInt(SEED);
-  int nbThreads = omp_get_num_procs();
   int nbDatas = dataset->getNbSamples();
   vector<int> notCoveredSamples(nbDatas);
   int minNbCover = p->getInt(MIN_COVERING);
   int nbThreadsUsed = p->getInt(NB_THREADS_USED);
   iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
-
-  cout << nbThreads << " CPU cores available" << endl
-       << endl;
 
 #pragma omp parallel num_threads(nbThreadsUsed)
   {
@@ -78,6 +73,7 @@ tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *
     int cnt = 0;
     int localNbProblems = 0;
     int localNbRulesNotFound = 0;
+    int seed = p->getInt(SEED);
     int currentMinNbCov = minNbCover;
     Hyperspace hyperspace(hyperlocus);
     float minFidelity = p->getFloat(MIN_FIDELITY);
@@ -99,14 +95,13 @@ tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *
 #pragma omp critical
           {
             cout << "Processing : " << int((double(idSample) / (nbDatas / nbThreadsUsed)) * 100) << "%\r";
-            std::cout.flush();
+            cout.flush();
           }
         }
       }
 
       while (!ruleCreated) {
         ruleCreated = fidex.compute(&rule, idSample, minFidelity);
-
         if (currentMinNbCov >= 2) {
           currentMinNbCov -= 1;
         } else {
@@ -134,13 +129,18 @@ tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *
     }
     t2 = omp_get_wtime();
 
-// gathering local data to main process
-#pragma omp critical
-    {
-      cout << "Thread #" << threadId << " ended " << cnt << " iterations in " << (t2 - t1) << " seconds." << endl;
-      rules.insert(rules.end(), localRules.begin(), localRules.end());
-      nbProblems += localNbProblems;
-      nbRulesNotFound += localNbRulesNotFound;
+    // gathering local data to main process
+#pragma omp for ordered
+    for (int i = 0; i < nbThreadsUsed; i++) {
+#pragma omp ordered
+      {
+        if (i == threadId) {
+          cout << "Thread #" << threadId << " ended " << cnt << " iterations in " << (t2 - t1) << " seconds." << endl;
+          rules.insert(rules.end(), localRules.begin(), localRules.end());
+          nbProblems += localNbProblems;
+          nbRulesNotFound += localNbRulesNotFound;
+        }
+      }
     }
   } // end of parallel section
 
@@ -149,6 +149,12 @@ tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *
        << "Number of sample with lower covering than " << minNbCover << " is " << nbProblems << endl
        << "Number of rules not found is " << nbRulesNotFound << endl
        << "Fidex rules computed" << endl;
+
+  sort(rules.begin(), rules.end(), [&rules](Rule r1, Rule r2) {
+    return r1.getCoveredSamples().size() > r2.getCoveredSamples().size();
+  });
+
+  writeRulesFile(p->getString(RULES_FILE) + ".RR", rules, dataset->getAttributeNames(), dataset->getClassNames());
 
   return make_tuple(rules, notCoveredSamples);
 }
@@ -160,13 +166,7 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   vector<Rule> rules = get<0>(results);
   vector<int> notCoveredSamples = get<1>(results);
 
-  // cout << rules.size() << endl;
-  // cout << notCoveredSamples.size() << endl;
-
   cout << "Computing global ruleset..." << endl;
-
-  //! No difference between first rules generation between heuristic 1 and 2
-  // writeRulesFile("heuristic1.rls", rules, dataset->getAttributeNames(), dataset->getClassNames());
 
   // While there is some not covered samples
   int nbRules = 0;
@@ -219,19 +219,10 @@ vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   vector<Rule> rules = get<0>(results);
   vector<int> notCoveredSamples = get<1>(results);
 
-  // cout << rules.size() << endl;
-  // cout << notCoveredSamples.size() << endl;
-
   cout << "Computing global ruleset..." << endl;
-
-  //! No difference between first rules generation between heuristic 1 and 2
-  // writeRulesFile("heuristic2.rls", rules, dataset->getAttributeNames(), dataset->getClassNames());
 
   // Sort the rules(dataIds) depending of their covering size
   vector<int> dataIds = notCoveredSamples;
-  sort(rules.begin(), rules.end(), [&rules](Rule r1, Rule r2) {
-    return r1.getCoveredSamples().size() > r2.getCoveredSamples().size();
-  });
 
   // While there is some not covered samples
   int dataId = 0;
@@ -240,6 +231,7 @@ vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   vector<int>::iterator ite;
   int ancienNotCoveringSize = static_cast<int>(notCoveredSamples.size());
 
+  //! Something int this loop triggers a SEGFAULT
   while (!notCoveredSamples.empty()) {
     currentRule = rules[dataId];
 
@@ -382,9 +374,9 @@ void checkParametersLogicValues(Parameters *p) {
  * @param hasConfidence whether or not Rule's confidence is written in file.
  * @param attributes list of the attributes names, used to write Rules's Antecedants with attributes explicit name instead of a "X" variable.
  * @param classes list of class names, used to write Rule's class with class explicit name instead of its numerical representation.
- * @return tuple<int, int>
+ * @return tuple<double, double>
  */
-tuple<int, int> writeRulesFile(string filename, const vector<Rule> rules, const vector<string> *attributes, const vector<string> *classes) {
+tuple<double, double> writeRulesFile(string filename, const vector<Rule> rules, const vector<string> *attributes, const vector<string> *classes) {
   if (rules.empty()) {
     cout << "Warning: cannot write to file \"" << filename << "\", generated rules list is empty.";
     return make_tuple(0, 0);
@@ -409,8 +401,8 @@ tuple<int, int> writeRulesFile(string filename, const vector<Rule> rules, const 
 
   if (file.is_open()) {
     file << "Number of rules : " << nbRules
-         << ", mean sample covering number per rule : " << meanCovSize
-         << ", mean number of antecedents per rule : " << meanNbAntecedents
+         << ", mean sample covering number per rule : " << formattingDoubleToString(meanCovSize)
+         << ", mean number of antecedents per rule : " << formattingDoubleToString(meanNbAntecedents)
          << endl;
 
     if (attributes && !attributes->empty()) {
@@ -571,7 +563,7 @@ int fidexGloRules(const string &command) {
       throw InternalError("Error : the size of hyperLocus - " + to_string(nbIn) + " is not a multiple of the number of attributs - " + to_string(nbAttributes));
     }
 
-    cout << "Hyperspace created" << endl
+    cout << "Hyperspace created." << endl
          << endl;
 
     // Samples not yet covered by any rules
@@ -613,7 +605,7 @@ int fidexGloRules(const string &command) {
 
     nbRules = generatedRules.size();
 
-    cout << "Global ruleset Computed" << endl
+    cout << "Global ruleset Computed." << endl
          << endl;
 
     cout << nbRules << " rules selected." << endl

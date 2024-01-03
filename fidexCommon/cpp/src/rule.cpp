@@ -10,6 +10,12 @@
  * @param confidence double indicating the confidence of the rule.
  */
 Rule::Rule(vector<Antecedant> antecedants, vector<int> coveredSamples, int out_class, double fidelity, double accuracy, double confidence) {
+
+  // not sure that sorting is usefull
+  sort(antecedants.begin(), antecedants.end(), [&antecedants](Antecedant a1, Antecedant a2) {
+    return a1.getValue() > a2.getValue();
+  });
+
   setAntecedants(antecedants);
   setCoveredSamples(coveredSamples);
   setOutputClass(out_class);
@@ -46,7 +52,7 @@ string Rule::toString(const vector<string> *attributes, const vector<string> *cl
       result << "<";
     }
 
-    result << to_string(a.getValue()) << " ";
+    result << formattingDoubleToString(a.getValue()) << " ";
   }
 
   if (classes && !classes->empty()) {
