@@ -10,6 +10,7 @@
 #include <iostream>
 #include <math.h>
 #include <numeric>
+#include <omp.h>
 #include <random>
 #include <sstream>
 #include <time.h>

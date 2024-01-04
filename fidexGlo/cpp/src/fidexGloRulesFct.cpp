@@ -85,10 +85,9 @@ tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *
 
 #pragma omp for
     for (int idSample = 0; idSample < nbDatas; idSample++) {
-      cnt += 1;
-      counterFailed = 0; // If we can't find a good rule after a lot of tries
       ruleCreated = false;
-      currentMinNbCov = minNbCover;
+      counterFailed = 0; // If we can't find a good rule after a lot of tries
+      cnt += 1;
 
       if (omp_get_thread_num() == 0) {
         if (((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && consoleFile.empty()) {
@@ -100,8 +99,11 @@ tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *
         }
       }
 
+      double tb1 = omp_get_wtime();
       while (!ruleCreated) {
         ruleCreated = fidex.compute(&rule, idSample, minFidelity);
+
+        // TODO "2" must be replaced by some user arg
         if (currentMinNbCov >= 2) {
           currentMinNbCov -= 1;
         } else {
@@ -121,6 +123,14 @@ tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *
           break;
         }
       }
+      double tb2 = omp_get_wtime();
+
+      // #pragma omp critical
+      //       {
+      //         if ((tb2 - tb1) > 0.5) {
+      //         cout << "Thread #" << threadId << " loop duration on sample " << idSample <<": " << (tb2 - tb1) << " seconds." << endl << endl;
+      //         }
+      //       }
 
       if (currentMinNbCov + 1 < minNbCover) {
         localNbProblems += 1;
@@ -154,7 +164,7 @@ tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *
     return r1.getCoveredSamples().size() > r2.getCoveredSamples().size();
   });
 
-  writeRulesFile(p->getString(RULES_FILE) + ".RR", rules, dataset->getAttributeNames(), dataset->getClassNames());
+  // writeRulesFile(p->getString(RULES_FILE) + ".RR", rules, dataset->getAttributeNames(), dataset->getClassNames());
 
   return make_tuple(rules, notCoveredSamples);
 }

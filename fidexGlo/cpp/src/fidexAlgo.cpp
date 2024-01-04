@@ -1,5 +1,6 @@
 #include "fidexAlgo.h"
 
+// TODO: the "seed" argument is not really useful anymore as it's contained by the Parameter object, should be removed
 Fidex::Fidex(DataSetFid *dataset, Parameters *parameters, Hyperspace *hyperspace, int seed) {
   _dataset = dataset;
   _parameters = parameters;
@@ -21,6 +22,9 @@ mt19937 Fidex::generateRandom(int seed) {
 }
 
 bool Fidex::compute(Rule *rule, int idSample, float minFidelity) {
+  int threadId = omp_get_thread_num();
+
+  // double t_init_s = omp_get_wtime();
   int nbDatas = _dataset->getNbSamples();
   int nbAttributes = _dataset->getNbAttributes();
   vector<int> *trainPreds = _dataset->getPredictions();
@@ -34,6 +38,11 @@ bool Fidex::compute(Rule *rule, int idSample, float minFidelity) {
   int minNbCover = _parameters->getInt(MIN_COVERING);
   float dropoutDim = _parameters->getFloat(DROPOUT_DIM);
   float dropoutHyp = _parameters->getFloat(DROPOUT_HYP);
+  bool hasdd = dropoutDim > 0.001;
+  bool hasdh = dropoutHyp > 0.001;
+  // double t_init_e = omp_get_wtime();
+
+  // cout << "Thread#" << threadId << " var init time cost: " << (t_init_e - t_init_s) << " seconds." << endl;
 
   uniform_real_distribution<double> dis(0.0, 1.0);
 
@@ -47,6 +56,10 @@ bool Fidex::compute(Rule *rule, int idSample, float minFidelity) {
   _hyperspace->getHyperbox()->resetDiscriminativeHyperplans();             // If we come from fidexGlo, we reset hyperbox discriminativeHyperplans
 
   int nbIt = 0;
+
+  double t_maxit_s = omp_get_wtime();
+  double sum_innerfor = 0;
+  double sum_doublecmp = 0;
   while (_hyperspace->getHyperbox()->getFidelity() < minFidelity && nbIt < itMax) { // While fidelity of our hyperbox is not high enough
     unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                              // best hyperbox to choose for next step
     unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());
@@ -64,7 +77,7 @@ bool Fidex::compute(Rule *rule, int idSample, float minFidelity) {
 
     vector<int> currentCovSamp;
     for (int d = 0; d < nbInputs; d++) {
-      if (bestHyperbox->getFidelity() == 1) {
+      if (bestHyperbox->getFidelity() >= minFidelity) {
         break;
       }
 
@@ -73,26 +86,39 @@ bool Fidex::compute(Rule *rule, int idSample, float minFidelity) {
       mainSampleValue = (*mainSampleValues)[attribut];
 
       // Test if we dropout this dimension
-      if (isless(dis(_rnd), dropoutDim)) {
+      // double t_dd_s = omp_get_wtime();
+      if (hasdd && isless(dis(_rnd), dropoutDim)) {
         continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
       }
+      // double t_dd_e = omp_get_wtime();
+      // cout << "-Thread#" << threadId << " Double to double comparison (drop_dim) time cost: " << (t_dd_e - t_dd_s) << " seconds." << endl;
       bool maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
 
       size_t nbHyp = _hyperspace->getHyperLocus()[dimension].size();
       if (nbHyp == 0) {
         continue; // No data on this dimension
       }
+
+      double t_innerfor_s = omp_get_wtime();
+      //! this is probably slow in some cases
+      cout << "nbHyp" << nbHyp << endl;
       for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
 
         // Test if we dropout this hyperplan
-        if (isless(dis(_rnd), dropoutHyp)) {
+        //! is 0.0003s a lot for double comparisons ?
+        double t_dh_s = omp_get_wtime();
+        if (hasdh && isless(dis(_rnd), dropoutHyp)) {
           continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
         }
+        double t_dh_e = omp_get_wtime();
+        sum_doublecmp += t_dh_e - t_dh_s;
+        // cout << "--Thread#" << threadId << " Double to double comparison (drop_hyp) time cost: " << (t_dh_e - t_dh_s) << " seconds." << endl;
 
         double hypValue = _hyperspace->getHyperLocus()[dimension][k];
         bool mainSampleGreater = hypValue <= mainSampleValue;                                                                                      // Check if main sample value is on the right of the hyperplan
         currentHyperbox->computeCoveredSamples(_hyperspace->getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
         currentHyperbox->computeFidelity(mainSamplePred, trainPreds);                                                                              // Compute fidelity
+        //! ok checkpoint
         // If the fidelity is better or is same with better covering but not if covering size is lower than minNbCover
         if (currentHyperbox->getCoveredSamples().size() >= minNbCover && (currentHyperbox->getFidelity() > bestHyperbox->getFidelity() || (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() > bestHyperbox->getCoveredSamples().size()))) {
           bestHyperbox->setFidelity(currentHyperbox->getFidelity()); // Update best hyperbox
@@ -110,10 +136,14 @@ bool Fidex::compute(Rule *rule, int idSample, float minFidelity) {
           maxHypBlocked = true; // we can't increase maxHyp anymmore for this best hyperplan
         }
 
-        if (bestHyperbox->getFidelity() == 1) {
+        if (bestHyperbox->getFidelity() >= minFidelity) {
           break;
         }
       }
+
+      double t_innerfor_e = omp_get_wtime();
+      sum_innerfor += (t_innerfor_e - t_innerfor_s);
+      // cout << "----Thread #" << threadId << " inner loop time cost: " << (t_innerfor_e - t_innerfor_s) << " seconds." << endl;
     }
 
     // Modication of our hyperbox with the best at this iteration and modify discriminative hyperplans
@@ -131,6 +161,12 @@ bool Fidex::compute(Rule *rule, int idSample, float minFidelity) {
     nbIt += 1;
   }
 
+  double t_maxit_e = omp_get_wtime();
+  // if ((t_maxit_e - t_maxit_s) > 0.18) {
+  //   cout << "---Thread #" << threadId << " Sum of innerfor time: " << sum_innerfor << " seconds." << endl;
+  //   cout << "---Thread #" << threadId << " Sum of doublecmp time: " << sum_doublecmp << " seconds." << endl;
+  //   cout << "--Thread #" << threadId << " Max iteration loop (main one) time cost: " << (t_maxit_e - t_maxit_s) << " seconds. nbTt: " << nbIt << endl;
+  // }
   if (_hyperspace->getHyperbox()->getFidelity() < minFidelity) {
     return false;
   }
@@ -139,9 +175,12 @@ bool Fidex::compute(Rule *rule, int idSample, float minFidelity) {
   double ruleAccuracy;
   ruleAccuracy = _hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass); // Percentage of correct model prediction on samples covered by the rule
 
+  // double t_ruleextract_s = omp_get_wtime();
   double ruleConfidence;
   ruleConfidence = _hyperspace->computeRuleConfidence(trainOutputValuesPredictions, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples
   *rule = _hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence);
+  // double t_ruleextract_e = omp_get_wtime();
+  // cout << "Thread#" << threadId << " Rule confidence & rule extraction time cost: " << (t_ruleextract_e - t_ruleextract_s) << " seconds." << endl;
 
   return true;
 }
