@@ -27,11 +27,12 @@ private:
   bool hasClasses = false;
   bool hasWeights = false;
 
+  std::string classFormat = ""; // one-hot, id, one-hot_combined or id_combined
+
   double decisionThreshold = -1;
   int indexPositiveClass = -1;
 
   int nbClasses = -1;
-  int nbPreds = -1;
   int nbAttributes = -1;
   int nbSamples = -1;
   int nbClassData = -1;
@@ -40,6 +41,11 @@ private:
   void setDataLine(const std::string &line, const char *dataFile);
   void setPredLine(const std::string &line, const char *dataFile);
   void setClassLine(const std::string &line, const char *dataFile);
+
+  void setNbClass(int nb_classes);
+  void setNbClassAndAttr(int _nbClasses, int _nbAttributes);
+
+  bool isOneHot(const std::vector<double> &values, int start, int &oneHotIndex) const;
 
   void checkDatas() const;
   void checkThreshold() const;
@@ -51,13 +57,13 @@ private:
 
 public:
   explicit DataSetFid(const std::string &name) : datasetName(name){};
-  DataSetFid(const std::string &name, const char *dataFile, const char *predFile, double decisionThresh, int indexPositiveCl, const char *trueClassFile = nullptr);
-  DataSetFid(const std::string &name, const char *dataFile, double decisionThresh, int indexPositiveCl); // dataFile with data, predictions and maybe classes
+  DataSetFid(const std::string &name, const char *dataFile, const char *predFile, int _nbAttributes, int _nbClasses, double decisionThresh, int indexPositiveCl, const char *trueClassFile = nullptr);
+  DataSetFid(const std::string &name, const char *dataFile, int _nbAttributes, int _nbClasses, double decisionThresh, int indexPositiveCl); // dataFile with data, predictions and maybe classes
   explicit DataSetFid(const std::string &name, const char *weightFile);
 
-  void setDataFromFile(const char *dataFile);
-  void setPredFromFile(const char *predFile, double decisionThreshold = -1, int indexPositiveClass = -1);
-  void setClassFromFile(const char *classFile);
+  void setDataFromFile(const char *dataFile, int _nbAttributes, int _nbClasses);
+  void setPredFromFile(const char *predFile, int _nbClasses, double decisionThreshold = -1, int indexPositiveClass = -1);
+  void setClassFromFile(const char *classFile, int _nbClasses);
 
   std::vector<std::vector<double>> *getDatas();
   std::vector<int> *getClasses();
@@ -68,7 +74,7 @@ public:
   int getNbAttributes() const;
   int getNbSamples() const;
 
-  void setAttribute(const char *attributFile);
+  void setAttributes(const char *attributFile, int _nbAttributes, int _nbClasses = -1);
   std::vector<std::string> *getAttributeNames();
   std::vector<std::string> *getClassNames();
   bool getHasClassNames() const;

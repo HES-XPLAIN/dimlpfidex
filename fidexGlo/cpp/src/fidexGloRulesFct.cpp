@@ -10,7 +10,7 @@ void showRulesParams() {
 
   cout << "Obligatory parameters : \n"
        << endl;
-  cout << "fidexGloRules -T <train dataset file> -P <train prediction file> -C <train true class file> ";
+  cout << "fidexGloRules -T <train data file> -P <train prediction file> -C <train true class file, not mendatory if classes are specified in train data file> ";
   cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> [Not mendatory if a rules file is given with -f] ";
   cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
   cout << "-O <Rules output file> ";
@@ -495,12 +495,29 @@ int fidexGloRules(const string &command) {
     // Import files
     cout << "Importing files..." << endl;
 
-    unique_ptr<DataSetFid> trainDatas(new DataSetFid("trainDatas from FidexGloRules",
-                                                     params->getString(TRAIN_DATA_FILE).c_str(),
-                                                     params->getString(TRAIN_DATA_PRED_FILE).c_str(),
-                                                     params->getFloat(DECISION_THRESHOLD),
-                                                     params->getInt(INDEX_POSITIVE_CLASS),
-                                                     params->getString(TRAIN_DATA_TRUE_CLASS_FILE).c_str()));
+    std::unique_ptr<DataSetFid> trainDatas;
+    if (!params->isStringSet(TRAIN_DATA_TRUE_CLASS_FILE)) {
+      trainDatas.reset(new DataSetFid("trainDatas from FidexGloRules",
+                                      params->getString(TRAIN_DATA_FILE).c_str(),
+                                      params->getString(TRAIN_DATA_PRED_FILE).c_str(),
+                                      params->getInt(NB_ATTRIBUTES),
+                                      params->getInt(NB_CLASSES),
+                                      params->getFloat(DECISION_THRESHOLD),
+                                      params->getInt(INDEX_POSITIVE_CLASS)));
+
+      if (!trainDatas->getHasClasses()) {
+        throw CommandArgumentException("The train true classes file has to be given with option -C or classes have to be given in the train data file.");
+      }
+    } else {
+      trainDatas.reset(new DataSetFid("trainDatas from FidexGloRules",
+                                      params->getString(TRAIN_DATA_FILE).c_str(),
+                                      params->getString(TRAIN_DATA_PRED_FILE).c_str(),
+                                      params->getInt(NB_ATTRIBUTES),
+                                      params->getInt(NB_CLASSES),
+                                      params->getFloat(DECISION_THRESHOLD),
+                                      params->getInt(INDEX_POSITIVE_CLASS),
+                                      params->getString(TRAIN_DATA_TRUE_CLASS_FILE).c_str()));
+    }
 
     int nbDatas = trainDatas->getNbSamples();
 
@@ -510,7 +527,7 @@ int fidexGloRules(const string &command) {
     bool hasClassNames = false;
 
     if (!params->getString(ATTRIBUTES_FILE).empty()) {
-      trainDatas->setAttribute(params->getString(ATTRIBUTES_FILE).c_str());
+      trainDatas->setAttributes(params->getString(ATTRIBUTES_FILE).c_str(), params->getInt(NB_ATTRIBUTES), params->getInt(NB_CLASSES));
       attributeNames = (*trainDatas->getAttributeNames());
       hasClassNames = trainDatas->getHasClassNames();
       if (hasClassNames) {

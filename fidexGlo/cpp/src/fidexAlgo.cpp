@@ -101,7 +101,7 @@ bool Fidex::compute(Rule *rule, int idSample, float minFidelity) {
 
       double t_innerfor_s = omp_get_wtime();
       //! this is probably slow in some cases
-      cout << "nbHyp" << nbHyp << endl;
+      // cout << "nbHyp" << nbHyp << endl;
       for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
 
         // Test if we dropout this hyperplan

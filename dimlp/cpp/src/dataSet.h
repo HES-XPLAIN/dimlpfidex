@@ -4,8 +4,11 @@
 #include "../../../fidexCommon/cpp/src/errorHandler.h"
 #include "rule.h"
 #include "stringI.h"
+#include <algorithm>
+#include <cmath>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <vector>
 
 ///////////////////////////////////////////////////////////////////
@@ -30,6 +33,7 @@ public:
   DataSet() = default;
   explicit DataSet(int nbEx);
   DataSet(const char nameFile[], int nbAttr);
+  DataSet(const char nameFile[], int nbIn, int nbOut);
   DataSet(DataSet &bigData, StringInt *listPat);
   DataSet(DataSet &master, const int *indPat, int nbEx);
   DataSet(DataSet &data1, DataSet &data2);

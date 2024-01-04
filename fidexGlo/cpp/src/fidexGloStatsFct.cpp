@@ -8,7 +8,7 @@ void showStatsParams() {
 
   std::cout << "Obligatory parameters : \n"
             << std::endl;
-  std::cout << "fidexGloStats -T <test data file> -P <test prediction file> -C <test true class file> ";
+  std::cout << "fidexGloStats -T <test data file> -P <test prediction file> -C <test true class file, not mendatory if classes are specified in test data file> ";
   std::cout << "-R <rules input file> ";
   std::cout << "-a <number of attributes>";
   std::cout << "-b <number of classes>";
@@ -301,9 +301,6 @@ int fidexGloStats(const string &command) {
     if (!testDataFilePredInit) {
       throw CommandArgumentException("The test predictions data file has to be given with option -P.");
     }
-    if (!testDataFileTrueClassInit) {
-      throw CommandArgumentException("The test true class data file has to be given with option -T.");
-    }
     if (!rulesFileInit) {
       throw CommandArgumentException("The rules file has to be given with option -R.");
     }
@@ -329,7 +326,15 @@ int fidexGloStats(const string &command) {
 
     // Get test data
 
-    std::unique_ptr<DataSetFid> testDatas(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, decisionThreshold, indexPositiveClass, testDataFileTrueClass));
+    std::unique_ptr<DataSetFid> testDatas;
+    if (!testDataFileTrueClassInit) {
+      testDatas.reset(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass));
+      if (!testDatas->getHasClasses()) {
+        throw CommandArgumentException("The test true classes file has to be given with option -T or classes have to be given in the test data file.");
+      }
+    } else {
+      testDatas.reset(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass, testDataFileTrueClass));
+    }
 
     vector<vector<double>> *testData = testDatas->getDatas();
     vector<int> *testPreds = testDatas->getPredictions();
@@ -344,7 +349,7 @@ int fidexGloStats(const string &command) {
     vector<string> classNames;
     bool hasClassNames = false;
     if (attributFileInit) {
-      testDatas->setAttribute(attributFile);
+      testDatas->setAttributes(attributFile, nb_attributes, nb_classes);
       attributeNames = (*testDatas->getAttributeNames());
       hasClassNames = testDatas->getHasClassNames();
       if (hasClassNames) {

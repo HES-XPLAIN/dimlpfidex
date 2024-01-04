@@ -8,8 +8,8 @@ void showFidexParams() {
 
   std::cout << "Obligatory parameters : \n"
             << std::endl;
-  std::cout << "fidex -T <train dataset file> -P <train prediction file> -C <train true class file> ";
-  std::cout << "-S <test sample(s) data file with data, prediction(if no -p) and true class(if no -c, with only the index of the true class)> ";
+  std::cout << "fidex -T <train data file> -P <train prediction file> -C <train true class file, not mendatory if classes are specified in train data file> ";
+  std::cout << "-S <test sample(s) data file with data, prediction(if no -p) and true class(if no -c)> ";
   std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> [Not mendatory if a rules file is given with -f] ";
   std::cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
   std::cout << "-O <Rule output file>";
@@ -23,7 +23,7 @@ void showFidexParams() {
   std::cout << "-R <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
   std::cout << "-p <test prediction file> ";
-  std::cout << "-c <test true class file> If at least -p is specified, -S needs to have only test datas" << std::endl;
+  std::cout << "-c <test true class file> If at least -p is specified, -S needs to have only test datas and eventually classes on same line (don't add -c in this case)" << std::endl;
   std::cout << "-A <file of attributes>" << std::endl;
   std::cout << "-s <output statistic file>" << std::endl;
   std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
@@ -452,9 +452,6 @@ int fidex(const string &command) {
     if (!trainDataFilePredInit) {
       throw CommandArgumentException("The train prediction file has to be given with option -P.");
     }
-    if (!trainDataFileTrueClassInit) {
-      throw CommandArgumentException("The train true classes file has to be given with option -C.");
-    }
     if (!mainSamplesDataFileInit) {
       throw CommandArgumentException("The test samples data file <value, prediction(if no -p), true class(if no -c)> has to be given with option -S.");
     }
@@ -512,7 +509,15 @@ int fidex(const string &command) {
 
     impt1 = clock();
 
-    std::unique_ptr<DataSetFid> trainDatas(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
+    std::unique_ptr<DataSetFid> trainDatas;
+    if (!trainDataFileTrueClassInit) {
+      trainDatas.reset(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass));
+      if (!trainDatas->getHasClasses()) {
+        throw CommandArgumentException("The train true classes file has to be given with option -C or classes have to be given in the train data file.");
+      }
+    } else {
+      trainDatas.reset(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
+    }
 
     vector<vector<double>> *trainData = trainDatas->getDatas();
     vector<int> *trainPreds = trainDatas->getPredictions();
@@ -522,7 +527,7 @@ int fidex(const string &command) {
     int nbTrainSamples = trainDatas->getNbSamples();
 
     if (minNbCover > nbTrainSamples) {
-      throw CommandArgumentException("Error : invalide type for parameter -c, strictly positive integer smaller or equal than the number of train data samples requested.");
+      throw CommandArgumentException("Error : invalide type for parameter -v, strictly positive integer smaller or equal than the number of train data samples requested.");
     }
 
     // Get test data
@@ -532,7 +537,7 @@ int fidex(const string &command) {
     vector<vector<double>> mainSamplesOutputValuesPredictions;
     std::unique_ptr<DataSetFid> testDatas;
     if (!mainSamplesPredFileInit) { // If we have only one test data file with data, pred and class
-      testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, decisionThreshold, indexPositiveClass));
+      testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass));
       mainSamplesValues = (*testDatas->getDatas());
       mainSamplesPreds = (*testDatas->getPredictions());
       mainSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
@@ -544,9 +549,9 @@ int fidex(const string &command) {
     } else { // We have different files for test predictions and test classes
 
       if (mainSamplesClassFileInit) {
-        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, decisionThreshold, indexPositiveClass, mainSamplesClassFile));
+        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass, mainSamplesClassFile));
       } else {
-        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, decisionThreshold, indexPositiveClass));
+        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass));
       }
       mainSamplesValues = (*testDatas->getDatas());
       mainSamplesPreds = (*testDatas->getPredictions());
@@ -568,7 +573,7 @@ int fidex(const string &command) {
     vector<string> classNames;
     bool hasClassNames = false;
     if (attributFileInit) {
-      testDatas->setAttribute(attributFile);
+      testDatas->setAttributes(attributFile, nb_attributes, nb_classes);
       attributeNames = (*testDatas->getAttributeNames());
       hasClassNames = testDatas->getHasClassNames();
       if (hasClassNames) {
