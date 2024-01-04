@@ -113,7 +113,7 @@ def get_data_pred(file_name, nb_classes):
     except (IOError):
         raise ValueError(f"Error : Couldn't open file {file_name}.")
 
-def get_data(file_name, nb_attributes, nb_classes=0):
+def get_data(file_name, nb_attributes, nb_classes=0, keep_string=False):
     """
     Get data from file and separate it into attributes and classes(if there are some classes).
 
@@ -129,6 +129,8 @@ def get_data(file_name, nb_attributes, nb_classes=0):
     :type nb_attributes: int
     :param nb_classes: The number of classes, defaults to 0.
     :type nb_classes: int, optional
+    :param keep_string : Whether to keep data on string format (allows non numericals)
+    :type keep_string : bool
     :raises ValueError: If the file is not found, cannot be opened, or if the data format is incorrect.
     :return: A tuple containing two lists of list of float, one for data (attributes) and one for classes.
             Each element in the data list is a list of floats representing the attributes of a sample.
@@ -146,10 +148,11 @@ def get_data(file_name, nb_attributes, nb_classes=0):
                     elements = line.split()
 
                     # Check if all elements are numbers (int or float)
-                    try:
-                        elements = [float(elt) for elt in elements]
-                    except ValueError:
-                        raise ValueError(f"Error in {file_name}: Non-numeric value found.")
+                    if not keep_string:
+                        try:
+                            elements = [float(elt) for elt in elements]
+                        except ValueError:
+                            raise ValueError(f"Error in {file_name}: Non-numeric value found.")
 
                     # Determine expected length based on the first line and check consistency
                     if expected_length is None:
@@ -174,7 +177,7 @@ def get_data(file_name, nb_attributes, nb_classes=0):
                             data.append(elements[:nb_attributes])
                             classes.append(class_id)
                         except ValueError:
-                            raise ValueError(f"Error in {file_name}: Invalid class ID.")
+                            raise ValueError(f"Error in {file_name}: Invalid class ID, the number of classes is set to {nb_classes}.")
                     elif len(elements) == nb_attributes + nb_classes:
                         # One-hot format
                         try:
@@ -264,7 +267,47 @@ def get_data_class(file_name, nb_classes):
     except IOError:
         raise ValueError(f"Error: Couldn't open file {file_name}.")
 
+def get_attribute_file(attribute_file, nb_attributes, nb_classes=None):
+    """
+    Reads an attribute file and splits its content into two lists: 'attributes' and 'classes'.
+    The first 'nb_attributes' non-empty lines are stored in 'attributes', and the
+    remaining non-empty lines in 'classes'. Raises an error if the file does not
+    contain at least 'nb_attributes' non-empty lines and if there is not exactly
+    nb_attributes + nb_classes lines when nb_classes is specified.
 
+    Format of attribute_file : one attribute per line followed eventually by one class per line
+
+    :param attribute_file: Path to the file to be read
+    :param nb_attributes: Number of non-empty lines to be included in 'attributes'
+    :return: A tuple of two lists: (attributes, classes)
+    """
+    attributes = []
+    classes = []
+    has_classes = True
+    if nb_classes is None:
+        has_classes = False
+
+    try:
+        with open(attribute_file, "r") as attr_file:
+            # Read all lines and filter out empty ones
+            lines = [line.strip() for line in attr_file if line.strip()]
+
+            # Check if there is the good amount of attributes and classes
+            if (not has_classes and len(lines) < nb_attributes): # Number of classes not specified, if there is too many attributes, it's stored in classes
+                raise ValueError(f"Error in file {attribute_file} : There is not enough attributes. Required at least : {nb_attributes}, found: {len(lines)}")
+            if (has_classes and len(lines) != nb_attributes + nb_classes): # Number of classes specified, need to be precise
+                raise ValueError(f"Error in file {attribute_file} : The number of classes and attributes don't correspond to the number of lines. Required : {nb_attributes + nb_classes}, found: {len(lines)}")
+
+            # Splitting the lines into attributes and classes
+            attributes = lines[:nb_attributes]
+            classes = lines[nb_attributes:]
+
+    except FileNotFoundError:
+        raise ValueError(f"Error: File {attribute_file} not found.")
+    except IOError:
+        raise ValueError(f"Error: Couldn't open file {attribute_file}.")
+
+    return attributes, classes
 
 def output_pred(pred, pred_file, nb_classes):
     """
