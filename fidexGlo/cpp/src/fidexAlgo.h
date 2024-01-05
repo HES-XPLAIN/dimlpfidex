@@ -26,25 +26,15 @@ private:
   DataSetFid *_dataset;
   Parameters *_parameters;
   Hyperspace *_hyperspace;
-  mt19937 _rnd;
-
-  mt19937 generateRandom(int seed);
+  int _rnd;
 
 public:
   Fidex() = default;
   Fidex(DataSetFid *dataset, Parameters *parameters, Hyperspace *Hyperspace, int seed);
 
   // execute algo
-  bool compute(Rule *rule, int idSample, float minFidelity);
-
-  //  Méthodes:
-  // bool fidex(Rule &rule,
-  //            DataSetFid *dataset,
-  //            Parameters *p,
-  //            Hyperspace *hyperspace,
-  //            int idSample,
-  //            double minFidelity,
-  //            mt19937 gen) const;
+  // TODO: gen param to be removed once tests passed
+  bool compute(Rule &rule, int idSample, double minFidelity, mt19937 gen);
 };
 
 #endif
