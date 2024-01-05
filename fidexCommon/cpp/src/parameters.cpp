@@ -45,7 +45,7 @@ Parameters::Parameters(vector<string> args) {
         break;
 
       case 'f':
-        setString(RULES_FILE, arg);
+        setString(INPUT_RULES_FILE, arg);
         break;
 
       case 'N':

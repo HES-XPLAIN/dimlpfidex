@@ -364,6 +364,7 @@ void checkParametersLogicValues(Parameters *p) {
   p->setDefaultString(ATTRIBUTES_FILE, "");
   p->setDefaultString(CONSOLE_FILE, "");
   p->setDefaultString(INPUT_RULES_FILE, "");
+  p->setDefaultString(RULES_FILE, "generatedRules.rls"); // not sure of this
   p->setDefaultInt(MAX_ITERATIONS, 100);
   p->setDefaultInt(MIN_COVERING, 2);
   p->setDefaultFloat(DROPOUT_DIM, 0.0f);
