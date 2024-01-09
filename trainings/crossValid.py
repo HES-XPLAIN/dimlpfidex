@@ -755,9 +755,9 @@ def crossValid(*args, **kwargs):
 
             # Statistics initialization
 
-            fprs = [] #false positive rates for ROC curve
-            tprs = [] #true positive rates for ROC curve
-            aucs = []
+            mean_fprs = [] #false positive rates for ROC curve
+            mean_tprs = [] #true positive rates for ROC curve
+            mean_aucs = []
 
             if is_fidex:
                 # statistics for Fidex
@@ -1072,6 +1072,10 @@ def crossValid(*args, **kwargs):
 
                 nb_no_rules_current_exec_dimlp = 0.0 # If there is no rule found for a Fold in this execution
 
+                fprs = [] #false positive rates for ROC curve
+                tprs = [] #true positive rates for ROC curve
+                aucs = []
+
                 for ki in range(k): # K-fold, we shift each time groups by 1.
                     print("----")
                     print(f"k={ki+1}")
@@ -1267,7 +1271,7 @@ def crossValid(*args, **kwargs):
                                      weights = folder_path_from_root + separator + "weights", stats = folder_path_from_root + separator + "stats.txt", nb_attributes = nb_in,
                                      nb_classes = nb_out, output_file = crossval_folder_temp + separator + "consoleTemp.txt", train_pred = folder_path_from_root + separator + "train",
                                      test_pred = folder_path_from_root + separator + "test", positive_index=positive_class_index,
-                                     output_roc=folder_path_from_root + separator + "rocCurve", save_folder = save_folder, nb_stairs = nb_stairs,
+                                     output_roc=folder_path_from_root + separator + "ROC_curve", save_folder = save_folder, nb_stairs = nb_stairs,
                                      K = svm_k, C = c_var, kernel = kernel_var, degree = degree_var, gamma = gamma_var, coef0 = coef0_var, shrinking = shrinking_var,
                                      tol = svm_tol_var, cache_size = cache_size_var, class_weight = svm_class_weight_var, max_iter = svm_max_iter_var,
                                      decision_function_shape = decision_function_shape_var, break_ties = break_ties_var, return_roc = return_roc_var)
@@ -1343,7 +1347,7 @@ def crossValid(*args, **kwargs):
 
                     if train_method != "svm" and with_roc:
                         res = computeRocCurve(test_class=folder_path_from_root + separator + "testTarget.txt", test_pred = folder_path_from_root + separator + "test.out",
-                                              positive_index=positive_class_index, nb_classes = nb_out, output_roc=folder_path_from_root + separator + "rocCurve",
+                                              positive_index=positive_class_index, nb_classes = nb_out, output_roc=folder_path_from_root + separator + "ROC_curve",
                                               stats_file=folder_path_from_root + separator + "stats.txt", save_folder = save_folder)
                         if (res == -1):
                             raise ValueError('Error during computation of ROC curve.')
@@ -1611,6 +1615,18 @@ def crossValid(*args, **kwargs):
                                 mean_recall_rule += stat_glo_vals[24]
                 # Compute execution Stats
 
+                if with_roc:
+                    mean_aucs.append(np.mean(np.array(aucs)))
+                    mean_tprs.append(np.mean(np.array(tprs), axis=0))
+                    mean_fprs.append(np.mean(np.array(fprs), axis=0))
+                    formatted_mean_aucs = formatting(mean_aucs[-1])
+                    viz = RocCurveDisplay(fpr=mean_fprs[-1],
+                    tpr=mean_tprs[-1],
+                    roc_auc=mean_aucs[-1]).plot(color="darkorange", plot_chance_level=True)
+
+                    viz.figure_.savefig(str(crossval_folder) + separator + "Execution" + str(ni + 1) + separator + "ROC_curve.png")
+                    plt.close(viz.figure_)
+
                 mean_current_exec_values_dimlp = []
                 if is_dimlprul: # For DimlpRul
                     nb_fold_with_rules_dimlp = k-nb_no_rules_current_exec_dimlp
@@ -1749,6 +1765,9 @@ def crossValid(*args, **kwargs):
                         print("\n---------------------------------------------------------")
                         print("---------------------------------------------------------\n")
                         print(f"Results for execution {ni + 1} of {k}-Cross validation :\n")
+                        if with_roc:
+                            outputStatsFile.write(f"The mean AUC score is: {formatted_mean_aucs}\n\n")
+                            print(f"The mean AUC score is: {formatted_mean_aucs}\n")
                         if is_dimlprul:
                             formatted_mean_current_exec_values_dimlp = []
                             for i in range(len(mean_current_exec_values_dimlp)):
@@ -1889,23 +1908,21 @@ def crossValid(*args, **kwargs):
 
             # Compute stats on all executions
             if with_roc:
-                mean_auc = np.mean(np.array(aucs))
-                std_auc = np.std(np.array(aucs))
+                mean_all_aucs = np.mean(np.array(mean_aucs))
+                std_all_aucs = np.std(np.array(mean_aucs))
 
-                mean_fprs = np.array(fprs)
-                mean_fprs = np.mean(mean_fprs, axis=0)
-                mean_tprs = np.array(tprs)
-                mean_tprs = np.mean(mean_tprs, axis=0)
+                mean_all_fprs = np.mean(np.array(mean_fprs), axis=0)
+                mean_all_tprs = np.mean(np.array(mean_tprs), axis=0)
 
-                viz = RocCurveDisplay(fpr=mean_fprs,
-                                    tpr=mean_tprs,
-                                    roc_auc=mean_auc).plot(color="darkorange", plot_chance_level=True)
+                viz = RocCurveDisplay(fpr=mean_all_fprs,
+                                    tpr=mean_all_tprs,
+                                    roc_auc=mean_all_aucs).plot(color="darkorange", plot_chance_level=True)
 
                 viz.figure_.savefig(crossval_folder + separator + "ROC_curve.png")
                 plt.close(viz.figure_)
 
-                formatted_mean_auc = formatting(mean_auc)
-                formatted_std_auc = formatting(std_auc)
+                formatted_mean_all_aucs = formatting(mean_all_aucs)
+                formatted_std_all_aucs = formatting(std_all_aucs)
 
 
             if is_dimlprul: # For dimlpRul
@@ -2065,10 +2082,10 @@ def crossValid(*args, **kwargs):
                     print("---------------------------------------------------------\n")
                     print(f"Results for {n} times {k}-Cross validation :\n")
                     if with_roc:
-                        outputStatsFile.write(f"The mean AUC score is: {formatted_mean_auc}\n")
-                        outputStatsFile.write(f"The standard deviation of the AUC score is: {formatted_std_auc}\n\n")
-                        print(f"The mean AUC score is: {formatted_mean_auc}")
-                        print(f"The standard deviation of the AUC score is: {formatted_std_auc}\n")
+                        outputStatsFile.write(f"The mean AUC score is: {formatted_mean_all_aucs}\n")
+                        outputStatsFile.write(f"The standard deviation of the AUC score is: {formatted_std_all_aucs}\n\n")
+                        print(f"The mean AUC score is: {formatted_mean_all_aucs}")
+                        print(f"The standard deviation of the AUC score is: {formatted_std_all_aucs}\n")
 
                     if is_dimlprul:
 
