@@ -161,10 +161,11 @@ def parse_normalization_stats(file_name, nb_attributes, attributes=None):
             raise ValueError(f"Error during parsing of {file_name} : the number of attributes is not equal to the length of attributes list.")
 
         attr_pattern = "|".join(map(re.escape, attributes))
-        attr_pattern = re.compile(fr'({attr_pattern}) : original (mean|median): (\d+(\.\d+)?), original std: (\d+(\.\d+)?)') # Regular expression pattern to match for each line
+        float_pattern = r'-?\d+(\.\d+)?'
+        attr_pattern = re.compile(fr'({attr_pattern}) : original (mean|median): ({float_pattern}), original std: ({float_pattern})') # Regular expression pattern to match for each line
         patterns.append(attr_pattern)
     index_pattern = "|".join(map(str, range(nb_attributes)))
-    index_pattern = re.compile(fr'({index_pattern}) : original (mean|median): (\d+(\.\d+)?), original std: (\d+(\.\d+)?)') # Regular expression pattern to match for each line
+    index_pattern = re.compile(fr'({index_pattern}) : original (mean|median): ({float_pattern}), original std: ({float_pattern})') # Regular expression pattern to match for each line
     patterns.append(index_pattern)
 
     for pattern in patterns: # We test if it works with attribute names, and if not, with indices
@@ -239,6 +240,97 @@ def get_and_check_string_data_from_list(datas, name):
     else:
         return [datas]
 
+def get_pattern_from_rule_file(rule_file, possible_patterns):
+    """
+    This function reads through a given rule file and identifies the pattern that matches the rules in the file.
+    It narrows down the possible patterns to the one that matches the content of the file.
+    If no pattern matches, or if multiple patterns match different rules, an error is raised.
+
+    :param rule_file: The path to the rule file to be analyzed.
+    :type rule_file: str
+    :param possible_patterns: A list of regular expression patterns to check against the lines in the file.
+    :type possible_patterns: list of str
+    :raises ValueError: If no rule matches the provided patterns, or if multiple patterns match different rules.
+    :raises ValueError: If the file is not found or cannot be opened.
+    :return: The pattern that matches the rules in the file.
+    :rtype: str
+    """
+    try:
+        with open(rule_file, "r") as file:
+
+            has_rules = False
+            for line in file:
+                matches = [pattern for pattern in possible_patterns if re.search(pattern, line)]
+                # We keep the pattern that match the line, if there is some
+                if matches:
+                    has_rules = True
+                    possible_patterns = matches
+                if len(possible_patterns) == 0:
+                    raise ValueError(f"Error in file {rule_file}: At least 2 different rules match 2 different patterns, maybe some rules have attribute or class names and some others don't.")
+                if len(possible_patterns) == 1:
+                    break
+            if not has_rules:
+                raise ValueError(f"Error in file {rule_file}: There is no rule with correct format in the file. Maybe you forgot to add an attribute file.")
+            pattern = possible_patterns[0]
+    except FileNotFoundError:
+            raise ValueError(f"Error : File {rule_file} not found.")
+    except IOError:
+        raise ValueError(f"Error : Couldn't open file {rule_file}.")
+
+    return pattern
+
+def denormalize_rule(line, pattern, antecedant_pattern, dimlp_rule, with_attribute_names, attribute_indices, attributes, sigmas, mus):
+    """
+    This function denormalizes a given rule line based on specified rule patterns and normalization parameters.
+    If the line don't correspond to the pattern, it's left unchanged.
+    Otherwise, it parses the rule line using the provided regular expression patterns, identifies each antecedent corresponding to indices that we need to denormalize,
+    and applies denormalization to the numeric values using the provided sigma (standard deviation) and mu (mean) values.
+    The function reconstructs the rule with the denormalized values.
+
+    :param line: The rule line to be denormalized.
+    :type line: str
+    :param pattern: The regular expression pattern for identifying and parsing the entire rule line.
+    :type pattern: str
+    :param antecedant_pattern: The regular expression pattern for identifying each antecedent in the rule.
+    :type antecedant_pattern: str
+    :param dimlp_rule: A flag indicating whether the rule is a DIMLP rule or a Fidex rule, which affects attribute indexing and rule pattern.
+    :type dimlp_rule: bool
+    :param with_attribute_names: A flag indicating whether the rules use attribute names instead of numeric IDs.
+    :type with_attribute_names: bool
+    :param attribute_indices: A list of indices of the attributes to be denormalized.
+    :type attribute_indices: list of int
+    :param attributes: A list of attribute names or numeric IDs of the attributes.
+    :type attributes: list of str or int
+    :param sigmas: A list of standard deviation values for denormalization, corresponding to each attribute of attribute_indices.
+    :type sigmas: list of float
+    :param mus: A list of mean or median values for denormalization, corresponding to each attribute of attribute_indices.
+    :type mus: list of float
+    :return: The denormalized rule line.
+    :rtype: str
+    """
+    match = re.search(pattern, line) # Get each rule
+    if match:
+        new_line = match.group("first_part")
+        # Get each antecedant
+        antecedants = match.group('antecedants')
+        antecedants_matches = re.finditer(antecedant_pattern, antecedants)
+        for antecedant_match in antecedants_matches:
+            attribute = antecedant_match.group('attribute')
+            attribute_id = attributes.index(attribute) if with_attribute_names else int(attribute)
+            if dimlp_rule and not with_attribute_names:
+                attribute_id -= 1 # indexes start at 1 in dimlp rules
+            value = float(antecedant_match.group('value'))
+            if attribute_id in attribute_indices:
+                #Denormalize this antecedant
+                idx = attribute_indices.index(attribute_id)
+                value = value*sigmas[idx]+mus[idx]
+            # Reconstuct rule
+            new_line += f"{antecedant_match.group(1)}{attribute}{antecedant_match.group('inequality')}{value:.6f}{antecedant_match.group('last_part')}"
+        new_line += match.group("last_part")
+        return new_line
+    else: # Rewrite the line
+        return line
+
 def normalization(*args, **kwargs):
 
     """
@@ -250,6 +342,8 @@ def normalization(*args, **kwargs):
     On peut choisir de remplir les valeurs manquantes ou non. Il est important de toujours préciser le symbole représentant les valeurs manquantes, ou NaN sinon
     On peut normaliser avec la moyenne ou la médiane
     Pour la dénormalisation...
+
+    Important : si on normalise un fichier d'entrainement, il faut aussi normaliser le fichier de test en même temps sinon on peut pas tester
     """
 
     try:
@@ -264,7 +358,7 @@ def normalization(*args, **kwargs):
             print('missing_values : string representing a missing value in your data, put "NaN" (or any string not in your data) if you do not have any missing value (only when working on data files)')
             print("----------------------------")
             print("Optional parameters :")
-            print("nb_classes : mendatory if classes are also present in data file")
+            print("nb_classes : mendatory if classes are also present in data file or attribute file")
             print("save_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
             print("normalization_stats : file containing the mean and std of some attributes. Used to normalize or denormalize if specified.")
             print("mus : list of float corresponding to mean or median of each attribute index of interest.")
@@ -276,14 +370,14 @@ def normalization(*args, **kwargs):
             print("attribute_indices : indices of the attributes(columns) to normalize a data file, contained in a list (first column is index 0, all indices by default, only used when no normalization_stats is given).")
             print("output_normalization_stats : name of the output file containing the mean and std of some attributes when normalization_stats is not specified (normalization_stats.txt by default).")
             print("output_datas : name of the normalized files contained in a list if there is more than one file. Need to specify everyone of them if one is specified (<original_name>_normalized<original_extension> by default)")
-            print("output_rules : name of the normalized rule files contained in a list if there is more than one file. Need to specify everyone of them if one is specified (<original_name>_normalized<original_extension> by default)")
+            print("output_rules : name of the normalized rule files contained in a list if there is more than one file. Need to specify everyone of them if one is specified (<original_name>_denormalized<original_extension> by default)")
             print("with_median : boolean, whether we use median instead of mean to compute normalitzation (False by default, only when working on data files)")
             print("fill_missing_values : boolean, whether we fill missing values with mean or median (True by default, only when working on data files)")
             print("----------------------------")
             print("Here is an example with data files, keep same parameter names :")
             print('normalization(datas = ["datanormTrain", "datanormTest"], attribute_indices = [0,2,4], nb_attributes=16, missing_values="NaN", save_folder = "dimlp/datafiles")')
             print("Another example with rule files :")
-            print('normalization(normalization_stats = "normalization_stats.txt", rule_files = "globalRulesDatanorm", nb_attributes=16, save_folder = "dimlp/datafiles")')
+            print('normalization(normalization_stats = "normalization_stats.txt", rule_files = "globalRulesDatanorm.txt", nb_attributes=16, save_folder = "dimlp/datafiles")')
             print("---------------------------------------------------------------------")
         else:
 
@@ -371,7 +465,7 @@ def normalization(*args, **kwargs):
                 if len(mus) != len(sigmas):
                     raise ValueError("Error : mus and sigmas have not the same amount of values.")
                 if len(mus) != len(attribute_indices):
-                    raise ValueError("Error : attribute_indices has not the same amount of values as mus and sigmas.")
+                    raise ValueError("Error : attribute_indices has not the same amount of values as mus and sigmas. Maybe you forgot to specify it.")
 
 
             output_normalization_stats = validate_string_param(output_normalization_stats, "output_normalization_stats", default="normalization_stats.txt")
@@ -416,9 +510,9 @@ def normalization(*args, **kwargs):
                     for rule_file in rule_files:
                         base, ext = os.path.splitext(rule_file)
                         if ext:
-                            output_rules.append(f"{base}_normalized{ext}")
+                            output_rules.append(f"{base}_denormalized{ext}")
                         else:
-                            output_rules.append(f"{rule_file}_normalized")
+                            output_rules.append(f"{rule_file}_denormalized")
                 if len(output_rules) != len(rule_files):
                     raise ValueError("Error : the size of output_rules is not equal to the size of rule_files")
 
@@ -443,10 +537,12 @@ def normalization(*args, **kwargs):
 
             # Get attributes
             attributes = None
+            has_classes = False
             if (attribute_file is not None):
                 attributes = []
-                attributes, _ = get_attribute_file(attribute_file, nb_attributes, nb_classes)
-
+                attributes, classes = get_attribute_file(attribute_file, nb_attributes, nb_classes)
+                if (len(classes) != 0):
+                    has_classes = True
             if normalization_stats is not None:
                 # Get attribute_indices, mean/median, std and withMedian from normalization file
                 attribute_indices, with_median, mus, sigmas = parse_normalization_stats(normalization_stats, nb_attributes, attributes)
@@ -479,38 +575,79 @@ def normalization(*args, **kwargs):
             if rule_files is not None:
                 #Denormalize each rule file with mean/median and std obtained above
 
+                #Patterns corresponding to rules, there are 6 possible patterns :
+                float_pattern = r'-?\d+(\.\d+)?'
+                int_pattern = r'\d+'
+                if attribute_file is not None:
+                    attr_pattern = "|".join(map(re.escape, attributes))
+                    pattern_fidex_attributes = fr'(?P<first_part>.*?)(?P<antecedants>(({attr_pattern})[<>]=?{float_pattern} )+)(?P<last_part>-> class {int_pattern}.*)'
+                    pattern_dimlp_attributes = fr'(?P<first_part>.*?)(?P<antecedants>(\(({attr_pattern}) [<>] {float_pattern}\) )+)(?P<last_part>Class = {int_pattern}.*)'
+                    if has_classes:
+                        class_pattern = "|".join(map(re.escape, classes))
+                        pattern_fidex_attributes_and_classes = fr'(?P<first_part>.*?)(?P<antecedants>(({attr_pattern})[<>]=?{float_pattern} )+)(?P<last_part>-> ({class_pattern}).*)'
+                        pattern_dimlp_attributes_and_classes = fr'(?P<first_part>.*?)(?P<antecedants>(\(({attr_pattern}) [<>] {float_pattern}\) )+)(?P<last_part>Class = ({class_pattern}).*)'
 
-                print("Denormalization of rules")
-                """
-                But : transformer le fichier rempli de règles par le même fichier en dénormalisant ce qui avait été auparavant été normalisé (les indices des colonnes sont données par attribute_indices)
-                Fichiers de règles possibles :
-                - Règles obtenues avec fidexGloRules. Sous la forme :
-                    Rule 1: X1>=0.500000 X7<0.475000 -> class 0
-                - Règles obtenues avec fidex. Sous cette forme :
-                X7>=0.505 X0<0.561112 X10>=0.501666 -> class 1
-                - Règles obtenues avec fidexGlo (Explanation, utilisation de getRules et de Fidex), sous les formes :
-                R14: Rule 15: RS10764743>=0.934500 NODES_EXAMINED<3.500000 RS67342194<0.006500 -> NO_FOLLOW_UP_ARM_LYMPHEDEMA
-                F14: Rule 15: RS10764743>=0.934500 NODES_EXAMINED<3.500000 RS67342194<0.006500 -> NO_FOLLOW_UP_ARM_LYMPHEDEMA
-                CLINICAL_N_STAGE_N1>=0.500000 RS1788750<0.152000 WEIGHT>=70.200001 RS10764743<0.994500 ADJUVANT_CHEMOTHERAPY>=0.500000 RS2101893<1.997500 IMRT_TYPE_VMAT<0.500000 -> FOLLOW_UP_ARM_LYMPHEDEMA
-                - Règles obtenues avec DimlpRul. Sous cette forme :
-                Rule 1: (x1 > 0.665967) (x2 > 0.900465) (x6 > 0.355243) Class = 1 (173)
+                pattern_fidex_id = fr'(?P<first_part>.*?)(?P<antecedants>(X{int_pattern}[<>]=?{float_pattern} )+)(?P<last_part>-> class {int_pattern}.*)'
+                pattern_dimlp_id = fr'(?P<first_part>.*?)(?P<antecedants>(\(x{int_pattern} [<>] {float_pattern}\) )+)(?P<last_part>Class = {int_pattern}.*)'
 
+                for r in range(len(rule_files)): # For each rule file
+                    rule_file = rule_files[r]
+                    output_rule_file = output_rules[r]
 
-                Trouver une règle si elle correspond à un des patterns recherchés.
-                Il y a un pattern pour les règles Dimlp et un pattern pour les règles fidex
-                Pour chaque pattern il y a une version avec les attributs et une version avec les indices
+                    possible_patterns = [pattern_fidex_id, pattern_dimlp_id]
+                    possible_dimlp_patters = [pattern_dimlp_id]
+                    possible_patterns_with_attribute_names = []
+                    if attribute_file is not None:
+                        possible_patterns.append(pattern_fidex_attributes)
+                        possible_patterns.append(pattern_dimlp_attributes)
+                        possible_dimlp_patters.append(pattern_dimlp_attributes)
+                        possible_patterns_with_attribute_names.append(pattern_fidex_attributes)
+                        possible_patterns_with_attribute_names.append(pattern_dimlp_attributes)
+                        if has_classes:
+                            possible_patterns.append(pattern_fidex_attributes_and_classes)
+                            possible_patterns.append(pattern_dimlp_attributes_and_classes)
+                            possible_dimlp_patters.append(pattern_dimlp_attributes_and_classes)
+                            possible_patterns_with_attribute_names.append(pattern_fidex_attributes_and_classes)
+                            possible_patterns_with_attribute_names.append(pattern_dimlp_attributes_and_classes)
 
-                Pour un même fichier, un seul pattern doit fonctionner tout du long
-                Première lecture :
-                Au début les 4 patterns sont ok. Si on trouve un ligne qui correspond à un des 4 patterns, ceux qui ne correspondent pas à la ligne c'est chao. Si il n'y en a plus aucun de ok on stop
-                Si il y en a plus que 1, on le choisit comme principal et on stop la première lecture
-                À la fin, on prend le premier si yen a plusieurs
-                Erreur si aucun pattern n'a jamais été trouvé
-                Deuxième lecture :
-                On écrit chaque ligne dans un nouveau fichier, et on modifie celles qui correspondent au pattern principal.
+                    # Check which pattern is in the file
+                    pattern = get_pattern_from_rule_file(rule_file, possible_patterns)
 
-                """
+                    dimlp_rules = pattern in possible_dimlp_patters
+                    with_attribute_names = pattern in possible_patterns_with_attribute_names
 
+                    # Build antecedant pattern
+                    if dimlp_rules:
+                        if with_attribute_names:
+                            dimlp_attr_pattern = fr'(\()(?P<attribute>{attr_pattern})'
+                        else:
+                            dimlp_attr_pattern = fr'(\(x)(?P<attribute>{int_pattern})'
+                        antecedant_pattern = fr'{dimlp_attr_pattern}(?P<inequality> [<>] )(?P<value>{float_pattern})(?P<last_part>\) )'
+                    else:
+                        if with_attribute_names:
+                            fidex_attr_pattern = fr'()(?P<attribute>{attr_pattern})'
+                        else:
+                            fidex_attr_pattern = fr'(X)(?P<attribute>{int_pattern})'
+                        antecedant_pattern = fr'{fidex_attr_pattern}(?P<inequality>[<>]=?)(?P<value>{float_pattern})(?P<last_part> )'
+
+                    # Denormalize each rules
+                    try:
+                        with open(rule_file, "r") as file:
+                            try:
+                                with open(output_rule_file, "w") as output_file:
+                                    for line in file:
+                                        #Denormalize rule
+                                        new_line = denormalize_rule(line.rstrip("\n"), pattern, antecedant_pattern, dimlp_rules, with_attribute_names, attribute_indices, attributes, sigmas, mus) + "\n"
+                                        output_file.write(new_line) # Write line in output file
+
+                            except FileNotFoundError:
+                                    raise ValueError(f"Error : File {output_file} not found.")
+                            except IOError:
+                                raise ValueError(f"Error : Couldn't open file {output_file}.")
+                    except FileNotFoundError:
+                            raise ValueError(f"Error : File {rule_file} not found.")
+                    except IOError:
+                        raise ValueError(f"Error : Couldn't open file {rule_file}.")
 
 
             end_time = time.time()
