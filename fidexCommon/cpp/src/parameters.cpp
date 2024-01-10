@@ -135,6 +135,7 @@ Parameters::Parameters(vector<string> args) {
 }
 
 // TODO: Implement Parameters::Parameters(string jsonfile) {}
+// TODO: (nice to have) use generic types to avoid code duplication
 
 // private setters
 void Parameters::setInt(ParameterCode id, string value) {
@@ -262,34 +263,22 @@ void Parameters::setWeightsFiles() {
 
 // public getters
 int Parameters::getInt(ParameterCode id) {
-  if (_intParams.find(id) == _intParams.end()) {
-    throwArgumentNotFoundException(id);
-  }
-
+  assertIntExists(id);
   return _intParams[id];
 }
 
 float Parameters::getFloat(ParameterCode id) {
-  if (_floatParams.find(id) == _floatParams.end()) {
-    throwArgumentNotFoundException(id);
-  }
-
+  assertFloatExists(id);
   return _floatParams[id];
 }
 
 double Parameters::getDouble(ParameterCode id) {
-  if (_doubleParams.find(id) == _doubleParams.end()) {
-    throwArgumentNotFoundException(id);
-  }
-
+  assertDoubleExists(id);
   return _doubleParams[id];
 }
 
 string Parameters::getString(ParameterCode id) {
-  if (_stringParams.find(id) == _stringParams.end()) {
-    throwArgumentNotFoundException(id);
-  }
-
+  assertStringExists(id);
   return _stringParams[id];
 }
 
@@ -313,8 +302,32 @@ vector<string> Parameters::getWeightsFiles() const {
   return _weightFiles;
 }
 
+// public assertions
+void Parameters::assertStringExists(ParameterCode id) {
+  if (!isStringSet(id)) {
+    throwArgumentNotFoundException(id);
+  }
+}
+
+void Parameters::assertIntExists(ParameterCode id) {
+  if (!isIntSet(id)) {
+    throwArgumentNotFoundException(id);
+  }
+}
+
+void Parameters::assertFloatExists(ParameterCode id) {
+  if (!isFloatSet(id)) {
+    throwArgumentNotFoundException(id);
+  }
+}
+
+void Parameters::assertDoubleExists(ParameterCode id) {
+  if (!isDoubleSet(id)) {
+    throwArgumentNotFoundException(id);
+  }
+}
+
 // public special operations
-// TODO check for duplicates ?
 void Parameters::addWeightsFile(string file) {
   _weightFiles.push_back(file);
 }

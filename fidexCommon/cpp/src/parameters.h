@@ -134,32 +134,41 @@ public:
   // special operations
   void setWeightsFiles();
   void addWeightsFile(string file);
+
+  // assertions
+  void assertIntExists(ParameterCode id);
+  void assertFloatExists(ParameterCode id);
+  void assertDoubleExists(ParameterCode id);
+  void assertStringExists(ParameterCode id);
 };
 
 inline ostream &operator<<(ostream &stream, const Parameters &p) {
   int pad = 100;
-  stream << "Parameters list:" << endl
-         << setfill(' ');
+  stream << "Parameters list:" << endl;
 
   for (auto const &x : p.getAllStrings()) {
-    stream << "   - " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << x.second << endl;
+    stream << "   - " << parameterNames[x.first] << endl
+           << "     " << x.second << endl;
   }
 
   for (auto const &x : p.getAllInts()) {
-    stream << "   - " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
+    stream << "   - " << parameterNames[x.first] << endl
+           << "     " << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllFloats()) {
-    stream << "   - " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
+    stream << "   - " << parameterNames[x.first] << endl
+           << "     " << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllDoubles()) {
-    stream << "   - " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
+    stream << "   - " << parameterNames[x.first] << endl
+           << "     " << to_string(x.second) << endl;
   }
 
   stream << "  WEIGHTS_FILES (list)" << endl;
   for (string f : p.getWeightsFiles()) {
-    stream << "   - " << setw(pad) << f << endl;
+    stream << "     " << f << endl;
   }
 
   stream << "End of Parameters list." << endl;
