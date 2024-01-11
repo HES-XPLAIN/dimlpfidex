@@ -38,7 +38,7 @@ from .trnFun import compute_first_hidden_layer, output_stats, output_data, check
 def convKeras(*args, **kwargs):
 
     try:
-        if args or not kwargs:
+        if not kwargs:
             print("Obligatory parameters :")
             print("dataset : mnist, cifar100, cifar10 or fer")
             print("train_data : train data file")

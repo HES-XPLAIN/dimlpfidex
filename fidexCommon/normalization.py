@@ -155,13 +155,12 @@ def parse_normalization_stats(file_name, nb_attributes, attributes=None):
 
     # Check if each line is on good format, either with attribute names or with attribute indices
     patterns = []
-
+    float_pattern = r'-?\d+(\.\d+)?'
     if attributes is not None:
         if len(attributes) != nb_attributes:
             raise ValueError(f"Error during parsing of {file_name} : the number of attributes is not equal to the length of attributes list.")
 
         attr_pattern = "|".join(map(re.escape, attributes))
-        float_pattern = r'-?\d+(\.\d+)?'
         attr_pattern = re.compile(fr'({attr_pattern}) : original (mean|median): ({float_pattern}), original std: ({float_pattern})') # Regular expression pattern to match for each line
         patterns.append(attr_pattern)
     index_pattern = "|".join(map(str, range(nb_attributes)))
@@ -334,21 +333,55 @@ def denormalize_rule(line, pattern, antecedant_pattern, dimlp_rule, with_attribu
 def normalization(*args, **kwargs):
 
     """
-    Note : On accepte les fichiers avec des classes, on se base sur nbAttributes
-    Ce qu'on peut faire : normaliser des fichiers de donneés ou dénormaliser des fichiers de règles
-    On normalise selon les colonnes indiquées
-    Génère un fichier avec les moyennes et std des colonnes normalisées ainsi que le nouveau fichier de données normalisé
-    Pour normaliser, soit on se base sur le premier fichier donné, soit sur un fichier de normalisation obtenu aurapavant, soit en donnant explicitement une moyenne et un std
-    On peut choisir de remplir les valeurs manquantes ou non. Il est important de toujours préciser le symbole représentant les valeurs manquantes, ou NaN sinon
-    On peut normaliser avec la moyenne ou la médiane
-    Pour la dénormalisation...
+    This function serves two primary purposes: to normalize data files and to denormalize rule files.
+    It offers flexibility in the normalization process through various options.
 
-    Important : si on normalise un fichier d'entrainement, il faut aussi normaliser le fichier de test en même temps sinon on peut pas tester
+    Normalization can be performed in several ways:
+    1. Using a 'normalization_stats' file containing normalization parameters along with one or more data files.
+    2. Providing data files directly, where the first file is normalized to determine mean/median and standard deviation, which are then applied to other files.
+    3. Supplying mean/median (mus) and standard deviations (sigmas) as lists, along with the data files.
+    In the last two cases, indices of attributes to normalize must be provided, and a 'normalization_stats' file is generated for future use.
+
+    Denormalization can also be done in multiple ways:
+    1. Using a 'normalization_stats' file with one or more rule files.
+    2. Directly providing mean/median (mus) and standard deviations (sigmas) along with the rule files. Attribute indices to be denormalized must be provided in this case.
+
+    The function generates new normalized and/or denormalized files.
+
+    Note:
+    - Specify the number of attributes in the data and the symbol representing missing data.
+    - Choose whether to replace missing data or not.
+    - If normalizing training data, it is advisable to normalize test/validation files simultaneously for consistency.
+    - If no keyword arguments are provided, the function displays the usage instructions, detailing the required and optional parameters.
+      This guide assists users in correctly specifying arguments for the function.
+
+    Formats:
+    - normalization_stats file: Each line contains the mean/median and standard deviation for an attribute.
+      Format: '2 : original mean: 0.8307, original std: 0.0425'
+      Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
+    - Data files (datas): Should contain one sample per line, with numbers separated by spaces. Supported formats:
+      1. Only attributes (floats).
+      2. Attributes (floats) followed by an integer class ID.
+      3. Attributes (floats) followed by one-hot encoded class.
+    - Rule files (rule_files): Contain rules in Dimlp or Fidex format. Formats:
+      Dimlp: 'Rule 1: (x2 > 0.785787) (x5 > 0.591247) (x8 < 0.443135) Class = 1 (187)'
+      Fidex: 'X1>=0.414584 X10<0.507982 X5>=0.314835 X6>=0.356158 -> class 0'
+      In both formats, attribute indices (e.g., X1, x2) and class identifiers can be replaced with attribute names and class names, respectively, then an attribute file is required.
+    - Attribute file (attribute_file): Each line corresponds to an attribute's name, with optional class names at the end.
+
+    Examples of how to call the function:
+    - For data files: normalization(datas=["datanormTrain.txt", "datanormTest.txt"], attribute_indices=[0,2,4], nb_attributes=16, missing_values="NaN", save_folder="dimlp/datafiles")
+    - For rule files: normalization(normalization_stats="normalization_stats.txt", rule_files="globalRulesDatanorm.txt", nb_attributes=16, save_folder="dimlp/datafiles")
+
+    :param args: Non-keyword arguments are not used.
+    :param kwargs: Keyword arguments specifying various options and file paths for the normalization/denormalization process.
+    :return: Returns 0 for successful execution, -1 for errors.
+
     """
 
     try:
 
-        if args or not kwargs:
+        if not kwargs:
             print("---------------------------------------------------------------------")
             print("Please specify arguments using named parameters.")
             print("Warning! The files are localised with respect to root folder dimlpfidex.")
@@ -375,7 +408,7 @@ def normalization(*args, **kwargs):
             print("fill_missing_values : boolean, whether we fill missing values with mean or median (True by default, only when working on data files)")
             print("----------------------------")
             print("Here is an example with data files, keep same parameter names :")
-            print('normalization(datas = ["datanormTrain", "datanormTest"], attribute_indices = [0,2,4], nb_attributes=16, missing_values="NaN", save_folder = "dimlp/datafiles")')
+            print('normalization(datas = ["datanormTrain.txt", "datanormTest.txt"], attribute_indices = [0,2,4], nb_attributes=16, missing_values="NaN", save_folder = "dimlp/datafiles")')
             print("Another example with rule files :")
             print('normalization(normalization_stats = "normalization_stats.txt", rule_files = "globalRulesDatanorm.txt", nb_attributes=16, save_folder = "dimlp/datafiles")')
             print("---------------------------------------------------------------------")
