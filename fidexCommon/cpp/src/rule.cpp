@@ -66,3 +66,27 @@ string Rule::toString(const vector<string> *attributes, const vector<string> *cl
 
   return result.str();
 }
+
+bool Rule::isEqual(const Rule other) const {
+  double epsilon = 10e-6;
+
+  if (getAntecedants() != other.getAntecedants())
+    return false;
+
+  if (getCoveredSamples() != other.getCoveredSamples())
+    return false;
+
+  if (getOutputClass() != other.getOutputClass())
+    return false;
+
+  if (fabs(getFidelity() - other.getFidelity()) > epsilon)
+    return false;
+
+  if (fabs(getAccuracy() != other.getAccuracy()) > epsilon)
+    return false;
+
+  if (fabs(getConfidence() != other.getConfidence()) > epsilon)
+    return false;
+
+  return true;
+}
