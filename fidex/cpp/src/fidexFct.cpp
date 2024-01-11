@@ -37,6 +37,10 @@ void showFidexParams() {
   std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
   std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
   std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
+  std::cout << "-n <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << std::endl;
+  std::cout << "-u <list of float in the form [1.1, 3.5] corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
+  std::cout << "-g <list of float in the form [4.5, 12] corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
+  std::cout << "-I <list of integers in the form [0,3,7] corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_stats is given)>" << std::endl;
   std::cout << "-z <seed (0=random, default)>";
 
   std::cout << "\n-------------------------------------------------\n"
@@ -125,6 +129,15 @@ int fidex(const string &command) {
     double decisionThreshold = -1;
     bool hasIndexPositiveClass = false;
     int indexPositiveClass = -1;
+
+    string normalizationFileTemp;
+    bool normalizationFileInit = false;
+    std::vector<float> mus;
+    bool hasMus = false;
+    std::vector<float> sigmas;
+    bool hasSigmas = false;
+    std::vector<int> normalizationIndices;
+    bool hasNormalizationIndices = false;
 
     // Import parameters
 
@@ -323,6 +336,30 @@ int fidex(const string &command) {
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested.");
           }
+          break;
+
+        case 'n':
+          normalizationFileTemp = arg;
+          normalizationFileInit = true;
+          break;
+
+        case 'u':
+          mus = getFloatVectorFromString(arg);
+          hasMus = true;
+          for (const double &value : mus) {
+            std::cout << value << " ";
+          }
+          std::cout << std::endl;
+          break;
+
+        case 'g':
+          // sigmas = arg;
+          hasSigmas = true;
+          break;
+
+        case 'I':
+          // normalizationIndices = arg;
+          hasNormalizationIndices = true;
           break;
 
         case 'z':
