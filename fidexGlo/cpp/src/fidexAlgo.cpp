@@ -17,7 +17,7 @@ Fidex::Fidex(DataSetFid *dataset, Parameters *parameters, Hyperspace *hyperspace
   //  _rnd(seed);
 }
 
-bool Fidex::compute(Rule &rule, int idSample, double minFidelity, mt19937 gen) {
+bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover, mt19937 gen) {
   Hyperspace *hyperspace = _hyperspace;
   int nbAttributes = _dataset->getNbAttributes();
   vector<int> *trainPreds = _dataset->getPredictions();
@@ -28,7 +28,6 @@ bool Fidex::compute(Rule &rule, int idSample, double minFidelity, mt19937 gen) {
   int mainSamplePred = (*trainPreds)[idSample];
   int nbInputs = hyperspace->getHyperLocus().size();
   int itMax = _parameters->getInt(MAX_ITERATIONS);
-  int minNbCover = _parameters->getInt(MIN_COVERING);
   double dropoutDim = _parameters->getFloat(DROPOUT_DIM);
   double dropoutHyp = _parameters->getFloat(DROPOUT_HYP);
   bool hasdd = dropoutDim > 0.01;

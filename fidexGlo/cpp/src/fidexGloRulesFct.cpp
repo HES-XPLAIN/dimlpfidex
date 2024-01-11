@@ -43,15 +43,15 @@ void showRulesParams() {
 }
 
 // TODO: comment this
-tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *p, vector<vector<double>> hyperlocus) {
-  vector<Rule> rules;
+void generateRules(vector<Rule> *rules, vector<int> *notCoveredSamples, DataSetFid *dataset, Parameters *p, vector<vector<double>> hyperlocus) {
+  // vector<Rule> rules;
   int nbProblems = 0;
   int nbRulesNotFound = 0;
   int nbDatas = dataset->getNbSamples();
-  vector<int> notCoveredSamples(nbDatas);
   int minNbCover = p->getInt(MIN_COVERING);
   int nbThreadsUsed = p->getInt(NB_THREADS_USED);
-  iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
+  // vector<int> notCoveredSamples(nbDatas);
+  // iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
 
   int seed = p->getInt(SEED);
   if (seed == 0) {
@@ -91,6 +91,7 @@ tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *
 
 #pragma omp for
     for (int idSample = 0; idSample < nbDatas; idSample++) {
+      currentMinNbCov = minNbCover;
       ruleCreated = false;
       counterFailed = 0; // If we can't find a good rule after a lot of tries
       cnt += 1;
@@ -106,9 +107,8 @@ tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *
       }
 
       while (!ruleCreated) {
-        ruleCreated = fidex.compute(rule, idSample, minFidelity, gen);
+        ruleCreated = fidex.compute(rule, idSample, minFidelity, currentMinNbCov, gen);
 
-        // TODO "2" must be replaced by some user arg
         if (currentMinNbCov >= 2) {
           currentMinNbCov -= 1;
         } else {
@@ -120,9 +120,10 @@ tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *
 
 #pragma omp critical
           {
-            it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
-            if (it != notCoveredSamples.end()) {
-              notCoveredSamples.erase(it);
+            // ignore samples that cannot be covered after "maxFailedAttempts" attempts
+            it = find(notCoveredSamples->begin(), notCoveredSamples->end(), idSample);
+            if (it != notCoveredSamples->end()) {
+              notCoveredSamples->erase(it);
             }
           }
           break;
@@ -132,7 +133,10 @@ tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *
       if (currentMinNbCov + 1 < minNbCover) {
         localNbProblems += 1;
       }
-      localRules.push_back(rule);
+
+      if (ruleCreated) {
+        localRules.push_back(rule);
+      }
     }
 
     t2 = omp_get_wtime();
@@ -144,7 +148,7 @@ tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *
       {
         if (i == threadId) {
           cout << "Thread #" << threadId << " ended " << cnt << " iterations in " << (t2 - t1) << " seconds." << endl;
-          rules.insert(rules.end(), localRules.begin(), localRules.end());
+          rules->insert(rules->end(), localRules.begin(), localRules.end());
           nbProblems += localNbProblems;
           nbRulesNotFound += localNbRulesNotFound;
         }
@@ -153,60 +157,56 @@ tuple<vector<Rule>, vector<int>> generateRules(DataSetFid *dataset, Parameters *
   } // end of parallel section
 
   cout << endl
-       << rules.size() << " rules created." << endl
+       << rules->size() << " rules created." << endl
        << "Number of sample with lower covering than " << minNbCover << " is " << nbProblems << endl
        << "Number of rules not found is " << nbRulesNotFound << endl
        << "Fidex rules computed" << endl;
-
-  // writeRulesFile(p->getString(RULES_FILE) + ".RR", rules, dataset->getAttributeNames(), dataset->getClassNames());
-
-  return make_tuple(rules, notCoveredSamples);
 }
 
 // TODO: comment this
 vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<double>> hyperlocus) {
-  tuple<vector<Rule>, vector<int>> results = generateRules(dataset, p, hyperlocus);
+  vector<Rule> rules;
   vector<Rule> chosenRules;
-  vector<Rule> rules = get<0>(results);
-  vector<int> notCoveredSamples = get<1>(results);
+  int nbDatas = dataset->getNbSamples();
+  vector<int> notCoveredSamples(nbDatas);
+  iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
+  generateRules(&rules, &notCoveredSamples, dataset, p, hyperlocus);
 
   cout << "Computing global ruleset..." << endl;
 
   // While there is some not covered samples
-  vector<int>::iterator it;
+  vector<int>::iterator ite;
   vector<int> currentRuleSamples;
-  vector<int> newNotCoveredSamples;
-  vector<int> bestNewNotCoveredSamples;
 
   while (!notCoveredSamples.empty()) {
-    // Get rule that covers the most new samples
-    int bestRule = -1;
+    Rule bestRule;
+    int bestRuleIndex = 0;
     int bestCovering = INT_MAX;
-    int currentCovering; // Size of new covering if we choose this rule
+    vector<int> remainingSamples;
+    vector<int> difference(notCoveredSamples.size());
 
-    for (int r = 0; r < rules.size(); r++) {
-      newNotCoveredSamples = notCoveredSamples;
-      currentRuleSamples = rules[r].getCoveredSamples();
-      // Remove samples that are in current covering
-      it = set_difference(newNotCoveredSamples.begin(),
-                          newNotCoveredSamples.end(),
-                          currentRuleSamples.begin(),
-                          currentRuleSamples.end(),
-                          newNotCoveredSamples.begin()); // vectors have to be sorted
+    for (int i = 0; i < rules.size(); i++) {
+      currentRuleSamples = rules[i].getCoveredSamples();
 
-      newNotCoveredSamples.resize(it - newNotCoveredSamples.begin());
-      currentCovering = static_cast<int>(newNotCoveredSamples.size());
+      ite = set_difference(notCoveredSamples.begin(),
+                           notCoveredSamples.end(),
+                           currentRuleSamples.begin(),
+                           currentRuleSamples.end(),
+                           difference.begin()); // vectors have to be sorted
 
-      if (currentCovering < bestCovering) {
-        bestRule = r;
-        bestCovering = currentCovering;
-        bestNewNotCoveredSamples = newNotCoveredSamples;
+      difference.resize(ite - difference.begin());
+
+      if (difference.size() < bestCovering) {
+        bestRuleIndex = i;
+        bestRule = rules[i];
+        remainingSamples = difference;
+        bestCovering = difference.size();
       }
     }
 
-    notCoveredSamples = bestNewNotCoveredSamples; // Delete new covered samples
-    chosenRules.push_back(rules[bestRule]);       // add best rule with maximum covering
-    rules.erase(rules.begin() + bestRule);        // Remove this rule
+    chosenRules.push_back(bestRule); // add best rule with maximum covering
+    notCoveredSamples = remainingSamples;
+    rules.erase(rules.begin() + bestRuleIndex); // Remove this rule
   }
 
   cout << chosenRules.size() << " rules selected." << endl;
@@ -216,48 +216,47 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
 
 // TODO: comment this
 vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<double>> hyperlocus) {
-  tuple<vector<Rule>, vector<int>> results = generateRules(dataset, p, hyperlocus);
+  vector<Rule> rules;
   vector<Rule> chosenRules;
-  vector<Rule> rules = get<0>(results);
-  vector<int> notCoveredSamples = get<1>(results);
+  int nbDatas = dataset->getNbSamples();
+  vector<int> notCoveredSamples(nbDatas);
+  iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
 
-  cout << "Computing global ruleset..." << endl;
+  // getting rules and not covered samples
+  generateRules(&rules, &notCoveredSamples, dataset, p, hyperlocus);
 
-  // Sort the rules(dataIds) depending of their covering size
-  vector<int> dataIds = notCoveredSamples;
-
+  // sort rules by covering
   sort(rules.begin(), rules.end(), [&rules](Rule r1, Rule r2) {
     return r1.getCoveredSamples().size() > r2.getCoveredSamples().size();
   });
 
-  // While there is some not covered samples
-  int dataId = 0;
-  int nbRules = 0;
-  Rule currentRule;
-  vector<int>::iterator ite;
-  int ancienNotCoveringSize = static_cast<int>(notCoveredSamples.size());
+  // remove duplicates
+  rules.erase(unique(rules.begin(), rules.end()), rules.end());
 
-  //! Something int this loop triggers a SEGFAULT
+  // While there is some not covered samples
+  int i = 0;
+  vector<int>::iterator ite;
+  vector<int> currentRuleSamples;
+
   while (!notCoveredSamples.empty()) {
-    currentRule = rules[dataId];
+    vector<int> difference(notCoveredSamples.size());
+    currentRuleSamples = rules[i].getCoveredSamples();
 
     // Delete covered samples
     ite = set_difference(notCoveredSamples.begin(),
                          notCoveredSamples.end(),
-                         currentRule.getCoveredSamples().begin(),
-                         currentRule.getCoveredSamples().end(),
-                         notCoveredSamples.begin()); // vectors have to be sorted
+                         currentRuleSamples.begin(),
+                         currentRuleSamples.end(),
+                         difference.begin()); // vectors have to be sorted
 
-    notCoveredSamples.resize(ite - notCoveredSamples.begin());
+    difference.resize(ite - difference.begin());
 
     // If the rule covers a new sample
-    if (ancienNotCoveringSize > notCoveredSamples.size()) {
-      nbRules += 1;
-      chosenRules.push_back(currentRule); // add best rule with maximum covering
+    if (difference.size() < notCoveredSamples.size()) {
+      chosenRules.push_back(rules[i]); // add best rule with maximum covering
     }
-
-    ancienNotCoveringSize = static_cast<int>(notCoveredSamples.size());
-    dataId += 1;
+    notCoveredSamples = difference;
+    i += 1;
   }
 
   cout << chosenRules.size() << " rules selected." << endl;
@@ -312,7 +311,7 @@ vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<doubl
     ruleCreated = false;
     int counterFailed = 0; // If we can't find a good rule after a lot of tries
     while (!ruleCreated) {
-      ruleCreated = fidex.compute(rule, idSample, minFidelity, gen);
+      ruleCreated = fidex.compute(rule, idSample, minFidelity, currentMinNbCov, gen);
 
       if (currentMinNbCov >= 2) {
         currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
@@ -364,7 +363,6 @@ void checkParametersLogicValues(Parameters *p) {
   p->setDefaultString(ATTRIBUTES_FILE, "");
   p->setDefaultString(CONSOLE_FILE, "");
   p->setDefaultString(INPUT_RULES_FILE, "");
-  p->setDefaultString(RULES_FILE, "generatedRules.rls"); // not sure of this
   p->setDefaultInt(MAX_ITERATIONS, 100);
   p->setDefaultInt(MIN_COVERING, 2);
   p->setDefaultFloat(DROPOUT_DIM, 0.0f);
@@ -380,6 +378,7 @@ void checkParametersLogicValues(Parameters *p) {
   p->setWeightsFiles(); // must be called to initialize
 
   // TODO check for logic values
+  p->assertStringExists(RULES_FILE);
 }
 
 /**
@@ -392,6 +391,7 @@ void checkParametersLogicValues(Parameters *p) {
  * @param classes list of class names, used to write Rule's class with class explicit name instead of its numerical representation.
  * @return tuple<double, double>
  */
+// TODO: check for side effects (effets de bord)
 tuple<double, double> writeRulesFile(string filename, const vector<Rule> rules, const vector<string> *attributes, const vector<string> *classes) {
   if (rules.empty()) {
     cout << "Warning: cannot write to file \"" << filename << "\", generated rules list is empty.";
@@ -628,11 +628,7 @@ int fidexGloRules(const string &command) {
 
     nbRules = generatedRules.size();
 
-    cout << "Global ruleset Computed." << endl
-         << endl;
-
-    cout << nbRules << " rules selected." << endl
-         << endl;
+    cout << "Global ruleset Computed." << endl;
 
     const auto end_h = high_resolution_clock::now();
     const duration<double> diff_h = end_h - start;
@@ -642,7 +638,6 @@ int fidexGloRules(const string &command) {
          << endl;
 
     cout << "Rules extraction..."
-         << endl
          << endl;
 
     sort(generatedRules.begin(), generatedRules.end(), [&generatedRules](Rule r1, Rule r2) {

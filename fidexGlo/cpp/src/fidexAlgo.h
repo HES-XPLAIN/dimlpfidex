@@ -34,7 +34,7 @@ public:
 
   // execute algo
   // TODO: gen param to be removed once tests passed
-  bool compute(Rule &rule, int idSample, double minFidelity, mt19937 gen);
+  bool compute(Rule &rule, int idSample, double minFidelity, int minNbCover, mt19937 gen);
 };
 
 #endif
