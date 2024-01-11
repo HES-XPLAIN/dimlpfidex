@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS "-O3")
 # Warning, these flags slows down the execution
-# set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra -fsanitize=address -fsanitize=leak -fsanitize=undefined")
+# set(CMAKE_CXX_FLAGS "-O3 -fsanitize=address -fsanitize=leak -fsanitize=undefined")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 FILE(GLOB FIDEXGLO_SRC
