@@ -16,7 +16,20 @@ std::shared_ptr<Hyperbox> Hyperspace::getHyperbox() const {
   return hyperbox;
 }
 
-void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, vector<string> &lines, bool hasAttributeNames, vector<string> *attributeNames, bool hasClassNames, vector<string> *classNames) {
+void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, vector<string> &lines,
+                                bool hasAttributeNames, vector<string> *attributeNames, bool hasClassNames, vector<string> *classNames, const vector<float> *mus, const vector<float> *sigmas, const vector<int> *normalization_indices) {
+
+  bool denormalizing = false;
+  // Check if we need to denormalize
+  if (mus && sigmas && normalization_indices) {
+    denormalizing = true;
+    if (!(mus->size() == sigmas->size() && mus->size() == normalization_indices->size())) {
+      throw InternalError("Error during rule extraction : Means, standard deviations, and normalization indices must have the same number of elements.");
+    }
+  } else if (mus || sigmas || normalization_indices) {
+    throw InternalError("Error during rule extraction : Means, standard deviations, and normalization indices must either all be specified or none at all.");
+  }
+
   double hypValue;
   int attribut;
 
@@ -26,6 +39,7 @@ void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
 
     attribut = hyperbox->getDiscriminativeHyperplans()[k].first % (*mainSampleData).size();
     hypValue = hyperLocus[hyperbox->getDiscriminativeHyperplans()[k].first][hyperbox->getDiscriminativeHyperplans()[k].second];
+
     double mainSampleValue = (*mainSampleData)[attribut];
     if (hypValue <= mainSampleValue) {
       inequality = ">=";
@@ -37,6 +51,22 @@ void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
     } else {
       line += "X" + std::to_string(attribut);
     }
+
+    // Denormalization of values in case it was previously normalized
+    if (denormalizing) {
+      // Check if the attribute needs to be denormalized
+      int index = -1;
+      for (size_t i = 0; i < normalization_indices->size(); ++i) {
+        if ((*normalization_indices)[i] == attribut) {
+          index = static_cast<int>(i);
+          break; // Arrêter la boucle une fois la valeur trouvée
+        }
+      }
+      if (index != -1) {
+        hypValue = hypValue * (*sigmas)[index] + (*mus)[index];
+      }
+    }
+
     line += inequality + formattingDoubleToString(hypValue) + " ";
   }
   if (hasClassNames) {

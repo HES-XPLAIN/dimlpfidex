@@ -83,3 +83,72 @@ std::string formattingDoubleToString(double number) {
   str.erase(str.find_last_not_of('.') + 1, std::string::npos);
   return str;
 }
+
+//////////////////////////////////////////////////////
+
+/**
+ * @brief Splits a given string into a vector of substrings based on a specified delimiter.
+ *
+ * This function takes a string and a delimiter string, then iteratively finds and extracts
+ * substrings separated by the delimiter. Substrings at the start and end of the input string
+ * are handled appropriately to avoid including empty strings in the result.
+ *
+ * @param str The string to be split.
+ * @param delimiter The string used as the delimiter to split the input string.
+ * @return std::vector<std::string> A vector containing the substrings obtained by splitting the input string.
+ */
+std::vector<std::string> splitString(const std::string &str, const std::string &delimiter) {
+  std::vector<std::string> tokens;
+  size_t start = 0;
+  size_t end = str.find(delimiter);
+
+  // Loop to find and add new sub-strings
+  while (end != std::string::npos) {
+    if (start != end) { // Not adding empty strings
+      tokens.push_back(str.substr(start, end - start));
+    }
+    start = end + delimiter.length();
+    end = str.find(delimiter, start);
+  }
+
+  // Add last string if not empty
+  if (start != str.length()) {
+    tokens.push_back(str.substr(start));
+  }
+
+  return tokens;
+}
+
+//////////////////////////////////////////////////////
+
+std::vector<float> getFloatVectorFromString(const std::string &str) {
+  std::vector<float> result;
+  auto tokens = splitString(str.substr(1, str.size() - 2), ", ");
+
+  for (const auto &token : tokens) {
+    try {
+      result.push_back(std::stof(token));
+    } catch (const std::invalid_argument &) {
+      throw CommandArgumentException("Error : Invalid float value in float vector: " + token);
+    }
+  }
+
+  return result;
+}
+
+//////////////////////////////////////////////////////
+
+std::vector<int> getIntVectorFromString(const std::string &str) {
+  std::vector<int> result;
+  auto tokens = splitString(str.substr(1, str.size() - 2), ",");
+
+  for (const auto &token : tokens) {
+    try {
+      result.push_back(std::stoi(token));
+    } catch (const std::invalid_argument &) {
+      throw CommandArgumentException("Error : Invalid integer value in int vector: " + token);
+    }
+  }
+
+  return result;
+}

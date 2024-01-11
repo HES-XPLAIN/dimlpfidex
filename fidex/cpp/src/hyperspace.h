@@ -24,7 +24,9 @@ public:
 
   std::shared_ptr<Hyperbox> getHyperbox() const;
   std::vector<std::vector<double>> getHyperLocus() const;
-  void ruleExtraction(std::vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, std::vector<std::string> &lines, bool hasAttributeNames, std::vector<std::string> *attributeNames, bool hasClassNames, std::vector<std::string> *classNames);
+  void ruleExtraction(std::vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, std::vector<std::string> &lines,
+                      bool hasAttributeNames, std::vector<std::string> *attributeNames, bool hasClassNames, std::vector<std::string> *classNames,
+                      const std::vector<float> *mus = nullptr, const std::vector<float> *sigmas = nullptr, const std::vector<int> *normalization_indices = nullptr);
   double computeRuleAccuracy(std::vector<int> *trainPreds, std::vector<int> *trainTrueClass, bool mainSampleCorrect = false) const;
   double computeRuleConfidence(std::vector<std::vector<double>> *trainOutputValuesPredictions, const int rulePred, double mainSamplePredValueOnRulePred) const;
 };
