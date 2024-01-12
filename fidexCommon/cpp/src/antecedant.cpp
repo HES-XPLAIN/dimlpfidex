@@ -15,8 +15,7 @@ Antecedant::Antecedant(int attribute, bool inequality, double value) {
 
 bool Antecedant::isEqual(const Antecedant other) const {
   double epsilon = 10e-6;
-  bool _inequality; // true if attribute >= value false if attribute < value
-  double _value;
+
   if (getAttribute() != other.getAttribute())
     return false;
 
