@@ -1,10 +1,10 @@
 #include "fidexAlgo.h"
 
-// TODO: the "seed" argument is not really useful anymore as it's contained by the Parameter object, should be removed
-Fidex::Fidex(DataSetFid *dataset, Parameters *parameters, Hyperspace *hyperspace, int seed) {
+Fidex::Fidex(DataSetFid *dataset, Parameters *parameters, Hyperspace *hyperspace) {
   _dataset = dataset;
   _parameters = parameters;
   _hyperspace = hyperspace;
+  int seed = parameters->getInt(SEED);
 
   if (seed == 0) {
     auto currentTime = high_resolution_clock::now();
@@ -12,12 +12,10 @@ Fidex::Fidex(DataSetFid *dataset, Parameters *parameters, Hyperspace *hyperspace
     seed = seedValue;
   }
 
-  _rnd = seed;
-  // TODO: once all tests have passed, put the correct version of the seed
-  //  _rnd(seed);
+  _rnd.seed(seed);
 }
 
-bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover, mt19937 gen) {
+bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover) {
   Hyperspace *hyperspace = _hyperspace;
   int nbAttributes = _dataset->getNbAttributes();
   vector<int> *trainPreds = _dataset->getPredictions();
@@ -59,7 +57,7 @@ bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover
     // Randomize dimensions
     vector<int> dimensions(nbInputs);
     iota(begin(dimensions), end(dimensions), 0); // Vector from 0 to nbIn-1
-    shuffle(begin(dimensions), end(dimensions), gen);
+    shuffle(begin(dimensions), end(dimensions), _rnd);
 
     vector<int> currentCovSamp;
     for (int d = 0; d < nbInputs; d++) {
@@ -72,7 +70,7 @@ bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover
       mainSampleValue = (*mainSampleValues)[attribut];
 
       // Test if we dropout this dimension
-      if (hasdd && dis(gen) < dropoutDim) {
+      if (hasdd && dis(_rnd) < dropoutDim) {
         continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
       }
       bool maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
@@ -84,7 +82,7 @@ bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover
 
       for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
         // Test if we dropout this hyperplan
-        if (hasdh && dis(gen) < dropoutHyp) {
+        if (hasdh && dis(_rnd) < dropoutHyp) {
           continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
         }
 

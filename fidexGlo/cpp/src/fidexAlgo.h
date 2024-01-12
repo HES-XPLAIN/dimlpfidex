@@ -26,15 +26,14 @@ private:
   DataSetFid *_dataset;
   Parameters *_parameters;
   Hyperspace *_hyperspace;
-  int _rnd;
+  mt19937 _rnd;
 
 public:
   Fidex() = default;
-  Fidex(DataSetFid *dataset, Parameters *parameters, Hyperspace *Hyperspace, int seed);
+  Fidex(DataSetFid *dataset, Parameters *parameters, Hyperspace *Hyperspace);
 
   // execute algo
-  // TODO: gen param to be removed once tests passed
-  bool compute(Rule &rule, int idSample, double minFidelity, int minNbCover, mt19937 gen);
+  bool compute(Rule &rule, int idSample, double minFidelity, int minNbCover);
 };
 
 #endif
