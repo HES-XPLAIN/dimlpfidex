@@ -1,6 +1,9 @@
 #ifndef RULE_H
 #define RULE_H
 #include "antecedant.h"
+#include "checkFun.h"
+#include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <ostream>
 #include <sstream>
@@ -49,6 +52,7 @@ public:
   void addAntecedant(Antecedant antecedant) { _antecedants.push_back(antecedant); };
   void addCoveredSample(int sampleId) { _coveredSamples.push_back(sampleId); };
   string toString(const vector<string> *attributes = NULL, const vector<string> *classes = NULL);
+  bool isEqual(const Rule other) const;
 };
 
 // OPERATOR OVERLOAD TO EASE PRINTING PURPOSES
@@ -63,6 +67,14 @@ inline ostream &operator<<(ostream &stream, const Rule &rule) {
          << "   Covering:   " << rule.getCoveredSamples().size() << endl;
 
   return stream;
+}
+
+inline bool operator==(const Rule &r1, const Rule &r2) {
+  return r1.isEqual(r2);
+}
+
+inline bool operator!=(const Rule &r1, const Rule &r2) {
+  return !r1.isEqual(r2);
 }
 
 #endif

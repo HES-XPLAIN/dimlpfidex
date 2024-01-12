@@ -13,21 +13,22 @@
 #include <tuple>
 #include <vector>
 
+using namespace std;
+
 namespace FidexGloNameSpace {
 class Hyperspace {
-
-  std::vector<std::vector<double>> hyperLocus; // All the possible hyperplans
-  std::shared_ptr<Hyperbox> hyperbox;
+  vector<vector<double>> hyperLocus; // All the possible hyperplans
+  shared_ptr<Hyperbox> hyperbox;
 
 public:
   Hyperspace();
-  explicit Hyperspace(const std::vector<std::vector<double>> &matHypLocus);
+  explicit Hyperspace(const vector<vector<double>> &matHypLocus);
 
-  std::shared_ptr<Hyperbox> getHyperbox() const;
-  std::vector<std::vector<double>> getHyperLocus() const;
-  Rule ruleExtraction(std::vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence);
-  double computeRuleAccuracy(std::vector<int> *trainPreds, std::vector<int> *trainTrueClass) const;
-  double computeRuleConfidence(std::vector<std::vector<double>> *trainOutputValuesPredictions, const int rulePred) const;
+  shared_ptr<Hyperbox> getHyperbox() const;
+  vector<vector<double>> getHyperLocus() const;
+  Rule ruleExtraction(vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence);
+  double computeRuleAccuracy(vector<int> *trainPreds, vector<int> *trainTrueClass) const;
+  double computeRuleConfidence(vector<vector<double>> *trainOutputValuesPredictions, const int mainSamplePred) const;
 };
 } // namespace FidexGloNameSpace
 

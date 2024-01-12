@@ -1,31 +1,36 @@
 #include "fidexAlgo.h"
 
-FidexAlgo::FidexAlgo() = default;
+Fidex::Fidex(DataSetFid *dataset, Parameters *parameters, Hyperspace *hyperspace) {
+  _dataset = dataset;
+  _parameters = parameters;
+  _hyperspace = hyperspace;
+  int seed = parameters->getInt(SEED);
 
-// Different mains:
+  if (seed == 0) {
+    auto currentTime = high_resolution_clock::now();
+    auto seedValue = currentTime.time_since_epoch().count();
+    seed = seedValue;
+  }
 
-// OPENMP: hyperspace is a shared ressource that might produce concurrency errors
-bool FidexAlgo::fidex(
-    Rule &rule,
-    vector<vector<double>> *trainData,
-    vector<int> *trainPreds,
-    vector<vector<double>> *trainOutputValuesPredictions,
-    vector<int> *trainTrueClass,
-    vector<double> *mainSampleValues,
-    int mainSamplePred,
-    Hyperspace *hyperspace,
-    const int nbIn,
-    const int nbAttributs,
-    int itMax,
-    int minNbCover,
-    double minFidelity,
-    bool dropoutDim,
-    double dropoutDimParam,
-    bool dropoutHyp,
-    double dropoutHypParam,
-    mt19937 gen) const {
+  _rnd.seed(seed);
+}
 
-  // Initialize uniform distribution
+bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover) {
+  Hyperspace *hyperspace = _hyperspace;
+  int nbAttributes = _dataset->getNbAttributes();
+  vector<int> *trainPreds = _dataset->getPredictions();
+  vector<int> *trainTrueClass = _dataset->getClasses();
+  vector<vector<double>> *trainData = _dataset->getDatas();
+  vector<double> *mainSampleValues = &(*trainData)[idSample];
+  vector<vector<double>> *trainOutputValuesPredictions = _dataset->getOutputValuesPredictions();
+  int mainSamplePred = (*trainPreds)[idSample];
+  int nbInputs = hyperspace->getHyperLocus().size();
+  int itMax = _parameters->getInt(MAX_ITERATIONS);
+  double dropoutDim = _parameters->getFloat(DROPOUT_DIM);
+  double dropoutHyp = _parameters->getFloat(DROPOUT_HYP);
+  bool hasdd = dropoutDim > 0.01;
+  bool hasdh = dropoutHyp > 0.01;
+
   uniform_real_distribution<double> dis(0.0, 1.0);
 
   // Compute initial covering
@@ -35,8 +40,8 @@ bool FidexAlgo::fidex(
   // Store covering and compute initial fidelty
   hyperspace->getHyperbox()->setCoveredSamples(coveredSamples);
   hyperspace->getHyperbox()->computeFidelity(mainSamplePred, trainPreds); // Compute fidelity of initial hyperbox
-  // If we come from fidexGlo, we reset hyperbox discriminativeHyperplans
-  hyperspace->getHyperbox()->resetDiscriminativeHyperplans();
+  hyperspace->getHyperbox()->resetDiscriminativeHyperplans();             // If we come from fidexGlo, we reset hyperbox discriminativeHyperplans
+
   int nbIt = 0;
 
   while (hyperspace->getHyperbox()->getFidelity() < minFidelity && nbIt < itMax) { // While fidelity of our hyperbox is not high enough
@@ -50,22 +55,22 @@ bool FidexAlgo::fidex(
     int minHyp = -1; // Index of first hyperplan without any change of the best hyperplan
     int maxHyp = -1;
     // Randomize dimensions
-    vector<int> dimensions(nbIn);
+    vector<int> dimensions(nbInputs);
     iota(begin(dimensions), end(dimensions), 0); // Vector from 0 to nbIn-1
-    shuffle(begin(dimensions), end(dimensions), gen);
+    shuffle(begin(dimensions), end(dimensions), _rnd);
 
     vector<int> currentCovSamp;
-    for (int d = 0; d < nbIn; d++) {
+    for (int d = 0; d < nbInputs; d++) {
       if (bestHyperbox->getFidelity() >= minFidelity) {
         break;
       }
 
       dimension = dimensions[d];
-      attribut = dimension % nbAttributs;
+      attribut = dimension % nbAttributes;
       mainSampleValue = (*mainSampleValues)[attribut];
 
       // Test if we dropout this dimension
-      if (dropoutDim && dis(gen) < dropoutDimParam) {
+      if (hasdd && dis(_rnd) < dropoutDim) {
         continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
       }
       bool maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
@@ -74,10 +79,10 @@ bool FidexAlgo::fidex(
       if (nbHyp == 0) {
         continue; // No data on this dimension
       }
-      for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
 
+      for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
         // Test if we dropout this hyperplan
-        if (dropoutHyp && dis(gen) < dropoutHypParam) {
+        if (hasdh && dis(_rnd) < dropoutHyp) {
           continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
         }
 
@@ -85,8 +90,10 @@ bool FidexAlgo::fidex(
         bool mainSampleGreater = hypValue <= mainSampleValue;                                                                                     // Check if main sample value is on the right of the hyperplan
         currentHyperbox->computeCoveredSamples(hyperspace->getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
         currentHyperbox->computeFidelity(mainSamplePred, trainPreds);                                                                             // Compute fidelity
+
         // If the fidelity is better or is same with better covering but not if covering size is lower than minNbCover
         if (currentHyperbox->getCoveredSamples().size() >= minNbCover && (currentHyperbox->getFidelity() > bestHyperbox->getFidelity() || (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() > bestHyperbox->getCoveredSamples().size()))) {
+
           bestHyperbox->setFidelity(currentHyperbox->getFidelity()); // Update best hyperbox
           bestHyperbox->setCoveredSamples(currentHyperbox->getCoveredSamples());
           indexBestHyp = k;
@@ -129,14 +136,6 @@ bool FidexAlgo::fidex(
 
   // Compute rule accuracy
   double ruleAccuracy;
-  // #pragma omp critical
-  // {
-  //   for (int i : *trainTrueClass) {
-  //     cout << i << ", ";
-  //   }
-  //   cout << endl << "trainPreds size: " << trainPreds->size() << " trainTrueClass size: " << trainTrueClass->size() << endl;
-  // }
-
   ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass); // Percentage of correct model prediction on samples covered by the rule
 
   double ruleConfidence;
@@ -145,25 +144,3 @@ bool FidexAlgo::fidex(
 
   return true;
 }
-
-/*
-
-    #include <Windows.h>
-
-    LARGE_INTEGER frequency2;        ticks per second
-    LARGE_INTEGER g1, g2;           ticks
-    double elapsedTime2;
-
-    get ticks per second
-    QueryPerformanceFrequency(&frequency2);
-
-    start timer
-    QueryPerformanceCounter(&g1);
-
-    stop timer
-    QueryPerformanceCounter(&g2);
-
-    compute and print the elapsed time in millisec
-    elapsedTime2 = (g2.QuadPart - g1.QuadPart) * 1000.0 / frequency2.QuadPart;
-
-    */

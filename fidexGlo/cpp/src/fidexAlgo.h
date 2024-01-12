@@ -1,28 +1,39 @@
 #ifndef FIDEXALGO_H
 #define FIDEXALGO_H
+#include "../../../fidexCommon/cpp/src/dataSet.h"
+#include "../../../fidexCommon/cpp/src/parameters.h"
 #include "hyperspace.h"
 #include <algorithm>
 #include <chrono>
 #include <ctime>
 #include <fstream>
 #include <iostream>
+#include <math.h>
 #include <numeric>
+#include <omp.h>
 #include <random>
 #include <sstream>
+#include <time.h>
 #include <tuple>
 #include <vector>
 
 using namespace std;
+using namespace std::chrono;
 using namespace FidexGloNameSpace;
 
-class FidexAlgo {
+class Fidex {
+private:
+  DataSetFid *_dataset;
+  Parameters *_parameters;
+  Hyperspace *_hyperspace;
+  mt19937 _rnd;
+
 public:
-  //  Contructeur:
-  FidexAlgo();
+  Fidex() = default;
+  Fidex(DataSetFid *dataset, Parameters *parameters, Hyperspace *Hyperspace);
 
-  //  Méthodes:
-
-  bool fidex(Rule &rule, std::vector<std::vector<double>> *trainData, std::vector<int> *trainPreds, std::vector<std::vector<double>> *trainOutputValuesPredictions, std::vector<int> *trainTrueClass, std::vector<double> *mainSampleValues, int mainSamplePred, FidexGloNameSpace::Hyperspace *hyperspace, const int nbIn, const int nbAttributs, int itMax, int minNbCover, double minFidelity, bool dropoutDim, double dropoutDimParam, bool dropoutHyp, double dropoutHypParam, std::mt19937 g) const;
+  // execute algo
+  bool compute(Rule &rule, int idSample, double minFidelity, int minNbCover);
 };
 
 #endif

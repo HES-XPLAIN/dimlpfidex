@@ -11,6 +11,8 @@
 #include <sstream>
 #include <vector>
 
+using namespace std;
+
 class DataSetFid {
 
 private:

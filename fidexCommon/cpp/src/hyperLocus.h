@@ -6,6 +6,7 @@
 #include "errorHandler.h"
 #include <fstream>
 #include <iomanip>
+#include <regex>
 #include <set>
 #include <sstream>
 #include <string.h>

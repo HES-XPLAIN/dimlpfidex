@@ -1,5 +1,4 @@
 #include "dataSet.h"
-using namespace std;
 
 /**
  * @brief Construct a new DataSetFid object using three separate data files: one for data, one for predictions, and optionally one for classes.

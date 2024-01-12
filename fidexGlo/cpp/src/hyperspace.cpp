@@ -36,7 +36,6 @@ Rule Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
     }
     antecedants.push_back(Antecedant(attribut, inequalityBool, hypValue));
   }
-
   return Rule(antecedants, hyperbox->getCoveredSamples(), mainSamplePred, hyperbox->getFidelity(), ruleAccuracy, ruleConfidence);
 }
 
@@ -45,18 +44,8 @@ double Hyperspace::computeRuleAccuracy(vector<int> *trainPreds, vector<int> *tra
   int total = 0; // Number of indexes predicted good
   vector<int> coveredSamples = hyperbox->getCoveredSamples();
 
-  // cout << "HYPERBOX Covered samples: (size=" << coveredSamples.size() << ")" << endl;
-  // for (int i : coveredSamples) {
-  //   cout << i << ", ";
-  // }
-  // cout << endl;
-
   for (int i = 0; i < coveredSamples.size(); i++) {
     idSample = coveredSamples[i];
-    // cout << "trainPreds[" << idSample << "] == trainTrueClass[" << idSample << "]" << endl;
-    // cout << (*trainPreds)[idSample] << " == " << (*trainTrueClass)[idSample] << endl
-    //      << endl;
-
     if ((*trainPreds)[idSample] == (*trainTrueClass)[idSample]) {
       total += 1;
     }

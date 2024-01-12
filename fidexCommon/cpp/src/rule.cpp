@@ -46,7 +46,7 @@ string Rule::toString(const vector<string> *attributes, const vector<string> *cl
       result << "<";
     }
 
-    result << to_string(a.getValue()) << " ";
+    result << formattingDoubleToString(a.getValue()) << " ";
   }
 
   if (classes && !classes->empty()) {
@@ -54,14 +54,39 @@ string Rule::toString(const vector<string> *attributes, const vector<string> *cl
   } else {
     result << "-> class " << outputClass << endl;
   }
-  // TODO pretty print double values with formattingDoubleToString()
+
   result << "   Train Covering size : " << nbCoveredSamples
          << endl
-         << "   Train Fidelity : " << fidelity
+         << "   Train Fidelity : " << formattingDoubleToString(fidelity)
          << endl
-         << "   Train Accuracy : " << accuracy
+         << "   Train Accuracy : " << formattingDoubleToString(accuracy)
          << endl
-         << "   Train Confidence : " << confidence << endl;
+         << "   Train Confidence : " << formattingDoubleToString(confidence)
+         << endl;
 
   return result.str();
+}
+
+bool Rule::isEqual(const Rule other) const {
+  double epsilon = 10e-6;
+
+  if (getAntecedants() != other.getAntecedants())
+    return false;
+
+  if (getCoveredSamples() != other.getCoveredSamples())
+    return false;
+
+  if (getOutputClass() != other.getOutputClass())
+    return false;
+
+  if (fabs(getFidelity() - other.getFidelity()) > epsilon)
+    return false;
+
+  if (fabs(getAccuracy() != other.getAccuracy()) > epsilon)
+    return false;
+
+  if (fabs(getConfidence() != other.getConfidence()) > epsilon)
+    return false;
+
+  return true;
 }

@@ -1,5 +1,6 @@
 #ifndef ANTECEDANT_H
 #define ANTECEDANT_H
+#include <cmath>
 #include <ostream>
 
 using namespace std;
@@ -23,11 +24,24 @@ public:
   int getAttribute() const { return _attribute; }
   bool getInequality() const { return _inequality; }
   double getValue() const { return _value; }
+
+  bool isEqual(Antecedant other) const;
 };
 
 // OPERATOR OVERLOAD TO EASE PRINTING PURPOSES
 inline ostream &operator<<(ostream &stream, const Antecedant &antecedant) {
-  return stream << " " << antecedant.getAttribute() << " " << antecedant.getInequality() << " " << antecedant.getValue() << " ";
+  return stream << " "
+                << antecedant.getAttribute() << " "
+                << antecedant.getInequality() << " "
+                << antecedant.getValue() << " ";
+}
+
+inline bool operator==(const Antecedant &a1, const Antecedant &a2) {
+  return a1.isEqual(a2);
+}
+
+inline bool operator!=(const Antecedant &a1, const Antecedant &a2) {
+  return !a1.isEqual(a2);
 }
 
 #endif
