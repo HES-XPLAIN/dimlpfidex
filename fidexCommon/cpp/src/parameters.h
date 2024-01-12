@@ -147,23 +147,19 @@ inline ostream &operator<<(ostream &stream, const Parameters &p) {
   stream << "Parameters list:" << endl;
 
   for (auto const &x : p.getAllStrings()) {
-    stream << "   - " << parameterNames[x.first] << endl
-           << "     " << x.second << endl;
+    stream << " - " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << x.second << endl;
   }
 
   for (auto const &x : p.getAllInts()) {
-    stream << "   - " << parameterNames[x.first] << endl
-           << "     " << to_string(x.second) << endl;
+    stream << " - " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllFloats()) {
-    stream << "   - " << parameterNames[x.first] << endl
-           << "     " << to_string(x.second) << endl;
+    stream << " - " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllDoubles()) {
-    stream << "   - " << parameterNames[x.first] << endl
-           << "     " << to_string(x.second) << endl;
+    stream << " - " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
   }
 
   stream << "  WEIGHTS_FILES (list)" << endl;
@@ -171,7 +167,8 @@ inline ostream &operator<<(ostream &stream, const Parameters &p) {
     stream << "     " << f << endl;
   }
 
-  stream << "End of Parameters list." << endl;
+  stream << "End of Parameters list." << endl
+         << endl;
 
   return stream;
 }
