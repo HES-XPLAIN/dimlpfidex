@@ -8,12 +8,14 @@
 #include <string>
 #include <vector>
 
-int CheckPositiveInt(const char *str);
-int CheckFloatFid(const char *str);
+bool CheckInt(const char *str);
+bool CheckPositiveInt(const char *str);
+bool CheckFloatFid(const char *str);
 bool checkBool(std::string input);
+bool checkList(std::string input);
 bool checkStringEmpty(std::string line);
 std::string formattingDoubleToString(double number);
 std::vector<std::string> splitString(const std::string &str, const std::string &delimiter);
-std::vector<int> getIntVectorFromString(const std::string &str);
+std::vector<int> getPositiveIntVectorFromString(const std::string &str);
 std::vector<float> getFloatVectorFromString(const std::string &str);
 #endif
