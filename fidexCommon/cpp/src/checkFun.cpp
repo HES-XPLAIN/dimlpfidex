@@ -2,7 +2,49 @@
 
 ////////////////////////////////////////////////////////
 
-int CheckPositiveInt(const char *str)
+/**
+ * @brief Checks if a given string represents a valid integer (positive or negative).
+ *
+ * @param str A C-style string representing the number to be checked.
+ * @return bool Returns true if the string is a valid integer, false otherwise.
+ */
+bool checkInt(const char *str) {
+  // Check if empty
+  if (str == nullptr || *str == '\0') {
+    return 0;
+  }
+
+  int i = 0;
+
+  // Allow - sign for negatives
+  if (str[0] == '-') {
+    // If it's only a -
+    if (str[1] == '\0') {
+      return false;
+    }
+    i = 1; // Start checking from second character
+  }
+
+  char ch;
+  for (; str[i] != '\0'; i++) {
+    ch = str[i];
+    if (ch < '0' || ch > '9') {
+      return false; // Non numerical character found
+    }
+  }
+
+  return true;
+}
+
+////////////////////////////////////////////////////////
+
+/**
+ * @brief Checks if a given string represents a valid positive integer.
+ *
+ * @param str A C-style string representing the number to be checked.
+ * @return bool Returns true if the string is a valid positive integer, false otherwise.
+ */
+bool CheckPositiveInt(const char *str)
 
 {
   char ch;
@@ -11,16 +53,22 @@ int CheckPositiveInt(const char *str)
     ch = str[i];
 
     if ((ch > '9') || (ch < '0')) {
-      return 0;
+      return false;
     }
   }
 
-  return 1;
+  return true;
 }
 
 ////////////////////////////////////////////////////////
 
-int CheckFloatFid(const char *str)
+/**
+ * @brief Checks if a given string represents a valid floating-point number.
+ *
+ * @param str A C-style string representing the number to be checked.
+ * @return bool Returns true if the string is a valid float, false otherwise.
+ */
+bool CheckFloatFid(const char *str)
 
 {
   int i;
@@ -34,7 +82,7 @@ int CheckFloatFid(const char *str)
     if (((ch > '9') || (ch < '0')) && (ch != '.') && (ch != '-')) {
       std::cout << "Problem with float argument (" << str;
       std::cout << ") or with the previous argument." << std::endl;
-      return 0;
+      return false;
     }
   }
 
@@ -49,13 +97,20 @@ int CheckFloatFid(const char *str)
   if ((countDot > 1) || (countMinus > 1)) {
     std::cout << "Problem with float argument (" << str;
     std::cout << ") or with previous argument." << std::endl;
-    return 0;
+    return false;
   }
 
-  return 1;
+  return true;
 }
 
 ////////////////////////////////////////////////////////
+
+/**
+ * @brief Checks if a given string is a valid representation of a boolean value.
+ *
+ * @param input A string input representing a boolean.
+ * @return bool Returns true if the string is 'true', 'false', '0', or '1' (case-insensitive), false otherwise.
+ */
 bool checkBool(std::string input) {
   std::transform(input.begin(), input.end(), input.begin(),
                  [](unsigned char c) { return std::tolower(c); });
@@ -64,6 +119,37 @@ bool checkBool(std::string input) {
 
 ////////////////////////////////////////////////////////
 
+/**
+ * @brief Checks if a given string is in the format of a list of floating-point numbers.
+ *
+ * @param input A string representing a list of floats in the format "[a,b,...,c]" without spaces.
+ * @return bool Returns true if the string is a valid list of floats, false otherwise.
+ */
+bool checkList(std::string input) {
+  if (input.size() < 3 || input.front() != '[' || input.back() != ']') {
+    return false;
+  }
+
+  std::istringstream iss(input.substr(1, input.size() - 2)); // remove brackets
+  std::string number;
+
+  while (std::getline(iss, number, ',')) {
+    if (!CheckFloatFid(number.c_str())) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+////////////////////////////////////////////////////////
+
+/**
+ * @brief Checks if a given string is empty or contains only whitespace characters.
+ *
+ * @param line A string to be checked.
+ * @return bool Returns true if the string is empty or contains only whitespace, false otherwise
+ */
 bool checkStringEmpty(std::string line) {
   if (line.length() == 0) {
     return true;
@@ -77,6 +163,12 @@ bool checkStringEmpty(std::string line) {
 
 ///////////////////////////////////////////////////////
 
+/**
+ * @brief Converts a double value to a string and formats it by removing trailing zeros and decimal point if necessary.
+ *
+ * @param number The double number to be converted.
+ * @return std::string A formatted string representing the number.
+ */
 std::string formattingDoubleToString(double number) {
   std::string str = std::to_string(number);
   str.erase(str.find_last_not_of('0') + 1, std::string::npos);
@@ -121,9 +213,15 @@ std::vector<std::string> splitString(const std::string &str, const std::string &
 
 //////////////////////////////////////////////////////
 
+/**
+ * @brief Parses a string representing a list of floats and returns them as a vector.
+ *
+ * @param str A string in the format "[a,b,...,c]" without spaces representing a list of floats.
+ * @return std::vector<float> A vector of floats parsed from the string.
+ */
 std::vector<float> getFloatVectorFromString(const std::string &str) {
   std::vector<float> result;
-  auto tokens = splitString(str.substr(1, str.size() - 2), ", ");
+  auto tokens = splitString(str.substr(1, str.size() - 2), ",");
 
   for (const auto &token : tokens) {
     try {
@@ -138,15 +236,21 @@ std::vector<float> getFloatVectorFromString(const std::string &str) {
 
 //////////////////////////////////////////////////////
 
-std::vector<int> getIntVectorFromString(const std::string &str) {
+/**
+ * @brief Parses a string representing a list of positive integers and returns them as a vector.
+ *
+ * @param str A string in the format "[a,b,...,c]" without spaces representing a list of positive integers.
+ * @return std::vector<int> A vector of positive integers parsed from the string.
+ */
+std::vector<int> getPositiveIntVectorFromString(const std::string &str) {
   std::vector<int> result;
   auto tokens = splitString(str.substr(1, str.size() - 2), ",");
 
   for (const auto &token : tokens) {
-    try {
+    if (CheckPositiveInt(token.c_str())) {
       result.push_back(std::stoi(token));
-    } catch (const std::invalid_argument &) {
-      throw CommandArgumentException("Error : Invalid integer value in int vector: " + token);
+    } else {
+      throw CommandArgumentException("Error : Invalid positive integer value in int vector: " + token);
     }
   }
 
