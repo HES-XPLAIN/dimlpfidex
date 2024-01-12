@@ -1,13 +1,21 @@
 #!/bin/bash
 
 # This file is used to test fidex algo
+# EXE="bin/fidexGloRules"
+# BASE_DIR="$HOME/Documents/hepia"
+# TESTS_DIR="$BASE_DIR/dimlpfidex-tests/"
+# CURRENT_VERSION_DIR="$BASE_DIR/dimlpfidex/"
+# DATASET_DIR="data/pre-act/"
+# DATA_DIR="${DATASET_DIR}data/"
+# OUT_DIR="${DATA_DIR}out/"
+
 EXE="bin/fidexGloRules"
-BASE_DIR="$HOME/Documents/hepia"
-TESTS_DIR="$BASE_DIR/dimlpfidex-tests/"
+BASE_DIR="$HOME/Documents/hepia/"
 CURRENT_VERSION_DIR="$BASE_DIR/dimlpfidex/"
-DATASET_DIR="data/pre-act/"
-DATA_DIR="${DATASET_DIR}data/"
-OUT_DIR="${DATASET_DIR}out/"
+TESTS_DIR="${CURRENT_VERSION_DIR}fidexGlo/tests/"
+MAIN_VERSION_DIR="${BASE_DIR}dimlpfidex-main/dimlpfidex/"
+DATA_DIR="data/obesity/"
+OUT_DIR="out/"
 
 # utils
 RED='\033[0;31m'
@@ -18,11 +26,11 @@ RESET='\033[0m'
 to_test_dir=$CURRENT_VERSION_DIR
 full_dir="${to_test_dir}${DATA_DIR}${OUT_DIR}"
 
-nb_attributes=84
-nb_classes=2
+# default & optional args
+root_directory="${full_dir}"
 nb_dimlp_nets=1
+attributes_file="${full_dir}attributes.txt"
 console_file=""
-heuristic=1
 max_iterations=50
 min_covering=2
 dropout_dim=0.7
@@ -35,23 +43,54 @@ nb_threads_used=4
 min_fidelity=1
 seed=0
 
+# to choose which version to test
+# to_test_dir=$CURRENT_VERSION_DIR
+# full_dir="${to_test_dir}${DATA_DIR}${OUT_DIR}"
+
+# nb_attributes=84
+# nb_classes=2
+# nb_dimlp_nets=1
+# console_file=""
+# heuristic=1
+# max_iterations=50
+# min_covering=2
+# dropout_dim=0.7
+# dropout_hyp=0.7
+# max_failed_attempts=10
+# nb_stairs=50
+# decision_threshold=-1.0
+# index_positive_class=-1
+# nb_threads_used=4
+# min_fidelity=1
+# seed=0
+
 date_str=$(date "+%d%m%y_%H%M%S")
 
-root_directory="${full_dir}"
-attributes_file="${DATA_DIR}attributes.txt"
-train_data_file="${DATA_DIR}trainDatas.txt"
-train_true_classes="${DATA_DIR}trainClasses.txt"
-train_pred_file="${OUT_DIR}train.out"
-weigths_file="${OUT_DIR}weights.wts"
+# root_directory="${full_dir}"
+# attributes_file="${DATA_DIR}attributes.txt"
+# train_data_file="${DATA_DIR}trainDatas.txt"
+# train_true_classes="${DATA_DIR}trainClasses.txt"
+# train_pred_file="${OUT_DIR}train.out"
+# weigths_file="${OUT_DIR}weights.wts"
+# input_rules_file=""
+# output_rules_file="${TESTS_DIR}tests_fidexglo_${date_str}.rls"
+
+train_data_file="${full_dir}obesity_train.txt"
+train_pred_file="${full_dir}obesity_train.out"
+train_true_classes="${full_dir}obesity_train_true_classes.txt"
+weigths_file="${full_dir}obesity.wts"
 input_rules_file=""
 output_rules_file="${TESTS_DIR}tests_fidexglo_${date_str}.rls"
+heuristic=1
+nb_attributes=31
+nb_classes=7
 
 
 
 # redirection type, uncomment what fits your needs
 # REDIRECTION="/dev/null"                 # silent
 # REDIRECTION="/dev/stdout"               # in console
-REDIRECTION="${TESTS_DIR}output.txt"    # in file
+REDIRECTION="${TESTS_DIR}output.txt"      # in file
 
 echo "Tests ran on $(date "+%d/%m/%y %R")"
 echo "$date_str" >> $REDIRECTION
@@ -711,7 +750,7 @@ test_same_seed_same_output 2
 # test_coherence_with_main_version 1
 # test_coherence_with_main_version 2
 
-for i in {1..50}
+for i in {1..250}
 do
     random_test_generation $i
 done
