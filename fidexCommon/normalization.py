@@ -134,7 +134,7 @@ def gaussian_normalization(datas, attribute_indices, normalized_file, fill_missi
 
 def parse_normalization_stats(file_name, nb_attributes, attributes=None):
     """
-    Parse a file containing normalization statistics previously generated the using the normalization function.
+    Parse a file containing normalization statistics previously generated using the normalization function.
 
     :param file_name: Name of the file containing the normalization statistics.
                       The expected format for each line in the file is either:
