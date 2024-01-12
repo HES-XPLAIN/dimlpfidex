@@ -42,16 +42,29 @@ void showRulesParams() {
        << endl;
 }
 
-// TODO: comment this
+/**
+ * @brief executes fidex algorithm on all provided samples in the following way:
+ *
+ *    - Initialize the number of threads chosen by the user and splits evenly all samples to be covered between them.
+ *    - Computes fidex until a rule is created or until the max failed attempts limit is reached
+ *      -> For each failed attempt, the current minimal covering to be reached is lowered until the limit of 2 is reached.
+ *      -> Each rule that have been found with a covering that is lower than the minimal covering setted by the used are counted.
+ *      -> If the max failed attempts limit is reached, then the sample computed is removed from the not covered samples vector as it's considered as unreachable
+ *    - The computed rule is added to the list of rules
+ *
+ *
+ * @param rules Empty vector of rules to be filled once the function has finished
+ * @param notCoveredSamples vector with all samples to be covered or ignored if the algorithm isn't able to find one in "maxFailedAttempts" attempts.
+ * @param dataset class containing all usable data to compute the algorithm.
+ * @param p class containing all used defined parameters that influences the program execution.
+ * @param hyperlocus 2D vector of doubles used to compute Fidex alorithm
+ */
 void generateRules(vector<Rule> *rules, vector<int> *notCoveredSamples, DataSetFid *dataset, Parameters *p, vector<vector<double>> hyperlocus) {
-  // vector<Rule> rules;
   int nbProblems = 0;
   int nbRulesNotFound = 0;
   int nbDatas = dataset->getNbSamples();
   int minNbCover = p->getInt(MIN_COVERING);
   int nbThreadsUsed = p->getInt(NB_THREADS_USED);
-  // vector<int> notCoveredSamples(nbDatas);
-  // iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
 
   int seed = p->getInt(SEED);
   if (seed == 0) {
@@ -73,14 +86,13 @@ void generateRules(vector<Rule> *rules, vector<int> *notCoveredSamples, DataSetF
     vector<Rule> localRules;
     vector<int>::iterator it;
     int localNbRulesNotFound = 0;
-    int seed = p->getInt(SEED);
     int currentMinNbCov = minNbCover;
     Hyperspace hyperspace(hyperlocus);
     int threadId = omp_get_thread_num();
     float minFidelity = p->getFloat(MIN_FIDELITY);
     string consoleFile = p->getString(CONSOLE_FILE);
     int maxFailedAttempts = p->getInt(MAX_FAILED_ATTEMPTS);
-    Fidex fidex = Fidex(dataset, p, &hyperspace, seed);
+    Fidex fidex = Fidex(dataset, p, &hyperspace);
 
 #pragma omp critical
     {
@@ -91,7 +103,6 @@ void generateRules(vector<Rule> *rules, vector<int> *notCoveredSamples, DataSetF
 
 #pragma omp for
     for (int idSample = 0; idSample < nbDatas; idSample++) {
-      currentMinNbCov = minNbCover;
       ruleCreated = false;
       counterFailed = 0; // If we can't find a good rule after a lot of tries
       cnt += 1;
@@ -106,8 +117,9 @@ void generateRules(vector<Rule> *rules, vector<int> *notCoveredSamples, DataSetF
         }
       }
 
+      currentMinNbCov = minNbCover;
       while (!ruleCreated) {
-        ruleCreated = fidex.compute(rule, idSample, minFidelity, currentMinNbCov, gen);
+        ruleCreated = fidex.compute(rule, idSample, minFidelity, currentMinNbCov);
 
         if (currentMinNbCov >= 2) {
           currentMinNbCov -= 1;
@@ -130,7 +142,7 @@ void generateRules(vector<Rule> *rules, vector<int> *notCoveredSamples, DataSetF
         }
       }
 
-      if (currentMinNbCov + 1 < minNbCover) {
+      if ((currentMinNbCov + 1) < minNbCover) {
         localNbProblems += 1;
       }
 
@@ -163,7 +175,24 @@ void generateRules(vector<Rule> *rules, vector<int> *notCoveredSamples, DataSetF
        << "Fidex rules computed" << endl;
 }
 
-// TODO: comment this
+/**
+ * @brief Filters the list of generated rules to remove duplicates and keep the rules that best fits and covers not covered samples.
+ * This is performed in the following way:
+ *
+ *    - Duplicated rules are removed
+ *    - While all samples are not covered, it checks every rule's covered samples vector and checks how many of the not covered ones are present in it.
+ *    - If the rule covers samples that are not considered covered yet and covers more than the rule that is considered being the best, it's saved as the
+ *      best rule to be added to the filtered ones.
+ *    - When all the rules are checked, the best one is removed from the rules to check, it is saved in the chosen rules vector and the samples
+ *      it covers are removed from the ones that are considered not covered.
+ *
+ *
+ *
+ * @param dataset class containing all usable data to compute the algorithm.
+ * @param p class containing all used defined parameters that influences the program execution.
+ * @param hyperlocus 2D vector of doubles used to compute Fidex alorithm
+ * @return vector<Rule>
+ */
 vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<double>> hyperlocus) {
   vector<Rule> rules;
   vector<Rule> chosenRules;
@@ -173,6 +202,9 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   generateRules(&rules, &notCoveredSamples, dataset, p, hyperlocus);
 
   cout << "Computing global ruleset..." << endl;
+
+  // remove duplicates
+  rules.erase(unique(rules.begin(), rules.end()), rules.end());
 
   // While there is some not covered samples
   vector<int>::iterator ite;
@@ -214,7 +246,16 @@ vector<Rule> heuristic_1(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   return chosenRules;
 }
 
-// TODO: comment this
+/**
+ * @brief Faster version of the first heuristic, only difference is that it doesn't check every rule before choosing the best one.
+ * It directly selects if one or more not covered sample is covered.
+ *
+ *
+ * @param dataset class containing all usable data to compute the algorithm.
+ * @param p class containing all used defined parameters that influences the program execution.
+ * @param hyperlocus 2D vector of doubles used to compute Fidex alorithm
+ * @return vector<Rule>
+ */
 vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<double>> hyperlocus) {
   vector<Rule> rules;
   vector<Rule> chosenRules;
@@ -264,7 +305,16 @@ vector<Rule> heuristic_2(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   return chosenRules;
 }
 
-// TODO: comment this
+// TODO: this heuristic must be discussed, I am wondering if this ever worked correctly once...
+// TODO: complete comments
+/**
+ * @brief 3rd heuristic,
+ *
+ * @param dataset
+ * @param p
+ * @param hyperlocus
+ * @return vector<Rule>
+ */
 vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<double>> hyperlocus) {
   Rule rule;
   int idSample;
@@ -274,16 +324,18 @@ vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   int currentMinNbCov;
   int nbRulesNotFound = 0;
   vector<Rule> chosenRules;
+  vector<int>::iterator ite;
   int seed = p->getInt(SEED);
+  vector<int> chosenRuleSamples;
   Hyperspace hyperspace(hyperlocus);
   int minNbCover = p->getInt(MIN_COVERING);
   int nbDatas = dataset->getDatas()->size();
   vector<int> notCoveredSamples(nbDatas);
   float minFidelity = p->getFloat(MIN_FIDELITY);
-  Fidex fidex = Fidex(dataset, p, &hyperspace, seed);
+  Fidex fidex = Fidex(dataset, p, &hyperspace);
+  string consoleFile = p->getString(CONSOLE_FILE);
   int maxFailedAttempts = p->getInt(MAX_FAILED_ATTEMPTS);
 
-  // int seed = p->getInt(SEED);
   if (seed == 0) {
     auto currentTime = high_resolution_clock::now();
     auto seedValue = currentTime.time_since_epoch().count();
@@ -301,7 +353,7 @@ vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   // While there is some not covered samples
   while (!notCoveredSamples.empty()) {
 
-    if (int(nbDatas / 100) != 0 && (nbDatas - notCoveredSamples.size()) % int(nbDatas / 100) == 0 && !p->isStringSet(CONSOLE_FILE)) {
+    if (int(nbDatas / 100) != 0 && (nbDatas - notCoveredSamples.size()) % int(nbDatas / 100) == 0 && consoleFile.empty()) {
       cout << "Processing: " << int((double(nbDatas - notCoveredSamples.size()) / nbDatas) * 100) << "%\r";
       cout.flush();
     }
@@ -310,8 +362,9 @@ vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<doubl
     currentMinNbCov = minNbCover;
     ruleCreated = false;
     int counterFailed = 0; // If we can't find a good rule after a lot of tries
+
     while (!ruleCreated) {
-      ruleCreated = fidex.compute(rule, idSample, minFidelity, currentMinNbCov, gen);
+      ruleCreated = fidex.compute(rule, idSample, minFidelity, currentMinNbCov);
 
       if (currentMinNbCov >= 2) {
         currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
@@ -329,16 +382,16 @@ vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<doubl
 
     if (ruleCreated) {
       chosenRules.push_back(rule); // We add the new rule
+      chosenRuleSamples = rule.getCoveredSamples();
 
-      // Delete covered samples
+      // TODO: this part was probably broken, now is kinda fixed but im unsure if it's working as originaly intended....
       notCoveredSamples.erase(
           remove_if(
-              notCoveredSamples.begin(), notCoveredSamples.end(), [&rule](int x) {
-                return find(rule.getCoveredSamples().begin(), rule.getCoveredSamples().end(), x) != rule.getCoveredSamples().end();
-                // find index of coveredSamples which is x (x is element of notCoveredSamples), find returns last if x not found
-                // -> Removes x if it appears on coveredSamples (found before the end of coveredSamples)
-              }),
-          notCoveredSamples.end());
+              notCoveredSamples.begin(), notCoveredSamples.end(), [&chosenRuleSamples](int sample) {
+                return find(chosenRuleSamples.begin(), chosenRuleSamples.end(), sample) != chosenRuleSamples.end();
+                // find index of coveredSamples which is "sample" ("sample" is element of notCoveredSamples), find returns last if "sample" not found
+                // -> Removes "sample" if it appears on coveredSamples (found before the end of coveredSamples)
+              }));
 
       nbRules++;
     } else {
@@ -348,6 +401,9 @@ vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<doubl
 
   cout << endl;
 
+  // remove duplicates
+  chosenRules.erase(unique(chosenRules.begin(), chosenRules.end()), chosenRules.end());
+
   cout << "Number of sample with lower covering than " << minNbCover << " : " << nbProblems << endl;
   if (nbRulesNotFound > 0) {
     cout << "Number of rules not found : " << nbRulesNotFound << endl;
@@ -356,6 +412,11 @@ vector<Rule> heuristic_3(DataSetFid *dataset, Parameters *p, vector<vector<doubl
   return chosenRules;
 }
 
+/**
+ * @brief Used to set default hyperparameters values and to check the sanity of all used values like boundaries and logic.
+ *
+ * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
+ */
 void checkParametersLogicValues(Parameters *p) {
   // setting default values
   p->setDefaultString(ROOT_FOLDER, "");
@@ -391,7 +452,6 @@ void checkParametersLogicValues(Parameters *p) {
  * @param classes list of class names, used to write Rule's class with class explicit name instead of its numerical representation.
  * @return tuple<double, double>
  */
-// TODO: check for side effects (effets de bord)
 tuple<double, double> writeRulesFile(string filename, const vector<Rule> rules, const vector<string> *attributes, const vector<string> *classes) {
   if (rules.empty()) {
     cout << "Warning: cannot write to file \"" << filename << "\", generated rules list is empty.";
@@ -408,7 +468,7 @@ tuple<double, double> writeRulesFile(string filename, const vector<Rule> rules, 
   for (Rule r : rules) { // each rule
     meanCovSize += static_cast<double>(r.getCoveredSamples().size());
     meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
-    stream << "Rule " << counter++ << ": " << r.toString(attributes, classes); // TODO check for NULL case
+    stream << "Rule " << counter++ << ": " << r.toString(attributes, classes);
     stream << endl;
   }
 
