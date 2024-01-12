@@ -179,8 +179,5 @@ dmypy.json
 .pyre/
 
 autoexe.sh
-data/obesity
-<<<<<<< HEAD
-=======
+data/
 compile_commands.json
->>>>>>> 426dcd1e90c099507550d139344f9804831d0746
