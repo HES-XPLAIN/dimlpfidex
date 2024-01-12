@@ -44,7 +44,7 @@ bool checkInt(const char *str) {
  * @param str A C-style string representing the number to be checked.
  * @return bool Returns true if the string is a valid positive integer, false otherwise.
  */
-bool CheckPositiveInt(const char *str)
+bool checkPositiveInt(const char *str)
 
 {
   char ch;
@@ -68,7 +68,7 @@ bool CheckPositiveInt(const char *str)
  * @param str A C-style string representing the number to be checked.
  * @return bool Returns true if the string is a valid float, false otherwise.
  */
-bool CheckFloatFid(const char *str)
+bool checkFloatFid(const char *str)
 
 {
   int i;
@@ -134,7 +134,7 @@ bool checkList(std::string input) {
   std::string number;
 
   while (std::getline(iss, number, ',')) {
-    if (!CheckFloatFid(number.c_str())) {
+    if (!checkFloatFid(number.c_str())) {
       return false;
     }
   }
@@ -237,20 +237,20 @@ std::vector<float> getFloatVectorFromString(const std::string &str) {
 //////////////////////////////////////////////////////
 
 /**
- * @brief Parses a string representing a list of positive integers and returns them as a vector.
+ * @brief Parses a string representing a list of integers and returns them as a vector.
  *
- * @param str A string in the format "[a,b,...,c]" without spaces representing a list of positive integers.
- * @return std::vector<int> A vector of positive integers parsed from the string.
+ * @param str A string in the format "[a,b,...,c]" without spaces representing a list of integers.
+ * @return std::vector<int> A vector of integers parsed from the string.
  */
-std::vector<int> getPositiveIntVectorFromString(const std::string &str) {
+std::vector<int> getIntVectorFromString(const std::string &str) {
   std::vector<int> result;
   auto tokens = splitString(str.substr(1, str.size() - 2), ",");
 
   for (const auto &token : tokens) {
-    if (CheckPositiveInt(token.c_str())) {
+    if (checkInt(token.c_str())) {
       result.push_back(std::stoi(token));
     } else {
-      throw CommandArgumentException("Error : Invalid positive integer value in int vector: " + token);
+      throw CommandArgumentException("Error : Invalid integer value in int vector: " + token);
     }
   }
 
