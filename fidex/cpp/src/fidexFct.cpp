@@ -2,93 +2,136 @@
 
 using namespace std;
 
-std::tuple<std::vector<int>, bool, std::vector<float>, std::vector<float>> parseNormalizationStats(const std::string &normalizationFile, int nbAttributes, const std::vector<std::string> &attributes = std::vector<std::string>()) {
+/**
+ * @brief Parses a normalization file to extract statistical data.
+ *
+ * This function reads a normalization file and extracts statistical information such as attribute indices, wether mean or median was used for normalization
+ * mean/median and standard deviations values.
+ * It handles files with either numeric indices or attribute names. The function also checks for consistency in the usage of mean or median
+ * across the file and detects duplicate indices.
+ *
+ * @param normalizationFile The path to the normalization file to be parsed.
+ * @param nbAttributes The number of attributes expected in the file.
+ * @param attributes Optional list of attribute names. If provided, the function will parse the file based on attribute names instead of numeric indices.
+ * @return A tuple containing four elements in the following order:
+ *         1. A vector of attribute indices (int).
+ *         2. A boolean flag indicating whether the file uses 'median' (true) or 'mean' (false).
+ *         3. A vector of mean or median values (double) extracted from the file.
+ *         4. A vector of standard deviations values (double) extracted from the file.
+ * @throws FileContentError If there is a mismatch in the number of attributes, or if the file format is incorrect.
+ * @throws FileNotFoundError If the normalization file cannot be opened or found.
+ */
+std::tuple<std::vector<int>, bool, std::vector<double>, std::vector<double>> parseNormalizationStats(const std::string &normalizationFile, int nbAttributes, const std::vector<std::string> &attributes = std::vector<std::string>()) {
   std::vector<int> indices_list;
-  std::vector<float> mus;
-  std::vector<float> sigmas;
+  std::vector<double> mus;
+  std::vector<double> sigmas;
   bool withMedian = false;
   bool withMedian_initialized = false;
   std::set<int> unique_indices;
-
-  std::ifstream file(normalizationFile);
-  if (!file) {
-    throw FileNotFoundError("Error : file " + std::string(normalizationFile) + " not found or couldn't be opened.");
-  }
 
   if (!attributes.empty() && attributes.size() != nbAttributes) {
     throw FileContentError("Error during parsing of " + normalizationFile + ": The number of attributes is not equal to the length of attributes list.");
   }
 
-  std::string line;
-  while (getline(file, line)) {
-    std::cout << line << std::endl;
-    std::string mean_median;
-    int index;
+  // Create some general regex patterns
+  std::string indexPattern = "(";
 
-    if (line.empty())
-      continue;
-
-    std::istringstream iss(line);
-    // Créer un flux de sortie pour construire le motif regex
-    std::string indexPattern = "(";
-
-    // Construire le motif regex avec des chiffres séparés par "|"
-    for (int i = 0; i < nbAttributes; i++) {
-      indexPattern += std::to_string(i);
-      if (i < nbAttributes - 1) {
-        indexPattern += "|"; // Échapper le caractère "|" dans le regex
-      }
+  for (int i = 0; i < nbAttributes; i++) {
+    indexPattern += std::to_string(i);
+    if (i < nbAttributes - 1) {
+      indexPattern += "|";
     }
-    indexPattern += ")";
+  }
+  indexPattern += ")";
 
-    std::string attrPattern = "(";
-    for (const auto &attr : attributes) {
-      if (!attrPattern.empty()) {
+  std::string attrPattern = "";
+  if (!attributes.empty()) {
+    attrPattern += "(";
+    for (int i = 0; i < nbAttributes; i++) {
+      attrPattern += attributes[i];
+      if (i < nbAttributes - 1) {
         attrPattern += "|";
       }
-      attrPattern += attr;
     }
     attrPattern += ")";
+  }
 
-    std::string floatPattern = "(-?\\d+(\\.\\d+)?)";
+  std::string floatPattern = "(-?\\d+(\\.\\d+)?)(?=$|[^\\d])"; // We ask that the float is followed either by the end of the line either by a not-number character
 
-    // Créer un objet regex avec le motif
-    std::regex pattern(indexPattern + " : original (mean|median): " + floatPattern + ", original std: " + floatPattern + "");
-    std::regex pattern2(attrPattern + " : original (mean|median): " + floatPattern + ", original std: " + floatPattern + "");
+  // Create regex patterns for a line
+  std::vector<std::pair<std::regex, std::string>> patterns;
+  std::regex patternIndices(indexPattern + " : original (mean|median): " + floatPattern + ", original std: " + floatPattern);
+  std::string patternIndicesStr = "indexPattern";
+  std::regex patternAttributes(attrPattern + " : original (mean|median): " + floatPattern + ", original std: " + floatPattern);
+  std::string patternAttributesStr = "attributePattern";
+  if (!attributes.empty()) {
+    patterns.emplace_back(patternAttributes, patternAttributesStr);
+  }
+  patterns.emplace_back(patternIndices, patternIndicesStr);
 
-    if (attributes.empty()) {
-      if (std::regex_match(line, pattern)) {
-        std::cout << "CA marche" << std::endl;
-      } else {
-        throw FileFormatError("Error in " + normalizationFile + ": File not in the correct format.");
-      }
-    } else {
-      std::cout << "attributs" << std::endl;
-      if (std::regex_match(line, pattern2)) {
-        std::cout << "CA marche" << std::endl;
-        /*
-        auto it = std::find(attributes.begin(), attributes.end(), attr);
-        if (it == attributes.end()) {
+  bool patternError;
+
+  for (const auto &pattern : patterns) {
+
+    std::ifstream file(normalizationFile);
+    if (!file) {
+      throw FileNotFoundError("Error : file " + std::string(normalizationFile) + " not found or couldn't be opened.");
+    }
+
+    patternError = false;
+    std::string line;
+    while (getline(file, line)) {
+      std::string mean_median;
+      int index;
+
+      if (line.empty())
+        continue;
+
+      std::istringstream iss(line);
+
+      std::smatch matches;
+
+      if (std::regex_search(line, matches, pattern.first)) {
+        mean_median = matches[2];
+        mus.push_back(stod(matches[3]));
+        sigmas.push_back(stod(matches[5]));
+        if (pattern.second == patternIndicesStr) {
+          index = stoi(matches[1]);
+        } else {
+          std::string attr = matches[1];
+          auto it = std::find(attributes.begin(), attributes.end(), attr);
+          if (it == attributes.end()) {
             throw FileContentError("Error in " + normalizationFile + ": Attribute not found.");
+          }
+          index = static_cast<int>(std::distance(attributes.begin(), it));
         }
-        index = static_cast<int>(std::distance(attributes.begin(), it));*/
+
       } else {
-        throw FileFormatError("Error in " + normalizationFile + ": File not in the correct format.");
+        patternError = true;
+        break;
+      }
+
+      indices_list.push_back(index);
+      unique_indices.insert(index);
+
+      if (!withMedian_initialized) {
+        withMedian = (mean_median == "median");
+        withMedian_initialized = true;
+      } else if ((withMedian && mean_median != "median") || (!withMedian && mean_median != "mean")) {
+        throw FileContentError("Error in " + normalizationFile + ": Inconsistency in using mean or median.");
       }
     }
-
-    indices_list.push_back(index);
-    unique_indices.insert(index);
-
-    if (!withMedian_initialized) {
-      withMedian = (mean_median == "original median");
-      withMedian_initialized = true;
-    } else if ((withMedian && mean_median != "original median") || (!withMedian && mean_median != "original mean")) {
-      throw FileContentError("Error in " + normalizationFile + ": Inconsistency in using mean or median.");
+    if (!patternError) {
+      break;
     }
+  }
 
-    // mus.push_back(mu);
-    // sigmas.push_back(sigma);
+  if (patternError) {
+    if (attributes.empty()) {
+      throw FileContentError("Error in " + normalizationFile + ": File not in the correct format, maybe you forgot to add the attribute file.");
+    } else {
+      throw FileContentError("Error in " + normalizationFile + ": File not in the correct format.");
+    }
   }
 
   if (indices_list.size() != unique_indices.size()) {
@@ -228,9 +271,9 @@ int fidex(const string &command) {
 
     string normalizationFileTemp;
     bool normalizationFileInit = false;
-    std::vector<float> mus;
+    std::vector<double> mus;
     bool hasMus = false;
-    std::vector<float> sigmas;
+    std::vector<double> sigmas;
     bool hasSigmas = false;
     std::vector<int> normalizationIndices;
     bool hasNormalizationIndices = false;
@@ -443,7 +486,7 @@ int fidex(const string &command) {
           if (!checkList(arg)) {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + string(arg) + ".");
           }
-          mus = getFloatVectorFromString(arg);
+          mus = getDoubleVectorFromString(arg);
           hasMus = true;
           break;
 
@@ -451,7 +494,7 @@ int fidex(const string &command) {
           if (!checkList(arg)) {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + string(arg) + ".");
           }
-          sigmas = getFloatVectorFromString(arg);
+          sigmas = getDoubleVectorFromString(arg);
           hasSigmas = true;
           break;
 

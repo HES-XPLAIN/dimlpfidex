@@ -192,7 +192,7 @@ def parse_normalization_stats(file_name, nb_attributes, attributes=None):
                             with_median = match.group(2) == "median"
                         else:
                             if match.group(2) != ("median" if with_median else "mean"):
-                                raise ValueError(f"Error in {file_name} : There is sometimes mean and sometimes median.")
+                                raise ValueError(f"Error in {file_name} : Inconsistency in using mean or median.")
 
                         mus.append(float(match.group(3)))
                         sigmas.append(float(match.group(5)))
@@ -205,7 +205,7 @@ def parse_normalization_stats(file_name, nb_attributes, attributes=None):
 
     if pattern_error:
         if attributes is None:
-            raise ValueError(f"Error in {file_name} : File not in the correct format, maybe you forgot to add the attribute file")
+            raise ValueError(f"Error in {file_name} : File not in the correct format, maybe you forgot to add the attribute file.")
         else:
             raise ValueError(f"Error in {file_name} : File not in the correct format.")
 

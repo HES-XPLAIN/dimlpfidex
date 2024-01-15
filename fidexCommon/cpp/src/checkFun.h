@@ -17,5 +17,5 @@ bool checkStringEmpty(std::string line);
 std::string formattingDoubleToString(double number);
 std::vector<std::string> splitString(const std::string &str, const std::string &delimiter);
 std::vector<int> getIntVectorFromString(const std::string &str);
-std::vector<float> getFloatVectorFromString(const std::string &str);
+std::vector<double> getDoubleVectorFromString(const std::string &str);
 #endif
