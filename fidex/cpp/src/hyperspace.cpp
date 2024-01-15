@@ -59,7 +59,7 @@ void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
       for (size_t i = 0; i < normalization_indices->size(); ++i) {
         if ((*normalization_indices)[i] == attribut) {
           index = static_cast<int>(i);
-          break; // Arrêter la boucle une fois la valeur trouvée
+          break;
         }
       }
       if (index != -1) {

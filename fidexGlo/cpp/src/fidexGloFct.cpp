@@ -666,7 +666,6 @@ int fidexGlo(const string &command) {
                   << std::endl;
       }
       int currentPredId = testSamplesPreds[currentSample];
-      std::cout << "ICI1" << std::endl;
       std::string currentPred;
       if (hasClassNames) {
         currentPred = classNames[currentPredId];
@@ -698,7 +697,7 @@ int fidexGlo(const string &command) {
           nb_fidex += 1;
         }
 
-      } else { // There is some activated rules
+      } else { // There are some activated rules
         for (int v : activatedRules) {
           if (get<2>(rules[v]) == testSamplesPreds[currentSample]) { // Check if the class of the rule is the predicted one
             correctRules.push_back(v);
