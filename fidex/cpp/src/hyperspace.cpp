@@ -17,7 +17,7 @@ std::shared_ptr<Hyperbox> Hyperspace::getHyperbox() const {
 }
 
 void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, vector<string> &lines,
-                                bool hasAttributeNames, vector<string> *attributeNames, bool hasClassNames, vector<string> *classNames, const vector<float> *mus, const vector<float> *sigmas, const vector<int> *normalization_indices) {
+                                bool hasAttributeNames, vector<string> *attributeNames, bool hasClassNames, vector<string> *classNames, const vector<double> *mus, const vector<double> *sigmas, const vector<int> *normalization_indices) {
 
   bool denormalizing = false;
   // Check if we need to denormalize

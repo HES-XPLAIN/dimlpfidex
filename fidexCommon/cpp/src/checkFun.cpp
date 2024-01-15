@@ -219,8 +219,8 @@ std::vector<std::string> splitString(const std::string &str, const std::string &
  * @param str A string in the format "[a,b,...,c]" without spaces representing a list of floats.
  * @return std::vector<float> A vector of floats parsed from the string.
  */
-std::vector<float> getFloatVectorFromString(const std::string &str) {
-  std::vector<float> result;
+std::vector<double> getDoubleVectorFromString(const std::string &str) {
+  std::vector<double> result;
   auto tokens = splitString(str.substr(1, str.size() - 2), ",");
 
   for (const auto &token : tokens) {
