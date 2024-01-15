@@ -682,11 +682,9 @@ int fidex(const string &command) {
       throw CommandArgumentException("Error : normlization file (-n) and mus or normalizationIndices (-I) are both given.");
     }
 
-    if (hasMus) {
-      // Mus, sigmas and normalizationIndices must have the same size and not be empty
-      if (mus.size() != sigmas.size() || mus.size() != normalizationIndices.size() || mus.empty()) {
-        throw CommandArgumentException("Error : mus (-u), sigmas (-g) and normalization indices (-I) don't have the same size or are empty.");
-      }
+    // Mus, sigmas and normalizationIndices must have the same size and not be empty
+    if (hasMus && (mus.size() != sigmas.size() || mus.size() != normalizationIndices.size() || mus.empty())) {
+      throw CommandArgumentException("Error : mus (-u), sigmas (-g) and normalization indices (-I) don't have the same size or are empty.");
     }
 
     // Check normalizationIndices
@@ -900,8 +898,6 @@ int fidex(const string &command) {
       do {
         hyperspace.getHyperbox()->resetDiscriminativeHyperplans(); // Reinitialize discriminativeHyperplans for next sample
 
-        // samplet1 = clock();
-
         if (nbTestSamples > 1 && currentMinNbCover == minNbCover) {
           std::cout << "Computation of rule for sample " << currentSample << " : " << endl
                     << endl;
@@ -1016,10 +1012,6 @@ int fidex(const string &command) {
               hyperspace.getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
             }
           }
-          /*itt2 = clock();
-          itTime = (float)(itt2 - itt1) / CLOCKS_PER_SEC;
-
-          std::cout << "\n Iteration time = " << itTime << " sec" << std::endl;*/
           nbIt += 1;
         }
 
