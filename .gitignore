@@ -181,3 +181,4 @@ dmypy.json
 autoexe.sh
 data/
 compile_commands.json
+rules.json
