@@ -217,7 +217,7 @@ int fidexGlo(const string &command) {
           break;
 
         case 'a':
-          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+          if (checkPositiveInt(arg) && atoi(arg) > 0) {
             nb_attributes = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
@@ -225,7 +225,7 @@ int fidexGlo(const string &command) {
           break;
 
         case 'b':
-          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+          if (checkPositiveInt(arg) && atoi(arg) > 0) {
             nb_classes = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
@@ -253,7 +253,7 @@ int fidexGlo(const string &command) {
           break;
 
         case 't':
-          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+          if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             hasDecisionThreshold = true;
             decisionThreshold = atof(arg);
           } else {
@@ -262,7 +262,7 @@ int fidexGlo(const string &command) {
           break;
 
         case 'x':
-          if (CheckPositiveInt(arg)) {
+          if (checkPositiveInt(arg)) {
             hasIndexPositiveClass = true;
             indexPositiveClass = atoi(arg);
           } else {
@@ -321,7 +321,7 @@ int fidexGlo(const string &command) {
         } break;
 
         case 'N':
-          if (CheckPositiveInt(arg)) {
+          if (checkPositiveInt(arg)) {
             nbDimlpNets = atoi(arg);
             nbDimlpNetsInit = true;
           } else {
@@ -331,7 +331,7 @@ int fidexGlo(const string &command) {
           break;
 
         case 'Q':
-          if (CheckPositiveInt(arg)) {
+          if (checkPositiveInt(arg)) {
             nbQuantLevelsInit = true;
             nbQuantLevels = atoi(arg);
           } else {
@@ -340,7 +340,7 @@ int fidexGlo(const string &command) {
           break;
 
         case 'i':
-          if (CheckPositiveInt(arg)) {
+          if (checkPositiveInt(arg)) {
             itMaxInit = true;
             itMax = atoi(arg);
           } else {
@@ -349,7 +349,7 @@ int fidexGlo(const string &command) {
           break;
 
         case 'v':
-          if (CheckPositiveInt(arg) && atoi(arg) >= 1) {
+          if (checkPositiveInt(arg) && atoi(arg) >= 1) {
             minNbCoverInit = true;
             minNbCover = atoi(arg);
           } else {
@@ -369,7 +369,7 @@ int fidexGlo(const string &command) {
           break;
 
         case 'm':
-          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+          if (checkPositiveInt(arg) && atoi(arg) > 0) {
             maxFailedAttempts = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
@@ -378,7 +378,7 @@ int fidexGlo(const string &command) {
           break;
 
         case 'q':
-          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+          if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             minFidelity = atof(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested.");
@@ -387,7 +387,7 @@ int fidexGlo(const string &command) {
           break;
 
         case 'd':
-          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+          if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             dropoutDimParam = atof(arg);
             dropoutDim = true; // We dropout a bunch of dimensions each iteration (accelerate the processus)
           } else {
@@ -396,7 +396,7 @@ int fidexGlo(const string &command) {
           break;
 
         case 'h':
-          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+          if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             dropoutHypParam = atof(arg);
             dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
           } else {
@@ -405,7 +405,7 @@ int fidexGlo(const string &command) {
           break;
 
         case 'z':
-          if (CheckPositiveInt(arg)) {
+          if (checkPositiveInt(arg)) {
             seed = atoi(arg);
             seedInit = true;
           } else
@@ -637,7 +637,7 @@ int fidexGlo(const string &command) {
 
     if (hasDecisionThreshold) {
       std::string classDecision;
-      if (attributFileInit) {
+      if (hasClassNames) {
         classDecision = classNames[indexPositiveClass];
       } else {
         classDecision = std::to_string(indexPositiveClass);
@@ -666,8 +666,9 @@ int fidexGlo(const string &command) {
                   << std::endl;
       }
       int currentPredId = testSamplesPreds[currentSample];
+      std::cout << "ICI1" << std::endl;
       std::string currentPred;
-      if (attributFileInit) {
+      if (hasClassNames) {
         currentPred = classNames[currentPredId];
       } else {
         currentPred = std::to_string(currentPredId);

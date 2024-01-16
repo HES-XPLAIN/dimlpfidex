@@ -162,7 +162,7 @@ int fidexGloStats(const string &command) {
           break;
 
         case 'a':
-          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+          if (checkPositiveInt(arg) && atoi(arg) > 0) {
             nb_attributes = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
@@ -170,7 +170,7 @@ int fidexGloStats(const string &command) {
           break;
 
         case 'b':
-          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+          if (checkPositiveInt(arg) && atoi(arg) > 0) {
             nb_classes = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
@@ -203,7 +203,7 @@ int fidexGloStats(const string &command) {
           break;
 
         case 't':
-          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+          if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             hasDecisionThreshold = true;
             decisionThreshold = atof(arg);
           } else {
@@ -212,7 +212,7 @@ int fidexGloStats(const string &command) {
           break;
 
         case 'x':
-          if (CheckPositiveInt(arg)) {
+          if (checkPositiveInt(arg)) {
             hasIndexPositiveClass = true;
             indexPositiveClass = atoi(arg);
           } else {

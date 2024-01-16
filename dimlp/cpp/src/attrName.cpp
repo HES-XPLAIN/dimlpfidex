@@ -23,7 +23,7 @@ int AttrName::FirstLect() const
       break;
   }
 
-  if (k == NbAttr + NbClasses)
+  if (k == NbAttr + NbClasses || k == NbAttr)
     return 1;
 
   cout << FileAttr;
@@ -56,8 +56,15 @@ void AttrName::SecondLect()
 
   ClassNames.clear();
   string className;
+  bool hasClasses = false;
   while (inFile >> className) {
+    hasClasses = true;
     ClassNames.push_back(className);
+  }
+  if (!hasClasses) {
+    for (int i = 0; i < NbClasses; i++) {
+      ClassNames.push_back(std::to_string(i + 1));
+    }
   }
 }
 

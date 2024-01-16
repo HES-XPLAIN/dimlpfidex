@@ -2,6 +2,145 @@
 
 using namespace std;
 
+/**
+ * @brief Parses a normalization file to extract statistical data.
+ *
+ * This function reads a normalization file and extracts statistical information such as attribute indices, wether mean or median was used for normalization
+ * mean/median and standard deviations values.
+ * It handles files with either numeric indices or attribute names. The function also checks for consistency in the usage of mean or median
+ * across the file and detects duplicate indices.
+ *
+ * @param normalizationFile The path to the normalization file to be parsed.
+ * @param nbAttributes The number of attributes expected in the file.
+ * @param attributes Optional list of attribute names. If provided, the function will parse the file based on attribute names instead of numeric indices.
+ * @return A tuple containing four elements in the following order:
+ *         1. A vector of attribute indices (int).
+ *         2. A boolean flag indicating whether the file uses 'median' (true) or 'mean' (false).
+ *         3. A vector of mean or median values (double) extracted from the file.
+ *         4. A vector of standard deviations values (double) extracted from the file.
+ * @throws FileContentError If there is a mismatch in the number of attributes, or if the file format is incorrect.
+ * @throws FileNotFoundError If the normalization file cannot be opened or found.
+ */
+std::tuple<std::vector<int>, bool, std::vector<double>, std::vector<double>> parseNormalizationStats(const std::string &normalizationFile, int nbAttributes, const std::vector<std::string> &attributes = std::vector<std::string>()) {
+  std::vector<int> indices_list;
+  std::vector<double> mus;
+  std::vector<double> sigmas;
+  bool withMedian = false;
+  bool withMedian_initialized = false;
+  std::set<int> unique_indices;
+
+  if (!attributes.empty() && attributes.size() != nbAttributes) {
+    throw FileContentError("Error during parsing of " + normalizationFile + ": The number of attributes is not equal to the length of attributes list.");
+  }
+
+  // Create some general regex patterns
+  std::string indexPattern = "(";
+
+  for (int i = 0; i < nbAttributes; i++) {
+    indexPattern += std::to_string(i);
+    if (i < nbAttributes - 1) {
+      indexPattern += "|";
+    }
+  }
+  indexPattern += ")";
+
+  std::string attrPattern = "";
+  if (!attributes.empty()) {
+    attrPattern += "(";
+    for (int i = 0; i < nbAttributes; i++) {
+      attrPattern += attributes[i];
+      if (i < nbAttributes - 1) {
+        attrPattern += "|";
+      }
+    }
+    attrPattern += ")";
+  }
+
+  std::string floatPattern = "(-?\\d+(\\.\\d+)?)(?=$|[^\\d])"; // We ask that the float is followed either by the end of the line either by a not-number character
+
+  // Create regex patterns for a line
+  std::vector<std::pair<std::regex, std::string>> patterns;
+  std::regex patternIndices(indexPattern + " : original (mean|median): " + floatPattern + ", original std: " + floatPattern);
+  std::string patternIndicesStr = "indexPattern";
+  std::regex patternAttributes(attrPattern + " : original (mean|median): " + floatPattern + ", original std: " + floatPattern);
+  std::string patternAttributesStr = "attributePattern";
+  if (!attributes.empty()) {
+    patterns.emplace_back(patternAttributes, patternAttributesStr);
+  }
+  patterns.emplace_back(patternIndices, patternIndicesStr);
+
+  bool patternError;
+
+  for (const auto &pattern : patterns) {
+
+    std::ifstream file(normalizationFile);
+    if (!file) {
+      throw FileNotFoundError("Error : file " + std::string(normalizationFile) + " not found or couldn't be opened.");
+    }
+
+    patternError = false;
+    std::string line;
+    while (getline(file, line)) {
+      std::string mean_median;
+      int index;
+
+      if (line.empty())
+        continue;
+
+      std::istringstream iss(line);
+
+      std::smatch matches;
+
+      if (std::regex_search(line, matches, pattern.first)) {
+        mean_median = matches[2];
+        mus.push_back(stod(matches[3]));
+        sigmas.push_back(stod(matches[5]));
+        if (pattern.second == patternIndicesStr) {
+          index = stoi(matches[1]);
+        } else {
+          std::string attr = matches[1];
+          auto it = std::find(attributes.begin(), attributes.end(), attr);
+          if (it == attributes.end()) {
+            throw FileContentError("Error in " + normalizationFile + ": Attribute not found.");
+          }
+          index = static_cast<int>(std::distance(attributes.begin(), it));
+        }
+
+      } else {
+        patternError = true;
+        break;
+      }
+
+      indices_list.push_back(index);
+      unique_indices.insert(index);
+
+      if (!withMedian_initialized) {
+        withMedian = (mean_median == "median");
+        withMedian_initialized = true;
+      } else if ((withMedian && mean_median != "median") || (!withMedian && mean_median != "mean")) {
+        throw FileContentError("Error in " + normalizationFile + ": Inconsistency in using mean or median.");
+      }
+    }
+    if (!patternError) {
+      break;
+    }
+  }
+
+  if (patternError) {
+    if (attributes.empty()) {
+      throw FileContentError("Error in " + normalizationFile + ": File not in the correct format, maybe you forgot to add the attribute file.");
+    } else {
+      throw FileContentError("Error in " + normalizationFile + ": File not in the correct format.");
+    }
+  }
+
+  if (indices_list.size() != unique_indices.size()) {
+    throw FileContentError("Error in " + normalizationFile + ": Duplicate indices found.");
+  }
+
+  return std::make_tuple(indices_list, withMedian, mus, sigmas);
+}
+
 void showFidexParams() {
   std::cout << "\n-------------------------------------------------\n"
             << std::endl;
@@ -37,6 +176,10 @@ void showFidexParams() {
   std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
   std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
   std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
+  std::cout << "-n <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << std::endl;
+  std::cout << "-u <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
+  std::cout << "-g <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
+  std::cout << "-I <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_stats is given)>" << std::endl;
   std::cout << "-z <seed (0=random, default)>";
 
   std::cout << "\n-------------------------------------------------\n"
@@ -86,8 +229,8 @@ int fidex(const string &command) {
     string attributFileTemp; // attribut file
     bool attributFileInit = false;
 
-    int nb_attributes = -1;
-    int nb_classes = -1;
+    int nbAttributes = -1;
+    int nbClasses = -1;
 
     bool hasTrueClasses; // Check if we have the true classes
 
@@ -125,6 +268,15 @@ int fidex(const string &command) {
     double decisionThreshold = -1;
     bool hasIndexPositiveClass = false;
     int indexPositiveClass = -1;
+
+    string normalizationFileTemp;
+    bool normalizationFileInit = false;
+    std::vector<double> mus;
+    bool hasMus = false;
+    std::vector<double> sigmas;
+    bool hasSigmas = false;
+    std::vector<int> normalizationIndices;
+    bool hasNormalizationIndices = false;
 
     // Import parameters
 
@@ -170,16 +322,16 @@ int fidex(const string &command) {
           break;
 
         case 'a':
-          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
-            nb_attributes = atoi(arg);
+          if (checkPositiveInt(arg) && atoi(arg) > 0) {
+            nbAttributes = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
           }
           break;
 
         case 'b':
-          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
-            nb_classes = atoi(arg);
+          if (checkPositiveInt(arg) && atoi(arg) > 0) {
+            nbClasses = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
           }
@@ -211,7 +363,7 @@ int fidex(const string &command) {
         } break;
 
         case 'N':
-          if (CheckPositiveInt(arg))
+          if (checkPositiveInt(arg))
             nbDimlpNets = atoi(arg);
           else {
             throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested.");
@@ -220,7 +372,7 @@ int fidex(const string &command) {
           break;
 
         case 'Q':
-          if (CheckPositiveInt(arg)) {
+          if (checkPositiveInt(arg)) {
             nbQuantLevels = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested.");
@@ -248,7 +400,7 @@ int fidex(const string &command) {
           break;
 
         case 'i':
-          if (CheckPositiveInt(arg)) {
+          if (checkPositiveInt(arg)) {
             itMax = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested.");
@@ -256,7 +408,7 @@ int fidex(const string &command) {
           break;
 
         case 'v':
-          if (CheckPositiveInt(arg) && atoi(arg) >= 1) {
+          if (checkPositiveInt(arg) && atoi(arg) >= 1) {
             minNbCover = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", integer strictly greater than 1 requested.");
@@ -274,7 +426,7 @@ int fidex(const string &command) {
           break;
 
         case 'm':
-          if (CheckPositiveInt(arg) && atoi(arg) > 0) {
+          if (checkPositiveInt(arg) && atoi(arg) > 0) {
             maxFailedAttempts = atoi(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
@@ -282,7 +434,7 @@ int fidex(const string &command) {
           break;
 
         case 'M':
-          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+          if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             minFidelity = atof(arg);
           } else {
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested.");
@@ -290,7 +442,7 @@ int fidex(const string &command) {
           break;
 
         case 'd':
-          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+          if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             dropoutDimParam = atof(arg);
             dropoutDim = true; // We dropout a bunch of dimensions each iteration (accelerate the processus)
           } else {
@@ -299,7 +451,7 @@ int fidex(const string &command) {
           break;
 
         case 'h':
-          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+          if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             dropoutHypParam = atof(arg);
             dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
           } else {
@@ -308,7 +460,7 @@ int fidex(const string &command) {
           break;
 
         case 't':
-          if (CheckFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+          if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             hasDecisionThreshold = true;
             decisionThreshold = atof(arg);
           } else {
@@ -317,7 +469,7 @@ int fidex(const string &command) {
           break;
 
         case 'x':
-          if (CheckPositiveInt(arg)) {
+          if (checkPositiveInt(arg)) {
             hasIndexPositiveClass = true;
             indexPositiveClass = atoi(arg);
           } else {
@@ -325,8 +477,37 @@ int fidex(const string &command) {
           }
           break;
 
+        case 'n':
+          normalizationFileTemp = arg;
+          normalizationFileInit = true;
+          break;
+
+        case 'u':
+          if (!checkList(arg)) {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + string(arg) + ".");
+          }
+          mus = getDoubleVectorFromString(arg);
+          hasMus = true;
+          break;
+
+        case 'g':
+          if (!checkList(arg)) {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + string(arg) + ".");
+          }
+          sigmas = getDoubleVectorFromString(arg);
+          hasSigmas = true;
+          break;
+
+        case 'I':
+          if (!checkList(arg)) {
+            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", list in the form [a,b,...,c] without spaces requested, a,b,c are integers. Received " + string(arg) + ".");
+          }
+          normalizationIndices = getIntVectorFromString(arg);
+          hasNormalizationIndices = true;
+          break;
+
         case 'z':
-          if (CheckPositiveInt(arg))
+          if (checkPositiveInt(arg))
             seed = atoi(arg);
           else
             throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested.");
@@ -368,6 +549,7 @@ int fidex(const string &command) {
     const char *ruleFile = nullptr;
     const char *statsFile = nullptr;
     const char *consoleFile = nullptr;
+    const char *normalizationFile = nullptr;
 
     string root = "";
     if (rootFolderInit) {
@@ -440,6 +622,11 @@ int fidex(const string &command) {
       consoleFile = &consoleFileTemp[0];
     }
 
+    if (normalizationFileInit) {
+      normalizationFileTemp = root + normalizationFileTemp;
+      normalizationFile = &normalizationFileTemp[0];
+    }
+
     if (hasDecisionThreshold && !hasIndexPositiveClass) {
       throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t).");
     }
@@ -466,11 +653,46 @@ int fidex(const string &command) {
     if (!ruleFileInit) {
       throw CommandArgumentException("The output rule file has to be given with option -O.");
     }
-    if (nb_attributes == -1) {
+    if (nbAttributes == -1) {
       throw CommandArgumentException("The number of attributes has to be given with option -a.");
     }
-    if (nb_classes == -1) {
+    if (nbClasses == -1) {
       throw CommandArgumentException("The number of classes has to be given with option -b.");
+    }
+
+    // ----------------------------------------------------------------------
+
+    // Check denormalization parameters
+
+    // If normalizationIndices were not specified, it's all attributes
+    if (!normalizationFileInit && !hasNormalizationIndices) {
+      for (int i = 0; i < nbAttributes; ++i) {
+        normalizationIndices.push_back(i);
+      }
+      hasNormalizationIndices = true;
+    }
+
+    // Check if mus and sigmas are both given or both not
+    if ((hasMus || hasSigmas) &&
+        !(hasMus && hasSigmas)) {
+      throw CommandArgumentException("Error : One of Mus(-u) and sigmas(-g) is given but not the other.");
+    }
+
+    if (normalizationFileInit && hasMus || normalizationFileInit && hasNormalizationIndices) {
+      throw CommandArgumentException("Error : normlization file (-n) and mus or normalizationIndices (-I) are both given.");
+    }
+
+    // Mus, sigmas and normalizationIndices must have the same size and not be empty
+    if (hasMus && (mus.size() != sigmas.size() || mus.size() != normalizationIndices.size() || mus.empty())) {
+      throw CommandArgumentException("Error : mus (-u), sigmas (-g) and normalization indices (-I) don't have the same size or are empty.");
+    }
+
+    // Check normalizationIndices
+    std::set<int> uniqueIndices(normalizationIndices.begin(), normalizationIndices.end());
+    if (uniqueIndices.size() != normalizationIndices.size() ||
+        *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= nbAttributes ||
+        *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
+      throw CommandArgumentException("Error : parameter normalization indices (-I) has negative, greater than the number of attributes or repeted elements.");
     }
 
     // ----------------------------------------------------------------------
@@ -511,12 +733,12 @@ int fidex(const string &command) {
 
     std::unique_ptr<DataSetFid> trainDatas;
     if (!trainDataFileTrueClassInit) {
-      trainDatas.reset(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass));
+      trainDatas.reset(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nbAttributes, nbClasses, decisionThreshold, indexPositiveClass));
       if (!trainDatas->getHasClasses()) {
         throw CommandArgumentException("The train true classes file has to be given with option -C or classes have to be given in the train data file.");
       }
     } else {
-      trainDatas.reset(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
+      trainDatas.reset(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nbAttributes, nbClasses, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
     }
 
     vector<vector<double>> *trainData = trainDatas->getDatas();
@@ -537,7 +759,7 @@ int fidex(const string &command) {
     vector<vector<double>> mainSamplesOutputValuesPredictions;
     std::unique_ptr<DataSetFid> testDatas;
     if (!mainSamplesPredFileInit) { // If we have only one test data file with data, pred and class
-      testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass));
+      testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, nbAttributes, nbClasses, decisionThreshold, indexPositiveClass));
       mainSamplesValues = (*testDatas->getDatas());
       mainSamplesPreds = (*testDatas->getPredictions());
       mainSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
@@ -549,9 +771,9 @@ int fidex(const string &command) {
     } else { // We have different files for test predictions and test classes
 
       if (mainSamplesClassFileInit) {
-        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass, mainSamplesClassFile));
+        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, nbAttributes, nbClasses, decisionThreshold, indexPositiveClass, mainSamplesClassFile));
       } else {
-        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass));
+        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, nbAttributes, nbClasses, decisionThreshold, indexPositiveClass));
       }
       mainSamplesValues = (*testDatas->getDatas());
       mainSamplesPreds = (*testDatas->getPredictions());
@@ -573,7 +795,7 @@ int fidex(const string &command) {
     vector<string> classNames;
     bool hasClassNames = false;
     if (attributFileInit) {
-      testDatas->setAttributes(attributFile, nb_attributes, nb_classes);
+      testDatas->setAttributes(attributFile, nbAttributes, nbClasses);
       attributeNames = (*testDatas->getAttributeNames());
       hasClassNames = testDatas->getHasClassNames();
       if (hasClassNames) {
@@ -583,6 +805,14 @@ int fidex(const string &command) {
 
     impt2 = clock();
     importTime = (float)(impt2 - impt1) / CLOCKS_PER_SEC;
+
+    // Get mus, sigmas and normalizationIndices from normalizationFile for denormalization :
+    if (normalizationFileInit) {
+      auto results = parseNormalizationStats(normalizationFile, nbAttributes, attributeNames);
+      normalizationIndices = std::get<0>(results);
+      mus = std::get<2>(results);
+      sigmas = std::get<3>(results);
+    }
 
     std::cout << "\nImport time = " << importTime << " sec" << std::endl;
 
@@ -636,7 +866,7 @@ int fidex(const string &command) {
         std::cout << "All hyperlocus created" << std::endl;
       }
     } else {
-      matHypLocus = calcHypLocus(inputRulesFile, nb_attributes);
+      matHypLocus = calcHypLocus(inputRulesFile, nbAttributes);
     }
 
     FidexNameSpace::Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans
@@ -644,8 +874,8 @@ int fidex(const string &command) {
     const size_t nbIn = hyperspace.getHyperLocus().size(); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
 
     // Check size of hyperlocus
-    if (nbIn == 0 || nbIn % nb_attributes != 0) {
-      throw InternalError("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributs - " + std::to_string(nb_attributes) + ".");
+    if (nbIn == 0 || nbIn % nbAttributes != 0) {
+      throw InternalError("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributs - " + std::to_string(nbAttributes) + ".");
     }
 
     std::cout << "Hyperspace created" << endl
@@ -667,8 +897,6 @@ int fidex(const string &command) {
 
       do {
         hyperspace.getHyperbox()->resetDiscriminativeHyperplans(); // Reinitialize discriminativeHyperplans for next sample
-
-        // samplet1 = clock();
 
         if (nbTestSamples > 1 && currentMinNbCover == minNbCover) {
           std::cout << "Computation of rule for sample " << currentSample << " : " << endl
@@ -715,7 +943,7 @@ int fidex(const string &command) {
               break;
             }
             dimension = dimensions[d];
-            attribut = dimension % nb_attributes;
+            attribut = dimension % nbAttributes;
             mainSampleValue = mainSamplesValues[currentSample][attribut];
             // Test if we dropout this dimension
 
@@ -784,10 +1012,6 @@ int fidex(const string &command) {
               hyperspace.getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
             }
           }
-          /*itt2 = clock();
-          itTime = (float)(itt2 - itt1) / CLOCKS_PER_SEC;
-
-          std::cout << "\n Iteration time = " << itTime << " sec" << std::endl;*/
           nbIt += 1;
         }
 
@@ -854,7 +1078,11 @@ int fidex(const string &command) {
       meanCovSize += static_cast<double>(hyperspace.getHyperbox()->getCoveredSamples().size());
       meanNbAntecedentsPerRule += static_cast<double>(hyperspace.getHyperbox()->getDiscriminativeHyperplans().size());
       // Extract rules
-      hyperspace.ruleExtraction(&mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, attributFileInit, &attributeNames, hasClassNames, &classNames);
+      if (hasMus) {
+        hyperspace.ruleExtraction(&mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, attributFileInit, &attributeNames, hasClassNames, &classNames, &mus, &sigmas, &normalizationIndices);
+      } else {
+        hyperspace.ruleExtraction(&mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, attributFileInit, &attributeNames, hasClassNames, &classNames);
+      }
 
       if (hyperspace.getHyperbox()->getCoveredSamples().size() < minNbCover) {
         std::cout << "The minimum covering of " << minNbCover << " is not achieved." << std::endl;

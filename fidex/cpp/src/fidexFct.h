@@ -14,7 +14,9 @@
 #include <memory>
 #include <numeric>
 #include <random>
+#include <regex>
 #include <sstream>
+#include <string>
 #include <time.h>
 #include <tuple>
 #include <vector>

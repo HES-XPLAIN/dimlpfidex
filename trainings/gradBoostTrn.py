@@ -8,7 +8,7 @@ from sklearn.tree import export_text
 def gradBoostTrn(*args, **kwargs):
     try:
 
-        if args or not kwargs:
+        if not kwargs:
             print("---------------------------------------------------------------------")
             print("Please specify arguments using named parameters.")
             print("Warning! The files are localised with respect to root folder dimlpfidex.")
