@@ -67,6 +67,92 @@ string Rule::toString(const vector<string> *attributes, const vector<string> *cl
   return result.str();
 }
 
+/**
+ * @brief Parses a JSON file and returns a vector of the parsed rules. JSON rule format must be like this example:
+ * {
+ *   "rules": [
+ *       {
+ *           "antecedants": [
+ *               {
+ *                   "attribute": 0,
+ *                   "inequality": true,
+ *                   "value": 0.7231
+ *               },
+ *               {
+ *                   "attribute": 3,
+ *                   "inequality": false,
+ *                   "value": 0.0031
+ *               },
+ *               ...
+ *           ],
+ *           "coveredSamples": [1,2,3, ...],
+ *           "outputClass": 0,
+ *           "fidelity": 1,
+ *           "accuracy": 0.63,
+ *           "confidence": 0.8
+ *       },
+ *       {...}
+ *     ]
+ *   }
+ *
+ * @param filename   path of the JSON file to be parsed
+ * @return vector<Rule>
+ */
+// TODO test this
+vector<Rule> Rule::fromJsonFile(string filename) {
+  Document doc;
+  ifstream ifs;
+  vector<Rule> result;
+
+  ifs.open(filename, ifstream::in);
+
+  if (!ifs.is_open() || ifs.fail()) {
+    throw FileNotFoundError("JSON file to parse named '" + filename + "' was not found, cannot proceed.");
+  }
+
+  IStreamWrapper isw(ifs);
+  doc.ParseStream(isw);
+
+  if (doc.HasParseError()) {
+    std::cout << "Error  : " << doc.GetParseError() << '\n'
+              << "Offset : " << doc.GetErrorOffset() << '\n';
+  }
+
+  if (!doc.HasMember("rules")) {
+    cout << "Parsing error: cannot find 'rules' list in json file." << endl;
+    return result;
+  }
+
+  const Value &jsonRules = doc["rules"];
+
+  for (SizeType i = 0; i < jsonRules.Size(); i++) {
+    vector<Antecedant> antecedants;
+    vector<int> coveredSamples;
+    const Value &jsonAntecedants = jsonRules[i]["antecedants"];
+    const Value &jsonCoveredSamples = jsonRules[i]["coveredSamples"];
+    const int outputClass = jsonRules[i]["outputClass"].GetInt();
+    const double fidelity = jsonRules[i]["fidelity"].GetDouble();
+    const double accuracy = jsonRules[i]["accuracy"].GetDouble();
+    const double confidence = jsonRules[i]["confidence"].GetDouble();
+
+    for (SizeType j = 0; j < jsonAntecedants.Size(); j++) {
+      int attribute = jsonAntecedants[j]["attribute"].GetInt();
+      bool inequality = jsonAntecedants[j]["inequality"].GetBool();
+      double value = jsonAntecedants[j]["value"].GetDouble();
+
+      antecedants.push_back(Antecedant(attribute, inequality, value));
+    }
+
+    for (SizeType k = 0; k < jsonCoveredSamples.Size(); k++) {
+      coveredSamples.push_back(jsonCoveredSamples[k].GetInt());
+    }
+
+    result.push_back(Rule(antecedants, coveredSamples, outputClass, fidelity, accuracy, confidence));
+  }
+
+  return result;
+}
+
 bool Rule::isEqual(const Rule other) const {
   double epsilon = 10e-6;
 

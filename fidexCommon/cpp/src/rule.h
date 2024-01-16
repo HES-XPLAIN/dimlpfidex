@@ -1,16 +1,23 @@
 #ifndef RULE_H
 #define RULE_H
+// Find better way to include this
+#include "../../../rapidjson/include/rapidjson/document.h"
+#include "../../../rapidjson/include/rapidjson/error/en.h"
+#include "../../../rapidjson/include/rapidjson/istreamwrapper.h"
+#include "../../../rapidjson/include/rapidjson/ostreamwrapper.h"
+#include "../../../rapidjson/include/rapidjson/stringbuffer.h"
+#include "../../../rapidjson/include/rapidjson/writer.h"
 #include "antecedant.h"
 #include "checkFun.h"
 #include <algorithm>
 #include <cmath>
+#include <fstream>
 #include <iostream>
-#include <ostream>
-#include <sstream>
 #include <string>
 #include <vector>
 
 using namespace std;
+using namespace rapidjson;
 
 class Rule {
 private:
@@ -53,6 +60,7 @@ public:
   void addCoveredSample(int sampleId) { _coveredSamples.push_back(sampleId); };
   string toString(const vector<string> *attributes = NULL, const vector<string> *classes = NULL);
   bool isEqual(const Rule other) const;
+  static vector<Rule> fromJsonFile(string filename);
 };
 
 // OPERATOR OVERLOAD TO EASE PRINTING PURPOSES
