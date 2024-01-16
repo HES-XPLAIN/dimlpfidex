@@ -75,7 +75,7 @@ rye shell
 
 #### Add dependencies
 
-To add new dependencies to the project, either add them to the `pyproject.toml` file or use `rye add <dependency>`.
+To add new dependencies to the project, either add them to the `pyproject.toml` file or use `rye add <dependency>`, then use `rye sync`.
 
 ### Compile
 
