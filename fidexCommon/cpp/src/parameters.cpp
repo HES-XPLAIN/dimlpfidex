@@ -2,6 +2,10 @@
 
 /**
  * @brief Construct a new Parameters object containing all arguments passed by CLI.
+ * To add a new parameter you must follow this workflow:
+ *    - Add a new element in the ParameterCode enum in Paramerters.h
+ *    - Add the same element in the ParameterNames vector in Paramerters.h
+ *    - Adapt the code below to accept your new argument in the switch case
  *
  * @param args program arguments
  */
@@ -134,7 +138,30 @@ Parameters::Parameters(vector<string> args) {
   setRootDirectory(WEIGHTS_FILE);
 }
 
-// TODO: Implement Parameters::Parameters(string jsonfile) {}
+Parameters::Parameters(string jsonfile) {
+  Document doc;
+  ifstream ifs;
+  vector<Rule> result;
+
+  ifs.open(jsonfile, ifstream::in);
+
+  if (!ifs.is_open() || ifs.fail()) {
+    throw FileNotFoundError("JSON file to parse named '" + jsonfile + "' was not found, cannot proceed.");
+  }
+
+  cout << ifs.rdbuf();
+
+  IStreamWrapper isw(ifs);
+  doc.ParseStream(isw);
+
+  if (doc.HasParseError()) {
+    std::cout << "Error  : " << doc.GetParseError() << '\n'
+              << "Offset : " << doc.GetErrorOffset() << '\n';
+  }
+
+  // TODO continue here
+}
+
 // TODO: (nice to have) use generic types to avoid code duplication
 
 // private setters
