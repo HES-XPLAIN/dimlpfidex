@@ -2,9 +2,6 @@
 #define PARAMETERS_H
 #include "../../../rapidjson/include/rapidjson/document.h"
 #include "../../../rapidjson/include/rapidjson/istreamwrapper.h"
-#include "../../../rapidjson/include/rapidjson/ostreamwrapper.h"
-#include "../../../rapidjson/include/rapidjson/stringbuffer.h"
-#include "../../../rapidjson/include/rapidjson/writer.h"
 #include "antecedant.h"
 #include "checkFun.h"
 #include "errorHandler.h"
