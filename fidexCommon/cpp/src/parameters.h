@@ -1,7 +1,15 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
+#include "../../../rapidjson/include/rapidjson/document.h"
+#include "../../../rapidjson/include/rapidjson/istreamwrapper.h"
+#include "../../../rapidjson/include/rapidjson/ostreamwrapper.h"
+#include "../../../rapidjson/include/rapidjson/stringbuffer.h"
+#include "../../../rapidjson/include/rapidjson/writer.h"
+#include "antecedant.h"
 #include "checkFun.h"
 #include "errorHandler.h"
+#include "rule.h"
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <map>
@@ -12,6 +20,7 @@
 #include <vector>
 
 using namespace std;
+using namespace rapidjson;
 
 // to add a new parameter, just add a new parameter code BEFORE "_NB_PARAMETERS"
 enum ParameterCode {
@@ -35,7 +44,6 @@ enum ParameterCode {
   NB_THREADS_USED,
   INDEX_POSITIVE_CLASS,
   SEED,
-  HEURISITC_INIT,
   DECISION_THRESHOLD,
   HI_KNOT,
   DROPOUT_HYP,
@@ -106,7 +114,7 @@ public:
   // constructor
   Parameters() = default;
   Parameters(vector<string> args);
-  // TODO Parameters(string jsonfile);
+  Parameters(string jsonfile);
 
   // default setter if value not set
   void setDefaultInt(ParameterCode id, int value);
