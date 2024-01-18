@@ -424,7 +424,6 @@ void checkParametersLogicValues(Parameters *p) {
   p->setDefaultInt(NB_DIMLP_NETS, 1);
   p->setDefaultString(ATTRIBUTES_FILE, "");
   p->setDefaultString(CONSOLE_FILE, "");
-  p->setDefaultString(INPUT_RULES_FILE, "");
   p->setDefaultInt(MAX_ITERATIONS, 100);
   p->setDefaultInt(MIN_COVERING, 2);
   p->setDefaultFloat(DROPOUT_DIM, 0.0f);
@@ -435,12 +434,46 @@ void checkParametersLogicValues(Parameters *p) {
   p->setDefaultInt(INDEX_POSITIVE_CLASS, -1);
   p->setDefaultInt(NB_THREADS_USED, 1);
   p->setDefaultFloat(MIN_FIDELITY, 1.0f);
-  p->setDefaultInt(HI_KNOT, 5);
+  // p->setDefaultFloat(HI_KNOT, 5);
   p->setDefaultInt(SEED, 0);
   p->setWeightsFiles(); // must be called to initialize
 
-  // TODO check for logic values
+  // this sections check if values comply with program logic
+
+  // asserting mandatory parameters
+  p->assertStringExists(TRAIN_DATA_FILE);
+  p->assertStringExists(TRAIN_DATA_PRED_FILE);
+  p->assertStringExists(TRAIN_DATA_TRUE_CLASS_FILE);
   p->assertStringExists(RULES_FILE);
+
+  // verifying logic between parameters, values range and so on...
+  if (p->isStringSet(WEIGHTS_FILE) && p->isStringSet(INPUT_RULES_FILE)) {
+    throw CommandArgumentException("Do not specify both a weight file(-W) and a rules file(-f). Choose one of them.");
+  }
+
+  if (!p->isStringSet(WEIGHTS_FILE) && !p->isStringSet(INPUT_RULES_FILE)) {
+    throw CommandArgumentException("A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f");
+  }
+
+  if (p->getInt(NB_QUANT_LEVELS) < 1) {
+    throw CommandArgumentException("Number of stairs in staircase activation function must be strictly positive (>=1).");
+  }
+
+  if (p->getInt(NB_DIMLP_NETS) < 1) {
+    throw CommandArgumentException("Number of networks must be strictly positive (>=1).");
+  }
+
+  // if (p->getFloat(HI_KNOT) < 0.0f) { }
+
+  if (!(p->getInt(HEURISTIC) > 0 && p->getInt(HEURISTIC) < 4)) {
+    throw CommandArgumentException("Heuristic must be 1, 2 or 3.");
+  }
+
+  // TODO continue checking with -i (https://github.com/HES-XPLAIN/dimlpfidex/blob/eedb7a977c61d5ff0371f8e4d454d864c99b1e53/fidexGlo/cpp/src/fidexGloRulesFct.cpp)
+
+  if (p->isFloatSet(DECISION_THRESHOLD) && !p->isIntSet(INDEX_POSITIVE_CLASS)) {
+    throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t)");
+  }
 }
 
 /**

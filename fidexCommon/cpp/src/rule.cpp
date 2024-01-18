@@ -100,57 +100,38 @@ string Rule::toString(const vector<string> *attributes, const vector<string> *cl
  */
 // TODO test this
 vector<Rule> Rule::fromJsonFile(string filename) {
-  Document doc;
-  ifstream ifs;
   vector<Rule> result;
-
-  ifs.open(filename, ifstream::in);
+  ifstream ifs(filename);
 
   if (!ifs.is_open() || ifs.fail()) {
-    throw FileNotFoundError("JSON file to parse named '" + filename + "' was not found, cannot proceed.");
+    throw FileNotFoundError("JSON file to parse named '" + filename + "' was not found or is corrupted, cannot proceed.");
   }
 
-  IStreamWrapper isw(ifs);
-  doc.ParseStream(isw);
+  // this throws an exception if input is not valid JSON
+  Json jsonData = Json::parse(ifs);
 
-  if (doc.HasParseError()) {
-    std::cout << "Error  : " << doc.GetParseError() << '\n'
-              << "Offset : " << doc.GetErrorOffset() << '\n';
-  }
-
-  if (!doc.HasMember("rules")) {
+  if (!jsonData.contains("rules")) {
     cout << "Parsing error: cannot find 'rules' list in json file." << endl;
     return result;
   }
 
-  const Value &jsonRules = doc["rules"];
-
-  for (SizeType i = 0; i < jsonRules.Size(); i++) {
-    vector<Antecedant> antecedants;
-    vector<int> coveredSamples;
-    const Value &jsonAntecedants = jsonRules[i]["antecedants"];
-    const Value &jsonCoveredSamples = jsonRules[i]["coveredSamples"];
-    const int outputClass = jsonRules[i]["outputClass"].GetInt();
-    const double fidelity = jsonRules[i]["fidelity"].GetDouble();
-    const double accuracy = jsonRules[i]["accuracy"].GetDouble();
-    const double confidence = jsonRules[i]["confidence"].GetDouble();
-
-    for (SizeType j = 0; j < jsonAntecedants.Size(); j++) {
-      int attribute = jsonAntecedants[j]["attribute"].GetInt();
-      bool inequality = jsonAntecedants[j]["inequality"].GetBool();
-      double value = jsonAntecedants[j]["value"].GetDouble();
-
-      antecedants.push_back(Antecedant(attribute, inequality, value));
-    }
-
-    for (SizeType k = 0; k < jsonCoveredSamples.Size(); k++) {
-      coveredSamples.push_back(jsonCoveredSamples[k].GetInt());
-    }
-
-    result.push_back(Rule(antecedants, coveredSamples, outputClass, fidelity, accuracy, confidence));
-  }
+  cout << "About to deserialize Rules" << endl;
+  result = jsonData["rules"];
+  cout << "Rules deserialized !" << endl;
 
   return result;
+}
+
+// TODO test this
+void Rule::toJsonFile(string filename, vector<Rule> rules) {
+  ofstream ofs(filename);
+
+  if (!ofs.is_open() || ofs.fail()) {
+    throw FileNotFoundError("JSON file to be written named '" + filename + "' couldn't be opened, cannot proceed.");
+  }
+
+  Json jsonData{{"rules", rules}};
+  ofs << setw(4) << jsonData << endl;
 }
 
 bool Rule::isEqual(const Rule other) const {

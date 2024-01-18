@@ -139,7 +139,6 @@ Parameters::Parameters(vector<string> args) {
 }
 
 Parameters::Parameters(string jsonfile) {
-  Document doc;
   ifstream ifs;
   vector<Rule> result;
 
@@ -151,15 +150,12 @@ Parameters::Parameters(string jsonfile) {
 
   cout << ifs.rdbuf();
 
-  IStreamWrapper isw(ifs);
-  doc.ParseStream(isw);
+  // doc.ParseStream(isw);
 
-  if (doc.HasParseError()) {
-    std::cout << "Error  : " << doc.GetParseError() << '\n'
-              << "Offset : " << doc.GetErrorOffset() << '\n';
-  }
-
-  // TODO continue here
+  // if (doc.HasParseError()) {
+  //   std::cout << "Error  : " << doc.GetParseError() << '\n'
+  //             << "Offset : " << doc.GetErrorOffset() << '\n';
+  // }
 }
 
 // TODO: (nice to have) use generic types to avoid code duplication

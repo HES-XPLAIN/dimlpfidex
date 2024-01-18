@@ -1,7 +1,6 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
-#include "../../../rapidjson/include/rapidjson/document.h"
-#include "../../../rapidjson/include/rapidjson/istreamwrapper.h"
+#include "../../../json/single_include/nlohmann/json.hpp"
 #include "antecedant.h"
 #include "checkFun.h"
 #include "errorHandler.h"
@@ -17,7 +16,6 @@
 #include <vector>
 
 using namespace std;
-using namespace rapidjson;
 
 // to add a new parameter, just add a new parameter code BEFORE "_NB_PARAMETERS"
 enum ParameterCode {
