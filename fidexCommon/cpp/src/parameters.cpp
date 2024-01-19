@@ -112,6 +112,22 @@ Parameters::Parameters(vector<string> args) {
         setInt(INDEX_POSITIVE_CLASS, arg);
         break;
 
+      case 'n':
+        setString(NORMALIZATION_FILE, arg);
+        break;
+
+      case 'u':
+        setDoubleVector(MUS, arg);
+        break;
+
+      case 'g':
+        setDoubleVector(SIGMAS, arg);
+        break;
+
+      case 'I':
+        setIntVector(NORMALIZATION_INDICES, arg);
+        break;
+
       case 'z':
         setInt(SEED, arg);
         break;
@@ -132,6 +148,7 @@ Parameters::Parameters(vector<string> args) {
   setRootDirectory(ROOT_FOLDER);
   setRootDirectory(ATTRIBUTES_FILE);
   setRootDirectory(WEIGHTS_FILE);
+  setRootDirectory(NORMALIZATION_FILE);
 }
 
 // TODO: Implement Parameters::Parameters(string jsonfile) {}
@@ -207,6 +224,32 @@ void Parameters::setDouble(ParameterCode id, double value) {
   _doubleParams[id] = value;
 }
 
+void Parameters::setDoubleVector(ParameterCode id, string value) {
+  if (isDoubleVectorSet(id)) {
+    throwAlreadySetArgumentException(id, value);
+  }
+
+  if (!checkList(value)) {
+    throw CommandArgumentException("Error : invalide type for parameter " + parameterNames[id] + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + value + ".");
+  }
+  _doubleVectorParams[id] = getDoubleVectorFromString(value);
+}
+
+void Parameters::setIntVector(ParameterCode id, string value) {
+  if (isIntVectorSet(id)) {
+    throwAlreadySetArgumentException(id, value);
+  }
+
+  if (!checkList(value)) {
+    throw CommandArgumentException("Error : invalide type for parameter " + parameterNames[id] + ", list in the form [a,b,...,c] without spaces requested, a,b,c are integers. Received " + value + ".");
+  }
+  _intVectorParams[id] = getIntVectorFromString(value);
+}
+
+void Parameters::setIntVector(ParameterCode id, vector<int> value) {
+  _intVectorParams[id] = value;
+}
+
 void Parameters::setString(ParameterCode id, string value) {
   if (isStringSet(id)) {
     throwAlreadySetArgumentException(id, value);
@@ -277,6 +320,16 @@ double Parameters::getDouble(ParameterCode id) {
   return _doubleParams[id];
 }
 
+vector<double> Parameters::getDoubleVector(ParameterCode id) {
+  assertDoubleVectorExists(id);
+  return _doubleVectorParams[id];
+}
+
+vector<int> Parameters::getIntVector(ParameterCode id) {
+  assertIntVectorExists(id);
+  return _intVectorParams[id];
+}
+
 string Parameters::getString(ParameterCode id) {
   assertStringExists(id);
   return _stringParams[id];
@@ -292,6 +345,14 @@ bool Parameters::isFloatSet(ParameterCode id) {
 
 bool Parameters::isDoubleSet(ParameterCode id) {
   return _doubleParams.find(id) != _doubleParams.end();
+}
+
+bool Parameters::isDoubleVectorSet(ParameterCode id) {
+  return _doubleVectorParams.find(id) != _doubleVectorParams.end();
+}
+
+bool Parameters::isIntVectorSet(ParameterCode id) {
+  return _intVectorParams.find(id) != _intVectorParams.end();
 }
 
 bool Parameters::isStringSet(ParameterCode id) {
@@ -327,6 +388,18 @@ void Parameters::assertDoubleExists(ParameterCode id) {
   }
 }
 
+void Parameters::assertDoubleVectorExists(ParameterCode id) {
+  if (!isDoubleVectorSet(id)) {
+    throwArgumentNotFoundException(id);
+  }
+}
+
+void Parameters::assertIntVectorExists(ParameterCode id) {
+  if (!isIntVectorSet(id)) {
+    throwArgumentNotFoundException(id);
+  }
+}
+
 // public special operations
 void Parameters::addWeightsFile(string file) {
   _weightFiles.push_back(file);
@@ -346,6 +419,16 @@ void Parameters::setDefaultFloat(ParameterCode id, float defaultValue) {
 void Parameters::setDefaultDouble(ParameterCode id, double defaultValue) {
   if (!isDoubleSet(id))
     setDouble(id, defaultValue);
+}
+
+void Parameters::setDefaultDoubleVector(ParameterCode id, string defaultValue) {
+  if (!isDoubleVectorSet(id))
+    setDoubleVector(id, defaultValue);
+}
+
+void Parameters::setDefaultIntVector(ParameterCode id, string defaultValue) {
+  if (!isIntVectorSet(id))
+    setIntVector(id, defaultValue);
 }
 
 void Parameters::setDefaultString(ParameterCode id, string defaultValue) {

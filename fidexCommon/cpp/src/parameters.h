@@ -41,6 +41,10 @@ enum ParameterCode {
   DROPOUT_HYP,
   DROPOUT_DIM,
   MIN_FIDELITY,
+  NORMALIZATION_FILE,
+  MUS,
+  SIGMAS,
+  NORMALIZATION_INDICES,
   _NB_PARAMETERS // internal use only, do not consider it as a usable parameter
 };
 
@@ -70,13 +74,19 @@ static const vector<string> parameterNames = {
     "HI_KNOT",
     "DROPOUT_HYP",
     "DROPOUT_DIM",
-    "MIN_FIDELITY"};
+    "MIN_FIDELITY",
+    "NORMALIZATION_FILE",
+    "MUS",
+    "SIGMAS",
+    "NORMALIZATION_INDICES"};
 
 class Parameters {
 private:
   map<ParameterCode, int> _intParams;
   map<ParameterCode, float> _floatParams;
   map<ParameterCode, double> _doubleParams;
+  map<ParameterCode, vector<double>> _doubleVectorParams;
+  map<ParameterCode, vector<int>> _intVectorParams;
   map<ParameterCode, string> _stringParams;
   vector<string> _weightFiles; // the only 1 special parameter
 
@@ -87,6 +97,8 @@ private:
   void setFloat(ParameterCode id, float value);
   void setDouble(ParameterCode id, string value);
   void setDouble(ParameterCode id, double value);
+  void setDoubleVector(ParameterCode id, string value);
+  void setIntVector(ParameterCode id, string value);
   void setString(ParameterCode id, string value);
   void setRootDirectory(ParameterCode id);
 
@@ -112,23 +124,34 @@ public:
   void setDefaultInt(ParameterCode id, int value);
   void setDefaultFloat(ParameterCode id, float value);
   void setDefaultDouble(ParameterCode id, double value);
+  void setDefaultDoubleVector(ParameterCode id, string value);
+  void setDefaultIntVector(ParameterCode id, string value);
   void setDefaultString(ParameterCode id, string value);
+
+  // public setter
+  void setIntVector(ParameterCode id, vector<int> value);
 
   // getters
   int getInt(ParameterCode id);
   float getFloat(ParameterCode id);
   double getDouble(ParameterCode id);
+  vector<double> getDoubleVector(ParameterCode id);
+  vector<int> getIntVector(ParameterCode id);
   string getString(ParameterCode id);
   vector<string> getWeightsFiles() const;
 
   map<ParameterCode, int> getAllInts() const { return _intParams; }
   map<ParameterCode, float> getAllFloats() const { return _floatParams; }
   map<ParameterCode, double> getAllDoubles() const { return _doubleParams; }
+  map<ParameterCode, vector<double>> getAllDoubleVectors() const { return _doubleVectorParams; }
+  map<ParameterCode, vector<int>> getAllIntVectors() const { return _intVectorParams; }
   map<ParameterCode, string> getAllStrings() const { return _stringParams; }
 
   bool isIntSet(ParameterCode id);
   bool isFloatSet(ParameterCode id);
   bool isDoubleSet(ParameterCode id);
+  bool isDoubleVectorSet(ParameterCode id);
+  bool isIntVectorSet(ParameterCode id);
   bool isStringSet(ParameterCode id);
 
   // special operations
@@ -139,6 +162,8 @@ public:
   void assertIntExists(ParameterCode id);
   void assertFloatExists(ParameterCode id);
   void assertDoubleExists(ParameterCode id);
+  void assertDoubleVectorExists(ParameterCode id);
+  void assertIntVectorExists(ParameterCode id);
   void assertStringExists(ParameterCode id);
 };
 

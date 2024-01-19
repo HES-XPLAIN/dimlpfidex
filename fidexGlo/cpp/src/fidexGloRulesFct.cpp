@@ -444,6 +444,45 @@ void checkParametersLogicValues(Parameters *p) {
 
   // TODO check for logic values
   p->assertStringExists(RULES_FILE);
+
+  // ----------------------------------------------------------------------
+
+  // Check denormalization parameters
+
+  // If normalizationIndices were not specified, it's all attributes
+  if (!p->isStringSet(NORMALIZATION_FILE) && !p->isIntVectorSet(NORMALIZATION_INDICES)) {
+    vector<int> normalizationIndicesTemp;
+    for (int i = 0; i < p->getInt(NB_ATTRIBUTES); ++i) {
+      normalizationIndicesTemp.push_back(i);
+    }
+    p->setIntVector(NORMALIZATION_INDICES, normalizationIndicesTemp);
+  }
+
+  // Check if mus and sigmas are both given or both not
+  if ((p->isDoubleVectorSet(MUS) || p->isDoubleVectorSet(SIGMAS)) &&
+      !(p->isDoubleVectorSet(MUS) && p->isDoubleVectorSet(SIGMAS))) {
+    throw CommandArgumentException("Error : One of Mus(-u) and sigmas(-g) is given but not the other.");
+  }
+
+  if (p->isStringSet(NORMALIZATION_FILE) && p->isDoubleVectorSet(MUS) || p->isStringSet(NORMALIZATION_FILE) && p->isIntVectorSet(NORMALIZATION_INDICES)) {
+    throw CommandArgumentException("Error : normlization file (-n) and mus or normalizationIndices (-I) are both given.");
+  }
+
+  // Mus, sigmas and normalizationIndices must have the same size and not be empty
+  if (p->isDoubleVectorSet(MUS) && (p->getDoubleVector(MUS).size() != p->getDoubleVector(SIGMAS).size() || p->getDoubleVector(MUS).size() != p->getIntVector(NORMALIZATION_INDICES).size() || p->getDoubleVector(MUS).empty())) {
+    throw CommandArgumentException("Error : mus (-u), sigmas (-g) and normalization indices (-I) don't have the same size or are empty.");
+  }
+
+  // Check normalizationIndices
+  if (p->isIntVectorSet(NORMALIZATION_INDICES)) {
+    vector<int> tempVect = p->getIntVector(NORMALIZATION_INDICES);
+    std::set<int> uniqueIndices(tempVect.begin(), tempVect.end());
+    if (uniqueIndices.size() != p->getIntVector(NORMALIZATION_INDICES).size() ||
+        *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= p->getInt(NB_ATTRIBUTES) ||
+        *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
+      throw CommandArgumentException("Error : parameter normalization indices (-I) has negative, greater than the number of attributes or repeted elements.");
+    }
+  }
 }
 
 /**
@@ -592,6 +631,27 @@ int fidexGloRules(const string &command) {
       if (hasClassNames) {
         classNames = (*trainDatas->getClassNames());
       }
+    }
+
+    vector<int> normalizationIndices;
+    vector<double> mus;
+    vector<double> sigmas;
+    if (params->isIntVectorSet(NORMALIZATION_INDICES)) {
+      normalizationIndices = params->getIntVector(NORMALIZATION_INDICES);
+    }
+    if (params->isDoubleVectorSet(MUS)) {
+      mus = params->getDoubleVector(MUS);
+    }
+    if (params->isDoubleVectorSet(SIGMAS)) {
+      sigmas = params->getDoubleVector(SIGMAS);
+    }
+
+    // Get mus, sigmas and normalizationIndices from normalizationFile for denormalization :
+    if (params->isStringSet(NORMALIZATION_FILE)) {
+      auto results = parseNormalizationStats(params->getString(NORMALIZATION_FILE), params->getInt(NB_ATTRIBUTES), attributeNames);
+      normalizationIndices = std::get<0>(results);
+      mus = std::get<2>(results);
+      sigmas = std::get<3>(results);
     }
 
     cout << "Files imported" << endl
