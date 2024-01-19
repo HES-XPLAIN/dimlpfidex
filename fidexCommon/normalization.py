@@ -355,6 +355,11 @@ def normalization(*args, **kwargs):
     - If no keyword arguments are provided, the function displays the usage instructions, detailing the required and optional parameters.
       This guide assists users in correctly specifying arguments for the function.
 
+    When to use :
+    - It's good to normalize data before training with Dimlp and DimlpBT.
+    - It's not necessary to normalize data before training with convKeras, MLP and SVM because a normalization is done during the process.
+    - It's not necessary to normalize before training with GradientBoosting and RandomForests because decision trees don't need normalization.
+
     Formats:
     - normalization_stats file: Each line contains the mean/median and standard deviation for an attribute.
       Format: '2 : original mean: 0.8307, original std: 0.0425'
