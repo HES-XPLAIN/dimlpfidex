@@ -3,9 +3,13 @@
 
 #include "errorHandler.h"
 #include <algorithm>
+#include <fstream>
 #include <iostream>
+#include <regex>
+#include <set>
 #include <sstream>
 #include <string>
+#include <tuple>
 #include <vector>
 
 bool checkInt(const char *str);
@@ -18,4 +22,5 @@ std::string formattingDoubleToString(double number);
 std::vector<std::string> splitString(const std::string &str, const std::string &delimiter);
 std::vector<int> getIntVectorFromString(const std::string &str);
 std::vector<double> getDoubleVectorFromString(const std::string &str);
+std::tuple<std::vector<int>, bool, std::vector<double>, std::vector<double>> parseNormalizationStats(const std::string &normalizationFile, int nbAttributes, const std::vector<std::string> &attributes = std::vector<std::string>());
 #endif
