@@ -130,6 +130,7 @@ public:
 
   // public setter
   void setIntVector(ParameterCode id, vector<int> value);
+  void setDoubleVector(ParameterCode id, vector<double> value);
 
   // getters
   int getInt(ParameterCode id);

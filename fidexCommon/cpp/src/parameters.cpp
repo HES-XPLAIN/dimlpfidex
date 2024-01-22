@@ -235,6 +235,10 @@ void Parameters::setDoubleVector(ParameterCode id, string value) {
   _doubleVectorParams[id] = getDoubleVectorFromString(value);
 }
 
+void Parameters::setDoubleVector(ParameterCode id, vector<double> value) {
+  _doubleVectorParams[id] = value;
+}
+
 void Parameters::setIntVector(ParameterCode id, string value) {
   if (isIntVectorSet(id)) {
     throwAlreadySetArgumentException(id, value);

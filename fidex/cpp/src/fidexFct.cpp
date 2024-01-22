@@ -31,7 +31,7 @@ void showFidexParams() {
   std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
   std::cout << "-y <decrement by 1 the min covering number each time the minimal covering size is not reached (False by default)>" << std::endl;
   std::cout << "-m <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
-  std::cout << "-M <minimum Fidelity to obtain when computing a rule (1 by default)>" << std::endl;
+  std::cout << "-M <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>" << std::endl;
   std::cout << "-d <dimension dropout parameter (None by default)>" << std::endl;
   std::cout << "-h <hyperplan dropout parameter (None by default)>" << std::endl;
   std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;

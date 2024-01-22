@@ -17,7 +17,19 @@ shared_ptr<Hyperbox> Hyperspace::getHyperbox() const {
 }
 
 // MODIFIED WITH NEW STRUCTURE
-Rule Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence) {
+Rule Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, const vector<double> *mus, const vector<double> *sigmas, const vector<int> *normalization_indices) {
+
+  bool denormalizing = false;
+  // Check if we need to denormalize
+  if (mus && sigmas && normalization_indices) {
+    denormalizing = true;
+    if (!(mus->size() == sigmas->size() && mus->size() == normalization_indices->size())) {
+      throw InternalError("Error during rule extraction : Means, standard deviations, and normalization indices must have the same number of elements.");
+    }
+  } else if (mus || sigmas || normalization_indices) {
+    throw InternalError("Error during rule extraction : Means, standard deviations, and normalization indices must either all be specified or none at all.");
+  }
+
   double hypValue;
   int attribut;
   bool inequalityBool;
@@ -34,6 +46,22 @@ Rule Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
     } else {
       inequalityBool = false;
     }
+
+    // Denormalization of values in case it was previously normalized
+    if (denormalizing) {
+      // Check if the attribute needs to be denormalized
+      int index = -1;
+      for (size_t i = 0; i < normalization_indices->size(); ++i) {
+        if ((*normalization_indices)[i] == attribut) {
+          index = static_cast<int>(i);
+          break;
+        }
+      }
+      if (index != -1) {
+        hypValue = hypValue * (*sigmas)[index] + (*mus)[index];
+      }
+    }
+
     antecedants.push_back(Antecedant(attribut, inequalityBool, hypValue));
   }
   return Rule(antecedants, hyperbox->getCoveredSamples(), mainSamplePred, hyperbox->getFidelity(), ruleAccuracy, ruleConfidence);
