@@ -39,7 +39,7 @@ void showRulesParams() {
   cout << "-g <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << endl;
   cout << "-I <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_stats is given)>" << endl;
   cout << "-p <number of threads used for computing the algorithm (default=1, this means by default its a sequential execution)>" << endl;
-  cout << "-y <minimal rule fidelity accepted when generating a rule [0,1] (default=1)>" << endl;
+  cout << "-y <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>" << endl;
   cout << "-z <seed (0=random, default)>";
 
   cout << "\n-------------------------------------------------\n"
@@ -636,15 +636,6 @@ int fidexGloRules(const string &command) {
     vector<int> normalizationIndices;
     vector<double> mus;
     vector<double> sigmas;
-    if (params->isIntVectorSet(NORMALIZATION_INDICES)) {
-      normalizationIndices = params->getIntVector(NORMALIZATION_INDICES);
-    }
-    if (params->isDoubleVectorSet(MUS)) {
-      mus = params->getDoubleVector(MUS);
-    }
-    if (params->isDoubleVectorSet(SIGMAS)) {
-      sigmas = params->getDoubleVector(SIGMAS);
-    }
 
     // Get mus, sigmas and normalizationIndices from normalizationFile for denormalization :
     if (params->isStringSet(NORMALIZATION_FILE)) {
@@ -652,6 +643,9 @@ int fidexGloRules(const string &command) {
       normalizationIndices = std::get<0>(results);
       mus = std::get<2>(results);
       sigmas = std::get<3>(results);
+      params->setIntVector(NORMALIZATION_INDICES, normalizationIndices);
+      params->setDoubleVector(MUS, mus);
+      params->setDoubleVector(SIGMAS, sigmas);
     }
 
     cout << "Files imported" << endl
