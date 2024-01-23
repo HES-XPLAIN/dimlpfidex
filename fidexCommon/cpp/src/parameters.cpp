@@ -7,143 +7,151 @@
  */
 Parameters::Parameters(vector<string> args) {
   for (int p = 1; p < args.size(); p++) {
-    if (args[p][0] == '-') {
+    string param = args[p];
+
+    if (param.substr(0, 2) == "--") {
+      param = param.substr(2);
       p++;
 
       if (p >= args.size()) {
         throw CommandArgumentException("Missing something at the end of the command.");
       }
+      const char *arg = args[p].c_str();
 
-      char option = args[p - 1][1];
-      const char *arg = &(args[p])[0];
-      const char *lastArg = &(args[p - 1])[0];
+      ParameterCode option;
+      auto it = parameterNames.find(param);
+      if (it != parameterNames.end()) {
+        option = it->second;
+      } else {
+        option = INVALID;
+      }
 
-      switch (option) { // Get letter after the -
+      switch (option) { // After --
 
-      case 'T':
+      case TRAIN_DATA_FILE:
         setString(TRAIN_DATA_FILE, arg); // Parameter after -T
         break;
 
-      case 'P':
-        setString(TRAIN_DATA_PRED_FILE, arg);
+      case TRAIN_PRED_FILE:
+        setString(TRAIN_PRED_FILE, arg);
         break;
 
-      case 'a':
+      case NB_ATTRIBUTES:
         setInt(NB_ATTRIBUTES, arg);
         break;
 
-      case 'b':
+      case NB_CLASSES:
         setInt(NB_CLASSES, arg);
         break;
 
-      case 'C':
-        setString(TRAIN_DATA_TRUE_CLASS_FILE, arg);
+      case TRAIN_CLASS_FILE:
+        setString(TRAIN_CLASS_FILE, arg);
         break;
 
-      case 'W':
+      case WEIGHTS_FILE:
         setString(WEIGHTS_FILE, arg);
         break;
 
-      case 'f':
-        setString(INPUT_RULES_FILE, arg);
-        break;
-
-      case 'N':
-        setInt(NB_DIMLP_NETS, arg);
-        break;
-
-      case 'Q':
-        setInt(NB_QUANT_LEVELS, arg);
-        break;
-
-      case 'O':
+      case RULES_FILE:
         setString(RULES_FILE, arg);
         break;
 
-      case 'r':
+      case NB_DIMLP_NETS:
+        setInt(NB_DIMLP_NETS, arg);
+        break;
+
+      case NB_QUANT_LEVELS:
+        setInt(NB_QUANT_LEVELS, arg);
+        break;
+
+      case RULES_OUTFILE:
+        setString(RULES_OUTFILE, arg);
+        break;
+
+      case CONSOLE_FILE:
         setString(CONSOLE_FILE, arg);
         break;
 
-      case 'A':
+      case ATTRIBUTES_FILE:
         setString(ATTRIBUTES_FILE, arg);
         break;
 
-      case 'S':
+      case ROOT_FOLDER:
         setString(ROOT_FOLDER, arg);
         break;
 
-      case 'M':
+      case HEURISTIC:
         setInt(HEURISTIC, arg);
         break;
 
-      case 'i':
+      case MAX_ITERATIONS:
         setInt(MAX_ITERATIONS, arg);
         break;
 
-      case 'v':
+      case MIN_COVERING:
         setInt(MIN_COVERING, arg);
         break;
 
-      case 'p':
-        setInt(NB_THREADS_USED, arg);
+      case NB_THREADS:
+        setInt(NB_THREADS, arg);
         break;
 
-      case 'y':
+      case MIN_FIDELITY:
         setFloat(MIN_FIDELITY, arg);
         break;
 
-      case 'd':
+      case DROPOUT_DIM:
         setFloat(DROPOUT_DIM, arg);
         break;
 
-      case 'h':
+      case DROPOUT_HYP:
         setFloat(DROPOUT_HYP, arg);
         break;
 
-      case 'm':
+      case MAX_FAILED_ATTEMPTS:
         setInt(MAX_FAILED_ATTEMPTS, arg);
         break;
 
-      case 't':
+      case DECISION_THRESHOLD:
         setFloat(DECISION_THRESHOLD, arg);
         break;
 
-      case 'x':
-        setInt(INDEX_POSITIVE_CLASS, arg);
+      case POSITIVE_CLASS_INDEX:
+        setInt(POSITIVE_CLASS_INDEX, arg);
         break;
 
-      case 'n':
+      case NORMALIZATION_FILE:
         setString(NORMALIZATION_FILE, arg);
         break;
 
-      case 'u':
+      case MUS:
         setDoubleVector(MUS, arg);
         break;
 
-      case 'g':
+      case SIGMAS:
         setDoubleVector(SIGMAS, arg);
         break;
 
-      case 'I':
+      case NORMALIZATION_INDICES:
         setIntVector(NORMALIZATION_INDICES, arg);
         break;
 
-      case 'z':
+      case SEED:
         setInt(SEED, arg);
         break;
 
       default: // If we put another -X option
-        throw CommandArgumentException("Illegal option : " + string(lastArg));
+        throw CommandArgumentException("Illegal option : " + param);
       }
     }
   }
 
   // updating paths of files
   setRootDirectory(TRAIN_DATA_FILE);
-  setRootDirectory(TRAIN_DATA_PRED_FILE);
-  setRootDirectory(TRAIN_DATA_TRUE_CLASS_FILE);
-  setRootDirectory(INPUT_RULES_FILE);
+  setRootDirectory(TRAIN_PRED_FILE);
+  setRootDirectory(TRAIN_CLASS_FILE);
   setRootDirectory(RULES_FILE);
+  setRootDirectory(RULES_OUTFILE);
   setRootDirectory(CONSOLE_FILE);
   setRootDirectory(ROOT_FOLDER);
   setRootDirectory(ATTRIBUTES_FILE);
@@ -230,7 +238,7 @@ void Parameters::setDoubleVector(ParameterCode id, string value) {
   }
 
   if (!checkList(value)) {
-    throw CommandArgumentException("Error : invalide type for parameter " + parameterNames[id] + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + value + ".");
+    throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(id) + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + value + ".");
   }
   _doubleVectorParams[id] = getDoubleVectorFromString(value);
 }
@@ -245,7 +253,7 @@ void Parameters::setIntVector(ParameterCode id, string value) {
   }
 
   if (!checkList(value)) {
-    throw CommandArgumentException("Error : invalide type for parameter " + parameterNames[id] + ", list in the form [a,b,...,c] without spaces requested, a,b,c are integers. Received " + value + ".");
+    throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(id) + ", list in the form [a,b,...,c] without spaces requested, a,b,c are integers. Received " + value + ".");
   }
   _intVectorParams[id] = getIntVectorFromString(value);
 }
@@ -337,6 +345,15 @@ vector<int> Parameters::getIntVector(ParameterCode id) {
 string Parameters::getString(ParameterCode id) {
   assertStringExists(id);
   return _stringParams[id];
+}
+
+std::string Parameters::getParameterName(ParameterCode id) const {
+  for (const auto &pair : parameterNames) {
+    if (pair.second == id) {
+      return pair.first;
+    }
+  }
+  return "unknown";
 }
 
 bool Parameters::isIntSet(ParameterCode id) {
