@@ -10,9 +10,9 @@
 # OUT_DIR="${DATA_DIR}out/"
 
 EXE="bin/fidexGloRules"
-BASE_DIR="$HOME/Documents/hepia/"
+BASE_DIR="$HOME/Documents/hepia/dimlpfidex-json"
 CURRENT_VERSION_DIR="$BASE_DIR/dimlpfidex/"
-TESTS_DIR="${CURRENT_VERSION_DIR}fidexGlo/tests/"
+TESTS_DIR="${CURRENT_VERSION_DIR}fidexGlo/cpp/tests/"
 MAIN_VERSION_DIR="${BASE_DIR}dimlpfidex-main/dimlpfidex/"
 DATA_DIR="data/obesity/"
 OUT_DIR="out/"
@@ -175,7 +175,6 @@ test_train_data_file()
     -P "${train_pred_file}" \
     -C "${train_true_classes}" \
     -W "${weigths_file}" \
-    -f "${input_rules_file}" \
     -O "${output_rules_file}" \
     -M "${heuristic}" \
     -a "${nb_attributes}" \
@@ -191,7 +190,6 @@ test_train_data_file()
     -P "${train_pred_file}" \
     -C "${train_true_classes}" \
     -W "${weigths_file}" \
-    -f "${input_rules_file}" \
     -O "${output_rules_file}" \
     -M "${heuristic}" \
     -a "${nb_attributes}" \
@@ -209,7 +207,6 @@ test_train_predictions_file()
     -T "${train_data_file}" \
     -C "${train_true_classes}" \
     -W "${weigths_file}" \
-    -f "${input_rules_file}" \
     -O "${output_rules_file}" \
     -M "${heuristic}" \
     -a "${nb_attributes}" \
@@ -225,7 +222,6 @@ test_train_predictions_file()
     -P "123" \
     -C "${train_true_classes}" \
     -W "${weigths_file}" \
-    -f "${input_rules_file}" \
     -O "${output_rules_file}" \
     -M "${heuristic}" \
     -a "${nb_attributes}" \
@@ -243,7 +239,6 @@ test_true_classes_file()
     -T "${train_data_file}" \
     -P "${train_pred_file}" \
     -W "${weigths_file}" \
-    -f "${input_rules_file}" \
     -O "${output_rules_file}" \
     -M "${heuristic}" \
     -a "${nb_attributes}" \
@@ -259,7 +254,6 @@ test_true_classes_file()
     -P "${train_pred_file}" \
     -C "123" \
     -W "${weigths_file}" \
-    -f "${input_rules_file}" \
     -O "${output_rules_file}" \
     -M "${heuristic}" \
     -a "${nb_attributes}" \
@@ -277,7 +271,6 @@ test_weights_file()
     -T "${train_data_file}" \
     -P "${train_pred_file}" \
     -C "${train_true_classes}" \
-    -f "${input_rules_file}" \
     -O "${output_rules_file}" \
     -M "${heuristic}" \
     -a "${nb_attributes}" \
@@ -293,7 +286,6 @@ test_weights_file()
     -P "${train_pred_file}" \
     -C "${train_true_classes}" \
     -W "123" \
-    -f "${input_rules_file}" \
     -O "${output_rules_file}" \
     -M "${heuristic}" \
     -a "${nb_attributes}" \
@@ -393,7 +385,6 @@ test_classes_nb_arg()
     -P "${train_pred_file}" \
     -C "${train_true_classes}" \
     -W "${weigths_file}" \
-    -f "${input_rules_file}" \
     -O "${output_rules_file}" \
     -M "${heuristic}" \
     -a "${nb_attributes}" \
@@ -408,7 +399,6 @@ test_classes_nb_arg()
     -P "${train_pred_file}" \
     -C "${train_true_classes}" \
     -W "${weigths_file}" \
-    -f "${input_rules_file}" \
     -O "${output_rules_file}" \
     -M "${heuristic}" \
     -a "${nb_attributes}" \
@@ -450,7 +440,6 @@ test_heuristics()
         -P "${train_pred_file}" \
         -C "${train_true_classes}" \
         -W "${weigths_file}" \
-        -f "${input_rules_file}" \
         -O "${output_rules_file}" \
         -A "${attributes_file}" \
         -M "${heuristic_val}" \
@@ -482,7 +471,6 @@ test_dropouts()
             -P "${train_pred_file}" \
             -C "${train_true_classes}" \
             -W "${weigths_file}" \
-            -f "${input_rules_file}" \
             -O "${output_rules_file}" \
             -A "${attributes_file}" \
             -M "${heuristic}" \
@@ -508,7 +496,6 @@ test_random_seed()
     -P "${train_pred_file}" \
     -C "${train_true_classes}" \
     -W "${weigths_file}" \
-    -f "${input_rules_file}" \
     -O "${output_rules_file}" \
     -M "${heuristic}" \
     -a "${nb_attributes}" \
@@ -526,7 +513,6 @@ test_random_seed()
     -P "${train_pred_file}" \
     -C "${train_true_classes}" \
     -W "${weigths_file}" \
-    -f "${input_rules_file}" \
     -O "${output_rules_file}" \
     -M "${heuristic}" \
     -a "${nb_attributes}" \
@@ -548,7 +534,6 @@ test_nb_threads()
         -P "${train_pred_file}" \
         -C "${train_true_classes}" \
         -W "${weigths_file}" \
-        -f "${input_rules_file}" \
         -O "${output_rules_file}" \
         -A "${attributes_file}" \
         -M "${heuristic}" \

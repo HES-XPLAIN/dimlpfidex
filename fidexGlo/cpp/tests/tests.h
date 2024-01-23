@@ -32,6 +32,7 @@
 // -------------------------------------------------
 
 #include "../src/fidexGloRulesFct.h"
+#include <map>
 
 // define default values to avoid litterals redundancy
 #define PROGRAM_NAME "fidexGloRules"
@@ -63,50 +64,71 @@
 #define MAX_FAILED_ATTEMPTS "10"
 #define NB_STAIRS_STAIRCASE_FN "50"
 #define DECISION_THRESHOLD "-1.0"
-#define IDX_POSITIVE_CLASS "-1.0"
+#define IDX_POSITIVE_CLASS "-1"
 #define NB_THREADS "4"
 #define MIN_FIDELITY "1.0"
 #define SEED "0"
 
+// printing utils
+#define RED "\033[1;31m"
+#define GREEN "\033[1;32m"
+#define RESET "\033[0m"
+
 using namespace std;
 
-string formatArg(string flag, string value) {
-  return flag + " " + value + " ";
-}
-
-string getArgs(const vector<string> &v) {
+string argsToString(const map<string, string> &args) {
   stringstream ss;
-  for (string e : v) {
-    ss << e << " ";
+  for (const auto &kv : args) {
+    ss << kv.first << " " << kv.second << " ";
   }
 
   return ss.str();
 }
 
-const vector<string> defaultArgs{
-    formatArg("-T", TRAIN_FILE),
-    formatArg("-P", TRAIN_PRED_FILE),
-    formatArg("-C", TRAIN_TRUE_CLASS_FILE),
-    formatArg("-W", WEIGHTS_FILE),
-    // formatArg("-f", TXT_IN_RULES_FILE), // TODO
-    formatArg("-O", TXT_OUT_RULES_FILE),
-    formatArg("-M", HEURISTIC),
-    formatArg("-a", NB_ATTRIBUTES),
-    formatArg("-b", NB_CLASSES),
-    // formatArg("-S", DATA_FOLDER), // TODO
-    formatArg("-N", NB_BAGGING_NETS),
-    formatArg("-A", ATTRIBUTES_FILE),
-    formatArg("-r", CONSOLE_FILE),
-    formatArg("-i", MAX_ITERATIONS),
-    formatArg("-v", MIN_COVERING),
-    formatArg("-d", DROPOUT_DIM),
-    formatArg("-h", DROPOUT_HYP),
-    formatArg("-m", MAX_FAILED_ATTEMPTS),
-    formatArg("-Q", NB_STAIRS_STAIRCASE_FN),
-    formatArg("-t", DECISION_THRESHOLD),
-    formatArg("-x", IDX_POSITIVE_CLASS),
-    formatArg("-p", NB_THREADS),
-    formatArg("-y", MIN_FIDELITY),
-    formatArg("-z", SEED)};
+map<string, string> remove(const map<string, string> &args, vector<string> toRemove) {
+  map<string, string> result = args;
+
+  for (string item : toRemove) {
+    result.erase(item);
+  }
+
+  return result;
+}
+
+void testAssert(string testName, bool condition) {
+  if (condition) {
+    cout << GREEN << "[" << testName << "] "
+         << "passed" << RESET << endl;
+  } else {
+    cout << RED << "[" << testName << "] "
+         << "failed" << RESET << endl;
+  }
+}
+
+const map<string, string> DEFAULT_ARGS{
+    {"-T", TRAIN_FILE},
+    {"-P", TRAIN_PRED_FILE},
+    {"-C", TRAIN_TRUE_CLASS_FILE},
+    {"-W", WEIGHTS_FILE},
+    // {"-f", TXT_IN_RULES_FILE}, // TODO
+    {"-O", TXT_OUT_RULES_FILE},
+    {"-M", HEURISTIC},
+    {"-a", NB_ATTRIBUTES},
+    {"-b", NB_CLASSES},
+    // {"-S", DATA_FOLDER}, // TODO
+    {"-N", NB_BAGGING_NETS},
+    {"-A", ATTRIBUTES_FILE},
+    {"-r", CONSOLE_FILE},
+    {"-i", MAX_ITERATIONS},
+    {"-v", MIN_COVERING},
+    {"-d", DROPOUT_DIM},
+    {"-h", DROPOUT_HYP},
+    {"-m", MAX_FAILED_ATTEMPTS},
+    {"-Q", NB_STAIRS_STAIRCASE_FN},
+    {"-t", DECISION_THRESHOLD},
+    {"-x", IDX_POSITIVE_CLASS},
+    {"-p", NB_THREADS},
+    {"-y", MIN_FIDELITY},
+    {"-z", SEED}};
 
 #endif // TESTS_H

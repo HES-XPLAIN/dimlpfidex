@@ -68,7 +68,6 @@ static const vector<string> parameterNames = {
     "NB_THREADS_USED",
     "INDEX_POSITIVE_CLASS",
     "SEED",
-    "HEURISITC_INIT",
     "DECISION_THRESHOLD",
     "HI_KNOT",
     "DROPOUT_HYP",
@@ -93,15 +92,15 @@ private:
   void setString(ParameterCode id, string value);
   void setRootDirectory(ParameterCode id);
 
-  void throwInvalidDataTypeException(ParameterCode id, string wrongValue, string typeName) {
+  void throwInvalidDataTypeException(ParameterCode id, string const &wrongValue, string const &typeName) const {
     throw CommandArgumentException("Parsing error: argument (ID " + parameterNames[id] + ") with value \"" + wrongValue + "\" is not a valid " + typeName + ".");
   }
 
-  void throwAlreadySetArgumentException(ParameterCode id, string value) {
+  void throwAlreadySetArgumentException(ParameterCode id, string const &value) const {
     throw CommandArgumentException("Parsing error: argument (ID " + parameterNames[id] + ") with value \"" + value + "\" is already set, cannot override it.");
   }
 
-  void throwArgumentNotFoundException(ParameterCode id) {
+  void throwArgumentNotFoundException(ParameterCode id) const {
     throw CommandArgumentException("Parameters error: argument (ID " + parameterNames[id] + ") requested was not found, try to rerun including it.");
   }
 
