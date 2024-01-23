@@ -9,7 +9,7 @@ void showStatsParams() {
   std::cout << "Obligatory parameters : \n"
             << std::endl;
   std::cout << "fidexGloStats --test_data_file <test data file> --test_pred_file <test prediction file> --test_class_file <test true class file, not mendatory if classes are specified in test data file> ";
-  std::cout << "--rules_file <rules input file> ";
+  std::cout << "--global_rules_file <rules input file> ";
   std::cout << "--nb_attributes <number of attributes>";
   std::cout << "--nb_classes <number of classes>";
   std::cout << "<Options>\n"
@@ -20,7 +20,7 @@ void showStatsParams() {
   std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   std::cout << "--attributes_file <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it" << std::endl;
   std::cout << "--stats_file <stats output file>" << std::endl;
-  std::cout << "--rules_outfile <global rules output file with stats on test set> If you want to compute statistics of global rules on tests set" << std::endl;
+  std::cout << "--global_rules_outfile <global rules output file with stats on test set> If you want to compute statistics of global rules on tests set" << std::endl;
   std::cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
   std::cout << "--decision_threshold <decision threshold for predictions, use if it was used in FidexGlo, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
   std::cout << "--positive_class_index <index of positive class sample to compute true/false positive/negative rates (None by default, put 0 for first class)>" << std::endl; // If we want to compute TP, FP, TN, FN
@@ -69,41 +69,41 @@ void computeTFPN(int decision, int indexPositiveClass, int testTrueClass, int &n
   }
 }
 
-enum ParameterEnum {
+enum ParameterFidexGloStatsEnum {
   TEST_DATA_FILE,
   TEST_PRED_FILE,
   TEST_CLASS_FILE,
-  RULES_FILE,
+  GLOBAL_RULES_FILE,
   NB_ATTRIBUTES,
   NB_CLASSES,
   ROOT_FOLDER,
   ATTRIBUTES_FILE,
   STATS_FILE,
-  RULES_OUTFILE,
+  GLOBAL_RULES_OUTFILE,
   CONSOLE_FILE,
   DECISION_THRESHOLD,
   POSITIVE_CLASS_INDEX,
   INVALID
 };
 
-const std::unordered_map<std::string, ParameterEnum> parameterMap = {
+const std::unordered_map<std::string, ParameterFidexGloStatsEnum> parameterMap = {
     {"test_data_file", TEST_DATA_FILE},
     {"test_pred_file", TEST_PRED_FILE},
     {"test_class_file", TEST_CLASS_FILE},
-    {"rules_file", RULES_FILE},
+    {"global_rules_file", GLOBAL_RULES_FILE},
     {"nb_attributes", NB_ATTRIBUTES},
     {"nb_classes", NB_CLASSES},
     {"root_folder", ROOT_FOLDER},
     {"attributes_file", ATTRIBUTES_FILE},
     {"stats_file", STATS_FILE},
-    {"rules_outfile", RULES_OUTFILE},
+    {"global_rules_outfile", GLOBAL_RULES_OUTFILE},
     {"console_file", CONSOLE_FILE},
     {"decision_threshold", DECISION_THRESHOLD},
     {"positive_class_index", POSITIVE_CLASS_INDEX},
 };
 
 // Function to get parameter name from identifier
-std::string getParameterName(ParameterEnum id) {
+std::string getParameterName(ParameterFidexGloStatsEnum id) {
   for (const auto &pair : parameterMap) {
     if (pair.second == id) {
       return pair.first;
@@ -185,7 +185,7 @@ int fidexGloStats(const string &command) {
         }
         const char *arg = commandList[p].c_str();
 
-        ParameterEnum par;
+        ParameterFidexGloStatsEnum par;
         auto it = parameterMap.find(param);
         if (it != parameterMap.end()) {
           par = it->second;
@@ -209,7 +209,7 @@ int fidexGloStats(const string &command) {
           testDataFileTrueClassInit = true;
           break;
 
-        case RULES_FILE:
+        case GLOBAL_RULES_FILE:
           rulesFileTemp = arg;
           rulesFileInit = true;
           break;
@@ -235,7 +235,7 @@ int fidexGloStats(const string &command) {
           statsFileInit = true;
           break;
 
-        case RULES_OUTFILE:
+        case GLOBAL_RULES_OUTFILE:
           globalRulesStatsFileTemp = arg;
           globalRulesStatsFileInit = true;
           break;
@@ -274,7 +274,7 @@ int fidexGloStats(const string &command) {
           break;
 
         default:
-          throw CommandArgumentException("Illegal option : " + param);
+          throw CommandArgumentException("Illegal option : " + param + ".");
         }
       }
 
@@ -686,11 +686,11 @@ int fidexGloStats(const string &command) {
 
 /* Exemples pour lancer le code :
 
-./fidexGloStats --test_data datanorm --test_pred dimlp.out --test_class dataclass2 --rules_file globalRules.txt --nb_attributes 16 --nb_classes2 --stats_file stats.txt --root_folder ../fidexGlo/datafiles
-./fidexGloStats --test_data datanormTest --test_pred dimlpDatanormTest.out --test_class dataclass2Test --rules_file globalRulesDatanorm.txt --nb_attributes 16 --nb_classes 2 --stats_file stats.txt --root_folder ../fidexGlo/datafiles
-./fidexGloStats --test_data covidTestData.txt --test_pred covidTestPred.out --test_class covidTestClass.txt --rules_file globalRulesCovid.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/covidDataset
-./fidexGloStats --test_data spamTestData.txt --test_pred spamTestPred.out --test_class spamTestClass.txt --rules_file globalRulesSpam.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/spamDataset
-./fidexGloStats --test_data isoletTestData.txt --test_pred isoletTestPred.out --test_class isoletTestClass.txt --rules_file globalRulesIsolet.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/isoletDataset
-./fidexGloStats --test_data Test/X_test.txt --test_pred Test/pred_testV2.out --test_class Test/y_test.txt --rules_file globalRulesHAPTV2.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStatsV2.txt --root_folder ../dimlp/datafiles/HAPTDataset
+./fidexGloStats --test_data_file datanorm --test_pred_file dimlp.out --test_class_file dataclass2 --rules_file globalRules.txt --nb_attributes 16 --nb_classes2 --stats_file stats.txt --root_folder ../fidexGlo/datafiles
+./fidexGloStats --test_data_file datanormTest --test_pred_file dimlpDatanormTest.out --test_class_file dataclass2Test --rules_file globalRulesDatanorm.txt --nb_attributes 16 --nb_classes 2 --stats_file stats.txt --root_folder ../fidexGlo/datafiles
+./fidexGloStats --test_data_file covidTestData.txt --test_pred_file covidTestPred.out --test_class_file covidTestClass.txt --rules_file globalRulesCovid.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/covidDataset
+./fidexGloStats --test_data_file spamTestData.txt --test_pred_file spamTestPred.out --test_class_file spamTestClass.txt --rules_file globalRulesSpam.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/spamDataset
+./fidexGloStats --test_data_file isoletTestData.txt --test_pred_file isoletTestPred.out --test_class_file isoletTestClass.txt --rules_file globalRulesIsolet.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/isoletDataset
+./fidexGloStats --test_data_file Test/X_test.txt --test_pred_file Test/pred_testV2.out --test_class_file Test/y_test.txt --rules_file globalRulesHAPTV2.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStatsV2.txt --root_folder ../dimlp/datafiles/HAPTDataset
 
 */

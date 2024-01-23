@@ -9,44 +9,44 @@ void showParams() {
   std::cout << "Obligatory parameters : \n"
             << std::endl;
 
-  std::cout << "fidexGlo -S <test sample(s) data file with data and prediction(if no -p), classes may been added here if launching with fidex(-w)> ";
-  std::cout << "-R <ruleset input file> ";
-  std::cout << "-a <number of attributes>";
-  std::cout << "-b <number of classes>";
+  std::cout << "fidexGlo --test_data_file <test sample(s) data file with data and prediction(if no --test_pred_file), classes may been added here if launching with fidex(--with_fidex)> ";
+  std::cout << "--global_rules_file <ruleset input file> ";
+  std::cout << "--nb_attributes <number of attributes>";
+  std::cout << "--nb_classes <number of classes>";
   std::cout << "<Options>\n"
             << std::endl;
 
   std::cout << "Options are: \n"
             << std::endl;
-  std::cout << "-F <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  std::cout << "-A <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it" << std::endl;
-  std::cout << "-p <test prediction file> if given, -S needs to have only test datas" << std::endl;
-  std::cout << "-O <Explanation(s) output file>" << std::endl;
-  std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
-  std::cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
-  std::cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
-  std::cout << "-w <with Fidex if not rule is given (False by default)>" << std::endl;
-  std::cout << "-M <minimal version, only correct activated rules, launch Fidex when no such rule is found(if with fidex) (False by default)>" << std::endl
+  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  std::cout << "--attributes_file <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it" << std::endl;
+  std::cout << "--test_pred_file <test prediction file> if given, --test_data_file needs to have only test datas" << std::endl;
+  std::cout << "--explanation_file <Explanation(s) output file>" << std::endl;
+  std::cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  std::cout << "--decision_threshold <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
+  std::cout << "--positive_class_index <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
+  std::cout << "--with_fidex <with Fidex if not rule is given (False by default)>" << std::endl;
+  std::cout << "--with_minimal_version <minimal version, only correct activated rules, launch Fidex when no such rule is found(if with fidex) (False by default)>" << std::endl
             << std::endl;
   std::cout << "If using fidex :" << std::endl;
   std::cout << "Obligatory :" << std::endl;
-  std::cout << "-T <train data file>" << std::endl;
-  std::cout << "-P <train prediction file>" << std::endl;
-  std::cout << "-C <train true class file, not mendatory if classes are specified in train data file>" << std::endl;
-  std::cout << "-c <test true class file, not mendatory if classes are specified in test data file>" << std::endl;
-  std::cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> [Not mendatory if a rules file is given with -f] " << std::endl;
-  std::cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] " << std::endl;
+  std::cout << "--train_data_file <train data file>" << std::endl;
+  std::cout << "--train_pred_file <train prediction file>" << std::endl;
+  std::cout << "--train_class_file <train true class file, not mendatory if classes are specified in train data file>" << std::endl;
+  std::cout << "--test_class_file <test true class file, not mendatory if classes are specified in test data file>" << std::endl;
+  std::cout << "--weights_file <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file] " << std::endl;
+  std::cout << "--rules_file <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] " << std::endl;
   std::cout << "Options :" << std::endl;
-  std::cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
-  std::cout << "-i <max iteration number (100 by default)>" << std::endl;
-  std::cout << "-v <minimum covering number (2 by default)>" << std::endl;
-  std::cout << "-y <decrement by 1 the min covering number each time the minimal covering size is not reached (False by default)>" << std::endl;
-  std::cout << "-m <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
-  std::cout << "-q <minimum Fidelity to obtain when computing a rule (1 by default)>" << std::endl;
-  std::cout << "-d <dimension dropout parameter (None by default)>" << std::endl;
-  std::cout << "-h <hyperplan dropout parameter (None by default)>" << std::endl;
-  std::cout << "-Q <number of stairs in staircase activation function (50 by default)>" << std::endl;
-  std::cout << "-z <seed (0=random, default)>";
+  std::cout << "--nb_dimlp_nets <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
+  std::cout << "--max_itertions <max iteration number (100 by default)>" << std::endl;
+  std::cout << "--min_covering <minimum covering number (2 by default)>" << std::endl;
+  std::cout << "--covering_strategy <decrement by 1 the min covering number each time the minimal covering size is not reached (False by default)>" << std::endl;
+  std::cout << "--max_failed_attempts <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
+  std::cout << "--min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>" << std::endl;
+  std::cout << "--dropout_dim <dimension dropout parameter (None by default)>" << std::endl;
+  std::cout << "--dropout_hyp <hyperplan dropout parameter (None by default)>" << std::endl;
+  std::cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
+  std::cout << "--seed <seed (0=random, default)>";
 
   std::cout << "\n-------------------------------------------------\n"
             << std::endl;
@@ -91,6 +91,80 @@ void outputDataSample(const std::string &outFile, const std::vector<double> &dat
   } else {
     throw CannotOpenFileError("Error : Couldn't open dataSample file " + std::string(outFile) + ".");
   }
+}
+
+enum ParameterFidexGloEnum {
+  TEST_DATA_FILE,
+  GLOBAL_RULES_FILE,
+  NB_ATTRIBUTES,
+  NB_CLASSES,
+  ROOT_FOLDER,
+  ATTRIBUTES_FILE,
+  TEST_PRED_FILE,
+  EXPLANATION_FILE,
+  CONSOLE_FILE,
+  DECISION_THRESHOLD,
+  POSITIVE_CLASS_INDEX,
+  WITH_FIDEX,
+  WITH_MINIMAL_VERSION,
+  TRAIN_DATA_FILE,
+  TRAIN_PRED_FILE,
+  TRAIN_CLASS_FILE,
+  TEST_CLASS_FILE,
+  WEIGHTS_FILE,
+  RULES_FILE,
+  NB_DIMLP_NETS,
+  MAX_ITERATIONS,
+  MIN_COVERING,
+  COVERING_STRATEGY,
+  MAX_FAILED_ATTEMPTS,
+  MIN_FIDELITY,
+  DROPOUT_DIM,
+  DROPOUT_HYP,
+  NB_QUANT_LEVELS,
+  SEED,
+  INVALID
+};
+
+const std::unordered_map<std::string, ParameterFidexGloEnum> parameterMap = {
+    {"test_data_file", TEST_DATA_FILE},
+    {"global_rules_file", GLOBAL_RULES_FILE},
+    {"nb_attributes", NB_ATTRIBUTES},
+    {"nb_classes", NB_CLASSES},
+    {"root_folder", ROOT_FOLDER},
+    {"attributes_file", ATTRIBUTES_FILE},
+    {"test_pred_file", TEST_PRED_FILE},
+    {"explanation_file", EXPLANATION_FILE},
+    {"console_file", CONSOLE_FILE},
+    {"decision_threshold", DECISION_THRESHOLD},
+    {"positive_class_index", POSITIVE_CLASS_INDEX},
+    {"with_fidex", WITH_FIDEX},
+    {"with_minimal_version", WITH_MINIMAL_VERSION},
+    {"train_data_file", TRAIN_DATA_FILE},
+    {"train_pred_file", TRAIN_PRED_FILE},
+    {"train_class_file", TRAIN_CLASS_FILE},
+    {"test_class_file", TEST_CLASS_FILE},
+    {"weights_file", WEIGHTS_FILE},
+    {"rules_file", RULES_FILE},
+    {"nb_dimlp_nets", NB_DIMLP_NETS},
+    {"max_iterations", MAX_ITERATIONS},
+    {"min_covering", MIN_COVERING},
+    {"covering_strategy", COVERING_STRATEGY},
+    {"max_failed_attempts", MAX_FAILED_ATTEMPTS},
+    {"min_fidelity", MIN_FIDELITY},
+    {"dropout_dim", DROPOUT_DIM},
+    {"dropout_hyp", DROPOUT_HYP},
+    {"nb_quant_levels", NB_QUANT_LEVELS},
+    {"seed", SEED}};
+
+// Function to get parameter name from identifier
+std::string getParameterName(ParameterFidexGloEnum id) {
+  for (const auto &pair : parameterMap) {
+    if (pair.second == id) {
+      return pair.first;
+    }
+  }
+  return "unknown";
 }
 
 int fidexGlo(const string &command) {
@@ -188,233 +262,241 @@ int fidexGlo(const string &command) {
 
     int p = 1; // We skip "fidexGlo"
     while (p < nbParam) {
-      if (commandList[p][0] == '-') {
+      string param = commandList[p];
+
+      if (param.substr(0, 2) == "--") {
+        param = param.substr(2);
         p++;
 
         if (p >= nbParam) {
           throw CommandArgumentException("Missing something at the end of the command.");
         }
-
-        char option = commandList[p - 1][1];
-        const char *arg = &(commandList[p])[0];
-        const char *lastArg = &(commandList[p - 1])[0];
+        const char *arg = commandList[p].c_str();
         string stringArg = arg;
 
-        switch (option) { // Get letter after the -
-        case 'S':
+        ParameterFidexGloEnum par;
+        auto it = parameterMap.find(param);
+        if (it != parameterMap.end()) {
+          par = it->second;
+        } else {
+          par = INVALID;
+        }
+
+        switch (par) { // After --
+        case TEST_DATA_FILE:
           testSamplesDataFileTemp = arg;
           testSamplesDataFileInit = true;
           break;
 
-        case 'p':
+        case TEST_PRED_FILE:
           testSamplesPredFileTemp = arg;
           testSamplesPredFileInit = true;
           break;
 
-        case 'R':
+        case GLOBAL_RULES_FILE:
           rulesFileTemp = arg;
           rulesFileInit = true;
           break;
 
-        case 'a':
+        case NB_ATTRIBUTES:
           if (checkPositiveInt(arg) && atoi(arg) > 0) {
             nb_attributes = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(NB_ATTRIBUTES) + ", strictly positive integer requested.");
           }
           break;
 
-        case 'b':
+        case NB_CLASSES:
           if (checkPositiveInt(arg) && atoi(arg) > 0) {
             nb_classes = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(NB_CLASSES) + ", strictly positive integer requested.");
           }
           break;
 
-        case 'O':
+        case EXPLANATION_FILE:
           explanationFileTemp = arg;
           explanationFileInit = true;
           break;
 
-        case 'r':
+        case CONSOLE_FILE:
           consoleFileTemp = arg;
           consoleFileInit = true;
           break;
 
-        case 'A':
+        case ATTRIBUTES_FILE:
           attributFileTemp = arg;
           attributFileInit = true;
           break;
 
-        case 'F':
+        case ROOT_FOLDER:
           rootFolderTemp = arg;
           rootFolderInit = true;
           break;
 
-        case 't':
+        case DECISION_THRESHOLD:
           if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             hasDecisionThreshold = true;
             decisionThreshold = atof(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(DECISION_THRESHOLD) + ", float included in [0,1] requested.");
           }
           break;
 
-        case 'x':
+        case POSITIVE_CLASS_INDEX:
           if (checkPositiveInt(arg)) {
             hasIndexPositiveClass = true;
             indexPositiveClass = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(POSITIVE_CLASS_INDEX) + ", positive integer requested.");
           }
           break;
 
-        case 'w':
+        case WITH_FIDEX:
           if (checkBool(arg)) {
             std::transform(stringArg.begin(), stringArg.end(), stringArg.begin(),
                            [](unsigned char c) { return std::tolower(c); });
             withFidex = (stringArg == "true" || stringArg == "1") ? true : false;
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(WITH_FIDEX) + ", boolean requested.");
           }
           break;
 
-        case 'M':
+        case WITH_MINIMAL_VERSION:
           if (checkBool(arg)) {
             std::transform(stringArg.begin(), stringArg.end(), stringArg.begin(),
                            [](unsigned char c) { return std::tolower(c); });
             minimalVersion = (stringArg == "true" || stringArg == "1") ? true : false;
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(WITH_MINIMAL_VERSION) + ", boolean requested.");
           }
           break;
 
-        case 'T':
-          trainDataFile = arg; // Parameter after -T
+        case TRAIN_DATA_FILE:
+          trainDataFile = arg; // Parameter after --train_data_file
           trainDataFileInit = true;
           break;
 
-        case 'P':
+        case TRAIN_PRED_FILE:
           trainDataFilePred = arg;
           trainDataFilePredInit = true;
           break;
 
-        case 'C':
+        case TRAIN_CLASS_FILE:
           trainDataFileTrueClass = arg;
           trainDataFileTrueClassInit = true;
           break;
 
-        case 'c':
+        case TEST_CLASS_FILE:
           testTrueClassFileTemp = arg;
           testTrueClassFileInit = true;
           break;
 
-        case 'W': {
+        case WEIGHTS_FILE: {
           weightsFile = arg;
           weightsFileInit = true;
         } break;
 
-        case 'f': {
+        case RULES_FILE: {
           inputRulesFile = arg;
           inputRulesFileInit = true;
         } break;
 
-        case 'N':
+        case NB_DIMLP_NETS:
           if (checkPositiveInt(arg)) {
             nbDimlpNets = atoi(arg);
             nbDimlpNetsInit = true;
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(NB_DIMLP_NETS) + ", positive integer requested.");
           }
 
           break;
 
-        case 'Q':
+        case NB_QUANT_LEVELS:
           if (checkPositiveInt(arg)) {
             nbQuantLevelsInit = true;
             nbQuantLevels = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(NB_QUANT_LEVELS) + ", positive integer requested.");
           }
           break;
 
-        case 'i':
+        case MAX_ITERATIONS:
           if (checkPositiveInt(arg)) {
             itMaxInit = true;
             itMax = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(MAX_ITERATIONS) + ", positive integer requested.");
           }
           break;
 
-        case 'v':
+        case MIN_COVERING:
           if (checkPositiveInt(arg) && atoi(arg) >= 1) {
             minNbCoverInit = true;
             minNbCover = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", integer strictly greater than 1 requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(MIN_COVERING) + ", integer strictly greater than 1 requested.");
           }
           break;
 
-        case 'y':
+        case COVERING_STRATEGY:
           if (std::strcmp(arg, "true") == 0 || std::strcmp(arg, "True") == 0 || std::strcmp(arg, "1") == 0) {
             minCoverStrategy = true;
           } else if (std::strcmp(arg, "false") == 0 || std::strcmp(arg, "False") == 0 || std::strcmp(arg, "0") == 0) {
             minCoverStrategy = false;
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", boolean requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(COVERING_STRATEGY) + ", boolean requested.");
           }
           minCoverStrategyInit = true;
           break;
 
-        case 'm':
+        case MAX_FAILED_ATTEMPTS:
           if (checkPositiveInt(arg) && atoi(arg) > 0) {
             maxFailedAttempts = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(MAX_FAILED_ATTEMPTS) + ", strictly positive integer requested.");
           }
           maxFailedAttemptsInit = true;
           break;
 
-        case 'q':
+        case MIN_FIDELITY:
           if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             minFidelity = atof(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(MIN_FIDELITY) + ", float included in [0,1] requested.");
           }
           minFidelityInit = true;
           break;
 
-        case 'd':
+        case DROPOUT_DIM:
           if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             dropoutDimParam = atof(arg);
             dropoutDim = true; // We dropout a bunch of dimensions each iteration (accelerate the processus)
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(DROPOUT_DIM) + ", float included in [0,1] requested.");
           }
           break;
 
-        case 'h':
+        case DROPOUT_HYP:
           if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             dropoutHypParam = atof(arg);
             dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(DROPOUT_HYP) + ", float included in [0,1] requested.");
           }
           break;
 
-        case 'z':
+        case SEED:
           if (checkPositiveInt(arg)) {
             seed = atoi(arg);
             seedInit = true;
           } else
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(SEED) + ", positive integer requested.");
 
           break;
 
         default: // If we put another -X option
-          throw CommandArgumentException("Illegal option: " + std::string(&option, 1) + ".");
+          throw CommandArgumentException("Illegal option: " + param + ".");
         }
       }
 
@@ -476,21 +558,21 @@ int fidexGlo(const string &command) {
     }
 
     if (hasDecisionThreshold && !hasIndexPositiveClass) {
-      throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t).");
+      throw CommandArgumentException("The positive class index has to be given with option --positive_class_index if the decision threshold is given (--decision_threshold).");
     }
 
     // ----------------------------------------------------------------------
     if (!testSamplesDataFileInit) {
-      throw CommandArgumentException("The test samples data file has to be given with option -S.");
+      throw CommandArgumentException("The test samples data file has to be given with option --test_data_file.");
     }
     if (!rulesFileInit) {
-      throw CommandArgumentException("The rules file has to be given with option -R.");
+      throw CommandArgumentException("The rules file has to be given with option --global_rules_file.");
     }
     if (nb_attributes == -1) {
-      throw CommandArgumentException("The number of attributes has to be given with option -a.");
+      throw CommandArgumentException("The number of attributes has to be given with option --nb_attributes.");
     }
     if (nb_classes == -1) {
-      throw CommandArgumentException("The number of classes has to be given with option -b.");
+      throw CommandArgumentException("The number of classes has to be given with option --nb_classes.");
     }
     // ----------------------------------------------------------------------
 
@@ -546,21 +628,21 @@ int fidexGlo(const string &command) {
     if (withFidex) {
       // Check if we have the obligatory parameters
       if (!trainDataFileInit) {
-        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). The train data file has to be given with option -T.");
+        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (--with_fidex). The train data file has to be given with option --train_data_file.");
       }
       if (!trainDataFilePredInit) {
-        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). The train prediction file has to be given with option -P.");
+        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (--with_fidex). The train prediction file has to be given with option --train_pred_file.");
       }
       if (!weightsFileInit && !inputRulesFileInit) {
-        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f.");
+        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (--with_fidex). A weight file or a rules file has to be given. Give the weights file with option --weights_file or the rules file with option --rules_file.");
       } else if (weightsFileInit && inputRulesFileInit) {
-        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). Do not specify both a weight file(-W) and a rules file(-f). Choose one of them.");
+        throw CommandArgumentException("Error : You specified that you wanted to use Fidex (--with_fidex). Do not specify both a weight file(--weights_file) and a rules file(--rules_file). Choose one of them.");
       }
 
       // Get test class data :
       if (!testTrueClassFileInit) {
         if (!testDatas->getHasClasses()) {
-          throw CommandArgumentException("Error : You specified that you wanted to use Fidex (-w). The test true classes file has to be given with option -c or classes have to be given in the test data file.");
+          throw CommandArgumentException("Error : You specified that you wanted to use Fidex (--with_fidex). The test true classes file has to be given with option --test_class_file or classes have to be given in the test data file.");
         }
       } else {
         testDatas->setClassFromFile(testTrueClassFile, nb_classes);
@@ -568,56 +650,56 @@ int fidexGlo(const string &command) {
 
       testSamplesClasses = (*testDatas->getClasses());
 
-      fidexCommand += "fidex -T " + trainDataFile + " -P " + trainDataFilePred;
+      fidexCommand += "fidex --train_data_file " + trainDataFile + " --train_pred_file " + trainDataFilePred;
       if (trainDataFileTrueClassInit) {
-        fidexCommand += " -C " + trainDataFileTrueClass;
+        fidexCommand += " --train_class_file " + trainDataFileTrueClass;
       }
-      fidexCommand += " -a " + std::to_string(nb_attributes) + " -b " + std::to_string(nb_classes);
+      fidexCommand += " --nb_attributes " + std::to_string(nb_attributes) + " --nb_classes " + std::to_string(nb_classes);
       if (inputRulesFileInit) {
-        fidexCommand += " -f " + inputRulesFile;
+        fidexCommand += " --rules_file " + inputRulesFile;
       } else {
-        fidexCommand += " -W " + weightsFile;
+        fidexCommand += " --weights_file " + weightsFile;
       }
       if (nbQuantLevelsInit) {
-        fidexCommand += " -Q " + std::to_string(nbQuantLevels);
+        fidexCommand += " --nb_quant_levels " + std::to_string(nbQuantLevels);
       }
       if (itMaxInit) {
-        fidexCommand += " -i " + std::to_string(itMax);
+        fidexCommand += " --max_iterations " + std::to_string(itMax);
       }
       if (minNbCoverInit) {
-        fidexCommand += " -v " + std::to_string(minNbCover);
+        fidexCommand += " --min_covering " + std::to_string(minNbCover);
       }
       if (minCoverStrategyInit) {
-        fidexCommand += " -y " + std::to_string(minCoverStrategy);
+        fidexCommand += " --covering_strategy " + std::to_string(minCoverStrategy);
       }
       if (maxFailedAttemptsInit) {
-        fidexCommand += " -m " + std::to_string(maxFailedAttempts);
+        fidexCommand += " --max_failed_attempts " + std::to_string(maxFailedAttempts);
       }
       if (minFidelityInit) {
-        fidexCommand += " -M " + std::to_string(minFidelity);
+        fidexCommand += " --min_fidelity " + std::to_string(minFidelity);
       }
       if (seedInit) {
-        fidexCommand += " -z " + std::to_string(seed);
+        fidexCommand += " --seed " + std::to_string(seed);
       }
       if (attributFileInit) {
-        fidexCommand += " -A " + attributFileTemp;
+        fidexCommand += " --attributes_file " + attributFileTemp;
       }
       if (dropoutDim) {
-        fidexCommand += " -d " + std::to_string(dropoutDimParam);
+        fidexCommand += " --dropout_dim " + std::to_string(dropoutDimParam);
       }
       if (dropoutHyp) {
-        fidexCommand += " -h " + std::to_string(dropoutHypParam);
+        fidexCommand += " --dropout_hyp " + std::to_string(dropoutHypParam);
       }
       if (hasDecisionThreshold) {
-        fidexCommand += " -t " + std::to_string(decisionThreshold);
+        fidexCommand += " --decision_threshold " + std::to_string(decisionThreshold);
       }
       if (hasIndexPositiveClass) {
-        fidexCommand += " -x " + std::to_string(indexPositiveClass);
+        fidexCommand += " --positive_class_index " + std::to_string(indexPositiveClass);
       }
       if (nbDimlpNetsInit) {
-        fidexCommand += " -N " + std::to_string(nbDimlpNets);
+        fidexCommand += " --nb_dimlp_nets " + std::to_string(nbDimlpNets);
       }
-      fidexCommand += " -O " + fidexRuleFile + " -R " + rootFolderTemp;
+      fidexCommand += " --rules_outfile " + fidexRuleFile + " --root_folder " + rootFolderTemp;
     }
 
     // Get rules
@@ -692,7 +774,7 @@ int fidexGlo(const string &command) {
         lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
         if (withFidex) {
           outputDataSample(root + testSampleDataFile, testSamplesValues[currentSample], testSamplesOutputValuesPredictions[currentSample], testSamplesClasses[currentSample], nb_classes);
-          fidexCommand += " -S " + testSampleDataFile;
+          fidexCommand += " --test_data_file " + testSampleDataFile;
           launchingFidex = true;
           nb_fidex += 1;
         }
@@ -744,7 +826,7 @@ int fidexGlo(const string &command) {
             lines.emplace_back("The predicted class is " + std::to_string(testSamplesPreds[currentSample]));
             if (withFidex) {
               outputDataSample(testSampleDataFile, testSamplesValues[currentSample], testSamplesOutputValuesPredictions[currentSample], testSamplesClasses[currentSample], nb_classes);
-              fidexCommand += " -S " + testSampleDataFile;
+              fidexCommand += " --test_data_file " + testSampleDataFile;
               launchingFidex = true;
               nb_fidex += 1;
             }
@@ -835,4 +917,4 @@ int fidexGlo(const string &command) {
   return 0;
 }
 
-// Exemple pour lancer le code : ./fidexGlo -S datanormTest -p predTest.out -R globalRulesDatanorm.txt -a 16 -b 2 -O explanation.txt -F ../fidexGlo/datafiles -w true -T datanormTrain -P predTrain.out -C dataclass2Train -c dataclass2Test -W weights.wts
+// Exemple pour lancer le code : ./fidexGlo --test_data_file datanormTest --test_pred_file predTest.out --global_rules_file globalRulesDatanorm.txt --nb_attributes 16 --nb_classes 2 --explanation_file explanation.txt --root_folder ../fidexGlo/datafiles --with_fidex true --train_data_file datanormTrain --train_pred_file predTrain.out --train_class_file dataclass2Train --test_class_file dataclass2Test --weights_file weights.wts
