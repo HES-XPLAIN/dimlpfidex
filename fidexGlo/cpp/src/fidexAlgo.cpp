@@ -31,6 +31,23 @@ bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover
   bool hasdd = dropoutDim > 0.01;
   bool hasdh = dropoutHyp > 0.01;
 
+  vector<int> normalizationIndices;
+  vector<double> mus;
+  vector<double> sigmas;
+
+  if (_parameters->isIntVectorSet(NORMALIZATION_INDICES)) {
+    normalizationIndices = _parameters->getIntVector(NORMALIZATION_INDICES);
+  }
+  if (_parameters->isDoubleVectorSet(MUS)) {
+    mus = _parameters->getDoubleVector(MUS);
+  }
+  if (_parameters->isDoubleVectorSet(SIGMAS)) {
+    sigmas = _parameters->getDoubleVector(SIGMAS);
+  }
+  if (_parameters->isDoubleVectorSet(MUS) && !(_parameters->isIntVectorSet(NORMALIZATION_INDICES) && _parameters->isDoubleVectorSet(SIGMAS))) {
+    throw InternalError("Error during computation of Fidex: mus are specified but sigmas or normalization indices are not specified.");
+  }
+
   uniform_real_distribution<double> dis(0.0, 1.0);
 
   // Compute initial covering
@@ -140,7 +157,11 @@ bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover
 
   double ruleConfidence;
   ruleConfidence = hyperspace->computeRuleConfidence(trainOutputValuesPredictions, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples
-  rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence);
+  if (_parameters->isDoubleVectorSet(MUS)) {
+    rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence, &mus, &sigmas, &normalizationIndices);
+  } else {
+    rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence);
+  }
 
   return true;
 }

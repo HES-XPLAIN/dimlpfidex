@@ -13,6 +13,7 @@
 #include <ostream>
 #include <sstream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
@@ -20,10 +21,10 @@ using namespace std;
 // to add a new parameter, just add a new parameter code BEFORE "_NB_PARAMETERS"
 enum ParameterCode {
   TRAIN_DATA_FILE,
-  TRAIN_DATA_PRED_FILE,
-  TRAIN_DATA_TRUE_CLASS_FILE,
-  INPUT_RULES_FILE,
+  TRAIN_PRED_FILE,
+  TRAIN_CLASS_FILE,
   RULES_FILE,
+  RULES_OUTFILE,
   CONSOLE_FILE,
   ROOT_FOLDER,
   ATTRIBUTES_FILE,
@@ -36,50 +37,60 @@ enum ParameterCode {
   MAX_ITERATIONS,
   MIN_COVERING,
   MAX_FAILED_ATTEMPTS,
-  NB_THREADS_USED,
-  INDEX_POSITIVE_CLASS,
+  NB_THREADS,
+  POSITIVE_CLASS_INDEX,
   SEED,
   DECISION_THRESHOLD,
   HI_KNOT,
   DROPOUT_HYP,
   DROPOUT_DIM,
   MIN_FIDELITY,
+  NORMALIZATION_FILE,
+  MUS,
+  SIGMAS,
+  NORMALIZATION_INDICES,
+  INVALID,
   _NB_PARAMETERS // internal use only, do not consider it as a usable parameter
 };
 
-static const vector<string> parameterNames = {
-    "TRAIN_DATA_FILE",
-    "TRAIN_DATA_PRED_FILE",
-    "TRAIN_DATA_TRUE_CLASS_FILE",
-    "INPUT_RULES_FILE",
-    "RULES_FILE",
-    "CONSOLE_FILE",
-    "ROOT_FOLDER",
-    "ATTRIBUTES_FILE",
-    "WEIGHTS_FILE",
-    "NB_ATTRIBUTES",
-    "NB_CLASSES",
-    "NB_DIMLP_NETS",
-    "NB_QUANT_LEVELS",
-    "HEURISTIC",
-    "MAX_ITERATIONS",
-    "MIN_COVERING",
-    "MAX_FAILED_ATTEMPTS",
-    "NB_THREADS_USED",
-    "INDEX_POSITIVE_CLASS",
-    "SEED",
-    "HEURISITC_INIT",
-    "DECISION_THRESHOLD",
-    "HI_KNOT",
-    "DROPOUT_HYP",
-    "DROPOUT_DIM",
-    "MIN_FIDELITY"};
+static const std::unordered_map<std::string, ParameterCode> parameterNames = {
+    {"train_data_file", TRAIN_DATA_FILE},
+    {"train_pred_file", TRAIN_PRED_FILE},
+    {"train_class_file", TRAIN_CLASS_FILE},
+    {"rules_file", RULES_FILE},
+    {"rules_outfile", RULES_OUTFILE},
+    {"console_file", CONSOLE_FILE},
+    {"root_folder", ROOT_FOLDER},
+    {"attributes_file", ATTRIBUTES_FILE},
+    {"weights_file", WEIGHTS_FILE},
+    {"nb_attributes", NB_ATTRIBUTES},
+    {"nb_classes", NB_CLASSES},
+    {"nb_dimlp_nets", NB_DIMLP_NETS},
+    {"nb_quant_levels", NB_QUANT_LEVELS},
+    {"heuristic", HEURISTIC},
+    {"max_iterations", MAX_ITERATIONS},
+    {"min_covering", MIN_COVERING},
+    {"max_failed_attempts", MAX_FAILED_ATTEMPTS},
+    {"nb_threads", NB_THREADS},
+    {"positive_class_index", POSITIVE_CLASS_INDEX},
+    {"seed", SEED},
+    {"decision_threshold", DECISION_THRESHOLD},
+    {"hi_knot", HI_KNOT},
+    {"dropout_hyp", DROPOUT_HYP},
+    {"dropout_dim", DROPOUT_DIM},
+    {"min_fidelity", MIN_FIDELITY},
+    {"normalization_file", NORMALIZATION_FILE},
+    {"mus", MUS},
+    {"sigmas", SIGMAS},
+    {"normalization_indices", NORMALIZATION_INDICES}};
 
 class Parameters {
 private:
   map<ParameterCode, int> _intParams;
   map<ParameterCode, float> _floatParams;
   map<ParameterCode, double> _doubleParams;
+  map<ParameterCode, vector<double>> _doubleVectorParams;
+  map<ParameterCode, vector<int>> _intVectorParams;
   map<ParameterCode, string> _stringParams;
   vector<string> _weightFiles; // the only 1 special parameter
 
@@ -90,19 +101,21 @@ private:
   void setFloat(ParameterCode id, float value);
   void setDouble(ParameterCode id, string value);
   void setDouble(ParameterCode id, double value);
+  void setDoubleVector(ParameterCode id, string value);
+  void setIntVector(ParameterCode id, string value);
   void setString(ParameterCode id, string value);
   void setRootDirectory(ParameterCode id);
 
   void throwInvalidDataTypeException(ParameterCode id, string wrongValue, string typeName) {
-    throw CommandArgumentException("Parsing error: argument (ID " + parameterNames[id] + ") with value \"" + wrongValue + "\" is not a valid " + typeName + ".");
+    throw CommandArgumentException("Parsing error: argument (ID " + getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid " + typeName + ".");
   }
 
   void throwAlreadySetArgumentException(ParameterCode id, string value) {
-    throw CommandArgumentException("Parsing error: argument (ID " + parameterNames[id] + ") with value \"" + value + "\" is already set, cannot override it.");
+    throw CommandArgumentException("Parsing error: argument (ID " + getParameterName(id) + ") with value \"" + value + "\" is already set, cannot override it.");
   }
 
   void throwArgumentNotFoundException(ParameterCode id) {
-    throw CommandArgumentException("Parameters error: argument (ID " + parameterNames[id] + ") requested was not found, try to rerun including it.");
+    throw CommandArgumentException("Parameters error: argument (ID " + getParameterName(id) + ") requested was not found, try to rerun including it.");
   }
 
 public:
@@ -115,23 +128,37 @@ public:
   void setDefaultInt(ParameterCode id, int value);
   void setDefaultFloat(ParameterCode id, float value);
   void setDefaultDouble(ParameterCode id, double value);
+  void setDefaultDoubleVector(ParameterCode id, string value);
+  void setDefaultIntVector(ParameterCode id, string value);
   void setDefaultString(ParameterCode id, string value);
+
+  // public setter
+  void setIntVector(ParameterCode id, vector<int> value);
+  void setDoubleVector(ParameterCode id, vector<double> value);
 
   // getters
   int getInt(ParameterCode id);
   float getFloat(ParameterCode id);
   double getDouble(ParameterCode id);
+  vector<double> getDoubleVector(ParameterCode id);
+  vector<int> getIntVector(ParameterCode id);
   string getString(ParameterCode id);
   vector<string> getWeightsFiles() const;
+
+  std::string getParameterName(ParameterCode id) const;
 
   map<ParameterCode, int> getAllInts() const { return _intParams; }
   map<ParameterCode, float> getAllFloats() const { return _floatParams; }
   map<ParameterCode, double> getAllDoubles() const { return _doubleParams; }
+  map<ParameterCode, vector<double>> getAllDoubleVectors() const { return _doubleVectorParams; }
+  map<ParameterCode, vector<int>> getAllIntVectors() const { return _intVectorParams; }
   map<ParameterCode, string> getAllStrings() const { return _stringParams; }
 
   bool isIntSet(ParameterCode id);
   bool isFloatSet(ParameterCode id);
   bool isDoubleSet(ParameterCode id);
+  bool isDoubleVectorSet(ParameterCode id);
+  bool isIntVectorSet(ParameterCode id);
   bool isStringSet(ParameterCode id);
 
   // special operations
@@ -142,6 +169,8 @@ public:
   void assertIntExists(ParameterCode id);
   void assertFloatExists(ParameterCode id);
   void assertDoubleExists(ParameterCode id);
+  void assertDoubleVectorExists(ParameterCode id);
+  void assertIntVectorExists(ParameterCode id);
   void assertStringExists(ParameterCode id);
 };
 
@@ -150,19 +179,19 @@ inline ostream &operator<<(ostream &stream, const Parameters &p) {
   stream << "Parameters list:" << endl;
 
   for (auto const &x : p.getAllStrings()) {
-    stream << " - " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << x.second << endl;
+    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << x.second << endl;
   }
 
   for (auto const &x : p.getAllInts()) {
-    stream << " - " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
+    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllFloats()) {
-    stream << " - " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
+    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllDoubles()) {
-    stream << " - " << parameterNames[x.first] << setw(pad - parameterNames[x.first].size()) << to_string(x.second) << endl;
+    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << to_string(x.second) << endl;
   }
 
   stream << "  WEIGHTS_FILES (list)" << endl;

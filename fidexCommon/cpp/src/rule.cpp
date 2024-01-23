@@ -25,7 +25,7 @@ Rule::Rule(vector<Antecedant> antecedants, vector<int> coveredSamples, int out_c
  * @param classes optional vector of string containing all class names, useful to print class name instead of an integer.
  * @return string
  */
-string Rule::toString(const vector<string> *attributes, const vector<string> *classes) {
+string Rule::toString(const vector<string> &attributes, const vector<string> &classes) {
   stringstream result;
   int outputClass = getOutputClass();
   int nbCoveredSamples = getCoveredSamples().size();
@@ -34,8 +34,8 @@ string Rule::toString(const vector<string> *attributes, const vector<string> *cl
   double confidence = getConfidence();
 
   for (Antecedant a : getAntecedants()) {
-    if (attributes && !attributes->empty()) {
-      result << (*attributes)[a.getAttribute()];
+    if (!attributes.empty()) {
+      result << attributes[a.getAttribute()];
     } else {
       result << "X" + to_string(a.getAttribute());
     }
@@ -49,8 +49,8 @@ string Rule::toString(const vector<string> *attributes, const vector<string> *cl
     result << formattingDoubleToString(a.getValue()) << " ";
   }
 
-  if (classes && !classes->empty()) {
-    result << "-> " << (*classes)[outputClass] << endl;
+  if (!classes.empty()) {
+    result << "-> " << classes[outputClass] << endl;
   } else {
     result << "-> class " << outputClass << endl;
   }

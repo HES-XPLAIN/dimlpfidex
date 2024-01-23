@@ -8,22 +8,22 @@ void showStatsParams() {
 
   std::cout << "Obligatory parameters : \n"
             << std::endl;
-  std::cout << "fidexGloStats -T <test data file> -P <test prediction file> -C <test true class file, not mendatory if classes are specified in test data file> ";
-  std::cout << "-R <rules input file> ";
-  std::cout << "-a <number of attributes>";
-  std::cout << "-b <number of classes>";
+  std::cout << "fidexGloStats --test_data_file <test data file> --test_pred_file <test prediction file> --test_class_file <test true class file, not mendatory if classes are specified in test data file> ";
+  std::cout << "--rules_file <rules input file> ";
+  std::cout << "--nb_attributes <number of attributes>";
+  std::cout << "--nb_classes <number of classes>";
   std::cout << "<Options>\n"
             << std::endl;
 
   std::cout << "Options are: \n"
             << std::endl;
-  std::cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  std::cout << "-A <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it" << std::endl;
-  std::cout << "-O <stats output file>" << std::endl;
-  std::cout << "-F <global rules output file with stats on test set> If you want to compute statistics of global rules on tests set" << std::endl;
-  std::cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
-  std::cout << "-t <decision threshold for predictions, use if it was used in FidexGlo, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
-  std::cout << "-x <index of positive class sample to compute true/false positive/negative rates (None by default, put 0 for first class)>" << std::endl; // If we want to compute TP, FP, TN, FN
+  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  std::cout << "--attributes_file <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it" << std::endl;
+  std::cout << "--stats_file <stats output file>" << std::endl;
+  std::cout << "--rules_outfile <global rules output file with stats on test set> If you want to compute statistics of global rules on tests set" << std::endl;
+  std::cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  std::cout << "--decision_threshold <decision threshold for predictions, use if it was used in FidexGlo, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
+  std::cout << "--positive_class_index <index of positive class sample to compute true/false positive/negative rates (None by default, put 0 for first class)>" << std::endl; // If we want to compute TP, FP, TN, FN
 
   std::cout << "\n-------------------------------------------------\n"
             << std::endl;
@@ -69,6 +69,49 @@ void computeTFPN(int decision, int indexPositiveClass, int testTrueClass, int &n
   }
 }
 
+enum ParameterEnum {
+  TEST_DATA_FILE,
+  TEST_PRED_FILE,
+  TEST_CLASS_FILE,
+  RULES_FILE,
+  NB_ATTRIBUTES,
+  NB_CLASSES,
+  ROOT_FOLDER,
+  ATTRIBUTES_FILE,
+  STATS_FILE,
+  RULES_OUTFILE,
+  CONSOLE_FILE,
+  DECISION_THRESHOLD,
+  POSITIVE_CLASS_INDEX,
+  INVALID
+};
+
+const std::unordered_map<std::string, ParameterEnum> parameterMap = {
+    {"test_data_file", TEST_DATA_FILE},
+    {"test_pred_file", TEST_PRED_FILE},
+    {"test_class_file", TEST_CLASS_FILE},
+    {"rules_file", RULES_FILE},
+    {"nb_attributes", NB_ATTRIBUTES},
+    {"nb_classes", NB_CLASSES},
+    {"root_folder", ROOT_FOLDER},
+    {"attributes_file", ATTRIBUTES_FILE},
+    {"stats_file", STATS_FILE},
+    {"rules_outfile", RULES_OUTFILE},
+    {"console_file", CONSOLE_FILE},
+    {"decision_threshold", DECISION_THRESHOLD},
+    {"positive_class_index", POSITIVE_CLASS_INDEX},
+};
+
+// Function to get parameter name from identifier
+std::string getParameterName(ParameterEnum id) {
+  for (const auto &pair : parameterMap) {
+    if (pair.second == id) {
+      return pair.first;
+    }
+  }
+  return "unknown";
+}
+
 int fidexGloStats(const string &command) {
   // Save buffer where we output results
   std::ofstream ofs;
@@ -93,7 +136,7 @@ int fidexGloStats(const string &command) {
 
     // Parameters declaration
 
-    string testDataFileTemp; // Parameter after -T
+    string testDataFileTemp; // Parameter after --test_data
     bool testDataFileInit = false;
     string testDataFilePredTemp;
     bool testDataFilePredInit = false;
@@ -128,100 +171,110 @@ int fidexGloStats(const string &command) {
       return 0;
     }
 
-    int p = 1; // We skip "fidexGlo"
+    int p = 1; // We skip "fidexGloStats"
+
     while (p < nbParam) {
-      if (commandList[p][0] == '-') {
+      string param = commandList[p];
+
+      if (param.substr(0, 2) == "--") {
+        param = param.substr(2);
         p++;
 
         if (p >= nbParam) {
           throw CommandArgumentException("Missing something at the end of the command.");
         }
-        char option = commandList[p - 1][1];
-        const char *arg = &(commandList[p])[0];
-        const char *lastArg = &(commandList[p - 1])[0];
-        switch (option) { // Get letter after the -
+        const char *arg = commandList[p].c_str();
 
-        case 'T':
-          testDataFileTemp = arg; // Parameter after -T
+        ParameterEnum par;
+        auto it = parameterMap.find(param);
+        if (it != parameterMap.end()) {
+          par = it->second;
+        } else {
+          par = INVALID;
+        }
+
+        switch (par) { // After --
+        case TEST_DATA_FILE:
+          testDataFileTemp = arg;
           testDataFileInit = true;
           break;
 
-        case 'P':
+        case TEST_PRED_FILE:
           testDataFilePredTemp = arg;
           testDataFilePredInit = true;
           break;
 
-        case 'C':
+        case TEST_CLASS_FILE:
           testDataFileTrueClassTemp = arg;
           testDataFileTrueClassInit = true;
           break;
 
-        case 'R':
+        case RULES_FILE:
           rulesFileTemp = arg;
           rulesFileInit = true;
           break;
 
-        case 'a':
+        case NB_ATTRIBUTES:
           if (checkPositiveInt(arg) && atoi(arg) > 0) {
             nb_attributes = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(NB_ATTRIBUTES) + ", strictly positive integer requested.");
           }
           break;
 
-        case 'b':
+        case NB_CLASSES:
           if (checkPositiveInt(arg) && atoi(arg) > 0) {
             nb_classes = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", strictly positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(NB_CLASSES) + ", strictly positive integer requested.");
           }
           break;
 
-        case 'O':
+        case STATS_FILE:
           statsFileTemp = arg;
           statsFileInit = true;
           break;
 
-        case 'F':
+        case RULES_OUTFILE:
           globalRulesStatsFileTemp = arg;
           globalRulesStatsFileInit = true;
           break;
 
-        case 'r':
+        case CONSOLE_FILE:
           consoleFileTemp = arg;
           consoleFileInit = true;
           break;
 
-        case 'A':
+        case ATTRIBUTES_FILE:
           attributFileTemp = arg;
           attributFileInit = true;
           break;
 
-        case 'S':
+        case ROOT_FOLDER:
           rootFolderTemp = arg;
           rootFolderInit = true;
           break;
 
-        case 't':
+        case DECISION_THRESHOLD:
           if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             hasDecisionThreshold = true;
             decisionThreshold = atof(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", float included in [0,1] requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(DECISION_THRESHOLD) + ", float included in [0,1] requested.");
           }
           break;
 
-        case 'x':
+        case POSITIVE_CLASS_INDEX:
           if (checkPositiveInt(arg)) {
             hasIndexPositiveClass = true;
             indexPositiveClass = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + string(lastArg) + ", positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(POSITIVE_CLASS_INDEX) + ", positive integer requested.");
           }
           break;
 
-        default: // If we put another -X option
-          throw CommandArgumentException("Illegal option : " + string(lastArg));
+        default:
+          throw CommandArgumentException("Illegal option : " + param);
         }
       }
 
@@ -290,25 +343,25 @@ int fidexGloStats(const string &command) {
     }
 
     if (hasDecisionThreshold && !hasIndexPositiveClass) {
-      throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t).");
+      throw CommandArgumentException("The positive class index has to be given with option --positive_class_index if the decision threshold is given (--decision_threshold).");
     }
 
     // ----------------------------------------------------------------------
 
     if (!testDataFileInit) {
-      throw CommandArgumentException("The test data file has to be given with option -T.");
+      throw CommandArgumentException("The test data file has to be given with option --test_data.");
     }
     if (!testDataFilePredInit) {
-      throw CommandArgumentException("The test predictions data file has to be given with option -P.");
+      throw CommandArgumentException("The test predictions data file has to be given with option --test_pred.");
     }
     if (!rulesFileInit) {
-      throw CommandArgumentException("The rules file has to be given with option -R.");
+      throw CommandArgumentException("The rules file has to be given with option --rule_file.");
     }
     if (nb_attributes == -1) {
-      throw CommandArgumentException("The number of attributes has to be given with option -a.");
+      throw CommandArgumentException("The number of attributes has to be given with option --nb_attributes.");
     }
     if (nb_classes == -1) {
-      throw CommandArgumentException("The number of classes has to be given with option -b.");
+      throw CommandArgumentException("The number of classes has to be given with option --nb_classes.");
     }
 
     // ----------------------------------------------------------------------
@@ -330,7 +383,7 @@ int fidexGloStats(const string &command) {
     if (!testDataFileTrueClassInit) {
       testDatas.reset(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass));
       if (!testDatas->getHasClasses()) {
-        throw CommandArgumentException("The test true classes file has to be given with option -T or classes have to be given in the test data file.");
+        throw CommandArgumentException("The test true classes file has to be given with option --test_data or classes have to be given in the test data file.");
       }
     } else {
       testDatas.reset(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass, testDataFileTrueClass));
@@ -633,11 +686,11 @@ int fidexGloStats(const string &command) {
 
 /* Exemples pour lancer le code :
 
-./fidexGloStats -T datanorm -P dimlp.out -C dataclass2 -R globalRules.txt -a 16 -b 2 -O stats.txt -S ../fidexGlo/datafiles
-./fidexGloStats -T datanormTest -P dimlpDatanormTest.out -C dataclass2Test -R globalRulesDatanorm.txt -a 16 -b 2 -O stats.txt -S ../fidexGlo/datafiles
-./fidexGloStats -T covidTestData.txt -P covidTestPred.out -C covidTestClass.txt -R globalRulesCovid.txt -a 16 -b 2 -O globalStats.txt -S ../dimlp/datafiles/covidDataset
-./fidexGloStats -T spamTestData.txt -P spamTestPred.out -C spamTestClass.txt -R globalRulesSpam.txt -a 16 -b 2 -O globalStats.txt -S ../dimlp/datafiles/spamDataset
-./fidexGloStats -T isoletTestData.txt -P isoletTestPred.out -C isoletTestClass.txt -R globalRulesIsolet.txt -a 16 -b 2 -O globalStats.txt -S ../dimlp/datafiles/isoletDataset
-./fidexGloStats -T Test/X_test.txt -P Test/pred_testV2.out -C Test/y_test.txt -R globalRulesHAPTV2.txt -a 16 -b 2 -O globalStatsV2.txt -S ../dimlp/datafiles/HAPTDataset
+./fidexGloStats --test_data datanorm --test_pred dimlp.out --test_class dataclass2 --rules_file globalRules.txt --nb_attributes 16 --nb_classes2 --stats_file stats.txt --root_folder ../fidexGlo/datafiles
+./fidexGloStats --test_data datanormTest --test_pred dimlpDatanormTest.out --test_class dataclass2Test --rules_file globalRulesDatanorm.txt --nb_attributes 16 --nb_classes 2 --stats_file stats.txt --root_folder ../fidexGlo/datafiles
+./fidexGloStats --test_data covidTestData.txt --test_pred covidTestPred.out --test_class covidTestClass.txt --rules_file globalRulesCovid.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/covidDataset
+./fidexGloStats --test_data spamTestData.txt --test_pred spamTestPred.out --test_class spamTestClass.txt --rules_file globalRulesSpam.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/spamDataset
+./fidexGloStats --test_data isoletTestData.txt --test_pred isoletTestPred.out --test_class isoletTestClass.txt --rules_file globalRulesIsolet.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/isoletDataset
+./fidexGloStats --test_data Test/X_test.txt --test_pred Test/pred_testV2.out --test_class Test/y_test.txt --rules_file globalRulesHAPTV2.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStatsV2.txt --root_folder ../dimlp/datafiles/HAPTDataset
 
 */

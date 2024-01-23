@@ -61,8 +61,10 @@ Install dependencies:
 ```shell
 python -m venv .venv
 source .venv/bin/activate
-pip install -r .
+pip install .
 ```
+
+To leave the virtualenv, use `deactivate`.
 
 #### Using Rye
 
@@ -73,13 +75,16 @@ rye sync
 rye shell
 ```
 
+To leave the virtualenv, use `exit`.
+
 #### Add dependencies
 
 To add new dependencies to the project, either add them to the `pyproject.toml` file or use `rye add <dependency>`.
+To add them to the virtualenv, use `pip install .` or `rye sync`.
 
 ### Compile
 
-Compile:
+To compile:
 
 ```shell
 python buildcpp.py
@@ -111,6 +116,10 @@ python -m build
 
 Git hooks are used to ensure quality checks are run by all developers every time
 before a commit.
+
+Install with `pip install pre-commit` or`rye sync`.
+
+To enable pre-commit:
 
 ```shell
 pre-commit install

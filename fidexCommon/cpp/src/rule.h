@@ -54,7 +54,7 @@ public:
   // UTILITIES
   void addAntecedant(Antecedant value) { antecedants.push_back(value); };
   void addCoveredSample(int value) { coveredSamples.push_back(value); };
-  string toString(const vector<string> *attributes = NULL, const vector<string> *classes = NULL);
+  string toString(const vector<string> &attributes, const vector<string> &classes);
   bool isEqual(const Rule other) const;
   static vector<Rule> fromJsonFile(string filename);
   static void toJsonFile(string filename, vector<Rule> rules);

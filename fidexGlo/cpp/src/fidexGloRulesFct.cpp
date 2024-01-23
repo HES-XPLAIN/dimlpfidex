@@ -10,33 +10,37 @@ void showRulesParams() {
 
   cout << "Obligatory parameters : \n"
        << endl;
-  cout << "fidexGloRules -T <train data file> -P <train prediction file> -C <train true class file, not mendatory if classes are specified in train data file> ";
-  cout << "-W <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with -N> [Not mendatory if a rules file is given with -f] ";
-  cout << "-f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
-  cout << "-O <Rules output file> ";
-  cout << "-M <Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo> ";
-  cout << "-a <number of attributes>";
-  cout << "-b <number of classes>";
+  cout << "fidexGloRules -T --train_data_file <train data file> -P --train_pred_file <train prediction file> -C --train_class_file <train true class file, not mendatory if classes are specified in train data file> ";
+  cout << "-W --weights_file <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file] ";
+  cout << "-f --rules_file <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
+  cout << "-O --rules_outfile <Rules output file> ";
+  cout << "-M --heuristic <Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo> ";
+  cout << "-a --nb_attributes <number of attributes>";
+  cout << "-b --nb_classes <number of classes>";
   cout << "<Options>\n"
        << endl;
 
   cout << "Options are: \n"
        << endl;
-  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << endl;
-  cout << "-N <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << endl;
-  cout << "-A <file of attributes>" << endl;
-  cout << "-r <file where you redirect console result>" << endl; // If we want to redirect console result to file
-  cout << "-i <max iteration number (100 by default)>" << endl;
-  cout << "-v <minimum covering number (2 by default)>" << endl;
-  cout << "-d <dimension dropout parameter>" << endl;
-  cout << "-h <hyperplan dropout parameter>" << endl;
-  cout << "-m <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << endl;
-  cout << "-Q <number of stairs in staircase activation function (50 by default)>" << endl;
-  cout << "-t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << endl;
-  cout << "-x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << endl;
-  cout << "-p <number of threads used for computing the algorithm (default=1, this means by default its a sequential execution)>" << endl;
-  cout << "-y <minimal rule fidelity accepted when generating a rule [0,1] (default=1)>" << endl;
-  cout << "-z <seed (0=random, default)>";
+  cout << "-S --root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << endl;
+  cout << "-N --nb_dimlp_nets <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << endl;
+  cout << "-A --attributes_file <file of attributes>" << endl;
+  cout << "-r --console_file <file where you redirect console result>" << endl; // If we want to redirect console result to file
+  cout << "-i --max_itertions <max iteration number (100 by default)>" << endl;
+  cout << "-v --min_covering <minimum covering number (2 by default)>" << endl;
+  cout << "-d --dropout_dim <dimension dropout parameter>" << endl;
+  cout << "-h --dropout_hyp <hyperplan dropout parameter>" << endl;
+  cout << "-m --max_failed_attempts <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << endl;
+  cout << "-Q --nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << endl;
+  cout << "-t --decision_threshold <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << endl;
+  cout << "-x --positive_class_index <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << endl;
+  cout << "-n --normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << endl;
+  cout << "-u --mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << endl;
+  cout << "-g --sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << endl;
+  cout << "-I --normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_stats is given)>" << endl;
+  cout << "-p --nb_threads <number of threads used for computing the algorithm (default=1, this means by default its a sequential execution)>" << endl;
+  cout << "-y --min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>" << endl;
+  cout << "-z --seed <seed (0=random, default)>";
 
   cout << "\n-------------------------------------------------\n"
        << endl;
@@ -65,7 +69,7 @@ void generateRules(vector<Rule> *rules, vector<int> *notCoveredSamples, DataSetF
   int nbRulesNotFound = 0;
   int nbDatas = dataset->getNbSamples();
   int minNbCover = p->getInt(MIN_COVERING);
-  int nbThreadsUsed = p->getInt(NB_THREADS_USED);
+  int nbThreadsUsed = p->getInt(NB_THREADS);
 
   int seed = p->getInt(SEED);
   if (seed == 0) {
@@ -424,6 +428,7 @@ void checkParametersLogicValues(Parameters *p) {
   p->setDefaultInt(NB_DIMLP_NETS, 1);
   p->setDefaultString(ATTRIBUTES_FILE, "");
   p->setDefaultString(CONSOLE_FILE, "");
+  p->setDefaultString(RULES_FILE, "");
   p->setDefaultInt(MAX_ITERATIONS, 100);
   p->setDefaultInt(MIN_COVERING, 2);
   p->setDefaultFloat(DROPOUT_DIM, 0.0f);
@@ -431,10 +436,10 @@ void checkParametersLogicValues(Parameters *p) {
   p->setDefaultInt(MAX_FAILED_ATTEMPTS, 30);
   p->setDefaultInt(NB_QUANT_LEVELS, 50);
   p->setDefaultFloat(DECISION_THRESHOLD, -1.0f);
-  p->setDefaultInt(INDEX_POSITIVE_CLASS, -1);
-  p->setDefaultInt(NB_THREADS_USED, 1);
+  p->setDefaultInt(POSITIVE_CLASS_INDEX, -1);
+  p->setDefaultInt(NB_THREADS, 1);
   p->setDefaultFloat(MIN_FIDELITY, 1.0f);
-  // p->setDefaultFloat(HI_KNOT, 5);
+  p->setDefaultFloat(HI_KNOT, 5);
   p->setDefaultInt(SEED, 0);
   p->setWeightsFiles(); // must be called to initialize
 
@@ -442,37 +447,96 @@ void checkParametersLogicValues(Parameters *p) {
 
   // asserting mandatory parameters
   p->assertStringExists(TRAIN_DATA_FILE);
-  p->assertStringExists(TRAIN_DATA_PRED_FILE);
-  p->assertStringExists(TRAIN_DATA_TRUE_CLASS_FILE);
-  p->assertStringExists(RULES_FILE);
+  p->assertStringExists(TRAIN_PRED_FILE);
+  p->assertStringExists(TRAIN_CLASS_FILE);
+  p->assertStringExists(RULES_OUTFILE);
 
   // verifying logic between parameters, values range and so on...
-  if (p->isStringSet(WEIGHTS_FILE) && p->isStringSet(INPUT_RULES_FILE)) {
-    throw CommandArgumentException("Do not specify both a weight file(-W) and a rules file(-f). Choose one of them.");
+  if (p->isStringSet(WEIGHTS_FILE) && p->isStringSet(RULES_FILE)) {
+    throw CommandArgumentException("Error : Do not specify both a weight file(-W) and a rules file(-f). Choose one of them.");
   }
 
-  if (!p->isStringSet(WEIGHTS_FILE) && !p->isStringSet(INPUT_RULES_FILE)) {
-    throw CommandArgumentException("A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f");
+  if (!p->isStringSet(WEIGHTS_FILE) && !p->isStringSet(RULES_FILE)) {
+    throw CommandArgumentException("Error : A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f");
   }
 
   if (p->getInt(NB_QUANT_LEVELS) < 1) {
-    throw CommandArgumentException("Number of stairs in staircase activation function must be strictly positive (>=1).");
+    throw CommandArgumentException("Error : Number of stairs in staircase activation function must be strictly positive (>=1).");
   }
 
   if (p->getInt(NB_DIMLP_NETS) < 1) {
-    throw CommandArgumentException("Number of networks must be strictly positive (>=1).");
+    throw CommandArgumentException("Error : Number of networks must be strictly positive (>=1).");
   }
-
-  // if (p->getFloat(HI_KNOT) < 0.0f) { }
 
   if (!(p->getInt(HEURISTIC) > 0 && p->getInt(HEURISTIC) < 4)) {
-    throw CommandArgumentException("Heuristic must be 1, 2 or 3.");
+    throw CommandArgumentException("Error : Heuristic must be 1, 2 or 3.");
   }
 
-  // TODO continue checking with -i (https://github.com/HES-XPLAIN/dimlpfidex/blob/eedb7a977c61d5ff0371f8e4d454d864c99b1e53/fidexGlo/cpp/src/fidexGloRulesFct.cpp)
+  if (p->getInt(MAX_ITERATIONS) < 1) {
+    throw CommandArgumentException("Error : Maximum number of iterations must be strictly positive (>=1).");
+  }
 
-  if (p->isFloatSet(DECISION_THRESHOLD) && !p->isIntSet(INDEX_POSITIVE_CLASS)) {
-    throw CommandArgumentException("The positive class index has to be given with option -x if the decision threshold is given (-t)");
+  if (p->getInt(MIN_COVERING) < 1) {
+    throw CommandArgumentException("Error : Minimium covering must be strictly positive (>=1).");
+  }
+
+  if (p->getFloat(DROPOUT_DIM) < 0.0f || p->getFloat(DROPOUT_DIM) > 1.0f) {
+    throw CommandArgumentException("Error : Dropout dim must be beetween [0.0, 1.0].");
+  }
+
+  if (p->getFloat(DROPOUT_HYP) < 0.0f || p->getFloat(DROPOUT_HYP) > 1.0f) {
+    throw CommandArgumentException("Error : Dropout hyp must be beetween [0.0, 1.0].");
+  }
+
+  if (p->getFloat(DECISION_THRESHOLD) < 0.0f || p->getFloat(DECISION_THRESHOLD) > 1.0f) {
+    throw CommandArgumentException("Error : Decision threshold must be beetween [0.0, 1.0].");
+  }
+
+  if (p->isFloatSet(DECISION_THRESHOLD) && !p->isIntSet(POSITIVE_CLASS_INDEX)) {
+    throw CommandArgumentException("Error : The positive class index has to be given with option -x if the decision threshold is given (-t)");
+  }
+
+  if (p->getInt(SEED) < 0) {
+        throw CommandArgumentException("Error : Minimium covering must be null or positive (>=0).");
+  }
+
+  // ----------------------------------------------------------------------
+
+  // Check denormalization parameters
+
+  // If normalizationIndices were not specified, it's all attributes
+  if (!p->isStringSet(NORMALIZATION_FILE) && !p->isIntVectorSet(NORMALIZATION_INDICES)) {
+    vector<int> normalizationIndicesTemp;
+    for (int i = 0; i < p->getInt(NB_ATTRIBUTES); ++i) {
+      normalizationIndicesTemp.push_back(i);
+    }
+    p->setIntVector(NORMALIZATION_INDICES, normalizationIndicesTemp);
+  }
+
+  // Check if mus and sigmas are both given or both not
+  if ((p->isDoubleVectorSet(MUS) || p->isDoubleVectorSet(SIGMAS)) &&
+      !(p->isDoubleVectorSet(MUS) && p->isDoubleVectorSet(SIGMAS))) {
+    throw CommandArgumentException("Error : One of Mus(--mus) and sigmas(--sigmas) is given but not the other.");
+  }
+
+  if (p->isStringSet(NORMALIZATION_FILE) && p->isDoubleVectorSet(MUS) || p->isStringSet(NORMALIZATION_FILE) && p->isIntVectorSet(NORMALIZATION_INDICES)) {
+    throw CommandArgumentException("Error : normlization file (--normalization_file) and mus or normalizationIndices (--normalization_indices) are both given.");
+  }
+
+  // Mus, sigmas and normalizationIndices must have the same size and not be empty
+  if (p->isDoubleVectorSet(MUS) && (p->getDoubleVector(MUS).size() != p->getDoubleVector(SIGMAS).size() || p->getDoubleVector(MUS).size() != p->getIntVector(NORMALIZATION_INDICES).size() || p->getDoubleVector(MUS).empty())) {
+    throw CommandArgumentException("Error : mus (--mus), sigmas (--sigmas) and normalization indices (--normalization_indices) don't have the same size or are empty.");
+  }
+
+  // Check normalizationIndices
+  if (p->isIntVectorSet(NORMALIZATION_INDICES)) {
+    vector<int> tempVect = p->getIntVector(NORMALIZATION_INDICES);
+    std::set<int> uniqueIndices(tempVect.begin(), tempVect.end());
+    if (uniqueIndices.size() != p->getIntVector(NORMALIZATION_INDICES).size() ||
+        *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= p->getInt(NB_ATTRIBUTES) ||
+        *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
+      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) has negative, greater than the number of attributes or repeted elements.");
+    }
   }
 }
 
@@ -486,7 +550,7 @@ void checkParametersLogicValues(Parameters *p) {
  * @param classes list of class names, used to write Rule's class with class explicit name instead of its numerical representation.
  * @return tuple<double, double>
  */
-tuple<double, double> writeRulesFile(string filename, const vector<Rule> rules, const vector<string> *attributes, const vector<string> *classes) {
+tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> &rules, const vector<string> &attributes, const vector<string> &classes) {
   if (rules.empty()) {
     cout << "Warning: cannot write to file \"" << filename << "\", generated rules list is empty.";
     return make_tuple(0, 0);
@@ -515,14 +579,14 @@ tuple<double, double> writeRulesFile(string filename, const vector<Rule> rules, 
          << ", mean number of antecedents per rule : " << formattingDoubleToString(meanNbAntecedents)
          << endl;
 
-    if (attributes && !attributes->empty()) {
+    if (!attributes.empty()) {
       file << "Attribute names are specified. ";
     } else {
       file << "Attribute names are not specified. "; // TODO : See if we can delete those lines in file and replace by a check to see if we have attribute names or not. cf. patterns in hyperLocus.cpp
     }
     file << endl;
 
-    if (classes && !classes->empty()) {
+    if (!classes.empty()) {
       file << "Class names are specified.";
     } else {
       file << "Class names are not specified.";
@@ -585,27 +649,27 @@ int fidexGloRules(const string &command) {
     cout << "Importing files..." << endl;
 
     std::unique_ptr<DataSetFid> trainDatas;
-    if (!params->isStringSet(TRAIN_DATA_TRUE_CLASS_FILE)) {
+    if (!params->isStringSet(TRAIN_CLASS_FILE)) {
       trainDatas.reset(new DataSetFid("trainDatas from FidexGloRules",
                                       params->getString(TRAIN_DATA_FILE).c_str(),
-                                      params->getString(TRAIN_DATA_PRED_FILE).c_str(),
+                                      params->getString(TRAIN_PRED_FILE).c_str(),
                                       params->getInt(NB_ATTRIBUTES),
                                       params->getInt(NB_CLASSES),
                                       params->getFloat(DECISION_THRESHOLD),
-                                      params->getInt(INDEX_POSITIVE_CLASS)));
+                                      params->getInt(POSITIVE_CLASS_INDEX)));
 
       if (!trainDatas->getHasClasses()) {
-        throw CommandArgumentException("The train true classes file has to be given with option -C or classes have to be given in the train data file.");
+        throw CommandArgumentException("The train true classes file has to be given with option --train_class_file or classes have to be given in the train data file.");
       }
     } else {
       trainDatas.reset(new DataSetFid("trainDatas from FidexGloRules",
                                       params->getString(TRAIN_DATA_FILE).c_str(),
-                                      params->getString(TRAIN_DATA_PRED_FILE).c_str(),
+                                      params->getString(TRAIN_PRED_FILE).c_str(),
                                       params->getInt(NB_ATTRIBUTES),
                                       params->getInt(NB_CLASSES),
                                       params->getFloat(DECISION_THRESHOLD),
-                                      params->getInt(INDEX_POSITIVE_CLASS),
-                                      params->getString(TRAIN_DATA_TRUE_CLASS_FILE).c_str()));
+                                      params->getInt(POSITIVE_CLASS_INDEX),
+                                      params->getString(TRAIN_CLASS_FILE).c_str()));
     }
 
     int nbDatas = trainDatas->getNbSamples();
@@ -624,6 +688,21 @@ int fidexGloRules(const string &command) {
       }
     }
 
+    vector<int> normalizationIndices;
+    vector<double> mus;
+    vector<double> sigmas;
+
+    // Get mus, sigmas and normalizationIndices from normalizationFile for denormalization :
+    if (params->isStringSet(NORMALIZATION_FILE)) {
+      auto results = parseNormalizationStats(params->getString(NORMALIZATION_FILE), params->getInt(NB_ATTRIBUTES), attributeNames);
+      normalizationIndices = std::get<0>(results);
+      mus = std::get<2>(results);
+      sigmas = std::get<3>(results);
+      params->setIntVector(NORMALIZATION_INDICES, normalizationIndices);
+      params->setDoubleVector(MUS, mus);
+      params->setDoubleVector(SIGMAS, sigmas);
+    }
+
     cout << "Files imported" << endl
          << endl;
 
@@ -634,12 +713,12 @@ int fidexGloRules(const string &command) {
     vector<vector<double>> matHypLocus;
     string weightsFile = params->getString(WEIGHTS_FILE);
     string attributesFile = params->getString(ATTRIBUTES_FILE);
-    string inputRulesFile = params->getString(INPUT_RULES_FILE);
+    string inputRulesFile = params->getString(RULES_FILE);
     vector<string> weightsFiles = params->getWeightsFiles();
     int nbDimlpNets = params->getInt(NB_DIMLP_NETS);
     int nbQuantLevels = params->getInt(NB_QUANT_LEVELS);
     int nbAttributes = params->getInt(NB_ATTRIBUTES);
-    int hiKnot = params->getInt(HI_KNOT);
+    float hiKnot = params->getFloat(HI_KNOT);
 
     if (!weightsFile.empty()) {
       if (nbDimlpNets > 1) {
@@ -734,11 +813,11 @@ int fidexGloRules(const string &command) {
     cout << "Rules extraction..."
          << endl;
 
-    sort(generatedRules.begin(), generatedRules.end(), [&generatedRules](Rule r1, Rule r2) {
+    sort(generatedRules.begin(), generatedRules.end(), [](const Rule &r1, const Rule &r2) {
       return r1.getCoveredSamples().size() > r2.getCoveredSamples().size();
     });
 
-    tuple<double, double> stats = writeRulesFile(params->getString(RULES_FILE), generatedRules, &attributeNames, &classNames);
+    tuple<double, double> stats = writeRulesFile(params->getString(RULES_OUTFILE), generatedRules, attributeNames, classNames);
 
     cout << "Mean covering size per rule : " << get<0>(stats) << endl;
     cout << "Mean number of antecedents per rule : " << get<1>(stats) << endl;
@@ -760,11 +839,11 @@ int fidexGloRules(const string &command) {
 
 /* Exemples pour lancer le code :
 
-./fidexGloRules -T datanormTrain -P dimlpDatanormTrain.out -C dataclass2Train -W dimlpDatanorm.wts -a 16 -b 2 -Q 50 -O globalRulesDatanorm.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesResult -S ../fidexGlo/datafiles
+./fidexGloRules --train_data_file datanormTrain --train_pred_file dimlpDatanormTrain.out --train_class_file dataclass2Train --weights_file dimlpDatanorm.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 --rules_outfile globalRulesDatanorm.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesResult --root_folder ../fidexGlo/datafiles
 
-./fidexGloRules -T covidTrainData.txt -P covidTrainPred.out -C covidTrainClass.txt -W covid.wts -a 16 -b 2 -Q 50 -O globalRulesCovid.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesCovidResult -S ../dimlp/datafiles/covidDataset
-./fidexGloRules -T spamTrainData.txt -P spamTrainPred.out -C spamTrainClass.txt -W spam.wts -a 16 -b 2 -Q 50 -O globalRulesSpam.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesSpamResult -S ../dimlp/datafiles/spamDataset
-./fidexGloRules -T isoletTrainData.txt -P isoletTrainPredV2.out -C isoletTrainClass.txt -W isoletV2.wts -a 16 -b 2 -Q 50 5 -O globalRulesIsoletV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesIsoletResultV2 -S ../dimlp/datafiles/isoletDataset
-./fidexGloRules -T Train/X_train.txt -P Train/pred_trainV2.out -C Train/y_train.txt -W HAPTV2.wts -a 16 -b 2 -Q 50 5 -O globalRulesHAPTV2.txt -M 1 -i 100 -v 2 -d 0.5 -h 0.5 -r rulesHAPTResultV2 -S ../dimlp/datafiles/HAPTDataset
+./fidexGloRules --train_data_file covidTrainData.txt --train_pred_file covidTrainPred.out --train_class_file covidTrainClass.txt --weights_file covid.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 --rules_outfile globalRulesCovid.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesCovidResult --root_folder ../dimlp/datafiles/covidDataset
+./fidexGloRules --train_data_file spamTrainData.txt --train_pred_file spamTrainPred.out --train_class_file spamTrainClass.txt --weights_file spam.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 --rules_outfile globalRulesSpam.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesSpamResult --root_folder ../dimlp/datafiles/spamDataset
+./fidexGloRules --train_data_file isoletTrainData.txt --train_pred_file isoletTrainPredV2.out --train_class_file isoletTrainClass.txt --weights_file isoletV2.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 5 --rules_outfile globalRulesIsoletV2.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesIsoletResultV2 --root_folder ../dimlp/datafiles/isoletDataset
+./fidexGloRules --train_data_file Train/X_train.txt --train_pred_file Train/pred_trainV2.out --train_class_file Train/y_train.txt --weights_file HAPTV2.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 5 --rules_outfile globalRulesHAPTV2.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesHAPTResultV2 --root_folder ../dimlp/datafiles/HAPTDataset
 
 */
