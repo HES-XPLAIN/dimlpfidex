@@ -64,8 +64,8 @@ Parameters::Parameters(vector<string> args) {
         setInt(NB_QUANT_LEVELS, arg);
         break;
 
-      case RULES_OUTFILE:
-        setString(RULES_OUTFILE, arg);
+      case GLOBAL_RULES_OUTFILE:
+        setString(GLOBAL_RULES_OUTFILE, arg);
         break;
 
       case CONSOLE_FILE:
@@ -151,7 +151,7 @@ Parameters::Parameters(vector<string> args) {
   setRootDirectory(TRAIN_PRED_FILE);
   setRootDirectory(TRAIN_CLASS_FILE);
   setRootDirectory(RULES_FILE);
-  setRootDirectory(RULES_OUTFILE);
+  setRootDirectory(GLOBAL_RULES_OUTFILE);
   setRootDirectory(CONSOLE_FILE);
   setRootDirectory(ROOT_FOLDER);
   setRootDirectory(ATTRIBUTES_FILE);

@@ -18,6 +18,7 @@
 #include <string>
 #include <time.h>
 #include <tuple>
+#include <unordered_map>
 #include <vector>
 
 void showFidexParams();
