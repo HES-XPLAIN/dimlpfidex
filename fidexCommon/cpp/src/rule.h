@@ -28,8 +28,8 @@ private:
 
 public:
   Rule() = default;
-  Rule(vector<Antecedant> antecedants,
-       vector<int> coveredSamples,
+  Rule(const vector<Antecedant> &antecedants,
+       const vector<int> &coveredSamples,
        int out_class,
        double fidelity,
        double accuracy,
@@ -40,8 +40,8 @@ public:
   void setFidelity(double value) { fidelity = value; };
   void setAccuracy(double value) { accuracy = value; };
   void setConfidence(double value) { confidence = value; };
-  void setAntecedants(vector<Antecedant> values) { antecedants = values; };
-  void setCoveredSamples(vector<int> values) { coveredSamples = values; };
+  void setAntecedants(vector<Antecedant> const &values) { antecedants = values; };
+  void setCoveredSamples(vector<int> const &values) { coveredSamples = values; };
 
   // GETTERS
   vector<Antecedant> getAntecedants() const { return antecedants; }
@@ -54,10 +54,10 @@ public:
   // UTILITIES
   void addAntecedant(Antecedant value) { antecedants.push_back(value); };
   void addCoveredSample(int value) { coveredSamples.push_back(value); };
-  string toString(const vector<string> &attributes, const vector<string> &classes);
-  bool isEqual(const Rule other) const;
-  static vector<Rule> fromJsonFile(string filename);
-  static void toJsonFile(string filename, vector<Rule> rules);
+  string toString(const vector<string> &attributes, const vector<string> &classes) const;
+  bool isEqual(const Rule &other) const;
+  static vector<Rule> fromJsonFile(const string &filename);
+  static void toJsonFile(const string &filename, const vector<Rule> &rules);
 };
 
 // OPERATOR OVERLOAD TO EASE PRINTING PURPOSES

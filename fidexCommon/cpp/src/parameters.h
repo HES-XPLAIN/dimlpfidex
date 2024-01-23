@@ -106,11 +106,11 @@ private:
   void setString(ParameterCode id, string value);
   void setRootDirectory(ParameterCode id);
 
-  void throwInvalidDataTypeException(ParameterCode id, string wrongValue, string typeName) {
+  void throwInvalidDataTypeException(ParameterCode id, const string &wrongValue, const string &typeName) {
     throw CommandArgumentException("Parsing error: argument (ID " + getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid " + typeName + ".");
   }
 
-  void throwAlreadySetArgumentException(ParameterCode id, string value) {
+  void throwAlreadySetArgumentException(ParameterCode id, const string &value) {
     throw CommandArgumentException("Parsing error: argument (ID " + getParameterName(id) + ") with value \"" + value + "\" is already set, cannot override it.");
   }
 
