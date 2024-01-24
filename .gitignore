@@ -177,5 +177,8 @@ dmypy.json
 
 autoexe.sh
 data/
+!fidexGlo/cpp/tests/dataset/data/
+!fidexGlo/cpp/tests/dataset/data/*.out
+!fidexGlo/cpp/tests/dataset/data/*.wts
+# fidexGlo/cpp/tests/dataset/out/
 compile_commands.json
-rules.json
