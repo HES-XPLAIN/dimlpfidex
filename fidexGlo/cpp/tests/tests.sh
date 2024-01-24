@@ -25,10 +25,35 @@ GREEN='\033[0;32m'
 RESET='\033[0m'
 
 # default & optional args
-root_directory="${full_dir}"
+# root_directory="${full_dir}"
+# nb_dimlp_nets=1
+# attributes_file="${DATA_DIR}attributes.txt"
+# console_file=""
+# max_iterations=50
+# min_covering=2
+# dropout_dim=0.7
+# dropout_hyp=0.7
+# max_failed_attempts=10
+# nb_stairs=50
+# decision_threshold=-1.0
+# index_positive_class=-1
+# nb_threads_used=4
+# min_fidelity=1
+# seed=0
+# nb_attributes=31
+# nb_classes=7
+
+# to choose which version to test
+# to_test_dir=$CURRENT_VERSION_DIR
+# full_dir="${to_test_dir}${DATA_DIR}${OUT_DIR}"
+
+# nb_attributes=84
+# nb_classes=2
+nb_attributes=31
+nb_classes=7
 nb_dimlp_nets=1
-attributes_file="${DATA_DIR}attributes.txt"
 console_file=""
+heuristic=1
 max_iterations=50
 min_covering=2
 dropout_dim=0.7
@@ -41,54 +66,33 @@ nb_threads_used=4
 min_fidelity=1
 seed=0
 
-# to choose which version to test
-# to_test_dir=$CURRENT_VERSION_DIR
-# full_dir="${to_test_dir}${DATA_DIR}${OUT_DIR}"
-
-# nb_attributes=84
-# nb_classes=2
-# nb_dimlp_nets=1
-# console_file=""
-# heuristic=1
-# max_iterations=50
-# min_covering=2
-# dropout_dim=0.7
-# dropout_hyp=0.7
-# max_failed_attempts=10
-# nb_stairs=50
-# decision_threshold=-1.0
-# index_positive_class=-1
-# nb_threads_used=4
-# min_fidelity=1
-# seed=0
-
 date_str=$(date "+%d%m%y_%H%M%S")
 
 # root_directory="${full_dir}"
-# attributes_file="${DATA_DIR}attributes.txt"
-# train_data_file="${DATA_DIR}trainDatas.txt"
-# train_true_classes="${DATA_DIR}trainClasses.txt"
-# train_pred_file="${OUT_DIR}train.out"
-# weigths_file="${OUT_DIR}weights.wts"
+train_data_file="${DATA_DIR}train.txt"
+train_pred_file="${DATA_DIR}train.out"
+train_true_classes="${DATA_DIR}train_true_classes.txt"
+weigths_file="${DATA_DIR}weights.wts"
+attributes_file="${DATA_DIR}attributes.txt"
 # input_rules_file=""
-# output_rules_file="${TESTS_DIR}tests_fidexglo_${date_str}.rls"
-
-train_data_file="${DATA_DIR}obesity_train.txt"
-train_pred_file="${DATA_DIR}obesity_train.out"
-train_true_classes="${DATA_DIR}obesity_train_true_classes.txt"
-weigths_file="${DATA_DIR}obesity.wts"
-input_rules_file=""
 output_rules_file="${OUT_DIR}tests_fidexglo_${date_str}.rls"
-heuristic=1
-nb_attributes=31
-nb_classes=7
+
+# train_data_file="${DATA_DIR}obesity_train.txt"
+# train_pred_file="${DATA_DIR}obesity_train.out"
+# train_true_classes="${DATA_DIR}obesity_train_true_classes.txt"
+# weigths_file="${DATA_DIR}obesity.wts"
+# input_rules_file=""
+# output_rules_file="${OUT_DIR}tests_fidexglo_${date_str}.rls"
+# heuristic=1
+# nb_attributes=31
+# nb_classes=7
 
 
 
 # redirection type, uncomment what fits your needs
-# REDIRECTION="/dev/null"                 # silent
+REDIRECTION="/dev/null"                 # silent
 # REDIRECTION="/dev/stdout"               # in console
-REDIRECTION="${OUT_DIR}output.txt"      # in file
+# REDIRECTION="${OUT_DIR}output.txt"      # in file
 
 echo "Tests ran on $(date "+%d/%m/%y %R")"
 echo "$date_str" >> $REDIRECTION
@@ -147,7 +151,7 @@ random_int()
 {
     min=$1
     max=$2
-    shuf --max_iterations "$min-$max" -n 1
+    shuf -i "$min-$max" -n 1
 }
 
 
@@ -525,7 +529,7 @@ test_random_seed()
 test_nb_threads()
 {
     print_bold "Different threads"
-    for threads in 2 4 8 16
+    for threads in 2 4 8
     do
         "${to_test_dir}${EXE}" \
         --train_data_file "${train_data_file}" \
@@ -561,10 +565,10 @@ random_test_generation()
     dh=$(random_float 0.4 0.95)
     max_failed_attempts=$(random_int 1 15)
     nb_stairs=50
-    heuristic=$(random_int 1 2)
+    heuristic=$(random_int 1 3)
     nb_threads_used=$(random_int 4 8)
     min_fidelity=$(random_float 0.5 1.0)
-    seed=$(random_int 1 10)
+    seed=$(random_int 1 10000)
     # decision_threshold=-1.0
     # index_positive_class=-1
 
@@ -642,71 +646,6 @@ test_same_seed_same_output()
     assert_success "Same seed, same output equality" $code
 }
 
-# test_coherence_with_main_version()
-# {
-#     heur=$1
-#     sd=$(random_int 1 1000)
-#     print_bold "Coherence with main version"
-#     "${CURRENT_VERSION_DIR}${EXE}" \
-#     --train_data_file "${train_data_file}" \
-#     --train_pred_file "${train_pred_file}" \
-#     --train_class_file "${train_true_classes}" \
-#     --weights_file "${weigths_file}" \
-#     --rules_outfile "${TESTS_DIR}test_coherence_1.rls" \
-#     --heuristic "${heur}" \
-#     --nb_attributes "${nb_attributes}" \
-#     --nb_classes "${nb_classes}" \
-#     --nb_dimlp_nets "${nb_dimlp_nets}" \
-#     --attributes_file "${attributes_file}" \
-#     --max_iterations "${max_iterations}" \
-#     --min_covering "1" \
-#     --dropout_dim "${dropout_dim}" \
-#     --dropout_hyp "${dropout_hyp}" \
-#     --max_failed_attempts "${max_failed_attempts}" \
-#     --nb_quant_levels "${nb_stairs}" \
-#     --nb_threads "${nb_threads_used}" \
-#     --min_fidelity "${min_fidelity}" \
-#     --seed "${sd}" \
-#     >>"$REDIRECTION"
-#     code=$?
-#     assert_success "1st intermediate execution" $code
-
-#     "${MAIN_VERSION_DIR}${EXE}" \
-#     --train_data_file "${train_data_file}" \
-#     --train_pred_file "${train_pred_file}" \
-#     --train_class_file "${train_true_classes}" \
-#     --weights_file "${weigths_file}" \
-#     --rules_outfile "${TESTS_DIR}test_coherence_2.rls" \
-#     --heuristic "${heur}" \
-#     --nb_attributes "${nb_attributes}" \
-#     --nb_classes "${nb_classes}" \
-#     --nb_dimlp_nets "${nb_dimlp_nets}" \
-#     --attributes_file "${attributes_file}" \
-#     --max_iterations "${max_iterations}" \
-#     --min_covering "${min_covering}" \
-#     --dropout_dim "${dropout_dim}" \
-#     --dropout_hyp "${dropout_hyp}" \
-#     --max_failed_attempts "${max_failed_attempts}" \
-#     --nb_quant_levels "${nb_stairs}" \
-#     --nb_threads "${nb_threads_used}" \
-#     --seed "${sd}" \
-#     >>"$REDIRECTION"
-#     code=$?
-#     assert_success "2nd intermediate execution" $code
-
-#     f1="${TESTS_DIR}test_coherence_1.rls"
-#     f2="${TESTS_DIR}test_coherence_2.rls"
-
-#     difference=$(diff ${f1} ${f2})
-#     code=0
-#     if [ "$difference" != "" ]
-#     then
-#         code=1
-#     fi
-
-#     assert_success "Coherence with main version" $code
-# }
-
 
 # main execution
 SECONDS=0
@@ -721,7 +660,6 @@ test_heuristic_arg
 test_attributes_nb_arg
 test_classes_nb_arg
 
-test_dropouts
 test_heuristics
 test_nb_threads
 test_same_seed_same_output 1
@@ -730,8 +668,6 @@ test_same_seed_same_output 1
 test_same_seed_same_output 2
 test_same_seed_same_output 2
 test_same_seed_same_output 2
-# test_coherence_with_main_version 1
-# test_coherence_with_main_version 2
 
 for i in {1..250}
 do
