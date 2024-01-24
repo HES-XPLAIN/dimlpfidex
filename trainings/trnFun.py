@@ -474,7 +474,7 @@ def validate_string_param(param, param_name, default=None, allow_none=False):
         raise ValueError(f'Error: parameter {param_name} has to be a name contained in quotation marks "".')
     return param
 
-def check_parameters_common(save_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes):
+def check_parameters_common(root_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes):
     """
     Validate the common parameters used in a machine learning process.
 
@@ -506,12 +506,12 @@ def check_parameters_common(save_folder, train_data_file, test_data_file, train_
     :rtype: tuple
     :raises ValueError: If any parameter is invalid.
     """
-    save_folder = validate_string_param(save_folder, "save_folder", allow_none=True)
-    train_data_file = validate_string_param(train_data_file, "train_data")
-    test_data_file = validate_string_param(test_data_file, "test_data")
-    train_pred_file = validate_string_param(train_pred_file, "train_pred", default="predTrain")
+    root_folder = validate_string_param(root_folder, "root_folder", allow_none=True)
+    train_data_file = validate_string_param(train_data_file, "train_data_file")
+    test_data_file = validate_string_param(test_data_file, "test_data_file")
+    train_pred_file = validate_string_param(train_pred_file, "train_pred_file", default="predTrain")
     train_pred_file += ".out"
-    test_pred_file = validate_string_param(test_pred_file, "test_pred", default="predTest")
+    test_pred_file = validate_string_param(test_pred_file, "test_pred_file", default="predTest")
     test_pred_file += ".out"
     stats_file = validate_string_param(stats_file, "stats_file", default="stats.txt")
 
@@ -527,7 +527,7 @@ def check_parameters_common(save_folder, train_data_file, test_data_file, train_
     elif not check_strictly_positive(nb_classes) or not check_int(nb_classes):
         raise ValueError('Error : parameter nb_classes has to be a strictly positive integer.')
 
-    return save_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes
+    return root_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes
 
 def check_parameters_dimlp_layer(weights_file, k, quant):
     """
@@ -547,7 +547,7 @@ def check_parameters_dimlp_layer(weights_file, k, quant):
     :rtype: tuple
     :raises ValueError: If any provided parameter is invalid.
     """
-    weights_file = validate_string_param(weights_file, "weights", default="weights")
+    weights_file = validate_string_param(weights_file, "weights_file", default="weights")
     weights_file += ".wts"
 
     if k is None:
@@ -558,11 +558,11 @@ def check_parameters_dimlp_layer(weights_file, k, quant):
     if quant is None:
         quant = 50
     elif not check_strictly_positive(quant):
-        raise ValueError('Error, parameter quant is not a strictly positive number.')
+        raise ValueError('Error, parameter nb_quant_levels is not a strictly positive number.')
 
     return weights_file, k, quant
 
-def check_parameters_decision_trees(n_estimators, min_samples_split, min_samples_leaf, min_weight_fraction_leaf, min_impurity_decrease, random_state, max_features, verbose, max_leaf_nodes, warm_start, ccp_alpha):
+def check_parameters_decision_trees(n_estimators, min_samples_split, min_samples_leaf, min_weight_fraction_leaf, min_impurity_decrease, seed, max_features, verbose, max_leaf_nodes, warm_start, ccp_alpha):
     """
     Validate and set default values for the parameters used in decision tree models.
 
@@ -576,8 +576,8 @@ def check_parameters_decision_trees(n_estimators, min_samples_split, min_samples
     :type min_weight_fraction_leaf: float, optional
     :param min_impurity_decrease: A node will be split if this split induces a decrease of the impurity greater than or equal to this value, defaults to 0.0.
     :type min_impurity_decrease: float, optional
-    :param random_state: Controls the randomness of the estimator, can be None.
-    :type random_state: int, optional
+    :param seed: Controls the randomness of the estimator, can be None.
+    :type seed: int, optional
     :param max_features: The number of features to consider when looking for the best split, can be int, float, "sqrt", "log2", or None, defaults to "sqrt".
     :type max_features: int, float, str or None, optional
     :param verbose: Controls the verbosity when fitting and predicting, defaults to 0.
@@ -617,8 +617,8 @@ def check_parameters_decision_trees(n_estimators, min_samples_split, min_samples
     elif not check_positive(min_impurity_decrease):
         raise ValueError('Error, parameter min_impurity_decrease is not a positive float.')
 
-    if random_state is not None and (not check_int(random_state) or not check_positive(random_state)):
-        raise ValueError('Error, parameter random_state is not a positive integer.')
+    if seed is not None and (not check_int(seed) or not check_positive(seed)):
+        raise ValueError('Error, parameter seed is not a positive integer.')
 
     if max_features is None:
         max_features = "sqrt"
@@ -645,7 +645,7 @@ def check_parameters_decision_trees(n_estimators, min_samples_split, min_samples
     elif not check_positive(ccp_alpha):
         raise ValueError('Error, parameter ccp_alpha is not a positive float.')
 
-    return n_estimators, min_samples_split, min_samples_leaf, min_weight_fraction_leaf, min_impurity_decrease, random_state, max_features, verbose, max_leaf_nodes, warm_start, ccp_alpha
+    return n_estimators, min_samples_split, min_samples_leaf, min_weight_fraction_leaf, min_impurity_decrease, seed, max_features, verbose, max_leaf_nodes, warm_start, ccp_alpha
 
 def recurse(tree, node, parent_path, feature_names, output_rules_file, k_dict, from_grad_boost): # parent_path : path taken until current node
     """
