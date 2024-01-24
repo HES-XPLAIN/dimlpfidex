@@ -112,46 +112,13 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
         }
       }
 
-      Rule lastRule;
-      bool lastAttempt = false;
-      int maxCovering = minCovering;
-      currentMinCovering = minCovering;
-      cout << "RESET range: from " << currentMinCovering << " to " << maxCovering << endl;
       while (!ruleCreated) {
         ruleCreated = fidex.compute(rule, idSample, minFidelity, currentMinCovering);
-        // dichotomic search
-        // TODO continue here
-        // if (ruleCreated && (currentMinCovering == minCovering)) {
-        //   // found with best covering, break from loop
-        //   cout << rule << endl
-        //        << "Rule found." << endl;
-        //   break;
-        // } else if (lastAttempt && !ruleCreated) {
-        //   // tried to find a better one but failed, returning the last rule found
-        //   rule = lastRule;
-        //   cout << rule << endl
-        //        << "Rule found." << endl;
-
-        //   break;
-        // } else if (!ruleCreated) {
-        //   // rule not found, lowering targeted covering
-        //   maxCovering /= 2;
-        //   currentMinCovering -= maxCovering;
-        // } else {
-        //   // found rule but trying to get a better one.
-        //   lastRule = rule;
-        //   lastAttempt = true;
-        //   ruleCreated = false;
-        //   currentMinCovering += (maxCovering - currentMinCovering) / 2;
-        // }
-
         if (currentMinCovering >= 2) {
           currentMinCovering -= 1;
         } else {
           counterFailed += 1;
         }
-
-        cout << "Covering range: from " << currentMinCovering << " to " << maxCovering << endl;
 
         if (currentMinCovering < 2) {
           counterFailed += 1;
@@ -163,7 +130,6 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
 #pragma omp critical
           {
             // ignore samples that cannot be covered after "maxFailedAttempts" attempts
-            cout << "Rule not found." << endl;
             it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
             if (it != notCoveredSamples.end()) {
               notCoveredSamples.erase(it);
@@ -172,9 +138,6 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
           break;
         }
       }
-
-      cout << endl
-           << endl;
 
       if ((currentMinCovering + 1) < minCovering) {
         localNbProblems += 1;
@@ -478,6 +441,10 @@ void checkParametersLogicValues(Parameters *p) {
 
   if (!p->isStringSet(WEIGHTS_FILE) && !p->isStringSet(RULES_FILE)) {
     throw CommandArgumentException("Error : A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f");
+  }
+
+  if (p->getInt(NB_THREADS) < 1 || p->getInt(NB_THREADS) > omp_get_max_threads()) {
+    throw CommandArgumentException("Error : Number threads must be between 1 and #CPU cores of your machine (which is " + to_string(omp_get_max_threads()) + ")");
   }
 
   if (p->getInt(NB_QUANT_LEVELS) < 1) {
