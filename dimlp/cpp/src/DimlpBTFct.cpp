@@ -35,7 +35,7 @@ void GiveAllParamDimlpBT()
   cout << "--Hk <number of neurons in the kth hidden layer>" << std::endl;
   cout << "--with_rule_extraction (RULE EXTRACTION)" << std::endl;
   cout << "--global_rules_outfile <extraction ruleFile>" << std::endl; // If we want to extract rules in a rulesFile instead of console
-  cout << "--learning_param <back-propagation learning parameter (Eta, 0.1 by default)>" << std::endl;
+  cout << "--learning_rate <back-propagation learning parameter (Eta, 0.1 by default)>" << std::endl;
   cout << "--momentum <back-propagation momentum parameter (Mu, 0.6 by default)>" << std::endl;
   cout << "--flat <back-propagation flat spot elimination parameter (Flat, 0.01 by default)>" << std::endl;
   cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
@@ -71,7 +71,7 @@ enum ParameterDimlpBTEnum {
   H,
   WITH_RULE_EXTRACTION,
   GLOBAL_RULES_OUTFILE,
-  LEARNING_PARAM,
+  LEARNING_RATE,
   MOMENTUM,
   FLAT,
   NB_QUANT_LEVELS,
@@ -103,7 +103,7 @@ const std::unordered_map<std::string, ParameterDimlpBTEnum> parameterMap = {
     {"H", H},
     {"with_rule_extraction", WITH_RULE_EXTRACTION},
     {"global_rules_outfile", GLOBAL_RULES_OUTFILE},
-    {"learning_param", LEARNING_PARAM},
+    {"learning_rate", LEARNING_RATE},
     {"momentum", MOMENTUM},
     {"flat", FLAT},
     {"nb_quant_levels", NB_QUANT_LEVELS},
@@ -237,7 +237,7 @@ int dimlpBT(const string &command) {
         }
 
         switch (option) { // After --
-        case LEARNING_PARAM:
+        case LEARNING_RATE:
           if (CheckFloat(arg))
             eta = static_cast<float>(atof(arg));
           else

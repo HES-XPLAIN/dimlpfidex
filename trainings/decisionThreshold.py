@@ -12,17 +12,17 @@ def decisionThreshold(*args, **kwargs):
             print("Warning! The files are localised with respect to root folder dimlpfidex.")
             print("----------------------------")
             print("Obligatory parameters :")
-            print("test_class : test class file")
-            print("test_pred : test prediction file, can also be a list")
-            print("train_pred : train prediction file, can also be a list")
+            print("test_class_file : test class file")
+            print("test_pred_file : test prediction file, can also be a list")
+            print("train_pred_file : train prediction file, can also be a list")
             print("nb_classes : number of classes")
-            print("positive_index : index of positive class (0 for first one)")
+            print("positive_class_index : index of positive class (0 for first one)")
             print("with_roc_computation : Boolean, if we need to compute ROC curve or not")
             print("----------------------------")
             print("Optional parameters :")
-            print("save_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
-            print("test_class_threshold : new test class file with the new threshold (test_class_threshold.txt by default)")
-            print("train_class_threshold : new train class file with the new threshold (train_class_threshold.txt by default)")
+            print("root_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
+            print("test_class_threshold_file : new test class file with the new threshold (test_class_threshold.txt by default)")
+            print("train_class_threshold_file : new train class file with the new threshold (train_class_threshold.txt by default)")
             print("----------------------------")
             print("obligatory parameters if the roc curve has already been computed :")
             print("fpr : false positive rate list")
@@ -39,38 +39,38 @@ def decisionThreshold(*args, **kwargs):
 
         else:
             # Get parameters
-            save_folder = kwargs.get('save_folder')
-            test_class_file = kwargs.get('test_class')
-            test_pred_file = kwargs.get('test_pred')
-            train_pred_file = kwargs.get('train_pred')
+            root_folder = kwargs.get('root_folder')
+            test_class_file = kwargs.get('test_class_file')
+            test_pred_file = kwargs.get('test_pred_file')
+            train_pred_file = kwargs.get('train_pred_file')
             nb_classes = kwargs.get('nb_classes')
             with_roc_computation = kwargs.get('with_roc_computation')
-            train_class_threshold_file = kwargs.get('train_class_threshold')
-            test_class_threshold_file = kwargs.get('test_class_threshold')
+            train_class_threshold_file = kwargs.get('train_class_threshold_file')
+            test_class_threshold_file = kwargs.get('test_class_threshold_file')
             fpr = kwargs.get('fpr')
             tpr = kwargs.get('tpr')
             auc_score = kwargs.get('auc_score')
-            positive_index_var = kwargs.get('positive_index')
+            positive_class_index_var = kwargs.get('positive_class_index')
             estimator_var = kwargs.get('estimator')
             output_roc_file = kwargs.get('output_roc')
             stats_file = kwargs.get('stats_file')
 
             # Check parameters
-            valid_args = ['test_class', 'test_pred', 'train_pred', 'nb_classes', 'with_roc_computation', 'save_folder', 'train_class_threshold', 'test_class_threshold',
-                          'fpr', 'tpr', 'auc_score', 'positive_index', 'estimator', 'output_roc', 'stats_file']
+            valid_args = ['test_class_file', 'test_pred_file', 'train_pred_file', 'nb_classes', 'with_roc_computation', 'root_folder', 'train_class_threshold_file', 'test_class_threshold_file',
+                          'fpr', 'tpr', 'auc_score', 'positive_class_index', 'estimator', 'output_roc', 'stats_file']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
                 if arg_key not in valid_args:
                     raise ValueError(f"Invalid argument : {arg_key}.")
 
-            save_folder = validate_string_param(save_folder, "save_folder", allow_none=True)
+            root_folder = validate_string_param(root_folder, "root_folder", allow_none=True)
 
-            test_class_file = validate_string_param(test_class_file, "test_class")
+            test_class_file = validate_string_param(test_class_file, "test_class_file")
 
             is_test_pred_list = False
             if test_pred_file is None:
-                raise ValueError('Error : test prediction data file missing, add it with option test_pred="your_test_prediction_data_file" or with a list.')
+                raise ValueError('Error : test prediction data file missing, add it with option test_pred_file="your_test_prediction_data_file" or with a list.')
             elif not isinstance(test_pred_file, str) and not isinstance(test_pred_file, list):
                 raise ValueError('Error : parameter test_pred has to be a name contained in quotation marks "" or a list.')
             elif isinstance(test_pred_file, list):
@@ -78,7 +78,7 @@ def decisionThreshold(*args, **kwargs):
 
             is_train_pred_list = False
             if train_pred_file is None:
-                raise ValueError('Error : train prediction data file missing, add it with option train_pred="your_train_prediction_data_file" or with a list.')
+                raise ValueError('Error : train prediction data file missing, add it with option train_pred_file="your_train_prediction_data_file" or with a list.')
             elif not isinstance(train_pred_file, str) and not isinstance(train_pred_file, list):
                 raise ValueError('Error : parameter train_pred has to be a name contained in quotation marks "" or a list.')
             elif isinstance(train_pred_file, list):
@@ -96,18 +96,18 @@ def decisionThreshold(*args, **kwargs):
             # Get data
             if is_test_pred_list:
                 test_pred = test_pred_file
-            elif save_folder is not None:
-                    test_pred = get_data_pred(save_folder + "/" + test_pred_file, nb_classes)
+            elif root_folder is not None:
+                    test_pred = get_data_pred(root_folder + "/" + test_pred_file, nb_classes)
             else:
                 test_pred = get_data_pred(test_pred_file, nb_classes)
             if is_train_pred_list:
                 train_pred = train_pred_file
-            elif save_folder is not None:
-                train_pred = get_data_pred(save_folder + "/" + train_pred_file, nb_classes)
+            elif root_folder is not None:
+                train_pred = get_data_pred(root_folder + "/" + train_pred_file, nb_classes)
             else:
-                get_data_pred(train_pred_file, nb_classes)
-            if save_folder is not None:
-                test_class = get_data_class(save_folder + "/" + test_class_file, nb_classes)
+                train_pred = get_data_pred(train_pred_file, nb_classes)
+            if root_folder is not None:
+                test_class = get_data_class(root_folder + "/" + test_class_file, nb_classes)
             else:
                 test_class = get_data_class(test_class_file, nb_classes)
 
@@ -119,21 +119,21 @@ def decisionThreshold(*args, **kwargs):
             elif not check_strictly_positive(nb_classes) or not check_int(nb_classes):
                 raise ValueError('Error : parameter nb_classes has to be a strictly positive integer.')
 
-            if save_folder is not None:
-                train_class_threshold_file = save_folder + "/" + train_class_threshold_file
-                test_class_threshold_file = save_folder + "/" + test_class_threshold_file
+            if root_folder is not None:
+                train_class_threshold_file = root_folder + "/" + train_class_threshold_file
+                test_class_threshold_file = root_folder + "/" + test_class_threshold_file
 
-            if positive_index_var is None:
-                raise ValueError('Error : parameter positive_index is missing, add it with positive_index=your_positive_class_index.')
-            elif not isinstance(positive_index_var, int) or positive_index_var < 0 or positive_index_var >= nb_classes:
-                raise ValueError(f'Error : parameter positive_index has to be a positive integer smaller than {nb_classes}.')
+            if positive_class_index_var is None:
+                raise ValueError('Error : parameter positive_class_index is missing, add it with positive_class_index=your_positive_class_index.')
+            elif not isinstance(positive_class_index_var, int) or positive_class_index_var < 0 or positive_class_index_var >= nb_classes:
+                raise ValueError(f'Error : parameter positive_class_index has to be a positive integer smaller than {nb_classes}.')
 
             # Get ROC result
 
             if with_roc_computation: # If we need to compute roc curve
                 from trainings.computeRocCurve import computeRocCurve
-                res = computeRocCurve(test_class = test_class, test_pred = test_pred, positive_index = positive_index_var, output_roc=output_roc_file,
-                                estimator = estimator_var, stats_file=stats_file, save_folder = save_folder, nb_classes = nb_classes)
+                res = computeRocCurve(test_class_file = test_class, test_pred_file = test_pred, positive_class_index = positive_class_index_var, output_roc=output_roc_file,
+                                estimator = estimator_var, stats_file=stats_file, root_folder = root_folder, nb_classes = nb_classes)
                 if (res == -1):
                     raise ValueError('Error during computation of ROC curve.')
                 else:
@@ -170,14 +170,14 @@ def decisionThreshold(*args, **kwargs):
             new_test_class = []
             # We choose the positive class if it is greater than the threshold, else we choose the maximum
             for pred in train_pred:
-                if pred[positive_index_var] > threshold:
-                    new_train_class.append([0 if j != positive_index_var else 1 for j in range(nb_classes)])
+                if pred[positive_class_index_var] > threshold:
+                    new_train_class.append([0 if j != positive_class_index_var else 1 for j in range(nb_classes)])
                 else:
                     new_train_class.append([0 if j != pred.index(max(pred)) else 1 for j in range(nb_classes)])
 
             for pred in test_pred:
-                if pred[positive_index_var] > threshold:
-                    new_test_class.append([0 if j != positive_index_var else 1 for j in range(nb_classes)])
+                if pred[positive_class_index_var] > threshold:
+                    new_test_class.append([0 if j != positive_class_index_var else 1 for j in range(nb_classes)])
                 else:
                     new_test_class.append([0 if j != pred.index(max(pred)) else 1 for j in range(nb_classes)])
 

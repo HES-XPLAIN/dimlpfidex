@@ -41,27 +41,27 @@ def convKeras(*args, **kwargs):
         if not kwargs:
             print("Obligatory parameters :")
             print("dataset : mnist, cifar100, cifar10 or fer")
-            print("train_data : train data file")
-            print("train_class : train class file, not mendatory if classes are specified in train_data")
-            print("test_data : test data file")
-            print("test_class : test class file, not mendatory if classes are specified in test_data")
+            print("train_data_file : train data file")
+            print("train_class_file : train class file, not mendatory if classes are specified in train_data_file")
+            print("test_data_file : test data file")
+            print("test_class_file : test class file, not mendatory if classes are specified in test_data_file")
             print("nb_attributes : number of attributes")
             print("nb_classes : number of classes")
             print("----------------------------")
             print("Optional parameters :")
             print("valid_ratio : porcentage(]0,1[) of train data taken for validation (0.1 by default if no valid data)")
-            print("valid_data : validation data file")
-            print("valid_class : validation class file")
+            print("valid_data_file : validation data file")
+            print("valid_class_file : validation class file")
             print("BE CAREFUL if there is validation files, and you want to use fidex algorithms you have to use both train and validation datas for train datas and classes")
             print("normalized : whether image datas are normalized between 0 and 1 (false by default, true if with_hsl)")
-            print("save_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
+            print("root_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
             print("nb_epochs : number of epochs during training(80 by default)")
-            print("train_valid_pred : output train and validation (in this order) prediction file name without extension(predTrain by default)")
-            print("test_pred : output test prediction file name without extension(predTest by default)")
-            print("weights : output weights file name without extension (weights by default)")
-            print("stats : output file name with train and test accuracy (stats.txt by default)")
-            print("output_file : file where you redirect console result")
-            print("nb_stairs : number of stairs in staircase activation function (50 by default)")
+            print("train_valid_pred_file : output train and validation (in this order) prediction file name without extension(predTrain by default)")
+            print("test_pred_file : output test prediction file name without extension(predTest by default)")
+            print("weights_file : output weights file name without extension (weights by default)")
+            print("stats_file : output file name with train and test accuracy (stats.txt by default)")
+            print("console_file : file where you redirect console result")
+            print("nb_quant_levels : number of stairs in staircase activation function (50 by default)")
             print("K : Parameter to improve dynamics (1 by default)")
             print("with_hsl : If you want to change 3-channels data from RGB to HSL format (False by default)")
             print("with_resnet : Training with ResNet (False by default)")
@@ -72,49 +72,49 @@ def convKeras(*args, **kwargs):
 
             # Get parameters
             dataset = kwargs.get('dataset')
-            save_folder = kwargs.get('save_folder')
-            train_data_file = kwargs.get('train_data')
-            train_class_file = kwargs.get('train_class')
-            test_data_file = kwargs.get('test_data')
-            test_class_file = kwargs.get('test_class')
+            root_folder = kwargs.get('root_folder')
+            train_data_file = kwargs.get('train_data_file')
+            train_class_file = kwargs.get('train_class_file')
+            test_data_file = kwargs.get('test_data_file')
+            test_class_file = kwargs.get('test_class_file')
             nb_attributes = kwargs.get('nb_attributes')
             nb_classes = kwargs.get('nb_classes')
             valid_ratio = kwargs.get('valid_ratio')
-            valid_data_file = kwargs.get('valid_data')
-            valid_class_file = kwargs.get('valid_class')
+            valid_data_file = kwargs.get('valid_data_file')
+            valid_class_file = kwargs.get('valid_class_file')
             normalized = kwargs.get('normalized')
-            output_file = kwargs.get('output_file')
-            train_valid_pred_file = kwargs.get('train_valid_pred')
-            test_pred_file = kwargs.get('test_pred')
-            weights_file = kwargs.get('weights')
-            stats_file = kwargs.get('stats')
+            console_file = kwargs.get('console_file')
+            train_valid_pred_file = kwargs.get('train_valid_pred_file')
+            test_pred_file = kwargs.get('test_pred_file')
+            weights_file = kwargs.get('weights_file')
+            stats_file = kwargs.get('stats_file')
             K = kwargs.get('K')
-            quant = kwargs.get('nb_stairs')
+            quant = kwargs.get('nb_quant_levels')
             nb_epochs = kwargs.get('nb_epochs')
             with_hsl = kwargs.get('with_hsl')
             with_resnet = kwargs.get('with_resnet')
             with_vgg = kwargs.get('with_vgg')
             hiknot = 5
             # Redirect output in file
-            if output_file != None:
+            if console_file != None:
                 try:
-                    if (save_folder is not None):
-                        output_file = save_folder + "/" + output_file
-                    sys.stdout = open(output_file, 'w+')
+                    if (root_folder is not None):
+                        console_file = root_folder + "/" + console_file
+                    sys.stdout = open(console_file, 'w+')
                 except (FileNotFoundError):
-                    raise ValueError(f"Error : File {output_file} not found.")
+                    raise ValueError(f"Error : File {console_file} not found.")
                 except (IOError):
-                    raise ValueError(f"Error : Couldn't open file {output_file}.")
+                    raise ValueError(f"Error : Couldn't open file {console_file}.")
 
-            valid_args = ['dataset', 'train_data', 'train_class', 'test_data', 'test_class', 'nb_attributes', 'nb_classes', 'valid_ratio', 'valid_data', 'valid_class', 'normalized', 'save_folder', 'output_file', 'train_valid_pred', 'test_pred', 'weights',
-                          'stats', 'K', 'nb_stairs', 'nb_epochs', 'with_hsl', 'with_resnet', 'with_vgg']
+            valid_args = ['dataset', 'train_data_file', 'train_class_file', 'test_data_file', 'test_class_file', 'nb_attributes', 'nb_classes', 'valid_ratio', 'valid_data_file', 'valid_class_file', 'normalized', 'root_folder', 'console_file', 'train_valid_pred_file', 'test_pred_file', 'weights_file',
+                          'stats_file', 'K', 'nb_quant_levels', 'nb_epochs', 'with_hsl', 'with_resnet', 'with_vgg']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
                 if arg_key not in valid_args:
                     raise ValueError(f"Invalid argument : {arg_key}.")
 
-            save_folder, train_data_file, test_data_file, train_valid_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes  = check_parameters_common(save_folder, train_data_file, test_data_file, train_valid_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
+            root_folder, train_data_file, test_data_file, train_valid_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes  = check_parameters_common(root_folder, train_data_file, test_data_file, train_valid_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
 
             if valid_ratio is None:
                 if (valid_data_file is None and valid_class_file is not None) or (valid_data_file is not None and valid_class_file is None):
@@ -127,8 +127,8 @@ def convKeras(*args, **kwargs):
             elif valid_ratio is not None and (valid_ratio <= 0 or valid_ratio >= 1):
                 raise ValueError('Error : parameter valid_ratio has to be strictly bigger than 0 and strictly smaller than 1.')
 
-            valid_data_file = validate_string_param(valid_data_file, "valid_data", allow_none=True)
-            valid_class_file = validate_string_param(valid_class_file, "valid_class", allow_none=True)
+            valid_data_file = validate_string_param(valid_data_file, "valid_data_file", allow_none=True)
+            valid_class_file = validate_string_param(valid_class_file, "valid_class_file", allow_none=True)
 
             if dataset is None :
                 raise ValueError('Error : dataset name missing, add it with option dataset and choose "mnist" or "cifar100" or "cifar10".')
@@ -167,17 +167,17 @@ def convKeras(*args, **kwargs):
             weights_file, K, quant = check_parameters_dimlp_layer(weights_file, K, quant)
 
             model_checkpoint_weights = "weights.hdf5"
-            if (save_folder is not None):
-                train_data_file = save_folder + "/" + train_data_file
-                test_data_file = save_folder + "/" + test_data_file
+            if (root_folder is not None):
+                train_data_file = root_folder + "/" + train_data_file
+                test_data_file = root_folder + "/" + test_data_file
                 if valid_ratio is None:
-                    valid_data_file = save_folder + "/" + valid_data_file
-                train_valid_pred_file = save_folder + "/" + train_valid_pred_file
-                test_pred_file = save_folder + "/" + test_pred_file
-                weights_file = save_folder + "/" + weights_file
+                    valid_data_file = root_folder + "/" + valid_data_file
+                train_valid_pred_file = root_folder + "/" + train_valid_pred_file
+                test_pred_file = root_folder + "/" + test_pred_file
+                weights_file = root_folder + "/" + weights_file
                 if (stats_file is not None):
-                    stats_file = save_folder + "/" + stats_file
-                model_checkpoint_weights = save_folder + "/" + model_checkpoint_weights
+                    stats_file = root_folder + "/" + stats_file
+                model_checkpoint_weights = root_folder + "/" + model_checkpoint_weights
 
             ###############################################################
 
@@ -192,9 +192,9 @@ def convKeras(*args, **kwargs):
 
             del x_train_full_temp
             if len(y_train_full_temp) == 0:
-                train_class_file = validate_string_param(train_class_file, "train_class")
-                if (save_folder is not None):
-                    train_class_file = save_folder + "/" + train_class_file
+                train_class_file = validate_string_param(train_class_file, "train_class_file")
+                if (root_folder is not None):
+                    train_class_file = root_folder + "/" + train_class_file
                 y_train_full_temp = get_data_class(train_class_file, nb_classes)
             y_train_full = np.array(y_train_full_temp)
             del y_train_full_temp
@@ -204,9 +204,9 @@ def convKeras(*args, **kwargs):
 
             x_test, y_test = get_data(test_data_file, nb_attributes, nb_classes)
             if len(y_test) == 0:
-                test_class_file = validate_string_param(test_class_file, "test_class")
-                if (save_folder is not None):
-                    test_class_file = save_folder + "/" + test_class_file
+                test_class_file = validate_string_param(test_class_file, "test_class_file")
+                if (root_folder is not None):
+                    test_class_file = root_folder + "/" + test_class_file
                 y_test = get_data_class(test_class_file, nb_classes)
             x_test, y_test = np.array(x_test), np.array(y_test)
 
@@ -218,9 +218,9 @@ def convKeras(*args, **kwargs):
                 y_train = y_train_full
                 x_val, y_val = get_data(valid_data_file, nb_attributes, nb_classes)
                 if len(y_val) == 0:
-                    valid_class_file = validate_string_param(valid_class_file, "valid_class")
-                    if (save_folder is not None):
-                        valid_class_file = save_folder + "/" + valid_class_file
+                    valid_class_file = validate_string_param(valid_class_file, "valid_class_file")
+                    if (root_folder is not None):
+                        valid_class_file = root_folder + "/" + valid_class_file
                     y_val = get_data_class(valid_class_file, nb_classes)
                 x_val, y_val = np.array(x_val), np.array(y_val)
 
@@ -556,14 +556,14 @@ def convKeras(*args, **kwargs):
             print(f"\nFull execution time = {full_time} sec")
 
             # Redirect output to terminal
-            if output_file != None:
+            if console_file != None:
                 sys.stdout = sys.__stdout__
 
             return 0
 
     except ValueError as error:
         # Redirect output to terminal
-        if output_file != None:
+        if console_file != None:
             sys.stdout = sys.__stdout__
         print(error)
         return -1
