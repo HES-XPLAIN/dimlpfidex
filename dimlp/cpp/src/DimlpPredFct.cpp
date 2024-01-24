@@ -10,23 +10,23 @@ void GiveAllParamPred()
   cout << "\n-------------------------------------------------\n"
        << std::endl;
 
-  cout << "DimlpPred -T <test set file (path with respect to specified root folder)> ";
-  cout << "-W <file of weights> ";
-  cout << "-I <number of input neurons> -O <number of output neurons>";
+  cout << "DimlpPred --test_data_file <test set file (path with respect to specified root folder)> ";
+  cout << "--weights_file <file of weights> ";
+  cout << "--nb_attributes <number of input neurons> --nb_classes <number of output neurons>";
 
   cout << " <Options>\n"
        << std::endl;
 
   cout << "Options are: \n"
        << std::endl;
-  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  cout << "-p <output prediction file (dimlp.out by default)>";
-  cout << "-r <file where you redirect console result>"; // If we want to redirect console result to file
-  cout << "-H1 <number of neurons in the first hidden layer> ";
+  cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  cout << "--test_pred_file <output prediction file (dimlp.out by default)>";
+  cout << "--console_file <file where you redirect console result>"; // If we want to redirect console result to file
+  cout << "--H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
   cout << "number of input neurons)" << std::endl;
-  cout << "-Hk <number of neurons in the kth hidden layer>" << std::endl;
-  cout << "-q <number of stairs in staircase activation function (50 by default)>" << std::endl;
+  cout << "--Hk <number of neurons in the kth hidden layer>" << std::endl;
+  cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
 
   cout << "\n-------------------------------------------------\n"
        << std::endl;
@@ -72,6 +72,31 @@ static void SaveOutputs(
 }
 
 ////////////////////////////////////////////////////////////
+
+enum ParameterDimlpPredEnum {
+  TEST_DATA_FILE,
+  WEIGHTS_FILE,
+  NB_ATTRIBUTES,
+  NB_CLASSES,
+  ROOT_FOLDER,
+  TEST_PRED_FILE,
+  CONSOLE_FILE,
+  H,
+  NB_QUANT_LEVELS,
+  INVALID
+};
+
+const std::unordered_map<std::string, ParameterDimlpPredEnum> parameterMap = {
+    {"test_data_file", TEST_DATA_FILE},
+    {"weights_file", WEIGHTS_FILE},
+    {"nb_attributes", NB_ATTRIBUTES},
+    {"nb_classes", NB_CLASSES},
+    {"root_folder", ROOT_FOLDER},
+    {"test_pred_file", TEST_PRED_FILE},
+    {"console_file", CONSOLE_FILE},
+    {"H", H},
+    {"nb_quant_levels", NB_QUANT_LEVELS}};
+
 int dimlpPred(const string &command) {
 
   // Save buffer where we output results
@@ -119,94 +144,113 @@ int dimlpPred(const string &command) {
       return 0;
     }
 
-    int k = 1; // We skip "DimlpPred"
-    while (k < nbParam) {
-      if (commandList[k][0] == '-') {
-        k++;
+    int p = 1; // We skip "DimlpPred"
+    while (p < nbParam) {
+      string param = commandList[p];
 
-        if (k >= nbParam) {
+      if (param.substr(0, 2) == "--") {
+        param = param.substr(2);
+        p++;
+
+        if (p >= nbParam) {
           throw CommandArgumentException("Missing something at the end of the command.");
         }
+        const char *arg = commandList[p].c_str();
+        string stringArg = arg;
 
-        char option = commandList[k - 1][1];
-        const char *arg = &(commandList[k])[0];
-        const char *lastArg = &(commandList[k - 1])[0];
-        switch (option) {
-        case 'q':
+        ParameterDimlpPredEnum option;
+        auto it = parameterMap.find(param);
+        if (it != parameterMap.end()) {
+          option = it->second;
+        } else {
+          if (param[0] == 'H') {
+            std::string numberPart = param.substr(1);
+            if (CheckInt(numberPart.c_str())) {
+              option = H;
+            } else {
+              option = INVALID;
+            }
+          } else {
+            option = INVALID;
+          }
+        }
+
+        switch (option) { // After --
+        case NB_QUANT_LEVELS:
           if (CheckInt(arg))
             quant = atoi(arg);
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'I':
+        case NB_ATTRIBUTES:
           if (CheckInt(arg))
             nbIn = atoi(arg);
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'H':
+        case H:
           if (CheckInt(arg)) {
             arch.Insert(atoi(arg));
 
-            const char *ptrParam = lastArg;
+            const char *ptrParam = param.c_str();
 
-            if (ptrParam[2] != '\0') {
-              std::string str(ptrParam + 2);
+            if (ptrParam[1] != '\0') {
+              std::string str(ptrParam + 1);
               archInd.Insert(std::atoi(str.c_str()));
             } else {
               throw CommandArgumentException("Error : Which hidden layer (-H) ?");
             }
           } else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'O':
+        case NB_CLASSES:
           if (CheckInt(arg))
             nbOut = atoi(arg);
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'S':
+        case ROOT_FOLDER:
           rootFolderTemp = arg;
           rootFolderInit = true;
           break;
 
-        case 'W':
+        case WEIGHTS_FILE:
           weightFileTemp = arg;
           weightFileInit = true;
           break;
 
-        case 'p':
+        case TEST_PRED_FILE:
           predFileTemp = arg;
           break;
 
-        case 'r':
+        case CONSOLE_FILE:
           consoleFileTemp = arg;
           consoleFileInit = true;
           break;
 
-        case 'T':
+        case TEST_DATA_FILE:
           testFileTemp = arg;
           testFileInit = true;
           break;
 
         default:
-          throw CommandArgumentException("Illegal option : " + string(lastArg));
+          throw CommandArgumentException("Illegal option : " + param + ".");
         }
       }
 
       else {
-        throw CommandArgumentException("Illegal option : " + string(&(commandList[k])[0]));
+        throw CommandArgumentException("Illegal option : " + string(&(commandList[p])[0]));
       }
 
-      k++;
+      p++;
     }
 
     // ----------------------------------------------------------------------
@@ -260,19 +304,19 @@ int dimlpPred(const string &command) {
     }
 
     if (nbIn == 0) {
-      throw CommandArgumentException("The number of input neurons must be given with option -I.");
+      throw CommandArgumentException("The number of input neurons must be given with option --nb_attributes.");
     }
 
     if (nbOut <= 1) {
-      throw CommandArgumentException("At least two output neurons must be given with option -O.");
+      throw CommandArgumentException("At least two output neurons must be given with option --nb_classes.");
     }
 
     if (weightFileInit == false) {
-      throw CommandArgumentException("Give a file of weights with -W selection please.");
+      throw CommandArgumentException("Give a file of weights with --weights_file selection please.");
     }
 
     if (testFileInit == false) {
-      throw CommandArgumentException("Give a testing file with -T selection please.");
+      throw CommandArgumentException("Give a testing file with --test_data_file selection please.");
     }
 
     else // if (testFileInit != false)
@@ -310,10 +354,10 @@ int dimlpPred(const string &command) {
         vecNbNeurons[0] = nbIn;
         vecNbNeurons[nbLayers - 1] = nbOut;
 
-        for (k = 1, arch.GoToBeg(); k <= arch.GetNbEl(); k++, arch.GoToNext()) {
-          vecNbNeurons[k] = arch.GetVal();
+        for (p = 1, arch.GoToBeg(); p <= arch.GetNbEl(); p++, arch.GoToNext()) {
+          vecNbNeurons[p] = arch.GetVal();
 
-          if (vecNbNeurons[k] == 0) {
+          if (vecNbNeurons[p] == 0) {
             throw InternalError("The number of neurons must be greater than 0.");
           }
         }
@@ -328,10 +372,10 @@ int dimlpPred(const string &command) {
         vecNbNeurons[1] = nbIn;
         vecNbNeurons[nbLayers - 1] = nbOut;
 
-        for (k = 1, arch.GoToBeg(); k <= arch.GetNbEl(); k++, arch.GoToNext()) {
-          vecNbNeurons[k + 1] = arch.GetVal();
+        for (p = 1, arch.GoToBeg(); p <= arch.GetNbEl(); p++, arch.GoToNext()) {
+          vecNbNeurons[p + 1] = arch.GetVal();
 
-          if (vecNbNeurons[k + 1] == 0) {
+          if (vecNbNeurons[p + 1] == 0) {
             throw InternalError("The number of neurons must be greater than 0.");
           }
         }
@@ -358,4 +402,4 @@ int dimlpPred(const string &command) {
   return 0;
 }
 
-// Exemple to launch the code : ./DimlpPred -T datanormTest -W dimlpDatanorm.wts -I 16 -H2 5 -O 2 -q 50 -p dimlpDatanormTest.out -r dimlpDatanormPredResult.txt -S ../dimlp/datafiles
+// Exemple to launch the code : ./DimlpPred --test_data_file datanormTest --weights_file dimlpDatanorm.wts --nb_attributes 16 --H2 5 --nb_classes 2 --nb_quant_levels 50 --test_pred_file dimlpDatanormTest.out --console_file dimlpDatanormPredResult.txt --root_folder ../dimlp/datafiles

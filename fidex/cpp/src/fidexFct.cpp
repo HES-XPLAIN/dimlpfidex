@@ -116,16 +116,6 @@ const std::unordered_map<std::string, ParameterFidexEnum> parameterMap = {
     {"seed", SEED},
     {"invalid", INVALID}};
 
-// Function to get parameter name from identifier
-std::string getParameterName(ParameterFidexEnum id) {
-  for (const auto &pair : parameterMap) {
-    if (pair.second == id) {
-      return pair.first;
-    }
-  }
-  return "unknown";
-}
-
 int fidex(const string &command) {
 
   // Save buffer where we output results
@@ -239,15 +229,15 @@ int fidex(const string &command) {
         const char *arg = commandList[p].c_str();
         string stringArg = arg;
 
-        ParameterFidexEnum par;
+        ParameterFidexEnum option;
         auto it = parameterMap.find(param);
         if (it != parameterMap.end()) {
-          par = it->second;
+          option = it->second;
         } else {
-          par = INVALID;
+          option = INVALID;
         }
 
-        switch (par) { // After --
+        switch (option) { // After --
 
         case TRAIN_DATA_FILE:
           trainDataFileTemp = arg; // Parameter after --train_data_file
@@ -273,7 +263,7 @@ int fidex(const string &command) {
           if (checkPositiveInt(arg) && atoi(arg) > 0) {
             nbAttributes = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(NB_ATTRIBUTES) + ", strictly positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", strictly positive integer requested.");
           }
           break;
 
@@ -281,7 +271,7 @@ int fidex(const string &command) {
           if (checkPositiveInt(arg) && atoi(arg) > 0) {
             nbClasses = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(NB_CLASSES) + ", strictly positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", strictly positive integer requested.");
           }
           break;
 
@@ -314,7 +304,7 @@ int fidex(const string &command) {
           if (checkPositiveInt(arg))
             nbDimlpNets = atoi(arg);
           else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(NB_DIMLP_NETS) + ", positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", positive integer requested.");
           }
 
           break;
@@ -323,7 +313,7 @@ int fidex(const string &command) {
           if (checkPositiveInt(arg)) {
             nbQuantLevels = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(NB_QUANT_LEVELS) + ", positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", positive integer requested.");
           }
           break;
 
@@ -351,7 +341,7 @@ int fidex(const string &command) {
           if (checkPositiveInt(arg)) {
             itMax = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(MAX_ITERATIONS) + ", positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", positive integer requested.");
           }
           break;
 
@@ -359,7 +349,7 @@ int fidex(const string &command) {
           if (checkPositiveInt(arg) && atoi(arg) >= 1) {
             minNbCover = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(MIN_COVERING) + ", integer strictly greater than 1 requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer strictly greater than 1 requested.");
           }
           break;
 
@@ -369,7 +359,7 @@ int fidex(const string &command) {
                            [](unsigned char c) { return std::tolower(c); });
             minCoverStrategy = (stringArg == "true" || stringArg == "1") ? true : false;
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(COVERING_STRATEGY) + ", boolean requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", boolean requested.");
           }
           break;
 
@@ -377,7 +367,7 @@ int fidex(const string &command) {
           if (checkPositiveInt(arg) && atoi(arg) > 0) {
             maxFailedAttempts = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(MAX_FAILED_ATTEMPTS) + ", strictly positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", strictly positive integer requested.");
           }
           break;
 
@@ -385,7 +375,7 @@ int fidex(const string &command) {
           if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
             minFidelity = atof(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(MIN_FIDELITY) + ", float included in [0,1] requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float included in [0,1] requested.");
           }
           break;
 
@@ -394,7 +384,7 @@ int fidex(const string &command) {
             dropoutDimParam = atof(arg);
             dropoutDim = true; // We dropout a bunch of dimensions each iteration (accelerate the processus)
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(DROPOUT_DIM) + ", float included in [0,1] requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float included in [0,1] requested.");
           }
           break;
 
@@ -403,7 +393,7 @@ int fidex(const string &command) {
             dropoutHypParam = atof(arg);
             dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(DROPOUT_HYP) + ", float included in [0,1] requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float included in [0,1] requested.");
           }
           break;
 
@@ -412,7 +402,7 @@ int fidex(const string &command) {
             hasDecisionThreshold = true;
             decisionThreshold = atof(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(DECISION_THRESHOLD) + ", float included in [0,1] requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float included in [0,1] requested.");
           }
           break;
 
@@ -421,7 +411,7 @@ int fidex(const string &command) {
             hasIndexPositiveClass = true;
             indexPositiveClass = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(POSITIVE_CLASS_INDEX) + ", positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", positive integer requested.");
           }
           break;
 
@@ -432,7 +422,7 @@ int fidex(const string &command) {
 
         case MUS:
           if (!checkList(arg)) {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(MUS) + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + string(arg) + ".");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + string(arg) + ".");
           }
           mus = getDoubleVectorFromString(arg);
           hasMus = true;
@@ -440,7 +430,7 @@ int fidex(const string &command) {
 
         case SIGMAS:
           if (!checkList(arg)) {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(SIGMAS) + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + string(arg) + ".");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + string(arg) + ".");
           }
           sigmas = getDoubleVectorFromString(arg);
           hasSigmas = true;
@@ -448,7 +438,7 @@ int fidex(const string &command) {
 
         case NORMALIZATION_INDICES:
           if (!checkList(arg)) {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(NORMALIZATION_INDICES) + ", list in the form [a,b,...,c] without spaces requested, a,b,c are integers. Received " + string(arg) + ".");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", list in the form [a,b,...,c] without spaces requested, a,b,c are integers. Received " + string(arg) + ".");
           }
           normalizationIndices = getIntVectorFromString(arg);
           hasNormalizationIndices = true;
@@ -458,7 +448,7 @@ int fidex(const string &command) {
           if (checkPositiveInt(arg))
             seed = atoi(arg);
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(SEED) + ", positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", positive integer requested.");
 
           break;
 

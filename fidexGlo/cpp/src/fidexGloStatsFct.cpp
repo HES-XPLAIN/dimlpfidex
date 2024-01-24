@@ -102,16 +102,6 @@ const std::unordered_map<std::string, ParameterFidexGloStatsEnum> parameterMap =
     {"positive_class_index", POSITIVE_CLASS_INDEX},
 };
 
-// Function to get parameter name from identifier
-std::string getParameterName(ParameterFidexGloStatsEnum id) {
-  for (const auto &pair : parameterMap) {
-    if (pair.second == id) {
-      return pair.first;
-    }
-  }
-  return "unknown";
-}
-
 int fidexGloStats(const string &command) {
   // Save buffer where we output results
   std::ofstream ofs;
@@ -185,15 +175,15 @@ int fidexGloStats(const string &command) {
         }
         const char *arg = commandList[p].c_str();
 
-        ParameterFidexGloStatsEnum par;
+        ParameterFidexGloStatsEnum option;
         auto it = parameterMap.find(param);
         if (it != parameterMap.end()) {
-          par = it->second;
+          option = it->second;
         } else {
-          par = INVALID;
+          option = INVALID;
         }
 
-        switch (par) { // After --
+        switch (option) { // After --
         case TEST_DATA_FILE:
           testDataFileTemp = arg;
           testDataFileInit = true;
@@ -218,7 +208,7 @@ int fidexGloStats(const string &command) {
           if (checkPositiveInt(arg) && atoi(arg) > 0) {
             nb_attributes = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(NB_ATTRIBUTES) + ", strictly positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", strictly positive integer requested.");
           }
           break;
 
@@ -226,7 +216,7 @@ int fidexGloStats(const string &command) {
           if (checkPositiveInt(arg) && atoi(arg) > 0) {
             nb_classes = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(NB_CLASSES) + ", strictly positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", strictly positive integer requested.");
           }
           break;
 
@@ -260,7 +250,7 @@ int fidexGloStats(const string &command) {
             hasDecisionThreshold = true;
             decisionThreshold = atof(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(DECISION_THRESHOLD) + ", float included in [0,1] requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float included in [0,1] requested.");
           }
           break;
 
@@ -269,7 +259,7 @@ int fidexGloStats(const string &command) {
             hasIndexPositiveClass = true;
             indexPositiveClass = atoi(arg);
           } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(POSITIVE_CLASS_INDEX) + ", positive integer requested.");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", positive integer requested.");
           }
           break;
 

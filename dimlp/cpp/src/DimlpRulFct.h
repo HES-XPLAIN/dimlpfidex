@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <string.h>
+#include <unordered_map>
 #include <vector>
 
 void GiveAllParamDimlpRul();

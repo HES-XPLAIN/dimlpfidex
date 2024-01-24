@@ -12,35 +12,73 @@ void GiveAllParamDimlpRul()
   cout << "\n-------------------------------------------------\n"
        << std::endl;
 
-  cout << "DimlpRul -L <training set file(path with respect to specified root folder)> ";
-  cout << "-W <file of weights> ";
-  cout << "-I <number of input neurons> -O <number of output neurons>";
+  cout << "DimlpRul --train_data_file <training set file(path with respect to specified root folder)> ";
+  cout << "--weights_file <file of weights> ";
+  cout << "--nb_attributes <number of input neurons> --nb_classes <number of output neurons>";
   cout << " <Options>\n"
        << std::endl;
 
   cout << "Options are: \n"
        << std::endl;
-  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  cout << "-A <file of attributes>" << std::endl;
-  cout << "-V <validation set file>" << std::endl;
-  cout << "-T <testing set file>" << std::endl;
-  cout << "-1 <file of train classes>" << std::endl;
-  cout << "-2 <file of test classes>" << std::endl;
-  cout << "-3 <file of validation classes>" << std::endl;
-  cout << "-R <rulesFile (dimlp.rls by default)>" << std::endl;
-  cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
-  cout << "-o <output file with train, test and validation accuracy>" << std::endl;
-  cout << "-H1 <number of neurons in the first hidden layer> ";
+  cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  cout << "--attributes_file <file of attributes>" << std::endl;
+  cout << "--valid_data_file <validation set file>" << std::endl;
+  cout << "--test_data_file <testing set file>" << std::endl;
+  cout << "--train_class_file <file of train classes>" << std::endl;
+  cout << "--test_class_file <file of test classes>" << std::endl;
+  cout << "--valid_class_file <file of validation classes>" << std::endl;
+  cout << "--global_rules_outfile <rulesFile (dimlp.rls by default)>" << std::endl;
+  cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  cout << "--stats_file <output file with train, test and validation accuracy>" << std::endl;
+  cout << "--H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
   cout << "number of input neurons)" << std::endl;
-  cout << "-Hk <number of neurons in the kth hidden layer>" << std::endl;
-  cout << "-q <number of stairs in staircase activation function (50 by default)>" << std::endl;
+  cout << "--Hk <number of neurons in the kth hidden layer>" << std::endl;
+  cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
 
   cout << "\n-------------------------------------------------\n"
        << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
+
+enum ParameterDimlpRulEnum {
+  TRAIN_DATA_FILE,
+  WEIGHTS_FILE,
+  NB_ATTRIBUTES,
+  NB_CLASSES,
+  ROOT_FOLDER,
+  ATTRIBUTES_FILE,
+  VALID_DATA_FILE,
+  TEST_DATA_FILE,
+  TRAIN_CLASS_FILE,
+  TEST_CLASS_FILE,
+  VALID_CLASS_FILE,
+  GLOBAL_RULES_OUTFILE,
+  CONSOLE_FILE,
+  STATS_FILE,
+  H,
+  NB_QUANT_LEVELS,
+  INVALID
+};
+
+const std::unordered_map<std::string, ParameterDimlpRulEnum> parameterMap = {
+    {"train_data_file", TRAIN_DATA_FILE},
+    {"weights_file", WEIGHTS_FILE},
+    {"nb_attributes", NB_ATTRIBUTES},
+    {"nb_classes", NB_CLASSES},
+    {"root_folder", ROOT_FOLDER},
+    {"attributes_file", ATTRIBUTES_FILE},
+    {"valid_data_file", VALID_DATA_FILE},
+    {"test_data_file", TEST_DATA_FILE},
+    {"train_class_file", TRAIN_CLASS_FILE},
+    {"test_class_file", TEST_CLASS_FILE},
+    {"valid_class_file", VALID_CLASS_FILE},
+    {"global_rules_outfile", GLOBAL_RULES_OUTFILE},
+    {"console_file", CONSOLE_FILE},
+    {"stats_file", STATS_FILE},
+    {"H", H},
+    {"nb_quant_levels", NB_QUANT_LEVELS}};
 
 int dimlpRul(const string &command) {
 
@@ -109,129 +147,147 @@ int dimlpRul(const string &command) {
       return 0;
     }
 
-    int k = 1; // We skip "DimlpRul"
-    while (k < nbParam) {
-      if (commandList[k][0] == '-') {
-        k++;
+    int p = 1; // We skip "DimlpRul"
+    while (p < nbParam) {
+      string param = commandList[p];
 
-        if (k >= nbParam) {
+      if (param.substr(0, 2) == "--") {
+        param = param.substr(2);
+        p++;
+
+        if (p >= nbParam) {
           throw CommandArgumentException("Missing something at the end of the command.");
         }
+        const char *arg = commandList[p].c_str();
+        string stringArg = arg;
 
-        char option = commandList[k - 1][1];
-        const char *arg = &(commandList[k])[0];
-        const char *lastArg = &(commandList[k - 1])[0];
-        switch (option) {
-        case 'q':
+        ParameterDimlpRulEnum option;
+        auto it = parameterMap.find(param);
+        if (it != parameterMap.end()) {
+          option = it->second;
+        } else {
+          if (param[0] == 'H') {
+            std::string numberPart = param.substr(1);
+            if (CheckInt(numberPart.c_str())) {
+              option = H;
+            } else {
+              option = INVALID;
+            }
+          } else {
+            option = INVALID;
+          }
+        }
+
+        switch (option) { // After --
+        case NB_QUANT_LEVELS:
           if (CheckInt(arg))
             quant = atoi(arg);
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'I':
+        case NB_ATTRIBUTES:
           if (CheckInt(arg))
             nbIn = atoi(arg);
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'H':
+        case H:
           if (CheckInt(arg)) {
             arch.Insert(atoi(arg));
 
-            const char *ptrParam = lastArg;
+            const char *ptrParam = param.c_str();
 
-            if (ptrParam[2] != '\0') {
-              std::string str(ptrParam + 2);
+            if (ptrParam[1] != '\0') {
+              std::string str(ptrParam + 1);
               archInd.Insert(std::atoi(str.c_str()));
             } else {
               throw CommandArgumentException("Error : Which hidden layer (-H) ?");
             }
           } else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'O':
+        case NB_CLASSES:
           if (CheckInt(arg))
             nbOut = atoi(arg);
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'S':
+        case ROOT_FOLDER:
           rootFolderTemp = arg;
           rootFolderInit = true;
           break;
 
-        case 'A':
+        case ATTRIBUTES_FILE:
           attrFileTemp = arg;
           attrFileInit = true;
           break;
 
-        case 'W':
+        case WEIGHTS_FILE:
           weightFileTemp = arg;
           weightFileInit = true;
           break;
 
-        case 'L':
+        case TRAIN_DATA_FILE:
           learnFileTemp = arg;
           learnFileInit = true;
           break;
 
-        case 'T':
+        case TEST_DATA_FILE:
           testFileTemp = arg;
           testFileInit = true;
           break;
 
-        case 'V':
+        case VALID_DATA_FILE:
           validFileTemp = arg;
           validFileInit = true;
           break;
 
-        case '1':
+        case TRAIN_CLASS_FILE:
           learnTarTemp = arg;
           learnTarInit = true;
           break;
 
-        case '2':
+        case TEST_CLASS_FILE:
           testTarTemp = arg;
           testTarInit = true;
           break;
 
-        case '3':
-
+        case VALID_CLASS_FILE:
           validTarTemp = arg;
           validTarInit = true;
           break;
 
-        case 'R':
+        case GLOBAL_RULES_OUTFILE:
           rulesFileTemp = arg;
           break;
 
-        case 'r':
+        case CONSOLE_FILE:
           consoleFileTemp = arg;
           consoleFileInit = true;
           break;
 
-        case 'o':
+        case STATS_FILE:
           accuracyFileTemp = arg;
           accuracyFileInit = true;
           break;
 
         default:
-          throw CommandArgumentException("Illegal option : " + string(lastArg));
+          throw CommandArgumentException("Illegal option : " + param + ".");
         }
       }
 
       else {
-        throw CommandArgumentException("Illegal option : " + string(&(commandList[k])[0]));
+        throw CommandArgumentException("Illegal option : " + string(&(commandList[p])[0]));
       }
-      k++;
+      p++;
     }
 
     // ----------------------------------------------------------------------
@@ -323,7 +379,7 @@ int dimlpRul(const string &command) {
     // ----------------------------------------------------------------------
 
     if (weightFileInit == false) {
-      throw CommandArgumentException("Give a file of weights with -W selection please.");
+      throw CommandArgumentException("Give a file of weights with --weights_file selection please.");
     }
 
     if (quant <= 2) {
@@ -331,11 +387,11 @@ int dimlpRul(const string &command) {
     }
 
     if (nbIn == 0) {
-      throw CommandArgumentException("The number of input neurons must be given with option -I.");
+      throw CommandArgumentException("The number of input neurons must be given with option --nb_attributes.");
     }
 
     if (nbOut <= 1) {
-      throw CommandArgumentException("At least two output neurons must be given with option -O.");
+      throw CommandArgumentException("At least two output neurons must be given with option --nb_classes.");
     }
 
     // ----------------------------------------------------------------------
@@ -367,10 +423,10 @@ int dimlpRul(const string &command) {
         vecNbNeurons[0] = nbIn;
         vecNbNeurons[nbLayers - 1] = nbOut;
 
-        for (k = 1, arch.GoToBeg(); k <= arch.GetNbEl(); k++, arch.GoToNext()) {
-          vecNbNeurons[k] = arch.GetVal();
+        for (p = 1, arch.GoToBeg(); p <= arch.GetNbEl(); p++, arch.GoToNext()) {
+          vecNbNeurons[p] = arch.GetVal();
 
-          if (vecNbNeurons[k] == 0) {
+          if (vecNbNeurons[p] == 0) {
             throw InternalError("The number of neurons must be greater than 0.");
           }
         }
@@ -385,10 +441,10 @@ int dimlpRul(const string &command) {
         vecNbNeurons[1] = nbIn;
         vecNbNeurons[nbLayers - 1] = nbOut;
 
-        for (k = 1, arch.GoToBeg(); k <= arch.GetNbEl(); k++, arch.GoToNext()) {
-          vecNbNeurons[k + 1] = arch.GetVal();
+        for (p = 1, arch.GoToBeg(); p <= arch.GetNbEl(); p++, arch.GoToNext()) {
+          vecNbNeurons[p + 1] = arch.GetVal();
 
-          if (vecNbNeurons[k + 1] == 0) {
+          if (vecNbNeurons[p + 1] == 0) {
             throw InternalError("The number of neurons must be greater than 0.");
           }
         }
@@ -398,7 +454,7 @@ int dimlpRul(const string &command) {
     // ----------------------------------------------------------------------
 
     if (learnFileInit == false) {
-      throw CommandArgumentException("Give the training file with -L selection please.");
+      throw CommandArgumentException("Give the training file with --train_data_file selection please.");
     }
 
     if (learnTarInit != false) {
@@ -589,4 +645,4 @@ int dimlpRul(const string &command) {
   return 0;
 }
 
-// Exemple to launch the code : dimlp.dimlpRul("DimlpRul -L datanormTrain -1 dataclass2Train -W dimlpDatanorm.wts -T datanormTest -2 dataclass2Test -I 16 -H2 5 -O 2 -R dimlpDatanormRul.rls -o dimlpDatanormRulStats -r dimlpDatanormRulResult.txt -S dimlp/datafiles")
+// Exemple to launch the code : dimlp.dimlpRul("DimlpRul --train_data_file datanormTrain --train_class_file dataclass2Train --weights_file dimlpDatanorm.wts --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --global_rules_outfile dimlpDatanormRul.rls --stats_file dimlpDatanormRulStats --console_file dimlpDatanormRulResult.txt --root_folder dimlp/datafiles")
