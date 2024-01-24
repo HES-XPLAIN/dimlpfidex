@@ -31,6 +31,7 @@
 // -z <seed (0=random, default)>
 // -------------------------------------------------
 
+#include "../../../fidexCommon/cpp/src/parameters.h"
 #include "../src/fidexGloRulesFct.h"
 #include <map>
 
@@ -38,13 +39,13 @@
 #define PROGRAM_NAME "fidexGloRules"
 #define DATA_FOLDER "./dataset/data/"
 #define OUT_FOLDER "./dataset/out/"
+#define JSON_CONFIG_FILE "/home/eldado/Documents/hepia/dimlpfidex-json/dimlpfidex/fidexGlo/cpp/tests/config.json"
 
 // default paths
 #define TRAIN_FILE DATA_FOLDER "train.txt"
 #define TRAIN_PRED_FILE DATA_FOLDER "train.out"
 #define TRAIN_TRUE_CLASS_FILE DATA_FOLDER "train_true_classes.txt"
 #define WEIGHTS_FILE DATA_FOLDER "weights.txt"
-#define JSON_CONFIG_FILE DATA_FOLDER "config.json"
 #define TXT_IN_RULES_FILE DATA_FOLDER "rules.txt"
 #define TXT_OUT_RULES_FILE OUT_FOLDER "new_rules.txt"
 #define JSON_IN_RULES_FILE DATA_FOLDER "rules.json"

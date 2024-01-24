@@ -9,10 +9,7 @@
  *
  * @param args program arguments
  */
-Parameters::Parameters(vector<string> args) {
-  for (auto a : args) {
-    cout << a << endl;
-  }
+Parameters::Parameters(const vector<string> &args) {
   for (int p = 1; p < args.size(); p++) {
     string param = args[p];
 
@@ -25,179 +22,176 @@ Parameters::Parameters(vector<string> args) {
       }
       const char *arg = args[p].c_str();
 
-      ParameterCode option;
-      auto it = parameterNames.find(param);
-      if (it != parameterNames.end()) {
-        option = it->second;
-      } else {
-        option = INVALID;
-      }
-
-      switch (option) { // After --
-
-      case TRAIN_DATA_FILE:
-        setString(TRAIN_DATA_FILE, arg); // Parameter after -T
-        break;
-
-      case TRAIN_PRED_FILE:
-        setString(TRAIN_PRED_FILE, arg);
-        break;
-
-      case NB_ATTRIBUTES:
-        setInt(NB_ATTRIBUTES, arg);
-        break;
-
-      case NB_CLASSES:
-        setInt(NB_CLASSES, arg);
-        break;
-
-      case TRAIN_CLASS_FILE:
-        setString(TRAIN_CLASS_FILE, arg);
-        break;
-
-      case WEIGHTS_FILE:
-        setString(WEIGHTS_FILE, arg);
-        break;
-
-      case RULES_FILE:
-        setString(RULES_FILE, arg);
-        break;
-
-      case NB_DIMLP_NETS:
-        setInt(NB_DIMLP_NETS, arg);
-        break;
-
-      case NB_QUANT_LEVELS:
-        setInt(NB_QUANT_LEVELS, arg);
-        break;
-
-      case RULES_OUTFILE:
-        setString(RULES_OUTFILE, arg);
-        break;
-
-      case CONSOLE_FILE:
-        setString(CONSOLE_FILE, arg);
-        break;
-
-      case ATTRIBUTES_FILE:
-        setString(ATTRIBUTES_FILE, arg);
-        break;
-
-      case ROOT_FOLDER:
-        setString(ROOT_FOLDER, arg);
-        break;
-
-      case HEURISTIC:
-        setInt(HEURISTIC, arg);
-        break;
-
-      case MAX_ITERATIONS:
-        setInt(MAX_ITERATIONS, arg);
-        break;
-
-      case MIN_COVERING:
-        setInt(MIN_COVERING, arg);
-        break;
-
-      case NB_THREADS:
-        setInt(NB_THREADS, arg);
-        break;
-
-      case MIN_FIDELITY:
-        setFloat(MIN_FIDELITY, arg);
-        break;
-
-      case DROPOUT_DIM:
-        setFloat(DROPOUT_DIM, arg);
-        break;
-
-      case DROPOUT_HYP:
-        setFloat(DROPOUT_HYP, arg);
-        break;
-
-      case MAX_FAILED_ATTEMPTS:
-        setInt(MAX_FAILED_ATTEMPTS, arg);
-        break;
-
-      case DECISION_THRESHOLD:
-        setFloat(DECISION_THRESHOLD, arg);
-        break;
-
-      case POSITIVE_CLASS_INDEX:
-        setInt(POSITIVE_CLASS_INDEX, arg);
-        break;
-
-      case NORMALIZATION_FILE:
-        setString(NORMALIZATION_FILE, arg);
-        break;
-
-      case MUS:
-        setDoubleVector(MUS, arg);
-        break;
-
-      case SIGMAS:
-        setDoubleVector(SIGMAS, arg);
-        break;
-
-      case NORMALIZATION_INDICES:
-        setIntVector(NORMALIZATION_INDICES, arg);
-        break;
-
-      case SEED:
-        setInt(SEED, arg);
-        break;
-
-      default: // If we put another -X option
-        throw CommandArgumentException("Illegal option : " + param);
-      }
+      parseArg(param, arg);
     }
   }
-
-  // updating paths of files
-  setRootDirectory(TRAIN_DATA_FILE);
-  setRootDirectory(TRAIN_PRED_FILE);
-  setRootDirectory(TRAIN_CLASS_FILE);
-  setRootDirectory(RULES_FILE);
-  setRootDirectory(RULES_OUTFILE);
-  setRootDirectory(CONSOLE_FILE);
-  setRootDirectory(ROOT_FOLDER);
-  setRootDirectory(ATTRIBUTES_FILE);
-  setRootDirectory(WEIGHTS_FILE);
-  setRootDirectory(NORMALIZATION_FILE);
 }
 
-Parameters::Parameters(string jsonfile) {
+Parameters::Parameters(const string &jsonfile) {
   ifstream ifs;
-  vector<Rule> result;
-
-  ifs.open(jsonfile, ifstream::in);
+  ifs.open(jsonfile);
+  vector<string> args;
 
   if (!ifs.is_open() || ifs.fail()) {
     throw FileNotFoundError("JSON file to parse named '" + jsonfile + "' was not found, cannot proceed.");
   }
 
-  cout << ifs.rdbuf();
+  Json jsonData = Json::parse(ifs);
 
-  // TODO continue here
-
-  // doc.ParseStream(isw);
-
-  // if (doc.HasParseError()) {
-  //   std::cout << "Error  : " << doc.GetParseError() << '\n'
-  //             << "Offset : " << doc.GetErrorOffset() << '\n';
-  // }
+  for (auto &item : jsonData.items()) {
+    parseArg(item.key(), to_string(item.value()).c_str());
+  }
 }
 
-// TODO: (nice to have) use generic types to avoid code duplication
+void Parameters::parseArg(const string &param, const char *arg) {
+  ParameterCode option;
+  auto it = parameterNames.find(param);
+  if (it != parameterNames.end()) {
+    option = it->second;
+  } else {
+    option = INVALID;
+  }
+
+  switch (option) { // After --
+
+  case TRAIN_DATA_FILE:
+    setString(TRAIN_DATA_FILE, arg); // Parameter after -T
+    break;
+
+  case TRAIN_PRED_FILE:
+    setString(TRAIN_PRED_FILE, arg);
+    break;
+
+  case NB_ATTRIBUTES:
+    setInt(NB_ATTRIBUTES, arg);
+    break;
+
+  case NB_CLASSES:
+    setInt(NB_CLASSES, arg);
+    break;
+
+  case TRAIN_CLASS_FILE:
+    setString(TRAIN_CLASS_FILE, arg);
+    break;
+
+  case WEIGHTS_FILE:
+    setString(WEIGHTS_FILE, arg);
+    break;
+
+  case RULES_FILE:
+    setString(RULES_FILE, arg);
+    break;
+
+  case NB_DIMLP_NETS:
+    setInt(NB_DIMLP_NETS, arg);
+    break;
+
+  case NB_QUANT_LEVELS:
+    setInt(NB_QUANT_LEVELS, arg);
+    break;
+
+  case RULES_OUTFILE:
+    setString(RULES_OUTFILE, arg);
+    break;
+
+  case CONSOLE_FILE:
+    setString(CONSOLE_FILE, arg);
+    break;
+
+  case ATTRIBUTES_FILE:
+    setString(ATTRIBUTES_FILE, arg);
+    break;
+
+  case ROOT_FOLDER:
+    setString(ROOT_FOLDER, arg);
+    break;
+
+  case HEURISTIC:
+    setInt(HEURISTIC, arg);
+    break;
+
+  case MAX_ITERATIONS:
+    setInt(MAX_ITERATIONS, arg);
+    break;
+
+  case MIN_COVERING:
+    setInt(MIN_COVERING, arg);
+    break;
+
+  case NB_THREADS:
+    setInt(NB_THREADS, arg);
+    break;
+
+  case MIN_FIDELITY:
+    setFloat(MIN_FIDELITY, arg);
+    break;
+
+  case DROPOUT_DIM:
+    setFloat(DROPOUT_DIM, arg);
+    break;
+
+  case DROPOUT_HYP:
+    setFloat(DROPOUT_HYP, arg);
+    break;
+
+  case MAX_FAILED_ATTEMPTS:
+    setInt(MAX_FAILED_ATTEMPTS, arg);
+    break;
+
+  case DECISION_THRESHOLD:
+    setFloat(DECISION_THRESHOLD, arg);
+    break;
+
+  case POSITIVE_CLASS_INDEX:
+    setInt(POSITIVE_CLASS_INDEX, arg);
+    break;
+
+  case NORMALIZATION_FILE:
+    setString(NORMALIZATION_FILE, arg);
+    break;
+
+  case MUS:
+    setDoubleVector(MUS, arg);
+    break;
+
+  case SIGMAS:
+    setDoubleVector(SIGMAS, arg);
+    break;
+
+  case NORMALIZATION_INDICES:
+    setIntVector(NORMALIZATION_INDICES, arg);
+    break;
+
+  case SEED:
+    setInt(SEED, arg);
+    break;
+
+  default: // If we put another -X option
+    throw CommandArgumentException("Illegal option : " + param);
+  }
+
+  // updating paths of files
+  if (isStringSet(ROOT_FOLDER)) {
+    setRootDirectory(TRAIN_DATA_FILE);
+    setRootDirectory(TRAIN_PRED_FILE);
+    setRootDirectory(TRAIN_CLASS_FILE);
+    setRootDirectory(RULES_FILE);
+    setRootDirectory(RULES_OUTFILE);
+    setRootDirectory(CONSOLE_FILE);
+    setRootDirectory(ATTRIBUTES_FILE);
+    setRootDirectory(WEIGHTS_FILE);
+    setRootDirectory(NORMALIZATION_FILE);
+  }
+}
 
 // private setters
-void Parameters::setInt(ParameterCode id, string value) {
+void Parameters::setInt(ParameterCode id, const string &value) {
   if (isIntSet(id)) {
     throwAlreadySetArgumentException(id, value);
   }
 
   try {
-    _intParams[id] = stof(value, nullptr);
+    _intParams[id] = stoi(value, nullptr);
   } catch (exception &e) { // out_of_range & invalid_argument are thrown
     throwInvalidDataTypeException(id, value, "integer");
   }
@@ -211,7 +205,7 @@ void Parameters::setInt(ParameterCode id, int value) {
   _intParams[id] = value;
 }
 
-void Parameters::setFloat(ParameterCode id, string value) {
+void Parameters::setFloat(ParameterCode id, const string &value) {
   if (isFloatSet(id)) {
     throwAlreadySetArgumentException(id, value);
   }
@@ -231,13 +225,13 @@ void Parameters::setFloat(ParameterCode id, float value) {
   _floatParams[id] = value;
 }
 
-void Parameters::setDouble(ParameterCode id, string value) {
+void Parameters::setDouble(ParameterCode id, const string &value) {
   if (isDoubleSet(id)) {
     throwAlreadySetArgumentException(id, value);
   }
 
   try {
-    _doubleParams[id] = stof(value, nullptr);
+    _doubleParams[id] = stod(value, nullptr);
   } catch (exception &e) { // out_of_range & invalid_argument are thrown
     throwInvalidDataTypeException(id, value, "double");
   }
@@ -251,7 +245,7 @@ void Parameters::setDouble(ParameterCode id, double value) {
   _doubleParams[id] = value;
 }
 
-void Parameters::setDoubleVector(ParameterCode id, string value) {
+void Parameters::setDoubleVector(ParameterCode id, const string &value) {
   if (isDoubleVectorSet(id)) {
     throwAlreadySetArgumentException(id, value);
   }
@@ -266,7 +260,7 @@ void Parameters::setDoubleVector(ParameterCode id, vector<double> value) {
   _doubleVectorParams[id] = value;
 }
 
-void Parameters::setIntVector(ParameterCode id, string value) {
+void Parameters::setIntVector(ParameterCode id, const string &value) {
   if (isIntVectorSet(id)) {
     throwAlreadySetArgumentException(id, value);
   }
@@ -281,7 +275,7 @@ void Parameters::setIntVector(ParameterCode id, vector<int> value) {
   _intVectorParams[id] = value;
 }
 
-void Parameters::setString(ParameterCode id, string value) {
+void Parameters::setString(ParameterCode id, const string &value) {
   if (isStringSet(id)) {
     throwAlreadySetArgumentException(id, value);
   }
@@ -461,17 +455,17 @@ void Parameters::setDefaultDouble(ParameterCode id, double defaultValue) {
     setDouble(id, defaultValue);
 }
 
-void Parameters::setDefaultDoubleVector(ParameterCode id, string defaultValue) {
+void Parameters::setDefaultDoubleVector(ParameterCode id, const string &defaultValue) {
   if (!isDoubleVectorSet(id))
     setDoubleVector(id, defaultValue);
 }
 
-void Parameters::setDefaultIntVector(ParameterCode id, string defaultValue) {
+void Parameters::setDefaultIntVector(ParameterCode id, const string &defaultValue) {
   if (!isIntVectorSet(id))
     setIntVector(id, defaultValue);
 }
 
-void Parameters::setDefaultString(ParameterCode id, string defaultValue) {
+void Parameters::setDefaultString(ParameterCode id, const string &defaultValue) {
   if (!isStringSet(id))
     setString(id, defaultValue);
 }

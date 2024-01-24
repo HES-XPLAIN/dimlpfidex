@@ -115,13 +115,17 @@ vector<Rule> Rule::fromJsonFile(const string &filename) {
     return result;
   }
 
-  cout << "About to deserialize Rules" << endl;
   result = jsonData["rules"];
-  cout << "Rules deserialized !" << endl;
 
   return result;
 }
 
+/**
+ * @brief writes automatically a vector of rules into a JSON file
+ *
+ * @param filename name of the file to be written
+ * @param rules vector of rules to be written
+ */
 // TODO test this
 void Rule::toJsonFile(const string &filename, const vector<Rule> &rules) {
   ofstream ofs(filename);

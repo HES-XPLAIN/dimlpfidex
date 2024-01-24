@@ -20,11 +20,19 @@ void test_train_data_file() {
   }
 }
 
+void test_parameters_from_json_file() {
+  // auto p = Parameters(DEFAULT_ARGS);
+  auto p = Parameters(JSON_CONFIG_FILE);
+
+  cout << p;
+}
+
 // TODO continue here
 
 int main(int argc, char **argv) {
-  test_help_output();
-  test_train_data_file();
+  // test_help_output();
+  // test_train_data_file();
+  test_parameters_from_json_file();
 
   return EXIT_SUCCESS;
 }

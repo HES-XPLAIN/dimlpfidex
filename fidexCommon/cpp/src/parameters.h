@@ -94,43 +94,46 @@ private:
   map<ParameterCode, string> _stringParams;
   vector<string> _weightFiles; // the only 1 special parameter
 
+  // private parser
+  void parseArg(const string &param, const char *arg);
+
   // setters handle formatting from string argument
-  void setInt(ParameterCode id, string value);
+  void setInt(ParameterCode id, const string &value);
   void setInt(ParameterCode id, int value);
-  void setFloat(ParameterCode id, string value);
+  void setFloat(ParameterCode id, const string &value);
   void setFloat(ParameterCode id, float value);
-  void setDouble(ParameterCode id, string value);
+  void setDouble(ParameterCode id, const string &value);
   void setDouble(ParameterCode id, double value);
-  void setDoubleVector(ParameterCode id, string value);
-  void setIntVector(ParameterCode id, string value);
-  void setString(ParameterCode id, string value);
+  void setDoubleVector(ParameterCode id, const string &value);
+  void setIntVector(ParameterCode id, const string &value);
+  void setString(ParameterCode id, const string &value);
   void setRootDirectory(ParameterCode id);
 
-  void throwInvalidDataTypeException(ParameterCode id, const string &wrongValue, const string &typeName) {
+  void throwInvalidDataTypeException(ParameterCode id, const string &wrongValue, const string &typeName) const {
     throw CommandArgumentException("Parsing error: argument (ID " + getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid " + typeName + ".");
   }
 
-  void throwAlreadySetArgumentException(ParameterCode id, const string &value) {
+  void throwAlreadySetArgumentException(ParameterCode id, const string &value) const {
     throw CommandArgumentException("Parsing error: argument (ID " + getParameterName(id) + ") with value \"" + value + "\" is already set, cannot override it.");
   }
 
-  void throwArgumentNotFoundException(ParameterCode id) {
+  void throwArgumentNotFoundException(ParameterCode id) const {
     throw CommandArgumentException("Parameters error: argument (ID " + getParameterName(id) + ") requested was not found, try to rerun including it.");
   }
 
 public:
   // constructor
   Parameters() = default;
-  Parameters(vector<string> args);
-  Parameters(string jsonfile);
+  Parameters(const vector<string> &args);
+  Parameters(const string &jsonfile);
 
   // default setter if value not set
   void setDefaultInt(ParameterCode id, int value);
   void setDefaultFloat(ParameterCode id, float value);
   void setDefaultDouble(ParameterCode id, double value);
-  void setDefaultDoubleVector(ParameterCode id, string value);
-  void setDefaultIntVector(ParameterCode id, string value);
-  void setDefaultString(ParameterCode id, string value);
+  void setDefaultDoubleVector(ParameterCode id, const string &defaultValue);
+  void setDefaultIntVector(ParameterCode id, const string &defaultValue);
+  void setDefaultString(ParameterCode id, const string &defaultValue);
 
   // public setter
   void setIntVector(ParameterCode id, vector<int> value);
