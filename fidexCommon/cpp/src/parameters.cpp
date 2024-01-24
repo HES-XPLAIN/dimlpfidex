@@ -10,6 +10,9 @@
  * @param args program arguments
  */
 Parameters::Parameters(vector<string> args) {
+  for (auto a : args) {
+    cout << a << endl;
+  }
   for (int p = 1; p < args.size(); p++) {
     string param = args[p];
 
@@ -175,6 +178,8 @@ Parameters::Parameters(string jsonfile) {
 
   cout << ifs.rdbuf();
 
+  // TODO continue here
+
   // doc.ParseStream(isw);
 
   // if (doc.HasParseError()) {
@@ -191,12 +196,9 @@ void Parameters::setInt(ParameterCode id, string value) {
     throwAlreadySetArgumentException(id, value);
   }
 
-  size_t size = 0;
-  int formattedValue = stoi(value, &size);
-
-  if (value.size() == size) {
-    _intParams[id] = formattedValue;
-  } else {
+  try {
+    _intParams[id] = stof(value, nullptr);
+  } catch (exception &e) { // out_of_range & invalid_argument are thrown
     throwInvalidDataTypeException(id, value, "integer");
   }
 }
@@ -214,12 +216,9 @@ void Parameters::setFloat(ParameterCode id, string value) {
     throwAlreadySetArgumentException(id, value);
   }
 
-  size_t size = 0;
-  float formattedValue = stof(value, &size);
-
-  if (value.size() == size) {
-    _floatParams[id] = formattedValue;
-  } else {
+  try {
+    _floatParams[id] = stof(value, nullptr);
+  } catch (exception &e) { // out_of_range & invalid_argument are thrown
     throwInvalidDataTypeException(id, value, "float");
   }
 }
@@ -237,12 +236,9 @@ void Parameters::setDouble(ParameterCode id, string value) {
     throwAlreadySetArgumentException(id, value);
   }
 
-  size_t size = 0;
-  double formattedValue = stod(value, &size);
-
-  if (value.size() == size) {
-    _doubleParams[id] = formattedValue;
-  } else {
+  try {
+    _doubleParams[id] = stof(value, nullptr);
+  } catch (exception &e) { // out_of_range & invalid_argument are thrown
     throwInvalidDataTypeException(id, value, "double");
   }
 }
