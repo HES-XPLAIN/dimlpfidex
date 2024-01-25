@@ -601,7 +601,6 @@ tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> 
  * @return int
  */
 int fidexGloRules(const string &command) {
-  throw InternalError("Error : the size of hyperLocus - is not a multiple of the number of attributs - ");
   // Save buffer where we output results
   ofstream ofs;
   streambuf *cout_buff = cout.rdbuf(); // Save old buf
