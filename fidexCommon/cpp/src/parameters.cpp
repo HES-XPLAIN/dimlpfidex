@@ -29,7 +29,7 @@ Parameters::Parameters(const vector<string> &args) {
     setRootDirectory(TRAIN_PRED_FILE);
     setRootDirectory(TRAIN_CLASS_FILE);
     setRootDirectory(RULES_FILE);
-    setRootDirectory(RULES_OUTFILE);
+    setRootDirectory(GLOBAL_RULES_OUTFILE);
     setRootDirectory(CONSOLE_FILE);
     setRootDirectory(ATTRIBUTES_FILE);
     setRootDirectory(WEIGHTS_FILE);
@@ -63,7 +63,7 @@ Parameters::Parameters(const string &jsonfile) {
     setRootDirectory(TRAIN_PRED_FILE);
     setRootDirectory(TRAIN_CLASS_FILE);
     setRootDirectory(RULES_FILE);
-    setRootDirectory(RULES_OUTFILE);
+    setRootDirectory(GLOBAL_RULES_OUTFILE);
     setRootDirectory(CONSOLE_FILE);
     setRootDirectory(ATTRIBUTES_FILE);
     setRootDirectory(WEIGHTS_FILE);
@@ -94,7 +94,7 @@ void Parameters::parseArg(const string &param, const char *arg) {
   switch (option) {
 
   case TRAIN_DATA_FILE:
-    setString(TRAIN_DATA_FILE, arg);
+    setString(TRAIN_DATA_FILE, arg); // Parameter after -T
     break;
 
   case TRAIN_PRED_FILE:
@@ -129,8 +129,8 @@ void Parameters::parseArg(const string &param, const char *arg) {
     setInt(NB_QUANT_LEVELS, arg);
     break;
 
-  case RULES_OUTFILE:
-    setString(RULES_OUTFILE, arg);
+  case GLOBAL_RULES_OUTFILE:
+    setString(GLOBAL_RULES_OUTFILE, arg);
     break;
 
   case CONSOLE_FILE:
@@ -415,7 +415,7 @@ bool Parameters::isIntVectorSet(ParameterCode id) {
   return _intVectorParams.find(id) != _intVectorParams.end();
 }
 
-bool Parameters::isStringSet(ParameterCode id) {
+bool Parameters::isStringSet(ParameterCode id) const {
   return _stringParams.find(id) != _stringParams.end();
 }
 

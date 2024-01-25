@@ -10,48 +10,110 @@ void GiveAllParamDimlpBT()
   cout << "\n-------------------------------------------------\n"
        << std::endl;
 
-  cout << "DimlpBT -L <training set file(path with respect to specified root folder)> ";
-  cout << "-I <number of input neurons> -O <number of output neurons>";
+  cout << "DimlpBT --train_data_file <training set file(path with respect to specified root folder)> ";
+  cout << "--nb_attributes <number of input neurons> --nb_classes <number of output neurons>";
 
   cout << " <Options>\n"
        << std::endl;
 
   cout << "Options are: \n"
        << std::endl;
-  cout << "-S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  cout << "-N <number of networks (25 by default)>" << std::endl;
-  cout << "-A <file of attributes>" << std::endl;
-  cout << "-T <testing set file>" << std::endl;
-  cout << "-1 <file of train classes>" << std::endl;
-  cout << "-2 <file of test classes>" << std::endl;
-  cout << "-r <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
-  cout << "-w <output weights generic name file(without .wts, dimlpBT by default)>" << std::endl;
-  cout << "-p <output train prediction file (dimlpBT.out by default)>" << std::endl;
-  cout << "-t <output test prediction file (dimlpBTTest.out by default)>" << std::endl;
-  cout << "-o <output file with train, test and validation accuracy and with the global accuracy for train and test>" << std::endl;
-  cout << "-H1 <number of neurons in the first hidden layer> ";
+  cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  cout << "--nb_dimlp_nets <number of networks (25 by default)>" << std::endl;
+  cout << "--attributes_file <file of attributes>" << std::endl;
+  cout << "--test_data_file <testing set file>" << std::endl;
+  cout << "--train_class_file <file of train classes>" << std::endl;
+  cout << "--test_class_file <file of test classes>" << std::endl;
+  cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  cout << "--weights_generic_filename <output weights generic name file(without .wts, dimlpBT by default)>" << std::endl;
+  cout << "--train_pred_file <output train prediction file (dimlpBT.out by default)>" << std::endl;
+  cout << "--test_pred_file <output test prediction file (dimlpBTTest.out by default)>" << std::endl;
+  cout << "--stats_file <output file with train, test and validation accuracy and with the global accuracy for train and test>" << std::endl;
+  cout << "--H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
   cout << "number of input neurons)" << std::endl;
-  cout << "-Hk <number of neurons in the kth hidden layer>" << std::endl;
-  cout << "-R (RULE EXTRACTION)" << std::endl;
-  cout << "-F <extraction ruleFile>" << std::endl; // If we want to extract rules in a rulesFile instead of console
-  cout << "-l <back-propagation learning parameter (Eta, 0.1 by default)>" << std::endl;
-  cout << "-m <back-propagation momentum parameter (Mu, 0.6 by default)>" << std::endl;
-  cout << "-f <back-propagation flat spot elimination parameter (Flat, 0.01 by default)>" << std::endl;
-  cout << "-q <number of stairs in staircase activation function (50 by default)>" << std::endl;
-  cout << "-e <error threshold (-1111111111 by default)>" << std::endl;
-  cout << "-a <accuracy threshold (11111111111111 by default)>" << std::endl;
-  cout << "-d <absolute difference error threshold>" << std::endl;
-  cout << "-i <number of epochs (0 by default)>" << std::endl;
-  cout << "-s <number of epochs to show error (1500 by default)>" << std::endl;
-  cout << "-n <number of examples for one single network (10 by default)>" << std::endl;
-  cout << "-z <seed (0=random, default)>";
+  cout << "--Hk <number of neurons in the kth hidden layer>" << std::endl;
+  cout << "--with_rule_extraction (RULE EXTRACTION)" << std::endl;
+  cout << "--global_rules_outfile <extraction ruleFile>" << std::endl; // If we want to extract rules in a rulesFile instead of console
+  cout << "--learning_rate <back-propagation learning parameter (Eta, 0.1 by default)>" << std::endl;
+  cout << "--momentum <back-propagation momentum parameter (Mu, 0.6 by default)>" << std::endl;
+  cout << "--flat <back-propagation flat spot elimination parameter (Flat, 0.01 by default)>" << std::endl;
+  cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
+  cout << "--error_thresh <error threshold (-1111111111 by default)>" << std::endl;
+  cout << "--acc_thresh <accuracy threshold (11111111111111 by default)>" << std::endl;
+  cout << "--abs_error_thresh <absolute difference error threshold>" << std::endl;
+  cout << "--nb_epochs <number of epochs (0 by default)>" << std::endl;
+  cout << "--nb_epochs_error <number of epochs to show error (1500 by default)>" << std::endl;
+  cout << "--nb_ex_per_net <number of examples for one single network (10 by default)>" << std::endl;
+  cout << "--seed <seed (0=random, default)>";
 
   cout << "\n-------------------------------------------------\n"
        << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
+
+enum ParameterDimlpBTEnum {
+  TRAIN_DATA_FILE,
+  NB_ATTRIBUTES,
+  NB_CLASSES,
+  ROOT_FOLDER,
+  NB_DIMLP_NETS,
+  ATTRIBUTES_FILE,
+  TEST_DATA_FILE,
+  TRAIN_CLASS_FILE,
+  TEST_CLASS_FILE,
+  CONSOLE_FILE,
+  WEIGHTS_GENERIC_FILENAME,
+  TRAIN_PRED_FILE,
+  TEST_PRED_FILE,
+  STATS_FILE,
+  H,
+  WITH_RULE_EXTRACTION,
+  GLOBAL_RULES_OUTFILE,
+  LEARNING_RATE,
+  MOMENTUM,
+  FLAT,
+  NB_QUANT_LEVELS,
+  ERROR_THRESH,
+  ACC_THRESH,
+  ABS_ERROR_THRESH,
+  NB_EPOCHS,
+  NB_EPOCHS_ERROR,
+  NB_EX_PER_NET,
+  SEED,
+  INVALID
+};
+
+const std::unordered_map<std::string, ParameterDimlpBTEnum> parameterMap = {
+    {"train_data_file", TRAIN_DATA_FILE},
+    {"nb_attributes", NB_ATTRIBUTES},
+    {"nb_classes", NB_CLASSES},
+    {"root_folder", ROOT_FOLDER},
+    {"nb_dimlp_nets", NB_DIMLP_NETS},
+    {"attributes_file", ATTRIBUTES_FILE},
+    {"test_data_file", TEST_DATA_FILE},
+    {"train_class_file", TRAIN_CLASS_FILE},
+    {"test_class_file", TEST_CLASS_FILE},
+    {"console_file", CONSOLE_FILE},
+    {"weights_generic_filename", WEIGHTS_GENERIC_FILENAME},
+    {"train_pred_file", TRAIN_PRED_FILE},
+    {"test_pred_file", TEST_PRED_FILE},
+    {"stats_file", STATS_FILE},
+    {"H", H},
+    {"with_rule_extraction", WITH_RULE_EXTRACTION},
+    {"global_rules_outfile", GLOBAL_RULES_OUTFILE},
+    {"learning_rate", LEARNING_RATE},
+    {"momentum", MOMENTUM},
+    {"flat", FLAT},
+    {"nb_quant_levels", NB_QUANT_LEVELS},
+    {"error_thresh", ERROR_THRESH},
+    {"acc_thresh", ACC_THRESH},
+    {"abs_error_thresh", ABS_ERROR_THRESH},
+    {"nb_epochs", NB_EPOCHS},
+    {"nb_epochs_error", NB_EPOCHS_ERROR},
+    {"nb_ex_per_net", NB_EX_PER_NET},
+    {"seed", SEED}};
 
 int dimlpBT(const string &command) {
   // Save buffer where we output results
@@ -143,226 +205,245 @@ int dimlpBT(const string &command) {
       return 0;
     }
 
-    int k = 1; // We skip "DimlpBT"
-    while (k < nbParam) {
-      if (commandList[k][0] == '-') {
-        k++;
+    int p = 1; // We skip "DimlpBT"
+    while (p < nbParam) {
+      string param = commandList[p];
 
-        if (k >= nbParam && commandList[k - 1][1] != 'R') {
+      if (param.substr(0, 2) == "--") {
+        param = param.substr(2);
+        p++;
+
+        if (p >= nbParam) {
           throw CommandArgumentException("Missing something at the end of the command.");
         }
+        const char *arg = commandList[p].c_str();
+        string stringArg = arg;
 
-        char option = commandList[k - 1][1];
-        const char *arg = &(commandList[k])[0];
-        const char *lastArg = &(commandList[k - 1])[0];
-        switch (option) {
-        case 'l':
+        ParameterDimlpBTEnum option;
+        auto it = parameterMap.find(param);
+        if (it != parameterMap.end()) {
+          option = it->second;
+        } else {
+          if (param[0] == 'H') {
+            std::string numberPart = param.substr(1);
+            if (CheckInt(numberPart.c_str())) {
+              option = H;
+            } else {
+              option = INVALID;
+            }
+          } else {
+            option = INVALID;
+          }
+        }
+
+        switch (option) { // After --
+        case LEARNING_RATE:
           if (CheckFloat(arg))
             eta = static_cast<float>(atof(arg));
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
 
           break;
 
-        case 'm':
+        case MOMENTUM:
           if (CheckFloat(arg))
             mu = static_cast<float>(atof(arg));
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
 
           break;
 
-        case 'f':
+        case FLAT:
           if (CheckFloat(arg))
             flat = static_cast<float>(atof(arg));
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
 
           break;
 
-        case 'e':
+        case ERROR_THRESH:
           if (CheckFloat(arg))
             errThres = static_cast<float>(atof(arg));
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
 
           if (flagEp == 0)
             epochs = 2000000000;
           break;
 
-        case 'a':
+        case ACC_THRESH:
           if (CheckFloat(arg))
             accThres = static_cast<float>(atof(arg));
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
 
           if (flagEp == 0)
             epochs = 2000000000;
           break;
 
-        case 'd':
+        case ABS_ERROR_THRESH:
           if (CheckFloat(arg))
             deltaErr = static_cast<float>(atof(arg));
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", float requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
 
           if (flagEp == 0)
             epochs = 2000000000;
           break;
 
-        case 's':
+        case NB_EPOCHS_ERROR:
           if (CheckInt(arg))
             showErr = atoi(arg);
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'i':
+        case NB_EPOCHS:
           if (CheckInt(arg)) {
             epochs = atoi(arg);
             flagEp = 1;
           } else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'q':
+        case NB_QUANT_LEVELS:
           if (CheckInt(arg))
             quant = atoi(arg);
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'n':
+        case NB_EX_PER_NET:
           if (CheckInt(arg))
             nbExInOne = atoi(arg);
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'N':
+        case NB_DIMLP_NETS:
           if (CheckInt(arg))
             nbDimlpNets = atoi(arg);
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'I':
+        case NB_ATTRIBUTES:
           if (CheckInt(arg))
             nbIn = atoi(arg);
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'H':
+        case H:
           if (CheckInt(arg)) {
             arch.Insert(atoi(arg));
 
-            const char *ptrParam = lastArg;
+            const char *ptrParam = param.c_str();
 
-            if (ptrParam[2] != '\0') {
-              std::string str(ptrParam + 2);
+            if (ptrParam[1] != '\0') {
+              std::string str(ptrParam + 1);
               archInd.Insert(std::atoi(str.c_str()));
             } else {
               throw CommandArgumentException("Error : Which hidden layer (-H) ?");
             }
           } else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'O':
+        case NB_CLASSES:
           if (CheckInt(arg))
             nbOut = atoi(arg);
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'z':
+        case SEED:
           if (CheckInt(arg))
             seed = atoi(arg);
           else
-            throw CommandArgumentException("Error : invalide type for parameter " + std::string(lastArg) + ", integer requested");
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
 
           break;
 
-        case 'S':
+        case ROOT_FOLDER:
           rootFolderTemp = arg;
           rootFolderInit = true;
           break;
 
-        case 'A':
+        case ATTRIBUTES_FILE:
           attrFileTemp = arg;
           attrFileInit = true;
           break;
 
-        case 'L':
+        case TRAIN_DATA_FILE:
           learnFileTemp = arg;
           learnFileInit = true;
           break;
 
-        case 'T':
+        case TEST_DATA_FILE:
           testFileTemp = arg;
           testFileInit = true;
           break;
 
-        case 'r':
+        case CONSOLE_FILE:
           consoleFileTemp = arg;
           consoleFileInit = true;
           break;
 
-        case 'w':
+        case WEIGHTS_GENERIC_FILENAME:
           genericWeightsFileTemp = arg;
           break;
 
-        case 'p':
+        case TRAIN_PRED_FILE:
           predTrainFileTemp = arg;
           break;
 
-        case 't':
+        case TEST_PRED_FILE:
           predTestFileTemp = arg;
           break;
 
-        case 'o':
+        case STATS_FILE:
           accuracyFileTemp = arg;
           accuracyFileInit = true;
           break;
 
-        case '1':
+        case TRAIN_CLASS_FILE:
           learnTarTemp = arg;
           learnTarInit = true;
           break;
 
-        case '2':
+        case TEST_CLASS_FILE:
           testTarTemp = arg;
           testTarInit = true;
           break;
 
-        case 'R':
+        case WITH_RULE_EXTRACTION:
           ruleExtr = 1;
-          k--;
+          p--;
           break;
 
-        case 'F':
+        case GLOBAL_RULES_OUTFILE:
           rulesFileTemp = arg;
           rulesFileInit = true;
           break;
 
         default:
-          throw CommandArgumentException("Illegal option : " + string(lastArg));
+          throw CommandArgumentException("Illegal option : " + param + ".");
         }
       }
 
       else {
-        throw CommandArgumentException("Illegal option : " + string(&(commandList[k])[0]));
+        throw CommandArgumentException("Illegal option : " + string(&(commandList[p])[0]));
       }
-      k++;
+      p++;
     }
 
     // ----------------------------------------------------------------------
@@ -482,11 +563,11 @@ int dimlpBT(const string &command) {
     }
 
     if (nbIn == 0) {
-      throw CommandArgumentException("The number of input neurons must be given with option -I.");
+      throw CommandArgumentException("The number of input neurons must be given with option --nb_attributes.");
     }
 
     if (nbOut == 0) {
-      throw CommandArgumentException("The number of output neurons must be given with option -O.");
+      throw CommandArgumentException("The number of output neurons must be given with option --nb_classes.");
     }
 
     // ----------------------------------------------------------------------
@@ -518,10 +599,10 @@ int dimlpBT(const string &command) {
         vecNbNeurons[0] = nbIn;
         vecNbNeurons[nbLayers - 1] = nbOut;
 
-        for (k = 1, arch.GoToBeg(); k <= arch.GetNbEl(); k++, arch.GoToNext()) {
-          vecNbNeurons[k] = arch.GetVal();
+        for (p = 1, arch.GoToBeg(); p <= arch.GetNbEl(); p++, arch.GoToNext()) {
+          vecNbNeurons[p] = arch.GetVal();
 
-          if (vecNbNeurons[k] == 0) {
+          if (vecNbNeurons[p] == 0) {
             throw InternalError("The number of neurons must be greater than 0.");
           }
         }
@@ -536,10 +617,10 @@ int dimlpBT(const string &command) {
         vecNbNeurons[1] = nbIn;
         vecNbNeurons[nbLayers - 1] = nbOut;
 
-        for (k = 1, arch.GoToBeg(); k <= arch.GetNbEl(); k++, arch.GoToNext()) {
-          vecNbNeurons[k + 1] = arch.GetVal();
+        for (p = 1, arch.GoToBeg(); p <= arch.GetNbEl(); p++, arch.GoToNext()) {
+          vecNbNeurons[p + 1] = arch.GetVal();
 
-          if (vecNbNeurons[k + 1] == 0) {
+          if (vecNbNeurons[p + 1] == 0) {
             throw InternalError("The number of neurons must be greater than 0.");
           }
         }
@@ -548,7 +629,7 @@ int dimlpBT(const string &command) {
 
     // ----------------------------------------------------------------------
     if (learnFileInit == false) {
-      throw CommandArgumentException("Give the training file with -L selection please.");
+      throw CommandArgumentException("Give the training file with --train_data_file selection please.");
     }
     if (learnTarInit != false) {
       DataSet train(learnFile, nbIn, nbOut);
@@ -762,4 +843,4 @@ int dimlpBT(const string &command) {
   return 0;
 }
 
-// Exemple to launch the code : dimlpBT("DimlpBT -L datanormTrain -1 dataclass2Train -T datanormTest -2 dataclass2Test -I 16 -H2 5 -O 2 -N 2 -w dimlpDatanormBT -p dimlpDatanormBTTrain.out -t dimlpDatanormBTTest.out -o dimlpDatanormBTStats -r dimlpDatanormBTResult.txt -S dimlp/datafiles");
+// Exemple to launch the code : dimlpBT("DimlpBT --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_generic_filename dimlpDatanormBT --train_pred_file dimlpDatanormBTTrain.out --test_pred_file dimlpDatanormBTTest.out --stats_file dimlpDatanormBTStats --console_file dimlpDatanormBTResult.txt --root_folder dimlp/datafiles");

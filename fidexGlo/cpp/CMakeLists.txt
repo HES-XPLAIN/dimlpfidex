@@ -55,6 +55,7 @@ set(FIDEXGLOTESTS_SRC "${FIDEXGLOTESTS_SRC}" CACHE INTERNAL "")
 add_executable(fidexGloProject ${FIDEXGLO_SRC} src/fidexGlo.cpp)
 add_executable(fidexGloRules ${FIDEXGLORULES_SRC} src/fidexGloRules.cpp)
 add_executable(fidexGloStats ${FIDEXGLOSTATS_SRC} src/fidexGloStats.cpp)
+<<<<<<< HEAD
 add_executable(fidexGloTests ${FIDEXGLOTESTS_SRC} tests/tests.cpp)
 add_executable(checkCovSize src/checkCovSize.cpp)
 add_dependencies(fidexGloProject fidexCommon)
@@ -67,6 +68,14 @@ target_link_libraries(fidexGloRules fidexCommon)
 target_link_libraries(fidexGloStats fidexCommon)
 target_link_libraries(fidexGloTests fidexCommon)
 target_link_libraries(checkCovSize fidexCommon)
+=======
+add_dependencies(fidexGloProject fidexCommon)
+add_dependencies(fidexGloRules fidexCommon)
+add_dependencies(fidexGloStats fidexCommon)
+target_link_libraries(fidexGloProject fidexCommon)
+target_link_libraries(fidexGloRules fidexCommon)
+target_link_libraries(fidexGloStats fidexCommon)
+>>>>>>> cf95941bb6ebcc95a6f5c44a0a3b522235d499a1
 
 set_target_properties(
     fidexGloProject PROPERTIES OUTPUT_NAME "fidexGlo" RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
@@ -77,9 +86,12 @@ set_target_properties(
 set_target_properties(
     fidexGloStats PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
+<<<<<<< HEAD
 set_target_properties(
     fidexGloTests PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
 set_target_properties(
     checkCovSize PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
+=======
+>>>>>>> cf95941bb6ebcc95a6f5c44a0a3b522235d499a1

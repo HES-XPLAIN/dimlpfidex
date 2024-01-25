@@ -18,21 +18,21 @@ def mlpTrn(*args, **kwargs):
             print("Warning! The files are localised with respect to root folder dimlpfidex.")
             print("----------------------------")
             print("Obligatory parameters :")
-            print("train_data : train data file")
-            print("train_class : train class file, not mendatory if classes are specified in train_data")
-            print("test_data : test data file")
-            print("test_class : test class file, not mendatory if classes are specified in test_data")
+            print("train_data_file : train data file")
+            print("train_class_file : train class file, not mendatory if classes are specified in train_data_file")
+            print("test_data_file : test data file")
+            print("test_class_file : test class file, not mendatory if classes are specified in test_data_file")
             print("nb_attributes : number of attributes")
             print("nb_classes : number of classes")
             print("----------------------------")
             print("Optional parameters :")
-            print("save_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
-            print("train_pred : output train prediction file name without extension(predTrain by default)")
-            print("test_pred : output test prediction file name without extension(predTest by default)")
-            print("weights : output weights file name without extension (weights by default)")
-            print("stats : output file name with train and test accuracy (stats.txt by default)")
-            print("output_file : file where you redirect console result")
-            print("nb_stairs : number of stairs in staircase activation function (50 by default)")
+            print("root_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
+            print("train_pred_file : output train prediction file name without extension(predTrain by default)")
+            print("test_pred_file : output test prediction file name without extension(predTest by default)")
+            print("weights_file : output weights file name without extension (weights by default)")
+            print("stats_file : output file name with train and test accuracy (stats.txt by default)")
+            print("console_file : file where you redirect console result")
+            print("nb_quant_levels : number of stairs in staircase activation function (50 by default)")
             print("K : Parameter to improve dynamics (1 by default)")
             print("----------------------------")
             print("MLP parameters (optional)")
@@ -44,9 +44,9 @@ def mlpTrn(*args, **kwargs):
             print("learning_rate : learning rate schedule for weight updates for sgd solver, constant(default), invscaling or adaptive")
             print("learning_rate_init : initial learning rate for adam and sgd, positive float (0.001 by default)")
             print("power_t : exponent for inverse scaling learning rate for sgd, positive float (0.5 by default)")
-            print("max_iter : maximum number of iterations, positive integer (200 by default)")
+            print("max_iterations : maximum number of iterations, positive integer (200 by default)")
             print("shuffle : whether to shuffle samples in each iteration for sgd and adam, True(default) or False")
-            print("random_state : positive integer(seed) or None(default) for sgd and adam")
+            print("seed : positive integer(seed) or None(default) for sgd and adam")
             print("tol : tolerance for optimization (0.0001 by default)")
             print("verbose : enable verbose output, True or False(default)")
             print("warm_start : whether to reuse previous solution to fit initialization, True or False(default)")
@@ -62,7 +62,7 @@ def mlpTrn(*args, **kwargs):
             print("----------------------------")
             print("----------------------------")
             print("Here is an example, keep same parameter names :")
-            print('mlpTrn(train_data="datanormTrain",train_class="dataclass2Train", test_data="datanormTest",test_class="dataclass2Test", weights = "mlp/weights", stats = "mlp/stats.txt", train_pred = "mlp/predTrain", test_pred = "mlp/predTest", nb_attributes=16, nb_classes=2, save_folder = "dimlp/datafiles")')
+            print('mlpTrn(train_data_file="datanormTrain",train_class_file="dataclass2Train", test_data_file="datanormTest",test_class_file="dataclass2Test", weights_file = "mlp/weights", stats_file = "mlp/stats.txt", train_pred_file = "mlp/predTrain", test_pred_file = "mlp/predTest", nb_attributes=16, nb_classes=2, root_folder = "dimlp/datafiles")')
             print("---------------------------------------------------------------------")
 
 
@@ -71,22 +71,22 @@ def mlpTrn(*args, **kwargs):
             start_time = time.time()
 
             # Get parameters
-            save_folder = kwargs.get('save_folder')
-            train_data_file = kwargs.get('train_data')
-            train_class_file = kwargs.get('train_class')
-            test_data_file = kwargs.get('test_data')
-            test_class_file = kwargs.get('test_class')
-            output_file = kwargs.get('output_file')
+            root_folder = kwargs.get('root_folder')
+            train_data_file = kwargs.get('train_data_file')
+            train_class_file = kwargs.get('train_class_file')
+            test_data_file = kwargs.get('test_data_file')
+            test_class_file = kwargs.get('test_class_file')
+            console_file = kwargs.get('console_file')
             nb_attributes = kwargs.get('nb_attributes')
             nb_classes = kwargs.get('nb_classes')
 
-            train_pred_file = kwargs.get('train_pred')
-            test_pred_file = kwargs.get('test_pred')
-            weights_file = kwargs.get('weights')
-            stats_file = kwargs.get('stats')
+            train_pred_file = kwargs.get('train_pred_file')
+            test_pred_file = kwargs.get('test_pred_file')
+            weights_file = kwargs.get('weights_file')
+            stats_file = kwargs.get('stats_file')
 
             K = kwargs.get('K')
-            quant = kwargs.get('nb_stairs')
+            quant = kwargs.get('nb_quant_levels')
             hiknot = 5
 
             hidden_layer_sizes_var = kwargs.get('hidden_layer_sizes')
@@ -97,9 +97,9 @@ def mlpTrn(*args, **kwargs):
             learning_rate_var = kwargs.get('learning_rate')
             learning_rate_init_var = kwargs.get('learning_rate_init')
             power_t_var = kwargs.get('power_t')
-            max_iter_var = kwargs.get('max_iter')
+            max_iterations_var = kwargs.get('max_iterations')
             shuffle_var = kwargs.get('shuffle')
-            random_state_var = kwargs.get('random_state')
+            seed_var = kwargs.get('seed')
             tol_var = kwargs.get('tol')
             verbose_var = kwargs.get('verbose')
             warm_start_var = kwargs.get('warm_start')
@@ -114,21 +114,21 @@ def mlpTrn(*args, **kwargs):
             max_fun_var = kwargs.get('max_fun')
 
             # Redirect output in file
-            if output_file != None:
+            if console_file != None:
                 try:
-                    if (save_folder is not None):
-                        output_file = save_folder + "/" + output_file
-                    sys.stdout = open(output_file, 'w+')
+                    if (root_folder is not None):
+                        console_file = root_folder + "/" + console_file
+                    sys.stdout = open(console_file, 'w+')
                 except (FileNotFoundError):
-                    raise ValueError(f"Error : File {output_file} not found.")
+                    raise ValueError(f"Error : File {console_file} not found.")
                 except (IOError):
-                    raise ValueError(f"Error : Couldn't open file {output_file}.")
+                    raise ValueError(f"Error : Couldn't open file {console_file}.")
 
             # Check parameters
 
-            valid_args = ['train_data', 'train_class', 'test_data', 'test_class', 'train_pred', 'test_pred', 'nb_attributes', 'nb_classes', 'weights',
-                        'stats', 'K', 'nb_stairs', 'save_folder', 'output_file', 'hidden_layer_sizes', 'activation', 'solver', 'alpha', 'batch_size', 'learning_rate',
-                        'learning_rate_init', 'power_t', 'max_iter', 'shuffle', 'random_state', 'tol', 'verbose', 'warm_start', 'momentum', 'nesterovs_momentum', 'early_stopping',
+            valid_args = ['train_data_file', 'train_class_file', 'test_data_file', 'test_class_file', 'train_pred_file', 'test_pred_file', 'nb_attributes', 'nb_classes', 'weights_file',
+                        'stats_file', 'K', 'nb_quant_levels', 'root_folder', 'console_file', 'hidden_layer_sizes', 'activation', 'solver', 'alpha', 'batch_size', 'learning_rate',
+                        'learning_rate_init', 'power_t', 'max_iterations', 'shuffle', 'seed', 'tol', 'verbose', 'warm_start', 'momentum', 'nesterovs_momentum', 'early_stopping',
                         'validation_fraction', 'beta_1', 'beta_2', 'epsilon', 'n_iter_no_change', 'max_fun']
 
             # Check if wrong parameters are given
@@ -136,7 +136,7 @@ def mlpTrn(*args, **kwargs):
                 if arg_key not in valid_args:
                     raise ValueError(f"Invalid argument : {arg_key}.")
 
-            save_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes = check_parameters_common(save_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
+            root_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes = check_parameters_common(root_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
             weights_file, K, quant = check_parameters_dimlp_layer(weights_file, K, quant)
 
             if hidden_layer_sizes_var is None:
@@ -185,18 +185,18 @@ def mlpTrn(*args, **kwargs):
             elif not check_positive(power_t_var):
                 raise ValueError('Error, parameter power_t is not a positive number.')
 
-            if max_iter_var is None:
-                max_iter_var = 200
-            elif not check_strictly_positive(max_iter_var) or not check_int(max_iter_var) :
-                raise ValueError('Error, parameter max_iter is not a strictly positive integer.')
+            if max_iterations_var is None:
+                max_iterations_var = 200
+            elif not check_strictly_positive(max_iterations_var) or not check_int(max_iterations_var) :
+                raise ValueError('Error, parameter max_iterations is not a strictly positive integer.')
 
             if shuffle_var is None:
                 shuffle_var = True
             elif not check_bool(shuffle_var) :
                 raise ValueError('Error, parameter shuffle is not a boolean.')
 
-            if random_state_var is not None and (not check_int(random_state_var) or not check_positive(random_state_var)):
-                raise ValueError('Error, parameter random_state is specified and not a positive integer.')
+            if seed_var is not None and (not check_int(seed_var) or not check_positive(seed_var)):
+                raise ValueError('Error, parameter seed is specified and not a positive integer.')
 
             if tol_var is None:
                 tol_var = 0.0001
@@ -258,21 +258,21 @@ def mlpTrn(*args, **kwargs):
             elif not check_int(max_fun_var) or max_fun_var < 1:
                 raise ValueError('Error, parameter max_fun is not an integer bigger than 0.')
 
-            if (save_folder is not None):
-                train_data_file = save_folder + "/" + train_data_file
-                test_data_file = save_folder + "/" + test_data_file
-                train_pred_file = save_folder + "/" + train_pred_file
-                test_pred_file = save_folder + "/" + test_pred_file
-                weights_file = save_folder + "/" + weights_file
+            if (root_folder is not None):
+                train_data_file = root_folder + "/" + train_data_file
+                test_data_file = root_folder + "/" + test_data_file
+                train_pred_file = root_folder + "/" + train_pred_file
+                test_pred_file = root_folder + "/" + test_pred_file
+                weights_file = root_folder + "/" + weights_file
                 if (stats_file is not None):
-                    stats_file = save_folder + "/" + stats_file
+                    stats_file = root_folder + "/" + stats_file
 
             # Get data
             train_data, train_class = get_data(train_data_file, nb_attributes, nb_classes)
             if len(train_class) == 0:
-                train_class_file = validate_string_param(train_class_file, "train_class")
-                if (save_folder is not None):
-                    train_class_file = save_folder + "/" + train_class_file
+                train_class_file = validate_string_param(train_class_file, "train_class_file")
+                if (root_folder is not None):
+                    train_class_file = root_folder + "/" + train_class_file
                 train_class = get_data_class(train_class_file, nb_classes)
             if len(train_data) != len(train_class):
                 raise ValueError('Error, there is not the same amount of train data and train class.')
@@ -281,9 +281,9 @@ def mlpTrn(*args, **kwargs):
 
             test_data, test_class = get_data(test_data_file, nb_attributes, nb_classes)
             if len(test_class) == 0:
-                test_class_file = validate_string_param(test_class_file, "test_class")
-                if (save_folder is not None):
-                    test_class_file = save_folder + "/" + test_class_file
+                test_class_file = validate_string_param(test_class_file, "test_class_file")
+                if (root_folder is not None):
+                    test_class_file = root_folder + "/" + test_class_file
                 test_class = get_data_class(test_class_file, nb_classes)
             if len(test_data) != len(test_class):
                 raise ValueError('Error, there is not the same amount of test data and test class.')
@@ -295,8 +295,8 @@ def mlpTrn(*args, **kwargs):
 
             # Train mlp
             model = MLPClassifier(hidden_layer_sizes = hidden_layer_sizes_var, activation = activation_var, solver = solver_var, alpha = alpha_var, batch_size = batch_size_var,
-                                  learning_rate = learning_rate_var, learning_rate_init = learning_rate_init_var, power_t = power_t_var, max_iter = max_iter_var, shuffle = shuffle_var,
-                                  random_state = random_state_var, tol = tol_var, verbose = verbose_var, warm_start = warm_start_var, momentum = momentum_var, nesterovs_momentum = nesterovs_momentum_var,
+                                  learning_rate = learning_rate_var, learning_rate_init = learning_rate_init_var, power_t = power_t_var, max_iter = max_iterations_var, shuffle = shuffle_var,
+                                  random_state = seed_var, tol = tol_var, verbose = verbose_var, warm_start = warm_start_var, momentum = momentum_var, nesterovs_momentum = nesterovs_momentum_var,
                                   early_stopping = early_stopping_var, validation_fraction = validation_fraction_var, beta_1 = beta_1_var, beta_2 = beta_2_var, epsilon = epsilon_var,
                                   n_iter_no_change = n_iter_no_change_var, max_fun = max_fun_var)
 
@@ -340,14 +340,14 @@ def mlpTrn(*args, **kwargs):
             print(f"\nFull execution time = {full_time} sec")
 
             # Redirect output to terminal
-            if output_file != None:
+            if console_file != None:
                 sys.stdout = sys.__stdout__
 
             return 0
 
     except ValueError as error:
         # Redirect output to terminal
-        if output_file != None:
+        if console_file != None:
             sys.stdout = sys.__stdout__
         print(error)
         return -1

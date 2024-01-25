@@ -24,7 +24,7 @@ enum ParameterCode {
   TRAIN_PRED_FILE,
   TRAIN_CLASS_FILE,
   RULES_FILE,
-  RULES_OUTFILE,
+  GLOBAL_RULES_OUTFILE,
   CONSOLE_FILE,
   ROOT_FOLDER,
   ATTRIBUTES_FILE,
@@ -58,7 +58,7 @@ static const std::unordered_map<std::string, ParameterCode> parameterNames = {
     {"train_pred_file", TRAIN_PRED_FILE},
     {"train_class_file", TRAIN_CLASS_FILE},
     {"rules_file", RULES_FILE},
-    {"rules_outfile", RULES_OUTFILE},
+    {"global_rules_outfile", GLOBAL_RULES_OUTFILE},
     {"console_file", CONSOLE_FILE},
     {"root_folder", ROOT_FOLDER},
     {"attributes_file", ATTRIBUTES_FILE},
@@ -162,7 +162,7 @@ public:
   bool isDoubleSet(ParameterCode id);
   bool isDoubleVectorSet(ParameterCode id);
   bool isIntVectorSet(ParameterCode id);
-  bool isStringSet(ParameterCode id);
+  bool isStringSet(ParameterCode id) const;
 
   // special operations
   void setWeightsFiles();
@@ -197,9 +197,11 @@ inline ostream &operator<<(ostream &stream, const Parameters &p) {
     stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << to_string(x.second) << endl;
   }
 
-  stream << "  WEIGHTS_FILES (list)" << endl;
-  for (string f : p.getWeightsFiles()) {
-    stream << "     " << f << endl;
+  if (p.isStringSet(WEIGHTS_FILE)) {
+    stream << "  WEIGHTS_FILES (list)" << endl;
+    for (string f : p.getWeightsFiles()) {
+      stream << "     " << f << endl;
+    }
   }
 
   stream << "End of Parameters list." << endl
