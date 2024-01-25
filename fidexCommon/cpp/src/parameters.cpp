@@ -376,7 +376,7 @@ bool Parameters::isIntVectorSet(ParameterCode id) {
   return _intVectorParams.find(id) != _intVectorParams.end();
 }
 
-bool Parameters::isStringSet(ParameterCode id) {
+bool Parameters::isStringSet(ParameterCode id) const {
   return _stringParams.find(id) != _stringParams.end();
 }
 

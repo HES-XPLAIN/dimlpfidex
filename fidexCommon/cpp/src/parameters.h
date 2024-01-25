@@ -155,7 +155,7 @@ public:
   bool isDoubleSet(ParameterCode id);
   bool isDoubleVectorSet(ParameterCode id);
   bool isIntVectorSet(ParameterCode id);
-  bool isStringSet(ParameterCode id);
+  bool isStringSet(ParameterCode id) const;
 
   // special operations
   void setWeightsFiles();
@@ -190,9 +190,11 @@ inline ostream &operator<<(ostream &stream, const Parameters &p) {
     stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << to_string(x.second) << endl;
   }
 
-  stream << "  WEIGHTS_FILES (list)" << endl;
-  for (string f : p.getWeightsFiles()) {
-    stream << "     " << f << endl;
+  if (p.isStringSet(WEIGHTS_FILE)) {
+    stream << "  WEIGHTS_FILES (list)" << endl;
+    for (string f : p.getWeightsFiles()) {
+      stream << "     " << f << endl;
+    }
   }
 
   stream << "End of Parameters list." << endl
