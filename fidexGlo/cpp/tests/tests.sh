@@ -100,10 +100,6 @@ echo "$date_str" >> $REDIRECTION
 SUCCESS=0
 TOTAL=0
 
-# TODO: test root directory arg
-# TODO: test 3rd heuristic
-# TODO: check whats happening when 16 threads are declared, tests are showing bizarre behaviour...
-
 # utils section
 assert_success()
 {
@@ -177,7 +173,7 @@ test_train_data_file()
     --train_data_file "${train_pred_file}" \
     --train_class_file "${train_true_classes}" \
     --weights_file "${weigths_file}" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --heuristic "${heuristic}" \
     --nb_attributes "${nb_attributes}" \
     --nb_classes "${nb_classes}" \
@@ -192,7 +188,7 @@ test_train_data_file()
     --train_pred_file "${train_pred_file}" \
     --train_class_file "${train_true_classes}" \
     --weights_file "${weigths_file}" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --heuristic "${heuristic}" \
     --nb_attributes "${nb_attributes}" \
     --nb_classes "${nb_classes}" \
@@ -209,7 +205,7 @@ test_train_predictions_file()
     --train_data_file "${train_data_file}" \
     --train_class_file "${train_true_classes}" \
     --weights_file "${weigths_file}" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --heuristic "${heuristic}" \
     --nb_attributes "${nb_attributes}" \
     --nb_classes "${nb_classes}" \
@@ -224,7 +220,7 @@ test_train_predictions_file()
     --train_pred_file "123" \
     --train_class_file "${train_true_classes}" \
     --weights_file "${weigths_file}" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --heuristic "${heuristic}" \
     --nb_attributes "${nb_attributes}" \
     --nb_classes "${nb_classes}" \
@@ -241,7 +237,7 @@ test_true_classes_file()
     --train_data_file "${train_data_file}" \
     --train_pred_file "${train_pred_file}" \
     --weights_file "${weigths_file}" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --heuristic "${heuristic}" \
     --nb_attributes "${nb_attributes}" \
     --nb_classes "${nb_classes}" \
@@ -256,7 +252,7 @@ test_true_classes_file()
     --train_pred_file "${train_pred_file}" \
     --train_class_file "123" \
     --weights_file "${weigths_file}" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --heuristic "${heuristic}" \
     --nb_attributes "${nb_attributes}" \
     --nb_classes "${nb_classes}" \
@@ -273,7 +269,7 @@ test_weights_file()
     --train_data_file "${train_data_file}" \
     --train_pred_file "${train_pred_file}" \
     --train_class_file "${train_true_classes}" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --heuristic "${heuristic}" \
     --nb_attributes "${nb_attributes}" \
     --nb_classes "${nb_classes}" \
@@ -288,7 +284,7 @@ test_weights_file()
     --train_pred_file "${train_pred_file}" \
     --train_class_file "${train_true_classes}" \
     --weights_file "123" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --heuristic "${heuristic}" \
     --nb_attributes "${nb_attributes}" \
     --nb_classes "${nb_classes}" \
@@ -323,7 +319,7 @@ test_heuristic_arg()
     --train_pred_file "${train_pred_file}" \
     --train_class_file "${train_true_classes}" \
     --weights_file "${weigths_file}" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --nb_attributes "${nb_attributes}" \
     --nb_classes "${nb_classes}" \
     >>"$REDIRECTION"
@@ -337,7 +333,7 @@ test_heuristic_arg()
     --train_pred_file "${train_pred_file}" \
     --train_class_file "${train_true_classes}" \
     --weights_file "${weigths_file}" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --heuristic "abc" \
     --nb_attributes "${nb_attributes}" \
     --nb_classes "${nb_classes}" \
@@ -355,7 +351,7 @@ test_attributes_nb_arg()
     --train_pred_file "${train_pred_file}" \
     --train_class_file "${train_true_classes}" \
     --weights_file "${weigths_file}" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --heuristic "${heuristic}" \
     --nb_classes "${nb_classes}" \
     >>"$REDIRECTION"
@@ -369,7 +365,7 @@ test_attributes_nb_arg()
     --train_pred_file "${train_pred_file}" \
     --train_class_file "${train_true_classes}" \
     --weights_file "${weigths_file}" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --heuristic "${heuristic}" \
     --nb_attributes "abc" \
     --nb_classes "${nb_classes}" \
@@ -387,7 +383,7 @@ test_classes_nb_arg()
     --train_pred_file "${train_pred_file}" \
     --train_class_file "${train_true_classes}" \
     --weights_file "${weigths_file}" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --heuristic "${heuristic}" \
     --nb_attributes "${nb_attributes}" \
     >>"$REDIRECTION"
@@ -401,7 +397,7 @@ test_classes_nb_arg()
     --train_pred_file "${train_pred_file}" \
     --train_class_file "${train_true_classes}" \
     --weights_file "${weigths_file}" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --heuristic "${heuristic}" \
     --nb_attributes "${nb_attributes}" \
     --nb_classes "abc" \
@@ -412,14 +408,13 @@ test_classes_nb_arg()
 
 # test_input_rules_file()
 # {
-    #TODO: find use case to test this
     # print_bold "Testing -f missing..."
     # "${to_test_dir}${EXE}" \
     # --train_data_file "${train_data_file}" \
     # --train_pred_file "${train_pred_file}" \
     # --train_class_file "${train_true_classes}" \
     # --weights_file "${weigths_file}" \
-    # --rules_outfile "${output_rules_file}" \
+    # --global_rules_outfile "${output_rules_file}" \
     # --heuristic "${heuristic}" \
     # --nb_attributes "${nb_attributes}" \
     # --nb_classes "${nb_classes}" \
@@ -442,7 +437,7 @@ test_heuristics()
         --train_pred_file "${train_pred_file}" \
         --train_class_file "${train_true_classes}" \
         --weights_file "${weigths_file}" \
-        --rules_outfile "${output_rules_file}" \
+        --global_rules_outfile "${output_rules_file}" \
         --attributes_file "${attributes_file}" \
         --heuristic "${heuristic_val}" \
         --dropout_dim "${dd}" \
@@ -473,7 +468,7 @@ test_dropouts()
             --train_pred_file "${train_pred_file}" \
             --train_class_file "${train_true_classes}" \
             --weights_file "${weigths_file}" \
-            --rules_outfile "${output_rules_file}" \
+            --global_rules_outfile "${output_rules_file}" \
             --attributes_file "${attributes_file}" \
             --heuristic "${heuristic}" \
             --nb_attributes "${nb_attributes}" \
@@ -498,7 +493,7 @@ test_random_seed()
     --train_pred_file "${train_pred_file}" \
     --train_class_file "${train_true_classes}" \
     --weights_file "${weigths_file}" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --heuristic "${heuristic}" \
     --nb_attributes "${nb_attributes}" \
     --nb_classes "${nb_classes}" \
@@ -515,7 +510,7 @@ test_random_seed()
     --train_pred_file "${train_pred_file}" \
     --train_class_file "${train_true_classes}" \
     --weights_file "${weigths_file}" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --heuristic "${heuristic}" \
     --nb_attributes "${nb_attributes}" \
     --nb_classes "${nb_classes}" \
@@ -536,7 +531,7 @@ test_nb_threads()
         --train_pred_file "${train_pred_file}" \
         --train_class_file "${train_true_classes}" \
         --weights_file "${weigths_file}" \
-        --rules_outfile "${output_rules_file}" \
+        --global_rules_outfile "${output_rules_file}" \
         --attributes_file "${attributes_file}" \
         --heuristic "${heuristic}" \
         --dropout_dim "${dd}" \
@@ -578,7 +573,7 @@ random_test_generation()
     --train_pred_file "${train_pred_file}" \
     --train_class_file "${train_true_classes}" \
     --weights_file "${weigths_file}" \
-    --rules_outfile "${output_rules_file}" \
+    --global_rules_outfile "${output_rules_file}" \
     --heuristic "${heuristic}" \
     --nb_attributes "${nb_attributes}" \
     --nb_classes "${nb_classes}" \
@@ -613,7 +608,7 @@ test_same_seed_same_output()
         --train_pred_file "${train_pred_file}" \
         --train_class_file "${train_true_classes}" \
         --weights_file "${weigths_file}" \
-        --rules_outfile "${TESTS_DIR}test_same_seed_${i}.rls" \
+        --global_rules_outfile "${TESTS_DIR}test_same_seed_${i}.rls" \
         --heuristic "${h}" \
         --nb_attributes "${nb_attributes}" \
         --nb_classes "${nb_classes}" \
@@ -684,7 +679,7 @@ print_bold "[$SUCCESS/$TOTAL] tests passed within ${SECONDS} seconds."
 # --train_class_file <train true class file, not mendatory if classes are specified in train data file>
 # --weights_file <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with -f]
 # -f <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given]
-# --rules_outfile <Rules output file>
+# --global_rules_outfile <Rules output file>
 # --heuristic <Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo>
 # --nb_attributes <number of attributes>
 # --nb_classes <number of classes><Options>
