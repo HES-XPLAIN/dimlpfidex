@@ -54,7 +54,15 @@ Parameters::Parameters(const string &jsonfile) {
   Json jsonData = Json::parse(ifs);
 
   for (auto &item : jsonData.items()) {
-    parseArg(item.key(), to_string(item.value()).c_str());
+    string value;
+
+    if (item.value().is_string()) {
+      value = static_cast<string>(item.value());
+    } else {
+      value = to_string(item.value());
+    }
+
+    parseArg(item.key(), value.c_str());
   }
 
   // updating paths of files
