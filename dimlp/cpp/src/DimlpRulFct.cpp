@@ -637,9 +637,10 @@ int dimlpRul(const string &command) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
 
     BpNN::resetInitRandomGen();
-  } catch (const char *msg) {
+
+  } catch (const errorHandler &e) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
-    cerr << msg << endl;
+    std::cerr << e.what() << endl;
     return -1;
   }
   return 0;

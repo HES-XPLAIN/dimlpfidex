@@ -839,9 +839,9 @@ int fidexGloRules(const string &command) {
 
     cout.rdbuf(cout_buff); // reset to standard output again
 
-  } catch (const char *msg) {
-    cout.rdbuf(cout_buff);
-    cerr << msg << endl;
+  } catch (const errorHandler &e) {
+    std::cout.rdbuf(cout_buff); // reset to standard output again
+    std::cerr << e.what() << endl;
     return -1;
   }
 

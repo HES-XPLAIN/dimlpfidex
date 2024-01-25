@@ -665,9 +665,9 @@ int fidexGloStats(const string &command) {
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
 
-  } catch (const char *msg) {
+  } catch (const errorHandler &e) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
-    cerr << msg << endl;
+    std::cerr << e.what() << endl;
     return -1;
   }
 
@@ -676,11 +676,11 @@ int fidexGloStats(const string &command) {
 
 /* Exemples pour lancer le code :
 
-./fidexGloStats --test_data_file datanorm --test_pred_file dimlp.out --test_class_file dataclass2 --rules_file globalRules.txt --nb_attributes 16 --nb_classes2 --stats_file stats.txt --root_folder ../fidexGlo/datafiles
-./fidexGloStats --test_data_file datanormTest --test_pred_file dimlpDatanormTest.out --test_class_file dataclass2Test --rules_file globalRulesDatanorm.txt --nb_attributes 16 --nb_classes 2 --stats_file stats.txt --root_folder ../fidexGlo/datafiles
-./fidexGloStats --test_data_file covidTestData.txt --test_pred_file covidTestPred.out --test_class_file covidTestClass.txt --rules_file globalRulesCovid.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/covidDataset
-./fidexGloStats --test_data_file spamTestData.txt --test_pred_file spamTestPred.out --test_class_file spamTestClass.txt --rules_file globalRulesSpam.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/spamDataset
-./fidexGloStats --test_data_file isoletTestData.txt --test_pred_file isoletTestPred.out --test_class_file isoletTestClass.txt --rules_file globalRulesIsolet.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/isoletDataset
-./fidexGloStats --test_data_file Test/X_test.txt --test_pred_file Test/pred_testV2.out --test_class_file Test/y_test.txt --rules_file globalRulesHAPTV2.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStatsV2.txt --root_folder ../dimlp/datafiles/HAPTDataset
+./fidexGloStats --test_data_file datanorm --test_pred_file dimlp.out --test_class_file dataclass2 --global_rules_file globalRules.txt --nb_attributes 16 --nb_classes 2 --stats_file stats.txt --root_folder ../fidexGlo/datafiles
+./fidexGloStats --test_data_file datanormTest --test_pred_file dimlpDatanormTest.out --test_class_file dataclass2Test --global_rules_file globalRulesDatanorm.txt --nb_attributes 16 --nb_classes 2 --stats_file stats.txt --root_folder ../fidexGlo/datafiles
+./fidexGloStats --test_data_file covidTestData.txt --test_pred_file covidTestPred.out --test_class_file covidTestClass.txt --global_rules_file globalRulesCovid.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/covidDataset
+./fidexGloStats --test_data_file spamTestData.txt --test_pred_file spamTestPred.out --test_class_file spamTestClass.txt --global_rules_file globalRulesSpam.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/spamDataset
+./fidexGloStats --test_data_file isoletTestData.txt --test_pred_file isoletTestPred.out --test_class_file isoletTestClass.txt --global_rules_file globalRulesIsolet.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/isoletDataset
+./fidexGloStats --test_data_file Test/X_test.txt --test_pred_file Test/pred_testV2.out --test_class_file Test/y_test.txt --global_rules_file globalRulesHAPTV2.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStatsV2.txt --root_folder ../dimlp/datafiles/HAPTDataset
 
 */
