@@ -608,20 +608,35 @@ int fidexGloRules(const string &command) {
   try {
     // Parsing the command
     vector<string> commandList;
-    const char delim = ' ';
     string s;
     stringstream ss(command);
-    while (getline(ss, s, delim)) {
+
+    while (getline(ss, s, ' ')) {
       commandList.push_back(s);
     }
+
     size_t nbParam = commandList.size();
     if (nbParam < 2) {
       showRulesParams();
       exit(1);
     }
 
+    unique_ptr<Parameters> params;
+
+    if (commandList[1].compare("--json_config_file") == 0) {
+      // Read parameters from JSON config file
+      try {
+        params = std::unique_ptr<Parameters>(new Parameters(commandList[2]));
+
+      } catch (out_of_range &e) {
+        throw CommandArgumentException("JSON config file name/path is missing");
+      }
+    } else {
+      // Read parameters from CLI
+      params = std::unique_ptr<Parameters>(new Parameters(commandList));
+    }
+
     // getting all program arguments from CLI
-    unique_ptr<Parameters> params(new Parameters(commandList));
     checkParametersLogicValues(params.get());
     cout << *params;
 
