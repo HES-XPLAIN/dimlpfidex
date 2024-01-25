@@ -440,7 +440,9 @@ void checkParametersLogicValues(Parameters *p) {
   p->setDefaultFloat(MIN_FIDELITY, 1.0f);
   p->setDefaultInt(HI_KNOT, 5);
   p->setDefaultInt(SEED, 0);
-  p->setWeightsFiles(); // must be called to initialize
+  if (p->isStringSet(WEIGHTS_FILE)) {
+    p->setWeightsFiles(); // must be called to initialize
+  }
 
   // TODO check for logic values
   p->assertStringExists(GLOBAL_RULES_OUTFILE);
@@ -557,6 +559,7 @@ tuple<double, double> writeRulesFile(string filename, const vector<Rule> rules, 
  * @return int
  */
 int fidexGloRules(const string &command) {
+  throw InternalError("Error : the size of hyperLocus - is not a multiple of the number of attributs - ");
   // Save buffer where we output results
   ofstream ofs;
   streambuf *cout_buff = cout.rdbuf(); // Save old buf
@@ -570,9 +573,7 @@ int fidexGloRules(const string &command) {
     while (getline(ss, s, delim)) {
       commandList.push_back(s);
     }
-
     size_t nbParam = commandList.size();
-
     if (nbParam < 2) {
       showRulesParams();
       exit(1);
@@ -656,10 +657,19 @@ int fidexGloRules(const string &command) {
     cout << "Creation of hyperspace..." << endl;
 
     vector<vector<double>> matHypLocus;
-    string weightsFile = params->getString(WEIGHTS_FILE);
+    string weightsFile;
+    if (params->isStringSet(WEIGHTS_FILE)) {
+      weightsFile = params->getString(WEIGHTS_FILE);
+    }
     string attributesFile = params->getString(ATTRIBUTES_FILE);
-    string inputRulesFile = params->getString(RULES_FILE);
-    vector<string> weightsFiles = params->getWeightsFiles();
+    string inputRulesFile;
+    if (params->isStringSet(RULES_FILE)) {
+      inputRulesFile = params->getString(RULES_FILE);
+    }
+    vector<string> weightsFiles;
+    if (params->isStringSet(WEIGHTS_FILE)) {
+      weightsFiles = params->getWeightsFiles();
+    }
     int nbDimlpNets = params->getInt(NB_DIMLP_NETS);
     int nbQuantLevels = params->getInt(NB_QUANT_LEVELS);
     int nbAttributes = params->getInt(NB_ATTRIBUTES);

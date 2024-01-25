@@ -1482,11 +1482,12 @@ def crossValid(*args, **kwargs):
                         fidexglo_rules_command += " --console_file " + folder_path_from_root + separator + "fidexGloResult.txt"
                         fidexglo_rules_command += " --heuristic " + str(fidexglo_heuristic)
                         if with_roc:
-                            fidexglo_rules_command += " --index_positive_class " + str(positive_class_index)
+                            fidexglo_rules_command += " --positive_class_index " + str(positive_class_index)
                         if decision_threshold is not None:
                             fidexglo_rules_command += " --decision_threshold " + str(decision_threshold)
 
                         print("Enter in fidexGloRules function")
+                        print(fidexglo_rules_command)
                         res_fid_glo_rules = fidexGlo.fidexGloRules(fidexglo_rules_command)
                         if res_fid_glo_rules == -1:
                             raise ValueError('Error during execution of FidexGloRules.')
