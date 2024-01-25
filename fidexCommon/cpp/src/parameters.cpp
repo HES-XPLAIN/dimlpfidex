@@ -2,10 +2,7 @@
 
 /**
  * @brief Construct a new Parameters object containing all arguments passed by CLI.
- * To add a new parameter you must follow this workflow:
- *    - Add a new element in the ParameterCode enum in Paramerters.h
- *    - Add the same element in the ParameterNames vector in Paramerters.h
- *    - Adapt the code below to accept your new argument in the switch case
+ *
  *
  * @param args program arguments
  */
@@ -25,8 +22,26 @@ Parameters::Parameters(const vector<string> &args) {
       parseArg(param, arg);
     }
   }
+
+  // updating paths of files
+  if (isStringSet(ROOT_FOLDER)) {
+    setRootDirectory(TRAIN_DATA_FILE);
+    setRootDirectory(TRAIN_PRED_FILE);
+    setRootDirectory(TRAIN_CLASS_FILE);
+    setRootDirectory(RULES_FILE);
+    setRootDirectory(RULES_OUTFILE);
+    setRootDirectory(CONSOLE_FILE);
+    setRootDirectory(ATTRIBUTES_FILE);
+    setRootDirectory(WEIGHTS_FILE);
+    setRootDirectory(NORMALIZATION_FILE);
+  }
 }
 
+/**
+ * @brief Construct a new Parameters object containing all arguments passed by JSON config file.
+ *
+ * @param jsonfile JSON config file name
+ */
 Parameters::Parameters(const string &jsonfile) {
   ifstream ifs;
   ifs.open(jsonfile);
@@ -41,8 +56,32 @@ Parameters::Parameters(const string &jsonfile) {
   for (auto &item : jsonData.items()) {
     parseArg(item.key(), to_string(item.value()).c_str());
   }
+
+  // updating paths of files
+  if (isStringSet(ROOT_FOLDER)) {
+    setRootDirectory(TRAIN_DATA_FILE);
+    setRootDirectory(TRAIN_PRED_FILE);
+    setRootDirectory(TRAIN_CLASS_FILE);
+    setRootDirectory(RULES_FILE);
+    setRootDirectory(RULES_OUTFILE);
+    setRootDirectory(CONSOLE_FILE);
+    setRootDirectory(ATTRIBUTES_FILE);
+    setRootDirectory(WEIGHTS_FILE);
+    setRootDirectory(NORMALIZATION_FILE);
+  }
 }
 
+/**
+ * @brief parse a given parameter name & its value in order to add it to the Parameter class
+ *
+ * To add a new parameter you must follow this workflow:
+ *    - Add a new element in the ParameterCode enum in Paramerters.h
+ *    - Add a new element in the unordered_map with the parameter litteral name and its enum in Paramerters.h
+ *    - Adapt the code below to accept your new argument in the switch case
+ *
+ * @param param parameter name (ex: nb_threads, min_fidelity etc...)
+ * @param arg parameter's associated value
+ */
 void Parameters::parseArg(const string &param, const char *arg) {
   ParameterCode option;
   auto it = parameterNames.find(param);
@@ -52,10 +91,10 @@ void Parameters::parseArg(const string &param, const char *arg) {
     option = INVALID;
   }
 
-  switch (option) { // After --
+  switch (option) {
 
   case TRAIN_DATA_FILE:
-    setString(TRAIN_DATA_FILE, arg); // Parameter after -T
+    setString(TRAIN_DATA_FILE, arg);
     break;
 
   case TRAIN_PRED_FILE:
@@ -168,19 +207,6 @@ void Parameters::parseArg(const string &param, const char *arg) {
 
   default: // If we put another -X option
     throw CommandArgumentException("Illegal option : " + param);
-  }
-
-  // updating paths of files
-  if (isStringSet(ROOT_FOLDER)) {
-    setRootDirectory(TRAIN_DATA_FILE);
-    setRootDirectory(TRAIN_PRED_FILE);
-    setRootDirectory(TRAIN_CLASS_FILE);
-    setRootDirectory(RULES_FILE);
-    setRootDirectory(RULES_OUTFILE);
-    setRootDirectory(CONSOLE_FILE);
-    setRootDirectory(ATTRIBUTES_FILE);
-    setRootDirectory(WEIGHTS_FILE);
-    setRootDirectory(NORMALIZATION_FILE);
   }
 }
 
