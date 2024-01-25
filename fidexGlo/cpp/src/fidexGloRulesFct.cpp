@@ -422,7 +422,7 @@ void checkParametersLogicValues(Parameters *p) {
   p->setDefaultInt(POSITIVE_CLASS_INDEX, -1);
   p->setDefaultInt(NB_THREADS, 1);
   p->setDefaultFloat(MIN_FIDELITY, 1.0f);
-  p->setDefaultFloat(HI_KNOT, 5);
+  p->setDefaultFloat(HI_KNOT, 5.0f);
   p->setDefaultInt(SEED, 0);
   p->setWeightsFiles(); // must be called to initialize
 
@@ -617,7 +617,7 @@ int fidexGloRules(const string &command) {
 
     if (nbParam < 2) {
       showRulesParams();
-      return 1;
+      exit(1);
     }
 
     // getting all program arguments from CLI
