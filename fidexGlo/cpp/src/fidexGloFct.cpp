@@ -40,7 +40,6 @@ void showParams() {
   std::cout << "--nb_dimlp_nets <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
   std::cout << "--max_itertions <max iteration number (100 by default)>" << std::endl;
   std::cout << "--min_covering <minimum covering number (2 by default)>" << std::endl;
-  std::cout << "--covering_strategy <decrement by 1 the min covering number each time the minimal covering size is not reached (False by default)>" << std::endl;
   std::cout << "--max_failed_attempts <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
   std::cout << "--min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>" << std::endl;
   std::cout << "--dropout_dim <dimension dropout parameter (None by default)>" << std::endl;
@@ -116,7 +115,6 @@ enum ParameterFidexGloEnum {
   NB_DIMLP_NETS,
   MAX_ITERATIONS,
   MIN_COVERING,
-  COVERING_STRATEGY,
   MAX_FAILED_ATTEMPTS,
   MIN_FIDELITY,
   DROPOUT_DIM,
@@ -149,7 +147,6 @@ const std::unordered_map<std::string, ParameterFidexGloEnum> parameterMap = {
     {"nb_dimlp_nets", NB_DIMLP_NETS},
     {"max_iterations", MAX_ITERATIONS},
     {"min_covering", MIN_COVERING},
-    {"covering_strategy", COVERING_STRATEGY},
     {"max_failed_attempts", MAX_FAILED_ATTEMPTS},
     {"min_fidelity", MIN_FIDELITY},
     {"dropout_dim", DROPOUT_DIM},
@@ -228,8 +225,6 @@ int fidexGlo(const string &command) {
     bool itMaxInit = false;
     int minNbCover; // Minimum size of covering that we ask
     bool minNbCoverInit = false;
-    bool minCoverStrategy = false; // Decresase by 1 the minNbCover each time maximal fidelity is not achieved
-    bool minCoverStrategyInit = false;
     int maxFailedAttempts = 30; // Maxamum number of attemps when minNbCover = 1
     bool maxFailedAttemptsInit = false;
     double minFidelity = 1; // Minimum Fidelity to obtain when computing a rule
@@ -429,17 +424,6 @@ int fidexGlo(const string &command) {
           }
           break;
 
-        case COVERING_STRATEGY:
-          if (std::strcmp(arg, "true") == 0 || std::strcmp(arg, "True") == 0 || std::strcmp(arg, "1") == 0) {
-            minCoverStrategy = true;
-          } else if (std::strcmp(arg, "false") == 0 || std::strcmp(arg, "False") == 0 || std::strcmp(arg, "0") == 0) {
-            minCoverStrategy = false;
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", boolean requested.");
-          }
-          minCoverStrategyInit = true;
-          break;
-
         case MAX_FAILED_ATTEMPTS:
           if (checkPositiveInt(arg) && atoi(arg) > 0) {
             maxFailedAttempts = atoi(arg);
@@ -578,23 +562,16 @@ int fidexGlo(const string &command) {
               << endl;
 
     // Get test data
-    vector<int> testSamplesPreds;
-    vector<vector<double>> testSamplesValues;
-    vector<vector<double>> testSamplesOutputValuesPredictions;
 
     std::unique_ptr<DataSetFid> testDatas;
     if (!testSamplesPredFileInit) { // If we have only one test data file with data and prediction
       testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass));
-      testSamplesValues = (*testDatas->getDatas());
-      testSamplesPreds = (*testDatas->getPredictions());
-      testSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
-
     } else { // We have a different file for test predictions
       testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, testSamplesPredFile, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass));
-      testSamplesValues = (*testDatas->getDatas());
-      testSamplesPreds = (*testDatas->getPredictions());
-      testSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
     }
+    vector<vector<double>> testSamplesValues = *testDatas->getDatas();
+    vector<int> testSamplesPreds = *testDatas->getPredictions();
+    vector<vector<double>> testSamplesOutputValuesPredictions = *testDatas->getOutputValuesPredictions();
 
     int nbSamples = testDatas->getNbSamples();
 
@@ -658,9 +635,6 @@ int fidexGlo(const string &command) {
       }
       if (minNbCoverInit) {
         fidexCommand += " --min_covering " + std::to_string(minNbCover);
-      }
-      if (minCoverStrategyInit) {
-        fidexCommand += " --covering_strategy " + std::to_string(minCoverStrategy);
       }
       if (maxFailedAttemptsInit) {
         fidexCommand += " --max_failed_attempts " + std::to_string(maxFailedAttempts);

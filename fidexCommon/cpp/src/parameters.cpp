@@ -28,8 +28,13 @@ Parameters::Parameters(const vector<string> &args) {
     setRootDirectory(TRAIN_DATA_FILE);
     setRootDirectory(TRAIN_PRED_FILE);
     setRootDirectory(TRAIN_CLASS_FILE);
+    setRootDirectory(TEST_DATA_FILE);
+    setRootDirectory(TEST_PRED_FILE);
+    setRootDirectory(TEST_CLASS_FILE);
     setRootDirectory(RULES_FILE);
     setRootDirectory(GLOBAL_RULES_OUTFILE);
+    setRootDirectory(GLOBAL_RULES_FILE);
+    setRootDirectory(EXPLANATION_FILE);
     setRootDirectory(CONSOLE_FILE);
     setRootDirectory(ATTRIBUTES_FILE);
     setRootDirectory(WEIGHTS_FILE);
@@ -109,6 +114,14 @@ void Parameters::parseArg(const string &param, const string &arg) {
     setString(TRAIN_PRED_FILE, arg);
     break;
 
+  case TEST_DATA_FILE:
+    setString(TEST_DATA_FILE, arg); // Parameter after -T
+    break;
+
+  case TEST_PRED_FILE:
+    setString(TEST_PRED_FILE, arg);
+    break;
+
   case NB_ATTRIBUTES:
     setInt(NB_ATTRIBUTES, arg);
     break;
@@ -119,6 +132,10 @@ void Parameters::parseArg(const string &param, const string &arg) {
 
   case TRAIN_CLASS_FILE:
     setString(TRAIN_CLASS_FILE, arg);
+    break;
+
+  case TEST_CLASS_FILE:
+    setString(TEST_CLASS_FILE, arg);
     break;
 
   case WEIGHTS_FILE:
@@ -139,6 +156,14 @@ void Parameters::parseArg(const string &param, const string &arg) {
 
   case GLOBAL_RULES_OUTFILE:
     setString(GLOBAL_RULES_OUTFILE, arg);
+    break;
+
+  case GLOBAL_RULES_FILE:
+    setString(GLOBAL_RULES_FILE, arg);
+    break;
+
+  case EXPLANATION_FILE:
+    setString(EXPLANATION_FILE, arg);
     break;
 
   case CONSOLE_FILE:
@@ -207,6 +232,14 @@ void Parameters::parseArg(const string &param, const string &arg) {
 
   case NORMALIZATION_INDICES:
     setIntVector(NORMALIZATION_INDICES, arg);
+    break;
+
+  case WITH_FIDEX:
+    setBool(WITH_FIDEX, arg);
+    break;
+
+  case WITH_MINIMAL_VERSION:
+    setBool(WITH_MINIMAL_VERSION, arg);
     break;
 
   case SEED:
@@ -279,6 +312,23 @@ void Parameters::setDouble(ParameterCode id, double value) {
   _doubleParams[id] = value;
 }
 
+void Parameters::setBool(ParameterCode id, string value) {
+  if (isBoolSet(id)) {
+    throwAlreadySetArgumentException(id, value);
+  }
+
+  if (checkBool(value)) {
+    std::transform(value.begin(), value.end(), value.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+    _boolParams[id] = (value == "true" || value == "1") ? true : false;
+  } else {
+    throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(id) + ", boolean requested.");
+  }
+}
+
+void Parameters::setBool(ParameterCode id, bool value) {
+  _boolParams[id] = value;
+}
 void Parameters::setDoubleVector(ParameterCode id, const string &value) {
   if (isDoubleVectorSet(id)) {
     throwAlreadySetArgumentException(id, value);
@@ -379,6 +429,11 @@ double Parameters::getDouble(ParameterCode id) {
   return _doubleParams[id];
 }
 
+bool Parameters::getBool(ParameterCode id) {
+  assertBoolExists(id);
+  return _boolParams[id];
+}
+
 vector<double> Parameters::getDoubleVector(ParameterCode id) {
   assertDoubleVectorExists(id);
   return _doubleVectorParams[id];
@@ -413,6 +468,10 @@ bool Parameters::isFloatSet(ParameterCode id) {
 
 bool Parameters::isDoubleSet(ParameterCode id) {
   return _doubleParams.find(id) != _doubleParams.end();
+}
+
+bool Parameters::isBoolSet(ParameterCode id) {
+  return _boolParams.find(id) != _boolParams.end();
 }
 
 bool Parameters::isDoubleVectorSet(ParameterCode id) {
@@ -456,6 +515,12 @@ void Parameters::assertDoubleExists(ParameterCode id) {
   }
 }
 
+void Parameters::assertBoolExists(ParameterCode id) {
+  if (!isBoolSet(id)) {
+    throwArgumentNotFoundException(id);
+  }
+}
+
 void Parameters::assertDoubleVectorExists(ParameterCode id) {
   if (!isDoubleVectorSet(id)) {
     throwArgumentNotFoundException(id);
@@ -487,6 +552,11 @@ void Parameters::setDefaultFloat(ParameterCode id, float defaultValue) {
 void Parameters::setDefaultDouble(ParameterCode id, double defaultValue) {
   if (!isDoubleSet(id))
     setDouble(id, defaultValue);
+}
+
+void Parameters::setDefaultBool(ParameterCode id, bool defaultValue) {
+  if (!isBoolSet(id))
+    setBool(id, defaultValue);
 }
 
 void Parameters::setDefaultDoubleVector(ParameterCode id, const string &defaultValue) {

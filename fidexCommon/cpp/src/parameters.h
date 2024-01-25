@@ -23,8 +23,13 @@ enum ParameterCode {
   TRAIN_DATA_FILE,
   TRAIN_PRED_FILE,
   TRAIN_CLASS_FILE,
+  TEST_DATA_FILE,
+  TEST_PRED_FILE,
+  TEST_CLASS_FILE,
   RULES_FILE,
   GLOBAL_RULES_OUTFILE,
+  GLOBAL_RULES_FILE,
+  EXPLANATION_FILE,
   CONSOLE_FILE,
   ROOT_FOLDER,
   ATTRIBUTES_FILE,
@@ -49,6 +54,8 @@ enum ParameterCode {
   MUS,
   SIGMAS,
   NORMALIZATION_INDICES,
+  WITH_FIDEX,
+  WITH_MINIMAL_VERSION,
   INVALID,
   _NB_PARAMETERS // internal use only, do not consider it as a usable parameter
 };
@@ -57,8 +64,13 @@ static const std::unordered_map<std::string, ParameterCode> parameterNames = {
     {"train_data_file", TRAIN_DATA_FILE},
     {"train_pred_file", TRAIN_PRED_FILE},
     {"train_class_file", TRAIN_CLASS_FILE},
+    {"test_data_file", TEST_DATA_FILE},
+    {"test_pred_file", TEST_PRED_FILE},
+    {"test_class_file", TEST_CLASS_FILE},
     {"rules_file", RULES_FILE},
     {"global_rules_outfile", GLOBAL_RULES_OUTFILE},
+    {"global_rules_file", GLOBAL_RULES_FILE},
+    {"explanation_file", EXPLANATION_FILE},
     {"console_file", CONSOLE_FILE},
     {"root_folder", ROOT_FOLDER},
     {"attributes_file", ATTRIBUTES_FILE},
@@ -82,13 +94,16 @@ static const std::unordered_map<std::string, ParameterCode> parameterNames = {
     {"normalization_file", NORMALIZATION_FILE},
     {"mus", MUS},
     {"sigmas", SIGMAS},
-    {"normalization_indices", NORMALIZATION_INDICES}};
+    {"normalization_indices", NORMALIZATION_INDICES},
+    {"normalization_indices", WITH_FIDEX},
+    {"normalization_indices", WITH_MINIMAL_VERSION}};
 
 class Parameters {
 private:
   map<ParameterCode, int> _intParams;
   map<ParameterCode, float> _floatParams;
   map<ParameterCode, double> _doubleParams;
+  map<ParameterCode, bool> _boolParams;
   map<ParameterCode, vector<double>> _doubleVectorParams;
   map<ParameterCode, vector<int>> _intVectorParams;
   map<ParameterCode, string> _stringParams;
@@ -104,6 +119,8 @@ private:
   void setFloat(ParameterCode id, float value);
   void setDouble(ParameterCode id, const string &value);
   void setDouble(ParameterCode id, double value);
+  void setBool(ParameterCode id, string value);
+  void setBool(ParameterCode id, bool value);
   void setDoubleVector(ParameterCode id, const string &value);
   void setIntVector(ParameterCode id, const string &value);
   void setString(ParameterCode id, const string &value);
@@ -131,6 +148,7 @@ public:
   void setDefaultInt(ParameterCode id, int value);
   void setDefaultFloat(ParameterCode id, float value);
   void setDefaultDouble(ParameterCode id, double value);
+  void setDefaultBool(ParameterCode id, bool value);
   void setDefaultDoubleVector(ParameterCode id, const string &defaultValue);
   void setDefaultIntVector(ParameterCode id, const string &defaultValue);
   void setDefaultString(ParameterCode id, const string &defaultValue);
@@ -143,6 +161,7 @@ public:
   int getInt(ParameterCode id);
   float getFloat(ParameterCode id);
   double getDouble(ParameterCode id);
+  bool getBool(ParameterCode id);
   vector<double> getDoubleVector(ParameterCode id);
   vector<int> getIntVector(ParameterCode id);
   string getString(ParameterCode id);
@@ -153,6 +172,7 @@ public:
   map<ParameterCode, int> getAllInts() const { return _intParams; }
   map<ParameterCode, float> getAllFloats() const { return _floatParams; }
   map<ParameterCode, double> getAllDoubles() const { return _doubleParams; }
+  map<ParameterCode, bool> getAllBools() const { return _boolParams; }
   map<ParameterCode, vector<double>> getAllDoubleVectors() const { return _doubleVectorParams; }
   map<ParameterCode, vector<int>> getAllIntVectors() const { return _intVectorParams; }
   map<ParameterCode, string> getAllStrings() const { return _stringParams; }
@@ -160,6 +180,7 @@ public:
   bool isIntSet(ParameterCode id);
   bool isFloatSet(ParameterCode id);
   bool isDoubleSet(ParameterCode id);
+  bool isBoolSet(ParameterCode id);
   bool isDoubleVectorSet(ParameterCode id);
   bool isIntVectorSet(ParameterCode id);
   bool isStringSet(ParameterCode id) const;
@@ -172,6 +193,7 @@ public:
   void assertIntExists(ParameterCode id);
   void assertFloatExists(ParameterCode id);
   void assertDoubleExists(ParameterCode id);
+  void assertBoolExists(ParameterCode id);
   void assertDoubleVectorExists(ParameterCode id);
   void assertIntVectorExists(ParameterCode id);
   void assertStringExists(ParameterCode id);
@@ -196,6 +218,18 @@ inline ostream &operator<<(ostream &stream, const Parameters &p) {
   for (auto const &x : p.getAllDoubles()) {
     stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << to_string(x.second) << endl;
   }
+
+  for (auto const &x : p.getAllBools()) {
+    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << to_string(x.second) << endl;
+  }
+
+  /*for (auto const &x : p.getAllIntVectors()) {
+    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << to_string(x.second) << endl;
+  }
+
+  for (auto const &x : p.getAllDoubleVectors()) {
+    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << to_string(x.second) << endl;
+  }*/
 
   if (p.isStringSet(WEIGHTS_FILE)) {
     stream << "  WEIGHTS_FILES (list)" << endl;
