@@ -1,29 +1,33 @@
 #ifndef ANTECEDANT_H
 #define ANTECEDANT_H
+#include "../../../json/single_include/nlohmann/json.hpp"
 #include <cmath>
+#include <iostream>
 #include <ostream>
 
 using namespace std;
+using Json = nlohmann::json;
 
 class Antecedant {
 private:
-  int _attribute;
-  bool _inequality; // true if attribute >= value false if attribute < value
-  double _value;
+  int attribute;
+  bool inequality; // true if attribute >= value false if attribute < value
+  double value;
 
-  // PRIVATE SETTERS
-  void setAttribute(int attribute) { _attribute = attribute; }
-  void setInequality(bool inequality) { _inequality = inequality; }
-  void setHyperlocus(double value) { _value = value; }
+  NLOHMANN_DEFINE_TYPE_INTRUSIVE(Antecedant, attribute, inequality, value)
 
 public:
   Antecedant() = default;
   Antecedant(int attribute, bool inequality, double value);
 
   // GETTERS
-  int getAttribute() const { return _attribute; }
-  bool getInequality() const { return _inequality; }
-  double getValue() const { return _value; }
+  int getAttribute() const { return attribute; }
+  bool getInequality() const { return inequality; }
+  double getValue() const { return value; }
+
+  void setAttribute(int value) { attribute = value; }
+  void setInequality(bool value) { inequality = value; }
+  void setHyperlocus(double value) { this->value = value; }
 
   bool isEqual(Antecedant other) const;
 };
