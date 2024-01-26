@@ -25,6 +25,6 @@ using namespace std::chrono;
 void showRulesParams();
 void checkParameters(Parameters p);
 int fidexGloRules(const string &command);
-tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> &rules, const vector<string> &attributes, const vector<string> &classes);
+tuple<double, double> writeRulesFile(string filename, const vector<Rule> rules, const vector<string> *attributes = NULL, const vector<string> *classes = NULL);
 
 #endif

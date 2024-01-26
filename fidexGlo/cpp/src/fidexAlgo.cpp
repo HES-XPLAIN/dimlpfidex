@@ -1,15 +1,18 @@
 #include "fidexAlgo.h"
 
-Fidex::Fidex(DataSetFid &dataset, Parameters &parameters, Hyperspace &hyperspace) : _dataset(&dataset), _parameters(&parameters), _hyperspace(&hyperspace) {
-  int seed = parameters.getInt(SEED);
+Fidex::Fidex(DataSetFid *dataset, Parameters *parameters, Hyperspace *hyperspace) {
+  _dataset = dataset;
+  _parameters = parameters;
+  _hyperspace = hyperspace;
+  int seed = parameters->getInt(SEED);
 
   if (seed == 0) {
     auto currentTime = high_resolution_clock::now();
     auto seedValue = currentTime.time_since_epoch().count();
-    _rnd.seed(seedValue);
-  } else {
-    _rnd.seed(seed);
+    seed = seedValue;
   }
+
+  _rnd.seed(seed);
 }
 
 bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover) {

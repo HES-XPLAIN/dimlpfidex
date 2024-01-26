@@ -1,63 +1,58 @@
 #ifndef RULE_H
 #define RULE_H
-// Find better way to include this
-#include "../../../json/single_include/nlohmann/json.hpp"
 #include "antecedant.h"
 #include "checkFun.h"
 #include <algorithm>
 #include <cmath>
-#include <fstream>
 #include <iostream>
+#include <ostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
 using namespace std;
-using Json = nlohmann::json;
 
 class Rule {
 private:
-  vector<Antecedant> antecedants;
-  vector<int> coveredSamples;
-  int outputClass;
-  double fidelity;
-  double accuracy;
-  double confidence;
+  vector<Antecedant> _antecedants;
+  vector<int> _coveredSamples;
+  int _outClass;
+  double _fidelity;
+  double _accuracy;
+  double _confidence;
 
-  // define to ease JSON lib use
-  NLOHMANN_DEFINE_TYPE_INTRUSIVE(Rule, antecedants, coveredSamples, outputClass, fidelity, accuracy, confidence)
+  // PRIVATE SETTERS
+  void setAntecedants(vector<Antecedant> antecedants) { _antecedants = antecedants; };
+  void setCoveredSamples(vector<int> coveredSamples) { _coveredSamples = coveredSamples; };
 
 public:
   Rule() = default;
-  Rule(const vector<Antecedant> &antecedants,
-       const vector<int> &coveredSamples,
+  Rule(vector<Antecedant> antecedants,
+       vector<int> coveredSamples,
        int out_class,
        double fidelity,
        double accuracy,
        double confidence);
 
   // SETTERS
-  void setOutputClass(int value) { outputClass = value; };
-  void setFidelity(double value) { fidelity = value; };
-  void setAccuracy(double value) { accuracy = value; };
-  void setConfidence(double value) { confidence = value; };
-  void setAntecedants(vector<Antecedant> const &values) { antecedants = values; };
-  void setCoveredSamples(vector<int> const &values) { coveredSamples = values; };
+  void setOutputClass(int outputClass) { _outClass = outputClass; };
+  void setFidelity(double fidelity) { _fidelity = fidelity; };
+  void setAccuracy(double accuracy) { _accuracy = accuracy; };
+  void setConfidence(double confidence) { _confidence = confidence; };
 
   // GETTERS
-  vector<Antecedant> getAntecedants() const { return antecedants; }
-  vector<int> getCoveredSamples() const { return coveredSamples; }
-  int getOutputClass() const { return outputClass; }
-  double getFidelity() const { return fidelity; }
-  double getAccuracy() const { return accuracy; }
-  double getConfidence() const { return confidence; }
+  vector<Antecedant> getAntecedants() const { return _antecedants; }
+  vector<int> getCoveredSamples() const { return _coveredSamples; }
+  int getOutputClass() const { return _outClass; }
+  double getFidelity() const { return _fidelity; }
+  double getAccuracy() const { return _accuracy; }
+  double getConfidence() const { return _confidence; }
 
   // UTILITIES
-  void addAntecedant(Antecedant value) { antecedants.push_back(value); };
-  void addCoveredSample(int value) { coveredSamples.push_back(value); };
-  string toString(const vector<string> &attributes, const vector<string> &classes) const;
-  bool isEqual(const Rule &other) const;
-  static vector<Rule> fromJsonFile(const string &filename);
-  static void toJsonFile(const string &filename, const vector<Rule> &rules);
+  void addAntecedant(Antecedant antecedant) { _antecedants.push_back(antecedant); };
+  void addCoveredSample(int sampleId) { _coveredSamples.push_back(sampleId); };
+  string toString(const vector<string> *attributes = NULL, const vector<string> *classes = NULL);
+  bool isEqual(const Rule other) const;
 };
 
 // OPERATOR OVERLOAD TO EASE PRINTING PURPOSES
