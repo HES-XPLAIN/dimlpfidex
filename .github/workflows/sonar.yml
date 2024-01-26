@@ -44,6 +44,10 @@ jobs:
           python -m pip install -U pip
           python -m pip install .
 
+      - name: Pull nlohmann/json submodule at v3.11.3 Tag
+        run: |
+          git submodule update --init
+
       - name: Install sonar-scanner and build-wrapper
         uses: SonarSource/sonarcloud-github-c-cpp@v2
 
