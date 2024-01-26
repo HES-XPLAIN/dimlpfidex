@@ -3,6 +3,21 @@ Discretized Interpretable Multi Layer Perceptron (DIMLP) and related algorithms
 
 ## Contribution
 
+### Get the project code
+
+To get the latest source code, install [git](https://git-scm.com/) and [clone](https://docs.github.com/en/get-started/getting-started-with-git/about-remote-repositories) the repository:
+
+```sh
+$ git clone https://github.com/HES-XPLAIN/dimlpfidex.git
+```
+
+To download the required dependencies on your system, run:
+
+```sh
+$ git submodule init
+$ git submodule update
+```
+
 ### Install C++ toolchain
 
 #### Linux, macOS, Windows/WSL
