@@ -188,6 +188,19 @@ public:
   // special operations
   void setWeightsFiles();
   void addWeightsFile(string file);
+  template <typename T>
+  std::string vectorToString(const std::vector<T> &vec) const {
+    std::stringstream ss;
+    ss << "[";
+    for (size_t i = 0; i < vec.size(); ++i) {
+      ss << vec[i];
+      if (i < vec.size() - 1) {
+        ss << ", ";
+      }
+    }
+    ss << "]";
+    return ss.str();
+  }
 
   // assertions
   void assertIntExists(ParameterCode id);
@@ -223,13 +236,13 @@ inline ostream &operator<<(ostream &stream, const Parameters &p) {
     stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << to_string(x.second) << endl;
   }
 
-  /*for (auto const &x : p.getAllIntVectors()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << to_string(x.second) << endl;
+  for (auto const &x : p.getAllIntVectors()) {
+    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << p.vectorToString(x.second) << endl;
   }
 
   for (auto const &x : p.getAllDoubleVectors()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << to_string(x.second) << endl;
-  }*/
+    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << p.vectorToString(x.second) << endl;
+  }
 
   if (p.isStringSet(WEIGHTS_FILE)) {
     stream << "  WEIGHTS_FILES (list)" << endl;
