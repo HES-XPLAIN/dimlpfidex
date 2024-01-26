@@ -95,7 +95,7 @@ private:
   vector<string> _weightFiles; // the only 1 special parameter
 
   // private parser
-  void parseArg(const string &param, const char *arg);
+  void parseArg(const string &param, const string &arg);
 
   // setters handle formatting from string argument
   void setInt(ParameterCode id, const string &value);

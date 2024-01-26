@@ -17,7 +17,7 @@ Parameters::Parameters(const vector<string> &args) {
       if (p >= args.size()) {
         throw CommandArgumentException("Missing something at the end of the command.");
       }
-      const char *arg = args[p].c_str();
+      const string arg = args[p];
 
       parseArg(param, arg);
     }
@@ -90,7 +90,7 @@ Parameters::Parameters(const string &jsonfile) {
  * @param param parameter name (ex: nb_threads, min_fidelity etc...)
  * @param arg parameter's associated value
  */
-void Parameters::parseArg(const string &param, const char *arg) {
+void Parameters::parseArg(const string &param, const string &arg) {
   ParameterCode option;
   auto it = parameterNames.find(param);
   if (it != parameterNames.end()) {
