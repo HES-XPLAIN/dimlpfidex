@@ -23,7 +23,7 @@ using namespace FidexGloNameSpace;
 using namespace std::chrono;
 
 void showRulesParams();
-void checkParameters(Parameters p);
+void checkRulesParametersLogicValues(Parameters *p);
 int fidexGloRules(const string &command);
 tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> &rules, const vector<string> &attributes, const vector<string> &classes);
 

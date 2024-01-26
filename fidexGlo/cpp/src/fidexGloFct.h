@@ -20,6 +20,7 @@
 #include <vector>
 
 void showParams();
+void checkParametersLogicValues(Parameters *p);
 void launchFidex(std::vector<std::string> &lines, const std::string &fidexCommand, const std::string &ruleFile);
 int fidexGlo(const std::string &command);
 

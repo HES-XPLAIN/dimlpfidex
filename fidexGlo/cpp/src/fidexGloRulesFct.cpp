@@ -406,19 +406,21 @@ vector<Rule> heuristic_3(DataSetFid &dataset, Parameters &p, const vector<vector
  *
  * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
  */
-void checkParametersLogicValues(Parameters *p) {
+void checkRulesParametersLogicValues(Parameters *p) {
   // setting default values
   p->setDefaultString(ROOT_FOLDER, "");
   p->setDefaultInt(NB_DIMLP_NETS, 1);
   p->setDefaultString(ATTRIBUTES_FILE, "");
   p->setDefaultString(CONSOLE_FILE, "");
-  p->setDefaultInt(MAX_ITERATIONS, 100);
+  p->setDefaultInt(NB_ATTRIBUTES, -1);
+  p->setDefaultInt(NB_CLASSES, -1);
+  p->setDefaultInt(MAX_ITERATIONS, 10);
   p->setDefaultInt(MIN_COVERING, 2);
   p->setDefaultFloat(DROPOUT_DIM, 0.0f);
   p->setDefaultFloat(DROPOUT_HYP, 0.0f);
   p->setDefaultInt(MAX_FAILED_ATTEMPTS, 30);
   p->setDefaultInt(NB_QUANT_LEVELS, 50);
-  p->setDefaultFloat(DECISION_THRESHOLD, -1.0f); // default value not matching
+  p->setDefaultFloat(DECISION_THRESHOLD, -1.0f);
   p->setDefaultInt(POSITIVE_CLASS_INDEX, -1);
   p->setDefaultInt(NB_THREADS, 1);
   p->setDefaultFloat(MIN_FIDELITY, 1.0f);
@@ -437,6 +439,15 @@ void checkParametersLogicValues(Parameters *p) {
   p->assertStringExists(GLOBAL_RULES_OUTFILE);
 
   // verifying logic between parameters, values range and so on...
+
+  if (p->getInt(NB_ATTRIBUTES) != -1 && p->getInt(NB_ATTRIBUTES) < 1) {
+    throw CommandArgumentException("Error : Number of attributes must be strictly positive (>=1).");
+  }
+
+  if (p->getInt(NB_CLASSES) != -1 && p->getInt(NB_CLASSES) < 1) {
+    throw CommandArgumentException("Error : Number of classes must be strictly positive (>=1).");
+  }
+
   if (p->isStringSet(WEIGHTS_FILE) && p->isStringSet(RULES_FILE)) {
     throw CommandArgumentException("Error : Do not specify both a weight file and an rules input file. Choose one of them.");
   }
@@ -470,15 +481,27 @@ void checkParametersLogicValues(Parameters *p) {
   }
 
   if (p->getFloat(DROPOUT_DIM) < 0.0f || p->getFloat(DROPOUT_DIM) > 1.0f) {
-    throw CommandArgumentException("Error : Dropout dim must be beetween [0.0, 1.0].");
+    throw CommandArgumentException("Error : Dropout dim must be between [0.0, 1.0].");
   }
 
   if (p->getFloat(DROPOUT_HYP) < 0.0f || p->getFloat(DROPOUT_HYP) > 1.0f) {
-    throw CommandArgumentException("Error : Dropout hyp must be beetween [0.0, 1.0].");
+    throw CommandArgumentException("Error : Dropout hyp must be between [0.0, 1.0].");
+  }
+
+  if (p->getInt(MAX_FAILED_ATTEMPTS) < 0) {
+    throw CommandArgumentException("Error : Maximum number of failed attempts has to be positive (>=0)");
+  }
+
+  if (p->getFloat(MIN_FIDELITY) < 0.0f || p->getFloat(MIN_FIDELITY) > 1.0f) {
+    throw CommandArgumentException("Error : Minimum fidelity has to be between [0.0, 1.0]");
   }
 
   if ((p->getFloat(DECISION_THRESHOLD) < 0.0f || p->getFloat(DECISION_THRESHOLD) > 1.0f) && p->getFloat(DECISION_THRESHOLD) != -1.0f) {
-    throw CommandArgumentException("Error : Decision threshold must be beetween [0.0, 1.0].");
+    throw CommandArgumentException("Error : Decision threshold must be between [0.0, 1.0].");
+  }
+
+  if (p->getInt(POSITIVE_CLASS_INDEX) < 0 && p->getInt(POSITIVE_CLASS_INDEX) != -1) {
+    throw CommandArgumentException("Error : Positive class index must be positive (>=0)");
   }
 
   if (p->isFloatSet(DECISION_THRESHOLD) && !p->isIntSet(POSITIVE_CLASS_INDEX)) {
@@ -621,6 +644,7 @@ int fidexGloRules(const string &command) {
       exit(1);
     }
 
+    // Import parameters
     unique_ptr<Parameters> params;
 
     if (commandList[1].compare("--json_config_file") == 0) {
@@ -637,7 +661,7 @@ int fidexGloRules(const string &command) {
     }
 
     // getting all program arguments from CLI
-    checkParametersLogicValues(params.get());
+    checkRulesParametersLogicValues(params.get());
     cout << *params;
 
     // Get console results to file
