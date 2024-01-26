@@ -327,6 +327,7 @@ void Parameters::setBool(ParameterCode id, string value) {
 }
 
 void Parameters::setBool(ParameterCode id, bool value) {
+  std::cout << "Et genre là on entre ici genre " << value << std::endl;
   _boolParams[id] = value;
 }
 void Parameters::setDoubleVector(ParameterCode id, const string &value) {

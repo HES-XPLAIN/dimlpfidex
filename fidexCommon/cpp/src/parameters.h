@@ -95,8 +95,8 @@ static const std::unordered_map<std::string, ParameterCode> parameterNames = {
     {"mus", MUS},
     {"sigmas", SIGMAS},
     {"normalization_indices", NORMALIZATION_INDICES},
-    {"normalization_indices", WITH_FIDEX},
-    {"normalization_indices", WITH_MINIMAL_VERSION}};
+    {"with_fidex", WITH_FIDEX},
+    {"with_minimal_version", WITH_MINIMAL_VERSION}};
 
 class Parameters {
 private:
