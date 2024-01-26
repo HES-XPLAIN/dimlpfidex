@@ -30,7 +30,7 @@ private:
 
 public:
   Fidex() = default;
-  Fidex(DataSetFid &dataset, Parameters &parameters, Hyperspace &Hyperspace);
+  Fidex(DataSetFid *dataset, Parameters *parameters, Hyperspace *Hyperspace);
 
   // execute algo
   bool compute(Rule &rule, int idSample, double minFidelity, int minNbCover);
