@@ -53,6 +53,10 @@ jobs:
           python -m pip install -U pip
           python -m pip install .
 
+      - name: Fetch nlohmann/json submodule
+        run: |
+          git submodule update --init
+
       - name: Compile
         run: |
           python buildcpp.py
