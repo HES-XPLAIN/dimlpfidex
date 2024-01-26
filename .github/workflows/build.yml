@@ -56,7 +56,7 @@ jobs:
       - name: Pull nlohmann/json submodule at v3.11.3 Tag
         run: |
           git submodule update --init
-      
+
       - name: Compile
         run: |
           python buildcpp.py
