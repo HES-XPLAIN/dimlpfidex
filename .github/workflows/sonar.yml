@@ -44,7 +44,7 @@ jobs:
           python -m pip install -U pip
           python -m pip install .
 
-      - name: Pull nlohmann/json submodule at v3.11.3 Tag
+      - name: Pull submodules
         run: |
           git submodule update --init
 
