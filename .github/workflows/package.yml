@@ -61,11 +61,17 @@ jobs:
           python -m pip install -U pip
           python -m pip install .
 
+      - name: Pull submodules
+        run: |
+          git submodule update --init
+
       - name: Compile
-        run: python buildcpp.py
+        run: |
+          python buildcpp.py
 
       - name: Build archives
-        run: python -m build
+        run: |
+          python -m build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
