@@ -1,6 +1,6 @@
 #include "fidexAlgo.h"
 
-Fidex::Fidex(DataSetFid &dataset, Parameters &parameters, Hyperspace &hyperspace) : _dataset(&dataset), _parameters(&parameters), _hyperspace(&hyperspace) {
+Fidex::Fidex(DataSetFid &trainDataset, Parameters &parameters, Hyperspace &hyperspace) : _trainDataset(&trainDataset), _parameters(&parameters), _hyperspace(&hyperspace) {
   int seed = parameters.getInt(SEED);
 
   if (seed == 0) {
@@ -12,15 +12,13 @@ Fidex::Fidex(DataSetFid &dataset, Parameters &parameters, Hyperspace &hyperspace
   }
 }
 
-bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover) {
+bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover) {
   Hyperspace *hyperspace = _hyperspace;
-  int nbAttributes = _dataset->getNbAttributes();
-  vector<int> *trainPreds = _dataset->getPredictions();
-  vector<int> *trainTrueClass = _dataset->getClasses();
-  vector<vector<double>> *trainData = _dataset->getDatas();
-  vector<double> *mainSampleValues = &(*trainData)[idSample];
-  vector<vector<double>> *trainOutputValuesPredictions = _dataset->getOutputValuesPredictions();
-  int mainSamplePred = (*trainPreds)[idSample];
+  int nbAttributes = _trainDataset->getNbAttributes();
+  vector<int> *trainPreds = _trainDataset->getPredictions();
+  vector<int> *trainTrueClass = _trainDataset->getClasses();
+  vector<vector<double>> *trainData = _trainDataset->getDatas();
+  vector<vector<double>> *trainOutputValuesPredictions = _trainDataset->getOutputValuesPredictions();
   int nbInputs = hyperspace->getHyperLocus().size();
   int itMax = _parameters->getInt(MAX_ITERATIONS);
   double dropoutDim = _parameters->getFloat(DROPOUT_DIM);
@@ -81,7 +79,7 @@ bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover
 
       dimension = dimensions[d];
       attribut = dimension % nbAttributes;
-      mainSampleValue = (*mainSampleValues)[attribut];
+      mainSampleValue = mainSampleValues[attribut];
 
       // Test if we dropout this dimension
       if (hasdd && dis(_rnd) < dropoutDim) {
@@ -155,9 +153,9 @@ bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover
   double ruleConfidence;
   ruleConfidence = hyperspace->computeRuleConfidence(trainOutputValuesPredictions, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples
   if (_parameters->isDoubleVectorSet(MUS)) {
-    rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence, &mus, &sigmas, &normalizationIndices);
+    rule = hyperspace->ruleExtraction(&mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence, &mus, &sigmas, &normalizationIndices);
   } else {
-    rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence);
+    rule = hyperspace->ruleExtraction(&mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence);
   }
 
   return true;

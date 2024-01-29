@@ -9,14 +9,14 @@ set(CMAKE_CXX_FLAGS "-O3 -Wunused" )
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 FILE(GLOB FIDEXGLO_SRC
-    ../../fidex/cpp/src/hyperspace.cpp
-    ../../fidex/cpp/src/hyperspace.h
-    ../../fidex/cpp/src/fidexFct.cpp
-    ../../fidex/cpp/src/fidexFct.h
     src/fidexGloFct.cpp
     src/fidexGloFct.h
     src/getRulesFun.cpp
     src/getRulesFun.h
+    src/fidexAlgo.cpp
+    src/fidexAlgo.h
+    src/hyperspace.cpp
+    src/hyperspace.h
 )
 
 FILE(GLOB FIDEXGLORULES_SRC

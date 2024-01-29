@@ -84,7 +84,6 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
   getline(rulesData, line);          // Skip second line
   bool attributsInFile = true;
   bool classesInFile = true;
-
   if (line.find("Attribute names are not specified.") != std::string::npos) { // TODO : See if we can delete those lines in file and replace by a check to see if we have attribute names or not. cf. patterns in hyperLocus.cpp
     attributsInFile = false;
   }

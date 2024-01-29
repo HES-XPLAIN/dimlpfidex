@@ -51,21 +51,27 @@ void showParams() {
             << std::endl;
 }
 
-/*void launchFidex(std::vector<std::string> &lines, int minNbCover, int maxFailedAttempts, double minFidelity, DataSetFid *dataset, Parameters *p) {
+void launchFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Parameters &p, Hyperspace &hyperspace, vector<double> *mainSampleValues, int mainSamplePred, const vector<string> &attributeNames, const vector<string> &classNames) {
+
+  std::cout << "\nWe launch Fidex." << std::endl;
+  std::cout << "\nLocal rule :" << std::endl;
+  lines.emplace_back("\nWe launch Fidex.\n");
+  lines.emplace_back("Local rule :\n");
+
   Rule rule;
   bool ruleCreated;
   int counterFailed;
-  int currentMinNbCov = minNbCover;
+  int currentMinNbCov = p.getInt(MIN_COVERING);
+  float minFidelity = p.getFloat(MIN_FIDELITY);
+  int maxFailedAttempts = p.getInt(MAX_FAILED_ATTEMPTS);
 
-  Fidex fidex = Fidex(dataset, p, &hyperspace);
+  auto fidex = Fidex(trainDataset, p, hyperspace);
 
   ruleCreated = false;
   counterFailed = 0; // If we can't find a good rule after a lot of tries
 
-
-  currentMinNbCov = minNbCover;
   while (!ruleCreated) {
-    ruleCreated = fidex.compute(rule, idSample, minFidelity, currentMinNbCov);
+    ruleCreated = fidex.compute(rule, *mainSampleValues, mainSamplePred, minFidelity, currentMinNbCov);
     // Pour idSample : Quand on appelle Fidex on a une fonction qui permet d'écrire le sample dans un fichier pour ensuite l'utiliser dans Fidex.
     // -> on n'aura plus besoin de faire ça ni de cette fonction.
     // Comment indiquer l'idSample par contre? l'idSample sert à récup mainSampleValues et mainSamplePred -> changer la méthode? À voir
@@ -81,7 +87,10 @@ void showParams() {
       break;
     }
   }
-}*/
+
+  std::cout << rule.toString(attributeNames, classNames) << std::endl;
+  lines.emplace_back(rule.toString(attributeNames, classNames) + "\n");
+}
 
 /**
  * @brief Used to set default hyperparameters values and to check the sanity of all used values like boundaries and logic.
@@ -121,8 +130,8 @@ void checkParametersLogicValues(Parameters *p) {
     throw CommandArgumentException("Error : Positive class index must be positive (>=0)");
   }
 
-  if (p->isFloatSet(DECISION_THRESHOLD) && !p->isIntSet(POSITIVE_CLASS_INDEX)) {
-    throw CommandArgumentException("Error : The positive class index has to be given with option -x if the decision threshold is given (-t)");
+  if (p->getFloat(DECISION_THRESHOLD) != -1 && p->getInt(POSITIVE_CLASS_INDEX) == -1) {
+    throw CommandArgumentException("Error : The positive class index has to be given with option --positive_class_index if the decision threshold is given (--decision_threshold)");
   }
 
   // If using Fidex :
@@ -298,7 +307,12 @@ int fidexGlo(const string &command) {
 
     // If we use Fidex, we generate fidex command
     std::vector<int> testSamplesClasses;
+    std::unique_ptr<DataSetFid> trainDatas;
+    vector<vector<double>> matHypLocus;
     if (withFidex) {
+
+      // Import files for Fidex
+      cout << "Importing files for Fidex..." << endl;
 
       // Get test class data :
       if (!params->isStringSet(TEST_CLASS_FILE)) {
@@ -310,6 +324,84 @@ int fidexGlo(const string &command) {
       }
 
       testSamplesClasses = (*testDatas->getClasses());
+
+      if (!params->isStringSet(TRAIN_CLASS_FILE)) {
+        trainDatas.reset(new DataSetFid("trainDatas from FidexGloRules",
+                                        params->getString(TRAIN_DATA_FILE).c_str(),
+                                        params->getString(TRAIN_PRED_FILE).c_str(),
+                                        params->getInt(NB_ATTRIBUTES),
+                                        params->getInt(NB_CLASSES),
+                                        params->getFloat(DECISION_THRESHOLD),
+                                        params->getInt(POSITIVE_CLASS_INDEX)));
+
+        if (!trainDatas->getHasClasses()) {
+          throw CommandArgumentException("The train true classes file has to be given with option --train_class_file or classes have to be given in the train data file.");
+        }
+      } else {
+        trainDatas.reset(new DataSetFid("trainDatas from FidexGloRules",
+                                        params->getString(TRAIN_DATA_FILE).c_str(),
+                                        params->getString(TRAIN_PRED_FILE).c_str(),
+                                        params->getInt(NB_ATTRIBUTES),
+                                        params->getInt(NB_CLASSES),
+                                        params->getFloat(DECISION_THRESHOLD),
+                                        params->getInt(POSITIVE_CLASS_INDEX),
+                                        params->getString(TRAIN_CLASS_FILE).c_str()));
+      }
+
+      // compute hyperspace
+
+      cout << "Creation of hyperspace..." << endl;
+
+      string weightsFile;
+      if (params->isStringSet(WEIGHTS_FILE)) {
+        weightsFile = params->getString(WEIGHTS_FILE);
+      }
+      if (params->isStringSet(ATTRIBUTES_FILE)) {
+        string attributesFile = params->getString(ATTRIBUTES_FILE);
+      }
+      string inputRulesFile;
+      if (params->isStringSet(RULES_FILE)) {
+        inputRulesFile = params->getString(RULES_FILE);
+      }
+      vector<string> weightsFiles;
+      if (params->isStringSet(WEIGHTS_FILE)) {
+        weightsFiles = params->getWeightsFiles();
+      }
+      int nbDimlpNets = params->getInt(NB_DIMLP_NETS);
+      int nbQuantLevels = params->getInt(NB_QUANT_LEVELS);
+      int nbAttributes = params->getInt(NB_ATTRIBUTES);
+      float hiKnot = params->getFloat(HI_KNOT);
+
+      if (params->isStringSet(WEIGHTS_FILE)) {
+        if (nbDimlpNets > 1) {
+          cout << "\nParameters of hyperLocus :" << endl;
+          cout << "\t- Number of stairs " << nbQuantLevels << endl;
+          cout << "\t- Interval : [-" << hiKnot << "," << hiKnot << "]" << endl
+               << endl;
+          cout << "Computing all hyperlocuses..." << endl;
+        }
+
+        cout << "Size of weight files:" << weightsFiles.size() << endl;
+        for (string wf : weightsFiles) {
+          vector<vector<double>> hypLocus;
+          if (nbDimlpNets > 1) {
+            hypLocus = calcHypLocus(wf.c_str(), nbQuantLevels, hiKnot, false); // Get hyperlocus
+          } else {
+            hypLocus = calcHypLocus(wf.c_str(), nbQuantLevels, hiKnot); // Get hyperlocus
+          }
+          matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end()); // Concatenate hypLocus to matHypLocus
+        }
+        if (nbDimlpNets > 1) {
+          cout << "All hyperlocus created" << endl;
+        }
+
+      } else {
+        if (params->isStringSet(ATTRIBUTES_FILE)) {
+          matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes, attributeNames);
+        } else {
+          matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes);
+        }
+      }
     }
 
     // Get rules
@@ -327,7 +419,7 @@ int fidexGlo(const string &command) {
                 << endl;
     }
 
-    if (params->isFloatSet(DECISION_THRESHOLD)) {
+    if (params->getFloat(DECISION_THRESHOLD) != -1) {
       std::string classDecision;
       if (hasClassNames) {
         classDecision = classNames[positiveClassIndex];
@@ -471,7 +563,12 @@ int fidexGlo(const string &command) {
       }
 
       if (launchingFidex) {
-        std::cout << "We launch Fidex" << std::endl;
+        auto trainDataset = *trainDatas.get();
+        Hyperspace hyperspace(matHypLocus);
+        vector<double> mainSampleValues = testSamplesValues[currentSample];
+        vector<int> *trainPreds = trainDataset.getPredictions();
+        int mainSamplePred = (*trainPreds)[currentSample];
+        launchFidex(lines, trainDataset, *params, hyperspace, &mainSampleValues, mainSamplePred, attributeNames, classNames);
       }
 
       lines.emplace_back("\n--------------------------------------------------------------------\n");

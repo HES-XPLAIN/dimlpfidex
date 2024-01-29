@@ -59,15 +59,15 @@ void showRulesParams() {
  *
  * @param rules Empty vector of rules to be filled once the function has finished
  * @param notCoveredSamples vector with all samples to be covered or ignored if the algorithm isn't able to find one in "maxFailedAttempts" attempts.
- * @param dataset class containing all usable data to compute the algorithm.
+ * @param trainDataset class containing all usable data to compute the algorithm.
  * @param p class containing all used defined parameters that influences the program execution.
  * @param hyperlocus 2D vector of doubles used to compute Fidex alorithm
  */
 // TODO: implement dicotomic min covering
-void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetFid &dataset, Parameters &p, const vector<vector<double>> &hyperlocus) {
+void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetFid &trainDataset, Parameters &p, const vector<vector<double>> &hyperlocus) {
   int nbProblems = 0;
   int nbRulesNotFound = 0;
-  int nbDatas = dataset.getNbSamples();
+  int nbDatas = trainDataset.getNbSamples();
   int minCovering = p.getInt(MIN_COVERING);
   int nbThreadsUsed = p.getInt(NB_THREADS);
 
@@ -87,7 +87,7 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
     int currentMinCovering = minCovering;
     int threadId = omp_get_thread_num();
     float minFidelity = p.getFloat(MIN_FIDELITY);
-    auto fidex = Fidex(dataset, p, hyperspace);
+    auto fidex = Fidex(trainDataset, p, hyperspace);
     string consoleFile = p.getString(CONSOLE_FILE);
     int maxFailedAttempts = p.getInt(MAX_FAILED_ATTEMPTS);
 
@@ -100,6 +100,10 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
 
 #pragma omp for
     for (int idSample = 0; idSample < nbDatas; idSample++) {
+      vector<int> *trainPreds = trainDataset.getPredictions();
+      vector<vector<double>> *trainData = trainDataset.getDatas();
+      vector<double> *mainSampleValues = &(*trainData)[idSample];
+      int mainSamplePred = (*trainPreds)[idSample];
       ruleCreated = false;
       counterFailed = 0; // If we can't find a good rule after a lot of tries
       cnt += 1;
@@ -113,7 +117,7 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
       }
 
       while (!ruleCreated) {
-        ruleCreated = fidex.compute(rule, idSample, minFidelity, currentMinCovering);
+        ruleCreated = fidex.compute(rule, *mainSampleValues, mainSamplePred, minFidelity, currentMinCovering);
         if (currentMinCovering >= 2) {
           currentMinCovering -= 1;
         } else {
@@ -185,18 +189,18 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
  *
  *
  *
- * @param dataset class containing all usable data to compute the algorithm.
+ * @param trainDataset class containing all usable data to compute the algorithm.
  * @param p class containing all used defined parameters that influences the program execution.
  * @param hyperlocus 2D vector of doubles used to compute Fidex alorithm
  * @return vector<Rule>
  */
-vector<Rule> heuristic_1(DataSetFid &dataset, Parameters &p, const vector<vector<double>> &hyperlocus) {
+vector<Rule> heuristic_1(DataSetFid &trainDataset, Parameters &p, const vector<vector<double>> &hyperlocus) {
   vector<Rule> rules;
   vector<Rule> chosenRules;
-  int nbDatas = dataset.getNbSamples();
+  int nbDatas = trainDataset.getNbSamples();
   vector<int> notCoveredSamples(nbDatas);
   iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
-  generateRules(rules, notCoveredSamples, dataset, p, hyperlocus);
+  generateRules(rules, notCoveredSamples, trainDataset, p, hyperlocus);
 
   cout << "Computing global ruleset..." << endl;
 
@@ -248,20 +252,20 @@ vector<Rule> heuristic_1(DataSetFid &dataset, Parameters &p, const vector<vector
  * It directly selects if one or more not covered sample is covered.
  *
  *
- * @param dataset class containing all usable data to compute the algorithm.
+ * @param trainDataset class containing all usable data to compute the algorithm.
  * @param p class containing all used defined parameters that influences the program execution.
  * @param hyperlocus 2D vector of doubles used to compute Fidex alorithm
  * @return vector<Rule>
  */
-vector<Rule> heuristic_2(DataSetFid &dataset, Parameters &p, const vector<vector<double>> &hyperlocus) {
+vector<Rule> heuristic_2(DataSetFid &trainDataset, Parameters &p, const vector<vector<double>> &hyperlocus) {
   vector<Rule> rules;
   vector<Rule> chosenRules;
-  int nbDatas = dataset.getNbSamples();
+  int nbDatas = trainDataset.getNbSamples();
   vector<int> notCoveredSamples(nbDatas);
   iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
 
   // getting rules and not covered samples
-  generateRules(rules, notCoveredSamples, dataset, p, hyperlocus);
+  generateRules(rules, notCoveredSamples, trainDataset, p, hyperlocus);
 
   // sort rules by covering
   sort(rules.begin(), rules.end(), [](const Rule &r1, const Rule &r2) {
@@ -305,12 +309,12 @@ vector<Rule> heuristic_2(DataSetFid &dataset, Parameters &p, const vector<vector
 /**
  * @brief this heuristic generate rules for every sample and
  *
- * @param dataset
+ * @param trainDataset
  * @param p
  * @param hyperlocus
  * @return vector<Rule>
  */
-vector<Rule> heuristic_3(DataSetFid &dataset, Parameters &p, const vector<vector<double>> &hyperlocus) {
+vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const vector<vector<double>> &hyperlocus) {
   Rule rule;
   int idSample;
   bool ruleCreated;
@@ -322,10 +326,10 @@ vector<Rule> heuristic_3(DataSetFid &dataset, Parameters &p, const vector<vector
   vector<int> chosenRuleSamples;
   Hyperspace hyperspace(hyperlocus);
   int minNbCover = p.getInt(MIN_COVERING);
-  int nbDatas = dataset.getDatas()->size();
+  int nbDatas = trainDataset.getDatas()->size();
   vector<int> notCoveredSamples(nbDatas);
   float minFidelity = p.getFloat(MIN_FIDELITY);
-  auto fidex = Fidex(dataset, p, hyperspace);
+  auto fidex = Fidex(trainDataset, p, hyperspace);
   string consoleFile = p.getString(CONSOLE_FILE);
   int maxFailedAttempts = p.getInt(MAX_FAILED_ATTEMPTS);
 
@@ -352,12 +356,16 @@ vector<Rule> heuristic_3(DataSetFid &dataset, Parameters &p, const vector<vector
     }
 
     idSample = notCoveredSamples[0];
+    vector<int> *trainPreds = trainDataset.getPredictions();
+    vector<vector<double>> *trainData = trainDataset.getDatas();
+    vector<double> *mainSampleValues = &(*trainData)[idSample];
+    int mainSamplePred = (*trainPreds)[idSample];
     currentMinNbCov = minNbCover;
     ruleCreated = false;
     int counterFailed = 0; // If we can't find a good rule after a lot of tries
 
     while (!ruleCreated) {
-      ruleCreated = fidex.compute(rule, idSample, minFidelity, currentMinNbCov);
+      ruleCreated = fidex.compute(rule, *mainSampleValues, mainSamplePred, minFidelity, currentMinNbCov);
 
       if (currentMinNbCov >= 2) {
         currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
@@ -504,8 +512,8 @@ void checkRulesParametersLogicValues(Parameters *p) {
     throw CommandArgumentException("Error : Positive class index must be positive (>=0)");
   }
 
-  if (p->isFloatSet(DECISION_THRESHOLD) && !p->isIntSet(POSITIVE_CLASS_INDEX)) {
-    throw CommandArgumentException("Error : The positive class index has to be given with option -x if the decision threshold is given (-t)");
+  if (p->getFloat(DECISION_THRESHOLD) != -1 && p->getInt(POSITIVE_CLASS_INDEX) == -1) {
+    throw CommandArgumentException("Error : The positive class index has to be given with option --positive_class_index if the decision threshold is given (--decision_threshold)");
   }
 
   if (p->getInt(SEED) < 0) {
@@ -779,7 +787,6 @@ int fidexGloRules(const string &command) {
       }
 
     } else {
-      string inputRulesFile = params->getString(RULES_FILE);
       if (!attributesFile.empty()) {
         matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes, attributeNames);
       } else {
@@ -810,7 +817,7 @@ int fidexGloRules(const string &command) {
 
     const auto start = high_resolution_clock::now();
     int heuristic = params->getInt(HEURISTIC);
-    auto dataset = *trainDatas.get();
+    auto trainDataset = *trainDatas.get();
     auto parameters = *params.get();
     vector<Rule> generatedRules;
 
@@ -819,15 +826,15 @@ int fidexGloRules(const string &command) {
 
     switch (heuristic) {
     case 1:
-      generatedRules = heuristic_1(dataset, parameters, matHypLocus);
+      generatedRules = heuristic_1(trainDataset, parameters, matHypLocus);
       break;
 
     case 2:
-      generatedRules = heuristic_2(dataset, parameters, matHypLocus);
+      generatedRules = heuristic_2(trainDataset, parameters, matHypLocus);
       break;
 
     case 3:
-      generatedRules = heuristic_3(dataset, parameters, matHypLocus);
+      generatedRules = heuristic_3(trainDataset, parameters, matHypLocus);
       break;
 
     default:

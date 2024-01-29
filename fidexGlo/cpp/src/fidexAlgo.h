@@ -23,17 +23,17 @@ using namespace FidexGloNameSpace;
 
 class Fidex {
 private:
-  DataSetFid *_dataset;
+  DataSetFid *_trainDataset;
   Parameters *_parameters;
   Hyperspace *_hyperspace;
   mt19937 _rnd;
 
 public:
   Fidex() = default;
-  Fidex(DataSetFid &dataset, Parameters &parameters, Hyperspace &Hyperspace);
+  Fidex(DataSetFid &_trainDataset, Parameters &parameters, Hyperspace &Hyperspace);
 
   // execute algo
-  bool compute(Rule &rule, int idSample, double minFidelity, int minNbCover);
+  bool compute(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover);
 };
 
 #endif
