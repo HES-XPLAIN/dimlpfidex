@@ -397,3 +397,28 @@ std::tuple<std::vector<int>, bool, std::vector<double>, std::vector<double>> par
 
   return std::make_tuple(indices_list, withMedian, mus, sigmas);
 }
+
+//////////////////////////////////////////////////////
+
+/**
+ * @brief Checks if a string contains a space between words.
+ *
+ * Iterates through the string to find spaces. A space is considered between words if it's not at the
+ * start or end of the string and is surrounded by non-space characters. Returns true if such a space is found.
+ *
+ * @param str The string to check.
+ * @return true If a space is found between words.
+ * @return false If no space is found between words.
+ */
+bool hasSpaceBetweenWords(const std::string &str) {
+  for (size_t i = 0; i < str.length(); ++i) {
+    if (str[i] == ' ' &&
+        i > 0 &&
+        i < str.length() - 1 &&
+        str[i - 1] != ' ' &&
+        str[i + 1] != ' ') {
+      return true; // Space found between words
+    }
+  }
+  return false; // No space found between words or only tabs are present
+}

@@ -833,6 +833,9 @@ void DataSetFid::setAttributes(const char *attributeFile, int _nbAttributes, int
     if (!checkStringEmpty(line)) {
       std::stringstream myLine(line);
       string attr = myLine.str();
+      if (hasSpaceBetweenWords(attr)) {
+        throw FileContentError("Error in dataset " + datasetName + ", in file " + std::string(attributeFile) + " : attribute " + attr + " has spaces inbetween. Maybe replace it by a an underscore.");
+      }
       attributeNames.push_back(attr);
     }
   }

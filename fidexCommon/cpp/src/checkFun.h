@@ -23,4 +23,5 @@ std::vector<std::string> splitString(const std::string &str, const std::string &
 std::vector<int> getIntVectorFromString(const std::string &str);
 std::vector<double> getDoubleVectorFromString(const std::string &str);
 std::tuple<std::vector<int>, bool, std::vector<double>, std::vector<double>> parseNormalizationStats(const std::string &normalizationFile, int nbAttributes, const std::vector<std::string> &attributes = std::vector<std::string>());
+bool hasSpaceBetweenWords(const std::string &str);
 #endif

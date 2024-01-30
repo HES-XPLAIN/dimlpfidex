@@ -96,8 +96,6 @@ void Hyperspace::ruleExtraction(vector<double> *mainSampleData, const int mainSa
 
 double Hyperspace::computeRuleAccuracy(vector<int> *trainPreds, vector<int> *trainTrueClass, bool hasTrueClasses, bool mainSampleCorrect) const { // Percentage of correct model prediction on samples covered by the rule
 
-  std::cout << hasTrueClasses << " " << mainSampleCorrect << std::endl;
-
   int idSample;
   int total = 0; // Number of indexes predicted good
   for (int i = 0; i < hyperbox->getCoveredSamples().size(); i++) {
