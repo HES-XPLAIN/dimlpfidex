@@ -226,6 +226,11 @@ int fidex(const string &command) {
         if (p >= nbParam) {
           throw CommandArgumentException("Missing something at the end of the command.");
         }
+
+        if (p + 1 < nbParam && commandList[p + 1].substr(0, 2) != "--") {
+          throw CommandArgumentException("There is a parameter without -- (" + commandList[p + 1] + ").");
+        }
+
         const char *arg = commandList[p].c_str();
         string stringArg = arg;
 

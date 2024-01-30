@@ -45,6 +45,10 @@ void showParams() {
   std::cout << "--dropout_dim <dimension dropout parameter (None by default)>" << std::endl;
   std::cout << "--dropout_hyp <hyperplan dropout parameter (None by default)>" << std::endl;
   std::cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
+  std::cout << "--normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << std::endl;
+  std::cout << "--mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
+  std::cout << "--sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
+  std::cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_stats is given)>" << std::endl;
   std::cout << "--seed <seed (0=random, default)>";
 
   std::cout << "\n-------------------------------------------------\n"
@@ -206,6 +210,45 @@ void checkParametersLogicValues(Parameters *p) {
     if (p->getInt(SEED) < 0) {
       throw CommandArgumentException("Error : Minimium covering must be null or positive (>=0).");
     }
+
+    // ----------------------------------------------------------------------
+
+    // Check denormalization parameters
+
+    // If normalizationIndices were not specified, it's all attributes
+    if (!p->isStringSet(NORMALIZATION_FILE) && !p->isIntVectorSet(NORMALIZATION_INDICES)) {
+      vector<int> normalizationIndicesTemp;
+      for (int i = 0; i < p->getInt(NB_ATTRIBUTES); ++i) {
+        normalizationIndicesTemp.push_back(i);
+      }
+      p->setIntVector(NORMALIZATION_INDICES, normalizationIndicesTemp);
+    }
+
+    // Check if mus and sigmas are both given or both not
+    if ((p->isDoubleVectorSet(MUS) || p->isDoubleVectorSet(SIGMAS)) &&
+        !(p->isDoubleVectorSet(MUS) && p->isDoubleVectorSet(SIGMAS))) {
+      throw CommandArgumentException("Error : One of Mus(--mus) and sigmas(--sigmas) is given but not the other.");
+    }
+
+    if (p->isStringSet(NORMALIZATION_FILE) && p->isDoubleVectorSet(MUS) || p->isStringSet(NORMALIZATION_FILE) && p->isIntVectorSet(NORMALIZATION_INDICES)) {
+      throw CommandArgumentException("Error : normlization file (--normalization_file) and mus or normalizationIndices (--normalization_indices) are both given.");
+    }
+
+    // Mus, sigmas and normalizationIndices must have the same size and not be empty
+    if (p->isDoubleVectorSet(MUS) && (p->getDoubleVector(MUS).size() != p->getDoubleVector(SIGMAS).size() || p->getDoubleVector(MUS).size() != p->getIntVector(NORMALIZATION_INDICES).size() || p->getDoubleVector(MUS).empty())) {
+      throw CommandArgumentException("Error : mus (--mus), sigmas (--sigmas) and normalization indices (--normalization_indices) don't have the same size or are empty.");
+    }
+
+    // Check normalizationIndices
+    if (p->isIntVectorSet(NORMALIZATION_INDICES)) {
+      vector<int> tempVect = p->getIntVector(NORMALIZATION_INDICES);
+      std::set<int> uniqueIndices(tempVect.begin(), tempVect.end());
+      if (uniqueIndices.size() != p->getIntVector(NORMALIZATION_INDICES).size() ||
+          *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= p->getInt(NB_ATTRIBUTES) ||
+          *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
+        throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) has negative, greater than the number of attributes or repeted elements.");
+      }
+    }
   }
 }
 
@@ -305,11 +348,26 @@ int fidexGlo(const string &command) {
       }
     }
 
-    // If we use Fidex, we generate fidex command
+    // If we use Fidex
     std::vector<int> testSamplesClasses;
     std::unique_ptr<DataSetFid> trainDatas;
     vector<vector<double>> matHypLocus;
     if (withFidex) {
+
+      vector<int> normalizationIndices;
+      vector<double> mus;
+      vector<double> sigmas;
+
+      // Get mus, sigmas and normalizationIndices from normalizationFile for denormalization :
+      if (params->isStringSet(NORMALIZATION_FILE)) {
+        auto results = parseNormalizationStats(params->getString(NORMALIZATION_FILE), params->getInt(NB_ATTRIBUTES), attributeNames);
+        normalizationIndices = std::get<0>(results);
+        mus = std::get<2>(results);
+        sigmas = std::get<3>(results);
+        params->setIntVector(NORMALIZATION_INDICES, normalizationIndices);
+        params->setDoubleVector(MUS, mus);
+        params->setDoubleVector(SIGMAS, sigmas);
+      }
 
       // Import files for Fidex
       cout << "Importing files for Fidex..." << endl;

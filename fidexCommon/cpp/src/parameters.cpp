@@ -19,6 +19,10 @@ Parameters::Parameters(const vector<string> &args) {
       }
       const string arg = args[p];
 
+      if (p + 1 < args.size() && args[p + 1].substr(0, 2) != "--") {
+        throw CommandArgumentException("There is a parameter without -- (" + args[p + 1] + ").");
+      }
+
       parseArg(param, arg);
     }
   }
@@ -96,6 +100,8 @@ Parameters::Parameters(const string &jsonfile) {
  * @param arg parameter's associated value
  */
 void Parameters::parseArg(const string &param, const string &arg) {
+  std::cout << param << std::endl;
+  std::cout << arg << std::endl;
   ParameterCode option;
   auto it = parameterNames.find(param);
   if (it != parameterNames.end()) {

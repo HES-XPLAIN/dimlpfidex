@@ -160,19 +160,18 @@ int densCls(const string &command) {
       return 0;
     }
 
+    std::vector<ParameterDensClsEnum> paramsWithoutValues;
+    paramsWithoutValues.push_back(WITH_RULE_EXTRACTION);
+    bool isParamWithoutValue = false;
+
     int p = 1; // We skip "DensCls"
     while (p < nbParam) {
+      isParamWithoutValue = false;
       string param = commandList[p];
 
       if (param.substr(0, 2) == "--") {
         param = param.substr(2);
         p++;
-
-        if (p >= nbParam) {
-          throw CommandArgumentException("Missing something at the end of the command.");
-        }
-        const char *arg = commandList[p].c_str();
-        string stringArg = arg;
 
         ParameterDensClsEnum option;
         auto it = parameterMap.find(param);
@@ -189,6 +188,25 @@ int densCls(const string &command) {
           } else {
             option = INVALID;
           }
+        }
+
+        if (std::find(paramsWithoutValues.begin(), paramsWithoutValues.end(), option) != paramsWithoutValues.end()) {
+          isParamWithoutValue = true;
+        }
+
+        if (p >= nbParam && !isParamWithoutValue) {
+          throw CommandArgumentException("Missing something at the end of the command.");
+        }
+
+        if (p + 1 < nbParam && commandList[p + 1].substr(0, 2) != "--" && !isParamWithoutValue) {
+          throw CommandArgumentException("There is a parameter without -- (" + commandList[p + 1] + ").");
+        }
+
+        const char *arg;
+        string stringArg;
+        if (!isParamWithoutValue) {
+          arg = commandList[p].c_str();
+          stringArg = arg;
         }
 
         switch (option) { // After --
