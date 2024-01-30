@@ -88,7 +88,12 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
     int threadId = omp_get_thread_num();
     float minFidelity = p.getFloat(MIN_FIDELITY);
     auto fidex = Fidex(trainDataset, p, hyperspace);
-    string consoleFile = p.getString(CONSOLE_FILE);
+
+    string consoleFile = "";
+    if (p.isStringSet(CONSOLE_FILE)) {
+      consoleFile = p.getString(CONSOLE_FILE);
+    }
+
     int maxFailedAttempts = p.getInt(MAX_FAILED_ATTEMPTS);
 
 #pragma omp critical
@@ -233,7 +238,7 @@ vector<Rule> heuristic_1(DataSetFid &trainDataset, Parameters &p, const vector<v
         bestRuleIndex = i;
         bestRule = rules[i];
         remainingSamples = difference;
-        bestCovering = difference.size();
+        bestCovering = static_cast<int>(difference.size());
       }
     }
 
@@ -326,17 +331,20 @@ vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const vector<v
   vector<int> chosenRuleSamples;
   Hyperspace hyperspace(hyperlocus);
   int minNbCover = p.getInt(MIN_COVERING);
-  int nbDatas = trainDataset.getDatas()->size();
+  auto nbDatas = static_cast<int>(trainDataset.getDatas()->size());
   vector<int> notCoveredSamples(nbDatas);
   float minFidelity = p.getFloat(MIN_FIDELITY);
   auto fidex = Fidex(trainDataset, p, hyperspace);
-  string consoleFile = p.getString(CONSOLE_FILE);
+  string consoleFile = "";
+  if (p.isStringSet(CONSOLE_FILE)) {
+    consoleFile = p.getString(CONSOLE_FILE);
+  }
   int maxFailedAttempts = p.getInt(MAX_FAILED_ATTEMPTS);
 
   if (seed == 0) {
     auto currentTime = high_resolution_clock::now();
     auto seedValue = currentTime.time_since_epoch().count();
-    seed = seedValue;
+    seed = static_cast<int>(seedValue);
   }
 
   mt19937 gen(seed);
@@ -416,10 +424,7 @@ vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const vector<v
  */
 void checkRulesParametersLogicValues(Parameters *p) {
   // setting default values
-  p->setDefaultString(ROOT_FOLDER, "");
   p->setDefaultInt(NB_DIMLP_NETS, 1);
-  p->setDefaultString(ATTRIBUTES_FILE, "");
-  p->setDefaultString(CONSOLE_FILE, "");
   p->setDefaultInt(NB_ATTRIBUTES, -1);
   p->setDefaultInt(NB_CLASSES, -1);
   p->setDefaultInt(MAX_ITERATIONS, 10);
@@ -577,7 +582,7 @@ tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> 
   }
 
   int counter = 1;
-  int nbRules = static_cast<int>(rules.size());
+  auto nbRules = static_cast<int>(rules.size());
   double meanCovSize = 0;
   double meanNbAntecedents = 0;
   stringstream stream;
@@ -586,7 +591,8 @@ tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> 
   for (Rule r : rules) { // each rule
     meanCovSize += static_cast<double>(r.getCoveredSamples().size());
     meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
-    stream << "Rule " << counter++ << ": " << r.toString(attributes, classes);
+    counter++;
+    stream << "Rule " << counter << ": " << r.toString(attributes, classes);
     stream << endl;
   }
 
@@ -654,14 +660,15 @@ int fidexGloRules(const string &command) {
 
     // Import parameters
     unique_ptr<Parameters> params;
-
     if (commandList[1].compare("--json_config_file") == 0) {
-      // Read parameters from JSON config file
+      if (commandList.size() < 3) {
+        throw CommandArgumentException("JSON config file name/path is missing");
+      }
+
       try {
         params = std::unique_ptr<Parameters>(new Parameters(commandList[2]));
-
-      } catch (out_of_range &e) {
-        throw CommandArgumentException("JSON config file name/path is missing");
+      } catch (const std::out_of_range &) {
+        throw CommandArgumentException("JSON config file name/path is invalid");
       }
     } else {
       // Read parameters from CLI
@@ -673,9 +680,8 @@ int fidexGloRules(const string &command) {
     cout << *params;
 
     // Get console results to file
-    string consoleFile = params->getString(CONSOLE_FILE);
-    if (!consoleFile.empty()) {
-      ofs.open(consoleFile);
+    if (params->isStringSet(CONSOLE_FILE)) {
+      ofs.open(params->getString(CONSOLE_FILE));
       cout.rdbuf(ofs.rdbuf()); // redirect cout to file
     }
 
@@ -713,7 +719,7 @@ int fidexGloRules(const string &command) {
     vector<string> classNames;
     bool hasClassNames = false;
 
-    if (!params->getString(ATTRIBUTES_FILE).empty()) {
+    if (params->isStringSet(ATTRIBUTES_FILE)) {
       trainDatas->setAttributes(params->getString(ATTRIBUTES_FILE).c_str(), params->getInt(NB_ATTRIBUTES), params->getInt(NB_CLASSES));
       attributeNames = (*trainDatas->getAttributeNames());
       hasClassNames = trainDatas->getHasClassNames();
@@ -749,7 +755,10 @@ int fidexGloRules(const string &command) {
     if (params->isStringSet(WEIGHTS_FILE)) {
       weightsFile = params->getString(WEIGHTS_FILE);
     }
-    string attributesFile = params->getString(ATTRIBUTES_FILE);
+    string attributesFile;
+    if (params->isStringSet(ATTRIBUTES_FILE)) {
+      attributesFile = params->getString(ATTRIBUTES_FILE);
+    }
     string inputRulesFile;
     if (params->isStringSet(RULES_FILE)) {
       inputRulesFile = params->getString(RULES_FILE);
@@ -763,7 +772,7 @@ int fidexGloRules(const string &command) {
     int nbAttributes = params->getInt(NB_ATTRIBUTES);
     float hiKnot = params->getFloat(HI_KNOT);
 
-    if (!weightsFile.empty()) {
+    if (params->isStringSet(WEIGHTS_FILE)) {
       if (nbDimlpNets > 1) {
         cout << "\nParameters of hyperLocus :" << endl;
         cout << "\t- Number of stairs " << nbQuantLevels << endl;
@@ -787,7 +796,7 @@ int fidexGloRules(const string &command) {
       }
 
     } else {
-      if (!attributesFile.empty()) {
+      if (params->isStringSet(ATTRIBUTES_FILE)) {
         matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes, attributeNames);
       } else {
         matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes);
@@ -795,7 +804,7 @@ int fidexGloRules(const string &command) {
     }
 
     // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
-    int nbIn = static_cast<int>(matHypLocus.size());
+    auto nbIn = static_cast<int>(matHypLocus.size());
 
     // Check size of hyperlocus
     if (nbIn == 0 || nbIn % nbAttributes != 0) {

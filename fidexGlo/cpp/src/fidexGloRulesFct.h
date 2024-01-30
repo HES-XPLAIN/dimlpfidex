@@ -18,10 +18,6 @@
 #include <string>
 #include <time.h>
 
-using namespace std;
-using namespace FidexGloNameSpace;
-using namespace std::chrono;
-
 void showRulesParams();
 void checkRulesParametersLogicValues(Parameters *p);
 int fidexGloRules(const string &command);

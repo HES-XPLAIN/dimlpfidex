@@ -16,8 +16,6 @@
 #include <unordered_map>
 #include <vector>
 
-using namespace std;
-
 // to add a new parameter, just add a new parameter code BEFORE "_NB_PARAMETERS"
 enum ParameterCode {
   TRAIN_DATA_FILE,
@@ -126,23 +124,23 @@ private:
   void setString(ParameterCode id, const string &value);
   void setRootDirectory(ParameterCode id);
 
-  void throwInvalidDataTypeException(ParameterCode id, const string &wrongValue, const string &typeName) const {
+  [[noreturn]] void throwInvalidDataTypeException(ParameterCode id, const string &wrongValue, const string &typeName) const {
     throw CommandArgumentException("Parsing error: argument (ID " + getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid " + typeName + ".");
   }
 
-  void throwAlreadySetArgumentException(ParameterCode id, const string &value) const {
+  [[noreturn]] void throwAlreadySetArgumentException(ParameterCode id, const string &value) const {
     throw CommandArgumentException("Parsing error: argument (ID " + getParameterName(id) + ") with value \"" + value + "\" is already set, cannot override it.");
   }
 
-  void throwArgumentNotFoundException(ParameterCode id) const {
+  [[noreturn]] void throwArgumentNotFoundException(ParameterCode id) const {
     throw CommandArgumentException("Parameters error: argument (ID " + getParameterName(id) + ") requested was not found, try to rerun including it.");
   }
 
 public:
   // constructor
   Parameters() = default;
-  Parameters(const vector<string> &args);
-  Parameters(const string &jsonfile);
+  explicit Parameters(const vector<string> &args);
+  explicit Parameters(const string &jsonfile);
 
   // default setter if value not set
   void setDefaultInt(ParameterCode id, int value);
@@ -154,8 +152,8 @@ public:
   void setDefaultString(ParameterCode id, const string &defaultValue);
 
   // public setter
-  void setIntVector(ParameterCode id, vector<int> value);
-  void setDoubleVector(ParameterCode id, vector<double> value);
+  void setIntVector(ParameterCode id, const vector<int> &value);
+  void setDoubleVector(ParameterCode id, const vector<double> &value);
 
   // getters
   int getInt(ParameterCode id);
@@ -187,7 +185,7 @@ public:
 
   // special operations
   void setWeightsFiles();
-  void addWeightsFile(string file);
+  void addWeightsFile(const string &file);
   template <typename T>
   std::string vectorToString(const std::vector<T> &vec) const {
     std::stringstream ss;
@@ -209,7 +207,7 @@ public:
   void assertBoolExists(ParameterCode id);
   void assertDoubleVectorExists(ParameterCode id);
   void assertIntVectorExists(ParameterCode id);
-  void assertStringExists(ParameterCode id);
+  void assertStringExists(ParameterCode id) const;
 };
 
 inline ostream &operator<<(ostream &stream, const Parameters &p) {
@@ -217,31 +215,31 @@ inline ostream &operator<<(ostream &stream, const Parameters &p) {
   stream << "Parameters list:" << endl;
 
   for (auto const &x : p.getAllStrings()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << x.second << endl;
+    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << x.second << endl;
   }
 
   for (auto const &x : p.getAllInts()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << to_string(x.second) << endl;
+    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllFloats()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << to_string(x.second) << endl;
+    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllDoubles()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << to_string(x.second) << endl;
+    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllBools()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << to_string(x.second) << endl;
+    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllIntVectors()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << p.vectorToString(x.second) << endl;
+    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << p.vectorToString(x.second) << endl;
   }
 
   for (auto const &x : p.getAllDoubleVectors()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - p.getParameterName(x.first).size()) << p.vectorToString(x.second) << endl;
+    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << p.vectorToString(x.second) << endl;
   }
 
   if (p.isStringSet(WEIGHTS_FILE)) {

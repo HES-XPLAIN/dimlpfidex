@@ -265,7 +265,7 @@ void Parameters::setInt(ParameterCode id, const string &value) {
 
   try {
     _intParams[id] = stoi(value, nullptr);
-  } catch (exception &e) { // out_of_range & invalid_argument are thrown
+  } catch (const std::exception &) { // out_of_range & invalid_argument are thrown
     throwInvalidDataTypeException(id, value, "integer");
   }
 }
@@ -285,7 +285,7 @@ void Parameters::setFloat(ParameterCode id, const string &value) {
 
   try {
     _floatParams[id] = stof(value, nullptr);
-  } catch (exception &e) { // out_of_range & invalid_argument are thrown
+  } catch (const std::exception &) { // out_of_range & invalid_argument are thrown
     throwInvalidDataTypeException(id, value, "float");
   }
 }
@@ -305,7 +305,7 @@ void Parameters::setDouble(ParameterCode id, const string &value) {
 
   try {
     _doubleParams[id] = stod(value, nullptr);
-  } catch (exception &e) { // out_of_range & invalid_argument are thrown
+  } catch (const std::exception &) { // out_of_range & invalid_argument are thrown
     throwInvalidDataTypeException(id, value, "double");
   }
 }
@@ -346,7 +346,7 @@ void Parameters::setDoubleVector(ParameterCode id, const string &value) {
   _doubleVectorParams[id] = getDoubleVectorFromString(value);
 }
 
-void Parameters::setDoubleVector(ParameterCode id, vector<double> value) {
+void Parameters::setDoubleVector(ParameterCode id, const vector<double> &value) {
   _doubleVectorParams[id] = value;
 }
 
@@ -361,7 +361,7 @@ void Parameters::setIntVector(ParameterCode id, const string &value) {
   _intVectorParams[id] = getIntVectorFromString(value);
 }
 
-void Parameters::setIntVector(ParameterCode id, vector<int> value) {
+void Parameters::setIntVector(ParameterCode id, const vector<int> &value) {
   _intVectorParams[id] = value;
 }
 
@@ -497,7 +497,7 @@ vector<string> Parameters::getWeightsFiles() const {
 }
 
 // public assertions
-void Parameters::assertStringExists(ParameterCode id) {
+void Parameters::assertStringExists(ParameterCode id) const {
   if (!isStringSet(id)) {
     throwArgumentNotFoundException(id);
   }
@@ -540,7 +540,7 @@ void Parameters::assertIntVectorExists(ParameterCode id) {
 }
 
 // public special operations
-void Parameters::addWeightsFile(string file) {
+void Parameters::addWeightsFile(const string &file) {
   _weightFiles.push_back(file);
 }
 
