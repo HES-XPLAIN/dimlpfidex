@@ -12,7 +12,7 @@ Fidex::Fidex(DataSetFid &trainDataset, Parameters &parameters, Hyperspace &hyper
   }
 }
 
-bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover) {
+bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover, int mainSampleClass) {
   Hyperspace *hyperspace = _hyperspace;
   int nbAttributes = _trainDataset->getNbAttributes();
   vector<int> *trainPreds = _trainDataset->getPredictions();
@@ -25,6 +25,10 @@ bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSample
   double dropoutHyp = _parameters->getFloat(DROPOUT_HYP);
   bool hasdd = dropoutDim > 0.01;
   bool hasdh = dropoutHyp > 0.01;
+  bool hasTrueClasses = true;
+  if (mainSampleClass == -1) {
+    hasTrueClasses = false;
+  }
 
   vector<int> normalizationIndices;
   vector<double> mus;
@@ -148,7 +152,12 @@ bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSample
 
   // Compute rule accuracy
   double ruleAccuracy;
-  ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass); // Percentage of correct model prediction on samples covered by the rule
+  if (hasTrueClasses) {
+    bool mainSampleCorrect = mainSamplePred == mainSampleClass;
+    ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass, hasTrueClasses, mainSampleCorrect); // Percentage of correct model prediction on samples covered by the rule
+  } else {
+    ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass, hasTrueClasses); // Percentage of correct model prediction on samples covered by the rule
+  }
 
   double ruleConfidence;
   ruleConfidence = hyperspace->computeRuleConfidence(trainOutputValuesPredictions, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples

@@ -33,7 +33,7 @@ public:
   Fidex(DataSetFid &_trainDataset, Parameters &parameters, Hyperspace &Hyperspace);
 
   // execute algo
-  bool compute(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover);
+  bool compute(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover, int mainSampleClass = -1);
 };
 
 #endif

@@ -33,10 +33,10 @@ void showParams() {
   std::cout << "--train_data_file <train data file>" << std::endl;
   std::cout << "--train_pred_file <train prediction file>" << std::endl;
   std::cout << "--train_class_file <train true class file, not mendatory if classes are specified in train data file>" << std::endl;
-  std::cout << "--test_class_file <test true class file, not mendatory if classes are specified in test data file>" << std::endl;
   std::cout << "--weights_file <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file] " << std::endl;
   std::cout << "--rules_file <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] " << std::endl;
   std::cout << "Options :" << std::endl;
+  std::cout << "--test_class_file <test true class file, classes can be specified in test data file>" << std::endl;
   std::cout << "--nb_dimlp_nets <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
   std::cout << "--max_itertions <max iteration number (100 by default)>" << std::endl;
   std::cout << "--min_covering <minimum covering number (2 by default)>" << std::endl;
@@ -55,7 +55,7 @@ void showParams() {
             << std::endl;
 }
 
-void launchFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Parameters &p, Hyperspace &hyperspace, vector<double> *mainSampleValues, int mainSamplePred, const vector<string> &attributeNames, const vector<string> &classNames) {
+void launchFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Parameters &p, Hyperspace &hyperspace, vector<double> *mainSampleValues, int mainSamplePred, int mainSampleClass, const vector<string> &attributeNames, const vector<string> &classNames) {
 
   std::cout << "\nWe launch Fidex." << std::endl;
   std::cout << "\nLocal rule :" << std::endl;
@@ -75,7 +75,7 @@ void launchFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Para
   counterFailed = 0; // If we can't find a good rule after a lot of tries
 
   while (!ruleCreated) {
-    ruleCreated = fidex.compute(rule, *mainSampleValues, mainSamplePred, minFidelity, currentMinNbCov);
+    ruleCreated = fidex.compute(rule, *mainSampleValues, mainSamplePred, minFidelity, currentMinNbCov, mainSampleClass);
     // Pour idSample : Quand on appelle Fidex on a une fonction qui permet d'écrire le sample dans un fichier pour ensuite l'utiliser dans Fidex.
     // -> on n'aura plus besoin de faire ça ni de cette fonction.
     // Comment indiquer l'idSample par contre? l'idSample sert à récup mainSampleValues et mainSamplePred -> changer la méthode? À voir
@@ -352,6 +352,7 @@ int fidexGlo(const string &command) {
     std::vector<int> testSamplesClasses;
     std::unique_ptr<DataSetFid> trainDatas;
     vector<vector<double>> matHypLocus;
+    bool hasTrueClasses;
     if (withFidex) {
 
       vector<int> normalizationIndices;
@@ -373,15 +374,17 @@ int fidexGlo(const string &command) {
       cout << "Importing files for Fidex..." << endl;
 
       // Get test class data :
+      hasTrueClasses = true;
       if (!params->isStringSet(TEST_CLASS_FILE)) {
         if (!testDatas->getHasClasses()) {
-          throw CommandArgumentException("Error : You specified that you wanted to use Fidex (--with_fidex). The test true classes file has to be given with option --test_class_file or classes have to be given in the test data file.");
+          hasTrueClasses = false;
         }
       } else {
         testDatas->setClassFromFile(params->getString(TEST_CLASS_FILE).c_str(), nb_classes);
       }
-
-      testSamplesClasses = (*testDatas->getClasses());
+      if (hasTrueClasses) {
+        testSamplesClasses = (*testDatas->getClasses());
+      }
 
       if (!params->isStringSet(TRAIN_CLASS_FILE)) {
         trainDatas.reset(new DataSetFid("trainDatas from FidexGloRules",
@@ -624,9 +627,14 @@ int fidexGlo(const string &command) {
         auto trainDataset = *trainDatas.get();
         Hyperspace hyperspace(matHypLocus);
         vector<double> mainSampleValues = testSamplesValues[currentSample];
-        vector<int> *trainPreds = trainDataset.getPredictions();
-        int mainSamplePred = (*trainPreds)[currentSample];
-        launchFidex(lines, trainDataset, *params, hyperspace, &mainSampleValues, mainSamplePred, attributeNames, classNames);
+        int mainSamplePred = testSamplesPreds[currentSample];
+        int mainSampleClass;
+        if (hasTrueClasses) {
+          mainSampleClass = testSamplesClasses[currentSample];
+        } else {
+          mainSampleClass = -1;
+        }
+        launchFidex(lines, trainDataset, *params, hyperspace, &mainSampleValues, mainSamplePred, mainSampleClass, attributeNames, classNames);
       }
 
       lines.emplace_back("\n--------------------------------------------------------------------\n");
