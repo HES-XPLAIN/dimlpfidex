@@ -641,7 +641,7 @@ int fidexGloRules(const string &command) {
     size_t nbParam = commandList.size();
     if (nbParam < 2) {
       showRulesParams();
-      exit(1);
+      return -1;
     }
 
     // Import parameters

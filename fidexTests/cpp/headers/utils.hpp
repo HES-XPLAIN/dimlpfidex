@@ -1,17 +1,13 @@
-#ifndef TESTS_H
-#define TESTS_H
+#ifndef UTILS_H
+#define UTILS_H
 
-#include "../../../fidexCommon/cpp/src/parameters.h"
-#include "../src/fidexGloRulesFct.h"
+#include <iostream>
 #include <map>
-
-// printing utils
-#define RED "\033[1;31m"
-#define GREEN "\033[1;32m"
-#define RESET "\033[0m"
+#include <sstream>
+#include <string>
+#include <vector>
 
 // default values to avoid generating litterals redundancy
-static const std::string PROGRAM_NAME = "fidexGloRules";
 static const std::string DATA_FOLDER = "./dataset/data/";
 static const std::string OUT_FOLDER = "./dataset/out/";
 // TODO: find a way to include relative path instead
@@ -46,36 +42,12 @@ static const std::string DEFAULT_NB_THREADS = "4";
 static const std::string DEFAULT_MIN_FIDELITY = "1.0";
 static const std::string DEFAULT_SEED = "0";
 
-std::string argsToString(const map<std::string, std::string> &args) {
-  std::stringstream ss;
-  for (const auto &kv : args) {
-    ss << kv.first << " " << kv.second << " ";
-  }
+// printing utils
+#define RED "\033[1;31m"
+#define GREEN "\033[1;32m"
+#define RESET "\033[0m"
 
-  return ss.str();
-}
-
-map<std::string, std::string> remove(const map<std::string, std::string> &args, const vector<std::string> &toRemove) {
-  map<std::string, std::string> result = args;
-
-  for (std::string item : toRemove) {
-    result.erase(item);
-  }
-
-  return result;
-}
-
-void testAssert(const std::string &testName, bool condition) {
-  if (condition) {
-    cout << GREEN << "[" << testName << "] "
-         << "passed" << RESET << endl;
-  } else {
-    cout << RED << "[" << testName << "] "
-         << "failed" << RESET << endl;
-  }
-}
-
-const map<std::string, std::string> DEFAULT_ARGS{
+const std::map<std::string, std::string> DEFAULT_ARGS{
     {"--train_data_file", DEFAULT_TRAIN_FILE},
     {"--train_pred_file", DEFAULT_TRAIN_PRED_FILE},
     {"--train_class_file", DEFAULT_TRAIN_TRUE_CLASS_FILE},
@@ -102,4 +74,8 @@ const map<std::string, std::string> DEFAULT_ARGS{
     {"--dropout_dim", DEFAULT_DROPOUT_HYP},
     {"--min_fidelity", DEFAULT_MIN_FIDELITY}};
 
-#endif // TESTS_H
+std::string argsToString(const std::map<std::string, std::string> &args);
+std::map<std::string, std::string> remove(const std::map<std::string, std::string> &args, const std::vector<std::string> &toRemove);
+void testAssert(const std::string &testName, bool condition);
+
+#endif // UTILS_H

@@ -449,7 +449,7 @@ string Parameters::getString(ParameterCode id) {
   return _stringParams[id];
 }
 
-std::string Parameters::getParameterName(ParameterCode id) const {
+std::string Parameters::getParameterName(ParameterCode id) {
   for (const auto &pair : parameterNames) {
     if (pair.second == id) {
       return pair.first;

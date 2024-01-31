@@ -112,20 +112,6 @@ private:
   // private parser
   void parseArg(const string &param, const string &arg);
 
-  // setters handle formatting from string argument
-  void setInt(ParameterCode id, const string &value);
-  void setInt(ParameterCode id, int value);
-  void setFloat(ParameterCode id, const string &value);
-  void setFloat(ParameterCode id, float value);
-  void setDouble(ParameterCode id, const string &value);
-  void setDouble(ParameterCode id, double value);
-  void setBool(ParameterCode id, string value);
-  void setBool(ParameterCode id, bool value);
-  void setDoubleVector(ParameterCode id, const string &value);
-  void setIntVector(ParameterCode id, const string &value);
-  void setString(ParameterCode id, const string &value);
-  void setRootDirectory(ParameterCode id);
-
   void throwInvalidDataTypeException(ParameterCode id, const string &wrongValue, const string &typeName) const {
     throw CommandArgumentException("Parsing error: argument (ID " + getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid " + typeName + ".");
   }
@@ -153,7 +139,19 @@ public:
   void setDefaultIntVector(ParameterCode id, const string &defaultValue);
   void setDefaultString(ParameterCode id, const string &defaultValue);
 
-  // public setter
+  // public setters
+  void setInt(ParameterCode id, const string &value);
+  void setInt(ParameterCode id, int value);
+  void setFloat(ParameterCode id, const string &value);
+  void setFloat(ParameterCode id, float value);
+  void setDouble(ParameterCode id, const string &value);
+  void setDouble(ParameterCode id, double value);
+  void setBool(ParameterCode id, string value);
+  void setBool(ParameterCode id, bool value);
+  void setDoubleVector(ParameterCode id, const string &value);
+  void setIntVector(ParameterCode id, const string &value);
+  void setString(ParameterCode id, const string &value);
+  void setRootDirectory(ParameterCode id);
   void setIntVector(ParameterCode id, vector<int> value);
   void setDoubleVector(ParameterCode id, vector<double> value);
 
@@ -167,7 +165,6 @@ public:
   string getString(ParameterCode id);
   vector<string> getWeightsFiles() const;
 
-  std::string getParameterName(ParameterCode id) const;
 
   map<ParameterCode, int> getAllInts() const { return _intParams; }
   map<ParameterCode, float> getAllFloats() const { return _floatParams; }
@@ -186,6 +183,7 @@ public:
   bool isStringSet(ParameterCode id) const;
 
   // special operations
+  static std::string getParameterName(ParameterCode id);
   void setWeightsFiles();
   void addWeightsFile(string file);
   template <typename T>
