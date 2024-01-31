@@ -755,6 +755,7 @@ int fidex(const string &command) {
       normalizationIndices = std::get<0>(results);
       mus = std::get<2>(results);
       sigmas = std::get<3>(results);
+      hasMus = true;
     }
 
     std::cout << "\nImport time = " << importTime << " sec" << std::endl;

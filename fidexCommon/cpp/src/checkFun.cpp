@@ -317,9 +317,9 @@ std::tuple<std::vector<int>, bool, std::vector<double>, std::vector<double>> par
 
   // Create regex patterns for a line
   std::vector<std::pair<std::regex, std::string>> patterns;
-  std::regex patternIndices(indexPattern + " : original (mean|median): " + floatPattern + ", original std: " + floatPattern);
+  std::regex patternIndices("^" + indexPattern + " : original (mean|median): " + floatPattern + ", original std: " + floatPattern);
   std::string patternIndicesStr = "indexPattern";
-  std::regex patternAttributes(attrPattern + " : original (mean|median): " + floatPattern + ", original std: " + floatPattern);
+  std::regex patternAttributes("^" + attrPattern + " : original (mean|median): " + floatPattern + ", original std: " + floatPattern);
   std::string patternAttributesStr = "attributePattern";
   if (!attributes.empty()) {
     patterns.emplace_back(patternAttributes, patternAttributesStr);

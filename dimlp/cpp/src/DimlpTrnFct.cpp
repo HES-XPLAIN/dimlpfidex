@@ -48,6 +48,10 @@ void GiveAllParamDimlpTrn()
   cout << "--abs_error_thresh <absolute difference error threshold (0 by default)>" << std::endl;
   cout << "--nb_epochs <number of epochs (1500 by default)>" << std::endl;
   cout << "--nb_epochs_error <number of epochs to show error (10 by default)>" << std::endl;
+  cout << "--normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << std::endl;
+  cout << "--mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
+  cout << "--sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
+  cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_stats is given)>" << std::endl;
   cout << "--seed <seed (0=random, default)>";
 
   cout << "\n-------------------------------------------------\n"
@@ -126,6 +130,10 @@ enum ParameterDimlpTrnEnum {
   ABS_ERROR_THRESH,
   NB_EPOCHS,
   NB_EPOCHS_ERROR,
+  NORMALIZATION_FILE,
+  MUS,
+  SIGMAS,
+  NORMALIZATION_INDICES,
   SEED,
   INVALID
 };
@@ -160,6 +168,10 @@ const std::unordered_map<std::string, ParameterDimlpTrnEnum> parameterMap = {
     {"abs_error_thresh", ABS_ERROR_THRESH},
     {"nb_epochs", NB_EPOCHS},
     {"nb_epochs_error", NB_EPOCHS_ERROR},
+    {"normalization_file", NORMALIZATION_FILE},
+    {"mus", MUS},
+    {"sigmas", SIGMAS},
+    {"normalization_indices", NORMALIZATION_INDICES},
     {"seed", SEED},
 };
 
@@ -241,6 +253,15 @@ int dimlpTrn(const string &command) {
     bool attrFileInit = false;
     string rootFolderTemp;
     bool rootFolderInit = false;
+
+    string normalizationFileTemp;
+    bool normalizationFileInit = false;
+    std::vector<double> mus;
+    bool hasMus = false;
+    std::vector<double> sigmas;
+    bool hasSigmas = false;
+    std::vector<int> normalizationIndices;
+    bool hasNormalizationIndices = false;
 
     int flagEp = 0;
 
@@ -519,6 +540,35 @@ int dimlpTrn(const string &command) {
           rulesFileInit = true;
           break;
 
+        case NORMALIZATION_FILE:
+          normalizationFileTemp = arg;
+          normalizationFileInit = true;
+          break;
+
+        case MUS:
+          if (!checkList(arg)) {
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + string(arg) + ".");
+          }
+          mus = getDoubleVectorFromString(arg);
+          hasMus = true;
+          break;
+
+        case SIGMAS:
+          if (!checkList(arg)) {
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + string(arg) + ".");
+          }
+          sigmas = getDoubleVectorFromString(arg);
+          hasSigmas = true;
+          break;
+
+        case NORMALIZATION_INDICES:
+          if (!checkList(arg)) {
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", list in the form [a,b,...,c] without spaces requested, a,b,c are integers. Received " + string(arg) + ".");
+          }
+          normalizationIndices = getIntVectorFromString(arg);
+          hasNormalizationIndices = true;
+          break;
+
         default:
           throw CommandArgumentException("Illegal option : " + param + ".");
         }
@@ -549,6 +599,7 @@ int dimlpTrn(const string &command) {
     const char *testTar = nullptr;
     const char *validTar = nullptr;
     const char *attrFile = nullptr;
+    const char *normalizationFile = nullptr;
 
     string root = "";
     if (rootFolderInit) {
@@ -626,6 +677,11 @@ int dimlpTrn(const string &command) {
       attrFile = &attrFileTemp[0];
     }
 
+    if (normalizationFileInit) {
+      normalizationFileTemp = root + normalizationFileTemp;
+      normalizationFile = &normalizationFileTemp[0];
+    }
+
     // ----------------------------------------------------------------------
 
     // Get console results to file
@@ -658,6 +714,41 @@ int dimlpTrn(const string &command) {
 
     if (nbOut <= 1) {
       throw CommandArgumentException("At least two output neurons must be given with option --nb_classes.");
+    }
+
+    // ----------------------------------------------------------------------
+
+    // Check denormalization parameters
+
+    // If normalizationIndices were not specified, it's all attributes
+    if (!normalizationFileInit && !hasNormalizationIndices) {
+      for (int i = 0; i < nbIn; ++i) {
+        normalizationIndices.push_back(i);
+      }
+      hasNormalizationIndices = true;
+    }
+
+    // Check if mus and sigmas are both given or both not
+    if ((hasMus || hasSigmas) &&
+        !(hasMus && hasSigmas)) {
+      throw CommandArgumentException("Error : One of Mus(--mus) and sigmas(--sigmas) is given but not the other.");
+    }
+
+    if (normalizationFileInit && hasMus || normalizationFileInit && hasNormalizationIndices) {
+      throw CommandArgumentException("Error : normlization file (--normalization_file) and mus or normalizationIndices (--normalization_indices) are both given.");
+    }
+
+    // Mus, sigmas and normalizationIndices must have the same size and not be empty
+    if (hasMus && (mus.size() != sigmas.size() || mus.size() != normalizationIndices.size() || mus.empty())) {
+      throw CommandArgumentException("Error : mus (--mus), sigmas (--sigmas) and normalization indices (--normalization_indices) don't have the same size or are empty.");
+    }
+
+    // Check normalizationIndices
+    std::set<int> uniqueIndices(normalizationIndices.begin(), normalizationIndices.end());
+    if (uniqueIndices.size() != normalizationIndices.size() ||
+        *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= nbIn ||
+        *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
+      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) has negative, greater than the number of attributes or repeted elements.");
     }
 
     // ----------------------------------------------------------------------
@@ -821,7 +912,7 @@ int dimlpTrn(const string &command) {
     }
 
     if (ruleExtr) {
-
+      vector<string> attributeNames;
       if (attrFileInit != false) {
         AttrName attr(attrFile, nbIn, nbOut);
 
@@ -831,6 +922,7 @@ int dimlpTrn(const string &command) {
                << std::endl;
 
         Attr = attr;
+        attributeNames = Attr.GetListAttr();
       }
 
       All = Train;
@@ -841,6 +933,15 @@ int dimlpTrn(const string &command) {
       if (Valid.GetNbEx() > 0) {
         DataSet all2(All, Valid);
         All = all2;
+      }
+
+      // Get mus, sigmas and normalizationIndices from normalizationFile for denormalization :
+      if (normalizationFileInit) {
+        auto results = parseNormalizationStats(normalizationFile, nbIn, attributeNames);
+        normalizationIndices = std::get<0>(results);
+        mus = std::get<2>(results);
+        sigmas = std::get<3>(results);
+        hasMus = true;
       }
 
       cout << "\n\n****************************************************\n"

@@ -45,6 +45,11 @@ void AttrName::SecondLect() {
   string varName;
   int k = 0;
   while (k < NbAttr && std::getline(inFile, varName)) {
+
+    while (!varName.empty() && (varName.back() == '\n' || varName.back() == '\r')) { // Remove line breaks
+      varName.pop_back();
+    }
+
     if (hasSpaceBetweenWords(varName)) {
       throw FileContentError("Error in file " + std::string(FileAttr) + " : an attribute has spaces inbetween. Maybe replace it by an underscore.");
     }

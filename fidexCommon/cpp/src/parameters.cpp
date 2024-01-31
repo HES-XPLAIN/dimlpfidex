@@ -100,8 +100,6 @@ Parameters::Parameters(const string &jsonfile) {
  * @param arg parameter's associated value
  */
 void Parameters::parseArg(const string &param, const string &arg) {
-  std::cout << param << std::endl;
-  std::cout << arg << std::endl;
   ParameterCode option;
   auto it = parameterNames.find(param);
   if (it != parameterNames.end()) {
