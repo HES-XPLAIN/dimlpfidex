@@ -1002,9 +1002,9 @@ int fidex(const string &command) {
       double ruleAccuracy;
       if (hasTrueClasses) {
         bool mainSampleCorrect = mainSamplesPreds[currentSample] == mainSamplesTrueClass[currentSample];
-        ruleAccuracy = hyperspace.computeRuleAccuracy(trainPreds, trainTrueClass, hasTrueClasses, mainSampleCorrect); // Percentage of correct model prediction on samples covered by the rule
+        ruleAccuracy = hyperspace.computeRuleAccuracy(*trainPreds, *trainTrueClass, hasTrueClasses, mainSampleCorrect); // Percentage of correct model prediction on samples covered by the rule
       } else {
-        ruleAccuracy = hyperspace.computeRuleAccuracy(trainPreds, trainTrueClass, hasTrueClasses); // Percentage of correct model prediction on samples covered by the rule
+        ruleAccuracy = hyperspace.computeRuleAccuracy(*trainPreds, *trainTrueClass, hasTrueClasses); // Percentage of correct model prediction on samples covered by the rule
       }
 
       meanAccuracy += ruleAccuracy;
@@ -1014,7 +1014,7 @@ int fidex(const string &command) {
       int currentSamplePred = mainSamplesPreds[currentSample];
       double currentSamplePredValue = mainSamplesOutputValuesPredictions[currentSample][currentSamplePred];
       double ruleConfidence;
-      ruleConfidence = hyperspace.computeRuleConfidence(trainOutputValuesPredictions, currentSamplePred, currentSamplePredValue); // Mean output value of prediction of class chosen by the rule for the covered samples
+      ruleConfidence = hyperspace.computeRuleConfidence(*trainOutputValuesPredictions, currentSamplePred, currentSamplePredValue); // Mean output value of prediction of class chosen by the rule for the covered samples
       meanConfidence += ruleConfidence;
       std::cout << "Rule confidence : " << ruleConfidence << endl
                 << endl;
@@ -1023,9 +1023,9 @@ int fidex(const string &command) {
       meanNbAntecedentsPerRule += static_cast<double>(hyperspace.getHyperbox()->getDiscriminativeHyperplans().size());
       // Extract rules
       if (hasMus) {
-        hyperspace.ruleExtraction(&mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, attributFileInit, &attributeNames, hasClassNames, &classNames, &mus, &sigmas, &normalizationIndices);
+        hyperspace.ruleExtraction(mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, attributFileInit, attributeNames, hasClassNames, classNames, mus, sigmas, normalizationIndices);
       } else {
-        hyperspace.ruleExtraction(&mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, attributFileInit, &attributeNames, hasClassNames, &classNames);
+        hyperspace.ruleExtraction(mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, attributFileInit, attributeNames, hasClassNames, classNames);
       }
 
       if (hyperspace.getHyperbox()->getCoveredSamples().size() < minNbCover) {

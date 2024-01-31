@@ -26,9 +26,9 @@ public:
 
   shared_ptr<Hyperbox> getHyperbox() const;
   vector<vector<double>> getHyperLocus() const;
-  Rule ruleExtraction(vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, const vector<double> *mus = nullptr, const vector<double> *sigmas = nullptr, const vector<int> *normalization_indices = nullptr);
-  double computeRuleAccuracy(vector<int> *trainPreds, vector<int> *trainTrueClass, bool hasTrueClasses, bool mainSampleCorrect = false) const;
-  double computeRuleConfidence(vector<vector<double>> *trainOutputValuesPredictions, const int mainSamplePred) const;
+  Rule ruleExtraction(vector<double> &mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, const vector<double> &mus = std::vector<double>(), const vector<double> &sigmas = std::vector<double>(), const vector<int> &normalizationIndices = std::vector<int>());
+  double computeRuleAccuracy(vector<int> &trainPreds, vector<int> &trainTrueClass, bool hasTrueClasses, bool mainSampleCorrect = false) const;
+  double computeRuleConfidence(vector<vector<double>> &trainOutputValuesPredictions, const int mainSamplePred) const;
 };
 } // namespace FidexGloNameSpace
 

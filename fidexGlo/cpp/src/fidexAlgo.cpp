@@ -154,17 +154,17 @@ bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSample
   double ruleAccuracy;
   if (hasTrueClasses) {
     bool mainSampleCorrect = mainSamplePred == mainSampleClass;
-    ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass, hasTrueClasses, mainSampleCorrect); // Percentage of correct model prediction on samples covered by the rule
+    ruleAccuracy = hyperspace->computeRuleAccuracy(*trainPreds, *trainTrueClass, hasTrueClasses, mainSampleCorrect); // Percentage of correct model prediction on samples covered by the rule
   } else {
-    ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass, hasTrueClasses); // Percentage of correct model prediction on samples covered by the rule
+    ruleAccuracy = hyperspace->computeRuleAccuracy(*trainPreds, *trainTrueClass, hasTrueClasses); // Percentage of correct model prediction on samples covered by the rule
   }
 
   double ruleConfidence;
-  ruleConfidence = hyperspace->computeRuleConfidence(trainOutputValuesPredictions, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples
+  ruleConfidence = hyperspace->computeRuleConfidence(*trainOutputValuesPredictions, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples
   if (_parameters->isDoubleVectorSet(MUS)) {
-    rule = hyperspace->ruleExtraction(&mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence, &mus, &sigmas, &normalizationIndices);
+    rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence, mus, sigmas, normalizationIndices);
   } else {
-    rule = hyperspace->ruleExtraction(&mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence);
+    rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence);
   }
 
   return true;

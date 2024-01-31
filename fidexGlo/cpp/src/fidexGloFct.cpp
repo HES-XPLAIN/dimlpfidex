@@ -55,7 +55,7 @@ void showParams() {
             << std::endl;
 }
 
-void launchFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Parameters &p, Hyperspace &hyperspace, vector<double> *mainSampleValues, int mainSamplePred, int mainSampleClass, const vector<string> &attributeNames, const vector<string> &classNames) {
+void launchFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Parameters &p, Hyperspace &hyperspace, vector<double> &mainSampleValues, int mainSamplePred, int mainSampleClass, const vector<string> &attributeNames, const vector<string> &classNames) {
 
   std::cout << "\nWe launch Fidex." << std::endl;
   std::cout << "\nLocal rule :" << std::endl;
@@ -75,7 +75,7 @@ void launchFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Para
   counterFailed = 0; // If we can't find a good rule after a lot of tries
 
   while (!ruleCreated) {
-    ruleCreated = fidex.compute(rule, *mainSampleValues, mainSamplePred, minFidelity, currentMinNbCov, mainSampleClass);
+    ruleCreated = fidex.compute(rule, mainSampleValues, mainSamplePred, minFidelity, currentMinNbCov, mainSampleClass);
     // Pour idSample : Quand on appelle Fidex on a une fonction qui permet d'écrire le sample dans un fichier pour ensuite l'utiliser dans Fidex.
     // -> on n'aura plus besoin de faire ça ni de cette fonction.
     // Comment indiquer l'idSample par contre? l'idSample sert à récup mainSampleValues et mainSamplePred -> changer la méthode? À voir
@@ -101,113 +101,113 @@ void launchFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Para
  *
  * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
  */
-void checkParametersLogicValues(Parameters *p) {
+void checkParametersLogicValues(Parameters &p) {
   // setting default values
-  p->setDefaultFloat(DECISION_THRESHOLD, -1.0f);
-  p->setDefaultInt(POSITIVE_CLASS_INDEX, -1);
-  p->setDefaultBool(WITH_FIDEX, false);
-  p->setDefaultBool(WITH_MINIMAL_VERSION, false);
+  p.setDefaultFloat(DECISION_THRESHOLD, -1.0f);
+  p.setDefaultInt(POSITIVE_CLASS_INDEX, -1);
+  p.setDefaultBool(WITH_FIDEX, false);
+  p.setDefaultBool(WITH_MINIMAL_VERSION, false);
 
   // this sections check if values comply with program logic
 
   // asserting mandatory parameters
-  p->assertStringExists(TEST_DATA_FILE);
-  p->assertStringExists(GLOBAL_RULES_FILE);
-  p->assertIntExists(NB_ATTRIBUTES);
-  p->assertIntExists(NB_CLASSES);
+  p.assertStringExists(TEST_DATA_FILE);
+  p.assertStringExists(GLOBAL_RULES_FILE);
+  p.assertIntExists(NB_ATTRIBUTES);
+  p.assertIntExists(NB_CLASSES);
 
   // verifying logic between parameters, values range and so on...
 
-  if (p->getInt(NB_ATTRIBUTES) < 1) {
+  if (p.getInt(NB_ATTRIBUTES) < 1) {
     throw CommandArgumentException("Error : Number of attributes must be strictly positive (>=1).");
   }
 
-  if (p->getInt(NB_CLASSES) < 1) {
+  if (p.getInt(NB_CLASSES) < 1) {
     throw CommandArgumentException("Error : Number of classes must be strictly positive (>=1).");
   }
 
-  if ((p->getFloat(DECISION_THRESHOLD) < 0.0f || p->getFloat(DECISION_THRESHOLD) > 1.0f) && p->getFloat(DECISION_THRESHOLD) != -1.0f) {
+  if ((p.getFloat(DECISION_THRESHOLD) < 0.0f || p.getFloat(DECISION_THRESHOLD) > 1.0f) && p.getFloat(DECISION_THRESHOLD) != -1.0f) {
     throw CommandArgumentException("Error : Decision threshold must be beetween [0.0, 1.0].");
   }
 
-  if (p->getInt(POSITIVE_CLASS_INDEX) < 0 && p->getInt(POSITIVE_CLASS_INDEX) != -1) {
+  if (p.getInt(POSITIVE_CLASS_INDEX) < 0 && p.getInt(POSITIVE_CLASS_INDEX) != -1) {
     throw CommandArgumentException("Error : Positive class index must be positive (>=0)");
   }
 
-  if (p->getFloat(DECISION_THRESHOLD) != -1 && p->getInt(POSITIVE_CLASS_INDEX) == -1) {
+  if (p.getFloat(DECISION_THRESHOLD) != -1 && p.getInt(POSITIVE_CLASS_INDEX) == -1) {
     throw CommandArgumentException("Error : The positive class index has to be given with option --positive_class_index if the decision threshold is given (--decision_threshold)");
   }
 
   // If using Fidex :
-  if (p->getBool(WITH_FIDEX)) {
+  if (p.getBool(WITH_FIDEX)) {
     // setting default values
-    p->setDefaultInt(NB_DIMLP_NETS, 1);
-    p->setDefaultInt(MAX_ITERATIONS, 10);
-    p->setDefaultInt(MIN_COVERING, 2);
-    p->setDefaultInt(MAX_FAILED_ATTEMPTS, 30);
-    p->setDefaultFloat(MIN_FIDELITY, 1.0);
-    p->setDefaultFloat(DROPOUT_DIM, 0.0f);
-    p->setDefaultFloat(DROPOUT_HYP, 0.0f);
-    p->setDefaultInt(NB_QUANT_LEVELS, 50);
-    p->setDefaultFloat(HI_KNOT, 5.0f);
-    p->setDefaultInt(SEED, 0);
-    if (p->isStringSet(WEIGHTS_FILE)) {
-      p->setWeightsFiles(); // must be called to initialize
+    p.setDefaultInt(NB_DIMLP_NETS, 1);
+    p.setDefaultInt(MAX_ITERATIONS, 10);
+    p.setDefaultInt(MIN_COVERING, 2);
+    p.setDefaultInt(MAX_FAILED_ATTEMPTS, 30);
+    p.setDefaultFloat(MIN_FIDELITY, 1.0);
+    p.setDefaultFloat(DROPOUT_DIM, 0.0f);
+    p.setDefaultFloat(DROPOUT_HYP, 0.0f);
+    p.setDefaultInt(NB_QUANT_LEVELS, 50);
+    p.setDefaultFloat(HI_KNOT, 5.0f);
+    p.setDefaultInt(SEED, 0);
+    if (p.isStringSet(WEIGHTS_FILE)) {
+      p.setWeightsFiles(); // must be called to initialize
     }
 
     // this sections check if values comply with program logic
 
     // asserting mandatory parameters
-    p->assertStringExists(TRAIN_DATA_FILE);
-    p->assertStringExists(TRAIN_PRED_FILE);
+    p.assertStringExists(TRAIN_DATA_FILE);
+    p.assertStringExists(TRAIN_PRED_FILE);
 
     // verifying logic between parameters, values range and so on...
 
-    if (p->isStringSet(TEST_CLASS_FILE) && !p->isStringSet(TEST_PRED_FILE)) {
+    if (p.isStringSet(TEST_CLASS_FILE) && !p.isStringSet(TEST_PRED_FILE)) {
       throw CommandArgumentException("Error : The test prediction data file(--test_pred_file) needs to be specified if the test class data file(--test_class_file) is given.");
     }
 
-    if (p->isStringSet(WEIGHTS_FILE) && p->isStringSet(RULES_FILE)) {
+    if (p.isStringSet(WEIGHTS_FILE) && p.isStringSet(RULES_FILE)) {
       throw CommandArgumentException("Error : Do not specify both a weight file and an rules input file. Choose one of them.");
     }
 
-    if (!p->isStringSet(WEIGHTS_FILE) && !p->isStringSet(RULES_FILE)) {
+    if (!p.isStringSet(WEIGHTS_FILE) && !p.isStringSet(RULES_FILE)) {
       throw CommandArgumentException("Error : A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f");
     }
 
-    if (p->getInt(NB_QUANT_LEVELS) < 1) {
+    if (p.getInt(NB_QUANT_LEVELS) < 1) {
       throw CommandArgumentException("Error : Number of stairs in staircase activation function must be strictly positive (>=1).");
     }
 
-    if (p->getInt(NB_DIMLP_NETS) < 1) {
+    if (p.getInt(NB_DIMLP_NETS) < 1) {
       throw CommandArgumentException("Error : Number of networks must be strictly positive (>=1).");
     }
 
-    if (p->getInt(MAX_ITERATIONS) < 1) {
+    if (p.getInt(MAX_ITERATIONS) < 1) {
       throw CommandArgumentException("Error : Maximum number of iterations must be strictly positive (>=1).");
     }
 
-    if (p->getInt(MIN_COVERING) < 1) {
+    if (p.getInt(MIN_COVERING) < 1) {
       throw CommandArgumentException("Error : Minimium covering must be strictly positive (>=1).");
     }
 
-    if (p->getInt(MAX_FAILED_ATTEMPTS) < 0) {
+    if (p.getInt(MAX_FAILED_ATTEMPTS) < 0) {
       throw CommandArgumentException("Error : Maximum number of failed attempts has to be positive (>=0)");
     }
 
-    if (p->getFloat(MIN_FIDELITY) < 0.0f || p->getFloat(MIN_FIDELITY) > 1.0f) {
+    if (p.getFloat(MIN_FIDELITY) < 0.0f || p.getFloat(MIN_FIDELITY) > 1.0f) {
       throw CommandArgumentException("Error : Minimum fidelity has to be between [0.0, 1.0]");
     }
 
-    if (p->getFloat(DROPOUT_DIM) < 0.0f || p->getFloat(DROPOUT_DIM) > 1.0f) {
+    if (p.getFloat(DROPOUT_DIM) < 0.0f || p.getFloat(DROPOUT_DIM) > 1.0f) {
       throw CommandArgumentException("Error : Dropout dim must be between [0.0, 1.0].");
     }
 
-    if (p->getFloat(DROPOUT_HYP) < 0.0f || p->getFloat(DROPOUT_HYP) > 1.0f) {
+    if (p.getFloat(DROPOUT_HYP) < 0.0f || p.getFloat(DROPOUT_HYP) > 1.0f) {
       throw CommandArgumentException("Error : Dropout hyp must be between [0.0, 1.0].");
     }
 
-    if (p->getInt(SEED) < 0) {
+    if (p.getInt(SEED) < 0) {
       throw CommandArgumentException("Error : Minimium covering must be null or positive (>=0).");
     }
 
@@ -216,35 +216,35 @@ void checkParametersLogicValues(Parameters *p) {
     // Check denormalization parameters
 
     // If normalizationIndices were not specified, it's all attributes
-    if (!p->isStringSet(NORMALIZATION_FILE) && !p->isIntVectorSet(NORMALIZATION_INDICES)) {
+    if (!p.isStringSet(NORMALIZATION_FILE) && !p.isIntVectorSet(NORMALIZATION_INDICES)) {
       vector<int> normalizationIndicesTemp;
-      for (int i = 0; i < p->getInt(NB_ATTRIBUTES); ++i) {
+      for (int i = 0; i < p.getInt(NB_ATTRIBUTES); ++i) {
         normalizationIndicesTemp.push_back(i);
       }
-      p->setIntVector(NORMALIZATION_INDICES, normalizationIndicesTemp);
+      p.setIntVector(NORMALIZATION_INDICES, normalizationIndicesTemp);
     }
 
     // Check if mus and sigmas are both given or both not
-    if ((p->isDoubleVectorSet(MUS) || p->isDoubleVectorSet(SIGMAS)) &&
-        !(p->isDoubleVectorSet(MUS) && p->isDoubleVectorSet(SIGMAS))) {
+    if ((p.isDoubleVectorSet(MUS) || p.isDoubleVectorSet(SIGMAS)) &&
+        !(p.isDoubleVectorSet(MUS) && p.isDoubleVectorSet(SIGMAS))) {
       throw CommandArgumentException("Error : One of Mus(--mus) and sigmas(--sigmas) is given but not the other.");
     }
 
-    if (p->isStringSet(NORMALIZATION_FILE) && p->isDoubleVectorSet(MUS) || p->isStringSet(NORMALIZATION_FILE) && p->isIntVectorSet(NORMALIZATION_INDICES)) {
+    if (p.isStringSet(NORMALIZATION_FILE) && p.isDoubleVectorSet(MUS) || p.isStringSet(NORMALIZATION_FILE) && p.isIntVectorSet(NORMALIZATION_INDICES)) {
       throw CommandArgumentException("Error : normlization file (--normalization_file) and mus or normalizationIndices (--normalization_indices) are both given.");
     }
 
     // Mus, sigmas and normalizationIndices must have the same size and not be empty
-    if (p->isDoubleVectorSet(MUS) && (p->getDoubleVector(MUS).size() != p->getDoubleVector(SIGMAS).size() || p->getDoubleVector(MUS).size() != p->getIntVector(NORMALIZATION_INDICES).size() || p->getDoubleVector(MUS).empty())) {
+    if (p.isDoubleVectorSet(MUS) && (p.getDoubleVector(MUS).size() != p.getDoubleVector(SIGMAS).size() || p.getDoubleVector(MUS).size() != p.getIntVector(NORMALIZATION_INDICES).size() || p.getDoubleVector(MUS).empty())) {
       throw CommandArgumentException("Error : mus (--mus), sigmas (--sigmas) and normalization indices (--normalization_indices) don't have the same size or are empty.");
     }
 
     // Check normalizationIndices
-    if (p->isIntVectorSet(NORMALIZATION_INDICES)) {
-      vector<int> tempVect = p->getIntVector(NORMALIZATION_INDICES);
+    if (p.isIntVectorSet(NORMALIZATION_INDICES)) {
+      vector<int> tempVect = p.getIntVector(NORMALIZATION_INDICES);
       std::set<int> uniqueIndices(tempVect.begin(), tempVect.end());
-      if (uniqueIndices.size() != p->getIntVector(NORMALIZATION_INDICES).size() ||
-          *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= p->getInt(NB_ATTRIBUTES) ||
+      if (uniqueIndices.size() != p.getIntVector(NORMALIZATION_INDICES).size() ||
+          *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= p.getInt(NB_ATTRIBUTES) ||
           *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
         throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) has negative, greater than the number of attributes or repeted elements.");
       }
@@ -296,7 +296,7 @@ int fidexGlo(const string &command) {
     }
 
     // getting all program arguments from CLI
-    checkParametersLogicValues(params.get());
+    checkParametersLogicValues(*params);
     cout << *params;
 
     // Get console results to file
@@ -522,7 +522,7 @@ int fidexGlo(const string &command) {
                 << std::endl;
       // Find rules activated by this sample
       vector<int> activatedRules;
-      getActivatedRules(activatedRules, &rules, &testSamplesValues[currentSample]);
+      getActivatedRules(activatedRules, rules, testSamplesValues[currentSample]);
       // Check which rules are correct
       vector<int> correctRules;
       vector<int> notcorrectRules;
@@ -635,7 +635,7 @@ int fidexGlo(const string &command) {
         } else {
           mainSampleClass = -1;
         }
-        launchFidex(lines, trainDataset, *params, hyperspace, &mainSampleValues, mainSamplePred, mainSampleClass, attributeNames, classNames);
+        launchFidex(lines, trainDataset, *params, hyperspace, mainSampleValues, mainSamplePred, mainSampleClass, attributeNames, classNames);
       }
 
       lines.emplace_back("\n--------------------------------------------------------------------\n");

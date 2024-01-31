@@ -29,21 +29,21 @@ void showStatsParams() {
             << std::endl;
 }
 
-void getCovering(vector<int> &sampleIds, tuple<vector<tuple<int, bool, double>>, int, int, double, double> *rule, vector<vector<double>> *testValues) {
+void getCovering(vector<int> &sampleIds, tuple<vector<tuple<int, bool, double>>, int, int, double, double> &rule, vector<vector<double>> &testValues) {
   // Get covering index samples
   int attr;
   bool ineq;
   double val;
-  for (int id = 0; id < (*testValues).size(); id++) {
+  for (int id = 0; id < testValues.size(); id++) {
     bool notCovered = false;
-    for (const auto &antecedent : get<0>(*rule)) { // For each antecedant
+    for (const auto &antecedent : get<0>(rule)) { // For each antecedant
       attr = get<0>(antecedent);
       ineq = get<1>(antecedent);
       val = get<2>(antecedent);
-      if (ineq == 0 && (*testValues)[id][attr] >= val) { // If the inequality is not verified
+      if (ineq == 0 && testValues[id][attr] >= val) { // If the inequality is not verified
         notCovered = true;
       }
-      if (ineq == 1 && (*testValues)[id][attr] < val) {
+      if (ineq == 1 && testValues[id][attr] < val) {
         notCovered = true;
       }
     }
@@ -472,7 +472,7 @@ int fidexGloStats(const string &command) {
       // Find rules activated by this sample
       bool noCorrectRuleWithAllSameClass = false; // If there is no correct rule activated but all rules have same class
       vector<int> activatedRules;
-      getActivatedRules(activatedRules, &rules, &testValues);
+      getActivatedRules(activatedRules, rules, testValues);
 
       // Check which rules are correct
       vector<int> correctRules;
@@ -617,7 +617,7 @@ int fidexGloStats(const string &command) {
 
         for (int r = 0; r < rules.size(); r++) { // For each rule
           vector<int> sampleIds;
-          getCovering(sampleIds, &rules[r], testData);
+          getCovering(sampleIds, rules[r], *testData);
           size_t coverSize = sampleIds.size();
           double ruleFidelity = 0;   // porcentage of correct covered samples predictions with respect to the rule prediction
           double ruleAccuracy = 0;   // porcentage of correct covered samples predictions with respect to the samples true class

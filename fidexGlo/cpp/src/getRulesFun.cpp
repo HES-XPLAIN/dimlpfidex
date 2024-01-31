@@ -127,20 +127,20 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
 
 ////////////////////////////////////////////////////////
 
-void getActivatedRules(vector<int> &activatedRules, vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> *rules, vector<double> *testValues) {
+void getActivatedRules(vector<int> &activatedRules, vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> &rules, vector<double> &testValues) {
   int attr;
   bool ineq;
   double val;
-  for (int r = 0; r < (*rules).size(); r++) { // For each rule
+  for (int r = 0; r < rules.size(); r++) { // For each rule
     bool notActivated = false;
-    for (const auto &antecedent : get<0>((*rules)[r])) { // For each antecedant
+    for (const auto &antecedent : get<0>(rules[r])) { // For each antecedant
       attr = get<0>(antecedent);
       ineq = get<1>(antecedent);
       val = get<2>(antecedent);
-      if (ineq == 0 && (*testValues)[attr] >= val) { // If the inequality is not verified
+      if (ineq == 0 && testValues[attr] >= val) { // If the inequality is not verified
         notActivated = true;
       }
-      if (ineq == 1 && (*testValues)[attr] < val) {
+      if (ineq == 1 && testValues[attr] < val) {
         notActivated = true;
       }
     }
