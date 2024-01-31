@@ -23,7 +23,7 @@ void test_parameters_setter() {
     // this must throw an exception
     p.setInt(HEURISTIC, 10);
     testAssert("Parameter throw on double set", false);
-  } catch (errorHandler &e) {
+  } catch (ErrorHandler &e) {
     std::string expectedMessage = getAlreadySetArgumentExceptionMessage(HEURISTIC, "10");
     std::string actualMessage = e.what();
 
@@ -39,7 +39,7 @@ void test_parameters_getter() {
   try {
     p.getString(TRAIN_DATA_FILE);
     testAssert("Parameter throw on empty getter", false);
-  } catch (errorHandler &e) {
+  } catch (ErrorHandler &e) {
     std::string expectedMessage = getArgumentNotFoundExceptionMessage(TRAIN_DATA_FILE);
     std::string actualMessage = e.what();
 
@@ -59,6 +59,9 @@ void test_parameters_default_setter() {
   p.setString(ROOT_FOLDER, new_value);
   testAssert("Parameter override default value", new_value.compare(p.getString(ROOT_FOLDER)) == 0);
 }
+
+// void test_parameters_arg_parser();
+// void test_parameters_json_parser();
 
 void run_fidexcommon_test_suite() {
   test_parameters_setter();

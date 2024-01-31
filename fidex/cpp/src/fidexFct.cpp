@@ -1078,7 +1078,7 @@ int fidex(const string &command) {
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
 
-  } catch (const errorHandler &e) {
+  } catch (const ErrorHandler &e) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
     std::cerr << e.what() << endl;
     return -1;
