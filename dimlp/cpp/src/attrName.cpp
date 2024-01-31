@@ -61,6 +61,11 @@ void AttrName::SecondLect() {
   bool hasClasses = false;
 
   while (std::getline(inFile, className)) {
+
+    while (!className.empty() && (className.back() == '\n' || className.back() == '\r')) { // Remove line breaks
+      className.pop_back();
+    }
+
     if (hasSpaceBetweenWords(className)) {
       throw FileContentError("Error in file " + std::string(FileAttr) + " : a class has spaces inbetween. Maybe replace it by an underscore.");
     }

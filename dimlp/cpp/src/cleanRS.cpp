@@ -405,9 +405,26 @@ void CleanRuleStruct::CreateStructures() {
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::WriteRules(int def, ostream &ruleFile)
+void CleanRuleStruct::WriteRules(
+    int def,
+    ostream &ruleFile,
+    const std::vector<double> &mus,
+    const std::vector<double> &sigmas,
+    const std::vector<int> &normalizationIndices)
 
 {
+
+  bool denormalizing = false;
+  // Check if we need to denormalize
+  if (!mus.empty() && !sigmas.empty() && !normalizationIndices.empty()) {
+    denormalizing = true;
+    if (!(mus.size() == sigmas.size() && mus.size() == normalizationIndices.size())) {
+      throw InternalError("Error during rule extraction : Means, standard deviations, and normalization indices must have the same number of elements.");
+    }
+  } else if (!mus.empty() || !sigmas.empty() || !normalizationIndices.empty()) {
+    throw InternalError("Error during rule extraction : Means, standard deviations, and normalization indices must either all be specified or none at all.");
+  }
+
   int r;
   int count;
   int nbRules;
@@ -438,9 +455,26 @@ void CleanRuleStruct::WriteRules(int def, ostream &ruleFile)
     ptrAnt = const_cast<const AssocAnte *>(Clean[r]->SevAnt.data());
 
     for (int a = 0; a < Clean[r]->NbAnt; a++, ptrAnt++) {
+
+      // Denormalization of values in case it was previously normalized
+      float hypValue = ptrAnt->Val;
+      if (denormalizing) {
+        // Check if the attribute needs to be denormalized
+        int index = -1;
+        for (size_t i = 0; i < normalizationIndices.size(); ++i) {
+          if (normalizationIndices[i] == ptrAnt->Var) {
+            index = static_cast<int>(i);
+            break;
+          }
+        }
+        if (index != -1) {
+          hypValue = static_cast<float>(hypValue * sigmas[index] + mus[index]);
+        }
+      }
+
       ruleFile << "(" << ptrAnt->Str << " ";
       ruleFile << ptrAnt->Rel << " ";
-      ruleFile << ptrAnt->Val << ") ";
+      ruleFile << hypValue << ") ";
     }
 
     ruleFile << "Class = " << Clean[r]->StrClass;

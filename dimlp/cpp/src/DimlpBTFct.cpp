@@ -909,8 +909,14 @@ int dimlpBT(const string &command) {
         }
 
         ostream rulesFileost(&buf);
-        ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                           Test, TestClass, Attr, rulesFileost);
+
+        if (hasMus) {
+          ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                             Test, TestClass, Attr, rulesFileost, mus, sigmas, normalizationIndices);
+        } else {
+          ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                             Test, TestClass, Attr, rulesFileost);
+        }
 
         if (ryp.TreeAborted()) {
 
@@ -921,8 +927,13 @@ int dimlpBT(const string &command) {
                         All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
                         nbWeightLayers);
 
-          ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                              Test, TestClass, Attr, rulesFileost);
+          if (hasMus) {
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                                Test, TestClass, Attr, rulesFileost, mus, sigmas, normalizationIndices);
+          } else {
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                                Test, TestClass, Attr, rulesFileost);
+          }
         }
 
         cout << "\n\n"
@@ -930,8 +941,13 @@ int dimlpBT(const string &command) {
              << "Written.\n"
              << std::endl;
       } else {
-        ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                           Test, TestClass, Attr, cout);
+        if (hasMus) {
+          ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                             Test, TestClass, Attr, cout, mus, sigmas, normalizationIndices);
+        } else {
+          ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                             Test, TestClass, Attr, cout);
+        }
 
         if (ryp.TreeAborted()) {
 
@@ -942,8 +958,13 @@ int dimlpBT(const string &command) {
                         All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
                         nbWeightLayers);
 
-          ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                              Test, TestClass, Attr, cout);
+          if (hasMus) {
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                                Test, TestClass, Attr, cout, mus, sigmas, normalizationIndices);
+          } else {
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                                Test, TestClass, Attr, cout);
+          }
         }
       }
     }

@@ -726,15 +726,25 @@ int dimlpRul(const string &command) {
 
     ostream rulesFileost(&buf);
 
-    ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                       Test, TestClass, Attr, rulesFileost);
+    if (hasMus) {
+      ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                         Test, TestClass, Attr, rulesFileost, mus, sigmas, normalizationIndices);
+    } else {
+      ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                         Test, TestClass, Attr, rulesFileost);
+    }
 
     if (ryp.TreeAborted()) {
       RealHyp2 ryp2(All, net, quant, nbIn,
                     vecNbNeurons[1] / nbIn, nbWeightLayers);
 
-      ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                          Test, TestClass, Attr, rulesFileost);
+      if (hasMus) {
+        ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                            Test, TestClass, Attr, rulesFileost, mus, sigmas, normalizationIndices);
+      } else {
+        ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                            Test, TestClass, Attr, rulesFileost);
+      }
     }
 
     cout << "\n\n"

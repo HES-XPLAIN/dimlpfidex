@@ -956,16 +956,26 @@ int dimlpTrn(const string &command) {
           throw CannotOpenFileError("Error : Cannot open rules file " + std::string(rulesFile));
         }
         ostream rulesFileost(&buf);
-        ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                            Test, TestClass, Attr, rulesFileost);
+        if (hasMus) {
+          ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                              Test, TestClass, Attr, rulesFileost, mus, sigmas, normalizationIndices);
+        } else {
+          ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                              Test, TestClass, Attr, rulesFileost);
+        }
 
         if (ryp1.TreeAborted()) {
 
           RealHyp2 ryp2(All, net, quant, nbIn,
                         vecNbNeurons[1] / nbIn, nbWeightLayers);
 
-          ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                              Test, TestClass, Attr, rulesFileost);
+          if (hasMus) {
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                                Test, TestClass, Attr, rulesFileost, mus, sigmas, normalizationIndices);
+          } else {
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                                Test, TestClass, Attr, rulesFileost);
+          }
 
         } else
 
@@ -976,16 +986,26 @@ int dimlpTrn(const string &command) {
       }
 
       else {
-        ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                            Test, TestClass, Attr, cout);
+        if (hasMus) {
+          ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                              Test, TestClass, Attr, cout, mus, sigmas, normalizationIndices);
+        } else {
+          ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                              Test, TestClass, Attr, cout);
+        }
 
         if (ryp1.TreeAborted()) {
 
           RealHyp2 ryp2(All, net, quant, nbIn,
                         vecNbNeurons[1] / nbIn, nbWeightLayers);
 
-          ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                              Test, TestClass, Attr, cout);
+          if (hasMus) {
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                                Test, TestClass, Attr, cout, mus, sigmas, normalizationIndices);
+          } else {
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                                Test, TestClass, Attr, cout);
+          }
         }
       }
     }

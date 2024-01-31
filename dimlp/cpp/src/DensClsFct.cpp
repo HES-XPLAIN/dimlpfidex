@@ -756,8 +756,13 @@ int densCls(const string &command) {
         }
 
         ostream rulesFileost(&buf);
-        ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                           Test, TestClass, Attr, rulesFileost);
+        if (hasMus) {
+          ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                             Test, TestClass, Attr, rulesFileost, mus, sigmas, normalizationIndices);
+        } else {
+          ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                             Test, TestClass, Attr, rulesFileost);
+        }
 
         if (ryp.TreeAborted()) {
 
@@ -768,8 +773,13 @@ int densCls(const string &command) {
                         All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
                         nbWeightLayers);
 
-          ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                              Test, TestClass, Attr, rulesFileost);
+          if (hasMus) {
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                                Test, TestClass, Attr, rulesFileost, mus, sigmas, normalizationIndices);
+          } else {
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                                Test, TestClass, Attr, rulesFileost);
+          }
         }
 
         cout << "\n\n"
@@ -777,8 +787,13 @@ int densCls(const string &command) {
              << "Written.\n"
              << std::endl;
       } else {
-        ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                           Test, TestClass, Attr, cout);
+        if (hasMus) {
+          ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                             Test, TestClass, Attr, cout, mus, sigmas, normalizationIndices);
+        } else {
+          ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                             Test, TestClass, Attr, cout);
+        }
 
         if (ryp.TreeAborted()) {
 
@@ -788,9 +803,13 @@ int densCls(const string &command) {
           RealHyp2 ryp2(globVirt3, nbDimlpNets, net->GetGlobalOut(), nbOut,
                         All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
                         nbWeightLayers);
-
-          ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                              Test, TestClass, Attr, cout);
+          if (hasMus) {
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                                Test, TestClass, Attr, cout, mus, sigmas, normalizationIndices);
+          } else {
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                                Test, TestClass, Attr, cout);
+          }
         }
       }
     }
