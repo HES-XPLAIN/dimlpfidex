@@ -616,9 +616,9 @@ bool DataSetFid::isOneHot(const std::vector<double> &values, int start, int &one
  *
  * @return vector<vector<double>>*
  */
-vector<vector<double>> *DataSetFid::getDatas() {
+vector<vector<double>> &DataSetFid::getDatas() {
   if (hasDatas) {
-    return &datas;
+    return datas;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : data file not specified for this dataset.");
   }
@@ -629,9 +629,9 @@ vector<vector<double>> *DataSetFid::getDatas() {
  *
  * @return vector<int>*
  */
-vector<int> *DataSetFid::getClasses() {
+vector<int> &DataSetFid::getClasses() {
   if (hasClasses) {
-    return &trueClasses;
+    return trueClasses;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : dataClass file not specified for this dataset.");
   }
@@ -652,9 +652,9 @@ bool DataSetFid::getHasClasses() const {
  *
  * @return vector<int>*
  */
-vector<int> *DataSetFid::getPredictions() {
+vector<int> &DataSetFid::getPredictions() {
   if (hasPreds) {
-    return &predictions;
+    return predictions;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : prediction file not specified for this dataset.");
   }
@@ -665,9 +665,9 @@ vector<int> *DataSetFid::getPredictions() {
  *
  * @return vector<vector<double>>*
  */
-vector<vector<double>> *DataSetFid::getOutputValuesPredictions() {
+vector<vector<double>> &DataSetFid::getOutputValuesPredictions() {
   if (hasPreds) {
-    return &outputValuesPredictions;
+    return outputValuesPredictions;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : prediction file not specified for this dataset.");
   }
@@ -870,9 +870,9 @@ void DataSetFid::setAttributes(const char *attributeFile, int _nbAttributes, int
  *
  * @return vector<string>*
  */
-vector<string> *DataSetFid::getAttributeNames() {
+vector<string> &DataSetFid::getAttributeNames() {
   if (hasAttributes) {
-    return &attributeNames;
+    return attributeNames;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : attribute file not specified for this dataset.");
   }
@@ -883,9 +883,9 @@ vector<string> *DataSetFid::getAttributeNames() {
  *
  * @return vector<string>*
  */
-vector<string> *DataSetFid::getClassNames() {
+vector<string> &DataSetFid::getClassNames() {
   if (hasClassNames) {
-    return &classNames;
+    return classNames;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : classNames not present in attribute file or attribute file not specified.");
   }

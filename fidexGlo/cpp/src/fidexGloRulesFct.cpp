@@ -105,10 +105,10 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
 
 #pragma omp for
     for (int idSample = 0; idSample < nbDatas; idSample++) {
-      vector<int> *trainPreds = trainDataset.getPredictions();
-      vector<vector<double>> *trainData = trainDataset.getDatas();
-      vector<double> *mainSampleValues = &(*trainData)[idSample];
-      int mainSamplePred = (*trainPreds)[idSample];
+      vector<int> &trainPreds = trainDataset.getPredictions();
+      vector<vector<double>> &trainData = trainDataset.getDatas();
+      vector<double> &mainSampleValues = trainData[idSample];
+      int mainSamplePred = trainPreds[idSample];
       ruleCreated = false;
       counterFailed = 0; // If we can't find a good rule after a lot of tries
       cnt += 1;
@@ -122,7 +122,7 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
       }
 
       while (!ruleCreated) {
-        ruleCreated = fidex.compute(rule, *mainSampleValues, mainSamplePred, minFidelity, currentMinCovering);
+        ruleCreated = fidex.compute(rule, mainSampleValues, mainSamplePred, minFidelity, currentMinCovering);
         if (currentMinCovering >= 2) {
           currentMinCovering -= 1;
         } else {
@@ -331,7 +331,7 @@ vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const vector<v
   vector<int> chosenRuleSamples;
   Hyperspace hyperspace(hyperlocus);
   int minNbCover = p.getInt(MIN_COVERING);
-  auto nbDatas = static_cast<int>(trainDataset.getDatas()->size());
+  auto nbDatas = static_cast<int>(trainDataset.getDatas().size());
   vector<int> notCoveredSamples(nbDatas);
   float minFidelity = p.getFloat(MIN_FIDELITY);
   auto fidex = Fidex(trainDataset, p, hyperspace);
@@ -364,16 +364,16 @@ vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const vector<v
     }
 
     idSample = notCoveredSamples[0];
-    vector<int> *trainPreds = trainDataset.getPredictions();
-    vector<vector<double>> *trainData = trainDataset.getDatas();
-    vector<double> *mainSampleValues = &(*trainData)[idSample];
-    int mainSamplePred = (*trainPreds)[idSample];
+    vector<int> &trainPreds = trainDataset.getPredictions();
+    vector<vector<double>> &trainData = trainDataset.getDatas();
+    vector<double> &mainSampleValues = trainData[idSample];
+    int mainSamplePred = trainPreds[idSample];
     currentMinNbCov = minNbCover;
     ruleCreated = false;
     int counterFailed = 0; // If we can't find a good rule after a lot of tries
 
     while (!ruleCreated) {
-      ruleCreated = fidex.compute(rule, *mainSampleValues, mainSamplePred, minFidelity, currentMinNbCov);
+      ruleCreated = fidex.compute(rule, mainSampleValues, mainSamplePred, minFidelity, currentMinNbCov);
 
       if (currentMinNbCov >= 2) {
         currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
@@ -721,10 +721,10 @@ int fidexGloRules(const string &command) {
 
     if (params->isStringSet(ATTRIBUTES_FILE)) {
       trainDatas->setAttributes(params->getString(ATTRIBUTES_FILE).c_str(), params->getInt(NB_ATTRIBUTES), params->getInt(NB_CLASSES));
-      attributeNames = (*trainDatas->getAttributeNames());
+      attributeNames = trainDatas->getAttributeNames();
       hasClassNames = trainDatas->getHasClassNames();
       if (hasClassNames) {
-        classNames = (*trainDatas->getClassNames());
+        classNames = trainDatas->getClassNames();
       }
     }
 

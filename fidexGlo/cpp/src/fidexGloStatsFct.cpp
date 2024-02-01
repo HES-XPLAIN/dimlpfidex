@@ -384,12 +384,11 @@ int fidexGloStats(const string &command) {
       testDatas.reset(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass, testDataFileTrueClass));
     }
 
-    vector<vector<double>> *testData = testDatas->getDatas();
-    vector<int> *testPreds = testDatas->getPredictions();
-    vector<int> *testTrueClasses = testDatas->getClasses();
+    vector<vector<double>> &testData = testDatas->getDatas();
+    vector<int> &testPreds = testDatas->getPredictions();
+    vector<int> &testTrueClasses = testDatas->getClasses();
 
-    vector<vector<double>> *testOutputValuesPredictions = nullptr;
-    testOutputValuesPredictions = testDatas->getOutputValuesPredictions();
+    vector<vector<double>> &testOutputValuesPredictions = testDatas->getOutputValuesPredictions();
     int nbTestData = testDatas->getNbSamples();
 
     // Get attributes
@@ -398,10 +397,10 @@ int fidexGloStats(const string &command) {
     bool hasClassNames = false;
     if (attributFileInit) {
       testDatas->setAttributes(attributFile, nb_attributes, nb_classes);
-      attributeNames = (*testDatas->getAttributeNames());
+      attributeNames = testDatas->getAttributeNames();
       hasClassNames = testDatas->getHasClassNames();
       if (hasClassNames) {
-        classNames = (*testDatas->getClassNames());
+        classNames = testDatas->getClassNames();
       }
     }
     // Get rules
@@ -451,9 +450,9 @@ int fidexGloStats(const string &command) {
     int nbFalseNegativeRules = 0; // Wrong negative rule prediction
 
     for (int t = 0; t < nbTestData; t++) { // For each test value
-      testValues = (*testData)[t];
-      testPred = (*testPreds)[t];
-      testTrueClass = (*testTrueClasses)[t];
+      testValues = testData[t];
+      testPred = testPreds[t];
+      testTrueClass = testTrueClasses[t];
       if (hasIndexPositiveClass) {
         if (testTrueClass == indexPositiveClass) {
           nbPositive += 1;
@@ -617,18 +616,18 @@ int fidexGloStats(const string &command) {
 
         for (int r = 0; r < rules.size(); r++) { // For each rule
           vector<int> sampleIds;
-          getCovering(sampleIds, rules[r], *testData);
+          getCovering(sampleIds, rules[r], testData);
           size_t coverSize = sampleIds.size();
           double ruleFidelity = 0;   // porcentage of correct covered samples predictions with respect to the rule prediction
           double ruleAccuracy = 0;   // porcentage of correct covered samples predictions with respect to the samples true class
           double ruleConfidence = 0; // mean output prediction score of covered samples
           for (int sampleId : sampleIds) {
-            int samplePred = (*testPreds)[sampleId];
+            int samplePred = testPreds[sampleId];
             double sampleOutputPred = 0.0;
             int classRule = get<2>(rules[r]);
-            sampleOutputPred = (*testOutputValuesPredictions)[sampleId][classRule];
+            sampleOutputPred = testOutputValuesPredictions[sampleId][classRule];
             int rulePred = get<2>(rules[r]);
-            int trueClass = (*testTrueClasses)[sampleId];
+            int trueClass = testTrueClasses[sampleId];
             if (samplePred == rulePred) {
               ruleFidelity += 1;
             }

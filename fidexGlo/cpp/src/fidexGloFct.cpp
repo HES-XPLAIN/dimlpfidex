@@ -330,9 +330,9 @@ int fidexGlo(const string &command) {
     } else { // We have a different file for test predictions
       testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, testSamplesPredFile, nb_attributes, nb_classes, decisionThreshold, positiveClassIndex));
     }
-    vector<vector<double>> testSamplesValues = *testDatas->getDatas();
-    vector<int> testSamplesPreds = *testDatas->getPredictions();
-    vector<vector<double>> testSamplesOutputValuesPredictions = *testDatas->getOutputValuesPredictions();
+    vector<vector<double>> testSamplesValues = testDatas->getDatas();
+    vector<int> testSamplesPreds = testDatas->getPredictions();
+    vector<vector<double>> testSamplesOutputValuesPredictions = testDatas->getOutputValuesPredictions();
 
     int nbSamples = testDatas->getNbSamples();
 
@@ -342,10 +342,10 @@ int fidexGlo(const string &command) {
     bool hasClassNames = false;
     if (params->isStringSet(ATTRIBUTES_FILE)) {
       testDatas->setAttributes(params->getString(ATTRIBUTES_FILE).c_str(), nb_attributes, nb_classes);
-      attributeNames = (*testDatas->getAttributeNames());
+      attributeNames = testDatas->getAttributeNames();
       hasClassNames = testDatas->getHasClassNames();
       if (hasClassNames) {
-        classNames = (*testDatas->getClassNames());
+        classNames = testDatas->getClassNames();
       }
     }
 
@@ -384,7 +384,7 @@ int fidexGlo(const string &command) {
         testDatas->setClassFromFile(params->getString(TEST_CLASS_FILE).c_str(), nb_classes);
       }
       if (hasTrueClasses) {
-        testSamplesClasses = (*testDatas->getClasses());
+        testSamplesClasses = testDatas->getClasses();
       }
 
       if (!params->isStringSet(TRAIN_CLASS_FILE)) {

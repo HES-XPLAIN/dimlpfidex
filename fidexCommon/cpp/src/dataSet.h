@@ -65,18 +65,18 @@ public:
   void setPredFromFile(const char *predFile, int _nbClasses, double decisionThreshold = -1, int indexPositiveClass = -1);
   void setClassFromFile(const char *classFile, int _nbClasses);
 
-  std::vector<std::vector<double>> *getDatas();
-  std::vector<int> *getClasses();
+  std::vector<std::vector<double>> &getDatas();
+  std::vector<int> &getClasses();
   bool getHasClasses() const;
-  std::vector<int> *getPredictions();
-  std::vector<std::vector<double>> *getOutputValuesPredictions();
+  std::vector<int> &getPredictions();
+  std::vector<std::vector<double>> &getOutputValuesPredictions();
   int getNbClasses() const;
   int getNbAttributes() const;
   int getNbSamples() const;
 
   void setAttributes(const char *attributFile, int _nbAttributes, int _nbClasses = -1);
-  std::vector<std::string> *getAttributeNames();
-  std::vector<std::string> *getClassNames();
+  std::vector<std::string> &getAttributeNames();
+  std::vector<std::string> &getClassNames();
   bool getHasClassNames() const;
 
   std::vector<std::vector<double>> getWeights() const;

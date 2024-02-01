@@ -27,11 +27,11 @@ Rule::Rule(const vector<Antecedant> &antecedants, const vector<int> &coveredSamp
  */
 string Rule::toString(const vector<string> &attributes, const vector<string> &classes) const {
   stringstream result;
-  int outputClass = getOutputClass();
-  int nbCoveredSamples = getCoveredSamples().size();
-  double fidelity = getFidelity();
-  double accuracy = getAccuracy();
-  double confidence = getConfidence();
+  int _outputClass = getOutputClass();
+  auto nbCoveredSamples = static_cast<int>(getCoveredSamples().size());
+  double _fidelity = getFidelity();
+  double _accuracy = getAccuracy();
+  double _confidence = getConfidence();
 
   for (Antecedant a : getAntecedants()) {
     if (!attributes.empty()) {
@@ -50,18 +50,18 @@ string Rule::toString(const vector<string> &attributes, const vector<string> &cl
   }
 
   if (!classes.empty()) {
-    result << "-> " << classes[outputClass] << endl;
+    result << "-> " << classes[_outputClass] << endl;
   } else {
     result << "-> class " << getOutputClass() << endl;
   }
 
   result << "   Train Covering size : " << nbCoveredSamples
          << endl
-         << "   Train Fidelity : " << formattingDoubleToString(fidelity)
+         << "   Train Fidelity : " << formattingDoubleToString(_fidelity)
          << endl
-         << "   Train Accuracy : " << formattingDoubleToString(accuracy)
+         << "   Train Accuracy : " << formattingDoubleToString(_accuracy)
          << endl
-         << "   Train Confidence : " << formattingDoubleToString(confidence)
+         << "   Train Confidence : " << formattingDoubleToString(_confidence)
          << endl;
 
   return result.str();

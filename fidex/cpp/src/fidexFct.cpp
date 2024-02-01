@@ -684,10 +684,10 @@ int fidex(const string &command) {
       trainDatas.reset(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nbAttributes, nbClasses, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
     }
 
-    vector<vector<double>> *trainData = trainDatas->getDatas();
-    vector<int> *trainPreds = trainDatas->getPredictions();
-    vector<vector<double>> *trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
-    vector<int> *trainTrueClass = trainDatas->getClasses();
+    vector<vector<double>> &trainData = trainDatas->getDatas();
+    vector<int> &trainPreds = trainDatas->getPredictions();
+    vector<vector<double>> &trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
+    vector<int> &trainTrueClass = trainDatas->getClasses();
 
     int nbTrainSamples = trainDatas->getNbSamples();
 
@@ -703,12 +703,12 @@ int fidex(const string &command) {
     std::unique_ptr<DataSetFid> testDatas;
     if (!mainSamplesPredFileInit) { // If we have only one test data file with data, pred and class
       testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, nbAttributes, nbClasses, decisionThreshold, indexPositiveClass));
-      mainSamplesValues = (*testDatas->getDatas());
-      mainSamplesPreds = (*testDatas->getPredictions());
-      mainSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
+      mainSamplesValues = testDatas->getDatas();
+      mainSamplesPreds = testDatas->getPredictions();
+      mainSamplesOutputValuesPredictions = testDatas->getOutputValuesPredictions();
       hasTrueClasses = testDatas->getHasClasses();
       if (hasTrueClasses) {
-        mainSamplesTrueClass = (*testDatas->getClasses());
+        mainSamplesTrueClass = testDatas->getClasses();
       }
 
     } else { // We have different files for test predictions and test classes
@@ -718,14 +718,14 @@ int fidex(const string &command) {
       } else {
         testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, nbAttributes, nbClasses, decisionThreshold, indexPositiveClass));
       }
-      mainSamplesValues = (*testDatas->getDatas());
-      mainSamplesPreds = (*testDatas->getPredictions());
-      mainSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
+      mainSamplesValues = testDatas->getDatas();
+      mainSamplesPreds = testDatas->getPredictions();
+      mainSamplesOutputValuesPredictions = testDatas->getOutputValuesPredictions();
 
       // Classes :
       if (mainSamplesClassFileInit) {
         hasTrueClasses = true;
-        mainSamplesTrueClass = (*testDatas->getClasses());
+        mainSamplesTrueClass = testDatas->getClasses();
       } else {
         hasTrueClasses = false;
       }
@@ -739,10 +739,10 @@ int fidex(const string &command) {
     bool hasClassNames = false;
     if (attributFileInit) {
       testDatas->setAttributes(attributFile, nbAttributes, nbClasses);
-      attributeNames = (*testDatas->getAttributeNames());
+      attributeNames = testDatas->getAttributeNames();
       hasClassNames = testDatas->getHasClassNames();
       if (hasClassNames) {
-        classNames = (*testDatas->getClassNames());
+        classNames = testDatas->getClassNames();
       }
     }
 
@@ -1002,9 +1002,9 @@ int fidex(const string &command) {
       double ruleAccuracy;
       if (hasTrueClasses) {
         bool mainSampleCorrect = mainSamplesPreds[currentSample] == mainSamplesTrueClass[currentSample];
-        ruleAccuracy = hyperspace.computeRuleAccuracy(*trainPreds, *trainTrueClass, hasTrueClasses, mainSampleCorrect); // Percentage of correct model prediction on samples covered by the rule
+        ruleAccuracy = hyperspace.computeRuleAccuracy(trainPreds, trainTrueClass, hasTrueClasses, mainSampleCorrect); // Percentage of correct model prediction on samples covered by the rule
       } else {
-        ruleAccuracy = hyperspace.computeRuleAccuracy(*trainPreds, *trainTrueClass, hasTrueClasses); // Percentage of correct model prediction on samples covered by the rule
+        ruleAccuracy = hyperspace.computeRuleAccuracy(trainPreds, trainTrueClass, hasTrueClasses); // Percentage of correct model prediction on samples covered by the rule
       }
 
       meanAccuracy += ruleAccuracy;
@@ -1014,7 +1014,7 @@ int fidex(const string &command) {
       int currentSamplePred = mainSamplesPreds[currentSample];
       double currentSamplePredValue = mainSamplesOutputValuesPredictions[currentSample][currentSamplePred];
       double ruleConfidence;
-      ruleConfidence = hyperspace.computeRuleConfidence(*trainOutputValuesPredictions, currentSamplePred, currentSamplePredValue); // Mean output value of prediction of class chosen by the rule for the covered samples
+      ruleConfidence = hyperspace.computeRuleConfidence(trainOutputValuesPredictions, currentSamplePred, currentSamplePredValue); // Mean output value of prediction of class chosen by the rule for the covered samples
       meanConfidence += ruleConfidence;
       std::cout << "Rule confidence : " << ruleConfidence << endl
                 << endl;

@@ -17,7 +17,6 @@
 #include <tuple>
 #include <vector>
 
-using namespace std;
 using namespace std::chrono;
 using namespace FidexGloNameSpace;
 
