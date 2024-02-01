@@ -38,7 +38,7 @@ void showParams() {
   std::cout << "Options :" << std::endl;
   std::cout << "--test_class_file <test true class file, classes can be specified in test data file>" << std::endl;
   std::cout << "--nb_dimlp_nets <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
-  std::cout << "--max_itertions <max iteration number (100 by default)>" << std::endl;
+  std::cout << "--max_iterations <max iteration number (100 by default)>" << std::endl;
   std::cout << "--min_covering <minimum covering number (2 by default)>" << std::endl;
   std::cout << "--max_failed_attempts <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
   std::cout << "--min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>" << std::endl;
@@ -216,7 +216,7 @@ void checkParametersLogicValues(Parameters &p) {
     // Check denormalization parameters
 
     // If normalizationIndices were not specified, it's all attributes
-    if (!p.isStringSet(NORMALIZATION_FILE) && !p.isIntVectorSet(NORMALIZATION_INDICES)) {
+    if (!p.isStringSet(NORMALIZATION_FILE) && !p.isIntVectorSet(NORMALIZATION_INDICES) && p.isDoubleVectorSet(MUS)) {
       vector<int> normalizationIndicesTemp;
       for (int i = 0; i < p.getInt(NB_ATTRIBUTES); ++i) {
         normalizationIndicesTemp.push_back(i);

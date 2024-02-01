@@ -67,6 +67,7 @@ def imageAnalyser(dataSet):
             dropout_hyp = 0.9
             size1d = 28
             nb_channels = 1
+            nb_classes = 10
             with_hsl = False
             normalized = False
         elif dataSet == "Cifar10":
@@ -91,6 +92,7 @@ def imageAnalyser(dataSet):
             dropout_hyp = 0.9
             size1d = 32
             nb_channels = 3
+            nb_classes = 10
         elif dataSet == "fer":
             normalized = True # Data between 0 and 1
             with_hsl = False
@@ -114,6 +116,9 @@ def imageAnalyser(dataSet):
             dropout_hyp = 0.9
             size1d = 48
             nb_channels = 1
+            nb_classes = 7
+
+        nb_attributes = size1d*size1d*nb_channels
 
         image_save_folder = image_folder_from_base + "/imagesTest"
 
@@ -137,15 +142,18 @@ def imageAnalyser(dataSet):
 
         # Lauch fidexGlo to get explanation
 
-        fidexglo_command = "fidexGlo -S " + test_data_samples + " -p " + test_pred_samples + " -c " + test_class_samples
-        fidexglo_command += " -R " + global_rules + " -O explanation.txt -F " + image_folder_from_base # + " -r imgExplanationResult.txt "
-        fidexglo_command += " -w true -T " + train_data_file + " -P " + train_pred_file + " -C " + train_class_file
+        fidexglo_command = "fidexGlo --test_data_file " + test_data_samples + " --test_pred_file " + test_pred_samples + " --test_class_file " + test_class_samples
+        fidexglo_command += " --nb_attributes " + str(nb_attributes) + " --nb_classes " + str(nb_classes)
+        fidexglo_command += " --global_rules_file " + global_rules + " --explanation_file explanation.txt --root_folder " + image_folder_from_base # + " --console_file imgExplanationResult.txt "
+        fidexglo_command += " --with_fidex true --train_data_file " + train_data_file + " --train_pred_file " + train_pred_file + " --train_class_file " + train_class_file
         if with_file:
-            fidexglo_command += " -f " + rules_file
+            fidexglo_command += " --rules_file " + rules_file
         else:
-            fidexglo_command += " -W " + weights_file
-        fidexglo_command += " -Q 100 -i 25"
-        fidexglo_command += " -d " + str(dropout_dim) + " -h " + str(dropout_hyp)
+            fidexglo_command += " --weights_file " + weights_file
+        fidexglo_command += " --nb_quant_levels 100 --max_iterations 25"
+        fidexglo_command += " --dropout_dim " + str(dropout_dim) + " --dropout_hyp " + str(dropout_hyp)
+
+        print("Launching FidexGlo")
 
         res_fid_glo = fidexGlo.fidexGlo(fidexglo_command)
         if res_fid_glo == -1:

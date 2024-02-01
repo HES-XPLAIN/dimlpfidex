@@ -608,7 +608,7 @@ int fidex(const string &command) {
     // Check denormalization parameters
 
     // If normalizationIndices were not specified, it's all attributes
-    if (!normalizationFileInit && !hasNormalizationIndices) {
+    if (!normalizationFileInit && !hasNormalizationIndices && hasMus) {
       for (int i = 0; i < nbAttributes; ++i) {
         normalizationIndices.push_back(i);
       }

@@ -516,7 +516,7 @@ int densCls(const string &command) {
     // Check denormalization parameters
 
     // If normalizationIndices were not specified, it's all attributes
-    if (!normalizationFileInit && !hasNormalizationIndices) {
+    if (!normalizationFileInit && !hasNormalizationIndices && hasMus) {
       for (int i = 0; i < nbIn; ++i) {
         normalizationIndices.push_back(i);
       }

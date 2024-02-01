@@ -530,7 +530,7 @@ void checkRulesParametersLogicValues(Parameters &p) {
   // Check denormalization parameters
 
   // If normalizationIndices were not specified, it's all attributes
-  if (!p.isStringSet(NORMALIZATION_FILE) && !p.isIntVectorSet(NORMALIZATION_INDICES)) {
+  if (!p.isStringSet(NORMALIZATION_FILE) && !p.isIntVectorSet(NORMALIZATION_INDICES) && p.isDoubleVectorSet(MUS)) {
     vector<int> normalizationIndicesTemp;
     for (int i = 0; i < p.getInt(NB_ATTRIBUTES); ++i) {
       normalizationIndicesTemp.push_back(i);
