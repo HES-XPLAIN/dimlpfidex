@@ -1,6 +1,6 @@
-#include "../headers/fidexGloTests.hpp"
+// #include "../headers/fidexGloTests.hpp"
 
-// void test_help_output() {
+// void testHelpOutput() {
 //   map<string, string> args = {};
 //   string argsStr = argsToString(args);
 
@@ -8,7 +8,7 @@
 // }
 
 // // TODO continue here
-// void test_missing_parameter(const std::string &parameterName) {
+// void testMissingParameter(const std::string &parameterName) {
 //   map<string, string> args = remove(DEFAULT_ARGS, {"--data_train_file"});
 //   string argsStr = argsToString(args);
 
@@ -25,8 +25,12 @@
 //   }
 // }
 
-// void test_parameters_from_json_file() {
-//   auto p = Parameters(DEFAULT_JSON_CONFIG_FILE);
-// }
+// // void test_with_user_args() {
+// //   auto p = Parameters(DEFAULT_JSON_CONFIG_FILE);
+// // }
+
+// // void test_with_json_file() {
+// //   auto p = Parameters(DEFAULT_JSON_CONFIG_FILE);
+// // }
 
 

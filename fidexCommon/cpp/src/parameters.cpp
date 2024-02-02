@@ -258,7 +258,13 @@ void Parameters::setInt(ParameterCode id, const string &value) {
   }
 
   try {
-    _intParams[id] = stoi(value, nullptr);
+    int res = stoi(value, nullptr);
+
+    if (res != stof(value, nullptr)) { // checks if float is being inserted
+      throw exception();
+    }
+
+    _intParams[id] = res;
   } catch (exception &e) { // out_of_range & invalid_argument are thrown
     throwInvalidDataTypeException(id, value, "integer");
   }

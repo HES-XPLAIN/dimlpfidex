@@ -5,5 +5,7 @@
 #include "../../../fidexGlo/cpp/src/fidexGloRulesFct.h"
 #include "utils.hpp"
 
+void testHelpOutput();
+void testMissingParameter(const std::string &parameterName);
 
 #endif // FIDEXGLO_TESTS_H

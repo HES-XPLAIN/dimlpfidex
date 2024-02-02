@@ -7,20 +7,15 @@ set(CMAKE_CXX_FLAGS "-O3" )
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 FILE(GLOB FIDEXTESTS_SRC
-    src/fidexGloTests.cpp
-    headers/fidexGloTests.hpp
-    src/fidexCommonTests.cpp
-    headers/fidexCommonTests.hpp
-    src/utils.cpp
-    headers/utils.hpp
-    headers/tests.hpp
+    headers/*.hpp
+    src/*.cpp
 )
 
 # make variables visible to external CMakeLists.txt
 set(FIDEXTESTS_SRC "${FIDEXTESTS_SRC}" CACHE INTERNAL "")
 
 # build executables
-add_executable(fidexTests ${FIDEXTESTS_SRC} tests.cpp)
+add_executable(fidexTests ${FIDEXTESTS_SRC} fidexTests.cpp)
 add_dependencies(fidexTests fidexCommon)
 # add_dependencies(fidexTests fidexGloRules)
 target_link_libraries(fidexTests fidexCommon)

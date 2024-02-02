@@ -6,12 +6,13 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "../../../json/single_include/nlohmann/json.hpp"
+
+using Json = nlohmann::json;
 
 // default values to avoid generating litterals redundancy
 static const std::string DATA_FOLDER = "./dataset/data/";
 static const std::string OUT_FOLDER = "./dataset/out/";
-// TODO: find a way to include relative path instead
-static const std::string DEFAULT_JSON_CONFIG_FILE = "/home/eldado/Documents/hepia/dimlpfidex-json/dimlpfidex/fidexGlo/cpp/tests/config.json";
 
 // default paths
 static const std::string DEFAULT_TRAIN_FILE = DATA_FOLDER + "train.txt";
