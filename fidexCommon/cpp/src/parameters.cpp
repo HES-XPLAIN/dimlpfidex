@@ -42,6 +42,7 @@ Parameters::Parameters(const vector<string> &args) {
     setRootDirectory(CONSOLE_FILE);
     setRootDirectory(ATTRIBUTES_FILE);
     setRootDirectory(WEIGHTS_FILE);
+    setRootDirectory(STATS_FILE);
     setRootDirectory(NORMALIZATION_FILE);
   }
 }
@@ -79,11 +80,17 @@ Parameters::Parameters(const string &jsonfile) {
     setRootDirectory(TRAIN_DATA_FILE);
     setRootDirectory(TRAIN_PRED_FILE);
     setRootDirectory(TRAIN_CLASS_FILE);
+    setRootDirectory(TEST_DATA_FILE);
+    setRootDirectory(TEST_PRED_FILE);
+    setRootDirectory(TEST_CLASS_FILE);
     setRootDirectory(RULES_FILE);
     setRootDirectory(GLOBAL_RULES_OUTFILE);
+    setRootDirectory(GLOBAL_RULES_FILE);
+    setRootDirectory(EXPLANATION_FILE);
     setRootDirectory(CONSOLE_FILE);
     setRootDirectory(ATTRIBUTES_FILE);
     setRootDirectory(WEIGHTS_FILE);
+    setRootDirectory(STATS_FILE);
     setRootDirectory(NORMALIZATION_FILE);
   }
 }
@@ -144,6 +151,10 @@ void Parameters::parseArg(const string &param, const string &arg) {
 
   case WEIGHTS_FILE:
     setString(WEIGHTS_FILE, arg);
+    break;
+
+  case STATS_FILE:
+    setString(STATS_FILE, arg);
     break;
 
   case RULES_FILE:

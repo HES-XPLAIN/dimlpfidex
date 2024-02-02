@@ -134,6 +134,10 @@ void checkParametersLogicValues(Parameters &p) {
     throw CommandArgumentException("Error : Positive class index must be positive (>=0)");
   }
 
+  if (p.getInt(POSITIVE_CLASS_INDEX) >= p.getInt(NB_CLASSES)) {
+    throw CommandArgumentException("Error : The index of positive class cannot be greater or equal to the number of classes (" + to_string(p.getInt(NB_CLASSES)) + ").");
+  }
+
   if (p.getFloat(DECISION_THRESHOLD) != -1 && p.getInt(POSITIVE_CLASS_INDEX) == -1) {
     throw CommandArgumentException("Error : The positive class index has to be given with option --positive_class_index if the decision threshold is given (--decision_threshold)");
   }
@@ -312,8 +316,6 @@ int fidexGlo(const string &command) {
     int nb_classes = params->getInt(NB_CLASSES);
     std::string testSamplesDataFileTemp = params->getString(TEST_DATA_FILE);
     const char *testSamplesDataFile = testSamplesDataFileTemp.c_str();
-    std::string testSamplesPredFileTemp = params->getString(TEST_PRED_FILE);
-    const char *testSamplesPredFile = testSamplesPredFileTemp.c_str();
     double decisionThreshold = params->getFloat(DECISION_THRESHOLD);
     int positiveClassIndex = params->getInt(POSITIVE_CLASS_INDEX);
     bool withFidex = params->getBool(WITH_FIDEX);
@@ -328,7 +330,7 @@ int fidexGlo(const string &command) {
     if (!params->isStringSet(TEST_PRED_FILE)) { // If we have only one test data file with data and prediction
       testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, nb_attributes, nb_classes, decisionThreshold, positiveClassIndex));
     } else { // We have a different file for test predictions
-      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, testSamplesPredFile, nb_attributes, nb_classes, decisionThreshold, positiveClassIndex));
+      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, params->getString(TEST_PRED_FILE).c_str(), nb_attributes, nb_classes, decisionThreshold, positiveClassIndex));
     }
     vector<vector<double>> testSamplesValues = testDatas->getDatas();
     vector<int> testSamplesPreds = testDatas->getPredictions();
@@ -417,9 +419,6 @@ int fidexGlo(const string &command) {
       string weightsFile;
       if (params->isStringSet(WEIGHTS_FILE)) {
         weightsFile = params->getString(WEIGHTS_FILE);
-      }
-      if (params->isStringSet(ATTRIBUTES_FILE)) {
-        string attributesFile = params->getString(ATTRIBUTES_FILE);
       }
       string inputRulesFile;
       if (params->isStringSet(RULES_FILE)) {

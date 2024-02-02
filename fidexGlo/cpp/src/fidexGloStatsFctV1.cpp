@@ -53,15 +53,15 @@ void getCovering(vector<int> &sampleIds, tuple<vector<tuple<int, bool, double>>,
   }
 }
 
-void computeTFPN(int decision, int positiveClassIndex, int testTrueClass, int &nbTruePositive, int &nbFalsePositive, int &nbTrueNegative, int &nbFalseNegative) {
-  if (decision == positiveClassIndex) { // Positive prediction
+void computeTFPN(int decision, int indexPositiveClass, int testTrueClass, int &nbTruePositive, int &nbFalsePositive, int &nbTrueNegative, int &nbFalseNegative) {
+  if (decision == indexPositiveClass) { // Positive prediction
     if (decision == testTrueClass) {
       nbTruePositive += 1;
     } else {
       nbFalsePositive += 1;
     }
   } else { // Negative prediction
-    if (testTrueClass == positiveClassIndex) {
+    if (testTrueClass == indexPositiveClass) {
       nbFalseNegative += 1;
     } else {
       nbTrueNegative += 1;
@@ -69,51 +69,38 @@ void computeTFPN(int decision, int positiveClassIndex, int testTrueClass, int &n
   }
 }
 
-/**
- * @brief Used to set default hyperparameters values and to check the sanity of all used values like boundaries and logic.
- *
- * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
- */
-void checkStatsParametersLogicValues(Parameters &p) {
-  // setting default values
-  p.setDefaultFloat(DECISION_THRESHOLD, -1.0f);
-  p.setDefaultInt(POSITIVE_CLASS_INDEX, -1);
+enum ParameterFidexGloStatsEnum {
+  TEST_DATA_FILE,
+  TEST_PRED_FILE,
+  TEST_CLASS_FILE,
+  GLOBAL_RULES_FILE,
+  NB_ATTRIBUTES,
+  NB_CLASSES,
+  ROOT_FOLDER,
+  ATTRIBUTES_FILE,
+  STATS_FILE,
+  GLOBAL_RULES_OUTFILE,
+  CONSOLE_FILE,
+  DECISION_THRESHOLD,
+  POSITIVE_CLASS_INDEX,
+  INVALID
+};
 
-  // this sections check if values comply with program logic
-
-  // asserting mandatory parameters
-  p.assertStringExists(TEST_DATA_FILE);
-  p.assertStringExists(TEST_PRED_FILE);
-  p.assertStringExists(GLOBAL_RULES_FILE);
-  p.assertIntExists(NB_ATTRIBUTES);
-  p.assertIntExists(NB_CLASSES);
-
-  // verifying logic between parameters, values range and so on...
-
-  if (p.getInt(NB_ATTRIBUTES) < 1) {
-    throw CommandArgumentException("Error : Number of attributes must be strictly positive (>=1).");
-  }
-
-  if (p.getInt(NB_CLASSES) < 1) {
-    throw CommandArgumentException("Error : Number of classes must be strictly positive (>=1).");
-  }
-
-  if ((p.getFloat(DECISION_THRESHOLD) < 0.0f || p.getFloat(DECISION_THRESHOLD) > 1.0f) && p.getFloat(DECISION_THRESHOLD) != -1.0f) {
-    throw CommandArgumentException("Error : Decision threshold must be beetween [0.0, 1.0].");
-  }
-
-  if (p.getInt(POSITIVE_CLASS_INDEX) < 0 && p.getInt(POSITIVE_CLASS_INDEX) != -1) {
-    throw CommandArgumentException("Error : Positive class index must be positive (>=0)");
-  }
-
-  if (p.getInt(POSITIVE_CLASS_INDEX) >= p.getInt(NB_CLASSES)) {
-    throw CommandArgumentException("Error : The index of positive class cannot be greater or equal to the number of classes (" + to_string(p.getInt(NB_CLASSES)) + ").");
-  }
-
-  if (p.getFloat(DECISION_THRESHOLD) != -1 && p.getInt(POSITIVE_CLASS_INDEX) == -1) {
-    throw CommandArgumentException("Error : The positive class index has to be given with option --positive_class_index if the decision threshold is given (--decision_threshold)");
-  }
-}
+const std::unordered_map<std::string, ParameterFidexGloStatsEnum> parameterMap = {
+    {"test_data_file", TEST_DATA_FILE},
+    {"test_pred_file", TEST_PRED_FILE},
+    {"test_class_file", TEST_CLASS_FILE},
+    {"global_rules_file", GLOBAL_RULES_FILE},
+    {"nb_attributes", NB_ATTRIBUTES},
+    {"nb_classes", NB_CLASSES},
+    {"root_folder", ROOT_FOLDER},
+    {"attributes_file", ATTRIBUTES_FILE},
+    {"stats_file", STATS_FILE},
+    {"global_rules_outfile", GLOBAL_RULES_OUTFILE},
+    {"console_file", CONSOLE_FILE},
+    {"decision_threshold", DECISION_THRESHOLD},
+    {"positive_class_index", POSITIVE_CLASS_INDEX},
+};
 
 int fidexGloStats(const string &command) {
   // Save buffer where we output results
@@ -129,72 +116,272 @@ int fidexGloStats(const string &command) {
 
     // Parsing the command
     vector<string> commandList;
+    const char delim = ' ';
     string s;
     stringstream ss(command);
-
-    while (std::getline(ss, s, ' ')) {
+    while (std::getline(ss, s, delim)) {
       commandList.push_back(s);
     }
-    std::size_t nbParam = commandList.size();
-    if (nbParam < 2) {
-      showStatsParams();
-      exit(1);
-    }
+    size_t nbParam = commandList.size();
+
+    // Parameters declaration
+
+    string testDataFileTemp; // Parameter after --test_data
+    bool testDataFileInit = false;
+    string testDataFilePredTemp;
+    bool testDataFilePredInit = false;
+    string testDataFileTrueClassTemp;
+    bool testDataFileTrueClassInit = false;
+
+    int nb_attributes = -1;
+    int nb_classes = -1;
+
+    string rulesFileTemp;
+    bool rulesFileInit = false;
+    string statsFileTemp;
+    bool statsFileInit = false;
+    string consoleFileTemp;
+    bool consoleFileInit = false;
+    string rootFolderTemp;
+    bool rootFolderInit = false;
+    string attributFileTemp; // attribut file
+    bool attributFileInit = false;
+    bool globalRulesStatsFileInit = false;
+    string globalRulesStatsFileTemp;
+
+    bool hasDecisionThreshold = false;
+    double decisionThreshold = -1;
+    bool hasIndexPositiveClass = false;
+    int indexPositiveClass = -1;
 
     // Import parameters
-    unique_ptr<Parameters> params;
-    if (commandList[1].compare("--json_config_file") == 0) {
-      if (commandList.size() < 3) {
-        throw CommandArgumentException("JSON config file name/path is missing");
-      }
 
-      try {
-        params = std::unique_ptr<Parameters>(new Parameters(commandList[2]));
-      } catch (const std::out_of_range &) {
-        throw CommandArgumentException("JSON config file name/path is invalid");
-      }
-    } else {
-      // Read parameters from CLI
-      params = std::unique_ptr<Parameters>(new Parameters(commandList));
+    if (nbParam <= 1) {
+      showStatsParams();
+      return 0;
     }
 
-    // getting all program arguments from CLI
-    checkStatsParametersLogicValues(*params);
-    cout << *params;
+    int p = 1; // We skip "fidexGloStats"
+
+    while (p < nbParam) {
+      string param = commandList[p];
+
+      if (param.substr(0, 2) == "--") {
+        param = param.substr(2);
+        p++;
+
+        if (p >= nbParam) {
+          throw CommandArgumentException("Missing something at the end of the command.");
+        }
+
+        if (p + 1 < nbParam && commandList[p + 1].substr(0, 2) != "--") {
+          throw CommandArgumentException("There is a parameter without -- (" + commandList[p + 1] + ").");
+        }
+
+        const char *arg = commandList[p].c_str();
+
+        ParameterFidexGloStatsEnum option;
+        auto it = parameterMap.find(param);
+        if (it != parameterMap.end()) {
+          option = it->second;
+        } else {
+          option = INVALID;
+        }
+
+        switch (option) { // After --
+        case TEST_DATA_FILE:
+          testDataFileTemp = arg;
+          testDataFileInit = true;
+          break;
+
+        case TEST_PRED_FILE:
+          testDataFilePredTemp = arg;
+          testDataFilePredInit = true;
+          break;
+
+        case TEST_CLASS_FILE:
+          testDataFileTrueClassTemp = arg;
+          testDataFileTrueClassInit = true;
+          break;
+
+        case GLOBAL_RULES_FILE:
+          rulesFileTemp = arg;
+          rulesFileInit = true;
+          break;
+
+        case NB_ATTRIBUTES:
+          if (checkPositiveInt(arg) && atoi(arg) > 0) {
+            nb_attributes = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", strictly positive integer requested.");
+          }
+          break;
+
+        case NB_CLASSES:
+          if (checkPositiveInt(arg) && atoi(arg) > 0) {
+            nb_classes = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", strictly positive integer requested.");
+          }
+          break;
+
+        case STATS_FILE:
+          statsFileTemp = arg;
+          statsFileInit = true;
+          break;
+
+        case GLOBAL_RULES_OUTFILE:
+          globalRulesStatsFileTemp = arg;
+          globalRulesStatsFileInit = true;
+          break;
+
+        case CONSOLE_FILE:
+          consoleFileTemp = arg;
+          consoleFileInit = true;
+          break;
+
+        case ATTRIBUTES_FILE:
+          attributFileTemp = arg;
+          attributFileInit = true;
+          break;
+
+        case ROOT_FOLDER:
+          rootFolderTemp = arg;
+          rootFolderInit = true;
+          break;
+
+        case DECISION_THRESHOLD:
+          if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
+            hasDecisionThreshold = true;
+            decisionThreshold = atof(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float included in [0,1] requested.");
+          }
+          break;
+
+        case POSITIVE_CLASS_INDEX:
+          if (checkPositiveInt(arg)) {
+            hasIndexPositiveClass = true;
+            indexPositiveClass = atoi(arg);
+          } else {
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", positive integer requested.");
+          }
+          break;
+
+        default:
+          throw CommandArgumentException("Illegal option : " + param + ".");
+        }
+      }
+
+      p++;
+    }
+
+    // ----------------------------------------------------------------------
+    // create paths with root foler
+
+    const char *testDataFile = nullptr;
+    const char *testDataFilePred = nullptr;
+    const char *testDataFileTrueClass = nullptr;
+    const char *rulesFile = nullptr;
+    const char *statsFile = nullptr;
+    const char *globalRulesStatsFile = nullptr;
+    const char *consoleFile = nullptr;
+    const char *attributFile = nullptr;
+
+    string root = "";
+    if (rootFolderInit) {
+#if defined(__unix__) || defined(__APPLE__)
+      root = rootFolderTemp + "/";
+#elif defined(_WIN32)
+      root = rootFolderTemp + "\\";
+#endif
+    }
+
+    if (testDataFileInit) {
+      testDataFileTemp = root + testDataFileTemp;
+      testDataFile = &testDataFileTemp[0];
+    }
+
+    if (testDataFilePredInit) {
+      testDataFilePredTemp = root + testDataFilePredTemp;
+      testDataFilePred = &testDataFilePredTemp[0];
+    }
+
+    if (testDataFileTrueClassInit) {
+      testDataFileTrueClassTemp = root + testDataFileTrueClassTemp;
+      testDataFileTrueClass = &testDataFileTrueClassTemp[0];
+    }
+
+    if (rulesFileInit) {
+      rulesFileTemp = root + rulesFileTemp;
+      rulesFile = &rulesFileTemp[0];
+    }
+
+    if (statsFileInit) {
+      statsFileTemp = root + statsFileTemp;
+      statsFile = &statsFileTemp[0];
+    }
+
+    if (globalRulesStatsFileInit) {
+      globalRulesStatsFileTemp = root + globalRulesStatsFileTemp;
+      globalRulesStatsFile = &globalRulesStatsFileTemp[0];
+    }
+
+    if (consoleFileInit) {
+      consoleFileTemp = root + consoleFileTemp;
+      consoleFile = &consoleFileTemp[0];
+    }
+
+    if (attributFileInit) {
+      attributFileTemp = root + attributFileTemp;
+      attributFile = &attributFileTemp[0];
+    }
+
+    if (hasDecisionThreshold && !hasIndexPositiveClass) {
+      throw CommandArgumentException("The positive class index has to be given with option --positive_class_index if the decision threshold is given (--decision_threshold).");
+    }
+
+    // ----------------------------------------------------------------------
+
+    if (!testDataFileInit) {
+      throw CommandArgumentException("The test data file has to be given with option --test_data.");
+    }
+    if (!testDataFilePredInit) {
+      throw CommandArgumentException("The test predictions data file has to be given with option --test_pred.");
+    }
+    if (!rulesFileInit) {
+      throw CommandArgumentException("The rules file has to be given with option --rule_file.");
+    }
+    if (nb_attributes == -1) {
+      throw CommandArgumentException("The number of attributes has to be given with option --nb_attributes.");
+    }
+    if (nb_classes == -1) {
+      throw CommandArgumentException("The number of classes has to be given with option --nb_classes.");
+    }
+
+    // ----------------------------------------------------------------------
 
     // Get console results to file
-    if (params->isStringSet(CONSOLE_FILE)) {
-      string consoleFile = params->getString(CONSOLE_FILE);
+    if (consoleFileInit != false) {
       ofs.open(consoleFile);
       std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
     }
 
     // ----------------------------------------------------------------------
 
-    int nb_attributes = params->getInt(NB_ATTRIBUTES);
-    int nb_classes = params->getInt(NB_CLASSES);
-    std::string testDataFileTemp = params->getString(TEST_DATA_FILE);
-    const char *testDataFile = testDataFileTemp.c_str();
-    std::string testDataFilePredTemp = params->getString(TEST_PRED_FILE);
-    const char *testDataFilePred = testDataFilePredTemp.c_str();
-    std::string rulesFileTemp = params->getString(GLOBAL_RULES_FILE);
-    const char *rulesFile = rulesFileTemp.c_str();
-    double decisionThreshold = params->getFloat(DECISION_THRESHOLD);
-    int positiveClassIndex = params->getInt(POSITIVE_CLASS_INDEX);
-
-    std::cout << "Importing files..." << endl
+    std::cout << "Import data..." << endl
               << endl;
 
     // Get test data
 
     std::unique_ptr<DataSetFid> testDatas;
-    if (!params->isStringSet(TEST_CLASS_FILE)) {
-      testDatas.reset(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, nb_attributes, nb_classes, decisionThreshold, positiveClassIndex));
+    if (!testDataFileTrueClassInit) {
+      testDatas.reset(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass));
       if (!testDatas->getHasClasses()) {
-        throw CommandArgumentException("The test true classes file has to be given with option --test_class_file or classes have to be given in the test data file.");
+        throw CommandArgumentException("The test true classes file has to be given with option --test_data or classes have to be given in the test data file.");
       }
     } else {
-      testDatas.reset(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, nb_attributes, nb_classes, decisionThreshold, positiveClassIndex, params->getString(TEST_CLASS_FILE).c_str()));
+      testDatas.reset(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, nb_attributes, nb_classes, decisionThreshold, indexPositiveClass, testDataFileTrueClass));
     }
 
     vector<vector<double>> &testData = testDatas->getDatas();
@@ -208,8 +395,8 @@ int fidexGloStats(const string &command) {
     vector<string> attributeNames;
     vector<string> classNames;
     bool hasClassNames = false;
-    if (params->isStringSet(ATTRIBUTES_FILE)) {
-      testDatas->setAttributes(params->getString(ATTRIBUTES_FILE).c_str(), nb_attributes, nb_classes);
+    if (attributFileInit) {
+      testDatas->setAttributes(attributFile, nb_attributes, nb_classes);
       attributeNames = testDatas->getAttributeNames();
       hasClassNames = testDatas->getHasClassNames();
       if (hasClassNames) {
@@ -223,7 +410,7 @@ int fidexGloStats(const string &command) {
     vector<string> statsLines;
     lines.emplace_back("Global statistics of the rule set : "); // Lines for the output stats
     vector<string> stringRules;
-    getRules(rules, statsLines, stringRules, rulesFile, params->isStringSet(ATTRIBUTES_FILE), attributeNames, hasClassNames, classNames);
+    getRules(rules, statsLines, stringRules, rulesFile, attributFileInit, attributeNames, hasClassNames, classNames);
     for (auto l : statsLines) {
       lines.emplace_back(l);
     }
@@ -266,8 +453,8 @@ int fidexGloStats(const string &command) {
       testValues = testData[t];
       testPred = testPreds[t];
       testTrueClass = testTrueClasses[t];
-      if (positiveClassIndex != -1) {
-        if (testTrueClass == positiveClassIndex) {
+      if (hasIndexPositiveClass) {
+        if (testTrueClass == indexPositiveClass) {
           nbPositive += 1;
         } else {
           nbNegative += 1;
@@ -277,8 +464,8 @@ int fidexGloStats(const string &command) {
       if (testPred == testTrueClass) {
         modelAccuracy++;
       }
-      if (positiveClassIndex != -1) {
-        computeTFPN(testPred, positiveClassIndex, testTrueClass, nbTruePositive, nbFalsePositive, nbTrueNegative, nbFalseNegative);
+      if (hasIndexPositiveClass) {
+        computeTFPN(testPred, indexPositiveClass, testTrueClass, nbTruePositive, nbFalsePositive, nbTrueNegative, nbFalseNegative);
       }
 
       // Find rules activated by this sample
@@ -321,8 +508,8 @@ int fidexGloStats(const string &command) {
             }
             // The rules' decision is different from the model's
             noCorrectRuleWithAllSameClass = true;
-            if (positiveClassIndex != -1) {
-              computeTFPN(decision, positiveClassIndex, testTrueClass, nbTruePositiveRules, nbFalsePositiveRules, nbTrueNegativeRules, nbFalseNegativeRules);
+            if (hasIndexPositiveClass) {
+              computeTFPN(decision, indexPositiveClass, testTrueClass, nbTruePositiveRules, nbFalsePositiveRules, nbTrueNegativeRules, nbFalseNegativeRules);
             }
           }
 
@@ -342,8 +529,8 @@ int fidexGloStats(const string &command) {
         }
       }
 
-      if (!noCorrectRuleWithAllSameClass && positiveClassIndex != -1) { // The rules' decision is the same as the model's, if we can find a correct rule or if we need to compute Fidex
-        computeTFPN(testPred, positiveClassIndex, testTrueClass, nbTruePositiveRules, nbFalsePositiveRules, nbTrueNegativeRules, nbFalseNegativeRules);
+      if (!noCorrectRuleWithAllSameClass && hasIndexPositiveClass) { // The rules' decision is the same as the model's, if we can find a correct rule or if we need to compute Fidex
+        computeTFPN(testPred, indexPositiveClass, testTrueClass, nbTruePositiveRules, nbFalsePositiveRules, nbTrueNegativeRules, nbFalseNegativeRules);
       }
     }
 
@@ -368,11 +555,11 @@ int fidexGloStats(const string &command) {
     lines.push_back("The model test accuracy when rules and model agree is : " + std::to_string(accuracyWhenRulesAndModelAgree));
     lines.push_back("The model test accuracy when activated rules and model agree is : " + std::to_string(accuracyWhenActivatedRulesAndModelAgree));
 
-    if (positiveClassIndex != -1) {
+    if (hasIndexPositiveClass) {
       if (hasClassNames) {
-        lines.push_back("\nWith positive class " + classNames[positiveClassIndex] + " :");
+        lines.push_back("\nWith positive class " + classNames[indexPositiveClass] + " :");
       } else {
-        lines.push_back("\nWith positive class " + std::to_string(positiveClassIndex) + " :");
+        lines.push_back("\nWith positive class " + std::to_string(indexPositiveClass) + " :");
       }
       lines.emplace_back("\nComputation with model decision :");
       lines.push_back("The number of true positive test samples is : " + std::to_string(nbTruePositive));
@@ -400,26 +587,26 @@ int fidexGloStats(const string &command) {
     }
 
     // Output statistics
-    if (params->isStringSet(STATS_FILE)) {
-      ofstream outputFile(params->getString(STATS_FILE).c_str());
+    if (statsFileInit) {
+      ofstream outputFile(statsFile);
       if (outputFile.is_open()) {
         for (const string &line : lines) {
           outputFile << line + "" << std::endl;
         }
         outputFile.close();
       } else {
-        throw CannotOpenFileError("Error : Couldn't open explanation extraction file " + std::string(params->getString(STATS_FILE).c_str()) + ".");
+        throw CannotOpenFileError("Error : Couldn't open explanation extraction file " + std::string(statsFile) + ".");
       }
     }
 
     // Compute rules statistics on test set
-    if (params->isStringSet(GLOBAL_RULES_OUTFILE)) {
-      ofstream outputFile(params->getString(GLOBAL_RULES_OUTFILE).c_str());
+    if (globalRulesStatsFileInit) {
+      ofstream outputFile(globalRulesStatsFile);
       if (outputFile.is_open()) {
         for (string l : statsLines) {
           outputFile << l;
         }
-        if (!params->isStringSet(ATTRIBUTES_FILE)) {
+        if (!attributFileInit) {
           outputFile << "The name of the attributes and classes are not specified" << std::endl;
         } else if (!hasClassNames) {
           outputFile << "The name of the attributes is specified" << std::endl;
@@ -472,7 +659,7 @@ int fidexGloStats(const string &command) {
         }
         outputFile.close();
       } else {
-        throw CannotOpenFileError("Error : Couldn't open global rules file with statistics on test set " + std::string(params->getString(GLOBAL_RULES_OUTFILE).c_str()) + ".");
+        throw CannotOpenFileError("Error : Couldn't open explanation extraction file " + std::string(statsFile) + ".");
       }
     }
 

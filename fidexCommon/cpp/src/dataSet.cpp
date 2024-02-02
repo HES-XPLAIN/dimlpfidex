@@ -447,10 +447,6 @@ void DataSetFid::setPredLine(const string &line, const char *predFile) {
     throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(predFile) + ", the number of predictions is not equal to the number of classes (" + std::to_string(nbClasses) + ") for each sample.");
   }
 
-  if (decisionThreshold >= 0 && indexPositiveClass >= nbClasses) {
-    throw CommandArgumentException("Error in dataset " + datasetName + " : The index of positive class cannot be greater or equal to the number of classes (" + to_string(nbClasses) + ").");
-  }
-
   if (decisionThreshold >= 0 && valuesPred[indexPositiveClass] >= decisionThreshold) {
     predictions.push_back(indexPositiveClass);
   } else {
@@ -795,6 +791,10 @@ void DataSetFid::checkThreshold() const {
 
   if (indexPositiveClass != -1 && indexPositiveClass < 0) {
     throw CommandArgumentException("Error in dataset " + datasetName + " : the index of positive class has to be a positive integer.");
+  }
+
+  if (indexPositiveClass >= nbClasses) {
+    throw CommandArgumentException("Error in dataset " + datasetName + " : The index of positive class cannot be greater or equal to the number of classes (" + to_string(nbClasses) + ").");
   }
 }
 
