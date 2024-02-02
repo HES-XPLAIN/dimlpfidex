@@ -24,18 +24,18 @@
  * @param _nbAttributes int number of attributes
  * @param _nbClasses int number of classes
  * @param decisionThresh double indicating the decision threshold, useful when choosing the decision (-1 for no threshold)
- * @param indexPositiveClass integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
+ * @param positiveClassIndex integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
  * @param trueClassFile const char* class file name
  */
-DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *predFile, int _nbAttributes, int _nbClasses, double decisionThresh, int indexPositiveCl, const char *trueClassFile) : datasetName(name) {
+DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *predFile, int _nbAttributes, int _nbClasses, double decisionThresh, int positiveClassId, const char *trueClassFile) : datasetName(name) {
 
   setNbClassAndAttr(_nbClasses, _nbAttributes);
 
   if (decisionThresh != -1 && !std::isnan(decisionThresh)) {
     decisionThreshold = decisionThresh;
   }
-  if (indexPositiveCl != -1 && !std::isnan(indexPositiveCl)) {
-    indexPositiveClass = indexPositiveCl;
+  if (positiveClassId != -1 && !std::isnan(positiveClassId)) {
+    positiveClassIndex = positiveClassId;
   }
 
   checkThreshold();
@@ -68,17 +68,17 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *pre
  * @param _nbAttributes int number of attributes
  * @param _nbClasses int number of classes
  * @param decisionThres double indicating the decision threshold, useful when choosing the decision (-1 for no threshold)
- * @param indexPositiveClass integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
+ * @param positiveClassIndex integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
  */
-DataSetFid::DataSetFid(const string &name, const char *dataFile, int _nbAttributes, int _nbClasses, double decisionThresh, int indexPositiveCl) : datasetName(name), hasDatas(true), hasPreds(true) {
+DataSetFid::DataSetFid(const string &name, const char *dataFile, int _nbAttributes, int _nbClasses, double decisionThresh, int positiveClassId) : datasetName(name), hasDatas(true), hasPreds(true) {
 
   setNbClassAndAttr(_nbClasses, _nbAttributes);
 
   if (decisionThresh != -1 && !std::isnan(decisionThresh)) {
     decisionThreshold = decisionThresh;
   }
-  if (indexPositiveCl != -1 && !std::isnan(indexPositiveCl)) {
-    indexPositiveClass = indexPositiveCl;
+  if (positiveClassId != -1 && !std::isnan(positiveClassId)) {
+    positiveClassIndex = positiveClassId;
   }
 
   checkThreshold();
@@ -252,9 +252,9 @@ void DataSetFid::setDataFromFile(const char *dataFile, int _nbAttributes, int _n
  * @param predFile const char* prediction file name
  * @param _nbClasses int number of classes
  * @param decisionThresh optional double indicating the decision threshold, useful when choosing the decision (-1 for no threshold)
- * @param indexPositiveClass optional integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
+ * @param positiveClassIndex optional integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
  */
-void DataSetFid::setPredFromFile(const char *predFile, int _nbClasses, double decisionThresh, int indexPositiveCl) {
+void DataSetFid::setPredFromFile(const char *predFile, int _nbClasses, double decisionThresh, int positiveClassId) {
 
   setNbClass(_nbClasses);
 
@@ -265,9 +265,9 @@ void DataSetFid::setPredFromFile(const char *predFile, int _nbClasses, double de
       throw InternalError("Error in dataset " + datasetName + " : decision threshold has been given two times.");
     }
   }
-  if (indexPositiveCl != -1 && !std::isnan(indexPositiveCl)) {
-    if (indexPositiveClass != -1) {
-      indexPositiveClass = indexPositiveCl;
+  if (positiveClassId != -1 && !std::isnan(positiveClassId)) {
+    if (positiveClassIndex != -1) {
+      positiveClassIndex = positiveClassId;
     } else {
       throw InternalError("Error in dataset " + datasetName + " : index of positive class has been given two times.");
     }
@@ -447,8 +447,8 @@ void DataSetFid::setPredLine(const string &line, const char *predFile) {
     throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(predFile) + ", the number of predictions is not equal to the number of classes (" + std::to_string(nbClasses) + ") for each sample.");
   }
 
-  if (decisionThreshold >= 0 && valuesPred[indexPositiveClass] >= decisionThreshold) {
-    predictions.push_back(indexPositiveClass);
+  if (decisionThreshold >= 0 && valuesPred[positiveClassIndex] >= decisionThreshold) {
+    predictions.push_back(positiveClassIndex);
   } else {
     predictions.push_back(static_cast<int>(std::max_element(valuesPred.begin(), valuesPred.end()) - valuesPred.begin()));
   }
@@ -781,7 +781,7 @@ void DataSetFid::checkDatas() const {
  */
 void DataSetFid::checkThreshold() const {
 
-  if (decisionThreshold != -1 && indexPositiveClass == -1) { // XOR
+  if (decisionThreshold != -1 && positiveClassIndex == -1) { // XOR
     throw InternalError("Error in dataset " + datasetName + " : index positive class has to be given when decisionThreshold is given.");
   }
 
@@ -789,11 +789,11 @@ void DataSetFid::checkThreshold() const {
     throw CommandArgumentException("Error in dataset " + datasetName + " : the decision threshold has to be a float included in [0,1].");
   }
 
-  if (indexPositiveClass != -1 && indexPositiveClass < 0) {
+  if (positiveClassIndex != -1 && positiveClassIndex < 0) {
     throw CommandArgumentException("Error in dataset " + datasetName + " : the index of positive class has to be a positive integer.");
   }
 
-  if (indexPositiveClass >= nbClasses) {
+  if (positiveClassIndex >= nbClasses) {
     throw CommandArgumentException("Error in dataset " + datasetName + " : The index of positive class cannot be greater or equal to the number of classes (" + to_string(nbClasses) + ").");
   }
 }

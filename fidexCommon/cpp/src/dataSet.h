@@ -30,7 +30,7 @@ private:
   std::string classFormat = ""; // one-hot, id, one-hot_combined or id_combined
 
   double decisionThreshold = -1;
-  int indexPositiveClass = -1;
+  int positiveClassIndex = -1;
 
   int nbClasses = -1;
   int nbAttributes = -1;
@@ -62,7 +62,7 @@ public:
   explicit DataSetFid(const std::string &name, const char *weightFile);
 
   void setDataFromFile(const char *dataFile, int _nbAttributes, int _nbClasses);
-  void setPredFromFile(const char *predFile, int _nbClasses, double decisionThreshold = -1, int indexPositiveClass = -1);
+  void setPredFromFile(const char *predFile, int _nbClasses, double decisionThreshold = -1, int positiveClassIndex = -1);
   void setClassFromFile(const char *classFile, int _nbClasses);
 
   std::vector<std::vector<double>> &getDatas();

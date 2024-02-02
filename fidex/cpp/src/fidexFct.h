@@ -5,6 +5,7 @@
 #include "../../../fidexCommon/cpp/src/dataSet.h"
 #include "../../../fidexCommon/cpp/src/errorHandler.h"
 #include "../../../fidexCommon/cpp/src/hyperLocus.h"
+#include "../../../fidexCommon/cpp/src/parameters.h"
 #include "hyperspace.h"
 #include <algorithm>
 #include <chrono>
@@ -22,6 +23,7 @@
 #include <vector>
 
 void showFidexParams();
+void checkFidexParametersLogicValues(Parameters &p);
 int fidex(const std::string &command);
 
 #endif

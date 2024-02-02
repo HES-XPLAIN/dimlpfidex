@@ -10,8 +10,8 @@ void showStatsParams() {
             << std::endl;
   std::cout << "fidexGloStats --test_data_file <test data file> --test_pred_file <test prediction file> --test_class_file <test true class file, not mendatory if classes are specified in test data file> ";
   std::cout << "--global_rules_file <rules input file> ";
-  std::cout << "--nb_attributes <number of attributes>";
-  std::cout << "--nb_classes <number of classes>";
+  std::cout << "--nb_attributes <number of attributes> ";
+  std::cout << "--nb_classes <number of classes> ";
   std::cout << "<Options>\n"
             << std::endl;
 
@@ -171,8 +171,8 @@ int fidexGloStats(const string &command) {
 
     // ----------------------------------------------------------------------
 
-    int nb_attributes = params->getInt(NB_ATTRIBUTES);
-    int nb_classes = params->getInt(NB_CLASSES);
+    int nbAttributes = params->getInt(NB_ATTRIBUTES);
+    int nbClasses = params->getInt(NB_CLASSES);
     std::string testDataFileTemp = params->getString(TEST_DATA_FILE);
     const char *testDataFile = testDataFileTemp.c_str();
     std::string testDataFilePredTemp = params->getString(TEST_PRED_FILE);
@@ -189,12 +189,12 @@ int fidexGloStats(const string &command) {
 
     std::unique_ptr<DataSetFid> testDatas;
     if (!params->isStringSet(TEST_CLASS_FILE)) {
-      testDatas.reset(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, nb_attributes, nb_classes, decisionThreshold, positiveClassIndex));
+      testDatas.reset(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, nbAttributes, nbClasses, decisionThreshold, positiveClassIndex));
       if (!testDatas->getHasClasses()) {
         throw CommandArgumentException("The test true classes file has to be given with option --test_class_file or classes have to be given in the test data file.");
       }
     } else {
-      testDatas.reset(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, nb_attributes, nb_classes, decisionThreshold, positiveClassIndex, params->getString(TEST_CLASS_FILE).c_str()));
+      testDatas.reset(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, nbAttributes, nbClasses, decisionThreshold, positiveClassIndex, params->getString(TEST_CLASS_FILE).c_str()));
     }
 
     vector<vector<double>> &testData = testDatas->getDatas();
@@ -209,7 +209,7 @@ int fidexGloStats(const string &command) {
     vector<string> classNames;
     bool hasClassNames = false;
     if (params->isStringSet(ATTRIBUTES_FILE)) {
-      testDatas->setAttributes(params->getString(ATTRIBUTES_FILE).c_str(), nb_attributes, nb_classes);
+      testDatas->setAttributes(params->getString(ATTRIBUTES_FILE).c_str(), nbAttributes, nbClasses);
       attributeNames = testDatas->getAttributeNames();
       hasClassNames = testDatas->getHasClassNames();
       if (hasClassNames) {

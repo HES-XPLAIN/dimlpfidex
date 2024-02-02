@@ -11,8 +11,8 @@ void showParams() {
 
   std::cout << "fidexGlo --test_data_file <test sample(s) data file with data and prediction(if no --test_pred_file), classes may been added here if launching with fidex(--with_fidex)> ";
   std::cout << "--global_rules_file <ruleset input file> ";
-  std::cout << "--nb_attributes <number of attributes>";
-  std::cout << "--nb_classes <number of classes>";
+  std::cout << "--nb_attributes <number of attributes> ";
+  std::cout << "--nb_classes <number of classes> ";
   std::cout << "<Options>\n"
             << std::endl;
 
@@ -312,8 +312,8 @@ int fidexGlo(const string &command) {
 
     // ----------------------------------------------------------------------
 
-    int nb_attributes = params->getInt(NB_ATTRIBUTES);
-    int nb_classes = params->getInt(NB_CLASSES);
+    int nbAttributes = params->getInt(NB_ATTRIBUTES);
+    int nbClasses = params->getInt(NB_CLASSES);
     std::string testSamplesDataFileTemp = params->getString(TEST_DATA_FILE);
     const char *testSamplesDataFile = testSamplesDataFileTemp.c_str();
     double decisionThreshold = params->getFloat(DECISION_THRESHOLD);
@@ -328,9 +328,9 @@ int fidexGlo(const string &command) {
 
     std::unique_ptr<DataSetFid> testDatas;
     if (!params->isStringSet(TEST_PRED_FILE)) { // If we have only one test data file with data and prediction
-      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, nb_attributes, nb_classes, decisionThreshold, positiveClassIndex));
+      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, nbAttributes, nbClasses, decisionThreshold, positiveClassIndex));
     } else { // We have a different file for test predictions
-      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, params->getString(TEST_PRED_FILE).c_str(), nb_attributes, nb_classes, decisionThreshold, positiveClassIndex));
+      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, params->getString(TEST_PRED_FILE).c_str(), nbAttributes, nbClasses, decisionThreshold, positiveClassIndex));
     }
     vector<vector<double>> testSamplesValues = testDatas->getDatas();
     vector<int> testSamplesPreds = testDatas->getPredictions();
@@ -343,7 +343,7 @@ int fidexGlo(const string &command) {
     vector<string> classNames;
     bool hasClassNames = false;
     if (params->isStringSet(ATTRIBUTES_FILE)) {
-      testDatas->setAttributes(params->getString(ATTRIBUTES_FILE).c_str(), nb_attributes, nb_classes);
+      testDatas->setAttributes(params->getString(ATTRIBUTES_FILE).c_str(), nbAttributes, nbClasses);
       attributeNames = testDatas->getAttributeNames();
       hasClassNames = testDatas->getHasClassNames();
       if (hasClassNames) {
@@ -383,7 +383,7 @@ int fidexGlo(const string &command) {
           hasTrueClasses = false;
         }
       } else {
-        testDatas->setClassFromFile(params->getString(TEST_CLASS_FILE).c_str(), nb_classes);
+        testDatas->setClassFromFile(params->getString(TEST_CLASS_FILE).c_str(), nbClasses);
       }
       if (hasTrueClasses) {
         testSamplesClasses = testDatas->getClasses();
@@ -410,6 +410,11 @@ int fidexGlo(const string &command) {
                                         params->getFloat(DECISION_THRESHOLD),
                                         params->getInt(POSITIVE_CLASS_INDEX),
                                         params->getString(TRAIN_CLASS_FILE).c_str()));
+      }
+
+      int nbTrainSamples = trainDatas->getNbSamples();
+      if (params->getInt(MIN_COVERING) > nbTrainSamples) {
+        throw CommandArgumentException("Error : invalide type for parameter --min_covering, strictly positive integer smaller or equal than the number of train data samples requested.");
       }
 
       // compute hyperspace
@@ -463,6 +468,17 @@ int fidexGlo(const string &command) {
           matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes);
         }
       }
+
+      // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
+      auto nbIn = static_cast<int>(matHypLocus.size());
+
+      // Check size of hyperlocus
+      if (nbIn == 0 || nbIn % nbAttributes != 0) {
+        throw InternalError("Error : the size of hyperLocus - " + to_string(nbIn) + " is not a multiple of the number of attributs - " + to_string(nbAttributes));
+      }
+
+      cout << "Hyperspace created." << endl
+           << endl;
     }
 
     // Get rules
@@ -681,4 +697,4 @@ int fidexGlo(const string &command) {
   return 0;
 }
 
-// Exemple pour lancer le code : ./fidexGlo --test_data_file datanormTest --test_pred_file dimlpDatanormTest.out --global_rules_file globalRulesDatanorm.txt --nb_attributes 16 --nb_classes 2 --explanation_file explanation.txt --root_folder ../fidexGlo/datafiles --with_fidex true --train_data_file datanormTrain --train_pred_file dimlpDatanormTrain.out --train_class_file dataclass2Train --test_class_file dataclass2Test --weights_file dimlpDatanorm.wts
+// Exemple pour lancer le code : ./fidexGlo --test_data_file datanormTest --test_pred_file dimlpDatanormTest.out --global_rules_file globalRulesDatanorm.txt --nb_attributes 16 --nb_lasses 2 --explanation_file explanation.txt --root_folder ../fidexGlo/datafiles --with_fidex true --train_data_file datanormTrain --train_pred_file dimlpDatanormTrain.out --train_class_file dataclass2Train --test_class_file dataclass2Test --weights_file dimlpDatanorm.wts

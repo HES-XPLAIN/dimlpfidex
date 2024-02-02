@@ -20,11 +20,11 @@ bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSample
   vector<vector<double>> &trainData = _trainDataset->getDatas();
   vector<vector<double>> &trainOutputValuesPredictions = _trainDataset->getOutputValuesPredictions();
   auto nbInputs = static_cast<int>(hyperspace->getHyperLocus().size());
-  int itMax = _parameters->getInt(MAX_ITERATIONS);
+  int maxIterations = _parameters->getInt(MAX_ITERATIONS);
   double dropoutDim = _parameters->getFloat(DROPOUT_DIM);
   double dropoutHyp = _parameters->getFloat(DROPOUT_HYP);
-  bool hasdd = dropoutDim > 0.01;
-  bool hasdh = dropoutHyp > 0.01;
+  bool hasdd = dropoutDim > 0.001;
+  bool hasdh = dropoutHyp > 0.001;
   bool hasTrueClasses = true;
   if (mainSampleClass == -1) {
     hasTrueClasses = false;
@@ -60,8 +60,8 @@ bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSample
 
   int nbIt = 0;
 
-  while (hyperspace->getHyperbox()->getFidelity() < minFidelity && nbIt < itMax) { // While fidelity of our hyperbox is not high enough
-    unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                             // best hyperbox to choose for next step
+  while (hyperspace->getHyperbox()->getFidelity() < minFidelity && nbIt < maxIterations) { // While fidelity of our hyperbox is not high enough
+    unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                                     // best hyperbox to choose for next step
     unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());
     double mainSampleValue;
     int attribut;

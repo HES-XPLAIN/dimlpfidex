@@ -36,6 +36,7 @@ Parameters::Parameters(const vector<string> &args) {
     setRootDirectory(TEST_PRED_FILE);
     setRootDirectory(TEST_CLASS_FILE);
     setRootDirectory(RULES_FILE);
+    setRootDirectory(RULES_OUTFILE);
     setRootDirectory(GLOBAL_RULES_OUTFILE);
     setRootDirectory(GLOBAL_RULES_FILE);
     setRootDirectory(EXPLANATION_FILE);
@@ -84,6 +85,7 @@ Parameters::Parameters(const string &jsonfile) {
     setRootDirectory(TEST_PRED_FILE);
     setRootDirectory(TEST_CLASS_FILE);
     setRootDirectory(RULES_FILE);
+    setRootDirectory(RULES_OUTFILE);
     setRootDirectory(GLOBAL_RULES_OUTFILE);
     setRootDirectory(GLOBAL_RULES_FILE);
     setRootDirectory(EXPLANATION_FILE);
@@ -161,6 +163,10 @@ void Parameters::parseArg(const string &param, const string &arg) {
     setString(RULES_FILE, arg);
     break;
 
+  case RULES_OUTFILE:
+    setString(RULES_OUTFILE, arg);
+    break;
+
   case NB_DIMLP_NETS:
     setInt(NB_DIMLP_NETS, arg);
     break;
@@ -203,6 +209,10 @@ void Parameters::parseArg(const string &param, const string &arg) {
 
   case MIN_COVERING:
     setInt(MIN_COVERING, arg);
+    break;
+
+  case COVERING_STRATEGY:
+    setBool(COVERING_STRATEGY, arg);
     break;
 
   case NB_THREADS:

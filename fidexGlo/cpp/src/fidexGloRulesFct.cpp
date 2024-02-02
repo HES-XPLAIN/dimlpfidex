@@ -15,8 +15,8 @@ void showRulesParams() {
   cout << "--rules_file <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
   cout << "--global_rules_outfile <Rules output file> ";
   cout << "--heuristic <Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo> ";
-  cout << "--nb_attributes <number of attributes>";
-  cout << "--nb_classes <number of classes>";
+  cout << "--nb_attributes <number of attributes> ";
+  cout << "--nbClasses <number of classes> ";
   cout << "<Options>\n"
        << endl;
 
@@ -425,8 +425,6 @@ vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const vector<v
 void checkRulesParametersLogicValues(Parameters &p) {
   // setting default values
   p.setDefaultInt(NB_DIMLP_NETS, 1);
-  p.setDefaultInt(NB_ATTRIBUTES, -1);
-  p.setDefaultInt(NB_CLASSES, -1);
   p.setDefaultInt(MAX_ITERATIONS, 10);
   p.setDefaultInt(MIN_COVERING, 2);
   p.setDefaultFloat(DROPOUT_DIM, 0.0f);
@@ -446,18 +444,20 @@ void checkRulesParametersLogicValues(Parameters &p) {
   // this sections check if values comply with program logic
 
   // asserting mandatory parameters
+  p.assertIntExists(NB_ATTRIBUTES);
+  p.assertIntExists(NB_CLASSES);
   p.assertStringExists(TRAIN_DATA_FILE);
   p.assertStringExists(TRAIN_PRED_FILE);
-  p.assertStringExists(TRAIN_CLASS_FILE);
   p.assertStringExists(GLOBAL_RULES_OUTFILE);
+  p.assertIntExists(HEURISTIC);
 
   // verifying logic between parameters, values range and so on...
 
-  if (p.getInt(NB_ATTRIBUTES) != -1 && p.getInt(NB_ATTRIBUTES) < 1) {
+  if (p.getInt(NB_ATTRIBUTES) < 1) {
     throw CommandArgumentException("Error : Number of attributes must be strictly positive (>=1).");
   }
 
-  if (p.getInt(NB_CLASSES) != -1 && p.getInt(NB_CLASSES) < 1) {
+  if (p.getInt(NB_CLASSES) < 1) {
     throw CommandArgumentException("Error : Number of classes must be strictly positive (>=1).");
   }
 
@@ -718,6 +718,10 @@ int fidexGloRules(const string &command) {
 
     int nbDatas = trainDatas->getNbSamples();
 
+    if (params->getInt(MIN_COVERING) > nbDatas) {
+      throw CommandArgumentException("Error : invalide type for parameter --min_covering, strictly positive integer smaller or equal than the number of train data samples requested.");
+    }
+
     // Get attributes
     vector<string> attributeNames;
     vector<string> classNames;
@@ -894,11 +898,11 @@ int fidexGloRules(const string &command) {
 
 /* Exemples pour lancer le code :
 
-./fidexGloRules --train_data_file datanormTrain --train_pred_file dimlpDatanormTrain.out --train_class_file dataclass2Train --weights_file dimlpDatanorm.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 --global_rules_outfile globalRulesDatanorm.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesResult --root_folder ../fidexGlo/datafiles
+./fidexGloRules --train_data_file datanormTrain --train_pred_file dimlpDatanormTrain.out --train_class_file dataclass2Train --weights_file dimlpDatanorm.wts --nb_attributes 16 --nbClasses 2 --nb_quant_levels 50 --global_rules_outfile globalRulesDatanorm.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesResult --root_folder ../fidexGlo/datafiles
 
-./fidexGloRules --train_data_file covidTrainData.txt --train_pred_file covidTrainPred.out --train_class_file covidTrainClass.txt --weights_file covid.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 --global_rules_outfile globalRulesCovid.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesCovidResult --root_folder ../dimlp/datafiles/covidDataset
-./fidexGloRules --train_data_file spamTrainData.txt --train_pred_file spamTrainPred.out --train_class_file spamTrainClass.txt --weights_file spam.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 --global_rules_outfile globalRulesSpam.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesSpamResult --root_folder ../dimlp/datafiles/spamDataset
-./fidexGloRules --train_data_file isoletTrainData.txt --train_pred_file isoletTrainPredV2.out --train_class_file isoletTrainClass.txt --weights_file isoletV2.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 5 --global_rules_outfile globalRulesIsoletV2.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesIsoletResultV2 --root_folder ../dimlp/datafiles/isoletDataset
-./fidexGloRules --train_data_file Train/X_train.txt --train_pred_file Train/pred_trainV2.out --train_class_file Train/y_train.txt --weights_file HAPTV2.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 5 --global_rules_outfile globalRulesHAPTV2.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesHAPTResultV2 --root_folder ../dimlp/datafiles/HAPTDataset
+./fidexGloRules --train_data_file covidTrainData.txt --train_pred_file covidTrainPred.out --train_class_file covidTrainClass.txt --weights_file covid.wts --nb_attributes 16 --nbClasses 2 --nb_quant_levels 50 --global_rules_outfile globalRulesCovid.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesCovidResult --root_folder ../dimlp/datafiles/covidDataset
+./fidexGloRules --train_data_file spamTrainData.txt --train_pred_file spamTrainPred.out --train_class_file spamTrainClass.txt --weights_file spam.wts --nb_attributes 16 --nbClasses 2 --nb_quant_levels 50 --global_rules_outfile globalRulesSpam.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesSpamResult --root_folder ../dimlp/datafiles/spamDataset
+./fidexGloRules --train_data_file isoletTrainData.txt --train_pred_file isoletTrainPredV2.out --train_class_file isoletTrainClass.txt --weights_file isoletV2.wts --nb_attributes 16 --nbClasses 2 --nb_quant_levels 50 5 --global_rules_outfile globalRulesIsoletV2.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesIsoletResultV2 --root_folder ../dimlp/datafiles/isoletDataset
+./fidexGloRules --train_data_file Train/X_train.txt --train_pred_file Train/pred_trainV2.out --train_class_file Train/y_train.txt --weights_file HAPTV2.wts --nb_attributes 16 --nbClasses 2 --nb_quant_levels 50 5 --global_rules_outfile globalRulesHAPTV2.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesHAPTResultV2 --root_folder ../dimlp/datafiles/HAPTDataset
 
 */
