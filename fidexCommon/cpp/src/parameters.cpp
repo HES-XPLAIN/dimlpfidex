@@ -73,7 +73,7 @@ Parameters::Parameters(const string &jsonfile) {
       value = to_string(item.value());
     }
 
-    parseArg(item.key(), value.c_str());
+    parseArg(item.key(), value);
   }
 
   // updating paths of files

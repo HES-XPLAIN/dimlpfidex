@@ -173,12 +173,10 @@ int fidexGloStats(const string &command) {
 
     int nbAttributes = params->getInt(NB_ATTRIBUTES);
     int nbClasses = params->getInt(NB_CLASSES);
-    std::string testDataFileTemp = params->getString(TEST_DATA_FILE);
-    const char *testDataFile = testDataFileTemp.c_str();
-    std::string testDataFilePredTemp = params->getString(TEST_PRED_FILE);
-    const char *testDataFilePred = testDataFilePredTemp.c_str();
-    std::string rulesFileTemp = params->getString(GLOBAL_RULES_FILE);
-    const char *rulesFile = rulesFileTemp.c_str();
+    std::string testDataFile = params->getString(TEST_DATA_FILE);
+    std::string testDataFilePred = params->getString(TEST_PRED_FILE);
+    std::string rulesFile = params->getString(GLOBAL_RULES_FILE);
+
     double decisionThreshold = params->getFloat(DECISION_THRESHOLD);
     int positiveClassIndex = params->getInt(POSITIVE_CLASS_INDEX);
 
@@ -194,7 +192,7 @@ int fidexGloStats(const string &command) {
         throw CommandArgumentException("The test true classes file has to be given with option --test_class_file or classes have to be given in the test data file.");
       }
     } else {
-      testDatas.reset(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, nbAttributes, nbClasses, decisionThreshold, positiveClassIndex, params->getString(TEST_CLASS_FILE).c_str()));
+      testDatas.reset(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, nbAttributes, nbClasses, decisionThreshold, positiveClassIndex, params->getString(TEST_CLASS_FILE)));
     }
 
     vector<vector<double>> &testData = testDatas->getDatas();
@@ -209,7 +207,7 @@ int fidexGloStats(const string &command) {
     vector<string> classNames;
     bool hasClassNames = false;
     if (params->isStringSet(ATTRIBUTES_FILE)) {
-      testDatas->setAttributes(params->getString(ATTRIBUTES_FILE).c_str(), nbAttributes, nbClasses);
+      testDatas->setAttributes(params->getString(ATTRIBUTES_FILE), nbAttributes, nbClasses);
       attributeNames = testDatas->getAttributeNames();
       hasClassNames = testDatas->getHasClassNames();
       if (hasClassNames) {

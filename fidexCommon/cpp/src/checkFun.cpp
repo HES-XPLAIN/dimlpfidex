@@ -11,7 +11,7 @@
 bool checkInt(const char *str) {
   // Check if empty
   if (str == nullptr || *str == '\0') {
-    return 0;
+    return false;
   }
 
   int i = 0;
@@ -30,30 +30,6 @@ bool checkInt(const char *str) {
     ch = str[i];
     if (ch < '0' || ch > '9') {
       return false; // Non numerical character found
-    }
-  }
-
-  return true;
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * @brief Checks if a given string represents a valid positive integer.
- *
- * @param str A C-style string representing the number to be checked.
- * @return bool Returns true if the string is a valid positive integer, false otherwise.
- */
-bool checkPositiveInt(const char *str)
-
-{
-  char ch;
-
-  for (int i = 0; str[i] != '\0'; i++) {
-    ch = str[i];
-
-    if ((ch > '9') || (ch < '0')) {
-      return false;
     }
   }
 
@@ -111,7 +87,8 @@ bool checkFloatFid(const char *str)
  * @param input A string input representing a boolean.
  * @return bool Returns true if the string is 'true', 'false', '0', or '1' (case-insensitive), false otherwise.
  */
-bool checkBool(std::string input) {
+bool checkBool(const std::string &inputTemp) {
+  std::string input = inputTemp;
   std::transform(input.begin(), input.end(), input.begin(),
                  [](unsigned char c) { return std::tolower(c); });
   return (input == "true" || input == "false" || input == "0" || input == "1");
@@ -125,7 +102,7 @@ bool checkBool(std::string input) {
  * @param input A string representing a list of floats in the format "[a,b,...,c]" without spaces.
  * @return bool Returns true if the string is a valid list of floats, false otherwise.
  */
-bool checkList(std::string input) {
+bool checkList(const std::string &input) {
   if (input.size() < 3 || input.front() != '[' || input.back() != ']') {
     return false;
   }
@@ -150,7 +127,7 @@ bool checkList(std::string input) {
  * @param line A string to be checked.
  * @return bool Returns true if the string is empty or contains only whitespace, false otherwise
  */
-bool checkStringEmpty(std::string line) {
+bool checkStringEmpty(const std::string &line) {
   if (line.length() == 0) {
     return true;
   } else {

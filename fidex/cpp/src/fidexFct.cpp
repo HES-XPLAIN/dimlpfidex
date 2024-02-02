@@ -254,14 +254,10 @@ int fidex(const string &command) {
 
     int nbAttributes = params->getInt(NB_ATTRIBUTES);
     int nbClasses = params->getInt(NB_CLASSES);
-    std::string trainDataFileTemp = params->getString(TRAIN_DATA_FILE);
-    const char *trainDataFile = trainDataFileTemp.c_str();
-    std::string trainDataFilePredTemp = params->getString(TRAIN_PRED_FILE);
-    const char *trainDataFilePred = trainDataFilePredTemp.c_str();
-    std::string mainSamplesDataFileTemp = params->getString(TEST_DATA_FILE);
-    const char *mainSamplesDataFile = mainSamplesDataFileTemp.c_str();
-    std::string ruleFileTemp = params->getString(RULES_OUTFILE);
-    const char *ruleFile = ruleFileTemp.c_str();
+    std::string trainDataFile = params->getString(TRAIN_DATA_FILE);
+    std::string trainDataFilePred = params->getString(TRAIN_PRED_FILE);
+    std::string mainSamplesDataFile = params->getString(TEST_DATA_FILE);
+    std::string ruleFile = params->getString(RULES_OUTFILE);
     float decisionThreshold = params->getFloat(DECISION_THRESHOLD);
     int positiveClassIndex = params->getInt(POSITIVE_CLASS_INDEX);
     int minNbCover = params->getInt(MIN_COVERING);
@@ -310,7 +306,7 @@ int fidex(const string &command) {
         throw CommandArgumentException("The train true classes file has to be given with option --train_class_file or classes have to be given in the train data file.");
       }
     } else {
-      trainDatas.reset(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nbAttributes, nbClasses, decisionThreshold, positiveClassIndex, params->getString(TRAIN_CLASS_FILE).c_str()));
+      trainDatas.reset(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nbAttributes, nbClasses, decisionThreshold, positiveClassIndex, params->getString(TRAIN_CLASS_FILE)));
     }
 
     vector<vector<double>> &trainData = trainDatas->getDatas();
@@ -344,9 +340,9 @@ int fidex(const string &command) {
     } else { // We have different files for test predictions and test classes
 
       if (params->isStringSet(TEST_CLASS_FILE)) {
-        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, params->getString(TEST_PRED_FILE).c_str(), nbAttributes, nbClasses, decisionThreshold, positiveClassIndex, params->getString(TEST_CLASS_FILE).c_str()));
+        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, params->getString(TEST_PRED_FILE), nbAttributes, nbClasses, decisionThreshold, positiveClassIndex, params->getString(TEST_CLASS_FILE)));
       } else {
-        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, params->getString(TEST_PRED_FILE).c_str(), nbAttributes, nbClasses, decisionThreshold, positiveClassIndex));
+        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, params->getString(TEST_PRED_FILE), nbAttributes, nbClasses, decisionThreshold, positiveClassIndex));
       }
       mainSamplesValues = testDatas->getDatas();
       mainSamplesPreds = testDatas->getPredictions();
@@ -368,7 +364,7 @@ int fidex(const string &command) {
     vector<string> classNames;
     bool hasClassNames = false;
     if (params->isStringSet(ATTRIBUTES_FILE)) {
-      testDatas->setAttributes(params->getString(ATTRIBUTES_FILE).c_str(), nbAttributes, nbClasses);
+      testDatas->setAttributes(params->getString(ATTRIBUTES_FILE), nbAttributes, nbClasses);
       attributeNames = testDatas->getAttributeNames();
       hasClassNames = testDatas->getHasClassNames();
       if (hasClassNames) {
@@ -435,9 +431,9 @@ int fidex(const string &command) {
       for (string wf : weightsFiles) {
         std::vector<std::vector<double>> hypLocus;
         if (nbDimlpNets > 1) {
-          hypLocus = calcHypLocus(wf.c_str(), nbQuantLevels, hiKnot, false); // Get hyperlocus
+          hypLocus = calcHypLocus(wf, nbQuantLevels, hiKnot, false); // Get hyperlocus
         } else {
-          hypLocus = calcHypLocus(wf.c_str(), nbQuantLevels, hiKnot); // Get hyperlocus
+          hypLocus = calcHypLocus(wf, nbQuantLevels, hiKnot); // Get hyperlocus
         }
 
         matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end()); // Concatenate hypLocus to matHypLocus
@@ -447,9 +443,9 @@ int fidex(const string &command) {
       }
     } else {
       if (params->isStringSet(ATTRIBUTES_FILE)) {
-        matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes, attributeNames);
+        matHypLocus = calcHypLocus(inputRulesFile, nbAttributes, attributeNames);
       } else {
-        matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes);
+        matHypLocus = calcHypLocus(inputRulesFile, nbAttributes);
       }
     }
 
@@ -688,7 +684,7 @@ int fidex(const string &command) {
     meanAccuracy /= static_cast<double>(nbTestSamples);
 
     if (params->isStringSet(STATS_FILE)) {
-      ofstream outputStatsFile(params->getString(STATS_FILE).c_str());
+      ofstream outputStatsFile(params->getString(STATS_FILE));
       if (outputStatsFile.is_open()) {
         outputStatsFile << "Statistics with a test set of " << nbTestSamples << " samples :\n"
                         << std::endl;
@@ -699,7 +695,7 @@ int fidex(const string &command) {
         outputStatsFile << "The mean rule confidence is : " << meanConfidence << "" << std::endl;
         outputStatsFile.close();
       } else {
-        throw CannotOpenFileError("Error : Couldn't open stats extraction file " + std::string(params->getString(STATS_FILE).c_str()) + ".");
+        throw CannotOpenFileError("Error : Couldn't open stats extraction file " + params->getString(STATS_FILE) + ".");
       }
     }
 
@@ -710,7 +706,7 @@ int fidex(const string &command) {
       }
       outputFile.close();
     } else {
-      throw CannotOpenFileError("Error : Couldn't open rule extraction file " + std::string(ruleFile) + ".");
+      throw CannotOpenFileError("Error : Couldn't open rule extraction file " + ruleFile + ".");
     }
 
     d2 = clock();

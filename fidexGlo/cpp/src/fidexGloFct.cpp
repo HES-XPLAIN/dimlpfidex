@@ -314,8 +314,7 @@ int fidexGlo(const string &command) {
 
     int nbAttributes = params->getInt(NB_ATTRIBUTES);
     int nbClasses = params->getInt(NB_CLASSES);
-    std::string testSamplesDataFileTemp = params->getString(TEST_DATA_FILE);
-    const char *testSamplesDataFile = testSamplesDataFileTemp.c_str();
+    std::string testSamplesDataFile = params->getString(TEST_DATA_FILE);
     double decisionThreshold = params->getFloat(DECISION_THRESHOLD);
     int positiveClassIndex = params->getInt(POSITIVE_CLASS_INDEX);
     bool withFidex = params->getBool(WITH_FIDEX);
@@ -330,7 +329,7 @@ int fidexGlo(const string &command) {
     if (!params->isStringSet(TEST_PRED_FILE)) { // If we have only one test data file with data and prediction
       testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, nbAttributes, nbClasses, decisionThreshold, positiveClassIndex));
     } else { // We have a different file for test predictions
-      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, params->getString(TEST_PRED_FILE).c_str(), nbAttributes, nbClasses, decisionThreshold, positiveClassIndex));
+      testDatas.reset(new DataSetFid("testDatas from FidexGlo", testSamplesDataFile, params->getString(TEST_PRED_FILE), nbAttributes, nbClasses, decisionThreshold, positiveClassIndex));
     }
     vector<vector<double>> testSamplesValues = testDatas->getDatas();
     vector<int> testSamplesPreds = testDatas->getPredictions();
@@ -343,7 +342,7 @@ int fidexGlo(const string &command) {
     vector<string> classNames;
     bool hasClassNames = false;
     if (params->isStringSet(ATTRIBUTES_FILE)) {
-      testDatas->setAttributes(params->getString(ATTRIBUTES_FILE).c_str(), nbAttributes, nbClasses);
+      testDatas->setAttributes(params->getString(ATTRIBUTES_FILE), nbAttributes, nbClasses);
       attributeNames = testDatas->getAttributeNames();
       hasClassNames = testDatas->getHasClassNames();
       if (hasClassNames) {
@@ -383,7 +382,7 @@ int fidexGlo(const string &command) {
           hasTrueClasses = false;
         }
       } else {
-        testDatas->setClassFromFile(params->getString(TEST_CLASS_FILE).c_str(), nbClasses);
+        testDatas->setClassFromFile(params->getString(TEST_CLASS_FILE), nbClasses);
       }
       if (hasTrueClasses) {
         testSamplesClasses = testDatas->getClasses();
@@ -391,8 +390,8 @@ int fidexGlo(const string &command) {
 
       if (!params->isStringSet(TRAIN_CLASS_FILE)) {
         trainDatas.reset(new DataSetFid("trainDatas from FidexGloRules",
-                                        params->getString(TRAIN_DATA_FILE).c_str(),
-                                        params->getString(TRAIN_PRED_FILE).c_str(),
+                                        params->getString(TRAIN_DATA_FILE),
+                                        params->getString(TRAIN_PRED_FILE),
                                         params->getInt(NB_ATTRIBUTES),
                                         params->getInt(NB_CLASSES),
                                         params->getFloat(DECISION_THRESHOLD),
@@ -403,13 +402,13 @@ int fidexGlo(const string &command) {
         }
       } else {
         trainDatas.reset(new DataSetFid("trainDatas from FidexGloRules",
-                                        params->getString(TRAIN_DATA_FILE).c_str(),
-                                        params->getString(TRAIN_PRED_FILE).c_str(),
+                                        params->getString(TRAIN_DATA_FILE),
+                                        params->getString(TRAIN_PRED_FILE),
                                         params->getInt(NB_ATTRIBUTES),
                                         params->getInt(NB_CLASSES),
                                         params->getFloat(DECISION_THRESHOLD),
                                         params->getInt(POSITIVE_CLASS_INDEX),
-                                        params->getString(TRAIN_CLASS_FILE).c_str()));
+                                        params->getString(TRAIN_CLASS_FILE)));
       }
 
       int nbTrainSamples = trainDatas->getNbSamples();
@@ -451,9 +450,9 @@ int fidexGlo(const string &command) {
         for (string wf : weightsFiles) {
           vector<vector<double>> hypLocus;
           if (nbDimlpNets > 1) {
-            hypLocus = calcHypLocus(wf.c_str(), nbQuantLevels, hiKnot, false); // Get hyperlocus
+            hypLocus = calcHypLocus(wf, nbQuantLevels, hiKnot, false); // Get hyperlocus
           } else {
-            hypLocus = calcHypLocus(wf.c_str(), nbQuantLevels, hiKnot); // Get hyperlocus
+            hypLocus = calcHypLocus(wf, nbQuantLevels, hiKnot); // Get hyperlocus
           }
           matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end()); // Concatenate hypLocus to matHypLocus
         }
@@ -463,9 +462,9 @@ int fidexGlo(const string &command) {
 
       } else {
         if (params->isStringSet(ATTRIBUTES_FILE)) {
-          matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes, attributeNames);
+          matHypLocus = calcHypLocus(inputRulesFile, nbAttributes, attributeNames);
         } else {
-          matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes);
+          matHypLocus = calcHypLocus(inputRulesFile, nbAttributes);
         }
       }
 
@@ -487,7 +486,7 @@ int fidexGlo(const string &command) {
     lines.emplace_back("Global statistics of the rule set : ");
     vector<string> stringRules;
 
-    getRules(rules, lines, stringRules, params->getString(GLOBAL_RULES_FILE).c_str(), params->isStringSet(ATTRIBUTES_FILE), attributeNames, hasClassNames, classNames);
+    getRules(rules, lines, stringRules, params->getString(GLOBAL_RULES_FILE), params->isStringSet(ATTRIBUTES_FILE), attributeNames, hasClassNames, classNames);
 
     std::cout << "Files imported" << endl
               << endl;
@@ -671,7 +670,7 @@ int fidexGlo(const string &command) {
 
     // Output global explanation result
     if (params->isStringSet(EXPLANATION_FILE)) {
-      ofstream outputFile(params->getString(EXPLANATION_FILE).c_str());
+      ofstream outputFile(params->getString(EXPLANATION_FILE));
       if (outputFile.is_open()) {
         for (const auto &line : lines) {
           outputFile << line << "" << std::endl;
@@ -697,4 +696,4 @@ int fidexGlo(const string &command) {
   return 0;
 }
 
-// Exemple pour lancer le code : ./fidexGlo --test_data_file datanormTest --test_pred_file dimlpDatanormTest.out --global_rules_file globalRulesDatanorm.txt --nb_attributes 16 --nb_lasses 2 --explanation_file explanation.txt --root_folder ../fidexGlo/datafiles --with_fidex true --train_data_file datanormTrain --train_pred_file dimlpDatanormTrain.out --train_class_file dataclass2Train --test_class_file dataclass2Test --weights_file dimlpDatanorm.wts
+// Exemple pour lancer le code : ./fidexGlo --test_data_file datanormTest --test_pred_file dimlpDatanormTest.out --global_rules_file globalRulesDatanorm.txt --nb_attributes 16 --nb_classes 2 --explanation_file explanation.txt --root_folder ../fidexGlo/datafiles --with_fidex true --train_data_file datanormTrain --train_pred_file dimlpDatanormTrain.out --train_class_file dataclass2Train --test_class_file dataclass2Test --weights_file dimlpDatanorm.wts

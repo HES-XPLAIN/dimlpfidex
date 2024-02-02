@@ -16,7 +16,7 @@ void showRulesParams() {
   cout << "--global_rules_outfile <Rules output file> ";
   cout << "--heuristic <Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo> ";
   cout << "--nb_attributes <number of attributes> ";
-  cout << "--nbClasses <number of classes> ";
+  cout << "--nb_classes <number of classes> ";
   cout << "<Options>\n"
        << endl;
 
@@ -695,8 +695,8 @@ int fidexGloRules(const string &command) {
     std::unique_ptr<DataSetFid> trainDatas;
     if (!params->isStringSet(TRAIN_CLASS_FILE)) {
       trainDatas.reset(new DataSetFid("trainDatas from FidexGloRules",
-                                      params->getString(TRAIN_DATA_FILE).c_str(),
-                                      params->getString(TRAIN_PRED_FILE).c_str(),
+                                      params->getString(TRAIN_DATA_FILE),
+                                      params->getString(TRAIN_PRED_FILE),
                                       params->getInt(NB_ATTRIBUTES),
                                       params->getInt(NB_CLASSES),
                                       params->getFloat(DECISION_THRESHOLD),
@@ -707,13 +707,13 @@ int fidexGloRules(const string &command) {
       }
     } else {
       trainDatas.reset(new DataSetFid("trainDatas from FidexGloRules",
-                                      params->getString(TRAIN_DATA_FILE).c_str(),
-                                      params->getString(TRAIN_PRED_FILE).c_str(),
+                                      params->getString(TRAIN_DATA_FILE),
+                                      params->getString(TRAIN_PRED_FILE),
                                       params->getInt(NB_ATTRIBUTES),
                                       params->getInt(NB_CLASSES),
                                       params->getFloat(DECISION_THRESHOLD),
                                       params->getInt(POSITIVE_CLASS_INDEX),
-                                      params->getString(TRAIN_CLASS_FILE).c_str()));
+                                      params->getString(TRAIN_CLASS_FILE)));
     }
 
     int nbDatas = trainDatas->getNbSamples();
@@ -728,7 +728,7 @@ int fidexGloRules(const string &command) {
     bool hasClassNames = false;
 
     if (params->isStringSet(ATTRIBUTES_FILE)) {
-      trainDatas->setAttributes(params->getString(ATTRIBUTES_FILE).c_str(), params->getInt(NB_ATTRIBUTES), params->getInt(NB_CLASSES));
+      trainDatas->setAttributes(params->getString(ATTRIBUTES_FILE), params->getInt(NB_ATTRIBUTES), params->getInt(NB_CLASSES));
       attributeNames = trainDatas->getAttributeNames();
       hasClassNames = trainDatas->getHasClassNames();
       if (hasClassNames) {
@@ -793,9 +793,9 @@ int fidexGloRules(const string &command) {
       for (string wf : weightsFiles) {
         vector<vector<double>> hypLocus;
         if (nbDimlpNets > 1) {
-          hypLocus = calcHypLocus(wf.c_str(), nbQuantLevels, hiKnot, false); // Get hyperlocus
+          hypLocus = calcHypLocus(wf, nbQuantLevels, hiKnot, false); // Get hyperlocus
         } else {
-          hypLocus = calcHypLocus(wf.c_str(), nbQuantLevels, hiKnot); // Get hyperlocus
+          hypLocus = calcHypLocus(wf, nbQuantLevels, hiKnot); // Get hyperlocus
         }
         matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end()); // Concatenate hypLocus to matHypLocus
       }
@@ -805,9 +805,9 @@ int fidexGloRules(const string &command) {
 
     } else {
       if (params->isStringSet(ATTRIBUTES_FILE)) {
-        matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes, attributeNames);
+        matHypLocus = calcHypLocus(inputRulesFile, nbAttributes, attributeNames);
       } else {
-        matHypLocus = calcHypLocus(inputRulesFile.c_str(), nbAttributes);
+        matHypLocus = calcHypLocus(inputRulesFile, nbAttributes);
       }
     }
 
@@ -898,11 +898,11 @@ int fidexGloRules(const string &command) {
 
 /* Exemples pour lancer le code :
 
-./fidexGloRules --train_data_file datanormTrain --train_pred_file dimlpDatanormTrain.out --train_class_file dataclass2Train --weights_file dimlpDatanorm.wts --nb_attributes 16 --nbClasses 2 --nb_quant_levels 50 --global_rules_outfile globalRulesDatanorm.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesResult --root_folder ../fidexGlo/datafiles
+./fidexGloRules --train_data_file datanormTrain --train_pred_file dimlpDatanormTrain.out --train_class_file dataclass2Train --weights_file dimlpDatanorm.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 --global_rules_outfile globalRulesDatanorm.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesResult --root_folder ../fidexGlo/datafiles
 
-./fidexGloRules --train_data_file covidTrainData.txt --train_pred_file covidTrainPred.out --train_class_file covidTrainClass.txt --weights_file covid.wts --nb_attributes 16 --nbClasses 2 --nb_quant_levels 50 --global_rules_outfile globalRulesCovid.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesCovidResult --root_folder ../dimlp/datafiles/covidDataset
-./fidexGloRules --train_data_file spamTrainData.txt --train_pred_file spamTrainPred.out --train_class_file spamTrainClass.txt --weights_file spam.wts --nb_attributes 16 --nbClasses 2 --nb_quant_levels 50 --global_rules_outfile globalRulesSpam.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesSpamResult --root_folder ../dimlp/datafiles/spamDataset
-./fidexGloRules --train_data_file isoletTrainData.txt --train_pred_file isoletTrainPredV2.out --train_class_file isoletTrainClass.txt --weights_file isoletV2.wts --nb_attributes 16 --nbClasses 2 --nb_quant_levels 50 5 --global_rules_outfile globalRulesIsoletV2.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesIsoletResultV2 --root_folder ../dimlp/datafiles/isoletDataset
-./fidexGloRules --train_data_file Train/X_train.txt --train_pred_file Train/pred_trainV2.out --train_class_file Train/y_train.txt --weights_file HAPTV2.wts --nb_attributes 16 --nbClasses 2 --nb_quant_levels 50 5 --global_rules_outfile globalRulesHAPTV2.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesHAPTResultV2 --root_folder ../dimlp/datafiles/HAPTDataset
+./fidexGloRules --train_data_file covidTrainData.txt --train_pred_file covidTrainPred.out --train_class_file covidTrainClass.txt --weights_file covid.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 --global_rules_outfile globalRulesCovid.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesCovidResult --root_folder ../dimlp/datafiles/covidDataset
+./fidexGloRules --train_data_file spamTrainData.txt --train_pred_file spamTrainPred.out --train_class_file spamTrainClass.txt --weights_file spam.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 --global_rules_outfile globalRulesSpam.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesSpamResult --root_folder ../dimlp/datafiles/spamDataset
+./fidexGloRules --train_data_file isoletTrainData.txt --train_pred_file isoletTrainPredV2.out --train_class_file isoletTrainClass.txt --weights_file isoletV2.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 5 --global_rules_outfile globalRulesIsoletV2.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesIsoletResultV2 --root_folder ../dimlp/datafiles/isoletDataset
+./fidexGloRules --train_data_file Train/X_train.txt --train_pred_file Train/pred_trainV2.out --train_class_file Train/y_train.txt --weights_file HAPTV2.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 5 --global_rules_outfile globalRulesHAPTV2.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesHAPTResultV2 --root_folder ../dimlp/datafiles/HAPTDataset
 
 */
