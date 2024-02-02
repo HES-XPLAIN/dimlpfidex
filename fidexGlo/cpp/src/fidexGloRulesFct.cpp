@@ -26,7 +26,7 @@ void showRulesParams() {
   cout << "--nb_dimlp_nets <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << endl;
   cout << "--attributes_file <file of attributes>" << endl;
   cout << "--console_file <file where you redirect console result>" << endl; // If we want to redirect console result to file
-  cout << "--max_itertions <max iteration number (100 by default)>" << endl;
+  cout << "--max_itertions <max iteration number, also the max possible number of attributs in a rule (10 by default, should put 25 if working with images)>" << endl;
   cout << "--min_covering <minimum covering number (2 by default)>" << endl;
   cout << "--dropout_dim <dimension dropout parameter>" << endl;
   cout << "--dropout_hyp <hyperplan dropout parameter>" << endl;
