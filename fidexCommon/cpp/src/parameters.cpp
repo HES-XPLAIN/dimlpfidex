@@ -28,24 +28,22 @@ Parameters::Parameters(const vector<string> &args) {
   }
 
   // updating paths of files
-  if (isStringSet(ROOT_FOLDER)) {
-    setRootDirectory(TRAIN_DATA_FILE);
-    setRootDirectory(TRAIN_PRED_FILE);
-    setRootDirectory(TRAIN_CLASS_FILE);
-    setRootDirectory(TEST_DATA_FILE);
-    setRootDirectory(TEST_PRED_FILE);
-    setRootDirectory(TEST_CLASS_FILE);
-    setRootDirectory(RULES_FILE);
-    setRootDirectory(RULES_OUTFILE);
-    setRootDirectory(GLOBAL_RULES_OUTFILE);
-    setRootDirectory(GLOBAL_RULES_FILE);
-    setRootDirectory(EXPLANATION_FILE);
-    setRootDirectory(CONSOLE_FILE);
-    setRootDirectory(ATTRIBUTES_FILE);
-    setRootDirectory(WEIGHTS_FILE);
-    setRootDirectory(STATS_FILE);
-    setRootDirectory(NORMALIZATION_FILE);
-  }
+  sanitizePath(TRAIN_DATA_FILE);
+  sanitizePath(TRAIN_PRED_FILE);
+  sanitizePath(TRAIN_CLASS_FILE);
+  sanitizePath(TEST_DATA_FILE);
+  sanitizePath(TEST_PRED_FILE);
+  sanitizePath(TEST_CLASS_FILE);
+  sanitizePath(RULES_FILE);
+  sanitizePath(RULES_OUTFILE);
+  sanitizePath(GLOBAL_RULES_OUTFILE);
+  sanitizePath(GLOBAL_RULES_FILE);
+  sanitizePath(EXPLANATION_FILE);
+  sanitizePath(CONSOLE_FILE);
+  sanitizePath(ATTRIBUTES_FILE);
+  sanitizePath(WEIGHTS_FILE);
+  sanitizePath(STATS_FILE);
+  sanitizePath(NORMALIZATION_FILE);
 }
 
 /**
@@ -77,24 +75,22 @@ Parameters::Parameters(const string &jsonfile) {
   }
 
   // updating paths of files
-  if (isStringSet(ROOT_FOLDER)) {
-    setRootDirectory(TRAIN_DATA_FILE);
-    setRootDirectory(TRAIN_PRED_FILE);
-    setRootDirectory(TRAIN_CLASS_FILE);
-    setRootDirectory(TEST_DATA_FILE);
-    setRootDirectory(TEST_PRED_FILE);
-    setRootDirectory(TEST_CLASS_FILE);
-    setRootDirectory(RULES_FILE);
-    setRootDirectory(RULES_OUTFILE);
-    setRootDirectory(GLOBAL_RULES_OUTFILE);
-    setRootDirectory(GLOBAL_RULES_FILE);
-    setRootDirectory(EXPLANATION_FILE);
-    setRootDirectory(CONSOLE_FILE);
-    setRootDirectory(ATTRIBUTES_FILE);
-    setRootDirectory(WEIGHTS_FILE);
-    setRootDirectory(STATS_FILE);
-    setRootDirectory(NORMALIZATION_FILE);
-  }
+  sanitizePath(TRAIN_DATA_FILE);
+  sanitizePath(TRAIN_PRED_FILE);
+  sanitizePath(TRAIN_CLASS_FILE);
+  sanitizePath(TEST_DATA_FILE);
+  sanitizePath(TEST_PRED_FILE);
+  sanitizePath(TEST_CLASS_FILE);
+  sanitizePath(RULES_FILE);
+  sanitizePath(RULES_OUTFILE);
+  sanitizePath(GLOBAL_RULES_OUTFILE);
+  sanitizePath(GLOBAL_RULES_FILE);
+  sanitizePath(EXPLANATION_FILE);
+  sanitizePath(CONSOLE_FILE);
+  sanitizePath(ATTRIBUTES_FILE);
+  sanitizePath(WEIGHTS_FILE);
+  sanitizePath(STATS_FILE);
+  sanitizePath(NORMALIZATION_FILE);
 }
 
 /**
@@ -196,6 +192,7 @@ void Parameters::parseArg(const string &param, const string &arg) {
     break;
 
   case ROOT_FOLDER:
+    checkPath(ROOT_FOLDER, arg); // root directory existence must be checked
     setString(ROOT_FOLDER, arg);
     break;
 
@@ -276,7 +273,6 @@ void Parameters::parseArg(const string &param, const string &arg) {
   }
 }
 
-// private setters
 void Parameters::setInt(ParameterCode id, const string &value) {
   if (isIntSet(id)) {
     throwAlreadySetArgumentException(id, value);
@@ -321,6 +317,12 @@ void Parameters::setFloat(ParameterCode id, float value) {
   }
 
   _floatParams[id] = value;
+}
+
+void Parameters::checkPath(ParameterCode id, const string &path) {
+  if (!exists(path)) {
+    throwInvalidFileOrDirectory(id, path);
+  }
 }
 
 void Parameters::setDouble(ParameterCode id, const string &value) {
@@ -397,18 +399,20 @@ void Parameters::setString(ParameterCode id, const string &value) {
   _stringParams[id] = value;
 }
 
-void Parameters::setRootDirectory(ParameterCode id) {
-  // ignore if root or target were not set
-  if (!isStringSet(ROOT_FOLDER) || !isStringSet(id))
+void Parameters::sanitizePath(ParameterCode id) {
+  // ignore if target is not set and avoid duplicating the root path for no reason
+  if (!isStringSet(id) || id == ROOT_FOLDER) {
     return;
-
-  // avoid duplicating the root path for no reason
-  if (id == ROOT_FOLDER)
-    return;
+  }
 
   string root = getString(ROOT_FOLDER);
   string target = getString(id);
   string separator;
+
+  // only check target path of root folder isn't defined
+  if (!isStringSet(ROOT_FOLDER)) {
+    checkPath(id, target);
+  }
 
   // define separator depending on OS
 #if defined(__unix__) || defined(__APPLE__)
@@ -417,8 +421,16 @@ void Parameters::setRootDirectory(ParameterCode id) {
   separator = "\\";
 #endif
 
-  // to avoid AlreadySetException errors thrown by setters, the map is directly midified
-  _stringParams[id] = root + separator + target;
+  // avoid repeating separator if its already present
+  if ((target.substr(0, separator.size()).compare(separator) == 0) ||
+      (root.substr(root.size() - separator.size(), separator.size()).compare(separator) == 0)) {
+    separator = "";
+  }
+
+  string result = root + separator + target;
+
+  checkPath(id, result); // checks for potential invalid paths
+  _stringParams[id] = result;
 }
 
 void Parameters::setWeightsFiles() {

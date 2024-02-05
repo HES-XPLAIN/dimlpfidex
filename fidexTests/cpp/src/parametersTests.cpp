@@ -71,7 +71,6 @@ void testDefaultSetter() {
   p.setDefaultString(ROOT_FOLDER, value);
   testAssert("Parameter is default value set", p.isStringSet(ROOT_FOLDER));
   testAssert("Parameter get default value", value.compare(p.getString(ROOT_FOLDER)) == 0);
-
   p.setString(TEST_DATA_FILE, value);
   p.setDefaultString(TEST_DATA_FILE, new_value);
   testAssert("Parameter value not overrided", new_value.compare(p.getString(TEST_DATA_FILE)) != 0);

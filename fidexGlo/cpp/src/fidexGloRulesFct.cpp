@@ -424,7 +424,6 @@ vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const vector<v
  */
 void checkRulesParametersLogicValues(Parameters &p) {
   // setting default values
-  // TODO file path validation
   p.setDefaultInt(NB_DIMLP_NETS, 1);
   p.setDefaultInt(MAX_ITERATIONS, 10);
   p.setDefaultInt(MIN_COVERING, 2);

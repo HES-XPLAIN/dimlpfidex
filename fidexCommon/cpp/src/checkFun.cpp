@@ -399,3 +399,18 @@ bool hasSpaceBetweenWords(const std::string &str) {
   }
   return false; // No space found between words or only tabs are present
 }
+
+
+//////////////////////////////////////////////////////
+
+/**
+ * @brief Checks if a given file or directory is valid.
+ * 
+ * 
+ * @param path path of the file or directory to be checked
+ * @return whether the file or directory exists or not
+ */
+bool exists(const std::string &path) {
+  struct stat buffer;
+  return (stat(path.c_str(), &buffer) == 0);
+}
