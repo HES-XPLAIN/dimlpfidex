@@ -43,6 +43,14 @@ void testGetter() {
   testAssert("Parameter get correct int value", p.getInt(HEURISTIC) == 1);
   testAssert("Parameter get correct float value", p.getFloat(DROPOUT_DIM) == 0.5f);
   testAssert("Parameter get correct double value", p.getDouble(DROPOUT_HYP) == 0.99999);
+  
+  try {
+    p.getString(HEURISTIC);
+    testAssert("Parameter get exception on wrong value", false);
+  }catch (ErrorHandler &e) {
+    cout << e.what() << endl;
+    testAssert("Parameter get exception on wrong value", true);
+  }
 
   try {
     p.getString(TRAIN_DATA_FILE);
@@ -103,7 +111,7 @@ void testArgsParser() {
 
 void testJsonParser() {
   vector<string> args = {
-      "executable name to ignore",
+      "executableNameToIgnore",
       "--train_data_file", "train.txt",
       "--train_pred_file", "train.out",
       "--train_class_file", "train_true_classes.txt",

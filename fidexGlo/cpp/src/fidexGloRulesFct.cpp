@@ -408,6 +408,7 @@ vector<Rule> heuristic_3(DataSetFid &dataset, Parameters &p, const vector<vector
  */
 void checkRulesParametersLogicValues(Parameters *p) {
   // setting default values
+  // TODO file path validation
   p->setDefaultString(ROOT_FOLDER, "");
   p->setDefaultInt(NB_DIMLP_NETS, 1);
   p->setDefaultString(ATTRIBUTES_FILE, "");
