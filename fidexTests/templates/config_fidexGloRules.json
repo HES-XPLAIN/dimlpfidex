@@ -1,5 +1,9 @@
 {
+<<<<<<<< HEAD:config.json
     "root_folder": "fidexTests/dataset/data",
+========
+    "root_folder": "fidexGlo/cpp/tests/dataset/data",
+>>>>>>>> 450983b9a4c966394568c2a54839eddac83f1cb9:fidexTests/templates/config_fidexGloRules.json
     "train_data_file": "train.txt",
     "train_pred_file": "train.out",
     "train_class_file": "train_true_classes.txt",

@@ -12,9 +12,9 @@ void showFidexParams() {
   std::cout << "--test_data_file <test sample(s) data file with data, prediction(if no --test_pred_file) and true class(if no --test_class_file)> ";
   std::cout << "--weights_file <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file] ";
   std::cout << "--rules_file <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
-  std::cout << "--rules_outfile <Rule(s) output file>";
-  std::cout << "--nb_attributes <number of attributes>";
-  std::cout << "--nb_classes <number of classes>";
+  std::cout << "--rules_outfile <Rule(s) output file> ";
+  std::cout << "--nb_attributes <number of attributes> ";
+  std::cout << "--nb_classes <number of classes> ";
   std::cout << "<Options>\n"
             << std::endl;
 
@@ -47,74 +47,153 @@ void showFidexParams() {
             << std::endl;
 }
 
-enum ParameterFidexEnum {
-  TRAIN_DATA_FILE,
-  TRAIN_PRED_FILE,
-  TRAIN_CLASS_FILE,
-  TEST_DATA_FILE,
-  WEIGHTS_FILE,
-  RULES_FILE,
-  RULES_OUTFILE,
-  NB_ATTRIBUTES,
-  NB_CLASSES,
-  ROOT_FOLDER,
-  NB_DIMLP_NETS,
-  TEST_PRED_FILE,
-  TEST_CLASS_FILE,
-  ATTRIBUTES_FILE,
-  STATS_FILE,
-  CONSOLE_FILE,
-  MAX_ITERATIONS,
-  MIN_COVERING,
-  COVERING_STRATEGY,
-  MAX_FAILED_ATTEMPTS,
-  MIN_FIDELITY,
-  DROPOUT_DIM,
-  DROPOUT_HYP,
-  NB_QUANT_LEVELS,
-  DECISION_THRESHOLD,
-  POSITIVE_CLASS_INDEX,
-  NORMALIZATION_FILE,
-  MUS,
-  SIGMAS,
-  NORMALIZATION_INDICES,
-  SEED,
-  INVALID
-};
+/**
+ * @brief Used to set default hyperparameters values and to check the sanity of all used values like boundaries and logic.
+ *
+ * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
+ */
+void checkFidexParametersLogicValues(Parameters &p) {
+  // setting default values
+  p.setDefaultInt(NB_DIMLP_NETS, 1);
+  p.setDefaultInt(MAX_ITERATIONS, 10);
+  p.setDefaultInt(MIN_COVERING, 2);
+  p.setDefaultBool(COVERING_STRATEGY, false);
+  p.setDefaultFloat(DROPOUT_DIM, 0.0f);
+  p.setDefaultFloat(DROPOUT_HYP, 0.0f);
+  p.setDefaultInt(MAX_FAILED_ATTEMPTS, 30);
+  p.setDefaultInt(NB_QUANT_LEVELS, 50);
+  p.setDefaultFloat(DECISION_THRESHOLD, -1.0f);
+  p.setDefaultInt(POSITIVE_CLASS_INDEX, -1);
+  p.setDefaultFloat(MIN_FIDELITY, 1.0f);
+  p.setDefaultFloat(HI_KNOT, 5.0f);
+  p.setDefaultInt(SEED, 0);
+  if (p.isStringSet(WEIGHTS_FILE)) {
+    p.setWeightsFiles(); // must be called to initialize
+  }
 
-const std::unordered_map<std::string, ParameterFidexEnum> parameterMap = {
-    {"train_data_file", TRAIN_DATA_FILE},
-    {"train_pred_file", TRAIN_PRED_FILE},
-    {"train_class_file", TRAIN_CLASS_FILE},
-    {"test_data_file", TEST_DATA_FILE},
-    {"weights_file", WEIGHTS_FILE},
-    {"rules_file", RULES_FILE},
-    {"rules_outfile", RULES_OUTFILE},
-    {"nb_attributes", NB_ATTRIBUTES},
-    {"nb_classes", NB_CLASSES},
-    {"root_folder", ROOT_FOLDER},
-    {"nb_dimlp_nets", NB_DIMLP_NETS},
-    {"test_pred_file", TEST_PRED_FILE},
-    {"test_class_file", TEST_CLASS_FILE},
-    {"attributes_file", ATTRIBUTES_FILE},
-    {"stats_file", STATS_FILE},
-    {"console_file", CONSOLE_FILE},
-    {"max_iterations", MAX_ITERATIONS},
-    {"min_covering", MIN_COVERING},
-    {"covering_strategy", COVERING_STRATEGY},
-    {"max_failed_attempts", MAX_FAILED_ATTEMPTS},
-    {"min_fidelity", MIN_FIDELITY},
-    {"dropout_dim", DROPOUT_DIM},
-    {"dropout_hyp", DROPOUT_HYP},
-    {"nb_quant_levels", NB_QUANT_LEVELS},
-    {"decision_threshold", DECISION_THRESHOLD},
-    {"positive_class_index", POSITIVE_CLASS_INDEX},
-    {"normalization_file", NORMALIZATION_FILE},
-    {"mus", MUS},
-    {"sigmas", SIGMAS},
-    {"normalization_indices", NORMALIZATION_INDICES},
-    {"seed", SEED},
-    {"invalid", INVALID}};
+  // this sections check if values comply with program logic
+
+  // asserting mandatory parameters
+  p.assertIntExists(NB_ATTRIBUTES);
+  p.assertIntExists(NB_CLASSES);
+  p.assertStringExists(TRAIN_DATA_FILE);
+  p.assertStringExists(TRAIN_PRED_FILE);
+  p.assertStringExists(TEST_DATA_FILE);
+  p.assertStringExists(RULES_OUTFILE);
+
+  // verifying logic between parameters, values range and so on...
+
+  if (p.getInt(NB_ATTRIBUTES) < 1) {
+    throw CommandArgumentException("Error : Number of attributes must be strictly positive (>=1).");
+  }
+
+  if (p.getInt(NB_CLASSES) < 1) {
+    throw CommandArgumentException("Error : Number of classes must be strictly positive (>=1).");
+  }
+
+  if (p.isStringSet(TEST_CLASS_FILE) && !p.isStringSet(TEST_PRED_FILE)) {
+    throw CommandArgumentException("Error : The test prediction data file(--test_pred_file) needs to be specified if the test class data file(--test_class_file) is given.");
+  }
+
+  if (p.isStringSet(WEIGHTS_FILE) && p.isStringSet(RULES_FILE)) {
+    throw CommandArgumentException("Error : Do not specify both a weight file and an rules input file. Choose one of them.");
+  }
+
+  if (!p.isStringSet(WEIGHTS_FILE) && !p.isStringSet(RULES_FILE)) {
+    throw CommandArgumentException("Error : A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f");
+  }
+
+  if (p.getInt(NB_QUANT_LEVELS) < 1) {
+    throw CommandArgumentException("Error : Number of stairs in staircase activation function must be strictly positive (>=1).");
+  }
+
+  if (p.getInt(NB_DIMLP_NETS) < 1) {
+    throw CommandArgumentException("Error : Number of networks must be strictly positive (>=1).");
+  }
+
+  if (p.getInt(MAX_ITERATIONS) < 1) {
+    throw CommandArgumentException("Error : Maximum number of iterations must be strictly positive (>=1).");
+  }
+
+  if (p.getInt(MIN_COVERING) < 1) {
+    throw CommandArgumentException("Error : Minimium covering must be strictly positive (>=1).");
+  }
+
+  if (p.getFloat(DROPOUT_DIM) < 0.0f || p.getFloat(DROPOUT_DIM) > 1.0f) {
+    throw CommandArgumentException("Error : Dropout dim must be between [0.0, 1.0].");
+  }
+
+  if (p.getFloat(DROPOUT_HYP) < 0.0f || p.getFloat(DROPOUT_HYP) > 1.0f) {
+    throw CommandArgumentException("Error : Dropout hyp must be between [0.0, 1.0].");
+  }
+
+  if (p.getInt(MAX_FAILED_ATTEMPTS) < 0) {
+    throw CommandArgumentException("Error : Maximum number of failed attempts has to be positive (>=0)");
+  }
+
+  if (p.getFloat(MIN_FIDELITY) < 0.0f || p.getFloat(MIN_FIDELITY) > 1.0f) {
+    throw CommandArgumentException("Error : Minimum fidelity has to be between [0.0, 1.0]");
+  }
+
+  if ((p.getFloat(DECISION_THRESHOLD) < 0.0f || p.getFloat(DECISION_THRESHOLD) > 1.0f) && p.getFloat(DECISION_THRESHOLD) != -1.0f) {
+    throw CommandArgumentException("Error : Decision threshold must be between [0.0, 1.0].");
+  }
+
+  if (p.getInt(POSITIVE_CLASS_INDEX) < 0 && p.getInt(POSITIVE_CLASS_INDEX) != -1) {
+    throw CommandArgumentException("Error : Positive class index must be positive (>=0)");
+  }
+
+  if (p.getInt(POSITIVE_CLASS_INDEX) >= p.getInt(NB_CLASSES)) {
+    throw CommandArgumentException("Error : The index of positive class cannot be greater or equal to the number of classes (" + to_string(p.getInt(NB_CLASSES)) + ").");
+  }
+
+  if (p.getFloat(DECISION_THRESHOLD) != -1 && p.getInt(POSITIVE_CLASS_INDEX) == -1) {
+    throw CommandArgumentException("Error : The positive class index has to be given with option --positive_class_index if the decision threshold is given (--decision_threshold)");
+  }
+
+  if (p.getInt(SEED) < 0) {
+    throw CommandArgumentException("Error : Minimium covering must be null or positive (>=0).");
+  }
+
+  // ----------------------------------------------------------------------
+
+  // Check denormalization parameters
+
+  // If normalizationIndices were not specified, it's all attributes
+  if (!p.isStringSet(NORMALIZATION_FILE) && !p.isIntVectorSet(NORMALIZATION_INDICES) && p.isDoubleVectorSet(MUS)) {
+    vector<int> normalizationIndicesTemp;
+    for (int i = 0; i < p.getInt(NB_ATTRIBUTES); ++i) {
+      normalizationIndicesTemp.push_back(i);
+    }
+    p.setIntVector(NORMALIZATION_INDICES, normalizationIndicesTemp);
+  }
+
+  // Check if mus and sigmas are both given or both not
+  if ((p.isDoubleVectorSet(MUS) || p.isDoubleVectorSet(SIGMAS)) &&
+      !(p.isDoubleVectorSet(MUS) && p.isDoubleVectorSet(SIGMAS))) {
+    throw CommandArgumentException("Error : One of Mus(--mus) and sigmas(--sigmas) is given but not the other.");
+  }
+
+  if (p.isStringSet(NORMALIZATION_FILE) && p.isDoubleVectorSet(MUS) || p.isStringSet(NORMALIZATION_FILE) && p.isIntVectorSet(NORMALIZATION_INDICES)) {
+    throw CommandArgumentException("Error : normlization file (--normalization_file) and mus or normalizationIndices (--normalization_indices) are both given.");
+  }
+
+  // Mus, sigmas and normalizationIndices must have the same size and not be empty
+  if (p.isDoubleVectorSet(MUS) && (p.getDoubleVector(MUS).size() != p.getDoubleVector(SIGMAS).size() || p.getDoubleVector(MUS).size() != p.getIntVector(NORMALIZATION_INDICES).size() || p.getDoubleVector(MUS).empty())) {
+    throw CommandArgumentException("Error : mus (--mus), sigmas (--sigmas) and normalization indices (--normalization_indices) don't have the same size or are empty.");
+  }
+
+  // Check normalizationIndices
+  if (p.isIntVectorSet(NORMALIZATION_INDICES)) {
+    vector<int> tempVect = p.getIntVector(NORMALIZATION_INDICES);
+    std::set<int> uniqueIndices(tempVect.begin(), tempVect.end());
+    if (uniqueIndices.size() != p.getIntVector(NORMALIZATION_INDICES).size() ||
+        *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= p.getInt(NB_ATTRIBUTES) ||
+        *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
+      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) has negative, greater than the number of attributes or repeted elements.");
+    }
+  }
+}
 
 int fidex(const string &command) {
 
@@ -131,533 +210,84 @@ int fidex(const string &command) {
 
     // Parsing the command
     vector<string> commandList;
-    const char delim = ' ';
     string s;
     stringstream ss(command);
-    while (std::getline(ss, s, delim)) {
+
+    while (getline(ss, s, ' ')) {
       commandList.push_back(s);
     }
+
     size_t nbParam = commandList.size();
-
-    // Parameters declaration
-
-    int seed = 0;
-
-    string trainDataFileTemp; // Train data
-    bool trainDataFileInit = false;
-    string trainDataFilePredTemp; // Train class predictions from dimlp
-    bool trainDataFilePredInit = false;
-    string trainDataFileTrueClassTemp; // Train true classes
-    bool trainDataFileTrueClassInit = false;
-
-    string mainSamplesDataFileTemp; // Test data value, prediction(if no --test_pred_file) and true class(optional, if no --test_class_file)
-    bool mainSamplesDataFileInit = false;
-    string mainSamplesPredFileTemp; // Test predictions
-    bool mainSamplesPredFileInit = false;
-    string mainSamplesClassFileTemp; // Test true classes
-    bool mainSamplesClassFileInit = false;
-    string attributFileTemp; // attribut file
-    bool attributFileInit = false;
-
-    int nbAttributes = -1;
-    int nbClasses = -1;
-
-    bool hasTrueClasses; // Check if we have the true classes
-
-    std::string weightsFileTemp;
-    std::vector<std::string> weightsFilesTemp;
-    bool weightsFileInit = false;
-    string inputRulesFileTemp; // Rule file to be converted to hyperlocus, replace weight file
-    bool inputRulesFileInit = false;
-
-    string ruleFileTemp;
-    bool ruleFileInit = false;
-    string statsFileTemp;
-    bool statsFileInit = false;
-    string consoleFileTemp;
-    bool consoleFileInit = false;
-    string rootFolderTemp;
-    bool rootFolderInit = false;
-
-    int nbDimlpNets = 1; // Number of networks. 1 means no bagging
-
-    int nbQuantLevels = 50; // Number of steps of the step function
-    double hiKnot = 5;      // High end of the interval for each dimension, a hyperplan can't be after
-
-    int itMax = 10;                // We stop if we have more than itMax iterations (impossible to have a rule with more than itMax antecedents)
-    int minNbCover = 2;            // Minimum size of covering that we ask
-    bool minCoverStrategy = false; // Decresase by 1 the minNbCover each time maximal fidelity is not achieved
-    int maxFailedAttempts = 30;    // Maximum number of attemps when minNbCover = 1
-    double minFidelity = 1;        // Minimum Fidelity to obtain when computing a rule
-    bool dropoutHyp = false;       // We dropout a bunch of hyperplans each iteration (could accelerate the processus)
-    double dropoutHypParam = 0.5;
-    bool dropoutDim = false; // We dropout a bunch of dimensions each iteration (could accelerate the processus)
-    double dropoutDimParam = 0.5;
-
-    bool hasDecisionThreshold = false;
-    double decisionThreshold = -1;
-    bool hasIndexPositiveClass = false;
-    int indexPositiveClass = -1;
-
-    string normalizationFileTemp;
-    bool normalizationFileInit = false;
-    std::vector<double> mus;
-    bool hasMus = false;
-    std::vector<double> sigmas;
-    bool hasSigmas = false;
-    std::vector<int> normalizationIndices;
-    bool hasNormalizationIndices = false;
+    if (nbParam < 2) {
+      showFidexParams();
+      exit(1);
+    }
 
     // Import parameters
-
-    if (nbParam <= 1) {
-      showFidexParams();
-      return 0;
-    }
-
-    int p = 1; // We skip "fidexGlo"
-    while (p < nbParam) {
-      string param = commandList[p];
-
-      if (param.substr(0, 2) == "--") {
-        param = param.substr(2);
-        p++;
-
-        if (p >= nbParam) {
-          throw CommandArgumentException("Missing something at the end of the command.");
-        }
-        const char *arg = commandList[p].c_str();
-        string stringArg = arg;
-
-        ParameterFidexEnum option;
-        auto it = parameterMap.find(param);
-        if (it != parameterMap.end()) {
-          option = it->second;
-        } else {
-          option = INVALID;
-        }
-
-        switch (option) { // After --
-
-        case TRAIN_DATA_FILE:
-          trainDataFileTemp = arg; // Parameter after --train_data_file
-          trainDataFileInit = true;
-          break;
-
-        case TRAIN_PRED_FILE:
-          trainDataFilePredTemp = arg;
-          trainDataFilePredInit = true;
-          break;
-
-        case TRAIN_CLASS_FILE:
-          trainDataFileTrueClassTemp = arg;
-          trainDataFileTrueClassInit = true;
-          break;
-
-        case TEST_DATA_FILE:
-          mainSamplesDataFileTemp = arg;
-          mainSamplesDataFileInit = true;
-          break;
-
-        case NB_ATTRIBUTES:
-          if (checkPositiveInt(arg) && atoi(arg) > 0) {
-            nbAttributes = atoi(arg);
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", strictly positive integer requested.");
-          }
-          break;
-
-        case NB_CLASSES:
-          if (checkPositiveInt(arg) && atoi(arg) > 0) {
-            nbClasses = atoi(arg);
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", strictly positive integer requested.");
-          }
-          break;
-
-        case TEST_PRED_FILE:
-          mainSamplesPredFileTemp = arg;
-          mainSamplesPredFileInit = true;
-          break;
-
-        case TEST_CLASS_FILE:
-          mainSamplesClassFileTemp = arg;
-          mainSamplesClassFileInit = true;
-          break;
-
-        case ATTRIBUTES_FILE:
-          attributFileTemp = arg;
-          attributFileInit = true;
-          break;
-
-        case WEIGHTS_FILE: {
-          weightsFileTemp = arg;
-          weightsFileInit = true;
-        } break;
-
-        case RULES_FILE: {
-          inputRulesFileTemp = arg;
-          inputRulesFileInit = true;
-        } break;
-
-        case NB_DIMLP_NETS:
-          if (checkPositiveInt(arg))
-            nbDimlpNets = atoi(arg);
-          else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", positive integer requested.");
-          }
-
-          break;
-
-        case NB_QUANT_LEVELS:
-          if (checkPositiveInt(arg)) {
-            nbQuantLevels = atoi(arg);
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", positive integer requested.");
-          }
-          break;
-
-        case RULES_OUTFILE:
-          ruleFileTemp = arg;
-          ruleFileInit = true;
-          break;
-
-        case STATS_FILE:
-          statsFileTemp = arg;
-          statsFileInit = true;
-          break;
-
-        case CONSOLE_FILE:
-          consoleFileTemp = arg;
-          consoleFileInit = true;
-          break;
-
-        case ROOT_FOLDER:
-          rootFolderTemp = arg;
-          rootFolderInit = true;
-          break;
-
-        case MAX_ITERATIONS:
-          if (checkPositiveInt(arg)) {
-            itMax = atoi(arg);
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", positive integer requested.");
-          }
-          break;
-
-        case MIN_COVERING:
-          if (checkPositiveInt(arg) && atoi(arg) >= 1) {
-            minNbCover = atoi(arg);
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer strictly greater than 1 requested.");
-          }
-          break;
-
-        case COVERING_STRATEGY:
-          if (checkBool(arg)) {
-            std::transform(stringArg.begin(), stringArg.end(), stringArg.begin(),
-                           [](unsigned char c) { return std::tolower(c); });
-            minCoverStrategy = (stringArg == "true" || stringArg == "1") ? true : false;
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", boolean requested.");
-          }
-          break;
-
-        case MAX_FAILED_ATTEMPTS:
-          if (checkPositiveInt(arg) && atoi(arg) > 0) {
-            maxFailedAttempts = atoi(arg);
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", strictly positive integer requested.");
-          }
-          break;
-
-        case MIN_FIDELITY:
-          if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
-            minFidelity = atof(arg);
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float included in [0,1] requested.");
-          }
-          break;
-
-        case DROPOUT_DIM:
-          if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
-            dropoutDimParam = atof(arg);
-            dropoutDim = true; // We dropout a bunch of dimensions each iteration (accelerate the processus)
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float included in [0,1] requested.");
-          }
-          break;
-
-        case DROPOUT_HYP:
-          if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
-            dropoutHypParam = atof(arg);
-            dropoutHyp = true; // We dropout a bunch of hyperplans each iteration (accelerate the processus)
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float included in [0,1] requested.");
-          }
-          break;
-
-        case DECISION_THRESHOLD:
-          if (checkFloatFid(arg) && atof(arg) >= 0 && atof(arg) <= 1) {
-            hasDecisionThreshold = true;
-            decisionThreshold = atof(arg);
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float included in [0,1] requested.");
-          }
-          break;
-
-        case POSITIVE_CLASS_INDEX:
-          if (checkPositiveInt(arg)) {
-            hasIndexPositiveClass = true;
-            indexPositiveClass = atoi(arg);
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", positive integer requested.");
-          }
-          break;
-
-        case NORMALIZATION_FILE:
-          normalizationFileTemp = arg;
-          normalizationFileInit = true;
-          break;
-
-        case MUS:
-          if (!checkList(arg)) {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + string(arg) + ".");
-          }
-          mus = getDoubleVectorFromString(arg);
-          hasMus = true;
-          break;
-
-        case SIGMAS:
-          if (!checkList(arg)) {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + string(arg) + ".");
-          }
-          sigmas = getDoubleVectorFromString(arg);
-          hasSigmas = true;
-          break;
-
-        case NORMALIZATION_INDICES:
-          if (!checkList(arg)) {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", list in the form [a,b,...,c] without spaces requested, a,b,c are integers. Received " + string(arg) + ".");
-          }
-          normalizationIndices = getIntVectorFromString(arg);
-          hasNormalizationIndices = true;
-          break;
-
-        case SEED:
-          if (checkPositiveInt(arg))
-            seed = atoi(arg);
-          else
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", positive integer requested.");
-
-          break;
-
-        default: // If we put another -X option
-          throw CommandArgumentException("Illegal option : " + param + ".");
-        }
+    unique_ptr<Parameters> params;
+    if (commandList[1].compare("--json_config_file") == 0) {
+      if (commandList.size() < 3) {
+        throw CommandArgumentException("JSON config file name/path is missing");
       }
 
-      p++;
-    }
-
-    // ----------------------------------------------------------------------
-
-    // Fill weights vector
-    if (weightsFileInit) {
-      if (nbDimlpNets == 1) {
-        weightsFilesTemp.push_back(weightsFileTemp);
-      } else {
-        for (int n = 0; n < nbDimlpNets; n++) {
-          weightsFilesTemp.push_back(weightsFileTemp + std::to_string(n + 1) + ".wts");
-        }
+      try {
+        params = std::unique_ptr<Parameters>(new Parameters(commandList[2]));
+      } catch (const std::out_of_range &) {
+        throw CommandArgumentException("JSON config file name/path is invalid");
       }
+    } else {
+      // Read parameters from CLI
+      params = std::unique_ptr<Parameters>(new Parameters(commandList));
     }
 
-    // create paths with root foler
-
-    const char *trainDataFile = nullptr;
-    const char *trainDataFilePred = nullptr;
-    const char *trainDataFileTrueClass = nullptr;
-    const char *mainSamplesDataFile = nullptr;
-    const char *mainSamplesPredFile = nullptr;
-    const char *mainSamplesClassFile = nullptr;
-    const char *attributFile = nullptr;
-    std::vector<const char *> weightsFiles;
-    const char *inputRulesFile = nullptr;
-    const char *ruleFile = nullptr;
-    const char *statsFile = nullptr;
-    const char *consoleFile = nullptr;
-    const char *normalizationFile = nullptr;
-
-    string root = "";
-    if (rootFolderInit) {
-#if defined(__unix__) || defined(__APPLE__)
-      root = rootFolderTemp + "/";
-#elif defined(_WIN32)
-      root = rootFolderTemp + "\\";
-#endif
-    }
-
-    if (trainDataFileInit) {
-      trainDataFileTemp = root + trainDataFileTemp;
-      trainDataFile = &trainDataFileTemp[0];
-    }
-
-    if (trainDataFilePredInit) {
-      trainDataFilePredTemp = root + trainDataFilePredTemp;
-      trainDataFilePred = &trainDataFilePredTemp[0];
-    }
-
-    if (trainDataFileTrueClassInit) {
-      trainDataFileTrueClassTemp = root + trainDataFileTrueClassTemp;
-      trainDataFileTrueClass = &trainDataFileTrueClassTemp[0];
-    }
-
-    if (mainSamplesDataFileInit) {
-      mainSamplesDataFileTemp = root + mainSamplesDataFileTemp;
-      mainSamplesDataFile = &mainSamplesDataFileTemp[0];
-    }
-
-    if (mainSamplesPredFileInit) {
-      mainSamplesPredFileTemp = root + mainSamplesPredFileTemp;
-      mainSamplesPredFile = &mainSamplesPredFileTemp[0];
-    }
-
-    if (mainSamplesClassFileInit) {
-      mainSamplesClassFileTemp = root + mainSamplesClassFileTemp;
-      mainSamplesClassFile = &mainSamplesClassFileTemp[0];
-    }
-
-    if (attributFileInit) {
-      attributFileTemp = root + attributFileTemp;
-      attributFile = &attributFileTemp[0];
-    }
-
-    if (weightsFileInit) {
-      for (int i; i < weightsFilesTemp.size(); i++) {
-        weightsFilesTemp[i] = root + weightsFilesTemp[i];
-        weightsFiles.push_back(&weightsFilesTemp[i][0]);
-      }
-    }
-
-    if (inputRulesFileInit) {
-      inputRulesFileTemp = root + inputRulesFileTemp;
-      inputRulesFile = &inputRulesFileTemp[0];
-    }
-
-    if (ruleFileInit) {
-      ruleFileTemp = root + ruleFileTemp;
-      ruleFile = &ruleFileTemp[0];
-    }
-
-    if (statsFileInit) {
-      statsFileTemp = root + statsFileTemp;
-      statsFile = &statsFileTemp[0];
-    }
-
-    if (consoleFileInit) {
-      consoleFileTemp = root + consoleFileTemp;
-      consoleFile = &consoleFileTemp[0];
-    }
-
-    if (normalizationFileInit) {
-      normalizationFileTemp = root + normalizationFileTemp;
-      normalizationFile = &normalizationFileTemp[0];
-    }
-
-    if (hasDecisionThreshold && !hasIndexPositiveClass) {
-      throw CommandArgumentException("The positive class index has to be given with option --positive_class_index if the decision threshold is given (--decision_threshold).");
-    }
-
-    // ----------------------------------------------------------------------
-
-    if (!trainDataFileInit) {
-      throw CommandArgumentException("The train data file has to be given with option --train_data_file.");
-    }
-    if (!trainDataFilePredInit) {
-      throw CommandArgumentException("The train prediction file has to be given with option --train_pred_file.");
-    }
-    if (!mainSamplesDataFileInit) {
-      throw CommandArgumentException("The test samples data file <value, prediction(if no --test_pred_file), true class(if no --test_class_file)> has to be given with option --test_data_file.");
-    }
-    if (mainSamplesClassFileInit && !mainSamplesPredFileInit) {
-      throw CommandArgumentException("The test prediction data file(--test_pred_file) needs to be specified if the test class data file(--test_class_file) is given.");
-    }
-    if (!weightsFileInit && !inputRulesFileInit) {
-      throw CommandArgumentException("A weight file or a rules file has to be given. Give the weights file with option --weights_file or the rules file with option --rules_file.");
-    } else if (weightsFileInit && inputRulesFileInit) {
-      throw CommandArgumentException("Do not specify both a weight file(--weights_file) and a rules file(--rules_file). Choose one of them.");
-    }
-    if (!ruleFileInit) {
-      throw CommandArgumentException("The output rule file has to be given with option --rules_outfile.");
-    }
-    if (nbAttributes == -1) {
-      throw CommandArgumentException("The number of attributes has to be given with option --nb_attributes.");
-    }
-    if (nbClasses == -1) {
-      throw CommandArgumentException("The number of classes has to be given with option --nb_classes.");
-    }
-
-    // ----------------------------------------------------------------------
-
-    // Check denormalization parameters
-
-    // If normalizationIndices were not specified, it's all attributes
-    if (!normalizationFileInit && !hasNormalizationIndices) {
-      for (int i = 0; i < nbAttributes; ++i) {
-        normalizationIndices.push_back(i);
-      }
-      hasNormalizationIndices = true;
-    }
-
-    // Check if mus and sigmas are both given or both not
-    if ((hasMus || hasSigmas) &&
-        !(hasMus && hasSigmas)) {
-      throw CommandArgumentException("Error : One of Mus(--mus) and sigmas(--sigmas) is given but not the other.");
-    }
-
-    if (normalizationFileInit && hasMus || normalizationFileInit && hasNormalizationIndices) {
-      throw CommandArgumentException("Error : normlization file (--normalization_file) and mus or normalizationIndices (--normalization_indices) are both given.");
-    }
-
-    // Mus, sigmas and normalizationIndices must have the same size and not be empty
-    if (hasMus && (mus.size() != sigmas.size() || mus.size() != normalizationIndices.size() || mus.empty())) {
-      throw CommandArgumentException("Error : mus (--mus), sigmas (--sigmas) and normalization indices (--normalization_indices) don't have the same size or are empty.");
-    }
-
-    // Check normalizationIndices
-    std::set<int> uniqueIndices(normalizationIndices.begin(), normalizationIndices.end());
-    if (uniqueIndices.size() != normalizationIndices.size() ||
-        *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= nbAttributes ||
-        *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
-      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) has negative, greater than the number of attributes or repeted elements.");
-    }
-
-    // ----------------------------------------------------------------------
+    // getting all program arguments from CLI
+    checkFidexParametersLogicValues(*params);
+    cout << *params;
 
     // Get console results to file
-    if (consoleFileInit != false) {
-      ofs.open(consoleFile);
-      std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
+    if (params->isStringSet(CONSOLE_FILE)) {
+      ofs.open(params->getString(CONSOLE_FILE));
+      cout.rdbuf(ofs.rdbuf()); // redirect cout to file
     }
 
     // ----------------------------------------------------------------------
 
-    std::cout << "\nParameters :\n"
-              << std::endl;
-    std::cout << "- Max iteration number : " << itMax << endl;
-    std::cout << "- Min size of covering : " << minNbCover << endl;
-    if (dropoutDim) {
-      std::cout << "- We use a dimension dropout of " << dropoutDimParam << endl;
-    } else {
-      std::cout << "- We don't use dimension dropout" << std::endl;
+    int nbAttributes = params->getInt(NB_ATTRIBUTES);
+    int nbClasses = params->getInt(NB_CLASSES);
+    std::string trainDataFile = params->getString(TRAIN_DATA_FILE);
+    std::string trainDataFilePred = params->getString(TRAIN_PRED_FILE);
+    std::string mainSamplesDataFile = params->getString(TEST_DATA_FILE);
+    std::string ruleFile = params->getString(RULES_OUTFILE);
+    float decisionThreshold = params->getFloat(DECISION_THRESHOLD);
+    int positiveClassIndex = params->getInt(POSITIVE_CLASS_INDEX);
+    int minNbCover = params->getInt(MIN_COVERING);
+    int seed = params->getInt(SEED);
+    int nbDimlpNets = params->getInt(NB_DIMLP_NETS);
+    int nbQuantLevels = params->getInt(NB_QUANT_LEVELS);
+    float hiKnot = params->getFloat(HI_KNOT);
+    float minFidelity = params->getFloat(MIN_FIDELITY);
+    int maxIterations = params->getInt(MAX_ITERATIONS);
+    float dropoutDim = params->getFloat(DROPOUT_DIM);
+    float dropoutHyp = params->getFloat(DROPOUT_HYP);
+    bool hasdd = dropoutDim > 0.001;
+    bool hasdh = dropoutHyp > 0.001;
+    bool minCoverStrategy = params->getBool(COVERING_STRATEGY);
+    int maxFailedAttempts = params->getInt(MAX_FAILED_ATTEMPTS);
+
+    string weightsFile;
+    if (params->isStringSet(WEIGHTS_FILE)) {
+      weightsFile = params->getString(WEIGHTS_FILE);
     }
-    if (dropoutHyp) {
-      std::cout << "- We use a hyperplan dropout of " << dropoutHypParam << endl;
-    } else {
-      std::cout << "- We don't use hyperplan dropout" << std::endl;
+
+    string inputRulesFile;
+    if (params->isStringSet(RULES_FILE)) {
+      inputRulesFile = params->getString(RULES_FILE);
     }
-    std::cout << endl;
+
+    vector<string> weightsFiles;
+    if (params->isStringSet(WEIGHTS_FILE)) {
+      weightsFiles = params->getWeightsFiles();
+    }
 
     // Import files
 
@@ -670,19 +300,19 @@ int fidex(const string &command) {
     impt1 = clock();
 
     std::unique_ptr<DataSetFid> trainDatas;
-    if (!trainDataFileTrueClassInit) {
-      trainDatas.reset(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nbAttributes, nbClasses, decisionThreshold, indexPositiveClass));
+    if (!params->isStringSet(TRAIN_CLASS_FILE)) {
+      trainDatas.reset(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nbAttributes, nbClasses, decisionThreshold, positiveClassIndex));
       if (!trainDatas->getHasClasses()) {
         throw CommandArgumentException("The train true classes file has to be given with option --train_class_file or classes have to be given in the train data file.");
       }
     } else {
-      trainDatas.reset(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nbAttributes, nbClasses, decisionThreshold, indexPositiveClass, trainDataFileTrueClass));
+      trainDatas.reset(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nbAttributes, nbClasses, decisionThreshold, positiveClassIndex, params->getString(TRAIN_CLASS_FILE)));
     }
 
-    vector<vector<double>> *trainData = trainDatas->getDatas();
-    vector<int> *trainPreds = trainDatas->getPredictions();
-    vector<vector<double>> *trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
-    vector<int> *trainTrueClass = trainDatas->getClasses();
+    vector<vector<double>> &trainData = trainDatas->getDatas();
+    vector<int> &trainPreds = trainDatas->getPredictions();
+    vector<vector<double>> &trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
+    vector<int> &trainTrueClass = trainDatas->getClasses();
 
     int nbTrainSamples = trainDatas->getNbSamples();
 
@@ -696,31 +326,32 @@ int fidex(const string &command) {
     vector<vector<double>> mainSamplesValues;
     vector<vector<double>> mainSamplesOutputValuesPredictions;
     std::unique_ptr<DataSetFid> testDatas;
-    if (!mainSamplesPredFileInit) { // If we have only one test data file with data, pred and class
-      testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, nbAttributes, nbClasses, decisionThreshold, indexPositiveClass));
-      mainSamplesValues = (*testDatas->getDatas());
-      mainSamplesPreds = (*testDatas->getPredictions());
-      mainSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
+    bool hasTrueClasses;
+    if (!params->isStringSet(TEST_PRED_FILE)) { // If we have only one test data file with data, pred and class
+      testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, nbAttributes, nbClasses, decisionThreshold, positiveClassIndex));
+      mainSamplesValues = testDatas->getDatas();
+      mainSamplesPreds = testDatas->getPredictions();
+      mainSamplesOutputValuesPredictions = testDatas->getOutputValuesPredictions();
       hasTrueClasses = testDatas->getHasClasses();
       if (hasTrueClasses) {
-        mainSamplesTrueClass = (*testDatas->getClasses());
+        mainSamplesTrueClass = testDatas->getClasses();
       }
 
     } else { // We have different files for test predictions and test classes
 
-      if (mainSamplesClassFileInit) {
-        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, nbAttributes, nbClasses, decisionThreshold, indexPositiveClass, mainSamplesClassFile));
+      if (params->isStringSet(TEST_CLASS_FILE)) {
+        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, params->getString(TEST_PRED_FILE), nbAttributes, nbClasses, decisionThreshold, positiveClassIndex, params->getString(TEST_CLASS_FILE)));
       } else {
-        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, mainSamplesPredFile, nbAttributes, nbClasses, decisionThreshold, indexPositiveClass));
+        testDatas.reset(new DataSetFid("testDatas from Fidex", mainSamplesDataFile, params->getString(TEST_PRED_FILE), nbAttributes, nbClasses, decisionThreshold, positiveClassIndex));
       }
-      mainSamplesValues = (*testDatas->getDatas());
-      mainSamplesPreds = (*testDatas->getPredictions());
-      mainSamplesOutputValuesPredictions = (*testDatas->getOutputValuesPredictions());
+      mainSamplesValues = testDatas->getDatas();
+      mainSamplesPreds = testDatas->getPredictions();
+      mainSamplesOutputValuesPredictions = testDatas->getOutputValuesPredictions();
 
       // Classes :
-      if (mainSamplesClassFileInit) {
+      if (params->isStringSet(TEST_CLASS_FILE)) {
         hasTrueClasses = true;
-        mainSamplesTrueClass = (*testDatas->getClasses());
+        mainSamplesTrueClass = testDatas->getClasses();
       } else {
         hasTrueClasses = false;
       }
@@ -732,24 +363,31 @@ int fidex(const string &command) {
     vector<string> attributeNames;
     vector<string> classNames;
     bool hasClassNames = false;
-    if (attributFileInit) {
-      testDatas->setAttributes(attributFile, nbAttributes, nbClasses);
-      attributeNames = (*testDatas->getAttributeNames());
+    if (params->isStringSet(ATTRIBUTES_FILE)) {
+      testDatas->setAttributes(params->getString(ATTRIBUTES_FILE), nbAttributes, nbClasses);
+      attributeNames = testDatas->getAttributeNames();
       hasClassNames = testDatas->getHasClassNames();
       if (hasClassNames) {
-        classNames = (*testDatas->getClassNames());
+        classNames = testDatas->getClassNames();
       }
     }
 
     impt2 = clock();
     importTime = (float)(impt2 - impt1) / CLOCKS_PER_SEC;
 
+    vector<int> normalizationIndices;
+    vector<double> mus;
+    vector<double> sigmas;
+
     // Get mus, sigmas and normalizationIndices from normalizationFile for denormalization :
-    if (normalizationFileInit) {
-      auto results = parseNormalizationStats(normalizationFile, nbAttributes, attributeNames);
+    if (params->isStringSet(NORMALIZATION_FILE)) {
+      auto results = parseNormalizationStats(params->getString(NORMALIZATION_FILE), params->getInt(NB_ATTRIBUTES), attributeNames);
       normalizationIndices = std::get<0>(results);
       mus = std::get<2>(results);
       sigmas = std::get<3>(results);
+      params->setIntVector(NORMALIZATION_INDICES, normalizationIndices);
+      params->setDoubleVector(MUS, mus);
+      params->setDoubleVector(SIGMAS, sigmas);
     }
 
     std::cout << "\nImport time = " << importTime << " sec" << std::endl;
@@ -781,7 +419,7 @@ int fidex(const string &command) {
 
     std::vector<std::vector<double>> matHypLocus;
 
-    if (weightsFileInit) {
+    if (params->isStringSet(WEIGHTS_FILE)) {
       if (nbDimlpNets > 1) {
         std::cout << "\nParameters of hyperLocus :\n"
                   << std::endl;
@@ -790,12 +428,12 @@ int fidex(const string &command) {
                   << std::endl;
         std::cout << "Computation of all hyperlocus" << std::endl;
       }
-      for (const auto &weightsFile : weightsFiles) {
+      for (string wf : weightsFiles) {
         std::vector<std::vector<double>> hypLocus;
         if (nbDimlpNets > 1) {
-          hypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot, false); // Get hyperlocus
+          hypLocus = calcHypLocus(wf, nbQuantLevels, hiKnot, false); // Get hyperlocus
         } else {
-          hypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
+          hypLocus = calcHypLocus(wf, nbQuantLevels, hiKnot); // Get hyperlocus
         }
 
         matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end()); // Concatenate hypLocus to matHypLocus
@@ -804,7 +442,11 @@ int fidex(const string &command) {
         std::cout << "All hyperlocus created" << std::endl;
       }
     } else {
-      matHypLocus = calcHypLocus(inputRulesFile, nbAttributes);
+      if (params->isStringSet(ATTRIBUTES_FILE)) {
+        matHypLocus = calcHypLocus(inputRulesFile, nbAttributes, attributeNames);
+      } else {
+        matHypLocus = calcHypLocus(inputRulesFile, nbAttributes);
+      }
     }
 
     FidexNameSpace::Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans
@@ -859,7 +501,7 @@ int fidex(const string &command) {
 
         nbIt = 0;
 
-        while (hyperspace.getHyperbox()->getFidelity() < minFidelity && nbIt < itMax) { // While fidelity of our hyperbox is not high enough
+        while (hyperspace.getHyperbox()->getFidelity() < minFidelity && nbIt < maxIterations) { // While fidelity of our hyperbox is not high enough
           // std::cout << "New iteration : " << nbIt << std::endl;
           std::unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());    // best hyperbox to choose for next step
           std::unique_ptr<Hyperbox> currentHyperbox(new Hyperbox()); // best hyperbox to choose for next step
@@ -885,7 +527,7 @@ int fidex(const string &command) {
             mainSampleValue = mainSamplesValues[currentSample][attribut];
             // Test if we dropout this dimension
 
-            if (dropoutDim && dis(gen) < dropoutDimParam) {
+            if (hasdd && dis(gen) < dropoutDim) {
               continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
             }
 
@@ -900,7 +542,7 @@ int fidex(const string &command) {
             for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
               // std::cout << "\rNEW hyp: " << k+1 << "/" << nbHyp << std::flush;
               //  Test if we dropout this hyperplan
-              if (dropoutHyp && dis(gen) < dropoutHypParam) {
+              if (hasdh && dis(gen) < dropoutHyp) {
                 continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
               }
 
@@ -966,7 +608,7 @@ int fidex(const string &command) {
             }
             if (counterFailed >= maxFailedAttempts) {
               std::cout << "WARNING Fidelity is too low after trying " << std::to_string(maxFailedAttempts) << "times with a minimum covering of 1! You may want to try again." << std::endl;
-              if (dropoutDim || dropoutHyp) {
+              if (hasdd || hasdh) {
                 std::cout << "Try to not use dropout." << std::endl;
               }
             }
@@ -996,9 +638,9 @@ int fidex(const string &command) {
       double ruleAccuracy;
       if (hasTrueClasses) {
         bool mainSampleCorrect = mainSamplesPreds[currentSample] == mainSamplesTrueClass[currentSample];
-        ruleAccuracy = hyperspace.computeRuleAccuracy(trainPreds, trainTrueClass, mainSampleCorrect); // Percentage of correct model prediction on samples covered by the rule
+        ruleAccuracy = hyperspace.computeRuleAccuracy(trainPreds, trainTrueClass, hasTrueClasses, mainSampleCorrect); // Percentage of correct model prediction on samples covered by the rule
       } else {
-        ruleAccuracy = hyperspace.computeRuleAccuracy(trainPreds, trainTrueClass); // Percentage of correct model prediction on samples covered by the rule
+        ruleAccuracy = hyperspace.computeRuleAccuracy(trainPreds, trainTrueClass, hasTrueClasses); // Percentage of correct model prediction on samples covered by the rule
       }
 
       meanAccuracy += ruleAccuracy;
@@ -1016,10 +658,10 @@ int fidex(const string &command) {
       meanCovSize += static_cast<double>(hyperspace.getHyperbox()->getCoveredSamples().size());
       meanNbAntecedentsPerRule += static_cast<double>(hyperspace.getHyperbox()->getDiscriminativeHyperplans().size());
       // Extract rules
-      if (hasMus) {
-        hyperspace.ruleExtraction(&mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, attributFileInit, &attributeNames, hasClassNames, &classNames, &mus, &sigmas, &normalizationIndices);
+      if (params->isDoubleVectorSet(MUS)) {
+        hyperspace.ruleExtraction(mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, params->isStringSet(ATTRIBUTES_FILE), attributeNames, hasClassNames, classNames, mus, sigmas, normalizationIndices);
       } else {
-        hyperspace.ruleExtraction(&mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, attributFileInit, &attributeNames, hasClassNames, &classNames);
+        hyperspace.ruleExtraction(mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, params->isStringSet(ATTRIBUTES_FILE), attributeNames, hasClassNames, classNames);
       }
 
       if (hyperspace.getHyperbox()->getCoveredSamples().size() < minNbCover) {
@@ -1041,8 +683,8 @@ int fidex(const string &command) {
     meanNbAntecedentsPerRule /= static_cast<double>(nbTestSamples);
     meanAccuracy /= static_cast<double>(nbTestSamples);
 
-    if (statsFileInit) {
-      ofstream outputStatsFile(statsFile);
+    if (params->isStringSet(STATS_FILE)) {
+      ofstream outputStatsFile(params->getString(STATS_FILE));
       if (outputStatsFile.is_open()) {
         outputStatsFile << "Statistics with a test set of " << nbTestSamples << " samples :\n"
                         << std::endl;
@@ -1053,7 +695,7 @@ int fidex(const string &command) {
         outputStatsFile << "The mean rule confidence is : " << meanConfidence << "" << std::endl;
         outputStatsFile.close();
       } else {
-        throw CannotOpenFileError("Error : Couldn't open stats extraction file " + std::string(statsFile) + ".");
+        throw CannotOpenFileError("Error : Couldn't open stats extraction file " + params->getString(STATS_FILE) + ".");
       }
     }
 
@@ -1064,7 +706,7 @@ int fidex(const string &command) {
       }
       outputFile.close();
     } else {
-      throw CannotOpenFileError("Error : Couldn't open rule extraction file " + std::string(ruleFile) + ".");
+      throw CannotOpenFileError("Error : Couldn't open rule extraction file " + ruleFile + ".");
     }
 
     d2 = clock();

@@ -36,6 +36,10 @@ void GiveAllParamDensCls()
   cout << "--with_rule_extraction (RULE EXTRACTION)" << std::endl;
   cout << "--global_rules_outfile <extraction ruleFile>" << std::endl; // If we want to extract rules in a rulesFile instead of console
   cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
+  cout << "--normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << std::endl;
+  cout << "--mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
+  cout << "--sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
+  cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_stats is given)>" << std::endl;
 
   cout << "\n-------------------------------------------------\n"
        << std::endl;
@@ -62,6 +66,10 @@ enum ParameterDensClsEnum {
   WITH_RULE_EXTRACTION,
   GLOBAL_RULES_OUTFILE,
   NB_QUANT_LEVELS,
+  NORMALIZATION_FILE,
+  MUS,
+  SIGMAS,
+  NORMALIZATION_INDICES,
   INVALID
 };
 
@@ -83,7 +91,11 @@ const std::unordered_map<std::string, ParameterDensClsEnum> parameterMap = {
     {"H", H},
     {"with_rule_extraction", WITH_RULE_EXTRACTION},
     {"global_rules_outfile", GLOBAL_RULES_OUTFILE},
-    {"nb_quant_levels", NB_QUANT_LEVELS}};
+    {"nb_quant_levels", NB_QUANT_LEVELS},
+    {"normalization_file", NORMALIZATION_FILE},
+    {"mus", MUS},
+    {"sigmas", SIGMAS},
+    {"normalization_indices", NORMALIZATION_INDICES}};
 
 int densCls(const string &command) {
 
@@ -148,6 +160,15 @@ int densCls(const string &command) {
     string rootFolderTemp;
     bool rootFolderInit = false;
 
+    string normalizationFileTemp;
+    bool normalizationFileInit = false;
+    std::vector<double> mus;
+    bool hasMus = false;
+    std::vector<double> sigmas;
+    bool hasSigmas = false;
+    std::vector<int> normalizationIndices;
+    bool hasNormalizationIndices = false;
+
     int nbLayers;
     int nbWeightLayers;
     std::vector<int> vecNbNeurons;
@@ -160,19 +181,18 @@ int densCls(const string &command) {
       return 0;
     }
 
+    std::vector<ParameterDensClsEnum> paramsWithoutValues;
+    paramsWithoutValues.push_back(WITH_RULE_EXTRACTION);
+    bool isParamWithoutValue = false;
+
     int p = 1; // We skip "DensCls"
     while (p < nbParam) {
+      isParamWithoutValue = false;
       string param = commandList[p];
 
       if (param.substr(0, 2) == "--") {
         param = param.substr(2);
         p++;
-
-        if (p >= nbParam) {
-          throw CommandArgumentException("Missing something at the end of the command.");
-        }
-        const char *arg = commandList[p].c_str();
-        string stringArg = arg;
 
         ParameterDensClsEnum option;
         auto it = parameterMap.find(param);
@@ -189,6 +209,25 @@ int densCls(const string &command) {
           } else {
             option = INVALID;
           }
+        }
+
+        if (std::find(paramsWithoutValues.begin(), paramsWithoutValues.end(), option) != paramsWithoutValues.end()) {
+          isParamWithoutValue = true;
+        }
+
+        if (p >= nbParam && !isParamWithoutValue) {
+          throw CommandArgumentException("Missing something at the end of the command.");
+        }
+
+        if (p + 1 < nbParam && commandList[p + 1].substr(0, 2) != "--" && !isParamWithoutValue) {
+          throw CommandArgumentException("There is a parameter without -- (" + commandList[p + 1] + ").");
+        }
+
+        const char *arg;
+        string stringArg;
+        if (!isParamWithoutValue) {
+          arg = commandList[p].c_str();
+          stringArg = arg;
         }
 
         switch (option) { // After --
@@ -305,6 +344,35 @@ int densCls(const string &command) {
           rulesFileInit = true;
           break;
 
+        case NORMALIZATION_FILE:
+          normalizationFileTemp = arg;
+          normalizationFileInit = true;
+          break;
+
+        case MUS:
+          if (!checkList(arg)) {
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + string(arg) + ".");
+          }
+          mus = getDoubleVectorFromString(arg);
+          hasMus = true;
+          break;
+
+        case SIGMAS:
+          if (!checkList(arg)) {
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + string(arg) + ".");
+          }
+          sigmas = getDoubleVectorFromString(arg);
+          hasSigmas = true;
+          break;
+
+        case NORMALIZATION_INDICES:
+          if (!checkList(arg)) {
+            throw CommandArgumentException("Error : invalide type for parameter " + param + ", list in the form [a,b,...,c] without spaces requested, a,b,c are integers. Received " + string(arg) + ".");
+          }
+          normalizationIndices = getIntVectorFromString(arg);
+          hasNormalizationIndices = true;
+          break;
+
         default:
           throw CommandArgumentException("Illegal option : " + param);
         }
@@ -334,6 +402,7 @@ int densCls(const string &command) {
     const char *validTar = nullptr;
     const char *attrFile = nullptr;
     const char *weightFileSave = nullptr;
+    const char *normalizationFile = nullptr;
 
     string root = "";
     if (rootFolderInit) {
@@ -404,6 +473,11 @@ int densCls(const string &command) {
       attrFile = &attrFileTemp[0];
     }
 
+    if (normalizationFileInit) {
+      normalizationFileTemp = root + normalizationFileTemp;
+      normalizationFile = &normalizationFileTemp[0];
+    }
+
     weightFileSaveTemp = root + weightFileSaveTemp;
     weightFileSave = &weightFileSaveTemp[0];
 
@@ -435,6 +509,41 @@ int densCls(const string &command) {
 
     if (nbDimlpNets == 0) {
       throw CommandArgumentException("Give the number of networks with --weights_generic_filename selection please.");
+    }
+
+    // ----------------------------------------------------------------------
+
+    // Check denormalization parameters
+
+    // If normalizationIndices were not specified, it's all attributes
+    if (!normalizationFileInit && !hasNormalizationIndices && hasMus) {
+      for (int i = 0; i < nbIn; ++i) {
+        normalizationIndices.push_back(i);
+      }
+      hasNormalizationIndices = true;
+    }
+
+    // Check if mus and sigmas are both given or both not
+    if ((hasMus || hasSigmas) &&
+        !(hasMus && hasSigmas)) {
+      throw CommandArgumentException("Error : One of Mus(--mus) and sigmas(--sigmas) is given but not the other.");
+    }
+
+    if (normalizationFileInit && hasMus || normalizationFileInit && hasNormalizationIndices) {
+      throw CommandArgumentException("Error : normlization file (--normalization_file) and mus or normalizationIndices (--normalization_indices) are both given.");
+    }
+
+    // Mus, sigmas and normalizationIndices must have the same size and not be empty
+    if (hasMus && (mus.size() != sigmas.size() || mus.size() != normalizationIndices.size() || mus.empty())) {
+      throw CommandArgumentException("Error : mus (--mus), sigmas (--sigmas) and normalization indices (--normalization_indices) don't have the same size or are empty.");
+    }
+
+    // Check normalizationIndices
+    std::set<int> uniqueIndices(normalizationIndices.begin(), normalizationIndices.end());
+    if (uniqueIndices.size() != normalizationIndices.size() ||
+        *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= nbIn ||
+        *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
+      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) has negative, greater than the number of attributes or repeted elements.");
     }
 
     // ----------------------------------------------------------------------
@@ -599,6 +708,7 @@ int densCls(const string &command) {
     }
 
     if (ruleExtr) {
+      vector<string> attributeNames;
       if (attrFileInit != false) {
         AttrName attr(attrFile, nbIn, nbOut);
 
@@ -608,6 +718,16 @@ int densCls(const string &command) {
                << std::endl;
 
         Attr = attr;
+        attributeNames = Attr.GetListAttr();
+      }
+
+      // Get mus, sigmas and normalizationIndices from normalizationFile for denormalization :
+      if (normalizationFileInit) {
+        auto results = parseNormalizationStats(normalizationFile, nbIn, attributeNames);
+        normalizationIndices = std::get<0>(results);
+        mus = std::get<2>(results);
+        sigmas = std::get<3>(results);
+        hasMus = true;
       }
 
       All = Train;
@@ -636,8 +756,13 @@ int densCls(const string &command) {
         }
 
         ostream rulesFileost(&buf);
-        ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                           Test, TestClass, Attr, rulesFileost);
+        if (hasMus) {
+          ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                             Test, TestClass, Attr, rulesFileost, mus, sigmas, normalizationIndices);
+        } else {
+          ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                             Test, TestClass, Attr, rulesFileost);
+        }
 
         if (ryp.TreeAborted()) {
 
@@ -648,8 +773,13 @@ int densCls(const string &command) {
                         All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
                         nbWeightLayers);
 
-          ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                              Test, TestClass, Attr, rulesFileost);
+          if (hasMus) {
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                                Test, TestClass, Attr, rulesFileost, mus, sigmas, normalizationIndices);
+          } else {
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                                Test, TestClass, Attr, rulesFileost);
+          }
         }
 
         cout << "\n\n"
@@ -657,8 +787,13 @@ int densCls(const string &command) {
              << "Written.\n"
              << std::endl;
       } else {
-        ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                           Test, TestClass, Attr, cout);
+        if (hasMus) {
+          ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                             Test, TestClass, Attr, cout, mus, sigmas, normalizationIndices);
+        } else {
+          ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                             Test, TestClass, Attr, cout);
+        }
 
         if (ryp.TreeAborted()) {
 
@@ -668,9 +803,13 @@ int densCls(const string &command) {
           RealHyp2 ryp2(globVirt3, nbDimlpNets, net->GetGlobalOut(), nbOut,
                         All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
                         nbWeightLayers);
-
-          ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                              Test, TestClass, Attr, cout);
+          if (hasMus) {
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                                Test, TestClass, Attr, cout, mus, sigmas, normalizationIndices);
+          } else {
+            ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                                Test, TestClass, Attr, cout);
+          }
         }
       }
     }

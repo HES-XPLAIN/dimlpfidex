@@ -1,6 +1,7 @@
 #ifndef ATTRNAME_H
 #define ATTRNAME_H
 
+#include "../../../fidexCommon/cpp/src/checkFun.h"
 #include "../../../fidexCommon/cpp/src/errorHandler.h"
 #include <fstream>
 #include <iostream>

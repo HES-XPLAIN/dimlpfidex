@@ -130,7 +130,12 @@ class CleanRuleStruct {
   // ------------------------------------------------------------------------
 
 public:
-  void WriteRules(int def, std::ostream &ruleFile);
+  void WriteRules(
+      int def,
+      std::ostream &ruleFile,
+      const std::vector<double> &mus = std::vector<double>(),
+      const std::vector<double> &sigmas = std::vector<double>(),
+      const std::vector<int> &normalizationIndices = std::vector<int>());
   void ElseRepresentation();
   void SimplifyElse(ThresDescr *descr);
 

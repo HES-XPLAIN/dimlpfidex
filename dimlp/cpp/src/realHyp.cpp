@@ -670,7 +670,10 @@ void RealHyp::RuleExtraction(
     const DataSet &test,
     const DataSet &testClass,
     const AttrName &attr,
-    ostream &ruleFile)
+    ostream &ruleFile,
+    const std::vector<double> &mus,
+    const std::vector<double> &sigmas,
+    const std::vector<int> &normalizationIndices)
 
 {
   Rule empty;
@@ -789,7 +792,11 @@ void RealHyp::RuleExtraction(
       clean2.SetAttr();
       clean2.SetStrClass(0);
     }
-    clean2.WriteRules(0, ruleFile);
+    if (mus.empty()) {
+      clean2.WriteRules(0, ruleFile);
+    } else {
+      clean2.WriteRules(0, ruleFile, mus, sigmas, normalizationIndices);
+    }
   }
 
   else {
@@ -808,7 +815,11 @@ void RealHyp::RuleExtraction(
       clean.SetStrClass(0);
     }
 
-    clean.WriteRules(0, ruleFile);
+    if (mus.empty()) {
+      clean.WriteRules(0, ruleFile);
+    } else {
+      clean.WriteRules(0, ruleFile, mus, sigmas, normalizationIndices);
+    }
   }
   SavedRules->Del();
 

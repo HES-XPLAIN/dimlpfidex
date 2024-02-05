@@ -11,7 +11,7 @@
 bool checkInt(const char *str) {
   // Check if empty
   if (str == nullptr || *str == '\0') {
-    return 0;
+    return false;
   }
 
   int i = 0;
@@ -30,30 +30,6 @@ bool checkInt(const char *str) {
     ch = str[i];
     if (ch < '0' || ch > '9') {
       return false; // Non numerical character found
-    }
-  }
-
-  return true;
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * @brief Checks if a given string represents a valid positive integer.
- *
- * @param str A C-style string representing the number to be checked.
- * @return bool Returns true if the string is a valid positive integer, false otherwise.
- */
-bool checkPositiveInt(const char *str)
-
-{
-  char ch;
-
-  for (int i = 0; str[i] != '\0'; i++) {
-    ch = str[i];
-
-    if ((ch > '9') || (ch < '0')) {
-      return false;
     }
   }
 
@@ -111,7 +87,8 @@ bool checkFloatFid(const char *str)
  * @param input A string input representing a boolean.
  * @return bool Returns true if the string is 'true', 'false', '0', or '1' (case-insensitive), false otherwise.
  */
-bool checkBool(std::string input) {
+bool checkBool(const std::string &inputTemp) {
+  std::string input = inputTemp;
   std::transform(input.begin(), input.end(), input.begin(),
                  [](unsigned char c) { return std::tolower(c); });
   return (input == "true" || input == "false" || input == "0" || input == "1");
@@ -125,7 +102,7 @@ bool checkBool(std::string input) {
  * @param input A string representing a list of floats in the format "[a,b,...,c]" without spaces.
  * @return bool Returns true if the string is a valid list of floats, false otherwise.
  */
-bool checkList(std::string input) {
+bool checkList(const std::string &input) {
   if (input.size() < 3 || input.front() != '[' || input.back() != ']') {
     return false;
   }
@@ -150,7 +127,7 @@ bool checkList(std::string input) {
  * @param line A string to be checked.
  * @return bool Returns true if the string is empty or contains only whitespace, false otherwise
  */
-bool checkStringEmpty(std::string line) {
+bool checkStringEmpty(const std::string &line) {
   if (line.length() == 0) {
     return true;
   } else {
@@ -317,9 +294,9 @@ std::tuple<std::vector<int>, bool, std::vector<double>, std::vector<double>> par
 
   // Create regex patterns for a line
   std::vector<std::pair<std::regex, std::string>> patterns;
-  std::regex patternIndices(indexPattern + " : original (mean|median): " + floatPattern + ", original std: " + floatPattern);
+  std::regex patternIndices("^" + indexPattern + " : original (mean|median): " + floatPattern + ", original std: " + floatPattern);
   std::string patternIndicesStr = "indexPattern";
-  std::regex patternAttributes(attrPattern + " : original (mean|median): " + floatPattern + ", original std: " + floatPattern);
+  std::regex patternAttributes("^" + attrPattern + " : original (mean|median): " + floatPattern + ", original std: " + floatPattern);
   std::string patternAttributesStr = "attributePattern";
   if (!attributes.empty()) {
     patterns.emplace_back(patternAttributes, patternAttributesStr);
@@ -396,4 +373,29 @@ std::tuple<std::vector<int>, bool, std::vector<double>, std::vector<double>> par
   }
 
   return std::make_tuple(indices_list, withMedian, mus, sigmas);
+}
+
+//////////////////////////////////////////////////////
+
+/**
+ * @brief Checks if a string contains a space between words.
+ *
+ * Iterates through the string to find spaces. A space is considered between words if it's not at the
+ * start or end of the string and is surrounded by non-space characters. Returns true if such a space is found.
+ *
+ * @param str The string to check.
+ * @return true If a space is found between words.
+ * @return false If no space is found between words.
+ */
+bool hasSpaceBetweenWords(const std::string &str) {
+  for (size_t i = 0; i < str.length(); ++i) {
+    if (str[i] == ' ' &&
+        i > 0 &&
+        i < str.length() - 1 &&
+        str[i - 1] != ' ' &&
+        str[i + 1] != ' ') {
+      return true; // Space found between words
+    }
+  }
+  return false; // No space found between words or only tabs are present
 }

@@ -291,6 +291,9 @@ def get_attribute_file(attribute_file, nb_attributes, nb_classes=None):
         with open(attribute_file, "r") as attr_file:
             # Read all lines and filter out empty ones
             lines = [line.strip() for line in attr_file if line.strip()]
+            for line in lines:
+                if len(line.split()) > 1:
+                    raise ValueError(f"Error in file {attribute_file} : an attribute has spaces inbetween.")
 
             # Check if there is the good amount of attributes and classes
             if (not has_classes and len(lines) < nb_attributes): # Number of classes not specified, if there is too many attributes, it's stored in classes

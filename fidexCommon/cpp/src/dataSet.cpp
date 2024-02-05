@@ -19,35 +19,35 @@
  *        The number of attributes and classes in the dataset are used to validate the format and content of the data and class files.
  *
  * @param name string containing the name of the dataSet
- * @param dataFile const char* data file name
- * @param predFile const char* predicion file name
- * @param _nbAttributes int number of attributes
- * @param _nbClasses int number of classes
+ * @param dataFile string data file name
+ * @param predFile string predicion file name
+ * @param nbAttributes int number of attributes
+ * @param nbClasses int number of classes
  * @param decisionThresh double indicating the decision threshold, useful when choosing the decision (-1 for no threshold)
- * @param indexPositiveClass integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
- * @param trueClassFile const char* class file name
+ * @param positiveClassIndex integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
+ * @param trueClassFile string class file name
  */
-DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *predFile, int _nbAttributes, int _nbClasses, double decisionThresh, int indexPositiveCl, const char *trueClassFile) : datasetName(name) {
+DataSetFid::DataSetFid(const string &name, const std::string &dataFile, const std::string &predFile, int nbAttributes, int nbClasses, double decisionThresh, int positiveClassId, const std::string &trueClassFile) : datasetName(name) {
 
-  setNbClassAndAttr(_nbClasses, _nbAttributes);
+  setNbClassAndAttr(nbClasses, nbAttributes);
 
   if (decisionThresh != -1 && !std::isnan(decisionThresh)) {
     decisionThreshold = decisionThresh;
   }
-  if (indexPositiveCl != -1 && !std::isnan(indexPositiveCl)) {
-    indexPositiveClass = indexPositiveCl;
+  if (positiveClassId != -1 && !std::isnan(positiveClassId)) {
+    positiveClassIndex = positiveClassId;
   }
 
   checkThreshold();
 
   // Get data
-  setDataFromFile(dataFile, _nbAttributes, _nbClasses);
+  setDataFromFile(dataFile, nbAttributes, nbClasses);
   // Get data class
-  if (trueClassFile != nullptr) {
-    setClassFromFile(trueClassFile, _nbClasses);
+  if (!trueClassFile.empty()) {
+    setClassFromFile(trueClassFile, nbClasses);
   }
   // Get predictions
-  setPredFromFile(predFile, _nbClasses);
+  setPredFromFile(predFile, nbClasses);
 
   checkDatas();
 }
@@ -64,21 +64,21 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, const char *pre
  *        The presence and format of class data (ID or one-hot) are inferred based on the structure of the lines in the file.
  *
  * @param name string containing the name of the dataSet
- * @param dataFile const char* data file name containing datas, predictions and maybe classes(not mendatory)
- * @param _nbAttributes int number of attributes
- * @param _nbClasses int number of classes
+ * @param dataFile string data file name containing datas, predictions and maybe classes(not mendatory)
+ * @param nbAttributes int number of attributes
+ * @param nbClasses int number of classes
  * @param decisionThres double indicating the decision threshold, useful when choosing the decision (-1 for no threshold)
- * @param indexPositiveClass integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
+ * @param positiveClassIndex integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
  */
-DataSetFid::DataSetFid(const string &name, const char *dataFile, int _nbAttributes, int _nbClasses, double decisionThresh, int indexPositiveCl) : datasetName(name), hasDatas(true), hasPreds(true) {
+DataSetFid::DataSetFid(const string &name, const std::string &dataFile, int nbAttributes, int nbClasses, double decisionThresh, int positiveClassId) : datasetName(name), hasDatas(true), hasPreds(true) {
 
-  setNbClassAndAttr(_nbClasses, _nbAttributes);
+  setNbClassAndAttr(nbClasses, nbAttributes);
 
   if (decisionThresh != -1 && !std::isnan(decisionThresh)) {
     decisionThreshold = decisionThresh;
   }
-  if (indexPositiveCl != -1 && !std::isnan(indexPositiveCl)) {
-    indexPositiveClass = indexPositiveCl;
+  if (positiveClassId != -1 && !std::isnan(positiveClassId)) {
+    positiveClassIndex = positiveClassId;
   }
 
   checkThreshold();
@@ -86,7 +86,7 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, int _nbAttribut
   fstream fileDta;
   fileDta.open(dataFile, ios::in); // Read data file
   if (fileDta.fail()) {
-    throw FileNotFoundError("Error in dataset " + datasetName + " : file " + std::string(dataFile) + " not found.");
+    throw FileNotFoundError("Error in dataset " + datasetName + " : file " + dataFile + " not found.");
   }
   string line;
   bool firstLine = true;
@@ -95,18 +95,18 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, int _nbAttribut
     if (!checkStringEmpty(line)) {
       setDataLine(line, dataFile);
     } else if (firstLine) {
-      throw FileFormatError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", first line is empty.");
+      throw FileFormatError("Error in dataset " + datasetName + " : in file " + dataFile + ", first line is empty.");
     } else {
       while (!fileDta.eof()) {
         getline(fileDta, line);
         if (!checkStringEmpty(line)) {
-          throw FileFormatError("Error in dataset " + datasetName + " : file " + std::string(dataFile) + " is not on good format, there are more than one empty line between 2 samples.");
+          throw FileFormatError("Error in dataset " + datasetName + " : file " + dataFile + " is not on good format, there are more than one empty line between 2 samples.");
         }
       }
       break; // There are just empty lines at the end of the file
     }
     if (fileDta.eof()) {
-      throw FileContentError("Error in dataset " + datasetName + " : file " + std::string(dataFile) + " has not enough prediction data.");
+      throw FileContentError("Error in dataset " + datasetName + " : file " + dataFile + " has not enough prediction data.");
     }
     // Get predictions
     getline(fileDta, line);
@@ -116,10 +116,10 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, int _nbAttribut
       while (!fileDta.eof()) {
         getline(fileDta, line);
         if (!checkStringEmpty(line)) {
-          throw FileFormatError("Error in dataset " + datasetName + " : file " + std::string(dataFile) + " is not on good format, there is empty lines inbetween data.");
+          throw FileFormatError("Error in dataset " + datasetName + " : file " + dataFile + " is not on good format, there is empty lines inbetween data.");
         }
       }
-      throw FileContentError("Error in dataset " + datasetName + " : file " + std::string(dataFile) + " has not enough prediction data.");
+      throw FileContentError("Error in dataset " + datasetName + " : file " + dataFile + " has not enough prediction data.");
     }
     bool endOfFile = false;
     if (fileDta.eof()) {
@@ -129,14 +129,14 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, int _nbAttribut
     getline(fileDta, line);
     if (!endOfFile && !checkStringEmpty(line)) {
       if (classFormat == "one-hot_combined" || classFormat == "id_combined") {
-        throw FileContentError("Error in dataset " + datasetName + " : file " + std::string(dataFile) + " classes are given two times in the file, with attributes and are after predictions.");
+        throw FileContentError("Error in dataset " + datasetName + " : file " + dataFile + " classes are given two times in the file, with attributes and are after predictions.");
       }
       setClassLine(line, dataFile);
 
       if (!fileDta.eof()) {
         getline(fileDta, line);
         if (!checkStringEmpty(line)) {
-          throw FileFormatError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", you need to have empty lines between samples. You have chosen to give data, predictions and classes in one file. If you want to separate them, use -p and -c.");
+          throw FileFormatError("Error in dataset " + datasetName + " : in file " + dataFile + ", you need to have empty lines between samples. You have chosen to give data, predictions and classes in one file. If you want to separate them, use -p and -c.");
         }
       }
     }
@@ -159,9 +159,9 @@ DataSetFid::DataSetFid(const string &name, const char *dataFile, int _nbAttribut
  * @brief Construct a new DataSetFid object using a weights file
  *
  * @param name string containing the name of the dataSet
- * @param weightFile const char* weight file name
+ * @param weightFile string weight file name
  */
-DataSetFid::DataSetFid(const std::string &name, const char *weightFile) : datasetName(name), hasWeights(true) {
+DataSetFid::DataSetFid(const std::string &name, const std::string &weightFile) : datasetName(name), hasWeights(true) {
 
   // Get weights
   fstream fileWts;
@@ -170,7 +170,7 @@ DataSetFid::DataSetFid(const std::string &name, const char *weightFile) : datase
 
   fileWts.open(weightFile, ios::in); // Read weight file
   if (fileWts.fail()) {
-    throw FileNotFoundError("Error in dataset " + datasetName + " : file " + std::string(weightFile) + " not found.");
+    throw FileNotFoundError("Error in dataset " + datasetName + " : file " + weightFile + " not found.");
   }
 
   while (!fileWts.eof()) {
@@ -181,7 +181,7 @@ DataSetFid::DataSetFid(const std::string &name, const char *weightFile) : datase
       vector<double> tempVect;
       while (myLine >> value) {
         if (myLine.fail()) {
-          throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(weightFile) + ", a number is required.");
+          throw FileContentError("Error in dataset " + datasetName + " : in file " + weightFile + ", a number is required.");
         }
         tempVect.push_back(value);
       }
@@ -200,24 +200,24 @@ DataSetFid::DataSetFid(const std::string &name, const char *weightFile) : datase
  *            3. Attributes with One-Hot Class Encoding: Each line contains all the float attributes followed by a one-hot encoding of the class.
  *               The number of elements in this encoding should match the total number of classes, with exactly one '1' and the rest '0's.
  *
- * @param dataFile const char* representing the name of the data file.. This file should contain data in one of the supported formats.
- * @param _nbAttributes int specifying the number of attributes
- * @param _nbClasses int specifying the number of classes
+ * @param dataFile string representing the name of the data file.. This file should contain data in one of the supported formats.
+ * @param nbAttributes int specifying the number of attributes
+ * @param nbClasses int specifying the number of classes
  */
-void DataSetFid::setDataFromFile(const char *dataFile, int _nbAttributes, int _nbClasses) {
+void DataSetFid::setDataFromFile(const std::string &dataFile, int nbAttributes, int nbClasses) {
   if (hasDatas == true) {
     throw InternalError("Error in dataset " + datasetName + " : datas have been given two times.");
   }
   hasDatas = true;
 
-  setNbClassAndAttr(_nbClasses, _nbAttributes);
+  setNbClassAndAttr(nbClasses, nbAttributes);
 
   string line;
   fstream fileDta;
 
   fileDta.open(dataFile, ios::in); // Read data file
   if (fileDta.fail()) {
-    throw FileNotFoundError("Error in dataset " + datasetName + " : file " + std::string(dataFile) + " not found.");
+    throw FileNotFoundError("Error in dataset " + datasetName + " : file " + dataFile + " not found.");
   }
 
   while (!fileDta.eof()) {
@@ -249,14 +249,14 @@ void DataSetFid::setDataFromFile(const char *dataFile, int _nbAttributes, int _n
  *        The number of values per line should match the specified number of classes.
  *        If a decision threshold is provided, the function uses it to determine the predicted class based on the threshold.
  *
- * @param predFile const char* prediction file name
- * @param _nbClasses int number of classes
+ * @param predFile string prediction file name
+ * @param nbClasses int number of classes
  * @param decisionThresh optional double indicating the decision threshold, useful when choosing the decision (-1 for no threshold)
- * @param indexPositiveClass optional integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
+ * @param positiveClassIndex optional integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
  */
-void DataSetFid::setPredFromFile(const char *predFile, int _nbClasses, double decisionThresh, int indexPositiveCl) {
+void DataSetFid::setPredFromFile(const std::string &predFile, int nbClasses, double decisionThresh, int positiveClassId) {
 
-  setNbClass(_nbClasses);
+  setNbClass(nbClasses);
 
   if (decisionThresh != -1 && !std::isnan(decisionThresh)) {
     if (decisionThreshold != -1) {
@@ -265,9 +265,9 @@ void DataSetFid::setPredFromFile(const char *predFile, int _nbClasses, double de
       throw InternalError("Error in dataset " + datasetName + " : decision threshold has been given two times.");
     }
   }
-  if (indexPositiveCl != -1 && !std::isnan(indexPositiveCl)) {
-    if (indexPositiveClass != -1) {
-      indexPositiveClass = indexPositiveCl;
+  if (positiveClassId != -1 && !std::isnan(positiveClassId)) {
+    if (positiveClassIndex != -1) {
+      positiveClassIndex = positiveClassId;
     } else {
       throw InternalError("Error in dataset " + datasetName + " : index of positive class has been given two times.");
     }
@@ -284,7 +284,7 @@ void DataSetFid::setPredFromFile(const char *predFile, int _nbClasses, double de
 
   filePrd.open(predFile, ios::in); // read predictions data file
   if (filePrd.fail()) {
-    throw FileNotFoundError("Error in dataset " + datasetName + " : file " + std::string(predFile) + " not found.");
+    throw FileNotFoundError("Error in dataset " + datasetName + " : file " + predFile + " not found.");
   }
 
   while (!filePrd.eof()) {
@@ -307,26 +307,26 @@ void DataSetFid::setPredFromFile(const char *predFile, int _nbClasses, double de
  *           where exactly one value is 1 (indicating the class ID) and all others are 0.
  *        Each number in a line is separated by a space
  *
- *        The function determines the format of each line based on the '_nbClasses' parameter and the structure of the data in the line.
+ *        The function determines the format of each line based on the 'nbClasses' parameter and the structure of the data in the line.
  *
- * @param classFile A const char* representing the name of the class file. This file should contain class data
+ * @param classFile A string representing the name of the class file. This file should contain class data
  *                  in one of the supported formats (either class ID or one-hot encoded).
- * @param _nbClasses An int specifying the number of classes.
+ * @param nbClasses An int specifying the number of classes.
  */
-void DataSetFid::setClassFromFile(const char *classFile, int _nbClasses) {
+void DataSetFid::setClassFromFile(const std::string &classFile, int nbClasses) {
   if (hasClasses == true) {
     throw InternalError("Error in dataset " + datasetName + " : classes have been given two times.");
   }
   hasClasses = true;
 
-  setNbClass(_nbClasses);
+  setNbClass(nbClasses);
 
   string line;
   fstream fileCl;
 
   fileCl.open(classFile, ios::in); // read true dataclass file
   if (fileCl.fail()) {
-    throw FileNotFoundError("Error in dataset " + datasetName + " : file " + std::string(classFile) + " not found.");
+    throw FileNotFoundError("Error in dataset " + datasetName + " : file " + classFile + " not found.");
   }
 
   while (!fileCl.eof()) {
@@ -352,9 +352,9 @@ void DataSetFid::setClassFromFile(const char *classFile, int _nbClasses) {
  *        The format of the class representation (ID or one-hot encoding) is determined based on the structure of the data in the line.
  *
  * @param line A string containing one line of the data file. This line can include attribute values and, optionally, class information.
- * @param dataFile A const char* representing the name of the data file. This file may contain lines of data in any of the supported formats.
+ * @param dataFile A string representing the name of the data file. This file may contain lines of data in any of the supported formats.
  */
-void DataSetFid::setDataLine(const string &line, const char *dataFile) {
+void DataSetFid::setDataLine(const string &line, const std::string &dataFile) {
   std::stringstream myLine(line);
   double valueData;
   vector<double> valuesData;
@@ -364,7 +364,7 @@ void DataSetFid::setDataLine(const string &line, const char *dataFile) {
     }
     myLine >> valueData;
     if (myLine.fail()) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", a number is required.");
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + dataFile + ", a number is required.");
     }
     valuesData.push_back(valueData);
   }
@@ -372,43 +372,43 @@ void DataSetFid::setDataLine(const string &line, const char *dataFile) {
 
   // Identify class format (one-hot, id, one-hot_combined, id_combined)
   if (classFormat.empty()) {
-    if (lineSize == nbAttributes + nbClasses) {
+    if (lineSize == _nbAttributes + _nbClasses) {
       classFormat = "one-hot_combined";
-    } else if (lineSize == nbAttributes + 1) {
+    } else if (lineSize == _nbAttributes + 1) {
       classFormat = "id_combined";
-    } else if (lineSize != nbAttributes) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", incorrect number of parameters per line, expected the given number of attributes (" + std::to_string(nbAttributes) + ") or this number plus 1 (classes in id format) or plus the number of classes (one-hot format).");
+    } else if (lineSize != _nbAttributes) {
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + dataFile + ", incorrect number of parameters per line, expected the given number of attributes (" + std::to_string(_nbAttributes) + ") or this number plus 1 (classes in id format) or plus the number of classes (one-hot format).");
     }
   }
 
   if (classFormat == "one-hot" || classFormat == "id" || classFormat == "") { // No classes with the attributes
-    if (lineSize != nbAttributes) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", the number of attributes for a sample don't match the given number of attributes (" + std::to_string(nbAttributes) + "). No class should be given with the data as there was none beforehand.");
+    if (lineSize != _nbAttributes) {
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + dataFile + ", the number of attributes for a sample don't match the given number of attributes (" + std::to_string(_nbAttributes) + "). No class should be given with the data as there was none beforehand.");
     } else {
       datas.push_back(valuesData);
     }
   } else if (classFormat == "one-hot_combined") { // With classes on one-hot format
-    if (lineSize != nbAttributes + nbClasses) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", the number of attributes and classes for a sample don't match the given number of attributes and classes (" + std::to_string(nbAttributes + nbClasses) + "). Classes should be given with datas on one-hot format as they were given like this beforehand.");
+    if (lineSize != _nbAttributes + _nbClasses) {
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + dataFile + ", the number of attributes and classes for a sample don't match the given number of attributes and classes (" + std::to_string(_nbAttributes + _nbClasses) + "). Classes should be given with datas on one-hot format as they were given like this beforehand.");
     } else {
 
       int oneHotIndex;
-      if (isOneHot(valuesData, nbAttributes, oneHotIndex)) {
-        datas.emplace_back(valuesData.begin(), valuesData.begin() + nbAttributes);
+      if (isOneHot(valuesData, _nbAttributes, oneHotIndex)) {
+        datas.emplace_back(valuesData.begin(), valuesData.begin() + _nbAttributes);
         trueClasses.emplace_back(oneHotIndex);
       } else {
-        throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", invalid one-hot format for a given sample.");
+        throw FileContentError("Error in dataset " + datasetName + " : in file " + dataFile + ", invalid one-hot format for a given sample.");
       }
     }
   } else if (classFormat == "id_combined") { // With classes on id format
-    if (lineSize != nbAttributes + 1) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", the number of attributes for a sample don't match the given number of attributes (" + std::to_string(nbAttributes) + "). The id of the class should be given at the end of the line as they were given like this beforehand.");
+    if (lineSize != _nbAttributes + 1) {
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + dataFile + ", the number of attributes for a sample don't match the given number of attributes (" + std::to_string(_nbAttributes) + "). The id of the class should be given at the end of the line as they were given like this beforehand.");
     } else {
       double classId = valuesData.back();
-      if (classId < 0 || classId >= nbClasses || classId != std::floor(classId)) {
-        throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(dataFile) + ", invalid class ID for a given sample.");
+      if (classId < 0 || classId >= _nbClasses || classId != std::floor(classId)) {
+        throw FileContentError("Error in dataset " + datasetName + " : in file " + dataFile + ", invalid class ID for a given sample.");
       }
-      datas.emplace_back(valuesData.begin(), valuesData.begin() + nbAttributes);
+      datas.emplace_back(valuesData.begin(), valuesData.begin() + _nbAttributes);
       trueClasses.emplace_back(classId);
     }
   } else {
@@ -424,9 +424,9 @@ void DataSetFid::setDataLine(const string &line, const char *dataFile) {
  *        Each line should contain numbers separated by spaces.
  *
  * @param line string containing one line of the prediction file
- * @param predFile const char* prediction file name
+ * @param predFile string prediction file name
  */
-void DataSetFid::setPredLine(const string &line, const char *predFile) {
+void DataSetFid::setPredLine(const string &line, const std::string &predFile) {
 
   std::stringstream myLine(line);
   double valuePred;
@@ -437,22 +437,18 @@ void DataSetFid::setPredLine(const string &line, const char *predFile) {
     }
     myLine >> valuePred;
     if (myLine.fail()) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(predFile) + ", a number is required.");
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + predFile + ", a number is required.");
     }
     valuesPred.push_back(valuePred);
   }
   outputValuesPredictions.push_back(valuesPred);
 
-  if (static_cast<int>(valuesPred.size()) != nbClasses) {
-    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(predFile) + ", the number of predictions is not equal to the number of classes (" + std::to_string(nbClasses) + ") for each sample.");
+  if (static_cast<int>(valuesPred.size()) != _nbClasses) {
+    throw FileContentError("Error in dataset " + datasetName + " : in file " + predFile + ", the number of predictions is not equal to the number of classes (" + std::to_string(_nbClasses) + ") for each sample.");
   }
 
-  if (decisionThreshold >= 0 && indexPositiveClass >= nbClasses) {
-    throw CommandArgumentException("Error in dataset " + datasetName + " : The index of positive class cannot be greater or equal to the number of classes (" + to_string(nbClasses) + ").");
-  }
-
-  if (decisionThreshold >= 0 && valuesPred[indexPositiveClass] >= decisionThreshold) {
-    predictions.push_back(indexPositiveClass);
+  if (decisionThreshold >= 0 && valuesPred[positiveClassIndex] >= decisionThreshold) {
+    predictions.push_back(positiveClassIndex);
   } else {
     predictions.push_back(static_cast<int>(std::max_element(valuesPred.begin(), valuesPred.end()) - valuesPred.begin()));
   }
@@ -470,10 +466,10 @@ void DataSetFid::setPredLine(const string &line, const char *predFile) {
  *
  * @param line A string containing one line from the class file. This line can either have a single integer (class ID)
  *             or multiple integers (one-hot encoded vector) representing the class information.
- * @param classFile A const char* representing the name of the class file. This file should contain lines in one of the
+ * @param classFile A string representing the name of the class file. This file should contain lines in one of the
  *                  supported formats (either class ID or one-hot encoded).
  */
-void DataSetFid::setClassLine(const string &line, const char *classFile) {
+void DataSetFid::setClassLine(const string &line, const std::string &classFile) {
   std::stringstream myLine(line);
   double valueData;
   vector<double> valuesData;
@@ -483,40 +479,40 @@ void DataSetFid::setClassLine(const string &line, const char *classFile) {
     }
     myLine >> valueData;
     if (myLine.fail() || valueData != std::floor(valueData)) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", an integer is required.");
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + classFile + ", an integer is required.");
     }
     valuesData.push_back(valueData);
   }
   auto lineSize = static_cast<int>(valuesData.size());
 
   if (classFormat == "") {
-    if (lineSize == nbClasses) {
+    if (lineSize == _nbClasses) {
       classFormat = "one-hot";
     } else if (lineSize == 1) {
       classFormat = "id";
     } else {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", incorrect number of classes for a given sample.");
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + classFile + ", incorrect number of classes for a given sample.");
     }
   }
 
   if (classFormat == "one-hot") {
-    if (lineSize != nbClasses) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", the number of classes for a sample doesn't match the given number of classes (" + std::to_string(nbClasses) + "). Classes should be given with datas on one-hot format as they were given like this beforehand.");
+    if (lineSize != _nbClasses) {
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + classFile + ", the number of classes for a sample doesn't match the given number of classes (" + std::to_string(_nbClasses) + "). Classes should be given with datas on one-hot format as they were given like this beforehand.");
     } else {
       int oneHotIndex;
       if (isOneHot(valuesData, 0, oneHotIndex)) {
         trueClasses.emplace_back(oneHotIndex);
       } else {
-        throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", invalid one-hot format for a given sample.");
+        throw FileContentError("Error in dataset " + datasetName + " : in file " + classFile + ", invalid one-hot format for a given sample.");
       }
     }
   } else if (classFormat == "id") {
     if (lineSize != 1) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", only the id of the class should be given on the line as classes were given like this beforehand.");
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + classFile + ", only the id of the class should be given on the line as classes were given like this beforehand.");
     } else {
       double classId = valuesData[0];
-      if (classId < 0 || classId >= nbClasses || classId != std::floor(classId)) {
-        throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(classFile) + ", invalid class ID for a given sample.");
+      if (classId < 0 || classId >= _nbClasses || classId != std::floor(classId)) {
+        throw FileContentError("Error in dataset " + datasetName + " : in file " + classFile + ", invalid class ID for a given sample.");
       }
       trueClasses.emplace_back(classId);
     }
@@ -535,16 +531,16 @@ void DataSetFid::setClassLine(const string &line, const char *classFile) {
  * if the new value matches the existing one. If not, an error is thrown.
  * If the number is not set yet, it validates that the new value is strictly positive.
  *
- * @param _nbClasses The number of classes to set.
+ * @param nbClasses The number of classes to set.
  */
-void DataSetFid::setNbClass(int _nbClasses) {
-  if (nbClasses != -1) {
-    if (nbClasses != _nbClasses) {
-      throw InternalError("Error in dataset " + datasetName + " : the given number of classes (" + to_string(_nbClasses) + ") doesn't match the number given before (" + to_string(nbClasses) + ").");
+void DataSetFid::setNbClass(int nbClasses) {
+  if (_nbClasses != -1) {
+    if (_nbClasses != nbClasses) {
+      throw InternalError("Error in dataset " + datasetName + " : the given number of classes (" + to_string(nbClasses) + ") doesn't match the number given before (" + to_string(_nbClasses) + ").");
     }
   } else {
-    if (_nbClasses > 0) {
-      nbClasses = _nbClasses;
+    if (nbClasses > 0) {
+      _nbClasses = nbClasses;
     } else {
       throw InternalError("Error in dataset " + datasetName + " : the number of classes has to be a strictly positive integer.");
     }
@@ -559,23 +555,23 @@ void DataSetFid::setNbClass(int _nbClasses) {
  * if the new value matches the existing one. If not, an error is thrown.
  * If the number is not set yet, it validates that the new value is strictly positive.
  *
- * @param _nbAttributes The number of attributes to set.
- * @param _nbClasses The number of classes to set.
+ * @param nbAttributes The number of attributes to set.
+ * @param nbClasses The number of classes to set.
  */
-void DataSetFid::setNbClassAndAttr(int _nbClasses, int _nbAttributes) {
-  if (nbAttributes != -1) {
-    if (nbAttributes != _nbAttributes) {
-      throw InternalError("Error in dataset " + datasetName + " : the given number of attributes (" + to_string(_nbAttributes) + ") doesn't match the number given before (" + to_string(nbAttributes) + ").");
+void DataSetFid::setNbClassAndAttr(int nbClasses, int nbAttributes) {
+  if (_nbAttributes != -1) {
+    if (_nbAttributes != nbAttributes) {
+      throw InternalError("Error in dataset " + datasetName + " : the given number of attributes (" + to_string(nbAttributes) + ") doesn't match the number given before (" + to_string(_nbAttributes) + ").");
     }
   } else {
-    if (_nbAttributes > 0) {
-      nbAttributes = _nbAttributes;
+    if (nbAttributes > 0) {
+      _nbAttributes = nbAttributes;
     } else {
       throw InternalError("Error in dataset " + datasetName + " : the number of attributes has to be a strictly positive integer.");
     }
   }
 
-  setNbClass(_nbClasses);
+  setNbClass(nbClasses);
 }
 
 /**
@@ -616,9 +612,9 @@ bool DataSetFid::isOneHot(const std::vector<double> &values, int start, int &one
  *
  * @return vector<vector<double>>*
  */
-vector<vector<double>> *DataSetFid::getDatas() {
+vector<vector<double>> &DataSetFid::getDatas() {
   if (hasDatas) {
-    return &datas;
+    return datas;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : data file not specified for this dataset.");
   }
@@ -629,9 +625,9 @@ vector<vector<double>> *DataSetFid::getDatas() {
  *
  * @return vector<int>*
  */
-vector<int> *DataSetFid::getClasses() {
+vector<int> &DataSetFid::getClasses() {
   if (hasClasses) {
-    return &trueClasses;
+    return trueClasses;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : dataClass file not specified for this dataset.");
   }
@@ -652,9 +648,9 @@ bool DataSetFid::getHasClasses() const {
  *
  * @return vector<int>*
  */
-vector<int> *DataSetFid::getPredictions() {
+vector<int> &DataSetFid::getPredictions() {
   if (hasPreds) {
-    return &predictions;
+    return predictions;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : prediction file not specified for this dataset.");
   }
@@ -665,9 +661,9 @@ vector<int> *DataSetFid::getPredictions() {
  *
  * @return vector<vector<double>>*
  */
-vector<vector<double>> *DataSetFid::getOutputValuesPredictions() {
+vector<vector<double>> &DataSetFid::getOutputValuesPredictions() {
   if (hasPreds) {
-    return &outputValuesPredictions;
+    return outputValuesPredictions;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : prediction file not specified for this dataset.");
   }
@@ -679,8 +675,8 @@ vector<vector<double>> *DataSetFid::getOutputValuesPredictions() {
  * @return int
  */
 int DataSetFid::getNbClasses() const {
-  if (nbClasses != -1) {
-    return nbClasses;
+  if (_nbClasses != -1) {
+    return _nbClasses;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : number of classes not specified for this dataset.");
   }
@@ -692,8 +688,8 @@ int DataSetFid::getNbClasses() const {
  * @return int
  */
 int DataSetFid::getNbAttributes() const {
-  if (nbAttributes != -1) {
-    return nbAttributes;
+  if (_nbAttributes != -1) {
+    return _nbAttributes;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : number of attributes not specified for this dataset.");
   }
@@ -785,7 +781,7 @@ void DataSetFid::checkDatas() const {
  */
 void DataSetFid::checkThreshold() const {
 
-  if (decisionThreshold != -1 && indexPositiveClass == -1) { // XOR
+  if (decisionThreshold != -1 && positiveClassIndex == -1) { // XOR
     throw InternalError("Error in dataset " + datasetName + " : index positive class has to be given when decisionThreshold is given.");
   }
 
@@ -793,33 +789,37 @@ void DataSetFid::checkThreshold() const {
     throw CommandArgumentException("Error in dataset " + datasetName + " : the decision threshold has to be a float included in [0,1].");
   }
 
-  if (indexPositiveClass != -1 && indexPositiveClass < 0) {
+  if (positiveClassIndex != -1 && positiveClassIndex < 0) {
     throw CommandArgumentException("Error in dataset " + datasetName + " : the index of positive class has to be a positive integer.");
+  }
+
+  if (positiveClassIndex >= _nbClasses) {
+    throw CommandArgumentException("Error in dataset " + datasetName + " : The index of positive class cannot be greater or equal to the number of classes (" + to_string(_nbClasses) + ").");
   }
 }
 
 /**
  * @brief Add attributes and eventually classes from attribute file in the dataset
  *
- * @param attributeFile const char* attribute file name
- * @param _nbAttributes int number of attributes
- * @param _nbClasses optional int number of classes
+ * @param attributesFile string attribute file name
+ * @param nbAttributes int number of attributes
+ * @param nbClasses optional int number of classes
  */
-void DataSetFid::setAttributes(const char *attributeFile, int _nbAttributes, int _nbClasses) {
+void DataSetFid::setAttributes(const std::string &attributesFile, int nbAttributes, int nbClasses) {
   hasAttributes = true;
-  if (_nbClasses != -1) {
-    setNbClassAndAttr(_nbClasses, _nbAttributes);
+  if (nbClasses != -1) {
+    setNbClassAndAttr(nbClasses, nbAttributes);
   } else {
-    setNbClass(_nbClasses);
+    setNbClass(nbClasses);
   }
 
   // Get attributes
   fstream fileAttr;
   string line;
 
-  fileAttr.open(attributeFile, ios::in); // Read attribute file
+  fileAttr.open(attributesFile, ios::in); // Read attribute file
   if (fileAttr.fail()) {
-    throw FileNotFoundError("Error in dataset " + datasetName + " : file " + std::string(attributeFile) + " not found.");
+    throw FileNotFoundError("Error in dataset " + datasetName + " : file " + attributesFile + " not found.");
   }
   while (!fileAttr.eof()) {
     getline(fileAttr, line);
@@ -833,29 +833,32 @@ void DataSetFid::setAttributes(const char *attributeFile, int _nbAttributes, int
     if (!checkStringEmpty(line)) {
       std::stringstream myLine(line);
       string attr = myLine.str();
+      if (hasSpaceBetweenWords(attr)) {
+        throw FileContentError("Error in dataset " + datasetName + ", in file " + attributesFile + " : attribute " + attr + " has spaces inbetween. Maybe replace it by a an underscore.");
+      }
       attributeNames.push_back(attr);
     }
   }
 
   hasClassNames = false;
 
-  if (attributeNames.size() < nbAttributes) { // Not enough attributes
-    throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(attributeFile) + ", there is not enough attribute names.");
-  } else if (attributeNames.size() == nbAttributes) { // Exact correlation, so there is no class names.
+  if (attributeNames.size() < _nbAttributes) { // Not enough attributes
+    throw FileContentError("Error in dataset " + datasetName + " : in file " + attributesFile + ", there is not enough attribute names.");
+  } else if (attributeNames.size() == _nbAttributes) { // Exact correlation, so there is no class names.
     hasClassNames = false;
   } else {
-    if (nbClasses != -1) {
-      if (attributeNames.size() != nbAttributes + nbClasses) { // No correlation with the number of attributes and classes
-        throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(attributeFile) + ", there is not the good amount of attribute and class names.");
+    if (_nbClasses != -1) {
+      if (attributeNames.size() != _nbAttributes + _nbClasses) { // No correlation with the number of attributes and classes
+        throw FileContentError("Error in dataset " + datasetName + " : in file " + attributesFile + ", there is not the good amount of attribute and class names.");
       } else { // There is attributes and classes
         hasClassNames = true;
-        auto firstEl = attributeNames.end() - nbClasses;
+        auto firstEl = attributeNames.end() - _nbClasses;
         auto lastEl = attributeNames.end();
         classNames.insert(classNames.end(), firstEl, lastEl);
         attributeNames.erase(firstEl, lastEl);
       }
     } else { // No class specified and too much attributes
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + std::string(attributeFile) + ", there are too much attribute names (no class has been specified, if you have classNames, add the number of classes).");
+      throw FileContentError("Error in dataset " + datasetName + " : in file " + attributesFile + ", there are too much attribute names (no class has been specified, if you have classNames, add the number of classes).");
     }
   }
 
@@ -867,9 +870,9 @@ void DataSetFid::setAttributes(const char *attributeFile, int _nbAttributes, int
  *
  * @return vector<string>*
  */
-vector<string> *DataSetFid::getAttributeNames() {
+vector<string> &DataSetFid::getAttributeNames() {
   if (hasAttributes) {
-    return &attributeNames;
+    return attributeNames;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : attribute file not specified for this dataset.");
   }
@@ -880,9 +883,9 @@ vector<string> *DataSetFid::getAttributeNames() {
  *
  * @return vector<string>*
  */
-vector<string> *DataSetFid::getClassNames() {
+vector<string> &DataSetFid::getClassNames() {
   if (hasClassNames) {
-    return &classNames;
+    return classNames;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : classNames not present in attribute file or attribute file not specified.");
   }

@@ -22,9 +22,9 @@ public:
   void resetDiscriminativeHyperplans();
 
   // Get new covered samples with a new discriminative hyperplan
-  void computeCoveredSamples(const std::vector<int> &ancienCoveredSamples, int attribut, std::vector<std::vector<double>> *trainData, bool mainSampleGreater, double hypValue);
+  void computeCoveredSamples(const std::vector<int> &ancienCoveredSamples, int attribut, std::vector<std::vector<double>> &trainData, bool mainSampleGreater, double hypValue);
 
-  void computeFidelity(const int mainsamplePred, std::vector<int> *trainPreds);
+  void computeFidelity(const int mainsamplePred, std::vector<int> &trainPreds);
   double getFidelity() const;
   void setFidelity(double x);
   std::vector<int> getCoveredSamples() const;

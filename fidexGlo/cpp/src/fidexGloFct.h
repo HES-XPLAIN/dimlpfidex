@@ -4,6 +4,7 @@
 #include "../../../fidex/cpp/src/fidexFct.h"
 #include "../../../fidexCommon/cpp/src/dataSet.h"
 #include "../../../fidexCommon/cpp/src/errorHandler.h"
+#include "../../../fidexCommon/cpp/src/hyperLocus.h"
 #include "../../../fidexCommon/cpp/src/parameters.h"
 #include "../../../fidexCommon/cpp/src/rule.h"
 #include "fidexAlgo.h"
@@ -20,8 +21,8 @@
 #include <vector>
 
 void showParams();
-void checkParametersLogicValues(Parameters *p);
-void launchFidex(std::vector<std::string> &lines, const std::string &fidexCommand, const std::string &ruleFile);
+void checkParametersLogicValues(Parameters &p);
+void launchFidex(std::vector<std::string> &lines, DataSetFid &dataset, Parameters &p, Hyperspace &hyperspace, vector<double> &mainSampleValues, int mainSamplePred, int mainSampleClass, const vector<string> &attributeNames, const vector<string> &classNames);
 int fidexGlo(const std::string &command);
 
 #endif

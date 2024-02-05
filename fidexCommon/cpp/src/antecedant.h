@@ -25,9 +25,9 @@ public:
   bool getInequality() const { return inequality; }
   double getValue() const { return value; }
 
-  void setAttribute(int value) { attribute = value; }
-  void setInequality(bool value) { inequality = value; }
-  void setHyperlocus(double value) { this->value = value; }
+  void setAttribute(int val) { attribute = val; }
+  void setInequality(bool val) { inequality = val; }
+  void setHyperlocus(double val) { value = val; }
 
   bool isEqual(Antecedant other) const;
 };

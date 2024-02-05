@@ -3,6 +3,7 @@
 
 #include "../../../fidexCommon/cpp/src/dataSet.h"
 #include "../../../fidexCommon/cpp/src/errorHandler.h"
+#include "../../../fidexCommon/cpp/src/parameters.h"
 #include "getRulesFun.h"
 #include <fstream>
 #include <iostream>
@@ -14,6 +15,7 @@
 #include <vector>
 
 void showStatsParams();
+void checkStatsParametersLogicValues(Parameters &p);
 int fidexGloStats(const std::string &command);
 
 #endif

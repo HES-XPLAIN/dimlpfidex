@@ -1,6 +1,6 @@
 #include "fidexAlgo.h"
 
-Fidex::Fidex(DataSetFid &dataset, Parameters &parameters, Hyperspace &hyperspace) : _dataset(&dataset), _parameters(&parameters), _hyperspace(&hyperspace) {
+Fidex::Fidex(DataSetFid &trainDataset, Parameters &parameters, Hyperspace &hyperspace) : _trainDataset(&trainDataset), _parameters(&parameters), _hyperspace(&hyperspace) {
   int seed = parameters.getInt(SEED);
 
   if (seed == 0) {
@@ -12,21 +12,23 @@ Fidex::Fidex(DataSetFid &dataset, Parameters &parameters, Hyperspace &hyperspace
   }
 }
 
-bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover) {
+bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover, int mainSampleClass) {
   Hyperspace *hyperspace = _hyperspace;
-  int nbAttributes = _dataset->getNbAttributes();
-  vector<int> *trainPreds = _dataset->getPredictions();
-  vector<int> *trainTrueClass = _dataset->getClasses();
-  vector<vector<double>> *trainData = _dataset->getDatas();
-  vector<double> *mainSampleValues = &(*trainData)[idSample];
-  vector<vector<double>> *trainOutputValuesPredictions = _dataset->getOutputValuesPredictions();
-  int mainSamplePred = (*trainPreds)[idSample];
-  int nbInputs = hyperspace->getHyperLocus().size();
-  int itMax = _parameters->getInt(MAX_ITERATIONS);
+  int nbAttributes = _trainDataset->getNbAttributes();
+  vector<int> &trainPreds = _trainDataset->getPredictions();
+  vector<int> &trainTrueClass = _trainDataset->getClasses();
+  vector<vector<double>> &trainData = _trainDataset->getDatas();
+  vector<vector<double>> &trainOutputValuesPredictions = _trainDataset->getOutputValuesPredictions();
+  auto nbInputs = static_cast<int>(hyperspace->getHyperLocus().size());
+  int maxIterations = _parameters->getInt(MAX_ITERATIONS);
   double dropoutDim = _parameters->getFloat(DROPOUT_DIM);
   double dropoutHyp = _parameters->getFloat(DROPOUT_HYP);
-  bool hasdd = dropoutDim > 0.01;
-  bool hasdh = dropoutHyp > 0.01;
+  bool hasdd = dropoutDim > 0.001;
+  bool hasdh = dropoutHyp > 0.001;
+  bool hasTrueClasses = true;
+  if (mainSampleClass == -1) {
+    hasTrueClasses = false;
+  }
 
   vector<int> normalizationIndices;
   vector<double> mus;
@@ -48,7 +50,7 @@ bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover
   uniform_real_distribution<double> dis(0.0, 1.0);
 
   // Compute initial covering
-  vector<int> coveredSamples((*trainData).size());     // Samples covered by the hyperbox
+  vector<int> coveredSamples(trainData.size());        // Samples covered by the hyperbox
   iota(begin(coveredSamples), end(coveredSamples), 0); // Vector from 0 to len(coveredSamples)-1
 
   // Store covering and compute initial fidelty
@@ -58,8 +60,8 @@ bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover
 
   int nbIt = 0;
 
-  while (hyperspace->getHyperbox()->getFidelity() < minFidelity && nbIt < itMax) { // While fidelity of our hyperbox is not high enough
-    unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                             // best hyperbox to choose for next step
+  while (hyperspace->getHyperbox()->getFidelity() < minFidelity && nbIt < maxIterations) { // While fidelity of our hyperbox is not high enough
+    unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                                     // best hyperbox to choose for next step
     unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());
     double mainSampleValue;
     int attribut;
@@ -81,7 +83,7 @@ bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover
 
       dimension = dimensions[d];
       attribut = dimension % nbAttributes;
-      mainSampleValue = (*mainSampleValues)[attribut];
+      mainSampleValue = mainSampleValues[attribut];
 
       // Test if we dropout this dimension
       if (hasdd && dis(_rnd) < dropoutDim) {
@@ -150,12 +152,17 @@ bool Fidex::compute(Rule &rule, int idSample, double minFidelity, int minNbCover
 
   // Compute rule accuracy
   double ruleAccuracy;
-  ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass); // Percentage of correct model prediction on samples covered by the rule
+  if (hasTrueClasses) {
+    bool mainSampleCorrect = mainSamplePred == mainSampleClass;
+    ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass, hasTrueClasses, mainSampleCorrect); // Percentage of correct model prediction on samples covered by the rule
+  } else {
+    ruleAccuracy = hyperspace->computeRuleAccuracy(trainPreds, trainTrueClass, hasTrueClasses); // Percentage of correct model prediction on samples covered by the rule
+  }
 
   double ruleConfidence;
   ruleConfidence = hyperspace->computeRuleConfidence(trainOutputValuesPredictions, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples
   if (_parameters->isDoubleVectorSet(MUS)) {
-    rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence, &mus, &sigmas, &normalizationIndices);
+    rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence, mus, sigmas, normalizationIndices);
   } else {
     rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence);
   }

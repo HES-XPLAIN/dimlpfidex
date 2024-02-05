@@ -94,7 +94,10 @@ public:
       const DataSet &test,
       const DataSet &testClass,
       const AttrName &attr,
-      std::ostream &ruleFile);
+      std::ostream &ruleFile,
+      const std::vector<double> &mus = std::vector<double>(),
+      const std::vector<double> &sigmas = std::vector<double>(),
+      const std::vector<int> &normalizationIndices = std::vector<int>());
 
   //----------------------------------------------------------------
 

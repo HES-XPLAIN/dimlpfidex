@@ -71,12 +71,12 @@ void getAntecedents(vector<tuple<int, bool, double>> &antecedents, int &ruleClas
 
 ////////////////////////////////////////////////////////
 
-void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> &rules, vector<string> &statsLines, vector<string> &stringRules, const char *rulesFile, bool hasAttributeNames, const vector<string> &attributeNames, bool hasClassNames, const vector<string> &classNames) {
+void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> &rules, vector<string> &statsLines, vector<string> &stringRules, const std::string &rulesFile, bool hasAttributeNames, const vector<string> &attributeNames, bool hasClassNames, const vector<string> &classNames) {
   tuple<vector<tuple<int, bool, double>>, int, int, double, double> rule; // <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
   fstream rulesData;
   rulesData.open(rulesFile, ios::in); // Read data file
   if (rulesData.fail()) {
-    throw FileNotFoundError("Error : file " + std::string(rulesFile) + " not found.");
+    throw FileNotFoundError("Error : file " + rulesFile + " not found.");
   }
   string line;
   getline(rulesData, line);          // Skip first line;
@@ -84,7 +84,6 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
   getline(rulesData, line);          // Skip second line
   bool attributsInFile = true;
   bool classesInFile = true;
-
   if (line.find("Attribute names are not specified.") != std::string::npos) { // TODO : See if we can delete those lines in file and replace by a check to see if we have attribute names or not. cf. patterns in hyperLocus.cpp
     attributsInFile = false;
   }
@@ -93,7 +92,7 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
     classesInFile = false;
   }
   if (attributsInFile && !hasAttributeNames) {
-    throw CommandArgumentException("The attribute names file has to be given with option -A because there are attributes in the rule file.");
+    throw CommandArgumentException("The attribute names file has to be given with option --attributes_name because there are attributes in the rule file.");
   }
   if (classesInFile && !hasClassNames) {
     throw CommandArgumentException("The class names have to be given in attribut file because there are class names in the rule file.");
@@ -128,20 +127,20 @@ void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, d
 
 ////////////////////////////////////////////////////////
 
-void getActivatedRules(vector<int> &activatedRules, vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> *rules, vector<double> *testValues) {
+void getActivatedRules(vector<int> &activatedRules, vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> &rules, vector<double> &testValues) {
   int attr;
   bool ineq;
   double val;
-  for (int r = 0; r < (*rules).size(); r++) { // For each rule
+  for (int r = 0; r < rules.size(); r++) { // For each rule
     bool notActivated = false;
-    for (const auto &antecedent : get<0>((*rules)[r])) { // For each antecedant
+    for (const auto &antecedent : get<0>(rules[r])) { // For each antecedant
       attr = get<0>(antecedent);
       ineq = get<1>(antecedent);
       val = get<2>(antecedent);
-      if (ineq == 0 && (*testValues)[attr] >= val) { // If the inequality is not verified
+      if (ineq == 0 && testValues[attr] >= val) { // If the inequality is not verified
         notActivated = true;
       }
-      if (ineq == 1 && (*testValues)[attr] < val) {
+      if (ineq == 1 && testValues[attr] < val) {
         notActivated = true;
       }
     }

@@ -19,6 +19,10 @@ Parameters::Parameters(const vector<string> &args) {
       }
       const string arg = args[p];
 
+      if (p + 1 < args.size() && args[p + 1].substr(0, 2) != "--") {
+        throw CommandArgumentException("There is a parameter without -- (" + args[p + 1] + ").");
+      }
+
       parseArg(param, arg);
     }
   }
@@ -32,12 +36,14 @@ Parameters::Parameters(const vector<string> &args) {
     setRootDirectory(TEST_PRED_FILE);
     setRootDirectory(TEST_CLASS_FILE);
     setRootDirectory(RULES_FILE);
+    setRootDirectory(RULES_OUTFILE);
     setRootDirectory(GLOBAL_RULES_OUTFILE);
     setRootDirectory(GLOBAL_RULES_FILE);
     setRootDirectory(EXPLANATION_FILE);
     setRootDirectory(CONSOLE_FILE);
     setRootDirectory(ATTRIBUTES_FILE);
     setRootDirectory(WEIGHTS_FILE);
+    setRootDirectory(STATS_FILE);
     setRootDirectory(NORMALIZATION_FILE);
   }
 }
@@ -67,7 +73,7 @@ Parameters::Parameters(const string &jsonfile) {
       value = to_string(item.value());
     }
 
-    parseArg(item.key(), value.c_str());
+    parseArg(item.key(), value);
   }
 
   // updating paths of files
@@ -75,11 +81,18 @@ Parameters::Parameters(const string &jsonfile) {
     setRootDirectory(TRAIN_DATA_FILE);
     setRootDirectory(TRAIN_PRED_FILE);
     setRootDirectory(TRAIN_CLASS_FILE);
+    setRootDirectory(TEST_DATA_FILE);
+    setRootDirectory(TEST_PRED_FILE);
+    setRootDirectory(TEST_CLASS_FILE);
     setRootDirectory(RULES_FILE);
+    setRootDirectory(RULES_OUTFILE);
     setRootDirectory(GLOBAL_RULES_OUTFILE);
+    setRootDirectory(GLOBAL_RULES_FILE);
+    setRootDirectory(EXPLANATION_FILE);
     setRootDirectory(CONSOLE_FILE);
     setRootDirectory(ATTRIBUTES_FILE);
     setRootDirectory(WEIGHTS_FILE);
+    setRootDirectory(STATS_FILE);
     setRootDirectory(NORMALIZATION_FILE);
   }
 }
@@ -142,8 +155,16 @@ void Parameters::parseArg(const string &param, const string &arg) {
     setString(WEIGHTS_FILE, arg);
     break;
 
+  case STATS_FILE:
+    setString(STATS_FILE, arg);
+    break;
+
   case RULES_FILE:
     setString(RULES_FILE, arg);
+    break;
+
+  case RULES_OUTFILE:
+    setString(RULES_OUTFILE, arg);
     break;
 
   case NB_DIMLP_NETS:
@@ -188,6 +209,10 @@ void Parameters::parseArg(const string &param, const string &arg) {
 
   case MIN_COVERING:
     setInt(MIN_COVERING, arg);
+    break;
+
+  case COVERING_STRATEGY:
+    setBool(COVERING_STRATEGY, arg);
     break;
 
   case NB_THREADS:
@@ -285,7 +310,7 @@ void Parameters::setFloat(ParameterCode id, const string &value) {
 
   try {
     _floatParams[id] = stof(value, nullptr);
-  } catch (exception &e) { // out_of_range & invalid_argument are thrown
+  } catch (const std::exception &) { // out_of_range & invalid_argument are thrown
     throwInvalidDataTypeException(id, value, "float");
   }
 }
@@ -305,7 +330,7 @@ void Parameters::setDouble(ParameterCode id, const string &value) {
 
   try {
     _doubleParams[id] = stod(value, nullptr);
-  } catch (exception &e) { // out_of_range & invalid_argument are thrown
+  } catch (const std::exception &) { // out_of_range & invalid_argument are thrown
     throwInvalidDataTypeException(id, value, "double");
   }
 }
@@ -346,7 +371,7 @@ void Parameters::setDoubleVector(ParameterCode id, const string &value) {
   _doubleVectorParams[id] = getDoubleVectorFromString(value);
 }
 
-void Parameters::setDoubleVector(ParameterCode id, vector<double> value) {
+void Parameters::setDoubleVector(ParameterCode id, const vector<double> &value) {
   _doubleVectorParams[id] = value;
 }
 
@@ -361,7 +386,7 @@ void Parameters::setIntVector(ParameterCode id, const string &value) {
   _intVectorParams[id] = getIntVectorFromString(value);
 }
 
-void Parameters::setIntVector(ParameterCode id, vector<int> value) {
+void Parameters::setIntVector(ParameterCode id, const vector<int> &value) {
   _intVectorParams[id] = value;
 }
 
@@ -497,7 +522,7 @@ vector<string> Parameters::getWeightsFiles() const {
 }
 
 // public assertions
-void Parameters::assertStringExists(ParameterCode id) {
+void Parameters::assertStringExists(ParameterCode id) const {
   if (!isStringSet(id)) {
     throwArgumentNotFoundException(id);
   }
@@ -540,7 +565,7 @@ void Parameters::assertIntVectorExists(ParameterCode id) {
 }
 
 // public special operations
-void Parameters::addWeightsFile(string file) {
+void Parameters::addWeightsFile(const string &file) {
   _weightFiles.push_back(file);
 }
 

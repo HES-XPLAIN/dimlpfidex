@@ -13,14 +13,14 @@
 #include <vector>
 
 bool checkInt(const char *str);
-bool checkPositiveInt(const char *str);
 bool checkFloatFid(const char *str);
-bool checkBool(std::string input);
-bool checkList(std::string input);
-bool checkStringEmpty(std::string line);
+bool checkBool(const std::string &input);
+bool checkList(const std::string &input);
+bool checkStringEmpty(const std::string &line);
 std::string formattingDoubleToString(double number);
 std::vector<std::string> splitString(const std::string &str, const std::string &delimiter);
 std::vector<int> getIntVectorFromString(const std::string &str);
 std::vector<double> getDoubleVectorFromString(const std::string &str);
 std::tuple<std::vector<int>, bool, std::vector<double>, std::vector<double>> parseNormalizationStats(const std::string &normalizationFile, int nbAttributes, const std::vector<std::string> &attributes = std::vector<std::string>());
+bool hasSpaceBetweenWords(const std::string &str);
 #endif

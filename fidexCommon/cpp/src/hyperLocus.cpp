@@ -28,7 +28,7 @@
 //   return hyperlocus;
 // }
 
-vector<vector<double>> calcHypLocus(const char *dataFileWeights, int nbQuantLevels, double hiKnot, bool display) {
+vector<vector<double>> calcHypLocus(const std::string &dataFileWeights, int nbQuantLevels, double hiKnot, bool display) {
 
   double lowKnot = -hiKnot;
   if (display) {
@@ -79,7 +79,7 @@ vector<vector<double>> calcHypLocus(const char *dataFileWeights, int nbQuantLeve
   return matHypLocus;
 }
 
-std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, const int nbAttributes, const std::vector<std::string> &attributeNames) {
+std::vector<std::vector<double>> calcHypLocus(const std::string &rulesFile, const int nbAttributes, const std::vector<std::string> &attributeNames) {
 
   std::string line;
   std::regex Xpattern("X(\\d+)([<>]=?)(-?[\\d.]+)");
@@ -104,7 +104,7 @@ std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, const int n
   ifstream fileDta(rulesFile);
 
   if (!fileDta) {
-    throw FileNotFoundError("Error : file " + string(rulesFile) + " not found");
+    throw FileNotFoundError("Error : file " + rulesFile + " not found");
   }
 
   // Check if the file follows the X[nb_attr] pattern or the attribute names pattern
@@ -120,7 +120,7 @@ std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, const int n
     }
   }
   if (!isXPatternFound && !isAttributeNamesPatternFound) {
-    throw FileContentError("Error : in file " + string(rulesFile) + ", antecedant of rule not in good format, it should be in the form X3<=45.3 or in the form SMOKING>0");
+    throw FileContentError("Error : in file " + rulesFile + ", antecedant of rule not in good format, it should be in the form X3<=45.3 or in the form SMOKING>0");
   } else if (isXPatternFound) {
     pattern = Xpattern;
   } else {
@@ -149,7 +149,7 @@ std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, const int n
             if (it != attributeNames.end()) {
               index = static_cast<int>(distance(attributeNames.begin(), it));
             } else {
-              throw FileContentError("Error: in file " + string(rulesFile) + ", attribute not found in attributeNames vector, got " + token);
+              throw FileContentError("Error: in file " + rulesFile + ", attribute not found in attributeNames vector, got " + token);
             }
           }
           double value = stod(match[3]);
@@ -158,7 +158,7 @@ std::vector<std::vector<double>> calcHypLocus(const char *rulesFile, const int n
         } else if (token == "->") { // end of rule
           break;
         } else {
-          throw FileContentError("Error : in file " + string(rulesFile) + ", antecedant of rule not in good format, got " + token);
+          throw FileContentError("Error : in file " + rulesFile + ", antecedant of rule not in good format, got " + token);
         }
       }
     }
