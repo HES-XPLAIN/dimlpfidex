@@ -543,7 +543,7 @@ int densCls(const string &command) {
     if (uniqueIndices.size() != normalizationIndices.size() ||
         *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= nbIn ||
         *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
-      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) has negative, greater than the number of attributes or repeted elements.");
+      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) must be a list composed of integers between [0, nb_attributes-1] without repeted elements.");
     }
 
     // ----------------------------------------------------------------------
