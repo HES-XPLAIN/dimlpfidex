@@ -4,112 +4,51 @@
 #include <exception>
 #include <string>
 
-class errorHandler : public std::exception {
-
+class ErrorHandler : public std::exception {
 private:
   std::string message_;
 
-protected:
-  const std::string &getMessage() const { return message_; }
-
 public:
-  explicit errorHandler(const std::string &message) : message_(message) {}
+  ErrorHandler(const std::string &message) : message_(message) {}
 
   const char *what() const noexcept override {
     return message_.c_str();
   }
-  virtual const std::string &getError() const = 0;
 };
 
-class CommandArgumentException : public errorHandler {
+class CommandArgumentException : public ErrorHandler {
 public:
-  using errorHandler::errorHandler;
-  const std::string &getError() const override {
-    static const std::string errorType = "CommandArgumentException";
-    return errorType;
-  }
-  const char *what() const noexcept override {
-    static std::string fullMessage = getError() + ": " + getMessage();
-    return fullMessage.c_str();
-  }
+  CommandArgumentException(const std::string &message) : ErrorHandler("CommandArgumentException: " + message) {}
 };
 
-class FileNotFoundError : public errorHandler {
+class FileNotFoundError : public ErrorHandler {
 public:
-  using errorHandler::errorHandler;
-  const std::string &getError() const override {
-    static const std::string errorType = "FileNotFoundError";
-    return errorType;
-  }
-  const char *what() const noexcept override {
-    static std::string fullMessage = getError() + ": " + getMessage();
-    return fullMessage.c_str();
-  }
+  FileNotFoundError(const std::string &message) : ErrorHandler("FileNotFoundError: " + message) {}
 };
 
-class CannotOpenFileError : public errorHandler {
+class CannotOpenFileError : public ErrorHandler {
 public:
-  using errorHandler::errorHandler;
-  const std::string &getError() const override {
-    static const std::string errorType = "CannotOpenFileError";
-    return errorType;
-  }
-  const char *what() const noexcept override {
-    static std::string fullMessage = getError() + ": " + getMessage();
-    return fullMessage.c_str();
-  }
+  CannotOpenFileError(const std::string &message) : ErrorHandler("CannotOpenFileError: " + message) {}
 };
 
-class FileFormatError : public errorHandler {
+class FileFormatError : public ErrorHandler {
 public:
-  using errorHandler::errorHandler;
-  const std::string &getError() const override {
-    static const std::string errorType = "FileFormatError";
-    return errorType;
-  }
-  const char *what() const noexcept override {
-    static std::string fullMessage = getError() + ": " + getMessage();
-    return fullMessage.c_str();
-  }
+  FileFormatError(const std::string &message) : ErrorHandler("FileFormatError: " + message) {}
 };
 
-class FileContentError : public errorHandler {
+class FileContentError : public ErrorHandler {
 public:
-  using errorHandler::errorHandler;
-  const std::string &getError() const override {
-    static const std::string errorType = "FileContentError";
-    return errorType;
-  }
-  const char *what() const noexcept override {
-    static std::string fullMessage = getError() + ": " + getMessage();
-    return fullMessage.c_str();
-  }
+  FileContentError(const std::string &message) : ErrorHandler("FileContentError: " + message) {}
 };
 
-class InternalError : public errorHandler {
+class InternalError : public ErrorHandler {
 public:
-  using errorHandler::errorHandler;
-  const std::string &getError() const override {
-    static const std::string errorType = "InternalError";
-    return errorType;
-  }
-  const char *what() const noexcept override {
-    static std::string fullMessage = getError() + ": " + getMessage();
-    return fullMessage.c_str();
-  }
+  InternalError(const std::string &message) : ErrorHandler("InternalError: " + message) {}
 };
 
-class CannotCreateDirectoryError : public errorHandler {
+class CannotCreateDirectoryError : public ErrorHandler {
 public:
-  using errorHandler::errorHandler;
-  const std::string &getError() const override {
-    static const std::string errorType = "CannotCreateDirectoryError";
-    return errorType;
-  }
-  const char *what() const noexcept override {
-    static std::string fullMessage = getError() + ": " + getMessage();
-    return fullMessage.c_str();
-  }
+  CannotCreateDirectoryError(const std::string &message) : ErrorHandler("CannotCreateDirectoryError: " + message) {}
 };
 
 #endif

@@ -116,20 +116,10 @@ private:
   // private parser
   void parseArg(const string &param, const string &arg);
 
-  // setters handle formatting from string argument
-  void setInt(ParameterCode id, const string &value);
-  void setInt(ParameterCode id, int value);
-  void setFloat(ParameterCode id, const string &value);
-  void setFloat(ParameterCode id, float value);
-  void setDouble(ParameterCode id, const string &value);
-  void setDouble(ParameterCode id, double value);
-  void setBool(ParameterCode id, string value);
-  void setBool(ParameterCode id, bool value);
-  void setDoubleVector(ParameterCode id, const string &value);
-  void setIntVector(ParameterCode id, const string &value);
-  void setString(ParameterCode id, const string &value);
-  void setRootDirectory(ParameterCode id);
+  // path checker
+  void checkPath(ParameterCode id, const string &path);
 
+  // throwables
   [[noreturn]] void throwInvalidDataTypeException(ParameterCode id, const string &wrongValue, const string &typeName) const {
     throw CommandArgumentException("Parsing error: argument (ID " + getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid " + typeName + ".");
   }
@@ -142,11 +132,32 @@ private:
     throw CommandArgumentException("Parameters error: argument (ID " + getParameterName(id) + ") requested was not found, try to rerun including it.");
   }
 
+  [[noreturn]] void throwInvalidFileOrDirectory(ParameterCode id, const string &wrongValue) const {
+    throw CommandArgumentException("Parameters error: argument (ID " + getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid path. The directory or file specified could not be found.");
+  }
+
+
 public:
   // constructor
   Parameters() = default;
   explicit Parameters(const vector<string> &args);
   explicit Parameters(const string &jsonfile);
+
+  // setters handle formatting from string argument
+  void setInt(ParameterCode id, const string &value);
+  void setInt(ParameterCode id, int value);
+  void setFloat(ParameterCode id, const string &value);
+  void setFloat(ParameterCode id, float value);
+  void setDouble(ParameterCode id, const string &value);
+  void setDouble(ParameterCode id, double value);
+  void setBool(ParameterCode id, string value);
+  void setBool(ParameterCode id, bool value);
+  void setDoubleVector(ParameterCode id, const string &value);
+  void setDoubleVector(ParameterCode id, const vector<double> &value);
+  void setIntVector(ParameterCode id, const string &value);
+  void setIntVector(ParameterCode id, const vector<int> &value);
+  void setString(ParameterCode id, const string &value);
+  void sanitizePath(ParameterCode id);
 
   // default setter if value not set
   void setDefaultInt(ParameterCode id, int value);
@@ -157,10 +168,6 @@ public:
   void setDefaultIntVector(ParameterCode id, const string &defaultValue);
   void setDefaultString(ParameterCode id, const string &defaultValue);
 
-  // public setter
-  void setIntVector(ParameterCode id, const vector<int> &value);
-  void setDoubleVector(ParameterCode id, const vector<double> &value);
-
   // getters
   int getInt(ParameterCode id);
   float getFloat(ParameterCode id);
@@ -170,8 +177,6 @@ public:
   vector<int> getIntVector(ParameterCode id);
   string getString(ParameterCode id);
   vector<string> getWeightsFiles() const;
-
-  std::string getParameterName(ParameterCode id) const;
 
   map<ParameterCode, int> getAllInts() const { return _intParams; }
   map<ParameterCode, float> getAllFloats() const { return _floatParams; }
@@ -190,8 +195,10 @@ public:
   bool isStringSet(ParameterCode id) const;
 
   // special operations
+  static std::string getParameterName(ParameterCode id);
   void setWeightsFiles();
   void addWeightsFile(const string &file);
+
   template <typename T>
   std::string vectorToString(const std::vector<T> &vec) const {
     std::stringstream ss;

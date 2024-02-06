@@ -659,7 +659,7 @@ int fidexGloRules(const string &command) {
     size_t nbParam = commandList.size();
     if (nbParam < 2) {
       showRulesParams();
-      exit(1);
+      return -1;
     }
 
     // Import parameters
@@ -887,7 +887,7 @@ int fidexGloRules(const string &command) {
 
     cout.rdbuf(cout_buff); // reset to standard output again
 
-  } catch (const errorHandler &e) {
+  } catch (const ErrorHandler &e) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
     std::cerr << e.what() << endl;
     return -1;

@@ -1,5 +1,5 @@
 {
-    "root_folder": "fidexGlo/cpp/tests/dataset/data",
+    "root_folder": "fidexTests/dataset/data",
     "test_data_file": "test.txt",
     "test_pred_file": "test.out",
     "test_class_file": "test_true_classes.txt",
