@@ -6,7 +6,7 @@ const int BPNN = 1;
 
 ////////////////////////////////////////////////////////////
 
-void GiveAllParamDimlpTrn()
+void showDimlpTrnParams()
 
 {
   cout << "\n-------------------------------------------------\n"
@@ -273,7 +273,7 @@ int dimlpTrn(const string &command) {
     StringInt archInd;
 
     if (nbParam <= 1) {
-      GiveAllParamDimlpTrn();
+      showDimlpTrnParams();
       return 0;
     }
 
@@ -1029,7 +1029,7 @@ int dimlpTrn(const string &command) {
 
 /* Exemples to launch the code :
 
-./DimlpTrn --train_data_file irisTrainData.txt --train_class_file irisTrainClass.txt --test_data_file irisTestData.txt --test_class_file irisTestClass.txt --weights_file weights.wts --nb_attributes 4 --H2 5 --nb_classes 3 --train_pred_file predtrain.out --test_pred_file predTest.out --with_rule_extraction --global_rules_outfile rules.rls --stats_file stats --console_file results.txt --root_folder ../dimlp/datafiles/IrisDataset --attributes_file attributes.txt
+./DimlpTrn --train_data_file irisTrainData.txt --train_class_file irisTrainClass.txt --test_data_file irisTestData.txt --test_class_file irisTestClass.txt --weights_file weights.wts --nb_attributes 4 --H2 5 --nb_classes 3 --train_pred_file predTrain.out --test_pred_file predTest.out --with_rule_extraction --global_rules_outfile rules.rls --stats_file stats --console_file results.txt --root_folder ../dimlp/datafiles/IrisDataset --attributes_file attributes.txt
 ./DimlpTrn --train_data_file spamTrainData.txt --train_class_file spamTrainClass.txt --test_data_file spamTestData.txt --test_class_file spamTestClass.txt --weights_file spam.wts --nb_attributes 57 --H2 5 --nb_classes 2 --train_pred_file spamTrainPred.out --test_pred_file spamTestPred.out --with_rule_extraction --global_rules_outfile spamTrn.rls --stats_file spamTrnStats --console_file spamTrnResult.txt --root_folder ../dimlp/datafiles/spamDataset --attributes_file attributes.txt
 ./DimlpTrn --train_data_file isoletTrainData.txt --train_class_file isoletTrainClass.txt --test_data_file isoletTestData.txt --test_class_file isoletTestClass.txt --weights_file isoletV3.wts --nb_attributes 617 --H2 5 --nb_classes 26 --train_pred_file isoletTrainPredV3.out --test_pred_file isoletTestPredV3.out --with_rule_extraction --global_rules_outfile isoletTrnV3.rls --stats_file isoletTrnStatsV3 --console_file isoletTrnResultV3.txt --root_folder ../dimlp/datafiles/isoletDataset --attributes_file attributes.txt
 ./DimlpTrn --train_data_file Train/X_train.txt --train_class_file Train/y_train.txt --test_data_file test/X_test.txt --test_class_file Test/y_test.txt --weights_file HAPT.wts --nb_attributes 561 --H2 5 --nb_classes 12 --train_pred_file Train/pred_train.out --test_pred_file Test/pred_test.out --with_rule_extraction --global_rules_outfile HAPTTrain.rls --stats_file HAPTTrnStats --console_file HAPTTrnResult.txt --root_folder ../dimlp/datafiles/HAPTDataset --attributes_file attributes.txt

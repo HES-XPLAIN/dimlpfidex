@@ -11,7 +11,7 @@
 #include <unordered_map>
 #include <vector>
 
-void GiveAllParamDimlpRul();
+void showDimlpRulParams();
 int dimlpRul(const std::string &command);
 
 #endif

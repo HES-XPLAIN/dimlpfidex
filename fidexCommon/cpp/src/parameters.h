@@ -171,7 +171,7 @@ public:
   void setDefaultBool(ParameterCode id, bool value);
   void setDefaultDoubleVector(ParameterCode id, const string &defaultValue);
   void setDefaultIntVector(ParameterCode id, const string &defaultValue);
-  void setDefaultString(ParameterCode id, const string &defaultValue);
+  void setDefaultString(ParameterCode id, const string &defaultValue, bool withRoot = false);
 
   // getters
   int getInt(ParameterCode id);

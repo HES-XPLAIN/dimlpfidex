@@ -11,7 +11,7 @@
 #include <unordered_map>
 #include <vector>
 
-void GiveAllParamDensCls();
+void showDensClsParams();
 int densCls(const std::string &command);
 
 #endif

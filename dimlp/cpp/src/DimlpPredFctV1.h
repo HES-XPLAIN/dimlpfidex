@@ -1,5 +1,5 @@
-#ifndef DIMLPCLSFCT_H
-#define DIMLPCLSFCT_H
+#ifndef DIMLPPREDFCT_H
+#define DIMLPPREDFCT_H
 
 #include "checkFun.h"
 #include "dimlp.h"
@@ -10,8 +10,8 @@
 #include <unordered_map>
 #include <vector>
 
-void showDimlpClsParams();
+void showDimlpPredParams();
 static void SaveOutputs(DataSet &data, Dimlp *net, int nbOut, int nbWeightLayers, const char *outfile);
-int dimlpCls(const std::string &command);
+int dimlpPred(const std::string &command);
 
 #endif

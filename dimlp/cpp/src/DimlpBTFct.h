@@ -11,7 +11,7 @@
 #include <unordered_map>
 #include <vector>
 
-void GiveAllParamDimlpBT();
+void showDimlpBTParams();
 int dimlpBT(const std::string &command);
 
 #endif

@@ -4,7 +4,7 @@ const int BPNN = 1;
 using namespace std;
 ////////////////////////////////////////////////////////////
 
-void GiveAllParamDimlpBT()
+void showDimlpBTParams()
 
 {
   cout << "\n-------------------------------------------------\n"
@@ -222,7 +222,7 @@ int dimlpBT(const string &command) {
     StringInt archInd;
 
     if (nbParam <= 1) {
-      GiveAllParamDimlpBT();
+      showDimlpBTParams();
       return 0;
     }
 

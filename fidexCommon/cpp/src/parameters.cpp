@@ -648,7 +648,19 @@ void Parameters::setDefaultIntVector(ParameterCode id, const string &defaultValu
     setIntVector(id, defaultValue);
 }
 
-void Parameters::setDefaultString(ParameterCode id, const string &defaultValue) {
-  if (!isStringSet(id))
-    setString(id, defaultValue);
+void Parameters::setDefaultString(ParameterCode id, const string &defaultValue, bool withRoot) {
+  if (!isStringSet(id)) {
+    std::string value = defaultValue;
+    if (withRoot) {
+      // define separator depending on OS
+      std::string separator;
+#if defined(__unix__) || defined(__APPLE__)
+      separator = "/";
+#elif defined(_WIN32)
+      separator = "\\";
+#endif
+      value = getString(ROOT_FOLDER) + separator + defaultValue;
+    }
+    setString(id, value);
+  }
 }

@@ -6,7 +6,7 @@ const int BPNN = 1;
 
 ////////////////////////////////////////////////////////////
 
-void GiveAllParamDimlpRul()
+void showDimlpRulParams()
 
 {
   cout << "\n-------------------------------------------------\n"
@@ -164,7 +164,7 @@ int dimlpRul(const string &command) {
     StringInt archInd;
 
     if (nbParam <= 1) {
-      GiveAllParamDimlpRul();
+      showDimlpRulParams();
       return 0;
     }
 
