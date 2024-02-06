@@ -9,13 +9,13 @@
 #include <set>
 #include <sstream>
 #include <string>
-#include <tuple>
-#include <vector>
 #include <sys/stat.h>
+#include <tuple>
 #include <unistd.h>
+#include <vector>
 
-bool checkInt(const char *str);
-bool checkFloatFid(const char *str);
+bool checkInt(const std::string &input);
+bool checkFloat(const std::string &input);
 bool checkBool(const std::string &input);
 bool checkList(const std::string &input);
 bool checkStringEmpty(const std::string &line);

@@ -282,15 +282,9 @@ void Parameters::setInt(ParameterCode id, const string &value) {
     throwAlreadySetArgumentException(id, value);
   }
 
-  try {
-    int res = stoi(value, nullptr);
-
-    if (res != stof(value, nullptr)) { // checks if float is being inserted
-      throw exception();
-    }
-
-    _intParams[id] = res;
-  } catch (exception &e) { // out_of_range & invalid_argument are thrown
+  if (checkInt(value)) {
+    _intParams[id] = stoi(value, nullptr);
+  } else {
     throwInvalidDataTypeException(id, value, "integer");
   }
 }
@@ -308,9 +302,9 @@ void Parameters::setFloat(ParameterCode id, const string &value) {
     throwAlreadySetArgumentException(id, value);
   }
 
-  try {
+  if (checkFloat(value)) {
     _floatParams[id] = stof(value, nullptr);
-  } catch (const std::exception &) { // out_of_range & invalid_argument are thrown
+  } else {
     throwInvalidDataTypeException(id, value, "float");
   }
 }
@@ -334,9 +328,9 @@ void Parameters::setDouble(ParameterCode id, const string &value) {
     throwAlreadySetArgumentException(id, value);
   }
 
-  try {
+  if (checkFloat(value)) {
     _doubleParams[id] = stod(value, nullptr);
-  } catch (const std::exception &) { // out_of_range & invalid_argument are thrown
+  } else {
     throwInvalidDataTypeException(id, value, "double");
   }
 }
@@ -408,7 +402,6 @@ void Parameters::sanitizePath(ParameterCode id) {
   if (!isStringSet(id) || id == ROOT_FOLDER) {
     return;
   }
-
 
   // only check target path of root folder isn't defined
   if (!isStringSet(ROOT_FOLDER)) {

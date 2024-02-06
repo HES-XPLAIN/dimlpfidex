@@ -136,7 +136,6 @@ private:
     throw CommandArgumentException("Parameters error: argument (ID " + getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid path. The directory or file specified could not be found.");
   }
 
-
 public:
   // constructor
   Parameters() = default;
@@ -228,31 +227,31 @@ inline ostream &operator<<(ostream &stream, const Parameters &p) {
   stream << "Parameters list:" << endl;
 
   for (auto const &x : p.getAllStrings()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << x.second << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << x.second << endl;
   }
 
   for (auto const &x : p.getAllInts()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << to_string(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllFloats()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << to_string(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllDoubles()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << to_string(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllBools()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << to_string(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllIntVectors()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << p.vectorToString(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << p.vectorToString(x.second) << endl;
   }
 
   for (auto const &x : p.getAllDoubleVectors()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << p.vectorToString(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << p.vectorToString(x.second) << endl;
   }
 
   if (p.isStringSet(WEIGHTS_FILE)) {

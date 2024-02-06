@@ -1,81 +1,46 @@
 #include "checkFun.h"
 
-////////////////////////////////////////////////////////
-
 /**
  * @brief Checks if a given string represents a valid integer (positive or negative).
  *
- * @param str A C-style string representing the number to be checked.
+ * @param input A string representing the number to be checked.
  * @return bool Returns true if the string is a valid integer, false otherwise.
  */
-bool checkInt(const char *str) {
-  // Check if empty
-  if (str == nullptr || *str == '\0') {
+bool checkInt(const std::string &input) {
+  try {
+    std::size_t pos;
+    std::stoi(input, &pos);
+
+    if (pos != input.length()) {
+      return false; // There are some non-numerical characters
+    }
+  } catch (const std::invalid_argument &) {
+    return false;
+  } catch (const std::out_of_range &) {
     return false;
   }
-
-  int i = 0;
-
-  // Allow - sign for negatives
-  if (str[0] == '-') {
-    // If it's only a -
-    if (str[1] == '\0') {
-      return false;
-    }
-    i = 1; // Start checking from second character
-  }
-
-  char ch;
-  for (; str[i] != '\0'; i++) {
-    ch = str[i];
-    if (ch < '0' || ch > '9') {
-      return false; // Non numerical character found
-    }
-  }
-
   return true;
 }
-
-////////////////////////////////////////////////////////
 
 /**
  * @brief Checks if a given string represents a valid floating-point number.
  *
- * @param str A C-style string representing the number to be checked.
+ * @param str A string representing the number to be checked.
  * @return bool Returns true if the string is a valid float, false otherwise.
  */
-bool checkFloatFid(const char *str)
+bool checkFloat(const std::string &input) {
+  try {
+    std::size_t pos;        // Pour stocker la position du dernier caractère traité
+    std::stod(input, &pos); // Convertit la chaîne en double
 
-{
-  int i;
-  int countDot;
-  int countMinus;
-  char ch;
-
-  for (i = 0; str[i] != '\0'; i++) {
-    ch = str[i];
-
-    if (((ch > '9') || (ch < '0')) && (ch != '.') && (ch != '-')) {
-      std::cout << "Problem with float argument (" << str;
-      std::cout << ") or with the previous argument." << std::endl;
-      return false;
+    if (pos != input.length()) {
+      return false; // Il reste des caractères non traités dans la chaîne
     }
-  }
-
-  for (i = 0, countDot = 0; str[i] != '\0'; i++)
-    if (str[i] == '.')
-      countDot++;
-
-  for (i = 0, countMinus = 0; str[i] != '\0'; i++)
-    if (str[i] == '.')
-      countMinus++;
-
-  if ((countDot > 1) || (countMinus > 1)) {
-    std::cout << "Problem with float argument (" << str;
-    std::cout << ") or with previous argument." << std::endl;
+  } catch (const std::invalid_argument &) { // Gère les arguments invalides
+    return false;
+  } catch (const std::out_of_range &) { // Gère les cas où la valeur est hors limite
     return false;
   }
-
   return true;
 }
 
@@ -111,7 +76,7 @@ bool checkList(const std::string &input) {
   std::string number;
 
   while (std::getline(iss, number, ',')) {
-    if (!checkFloatFid(number.c_str())) {
+    if (!checkFloat(number)) {
       return false;
     }
   }
@@ -224,7 +189,7 @@ std::vector<int> getIntVectorFromString(const std::string &str) {
   auto tokens = splitString(str.substr(1, str.size() - 2), ",");
 
   for (const auto &token : tokens) {
-    if (checkInt(token.c_str())) {
+    if (checkInt(token)) {
       result.push_back(std::stoi(token));
     } else {
       throw CommandArgumentException("Error : Invalid integer value in int vector: " + token);
@@ -400,13 +365,12 @@ bool hasSpaceBetweenWords(const std::string &str) {
   return false; // No space found between words or only tabs are present
 }
 
-
 //////////////////////////////////////////////////////
 
 /**
  * @brief Checks if a given file or directory is valid.
- * 
- * 
+ *
+ *
  * @param path path of the file or directory to be checked
  * @return whether the file or directory exists or not
  */
