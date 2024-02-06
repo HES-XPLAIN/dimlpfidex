@@ -34,7 +34,7 @@ def decisionThreshold(*args, **kwargs):
             print("----------------------------")
             print("Optional parameters if the computation of roc curve is needed :")
             print("estimator : name of estimator")
-            print("output_roc : output ROC curve without extension(roc_curve.png by default)")
+            print("output_roc : output ROC curve (roc_curve.png by default)")
             print("stats_file : stats file to save AUC score")
 
         else:

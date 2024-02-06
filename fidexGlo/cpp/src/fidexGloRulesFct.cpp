@@ -564,7 +564,7 @@ void checkRulesParametersLogicValues(Parameters &p) {
     if (uniqueIndices.size() != p.getIntVector(NORMALIZATION_INDICES).size() ||
         *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= p.getInt(NB_ATTRIBUTES) ||
         *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
-      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) has negative, greater than the number of attributes or repeted elements.");
+      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) must be a list composed of integers between [0, nb_attributes-1] without repeted elements.");
     }
   }
 }

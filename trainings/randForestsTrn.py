@@ -23,11 +23,11 @@ def randForestsTrn(*args, **kwargs):
             print("----------------------------")
             print("Optional parameters :")
             print("root_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
-            print("train_pred_file : output train prediction file name without extension(predTrain by default)")
-            print("test_pred_file : output test prediction file name without extension(predTest by default)")
+            print("train_pred_file : output train prediction file name (predTrain.out by default)")
+            print("test_pred_file : output test prediction file name (predTest.out by default)")
             print("stats_file : output file name with train and test accuracy (stats.txt by default)")
             print("console_file : file where you redirect console result")
-            print("rules_file : output random forests rules file without extension (RF_rules.rls by default)")
+            print("rules_file : output random forests rules file (RF_rules.rls by default)")
             print("----------------------------")
             print("Random Forests parameters (optional)")
             print("n_estimators : Number of generated trees in the forest(100 by default)")
@@ -120,8 +120,7 @@ def randForestsTrn(*args, **kwargs):
 
             n_estimators_var, min_samples_split_var, min_samples_leaf_var, min_weight_fraction_leaf_var, min_impurity_decrease_var, seed_var, max_features_var, verbose_var, max_leaf_nodes_var, warm_start_var, ccp_alpha_var = check_parameters_decision_trees(n_estimators_var, min_samples_split_var, min_samples_leaf_var, min_weight_fraction_leaf_var, min_impurity_decrease_var, seed_var, max_features_var, verbose_var, max_leaf_nodes_var, warm_start_var, ccp_alpha_var)
 
-            rules_file = validate_string_param(rules_file, "rules_file", default="RF_rules")
-            rules_file += ".rls"
+            rules_file = validate_string_param(rules_file, "rules_file", default="RF_rules.rls")
 
             if criterion_var is None:
                 criterion_var = "gini"
