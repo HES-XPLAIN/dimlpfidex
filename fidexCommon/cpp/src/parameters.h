@@ -1,5 +1,6 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
+#include "../../../dimlp/cpp/src/stringI.h"
 #include "../../../json/single_include/nlohmann/json.hpp"
 #include "antecedant.h"
 #include "checkFun.h"
@@ -57,6 +58,7 @@ enum ParameterCode {
   NORMALIZATION_INDICES,
   WITH_FIDEX,
   WITH_MINIMAL_VERSION,
+  H,
   INVALID,
   _NB_PARAMETERS // internal use only, do not consider it as a usable parameter
 };
@@ -100,7 +102,8 @@ static const std::unordered_map<std::string, ParameterCode> parameterNames = {
     {"sigmas", SIGMAS},
     {"normalization_indices", NORMALIZATION_INDICES},
     {"with_fidex", WITH_FIDEX},
-    {"with_minimal_version", WITH_MINIMAL_VERSION}};
+    {"with_minimal_version", WITH_MINIMAL_VERSION},
+    {"H", H}};
 
 class Parameters {
 private:
@@ -112,6 +115,8 @@ private:
   map<ParameterCode, vector<int>> _intVectorParams;
   map<ParameterCode, string> _stringParams;
   vector<string> _weightFiles; // the only 1 special parameter
+  StringInt arch;
+  StringInt archInd;
 
   // private parser
   void parseArg(const string &param, const string &arg);
@@ -156,6 +161,7 @@ public:
   void setIntVector(ParameterCode id, const string &value);
   void setIntVector(ParameterCode id, const vector<int> &value);
   void setString(ParameterCode id, const string &value);
+  void setArch(ParameterCode id, const string &value, const string &param);
   void sanitizePath(ParameterCode id);
 
   // default setter if value not set
@@ -176,6 +182,8 @@ public:
   vector<int> getIntVector(ParameterCode id);
   string getString(ParameterCode id);
   vector<string> getWeightsFiles() const;
+  StringInt getArch() const;
+  StringInt getArchInd() const;
 
   map<ParameterCode, int> getAllInts() const { return _intParams; }
   map<ParameterCode, float> getAllFloats() const { return _floatParams; }
@@ -252,6 +260,13 @@ inline ostream &operator<<(ostream &stream, const Parameters &p) {
 
   for (auto const &x : p.getAllDoubleVectors()) {
     stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << p.vectorToString(x.second) << endl;
+  }
+  StringInt arch = p.getArch();
+  StringInt archInd = p.getArchInd();
+  arch.GoToBeg();
+  archInd.GoToBeg();
+  for (int _ = 0; _ < arch.GetNbEl(); _++, arch.GoToNext(), archInd.GoToNext()) {
+    stream << " - H" << archInd.GetVal() << setw(pad - static_cast<int>(std::to_string(archInd.GetVal()).length() + 1)) << arch.GetVal() << endl;
   }
 
   if (p.isStringSet(WEIGHTS_FILE)) {

@@ -114,7 +114,16 @@ void Parameters::parseArg(const string &param, const string &arg) {
   if (it != parameterNames.end()) {
     option = it->second;
   } else {
-    option = INVALID;
+    if (param[0] == 'H') {
+      std::string numberPart = param.substr(1);
+      if (checkInt(numberPart.c_str())) {
+        option = H;
+      } else {
+        option = INVALID;
+      }
+    } else {
+      option = INVALID;
+    }
   }
 
   switch (option) {
@@ -272,6 +281,10 @@ void Parameters::parseArg(const string &param, const string &arg) {
     setInt(SEED, arg);
     break;
 
+  case H:
+    setArch(H, arg, param);
+    break;
+
   default: // If we put another -X option
     throw CommandArgumentException("Illegal option : " + param);
   }
@@ -397,6 +410,22 @@ void Parameters::setString(ParameterCode id, const string &value) {
   _stringParams[id] = value;
 }
 
+void Parameters::setArch(ParameterCode id, const string &value, const string &param) {
+  if (checkInt(value)) {
+    arch.Insert(stoi(value));
+
+    const char *ptrParam = param.c_str();
+
+    if (ptrParam[1] != '\0') {
+      std::string str(ptrParam + 1);
+      archInd.Insert(stoi(str));
+    } else {
+      throw CommandArgumentException("Error : Which hidden layer (-H) ?");
+    }
+  } else
+    throwInvalidDataTypeException(id, value, "integer");
+}
+
 void Parameters::sanitizePath(ParameterCode id) {
   // ignore if target is not set and avoid duplicating the root path for no reason
   if (!isStringSet(id) || id == ROOT_FOLDER) {
@@ -489,6 +518,14 @@ vector<int> Parameters::getIntVector(ParameterCode id) {
 string Parameters::getString(ParameterCode id) {
   assertStringExists(id);
   return _stringParams[id];
+}
+
+StringInt Parameters::getArch() const {
+  return arch;
+}
+
+StringInt Parameters::getArchInd() const {
+  return archInd;
 }
 
 std::string Parameters::getParameterName(ParameterCode id) {
