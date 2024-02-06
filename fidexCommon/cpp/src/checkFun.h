@@ -26,4 +26,5 @@ std::vector<double> getDoubleVectorFromString(const std::string &str);
 std::tuple<std::vector<int>, bool, std::vector<double>, std::vector<double>> parseNormalizationStats(const std::string &normalizationFile, int nbAttributes, const std::vector<std::string> &attributes = std::vector<std::string>());
 bool hasSpaceBetweenWords(const std::string &str);
 bool exists(const std::string &path);
+std::string getOSSeparator();
 #endif

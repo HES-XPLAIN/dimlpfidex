@@ -1,30 +1,29 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include "../../../json/single_include/nlohmann/json.hpp"
 #include <iostream>
 #include <map>
 #include <sstream>
 #include <string>
 #include <vector>
-#include "../../../json/single_include/nlohmann/json.hpp"
 
 using Json = nlohmann::json;
 
 // default values to avoid generating litterals redundancy
 static const std::string DATA_FOLDER = "fidexTests/dataset/data/";
-static const std::string OUT_FOLDER = "fidexTests/dataset/out/";
 
 // default paths
 static const std::string DEFAULT_TRAIN_FILE = DATA_FOLDER + "train.txt";
 static const std::string DEFAULT_TRAIN_PRED_FILE = DATA_FOLDER + "train.out";
 static const std::string DEFAULT_TRAIN_TRUE_CLASS_FILE = DATA_FOLDER + "train_true_classes.txt";
-static const std::string DEFAULT_WEIGHTS_FILE = DATA_FOLDER + "weights.txt";
+static const std::string DEFAULT_WEIGHTS_FILE = DATA_FOLDER + "weights.wts";
 static const std::string DEFAULT_TXT_IN_RULES_FILE = DATA_FOLDER + "rules.txt";
-static const std::string DEFAULT_TXT_OUT_RULES_FILE = OUT_FOLDER + "new_rules.txt";
+static const std::string DEFAULT_TXT_OUT_RULES_FILE = DATA_FOLDER + "new_rules.txt";
 static const std::string DEFAULT_JSON_IN_RULES_FILE = DATA_FOLDER + "rules.json";
-static const std::string DEFAULT_JSON_OUT_RULES_FILE = OUT_FOLDER + "new_rules.json";
+static const std::string DEFAULT_JSON_OUT_RULES_FILE = DATA_FOLDER + "new_rules.json";
 static const std::string DEFAULT_ATTRIBUTES_FILE = DATA_FOLDER + "attributes.txt";
-static const std::string DEFAULT_CONSOLE_FILE = OUT_FOLDER + "console.out";
+static const std::string DEFAULT_CONSOLE_FILE = DATA_FOLDER + "console.out";
 
 // default numeric args
 static const std::string DEFAULT_HEURISTIC = "1";

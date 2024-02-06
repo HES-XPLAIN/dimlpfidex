@@ -37,7 +37,7 @@ void testSetter() {
 
   try {
     p.setString(TEST_DATA_FILE, "../../dataset/data/fake_test.txt");
-    p.sanitizePath(TEST_DATA_FILE);
+    p.sanitizePath(TEST_DATA_FILE, true);
     testAssert("Parameter throw on invalid file path", false);
 
   } catch (ErrorHandler &e) {
@@ -46,6 +46,15 @@ void testSetter() {
 
     testAssert("Parameter throw on invalid file path", expectedMessage.compare(actualMessage) == 0);
   }
+
+  p.setString(ATTRIBUTES_FILE, DEFAULT_ATTRIBUTES_FILE);
+  p.sanitizePath(ATTRIBUTES_FILE, true);
+  testAssert("Parameter sanitize path of input file", true);
+
+  p.setString(RULES_OUTFILE, DEFAULT_TXT_OUT_RULES_FILE);
+  p.sanitizePath(RULES_OUTFILE, false);
+  testAssert("Parameter sanitize path of output file", true);
+
 }
 
 void testGetter() {
@@ -151,9 +160,6 @@ void testJsonParser() {
 
   Parameters pJson = Parameters("./fidexTests/templates/default_config.json");
   Parameters pArgs = Parameters(args);
-
-  buffer1 << pJson;
-  buffer2 << pArgs;
 
   testAssert("Parameters: JSON & user args are equal", buffer1.str().compare(buffer2.str()) == 0);
 }

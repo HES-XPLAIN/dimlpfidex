@@ -117,6 +117,7 @@ private:
   void parseArg(const string &param, const string &arg);
 
   // path checker
+  void checkFilesIntegrity();
   void checkPath(ParameterCode id, const string &path);
 
   // throwables
@@ -135,7 +136,6 @@ private:
   [[noreturn]] void throwInvalidFileOrDirectory(ParameterCode id, const string &wrongValue) const {
     throw CommandArgumentException("Parameters error: argument (ID " + getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid path. The directory or file specified could not be found.");
   }
-
 
 public:
   // constructor
@@ -157,7 +157,6 @@ public:
   void setIntVector(ParameterCode id, const string &value);
   void setIntVector(ParameterCode id, const vector<int> &value);
   void setString(ParameterCode id, const string &value);
-  void sanitizePath(ParameterCode id);
 
   // default setter if value not set
   void setDefaultInt(ParameterCode id, int value);
@@ -198,6 +197,7 @@ public:
   static std::string getParameterName(ParameterCode id);
   void setWeightsFiles();
   void addWeightsFile(const string &file);
+  void sanitizePath(ParameterCode id, bool shouldFileExist);
 
   template <typename T>
   std::string vectorToString(const std::vector<T> &vec) const {
