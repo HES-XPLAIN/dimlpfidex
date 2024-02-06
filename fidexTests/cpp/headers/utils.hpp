@@ -11,8 +11,8 @@
 using Json = nlohmann::json;
 
 // default values to avoid generating litterals redundancy
-static const std::string DATA_FOLDER = "./dataset/data/";
-static const std::string OUT_FOLDER = "./dataset/out/";
+static const std::string DATA_FOLDER = "fidexTests/dataset/data/";
+static const std::string OUT_FOLDER = "fidexTests/dataset/out/";
 
 // default paths
 static const std::string DEFAULT_TRAIN_FILE = DATA_FOLDER + "train.txt";

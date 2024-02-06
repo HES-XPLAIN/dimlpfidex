@@ -35,8 +35,6 @@ Parameters::Parameters(const vector<string> &args) {
   sanitizePath(TEST_PRED_FILE);
   sanitizePath(TEST_CLASS_FILE);
   sanitizePath(RULES_FILE);
-  sanitizePath(RULES_OUTFILE);
-  sanitizePath(GLOBAL_RULES_OUTFILE);
   sanitizePath(GLOBAL_RULES_FILE);
   sanitizePath(EXPLANATION_FILE);
   sanitizePath(CONSOLE_FILE);
@@ -44,6 +42,10 @@ Parameters::Parameters(const vector<string> &args) {
   sanitizePath(WEIGHTS_FILE);
   sanitizePath(STATS_FILE);
   sanitizePath(NORMALIZATION_FILE);
+
+  // TODO check differently output files
+  // sanitizePath(RULES_OUTFILE);
+  // sanitizePath(GLOBAL_RULES_OUTFILE);
 }
 
 /**
@@ -82,8 +84,6 @@ Parameters::Parameters(const string &jsonfile) {
   sanitizePath(TEST_PRED_FILE);
   sanitizePath(TEST_CLASS_FILE);
   sanitizePath(RULES_FILE);
-  sanitizePath(RULES_OUTFILE);
-  sanitizePath(GLOBAL_RULES_OUTFILE);
   sanitizePath(GLOBAL_RULES_FILE);
   sanitizePath(EXPLANATION_FILE);
   sanitizePath(CONSOLE_FILE);
@@ -91,6 +91,10 @@ Parameters::Parameters(const string &jsonfile) {
   sanitizePath(WEIGHTS_FILE);
   sanitizePath(STATS_FILE);
   sanitizePath(NORMALIZATION_FILE);
+
+  // TODO check differently output files
+  // sanitizePath(RULES_OUTFILE);
+  // sanitizePath(GLOBAL_RULES_OUTFILE);
 }
 
 /**
@@ -405,14 +409,16 @@ void Parameters::sanitizePath(ParameterCode id) {
     return;
   }
 
-  string root = getString(ROOT_FOLDER);
-  string target = getString(id);
-  string separator;
 
   // only check target path of root folder isn't defined
   if (!isStringSet(ROOT_FOLDER)) {
-    checkPath(id, target);
+    checkPath(id, getString(id));
+    return;
   }
+
+  string root = getString(ROOT_FOLDER);
+  string target = getString(id);
+  string separator;
 
   // define separator depending on OS
 #if defined(__unix__) || defined(__APPLE__)

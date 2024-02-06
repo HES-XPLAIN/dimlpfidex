@@ -1,6 +1,6 @@
 {
     "root_folder": "fidexTests/dataset/data",
-    "train_data_file": "train.txt",
+    "train_data_file": "",
     "train_pred_file": "train.out",
     "train_class_file": "train_true_classes.txt",
     "global_rules_outfile": "new_rules.txt",

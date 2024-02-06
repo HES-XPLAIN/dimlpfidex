@@ -12,6 +12,10 @@ std::string getArgumentNotFoundExceptionMessage(ParameterCode id) {
   return "CommandArgumentException: Parameters error: argument (ID " + Parameters::getParameterName(id) + ") requested was not found, try to rerun including it.";
 }
 
+std::string getInvalidFileOrDirectoryMessage(ParameterCode id, const string &wrongValue) {
+  return "CommandArgumentException: Parameters error: argument (ID " + Parameters::getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid path. The directory or file specified could not be found.";
+}
+
 void testSetter() {
   Parameters p;
 
@@ -30,6 +34,18 @@ void testSetter() {
 
     testAssert("Parameter throw on double set", expectedMessage.compare(actualMessage) == 0);
   }
+
+  try {
+    p.setString(TEST_DATA_FILE, "../../dataset/data/fake_test.txt");
+    p.sanitizePath(TEST_DATA_FILE);
+    testAssert("Parameter throw on invalid file path", false);
+
+  } catch (ErrorHandler &e) {
+    std::string expectedMessage = getInvalidFileOrDirectoryMessage(TEST_DATA_FILE, "../../dataset/data/fake_test.txt");
+    std::string actualMessage = e.what();
+
+    testAssert("Parameter throw on invalid file path", expectedMessage.compare(actualMessage) == 0);
+  }
 }
 
 void testGetter() {
@@ -43,13 +59,14 @@ void testGetter() {
   testAssert("Parameter get correct int value", p.getInt(HEURISTIC) == 1);
   testAssert("Parameter get correct float value", p.getFloat(DROPOUT_DIM) == 0.5f);
   testAssert("Parameter get correct double value", p.getDouble(DROPOUT_HYP) == 0.99999);
-  
+
   try {
     p.getString(HEURISTIC);
     testAssert("Parameter get exception on wrong value", false);
-  }catch (ErrorHandler &e) {
-    cout << e.what() << endl;
-    testAssert("Parameter get exception on wrong value", true);
+  } catch (ErrorHandler &e) {
+    std::string expectedMessage = getArgumentNotFoundExceptionMessage(HEURISTIC);
+    std::string actualMessage = e.what();
+    testAssert("Parameter get exception on wrong value", expectedMessage.compare(actualMessage) == 0);
   }
 
   try {
@@ -78,24 +95,20 @@ void testDefaultSetter() {
 
 void testArgsParser() {
   vector<string> args = {
-      "executable name to be ignored", // this line has to be present
-      "--train_data_file", "the/rainbow/",
+      "executableNameToIgnore", // this line has to be present
+      "--train_data_file", DEFAULT_TRAIN_FILE,
       "--heuristic", "1",
       "--dropout_hyp", "0.4"};
 
   Parameters p = Parameters(args);
 
   testAssert("Parameter by user args: parse int", p.getInt(HEURISTIC) == 1);
-  testAssert("Parameter by user args: parse string", p.getString(TRAIN_DATA_FILE).compare("the/rainbow/") == 0);
+  testAssert("Parameter by user args: parse string", p.getString(TRAIN_DATA_FILE).compare(DEFAULT_TRAIN_FILE) == 0);
   testAssert("Parameter by user args: parse float", p.getFloat(DROPOUT_HYP) == 0.4f);
-
-  args.push_back("--root_folder");
-  args.push_back("somehere/over/");
-  testAssert("Parameter by user args: root_folder concat", p.getString(TRAIN_DATA_FILE).compare("somehere/over/the/rainbow/"));
 
   try {
     vector<string> args = {
-        "executable name to be ignored", // this line has to be present
+        "executableNameToIgnore", // this line has to be present
         "--nb_threads", "1.5"};
 
     Parameters p = Parameters(args);
@@ -111,12 +124,12 @@ void testArgsParser() {
 void testJsonParser() {
   vector<string> args = {
       "executableNameToIgnore",
-      "--train_data_file", "train.txt",
-      "--train_pred_file", "train.out",
-      "--train_class_file", "train_true_classes.txt",
-      "--global_rules_outfile", "new_rules.txt",
-      "--attributes_file", "attributes.txt",
-      "--weights_file", "weights.wts",
+      "--train_data_file", DEFAULT_TRAIN_FILE,
+      "--train_pred_file", DEFAULT_TRAIN_PRED_FILE,
+      "--train_class_file", DEFAULT_TRAIN_TRUE_CLASS_FILE,
+      "--global_rules_outfile", DEFAULT_TXT_OUT_RULES_FILE,
+      "--attributes_file", DEFAULT_ATTRIBUTES_FILE,
+      "--weights_file", DEFAULT_WEIGHTS_FILE,
       "--nb_attributes", "31",
       "--nb_classes", "7",
       "--nb_dimlp_nets", "1",
