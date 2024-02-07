@@ -40,6 +40,7 @@ Parameters::Parameters(const vector<string> &args) {
   sanitizePath(CONSOLE_FILE);
   sanitizePath(ATTRIBUTES_FILE);
   sanitizePath(WEIGHTS_FILE);
+  sanitizePath(HID_FILE);
   sanitizePath(STATS_FILE);
   sanitizePath(NORMALIZATION_FILE);
 
@@ -89,6 +90,7 @@ Parameters::Parameters(const string &jsonfile) {
   sanitizePath(CONSOLE_FILE);
   sanitizePath(ATTRIBUTES_FILE);
   sanitizePath(WEIGHTS_FILE);
+  sanitizePath(HID_FILE);
   sanitizePath(STATS_FILE);
   sanitizePath(NORMALIZATION_FILE);
 
@@ -162,6 +164,10 @@ void Parameters::parseArg(const string &param, const string &arg) {
 
   case WEIGHTS_FILE:
     setString(WEIGHTS_FILE, arg);
+    break;
+
+  case HID_FILE:
+    setString(HID_FILE, arg);
     break;
 
   case STATS_FILE:

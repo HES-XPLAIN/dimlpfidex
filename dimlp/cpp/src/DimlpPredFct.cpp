@@ -39,13 +39,13 @@ static void SaveOutputs(
     Dimlp *net,
     int nbOut,
     int nbWeightLayers,
-    const char *outfile)
+    const std::string &outfile)
 
 {
   filebuf buf;
 
   if (buf.open(outfile, ios_base::out) == nullptr) {
-    throw CannotOpenFileError("Error : Cannot open output file " + std::string(outfile));
+    throw CannotOpenFileError("Error : Cannot open output file " + outfile);
   }
 
   std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
@@ -112,11 +112,6 @@ int dimlpPred(const string &command) {
   std::ofstream ofs;
   std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
   try {
-    float temps;
-    clock_t t1;
-    clock_t t2;
-
-    t1 = clock();
 
     // Parsing the command
     vector<string> commandList;
@@ -161,6 +156,8 @@ int dimlpPred(const string &command) {
     }
 
     // ----------------------------------------------------------------------
+
+    // Get parameters values
 
     int nbIn = params->getInt(NB_ATTRIBUTES);
     int nbOut = params->getInt(NB_CLASSES);
@@ -243,7 +240,7 @@ int dimlpPred(const string &command) {
 
     Dimlp net(weightFile.c_str(), nbLayers, vecNbNeurons, quant);
 
-    SaveOutputs(Test, &net, nbOut, nbWeightLayers, predFile.c_str());
+    SaveOutputs(Test, &net, nbOut, nbWeightLayers, predFile);
 
     std::cout << "\n-------------------------------------------------\n"
               << std::endl;

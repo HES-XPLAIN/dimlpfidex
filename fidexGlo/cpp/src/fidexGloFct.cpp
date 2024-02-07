@@ -312,6 +312,8 @@ int fidexGlo(const string &command) {
 
     // ----------------------------------------------------------------------
 
+    // Get parameters values
+
     int nbAttributes = params->getInt(NB_ATTRIBUTES);
     int nbClasses = params->getInt(NB_CLASSES);
     std::string testSamplesDataFile = params->getString(TEST_DATA_FILE);
@@ -319,6 +321,8 @@ int fidexGlo(const string &command) {
     int positiveClassIndex = params->getInt(POSITIVE_CLASS_INDEX);
     bool withFidex = params->getBool(WITH_FIDEX);
     bool minimalVersion = params->getBool(WITH_MINIMAL_VERSION);
+
+    // ----------------------------------------------------------------------
 
     std::cout << "Importing files..." << endl
               << endl;

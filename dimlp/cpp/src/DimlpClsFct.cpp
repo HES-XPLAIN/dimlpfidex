@@ -40,13 +40,13 @@ static void SaveOutputs(
     Dimlp *net,
     int nbOut,
     int nbWeightLayers,
-    const char *outfile)
+    const std::string &outfile)
 
 {
   filebuf buf;
 
   if (buf.open(outfile, ios_base::out) == nullptr) {
-    throw CannotOpenFileError("Error : Cannot open output file " + std::string(outfile));
+    throw CannotOpenFileError("Error : Cannot open output file " + outfile);
   }
 
   std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
@@ -79,14 +79,14 @@ void SaveFirstHid(
     DataSet &data,
     Dimlp *net,
     int nbHid,
-    const char *outfile,
-    const char *firsthidFile)
+    const std::string &outfile,
+    const std::string &firsthidFile)
 
 {
   filebuf buf;
 
   if (buf.open(firsthidFile, ios_base::out) == nullptr) {
-    throw CannotOpenFileError("Error : Cannot open output file " + std::string(outfile));
+    throw CannotOpenFileError("Error : Cannot open output file " + outfile);
   }
 
   std::shared_ptr<Layer> layer = net->GetLayer(0);
@@ -115,35 +115,39 @@ void SaveFirstHid(
 
 ////////////////////////////////////////////////////////////
 
-enum ParameterDimlpClsEnum {
-  TEST_DATA_FILE,
-  WEIGHTS_FILE,
-  NB_ATTRIBUTES,
-  NB_CLASSES,
-  ROOT_FOLDER,
-  TEST_CLASS_FILE,
-  TEST_PRED_FILE,
-  CONSOLE_FILE,
-  STATS_FILE,
-  HID_FILE,
-  H,
-  NB_QUANT_LEVELS,
-  INVALID
-};
+/**
+ * @brief Used to set default hyperparameters values and to check the sanity of all used values like boundaries and logic.
+ *
+ * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
+ */
+void checkDimlpClsParametersLogicValues(Parameters &p) {
+  // setting default values
+  p.setDefaultInt(NB_QUANT_LEVELS, 50);
+  p.setDefaultString(TEST_PRED_FILE, "dimlp.out", true);
+  p.setDefaultString(HID_FILE, "dimlp.hid", true);
 
-const std::unordered_map<std::string, ParameterDimlpClsEnum> parameterMap = {
-    {"test_data_file", TEST_DATA_FILE},
-    {"weights_file", WEIGHTS_FILE},
-    {"nb_attributes", NB_ATTRIBUTES},
-    {"nb_classes", NB_CLASSES},
-    {"root_folder", ROOT_FOLDER},
-    {"test_class_file", TEST_CLASS_FILE},
-    {"test_pred_file", TEST_PRED_FILE},
-    {"console_file", CONSOLE_FILE},
-    {"stats_file", STATS_FILE},
-    {"hid_file", HID_FILE},
-    {"H", H},
-    {"nb_quant_levels", NB_QUANT_LEVELS}};
+  // this sections check if values comply with program logic
+
+  // asserting mandatory parameters
+  p.assertIntExists(NB_ATTRIBUTES);
+  p.assertIntExists(NB_CLASSES);
+  p.assertStringExists(TEST_DATA_FILE);
+  p.assertStringExists(WEIGHTS_FILE);
+
+  // verifying logic between parameters, values range and so on...
+
+  if (p.getInt(NB_ATTRIBUTES) < 1) {
+    throw CommandArgumentException("Error : Number of attributes must be strictly positive (>=1).");
+  }
+
+  if (p.getInt(NB_CLASSES) < 2) {
+    throw CommandArgumentException("Error : Number of classes must be greater than 1.");
+  }
+
+  if (p.getInt(NB_QUANT_LEVELS) <= 2) {
+    throw CommandArgumentException("Error : Number of stairs in staircase activation function must be greater than 2.");
+  }
+}
 
 int dimlpCls(const string &command) {
   // Save buffer where we output results
@@ -153,247 +157,65 @@ int dimlpCls(const string &command) {
 
     // Parsing the command
     vector<string> commandList;
-    const char delim = ' ';
     string s;
     stringstream ss(command);
-    while (std::getline(ss, s, delim)) {
+
+    while (getline(ss, s, ' ')) {
       commandList.push_back(s);
     }
+
     size_t nbParam = commandList.size();
+    if (nbParam < 2) {
+      showDimlpClsParams();
+      exit(1);
+    }
+
+    // Import parameters
+    unique_ptr<Parameters> params;
+    if (commandList[1].compare("--json_config_file") == 0) {
+      if (commandList.size() < 3) {
+        throw CommandArgumentException("JSON config file name/path is missing");
+      }
+
+      try {
+        params = std::unique_ptr<Parameters>(new Parameters(commandList[2]));
+      } catch (const std::out_of_range &) {
+        throw CommandArgumentException("JSON config file name/path is invalid");
+      }
+    } else {
+      // Read parameters from CLI
+      params = std::unique_ptr<Parameters>(new Parameters(commandList));
+    }
+
+    // getting all program arguments from CLI
+    checkDimlpClsParametersLogicValues(*params);
+    std::cout << *params;
+
+    // Get console results to file
+    if (params->isStringSet(CONSOLE_FILE)) {
+      ofs.open(params->getString(CONSOLE_FILE));
+      std::cout.rdbuf(ofs.rdbuf()); // redirect cout to file
+    }
+
+    // ----------------------------------------------------------------------
+
+    // Get parameters values
+
+    int nbIn = params->getInt(NB_ATTRIBUTES);
+    int nbOut = params->getInt(NB_CLASSES);
+    std::string testFile = params->getString(TEST_DATA_FILE);
+    std::string weightFile = params->getString(WEIGHTS_FILE);
+    std::string hidFile = params->getString(HID_FILE);
+    std::string predFile = params->getString(TEST_PRED_FILE);
+    int quant = params->getInt(NB_QUANT_LEVELS);
 
     DataSet Test;
     DataSet TestClass;
-
-    int quant = 50;
-    int nbIn = 0;
-    int nbOut = 0;
-
-    string testFileTemp;
-    bool testFileInit = false;
-    string weightFileTemp;
-    bool weightFileInit = false;
-    string predFileTemp = "dimlp.out";
-    string consoleFileTemp;
-    bool consoleFileInit = false;
-    string accuracyFileTemp;
-    bool accuracyFileInit = false;
-    string testTarTemp;
-    bool testTarInit = false;
-    string hidFileTemp = "dimlp.hid";
-    string rootFolderTemp;
-    bool rootFolderInit = false;
-
     int nbLayers;
     int nbWeightLayers;
     std::vector<int> vecNbNeurons;
-
-    StringInt arch;
-    StringInt archInd;
-
-    if (nbParam <= 1) {
-      showDimlpClsParams();
-      return 0;
-    }
-
-    int p = 1; // We skip "DimlpCls"
-    while (p < nbParam) {
-      string param = commandList[p];
-
-      if (param.substr(0, 2) == "--") {
-        param = param.substr(2);
-        p++;
-
-        if (p >= nbParam) {
-          throw CommandArgumentException("Missing something at the end of the command.");
-        }
-
-        if (p + 1 < nbParam && commandList[p + 1].substr(0, 2) != "--") {
-          throw CommandArgumentException("There is a parameter without -- (" + commandList[p + 1] + ").");
-        }
-
-        const char *arg = commandList[p].c_str();
-        string stringArg = arg;
-
-        ParameterDimlpClsEnum option;
-        auto it = parameterMap.find(param);
-        if (it != parameterMap.end()) {
-          option = it->second;
-        } else {
-          if (param[0] == 'H') {
-            std::string numberPart = param.substr(1);
-            if (CheckInt(numberPart.c_str())) {
-              option = H;
-            } else {
-              option = INVALID;
-            }
-          } else {
-            option = INVALID;
-          }
-        }
-
-        switch (option) { // After --
-        case NB_QUANT_LEVELS:
-          if (CheckInt(arg))
-            quant = atoi(arg);
-          else
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
-
-          break;
-
-        case NB_ATTRIBUTES:
-          if (CheckInt(arg))
-            nbIn = atoi(arg);
-          else
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
-
-          break;
-
-        case H:
-          if (CheckInt(arg)) {
-            arch.Insert(atoi(arg));
-
-            const char *ptrParam = param.c_str();
-
-            if (ptrParam[1] != '\0') {
-              std::string str(ptrParam + 1);
-              archInd.Insert(std::atoi(str.c_str()));
-            } else {
-              throw CommandArgumentException("Error : Which hidden layer (-H) ?");
-            }
-          } else
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
-
-          break;
-
-        case NB_CLASSES:
-          if (CheckInt(arg))
-            nbOut = atoi(arg);
-          else
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
-
-          break;
-
-        case ROOT_FOLDER:
-          rootFolderTemp = arg;
-          rootFolderInit = true;
-          break;
-
-        case WEIGHTS_FILE:
-          weightFileTemp = arg;
-          weightFileInit = true;
-          break;
-
-        case TEST_PRED_FILE:
-          predFileTemp = arg;
-          break;
-
-        case CONSOLE_FILE:
-          consoleFileTemp = arg;
-          consoleFileInit = true;
-          break;
-
-        case STATS_FILE:
-          accuracyFileTemp = arg;
-          accuracyFileInit = true;
-          break;
-
-        case HID_FILE:
-          hidFileTemp = arg;
-          break;
-
-        case TEST_DATA_FILE:
-          testFileTemp = arg;
-          testFileInit = true;
-          break;
-
-        case TEST_CLASS_FILE:
-          testTarTemp = arg;
-          testTarInit = true;
-          break;
-
-        default:
-          throw CommandArgumentException("Illegal option : " + param + ".");
-        }
-      }
-
-      else {
-        throw CommandArgumentException("Illegal option : " + string(&(commandList[p])[0]));
-      }
-      p++;
-    }
-
-    // ----------------------------------------------------------------------
-
-    // create paths with root foler
-
-    const char *testFile = nullptr;
-    const char *weightFile = nullptr;
-    const char *predFile = nullptr;
-    const char *consoleFile = nullptr;
-    const char *accuracyFile = nullptr;
-    const char *testTar = nullptr;
-    const char *hidFile = nullptr;
-
-    string root = "";
-    if (rootFolderInit) {
-#if defined(__unix__) || defined(__APPLE__)
-      root = rootFolderTemp + "/";
-#elif defined(_WIN32)
-      root = rootFolderTemp + "\\";
-#endif
-    }
-
-    if (testFileInit) {
-      testFileTemp = root + testFileTemp;
-      testFile = &testFileTemp[0];
-    }
-
-    if (weightFileInit) {
-      weightFileTemp = root + weightFileTemp;
-      weightFile = &weightFileTemp[0];
-    }
-
-    predFileTemp = root + predFileTemp;
-    predFile = &predFileTemp[0];
-
-    if (consoleFileInit) {
-      consoleFileTemp = root + consoleFileTemp;
-      consoleFile = &consoleFileTemp[0];
-    }
-
-    if (accuracyFileInit) {
-      accuracyFileTemp = root + accuracyFileTemp;
-      accuracyFile = &accuracyFileTemp[0];
-    }
-
-    if (testTarInit) {
-      testTarTemp = root + testTarTemp;
-      testTar = &testTarTemp[0];
-    }
-
-    hidFileTemp = root + hidFileTemp;
-    hidFile = &hidFileTemp[0];
-
-    // ----------------------------------------------------------------------
-    // Get console results to file
-    if (consoleFileInit != false) {
-      ofs.open(consoleFile);
-      std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
-    }
-
-    // ----------------------------------------------------------------------
-
-    if (quant <= 2) {
-      throw CommandArgumentException("The number of quantized levels must be greater than 2.");
-    }
-
-    if (nbIn == 0) {
-      throw CommandArgumentException("The number of input neurons must be given with option --nb_attributes.");
-    }
-
-    if (nbOut <= 1) {
-      throw CommandArgumentException("At least two output neurons must be given with option --nb_classes.");
-    }
+    StringInt arch = params->getArch();
+    StringInt archInd = params->getArchInd();
 
     // ----------------------------------------------------------------------
     if (arch.GetNbEl() == 0) {
@@ -420,8 +242,8 @@ int dimlpCls(const string &command) {
         vecNbNeurons.assign(nbLayers, 0);
         vecNbNeurons[0] = nbIn;
         vecNbNeurons[nbLayers - 1] = nbOut;
-
-        for (p = 1, arch.GoToBeg(); p <= arch.GetNbEl(); p++, arch.GoToNext()) {
+        arch.GoToBeg();
+        for (int p = 1; p <= arch.GetNbEl(); p++, arch.GoToNext()) {
           vecNbNeurons[p] = arch.GetVal();
 
           if (vecNbNeurons[p] == 0) {
@@ -439,7 +261,8 @@ int dimlpCls(const string &command) {
         vecNbNeurons[1] = nbIn;
         vecNbNeurons[nbLayers - 1] = nbOut;
 
-        for (p = 1, arch.GoToBeg(); p <= arch.GetNbEl(); p++, arch.GoToNext()) {
+        arch.GoToBeg();
+        for (int p = 1; p <= arch.GetNbEl(); p++, arch.GoToNext()) {
           vecNbNeurons[p + 1] = arch.GetVal();
 
           if (vecNbNeurons[p + 1] == 0) {
@@ -450,23 +273,18 @@ int dimlpCls(const string &command) {
     }
     // ----------------------------------------------------------------------
 
-    if (testFileInit == false) {
-      throw CommandArgumentException("Give the training file with -L selection please.");
-    }
+    if (params->isStringSet(TEST_DATA_FILE)) {
+      if (params->isStringSet(TEST_CLASS_FILE)) {
 
-    else // if (testFileInit != false)
-    {
-      if (testTarInit != false) {
-
-        DataSet test(testFile, nbIn, nbOut);
-        DataSet testClass(testTar, nbIn, nbOut);
+        DataSet test(testFile.c_str(), nbIn, nbOut);
+        DataSet testClass(params->getString(TEST_CLASS_FILE).c_str(), nbIn, nbOut);
 
         Test = test;
         TestClass = testClass;
       }
 
       else {
-        DataSet data(testFile, nbIn, nbOut);
+        DataSet data(testFile.c_str(), nbIn, nbOut);
 
         DataSet test(data.GetNbEx());
         DataSet testClass(data.GetNbEx());
@@ -479,11 +297,8 @@ int dimlpCls(const string &command) {
         data.Del();
       }
     }
-    if (weightFileInit == false) {
-      throw CommandArgumentException("Give a file of weights with --weights_file selection please.");
-    }
 
-    Dimlp net(weightFile, nbLayers, vecNbNeurons, quant);
+    Dimlp net(weightFile.c_str(), nbLayers, vecNbNeurons, quant);
 
     float acc;
 
@@ -493,14 +308,14 @@ int dimlpCls(const string &command) {
     cout << "\n\n*** ACCURACY = " << acc << "" << std::endl;
 
     // Output accuracy stats in file
-    if (accuracyFileInit != false) {
-      ofstream accFile(accuracyFile);
+    if (params->isStringSet(STATS_FILE)) {
+      ofstream accFile(params->getString(STATS_FILE));
       if (accFile.is_open()) {
         accFile << "Sum squared error = " << err << "" << std::endl;
         accFile << "Accuracy = " << acc;
         accFile.close();
       } else {
-        throw CannotOpenFileError("Error : could not open accuracy file " + std::string(accuracyFile));
+        throw CannotOpenFileError("Error : could not open accuracy file " + params->getString(STATS_FILE));
       }
     }
 

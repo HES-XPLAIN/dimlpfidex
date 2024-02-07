@@ -252,6 +252,8 @@ int fidex(const string &command) {
 
     // ----------------------------------------------------------------------
 
+    // Get parameters values
+
     int nbAttributes = params->getInt(NB_ATTRIBUTES);
     int nbClasses = params->getInt(NB_CLASSES);
     std::string trainDataFile = params->getString(TRAIN_DATA_FILE);
@@ -288,6 +290,8 @@ int fidex(const string &command) {
     if (params->isStringSet(WEIGHTS_FILE)) {
       weightsFiles = params->getWeightsFiles();
     }
+
+    // ----------------------------------------------------------------------
 
     // Import files
 
