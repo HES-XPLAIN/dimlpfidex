@@ -120,7 +120,7 @@ private:
   map<ParameterCode, vector<double>> _doubleVectorParams;
   map<ParameterCode, vector<int>> _intVectorParams;
   map<ParameterCode, string> _stringParams;
-  vector<string> _weightFiles; // the only 1 special parameter
+  vector<string> _weightFiles;
   StringInt arch;
   StringInt archInd;
 

@@ -447,15 +447,14 @@ void Parameters::sanitizePath(ParameterCode id, bool shouldFileExist) {
     return;
   }
 
+  string fullPath;
   string target = getString(id);
-
-  if (target.empty()) {
-    throwInvalidFileOrDirectory(id, target);
-  }
-
   string separator = getOSSeparator();
   string root = isStringSet(ROOT_FOLDER) ? getString(ROOT_FOLDER) : "";
-  string fullPath;
+
+  if (target.empty() || target.back() == separator[0]) {
+    throwInvalidFileOrDirectory(id, target);
+  }
 
   if (root.empty() || !root.empty() && (root.back() == separator[0] || target.front() == separator[0])) {
     fullPath = root + target;
