@@ -5,7 +5,6 @@
 #include "antecedant.h"
 #include "checkFun.h"
 #include "errorHandler.h"
-#include "rule.h"
 #include <fstream>
 #include <iomanip>
 #include <iostream>

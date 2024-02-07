@@ -1,7 +1,5 @@
-Accuracy :
+Sum squared error on training set = 2589.22
+Accuracy on training set = 0.151659
 
-Sum squared error on training set = 1180.42
-Accuracy on training set = 0.536072
-
-Sum squared error on testing set = 17.4984
-Accuracy on testing set = 1
+Sum squared error on testing set = 391.932
+Accuracy on testing set = 0
