@@ -1,21 +1,5 @@
 #include "../headers/parametersTests.hpp"
 
-std::string getInvalidDataTypeExceptionMessage(ParameterCode id, const string &wrongValue, const string &typeName) {
-  return "CommandArgumentException: Parsing error: argument (ID " + Parameters::getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid " + typeName + ".";
-}
-
-std::string getAlreadySetArgumentExceptionMessage(ParameterCode id, const string &value) {
-  return "CommandArgumentException: Parsing error: argument (ID " + Parameters::getParameterName(id) + ") with value \"" + value + "\" is already set, cannot override it.";
-}
-
-std::string getArgumentNotFoundExceptionMessage(ParameterCode id) {
-  return "CommandArgumentException: Parameters error: argument (ID " + Parameters::getParameterName(id) + ") requested was not found, try to rerun including it.";
-}
-
-std::string getInvalidFileOrDirectoryMessage(ParameterCode id, const string &wrongValue) {
-  return "CommandArgumentException: Parameters error: argument (ID " + Parameters::getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid path. The directory or file specified could not be found.";
-}
-
 void testSetter() {
   Parameters p;
 
@@ -158,7 +142,7 @@ void testJsonParser() {
   std::stringstream buffer1;
   std::stringstream buffer2;
 
-  Parameters pJson = Parameters("./fidexTests/templates/default_config.json");
+  Parameters pJson = Parameters("fidexTests/templates/default_config.json");
   Parameters pArgs = Parameters(args);
 
   testAssert("Parameters: JSON & user args are equal", buffer1.str().compare(buffer2.str()) == 0);

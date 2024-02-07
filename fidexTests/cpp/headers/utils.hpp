@@ -2,6 +2,7 @@
 #define UTILS_H
 
 #include "../../../json/single_include/nlohmann/json.hpp"
+#include "../../../fidexCommon/cpp/src/parameters.h"
 #include <iostream>
 #include <map>
 #include <sstream>
@@ -74,8 +75,17 @@ const std::map<std::string, std::string> DEFAULT_ARGS{
     {"--dropout_dim", DEFAULT_DROPOUT_HYP},
     {"--min_fidelity", DEFAULT_MIN_FIDELITY}};
 
+void testAssert(const std::string &testName, bool condition);
+
+// specific helpers to handle Parameters tests use cases
 std::string argsToString(const std::map<std::string, std::string> &args);
 std::map<std::string, std::string> remove(const std::map<std::string, std::string> &args, const std::vector<std::string> &toRemove);
-void testAssert(const std::string &testName, bool condition);
+
+// custom exception messages
+std::string getArgumentNotFoundExceptionMessage(ParameterCode id);
+std::string getAlreadySetArgumentExceptionMessage(ParameterCode id, const std::string &value);
+std::string getInvalidFileOrDirectoryMessage(ParameterCode id, const std::string &wrongValue);
+std::string getInvalidDataTypeExceptionMessage(ParameterCode id, const std::string &wrongValue, const std::string &typeName);
+
 
 #endif // UTILS_H

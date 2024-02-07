@@ -414,6 +414,8 @@ bool exists(const std::string &path) {
   return (stat(path.c_str(), &buffer) == 0);
 }
 
+//////////////////////////////////////////////////////
+
 /**
  * @brief Gets the OS's default filesystem separator character
  * 

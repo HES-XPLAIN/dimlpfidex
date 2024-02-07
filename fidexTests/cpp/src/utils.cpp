@@ -1,5 +1,21 @@
 #include "../headers/utils.hpp"
 
+std::string getInvalidDataTypeExceptionMessage(ParameterCode id, const std::string &wrongValue, const std::string &typeName) {
+  return "CommandArgumentException: Parsing error: argument (ID " + Parameters::getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid " + typeName + ".";
+}
+
+std::string getAlreadySetArgumentExceptionMessage(ParameterCode id, const std::string &value) {
+  return "CommandArgumentException: Parsing error: argument (ID " + Parameters::getParameterName(id) + ") with value \"" + value + "\" is already set, cannot override it.";
+}
+
+std::string getArgumentNotFoundExceptionMessage(ParameterCode id) {
+  return "CommandArgumentException: Parameters error: argument (ID " + Parameters::getParameterName(id) + ") requested was not found, try to rerun including it.";
+}
+
+std::string getInvalidFileOrDirectoryMessage(ParameterCode id, const std::string &wrongValue) {
+  return "CommandArgumentException: Parameters error: argument (ID " + Parameters::getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid path. The directory or file specified could not be found.";
+}
+
 std::string argsToString(const std::map<std::string, std::string> &args) {
   std::stringstream ss;
   for (const auto &kv : args) {
