@@ -34,6 +34,8 @@ Parameters::Parameters(const vector<string> &args) {
   sanitizePath(TEST_DATA_FILE);
   sanitizePath(TEST_PRED_FILE);
   sanitizePath(TEST_CLASS_FILE);
+  sanitizePath(VALID_DATA_FILE);
+  sanitizePath(VALID_CLASS_FILE);
   sanitizePath(RULES_FILE);
   sanitizePath(GLOBAL_RULES_FILE);
   sanitizePath(EXPLANATION_FILE);
@@ -84,6 +86,8 @@ Parameters::Parameters(const string &jsonfile) {
   sanitizePath(TEST_DATA_FILE);
   sanitizePath(TEST_PRED_FILE);
   sanitizePath(TEST_CLASS_FILE);
+  sanitizePath(VALID_DATA_FILE);
+  sanitizePath(VALID_CLASS_FILE);
   sanitizePath(RULES_FILE);
   sanitizePath(GLOBAL_RULES_FILE);
   sanitizePath(EXPLANATION_FILE);
@@ -160,6 +164,14 @@ void Parameters::parseArg(const string &param, const string &arg) {
 
   case TEST_CLASS_FILE:
     setString(TEST_CLASS_FILE, arg);
+    break;
+
+  case VALID_DATA_FILE:
+    setString(VALID_DATA_FILE, arg);
+    break;
+
+  case VALID_CLASS_FILE:
+    setString(VALID_CLASS_FILE, arg);
     break;
 
   case WEIGHTS_FILE:
