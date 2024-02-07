@@ -40,15 +40,18 @@ set(FIDEXGLO_SRC "${FIDEXGLO_SRC}" CACHE INTERNAL "")
 set(FIDEXGLORULES_SRC "${FIDEXGLORULES_SRC}" CACHE INTERNAL "")
 set(FIDEXGLOSTATS_SRC "${FIDEXGLOSTATS_SRC}" CACHE INTERNAL "")
 set(FIDEXGLOTESTS_SRC "${FIDEXGLOTESTS_SRC}" CACHE INTERNAL "")
+add_library(fidexGloRulesLib STATIC ${FIDEXGLORULES_SRC})
 
 # build executables
 add_executable(fidexGloProject ${FIDEXGLO_SRC} src/fidexGlo.cpp)
 add_executable(fidexGloRules ${FIDEXGLORULES_SRC} src/fidexGloRules.cpp)
 add_executable(fidexGloStats ${FIDEXGLOSTATS_SRC} src/fidexGloStats.cpp)
 add_dependencies(fidexGloProject fidexCommon)
+add_dependencies(fidexGloRulesLib fidexCommon)
 add_dependencies(fidexGloRules fidexCommon)
 add_dependencies(fidexGloStats fidexCommon)
 target_link_libraries(fidexGloProject fidexCommon)
+target_link_libraries(fidexGloRulesLib fidexCommon)
 target_link_libraries(fidexGloRules fidexCommon)
 target_link_libraries(fidexGloStats fidexCommon)
 

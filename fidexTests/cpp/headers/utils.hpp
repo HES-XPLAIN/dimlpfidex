@@ -1,8 +1,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "../../../json/single_include/nlohmann/json.hpp"
 #include "../../../fidexCommon/cpp/src/parameters.h"
+#include "../../../json/single_include/nlohmann/json.hpp"
 #include <iostream>
 #include <map>
 #include <sstream>
@@ -13,18 +13,19 @@ using Json = nlohmann::json;
 
 // default values to avoid generating litterals redundancy
 static const std::string DATA_FOLDER = "fidexTests/dataset/data/";
+static const std::string DEFAULT_ROOT_FOLDER = DATA_FOLDER;
 
 // default paths
-static const std::string DEFAULT_TRAIN_FILE = DATA_FOLDER + "train.txt";
-static const std::string DEFAULT_TRAIN_PRED_FILE = DATA_FOLDER + "train.out";
-static const std::string DEFAULT_TRAIN_TRUE_CLASS_FILE = DATA_FOLDER + "train_true_classes.txt";
-static const std::string DEFAULT_WEIGHTS_FILE = DATA_FOLDER + "weights.wts";
-static const std::string DEFAULT_TXT_IN_RULES_FILE = DATA_FOLDER + "rules.txt";
-static const std::string DEFAULT_TXT_OUT_RULES_FILE = DATA_FOLDER + "new_rules.txt";
-static const std::string DEFAULT_JSON_IN_RULES_FILE = DATA_FOLDER + "rules.json";
-static const std::string DEFAULT_JSON_OUT_RULES_FILE = DATA_FOLDER + "new_rules.json";
-static const std::string DEFAULT_ATTRIBUTES_FILE = DATA_FOLDER + "attributes.txt";
-static const std::string DEFAULT_CONSOLE_FILE = DATA_FOLDER + "console.out";
+static const std::string DEFAULT_TRAIN_FILE = "train.txt";
+static const std::string DEFAULT_TRAIN_PRED_FILE = "train.out";
+static const std::string DEFAULT_TRAIN_TRUE_CLASS_FILE = "train_true_classes.txt";
+static const std::string DEFAULT_WEIGHTS_FILE = "weights.wts";
+static const std::string DEFAULT_TXT_IN_RULES_FILE = "rules.txt";
+static const std::string DEFAULT_TXT_OUT_RULES_FILE = "new_rules.txt";
+static const std::string DEFAULT_JSON_IN_RULES_FILE = "rules.json";
+static const std::string DEFAULT_JSON_OUT_RULES_FILE = "new_rules.json";
+static const std::string DEFAULT_ATTRIBUTES_FILE = "attributes.txt";
+static const std::string DEFAULT_CONSOLE_FILE = "console.out";
 
 // default numeric args
 static const std::string DEFAULT_HEURISTIC = "1";
@@ -49,13 +50,11 @@ static const std::string DEFAULT_SEED = "0";
 #define RESET "\033[0m"
 
 const std::map<std::string, std::string> DEFAULT_ARGS{
+    {"--root_folder", DEFAULT_ROOT_FOLDER},
     {"--train_data_file", DEFAULT_TRAIN_FILE},
     {"--train_pred_file", DEFAULT_TRAIN_PRED_FILE},
     {"--train_class_file", DEFAULT_TRAIN_TRUE_CLASS_FILE},
-    // {"--rules_file", DEFAULT_TXT_IN_RULES_FILE}, // TODO
-    {"--rules_outfile", DEFAULT_TXT_OUT_RULES_FILE},
-    {"--console_file", DEFAULT_CONSOLE_FILE},
-    // {"--root_folder", DEFAULT_ROOT_FOLDER}, // TODO
+    {"--global_rules_outfile", DEFAULT_TXT_OUT_RULES_FILE},
     {"--attributes_file", DEFAULT_ATTRIBUTES_FILE},
     {"--weights_file", DEFAULT_WEIGHTS_FILE},
     {"--nb_attributes", DEFAULT_NB_ATTRIBUTES},
@@ -70,7 +69,6 @@ const std::map<std::string, std::string> DEFAULT_ARGS{
     {"--positive_class_index", DEFAULT_IDX_POSITIVE_CLASS},
     {"--seed", DEFAULT_SEED},
     {"--decision_threshold", DEFAULT_DECISION_THRESHOLD},
-    // {"--hi_knot", HI_KNOT}, // TODO
     {"--dropout_hyp", DEFAULT_DROPOUT_DIM},
     {"--dropout_dim", DEFAULT_DROPOUT_HYP},
     {"--min_fidelity", DEFAULT_MIN_FIDELITY}};
@@ -86,6 +84,5 @@ std::string getArgumentNotFoundExceptionMessage(ParameterCode id);
 std::string getAlreadySetArgumentExceptionMessage(ParameterCode id, const std::string &value);
 std::string getInvalidFileOrDirectoryMessage(ParameterCode id, const std::string &wrongValue);
 std::string getInvalidDataTypeExceptionMessage(ParameterCode id, const std::string &wrongValue, const std::string &typeName);
-
 
 #endif // UTILS_H
