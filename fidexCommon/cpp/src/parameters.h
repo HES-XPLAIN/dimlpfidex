@@ -169,7 +169,6 @@ public:
   void setIntVector(ParameterCode id, const vector<int> &value);
   void setString(ParameterCode id, const string &value);
   void setArch(ParameterCode id, const string &value, const string &param);
-  void sanitizePath(ParameterCode id, bool shouldFileExist);
 
   // default setter if value not set
   void setDefaultInt(ParameterCode id, int value);
