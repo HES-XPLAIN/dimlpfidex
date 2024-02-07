@@ -256,6 +256,42 @@ void Parameters::parseArg(const string &param, const string &arg) {
     setInt(MIN_COVERING, arg);
     break;
 
+  case LEARNING_RATE:
+    setFloat(LEARNING_RATE, arg);
+    break;
+
+  case MOMENTUM:
+    setFloat(MOMENTUM, arg);
+    break;
+
+  case FLAT:
+    setFloat(FLAT, arg);
+    break;
+
+  case ERROR_THRESH:
+    setFloat(ERROR_THRESH, arg);
+    break;
+
+  case ACC_THRESH:
+    setFloat(ACC_THRESH, arg);
+    break;
+
+  case ABS_ERROR_THRESH:
+    setFloat(ABS_ERROR_THRESH, arg);
+    break;
+
+  case NB_EPOCHS:
+    setInt(NB_EPOCHS, arg);
+    break;
+
+  case NB_EPOCHS_ERROR:
+    setInt(NB_EPOCHS_ERROR, arg);
+    break;
+
+  case WITH_RULE_EXTRACTION:
+    setBool(WITH_RULE_EXTRACTION, arg);
+    break;
+
   case COVERING_STRATEGY:
     setBool(COVERING_STRATEGY, arg);
     break;

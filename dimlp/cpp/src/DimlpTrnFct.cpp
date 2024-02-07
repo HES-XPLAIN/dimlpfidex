@@ -28,7 +28,7 @@ void showDimlpTrnParams()
   cout << "--test_class_file <file of test classes>" << std::endl;
   cout << "--valid_class_file <file of validation classes>" << std::endl;
   cout << "--weights_outfile <output weight file (dimlp.wts by default)>" << std::endl;
-  cout << "--train_pred_outfile <output train prediction file (dimlp.out by default)>" << std::endl;
+  cout << "--train_pred_outfile <output train prediction file (dimlpTrain.out by default)>" << std::endl;
   cout << "--test_pred_file <output test prediction file (dimlpTest.out by default)>" << std::endl;
   cout << "--valid_pred_outfile <output validation prediction file (dimlpValidation.out by default)>" << std::endl;
   cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file

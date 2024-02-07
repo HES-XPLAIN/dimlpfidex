@@ -526,7 +526,7 @@ void checkRulesParametersLogicValues(Parameters &p) {
   }
 
   if (p.getInt(SEED) < 0) {
-    throw CommandArgumentException("Error : Minimium covering must be null or positive (>=0).");
+    throw CommandArgumentException("Error : random seed mus be positive (>=0).");
   }
 
   // ----------------------------------------------------------------------
