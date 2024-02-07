@@ -20,3 +20,7 @@ Advices :
 
 #### Add execution examples:
 - For JSON and CLI
+
+
+#### TO BE TESTED
+- Test if a non-conventionnal path is handled (if an exception is thrown at runtime start) when **trying to use a linux path in a Windows env**
