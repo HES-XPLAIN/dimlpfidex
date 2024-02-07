@@ -171,6 +171,8 @@ int fidexGloStats(const string &command) {
 
     // ----------------------------------------------------------------------
 
+    // Get parameters values
+
     int nbAttributes = params->getInt(NB_ATTRIBUTES);
     int nbClasses = params->getInt(NB_CLASSES);
     std::string testDataFile = params->getString(TEST_DATA_FILE);
@@ -179,6 +181,8 @@ int fidexGloStats(const string &command) {
 
     double decisionThreshold = params->getFloat(DECISION_THRESHOLD);
     int positiveClassIndex = params->getInt(POSITIVE_CLASS_INDEX);
+
+    // ----------------------------------------------------------------------
 
     std::cout << "Importing files..." << endl
               << endl;

@@ -11,6 +11,8 @@ FILE(GLOB COMMON_SRC
     src/checkFun.h
     ../../fidexCommon/cpp/src/checkFun.cpp
     ../../fidexCommon/cpp/src/checkFun.h
+    ../../fidexCommon/cpp/src/parameters.cpp
+    ../../fidexCommon/cpp/src/parameters.h
     src/dataSet.cpp
     src/dataSet.h
     src/errFunct.cpp

@@ -5,7 +5,7 @@ const int BPNN = 1;
 
 ////////////////////////////////////////////////////////////
 
-void GiveAllParamDensCls()
+void showDensClsParams()
 
 {
   cout << "\n-------------------------------------------------\n"
@@ -177,7 +177,7 @@ int densCls(const string &command) {
     StringInt archInd;
 
     if (nbParam <= 1) {
-      GiveAllParamDensCls();
+      showDensClsParams();
       return 0;
     }
 

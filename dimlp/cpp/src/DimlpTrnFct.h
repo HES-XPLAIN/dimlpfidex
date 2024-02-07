@@ -15,7 +15,7 @@
 #include <unordered_map>
 #include <vector>
 
-void GiveAllParamDimlpTrn();
+void showDimlpTrnParams();
 static void SaveOutputs(DataSet &data, std::shared_ptr<Dimlp> net, int nbOut, int nbWeightLayers, const char *outfile);
 int dimlpTrn(const std::string &command);
 

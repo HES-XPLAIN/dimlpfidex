@@ -1,5 +1,6 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
+#include "../../../dimlp/cpp/src/stringI.h"
 #include "../../../json/single_include/nlohmann/json.hpp"
 #include "antecedant.h"
 #include "checkFun.h"
@@ -24,6 +25,8 @@ enum ParameterCode {
   TEST_DATA_FILE,
   TEST_PRED_FILE,
   TEST_CLASS_FILE,
+  VALID_DATA_FILE,
+  VALID_CLASS_FILE,
   RULES_FILE,
   RULES_OUTFILE,
   GLOBAL_RULES_OUTFILE,
@@ -33,6 +36,7 @@ enum ParameterCode {
   ROOT_FOLDER,
   ATTRIBUTES_FILE,
   WEIGHTS_FILE,
+  HID_FILE,
   STATS_FILE,
   NB_ATTRIBUTES,
   NB_CLASSES,
@@ -57,6 +61,7 @@ enum ParameterCode {
   NORMALIZATION_INDICES,
   WITH_FIDEX,
   WITH_MINIMAL_VERSION,
+  H,
   INVALID,
   _NB_PARAMETERS // internal use only, do not consider it as a usable parameter
 };
@@ -68,6 +73,8 @@ static const std::unordered_map<std::string, ParameterCode> parameterNames = {
     {"test_data_file", TEST_DATA_FILE},
     {"test_pred_file", TEST_PRED_FILE},
     {"test_class_file", TEST_CLASS_FILE},
+    {"valid_data_file", VALID_DATA_FILE},
+    {"valid_class_file", VALID_CLASS_FILE},
     {"rules_file", RULES_FILE},
     {"rules_outfile", RULES_OUTFILE},
     {"global_rules_outfile", GLOBAL_RULES_OUTFILE},
@@ -77,6 +84,7 @@ static const std::unordered_map<std::string, ParameterCode> parameterNames = {
     {"root_folder", ROOT_FOLDER},
     {"attributes_file", ATTRIBUTES_FILE},
     {"weights_file", WEIGHTS_FILE},
+    {"hid_file", HID_FILE},
     {"stats_file", STATS_FILE},
     {"nb_attributes", NB_ATTRIBUTES},
     {"nb_classes", NB_CLASSES},
@@ -100,7 +108,8 @@ static const std::unordered_map<std::string, ParameterCode> parameterNames = {
     {"sigmas", SIGMAS},
     {"normalization_indices", NORMALIZATION_INDICES},
     {"with_fidex", WITH_FIDEX},
-    {"with_minimal_version", WITH_MINIMAL_VERSION}};
+    {"with_minimal_version", WITH_MINIMAL_VERSION},
+    {"H", H}};
 
 class Parameters {
 private:
@@ -112,6 +121,8 @@ private:
   map<ParameterCode, vector<int>> _intVectorParams;
   map<ParameterCode, string> _stringParams;
   vector<string> _weightFiles; // the only 1 special parameter
+  StringInt arch;
+  StringInt archInd;
 
   // private parser
   void parseArg(const string &param, const string &arg);
@@ -157,6 +168,8 @@ public:
   void setIntVector(ParameterCode id, const string &value);
   void setIntVector(ParameterCode id, const vector<int> &value);
   void setString(ParameterCode id, const string &value);
+  void setArch(ParameterCode id, const string &value, const string &param);
+  void sanitizePath(ParameterCode id, bool shouldFileExist);
 
   // default setter if value not set
   void setDefaultInt(ParameterCode id, int value);
@@ -165,7 +178,7 @@ public:
   void setDefaultBool(ParameterCode id, bool value);
   void setDefaultDoubleVector(ParameterCode id, const string &defaultValue);
   void setDefaultIntVector(ParameterCode id, const string &defaultValue);
-  void setDefaultString(ParameterCode id, const string &defaultValue);
+  void setDefaultString(ParameterCode id, const string &defaultValue, bool withRoot = false);
 
   // getters
   int getInt(ParameterCode id);
@@ -176,6 +189,8 @@ public:
   vector<int> getIntVector(ParameterCode id);
   string getString(ParameterCode id);
   vector<string> getWeightsFiles() const;
+  StringInt getArch() const;
+  StringInt getArchInd() const;
 
   map<ParameterCode, int> getAllInts() const { return _intParams; }
   map<ParameterCode, float> getAllFloats() const { return _floatParams; }
@@ -228,31 +243,38 @@ inline ostream &operator<<(ostream &stream, const Parameters &p) {
   stream << "Parameters list:" << endl;
 
   for (auto const &x : p.getAllStrings()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << x.second << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << x.second << endl;
   }
 
   for (auto const &x : p.getAllInts()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << to_string(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllFloats()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << to_string(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllDoubles()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << to_string(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllBools()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << to_string(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << to_string(x.second) << endl;
   }
 
   for (auto const &x : p.getAllIntVectors()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << p.vectorToString(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << p.vectorToString(x.second) << endl;
   }
 
   for (auto const &x : p.getAllDoubleVectors()) {
-    stream << " - " << p.getParameterName(x.first) << setw(pad - static_cast<int>(p.getParameterName(x.first).size())) << p.vectorToString(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << p.vectorToString(x.second) << endl;
+  }
+  StringInt arch = p.getArch();
+  StringInt archInd = p.getArchInd();
+  arch.GoToBeg();
+  archInd.GoToBeg();
+  for (int _ = 0; _ < arch.GetNbEl(); _++, arch.GoToNext(), archInd.GoToNext()) {
+    stream << " - H" << archInd.GetVal() << setw(pad - static_cast<int>(std::to_string(archInd.GetVal()).length() + 1)) << arch.GetVal() << endl;
   }
 
   if (p.isStringSet(WEIGHTS_FILE)) {

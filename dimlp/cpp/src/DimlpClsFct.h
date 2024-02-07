@@ -1,6 +1,7 @@
 #ifndef DIMLPCLSFCT_H
 #define DIMLPCLSFCT_H
 
+#include "../../../fidexCommon/cpp/src/parameters.h"
 #include "checkFun.h"
 #include "dimlp.h"
 #include <fstream>
@@ -10,8 +11,9 @@
 #include <unordered_map>
 #include <vector>
 
-void GiveAllParamDimlpCls();
-static void SaveOutputs(DataSet &data, Dimlp *net, int nbOut, int nbWeightLayers, const char *outfile);
+void showDimlpClsParams();
+void checkDimlpClsParametersLogicValues(Parameters &p);
+static void SaveOutputs(DataSet &data, Dimlp *net, int nbOut, int nbWeightLayers, const string &outfile);
 int dimlpCls(const std::string &command);
 
 #endif

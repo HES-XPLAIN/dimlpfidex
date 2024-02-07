@@ -22,6 +22,8 @@ FILE(GLOB COMMON_SRC_FIDEX
     src/rule.h
     src/parameters.cpp
     src/parameters.h
+    ../../dimlp/cpp/src/stringI.h
+    ../../dimlp/cpp/src/stringI.cpp
 )
 
 # make variables visible to external CMakeLists.txt
