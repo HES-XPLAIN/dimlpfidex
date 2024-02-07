@@ -23,14 +23,14 @@ void showDimlpTrnParams()
   cout << "--attributes_file <file of attributes>" << std::endl;
   cout << "--valid_data_file <validation set file>" << std::endl;
   cout << "--test_data_file <testing set file>" << std::endl;
-  cout << "--pretrained_weights_file <file of pretrained weights>" << std::endl;
+  cout << "--weights_file <file of pretrained weights>" << std::endl;
   cout << "--train_class_file <file of train classes>" << std::endl;
   cout << "--test_class_file <file of test classes>" << std::endl;
   cout << "--valid_class_file <file of validation classes>" << std::endl;
-  cout << "--weights_file <output weight file (weights.wts by default)>" << std::endl;
-  cout << "--train_pred_file <output train prediction file (dimlp.out by default)>" << std::endl;
+  cout << "--weights_outfile <output weight file (dimlp.wts by default)>" << std::endl;
+  cout << "--train_pred_outfile <output train prediction file (dimlp.out by default)>" << std::endl;
   cout << "--test_pred_file <output test prediction file (dimlpTest.out by default)>" << std::endl;
-  cout << "--valid_pred_file <output validation prediction file (dimlpValidation.out by default)>" << std::endl;
+  cout << "--valid_pred_outfile <output validation prediction file (dimlpValidation.out by default)>" << std::endl;
   cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
   cout << "--stats_file <output file with train, test and validation accuracy>" << std::endl;
   cout << "--H1 <number of neurons in the first hidden layer> ";
@@ -51,7 +51,7 @@ void showDimlpTrnParams()
   cout << "--normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << std::endl;
   cout << "--mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
   cout << "--sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
-  cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_stats is given)>" << std::endl;
+  cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)>" << std::endl;
   cout << "--seed <seed (0=random, default)>";
 
   cout << "\n-------------------------------------------------\n"
@@ -108,14 +108,14 @@ enum ParameterDimlpTrnEnum {
   ATTRIBUTES_FILE,
   VALID_DATA_FILE,
   TEST_DATA_FILE,
-  PRETRAINED_WEIGHTS_FILE,
+  WEIGHTS_FILE,
   TRAIN_CLASS_FILE,
   TEST_CLASS_FILE,
   VALID_CLASS_FILE,
-  WEIGHTS_FILE,
-  TRAIN_PRED_FILE,
+  WEIGHTS_OUTFILE,
+  TRAIN_PRED_OUTFILE,
   TEST_PRED_FILE,
-  VALID_PRED_FILE,
+  VALID_PRED_OUTFILE,
   CONSOLE_FILE,
   STATS_FILE,
   H,
@@ -146,14 +146,14 @@ const std::unordered_map<std::string, ParameterDimlpTrnEnum> parameterMap = {
     {"attributes_file", ATTRIBUTES_FILE},
     {"valid_data_file", VALID_DATA_FILE},
     {"test_data_file", TEST_DATA_FILE},
-    {"pretrained_weights_file", PRETRAINED_WEIGHTS_FILE},
+    {"weights_file", WEIGHTS_FILE},
     {"train_class_file", TRAIN_CLASS_FILE},
     {"test_class_file", TEST_CLASS_FILE},
     {"valid_class_file", VALID_CLASS_FILE},
-    {"weights_file", WEIGHTS_FILE},
-    {"train_pred_file", TRAIN_PRED_FILE},
+    {"weights_outfile", WEIGHTS_OUTFILE},
+    {"train_pred_outfile", TRAIN_PRED_OUTFILE},
     {"test_pred_file", TEST_PRED_FILE},
-    {"valid_pred_file", VALID_PRED_FILE},
+    {"valid_pred_outfile", VALID_PRED_OUTFILE},
     {"console_file", CONSOLE_FILE},
     {"stats_file", STATS_FILE},
     {"H", H},
@@ -469,16 +469,16 @@ int dimlpTrn(const string &command) {
           attrFileInit = true;
           break;
 
-        case PRETRAINED_WEIGHTS_FILE:
+        case WEIGHTS_FILE:
           weightFileTemp = arg;
           weightFileInit = true;
           break;
 
-        case WEIGHTS_FILE:
+        case WEIGHTS_OUTFILE:
           outputWeightFileTemp = arg;
           break;
 
-        case TRAIN_PRED_FILE:
+        case TRAIN_PRED_OUTFILE:
           predTrainFileTemp = arg;
           break;
 
@@ -486,7 +486,7 @@ int dimlpTrn(const string &command) {
           predTestFileTemp = arg;
           break;
 
-        case VALID_PRED_FILE:
+        case VALID_PRED_OUTFILE:
           predValidationFileTemp = arg;
           break;
 
@@ -1029,9 +1029,9 @@ int dimlpTrn(const string &command) {
 
 /* Exemples to launch the code :
 
-./DimlpTrn --train_data_file irisTrainData.txt --train_class_file irisTrainClass.txt --test_data_file irisTestData.txt --test_class_file irisTestClass.txt --weights_file weights.wts --nb_attributes 4 --H2 5 --nb_classes 3 --train_pred_file predTrain.out --test_pred_file predTest.out --with_rule_extraction --global_rules_outfile rules.rls --stats_file stats --console_file results.txt --root_folder ../dimlp/datafiles/IrisDataset --attributes_file attributes.txt
-./DimlpTrn --train_data_file spamTrainData.txt --train_class_file spamTrainClass.txt --test_data_file spamTestData.txt --test_class_file spamTestClass.txt --weights_file spam.wts --nb_attributes 57 --H2 5 --nb_classes 2 --train_pred_file spamTrainPred.out --test_pred_file spamTestPred.out --with_rule_extraction --global_rules_outfile spamTrn.rls --stats_file spamTrnStats --console_file spamTrnResult.txt --root_folder ../dimlp/datafiles/spamDataset --attributes_file attributes.txt
-./DimlpTrn --train_data_file isoletTrainData.txt --train_class_file isoletTrainClass.txt --test_data_file isoletTestData.txt --test_class_file isoletTestClass.txt --weights_file isoletV3.wts --nb_attributes 617 --H2 5 --nb_classes 26 --train_pred_file isoletTrainPredV3.out --test_pred_file isoletTestPredV3.out --with_rule_extraction --global_rules_outfile isoletTrnV3.rls --stats_file isoletTrnStatsV3 --console_file isoletTrnResultV3.txt --root_folder ../dimlp/datafiles/isoletDataset --attributes_file attributes.txt
-./DimlpTrn --train_data_file Train/X_train.txt --train_class_file Train/y_train.txt --test_data_file test/X_test.txt --test_class_file Test/y_test.txt --weights_file HAPT.wts --nb_attributes 561 --H2 5 --nb_classes 12 --train_pred_file Train/pred_train.out --test_pred_file Test/pred_test.out --with_rule_extraction --global_rules_outfile HAPTTrain.rls --stats_file HAPTTrnStats --console_file HAPTTrnResult.txt --root_folder ../dimlp/datafiles/HAPTDataset --attributes_file attributes.txt
+./DimlpTrn --train_data_file irisTrainData.txt --train_class_file irisTrainClass.txt --test_data_file irisTestData.txt --test_class_file irisTestClass.txt --weights_outfile weights.wts --nb_attributes 4 --H2 5 --nb_classes 3 --train_pred_outfile predTrain.out --test_pred_file predTest.out --with_rule_extraction --global_rules_outfile rules.rls --stats_file stats --console_file results.txt --root_folder ../dimlp/datafiles/IrisDataset --attributes_file attributes.txt
+./DimlpTrn --train_data_file spamTrainData.txt --train_class_file spamTrainClass.txt --test_data_file spamTestData.txt --test_class_file spamTestClass.txt --weights_outfile spam.wts --nb_attributes 57 --H2 5 --nb_classes 2 --train_pred_outfile spamTrainPred.out --test_pred_file spamTestPred.out --with_rule_extraction --global_rules_outfile spamTrn.rls --stats_file spamTrnStats --console_file spamTrnResult.txt --root_folder ../dimlp/datafiles/spamDataset --attributes_file attributes.txt
+./DimlpTrn --train_data_file isoletTrainData.txt --train_class_file isoletTrainClass.txt --test_data_file isoletTestData.txt --test_class_file isoletTestClass.txt --weights_outfile isoletV3.wts --nb_attributes 617 --H2 5 --nb_classes 26 --train_pred_outfile isoletTrainPredV3.out --test_pred_file isoletTestPredV3.out --with_rule_extraction --global_rules_outfile isoletTrnV3.rls --stats_file isoletTrnStatsV3 --console_file isoletTrnResultV3.txt --root_folder ../dimlp/datafiles/isoletDataset --attributes_file attributes.txt
+./DimlpTrn --train_data_file Train/X_train.txt --train_class_file Train/y_train.txt --test_data_file test/X_test.txt --test_class_file Test/y_test.txt --weights_outfile HAPT.wts --nb_attributes 561 --H2 5 --nb_classes 12 --train_pred_outfile Train/pred_train.out --test_pred_file Test/pred_test.out --with_rule_extraction --global_rules_outfile HAPTTrain.rls --stats_file HAPTTrnStats --console_file HAPTTrnResult.txt --root_folder ../dimlp/datafiles/HAPTDataset --attributes_file attributes.txt
 
 */

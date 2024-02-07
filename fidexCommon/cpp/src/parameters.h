@@ -21,12 +21,15 @@
 enum ParameterCode {
   TRAIN_DATA_FILE,
   TRAIN_PRED_FILE,
+  TRAIN_PRED_OUTFILE,
   TRAIN_CLASS_FILE,
   TEST_DATA_FILE,
   TEST_PRED_FILE,
+  TEST_PRED_OUTFILE,
   TEST_CLASS_FILE,
   VALID_DATA_FILE,
   VALID_CLASS_FILE,
+  VALID_PRED_OUTFILE,
   RULES_FILE,
   RULES_OUTFILE,
   GLOBAL_RULES_OUTFILE,
@@ -36,6 +39,9 @@ enum ParameterCode {
   ROOT_FOLDER,
   ATTRIBUTES_FILE,
   WEIGHTS_FILE,
+  WEIGHTS_OUTFILE,
+  WEIGHTS_GENERIC_FILENAME,
+  WEIGHTS_GENERIC_OUTFILENAME,
   HID_FILE,
   STATS_FILE,
   NB_ATTRIBUTES,
@@ -69,12 +75,15 @@ enum ParameterCode {
 static const std::unordered_map<std::string, ParameterCode> parameterNames = {
     {"train_data_file", TRAIN_DATA_FILE},
     {"train_pred_file", TRAIN_PRED_FILE},
+    {"train_pred_outfile", TRAIN_PRED_OUTFILE},
     {"train_class_file", TRAIN_CLASS_FILE},
     {"test_data_file", TEST_DATA_FILE},
     {"test_pred_file", TEST_PRED_FILE},
+    {"test_pred_outfile", TEST_PRED_OUTFILE},
     {"test_class_file", TEST_CLASS_FILE},
     {"valid_data_file", VALID_DATA_FILE},
     {"valid_class_file", VALID_CLASS_FILE},
+    {"valid_pred_outfile", VALID_PRED_OUTFILE},
     {"rules_file", RULES_FILE},
     {"rules_outfile", RULES_OUTFILE},
     {"global_rules_outfile", GLOBAL_RULES_OUTFILE},
@@ -84,6 +93,9 @@ static const std::unordered_map<std::string, ParameterCode> parameterNames = {
     {"root_folder", ROOT_FOLDER},
     {"attributes_file", ATTRIBUTES_FILE},
     {"weights_file", WEIGHTS_FILE},
+    {"weights_outfile", WEIGHTS_OUTFILE},
+    {"weights_generic_filename", WEIGHTS_GENERIC_FILENAME},
+    {"weights_generic_outfilename", WEIGHTS_GENERIC_OUTFILENAME},
     {"hid_file", HID_FILE},
     {"stats_file", STATS_FILE},
     {"nb_attributes", NB_ATTRIBUTES},
@@ -129,7 +141,7 @@ private:
 
   // path checker
   void checkFilesIntegrity();
-  void checkPath(ParameterCode id, const string &path);
+  void checkPath(ParameterCode id, const string &path) const;
 
   // throwables
   [[noreturn]] void throwInvalidDataTypeException(ParameterCode id, const string &wrongValue, const string &typeName) const {
@@ -169,7 +181,6 @@ public:
   void setIntVector(ParameterCode id, const vector<int> &value);
   void setString(ParameterCode id, const string &value);
   void setArch(ParameterCode id, const string &value, const string &param);
-  void sanitizePath(ParameterCode id, bool shouldFileExist);
 
   // default setter if value not set
   void setDefaultInt(ParameterCode id, int value);

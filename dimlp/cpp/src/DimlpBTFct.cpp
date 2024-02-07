@@ -25,9 +25,9 @@ void showDimlpBTParams()
   cout << "--train_class_file <file of train classes>" << std::endl;
   cout << "--test_class_file <file of test classes>" << std::endl;
   cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
-  cout << "--weights_generic_filename <output weights generic name file(without .wts, dimlpBT by default)>" << std::endl;
-  cout << "--train_pred_file <output train prediction file (dimlpBT.out by default)>" << std::endl;
-  cout << "--test_pred_file <output test prediction file (dimlpBTTest.out by default)>" << std::endl;
+  cout << "--weights_generic_outfilename <output weights generic name file(without .wts, dimlpBT by default)>" << std::endl;
+  cout << "--train_pred_outfile <output train prediction file (dimlpBT.out by default)>" << std::endl;
+  cout << "--test_pred_outfile <output test prediction file (dimlpBTTest.out by default)>" << std::endl;
   cout << "--stats_file <output file with train, test and validation accuracy and with the global accuracy for train and test>" << std::endl;
   cout << "--H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
@@ -48,7 +48,7 @@ void showDimlpBTParams()
   cout << "--normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << std::endl;
   cout << "--mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
   cout << "--sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
-  cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_stats is given)>" << std::endl;
+  cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)>" << std::endl;
   cout << "--seed <seed (0=random, default)>";
 
   cout << "\n-------------------------------------------------\n"
@@ -68,9 +68,9 @@ enum ParameterDimlpBTEnum {
   TRAIN_CLASS_FILE,
   TEST_CLASS_FILE,
   CONSOLE_FILE,
-  WEIGHTS_GENERIC_FILENAME,
-  TRAIN_PRED_FILE,
-  TEST_PRED_FILE,
+  WEIGHTS_GENERIC_OUTFILENAME,
+  TRAIN_PRED_OUTFILE,
+  TEST_PRED_OUTFILE,
   STATS_FILE,
   H,
   WITH_RULE_EXTRACTION,
@@ -104,9 +104,9 @@ const std::unordered_map<std::string, ParameterDimlpBTEnum> parameterMap = {
     {"train_class_file", TRAIN_CLASS_FILE},
     {"test_class_file", TEST_CLASS_FILE},
     {"console_file", CONSOLE_FILE},
-    {"weights_generic_filename", WEIGHTS_GENERIC_FILENAME},
-    {"train_pred_file", TRAIN_PRED_FILE},
-    {"test_pred_file", TEST_PRED_FILE},
+    {"weights_generic_outfilename", WEIGHTS_GENERIC_OUTFILENAME},
+    {"train_pred_outfile", TRAIN_PRED_OUTFILE},
+    {"test_pred_outfile", TEST_PRED_OUTFILE},
     {"stats_file", STATS_FILE},
     {"H", H},
     {"with_rule_extraction", WITH_RULE_EXTRACTION},
@@ -437,15 +437,15 @@ int dimlpBT(const string &command) {
           consoleFileInit = true;
           break;
 
-        case WEIGHTS_GENERIC_FILENAME:
+        case WEIGHTS_GENERIC_OUTFILENAME:
           genericWeightsFileTemp = arg;
           break;
 
-        case TRAIN_PRED_FILE:
+        case TRAIN_PRED_OUTFILE:
           predTrainFileTemp = arg;
           break;
 
-        case TEST_PRED_FILE:
+        case TEST_PRED_OUTFILE:
           predTestFileTemp = arg;
           break;
 
@@ -984,4 +984,4 @@ int dimlpBT(const string &command) {
   return 0;
 }
 
-// Exemple to launch the code : dimlpBT("DimlpBT --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_generic_filename dimlpDatanormBT --train_pred_file dimlpDatanormBTTrain.out --test_pred_file dimlpDatanormBTTest.out --stats_file dimlpDatanormBTStats --console_file dimlpDatanormBTResult.txt --root_folder dimlp/datafiles");
+// Exemple to launch the code : dimlpBT("DimlpBT --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_generic_outfilename dimlpDatanormBT --train_pred_outfile dimlpDatanormBTTrain.out --test_pred_outfile dimlpDatanormBTTest.out --stats_file dimlpDatanormBTStats --console_file dimlpDatanormBTResult.txt --root_folder dimlp/datafiles");

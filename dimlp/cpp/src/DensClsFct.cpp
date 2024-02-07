@@ -12,7 +12,7 @@ void showDensClsParams()
        << std::endl;
 
   cout << "DensCls --train_data_file <training set file(path with respect to specified root folder)> ";
-  cout << "--weights_generic_filename <weights generic name file> (for instance give DimlpBT) ";
+  cout << "--weights_generic_filename <weights generic name file> (for instance give DimlpBT, files need to have the .wts extension) ";
   cout << "--nb_attributes <number of input neurons> --nb_classes <number of output neurons> ";
   cout << "--nb_dimlp_nets <number of networks>";
   cout << " <Options>\n"
@@ -26,8 +26,8 @@ void showDensClsParams()
   cout << "--train_class_file <file of train classes>" << std::endl;
   cout << "--test_class_file <file of test classes>" << std::endl;
   cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
-  cout << "--train_pred_file <output train prediction file (densCls.out by default)>" << std::endl;
-  cout << "--test_pred_file <output test prediction file (densClsTest.out by default)>" << std::endl;
+  cout << "--train_pred_outfile <output train prediction file (densCls.out by default)>" << std::endl;
+  cout << "--test_pred_outfile <output test prediction file (densClsTest.out by default)>" << std::endl;
   cout << "--stats_file <output file with global train and test accuracy>" << std::endl;
   cout << "--H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
@@ -39,7 +39,7 @@ void showDensClsParams()
   cout << "--normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << std::endl;
   cout << "--mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
   cout << "--sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
-  cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_stats is given)>" << std::endl;
+  cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)>" << std::endl;
 
   cout << "\n-------------------------------------------------\n"
        << std::endl;
@@ -59,8 +59,8 @@ enum ParameterDensClsEnum {
   TRAIN_CLASS_FILE,
   TEST_CLASS_FILE,
   CONSOLE_FILE,
-  TRAIN_PRED_FILE,
-  TEST_PRED_FILE,
+  TRAIN_PRED_OUTFILE,
+  TEST_PRED_OUTFILE,
   STATS_FILE,
   H,
   WITH_RULE_EXTRACTION,
@@ -85,8 +85,8 @@ const std::unordered_map<std::string, ParameterDensClsEnum> parameterMap = {
     {"train_class_file", TRAIN_CLASS_FILE},
     {"test_class_file", TEST_CLASS_FILE},
     {"console_file", CONSOLE_FILE},
-    {"train_pred_file", TRAIN_PRED_FILE},
-    {"test_pred_file", TEST_PRED_FILE},
+    {"train_pred_outfile", TRAIN_PRED_OUTFILE},
+    {"test_pred_outfile", TEST_PRED_OUTFILE},
     {"stats_file", STATS_FILE},
     {"H", H},
     {"with_rule_extraction", WITH_RULE_EXTRACTION},
@@ -311,11 +311,11 @@ int densCls(const string &command) {
           consoleFileInit = true;
           break;
 
-        case TRAIN_PRED_FILE:
+        case TRAIN_PRED_OUTFILE:
           predTrainFileTemp = arg;
           break;
 
-        case TEST_PRED_FILE:
+        case TEST_PRED_OUTFILE:
           predTestFileTemp = arg;
           break;
 
@@ -826,4 +826,4 @@ int densCls(const string &command) {
   return 0;
 }
 
-// Exemple to launch the code : densCls("DensCls --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_generic_filename dimlpDatanormBT --with_rule_extraction --global_rules_outfile dimlpDatanormDensClsRul.rls --train_pred_file dimlpDatanormDensClsTrain.out --test_pred_file dimlpDatanormDensClsTest.out --stats_file dimlpDatanormDensClsStats --console_file dimlpDatanormDensClsResult.txt --root_folder dimlp/datafiles");
+// Exemple to launch the code : densCls("DensCls --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_generic_filename dimlpDatanormBT --with_rule_extraction --global_rules_outfile dimlpDatanormDensClsRul.rls --train_pred_outfile dimlpDatanormDensClsTrain.out --test_pred_outfile dimlpDatanormDensClsTest.out --stats_file dimlpDatanormDensClsStats --console_file dimlpDatanormDensClsResult.txt --root_folder dimlp/datafiles");
