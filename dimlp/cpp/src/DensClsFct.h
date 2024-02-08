@@ -1,6 +1,7 @@
 #ifndef DENSCLSFCT_H
 #define DENSCLSFCT_H
 
+#include "../../../fidexCommon/cpp/src/parameters.h"
 #include "bagDimlp.h"
 #include "checkFun.h"
 #include "realHyp2.h"
@@ -12,6 +13,7 @@
 #include <vector>
 
 void showDensClsParams();
+void checkDensClsParametersLogicValues(Parameters &p);
 int densCls(const std::string &command);
 
 #endif

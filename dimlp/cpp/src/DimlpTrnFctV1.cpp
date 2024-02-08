@@ -1,34 +1,38 @@
-#include "DimlpBTFct.h"
-const int BPNN = 1;
+#include "DimlpTrnFct.h"
 
 using namespace std;
+
+const int BPNN = 1;
+
 ////////////////////////////////////////////////////////////
 
-void showDimlpBTParams()
+void showDimlpTrnParams()
 
 {
   cout << "\n-------------------------------------------------\n"
        << std::endl;
 
-  cout << "DimlpBT --train_data_file <training set file(path with respect to specified root folder)> ";
+  cout << "DimlpTrn --train_data_file <training set file(path with respect to specified root folder)> ";
   cout << "--nb_attributes <number of input neurons> --nb_classes <number of output neurons>";
-
   cout << " <Options>\n"
        << std::endl;
 
   cout << "Options are: \n"
        << std::endl;
   cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  cout << "--nb_dimlp_nets <number of networks (25 by default)>" << std::endl;
   cout << "--attributes_file <file of attributes>" << std::endl;
+  cout << "--valid_data_file <validation set file>" << std::endl;
   cout << "--test_data_file <testing set file>" << std::endl;
+  cout << "--weights_file <file of pretrained weights>" << std::endl;
   cout << "--train_class_file <file of train classes>" << std::endl;
   cout << "--test_class_file <file of test classes>" << std::endl;
+  cout << "--valid_class_file <file of validation classes>" << std::endl;
+  cout << "--weights_outfile <output weight file (dimlp.wts by default)>" << std::endl;
+  cout << "--train_pred_outfile <output train prediction file (dimlpTrain.out by default)>" << std::endl;
+  cout << "--test_pred_file <output test prediction file (dimlpTest.out by default)>" << std::endl;
+  cout << "--valid_pred_outfile <output validation prediction file (dimlpValidation.out by default)>" << std::endl;
   cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
-  cout << "--weights_generic_outfilename <output weights generic name file(without .wts, dimlpBT by default)>" << std::endl;
-  cout << "--train_pred_outfile <output train prediction file (dimlpBT.out by default)>" << std::endl;
-  cout << "--test_pred_outfile <output test prediction file (dimlpBTTest.out by default)>" << std::endl;
-  cout << "--stats_file <output file with train, test and validation accuracy and with the global accuracy for train and test>" << std::endl;
+  cout << "--stats_file <output file with train, test and validation accuracy>" << std::endl;
   cout << "--H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";
   cout << "number of input neurons)" << std::endl;
@@ -41,10 +45,9 @@ void showDimlpBTParams()
   cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
   cout << "--error_thresh <error threshold (-1111111111 by default)>" << std::endl;
   cout << "--acc_thresh <accuracy threshold (11111111111111 by default)>" << std::endl;
-  cout << "--abs_error_thresh <absolute difference error threshold>" << std::endl;
-  cout << "--nb_epochs <number of epochs (0 by default)>" << std::endl;
-  cout << "--nb_epochs_error <number of epochs to show error (1500 by default)>" << std::endl;
-  cout << "--nb_ex_per_net <number of examples for one single network (10 by default)>" << std::endl;
+  cout << "--abs_error_thresh <absolute difference error threshold (0 by default)>" << std::endl;
+  cout << "--nb_epochs <number of epochs (1500 by default)>" << std::endl;
+  cout << "--nb_epochs_error <number of epochs to show error (10 by default)>" << std::endl;
   cout << "--normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << std::endl;
   cout << "--mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
   cout << "--sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
@@ -57,20 +60,63 @@ void showDimlpBTParams()
 
 ////////////////////////////////////////////////////////////
 
-enum ParameterDimlpBTEnum {
+static void SaveOutputs(
+    DataSet &data,
+    std::shared_ptr<Dimlp> net,
+    int nbOut,
+    int nbWeightLayers,
+    const char *outfile)
+
+{
+  filebuf buf;
+
+  if (buf.open(outfile, ios_base::out) == nullptr) {
+    throw CannotOpenFileError("Error : Cannot open output file " + std::string(outfile));
+  }
+
+  std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
+  const float *out = layer->GetUp();
+
+  cout << "\n\n"
+       << outfile << ": "
+       << "Writing ..." << std::endl;
+
+  ostream outFile(&buf);
+
+  for (int p = 0; p < data.GetNbEx(); p++) {
+    net->ForwardOneExample1(data, p);
+
+    for (int o = 0; o < nbOut; o++) {
+      outFile << out[o] << " ";
+    }
+
+    outFile << "" << std::endl;
+  }
+
+  cout << outfile << ": "
+       << "Written.\n"
+       << std::endl;
+}
+
+////////////////////////////////////////////////////////////
+
+enum ParameterDimlpTrnEnum {
   TRAIN_DATA_FILE,
   NB_ATTRIBUTES,
   NB_CLASSES,
   ROOT_FOLDER,
-  NB_DIMLP_NETS,
   ATTRIBUTES_FILE,
+  VALID_DATA_FILE,
   TEST_DATA_FILE,
+  WEIGHTS_FILE,
   TRAIN_CLASS_FILE,
   TEST_CLASS_FILE,
-  CONSOLE_FILE,
-  WEIGHTS_GENERIC_OUTFILENAME,
+  VALID_CLASS_FILE,
+  WEIGHTS_OUTFILE,
   TRAIN_PRED_OUTFILE,
-  TEST_PRED_OUTFILE,
+  TEST_PRED_FILE,
+  VALID_PRED_OUTFILE,
+  CONSOLE_FILE,
   STATS_FILE,
   H,
   WITH_RULE_EXTRACTION,
@@ -84,7 +130,6 @@ enum ParameterDimlpBTEnum {
   ABS_ERROR_THRESH,
   NB_EPOCHS,
   NB_EPOCHS_ERROR,
-  NB_EX_PER_NET,
   NORMALIZATION_FILE,
   MUS,
   SIGMAS,
@@ -93,20 +138,23 @@ enum ParameterDimlpBTEnum {
   INVALID
 };
 
-const std::unordered_map<std::string, ParameterDimlpBTEnum> parameterMap = {
+const std::unordered_map<std::string, ParameterDimlpTrnEnum> parameterMap = {
     {"train_data_file", TRAIN_DATA_FILE},
     {"nb_attributes", NB_ATTRIBUTES},
     {"nb_classes", NB_CLASSES},
     {"root_folder", ROOT_FOLDER},
-    {"nb_dimlp_nets", NB_DIMLP_NETS},
     {"attributes_file", ATTRIBUTES_FILE},
+    {"valid_data_file", VALID_DATA_FILE},
     {"test_data_file", TEST_DATA_FILE},
+    {"weights_file", WEIGHTS_FILE},
     {"train_class_file", TRAIN_CLASS_FILE},
     {"test_class_file", TEST_CLASS_FILE},
-    {"console_file", CONSOLE_FILE},
-    {"weights_generic_outfilename", WEIGHTS_GENERIC_OUTFILENAME},
+    {"valid_class_file", VALID_CLASS_FILE},
+    {"weights_outfile", WEIGHTS_OUTFILE},
     {"train_pred_outfile", TRAIN_PRED_OUTFILE},
-    {"test_pred_outfile", TEST_PRED_OUTFILE},
+    {"test_pred_file", TEST_PRED_FILE},
+    {"valid_pred_outfile", VALID_PRED_OUTFILE},
+    {"console_file", CONSOLE_FILE},
     {"stats_file", STATS_FILE},
     {"H", H},
     {"with_rule_extraction", WITH_RULE_EXTRACTION},
@@ -120,18 +168,19 @@ const std::unordered_map<std::string, ParameterDimlpBTEnum> parameterMap = {
     {"abs_error_thresh", ABS_ERROR_THRESH},
     {"nb_epochs", NB_EPOCHS},
     {"nb_epochs_error", NB_EPOCHS_ERROR},
-    {"nb_ex_per_net", NB_EX_PER_NET},
     {"normalization_file", NORMALIZATION_FILE},
     {"mus", MUS},
     {"sigmas", SIGMAS},
     {"normalization_indices", NORMALIZATION_INDICES},
-    {"seed", SEED}};
+    {"seed", SEED},
+};
 
-int dimlpBT(const string &command) {
+int dimlpTrn(const string &command) {
   // Save buffer where we output results
   std::ofstream ofs;
   std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
   try {
+
     float temps;
     clock_t t1;
     clock_t t2;
@@ -158,6 +207,8 @@ int dimlpBT(const string &command) {
 
     AttrName Attr;
 
+    std::shared_ptr<Dimlp> net;
+
     float eta = 0.1f;
     float mu = 0.6f;
     float flat = 0.01f;
@@ -167,13 +218,11 @@ int dimlpBT(const string &command) {
     int showErr = 10;
     int epochs = 1500;
     int quant = 50;
-    int nbDimlpNets = 25;
 
     int ruleExtr = 0;
 
     int nbIn = 0;
     int nbOut = 0;
-    int nbExInOne = 0;
     int seed = 0;
 
     string learnFileTemp;
@@ -182,10 +231,12 @@ int dimlpBT(const string &command) {
     bool testFileInit = false;
     string validFileTemp;
     bool validFileInit = false;
-    string weightFileTemp = "dimlp.wts";
-    string genericWeightsFileTemp = "dimlpBT";
-    string predTrainFileTemp = "dimlpBT.out";
-    string predTestFileTemp = "dimlpBTTest.out";
+    string weightFileTemp;
+    bool weightFileInit = false;
+    string outputWeightFileTemp = "dimlp.wts";
+    string predTrainFileTemp = "dimlp.out";
+    string predTestFileTemp = "dimlpTest.out";
+    string predValidationFileTemp = "dimlpValidation.out";
     string rulesFileTemp;
     bool rulesFileInit = false;
     string consoleFileTemp;
@@ -222,15 +273,15 @@ int dimlpBT(const string &command) {
     StringInt archInd;
 
     if (nbParam <= 1) {
-      showDimlpBTParams();
+      showDimlpTrnParams();
       return 0;
     }
 
-    std::vector<ParameterDimlpBTEnum> paramsWithoutValues;
+    std::vector<ParameterDimlpTrnEnum> paramsWithoutValues;
     paramsWithoutValues.push_back(WITH_RULE_EXTRACTION);
     bool isParamWithoutValue = false;
 
-    int p = 1; // We skip "DimlpBT"
+    int p = 1; // We skip "DimlpTrn"
     while (p < nbParam) {
       isParamWithoutValue = false;
       string param = commandList[p];
@@ -239,7 +290,7 @@ int dimlpBT(const string &command) {
         param = param.substr(2);
         p++;
 
-        ParameterDimlpBTEnum option;
+        ParameterDimlpTrnEnum option;
         auto it = parameterMap.find(param);
         if (it != parameterMap.end()) {
           option = it->second;
@@ -277,64 +328,71 @@ int dimlpBT(const string &command) {
 
         switch (option) { // After --
         case LEARNING_RATE:
-          if (CheckFloat(arg))
+          if (CheckFloat(arg)) {
             eta = static_cast<float>(atof(arg));
-          else
+          } else {
             throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
+          }
 
           break;
 
         case MOMENTUM:
-          if (CheckFloat(arg))
+          if (CheckFloat(arg)) {
             mu = static_cast<float>(atof(arg));
-          else
+          } else {
             throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
+          }
 
           break;
 
         case FLAT:
-          if (CheckFloat(arg))
+          if (CheckFloat(arg)) {
             flat = static_cast<float>(atof(arg));
-          else
+          } else {
             throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
+          }
 
           break;
 
         case ERROR_THRESH:
-          if (CheckFloat(arg))
+          if (CheckFloat(arg)) {
             errThres = static_cast<float>(atof(arg));
-          else
+          } else {
             throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
+          }
 
           if (flagEp == 0)
             epochs = 2000000000;
           break;
 
         case ACC_THRESH:
-          if (CheckFloat(arg))
+          if (CheckFloat(arg)) {
             accThres = static_cast<float>(atof(arg));
-          else
+          } else {
             throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
+          }
 
           if (flagEp == 0)
             epochs = 2000000000;
           break;
 
         case ABS_ERROR_THRESH:
-          if (CheckFloat(arg))
+          if (CheckFloat(arg)) {
             deltaErr = static_cast<float>(atof(arg));
-          else
+          } else {
             throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
+          }
 
           if (flagEp == 0)
             epochs = 2000000000;
           break;
 
         case NB_EPOCHS_ERROR:
-          if (CheckInt(arg))
+          if (CheckInt(arg)) {
             showErr = atoi(arg);
-          else
+          } else {
             throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
+          }
 
           break;
 
@@ -342,47 +400,33 @@ int dimlpBT(const string &command) {
           if (CheckInt(arg)) {
             epochs = atoi(arg);
             flagEp = 1;
-          } else
+          } else {
             throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
+          }
 
           break;
 
         case NB_QUANT_LEVELS:
-          if (CheckInt(arg))
+          if (CheckInt(arg)) {
             quant = atoi(arg);
-          else
+          } else {
             throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
-
-          break;
-
-        case NB_EX_PER_NET:
-          if (CheckInt(arg))
-            nbExInOne = atoi(arg);
-          else
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
-
-          break;
-
-        case NB_DIMLP_NETS:
-          if (CheckInt(arg))
-            nbDimlpNets = atoi(arg);
-          else
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
+          }
 
           break;
 
         case NB_ATTRIBUTES:
-          if (CheckInt(arg))
+          if (CheckInt(arg)) {
             nbIn = atoi(arg);
-          else
+          } else {
             throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
+          }
 
           break;
 
         case H:
           if (CheckInt(arg)) {
             arch.Insert(atoi(arg));
-
             const char *ptrParam = param.c_str();
 
             if (ptrParam[1] != '\0') {
@@ -391,24 +435,27 @@ int dimlpBT(const string &command) {
             } else {
               throw CommandArgumentException("Error : Which hidden layer (-H) ?");
             }
-          } else
+          } else {
             throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
+          }
 
           break;
 
         case NB_CLASSES:
-          if (CheckInt(arg))
+          if (CheckInt(arg)) {
             nbOut = atoi(arg);
-          else
+          } else {
             throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
+          }
 
           break;
 
         case SEED:
-          if (CheckInt(arg))
+          if (CheckInt(arg)) {
             seed = atoi(arg);
-          else
+          } else {
             throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
+          }
 
           break;
 
@@ -422,6 +469,37 @@ int dimlpBT(const string &command) {
           attrFileInit = true;
           break;
 
+        case WEIGHTS_FILE:
+          weightFileTemp = arg;
+          weightFileInit = true;
+          break;
+
+        case WEIGHTS_OUTFILE:
+          outputWeightFileTemp = arg;
+          break;
+
+        case TRAIN_PRED_OUTFILE:
+          predTrainFileTemp = arg;
+          break;
+
+        case TEST_PRED_FILE:
+          predTestFileTemp = arg;
+          break;
+
+        case VALID_PRED_OUTFILE:
+          predValidationFileTemp = arg;
+          break;
+
+        case CONSOLE_FILE:
+          consoleFileTemp = arg;
+          consoleFileInit = true;
+          break;
+
+        case STATS_FILE:
+          accuracyFileTemp = arg;
+          accuracyFileInit = true;
+          break;
+
         case TRAIN_DATA_FILE:
           learnFileTemp = arg;
           learnFileInit = true;
@@ -432,26 +510,9 @@ int dimlpBT(const string &command) {
           testFileInit = true;
           break;
 
-        case CONSOLE_FILE:
-          consoleFileTemp = arg;
-          consoleFileInit = true;
-          break;
-
-        case WEIGHTS_GENERIC_OUTFILENAME:
-          genericWeightsFileTemp = arg;
-          break;
-
-        case TRAIN_PRED_OUTFILE:
-          predTrainFileTemp = arg;
-          break;
-
-        case TEST_PRED_OUTFILE:
-          predTestFileTemp = arg;
-          break;
-
-        case STATS_FILE:
-          accuracyFileTemp = arg;
-          accuracyFileInit = true;
+        case VALID_DATA_FILE:
+          validFileTemp = arg;
+          validFileInit = true;
           break;
 
         case TRAIN_CLASS_FILE:
@@ -462,6 +523,11 @@ int dimlpBT(const string &command) {
         case TEST_CLASS_FILE:
           testTarTemp = arg;
           testTarInit = true;
+          break;
+
+        case VALID_CLASS_FILE:
+          validTarTemp = arg;
+          validTarInit = true;
           break;
 
         case WITH_RULE_EXTRACTION:
@@ -511,20 +577,21 @@ int dimlpBT(const string &command) {
       else {
         throw CommandArgumentException("Illegal option : " + string(&(commandList[p])[0]));
       }
+
       p++;
     }
 
     // ----------------------------------------------------------------------
-
     // create paths with root foler
 
     const char *learnFile = nullptr;
     const char *testFile = nullptr;
     const char *validFile = nullptr;
     const char *weightFile = nullptr;
-    const char *genericWeightsFile = nullptr;
+    const char *outputWeightFile = nullptr;
     const char *predTrainFile = nullptr;
     const char *predTestFile = nullptr;
+    const char *predValidationFile = nullptr;
     const char *rulesFile = nullptr;
     const char *consoleFile = nullptr;
     const char *accuracyFile = nullptr;
@@ -558,17 +625,22 @@ int dimlpBT(const string &command) {
       validFile = &validFileTemp[0];
     }
 
-    weightFileTemp = root + weightFileTemp;
-    weightFile = &weightFileTemp[0];
+    if (weightFileInit) {
+      weightFileTemp = root + weightFileTemp;
+      weightFile = &weightFileTemp[0];
+    }
 
-    genericWeightsFileTemp = root + genericWeightsFileTemp;
-    genericWeightsFile = &genericWeightsFileTemp[0];
+    outputWeightFileTemp = root + outputWeightFileTemp;
+    outputWeightFile = &outputWeightFileTemp[0];
 
     predTrainFileTemp = root + predTrainFileTemp;
     predTrainFile = &predTrainFileTemp[0];
 
     predTestFileTemp = root + predTestFileTemp;
     predTestFile = &predTestFileTemp[0];
+
+    predValidationFileTemp = root + predValidationFileTemp;
+    predValidationFile = &predValidationFileTemp[0];
 
     if (rulesFileInit) {
       rulesFileTemp = root + rulesFileTemp;
@@ -632,16 +704,16 @@ int dimlpBT(const string &command) {
       throw CommandArgumentException("The number of epochs must be greater than 0.");
     }
 
-    if (quant == 0) {
-      throw CommandArgumentException("The number of quantized levels must be greater than 0.");
+    if (quant <= 2) {
+      throw CommandArgumentException("The number of quantized levels must be greater than 2.");
     }
 
     if (nbIn == 0) {
       throw CommandArgumentException("The number of input neurons must be given with option --nb_attributes.");
     }
 
-    if (nbOut == 0) {
-      throw CommandArgumentException("The number of output neurons must be given with option --nb_classes.");
+    if (nbOut <= 1) {
+      throw CommandArgumentException("At least two output neurons must be given with option --nb_classes.");
     }
 
     // ----------------------------------------------------------------------
@@ -676,7 +748,7 @@ int dimlpBT(const string &command) {
     if (uniqueIndices.size() != normalizationIndices.size() ||
         *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= nbIn ||
         *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
-      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) has negative, greater than the number of attributes or repeted elements.");
+      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) must be a list composed of integers between [0, nb_attributes-1] without repeted elements.");
     }
 
     // ----------------------------------------------------------------------
@@ -737,9 +809,11 @@ int dimlpBT(const string &command) {
     }
 
     // ----------------------------------------------------------------------
+
     if (learnFileInit == false) {
       throw CommandArgumentException("Give the training file with --train_data_file selection please.");
     }
+
     if (learnTarInit != false) {
       DataSet train(learnFile, nbIn, nbOut);
       DataSet trainClass(learnTar, nbIn, nbOut);
@@ -759,7 +833,6 @@ int dimlpBT(const string &command) {
 
       data.Del();
     }
-
     if (validFileInit != false) {
       if (validTarInit != false) {
         DataSet valid(validFile, nbIn, nbOut);
@@ -807,54 +880,35 @@ int dimlpBT(const string &command) {
         data.Del();
       }
     }
-    auto net = std::make_shared<BagDimlp>(eta, mu, flat, errThres, accThres, deltaErr,
-                                          quant, showErr, epochs, nbLayers, vecNbNeurons,
-                                          nbDimlpNets, weightFile, seed);
 
-    if (nbExInOne == 0)
-      nbExInOne = Train.GetNbEx();
-    else if (nbExInOne > Train.GetNbEx())
-      nbExInOne = Train.GetNbEx();
+    if (weightFileInit == false)
+      net = std::make_shared<Dimlp>(eta, mu, flat, errThres, accThres, deltaErr,
+                                    quant, showErr, epochs, nbLayers, vecNbNeurons, outputWeightFile, seed);
 
-    net->MakeDataSets(Train, TrainClass, nbExInOne);
+    else
+      net = std::make_shared<Dimlp>(weightFile, eta, mu, flat, errThres, accThres,
+                                    deltaErr, quant, showErr, epochs,
+                                    nbLayers, vecNbNeurons, outputWeightFile, seed);
+
     if (accuracyFileInit != false) {
       ofstream accFile(accuracyFile);
       if (accFile.is_open()) {
-        accFile << "Accuracy for Bag training : \n"
+        accFile << "Accuracy : \n"
                 << std::endl;
         accFile.close();
       } else {
         throw CannotOpenFileError("Error : Cannot open accuracy file " + std::string(accuracyFile));
       }
     }
-    net->TrainAll(Test, TestClass, genericWeightsFile, accuracyFile, seed);
-    float acc;
-    float accTest;
 
-    net->ComputeAcc(Train, TrainClass, &acc, 1, predTrainFile);
-    cout << "\n\n*** GLOBAL ACCURACY ON TRAINING SET = " << acc << "\n"
-         << std::endl;
+    net->Train(Train, TrainClass, Test, TestClass, Valid, ValidClass, accuracyFile);
 
-    if (Test.GetNbEx() != 0) {
-      net->ComputeAcc(Test, TestClass, &accTest, 1, predTestFile);
-      cout << "*** GLOBAL ACCURACY ON TESTING SET = " << accTest << "" << std::endl;
+    SaveOutputs(Train, net, nbOut, nbWeightLayers, predTrainFile); // Get train predictions
+    if (testFileInit != false) {
+      SaveOutputs(Test, net, nbOut, nbWeightLayers, predTestFile); // Get test predictions
     }
-
-    // Output accuracy stats in file
-    if (accuracyFileInit != false) {
-      ofstream accFile(accuracyFile, ios::app);
-      if (accFile.is_open()) {
-        accFile << "-------------------------------------------------------" << std::endl;
-        accFile << "-------------------------------------------------------\n"
-                << std::endl;
-        accFile << "Global accuracy on training set = " << acc << "" << std::endl;
-        if (Test.GetNbEx() != 0) {
-          accFile << "Global accuracy on testing set = " << accTest;
-        }
-        accFile.close();
-      } else {
-        throw CannotOpenFileError("Error : could not open accuracy file " + std::string(accuracyFile));
-      }
+    if (validFileInit != false) {
+      SaveOutputs(Valid, net, nbOut, nbWeightLayers, predValidationFile); // Get validation predictions
     }
 
     if (ruleExtr) {
@@ -891,41 +945,29 @@ int dimlpBT(const string &command) {
       }
 
       cout << "\n\n****************************************************\n"
-           << std::endl;
+           << endl;
       cout << "*** RULE EXTRACTION" << std::endl;
-
-      std::shared_ptr<VirtualHyp> globVirt = net->MakeGlobalVirt(quant, nbIn,
-                                                                 vecNbNeurons[1] / nbIn);
-
-      RealHyp ryp(globVirt, nbDimlpNets, net->GetGlobalOut(), nbOut,
-                  All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
-                  nbWeightLayers);
-
+      RealHyp ryp1(All, net, quant, nbIn,
+                   vecNbNeurons[1] / nbIn, nbWeightLayers);
       if (rulesFileInit != false) {
         filebuf buf;
 
         if (buf.open(rulesFile, ios_base::out) == nullptr) {
           throw CannotOpenFileError("Error : Cannot open rules file " + std::string(rulesFile));
         }
-
         ostream rulesFileost(&buf);
-
         if (hasMus) {
-          ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                             Test, TestClass, Attr, rulesFileost, mus, sigmas, normalizationIndices);
+          ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                              Test, TestClass, Attr, rulesFileost, mus, sigmas, normalizationIndices);
         } else {
-          ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                             Test, TestClass, Attr, rulesFileost);
+          ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                              Test, TestClass, Attr, rulesFileost);
         }
 
-        if (ryp.TreeAborted()) {
+        if (ryp1.TreeAborted()) {
 
-          std::shared_ptr<VirtualHyp> globVirt2 = net->MakeGlobalVirt(quant, nbIn,
-                                                                      vecNbNeurons[1] / nbIn);
-
-          RealHyp2 ryp2(globVirt2, nbDimlpNets, net->GetGlobalOut(), nbOut,
-                        All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
-                        nbWeightLayers);
+          RealHyp2 ryp2(All, net, quant, nbIn,
+                        vecNbNeurons[1] / nbIn, nbWeightLayers);
 
           if (hasMus) {
             ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
@@ -934,29 +976,28 @@ int dimlpBT(const string &command) {
             ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                                 Test, TestClass, Attr, rulesFileost);
           }
-        }
 
-        cout << "\n\n"
-             << rulesFile << ": "
-             << "Written.\n"
-             << std::endl;
-      } else {
+        } else
+
+          cout << "\n\n"
+               << rulesFile << ": "
+               << "Written.\n"
+               << std::endl;
+      }
+
+      else {
         if (hasMus) {
-          ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                             Test, TestClass, Attr, cout, mus, sigmas, normalizationIndices);
+          ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                              Test, TestClass, Attr, cout, mus, sigmas, normalizationIndices);
         } else {
-          ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                             Test, TestClass, Attr, cout);
+          ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
+                              Test, TestClass, Attr, cout);
         }
 
-        if (ryp.TreeAborted()) {
+        if (ryp1.TreeAborted()) {
 
-          std::shared_ptr<VirtualHyp> globVirt3 = net->MakeGlobalVirt(quant, nbIn,
-                                                                      vecNbNeurons[1] / nbIn);
-
-          RealHyp2 ryp2(globVirt3, nbDimlpNets, net->GetGlobalOut(), nbOut,
-                        All, net, quant, nbIn, vecNbNeurons[1] / nbIn,
-                        nbWeightLayers);
+          RealHyp2 ryp2(All, net, quant, nbIn,
+                        vecNbNeurons[1] / nbIn, nbWeightLayers);
 
           if (hasMus) {
             ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
@@ -974,6 +1015,7 @@ int dimlpBT(const string &command) {
     std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
+
     BpNN::resetInitRandomGen();
 
   } catch (const ErrorHandler &e) {
@@ -981,7 +1023,15 @@ int dimlpBT(const string &command) {
     std::cerr << e.what() << endl;
     return -1;
   }
+
   return 0;
 }
 
-// Exemple to launch the code : dimlpBT("DimlpBT --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_generic_outfilename dimlpDatanormBT --with_rule_extraction true --global_rules_outfile dimlpDatanormDensClsRul.rls --train_pred_outfile dimlpDatanormBTTrain.out --test_pred_outfile dimlpDatanormBTTest.out --stats_file dimlpDatanormBTStats --console_file dimlpDatanormBTResult.txt --root_folder dimlp/datafiles");
+/* Exemples to launch the code :
+
+./DimlpTrn --train_data_file irisTrainData.txt --train_class_file irisTrainClass.txt --test_data_file irisTestData.txt --test_class_file irisTestClass.txt --weights_outfile weights.wts --nb_attributes 4 --H2 5 --nb_classes 3 --train_pred_outfile predTrain.out --test_pred_file predTest.out --with_rule_extraction --global_rules_outfile rules.rls --stats_file stats --console_file results.txt --root_folder ../dimlp/datafiles/IrisDataset --attributes_file attributes.txt
+./DimlpTrn --train_data_file spamTrainData.txt --train_class_file spamTrainClass.txt --test_data_file spamTestData.txt --test_class_file spamTestClass.txt --weights_outfile spam.wts --nb_attributes 57 --H2 5 --nb_classes 2 --train_pred_outfile spamTrainPred.out --test_pred_file spamTestPred.out --with_rule_extraction --global_rules_outfile spamTrn.rls --stats_file spamTrnStats --console_file spamTrnResult.txt --root_folder ../dimlp/datafiles/spamDataset --attributes_file attributes.txt
+./DimlpTrn --train_data_file isoletTrainData.txt --train_class_file isoletTrainClass.txt --test_data_file isoletTestData.txt --test_class_file isoletTestClass.txt --weights_outfile isoletV3.wts --nb_attributes 617 --H2 5 --nb_classes 26 --train_pred_outfile isoletTrainPredV3.out --test_pred_file isoletTestPredV3.out --with_rule_extraction --global_rules_outfile isoletTrnV3.rls --stats_file isoletTrnStatsV3 --console_file isoletTrnResultV3.txt --root_folder ../dimlp/datafiles/isoletDataset --attributes_file attributes.txt
+./DimlpTrn --train_data_file Train/X_train.txt --train_class_file Train/y_train.txt --test_data_file test/X_test.txt --test_class_file Test/y_test.txt --weights_outfile HAPT.wts --nb_attributes 561 --H2 5 --nb_classes 12 --train_pred_outfile Train/pred_train.out --test_pred_file Test/pred_test.out --with_rule_extraction --global_rules_outfile HAPTTrain.rls --stats_file HAPTTrnStats --console_file HAPTTrnResult.txt --root_folder ../dimlp/datafiles/HAPTDataset --attributes_file attributes.txt
+
+*/
