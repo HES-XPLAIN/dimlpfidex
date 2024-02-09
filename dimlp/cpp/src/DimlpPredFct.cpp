@@ -180,7 +180,7 @@ int dimlpPred(const string &command) {
     StringInt archInd = params->getArchInd();
 
     if (params->isStringSet(TEST_DATA_FILE)) {
-      DataSet test(testFile.c_str(), nbIn, nbOut);
+      DataSet test(testFile, nbIn, nbOut);
       Test = test;
     }
 
@@ -244,7 +244,7 @@ int dimlpPred(const string &command) {
 
     // ----------------------------------------------------------------------
 
-    Dimlp net(weightFile.c_str(), nbLayers, vecNbNeurons, quant);
+    Dimlp net(weightFile, nbLayers, vecNbNeurons, quant);
 
     SaveOutputs(Test, &net, nbOut, nbWeightLayers, predFile);
 

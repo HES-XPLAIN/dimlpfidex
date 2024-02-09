@@ -403,20 +403,20 @@ int fidexGloStats(const string &command) {
 
     // Output statistics
     if (params->isStringSet(STATS_FILE)) {
-      ofstream outputFile(params->getString(STATS_FILE).c_str());
+      ofstream outputFile(params->getString(STATS_FILE));
       if (outputFile.is_open()) {
         for (const string &line : lines) {
           outputFile << line + "" << std::endl;
         }
         outputFile.close();
       } else {
-        throw CannotOpenFileError("Error : Couldn't open explanation extraction file " + std::string(params->getString(STATS_FILE).c_str()) + ".");
+        throw CannotOpenFileError("Error : Couldn't open explanation extraction file " + params->getString(STATS_FILE) + ".");
       }
     }
 
     // Compute rules statistics on test set
     if (params->isStringSet(GLOBAL_RULES_OUTFILE)) {
-      ofstream outputFile(params->getString(GLOBAL_RULES_OUTFILE).c_str());
+      ofstream outputFile(params->getString(GLOBAL_RULES_OUTFILE));
       if (outputFile.is_open()) {
         for (string l : statsLines) {
           outputFile << l;
@@ -474,7 +474,7 @@ int fidexGloStats(const string &command) {
         }
         outputFile.close();
       } else {
-        throw CannotOpenFileError("Error : Couldn't open global rules file with statistics on test set " + std::string(params->getString(GLOBAL_RULES_OUTFILE).c_str()) + ".");
+        throw CannotOpenFileError("Error : Couldn't open global rules file with statistics on test set " + params->getString(GLOBAL_RULES_OUTFILE) + ".");
       }
     }
 

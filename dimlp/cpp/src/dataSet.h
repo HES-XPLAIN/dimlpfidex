@@ -21,8 +21,8 @@ class DataSet {
 
   // ------------------------------------------------------------------
 
-  int FirstLecture(const char nameFile[]) const;
-  void SecondLecture(const char nameFile[]);
+  int FirstLecture(const std::string &nameFile) const;
+  void SecondLecture(const std::string &nameFile);
 
   void SetNbAttr(int nbAttr) { NbAttr = nbAttr; }
   void InsertExample(const std::vector<float> &example, int index);
@@ -32,8 +32,8 @@ class DataSet {
 public:
   DataSet() = default;
   explicit DataSet(int nbEx);
-  DataSet(const char nameFile[], int nbAttr);
-  DataSet(const char nameFile[], int nbIn, int nbOut);
+  DataSet(const std::string &nameFile, int nbAttr);
+  DataSet(const std::string &nameFile, int nbIn, int nbOut);
   DataSet(DataSet &bigData, StringInt *listPat);
   DataSet(DataSet &master, const int *indPat, int nbEx);
   DataSet(DataSet &data1, DataSet &data2);
@@ -48,7 +48,7 @@ public:
   std::shared_ptr<StringInt> Select(std::shared_ptr<Rule> r, std::shared_ptr<StringInt> subSet);
 
   void ExtractDataAndTarget(DataSet &data1, int nbAttr1,
-                            DataSet &data2, int nbAttr2);
+                            DataSet &data2, int nbAttr2) const;
 };
 
 ///////////////////////////////////////////////////////////////////

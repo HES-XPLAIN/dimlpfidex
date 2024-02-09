@@ -95,7 +95,7 @@ int AttrName::ReadAttr()
 
 ///////////////////////////////////////////////////////////////////
 
-AttrName::AttrName(const char *fileAttr, int nbAttr, int nbClasses) : NbAttr(nbAttr), NbClasses(nbClasses), FileAttr(fileAttr)
+AttrName::AttrName(const std::string &fileAttr, int nbAttr, int nbClasses) : NbAttr(nbAttr), NbClasses(nbClasses), FileAttr(fileAttr)
 
 {
 }

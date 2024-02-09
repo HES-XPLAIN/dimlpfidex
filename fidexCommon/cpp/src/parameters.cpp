@@ -115,7 +115,7 @@ void Parameters::parseArg(const string &param, const string &arg) {
   } else {
     if (param[0] == 'H') {
       std::string numberPart = param.substr(1);
-      if (checkInt(numberPart.c_str())) {
+      if (checkInt(numberPart)) {
         option = H;
       } else {
         option = INVALID;

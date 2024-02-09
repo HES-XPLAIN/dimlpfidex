@@ -342,13 +342,13 @@ int dimlpBT(const string &command) {
     // ----------------------------------------------------------------------
 
     if (params->isStringSet(TRAIN_CLASS_FILE)) {
-      DataSet train(learnFile.c_str(), nbIn, nbOut);
-      DataSet trainClass(params->getString(TRAIN_CLASS_FILE).c_str(), nbIn, nbOut);
+      DataSet train(learnFile, nbIn, nbOut);
+      DataSet trainClass(params->getString(TRAIN_CLASS_FILE), nbIn, nbOut);
 
       Train = train;
       TrainClass = trainClass;
     } else {
-      DataSet data(learnFile.c_str(), nbIn, nbOut);
+      DataSet data(learnFile, nbIn, nbOut);
 
       DataSet train(data.GetNbEx());
       DataSet trainClass(data.GetNbEx());
@@ -363,15 +363,15 @@ int dimlpBT(const string &command) {
 
     if (params->isStringSet(TEST_DATA_FILE)) {
       if (params->isStringSet(TEST_CLASS_FILE)) {
-        DataSet test(params->getString(TEST_DATA_FILE).c_str(), nbIn, nbOut);
-        DataSet testClass(params->getString(TEST_CLASS_FILE).c_str(), nbIn, nbOut);
+        DataSet test(params->getString(TEST_DATA_FILE), nbIn, nbOut);
+        DataSet testClass(params->getString(TEST_CLASS_FILE), nbIn, nbOut);
 
         Test = test;
         TestClass = testClass;
       }
 
       else {
-        DataSet data(params->getString(TEST_DATA_FILE).c_str(), nbIn, nbOut);
+        DataSet data(params->getString(TEST_DATA_FILE), nbIn, nbOut);
 
         DataSet test(data.GetNbEx());
         DataSet testClass(data.GetNbEx());
@@ -437,7 +437,7 @@ int dimlpBT(const string &command) {
     if (params->getBool(WITH_RULE_EXTRACTION)) {
       vector<string> attributeNames;
       if (params->isStringSet(ATTRIBUTES_FILE)) {
-        AttrName attr(params->getString(ATTRIBUTES_FILE).c_str(), nbIn, nbOut);
+        AttrName attr(params->getString(ATTRIBUTES_FILE), nbIn, nbOut);
 
         if (attr.ReadAttr())
           cout << "\n\n"

@@ -282,15 +282,15 @@ int dimlpCls(const string &command) {
     if (params->isStringSet(TEST_DATA_FILE)) {
       if (params->isStringSet(TEST_CLASS_FILE)) {
 
-        DataSet test(testFile.c_str(), nbIn, nbOut);
-        DataSet testClass(params->getString(TEST_CLASS_FILE).c_str(), nbIn, nbOut);
+        DataSet test(testFile, nbIn, nbOut);
+        DataSet testClass(params->getString(TEST_CLASS_FILE), nbIn, nbOut);
 
         Test = test;
         TestClass = testClass;
       }
 
       else {
-        DataSet data(testFile.c_str(), nbIn, nbOut);
+        DataSet data(testFile, nbIn, nbOut);
 
         DataSet test(data.GetNbEx());
         DataSet testClass(data.GetNbEx());
@@ -304,7 +304,7 @@ int dimlpCls(const string &command) {
       }
     }
 
-    Dimlp net(weightFile.c_str(), nbLayers, vecNbNeurons, quant);
+    Dimlp net(weightFile, nbLayers, vecNbNeurons, quant);
 
     float acc;
 

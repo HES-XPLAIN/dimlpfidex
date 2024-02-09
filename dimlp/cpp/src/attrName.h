@@ -25,7 +25,7 @@ public:
   std::vector<std::string> GetListAttr() const { return VarNames; }
   std::vector<std::string> GetListClasses() const { return ClassNames; }
 
-  AttrName(const char *fileAttr, int nbAttr, int nbClasses);
+  AttrName(const std::string &fileAttr, int nbAttr, int nbClasses);
   AttrName() = default;
 };
 

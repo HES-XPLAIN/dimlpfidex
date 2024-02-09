@@ -14,22 +14,22 @@ void DataSet::InsertExample(const std::vector<float> &example, int index) {
 
 ///////////////////////////////////////////////////////////////////
 
-int DataSet::FirstLecture(const char nameFile[]) const
+int DataSet::FirstLecture(const std::string &nameFile) const
 
 {
   filebuf buf;
   int count;
   float x;
-  cout << "\n----------------------------------------------------------\n"
-       << std::endl;
+  std::cout << "\n----------------------------------------------------------\n"
+            << std::endl;
   if (buf.open(nameFile, ios_base::in) == nullptr) {
-    throw CannotOpenFileError("Error : Cannot open input file " + std::string(nameFile));
+    throw CannotOpenFileError("Error : Cannot open input file " + nameFile);
   }
 
   istream inFile(&buf);
 
-  cout << nameFile << ": "
-       << "Reading ..." << std::endl;
+  std::cout << nameFile << ": "
+            << "Reading ..." << std::endl;
 
   count = 0;
   while (inFile >> x) {
@@ -37,28 +37,28 @@ int DataSet::FirstLecture(const char nameFile[]) const
   }
 
   if ((inFile.rdstate() == ifstream::badbit) || (inFile.rdstate() == ifstream::failbit)) {
-    throw FileContentError("Error : File position " + to_string(count + 1) + ": problem in input file " + std::string(nameFile));
+    throw FileContentError("Error : File position " + to_string(count + 1) + ": problem in input file " + nameFile);
   }
 
   if (count % NbAttr != 0) {
-    throw FileContentError("Error : Possible wrong number of attributes in file " + std::string(nameFile));
+    throw FileContentError("Error : Possible wrong number of attributes in file " + nameFile);
   }
 
-  cout << nameFile << ": "
-       << "Read.\n"
-       << endl;
+  std::cout << nameFile << ": "
+            << "Read.\n"
+            << endl;
 
   return count / NbAttr;
 }
 
 ///////////////////////////////////////////////////////////////////
 
-void DataSet::SecondLecture(const char nameFile[]) {
+void DataSet::SecondLecture(const std::string &nameFile) {
   filebuf buf;
   std::vector<float> oneExample;
 
-  cout << nameFile << ": "
-       << "Creating dataset structures ..." << std::endl;
+  std::cout << nameFile << ": "
+            << "Creating dataset structures ..." << std::endl;
 
   buf.open(nameFile, ios_base::in);
   istream inFile(&buf);
@@ -72,8 +72,8 @@ void DataSet::SecondLecture(const char nameFile[]) {
     InsertExample(oneExample, count);
   }
 
-  cout << nameFile << ": "
-       << "Dataset structures created." << std::endl;
+  std::cout << nameFile << ": "
+            << "Dataset structures created." << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -201,14 +201,14 @@ DataSet::DataSet(int nbEx) : NbEx(nbEx)
 
 ///////////////////////////////////////////////////////////////////
 
-DataSet::DataSet(const char nameFile[], int nbAttr) : NbAttr(nbAttr)
+DataSet::DataSet(const std::string &nameFile, int nbAttr) : NbAttr(nbAttr)
 
 {
   NbEx = FirstLecture(nameFile);
   Set = new float *[NbEx];
 
-  cout << "Number of patterns in file " << nameFile << ": ";
-  cout << NbEx << endl;
+  std::cout << "Number of patterns in file " << nameFile << ": ";
+  std::cout << NbEx << endl;
 
   SecondLecture(nameFile);
 }
@@ -224,15 +224,15 @@ DataSet::DataSet(const char nameFile[], int nbAttr) : NbAttr(nbAttr)
  * @param nbOut Number of output attributes (class labels).
  * @throws FileContentError If there is a problem with the file format or content.
  */
-DataSet::DataSet(const char nameFile[], int nbIn, int nbOut) {
+DataSet::DataSet(const std::string &nameFile, int nbIn, int nbOut) {
   filebuf buf;
   float x;
   std::vector<float> lineValues;
 
-  cout << "\n----------------------------------------------------------\n"
-       << std::endl;
+  std::cout << "\n----------------------------------------------------------\n"
+            << std::endl;
   if (buf.open(nameFile, ios_base::in) == nullptr) {
-    throw CannotOpenFileError("Error : Cannot open input file " + std::string(nameFile));
+    throw CannotOpenFileError("Error : Cannot open input file " + nameFile);
   }
 
   istream inFile(&buf);
@@ -250,13 +250,13 @@ DataSet::DataSet(const char nameFile[], int nbIn, int nbOut) {
       lineValues.push_back(x);
     }
     if (lineStream.fail() && !lineStream.eof()) {
-      throw FileContentError("Error : Non number found in file " + std::string(nameFile) + ".");
+      throw FileContentError("Error : Non number found in file " + nameFile + ".");
     }
 
     auto currentLineSize = static_cast<int>(lineValues.size());
 
     if (lineSize != -1 && currentLineSize != lineSize) {
-      throw FileContentError("Error : Inconsistent line lengths in file " + std::string(nameFile) + ".");
+      throw FileContentError("Error : Inconsistent line lengths in file " + nameFile + ".");
     }
 
     // Apply specific checks based on currentLineSize
@@ -266,11 +266,11 @@ DataSet::DataSet(const char nameFile[], int nbIn, int nbOut) {
         lineSize = currentLineSize;
       }
       if (lineValues.back() != std::floor(lineValues[0])) {
-        throw FileContentError("Error : Class ID is not an integer in file " + std::string(nameFile) + ".");
+        throw FileContentError("Error : Class ID is not an integer in file " + nameFile + ".");
       }
       auto classID = static_cast<int>(lineValues[0]);
       if (classID < 0 || classID >= nbOut) {
-        throw FileContentError("Error : Class ID out of range in file " + std::string(nameFile) + ".");
+        throw FileContentError("Error : Class ID out of range in file " + nameFile + ".");
       }
     } else if (currentLineSize == nbIn + 1) {
       if (NbAttr == 0) {
@@ -278,11 +278,11 @@ DataSet::DataSet(const char nameFile[], int nbIn, int nbOut) {
         lineSize = currentLineSize;
       }
       if (lineValues.back() != std::floor(lineValues.back())) {
-        throw FileContentError("Error : Class ID is not an integer in file " + std::string(nameFile) + ".");
+        throw FileContentError("Error : Class ID is not an integer in file " + nameFile + ".");
       }
       auto classID = static_cast<int>(lineValues.back());
       if (classID < 0 || classID >= nbOut) {
-        throw FileContentError("Error : Class ID out of range in file " + std::string(nameFile) + ".");
+        throw FileContentError("Error : Class ID out of range in file " + nameFile + ".");
       }
     } else if (currentLineSize == nbOut || currentLineSize == nbIn + nbOut) {
       if (NbAttr == 0) {
@@ -291,7 +291,7 @@ DataSet::DataSet(const char nameFile[], int nbIn, int nbOut) {
       }
       auto oneHotCount = static_cast<int>(std::count(lineValues.end() - nbOut, lineValues.end(), 1.0f));
       if (oneHotCount != 1 || std::count_if(lineValues.end() - nbOut, lineValues.end(), [](float val) { return val != 0.0f && val != 1.0f; }) > 0) {
-        throw FileContentError("Error : Invalid one-hot encoding in file " + std::string(nameFile));
+        throw FileContentError("Error : Invalid one-hot encoding in file " + nameFile);
       }
     } else if (currentLineSize == nbIn) {
       if (NbAttr == 0) {
@@ -299,7 +299,7 @@ DataSet::DataSet(const char nameFile[], int nbIn, int nbOut) {
         lineSize = currentLineSize;
       }
     } else {
-      throw FileContentError("Error : Invalid line length in file " + std::string(nameFile));
+      throw FileContentError("Error : Invalid line length in file " + nameFile);
     }
 
     // Convert class ID format to one-hot format if necessary
@@ -384,7 +384,7 @@ DataSet::DataSet(DataSet &master, const int *indPat, int nbEx) : NbEx(nbEx), NbA
 ////////////////////////////////////////////////////////////////////////
 
 void DataSet::ExtractDataAndTarget(
-    DataSet &data1, int nbAttr1, DataSet &data2, int nbAttr2) {
+    DataSet &data1, int nbAttr1, DataSet &data2, int nbAttr2) const {
   int j;
   const float *ptr;
   float *ptrD1;
@@ -394,6 +394,8 @@ void DataSet::ExtractDataAndTarget(
 
   data1.SetNbAttr(nbAttr1);
   data2.SetNbAttr(nbAttr2);
+
+  bool hasClass;
 
   for (int p = 0; p < NbEx; p++) {
     ptr = Set[p];
@@ -407,6 +409,16 @@ void DataSet::ExtractDataAndTarget(
 
     for (j = 0; j < nbAttr2; j++, ptrD2++, ptr++)
       *ptrD2 = *ptr;
+
+    hasClass = false;
+    for (float i : vecData2) {
+      if (static_cast<int>(i) != 0) {
+        hasClass = true;
+      }
+    }
+    if (!hasClass) {
+      throw FileContentError("Error : No class file given, and there is no class in data file.");
+    }
 
     data2.InsertExample(vecData2, p);
   }

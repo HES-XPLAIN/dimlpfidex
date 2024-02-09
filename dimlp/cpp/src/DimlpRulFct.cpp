@@ -262,13 +262,13 @@ int dimlpRul(const string &command) {
     // ----------------------------------------------------------------------
 
     if (params->isStringSet(TRAIN_CLASS_FILE)) {
-      DataSet train(learnFile.c_str(), nbIn, nbOut);
-      DataSet trainClass(params->getString(TRAIN_CLASS_FILE).c_str(), nbIn, nbOut);
+      DataSet train(learnFile, nbIn, nbOut);
+      DataSet trainClass(params->getString(TRAIN_CLASS_FILE), nbIn, nbOut);
 
       Train = train;
       TrainClass = trainClass;
     } else {
-      DataSet data(learnFile.c_str(), nbIn, nbOut);
+      DataSet data(learnFile, nbIn, nbOut);
 
       DataSet train(data.GetNbEx());
       DataSet trainClass(data.GetNbEx());
@@ -283,15 +283,15 @@ int dimlpRul(const string &command) {
 
     if (params->isStringSet(VALID_DATA_FILE)) {
       if (params->isStringSet(VALID_CLASS_FILE)) {
-        DataSet valid(params->getString(VALID_DATA_FILE).c_str(), nbIn, nbOut);
-        DataSet validClass(params->getString(VALID_CLASS_FILE).c_str(), nbIn, nbOut);
+        DataSet valid(params->getString(VALID_DATA_FILE), nbIn, nbOut);
+        DataSet validClass(params->getString(VALID_CLASS_FILE), nbIn, nbOut);
 
         Valid = valid;
         ValidClass = validClass;
       }
 
       else {
-        DataSet data(params->getString(VALID_DATA_FILE).c_str(), nbIn, nbOut);
+        DataSet data(params->getString(VALID_DATA_FILE), nbIn, nbOut);
 
         DataSet valid(data.GetNbEx());
         DataSet validClass(data.GetNbEx());
@@ -307,15 +307,15 @@ int dimlpRul(const string &command) {
 
     if (params->isStringSet(TEST_DATA_FILE)) {
       if (params->isStringSet(TEST_CLASS_FILE)) {
-        DataSet test(params->getString(TEST_DATA_FILE).c_str(), nbIn, nbOut);
-        DataSet testClass(params->getString(TEST_CLASS_FILE).c_str(), nbIn, nbOut);
+        DataSet test(params->getString(TEST_DATA_FILE), nbIn, nbOut);
+        DataSet testClass(params->getString(TEST_CLASS_FILE), nbIn, nbOut);
 
         Test = test;
         TestClass = testClass;
       }
 
       else {
-        DataSet data(params->getString(TEST_DATA_FILE).c_str(), nbIn, nbOut);
+        DataSet data(params->getString(TEST_DATA_FILE), nbIn, nbOut);
 
         DataSet test(data.GetNbEx());
         DataSet testClass(data.GetNbEx());
@@ -331,7 +331,7 @@ int dimlpRul(const string &command) {
 
     // ----------------------------------------------------------------------
 
-    auto net = std::make_shared<Dimlp>(weightFile.c_str(), nbLayers, vecNbNeurons, quant);
+    auto net = std::make_shared<Dimlp>(weightFile, nbLayers, vecNbNeurons, quant);
 
     float accTrain;
     float errTrain;
@@ -403,7 +403,7 @@ int dimlpRul(const string &command) {
     vector<string> attributeNames;
 
     if (params->isStringSet(ATTRIBUTES_FILE)) {
-      AttrName attr(params->getString(ATTRIBUTES_FILE).c_str(), nbIn, nbOut);
+      AttrName attr(params->getString(ATTRIBUTES_FILE), nbIn, nbOut);
 
       if (attr.ReadAttr())
         cout << "\n\n"
