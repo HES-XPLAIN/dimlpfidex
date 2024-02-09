@@ -125,6 +125,12 @@ int dimlpRul(const string &command) {
   std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
   try {
 
+    float temps;
+    clock_t t1;
+    clock_t t2;
+
+    t1 = clock();
+
     // Parsing the command
     vector<string> commandList;
     string s;
@@ -459,6 +465,10 @@ int dimlpRul(const string &command) {
          << rulesFile << ": "
          << "Written.\n"
          << std::endl;
+
+    t2 = clock();
+    temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
+    std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
 

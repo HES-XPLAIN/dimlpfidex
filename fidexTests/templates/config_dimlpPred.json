@@ -1,7 +1,7 @@
 {
     "root_folder": "fidexTests/dataset/data",
     "test_data_file": "test.txt",
-    "test_pred_outfile": "test_dimlp.out",
+    "test_pred_outfile": "dimlpTest.out",
     "weights_file": "weights.wts",
     "nb_attributes": 31,
     "nb_classes": 7,

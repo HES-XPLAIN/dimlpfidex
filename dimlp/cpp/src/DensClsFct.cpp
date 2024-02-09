@@ -133,6 +133,12 @@ int densCls(const string &command) {
   std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
   try {
 
+    float temps;
+    clock_t t1;
+    clock_t t2;
+
+    t1 = clock();
+
     // Parsing the command
     vector<string> commandList;
     string s;
@@ -286,30 +292,6 @@ int densCls(const string &command) {
       data.Del();
     }
 
-    if (params->isStringSet(VALID_DATA_FILE)) {
-      if (params->isStringSet(VALID_CLASS_FILE)) {
-        DataSet valid(params->getString(VALID_DATA_FILE).c_str(), nbIn, nbOut);
-        DataSet validClass(params->getString(VALID_CLASS_FILE).c_str(), nbIn, nbOut);
-
-        Valid = valid;
-        ValidClass = validClass;
-      }
-
-      else {
-        DataSet data(params->getString(VALID_DATA_FILE).c_str(), nbIn, nbOut);
-
-        DataSet valid(data.GetNbEx());
-        DataSet validClass(data.GetNbEx());
-
-        data.ExtractDataAndTarget(valid, nbIn, validClass, nbOut);
-
-        Valid = valid;
-        ValidClass = validClass;
-
-        data.Del();
-      }
-    }
-
     if (params->isStringSet(TEST_DATA_FILE)) {
       if (params->isStringSet(TEST_CLASS_FILE)) {
         DataSet test(params->getString(TEST_DATA_FILE).c_str(), nbIn, nbOut);
@@ -395,11 +377,6 @@ int densCls(const string &command) {
 
       All = Train;
 
-      if (Valid.GetNbEx() > 0) {
-        DataSet all2(All, Valid);
-        All = all2;
-      }
-
       cout << "\n\n****************************************************\n"
            << std::endl;
       cout << "*** RULE EXTRACTION" << std::endl;
@@ -476,6 +453,10 @@ int densCls(const string &command) {
         }
       }
     }
+
+    t2 = clock();
+    temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
+    std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
 

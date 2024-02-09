@@ -215,6 +215,10 @@ void Parameters::parseArg(const string &param, const string &arg) {
     setInt(NB_DIMLP_NETS, arg);
     break;
 
+  case NB_EX_PER_NET:
+    setInt(NB_EX_PER_NET, arg);
+    break;
+
   case NB_QUANT_LEVELS:
     setInt(NB_QUANT_LEVELS, arg);
     break;

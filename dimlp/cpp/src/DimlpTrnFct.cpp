@@ -28,7 +28,7 @@ void showDimlpTrnParams()
   cout << "--test_class_file <file of test classes>" << std::endl;
   cout << "--valid_class_file <file of validation classes>" << std::endl;
   cout << "--weights_outfile <output weight file (dimlp.wts by default)>" << std::endl;
-  cout << "--train_pred_outfile <output train prediction file (dimlp.out by default)>" << std::endl;
+  cout << "--train_pred_outfile <output train prediction file (dimlpTrain.out by default)>" << std::endl;
   cout << "--test_pred_file <output test prediction file (dimlpTest.out by default)>" << std::endl;
   cout << "--valid_pred_outfile <output validation prediction file (dimlpValidation.out by default)>" << std::endl;
   cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
@@ -43,8 +43,8 @@ void showDimlpTrnParams()
   cout << "--momentum <back-propagation momentum parameter (Mu, 0.6 by default)>" << std::endl;
   cout << "--flat <back-propagation flat spot elimination parameter (Flat, 0.01 by default)>" << std::endl;
   cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
-  cout << "--error_thresh <error threshold (-1111111111 by default)>" << std::endl;
-  cout << "--acc_thresh <accuracy threshold (11111111111111 by default)>" << std::endl;
+  cout << "--error_thresh <error threshold (None by default )>" << std::endl;
+  cout << "--acc_thresh <accuracy threshold (None by default)>" << std::endl;
   cout << "--abs_error_thresh <absolute difference error threshold (0 by default)>" << std::endl;
   cout << "--nb_epochs <number of epochs (1500 by default)>" << std::endl;
   cout << "--nb_epochs_error <number of epochs to show error (10 by default)>" << std::endl;
@@ -145,11 +145,27 @@ void checkDimlpTrnParametersLogicValues(Parameters &p) {
   }
 
   if (p.getFloat(LEARNING_RATE) <= 0) {
-    throw CommandArgumentException("The learning parameter must be strictly positive (>=1).");
+    throw CommandArgumentException("The learning parameter must be strictly positive (>0).");
   }
 
   if (p.getFloat(MOMENTUM) < 0) {
     throw CommandArgumentException("The momentum parameter must be positive (>=0).");
+  }
+
+  if (p.getFloat(FLAT) < 0) {
+    throw CommandArgumentException("The flat parameter must be positive (>=0).");
+  }
+
+  if (p.getFloat(ERROR_THRESH) < 0 && p.getFloat(ERROR_THRESH) != -1111111111.0f) {
+    throw CommandArgumentException("The error threshold must be positive (>=0).");
+  }
+
+  if ((p.getFloat(ACC_THRESH) <= 0 || p.getFloat(ACC_THRESH) > 1) && p.getFloat(ACC_THRESH) != 11111111111111.0f) {
+    throw CommandArgumentException("The accuracy threshold must be between ]0,1].");
+  }
+
+  if (p.getFloat(ABS_ERROR_THRESH) < 0) {
+    throw CommandArgumentException("The delta error parameter (ABS_ERROR_THRESH) must be positive (>=0, 0=no delta).");
   }
 
   if (p.getInt(NB_EPOCHS) < 1) {

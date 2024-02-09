@@ -1,6 +1,7 @@
 #ifndef DIMLPBTFCT_H
 #define DIMLPBTFCT_H
 
+#include "../../../fidexCommon/cpp/src/parameters.h"
 #include "bagDimlp.h"
 #include "checkFun.h"
 #include "realHyp2.h"
@@ -12,6 +13,7 @@
 #include <vector>
 
 void showDimlpBTParams();
+void checkDimlpBTParametersLogicValues(Parameters &p);
 int dimlpBT(const std::string &command);
 
 #endif
