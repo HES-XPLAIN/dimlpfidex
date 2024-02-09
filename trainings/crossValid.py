@@ -154,8 +154,8 @@ def crossValid(*args, **kwargs):
             print("learning_rate : back-propagation learning parameter (0.1 by default)")
             print("momentum : back-propagation momentum parameter (0.6 by default)")
             print("flat : back-propagation flat spot elimination parameter (0.01 by default)")
-            print("error_thresh : error threshold (-1111111111.0 by default)")
-            print("acc_thresh : accuracy threshold (11111111111111.0 by default)")
+            print("error_thresh : error threshold (None by default)")
+            print("acc_thresh : accuracy threshold (None by default)")
             print("abs_error_thresh : absolute difference error threshold (0 by default)")
             print("nb_epochs : number of train epochs (1500 by default)")
             print("nb_epochs_error : number of train epochs to show error (10 by default)")
@@ -1223,7 +1223,7 @@ def crossValid(*args, **kwargs):
                         if attributes_file is not None:
                             dimlp_command += " --attributes_file " + attributes_file
                         if pretrained_weights is not None:
-                            dimlp_command += " --pretrained_weights_file " + pretrained_weights
+                            dimlp_command += " --weights_file " + pretrained_weights
                         dimlp_command += " --seed " + str(seed)
                         dimlp_command += " --nb_quant_levels " + str(nb_quant_levels)
                         for key, value in hk.items():
@@ -1234,20 +1234,20 @@ def crossValid(*args, **kwargs):
                         dimlp_command += "--train_class_file " + folder_path_from_root + separator + "trainTarget.txt "
                         dimlp_command += "--test_class_file " + folder_path_from_root + separator + "testTarget.txt "
 
-                        dimlp_command += "--train_pred_file " + folder_path_from_root + separator + "train.out "   # Output train pred file
-                        dimlp_command += "--test_pred_file " + folder_path_from_root + separator + "test.out "    # Output test pred file
+                        dimlp_command += "--train_pred_outfile " + folder_path_from_root + separator + "train.out "   # Output train pred file
+                        dimlp_command += "--test_pred_outfile " + folder_path_from_root + separator + "test.out "    # Output test pred file
                         dimlp_command += "--stats_file " + folder_path_from_root + separator + "stats.txt "    # Output stats file
 
                         if train_method == "dimlp":
                             dimlp_command += "--valid_data_file " + folder_path_from_root + separator + "valid.txt "
                             dimlp_command += "--valid_class_file " + folder_path_from_root + separator + "validTarget.txt "
-                            dimlp_command += "--valid_pred_file " + folder_path_from_root + separator + "valid.out "   # Output validation pred file
-                            dimlp_command += "--weights_file " + folder_path_from_root + separator + "weights.wts " # Output weight file
+                            dimlp_command += "--valid_pred_outfile " + folder_path_from_root + separator + "valid.out "   # Output validation pred file
+                            dimlp_command += "--weights_outfile " + folder_path_from_root + separator + "weights.wts " # Output weight file
                         else:
-                            dimlp_command += "--weights_generic_filename " + folder_path_from_root + separator + "weightsBT " # Output weight generic filename
+                            dimlp_command += "--weights_generic_outfilename " + folder_path_from_root + separator + "weightsBT " # Output weight generic filename
 
                         if is_dimlprul:
-                            dimlp_command += "--with_rule_extraction --global_rules_outfile " + folder_path_from_root + separator + "dimlpRules.rls "
+                            dimlp_command += "--with_rule_extraction true --global_rules_outfile " + folder_path_from_root + separator + "dimlpRules.rls "
 
                         dimlp_command += "--console_file " + str(crossval_folder_temp) + separator + "consoleTemp.txt" # To not show console result
 
@@ -1487,7 +1487,6 @@ def crossValid(*args, **kwargs):
                             fidexglo_rules_command += " --decision_threshold " + str(decision_threshold)
 
                         print("Enter in fidexGloRules function")
-                        print(fidexglo_rules_command)
                         res_fid_glo_rules = fidexGlo.fidexGloRules(fidexglo_rules_command)
                         if res_fid_glo_rules == -1:
                             raise ValueError('Error during execution of FidexGloRules.')
