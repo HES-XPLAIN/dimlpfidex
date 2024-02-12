@@ -1,4 +1,4 @@
-#include "DimlpClsFct.h"
+#include "dimlpClsFct.h"
 using namespace std;
 
 ////////////////////////////////////////////////////////////
@@ -9,7 +9,7 @@ void showDimlpClsParams()
   cout << "\n-------------------------------------------------\n"
        << std::endl;
 
-  cout << "DimlpCls --test_data_file <test set file (path with respect to specified root folder)> ";
+  cout << "dimlpCls --test_data_file <test set file (path with respect to specified root folder)> ";
   cout << "--weights_file <file of weights> ";
   cout << "--nb_attributes <number of input neurons> --nb_classes <number of output neurons>";
   cout << " <Options>\n"
@@ -348,4 +348,4 @@ int dimlpCls(const string &command) {
   return 0;
 }
 
-// Exemple to launch the code : dimlpCls("DimlpCls --test_data_file datanormTest --test_class_file dataclass2Test --weights_file dimlpDatanorm.wts --nb_attributes 16 --H2 5 --nb_classes 2 --nb_quant_levels 50 --test_pred_outfile dimlpDatanormTest.out --stats_file dimlpDatanormClsStats --console_file dimlpDatanormClsResult.txt --root_folder dimlp/datafiles");
+// Exemple to launch the code : dimlpCls("dimlpCls --test_data_file datanormTest --test_class_file dataclass2Test --weights_file dimlpDatanorm.wts --nb_attributes 16 --H2 5 --nb_classes 2 --nb_quant_levels 50 --test_pred_outfile dimlpDatanormTest.out --stats_file dimlpDatanormClsStats --console_file dimlpDatanormClsResult.txt --root_folder dimlp/datafiles");

@@ -94,8 +94,8 @@ FILE(GLOB DIMLP_PRED_SRC
 )
 
 FILE(GLOB DIMLP_CLS_SRC
-    src/DimlpClsFct.cpp
-    src/DimlpClsFct.h
+    src/dimlpClsFct.cpp
+    src/dimlpClsFct.h
     src/bpNN.cpp
     src/bpNN.h
     src/dimlp.cpp
@@ -258,8 +258,8 @@ FILE(GLOB DIMLP_RUL_SRC
 FILE(GLOB FCT_SRC
     src/DimlpPredFct.cpp
     src/DimlpPredFct.h
-    src/DimlpClsFct.cpp
-    src/DimlpClsFct.h
+    src/dimlpClsFct.cpp
+    src/dimlpClsFct.h
     src/DimlpRulFct.cpp
     src/DimlpRulFct.h
     src/DimlpTrnFct.cpp
@@ -283,7 +283,7 @@ set(FCT_SRC "${FCT_SRC}" CACHE INTERNAL "")
 # build executables
 add_executable(DimlpTrn ${COMMON_SRC} ${DIMLP_TRN_SRC} src/DimlpTrn.cpp)
 add_executable(DimlpPred ${COMMON_SRC} ${DIMLP_PRED_SRC} src/DimlpPred.cpp)
-add_executable(DimlpCls ${COMMON_SRC} ${DIMLP_CLS_SRC} src/DimlpCls.cpp)
+add_executable(dimlpCls ${COMMON_SRC} ${DIMLP_CLS_SRC} src/dimlpCls.cpp)
 add_executable(dimlpBT ${COMMON_SRC} ${DIMLP_BT_SRC} src/dimlpBT.cpp)
 add_executable(densCls ${COMMON_SRC} ${DENS_CLS_SRC} src/densCls.cpp)
 add_executable(DimlpRul ${COMMON_SRC} ${DIMLP_RUL_SRC} src/DimlpRul.cpp)
@@ -295,7 +295,7 @@ set_target_properties(
     DimlpPred PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
 set_target_properties(
-    DimlpCls PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+    dimlpCls PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
 set_target_properties(
     dimlpBT PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
