@@ -20,7 +20,7 @@ void showDimlpPredParams()
   std::cout << "Options are: \n"
             << std::endl;
   std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  std::cout << "--test_pred_file <output prediction file (dimlp.out by default)>";
+  std::cout << "--test_pred_outfile <output prediction file (dimlpTest.out by default)>";
   std::cout << "--console_file <file where you redirect console result>"; // If we want to redirect console result to file
   std::cout << "--H1 <number of neurons in the first hidden layer> ";
   std::cout << "(if not specified this number will be equal to the ";
@@ -81,7 +81,7 @@ static void SaveOutputs(
 void checkDimlpPredParametersLogicValues(Parameters &p) {
   // setting default values
   p.setDefaultInt(NB_QUANT_LEVELS, 50);
-  p.setDefaultString(TEST_PRED_FILE, "dimlp.out", true);
+  p.setDefaultString(TEST_PRED_OUTFILE, "dimlpTest.out", true);
 
   // this sections check if values comply with program logic
 
@@ -112,6 +112,12 @@ int dimlpPred(const string &command) {
   std::ofstream ofs;
   std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
   try {
+
+    float temps;
+    clock_t t1;
+    clock_t t2;
+
+    t1 = clock();
 
     // Parsing the command
     vector<string> commandList;
@@ -163,7 +169,7 @@ int dimlpPred(const string &command) {
     int nbOut = params->getInt(NB_CLASSES);
     std::string testFile = params->getString(TEST_DATA_FILE);
     std::string weightFile = params->getString(WEIGHTS_FILE);
-    std::string predFile = params->getString(TEST_PRED_FILE);
+    std::string predFile = params->getString(TEST_PRED_OUTFILE);
     int quant = params->getInt(NB_QUANT_LEVELS);
 
     DataSet Test;
@@ -174,7 +180,7 @@ int dimlpPred(const string &command) {
     StringInt archInd = params->getArchInd();
 
     if (params->isStringSet(TEST_DATA_FILE)) {
-      DataSet test(testFile.c_str(), nbIn, nbOut);
+      DataSet test(testFile, nbIn, nbOut);
       Test = test;
     }
 
@@ -238,12 +244,16 @@ int dimlpPred(const string &command) {
 
     // ----------------------------------------------------------------------
 
-    Dimlp net(weightFile.c_str(), nbLayers, vecNbNeurons, quant);
+    Dimlp net(weightFile, nbLayers, vecNbNeurons, quant);
 
     SaveOutputs(Test, &net, nbOut, nbWeightLayers, predFile);
 
     std::cout << "\n-------------------------------------------------\n"
               << std::endl;
+
+    t2 = clock();
+    temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
+    std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
 
@@ -257,4 +267,4 @@ int dimlpPred(const string &command) {
   return 0;
 }
 
-// Exemple to launch the code : ./DimlpPred --test_data_file datanormTest --weights_file dimlpDatanorm.wts --nb_attributes 16 --H2 5 --nb_classes 2 --nb_quant_levels 50 --test_pred_file dimlpDatanormTest.out --console_file dimlpDatanormPredResult.txt --root_folder ../dimlp/datafiles
+// Exemple to launch the code : ./DimlpPred --test_data_file datanormTest --weights_file dimlpDatanorm.wts --nb_attributes 16 --H2 5 --nb_classes 2 --nb_quant_levels 50 --test_pred_outfile dimlpDatanormTest.out --console_file dimlpDatanormPredResult.txt --root_folder ../dimlp/datafiles

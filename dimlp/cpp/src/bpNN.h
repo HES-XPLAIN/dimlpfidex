@@ -137,7 +137,7 @@ public:
                   DataSet &testTar,
                   DataSet &valid,
                   DataSet &validTar,
-                  const char *accuracyFile,
+                  const std::string &accuracyFile,
                   bool fromBT = false);
 
   //------------------------------------------------------------------------
@@ -159,14 +159,14 @@ public:
       int nbLayers,
       const std::vector<int> &nbNeurons,
       const std::string &saveFile,
-      const char printNetType[],
+      const std::string &printNetType,
       int seed = 0);
 
   BpNN(
       const std::string &readFile,
       int nbLayers,
       const std::vector<int> &nbNeurons,
-      const char printNetType[]);
+      const std::string &printNetType);
 
   BpNN(
       const std::string &readFile,
@@ -181,7 +181,7 @@ public:
       int nbLayers,
       const std::vector<int> &nbNeurons,
       const std::string &saveFile,
-      const char printNetType[],
+      const std::string &printNetType,
       int seed = 0);
 };
 

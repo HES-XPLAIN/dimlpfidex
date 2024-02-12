@@ -19,7 +19,7 @@ public:
              DataSet &testTar,
              DataSet &valid,
              DataSet &validTar,
-             const char *accuracyFile,
+             const std::string &accuracyFile,
              bool fromBT = false)
 
   { TrainPhase(train, trainTar, test, testTar, valid, validTar, accuracyFile, fromBT); }
@@ -40,13 +40,13 @@ public:
       int nbEpochsParam,
       int nbLayers,
       const std::vector<int> &nbNeurons,
-      const char weightFile[],
+      const std::string &weightFile,
       int seed = 0);
 
-  Dimlp(const char readFile[], int nbLayers, const std::vector<int> &nbNeurons, int discrLevels);
+  Dimlp(const std::string &readFile, int nbLayers, const std::vector<int> &nbNeurons, int discrLevels);
 
   Dimlp(
-      const char readFile[],
+      const std::string &readFile,
       float eta,
       float mu,
       float flat,
@@ -58,7 +58,7 @@ public:
       int nbEpochsParam,
       int nbLayers,
       const std::vector<int> &nbNeurons,
-      const char weightFile[],
+      const std::string &weightFile,
       int seed = 0);
 };
 

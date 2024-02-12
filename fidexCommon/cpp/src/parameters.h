@@ -5,7 +5,6 @@
 #include "antecedant.h"
 #include "checkFun.h"
 #include "errorHandler.h"
-#include "rule.h"
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -20,12 +19,15 @@
 enum ParameterCode {
   TRAIN_DATA_FILE,
   TRAIN_PRED_FILE,
+  TRAIN_PRED_OUTFILE,
   TRAIN_CLASS_FILE,
   TEST_DATA_FILE,
   TEST_PRED_FILE,
+  TEST_PRED_OUTFILE,
   TEST_CLASS_FILE,
   VALID_DATA_FILE,
   VALID_CLASS_FILE,
+  VALID_PRED_OUTFILE,
   RULES_FILE,
   RULES_OUTFILE,
   GLOBAL_RULES_OUTFILE,
@@ -35,11 +37,15 @@ enum ParameterCode {
   ROOT_FOLDER,
   ATTRIBUTES_FILE,
   WEIGHTS_FILE,
+  WEIGHTS_OUTFILE,
+  WEIGHTS_GENERIC_FILENAME,
+  WEIGHTS_GENERIC_OUTFILENAME,
   HID_FILE,
   STATS_FILE,
   NB_ATTRIBUTES,
   NB_CLASSES,
   NB_DIMLP_NETS,
+  NB_EX_PER_NET,
   NB_QUANT_LEVELS,
   HEURISTIC,
   MAX_ITERATIONS,
@@ -54,6 +60,15 @@ enum ParameterCode {
   DROPOUT_HYP,
   DROPOUT_DIM,
   MIN_FIDELITY,
+  LEARNING_RATE,
+  MOMENTUM,
+  FLAT,
+  ERROR_THRESH,
+  ACC_THRESH,
+  ABS_ERROR_THRESH,
+  NB_EPOCHS,
+  NB_EPOCHS_ERROR,
+  WITH_RULE_EXTRACTION,
   NORMALIZATION_FILE,
   MUS,
   SIGMAS,
@@ -68,12 +83,15 @@ enum ParameterCode {
 static const std::unordered_map<std::string, ParameterCode> parameterNames = {
     {"train_data_file", TRAIN_DATA_FILE},
     {"train_pred_file", TRAIN_PRED_FILE},
+    {"train_pred_outfile", TRAIN_PRED_OUTFILE},
     {"train_class_file", TRAIN_CLASS_FILE},
     {"test_data_file", TEST_DATA_FILE},
     {"test_pred_file", TEST_PRED_FILE},
+    {"test_pred_outfile", TEST_PRED_OUTFILE},
     {"test_class_file", TEST_CLASS_FILE},
     {"valid_data_file", VALID_DATA_FILE},
     {"valid_class_file", VALID_CLASS_FILE},
+    {"valid_pred_outfile", VALID_PRED_OUTFILE},
     {"rules_file", RULES_FILE},
     {"rules_outfile", RULES_OUTFILE},
     {"global_rules_outfile", GLOBAL_RULES_OUTFILE},
@@ -83,15 +101,28 @@ static const std::unordered_map<std::string, ParameterCode> parameterNames = {
     {"root_folder", ROOT_FOLDER},
     {"attributes_file", ATTRIBUTES_FILE},
     {"weights_file", WEIGHTS_FILE},
+    {"weights_outfile", WEIGHTS_OUTFILE},
+    {"weights_generic_filename", WEIGHTS_GENERIC_FILENAME},
+    {"weights_generic_outfilename", WEIGHTS_GENERIC_OUTFILENAME},
     {"hid_file", HID_FILE},
     {"stats_file", STATS_FILE},
     {"nb_attributes", NB_ATTRIBUTES},
     {"nb_classes", NB_CLASSES},
     {"nb_dimlp_nets", NB_DIMLP_NETS},
+    {"nb_ex_per_net", NB_EX_PER_NET},
     {"nb_quant_levels", NB_QUANT_LEVELS},
     {"heuristic", HEURISTIC},
     {"max_iterations", MAX_ITERATIONS},
     {"min_covering", MIN_COVERING},
+    {"learning_rate", LEARNING_RATE},
+    {"momentum", MOMENTUM},
+    {"flat", FLAT},
+    {"error_thresh", ERROR_THRESH},
+    {"acc_thresh", ACC_THRESH},
+    {"abs_error_thresh", ABS_ERROR_THRESH},
+    {"nb_epochs", NB_EPOCHS},
+    {"nb_epochs_error", NB_EPOCHS_ERROR},
+    {"with_rule_extraction", WITH_RULE_EXTRACTION},
     {"covering_strategy", COVERING_STRATEGY},
     {"max_failed_attempts", MAX_FAILED_ATTEMPTS},
     {"nb_threads", NB_THREADS},
@@ -128,7 +159,7 @@ private:
 
   // path checker
   void checkFilesIntegrity();
-  void checkPath(ParameterCode id, const string &path);
+  void checkPath(ParameterCode id, const string &path) const;
   void completePath(ParameterCode id);
 
   // throwables

@@ -23,14 +23,14 @@ void showDimlpTrnParams()
   cout << "--attributes_file <file of attributes>" << std::endl;
   cout << "--valid_data_file <validation set file>" << std::endl;
   cout << "--test_data_file <testing set file>" << std::endl;
-  cout << "--pretrained_weights_file <file of pretrained weights>" << std::endl;
+  cout << "--weights_file <file of pretrained weights>" << std::endl;
   cout << "--train_class_file <file of train classes>" << std::endl;
   cout << "--test_class_file <file of test classes>" << std::endl;
   cout << "--valid_class_file <file of validation classes>" << std::endl;
-  cout << "--weights_file <output weight file (weights.wts by default)>" << std::endl;
-  cout << "--train_pred_file <output train prediction file (dimlp.out by default)>" << std::endl;
+  cout << "--weights_outfile <output weight file (dimlp.wts by default)>" << std::endl;
+  cout << "--train_pred_outfile <output train prediction file (dimlpTrain.out by default)>" << std::endl;
   cout << "--test_pred_file <output test prediction file (dimlpTest.out by default)>" << std::endl;
-  cout << "--valid_pred_file <output validation prediction file (dimlpValidation.out by default)>" << std::endl;
+  cout << "--valid_pred_outfile <output validation prediction file (dimlpValidation.out by default)>" << std::endl;
   cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
   cout << "--stats_file <output file with train, test and validation accuracy>" << std::endl;
   cout << "--H1 <number of neurons in the first hidden layer> ";
@@ -43,15 +43,15 @@ void showDimlpTrnParams()
   cout << "--momentum <back-propagation momentum parameter (Mu, 0.6 by default)>" << std::endl;
   cout << "--flat <back-propagation flat spot elimination parameter (Flat, 0.01 by default)>" << std::endl;
   cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
-  cout << "--error_thresh <error threshold (-1111111111 by default)>" << std::endl;
-  cout << "--acc_thresh <accuracy threshold (11111111111111 by default)>" << std::endl;
+  cout << "--error_thresh <error threshold (None by default )>" << std::endl;
+  cout << "--acc_thresh <accuracy threshold (None by default)>" << std::endl;
   cout << "--abs_error_thresh <absolute difference error threshold (0 by default)>" << std::endl;
   cout << "--nb_epochs <number of epochs (1500 by default)>" << std::endl;
   cout << "--nb_epochs_error <number of epochs to show error (10 by default)>" << std::endl;
   cout << "--normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << std::endl;
   cout << "--mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
   cout << "--sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
-  cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_stats is given)>" << std::endl;
+  cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)>" << std::endl;
   cout << "--seed <seed (0=random, default)>";
 
   cout << "\n-------------------------------------------------\n"
@@ -65,13 +65,13 @@ static void SaveOutputs(
     std::shared_ptr<Dimlp> net,
     int nbOut,
     int nbWeightLayers,
-    const char *outfile)
+    const string &outfile)
 
 {
   filebuf buf;
 
   if (buf.open(outfile, ios_base::out) == nullptr) {
-    throw CannotOpenFileError("Error : Cannot open output file " + std::string(outfile));
+    throw CannotOpenFileError("Error : Cannot open output file " + outfile);
   }
 
   std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
@@ -100,80 +100,125 @@ static void SaveOutputs(
 
 ////////////////////////////////////////////////////////////
 
-enum ParameterDimlpTrnEnum {
-  TRAIN_DATA_FILE,
-  NB_ATTRIBUTES,
-  NB_CLASSES,
-  ROOT_FOLDER,
-  ATTRIBUTES_FILE,
-  VALID_DATA_FILE,
-  TEST_DATA_FILE,
-  PRETRAINED_WEIGHTS_FILE,
-  TRAIN_CLASS_FILE,
-  TEST_CLASS_FILE,
-  VALID_CLASS_FILE,
-  WEIGHTS_FILE,
-  TRAIN_PRED_FILE,
-  TEST_PRED_FILE,
-  VALID_PRED_FILE,
-  CONSOLE_FILE,
-  STATS_FILE,
-  H,
-  WITH_RULE_EXTRACTION,
-  GLOBAL_RULES_OUTFILE,
-  LEARNING_RATE,
-  MOMENTUM,
-  FLAT,
-  NB_QUANT_LEVELS,
-  ERROR_THRESH,
-  ACC_THRESH,
-  ABS_ERROR_THRESH,
-  NB_EPOCHS,
-  NB_EPOCHS_ERROR,
-  NORMALIZATION_FILE,
-  MUS,
-  SIGMAS,
-  NORMALIZATION_INDICES,
-  SEED,
-  INVALID
-};
+/**
+ * @brief Used to set default hyperparameters values and to check the sanity of all used values like boundaries and logic.
+ *
+ * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
+ */
+void checkDimlpTrnParametersLogicValues(Parameters &p) {
+  // setting default values
+  p.setDefaultString(TRAIN_PRED_OUTFILE, "dimlpTrain.out", true);
+  p.setDefaultString(TEST_PRED_OUTFILE, "dimlpTest.out", true);
+  p.setDefaultString(VALID_PRED_OUTFILE, "dimlpValidation.out", true);
+  p.setDefaultString(WEIGHTS_OUTFILE, "dimlp.wts", true);
+  p.setDefaultInt(NB_QUANT_LEVELS, 50);
+  p.setDefaultFloat(LEARNING_RATE, 0.1f);
+  p.setDefaultFloat(MOMENTUM, 0.6f);
+  p.setDefaultFloat(FLAT, 0.01f);
+  p.setDefaultFloat(ERROR_THRESH, -1111111111.0f);
+  p.setDefaultFloat(ACC_THRESH, 11111111111111.0f);
+  p.setDefaultFloat(ABS_ERROR_THRESH, 0.0f);
+  p.setDefaultInt(NB_EPOCHS_ERROR, 10);
+  p.setDefaultInt(NB_EPOCHS, 1500);
+  p.setDefaultBool(WITH_RULE_EXTRACTION, false);
+  p.setDefaultInt(SEED, 0);
 
-const std::unordered_map<std::string, ParameterDimlpTrnEnum> parameterMap = {
-    {"train_data_file", TRAIN_DATA_FILE},
-    {"nb_attributes", NB_ATTRIBUTES},
-    {"nb_classes", NB_CLASSES},
-    {"root_folder", ROOT_FOLDER},
-    {"attributes_file", ATTRIBUTES_FILE},
-    {"valid_data_file", VALID_DATA_FILE},
-    {"test_data_file", TEST_DATA_FILE},
-    {"pretrained_weights_file", PRETRAINED_WEIGHTS_FILE},
-    {"train_class_file", TRAIN_CLASS_FILE},
-    {"test_class_file", TEST_CLASS_FILE},
-    {"valid_class_file", VALID_CLASS_FILE},
-    {"weights_file", WEIGHTS_FILE},
-    {"train_pred_file", TRAIN_PRED_FILE},
-    {"test_pred_file", TEST_PRED_FILE},
-    {"valid_pred_file", VALID_PRED_FILE},
-    {"console_file", CONSOLE_FILE},
-    {"stats_file", STATS_FILE},
-    {"H", H},
-    {"with_rule_extraction", WITH_RULE_EXTRACTION},
-    {"global_rules_outfile", GLOBAL_RULES_OUTFILE},
-    {"learning_rate", LEARNING_RATE},
-    {"momentum", MOMENTUM},
-    {"flat", FLAT},
-    {"nb_quant_levels", NB_QUANT_LEVELS},
-    {"error_thresh", ERROR_THRESH},
-    {"acc_thresh", ACC_THRESH},
-    {"abs_error_thresh", ABS_ERROR_THRESH},
-    {"nb_epochs", NB_EPOCHS},
-    {"nb_epochs_error", NB_EPOCHS_ERROR},
-    {"normalization_file", NORMALIZATION_FILE},
-    {"mus", MUS},
-    {"sigmas", SIGMAS},
-    {"normalization_indices", NORMALIZATION_INDICES},
-    {"seed", SEED},
-};
+  // this sections check if values comply with program logic
+
+  // asserting mandatory parameters
+  p.assertIntExists(NB_ATTRIBUTES);
+  p.assertIntExists(NB_CLASSES);
+  p.assertStringExists(TRAIN_DATA_FILE);
+
+  // verifying logic between parameters, values range and so on...
+
+  if (p.getInt(NB_ATTRIBUTES) < 1) {
+    throw CommandArgumentException("Error : Number of attributes must be strictly positive (>=1).");
+  }
+
+  if (p.getInt(NB_CLASSES) < 2) {
+    throw CommandArgumentException("Error : Number of classes must be greater than 1.");
+  }
+
+  if (p.getInt(NB_QUANT_LEVELS) <= 2) {
+    throw CommandArgumentException("Error : Number of stairs in staircase activation function must be greater than 2.");
+  }
+
+  if (p.getFloat(LEARNING_RATE) <= 0) {
+    throw CommandArgumentException("The learning parameter must be strictly positive (>0).");
+  }
+
+  if (p.getFloat(MOMENTUM) < 0) {
+    throw CommandArgumentException("The momentum parameter must be positive (>=0).");
+  }
+
+  if (p.getFloat(FLAT) < 0) {
+    throw CommandArgumentException("The flat parameter must be positive (>=0).");
+  }
+
+  if (p.getFloat(ERROR_THRESH) < 0 && p.getFloat(ERROR_THRESH) != -1111111111.0f) {
+    throw CommandArgumentException("The error threshold must be positive (>=0).");
+  }
+
+  if ((p.getFloat(ACC_THRESH) <= 0 || p.getFloat(ACC_THRESH) > 1) && p.getFloat(ACC_THRESH) != 11111111111111.0f) {
+    throw CommandArgumentException("The accuracy threshold must be between ]0,1].");
+  }
+
+  if (p.getFloat(ABS_ERROR_THRESH) < 0) {
+    throw CommandArgumentException("The delta error parameter (ABS_ERROR_THRESH) must be positive (>=0, 0=no delta).");
+  }
+
+  if (p.getInt(NB_EPOCHS) < 1) {
+    throw CommandArgumentException("Error : Number of epochs must be strictly positive (>=1).");
+  }
+
+  if (p.getInt(NB_EPOCHS_ERROR) < 1) {
+    throw CommandArgumentException("Error : Number of epochs to show errors must be strictly positive (>=1).");
+  }
+
+  if (p.getInt(SEED) < 0) {
+    throw CommandArgumentException("Error : random seed mus be positive (>=0).");
+  }
+
+  // ----------------------------------------------------------------------
+
+  // Check denormalization parameters
+
+  // If normalizationIndices were not specified, it's all attributes
+  if (!p.isStringSet(NORMALIZATION_FILE) && !p.isIntVectorSet(NORMALIZATION_INDICES) && p.isDoubleVectorSet(MUS)) {
+    vector<int> normalizationIndicesTemp;
+    for (int i = 0; i < p.getInt(NB_ATTRIBUTES); ++i) {
+      normalizationIndicesTemp.push_back(i);
+    }
+    p.setIntVector(NORMALIZATION_INDICES, normalizationIndicesTemp);
+  }
+
+  // Check if mus and sigmas are both given or both not
+  if ((p.isDoubleVectorSet(MUS) || p.isDoubleVectorSet(SIGMAS)) &&
+      !(p.isDoubleVectorSet(MUS) && p.isDoubleVectorSet(SIGMAS))) {
+    throw CommandArgumentException("Error : One of Mus(--mus) and sigmas(--sigmas) is given but not the other.");
+  }
+
+  if (p.isStringSet(NORMALIZATION_FILE) && p.isDoubleVectorSet(MUS) || p.isStringSet(NORMALIZATION_FILE) && p.isIntVectorSet(NORMALIZATION_INDICES)) {
+    throw CommandArgumentException("Error : normlization file (--normalization_file) and mus or normalizationIndices (--normalization_indices) are both given.");
+  }
+
+  // Mus, sigmas and normalizationIndices must have the same size and not be empty
+  if (p.isDoubleVectorSet(MUS) && (p.getDoubleVector(MUS).size() != p.getDoubleVector(SIGMAS).size() || p.getDoubleVector(MUS).size() != p.getIntVector(NORMALIZATION_INDICES).size() || p.getDoubleVector(MUS).empty())) {
+    throw CommandArgumentException("Error : mus (--mus), sigmas (--sigmas) and normalization indices (--normalization_indices) don't have the same size or are empty.");
+  }
+
+  // Check normalizationIndices
+  if (p.isIntVectorSet(NORMALIZATION_INDICES)) {
+    vector<int> tempVect = p.getIntVector(NORMALIZATION_INDICES);
+    std::set<int> uniqueIndices(tempVect.begin(), tempVect.end());
+    if (uniqueIndices.size() != p.getIntVector(NORMALIZATION_INDICES).size() ||
+        *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= p.getInt(NB_ATTRIBUTES) ||
+        *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
+      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) must be a list composed of integers between [0, nb_attributes-1] without repeted elements.");
+    }
+  }
+}
 
 int dimlpTrn(const string &command) {
   // Save buffer where we output results
@@ -189,13 +234,68 @@ int dimlpTrn(const string &command) {
 
     // Parsing the command
     vector<string> commandList;
-    const char delim = ' ';
     string s;
     stringstream ss(command);
-    while (std::getline(ss, s, delim)) {
+
+    while (getline(ss, s, ' ')) {
       commandList.push_back(s);
     }
+
     size_t nbParam = commandList.size();
+    if (nbParam < 2) {
+      showDimlpTrnParams();
+      exit(1);
+    }
+
+    // Import parameters
+    unique_ptr<Parameters> params;
+    if (commandList[1].compare("--json_config_file") == 0) {
+      if (commandList.size() < 3) {
+        throw CommandArgumentException("JSON config file name/path is missing");
+      }
+
+      try {
+        params = std::unique_ptr<Parameters>(new Parameters(commandList[2]));
+      } catch (const std::out_of_range &) {
+        throw CommandArgumentException("JSON config file name/path is invalid");
+      }
+    } else {
+      // Read parameters from CLI
+      params = std::unique_ptr<Parameters>(new Parameters(commandList));
+    }
+
+    // getting all program arguments from CLI
+    checkDimlpTrnParametersLogicValues(*params);
+    std::cout << *params;
+
+    // Get console results to file
+    if (params->isStringSet(CONSOLE_FILE)) {
+      ofs.open(params->getString(CONSOLE_FILE));
+      std::cout.rdbuf(ofs.rdbuf()); // redirect cout to file
+    }
+
+    // ----------------------------------------------------------------------
+
+    // Get parameters values
+
+    int nbIn = params->getInt(NB_ATTRIBUTES);
+    int nbOut = params->getInt(NB_CLASSES);
+    std::string learnFile = params->getString(TRAIN_DATA_FILE);
+    std::string predTrainFile = params->getString(TRAIN_PRED_OUTFILE);
+    std::string predTestFile = params->getString(TEST_PRED_OUTFILE);
+    std::string predValidationFile = params->getString(VALID_PRED_OUTFILE);
+    std::string outputWeightFile = params->getString(WEIGHTS_OUTFILE);
+
+    float eta = params->getFloat(LEARNING_RATE);
+    float mu = params->getFloat(MOMENTUM);
+    float flat = params->getFloat(FLAT);
+    float errThres = params->getFloat(ERROR_THRESH);
+    float accThres = params->getFloat(ACC_THRESH);
+    float deltaErr = params->getFloat(ABS_ERROR_THRESH);
+    int showErr = params->getInt(NB_EPOCHS_ERROR);
+    int epochs = params->getInt(NB_EPOCHS);
+    int quant = params->getInt(NB_QUANT_LEVELS);
+    int seed = params->getInt(SEED);
 
     DataSet Train;
     DataSet Test;
@@ -209,547 +309,11 @@ int dimlpTrn(const string &command) {
 
     std::shared_ptr<Dimlp> net;
 
-    float eta = 0.1f;
-    float mu = 0.6f;
-    float flat = 0.01f;
-    float errThres = -1111111111.0f;
-    float accThres = 11111111111111.0f;
-    float deltaErr = 0;
-    int showErr = 10;
-    int epochs = 1500;
-    int quant = 50;
-
-    int ruleExtr = 0;
-
-    int nbIn = 0;
-    int nbOut = 0;
-    int seed = 0;
-
-    string learnFileTemp;
-    bool learnFileInit = false;
-    string testFileTemp;
-    bool testFileInit = false;
-    string validFileTemp;
-    bool validFileInit = false;
-    string weightFileTemp;
-    bool weightFileInit = false;
-    string outputWeightFileTemp = "dimlp.wts";
-    string predTrainFileTemp = "dimlp.out";
-    string predTestFileTemp = "dimlpTest.out";
-    string predValidationFileTemp = "dimlpValidation.out";
-    string rulesFileTemp;
-    bool rulesFileInit = false;
-    string consoleFileTemp;
-    bool consoleFileInit = false;
-    string accuracyFileTemp;
-    bool accuracyFileInit = false;
-    string learnTarTemp;
-    bool learnTarInit = false;
-    string testTarTemp;
-    bool testTarInit = false;
-    string validTarTemp;
-    bool validTarInit = false;
-    string attrFileTemp;
-    bool attrFileInit = false;
-    string rootFolderTemp;
-    bool rootFolderInit = false;
-
-    string normalizationFileTemp;
-    bool normalizationFileInit = false;
-    std::vector<double> mus;
-    bool hasMus = false;
-    std::vector<double> sigmas;
-    bool hasSigmas = false;
-    std::vector<int> normalizationIndices;
-    bool hasNormalizationIndices = false;
-
-    int flagEp = 0;
-
     int nbLayers;
     int nbWeightLayers;
     std::vector<int> vecNbNeurons;
-
-    StringInt arch;
-    StringInt archInd;
-
-    if (nbParam <= 1) {
-      showDimlpTrnParams();
-      return 0;
-    }
-
-    std::vector<ParameterDimlpTrnEnum> paramsWithoutValues;
-    paramsWithoutValues.push_back(WITH_RULE_EXTRACTION);
-    bool isParamWithoutValue = false;
-
-    int p = 1; // We skip "DimlpTrn"
-    while (p < nbParam) {
-      isParamWithoutValue = false;
-      string param = commandList[p];
-
-      if (param.substr(0, 2) == "--") {
-        param = param.substr(2);
-        p++;
-
-        ParameterDimlpTrnEnum option;
-        auto it = parameterMap.find(param);
-        if (it != parameterMap.end()) {
-          option = it->second;
-        } else {
-          if (param[0] == 'H') {
-            std::string numberPart = param.substr(1);
-            if (CheckInt(numberPart.c_str())) {
-              option = H;
-            } else {
-              option = INVALID;
-            }
-          } else {
-            option = INVALID;
-          }
-        }
-
-        if (std::find(paramsWithoutValues.begin(), paramsWithoutValues.end(), option) != paramsWithoutValues.end()) {
-          isParamWithoutValue = true;
-        }
-
-        if (p >= nbParam && !isParamWithoutValue) {
-          throw CommandArgumentException("Missing something at the end of the command.");
-        }
-
-        if (p + 1 < nbParam && commandList[p + 1].substr(0, 2) != "--" && !isParamWithoutValue) {
-          throw CommandArgumentException("There is a parameter without -- (" + commandList[p + 1] + ").");
-        }
-
-        const char *arg;
-        string stringArg;
-        if (!isParamWithoutValue) {
-          arg = commandList[p].c_str();
-          stringArg = arg;
-        }
-
-        switch (option) { // After --
-        case LEARNING_RATE:
-          if (CheckFloat(arg)) {
-            eta = static_cast<float>(atof(arg));
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
-          }
-
-          break;
-
-        case MOMENTUM:
-          if (CheckFloat(arg)) {
-            mu = static_cast<float>(atof(arg));
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
-          }
-
-          break;
-
-        case FLAT:
-          if (CheckFloat(arg)) {
-            flat = static_cast<float>(atof(arg));
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
-          }
-
-          break;
-
-        case ERROR_THRESH:
-          if (CheckFloat(arg)) {
-            errThres = static_cast<float>(atof(arg));
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
-          }
-
-          if (flagEp == 0)
-            epochs = 2000000000;
-          break;
-
-        case ACC_THRESH:
-          if (CheckFloat(arg)) {
-            accThres = static_cast<float>(atof(arg));
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
-          }
-
-          if (flagEp == 0)
-            epochs = 2000000000;
-          break;
-
-        case ABS_ERROR_THRESH:
-          if (CheckFloat(arg)) {
-            deltaErr = static_cast<float>(atof(arg));
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", float requested");
-          }
-
-          if (flagEp == 0)
-            epochs = 2000000000;
-          break;
-
-        case NB_EPOCHS_ERROR:
-          if (CheckInt(arg)) {
-            showErr = atoi(arg);
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
-          }
-
-          break;
-
-        case NB_EPOCHS:
-          if (CheckInt(arg)) {
-            epochs = atoi(arg);
-            flagEp = 1;
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
-          }
-
-          break;
-
-        case NB_QUANT_LEVELS:
-          if (CheckInt(arg)) {
-            quant = atoi(arg);
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
-          }
-
-          break;
-
-        case NB_ATTRIBUTES:
-          if (CheckInt(arg)) {
-            nbIn = atoi(arg);
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
-          }
-
-          break;
-
-        case H:
-          if (CheckInt(arg)) {
-            arch.Insert(atoi(arg));
-            const char *ptrParam = param.c_str();
-
-            if (ptrParam[1] != '\0') {
-              std::string str(ptrParam + 1);
-              archInd.Insert(std::atoi(str.c_str()));
-            } else {
-              throw CommandArgumentException("Error : Which hidden layer (-H) ?");
-            }
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
-          }
-
-          break;
-
-        case NB_CLASSES:
-          if (CheckInt(arg)) {
-            nbOut = atoi(arg);
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
-          }
-
-          break;
-
-        case SEED:
-          if (CheckInt(arg)) {
-            seed = atoi(arg);
-          } else {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", integer requested");
-          }
-
-          break;
-
-        case ROOT_FOLDER:
-          rootFolderTemp = arg;
-          rootFolderInit = true;
-          break;
-
-        case ATTRIBUTES_FILE:
-          attrFileTemp = arg;
-          attrFileInit = true;
-          break;
-
-        case PRETRAINED_WEIGHTS_FILE:
-          weightFileTemp = arg;
-          weightFileInit = true;
-          break;
-
-        case WEIGHTS_FILE:
-          outputWeightFileTemp = arg;
-          break;
-
-        case TRAIN_PRED_FILE:
-          predTrainFileTemp = arg;
-          break;
-
-        case TEST_PRED_FILE:
-          predTestFileTemp = arg;
-          break;
-
-        case VALID_PRED_FILE:
-          predValidationFileTemp = arg;
-          break;
-
-        case CONSOLE_FILE:
-          consoleFileTemp = arg;
-          consoleFileInit = true;
-          break;
-
-        case STATS_FILE:
-          accuracyFileTemp = arg;
-          accuracyFileInit = true;
-          break;
-
-        case TRAIN_DATA_FILE:
-          learnFileTemp = arg;
-          learnFileInit = true;
-          break;
-
-        case TEST_DATA_FILE:
-          testFileTemp = arg;
-          testFileInit = true;
-          break;
-
-        case VALID_DATA_FILE:
-          validFileTemp = arg;
-          validFileInit = true;
-          break;
-
-        case TRAIN_CLASS_FILE:
-          learnTarTemp = arg;
-          learnTarInit = true;
-          break;
-
-        case TEST_CLASS_FILE:
-          testTarTemp = arg;
-          testTarInit = true;
-          break;
-
-        case VALID_CLASS_FILE:
-          validTarTemp = arg;
-          validTarInit = true;
-          break;
-
-        case WITH_RULE_EXTRACTION:
-          ruleExtr = 1;
-          p--;
-          break;
-
-        case GLOBAL_RULES_OUTFILE:
-          rulesFileTemp = arg;
-          rulesFileInit = true;
-          break;
-
-        case NORMALIZATION_FILE:
-          normalizationFileTemp = arg;
-          normalizationFileInit = true;
-          break;
-
-        case MUS:
-          if (!checkList(arg)) {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + string(arg) + ".");
-          }
-          mus = getDoubleVectorFromString(arg);
-          hasMus = true;
-          break;
-
-        case SIGMAS:
-          if (!checkList(arg)) {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + string(arg) + ".");
-          }
-          sigmas = getDoubleVectorFromString(arg);
-          hasSigmas = true;
-          break;
-
-        case NORMALIZATION_INDICES:
-          if (!checkList(arg)) {
-            throw CommandArgumentException("Error : invalide type for parameter " + param + ", list in the form [a,b,...,c] without spaces requested, a,b,c are integers. Received " + string(arg) + ".");
-          }
-          normalizationIndices = getIntVectorFromString(arg);
-          hasNormalizationIndices = true;
-          break;
-
-        default:
-          throw CommandArgumentException("Illegal option : " + param + ".");
-        }
-      }
-
-      else {
-        throw CommandArgumentException("Illegal option : " + string(&(commandList[p])[0]));
-      }
-
-      p++;
-    }
-
-    // ----------------------------------------------------------------------
-    // create paths with root foler
-
-    const char *learnFile = nullptr;
-    const char *testFile = nullptr;
-    const char *validFile = nullptr;
-    const char *weightFile = nullptr;
-    const char *outputWeightFile = nullptr;
-    const char *predTrainFile = nullptr;
-    const char *predTestFile = nullptr;
-    const char *predValidationFile = nullptr;
-    const char *rulesFile = nullptr;
-    const char *consoleFile = nullptr;
-    const char *accuracyFile = nullptr;
-    const char *learnTar = nullptr;
-    const char *testTar = nullptr;
-    const char *validTar = nullptr;
-    const char *attrFile = nullptr;
-    const char *normalizationFile = nullptr;
-
-    string root = "";
-    if (rootFolderInit) {
-#if defined(__unix__) || defined(__APPLE__)
-      root = rootFolderTemp + "/";
-#elif defined(_WIN32)
-      root = rootFolderTemp + "\\";
-#endif
-    }
-
-    if (learnFileInit) {
-      learnFileTemp = root + learnFileTemp;
-      learnFile = &learnFileTemp[0];
-    }
-
-    if (testFileInit) {
-      testFileTemp = root + testFileTemp;
-      testFile = &testFileTemp[0];
-    }
-
-    if (validFileInit) {
-      validFileTemp = root + validFileTemp;
-      validFile = &validFileTemp[0];
-    }
-
-    if (weightFileInit) {
-      weightFileTemp = root + weightFileTemp;
-      weightFile = &weightFileTemp[0];
-    }
-
-    outputWeightFileTemp = root + outputWeightFileTemp;
-    outputWeightFile = &outputWeightFileTemp[0];
-
-    predTrainFileTemp = root + predTrainFileTemp;
-    predTrainFile = &predTrainFileTemp[0];
-
-    predTestFileTemp = root + predTestFileTemp;
-    predTestFile = &predTestFileTemp[0];
-
-    predValidationFileTemp = root + predValidationFileTemp;
-    predValidationFile = &predValidationFileTemp[0];
-
-    if (rulesFileInit) {
-      rulesFileTemp = root + rulesFileTemp;
-      rulesFile = &rulesFileTemp[0];
-    }
-
-    if (consoleFileInit) {
-      consoleFileTemp = root + consoleFileTemp;
-      consoleFile = &consoleFileTemp[0];
-    }
-
-    if (accuracyFileInit) {
-      accuracyFileTemp = root + accuracyFileTemp;
-      accuracyFile = &accuracyFileTemp[0];
-    }
-
-    if (learnTarInit) {
-      learnTarTemp = root + learnTarTemp;
-      learnTar = &learnTarTemp[0];
-    }
-
-    if (testTarInit) {
-      testTarTemp = root + testTarTemp;
-      testTar = &testTarTemp[0];
-    }
-
-    if (validTarInit) {
-      validTarTemp = root + validTarTemp;
-      validTar = &validTarTemp[0];
-    }
-
-    if (attrFileInit) {
-      attrFileTemp = root + attrFileTemp;
-      attrFile = &attrFileTemp[0];
-    }
-
-    if (normalizationFileInit) {
-      normalizationFileTemp = root + normalizationFileTemp;
-      normalizationFile = &normalizationFileTemp[0];
-    }
-
-    // ----------------------------------------------------------------------
-
-    // Get console results to file
-    if (consoleFileInit != false) {
-      ofs.open(consoleFile);
-      std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
-    }
-
-    // ----------------------------------------------------------------------
-
-    if (eta <= 0) {
-      throw CommandArgumentException("The learning parameter must be greater than 0.");
-    }
-
-    if (mu < 0) {
-      throw CommandArgumentException("The momentum parameter must be greater or equal to 0.");
-    }
-
-    if (showErr == 0) {
-      throw CommandArgumentException("The number of epochs must be greater than 0.");
-    }
-
-    if (quant <= 2) {
-      throw CommandArgumentException("The number of quantized levels must be greater than 2.");
-    }
-
-    if (nbIn == 0) {
-      throw CommandArgumentException("The number of input neurons must be given with option --nb_attributes.");
-    }
-
-    if (nbOut <= 1) {
-      throw CommandArgumentException("At least two output neurons must be given with option --nb_classes.");
-    }
-
-    // ----------------------------------------------------------------------
-
-    // Check denormalization parameters
-
-    // If normalizationIndices were not specified, it's all attributes
-    if (!normalizationFileInit && !hasNormalizationIndices && hasMus) {
-      for (int i = 0; i < nbIn; ++i) {
-        normalizationIndices.push_back(i);
-      }
-      hasNormalizationIndices = true;
-    }
-
-    // Check if mus and sigmas are both given or both not
-    if ((hasMus || hasSigmas) &&
-        !(hasMus && hasSigmas)) {
-      throw CommandArgumentException("Error : One of Mus(--mus) and sigmas(--sigmas) is given but not the other.");
-    }
-
-    if (normalizationFileInit && hasMus || normalizationFileInit && hasNormalizationIndices) {
-      throw CommandArgumentException("Error : normlization file (--normalization_file) and mus or normalizationIndices (--normalization_indices) are both given.");
-    }
-
-    // Mus, sigmas and normalizationIndices must have the same size and not be empty
-    if (hasMus && (mus.size() != sigmas.size() || mus.size() != normalizationIndices.size() || mus.empty())) {
-      throw CommandArgumentException("Error : mus (--mus), sigmas (--sigmas) and normalization indices (--normalization_indices) don't have the same size or are empty.");
-    }
-
-    // Check normalizationIndices
-    std::set<int> uniqueIndices(normalizationIndices.begin(), normalizationIndices.end());
-    if (uniqueIndices.size() != normalizationIndices.size() ||
-        *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= nbIn ||
-        *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
-      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) must be a list composed of integers between [0, nb_attributes-1] without repeted elements.");
-    }
+    StringInt arch = params->getArch();
+    StringInt archInd = params->getArchInd();
 
     // ----------------------------------------------------------------------
 
@@ -780,7 +344,8 @@ int dimlpTrn(const string &command) {
         vecNbNeurons[0] = nbIn;
         vecNbNeurons[nbLayers - 1] = nbOut;
 
-        for (p = 1, arch.GoToBeg(); p <= arch.GetNbEl(); p++, arch.GoToNext()) {
+        arch.GoToBeg();
+        for (int p = 1; p <= arch.GetNbEl(); p++, arch.GoToNext()) {
           vecNbNeurons[p] = arch.GetVal();
 
           if (vecNbNeurons[p] == 0) {
@@ -798,7 +363,8 @@ int dimlpTrn(const string &command) {
         vecNbNeurons[1] = nbIn;
         vecNbNeurons[nbLayers - 1] = nbOut;
 
-        for (p = 1, arch.GoToBeg(); p <= arch.GetNbEl(); p++, arch.GoToNext()) {
+        arch.GoToBeg();
+        for (int p = 1; p <= arch.GetNbEl(); p++, arch.GoToNext()) {
           vecNbNeurons[p + 1] = arch.GetVal();
 
           if (vecNbNeurons[p + 1] == 0) {
@@ -810,13 +376,9 @@ int dimlpTrn(const string &command) {
 
     // ----------------------------------------------------------------------
 
-    if (learnFileInit == false) {
-      throw CommandArgumentException("Give the training file with --train_data_file selection please.");
-    }
-
-    if (learnTarInit != false) {
+    if (params->isStringSet(TRAIN_CLASS_FILE)) {
       DataSet train(learnFile, nbIn, nbOut);
-      DataSet trainClass(learnTar, nbIn, nbOut);
+      DataSet trainClass(params->getString(TRAIN_CLASS_FILE), nbIn, nbOut);
 
       Train = train;
       TrainClass = trainClass;
@@ -833,17 +395,17 @@ int dimlpTrn(const string &command) {
 
       data.Del();
     }
-    if (validFileInit != false) {
-      if (validTarInit != false) {
-        DataSet valid(validFile, nbIn, nbOut);
-        DataSet validClass(validTar, nbIn, nbOut);
+    if (params->isStringSet(VALID_DATA_FILE)) {
+      if (params->isStringSet(VALID_CLASS_FILE)) {
+        DataSet valid(params->getString(VALID_DATA_FILE), nbIn, nbOut);
+        DataSet validClass(params->getString(VALID_CLASS_FILE), nbIn, nbOut);
 
         Valid = valid;
         ValidClass = validClass;
       }
 
       else {
-        DataSet data(validFile, nbIn, nbOut);
+        DataSet data(params->getString(VALID_DATA_FILE), nbIn, nbOut);
 
         DataSet valid(data.GetNbEx());
         DataSet validClass(data.GetNbEx());
@@ -857,17 +419,17 @@ int dimlpTrn(const string &command) {
       }
     }
 
-    if (testFileInit != false) {
-      if (testTarInit != false) {
-        DataSet test(testFile, nbIn, nbOut);
-        DataSet testClass(testTar, nbIn, nbOut);
+    if (params->isStringSet(TEST_DATA_FILE)) {
+      if (params->isStringSet(TEST_CLASS_FILE)) {
+        DataSet test(params->getString(TEST_DATA_FILE), nbIn, nbOut);
+        DataSet testClass(params->getString(TEST_CLASS_FILE), nbIn, nbOut);
 
         Test = test;
         TestClass = testClass;
       }
 
       else {
-        DataSet data(testFile, nbIn, nbOut);
+        DataSet data(params->getString(TEST_DATA_FILE), nbIn, nbOut);
 
         DataSet test(data.GetNbEx());
         DataSet testClass(data.GetNbEx());
@@ -881,44 +443,44 @@ int dimlpTrn(const string &command) {
       }
     }
 
-    if (weightFileInit == false)
+    if (!params->isStringSet(WEIGHTS_FILE))
       net = std::make_shared<Dimlp>(eta, mu, flat, errThres, accThres, deltaErr,
                                     quant, showErr, epochs, nbLayers, vecNbNeurons, outputWeightFile, seed);
 
     else
-      net = std::make_shared<Dimlp>(weightFile, eta, mu, flat, errThres, accThres,
+      net = std::make_shared<Dimlp>(params->getString(WEIGHTS_FILE), eta, mu, flat, errThres, accThres,
                                     deltaErr, quant, showErr, epochs,
                                     nbLayers, vecNbNeurons, outputWeightFile, seed);
 
-    if (accuracyFileInit != false) {
-      ofstream accFile(accuracyFile);
+    if (params->isStringSet(STATS_FILE)) {
+      ofstream accFile(params->getString(STATS_FILE));
       if (accFile.is_open()) {
         accFile << "Accuracy : \n"
                 << std::endl;
         accFile.close();
       } else {
-        throw CannotOpenFileError("Error : Cannot open accuracy file " + std::string(accuracyFile));
+        throw CannotOpenFileError("Error : Cannot open accuracy file " + params->getString(STATS_FILE));
       }
     }
 
-    net->Train(Train, TrainClass, Test, TestClass, Valid, ValidClass, accuracyFile);
+    net->Train(Train, TrainClass, Test, TestClass, Valid, ValidClass, params->getString(STATS_FILE));
 
     SaveOutputs(Train, net, nbOut, nbWeightLayers, predTrainFile); // Get train predictions
-    if (testFileInit != false) {
+    if (params->isStringSet(TEST_DATA_FILE)) {
       SaveOutputs(Test, net, nbOut, nbWeightLayers, predTestFile); // Get test predictions
     }
-    if (validFileInit != false) {
+    if (params->isStringSet(VALID_DATA_FILE)) {
       SaveOutputs(Valid, net, nbOut, nbWeightLayers, predValidationFile); // Get validation predictions
     }
 
-    if (ruleExtr) {
+    if (params->getBool(WITH_RULE_EXTRACTION)) {
       vector<string> attributeNames;
-      if (attrFileInit != false) {
-        AttrName attr(attrFile, nbIn, nbOut);
+      if (params->isStringSet(ATTRIBUTES_FILE)) {
+        AttrName attr(params->getString(ATTRIBUTES_FILE), nbIn, nbOut);
 
         if (attr.ReadAttr())
           cout << "\n\n"
-               << attrFile << ": Read file of attributes.\n"
+               << params->getString(ATTRIBUTES_FILE) << ": Read file of attributes.\n"
                << std::endl;
 
         Attr = attr;
@@ -926,7 +488,7 @@ int dimlpTrn(const string &command) {
       }
 
       All = Train;
-      if (rulesFileInit != false) {
+      if (params->isStringSet(GLOBAL_RULES_OUTFILE)) {
         cout << "Extraction Part :: " << std::endl;
       }
 
@@ -935,13 +497,19 @@ int dimlpTrn(const string &command) {
         All = all2;
       }
 
+      vector<int> normalizationIndices;
+      vector<double> mus;
+      vector<double> sigmas;
+
       // Get mus, sigmas and normalizationIndices from normalizationFile for denormalization :
-      if (normalizationFileInit) {
-        auto results = parseNormalizationStats(normalizationFile, nbIn, attributeNames);
+      if (params->isStringSet(NORMALIZATION_FILE)) {
+        auto results = parseNormalizationStats(params->getString(NORMALIZATION_FILE), params->getInt(NB_ATTRIBUTES), attributeNames);
         normalizationIndices = std::get<0>(results);
         mus = std::get<2>(results);
         sigmas = std::get<3>(results);
-        hasMus = true;
+        params->setIntVector(NORMALIZATION_INDICES, normalizationIndices);
+        params->setDoubleVector(MUS, mus);
+        params->setDoubleVector(SIGMAS, sigmas);
       }
 
       cout << "\n\n****************************************************\n"
@@ -949,14 +517,14 @@ int dimlpTrn(const string &command) {
       cout << "*** RULE EXTRACTION" << std::endl;
       RealHyp ryp1(All, net, quant, nbIn,
                    vecNbNeurons[1] / nbIn, nbWeightLayers);
-      if (rulesFileInit != false) {
+      if (params->isStringSet(GLOBAL_RULES_OUTFILE)) {
         filebuf buf;
 
-        if (buf.open(rulesFile, ios_base::out) == nullptr) {
-          throw CannotOpenFileError("Error : Cannot open rules file " + std::string(rulesFile));
+        if (buf.open(params->getString(GLOBAL_RULES_OUTFILE), ios_base::out) == nullptr) {
+          throw CannotOpenFileError("Error : Cannot open rules file " + params->getString(GLOBAL_RULES_OUTFILE));
         }
         ostream rulesFileost(&buf);
-        if (hasMus) {
+        if (params->isDoubleVectorSet(MUS)) {
           ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                               Test, TestClass, Attr, rulesFileost, mus, sigmas, normalizationIndices);
         } else {
@@ -969,7 +537,7 @@ int dimlpTrn(const string &command) {
           RealHyp2 ryp2(All, net, quant, nbIn,
                         vecNbNeurons[1] / nbIn, nbWeightLayers);
 
-          if (hasMus) {
+          if (params->isDoubleVectorSet(MUS)) {
             ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                                 Test, TestClass, Attr, rulesFileost, mus, sigmas, normalizationIndices);
           } else {
@@ -980,13 +548,13 @@ int dimlpTrn(const string &command) {
         } else
 
           cout << "\n\n"
-               << rulesFile << ": "
+               << params->getString(GLOBAL_RULES_OUTFILE) << ": "
                << "Written.\n"
                << std::endl;
       }
 
       else {
-        if (hasMus) {
+        if (params->isDoubleVectorSet(MUS)) {
           ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                               Test, TestClass, Attr, cout, mus, sigmas, normalizationIndices);
         } else {
@@ -999,7 +567,7 @@ int dimlpTrn(const string &command) {
           RealHyp2 ryp2(All, net, quant, nbIn,
                         vecNbNeurons[1] / nbIn, nbWeightLayers);
 
-          if (hasMus) {
+          if (params->isDoubleVectorSet(MUS)) {
             ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                                 Test, TestClass, Attr, cout, mus, sigmas, normalizationIndices);
           } else {
@@ -1029,9 +597,9 @@ int dimlpTrn(const string &command) {
 
 /* Exemples to launch the code :
 
-./DimlpTrn --train_data_file irisTrainData.txt --train_class_file irisTrainClass.txt --test_data_file irisTestData.txt --test_class_file irisTestClass.txt --weights_file weights.wts --nb_attributes 4 --H2 5 --nb_classes 3 --train_pred_file predTrain.out --test_pred_file predTest.out --with_rule_extraction --global_rules_outfile rules.rls --stats_file stats --console_file results.txt --root_folder ../dimlp/datafiles/IrisDataset --attributes_file attributes.txt
-./DimlpTrn --train_data_file spamTrainData.txt --train_class_file spamTrainClass.txt --test_data_file spamTestData.txt --test_class_file spamTestClass.txt --weights_file spam.wts --nb_attributes 57 --H2 5 --nb_classes 2 --train_pred_file spamTrainPred.out --test_pred_file spamTestPred.out --with_rule_extraction --global_rules_outfile spamTrn.rls --stats_file spamTrnStats --console_file spamTrnResult.txt --root_folder ../dimlp/datafiles/spamDataset --attributes_file attributes.txt
-./DimlpTrn --train_data_file isoletTrainData.txt --train_class_file isoletTrainClass.txt --test_data_file isoletTestData.txt --test_class_file isoletTestClass.txt --weights_file isoletV3.wts --nb_attributes 617 --H2 5 --nb_classes 26 --train_pred_file isoletTrainPredV3.out --test_pred_file isoletTestPredV3.out --with_rule_extraction --global_rules_outfile isoletTrnV3.rls --stats_file isoletTrnStatsV3 --console_file isoletTrnResultV3.txt --root_folder ../dimlp/datafiles/isoletDataset --attributes_file attributes.txt
-./DimlpTrn --train_data_file Train/X_train.txt --train_class_file Train/y_train.txt --test_data_file test/X_test.txt --test_class_file Test/y_test.txt --weights_file HAPT.wts --nb_attributes 561 --H2 5 --nb_classes 12 --train_pred_file Train/pred_train.out --test_pred_file Test/pred_test.out --with_rule_extraction --global_rules_outfile HAPTTrain.rls --stats_file HAPTTrnStats --console_file HAPTTrnResult.txt --root_folder ../dimlp/datafiles/HAPTDataset --attributes_file attributes.txt
+./DimlpTrn --train_data_file irisTrainData.txt --train_class_file irisTrainClass.txt --test_data_file irisTestData.txt --test_class_file irisTestClass.txt --weights_outfile weights.wts --nb_attributes 4 --H2 5 --nb_classes 3 --train_pred_outfile predTrain.out --test_pred_outfile predTest.out --with_rule_extraction true --global_rules_outfile rules.rls --stats_file stats --console_file results.txt --root_folder ../dimlp/datafiles/IrisDataset --attributes_file attributes.txt
+./DimlpTrn --train_data_file spamTrainData.txt --train_class_file spamTrainClass.txt --test_data_file spamTestData.txt --test_class_file spamTestClass.txt --weights_outfile spam.wts --nb_attributes 57 --H2 5 --nb_classes 2 --train_pred_outfile spamTrainPred.out --test_pred_outfile spamTestPred.out --with_rule_extraction true --global_rules_outfile spamTrn.rls --stats_file spamTrnStats --console_file spamTrnResult.txt --root_folder ../dimlp/datafiles/spamDataset --attributes_file attributes.txt
+./DimlpTrn --train_data_file isoletTrainData.txt --train_class_file isoletTrainClass.txt --test_data_file isoletTestData.txt --test_class_file isoletTestClass.txt --weights_outfile isoletV3.wts --nb_attributes 617 --H2 5 --nb_classes 26 --train_pred_outfile isoletTrainPredV3.out --test_pred_outfile isoletTestPredV3.out --with_rule_extraction true --global_rules_outfile isoletTrnV3.rls --stats_file isoletTrnStatsV3 --console_file isoletTrnResultV3.txt --root_folder ../dimlp/datafiles/isoletDataset --attributes_file attributes.txt
+./DimlpTrn --train_data_file Train/X_train.txt --train_class_file Train/y_train.txt --test_data_file test/X_test.txt --test_class_file Test/y_test.txt --weights_outfile HAPT.wts --nb_attributes 561 --H2 5 --nb_classes 12 --train_pred_outfile Train/pred_train.out --test_pred_outfile Test/pred_test.out --with_rule_extraction true --global_rules_outfile HAPTTrain.rls --stats_file HAPTTrnStats --console_file HAPTTrnResult.txt --root_folder ../dimlp/datafiles/HAPTDataset --attributes_file attributes.txt
 
 */
