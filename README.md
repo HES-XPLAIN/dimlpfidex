@@ -71,31 +71,36 @@ rye --version
 
 #### Using pip
 
-Install dependencies:
-
 ```shell
 python -m venv .venv
 source .venv/bin/activate
 pip install .
 ```
 
-To leave the virtualenv, use `deactivate`.
+> [!NOTE]
+> On Windows, use `.venv\Scripts\activate` instead.
 
 #### Using Rye
 
-Install python dependencies and activate the virtualenv:
+Install python dependencies and create a virtualenv in `.venv`:
 
 ```shell
 rye sync
-rye shell
 ```
-
-To leave the virtualenv, use `exit`.
 
 #### Add dependencies
 
 To add new dependencies to the project, either add them to the `pyproject.toml` file or use `rye add <dependency>`.
 To add them to the virtualenv, use `pip install .` or `rye sync`.
+
+### Work with virtualenv
+
+To activate the virtualenv, use the standard methods:
+
+* Unix: `source .venv/bin/activate`
+* Windows: `.venv\Scripts\activate`
+
+To leave the virtualenv, use `deactivate`.
 
 ### Compile
 
