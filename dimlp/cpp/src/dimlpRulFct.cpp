@@ -1,4 +1,4 @@
-#include "DimlpRulFct.h"
+#include "dimlpRulFct.h"
 
 using namespace std;
 
@@ -12,7 +12,7 @@ void showDimlpRulParams()
   cout << "\n-------------------------------------------------\n"
        << std::endl;
 
-  cout << "DimlpRul --train_data_file <training set file(path with respect to specified root folder)> ";
+  cout << "dimlpRul --train_data_file <training set file(path with respect to specified root folder)> ";
   cout << "--weights_file <file of weights> ";
   cout << "--nb_attributes <number of input neurons> --nb_classes <number of output neurons>";
   cout << " <Options>\n"
@@ -482,4 +482,4 @@ int dimlpRul(const string &command) {
   return 0;
 }
 
-// Exemple to launch the code : dimlp.dimlpRul("DimlpRul --train_data_file datanormTrain --train_class_file dataclass2Train --weights_file dimlpDatanorm.wts --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --global_rules_outfile dimlpDatanormRul.rls --stats_file dimlpDatanormRulStats --console_file dimlpDatanormRulResult.txt --root_folder dimlp/datafiles")
+// Exemple to launch the code : dimlp.dimlpRul("dimlpRul --train_data_file datanormTrain --train_class_file dataclass2Train --weights_file dimlpDatanorm.wts --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --global_rules_outfile dimlpDatanormRul.rls --stats_file dimlpDatanormRulStats --console_file dimlpDatanormRulResult.txt --root_folder dimlp/datafiles")

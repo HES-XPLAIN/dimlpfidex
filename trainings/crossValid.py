@@ -1252,7 +1252,7 @@ def crossValid(*args, **kwargs):
                         dimlp_command += "--console_file " + str(crossval_folder_temp) + separator + "consoleTemp.txt" # To not show console result
 
                         if train_method == "dimlp":
-                            print("Enter in DimlpTrn function")
+                            print("Enter in dimlpTrn function")
                             res = dimlp.dimlpTrn(dimlp_command)
                         else:
                             print("Enter in dimlpBT function")
@@ -1628,7 +1628,7 @@ def crossValid(*args, **kwargs):
                     plt.close(viz.figure_)
 
                 mean_current_exec_values_dimlp = []
-                if is_dimlprul: # For DimlpRul
+                if is_dimlprul: # For dimlpRul
                     nb_fold_with_rules_dimlp = k-nb_no_rules_current_exec_dimlp
 
                     mean_current_exec_values_dimlp.append(mean_nb_rules_dimlp / nb_fold_with_rules_dimlp)

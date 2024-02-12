@@ -1,4 +1,4 @@
-#include "DimlpPredFct.h"
+#include "dimlpPredFct.h"
 
 using namespace std;
 
@@ -10,7 +10,7 @@ void showDimlpPredParams()
   std::cout << "\n-------------------------------------------------\n"
             << std::endl;
 
-  std::cout << "DimlpPred --test_data_file <test set file (path with respect to specified root folder)> ";
+  std::cout << "dimlpPred --test_data_file <test set file (path with respect to specified root folder)> ";
   std::cout << "--weights_file <file of weights> ";
   std::cout << "--nb_attributes <number of input neurons> --nb_classes <number of output neurons>";
 
@@ -267,4 +267,4 @@ int dimlpPred(const string &command) {
   return 0;
 }
 
-// Exemple to launch the code : ./DimlpPred --test_data_file datanormTest --weights_file dimlpDatanorm.wts --nb_attributes 16 --H2 5 --nb_classes 2 --nb_quant_levels 50 --test_pred_outfile dimlpDatanormTest.out --console_file dimlpDatanormPredResult.txt --root_folder ../dimlp/datafiles
+// Exemple to launch the code : ./dimlpPred --test_data_file datanormTest --weights_file dimlpDatanorm.wts --nb_attributes 16 --H2 5 --nb_classes 2 --nb_quant_levels 50 --test_pred_outfile dimlpDatanormTest.out --console_file dimlpDatanormPredResult.txt --root_folder ../dimlp/datafiles

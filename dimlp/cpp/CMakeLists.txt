@@ -26,8 +26,8 @@ FILE(GLOB COMMON_SRC
 )
 
 FILE(GLOB DIMLP_TRN_SRC
-    src/DimlpTrnFct.cpp
-    src/DimlpTrnFct.h
+    src/dimlpTrnFct.cpp
+    src/dimlpTrnFct.h
     src/ante.cpp
     src/ante.h
     src/attrName.cpp
@@ -71,8 +71,8 @@ FILE(GLOB DIMLP_TRN_SRC
 )
 
 FILE(GLOB DIMLP_PRED_SRC
-    src/DimlpPredFct.cpp
-    src/DimlpPredFct.h
+    src/dimlpPredFct.cpp
+    src/dimlpPredFct.h
     src/bpNN.cpp
     src/bpNN.h
     src/dimlp.cpp
@@ -211,8 +211,8 @@ FILE(GLOB DENS_CLS_SRC
 )
 
 FILE(GLOB DIMLP_RUL_SRC
-    src/DimlpRulFct.cpp
-    src/DimlpRulFct.h
+    src/dimlpRulFct.cpp
+    src/dimlpRulFct.h
     src/ante.cpp
     src/ante.h
     src/attrName.cpp
@@ -256,14 +256,14 @@ FILE(GLOB DIMLP_RUL_SRC
 )
 
 FILE(GLOB FCT_SRC
-    src/DimlpPredFct.cpp
-    src/DimlpPredFct.h
+    src/dimlpPredFct.cpp
+    src/dimlpPredFct.h
     src/dimlpClsFct.cpp
     src/dimlpClsFct.h
-    src/DimlpRulFct.cpp
-    src/DimlpRulFct.h
-    src/DimlpTrnFct.cpp
-    src/DimlpTrnFct.h
+    src/dimlpRulFct.cpp
+    src/dimlpRulFct.h
+    src/dimlpTrnFct.cpp
+    src/dimlpTrnFct.h
     src/dimlpBTFct.cpp
     src/dimlpBTFct.h
     src/densClsFct.cpp
@@ -281,18 +281,18 @@ set(DIMLP_RUL_SRC "${DIMLP_RUL_SRC}" CACHE INTERNAL "")
 set(FCT_SRC "${FCT_SRC}" CACHE INTERNAL "")
 
 # build executables
-add_executable(DimlpTrn ${COMMON_SRC} ${DIMLP_TRN_SRC} src/DimlpTrn.cpp)
-add_executable(DimlpPred ${COMMON_SRC} ${DIMLP_PRED_SRC} src/DimlpPred.cpp)
+add_executable(dimlpTrn ${COMMON_SRC} ${DIMLP_TRN_SRC} src/dimlpTrn.cpp)
+add_executable(dimlpPred ${COMMON_SRC} ${DIMLP_PRED_SRC} src/dimlpPred.cpp)
 add_executable(dimlpCls ${COMMON_SRC} ${DIMLP_CLS_SRC} src/dimlpCls.cpp)
 add_executable(dimlpBT ${COMMON_SRC} ${DIMLP_BT_SRC} src/dimlpBT.cpp)
 add_executable(densCls ${COMMON_SRC} ${DENS_CLS_SRC} src/densCls.cpp)
-add_executable(DimlpRul ${COMMON_SRC} ${DIMLP_RUL_SRC} src/DimlpRul.cpp)
+add_executable(dimlpRul ${COMMON_SRC} ${DIMLP_RUL_SRC} src/dimlpRul.cpp)
 
 set_target_properties(
-    DimlpTrn PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+    dimlpTrn PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
 set_target_properties(
-    DimlpPred PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+    dimlpPred PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
 set_target_properties(
     dimlpCls PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
@@ -304,5 +304,5 @@ set_target_properties(
     densCls PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
 set_target_properties(
-    DimlpRul PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+    dimlpRul PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )

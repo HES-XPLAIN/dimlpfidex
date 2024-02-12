@@ -1,4 +1,4 @@
-#include "DimlpRulFct.h"
+#include "dimlpRulFct.h"
 
 ////////////////////////////////////////////////////////////
 int main(int nbParam, char **param)
