@@ -1,7 +1,0 @@
-Statistics with a test set of 211 samples :
-
-The mean covering size per rule is : 27.3033
-The mean number of antecedents per rule is : 7.12796
-The mean rule fidelity rate is : 1
-The mean rule accuracy is : 0.984865
-The mean rule confidence is : 0.965586

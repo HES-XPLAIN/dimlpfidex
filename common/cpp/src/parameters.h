@@ -9,7 +9,6 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
-#include <omp.h>
 #include <ostream>
 #include <sstream>
 #include <string>
@@ -151,7 +150,7 @@ private:
   map<ParameterCode, vector<double>> _doubleVectorParams;
   map<ParameterCode, vector<int>> _intVectorParams;
   map<ParameterCode, string> _stringParams;
-  vector<string> _weightFiles; // the only 1 special parameter
+  vector<string> _weightFiles;
   StringInt arch;
   StringInt archInd;
 
@@ -161,6 +160,7 @@ private:
   // path checker
   void checkFilesIntegrity();
   void checkPath(ParameterCode id, const string &path) const;
+  void completePath(ParameterCode id);
 
   // throwables
   [[noreturn]] void throwInvalidDataTypeException(ParameterCode id, const string &wrongValue, const string &typeName) const {

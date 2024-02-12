@@ -502,11 +502,39 @@ void Parameters::setArch(ParameterCode id, const string &value, const string &pa
 }
 
 /**
+ * @brief Completes the path of a given parameter with the ROOT_FOLDER, also checks if the given parameter is not empty
+ *
+ * @param id is the given parameter to be completed
+ */
+void Parameters::completePath(ParameterCode id) {
+  // avoid error cases
+  if (!isStringSet(id) || !isStringSet(ROOT_FOLDER) || id == ROOT_FOLDER) {
+    return;
+  }
+
+  string fullPath;
+  string target = getString(id);
+  string separator = getOSSeparator();
+  string root = isStringSet(ROOT_FOLDER) ? getString(ROOT_FOLDER) : "";
+
+  if (target.empty() || target.back() == separator[0]) {
+    throwInvalidFileOrDirectory(id, target);
+  }
+
+  if (root.empty() || !root.empty() && (root.back() == separator[0] || target.front() == separator[0])) {
+    fullPath = root + target;
+  } else {
+    fullPath = root + separator + target;
+  }
+
+  _stringParams[id] = fullPath;
+}
+
+/**
  * @brief handles every aspect of parameters that represents files:
  *
  * -  Checks if a file exists if "shouldFileExist" is set to true
  * -  appends the ROOT_FOLDER path to every file if ROOT_FOLDER is set
- * -  ensures there is not duplicated separators (ex: ./data//somefile.txt)
  *
  * @param id parameter id to be processed
  * @param shouldFileExist whether it should check the existance of the file itself or only the path
@@ -517,29 +545,14 @@ void Parameters::sanitizePath(ParameterCode id, bool shouldFileExist) {
     return;
   }
 
-  string target = getString(id);
-
-  if (target.empty()) {
-    throwInvalidFileOrDirectory(id, target);
-  }
-
-  string separator = getOSSeparator();
-  string root = isStringSet(ROOT_FOLDER) ? getString(ROOT_FOLDER) : "";
-  string fullPath;
-
-  if (root.empty() || !root.empty() && (root.back() == separator[0] || target.front() == separator[0])) {
-    fullPath = root + target;
-  } else {
-    fullPath = root + separator + target;
-  }
+  completePath(id);
+  std::string fullPath = getString(id);
 
   if (shouldFileExist) {
     checkPath(id, fullPath);
   } else {
-    checkPath(id, fullPath.substr(0, fullPath.find_last_of(separator) + 1));
+    checkPath(id, fullPath.substr(0, fullPath.find_last_of(getOSSeparator()) + 1));
   }
-
-  _stringParams[id] = fullPath;
 }
 
 void Parameters::setWeightsFiles() {

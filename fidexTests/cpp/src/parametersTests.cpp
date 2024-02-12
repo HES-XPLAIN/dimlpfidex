@@ -31,6 +31,7 @@ void testSetter() {
     testAssert("Parameter throw on invalid file path", expectedMessage.compare(actualMessage) == 0);
   }
 
+  p.setString(ROOT_FOLDER, DEFAULT_ROOT_FOLDER);
   p.setString(ATTRIBUTES_FILE, DEFAULT_ATTRIBUTES_FILE);
   p.sanitizePath(ATTRIBUTES_FILE, true);
   testAssert("Parameter sanitize path of input file", true);
@@ -89,6 +90,7 @@ void testDefaultSetter() {
 void testArgsParser() {
   vector<string> args = {
       "executableNameToIgnore", // this line has to be present
+      "--root_folder", DEFAULT_ROOT_FOLDER,
       "--train_data_file", DEFAULT_TRAIN_FILE,
       "--heuristic", "1",
       "--dropout_hyp", "0.4"};
@@ -96,7 +98,7 @@ void testArgsParser() {
   Parameters p = Parameters(args);
 
   testAssert("Parameter by user args: parse int", p.getInt(HEURISTIC) == 1);
-  testAssert("Parameter by user args: parse string", p.getString(TRAIN_DATA_FILE).compare(DEFAULT_TRAIN_FILE) == 0);
+  testAssert("Parameter by user args: parse string", p.getString(TRAIN_DATA_FILE).compare(DEFAULT_ROOT_FOLDER+DEFAULT_TRAIN_FILE) == 0);
   testAssert("Parameter by user args: parse float", p.getFloat(DROPOUT_HYP) == 0.4f);
 
   try {
@@ -117,6 +119,7 @@ void testArgsParser() {
 void testJsonParser() {
   vector<string> args = {
       "executableNameToIgnore",
+      "--root_folder", DEFAULT_ROOT_FOLDER,
       "--train_data_file", DEFAULT_TRAIN_FILE,
       "--train_pred_file", DEFAULT_TRAIN_PRED_FILE,
       "--train_class_file", DEFAULT_TRAIN_TRUE_CLASS_FILE,
