@@ -2,7 +2,6 @@
 #define DIMLPCLSFCT_H
 
 #include "../../../fidexCommon/cpp/src/parameters.h"
-#include "checkFun.h"
 #include "dimlp.h"
 #include <fstream>
 #include <sstream>

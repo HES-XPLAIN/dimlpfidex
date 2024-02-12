@@ -62,8 +62,8 @@ void BagDimlp::MakeDataSets(
 void BagDimlp::TrainAll(
     DataSet &test,
     DataSet &testTar,
-    const char genericWeightsFile[],
-    const char *accuracyFile,
+    const std::string &genericWeightsFile,
+    const std::string &accuracyFile,
     int seed)
 
 {
@@ -76,14 +76,14 @@ void BagDimlp::TrainAll(
     cout << "\n\nTraining network " << n + 1 << "" << std::endl;
 
     // Output accuracy on file
-    if (accuracyFile != nullptr) {
+    if (!accuracyFile.empty()) {
       ofstream accFile(accuracyFile, ios::app);
       if (accFile.is_open()) {
         accFile << "Network " << n + 1 << " : \n"
                 << std::endl;
         accFile.close();
       } else {
-        throw CannotOpenFileError("Error : Cannot open accuracy file " + std::string(accuracyFile));
+        throw CannotOpenFileError("Error : Cannot open accuracy file " + accuracyFile);
       }
     }
 
@@ -97,13 +97,13 @@ void BagDimlp::TrainAll(
 
     str1 = genericWeightsFile + std::to_string(n + 1) + ".wts";
 
-    VectDimlp[n]->Dimlp::SaveWeights(str1.c_str());
+    VectDimlp[n]->Dimlp::SaveWeights(str1);
   }
 }
 
 ///////////////////////////////////////////////////////////////////
 
-void BagDimlp::DefNetsWithWeights(const char *prefix)
+void BagDimlp::DefNetsWithWeights(const std::string &prefix)
 
 {
   string str1;
@@ -115,7 +115,7 @@ void BagDimlp::DefNetsWithWeights(const char *prefix)
     cout << "\n\nBuilding network " << n + 1 << "" << std::endl;
 
     str1 = prefix + std::to_string(n + 1) + ".wts";
-    VectDimlp[n] = std::make_shared<Dimlp>(str1.c_str(), NbLayers, NbNeurons,
+    VectDimlp[n] = std::make_shared<Dimlp>(str1, NbLayers, NbNeurons,
                                            DiscrLevels);
   }
 }
@@ -197,7 +197,7 @@ void BagDimlp::ComputeAcc(
     DataSet &target,
     float *accuracy,
     int toWrite,
-    const char predFile[])
+    const std::string &predFile)
 
 {
   int p;
@@ -268,7 +268,7 @@ BagDimlp::BagDimlp(
     int nbLayers,
     std::vector<int> nbNeurons,
     int nbDimlpNets,
-    const char weightFile[],
+    const string &weightFile,
     int seed) :
 
                 Dimlp(eta, mu, flat, errParam, accuracyParam, deltaErrParam,
@@ -305,7 +305,7 @@ BagDimlp::BagDimlp(
     int nbLayers,
     std::vector<int> nbNeurons,
     int nbDimlpNets,
-    const char weightFile[],
+    const string &weightFile,
     int seed) :
 
                 Dimlp(0, 0, 0, 0, 0, 0, discrLevels, 0, 0, nbLayers, nbNeurons, weightFile, seed),

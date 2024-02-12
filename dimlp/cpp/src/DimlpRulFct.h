@@ -2,7 +2,6 @@
 #define DIMLPRULFCT_H
 
 #include "../../../fidexCommon/cpp/src/parameters.h"
-#include "checkFun.h"
 #include "dimlp.h"
 #include "realHyp2.h"
 #include <fstream>

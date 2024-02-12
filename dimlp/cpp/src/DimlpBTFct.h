@@ -3,7 +3,6 @@
 
 #include "../../../fidexCommon/cpp/src/parameters.h"
 #include "bagDimlp.h"
-#include "checkFun.h"
 #include "realHyp2.h"
 #include <fstream>
 #include <sstream>

@@ -171,13 +171,13 @@ void BpNN::SaveWeights() const
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::SaveWeights(const char *strSave) const
+void BpNN::SaveWeights(const std::string &strSave) const
 
 {
   filebuf buf;
 
   if (buf.open(strSave, ios_base::out) == nullptr) {
-    throw CannotOpenFileError("Error : Cannot open save file " + std::string(strSave));
+    throw CannotOpenFileError("Error : Cannot open save file " + strSave);
   }
   ostream outFile(&buf);
 

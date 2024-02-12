@@ -7,8 +7,6 @@ set(CMAKE_CXX_FLAGS "-O3")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 FILE(GLOB COMMON_SRC
-    src/checkFun.cpp
-    src/checkFun.h
     ../../fidexCommon/cpp/src/checkFun.cpp
     ../../fidexCommon/cpp/src/checkFun.h
     ../../fidexCommon/cpp/src/parameters.cpp

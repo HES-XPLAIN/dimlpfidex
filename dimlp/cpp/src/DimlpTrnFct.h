@@ -3,7 +3,6 @@
 
 #include "../../../fidexCommon/cpp/src/errorHandler.h"
 #include "../../../fidexCommon/cpp/src/parameters.h"
-#include "checkFun.h"
 #include "dimlp.h"
 #include "realHyp2.h"
 

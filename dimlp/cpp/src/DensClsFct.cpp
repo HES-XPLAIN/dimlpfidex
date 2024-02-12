@@ -316,19 +316,19 @@ int densCls(const string &command) {
       }
     }
 
-    auto net = std::make_shared<BagDimlp>(quant, nbLayers, vecNbNeurons, nbDimlpNets, weightFileSave.c_str());
+    auto net = std::make_shared<BagDimlp>(quant, nbLayers, vecNbNeurons, nbDimlpNets, weightFileSave);
 
-    net->DefNetsWithWeights(weightFile.c_str());
+    net->DefNetsWithWeights(weightFile);
 
     float acc;
     float accTest;
 
-    net->ComputeAcc(Train, TrainClass, &acc, 1, predTrainFile.c_str());
+    net->ComputeAcc(Train, TrainClass, &acc, 1, predTrainFile);
     cout << "\n\n*** GLOBAL ACCURACY ON TRAINING SET = " << acc << "\n"
          << std::endl;
 
     if (Test.GetNbEx() != 0) {
-      net->ComputeAcc(Test, TestClass, &accTest, 1, predTestFile.c_str());
+      net->ComputeAcc(Test, TestClass, &accTest, 1, predTestFile);
       cout << "*** GLOBAL ACCURACY ON TESTING SET = " << accTest << "" << std::endl;
     }
 

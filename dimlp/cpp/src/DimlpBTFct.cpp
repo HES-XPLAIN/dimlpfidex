@@ -386,7 +386,7 @@ int dimlpBT(const string &command) {
     }
     auto net = std::make_shared<BagDimlp>(eta, mu, flat, errThres, accThres, deltaErr,
                                           quant, showErr, epochs, nbLayers, vecNbNeurons,
-                                          nbDimlpNets, weightFile.c_str(), seed);
+                                          nbDimlpNets, weightFile, seed);
 
     if (nbExInOne == 0)
       nbExInOne = Train.GetNbEx();
@@ -404,16 +404,16 @@ int dimlpBT(const string &command) {
         throw CannotOpenFileError("Error : Cannot open accuracy file " + params->getString(STATS_FILE));
       }
     }
-    net->TrainAll(Test, TestClass, genericWeightsFile.c_str(), params->getString(STATS_FILE).c_str(), seed);
+    net->TrainAll(Test, TestClass, genericWeightsFile, params->getString(STATS_FILE), seed);
     float acc;
     float accTest;
 
-    net->ComputeAcc(Train, TrainClass, &acc, 1, predTrainFile.c_str());
+    net->ComputeAcc(Train, TrainClass, &acc, 1, predTrainFile);
     cout << "\n\n*** GLOBAL ACCURACY ON TRAINING SET = " << acc << "\n"
          << std::endl;
 
     if (Test.GetNbEx() != 0) {
-      net->ComputeAcc(Test, TestClass, &accTest, 1, predTestFile.c_str());
+      net->ComputeAcc(Test, TestClass, &accTest, 1, predTestFile);
       cout << "*** GLOBAL ACCURACY ON TESTING SET = " << accTest << "" << std::endl;
     }
 
