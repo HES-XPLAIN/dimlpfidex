@@ -10,7 +10,7 @@ void showFidexParams() {
             << std::endl;
   std::cout << "fidex --train_data_file <train data file> --train_pred_file <train prediction file> --train_class_file <train true class file, not mendatory if classes are specified in train data file> ";
   std::cout << "--test_data_file <test sample(s) data file with data, prediction(if no --test_pred_file) and true class(if no --test_class_file)> ";
-  std::cout << "--weights_file <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file] ";
+  std::cout << "--weights_file <weights file. In case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file] ";
   std::cout << "--rules_file <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
   std::cout << "--rules_outfile <Rule(s) output file> ";
   std::cout << "--nb_attributes <number of attributes> ";

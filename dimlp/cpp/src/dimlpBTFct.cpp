@@ -1,4 +1,4 @@
-#include "DimlpBTFct.h"
+#include "dimlpBTFct.h"
 const int BPNN = 1;
 
 using namespace std;
@@ -10,7 +10,7 @@ void showDimlpBTParams()
   cout << "\n-------------------------------------------------\n"
        << std::endl;
 
-  cout << "DimlpBT --train_data_file <training set file(path with respect to specified root folder)> ";
+  cout << "dimlpBT --train_data_file <training set file(path with respect to specified root folder)> ";
   cout << "--nb_attributes <number of input neurons> --nb_classes <number of output neurons>";
 
   cout << " <Options>\n"
@@ -562,4 +562,4 @@ int dimlpBT(const string &command) {
   return 0;
 }
 
-// Exemple to launch the code : dimlpBT("DimlpBT --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_generic_outfilename dimlpDatanormBT --with_rule_extraction true --global_rules_outfile dimlpDatanormBTRul.rls --train_pred_outfile dimlpDatanormBTTrain.out --test_pred_outfile dimlpDatanormBTTest.out --stats_file dimlpDatanormBTStats --console_file dimlpDatanormBTResult.txt --root_folder dimlp/datafiles");
+// Exemple to launch the code : dimlpBT("dimlpBT --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_generic_outfilename dimlpDatanormBT --with_rule_extraction true --global_rules_outfile dimlpDatanormBTRul.rls --train_pred_outfile dimlpDatanormBTTrain.out --test_pred_outfile dimlpDatanormBTTest.out --stats_file dimlpDatanormBTStats --console_file dimlpDatanormBTResult.txt --root_folder dimlp/datafiles");

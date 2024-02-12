@@ -11,7 +11,7 @@ void showRulesParams() {
   cout << "Obligatory parameters : \n"
        << endl;
   cout << "fidexGloRules --train_data_file <train data file> --train_pred_file <train prediction file> --train_class_file <train true class file, not mendatory if classes are specified in train data file> ";
-  cout << "--weights_file <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file] ";
+  cout << "--weights_file <weights file. In case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file] ";
   cout << "--rules_file <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
   cout << "--global_rules_outfile <Rules output file> ";
   cout << "--heuristic <Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo> ";

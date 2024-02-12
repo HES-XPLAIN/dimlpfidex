@@ -122,7 +122,7 @@ def crossValid(*args, **kwargs):
             print("nb_classes : number of output neurons")
 
             print("----------------------------")
-            print("Obligatory parameters if training with dimlp and DimlpBT :")
+            print("Obligatory parameters if training with dimlp and dimlpBT :")
             print("dimlpRul : 1(with dimlpRul) or 0")
 
             print("----------------------------")
@@ -247,7 +247,7 @@ def crossValid(*args, **kwargs):
             print("Exemple with Dimlp :")
             print('crossValid(train_method="dimlp", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, dimlpRul=1, nb_attributes=16, nb_classes=2, H2=5, root_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLP")')
             print("----------------------------")
-            print("Exemple with DimlpBT :")
+            print("Exemple with dimlpBT :")
             print('crossValid(train_method="dimlpBT", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, dimlpRul=1, nb_attributes=16, nb_classes=2, H2=5, root_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLPBT")')
             print("----------------------------")
             print("Exemple with SVM :")
@@ -1255,10 +1255,10 @@ def crossValid(*args, **kwargs):
                             print("Enter in DimlpTrn function")
                             res = dimlp.dimlpTrn(dimlp_command)
                         else:
-                            print("Enter in DimlpBT function")
+                            print("Enter in dimlpBT function")
                             res = dimlp.dimlpBT(dimlp_command)
                         if (res == -1):
-                            raise ValueError('Error during training with Dimlp or DimlpBT.')
+                            raise ValueError('Error during training with Dimlp or dimlpBT.')
 
                     # Training with svm
                     elif train_method == "svm":
@@ -2427,6 +2427,6 @@ def crossValid(*args, **kwargs):
 
 
 # Exemple Dimlp : crossValid(train_method="dimlp", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, dimlpRul=1, nb_attributes=16, nb_classes=2, H2=5, root_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLP", K=3, N=2, seed=33)
-# Exemple DimlpBT : crossValid(train_method="dimlpBT", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, dimlpRul=1, nb_attributes=16, nb_classes=2, H2=5, root_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLPBT", K=3, N=2, seed=33)
+# Exemple dimlpBT : crossValid(train_method="dimlpBT", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, dimlpRul=1, nb_attributes=16, nb_classes=2, H2=5, root_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLPBT", K=3, N=2, seed=33)
 # Exemple SVM : crossValid(train_method="svm", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, nb_attributes=16, nb_classes=2, root_folder="dimlp/datafiles", crossVal_folder="CrossValidationSVM", K=3, N=2, seed=33)
 # Exemple MLP : crossValid(train_method="mlp", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, nb_attributes=16, nb_classes=2, root_folder="dimlp/datafiles", crossVal_folder="CrossValidationMLP", K=3, N=2, seed=33)

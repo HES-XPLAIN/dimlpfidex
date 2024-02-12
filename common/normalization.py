@@ -356,7 +356,7 @@ def normalization(*args, **kwargs):
       This guide assists users in correctly specifying arguments for the function.
 
     When to use :
-    - It's good to normalize data before training with Dimlp and DimlpBT.
+    - It's good to normalize data before training with Dimlp and dimlpBT.
     - It's not necessary to normalize data before training with convKeras, MLP and SVM because a normalization is done during the process.
     - It's not necessary to normalize before training with GradientBoosting and RandomForests because decision trees don't need normalization.
 

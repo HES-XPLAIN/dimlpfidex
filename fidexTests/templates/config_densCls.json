@@ -7,7 +7,7 @@
     "train_pred_outfile": "densClsTrain.out",
     "test_pred_outfile": "densClsTest.out",
     "attributes_file": "attributes.txt",
-    "weights_generic_filename": "",
+    "weights_generic_filename": "dimlpBT",
     "stats_file": "stats.txt",
     "nb_dimlp_nets":3,
     "with_rule_extraction": true,

@@ -117,8 +117,8 @@ FILE(GLOB DIMLP_CLS_SRC
 )
 
 FILE(GLOB DIMLP_BT_SRC
-    src/DimlpBTFct.cpp
-    src/DimlpBTFct.h
+    src/dimlpBTFct.cpp
+    src/dimlpBTFct.h
     src/ante.cpp
     src/ante.h
     src/attrName.cpp
@@ -164,8 +164,8 @@ FILE(GLOB DIMLP_BT_SRC
 )
 
 FILE(GLOB DENS_CLS_SRC
-    src/DensClsFct.cpp
-    src/DensClsFct.h
+    src/densClsFct.cpp
+    src/densClsFct.h
     src/ante.cpp
     src/ante.h
     src/attrName.cpp
@@ -264,10 +264,10 @@ FILE(GLOB FCT_SRC
     src/DimlpRulFct.h
     src/DimlpTrnFct.cpp
     src/DimlpTrnFct.h
-    src/DimlpBTFct.cpp
-    src/DimlpBTFct.h
-    src/DensClsFct.cpp
-    src/DensClsFct.h
+    src/dimlpBTFct.cpp
+    src/dimlpBTFct.h
+    src/densClsFct.cpp
+    src/densClsFct.h
 )
 
 # make variables visible to external CMakeLists.txt
@@ -284,8 +284,8 @@ set(FCT_SRC "${FCT_SRC}" CACHE INTERNAL "")
 add_executable(DimlpTrn ${COMMON_SRC} ${DIMLP_TRN_SRC} src/DimlpTrn.cpp)
 add_executable(DimlpPred ${COMMON_SRC} ${DIMLP_PRED_SRC} src/DimlpPred.cpp)
 add_executable(DimlpCls ${COMMON_SRC} ${DIMLP_CLS_SRC} src/DimlpCls.cpp)
-add_executable(DimlpBT ${COMMON_SRC} ${DIMLP_BT_SRC} src/DimlpBT.cpp)
-add_executable(DensCls ${COMMON_SRC} ${DENS_CLS_SRC} src/DensCls.cpp)
+add_executable(dimlpBT ${COMMON_SRC} ${DIMLP_BT_SRC} src/dimlpBT.cpp)
+add_executable(densCls ${COMMON_SRC} ${DENS_CLS_SRC} src/densCls.cpp)
 add_executable(DimlpRul ${COMMON_SRC} ${DIMLP_RUL_SRC} src/DimlpRul.cpp)
 
 set_target_properties(
@@ -298,10 +298,10 @@ set_target_properties(
     DimlpCls PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
 set_target_properties(
-    DimlpBT PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+    dimlpBT PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
 set_target_properties(
-    DensCls PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+    densCls PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
 set_target_properties(
     DimlpRul PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin

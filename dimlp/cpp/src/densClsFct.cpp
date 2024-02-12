@@ -1,4 +1,4 @@
-#include "DensClsFct.h"
+#include "densClsFct.h"
 using namespace std;
 
 const int BPNN = 1;
@@ -11,8 +11,8 @@ void showDensClsParams()
   cout << "\n-------------------------------------------------\n"
        << std::endl;
 
-  cout << "DensCls --train_data_file <training set file(path with respect to specified root folder)> ";
-  cout << "--weights_generic_filename <weights generic name file> (for instance give DimlpBT, files need to have the .wts extension) ";
+  cout << "densCls --train_data_file <training set file(path with respect to specified root folder)> ";
+  cout << "--weights_generic_filename <weights generic name file> (for instance give dimlpBT, files need to have the .wts extension) ";
   cout << "--nb_attributes <number of input neurons> --nb_classes <number of output neurons> ";
   cout << "--nb_dimlp_nets <number of networks>";
   cout << " <Options>\n"
@@ -470,4 +470,4 @@ int densCls(const string &command) {
   return 0;
 }
 
-// Exemple to launch the code : densCls("DensCls --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_generic_filename dimlpDatanormBT --with_rule_extraction true --global_rules_outfile dimlpDatanormDensClsRul.rls --train_pred_outfile dimlpDatanormDensClsTrain.out --test_pred_outfile dimlpDatanormDensClsTest.out --stats_file dimlpDatanormDensClsStats --console_file dimlpDatanormDensClsResult.txt --root_folder dimlp/datafiles");
+// Exemple to launch the code : densCls("densCls --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_generic_filename dimlpDatanormBT --with_rule_extraction true --global_rules_outfile dimlpDatanormDensClsRul.rls --train_pred_outfile dimlpDatanormDensClsTrain.out --test_pred_outfile dimlpDatanormDensClsTest.out --stats_file dimlpDatanormDensClsStats --console_file dimlpDatanormDensClsResult.txt --root_folder dimlp/datafiles");

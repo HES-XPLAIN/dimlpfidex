@@ -33,7 +33,7 @@ void showParams() {
   std::cout << "--train_data_file <train data file>" << std::endl;
   std::cout << "--train_pred_file <train prediction file>" << std::endl;
   std::cout << "--train_class_file <train true class file, not mendatory if classes are specified in train data file>" << std::endl;
-  std::cout << "--weights_file <weights file. In case of bagging, put prefix of files, ex: DimlpBT, files need to be in the form DimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file] " << std::endl;
+  std::cout << "--weights_file <weights file. In case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file] " << std::endl;
   std::cout << "--rules_file <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] " << std::endl;
   std::cout << "Options :" << std::endl;
   std::cout << "--test_class_file <test true class file, classes can be specified in test data file>" << std::endl;

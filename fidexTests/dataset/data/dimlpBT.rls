@@ -1,0 +1,916 @@
+
+
+---------------------------------------------------------
+
+Rule 1: (FCVC > 2.22107) (NCP > 2.99967) (Gender_Male < 0.891004) (family_history_with_overweight_yes > 0.94965) (FAVC_yes > 0.939766) (CAEC_Sometimes > 0.865282) (CALC_Sometimes > 0.923052) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_III (117)
+
+Rule 2: (Height > 1.74282) (FCVC < 2.70389) (NCP > 2.67931) (NCP < 3.10535) (CH2O < 2.88477) (FAF > 0.527377) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (CALC_Sometimes > 0.923052) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_II (116)
+
+Rule 3: (NCP > 2.88906) (NCP < 3.10535) (CH2O < 2.75412) (FAF > 0.998004) (FAF < 2.00692) (TUE < 0.997426) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (CALC_Sometimes > 0.923052) Class = OLD_Obesity_Type_II (98)
+
+Rule 4: (TUE > 0.0495479) (Gender_Male < 0.891004) (family_history_with_overweight_yes < 0.94965) (CAEC_Always < 0.99476) (SCC_yes < 0.962684) (CALC_Sometimes > 0.923052) (MTRANS_Automobile < 0.988102) (MTRANS_Walking < 0.996445) Class = OLD_Insufficient_Weight (97)
+
+Rule 5: (NCP > 2.87923) (CH2O < 2.65155) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (SCC_no > 0.975994) (CALC_Sometimes > 0.923052) (MTRANS_Public_Transportation < 0.986779) (MTRANS_Walking < 0.996445) Class = OLD_Obesity_Type_II (96)
+
+Rule 6: (Height > 1.72714) (NCP > 2.81041) (FAF > 0.978923) (TUE < 0.57463) (Gender_Female < 0.977738) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (SCC_no > 0.975994) (CALC_Sometimes > 0.923052) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_II (89)
+
+Rule 7: (Height > 1.78133) (FCVC > 2.26345) (TUE < 1.17359) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_II (78)
+
+Rule 8: (FCVC > 2.23268) (Gender_Female < 0.977738) (FAVC_no < 0.996154) (SCC_no > 0.975994) (CALC_Sometimes > 0.923052) (MTRANS_Automobile > 0.988102) Class = OLD_Obesity_Type_II (73)
+
+Rule 9: (NCP > 2.67931) (TUE > 0.0495479) (Gender_Male < 0.891004) (CAEC_Always < 0.99476) (CAEC_Sometimes < 0.865282) (CAEC_no < 0.90179) (SCC_yes < 0.962684) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Insufficient_Weight (71)
+
+Rule 10: (CH2O > 1.43877) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (SCC_no > 0.975994) (CALC_no > 0.990873) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_I (71)
+
+Rule 11: (FCVC < 2.46967) (CH2O > 1.71864) (FAF < 2.36129) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_yes > 0.939766) (CAEC_Sometimes > 0.865282) (CALC_no > 0.990873) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_I (70)
+
+Rule 12: (Height < 1.7794) (family_history_with_overweight_yes > 0.94965) (FAVC_no > 0.996154) (CAEC_Sometimes > 0.865282) (SMOKE_yes < 0.999656) (SCC_no > 0.975994) (MTRANS_Automobile < 0.988102) (MTRANS_Walking < 0.996445) Class = OLD_Overweight_Level_II (68)
+
+Rule 13: (Height < 1.7794) (FCVC < 2.46967) (NCP > 2.81041) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_yes > 0.939766) (CAEC_Sometimes > 0.865282) (CALC_Sometimes < 0.923052) (MTRANS_Automobile < 0.988102) Class = OLD_Obesity_Type_I (64)
+
+Rule 14: (FAF < 2.08746) (TUE < 1.17359) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (SCC_no > 0.975994) (CALC_no > 0.990873) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_I (61)
+
+Rule 15: (Gender_Male < 0.891004) (family_history_with_overweight_yes < 0.94965) (CAEC_Always < 0.99476) (CAEC_Sometimes < 0.865282) (CAEC_no < 0.90179) (CALC_Sometimes > 0.923052) (MTRANS_Automobile < 0.988102) Class = OLD_Insufficient_Weight (61)
+
+Rule 16: (FCVC > 2.42282) (CH2O < 1.99851) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_yes > 0.939766) (CAEC_Sometimes > 0.865282) (CALC_Sometimes < 0.923052) Class = OLD_Obesity_Type_II (61)
+
+Rule 17: (NCP > 2.60508) (CH2O > 1.11225) (Gender_Male < 0.891004) (family_history_with_overweight_yes < 0.94965) (CAEC_Always < 0.99476) (CAEC_no < 0.90179) (SCC_no > 0.975994) (CALC_Sometimes > 0.923052) (MTRANS_Automobile < 0.988102) Class = OLD_Insufficient_Weight (52)
+
+Rule 18: (Height > 1.74924) (Height < 1.76713) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (CALC_Sometimes > 0.923052) (MTRANS_Automobile > 0.988102) Class = OLD_Obesity_Type_II (52)
+
+Rule 19: (Gender_Male < 0.891004) (family_history_with_overweight_no < 0.918738) (CAEC_Always < 0.99476) (CAEC_Sometimes < 0.865282) (CAEC_no < 0.90179) (CALC_no > 0.990873) (MTRANS_Automobile < 0.988102) Class = OLD_Insufficient_Weight (52)
+
+Rule 20: (FCVC > 2.64143) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_yes > 0.939766) (CAEC_Sometimes > 0.865282) (CALC_no > 0.990873) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_II (51)
+
+Rule 21: (Height > 1.80058) (NCP > 2.52201) (CH2O > 1.29883) (CH2O < 2.28632) (Gender_Female < 0.977738) (CAEC_Sometimes > 0.865282) (CALC_Sometimes > 0.923052) (MTRANS_Automobile < 0.988102) Class = OLD_Obesity_Type_II (50)
+
+Rule 22: (FCVC > 2.00122) (NCP > 2.52201) (NCP < 3.10535) (FAF > 0.87886) (TUE < 0.14986) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (CAEC_Sometimes > 0.865282) (CALC_Sometimes > 0.923052) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_II (48)
+
+Rule 23: (FAF < 1.99081) (Gender_Male < 0.891004) (family_history_with_overweight_yes > 0.94965) (FAVC_no > 0.996154) (CAEC_Sometimes > 0.865282) (SMOKE_yes < 0.999656) (SCC_yes < 0.962684) (MTRANS_Walking < 0.996445) Class = OLD_Overweight_Level_II (47)
+
+Rule 24: (Height < 1.8776) (FCVC < 2.46967) (NCP < 2.86468) (CH2O < 2.47306) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (CAEC_Always < 0.99476) (SMOKE_yes < 0.999656) (CALC_Sometimes > 0.923052) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Overweight_Level_II (47)
+
+Rule 25: (TUE > 0.292767) (family_history_with_overweight_yes > 0.94965) (CAEC_Always < 0.99476) (CAEC_Sometimes < 0.865282) (SCC_yes < 0.962684) (CALC_no > 0.990873) (MTRANS_Automobile < 0.988102) (MTRANS_Walking < 0.996445) Class = OLD_Insufficient_Weight (43)
+
+Rule 26: (Gender_Male < 0.891004) (FAVC_yes < 0.939766) (CAEC_Frequently > 0.872213) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Insufficient_Weight (43)
+
+Rule 27: (FCVC < 2.73512) (CH2O > 1.71864) (TUE < 1.17359) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_yes > 0.939766) (CAEC_Sometimes > 0.865282) (CALC_no > 0.990873) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_I (42)
+
+Rule 28: (Height > 1.77101) (Height < 1.83682) (FCVC > 2.45405) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (CALC_Sometimes > 0.923052) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_II (42)
+
+Rule 29: (Height < 1.87118) (FCVC < 2.46967) (NCP < 2.88906) (TUE < 1.17359) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (CAEC_Always < 0.99476) (CALC_Sometimes > 0.923052) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Overweight_Level_II (41)
+
+Rule 30: (FAVC_yes > 0.939766) (CAEC_no > 0.90179) (SMOKE_no > 0.981156) Class = OLD_Overweight_Level_I (41)
+
+Rule 31: (FCVC < 2.18625) (TUE < 0.0810054) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (CAEC_Always < 0.99476) (CALC_no < 0.990873) (MTRANS_Automobile > 0.988102) Class = OLD_Obesity_Type_I (40)
+
+Rule 32: (TUE < 0.997426) (Gender_Male > 0.891004) (CAEC_Frequently > 0.872213) Class = OLD_Normal_Weight (38)
+
+Rule 33: (NCP > 2.52201) (FAF < 2.08746) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (SCC_no > 0.975994) (CALC_no > 0.990873) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_I (37)
+
+Rule 34: (Height > 1.76849) (FAF > 1.89416) (family_history_with_overweight_yes > 0.94965) (FAVC_yes > 0.939766) (CAEC_Sometimes > 0.865282) (CALC_no > 0.990873) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Insufficient_Weight (35)
+
+Rule 35: (NCP > 2.60508) (TUE < 0.997426) (Gender_Female < 0.977738) (family_history_with_overweight_yes < 0.94965) (CAEC_no < 0.90179) (MTRANS_Automobile < 0.988102) Class = OLD_Normal_Weight (35)
+
+Rule 36: (Height > 1.7052) (Height < 1.79416) (FCVC < 2.36112) (NCP > 2.99967) (NCP < 3.10535) (CH2O > 1.67199) (FAF < 0.998004) (TUE < 0.997426) (CALC_Sometimes > 0.923052) (MTRANS_Motorbike < 0.984318) Class = OLD_Obesity_Type_II (33)
+
+Rule 37: (Height < 1.84551) (family_history_with_overweight_yes > 0.94965) (FAVC_no > 0.996154) (CAEC_Sometimes > 0.865282) (SMOKE_yes < 0.999656) (SCC_no > 0.975994) (CALC_no < 0.990873) (MTRANS_Automobile < 0.988102) (MTRANS_Walking < 0.996445) Class = OLD_Overweight_Level_II (33)
+
+Rule 38: (FAF > 0.998004) (CAEC_Always > 0.99476) Class = OLD_Normal_Weight (31)
+
+Rule 39: (Height > 1.76208) (FCVC > 2.06368) (family_history_with_overweight_yes > 0.94965) (CAEC_Always < 0.99476) (CALC_no > 0.990873) (MTRANS_Public_Transportation < 0.986779) (MTRANS_Walking < 0.996445) Class = OLD_Insufficient_Weight (31)
+
+Rule 40: (FCVC < 2.40721) (Gender_Female < 0.977738) (family_history_with_overweight_yes < 0.94965) (FAVC_yes > 0.939766) (CAEC_Sometimes > 0.865282) (MTRANS_Automobile < 0.988102) Class = OLD_Normal_Weight (28)
+
+Rule 41: (Height < 1.72714) (NCP < 2.99967) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (CAEC_Always < 0.99476) (CALC_Sometimes > 0.923052) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Overweight_Level_II (28)
+
+Rule 42: (Height > 1.65297) (FCVC < 2.73512) (NCP > 2.60508) (FAF > 0.376862) (Gender_Male > 0.891004) (family_history_with_overweight_yes < 0.94965) (CAEC_Sometimes > 0.865282) Class = OLD_Normal_Weight (27)
+
+Rule 43: (Height < 1.74282) (NCP > 2.60508) (CH2O < 2.88477) (Gender_Female < 0.977738) (family_history_with_overweight_yes < 0.94965) (CAEC_Sometimes > 0.865282) (MTRANS_Automobile < 0.988102) Class = OLD_Normal_Weight (27)
+
+Rule 44: (FCVC < 2.73512) (FAF > 1.02909) (Gender_Male < 0.891004) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (CALC_no > 0.990873) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_I (25)
+
+Rule 45: (FCVC < 2.62582) (CH2O > 2.79148) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (CAEC_Frequently < 0.872213) (CALC_Sometimes < 0.923052) (MTRANS_Automobile < 0.988102) (MTRANS_Walking < 0.996445) Class = OLD_Obesity_Type_I (25)
+
+Rule 46: (Height > 1.77491) (Height < 1.78775) (FCVC < 2.73512) (NCP > 2.81041) (CH2O < 2.88477) (family_history_with_overweight_yes > 0.94965) (CALC_Sometimes > 0.923052) Class = OLD_Obesity_Type_II (25)
+
+Rule 47: (family_history_with_overweight_no > 0.918738) (CAEC_Sometimes < 0.865282) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Normal_Weight (24)
+
+Rule 48: (CH2O < 2.88477) (Gender_Male > 0.891004) (family_history_with_overweight_yes > 0.94965) (CAEC_Always < 0.99476) (CAEC_Sometimes < 0.865282) (CALC_no < 0.990873) Class = OLD_Normal_Weight (24)
+
+Rule 49: (FCVC > 1.98891) (NCP > 2.99967) (CAEC_Always > 0.99476) (CALC_no < 0.990873) Class = OLD_Normal_Weight (24)
+
+Rule 50: (FCVC > 2.02469) (CH2O < 1.99851) (Gender_Female < 0.977738) (CALC_Sometimes > 0.923052) (MTRANS_Automobile > 0.988102) Class = OLD_Obesity_Type_II (23)
+
+Rule 51: (Height < 1.70577) (CAEC_Always > 0.99476) (MTRANS_Automobile < 0.988102) Class = OLD_Normal_Weight (23)
+
+Rule 52: (Height < 1.84551) (NCP > 2.99967) (TUE > 0.539398) (family_history_with_overweight_yes < 0.94965) (CAEC_Always < 0.99476) (CAEC_Sometimes < 0.865282) (CALC_Sometimes > 0.923052) (MTRANS_Automobile < 0.988102) Class = OLD_Insufficient_Weight (22)
+
+Rule 53: (CH2O < 2.88477) (CAEC_Always < 0.99476) (CAEC_Sometimes < 0.865282) (CALC_no < 0.990873) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Normal_Weight (22)
+
+Rule 54: (CAEC_Always < 0.99476) (CAEC_Sometimes < 0.865282) (CAEC_no < 0.90179) (SMOKE_yes < 0.999656) (MTRANS_Automobile > 0.988102) Class = OLD_Normal_Weight (22)
+
+Rule 55: (Height > 1.72714) (FCVC > 2.22107) (NCP < 2.99967) (CH2O > 1.96947) (Gender_Female < 0.977738) (FAVC_no < 0.996154) (SMOKE_yes < 0.999656) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_II (21)
+
+Rule 56: (NCP < 2.88906) (TUE < 0.0810054) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_no < 0.996154) (CALC_no < 0.990873) (MTRANS_Automobile > 0.988102) Class = OLD_Obesity_Type_I (21)
+
+Rule 57: (NCP > 2.99967) (Gender_Female > 0.977738) (family_history_with_overweight_yes < 0.94965) (MTRANS_Automobile > 0.988102) Class = OLD_Normal_Weight (20)
+
+Rule 58: (family_history_with_overweight_yes < 0.94965) (FAVC_yes > 0.939766) (CALC_Sometimes > 0.923052) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Normal_Weight (20)
+
+Rule 59: (Height < 1.7364) (FCVC < 2.2743) (TUE > 1.17359) (Gender_Female < 0.977738) (FAVC_no < 0.996154) (CALC_Sometimes > 0.923052) (MTRANS_Automobile < 0.988102) Class = OLD_Overweight_Level_II (20)
+
+Rule 60: (Height > 1.65668) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (CAEC_Sometimes > 0.865282) (CALC_no > 0.990873) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_I (20)
+
+Rule 61: (FCVC > 2.40721) (NCP > 2.99967) (CAEC_Always > 0.99476) Class = OLD_Normal_Weight (20)
+
+Rule 62: (NCP > 3.03653) (TUE < 0.997426) (Gender_Male < 0.891004) (FAVC_yes > 0.939766) (CAEC_Sometimes < 0.865282) (CAEC_no < 0.90179) (SCC_yes < 0.962684) Class = OLD_Insufficient_Weight (19)
+
+Rule 63: (NCP < 2.77122) (CH2O < 2.29121) (FAF > 0.828408) (TUE < 1.17359) (Gender_Female > 0.977738) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (SMOKE_no > 0.981156) (CALC_no < 0.990873) (MTRANS_Automobile < 0.988102) Class = OLD_Overweight_Level_I (19)
+
+Rule 64: (CH2O < 1.99851) (TUE > 0.0810054) (family_history_with_overweight_yes > 0.94965) (FAVC_yes > 0.939766) (CALC_no > 0.990873) (MTRANS_Automobile > 0.988102) Class = OLD_Overweight_Level_II (19)
+
+Rule 65: (FCVC < 2.15493) (NCP > 2.81041) (CH2O < 2.70452) (FAF < 1.92638) (TUE > 0.0810054) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (CAEC_Sometimes > 0.865282) (CALC_no < 0.990873) (MTRANS_Automobile < 0.988102) Class = OLD_Obesity_Type_I (19)
+
+Rule 66: (Height < 1.80395) (NCP > 2.99967) (CH2O < 1.96947) (TUE < 0.0465783) (family_history_with_overweight_yes < 0.94965) (CAEC_Sometimes > 0.865282) (SCC_no > 0.975994) Class = OLD_Normal_Weight (19)
+
+Rule 67: (FCVC > 2.18625) (NCP > 2.84974) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (CALC_Sometimes > 0.923052) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Overweight_Level_I (18)
+
+Rule 68: (Height < 1.74924) (NCP < 2.87923) (FAF < 0.998004) (TUE > 0.124039) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (SCC_no > 0.975994) (CALC_Sometimes > 0.923052) (MTRANS_Automobile < 0.988102) Class = OLD_Obesity_Type_I (18)
+
+Rule 69: (Height < 1.71073) (FCVC < 2.28516) (NCP < 3.10535) (FAF < 0.998004) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (CAEC_Sometimes > 0.865282) (CALC_Sometimes > 0.923052) (MTRANS_Automobile < 0.988102) Class = OLD_Overweight_Level_II (18)
+
+Rule 70: (Height < 1.78133) (FCVC > 2.14407) (NCP > 2.60508) (CH2O < 2.19201) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (CAEC_Sometimes > 0.865282) (CALC_no > 0.990873) Class = OLD_Obesity_Type_II (18)
+
+Rule 71: (Height < 1.74282) (FCVC < 2.73512) (TUE > 0.92696) (TUE < 1.17359) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (CAEC_Sometimes > 0.865282) (CALC_Sometimes > 0.923052) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Overweight_Level_II (18)
+
+Rule 72: (Gender_Female > 0.977738) (family_history_with_overweight_no > 0.918738) (CAEC_Sometimes > 0.865282) (SCC_no < 0.975994) (CALC_Sometimes > 0.923052) Class = OLD_Overweight_Level_I (17)
+
+Rule 73: (FCVC < 2.20947) (NCP < 2.77122) (Gender_Female < 0.977738) (CAEC_Sometimes > 0.865282) (CALC_Sometimes > 0.923052) (MTRANS_Automobile > 0.988102) Class = OLD_Obesity_Type_I (17)
+
+Rule 74: (CH2O < 2.29121) (TUE < 0.124039) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (SMOKE_no > 0.981156) (CALC_no < 0.990873) (MTRANS_Automobile < 0.988102) Class = OLD_Overweight_Level_I (17)
+
+Rule 75: (Height > 1.7637) (Gender_Male > 0.891004) (family_history_with_overweight_yes < 0.94965) (CAEC_Sometimes < 0.865282) Class = OLD_Normal_Weight (16)
+
+Rule 76: (FCVC > 2.22107) (NCP > 2.99967) (FAF > 1.53081) (Gender_Male < 0.891004) (family_history_with_overweight_yes > 0.94965) (FAVC_no < 0.996154) (SCC_no > 0.975994) (CALC_no > 0.990873) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Insufficient_Weight (16)
+
+Rule 77: (Height > 1.74924) (FCVC > 2.22107) (TUE > 0.997426) (family_history_with_overweight_yes < 0.94965) (MTRANS_Automobile < 0.988102) Class = OLD_Insufficient_Weight (15)
+
+Rule 78: (NCP > 2.67931) (CH2O < 2.11571) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (CAEC_Sometimes > 0.865282) (CALC_no > 0.990873) (MTRANS_Automobile > 0.988102) Class = OLD_Overweight_Level_II (15)
+
+Rule 79: (FCVC < 2.26751) (family_history_with_overweight_yes < 0.94965) (FAVC_yes > 0.939766) (CAEC_Sometimes > 0.865282) (CALC_Sometimes < 0.923052) (MTRANS_Automobile < 0.988102) Class = OLD_Normal_Weight (14)
+
+Rule 80: (TUE < 1.17359) (Gender_Male < 0.891004) (family_history_with_overweight_yes < 0.94965) (CAEC_Sometimes > 0.865282) (SCC_no > 0.975994) (CALC_no > 0.990873) (MTRANS_Automobile < 0.988102) Class = OLD_Normal_Weight (14)
+
+Rule 81: (Gender_Male < 0.891004) (family_history_with_overweight_yes > 0.94965) (FAVC_no < 0.996154) (CAEC_Frequently < 0.872213) (SCC_no < 0.975994) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Overweight_Level_I (14)
+
+Rule 82: (Height < 1.89685) (NCP > 2.99967) (Gender_Male > 0.891004) (CALC_Sometimes > 0.923052) (MTRANS_Walking > 0.996445) Class = OLD_Normal_Weight (14)
+
+Rule 83: (NCP < 2.87923) (TUE > 1.17359) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (SCC_no > 0.975994) (CALC_Sometimes > 0.923052) Class = OLD_Obesity_Type_I (14)
+
+Rule 84: (FCVC < 2.23268) (CH2O > 2.70452) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (CALC_Sometimes > 0.923052) (MTRANS_Automobile > 0.988102) Class = OLD_Obesity_Type_I (14)
+
+Rule 85: (FCVC > 2.26751) (NCP > 2.81041) (TUE > 1.17359) (family_history_with_overweight_yes < 0.94965) (MTRANS_Automobile < 0.988102) Class = OLD_Insufficient_Weight (13)
+
+Rule 86: (FCVC < 2.5009) (CH2O < 1.99851) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (CAEC_Sometimes > 0.865282) (CALC_no > 0.990873) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Overweight_Level_II (13)
+
+Rule 87: (NCP > 2.99967) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (SMOKE_no < 0.981156) (CALC_Sometimes > 0.923052) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_II (13)
+
+Rule 88: (FAF > 2.07135) (TUE > 0.715562) (Gender_Female > 0.977738) (FAVC_no < 0.996154) (CALC_no < 0.990873) Class = OLD_Insufficient_Weight (13)
+
+Rule 89: (FAVC_yes > 0.939766) (CAEC_Always < 0.99476) (CAEC_Sometimes < 0.865282) (CAEC_no < 0.90179) (CALC_Sometimes < 0.923052) (CALC_no < 0.990873) Class = OLD_Normal_Weight (12)
+
+Rule 90: (Gender_Male > 0.891004) (CAEC_Sometimes < 0.865282) (MTRANS_Walking > 0.996445) Class = OLD_Normal_Weight (11)
+
+Rule 91: (CH2O > 2.00603) (FAF < 1.99081) (Gender_Female > 0.977738) (FAVC_yes < 0.939766) (CALC_no > 0.990873) (MTRANS_Automobile < 0.988102) Class = OLD_Insufficient_Weight (11)
+
+Rule 92: (NCP < 2.99967) (FAF < 2.36129) (MTRANS_Automobile < 0.988102) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Normal_Weight (11)
+
+Rule 93: (Height < 1.75638) (NCP < 2.8694) (FAF > 1.23629) (TUE < 1.17359) (Gender_Female > 0.977738) (FAVC_no < 0.996154) (CALC_no < 0.990873) (MTRANS_Automobile < 0.988102) Class = OLD_Overweight_Level_I (11)
+
+Rule 94: (Height < 1.77101) (FCVC < 2.73512) (NCP < 3.10535) (CH2O > 2.19201) (CH2O < 2.88477) (TUE > 0.124039) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (CALC_Sometimes > 0.923052) (MTRANS_Automobile < 0.988102) Class = OLD_Overweight_Level_II (10)
+
+Rule 95: (Height < 1.7794) (FCVC > 2.73512) (CH2O > 2.19201) (FAVC_yes < 0.939766) (CAEC_Always < 0.99476) (CAEC_no < 0.90179) (SMOKE_yes < 0.999656) (CALC_Sometimes < 0.923052) (MTRANS_Automobile < 0.988102) Class = OLD_Insufficient_Weight (10)
+
+Rule 96: (NCP < 2.99967) (family_history_with_overweight_yes < 0.94965) (FAVC_yes > 0.939766) (SCC_no > 0.975994) (CALC_Sometimes < 0.923052) (MTRANS_Automobile < 0.988102) Class = OLD_Normal_Weight (10)
+
+Rule 97: (Height < 1.74924) (NCP < 2.81041) (TUE < 0.0987916) (family_history_with_overweight_yes < 0.94965) (CAEC_Sometimes > 0.865282) (CALC_Sometimes > 0.923052) (MTRANS_Automobile < 0.988102) Class = OLD_Overweight_Level_I (10)
+
+Rule 98: (Height < 1.7052) (FCVC < 2.73512) (CH2O < 2.47306) (TUE > 0.0810054) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (CALC_no < 0.990873) (MTRANS_Automobile > 0.988102) Class = OLD_Overweight_Level_I (10)
+
+Rule 99: (Height > 1.7637) (NCP > 3.04636) (FAF < 1.99081) (CALC_Sometimes > 0.923052) Class = OLD_Obesity_Type_II (10)
+
+Rule 100: (Height < 1.7637) (NCP < 2.99967) (Gender_Male > 0.891004) (family_history_with_overweight_yes < 0.94965) (CAEC_no < 0.90179) (CALC_Sometimes > 0.923052) Class = OLD_Normal_Weight (9)
+
+Rule 101: (CH2O > 1.92073) (CH2O < 2.05478) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (SMOKE_yes < 0.999656) (SCC_no > 0.975994) (CALC_no > 0.990873) (MTRANS_Automobile > 0.988102) Class = OLD_Overweight_Level_II (9)
+
+Rule 102: (Height < 1.67222) (FCVC > 2.06368) (NCP < 2.84974) (Gender_Female > 0.977738) (FAVC_no < 0.996154) (CALC_Sometimes > 0.923052) (MTRANS_Automobile > 0.988102) Class = OLD_Obesity_Type_I (9)
+
+Rule 103: (Height > 1.74924) (Height < 1.77101) (FCVC < 2.33942) (FAF < 2.05524) (TUE > 1.17359) (CALC_Sometimes > 0.923052) (MTRANS_Bike < 0.979953) Class = OLD_Obesity_Type_II (9)
+
+Rule 104: (Height > 1.65297) (family_history_with_overweight_yes > 0.94965) (FAVC_yes < 0.939766) (MTRANS_Walking > 0.996445) Class = OLD_Normal_Weight (9)
+
+Rule 105: (FCVC > 2.56336) (FCVC < 2.73512) (NCP > 2.73176) (Gender_Female < 0.977738) (CALC_Sometimes < 0.923052) Class = OLD_Insufficient_Weight (8)
+
+Rule 106: (Height > 1.82625) (FCVC < 2.22107) (CH2O > 2.18883) (TUE > 1.03266) (FAVC_no < 0.996154) Class = OLD_Obesity_Type_I (8)
+
+Rule 107: (Gender_Female < 0.977738) (family_history_with_overweight_no > 0.918738) (CAEC_no < 0.90179) (SCC_yes > 0.962684) Class = OLD_Normal_Weight (8)
+
+Rule 108: (family_history_with_overweight_yes < 0.94965) (CAEC_Sometimes > 0.865282) (CALC_Frequently > 0.995607) Class = OLD_Normal_Weight (8)
+
+Rule 109: (Gender_Male > 0.891004) (family_history_with_overweight_no > 0.918738) (FAVC_yes > 0.939766) (CAEC_Sometimes < 0.865282) (CALC_no > 0.990873) Class = OLD_Normal_Weight (8)
+
+Rule 110: (Height > 1.85193) (NCP > 2.77122) (FAVC_no < 0.996154) (CAEC_Always < 0.99476) (SCC_no > 0.975994) (CALC_Sometimes > 0.923052) (MTRANS_Automobile > 0.988102) Class = OLD_Obesity_Type_II (8)
+
+Rule 111: (FAVC_yes > 0.939766) (CAEC_Frequently > 0.872213) (SCC_yes > 0.962684) (CALC_no < 0.990873) Class = OLD_Normal_Weight (8)
+
+Rule 112: (Gender_Female > 0.977738) (CAEC_Sometimes > 0.865282) (CALC_no > 0.990873) (MTRANS_Walking > 0.996445) Class = OLD_Normal_Weight (8)
+
+Rule 113: (Height > 1.76849) (FAVC_yes < 0.939766) (CAEC_Sometimes < 0.865282) Class = OLD_Normal_Weight (8)
+
+Rule 114: (Height < 1.74924) (FCVC > 2.70389) (NCP > 2.99967) (FAF > 0.376862) (TUE > 0.151835) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (CALC_Sometimes > 0.923052) Class = OLD_Overweight_Level_I (8)
+
+Rule 115: (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_yes > 0.939766) (CAEC_Sometimes > 0.865282) (CALC_Frequently > 0.995607) (MTRANS_Automobile > 0.988102) Class = OLD_Obesity_Type_I (8)
+
+Rule 116: (Height > 1.71982) (Height < 1.75638) (FCVC > 2.20421) (NCP > 2.99967) (CAEC_Sometimes > 0.865282) (CALC_Sometimes < 0.923052) (MTRANS_Automobile > 0.988102) Class = OLD_Obesity_Type_II (8)
+
+Rule 117: (Height < 1.77101) (FCVC > 2.28516) (NCP > 2.99967) (CH2O < 2.88477) (FAF < 0.998004) (TUE < 1.17359) (Gender_Female < 0.977738) (CAEC_Sometimes > 0.865282) (CALC_Sometimes > 0.923052) (MTRANS_Automobile < 0.988102) (MTRANS_Motorbike < 0.984318) Class = OLD_Overweight_Level_I (8)
+
+Rule 118: (NCP < 3.10535) (TUE < 0.997426) (Gender_Male < 0.891004) (family_history_with_overweight_no < 0.918738) (CAEC_Sometimes < 0.865282) (CAEC_no < 0.90179) (CALC_no < 0.990873) (MTRANS_Automobile < 0.988102) Class = OLD_Normal_Weight (8)
+
+Rule 119: (Height < 1.78563) (FCVC < 2.22107) (CH2O > 2.42347) (FAVC_no < 0.996154) (CALC_Sometimes > 0.923052) (MTRANS_Automobile > 0.988102) Class = OLD_Obesity_Type_I (8)
+
+Rule 120: (Height > 1.79416) (Height < 1.80058) (FCVC < 2.73512) (NCP > 2.67931) (CH2O < 2.88477) (FAVC_no < 0.996154) (CAEC_Sometimes > 0.865282) (CALC_Sometimes > 0.923052) Class = OLD_Obesity_Type_II (7)
+
+Rule 121: (Height > 1.76849) (Height < 1.79168) (FCVC < 2.2743) (TUE > 1.17359) (MTRANS_Automobile < 0.988102) Class = OLD_Obesity_Type_I (7)
+
+Rule 122: (Gender_Male > 0.891004) (CAEC_Sometimes > 0.865282) (SCC_no < 0.975994) (MTRANS_Automobile < 0.988102) Class = OLD_Normal_Weight (7)
+
+Rule 123: (Height < 1.72999) (NCP > 2.88906) (NCP < 3.10535) (TUE < 0.218714) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_yes > 0.939766) (CALC_Sometimes < 0.923052) Class = OLD_Obesity_Type_I (7)
+
+Rule 124: (Height > 1.85193) (Height < 1.85875) (TUE < 1.17359) (MTRANS_Automobile < 0.988102) Class = OLD_Obesity_Type_II (7)
+
+Rule 125: (FCVC < 2.15493) (NCP > 2.99967) (CH2O > 2.62186) (TUE < 0.821261) (Gender_Female > 0.977738) (CALC_no < 0.990873) (MTRANS_Automobile < 0.988102) Class = OLD_Overweight_Level_I (6)
+
+Rule 126: (FCVC < 2.5009) (NCP < 2.99967) (CH2O > 2.0918) (Gender_Female < 0.977738) (CALC_no > 0.990873) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Overweight_Level_II (6)
+
+Rule 127: (Height > 1.78563) (Height < 1.79295) (FAF < 1.95859) (CALC_Sometimes < 0.923052) Class = OLD_Obesity_Type_I (6)
+
+Rule 128: (Height > 1.92894) (CAEC_Always < 0.99476) Class = OLD_Obesity_Type_I (6)
+
+Rule 129: (FCVC < 2.73512) (FAF > 1.95859) (FAF < 2.36129) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (FAVC_no < 0.996154) (CAEC_Always < 0.99476) (SCC_no > 0.975994) (CALC_Sometimes > 0.923052) (MTRANS_Automobile < 0.988102) Class = OLD_Overweight_Level_I (6)
+
+Rule 130: (FCVC > 2.73512) (CH2O > 2.05478) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (CALC_no > 0.990873) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Overweight_Level_II (6)
+
+Rule 131: (Height < 1.65668) (FCVC < 2.73512) (NCP < 2.66738) (CH2O < 1.85858) (TUE > 0.0810054) (family_history_with_overweight_yes > 0.94965) (CAEC_Sometimes > 0.865282) (SCC_no > 0.975994) Class = OLD_Overweight_Level_II (6)
+
+Rule 132: (CH2O < 2.88477) (family_history_with_overweight_no < 0.918738) (FAVC_yes < 0.939766) (CAEC_Frequently < 0.872213) (SCC_no < 0.975994) Class = OLD_Normal_Weight (5)
+
+Rule 133: (Gender_Female > 0.977738) (family_history_with_overweight_no > 0.918738) (SCC_yes > 0.962684) (CALC_no > 0.990873) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Insufficient_Weight (5)
+
+Rule 134: (Gender_Male > 0.891004) (family_history_with_overweight_yes > 0.94965) (CAEC_Sometimes > 0.865282) (SMOKE_no > 0.981156) (CALC_Sometimes < 0.923052) (CALC_no < 0.990873) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Overweight_Level_II (5)
+
+Rule 135: (Height > 1.71804) (Height < 1.75566) (FCVC < 2.07929) (CH2O > 1.83542) (FAVC_yes > 0.939766) (CALC_Sometimes < 0.923052) (MTRANS_Automobile > 0.988102) Class = OLD_Overweight_Level_II (5)
+
+Rule 136: (Height > 1.66581) (FCVC < 2.73512) (NCP > 3.10535) (TUE < 0.0639106) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_II (5)
+
+Rule 137: (Height > 1.87118) (FCVC < 2.20947) (NCP < 2.84974) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_I (5)
+
+Rule 138: (Height > 1.79295) (NCP > 3.10535) (Gender_Male > 0.891004) (family_history_with_overweight_yes < 0.94965) Class = OLD_Normal_Weight (5)
+
+Rule 139: (Height > 1.70577) (Height < 1.74282) (FCVC > 2.2743) (TUE > 1.17359) (Gender_Female < 0.977738) Class = OLD_Overweight_Level_I (5)
+
+Rule 140: (FCVC < 2.73512) (CH2O > 2.05478) (Gender_Female > 0.977738) (CALC_no > 0.990873) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Obesity_Type_I (5)
+
+Rule 141: (FCVC > 2.2559) (FCVC < 2.39519) (NCP > 2.99967) (NCP < 3.10535) (CH2O < 2.03041) (Gender_Female < 0.977738) (MTRANS_Automobile < 0.988102) Class = OLD_Overweight_Level_I (4)
+
+Rule 142: (CH2O < 2.26195) (Gender_Female > 0.977738) (CAEC_Sometimes > 0.865282) (SMOKE_no > 0.981156) (SCC_no > 0.975994) (CALC_Sometimes < 0.923052) (CALC_no < 0.990873) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Overweight_Level_I (4)
+
+Rule 143: (Height > 1.79416) (Height < 1.807) (FCVC < 2.46967) (CH2O > 2.52266) (TUE < 0.997426) (MTRANS_Automobile < 0.988102) Class = OLD_Obesity_Type_I (4)
+
+Rule 144: (Height < 1.79416) (FCVC < 2.73512) (FAF > 1.99081) (TUE > 0.645096) (TUE < 1.17359) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (CAEC_Sometimes > 0.865282) (SMOKE_yes < 0.999656) (CALC_Sometimes > 0.923052) (MTRANS_Automobile < 0.988102) Class = OLD_Overweight_Level_II (4)
+
+Rule 145: (Height > 1.81622) (NCP < 2.99967) (family_history_with_overweight_yes < 0.94965) Class = OLD_Normal_Weight (4)
+
+Rule 146: (Height < 1.72999) (FCVC > 2.22107) (NCP < 2.81041) (CH2O < 1.98166) (TUE < 0.187068) (CALC_no > 0.990873) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Obesity_Type_I (4)
+
+Rule 147: (Gender_Male > 0.891004) (family_history_with_overweight_yes > 0.94965) (FAVC_yes < 0.939766) (CAEC_Sometimes > 0.865282) (SCC_yes < 0.962684) (CALC_Sometimes > 0.923052) (MTRANS_Automobile > 0.988102) Class = OLD_Obesity_Type_II (4)
+
+Rule 148: (FCVC < 2.73512) (family_history_with_overweight_yes > 0.94965) (FAVC_yes < 0.939766) (SMOKE_yes < 0.999656) (CALC_Sometimes < 0.923052) (MTRANS_Automobile > 0.988102) Class = OLD_Overweight_Level_II (4)
+
+Rule 149: (Height < 1.7637) (FCVC < 2.73512) (NCP > 3.03653) (FAF < 1.99081) (TUE > 0.0639106) (TUE < 1.17359) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (MTRANS_Automobile < 0.988102) Class = OLD_Overweight_Level_I (4)
+
+Rule 150: (Height > 1.67222) (Height < 1.6979) (TUE > 0.0810054) (Gender_Female > 0.977738) (CAEC_Sometimes > 0.865282) (CALC_no < 0.990873) (MTRANS_Automobile > 0.988102) Class = OLD_Overweight_Level_I (4)
+
+Rule 151: (NCP < 2.88602) (FAF > 2.36129) (TUE > 1.17359) Class = OLD_Overweight_Level_II (3)
+
+Rule 152: (Height > 1.7794) (NCP > 2.99967) (CH2O < 1.95187) (family_history_with_overweight_yes > 0.94965) (CALC_no > 0.990873) Class = OLD_Obesity_Type_II (3)
+
+Rule 153: (FCVC < 2.10499) (NCP < 2.99967) (CH2O < 1.99851) (Gender_Female < 0.977738) (FAVC_yes > 0.939766) (CALC_Sometimes < 0.923052) Class = OLD_Obesity_Type_I (3)
+
+Rule 154: (Height > 1.72999) (Height < 1.75566) (FCVC < 2.07929) (NCP < 3.09552) (CH2O < 1.99385) (FAF < 2.36129) (CALC_no > 0.990873) Class = OLD_Obesity_Type_I (3)
+
+Rule 155: (Height < 1.78133) (FCVC < 2.5009) (NCP < 2.84974) (CH2O < 2.0918) (Gender_Female < 0.977738) (CALC_no > 0.990873) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Obesity_Type_I (3)
+
+Rule 156: (Height > 1.79168) (Height < 1.79416) (NCP > 2.99967) (CH2O < 1.85858) Class = OLD_Overweight_Level_I (3)
+
+Rule 157: (Height > 1.80058) (Height < 1.80395) (FCVC < 2.02469) (CH2O > 2.28632) Class = OLD_Obesity_Type_I (3)
+
+Rule 158: (NCP < 2.99967) (Gender_Female < 0.977738) (family_history_with_overweight_yes < 0.94965) (FAVC_yes < 0.939766) (SCC_no > 0.975994) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Overweight_Level_II (3)
+
+Rule 159: (Height > 1.81622) (Height < 1.82625) (FCVC < 2.73512) (CH2O > 2.50613) (TUE < 0.997426) (CAEC_Sometimes > 0.865282) Class = OLD_Obesity_Type_I (3)
+
+Rule 160: (Height < 1.74176) (FAF > 1.71698) (Gender_Male < 0.891004) (FAVC_yes > 0.939766) (CALC_Sometimes < 0.923052) (CALC_no < 0.990873) Class = OLD_Obesity_Type_I (3)
+
+Rule 161: (FAF < 1.71698) (Gender_Male < 0.891004) (family_history_with_overweight_yes > 0.94965) (CALC_Sometimes < 0.923052) (CALC_no < 0.990873) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Overweight_Level_II (3)
+
+Rule 162: (family_history_with_overweight_no < 0.918738) (CAEC_Sometimes > 0.865282) (SCC_no < 0.975994) (MTRANS_Automobile > 0.988102) Class = OLD_Overweight_Level_I (3)
+
+Rule 163: (NCP < 3.10535) (CH2O > 2.88477) (family_history_with_overweight_no < 0.918738) (FAVC_yes < 0.939766) (SCC_no < 0.975994) (CALC_Sometimes > 0.923052) Class = OLD_Overweight_Level_I (3)
+
+Rule 164: (Height < 1.73032) (CH2O > 2.26195) (Gender_Female > 0.977738) (SCC_no > 0.975994) (CALC_Sometimes < 0.923052) (CALC_no < 0.990873) Class = OLD_Overweight_Level_II (3)
+
+Rule 165: (Height > 1.84551) (FAVC_no > 0.996154) (SMOKE_yes < 0.999656) (CALC_no < 0.990873) Class = OLD_Normal_Weight (3)
+
+Rule 166: (Height < 1.79295) (FCVC < 2.08981) (CH2O > 2.44) (CH2O < 2.88477) (FAF > 0.998004) (TUE < 0.124039) Class = OLD_Obesity_Type_I (3)
+
+Rule 167: (Height > 1.72357) (FCVC > 2.73512) (NCP > 2.99967) (NCP < 3.10535) (Gender_Male > 0.891004) (family_history_with_overweight_yes < 0.94965) (CAEC_no < 0.90179) (SCC_yes < 0.962684) (CALC_Frequently < 0.995607) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Insufficient_Weight (3)
+
+Rule 168: (FCVC > 2.73512) (NCP < 2.69244) (FAF > 2.36129) (TUE < 0.0782734) (MTRANS_Automobile < 0.988102) Class = OLD_Overweight_Level_I (3)
+
+Rule 169: (Height > 1.7364) (Height < 1.74282) (FAF < 2.03913) (TUE > 1.17359) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Overweight_Level_I (2)
+
+Rule 170: (Height > 1.76713) (Height < 1.76849) (FCVC < 2.36112) (FAF > 1.99081) Class = OLD_Obesity_Type_I (2)
+
+Rule 171: (Height > 1.85875) (Height < 1.86607) (FCVC < 2.24429) (TUE < 1.17359) (MTRANS_Automobile < 0.988102) Class = OLD_Overweight_Level_I (2)
+
+Rule 172: (NCP < 2.99967) (TUE > 1.17359) (Gender_Female > 0.977738) (CALC_Sometimes < 0.923052) (CALC_no < 0.990873) Class = OLD_Overweight_Level_II (2)
+
+Rule 173: (Height < 1.60283) (TUE > 0.0810054) (family_history_with_overweight_yes < 0.94965) (FAVC_no > 0.996154) (CAEC_Sometimes > 0.865282) Class = OLD_Normal_Weight (2)
+
+Rule 174: (CH2O > 2.88477) (TUE > 0.082377) (FAVC_yes > 0.939766) (CAEC_Always < 0.99476) (CAEC_Sometimes < 0.865282) (CAEC_no < 0.90179) (SCC_yes < 0.962684) (CALC_Sometimes > 0.923052) Class = OLD_Insufficient_Weight (2)
+
+Rule 175: (Height < 1.84551) (Gender_Female < 0.977738) (FAVC_yes > 0.939766) (CAEC_Sometimes > 0.865282) (CALC_no > 0.990873) (MTRANS_Walking > 0.996445) Class = OLD_Insufficient_Weight (2)
+
+Rule 176: (FCVC < 2.73512) (Gender_Female > 0.977738) (SMOKE_no < 0.981156) (CALC_Sometimes > 0.923052) Class = OLD_Obesity_Type_I (2)
+
+Rule 177: (Height < 1.74282) (Gender_Male > 0.891004) (family_history_with_overweight_yes > 0.94965) (FAVC_yes < 0.939766) (CALC_Sometimes < 0.923052) (MTRANS_Walking > 0.996445) Class = OLD_Overweight_Level_II (2)
+
+Rule 178: (Height > 1.71982) (TUE > 0.0810054) (Gender_Female > 0.977738) (family_history_with_overweight_yes > 0.94965) (MTRANS_Automobile > 0.988102) Class = OLD_Obesity_Type_I (2)
+
+Rule 179: (FCVC > 2.62582) (NCP < 2.73176) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (CAEC_Always < 0.99476) (CALC_no > 0.990873) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Obesity_Type_I (2)
+
+Rule 180: (CAEC_Sometimes > 0.865282) (SMOKE_no < 0.981156) (CALC_no > 0.990873) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Obesity_Type_I (2)
+
+Rule 181: (Height > 1.74282) (NCP > 2.60508) (Gender_Female > 0.977738) (SCC_no > 0.975994) (CALC_Sometimes < 0.923052) (CALC_no < 0.990873) Class = OLD_Overweight_Level_II (2)
+
+Rule 182: (Height < 1.75638) (FCVC < 2.73512) (NCP > 3.10535) (FAF > 1.23629) (TUE < 0.645096) (family_history_with_overweight_yes > 0.94965) (CALC_Sometimes > 0.923052) Class = OLD_Overweight_Level_I (2)
+
+Rule 183: (FAVC_yes < 0.939766) (CAEC_Sometimes < 0.865282) (SMOKE_no < 0.981156) Class = OLD_Insufficient_Weight (2)
+
+Rule 184: (Height > 1.82951) (FCVC > 2.73512) (FAF > 1.99081) (Gender_Female < 0.977738) (CAEC_Sometimes > 0.865282) (SMOKE_yes < 0.999656) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Overweight_Level_I (2)
+
+Rule 185: (Height < 1.73032) (FCVC > 2.73512) (CH2O > 2.88477) (FAF < 0.998004) (Gender_Female < 0.977738) Class = OLD_Overweight_Level_II (2)
+
+Rule 186: (Height > 1.74282) (Height < 1.74924) (TUE > 1.17359) Class = OLD_Obesity_Type_I (2)
+
+Rule 187: (Height > 1.75486) (Height < 1.7794) (FCVC > 2.73512) (NCP < 2.99967) (Gender_Female < 0.977738) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Overweight_Level_II (2)
+
+Rule 188: (Gender_Female > 0.977738) (SMOKE_yes > 0.999656) (SCC_yes < 0.962684) (CALC_Frequently > 0.995607) Class = OLD_Overweight_Level_II (1)
+
+Rule 189: (FCVC > 2.22107) (NCP > 2.87923) (FAF < 0.908646) (TUE > 1.17359) (Gender_Female > 0.977738) (CALC_Sometimes > 0.923052) Class = OLD_Obesity_Type_III (1)
+
+Rule 190: (Height > 1.83267) (Height < 1.84077) (FCVC < 2.73512) (CH2O < 1.62535) Class = OLD_Overweight_Level_I (1)
+
+Rule 191: (Height < 1.72999) (FCVC > 2.73512) (NCP < 2.99967) (TUE < 1.17359) (SMOKE_no < 0.981156) (CALC_no < 0.990873) Class = OLD_Overweight_Level_II (1)
+
+Rule 192: (Height > 1.75638) (Height < 1.76208) (FCVC > 2.1166) (FCVC < 2.12821) Class = OLD_Obesity_Type_I (1)
+
+Rule 193: (Height > 1.80058) (Height < 1.80395) (CH2O < 1.67199) Class = OLD_Overweight_Level_I (1)
+
+Rule 194: (Height > 1.77101) (Height < 1.77491) (NCP < 3.08569) (CH2O < 1.99851) Class = OLD_Overweight_Level_I (1)
+
+Rule 195: (FCVC < 2.20947) (NCP < 2.67931) (CH2O > 1.96947) (TUE > 0.997426) (Gender_Male < 0.891004) (CAEC_Sometimes < 0.865282) Class = OLD_Insufficient_Weight (1)
+
+Rule 196: (NCP < 2.77122) (Gender_Female > 0.977738) (family_history_with_overweight_yes < 0.94965) (FAVC_yes > 0.939766) (CALC_Sometimes < 0.923052) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Obesity_Type_I (1)
+
+Rule 197: (Height > 1.89685) (NCP > 2.99967) (FAVC_yes > 0.939766) (MTRANS_Automobile < 0.988102) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Insufficient_Weight (1)
+
+Rule 198: (Height > 1.7637) (Height < 1.76713) (FCVC > 2.70389) (FCVC < 2.73512) Class = OLD_Overweight_Level_I (1)
+
+Rule 199: (Height > 1.75638) (Height < 1.76208) (FCVC < 2.1166) (SMOKE_no > 0.981156) (CALC_Sometimes < 0.923052) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Overweight_Level_II (1)
+
+Rule 200: (FCVC < 2.20947) (NCP < 2.67931) (CH2O < 1.96947) (CAEC_Sometimes < 0.865282) (CALC_no < 0.990873) Class = OLD_Normal_Weight (1)
+
+Rule 201: (Height > 1.71073) (Height < 1.72357) (FCVC < 2.28516) (NCP > 2.99967) (CH2O < 1.95729) (FAF < 0.998004) (TUE < 1.17359) (Gender_Female < 0.977738) (MTRANS_Automobile < 0.988102) Class = OLD_Overweight_Level_I (1)
+
+Rule 202: (FAF > 1.99081) (FAVC_no > 0.996154) (SCC_no > 0.975994) (CALC_Frequently > 0.995607) (MTRANS_Automobile > 0.988102) Class = OLD_Overweight_Level_II (1)
+
+Rule 203: (FAF > 1.99081) (Gender_Male < 0.891004) (FAVC_no > 0.996154) (SMOKE_yes < 0.999656) (SCC_no > 0.975994) (CALC_Frequently < 0.995607) (MTRANS_Automobile > 0.988102) Class = OLD_Overweight_Level_I (1)
+
+Rule 204: (FAF < 2.02303) (TUE < 0.0465783) (Gender_Male < 0.891004) (FAVC_no > 0.996154) (SMOKE_no < 0.981156) Class = OLD_Normal_Weight (1)
+
+Rule 205: (Height > 1.78563) (Height < 1.79416) (NCP > 2.99967) (CH2O > 2.88477) Class = OLD_Obesity_Type_I (1)
+
+Rule 206: (Height < 1.72999) (FCVC > 2.17464) (NCP > 2.99967) (NCP < 3.10535) (Gender_Female < 0.977738) (family_history_with_overweight_yes > 0.94965) (CAEC_Always < 0.99476) (MTRANS_Automobile > 0.988102) Class = OLD_Insufficient_Weight (1)
+
+Rule 207: (Gender_Male < 0.891004) (FAVC_no > 0.996154) (SMOKE_no < 0.981156) (SCC_no > 0.975994) (MTRANS_Public_Transportation > 0.986779) Class = OLD_Obesity_Type_I (1)
+
+Rule 208: (FAVC_no > 0.996154) (SCC_no > 0.975994) (CALC_no > 0.990873) (MTRANS_Automobile < 0.988102) (MTRANS_Motorbike < 0.984318) (MTRANS_Public_Transportation < 0.986779) (MTRANS_Walking < 0.996445) Class = OLD_Overweight_Level_II (1)
+
+Rule 209: (Height > 1.75638) (Height < 1.77101) (FCVC > 2.73512) (CH2O > 2.88477) (CALC_Sometimes > 0.923052) (MTRANS_Automobile < 0.988102) Class = OLD_Overweight_Level_I (1)
+
+Rule 210: (Height > 1.80058) (Height < 1.81622) (NCP < 2.99967) (FAF > 1.99081) Class = OLD_Overweight_Level_I (1)
+
+Rule 211: (Height > 1.60283) (FCVC < 2.73512) (TUE > 1.17359) (Gender_Male < 0.891004) (FAVC_no > 0.996154) (SCC_no > 0.975994) Class = OLD_Overweight_Level_II (1)
+
+Rule 212: (NCP > 2.99967) (Gender_Female > 0.977738) (FAVC_yes < 0.939766) (CAEC_no > 0.90179) (SCC_yes < 0.962684) Class = OLD_Insufficient_Weight (1)
+
+Rule 213: (NCP < 2.99967) (FAVC_yes < 0.939766) (CAEC_no > 0.90179) Class = OLD_Normal_Weight (1)
+
+Rule 214: (Height > 1.77101) (Height < 1.7794) (FCVC > 2.44163) (FCVC < 2.73512) (TUE > 1.17359) Class = OLD_Overweight_Level_I (1)
+
+Rule 215: (Height < 1.74924) (FCVC < 2.73512) (FAF > 0.998004) (Gender_Male > 0.891004) (family_history_with_overweight_yes < 0.94965) (FAVC_yes > 0.939766) (CALC_Frequently < 0.995607) (MTRANS_Public_Transportation < 0.986779) Class = OLD_Overweight_Level_I (1)
+
+Rule 216: (NCP < 2.99967) (Gender_Female < 0.977738) (SMOKE_no < 0.981156) (SCC_no > 0.975994) Class = OLD_Obesity_Type_I (1)
+
+Rule 217: (Height > 1.79416) (CH2O > 1.99851) (FAF < 0.728064) (CAEC_Always > 0.99476) Class = OLD_Overweight_Level_II (1)
+
+Rule 218: (Height > 1.84551) (NCP < 2.99967) (CAEC_Always > 0.99476) Class = OLD_Obesity_Type_II (1)
+
+Rule 219: (Height < 1.82849) (NCP < 2.99967) (Gender_Female < 0.977738) (CAEC_Always > 0.99476) (SCC_yes < 0.962684) (CALC_no < 0.990873) Class = OLD_Overweight_Level_II (1)
+
+---------------------------------------------------------
+
+Training set:
+
+---------------------------------------------------------
+
+Rule    1:   117   110     7     0.940171       Class = OLD_Obesity_Type_III
+Rule    2:   116    97    19     0.836207       Class = OLD_Obesity_Type_II
+Rule    3:    98    70    28     0.714286       Class = OLD_Obesity_Type_II
+Rule    4:    97    78    19     0.804124       Class = OLD_Insufficient_Weight
+Rule    5:    96    71    25     0.739583       Class = OLD_Obesity_Type_II
+Rule    6:    89    61    28     0.685393       Class = OLD_Obesity_Type_II
+Rule    7:    78    54    24     0.692308       Class = OLD_Obesity_Type_II
+Rule    8:    73    42    31     0.575342       Class = OLD_Obesity_Type_II
+Rule    9:    71    50    21     0.704225       Class = OLD_Insufficient_Weight
+Rule   10:    71    48    23     0.676056       Class = OLD_Obesity_Type_I
+Rule   11:    70    51    19     0.728571       Class = OLD_Obesity_Type_I
+Rule   12:    68    57    11     0.838235       Class = OLD_Overweight_Level_II
+Rule   13:    64    44    20       0.6875       Class = OLD_Obesity_Type_I
+Rule   14:    61    48    13     0.786885       Class = OLD_Obesity_Type_I
+Rule   15:    61    55     6     0.901639       Class = OLD_Insufficient_Weight
+Rule   16:    61    58     3      0.95082       Class = OLD_Obesity_Type_II
+Rule   17:    52    37    15     0.711538       Class = OLD_Insufficient_Weight
+Rule   18:    52    49     3     0.942308       Class = OLD_Obesity_Type_II
+Rule   19:    52    40    12     0.769231       Class = OLD_Insufficient_Weight
+Rule   20:    51    48     3     0.941176       Class = OLD_Obesity_Type_II
+Rule   21:    50    32    18         0.64       Class = OLD_Obesity_Type_II
+Rule   22:    48    37    11     0.770833       Class = OLD_Obesity_Type_II
+Rule   23:    47    36    11     0.765957       Class = OLD_Overweight_Level_II
+Rule   24:    47    39     8     0.829787       Class = OLD_Overweight_Level_II
+Rule   25:    43    32    11     0.744186       Class = OLD_Insufficient_Weight
+Rule   26:    43    38     5     0.883721       Class = OLD_Insufficient_Weight
+Rule   27:    42    30    12     0.714286       Class = OLD_Obesity_Type_I
+Rule   28:    42    17    25     0.404762       Class = OLD_Obesity_Type_II
+Rule   29:    41    34     7     0.829268       Class = OLD_Overweight_Level_II
+Rule   30:    41    35     6     0.853659       Class = OLD_Overweight_Level_I
+Rule   31:    40    33     7        0.825       Class = OLD_Obesity_Type_I
+Rule   32:    38    27    11     0.710526       Class = OLD_Normal_Weight
+Rule   33:    37    24    13     0.648649       Class = OLD_Obesity_Type_I
+Rule   34:    35    32     3     0.914286       Class = OLD_Insufficient_Weight
+Rule   35:    35    23    12     0.657143       Class = OLD_Normal_Weight
+Rule   36:    33    27     6     0.818182       Class = OLD_Obesity_Type_II
+Rule   37:    33    24     9     0.727273       Class = OLD_Overweight_Level_II
+Rule   38:    31    25     6     0.806452       Class = OLD_Normal_Weight
+Rule   39:    31    29     2     0.935484       Class = OLD_Insufficient_Weight
+Rule   40:    28    15    13     0.535714       Class = OLD_Normal_Weight
+Rule   41:    28    27     1     0.964286       Class = OLD_Overweight_Level_II
+Rule   42:    27    17    10      0.62963       Class = OLD_Normal_Weight
+Rule   43:    27    19     8     0.703704       Class = OLD_Normal_Weight
+Rule   44:    25    17     8         0.68       Class = OLD_Obesity_Type_I
+Rule   45:    25    21     4         0.84       Class = OLD_Obesity_Type_I
+Rule   46:    25    19     6         0.76       Class = OLD_Obesity_Type_II
+Rule   47:    24    17     7     0.708333       Class = OLD_Normal_Weight
+Rule   48:    24    16     8     0.666667       Class = OLD_Normal_Weight
+Rule   49:    24    17     7     0.708333       Class = OLD_Normal_Weight
+Rule   50:    23    12    11     0.521739       Class = OLD_Obesity_Type_II
+Rule   51:    23    19     4     0.826087       Class = OLD_Normal_Weight
+Rule   52:    22    13     9     0.590909       Class = OLD_Insufficient_Weight
+Rule   53:    22    15     7     0.681818       Class = OLD_Normal_Weight
+Rule   54:    22    16     6     0.727273       Class = OLD_Normal_Weight
+Rule   55:    21    19     2     0.904762       Class = OLD_Obesity_Type_II
+Rule   56:    21    18     3     0.857143       Class = OLD_Obesity_Type_I
+Rule   57:    20    13     7         0.65       Class = OLD_Normal_Weight
+Rule   58:    20    14     6          0.7       Class = OLD_Normal_Weight
+Rule   59:    20     1    19         0.05       Class = OLD_Overweight_Level_II
+Rule   60:    20     6    14          0.3       Class = OLD_Obesity_Type_I
+Rule   61:    20    18     2          0.9       Class = OLD_Normal_Weight
+Rule   62:    19    16     3     0.842105       Class = OLD_Insufficient_Weight
+Rule   63:    19    15     4     0.789474       Class = OLD_Overweight_Level_I
+Rule   64:    19    14     5     0.736842       Class = OLD_Overweight_Level_II
+Rule   65:    19     8    11     0.421053       Class = OLD_Obesity_Type_I
+Rule   66:    19    14     5     0.736842       Class = OLD_Normal_Weight
+Rule   67:    18    11     7     0.611111       Class = OLD_Overweight_Level_I
+Rule   68:    18    15     3     0.833333       Class = OLD_Obesity_Type_I
+Rule   69:    18     7    11     0.388889       Class = OLD_Overweight_Level_II
+Rule   70:    18    15     3     0.833333       Class = OLD_Obesity_Type_II
+Rule   71:    18    15     3     0.833333       Class = OLD_Overweight_Level_II
+Rule   72:    17    15     2     0.882353       Class = OLD_Overweight_Level_I
+Rule   73:    17     6    11     0.352941       Class = OLD_Obesity_Type_I
+Rule   74:    17    14     3     0.823529       Class = OLD_Overweight_Level_I
+Rule   75:    16    14     2        0.875       Class = OLD_Normal_Weight
+Rule   76:    16    14     2        0.875       Class = OLD_Insufficient_Weight
+Rule   77:    15    12     3          0.8       Class = OLD_Insufficient_Weight
+Rule   78:    15    12     3          0.8       Class = OLD_Overweight_Level_II
+Rule   79:    14    12     2     0.857143       Class = OLD_Normal_Weight
+Rule   80:    14    10     4     0.714286       Class = OLD_Normal_Weight
+Rule   81:    14    12     2     0.857143       Class = OLD_Overweight_Level_I
+Rule   82:    14     8     6     0.571429       Class = OLD_Normal_Weight
+Rule   83:    14    11     3     0.785714       Class = OLD_Obesity_Type_I
+Rule   84:    14     9     5     0.642857       Class = OLD_Obesity_Type_I
+Rule   85:    13     8     5     0.615385       Class = OLD_Insufficient_Weight
+Rule   86:    13     9     4     0.692308       Class = OLD_Overweight_Level_II
+Rule   87:    13    12     1     0.923077       Class = OLD_Obesity_Type_II
+Rule   88:    13    10     3     0.769231       Class = OLD_Insufficient_Weight
+Rule   89:    12     6     6          0.5       Class = OLD_Normal_Weight
+Rule   90:    11     6     5     0.545455       Class = OLD_Normal_Weight
+Rule   91:    11    10     1     0.909091       Class = OLD_Insufficient_Weight
+Rule   92:    11     9     2     0.818182       Class = OLD_Normal_Weight
+Rule   93:    11     8     3     0.727273       Class = OLD_Overweight_Level_I
+Rule   94:    10     8     2          0.8       Class = OLD_Overweight_Level_II
+Rule   95:    10     9     1          0.9       Class = OLD_Insufficient_Weight
+Rule   96:    10     7     3          0.7       Class = OLD_Normal_Weight
+Rule   97:    10     5     5          0.5       Class = OLD_Overweight_Level_I
+Rule   98:    10     9     1          0.9       Class = OLD_Overweight_Level_I
+Rule   99:    10     0    10            0       Class = OLD_Obesity_Type_II
+Rule  100:     9     2     7     0.222222       Class = OLD_Normal_Weight
+Rule  101:     9     7     2     0.777778       Class = OLD_Overweight_Level_II
+Rule  102:     9     7     2     0.777778       Class = OLD_Obesity_Type_I
+Rule  103:     9     8     1     0.888889       Class = OLD_Obesity_Type_II
+Rule  104:     9     4     5     0.444444       Class = OLD_Normal_Weight
+Rule  105:     8     6     2         0.75       Class = OLD_Insufficient_Weight
+Rule  106:     8     8     0            1       Class = OLD_Obesity_Type_I
+Rule  107:     8     3     5        0.375       Class = OLD_Normal_Weight
+Rule  108:     8     4     4          0.5       Class = OLD_Normal_Weight
+Rule  109:     8     4     4          0.5       Class = OLD_Normal_Weight
+Rule  110:     8     2     6         0.25       Class = OLD_Obesity_Type_II
+Rule  111:     8     5     3        0.625       Class = OLD_Normal_Weight
+Rule  112:     8     7     1        0.875       Class = OLD_Normal_Weight
+Rule  113:     8     6     2         0.75       Class = OLD_Normal_Weight
+Rule  114:     8     4     4          0.5       Class = OLD_Overweight_Level_I
+Rule  115:     8     7     1        0.875       Class = OLD_Obesity_Type_I
+Rule  116:     8     6     2         0.75       Class = OLD_Obesity_Type_II
+Rule  117:     8     2     6         0.25       Class = OLD_Overweight_Level_I
+Rule  118:     8     6     2         0.75       Class = OLD_Normal_Weight
+Rule  119:     8     7     1        0.875       Class = OLD_Obesity_Type_I
+Rule  120:     7     3     4     0.428571       Class = OLD_Obesity_Type_II
+Rule  121:     7     6     1     0.857143       Class = OLD_Obesity_Type_I
+Rule  122:     7     3     4     0.428571       Class = OLD_Normal_Weight
+Rule  123:     7     4     3     0.571429       Class = OLD_Obesity_Type_I
+Rule  124:     7     3     4     0.428571       Class = OLD_Obesity_Type_II
+Rule  125:     6     5     1     0.833333       Class = OLD_Overweight_Level_I
+Rule  126:     6     6     0            1       Class = OLD_Overweight_Level_II
+Rule  127:     6     3     3          0.5       Class = OLD_Obesity_Type_I
+Rule  128:     6     5     1     0.833333       Class = OLD_Obesity_Type_I
+Rule  129:     6     5     1     0.833333       Class = OLD_Overweight_Level_I
+Rule  130:     6     5     1     0.833333       Class = OLD_Overweight_Level_II
+Rule  131:     6     4     2     0.666667       Class = OLD_Overweight_Level_II
+Rule  132:     5     5     0            1       Class = OLD_Normal_Weight
+Rule  133:     5     4     1          0.8       Class = OLD_Insufficient_Weight
+Rule  134:     5     1     4          0.2       Class = OLD_Overweight_Level_II
+Rule  135:     5     4     1          0.8       Class = OLD_Overweight_Level_II
+Rule  136:     5     1     4          0.2       Class = OLD_Obesity_Type_II
+Rule  137:     5     3     2          0.6       Class = OLD_Obesity_Type_I
+Rule  138:     5     4     1          0.8       Class = OLD_Normal_Weight
+Rule  139:     5     4     1          0.8       Class = OLD_Overweight_Level_I
+Rule  140:     5     3     2          0.6       Class = OLD_Obesity_Type_I
+Rule  141:     4     1     3         0.25       Class = OLD_Overweight_Level_I
+Rule  142:     4     3     1         0.75       Class = OLD_Overweight_Level_I
+Rule  143:     4     3     1         0.75       Class = OLD_Obesity_Type_I
+Rule  144:     4     2     2          0.5       Class = OLD_Overweight_Level_II
+Rule  145:     4     0     4            0       Class = OLD_Normal_Weight
+Rule  146:     4     3     1         0.75       Class = OLD_Obesity_Type_I
+Rule  147:     4     2     2          0.5       Class = OLD_Obesity_Type_II
+Rule  148:     4     2     2          0.5       Class = OLD_Overweight_Level_II
+Rule  149:     4     4     0            1       Class = OLD_Overweight_Level_I
+Rule  150:     4     4     0            1       Class = OLD_Overweight_Level_I
+Rule  151:     3     3     0            1       Class = OLD_Overweight_Level_II
+Rule  152:     3     0     3            0       Class = OLD_Obesity_Type_II
+Rule  153:     3     0     3            0       Class = OLD_Obesity_Type_I
+Rule  154:     3     1     2     0.333333       Class = OLD_Obesity_Type_I
+Rule  155:     3     0     3            0       Class = OLD_Obesity_Type_I
+Rule  156:     3     0     3            0       Class = OLD_Overweight_Level_I
+Rule  157:     3     3     0            1       Class = OLD_Obesity_Type_I
+Rule  158:     3     3     0            1       Class = OLD_Overweight_Level_II
+Rule  159:     3     3     0            1       Class = OLD_Obesity_Type_I
+Rule  160:     3     0     3            0       Class = OLD_Obesity_Type_I
+Rule  161:     3     3     0            1       Class = OLD_Overweight_Level_II
+Rule  162:     3     1     2     0.333333       Class = OLD_Overweight_Level_I
+Rule  163:     3     1     2     0.333333       Class = OLD_Overweight_Level_I
+Rule  164:     3     3     0            1       Class = OLD_Overweight_Level_II
+Rule  165:     3     3     0            1       Class = OLD_Normal_Weight
+Rule  166:     3     2     1     0.666667       Class = OLD_Obesity_Type_I
+Rule  167:     3     1     2     0.333333       Class = OLD_Insufficient_Weight
+Rule  168:     3     3     0            1       Class = OLD_Overweight_Level_I
+Rule  169:     2     1     1          0.5       Class = OLD_Overweight_Level_I
+Rule  170:     2     0     2            0       Class = OLD_Obesity_Type_I
+Rule  171:     2     2     0            1       Class = OLD_Overweight_Level_I
+Rule  172:     2     0     2            0       Class = OLD_Overweight_Level_II
+Rule  173:     2     2     0            1       Class = OLD_Normal_Weight
+Rule  174:     2     1     1          0.5       Class = OLD_Insufficient_Weight
+Rule  175:     2     0     2            0       Class = OLD_Insufficient_Weight
+Rule  176:     2     0     2            0       Class = OLD_Obesity_Type_I
+Rule  177:     2     2     0            1       Class = OLD_Overweight_Level_II
+Rule  178:     2     0     2            0       Class = OLD_Obesity_Type_I
+Rule  179:     2     0     2            0       Class = OLD_Obesity_Type_I
+Rule  180:     2     2     0            1       Class = OLD_Obesity_Type_I
+Rule  181:     2     0     2            0       Class = OLD_Overweight_Level_II
+Rule  182:     2     1     1          0.5       Class = OLD_Overweight_Level_I
+Rule  183:     2     0     2            0       Class = OLD_Insufficient_Weight
+Rule  184:     2     0     2            0       Class = OLD_Overweight_Level_I
+Rule  185:     2     1     1          0.5       Class = OLD_Overweight_Level_II
+Rule  186:     2     1     1          0.5       Class = OLD_Obesity_Type_I
+Rule  187:     2     0     2            0       Class = OLD_Overweight_Level_II
+Rule  188:     1     0     1            0       Class = OLD_Overweight_Level_II
+Rule  189:     1     0     1            0       Class = OLD_Obesity_Type_III
+Rule  190:     1     0     1            0       Class = OLD_Overweight_Level_I
+Rule  191:     1     0     1            0       Class = OLD_Overweight_Level_II
+Rule  192:     1     0     1            0       Class = OLD_Obesity_Type_I
+Rule  193:     1     0     1            0       Class = OLD_Overweight_Level_I
+Rule  194:     1     0     1            0       Class = OLD_Overweight_Level_I
+Rule  195:     1     0     1            0       Class = OLD_Insufficient_Weight
+Rule  196:     1     1     0            1       Class = OLD_Obesity_Type_I
+Rule  197:     1     0     1            0       Class = OLD_Insufficient_Weight
+Rule  198:     1     0     1            0       Class = OLD_Overweight_Level_I
+Rule  199:     1     0     1            0       Class = OLD_Overweight_Level_II
+Rule  200:     1     1     0            1       Class = OLD_Normal_Weight
+Rule  201:     1     1     0            1       Class = OLD_Overweight_Level_I
+Rule  202:     1     0     1            0       Class = OLD_Overweight_Level_II
+Rule  203:     1     0     1            0       Class = OLD_Overweight_Level_I
+Rule  204:     1     1     0            1       Class = OLD_Normal_Weight
+Rule  205:     1     0     1            0       Class = OLD_Obesity_Type_I
+Rule  206:     1     0     1            0       Class = OLD_Insufficient_Weight
+Rule  207:     1     1     0            1       Class = OLD_Obesity_Type_I
+Rule  208:     1     0     1            0       Class = OLD_Overweight_Level_II
+Rule  209:     1     0     1            0       Class = OLD_Overweight_Level_I
+Rule  210:     1     1     0            1       Class = OLD_Overweight_Level_I
+Rule  211:     1     0     1            0       Class = OLD_Overweight_Level_II
+Rule  212:     1     1     0            1       Class = OLD_Insufficient_Weight
+Rule  213:     1     1     0            1       Class = OLD_Normal_Weight
+Rule  214:     1     0     1            0       Class = OLD_Overweight_Level_I
+Rule  215:     1     0     1            0       Class = OLD_Overweight_Level_I
+Rule  216:     1     1     0            1       Class = OLD_Obesity_Type_I
+Rule  217:     1     1     0            1       Class = OLD_Overweight_Level_II
+Rule  218:     1     1     0            1       Class = OLD_Obesity_Type_II
+Rule  219:     1     1     0            1       Class = OLD_Overweight_Level_II
+
+---------------------------------------------------------
+
+Accuracy of rules on training set = 0.684044
+
+---------------------------------------------------------
+
+---------------------------------------------------------
+
+--- Number of rules = 219
+--- Number of antecedents = 1369
+--- Number of antecedents per rule = 6.25114
+--- Number of examples per rule = 17.2009
+
+---------------------------------------------------------
+
+--- Accuracy of rules on testing set = 1
+--- Fidelity on testing set (211/211) = 1
+--- Accuracy when rules and network agree (211/211) = 1
+
+--- Default rule activations rate (network classification) = 0
+
+---------------------------------------------------------
+
+Testing set:
+
+---------------------------------------------------------
+
+Rule    1:   211   211     0            1       Class = OLD_Obesity_Type_III
+Rule    2:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule    3:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule    4:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule    5:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule    6:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule    7:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule    8:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule    9:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule   10:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule   11:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule   12:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule   13:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule   14:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule   15:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule   16:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule   17:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule   18:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule   19:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule   20:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule   21:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule   22:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule   23:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule   24:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule   25:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule   26:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule   27:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule   28:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule   29:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule   30:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule   31:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule   32:     0     0     0                     Class = OLD_Normal_Weight
+Rule   33:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule   34:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule   35:     0     0     0                     Class = OLD_Normal_Weight
+Rule   36:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule   37:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule   38:     0     0     0                     Class = OLD_Normal_Weight
+Rule   39:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule   40:     0     0     0                     Class = OLD_Normal_Weight
+Rule   41:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule   42:     0     0     0                     Class = OLD_Normal_Weight
+Rule   43:     0     0     0                     Class = OLD_Normal_Weight
+Rule   44:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule   45:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule   46:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule   47:     0     0     0                     Class = OLD_Normal_Weight
+Rule   48:     0     0     0                     Class = OLD_Normal_Weight
+Rule   49:     0     0     0                     Class = OLD_Normal_Weight
+Rule   50:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule   51:     0     0     0                     Class = OLD_Normal_Weight
+Rule   52:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule   53:     0     0     0                     Class = OLD_Normal_Weight
+Rule   54:     0     0     0                     Class = OLD_Normal_Weight
+Rule   55:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule   56:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule   57:     0     0     0                     Class = OLD_Normal_Weight
+Rule   58:     0     0     0                     Class = OLD_Normal_Weight
+Rule   59:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule   60:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule   61:     0     0     0                     Class = OLD_Normal_Weight
+Rule   62:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule   63:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule   64:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule   65:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule   66:     0     0     0                     Class = OLD_Normal_Weight
+Rule   67:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule   68:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule   69:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule   70:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule   71:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule   72:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule   73:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule   74:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule   75:     0     0     0                     Class = OLD_Normal_Weight
+Rule   76:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule   77:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule   78:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule   79:     0     0     0                     Class = OLD_Normal_Weight
+Rule   80:     0     0     0                     Class = OLD_Normal_Weight
+Rule   81:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule   82:     0     0     0                     Class = OLD_Normal_Weight
+Rule   83:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule   84:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule   85:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule   86:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule   87:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule   88:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule   89:     0     0     0                     Class = OLD_Normal_Weight
+Rule   90:     0     0     0                     Class = OLD_Normal_Weight
+Rule   91:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule   92:     0     0     0                     Class = OLD_Normal_Weight
+Rule   93:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule   94:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule   95:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule   96:     0     0     0                     Class = OLD_Normal_Weight
+Rule   97:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule   98:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule   99:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule  100:     0     0     0                     Class = OLD_Normal_Weight
+Rule  101:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  102:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  103:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule  104:     0     0     0                     Class = OLD_Normal_Weight
+Rule  105:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule  106:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  107:     0     0     0                     Class = OLD_Normal_Weight
+Rule  108:     0     0     0                     Class = OLD_Normal_Weight
+Rule  109:     0     0     0                     Class = OLD_Normal_Weight
+Rule  110:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule  111:     0     0     0                     Class = OLD_Normal_Weight
+Rule  112:     0     0     0                     Class = OLD_Normal_Weight
+Rule  113:     0     0     0                     Class = OLD_Normal_Weight
+Rule  114:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  115:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  116:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule  117:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  118:     0     0     0                     Class = OLD_Normal_Weight
+Rule  119:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  120:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule  121:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  122:     0     0     0                     Class = OLD_Normal_Weight
+Rule  123:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  124:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule  125:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  126:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  127:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  128:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  129:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  130:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  131:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  132:     0     0     0                     Class = OLD_Normal_Weight
+Rule  133:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule  134:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  135:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  136:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule  137:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  138:     0     0     0                     Class = OLD_Normal_Weight
+Rule  139:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  140:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  141:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  142:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  143:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  144:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  145:     0     0     0                     Class = OLD_Normal_Weight
+Rule  146:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  147:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule  148:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  149:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  150:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  151:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  152:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule  153:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  154:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  155:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  156:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  157:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  158:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  159:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  160:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  161:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  162:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  163:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  164:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  165:     0     0     0                     Class = OLD_Normal_Weight
+Rule  166:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  167:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule  168:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  169:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  170:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  171:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  172:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  173:     0     0     0                     Class = OLD_Normal_Weight
+Rule  174:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule  175:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule  176:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  177:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  178:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  179:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  180:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  181:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  182:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  183:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule  184:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  185:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  186:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  187:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  188:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  189:     0     0     0                     Class = OLD_Obesity_Type_III
+Rule  190:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  191:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  192:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  193:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  194:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  195:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule  196:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  197:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule  198:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  199:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  200:     0     0     0                     Class = OLD_Normal_Weight
+Rule  201:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  202:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  203:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  204:     0     0     0                     Class = OLD_Normal_Weight
+Rule  205:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  206:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule  207:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  208:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  209:     1     0     1            0       Class = OLD_Overweight_Level_I
+Rule  210:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  211:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  212:     0     0     0                     Class = OLD_Insufficient_Weight
+Rule  213:     0     0     0                     Class = OLD_Normal_Weight
+Rule  214:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  215:     0     0     0                     Class = OLD_Overweight_Level_I
+Rule  216:     0     0     0                     Class = OLD_Obesity_Type_I
+Rule  217:     0     0     0                     Class = OLD_Overweight_Level_II
+Rule  218:     0     0     0                     Class = OLD_Obesity_Type_II
+Rule  219:     0     0     0                     Class = OLD_Overweight_Level_II
+
+---------------------------------------------------------
