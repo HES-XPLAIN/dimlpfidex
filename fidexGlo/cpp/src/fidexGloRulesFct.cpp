@@ -681,13 +681,15 @@ int fidexGloRules(const string &command) {
 
     // getting all program arguments from CLI
     checkRulesParametersLogicValues(*params);
-    cout << *params;
 
     // Get console results to file
     if (params->isStringSet(CONSOLE_FILE)) {
       ofs.open(params->getString(CONSOLE_FILE));
       cout.rdbuf(ofs.rdbuf()); // redirect cout to file
     }
+
+    // Show chosen parameters
+    std::cout << *params;
 
     // Import files
     cout << "Importing files..." << endl;

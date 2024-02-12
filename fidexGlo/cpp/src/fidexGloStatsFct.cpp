@@ -160,7 +160,6 @@ int fidexGloStats(const string &command) {
 
     // getting all program arguments from CLI
     checkStatsParametersLogicValues(*params);
-    cout << *params;
 
     // Get console results to file
     if (params->isStringSet(CONSOLE_FILE)) {
@@ -168,6 +167,9 @@ int fidexGloStats(const string &command) {
       ofs.open(consoleFile);
       std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
     }
+
+    // Show chosen parameters
+    std::cout << *params;
 
     // ----------------------------------------------------------------------
 

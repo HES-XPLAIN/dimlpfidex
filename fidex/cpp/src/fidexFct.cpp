@@ -242,13 +242,15 @@ int fidex(const string &command) {
 
     // getting all program arguments from CLI
     checkFidexParametersLogicValues(*params);
-    cout << *params;
 
     // Get console results to file
     if (params->isStringSet(CONSOLE_FILE)) {
       ofs.open(params->getString(CONSOLE_FILE));
       cout.rdbuf(ofs.rdbuf()); // redirect cout to file
     }
+
+    // Show chosen parameters
+    cout << *params;
 
     // ----------------------------------------------------------------------
 

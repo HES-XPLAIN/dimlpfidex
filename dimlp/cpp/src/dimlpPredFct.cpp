@@ -153,13 +153,15 @@ int dimlpPred(const string &command) {
 
     // getting all program arguments from CLI
     checkDimlpPredParametersLogicValues(*params);
-    std::cout << *params;
 
     // Get console results to file
     if (params->isStringSet(CONSOLE_FILE)) {
       ofs.open(params->getString(CONSOLE_FILE));
       std::cout.rdbuf(ofs.rdbuf()); // redirect cout to file
     }
+
+    // Show chosen parameters
+    std::cout << *params;
 
     // ----------------------------------------------------------------------
 
