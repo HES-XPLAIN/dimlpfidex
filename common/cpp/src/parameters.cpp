@@ -86,7 +86,6 @@ void Parameters::checkFilesIntegrity() {
   sanitizePath(TEST_PRED_OUTFILE, false);
   sanitizePath(VALID_PRED_OUTFILE, false);
   sanitizePath(WEIGHTS_OUTFILE, false);
-  sanitizePath(WEIGHTS_GENERIC_FILENAME, false);
   sanitizePath(WEIGHTS_GENERIC_OUTFILENAME, false);
   sanitizePath(HID_FILE, false);
   sanitizePath(STATS_FILE, false);
@@ -189,6 +188,7 @@ void Parameters::parseArg(const string &param, const string &arg) {
 
   case WEIGHTS_GENERIC_FILENAME:
     setString(WEIGHTS_GENERIC_FILENAME, arg);
+    completePath(WEIGHTS_GENERIC_FILENAME);
     break;
 
   case WEIGHTS_GENERIC_OUTFILENAME:
