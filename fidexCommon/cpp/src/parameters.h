@@ -10,7 +10,6 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
-#include <omp.h>
 #include <ostream>
 #include <sstream>
 #include <string>
@@ -130,6 +129,7 @@ private:
   // path checker
   void checkFilesIntegrity();
   void checkPath(ParameterCode id, const string &path);
+  void completePath(ParameterCode id);
 
   // throwables
   [[noreturn]] void throwInvalidDataTypeException(ParameterCode id, const string &wrongValue, const string &typeName) const {

@@ -432,18 +432,13 @@ void Parameters::setArch(ParameterCode id, const string &value, const string &pa
 }
 
 /**
- * @brief handles every aspect of parameters that represents files:
+ * @brief Completes the path of a given parameter with the ROOT_FOLDER, also checks if the given parameter is not empty
  *
- * -  Checks if a file exists if "shouldFileExist" is set to true
- * -  appends the ROOT_FOLDER path to every file if ROOT_FOLDER is set
- * -  ensures there is not duplicated separators (ex: ./data//somefile.txt)
- *
- * @param id parameter id to be processed
- * @param shouldFileExist whether it should check the existance of the file itself or only the path
+ * @param id is the given parameter to be completed
  */
-void Parameters::sanitizePath(ParameterCode id, bool shouldFileExist) {
-  // ignore if target is not set and avoid duplicating the root path for no reason
-  if (!isStringSet(id) || id == ROOT_FOLDER) {
+void Parameters::completePath(ParameterCode id) {
+  // avoid error cases
+  if (!isStringSet(id) || !isStringSet(ROOT_FOLDER) || id == ROOT_FOLDER) {
     return;
   }
 
@@ -462,13 +457,32 @@ void Parameters::sanitizePath(ParameterCode id, bool shouldFileExist) {
     fullPath = root + separator + target;
   }
 
+  _stringParams[id] = fullPath;
+}
+
+/**
+ * @brief handles every aspect of parameters that represents files:
+ *
+ * -  Checks if a file exists if "shouldFileExist" is set to true
+ * -  appends the ROOT_FOLDER path to every file if ROOT_FOLDER is set
+ *
+ * @param id parameter id to be processed
+ * @param shouldFileExist whether it should check the existance of the file itself or only the path
+ */
+void Parameters::sanitizePath(ParameterCode id, bool shouldFileExist) {
+  // ignore if target is not set and avoid duplicating the root path for no reason
+  if (!isStringSet(id) || id == ROOT_FOLDER) {
+    return;
+  }
+
+  completePath(id);
+  std::string fullPath = getString(id);
+
   if (shouldFileExist) {
     checkPath(id, fullPath);
   } else {
-    checkPath(id, fullPath.substr(0, fullPath.find_last_of(separator) + 1));
+    checkPath(id, fullPath.substr(0, fullPath.find_last_of(getOSSeparator()) + 1));
   }
-
-  _stringParams[id] = fullPath;
 }
 
 void Parameters::setWeightsFiles() {
