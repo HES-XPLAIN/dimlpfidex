@@ -60,7 +60,7 @@ packages = [
 #    "dimlp",
     "dimlpfidex",
 #    "fidex",
-#    "fidexCommon",
+#    "common",
 #    "fidexGlo",
     "trainings",
 ]
@@ -76,7 +76,7 @@ packages = [
 #    "dimlpfidex",
     "example",
     "fidex",
-    "fidexCommon",
+    "common",
     "fidexGlo",
     "trainings",
 ]

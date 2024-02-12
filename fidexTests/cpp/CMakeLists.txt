@@ -16,9 +16,9 @@ set(FIDEXTESTS_SRC "${FIDEXTESTS_SRC}" CACHE INTERNAL "")
 
 # build executables
 add_executable(fidexTests ${FIDEXTESTS_SRC} fidexTests.cpp)
-add_dependencies(fidexTests fidexCommon)
+add_dependencies(fidexTests common)
 # add_dependencies(fidexTests fidexGloRules)
-target_link_libraries(fidexTests fidexCommon)
+target_link_libraries(fidexTests common)
 # target_link_libraries(fidexTestsProject fidexGloRules)
 
 set_target_properties(

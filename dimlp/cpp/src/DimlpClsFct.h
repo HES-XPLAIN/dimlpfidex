@@ -1,7 +1,7 @@
 #ifndef DIMLPCLSFCT_H
 #define DIMLPCLSFCT_H
 
-#include "../../../fidexCommon/cpp/src/parameters.h"
+#include "../../../common/cpp/src/parameters.h"
 #include "dimlp.h"
 #include <fstream>
 #include <sstream>

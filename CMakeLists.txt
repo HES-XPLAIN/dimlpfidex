@@ -18,7 +18,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # add_subdirectory("example")
 add_subdirectory("dimlp")
-add_subdirectory("fidexCommon")
+add_subdirectory("common")
 add_subdirectory("fidex")
 add_subdirectory("fidexGlo")
 add_subdirectory("fidexTests")

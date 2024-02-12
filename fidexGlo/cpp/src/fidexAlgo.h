@@ -1,7 +1,7 @@
 #ifndef FIDEXALGO_H
 #define FIDEXALGO_H
-#include "../../../fidexCommon/cpp/src/dataSet.h"
-#include "../../../fidexCommon/cpp/src/parameters.h"
+#include "../../../common/cpp/src/dataSet.h"
+#include "../../../common/cpp/src/parameters.h"
 #include "hyperspace.h"
 #include <algorithm>
 #include <chrono>

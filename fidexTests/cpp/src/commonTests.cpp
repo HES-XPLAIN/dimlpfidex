@@ -1,5 +1,4 @@
-#include "../headers/fidexCommonTests.hpp"
-
+#include "../headers/commonTests.hpp"
 
 void runParametersTestSuite() {
   testSetter();

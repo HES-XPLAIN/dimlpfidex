@@ -1,10 +1,10 @@
 #ifndef PARAMETERS_TESTS_H
 #define PARAMETERS_TESTS_H
 
-#include "../../../fidexCommon/cpp/src/parameters.h"
+#include "../../../common/cpp/src/parameters.h"
 #include "utils.hpp"
-#include <string>
 #include <sstream>
+#include <string>
 
 std::string getInvalidDataTypeExceptionMessage(ParameterCode id, const string &wrongValue, const string &typeName);
 std::string getAlreadySetArgumentExceptionMessage(ParameterCode id, const string &value);

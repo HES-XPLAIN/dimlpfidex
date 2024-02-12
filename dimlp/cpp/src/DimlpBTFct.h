@@ -1,7 +1,7 @@
 #ifndef DIMLPBTFCT_H
 #define DIMLPBTFCT_H
 
-#include "../../../fidexCommon/cpp/src/parameters.h"
+#include "../../../common/cpp/src/parameters.h"
 #include "bagDimlp.h"
 #include "realHyp2.h"
 #include <fstream>

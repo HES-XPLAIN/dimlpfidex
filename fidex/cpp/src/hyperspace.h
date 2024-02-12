@@ -1,9 +1,9 @@
 #ifndef HYPERSPACE_H
 #define HYPERSPACE_H
 
-#include "../../../fidexCommon/cpp/src/checkFun.h"
-#include "../../../fidexCommon/cpp/src/errorHandler.h"
-#include "../../../fidexCommon/cpp/src/hyperbox.h"
+#include "../../../common/cpp/src/checkFun.h"
+#include "../../../common/cpp/src/errorHandler.h"
+#include "../../../common/cpp/src/hyperbox.h"
 #include <cstring>
 #include <fstream>
 #include <iostream>

@@ -1,9 +1,9 @@
 #ifndef FIDEXGLOSTATSFCT_H
 #define FIDEXGLOSTATSFCT_H
 
-#include "../../../fidexCommon/cpp/src/dataSet.h"
-#include "../../../fidexCommon/cpp/src/errorHandler.h"
-#include "../../../fidexCommon/cpp/src/parameters.h"
+#include "../../../common/cpp/src/dataSet.h"
+#include "../../../common/cpp/src/errorHandler.h"
+#include "../../../common/cpp/src/parameters.h"
 #include "getRulesFun.h"
 #include <fstream>
 #include <iostream>

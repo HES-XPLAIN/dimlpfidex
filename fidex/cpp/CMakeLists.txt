@@ -18,8 +18,8 @@ set(FIDEX_SRC "${FIDEX_SRC}" CACHE INTERNAL "")
 
 # build executables
 add_executable(fidexProject ${FIDEX_SRC} src/fidex.cpp)
-add_dependencies(fidexProject fidexCommon)
-target_link_libraries(fidexProject fidexCommon)
+add_dependencies(fidexProject common)
+target_link_libraries(fidexProject common)
 
 set_target_properties(
     fidexProject PROPERTIES OUTPUT_NAME "fidex" RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin

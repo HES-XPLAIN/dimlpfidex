@@ -1,12 +1,12 @@
 #ifndef FIDEXGLOFCT_H
 #define FIDEXGLOFCT_H
 
+#include "../../../common/cpp/src/dataSet.h"
+#include "../../../common/cpp/src/errorHandler.h"
+#include "../../../common/cpp/src/hyperLocus.h"
+#include "../../../common/cpp/src/parameters.h"
+#include "../../../common/cpp/src/rule.h"
 #include "../../../fidex/cpp/src/fidexFct.h"
-#include "../../../fidexCommon/cpp/src/dataSet.h"
-#include "../../../fidexCommon/cpp/src/errorHandler.h"
-#include "../../../fidexCommon/cpp/src/hyperLocus.h"
-#include "../../../fidexCommon/cpp/src/parameters.h"
-#include "../../../fidexCommon/cpp/src/rule.h"
 #include "fidexAlgo.h"
 #include "getRulesFun.h"
 #include <algorithm>

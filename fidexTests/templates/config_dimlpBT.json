@@ -14,7 +14,7 @@
     "weights_outfile": "dimlp.wts",
     "nb_attributes": 31,
     "nb_classes": 7,
-    "nb_dimlp_nets": 25,
+    "nb_dimlp_nets": 3,
     "nb_ex_per_net": 0,
     "H2": 5,
     "learning_rate": 0.1,

@@ -1,4 +1,4 @@
-project(fidexCommon)
+project(common)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -28,4 +28,4 @@ FILE(GLOB COMMON_SRC_FIDEX
 
 # make variables visible to external CMakeLists.txt
 set(COMMON_SRC_FIDEX "${COMMON_SRC_FIDEX}" CACHE INTERNAL "")
-add_library(fidexCommon STATIC ${COMMON_SRC_FIDEX})
+add_library(common STATIC ${COMMON_SRC_FIDEX})

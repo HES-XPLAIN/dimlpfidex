@@ -1,8 +1,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include "../../../common/cpp/src/parameters.h"
 #include "../../../json/single_include/nlohmann/json.hpp"
-#include "../../../fidexCommon/cpp/src/parameters.h"
 #include <iostream>
 #include <map>
 #include <sstream>
@@ -86,6 +86,5 @@ std::string getArgumentNotFoundExceptionMessage(ParameterCode id);
 std::string getAlreadySetArgumentExceptionMessage(ParameterCode id, const std::string &value);
 std::string getInvalidFileOrDirectoryMessage(ParameterCode id, const std::string &wrongValue);
 std::string getInvalidDataTypeExceptionMessage(ParameterCode id, const std::string &wrongValue, const std::string &typeName);
-
 
 #endif // UTILS_H

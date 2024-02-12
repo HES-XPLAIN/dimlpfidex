@@ -1,8 +1,7 @@
 #ifndef DIMLPTRNFCT_H
 #define DIMLPTRNFCT_H
 
-#include "../../../fidexCommon/cpp/src/errorHandler.h"
-#include "../../../fidexCommon/cpp/src/parameters.h"
+#include "../../../common/cpp/src/parameters.h"
 #include "dimlp.h"
 #include "realHyp2.h"
 

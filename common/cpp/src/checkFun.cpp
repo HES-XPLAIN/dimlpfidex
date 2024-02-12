@@ -383,8 +383,8 @@ bool exists(const std::string &path) {
 
 /**
  * @brief Gets the OS's default filesystem separator character
- * 
- * @return std::string 
+ *
+ * @return std::string
  */
 std::string getOSSeparator() {
 // define separator depending on OS

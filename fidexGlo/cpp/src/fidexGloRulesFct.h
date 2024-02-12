@@ -1,12 +1,12 @@
 #ifndef FIDEXGLORULESFCT_H
 #define FIDEXGLORULESFCT_H
 
-#include "../../../fidexCommon/cpp/src/checkFun.h"
-#include "../../../fidexCommon/cpp/src/dataSet.h"
-#include "../../../fidexCommon/cpp/src/errorHandler.h"
-#include "../../../fidexCommon/cpp/src/hyperLocus.h"
-#include "../../../fidexCommon/cpp/src/parameters.h"
-#include "../../../fidexCommon/cpp/src/rule.h"
+#include "../../../common/cpp/src/checkFun.h"
+#include "../../../common/cpp/src/dataSet.h"
+#include "../../../common/cpp/src/errorHandler.h"
+#include "../../../common/cpp/src/hyperLocus.h"
+#include "../../../common/cpp/src/parameters.h"
+#include "../../../common/cpp/src/rule.h"
 #include "fidexAlgo.h"
 #include <algorithm>
 #include <chrono>

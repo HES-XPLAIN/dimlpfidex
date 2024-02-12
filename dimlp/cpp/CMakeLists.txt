@@ -7,10 +7,10 @@ set(CMAKE_CXX_FLAGS "-O3")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 FILE(GLOB COMMON_SRC
-    ../../fidexCommon/cpp/src/checkFun.cpp
-    ../../fidexCommon/cpp/src/checkFun.h
-    ../../fidexCommon/cpp/src/parameters.cpp
-    ../../fidexCommon/cpp/src/parameters.h
+    ../../common/cpp/src/checkFun.cpp
+    ../../common/cpp/src/checkFun.h
+    ../../common/cpp/src/parameters.cpp
+    ../../common/cpp/src/parameters.h
     src/dataSet.cpp
     src/dataSet.h
     src/errFunct.cpp

@@ -1,7 +1,7 @@
 #ifndef DIMLPRULFCT_H
 #define DIMLPRULFCT_H
 
-#include "../../../fidexCommon/cpp/src/parameters.h"
+#include "../../../common/cpp/src/parameters.h"
 #include "dimlp.h"
 #include "realHyp2.h"
 #include <fstream>
