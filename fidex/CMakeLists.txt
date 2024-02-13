@@ -59,7 +59,7 @@ endif()
 
 # Build binding lib
 pybind11_add_module(fidex
-    ${COMMON_SRC_FIDEX}
+    ${COMMON_SRC}
     ${FIDEX_SRC}
     ${PYTHON_FILES}
 )

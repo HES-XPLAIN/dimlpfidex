@@ -6,7 +6,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS "-O3")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-FILE(GLOB COMMON_SRC_FIDEX
+FILE(GLOB COMMON_SRC
     src/errorHandler.h
     src/dataSet.h
     src/dataSet.cpp
@@ -27,5 +27,5 @@ FILE(GLOB COMMON_SRC_FIDEX
 )
 
 # make variables visible to external CMakeLists.txt
-set(COMMON_SRC_FIDEX "${COMMON_SRC_FIDEX}" CACHE INTERNAL "")
-add_library(common STATIC ${COMMON_SRC_FIDEX})
+set(COMMON_SRC "${COMMON_SRC}" CACHE INTERNAL "")
+add_library(common STATIC ${COMMON_SRC})
