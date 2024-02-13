@@ -17,21 +17,12 @@ FILE(GLOB DIMLP_COMMON_SRC
     src/randFun.h
     src/standAct.cpp
     src/standAct.h
-)
-
-FILE(GLOB DIMLP_TRN_SRC
-    src/dimlpTrnFct.cpp
-    src/dimlpTrnFct.h
-    src/ante.cpp
-    src/ante.h
-    src/attrName.cpp
-    src/attrName.h
     src/bpNN.cpp
     src/bpNN.h
-    src/cleanRS.cpp
-    src/cleanRS.h
     src/dimlp.cpp
     src/dimlp.h
+    src/stairObj.cpp
+    src/stairObj.h
     src/layer.cpp
     src/layer.h
     src/layerD2.cpp
@@ -44,6 +35,17 @@ FILE(GLOB DIMLP_TRN_SRC
     src/layerDmp.h
     src/layerFdp.cpp
     src/layerFdp.h
+)
+
+FILE(GLOB DIMLP_TRN_SRC
+    src/dimlpTrnFct.cpp
+    src/dimlpTrnFct.h
+    src/ante.cpp
+    src/ante.h
+    src/attrName.cpp
+    src/attrName.h
+    src/cleanRS.cpp
+    src/cleanRS.h
     src/oneVarTD.cpp
     src/oneVarTD.h
     src/realHyp.cpp
@@ -54,8 +56,6 @@ FILE(GLOB DIMLP_TRN_SRC
     src/rule.h
     src/rulePro.cpp
     src/rulePro.h
-    src/stairObj.cpp
-    src/stairObj.h
     src/thresD.cpp
     src/thresD.h
     src/vectWRV.cpp
@@ -67,47 +67,11 @@ FILE(GLOB DIMLP_TRN_SRC
 FILE(GLOB DIMLP_PRED_SRC
     src/dimlpPredFct.cpp
     src/dimlpPredFct.h
-    src/bpNN.cpp
-    src/bpNN.h
-    src/dimlp.cpp
-    src/dimlp.h
-    src/stairObj.cpp
-    src/stairObj.h
-    src/layer.cpp
-    src/layer.h
-    src/layerD2.cpp
-    src/layerD2.h
-    src/layerD3.cpp
-    src/layerD3.h
-    src/layerD4.cpp
-    src/layerD4.h
-    src/layerDmp.cpp
-    src/layerDmp.h
-    src/layerFdp.cpp
-    src/layerFdp.h
 )
 
 FILE(GLOB DIMLP_CLS_SRC
     src/dimlpClsFct.cpp
     src/dimlpClsFct.h
-    src/bpNN.cpp
-    src/bpNN.h
-    src/dimlp.cpp
-    src/dimlp.h
-    src/layer.cpp
-    src/layer.h
-    src/layerD2.cpp
-    src/layerD2.h
-    src/layerD3.cpp
-    src/layerD3.h
-    src/layerD4.cpp
-    src/layerD4.h
-    src/layerDmp.cpp
-    src/layerDmp.h
-    src/layerFdp.cpp
-    src/layerFdp.h
-    src/stairObj.cpp
-    src/stairObj.h
 )
 
 FILE(GLOB DIMLP_BT_SRC
@@ -119,24 +83,8 @@ FILE(GLOB DIMLP_BT_SRC
     src/attrName.h
     src/bagDimlp.cpp
     src/bagDimlp.h
-    src/bpNN.cpp
-    src/bpNN.h
     src/cleanRS.cpp
     src/cleanRS.h
-    src/dimlp.cpp
-    src/dimlp.h
-    src/layer.cpp
-    src/layer.h
-    src/layerD2.cpp
-    src/layerD2.h
-    src/layerD3.cpp
-    src/layerD3.h
-    src/layerD4.cpp
-    src/layerD4.h
-    src/layerDmp.cpp
-    src/layerDmp.h
-    src/layerFdp.cpp
-    src/layerFdp.h
     src/oneVarTD.cpp
     src/oneVarTD.h
     src/realHyp.cpp
@@ -147,8 +95,6 @@ FILE(GLOB DIMLP_BT_SRC
     src/rule.h
     src/rulePro.cpp
     src/rulePro.h
-    src/stairObj.cpp
-    src/stairObj.h
     src/thresD.cpp
     src/thresD.h
     src/vectWRV.cpp
@@ -166,24 +112,8 @@ FILE(GLOB DENS_CLS_SRC
     src/attrName.h
     src/bagDimlp.cpp
     src/bagDimlp.h
-    src/bpNN.cpp
-    src/bpNN.h
     src/cleanRS.cpp
     src/cleanRS.h
-    src/dimlp.cpp
-    src/dimlp.h
-    src/layer.cpp
-    src/layer.h
-    src/layerD2.cpp
-    src/layerD2.h
-    src/layerD3.cpp
-    src/layerD3.h
-    src/layerD4.cpp
-    src/layerD4.h
-    src/layerDmp.cpp
-    src/layerDmp.h
-    src/layerFdp.cpp
-    src/layerFdp.h
     src/oneVarTD.cpp
     src/oneVarTD.h
     src/realHyp.cpp
@@ -194,8 +124,6 @@ FILE(GLOB DENS_CLS_SRC
     src/rule.h
     src/rulePro.cpp
     src/rulePro.h
-    src/stairObj.cpp
-    src/stairObj.h
     src/thresD.cpp
     src/thresD.h
     src/vectWRV.cpp
@@ -211,24 +139,8 @@ FILE(GLOB DIMLP_RUL_SRC
     src/ante.h
     src/attrName.cpp
     src/attrName.h
-    src/bpNN.cpp
-    src/bpNN.h
     src/cleanRS.cpp
     src/cleanRS.h
-    src/dimlp.cpp
-    src/dimlp.h
-    src/layer.cpp
-    src/layer.h
-    src/layerD2.cpp
-    src/layerD2.h
-    src/layerD3.cpp
-    src/layerD3.h
-    src/layerD4.cpp
-    src/layerD4.h
-    src/layerDmp.cpp
-    src/layerDmp.h
-    src/layerFdp.cpp
-    src/layerFdp.h
     src/oneVarTD.cpp
     src/oneVarTD.h
     src/realHyp.cpp
@@ -239,8 +151,6 @@ FILE(GLOB DIMLP_RUL_SRC
     src/rule.h
     src/rulePro.cpp
     src/rulePro.h
-    src/stairObj.cpp
-    src/stairObj.h
     src/thresD.cpp
     src/thresD.h
     src/vectWRV.cpp
