@@ -7,10 +7,6 @@ set(CMAKE_CXX_FLAGS "-O3")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 FILE(GLOB DIMLP_COMMON_SRC
-    ../../common/cpp/src/checkFun.cpp
-    ../../common/cpp/src/checkFun.h
-    ../../common/cpp/src/parameters.cpp
-    ../../common/cpp/src/parameters.h
     src/dataSet.cpp
     src/dataSet.h
     src/errFunct.cpp
@@ -21,8 +17,6 @@ FILE(GLOB DIMLP_COMMON_SRC
     src/randFun.h
     src/standAct.cpp
     src/standAct.h
-    ../../common/cpp/src/stringI.cpp
-    ../../common/cpp/src/stringI.h
 )
 
 FILE(GLOB DIMLP_TRN_SRC
@@ -281,12 +275,24 @@ set(DIMLP_RUL_SRC "${DIMLP_RUL_SRC}" CACHE INTERNAL "")
 set(FCT_SRC "${FCT_SRC}" CACHE INTERNAL "")
 
 # build executables
-add_executable(dimlpTrn ${DIMLP_COMMON_SRC} ${DIMLP_TRN_SRC} src/dimlpTrn.cpp)
-add_executable(dimlpPred ${DIMLP_COMMON_SRC} ${DIMLP_PRED_SRC} src/dimlpPred.cpp)
-add_executable(dimlpCls ${DIMLP_COMMON_SRC} ${DIMLP_CLS_SRC} src/dimlpCls.cpp)
-add_executable(dimlpBT ${DIMLP_COMMON_SRC} ${DIMLP_BT_SRC} src/dimlpBT.cpp)
-add_executable(densCls ${DIMLP_COMMON_SRC} ${DENS_CLS_SRC} src/densCls.cpp)
-add_executable(dimlpRul ${DIMLP_COMMON_SRC} ${DIMLP_RUL_SRC} src/dimlpRul.cpp)
+add_executable(dimlpTrn ${COMMON_SRC} ${DIMLP_COMMON_SRC} ${DIMLP_TRN_SRC} src/dimlpTrn.cpp)
+add_executable(dimlpPred ${COMMON_SRC} ${DIMLP_COMMON_SRC} ${DIMLP_PRED_SRC} src/dimlpPred.cpp)
+add_executable(dimlpCls ${COMMON_SRC} ${DIMLP_COMMON_SRC} ${DIMLP_CLS_SRC} src/dimlpCls.cpp)
+add_executable(dimlpBT ${COMMON_SRC} ${DIMLP_COMMON_SRC} ${DIMLP_BT_SRC} src/dimlpBT.cpp)
+add_executable(densCls ${COMMON_SRC} ${DIMLP_COMMON_SRC} ${DENS_CLS_SRC} src/densCls.cpp)
+add_executable(dimlpRul ${COMMON_SRC} ${DIMLP_COMMON_SRC} ${DIMLP_RUL_SRC} src/dimlpRul.cpp)
+add_dependencies(dimlpTrn common)
+add_dependencies(dimlpPred common)
+add_dependencies(dimlpCls common)
+add_dependencies(dimlpBT common)
+add_dependencies(densCls common)
+add_dependencies(dimlpRul common)
+target_link_libraries(dimlpTrn common)
+target_link_libraries(dimlpPred common)
+target_link_libraries(dimlpCls common)
+target_link_libraries(dimlpBT common)
+target_link_libraries(densCls common)
+target_link_libraries(dimlpRul common)
 
 set_target_properties(
     dimlpTrn PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin

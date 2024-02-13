@@ -8,6 +8,8 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 FILE(GLOB COMMON_SRC
     src/errorHandler.h
+    src/stringI.cpp
+    src/stringI.h
     src/dataSet.h
     src/dataSet.cpp
     src/checkFun.cpp
@@ -22,8 +24,6 @@ FILE(GLOB COMMON_SRC
     src/rule.h
     src/parameters.cpp
     src/parameters.h
-    src/stringI.h
-    src/stringI.cpp
 )
 
 # make variables visible to external CMakeLists.txt
