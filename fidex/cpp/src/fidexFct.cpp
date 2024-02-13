@@ -438,7 +438,7 @@ int fidex(const string &command) {
       }
     }
 
-    FidexGloNameSpace::Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans
+    Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans
 
     const size_t nbIn = hyperspace.getHyperLocus().size(); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
 

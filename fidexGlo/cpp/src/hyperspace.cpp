@@ -1,7 +1,6 @@
 #include "hyperspace.h"
 using namespace std;
 
-namespace FidexGloNameSpace {
 Hyperspace::Hyperspace(const vector<vector<double>> &matHypLocus) : hyperLocus(matHypLocus) {
 
   vector<pair<int, int>> discriminativeHyperplans;
@@ -112,4 +111,3 @@ double Hyperspace::computeRuleConfidence(vector<vector<double>> &trainOutputValu
   }
   return float(total) / float(nbCovered);
 }
-} // namespace FidexGloNameSpace

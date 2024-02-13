@@ -14,7 +14,6 @@
 
 using namespace std;
 
-namespace FidexGloNameSpace {
 class Hyperspace {
   vector<vector<double>> hyperLocus; // All the possible hyperplans
   shared_ptr<Hyperbox> hyperbox;
@@ -29,6 +28,5 @@ public:
   double computeRuleAccuracy(vector<int> &trainPreds, vector<int> &trainTrueClass, bool hasTrueClasses, bool mainSampleCorrect = false) const;
   double computeRuleConfidence(vector<vector<double>> &trainOutputValuesPredictions, const int mainSamplePred, double mainSamplePredValue = -1.0) const;
 };
-} // namespace FidexGloNameSpace
 
 #endif

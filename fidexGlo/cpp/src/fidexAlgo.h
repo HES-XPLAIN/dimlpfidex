@@ -18,7 +18,6 @@
 #include <vector>
 
 using namespace std::chrono;
-using namespace FidexGloNameSpace;
 
 class Fidex {
 
