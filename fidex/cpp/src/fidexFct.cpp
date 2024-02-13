@@ -477,7 +477,7 @@ int fidex(const string &command) {
       }
 
       lines.push_back("Rule for sample " + std::to_string(currentSample) + " :\n");
-
+      fidex.setMainSamplePredValue(mainSamplePredValue);
       do {
 
         if (currentMinNbCover == minNbCover) {
@@ -492,7 +492,6 @@ int fidex(const string &command) {
           fidex.setShowInitialFidelity(true);
         }
 
-        fidex.setMainSamplePredValue(mainSamplePredValue);
         ruleCreated = fidex.compute(rule, true, mainSampleValues, mainSamplePred, minFidelity, currentMinNbCover, mainSampleClass);
 
         std::cout << "Final fidelity : " << rule.getFidelity() << endl;

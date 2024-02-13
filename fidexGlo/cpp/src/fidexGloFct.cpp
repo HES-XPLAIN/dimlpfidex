@@ -55,7 +55,7 @@ void showParams() {
             << std::endl;
 }
 
-void launchFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Parameters &p, Hyperspace &hyperspace, vector<double> &mainSampleValues, int mainSamplePred, int mainSampleClass, const vector<string> &attributeNames, const vector<string> &classNames) {
+void launchFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Parameters &p, Hyperspace &hyperspace, vector<double> &mainSampleValues, int mainSamplePred, double mainSamplePredValue, int mainSampleClass, const vector<string> &attributeNames, const vector<string> &classNames) {
 
   std::cout << "\nWe launch Fidex." << std::endl;
   std::cout << "\nLocal rule :" << std::endl;
@@ -74,11 +74,10 @@ void launchFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Para
   ruleCreated = false;
   counterFailed = 0; // If we can't find a good rule after a lot of tries
 
+  fidex.setMainSamplePredValue(mainSamplePredValue);
+
   while (!ruleCreated) {
-    ruleCreated = fidex.compute(rule, false, mainSampleValues, mainSamplePred, minFidelity, currentMinNbCov, mainSampleClass);
-    // Pour idSample : Quand on appelle Fidex on a une fonction qui permet d'écrire le sample dans un fichier pour ensuite l'utiliser dans Fidex.
-    // -> on n'aura plus besoin de faire ça ni de cette fonction.
-    // Comment indiquer l'idSample par contre? l'idSample sert à récup mainSampleValues et mainSamplePred -> changer la méthode? À voir
+    ruleCreated = fidex.compute(rule, true, mainSampleValues, mainSamplePred, minFidelity, currentMinNbCov, mainSampleClass);
 
     if (currentMinNbCov >= 2) {
       currentMinNbCov -= 1;
@@ -648,13 +647,14 @@ int fidexGlo(const string &command) {
         Hyperspace hyperspace(matHypLocus);
         vector<double> mainSampleValues = testSamplesValues[currentSample];
         int mainSamplePred = testSamplesPreds[currentSample];
+        double mainSamplePredValue = testSamplesOutputValuesPredictions[currentSample][mainSamplePred];
         int mainSampleClass;
         if (hasTrueClasses) {
           mainSampleClass = testSamplesClasses[currentSample];
         } else {
           mainSampleClass = -1;
         }
-        launchFidex(lines, trainDataset, *params, hyperspace, mainSampleValues, mainSamplePred, mainSampleClass, attributeNames, classNames);
+        launchFidex(lines, trainDataset, *params, hyperspace, mainSampleValues, mainSamplePred, mainSamplePredValue, mainSampleClass, attributeNames, classNames);
       }
 
       lines.emplace_back("\n--------------------------------------------------------------------\n");
