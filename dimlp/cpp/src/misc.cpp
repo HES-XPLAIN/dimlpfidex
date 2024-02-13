@@ -1,4 +1,4 @@
-#include "stringI.h"
+#include "../../../common/cpp/src/stringI.h"
 #include <iostream>
 #include <vector>
 

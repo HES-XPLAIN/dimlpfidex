@@ -21,8 +21,8 @@ FILE(GLOB DIMLP_COMMON_SRC
     src/randFun.h
     src/standAct.cpp
     src/standAct.h
-    src/stringI.cpp
-    src/stringI.h
+    ../../common/cpp/src/stringI.cpp
+    ../../common/cpp/src/stringI.h
 )
 
 FILE(GLOB DIMLP_TRN_SRC

@@ -2,7 +2,7 @@
 #define ONEVARTD_H
 
 #ifndef STRINGINT
-#include "stringI.h"
+#include "../../../common/cpp/src/stringI.h"
 #endif
 #include <memory>
 

@@ -2,8 +2,8 @@
 #define DATASET_H
 
 #include "../../../common/cpp/src/errorHandler.h"
+#include "../../../common/cpp/src/stringI.h"
 #include "rule.h"
-#include "stringI.h"
 #include <algorithm>
 #include <cmath>
 #include <fstream>

@@ -1,10 +1,10 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
-#include "../../../dimlp/cpp/src/stringI.h"
 #include "../../../json/single_include/nlohmann/json.hpp"
 #include "antecedant.h"
 #include "checkFun.h"
 #include "errorHandler.h"
+#include "stringI.h"
 #include <fstream>
 #include <iomanip>
 #include <iostream>
