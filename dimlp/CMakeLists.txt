@@ -58,7 +58,7 @@ endif()
 
 # Build binding lib
 pybind11_add_module(dimlp
-    ${COMMON_SRC}
+    ${DIMLP_COMMON_SRC}
     ${DIMLP_TRN_SRC}
     ${DIMLP_PRED_SRC}
     ${DIMLP_CLS_SRC}
