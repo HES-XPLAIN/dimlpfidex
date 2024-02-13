@@ -12,7 +12,13 @@ Fidex::Fidex(DataSetFid &trainDataset, Parameters &parameters, Hyperspace &hyper
   }
 }
 
-bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover, int mainSampleClass) {
+bool Fidex::compute(Rule &rule, bool withTestSample, vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover, int mainSampleClass) {
+
+  specs.nbIt = 0;
+
+  bool showInitialFidelity = getShowInitialFidelity();
+  double mainSamplePredValue = getMainSamplePredValue();
+
   Hyperspace *hyperspace = _hyperspace;
   int nbAttributes = _trainDataset->getNbAttributes();
   vector<int> &trainPreds = _trainDataset->getPredictions();
@@ -47,6 +53,10 @@ bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSample
     throw InternalError("Error during computation of Fidex: mus are specified but sigmas or normalization indices are not specified.");
   }
 
+  if (mainSamplePredValue == -1.0 && withTestSample) {
+    throw InternalError("Error during computation of Fidex: Execution with a test sample but no sample prediction value has been given.");
+  }
+
   uniform_real_distribution<double> dis(0.0, 1.0);
 
   // Compute initial covering
@@ -56,7 +66,11 @@ bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSample
   // Store covering and compute initial fidelty
   hyperspace->getHyperbox()->setCoveredSamples(coveredSamples);
   hyperspace->getHyperbox()->computeFidelity(mainSamplePred, trainPreds); // Compute fidelity of initial hyperbox
-  hyperspace->getHyperbox()->resetDiscriminativeHyperplans();             // If we come from fidexGlo, we reset hyperbox discriminativeHyperplans
+  hyperspace->getHyperbox()->resetDiscriminativeHyperplans();             // We reset hyperbox discriminativeHyperplans
+
+  if (withTestSample && showInitialFidelity) {
+    std::cout << "Initial fidelity : " << hyperspace->getHyperbox()->getFidelity() << endl;
+  }
 
   int nbIt = 0;
 
@@ -76,7 +90,7 @@ bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSample
     shuffle(begin(dimensions), end(dimensions), _rnd);
 
     vector<int> currentCovSamp;
-    for (int d = 0; d < nbInputs; d++) {
+    for (int d = 0; d < nbInputs; d++) { // Loop on all dimensions
       if (bestHyperbox->getFidelity() >= minFidelity) {
         break;
       }
@@ -146,11 +160,7 @@ bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSample
     nbIt += 1;
   }
 
-  if (hyperspace->getHyperbox()->getFidelity() < minFidelity) {
-    return false;
-  }
-
-  // Compute rule accuracy
+  // Compute rule accuracy and confidence
   double ruleAccuracy;
   if (hasTrueClasses) {
     bool mainSampleCorrect = mainSamplePred == mainSampleClass;
@@ -160,11 +170,20 @@ bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSample
   }
 
   double ruleConfidence;
-  ruleConfidence = hyperspace->computeRuleConfidence(trainOutputValuesPredictions, mainSamplePred); // Mean output value of prediction of class chosen by the rule for the covered samples
+  ruleConfidence = hyperspace->computeRuleConfidence(trainOutputValuesPredictions, mainSamplePred, mainSamplePredValue); // Mean output value of prediction of class chosen by the rule for the covered samples
+
+  // Extract rules
   if (_parameters->isDoubleVectorSet(MUS)) {
     rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence, mus, sigmas, normalizationIndices);
   } else {
     rule = hyperspace->ruleExtraction(mainSampleValues, mainSamplePred, ruleAccuracy, ruleConfidence);
+  }
+
+  resetExecutionSpecs();
+  setNbIt(nbIt);
+
+  if (hyperspace->getHyperbox()->getFidelity() < minFidelity) {
+    return false;
   }
 
   return true;

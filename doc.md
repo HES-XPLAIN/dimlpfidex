@@ -25,3 +25,7 @@ Advices :
 
 ### Dimlp params
 - If you want to train dimlp with an error or accuracy threshold stopping criterion and without beeing stopped by a number of iterations, you have to put a big number in nb_epochs.
+
+
+### Note in case performance decrease for fidexGloRules
+- We have moved  the "return false" in fidexAlgo after the rule extraction and stats computation. We did it for Fidex but it could have a computational cost.

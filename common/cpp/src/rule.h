@@ -45,7 +45,9 @@ public:
 
   // GETTERS
   vector<Antecedant> getAntecedants() const { return antecedants; }
+  int getNbAntecedants() const { return static_cast<int>(antecedants.size()); }
   vector<int> getCoveredSamples() const { return coveredSamples; }
+  int getNbCoveredSamples() const { return static_cast<int>(coveredSamples.size()); }
   int getOutputClass() const { return outputClass; }
   double getFidelity() const { return fidelity; }
   double getAccuracy() const { return accuracy; }

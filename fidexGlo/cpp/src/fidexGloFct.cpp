@@ -75,7 +75,7 @@ void launchFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Para
   counterFailed = 0; // If we can't find a good rule after a lot of tries
 
   while (!ruleCreated) {
-    ruleCreated = fidex.compute(rule, mainSampleValues, mainSamplePred, minFidelity, currentMinNbCov, mainSampleClass);
+    ruleCreated = fidex.compute(rule, false, mainSampleValues, mainSamplePred, minFidelity, currentMinNbCov, mainSampleClass);
     // Pour idSample : Quand on appelle Fidex on a une fonction qui permet d'écrire le sample dans un fichier pour ensuite l'utiliser dans Fidex.
     // -> on n'aura plus besoin de faire ça ni de cette fonction.
     // Comment indiquer l'idSample par contre? l'idSample sert à récup mainSampleValues et mainSamplePred -> changer la méthode? À voir

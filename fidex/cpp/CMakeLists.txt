@@ -9,8 +9,10 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 FILE(GLOB FIDEX_SRC
     src/fidexFct.cpp
     src/fidexFct.h
-    src/hyperspace.cpp
-    src/hyperspace.h
+    ../../fidexGlo/cpp/src/hyperspace.cpp
+    ../../fidexGlo/cpp/src//hyperspace.h
+    ../../fidexGlo/cpp/src/fidexAlgo.cpp
+    ../../fidexGlo/cpp/src/fidexAlgo.h
 )
 
 # make variables visible to external CMakeLists.txt

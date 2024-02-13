@@ -265,12 +265,10 @@ int fidex(const string &command) {
     float decisionThreshold = params->getFloat(DECISION_THRESHOLD);
     int positiveClassIndex = params->getInt(POSITIVE_CLASS_INDEX);
     int minNbCover = params->getInt(MIN_COVERING);
-    int seed = params->getInt(SEED);
     int nbDimlpNets = params->getInt(NB_DIMLP_NETS);
     int nbQuantLevels = params->getInt(NB_QUANT_LEVELS);
     float hiKnot = params->getFloat(HI_KNOT);
     float minFidelity = params->getFloat(MIN_FIDELITY);
-    int maxIterations = params->getInt(MAX_ITERATIONS);
     float dropoutDim = params->getFloat(DROPOUT_DIM);
     float dropoutHyp = params->getFloat(DROPOUT_HYP);
     bool hasdd = dropoutDim > 0.001;
@@ -314,11 +312,6 @@ int fidex(const string &command) {
     } else {
       trainDatas.reset(new DataSetFid("trainDatas from Fidex", trainDataFile, trainDataFilePred, nbAttributes, nbClasses, decisionThreshold, positiveClassIndex, params->getString(TRAIN_CLASS_FILE)));
     }
-
-    vector<vector<double>> &trainData = trainDatas->getDatas();
-    vector<int> &trainPreds = trainDatas->getPredictions();
-    vector<vector<double>> &trainOutputValuesPredictions = trainDatas->getOutputValuesPredictions();
-    vector<int> &trainTrueClass = trainDatas->getClasses();
 
     int nbTrainSamples = trainDatas->getNbSamples();
 
@@ -409,16 +402,6 @@ int fidex(const string &command) {
 
     d1 = clock();
 
-    // Initialize random number generator
-
-    if (seed == 0) {
-      auto currentTime = std::chrono::high_resolution_clock::now();
-      auto seedValue = currentTime.time_since_epoch().count();
-      seed = static_cast<unsigned int>(seedValue);
-    }
-    std::mt19937 gen(seed);
-    std::uniform_real_distribution<double> dis(0.0, 1.0);
-
     vector<string> lines;
     // compute hyperspace
     std::cout << "Creation of hyperspace..." << std::endl;
@@ -455,7 +438,7 @@ int fidex(const string &command) {
       }
     }
 
-    FidexNameSpace::Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans
+    FidexGloNameSpace::Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans
 
     const size_t nbIn = hyperspace.getHyperLocus().size(); // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)
 
@@ -467,6 +450,8 @@ int fidex(const string &command) {
     std::cout << "Hyperspace created" << endl
               << endl;
 
+    auto fidex = Fidex(*trainDatas, *params, hyperspace);
+
     // Stats
     double meanFidelity = 0;
     double meanConfidence = 0;
@@ -474,146 +459,55 @@ int fidex(const string &command) {
     double meanNbAntecedentsPerRule = 0;
     double meanAccuracy = 0;
 
-    int nbIt;
     // We compute rule for each test sample
     for (int currentSample = 0; currentSample < nbTestSamples; currentSample++) {
       int counterFailed = 0; // Number of times we failed to find a rule with maximal fidexlity when minNbCover is 1
       int currentMinNbCover = minNbCover;
+      bool ruleCreated = false;
+      Rule rule;
+
+      vector<double> mainSampleValues = mainSamplesValues[currentSample];
+      int mainSamplePred = mainSamplesPreds[currentSample];
+      double mainSamplePredValue = mainSamplesOutputValuesPredictions[currentSample][mainSamplePred];
+      int mainSampleClass;
+      if (hasTrueClasses) {
+        mainSampleClass = mainSamplesTrueClass[currentSample];
+      } else {
+        mainSampleClass = -1;
+      }
+
       lines.push_back("Rule for sample " + std::to_string(currentSample) + " :\n");
 
       do {
-        hyperspace.getHyperbox()->resetDiscriminativeHyperplans(); // Reinitialize discriminativeHyperplans for next sample
 
-        if (nbTestSamples > 1 && currentMinNbCover == minNbCover) {
-          std::cout << "Computation of rule for sample " << currentSample << " : " << endl
-                    << endl;
-        }
-
-        if (nbTestSamples == 1 && currentMinNbCover == minNbCover) {
-          std::cout << "Searching for discriminating hyperplans..." << std::endl;
-        }
-
-        // Compute initial covering
-        vector<int> coveredSamples(nbTrainSamples);                         // Samples covered by the hyperbox
-        std::iota(std::begin(coveredSamples), std::end(coveredSamples), 0); // Vector from 0 to len(coveredSamples)-1
-
-        // Store covering and compute initial fidelty
-        hyperspace.getHyperbox()->setCoveredSamples(coveredSamples);
-        hyperspace.getHyperbox()->computeFidelity(mainSamplesPreds[currentSample], trainPreds); // Compute fidelity of initial hyperbox
-
-        if (nbTestSamples == 1 && currentMinNbCover == minNbCover) {
-          std::cout << "Initial fidelity : " << hyperspace.getHyperbox()->getFidelity() << endl;
-        }
-
-        nbIt = 0;
-
-        while (hyperspace.getHyperbox()->getFidelity() < minFidelity && nbIt < maxIterations) { // While fidelity of our hyperbox is not high enough
-          // std::cout << "New iteration : " << nbIt << std::endl;
-          std::unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());    // best hyperbox to choose for next step
-          std::unique_ptr<Hyperbox> currentHyperbox(new Hyperbox()); // best hyperbox to choose for next step
-          double mainSampleValue;
-          int attribut;
-          int dimension;
-          int indexBestHyp = -1;
-          int bestDimension = -1;
-          int minHyp = -1; // Index of first hyperplan without any change of the best hyperplan
-          int maxHyp = -1;
-          // Randomize dimensions
-          vector<int> dimensions(nbIn);
-          std::iota(std::begin(dimensions), std::end(dimensions), 0); // Vector from 0 to nbIn-1
-          std::shuffle(std::begin(dimensions), std::end(dimensions), gen);
-          vector<int> currentCovSamp;
-
-          for (int d = 0; d < nbIn; d++) { // Loop on all dimensions
-            if (bestHyperbox->getFidelity() >= minFidelity) {
-              break;
-            }
-            dimension = dimensions[d];
-            attribut = dimension % nbAttributes;
-            mainSampleValue = mainSamplesValues[currentSample][attribut];
-            // Test if we dropout this dimension
-
-            if (hasdd && dis(gen) < dropoutDim) {
-              continue; // Drop this dimension if below parameter ex: param=0.2 -> 20% are dropped
-            }
-
-            bool maxHypBlocked = true; // We assure that we can't increase maxHyp index for the current best hyperbox
-
-            size_t nbHyp = hyperspace.getHyperLocus()[dimension].size();
-            if (nbHyp == 0) {
-              continue; // No data on this dimension
-            }
-            // std::cout << std::endl;
-            // std::cout << "NEW DIM" << d << std::endl;
-            for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
-              // std::cout << "\rNEW hyp: " << k+1 << "/" << nbHyp << std::flush;
-              //  Test if we dropout this hyperplan
-              if (hasdh && dis(gen) < dropoutHyp) {
-                continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
-              }
-
-              double hypValue = hyperspace.getHyperLocus()[dimension][k];
-              bool mainSampleGreater = hypValue <= mainSampleValue;
-
-              // Check if main sample value is on the right of the hyperplan
-              currentHyperbox->computeCoveredSamples(hyperspace.getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
-              currentHyperbox->computeFidelity(mainSamplesPreds[currentSample], trainPreds);
-              // Compute fidelity
-              // If the fidelity is better or is same with better covering but not if covering size is lower than minNbCover
-              if (currentHyperbox->getCoveredSamples().size() >= currentMinNbCover && (currentHyperbox->getFidelity() > bestHyperbox->getFidelity() || (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() > bestHyperbox->getCoveredSamples().size()))) {
-                bestHyperbox->setFidelity(currentHyperbox->getFidelity()); // Update best hyperbox
-                bestHyperbox->setCoveredSamples(currentHyperbox->getCoveredSamples());
-                indexBestHyp = k;
-                minHyp = k; // New best
-                maxHyp = -1;
-                maxHypBlocked = false; // We can increase maxHyp if next is the same
-                bestDimension = dimension;
-              } else if (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() == bestHyperbox->getCoveredSamples().size()) {
-                if (!maxHypBlocked) {
-                  maxHyp = k; // Index of last (for now) hyperplan which is equal to the best.
-                }
-
-              } else {
-                maxHypBlocked = true; // we can't increase maxHyp anymore for this best hyperplan
-              }
-
-              if (bestHyperbox->getFidelity() >= minFidelity) {
-                break;
-              }
-            }
+        if (currentMinNbCover == minNbCover) {
+          if (nbTestSamples > 1) {
+            std::cout << "Computation of rule for sample " << currentSample << " : " << endl
+                      << endl;
           }
 
-          // Modication of our hyperbox with the best at this iteration and modify discriminative hyperplans
-          if (indexBestHyp != -1 && bestDimension != -1) { // If we found any good dimension with good hyperplan (with enough covering)
-            if (maxHyp != -1) {
-              indexBestHyp = (maxHyp + minHyp) / 2;
-            }
-            // Rule is not added if fidelity and covering size did not increase
-            if (bestHyperbox->getFidelity() > hyperspace.getHyperbox()->getFidelity() || (bestHyperbox->getFidelity() == hyperspace.getHyperbox()->getFidelity() && bestHyperbox->getCoveredSamples().size() > hyperspace.getHyperbox()->getCoveredSamples().size())) {
-              // std::cout << "Found new best" << std::endl;
-              // std::cout << "Fidelity : " << bestHyperbox->getFidelity() << std::endl;
-              // std::cout << "Cov size :" << bestHyperbox->getCoveredSamples().size() << endl;
-              hyperspace.getHyperbox()->setFidelity(bestHyperbox->getFidelity());
-              hyperspace.getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
-              hyperspace.getHyperbox()->discriminateHyperplan(bestDimension, indexBestHyp);
-            }
+          if (nbTestSamples == 1) {
+            std::cout << "Searching for discriminating hyperplans..." << std::endl;
           }
-          nbIt += 1;
+          fidex.setShowInitialFidelity(true);
         }
 
-        meanFidelity += hyperspace.getHyperbox()->getFidelity();
-        std::cout << "Final fidelity : " << hyperspace.getHyperbox()->getFidelity() << endl;
-        if (hyperspace.getHyperbox()->getFidelity() < minFidelity) {
+        fidex.setMainSamplePredValue(mainSamplePredValue);
+        ruleCreated = fidex.compute(rule, true, mainSampleValues, mainSamplePred, minFidelity, currentMinNbCover, mainSampleClass);
+
+        std::cout << "Final fidelity : " << rule.getFidelity() << endl;
+
+        if (!ruleCreated) {
           if (minCoverStrategy) {
             if (currentMinNbCover >= 2) {
               currentMinNbCover -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
-              std::cout << "Fidelity is too low. Restarting fidex with a minimum covering of " << currentMinNbCover << std::endl;
+              std::cout << "Fidelity is too low. Restarting fidex with a minimum covering of " << currentMinNbCover << "." << std::endl;
             } else {
               counterFailed += 1;
-              std::cout << "Fidelity is too low. Restarting fidex with a minimum covering of " << currentMinNbCover << std::endl;
+              std::cout << "Fidelity is too low. Restarting fidex with a minimum covering of " << currentMinNbCover << "." << std::endl;
             }
             if (counterFailed >= maxFailedAttempts) {
-              std::cout << "WARNING Fidelity is too low after trying " << std::to_string(maxFailedAttempts) << "times with a minimum covering of 1! You may want to try again." << std::endl;
+              std::cout << "WARNING Fidelity is too low after trying " << std::to_string(maxFailedAttempts) << " times with a minimum covering of 1! You may want to try again." << std::endl;
               if (hasdd || hasdh) {
                 std::cout << "Try to not use dropout." << std::endl;
               }
@@ -622,57 +516,76 @@ int fidex(const string &command) {
             std::cout << "WARNING Fidelity is too low! You may want to try again." << std::endl;
             std::cout << "If you can't find a rule with the wanted fidelity, try a lowest minimal covering or a lower fidelity" << std::endl;
             std::cout << "You can also try to use the min cover strategy (--covering_strategy)" << std::endl;
-            std::cout << "If this is not enough, put the min covering to 1 and do not use dropout." << std::endl;
+            std::cout << "If this is not enough, put the min covering to 1 and do not use dropout.\n"
+                      << std::endl;
           }
         } else {
           std::cout << endl;
         }
+      } while (!ruleCreated && minCoverStrategy && counterFailed < maxFailedAttempts); // Restart Fidex if we use the strategy and fidelity is not high enough
 
-      } while (hyperspace.getHyperbox()->getFidelity() < minFidelity && minCoverStrategy && counterFailed < maxFailedAttempts); // Restart Fidex if we use the strategy and fidelity is not high enough
+      meanFidelity += rule.getFidelity();
+      meanAccuracy += rule.getAccuracy();
+      meanConfidence += rule.getConfidence();
+      meanCovSize += static_cast<double>(rule.getNbCoveredSamples());
+      meanNbAntecedentsPerRule += static_cast<double>(rule.getNbAntecedants());
 
       if (nbTestSamples == 1) {
         std::cout << "Discriminating hyperplans generated." << endl
                   << endl;
       }
-      // Rule extraction
-      if (nbTestSamples == 1) {
-        std::cout << "Rule extraction" << endl
-                  << endl;
-      }
 
-      // Compute rule accuracy and confidence
-      double ruleAccuracy;
-      if (hasTrueClasses) {
-        bool mainSampleCorrect = mainSamplesPreds[currentSample] == mainSamplesTrueClass[currentSample];
-        ruleAccuracy = hyperspace.computeRuleAccuracy(trainPreds, trainTrueClass, hasTrueClasses, mainSampleCorrect); // Percentage of correct model prediction on samples covered by the rule
-      } else {
-        ruleAccuracy = hyperspace.computeRuleAccuracy(trainPreds, trainTrueClass, hasTrueClasses); // Percentage of correct model prediction on samples covered by the rule
-      }
-
-      meanAccuracy += ruleAccuracy;
-      std::cout << "Rule accuracy : " << ruleAccuracy << endl
+      std::cout << "Rule accuracy : " << std::to_string(rule.getAccuracy()) << endl
                 << endl;
 
-      int currentSamplePred = mainSamplesPreds[currentSample];
-      double currentSamplePredValue = mainSamplesOutputValuesPredictions[currentSample][currentSamplePred];
-      double ruleConfidence;
-      ruleConfidence = hyperspace.computeRuleConfidence(trainOutputValuesPredictions, currentSamplePred, currentSamplePredValue); // Mean output value of prediction of class chosen by the rule for the covered samples
-      meanConfidence += ruleConfidence;
-      std::cout << "Rule confidence : " << ruleConfidence << endl
+      std::cout << "Rule confidence : " << std::to_string(rule.getConfidence()) << endl
                 << endl;
 
-      meanCovSize += static_cast<double>(hyperspace.getHyperbox()->getCoveredSamples().size());
-      meanNbAntecedentsPerRule += static_cast<double>(hyperspace.getHyperbox()->getDiscriminativeHyperplans().size());
-      // Extract rules
-      if (params->isDoubleVectorSet(MUS)) {
-        hyperspace.ruleExtraction(mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, params->isStringSet(ATTRIBUTES_FILE), attributeNames, hasClassNames, classNames, mus, sigmas, normalizationIndices);
-      } else {
-        hyperspace.ruleExtraction(mainSamplesValues[currentSample], currentSamplePred, ruleAccuracy, ruleConfidence, lines, params->isStringSet(ATTRIBUTES_FILE), attributeNames, hasClassNames, classNames);
+      std::string line;
+
+      for (int i = 0; i < rule.getNbAntecedants(); i++) {
+        Antecedant currentAntecedant = rule.getAntecedants()[i];
+        if (params->isStringSet(ATTRIBUTES_FILE)) {
+          line += attributeNames[currentAntecedant.getAttribute()];
+        } else {
+          line += "X" + std::to_string(currentAntecedant.getAttribute());
+        }
+        if (currentAntecedant.getInequality()) {
+          line += ">=";
+        } else {
+          line += "<";
+        }
+        line += formattingDoubleToString(currentAntecedant.getValue()) + " ";
       }
 
-      if (hyperspace.getHyperbox()->getCoveredSamples().size() < minNbCover) {
+      if (hasClassNames) {
+        line += "-> " + classNames[rule.getOutputClass()];
+      } else {
+        line += "-> class " + std::to_string(rule.getOutputClass());
+      }
+      std::cout << "Extracted rule :" << std::endl;
+      std::cout << line << endl;
+      lines.push_back(line);
+      line = "Train Covering size : " + std::to_string(rule.getNbCoveredSamples());
+      std::cout << line << endl;
+      lines.push_back(line);
+      line = "Train Fidelity : " + formattingDoubleToString(rule.getFidelity());
+      std::cout << line << endl;
+      lines.push_back(line);
+      line = "Train Accuracy : " + formattingDoubleToString(rule.getAccuracy());
+      std::cout << line << endl;
+      lines.push_back(line);
+      if (rule.getConfidence() != -1) {
+        line = "Train Confidence : " + formattingDoubleToString(rule.getConfidence());
+        std::cout << line << endl;
+        lines.push_back(line);
+      }
+      std::cout << std::endl;
+
+      if (rule.getNbCoveredSamples() < minNbCover) {
         std::cout << "The minimum covering of " << minNbCover << " is not achieved." << std::endl;
       }
+      int nbIt = fidex.getNbIt();
       std::cout << "Result found after " << nbIt << " iterations." << std::endl;
 
       std::cout << "-------------------------------------------------" << std::endl;

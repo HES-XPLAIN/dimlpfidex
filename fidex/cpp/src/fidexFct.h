@@ -6,7 +6,8 @@
 #include "../../../common/cpp/src/errorHandler.h"
 #include "../../../common/cpp/src/hyperLocus.h"
 #include "../../../common/cpp/src/parameters.h"
-#include "hyperspace.h"
+#include "../../../fidexGlo/cpp/src/fidexAlgo.h"
+#include "../../../fidexGlo/cpp/src/hyperspace.h"
 #include <algorithm>
 #include <chrono>
 #include <ctime>

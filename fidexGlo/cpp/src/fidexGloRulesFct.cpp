@@ -122,7 +122,7 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
       }
 
       while (!ruleCreated) {
-        ruleCreated = fidex.compute(rule, mainSampleValues, mainSamplePred, minFidelity, currentMinCovering);
+        ruleCreated = fidex.compute(rule, false, mainSampleValues, mainSamplePred, minFidelity, currentMinCovering);
         if (currentMinCovering >= 2) {
           currentMinCovering -= 1;
         } else {
@@ -373,7 +373,7 @@ vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const vector<v
     int counterFailed = 0; // If we can't find a good rule after a lot of tries
 
     while (!ruleCreated) {
-      ruleCreated = fidex.compute(rule, mainSampleValues, mainSamplePred, minFidelity, currentMinNbCov);
+      ruleCreated = fidex.compute(rule, false, mainSampleValues, mainSamplePred, minFidelity, currentMinNbCov);
 
       if (currentMinNbCov >= 2) {
         currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering

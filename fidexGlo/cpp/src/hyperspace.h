@@ -1,7 +1,6 @@
 #ifndef HYPERSPACEGLO_H
 #define HYPERSPACEGLO_H
 
-// #include "../../../common/cpp/src/antecedant.h"
 #include "../../../common/cpp/src/errorHandler.h"
 #include "../../../common/cpp/src/hyperbox.h"
 #include "../../../common/cpp/src/rule.h"
@@ -28,7 +27,7 @@ public:
   vector<vector<double>> getHyperLocus() const;
   Rule ruleExtraction(vector<double> &mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, const vector<double> &mus = std::vector<double>(), const vector<double> &sigmas = std::vector<double>(), const vector<int> &normalizationIndices = std::vector<int>());
   double computeRuleAccuracy(vector<int> &trainPreds, vector<int> &trainTrueClass, bool hasTrueClasses, bool mainSampleCorrect = false) const;
-  double computeRuleConfidence(vector<vector<double>> &trainOutputValuesPredictions, const int mainSamplePred) const;
+  double computeRuleConfidence(vector<vector<double>> &trainOutputValuesPredictions, const int mainSamplePred, double mainSamplePredValue = -1.0) const;
 };
 } // namespace FidexGloNameSpace
 

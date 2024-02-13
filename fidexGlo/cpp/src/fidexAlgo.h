@@ -21,18 +21,59 @@ using namespace std::chrono;
 using namespace FidexGloNameSpace;
 
 class Fidex {
+
+public:
+  // Struct to handle special parameters
+  struct currentExecutionSpecs {
+    bool showInitialFidelity = false;
+    double mainSamplePredValue = -1.0;
+    int nbIt = 0;
+  };
+
 private:
   DataSetFid *_trainDataset;
   Parameters *_parameters;
   Hyperspace *_hyperspace;
   mt19937 _rnd;
+  currentExecutionSpecs specs;
 
 public:
   Fidex() = default;
   Fidex(DataSetFid &_trainDataset, Parameters &parameters, Hyperspace &Hyperspace);
 
   // execute algo
-  bool compute(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover, int mainSampleClass = -1);
+  bool compute(Rule &rule, bool withTestSample, vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover, int mainSampleClass = -1);
+
+  // Setters
+  void setShowInitialFidelity(bool value) {
+    specs.showInitialFidelity = value;
+  }
+
+  void setMainSamplePredValue(double value) {
+    specs.mainSamplePredValue = value;
+  }
+
+  void setNbIt(int value) {
+    specs.nbIt = value;
+  }
+
+  // Getters
+  bool getShowInitialFidelity() const {
+    return specs.showInitialFidelity;
+  }
+
+  double getMainSamplePredValue() const {
+    return specs.mainSamplePredValue;
+  }
+
+  int getNbIt() const {
+    return specs.nbIt;
+  }
+
+  void resetExecutionSpecs() {
+    specs.showInitialFidelity = false;
+    specs.mainSamplePredValue = -1.0;
+  }
 };
 
 #endif
