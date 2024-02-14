@@ -8,17 +8,20 @@ set(CMAKE_CXX_FLAGS "-O3 -Wunused" )
 # set(CMAKE_CXX_FLAGS "-O3 -fsanitize=address -fsanitize=leak -fsanitize=undefined")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+FILE (GLOB FIDEX_COMMON_SRC
+    src/hyperLocus.cpp
+    src/hyperLocus.h
+    src/fidexAlgo.cpp
+    src/fidexAlgo.h
+    src/hyperbox.cpp
+    src/hyperbox.h
+    src/hyperspace.cpp
+    src/hyperspace.h
+)
+
 FILE(GLOB FIDEX_SRC
     src/fidexFct.cpp
     src/fidexFct.h
-    src/hyperLocus.cpp
-    src/hyperLocus.h
-    src/hyperbox.cpp
-    src//hyperbox.h
-    src/hyperspace.cpp
-    src//hyperspace.h
-    src/fidexAlgo.cpp
-    src/fidexAlgo.h
 )
 
 FILE(GLOB FIDEXGLO_SRC
@@ -26,27 +29,11 @@ FILE(GLOB FIDEXGLO_SRC
     src/fidexGloFct.h
     src/getRulesFun.cpp
     src/getRulesFun.h
-    src/fidexAlgo.cpp
-    src/fidexAlgo.h
-    src/hyperLocus.cpp
-    src/hyperLocus.h
-    src/hyperbox.cpp
-    src/hyperbox.h
-    src/hyperspace.cpp
-    src/hyperspace.h
 )
 
 FILE(GLOB FIDEXGLORULES_SRC
     src/fidexGloRulesFct.cpp
     src/fidexGloRulesFct.h
-    src/fidexAlgo.cpp
-    src/fidexAlgo.h
-    src/hyperLocus.cpp
-    src/hyperLocus.h
-    src/hyperbox.cpp
-    src/hyperbox.h
-    src/hyperspace.cpp
-    src/hyperspace.h
 )
 
 FILE(GLOB FIDEXGLOSTATS_SRC
@@ -57,17 +44,19 @@ FILE(GLOB FIDEXGLOSTATS_SRC
 )
 
 # make variables visible to external CMakeLists.txt
+set(FIDEX_COMMON_SRC "${FIDEX_COMMON_SRC}" CACHE INTERNAL "")
 set(FIDEX_SRC "${FIDEX_SRC}" CACHE INTERNAL "")
 set(FIDEXGLO_SRC "${FIDEXGLO_SRC}" CACHE INTERNAL "")
 set(FIDEXGLORULES_SRC "${FIDEXGLORULES_SRC}" CACHE INTERNAL "")
 set(FIDEXGLOSTATS_SRC "${FIDEXGLOSTATS_SRC}" CACHE INTERNAL "")
 set(FIDEXGLOTESTS_SRC "${FIDEXGLOTESTS_SRC}" CACHE INTERNAL "")
-add_library(fidexGloRulesLib STATIC ${FIDEXGLORULES_SRC})
+add_library(fidexGloRulesLib STATIC ${FIDEX_COMMON_SRC} ${FIDEXGLORULES_SRC})
+
 
 # build executables
-add_executable(fidexExe ${FIDEX_SRC} src/fidex.cpp)
-add_executable(fidexGlo ${FIDEXGLO_SRC} src/fidexGlo.cpp)
-add_executable(fidexGloRules ${FIDEXGLORULES_SRC} src/fidexGloRules.cpp)
+add_executable(fidexExe ${FIDEX_COMMON_SRC} ${FIDEX_SRC} src/fidex.cpp)
+add_executable(fidexGlo ${FIDEX_COMMON_SRC} ${FIDEXGLO_SRC} src/fidexGlo.cpp)
+add_executable(fidexGloRules ${FIDEX_COMMON_SRC} ${FIDEXGLORULES_SRC} src/fidexGloRules.cpp)
 add_executable(fidexGloStats ${FIDEXGLOSTATS_SRC} src/fidexGloStats.cpp)
 add_dependencies(fidexExe common)
 add_dependencies(fidexGlo common)
