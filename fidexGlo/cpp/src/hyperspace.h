@@ -2,8 +2,8 @@
 #define HYPERSPACEGLO_H
 
 #include "../../../common/cpp/src/errorHandler.h"
-#include "../../../common/cpp/src/hyperbox.h"
 #include "../../../common/cpp/src/rule.h"
+#include "hyperbox.h"
 #include <cstring>
 #include <fstream>
 #include <iostream>
