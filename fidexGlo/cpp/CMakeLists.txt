@@ -15,6 +15,8 @@ FILE(GLOB FIDEXGLO_SRC
     src/getRulesFun.h
     src/fidexAlgo.cpp
     src/fidexAlgo.h
+    src/hyperLocus.cpp
+    src/hyperLocus.h
     src/hyperbox.cpp
     src/hyperbox.h
     src/hyperspace.cpp
@@ -26,6 +28,8 @@ FILE(GLOB FIDEXGLORULES_SRC
     src/fidexGloRulesFct.h
     src/fidexAlgo.cpp
     src/fidexAlgo.h
+    src/hyperLocus.cpp
+    src/hyperLocus.h
     src/hyperbox.cpp
     src/hyperbox.h
     src/hyperspace.cpp

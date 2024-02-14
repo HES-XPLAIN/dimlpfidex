@@ -4,9 +4,9 @@
 #include "../../../common/cpp/src/checkFun.h"
 #include "../../../common/cpp/src/dataSet.h"
 #include "../../../common/cpp/src/errorHandler.h"
-#include "../../../common/cpp/src/hyperLocus.h"
 #include "../../../common/cpp/src/parameters.h"
 #include "../../../fidexGlo/cpp/src/fidexAlgo.h"
+#include "../../../fidexGlo/cpp/src/hyperLocus.h"
 #include "../../../fidexGlo/cpp/src/hyperspace.h"
 #include <algorithm>
 #include <chrono>

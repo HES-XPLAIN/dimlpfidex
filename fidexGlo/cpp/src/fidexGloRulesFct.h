@@ -4,10 +4,10 @@
 #include "../../../common/cpp/src/checkFun.h"
 #include "../../../common/cpp/src/dataSet.h"
 #include "../../../common/cpp/src/errorHandler.h"
-#include "../../../common/cpp/src/hyperLocus.h"
 #include "../../../common/cpp/src/parameters.h"
 #include "../../../common/cpp/src/rule.h"
 #include "fidexAlgo.h"
+#include "hyperLocus.h"
 #include <algorithm>
 #include <chrono>
 #include <limits.h>

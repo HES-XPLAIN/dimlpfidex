@@ -14,8 +14,6 @@ FILE(GLOB COMMON_SRC
     src/dataSet.cpp
     src/checkFun.cpp
     src/checkFun.h
-    src/hyperLocus.cpp
-    src/hyperLocus.h
     src/antecedant.cpp
     src/antecedant.h
     src/rule.cpp

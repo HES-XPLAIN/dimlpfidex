@@ -3,12 +3,11 @@
 
 #include "../../../common/cpp/src/dataSet.h"
 #include "../../../common/cpp/src/errorHandler.h"
-#include "../../../common/cpp/src/hyperLocus.h"
 #include "../../../common/cpp/src/parameters.h"
 #include "../../../common/cpp/src/rule.h"
-#include "../../../fidex/cpp/src/fidexFct.h"
 #include "fidexAlgo.h"
 #include "getRulesFun.h"
+#include "hyperLocus.h"
 #include <algorithm>
 #include <fstream>
 #include <iostream>

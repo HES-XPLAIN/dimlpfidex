@@ -1,9 +1,9 @@
 #ifndef HYPERLOCUSFCT_H
 #define HYPERLOCUSFCT_H
 
-#include "checkFun.h"
-#include "dataSet.h"
-#include "errorHandler.h"
+#include "../../../common/cpp/src/checkFun.h"
+#include "../../../common/cpp/src/dataSet.h"
+#include "../../../common/cpp/src/errorHandler.h"
 #include <fstream>
 #include <iomanip>
 #include <regex>
