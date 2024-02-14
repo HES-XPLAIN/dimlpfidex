@@ -29,3 +29,10 @@ Advices :
 
 ### Note in case performance decrease for fidexGloRules
 - We have moved  the "return false" in fidexAlgo after the rule extraction and stats computation. We did it for Fidex but it could have a computational cost.
+
+### Launch fidex from Python library :
+- Need to include the library before :
+from dimlpfidex import fidex or from dimlpfidex import dimlp
+- root_folder is not bin but it is where we launch Python
+- We need to add a word in front, exemple : fidexGlo.fidexGloRules("fidexGloRules --json_config_file fidexTests/templates/config_fidexGloRules.json")
+Juste mettre un espace devant suffit.

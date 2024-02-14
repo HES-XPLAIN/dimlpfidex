@@ -61,6 +61,7 @@ endif()
 # Build binding lib
 pybind11_add_module(fidexGlo
     ${COMMON_SRC}
+    ${FIDEX_SRC}
     ${FIDEXGLO_SRC}
     ${FIDEXGLORULES_SRC}
     ${FIDEXGLOSTATS_SRC}

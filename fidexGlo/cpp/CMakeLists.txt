@@ -8,6 +8,19 @@ set(CMAKE_CXX_FLAGS "-O3 -Wunused" )
 # set(CMAKE_CXX_FLAGS "-O3 -fsanitize=address -fsanitize=leak -fsanitize=undefined")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+FILE(GLOB FIDEX_SRC
+    src/fidexFct.cpp
+    src/fidexFct.h
+    src/hyperLocus.cpp
+    src/hyperLocus.h
+    src/hyperbox.cpp
+    src//hyperbox.h
+    src/hyperspace.cpp
+    src//hyperspace.h
+    src/fidexAlgo.cpp
+    src/fidexAlgo.h
+)
+
 FILE(GLOB FIDEXGLO_SRC
     src/fidexGloFct.cpp
     src/fidexGloFct.h
@@ -44,6 +57,7 @@ FILE(GLOB FIDEXGLOSTATS_SRC
 )
 
 # make variables visible to external CMakeLists.txt
+set(FIDEX_SRC "${FIDEX_SRC}" CACHE INTERNAL "")
 set(FIDEXGLO_SRC "${FIDEXGLO_SRC}" CACHE INTERNAL "")
 set(FIDEXGLORULES_SRC "${FIDEXGLORULES_SRC}" CACHE INTERNAL "")
 set(FIDEXGLOSTATS_SRC "${FIDEXGLOSTATS_SRC}" CACHE INTERNAL "")
@@ -51,19 +65,24 @@ set(FIDEXGLOTESTS_SRC "${FIDEXGLOTESTS_SRC}" CACHE INTERNAL "")
 add_library(fidexGloRulesLib STATIC ${FIDEXGLORULES_SRC})
 
 # build executables
+add_executable(fidexProject ${FIDEX_SRC} src/fidex.cpp)
 add_executable(fidexGloProject ${FIDEXGLO_SRC} src/fidexGlo.cpp)
 add_executable(fidexGloRules ${FIDEXGLORULES_SRC} src/fidexGloRules.cpp)
 add_executable(fidexGloStats ${FIDEXGLOSTATS_SRC} src/fidexGloStats.cpp)
+add_dependencies(fidexProject common)
 add_dependencies(fidexGloProject common)
 add_dependencies(fidexGloRulesLib common)
 add_dependencies(fidexGloRules common)
 add_dependencies(fidexGloStats common)
+target_link_libraries(fidexProject common)
 target_link_libraries(fidexGloProject common)
 target_link_libraries(fidexGloRulesLib common)
 target_link_libraries(fidexGloRules common)
 target_link_libraries(fidexGloStats common)
 
-
+set_target_properties(
+    fidexProject PROPERTIES OUTPUT_NAME "fidex" RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+)
 set_target_properties(
     fidexGloProject PROPERTIES OUTPUT_NAME "fidexGlo" RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
