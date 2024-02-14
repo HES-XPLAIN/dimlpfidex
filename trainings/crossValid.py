@@ -17,7 +17,6 @@ if sys.platform == 'win32':
 
 from dimlpfidex import dimlp
 from dimlpfidex import fidex
-from dimlpfidex import fidexGlo
 from trainings.svmTrn import svmTrn
 from trainings.mlpTrn import mlpTrn
 from trainings.randForestsTrn import randForestsTrn
@@ -1487,7 +1486,7 @@ def crossValid(*args, **kwargs):
                             fidexglo_rules_command += " --decision_threshold " + str(decision_threshold)
 
                         print("Enter in fidexGloRules function")
-                        res_fid_glo_rules = fidexGlo.fidexGloRules(fidexglo_rules_command)
+                        res_fid_glo_rules = fidex.fidexGloRules(fidexglo_rules_command)
                         if res_fid_glo_rules == -1:
                             raise ValueError('Error during execution of FidexGloRules.')
 
@@ -1512,7 +1511,7 @@ def crossValid(*args, **kwargs):
                             fidexglo_stats_command += " --positive_class_index " + str(positive_class_index)
 
                         print("Enter in fidexGloStats function")
-                        res_fid_glo_stats = fidexGlo.fidexGloStats(fidexglo_stats_command)
+                        res_fid_glo_stats = fidex.fidexGloStats(fidexglo_stats_command)
                         if res_fid_glo_stats == -1:
                             raise ValueError('Error during execution of FidexGloStats.')
                         # Get statistics from fidexGlo

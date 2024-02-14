@@ -1,4 +1,4 @@
-project(fidexGloProject)
+project(fidexProject)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -59,7 +59,7 @@ if (Python_FOUND AND Python_Interpreter_FOUND AND pybind11_FOUND)
 endif()
 
 # Build binding lib
-pybind11_add_module(fidexGlo
+pybind11_add_module(fidex
     ${COMMON_SRC}
     ${FIDEX_SRC}
     ${FIDEXGLO_SRC}
@@ -69,7 +69,7 @@ pybind11_add_module(fidexGlo
 )
 
 set_target_properties(
-    fidexGlo PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/dimlpfidex
+    fidex PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/dimlpfidex
 )
 
-target_link_libraries(fidexGlo PUBLIC)
+target_link_libraries(fidex PUBLIC)

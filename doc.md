@@ -34,5 +34,5 @@ Advices :
 - Need to include the library before :
 from dimlpfidex import fidex or from dimlpfidex import dimlp
 - root_folder is not bin but it is where we launch Python
-- We need to add a word in front, exemple : fidexGlo.fidexGloRules("fidexGloRules --json_config_file fidexTests/templates/config_fidexGloRules.json")
+- We need to add a word in front, exemple : fidex.fidexGloRules("fidexGloRules --json_config_file fidexTests/templates/config_fidexGloRules.json")
 Juste mettre un espace devant suffit.

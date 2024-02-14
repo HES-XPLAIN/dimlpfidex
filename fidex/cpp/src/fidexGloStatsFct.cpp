@@ -497,8 +497,8 @@ int fidexGloStats(const string &command) {
 
 /* Exemples pour lancer le code :
 
-./fidexGloStats --test_data_file datanorm --test_pred_file dimlp.out --test_class_file dataclass2 --global_rules_file globalRules.txt --nb_attributes 16 --nb_classes 2 --stats_file stats.txt --root_folder ../fidexGlo/datafiles
-./fidexGloStats --test_data_file datanormTest --test_pred_file dimlpDatanormTest.out --test_class_file dataclass2Test --global_rules_file globalRulesDatanorm.txt --nb_attributes 16 --nb_classes 2 --stats_file stats.txt --root_folder ../fidexGlo/datafiles
+./fidexGloStats --test_data_file datanorm --test_pred_file dimlp.out --test_class_file dataclass2 --global_rules_file globalRules.txt --nb_attributes 16 --nb_classes 2 --stats_file stats.txt --root_folder ../fidex/datafiles
+./fidexGloStats --test_data_file datanormTest --test_pred_file dimlpDatanormTest.out --test_class_file dataclass2Test --global_rules_file globalRulesDatanorm.txt --nb_attributes 16 --nb_classes 2 --stats_file stats.txt --root_folder ../fidex/datafiles
 ./fidexGloStats --test_data_file covidTestData.txt --test_pred_file covidTestPred.out --test_class_file covidTestClass.txt --global_rules_file globalRulesCovid.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/covidDataset
 ./fidexGloStats --test_data_file spamTestData.txt --test_pred_file spamTestPred.out --test_class_file spamTestClass.txt --global_rules_file globalRulesSpam.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/spamDataset
 ./fidexGloStats --test_data_file isoletTestData.txt --test_pred_file isoletTestPred.out --test_class_file isoletTestClass.txt --global_rules_file globalRulesIsolet.txt --nb_attributes 16 --nb_classes 2 --stats_file globalStats.txt --root_folder ../dimlp/datafiles/isoletDataset

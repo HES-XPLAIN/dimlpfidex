@@ -1,4 +1,4 @@
-project(fidexGloProject)
+project(fidexProject)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -66,16 +66,16 @@ add_library(fidexGloRulesLib STATIC ${FIDEXGLORULES_SRC})
 
 # build executables
 add_executable(fidexProject ${FIDEX_SRC} src/fidex.cpp)
-add_executable(fidexGloProject ${FIDEXGLO_SRC} src/fidexGlo.cpp)
+add_executable(fidexGlo ${FIDEXGLO_SRC} src/fidexGlo.cpp)
 add_executable(fidexGloRules ${FIDEXGLORULES_SRC} src/fidexGloRules.cpp)
 add_executable(fidexGloStats ${FIDEXGLOSTATS_SRC} src/fidexGloStats.cpp)
 add_dependencies(fidexProject common)
-add_dependencies(fidexGloProject common)
+add_dependencies(fidexGlo common)
 add_dependencies(fidexGloRulesLib common)
 add_dependencies(fidexGloRules common)
 add_dependencies(fidexGloStats common)
 target_link_libraries(fidexProject common)
-target_link_libraries(fidexGloProject common)
+target_link_libraries(fidexGlo common)
 target_link_libraries(fidexGloRulesLib common)
 target_link_libraries(fidexGloRules common)
 target_link_libraries(fidexGloStats common)
@@ -84,7 +84,7 @@ set_target_properties(
     fidexProject PROPERTIES OUTPUT_NAME "fidex" RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
 set_target_properties(
-    fidexGloProject PROPERTIES OUTPUT_NAME "fidexGlo" RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+    fidexGlo PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
 )
 set_target_properties(
     fidexGloRules PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin

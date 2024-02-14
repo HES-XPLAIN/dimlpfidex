@@ -61,7 +61,6 @@ packages = [
     "dimlpfidex",
 #    "fidex",
 #    "common",
-#    "fidexGlo",
     "trainings",
 ]
 artifacts = [
@@ -77,7 +76,6 @@ packages = [
     "example",
     "fidex",
     "common",
-    "fidexGlo",
     "trainings",
 ]
 include = [
@@ -93,10 +91,6 @@ include = [
     "fidex/cpp/src/*.cpp",
     "fidex/cpp/src/*.h",
     "fidex/pybind/*",
-    "fidexGlo/**/CMakeLists.txt",
-    "fidexGlo/cpp/src/*.cpp",
-    "fidexGlo/cpp/src/*.h",
-    "fidexGlo/pybind/*",
     "*.py",
     "*.txt",
 ]

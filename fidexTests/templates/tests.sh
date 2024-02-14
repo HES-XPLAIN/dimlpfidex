@@ -12,7 +12,7 @@
 EXE="bin/fidexGloRules"
 BASE_DIR="$HOME/Documents/hepia/dimlpfidex-json"
 CURRENT_VERSION_DIR="$BASE_DIR/dimlpfidex/"
-TESTS_DIR="${CURRENT_VERSION_DIR}fidexGlo/cpp/tests/"
+TESTS_DIR="${CURRENT_VERSION_DIR}fidex/cpp/tests/"
 MAIN_VERSION_DIR="${BASE_DIR}dimlpfidex-main/dimlpfidex/"
 DATA_DIR="${TESTS_DIR}dataset/data/"
 OUT_DIR="${TESTS_DIR}dataset/out/"

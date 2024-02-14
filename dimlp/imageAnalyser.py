@@ -5,7 +5,7 @@ import numpy as np
 import colorsys
 import os
 
-from dimlpfidex import fidex, fidexGlo
+from dimlpfidex import fidex
 
 def get_data(file_name): # Get data from file
     try:
@@ -155,7 +155,7 @@ def imageAnalyser(dataSet):
 
         print("Launching FidexGlo")
 
-        res_fid_glo = fidexGlo.fidexGlo(fidexglo_command)
+        res_fid_glo = fidex.fidexGlo(fidexglo_command)
         if res_fid_glo == -1:
             raise ValueError('Error during execution of FidexGlo')
 

@@ -2,7 +2,7 @@
 #define FIDEXGLO_TESTS_H
 
 #include "../../../common/cpp/src/parameters.h"
-#include "../../../fidexGlo/cpp/src/fidexGloRulesFct.h"
+#include "../../../fidex/cpp/src/fidexGloRulesFct.h"
 #include "utils.hpp"
 
 void testFidexGloRules();
