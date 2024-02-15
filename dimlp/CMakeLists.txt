@@ -75,4 +75,4 @@ set_target_properties(
     dimlp PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/dimlpfidex
 )
 
-target_link_libraries(dimlp PUBLIC)
+target_link_libraries(dimlp PUBLIC common)
