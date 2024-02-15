@@ -122,7 +122,7 @@ void SaveFirstHid(
  */
 void checkDimlpClsParametersLogicValues(Parameters &p) {
   // setting default values
-  p.setDefaultInt(NB_QUANT_LEVELS, 50);
+  p.setDefaultNbQuantLevels();
   p.setDefaultString(TEST_PRED_OUTFILE, "dimlp.out", true);
   p.setDefaultString(HID_FILE, "dimlp.hid", true);
 
@@ -135,18 +135,7 @@ void checkDimlpClsParametersLogicValues(Parameters &p) {
   p.assertStringExists(WEIGHTS_FILE);
 
   // verifying logic between parameters, values range and so on...
-
-  if (p.getInt(NB_ATTRIBUTES) < 1) {
-    throw CommandArgumentException("Error : Number of attributes must be strictly positive (>=1).");
-  }
-
-  if (p.getInt(NB_CLASSES) < 2) {
-    throw CommandArgumentException("Error : Number of classes must be greater than 1.");
-  }
-
-  if (p.getInt(NB_QUANT_LEVELS) <= 2) {
-    throw CommandArgumentException("Error : Number of stairs in staircase activation function must be greater than 2.");
-  }
+  p.checkParametersCommon();
 }
 
 int dimlpCls(const string &command) {

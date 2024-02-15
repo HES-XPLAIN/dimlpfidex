@@ -753,3 +753,201 @@ void Parameters::setDefaultString(ParameterCode id, const string &defaultValue, 
     setString(id, value);
   }
 }
+
+void Parameters::checkAttributeAndClassCounts() {
+
+  if (getInt(NB_ATTRIBUTES) < 1) {
+    throw CommandArgumentException("Error : Number of attributes must be strictly positive (>=1).");
+  }
+
+  if (getInt(NB_CLASSES) < 2) {
+    throw CommandArgumentException("Error : Number of classes must be greater than 1.");
+  }
+}
+
+void Parameters::checkParametersCommon() {
+
+  checkAttributeAndClassCounts();
+
+  if (getInt(NB_QUANT_LEVELS) <= 2) {
+    throw CommandArgumentException("Error : Number of stairs in staircase activation function must be greater than 2.");
+  }
+}
+
+void Parameters::checkParametersFidex() {
+
+  if (isStringSet(WEIGHTS_FILE) && isStringSet(RULES_FILE)) {
+    throw CommandArgumentException("Error : Do not specify both a weight file and an rules input file. Choose one of them.");
+  }
+
+  if (!isStringSet(WEIGHTS_FILE) && !isStringSet(RULES_FILE)) {
+    throw CommandArgumentException("Error : A weight file or a rules file has to be given. Give the weights file with option -W or the rules file with option -f");
+  }
+
+  if (getInt(NB_DIMLP_NETS) < 1) {
+    throw CommandArgumentException("Error : Number of networks must be strictly positive (>=1).");
+  }
+
+  if (getInt(MAX_ITERATIONS) < 1) {
+    throw CommandArgumentException("Error : Maximum number of iterations must be strictly positive (>=1).");
+  }
+
+  if (getInt(MIN_COVERING) < 1) {
+    throw CommandArgumentException("Error : Minimium covering must be strictly positive (>=1).");
+  }
+
+  if (getInt(MAX_FAILED_ATTEMPTS) < 0) {
+    throw CommandArgumentException("Error : Maximum number of failed attempts has to be positive (>=0)");
+  }
+
+  if (getFloat(MIN_FIDELITY) < 0.0f || getFloat(MIN_FIDELITY) > 1.0f) {
+    throw CommandArgumentException("Error : Minimum fidelity has to be between [0.0, 1.0]");
+  }
+
+  if (getFloat(DROPOUT_DIM) < 0.0f || getFloat(DROPOUT_DIM) > 1.0f) {
+    throw CommandArgumentException("Error : Dropout dim must be between [0.0, 1.0].");
+  }
+
+  if (getFloat(DROPOUT_HYP) < 0.0f || getFloat(DROPOUT_HYP) > 1.0f) {
+    throw CommandArgumentException("Error : Dropout hyp must be between [0.0, 1.0].");
+  }
+
+  if (getInt(SEED) < 0) {
+    throw CommandArgumentException("Error : random seed mus be positive (>=0).");
+  }
+}
+
+void Parameters::checkParametersDecisionThreshold() {
+
+  if ((getFloat(DECISION_THRESHOLD) < 0.0f || getFloat(DECISION_THRESHOLD) > 1.0f) && getFloat(DECISION_THRESHOLD) != -1.0f) {
+    throw CommandArgumentException("Error : Decision threshold must be beetween [0.0, 1.0].");
+  }
+
+  if (getInt(POSITIVE_CLASS_INDEX) < 0 && getInt(POSITIVE_CLASS_INDEX) != -1) {
+    throw CommandArgumentException("Error : Positive class index must be positive (>=0)");
+  }
+
+  if (getInt(POSITIVE_CLASS_INDEX) >= getInt(NB_CLASSES)) {
+    throw CommandArgumentException("Error : The index of positive class cannot be greater or equal to the number of classes (" + to_string(getInt(NB_CLASSES)) + ").");
+  }
+
+  if (getFloat(DECISION_THRESHOLD) != -1 && getInt(POSITIVE_CLASS_INDEX) == -1) {
+    throw CommandArgumentException("Error : The positive class index has to be given with option --positive_class_index if the decision threshold is given (--decision_threshold)");
+  }
+}
+
+void Parameters::checkParametersDimlpTrn() {
+
+  if (getFloat(LEARNING_RATE) <= 0) {
+    throw CommandArgumentException("The learning parameter must be strictly positive (>0).");
+  }
+
+  if (getFloat(MOMENTUM) < 0) {
+    throw CommandArgumentException("The momentum parameter must be positive (>=0).");
+  }
+
+  if (getFloat(FLAT) < 0) {
+    throw CommandArgumentException("The flat parameter must be positive (>=0).");
+  }
+
+  if (getFloat(ERROR_THRESH) < 0 && getFloat(ERROR_THRESH) != -1111111111.0f) {
+    throw CommandArgumentException("The error threshold must be positive (>=0).");
+  }
+
+  if ((getFloat(ACC_THRESH) <= 0 || getFloat(ACC_THRESH) > 1) && getFloat(ACC_THRESH) != 11111111111111.0f) {
+    throw CommandArgumentException("The accuracy threshold must be between ]0,1].");
+  }
+
+  if (getFloat(ABS_ERROR_THRESH) < 0) {
+    throw CommandArgumentException("The delta error parameter (ABS_ERROR_THRESH) must be positive (>=0, 0=no delta).");
+  }
+
+  if (getInt(NB_EPOCHS) < 1) {
+    throw CommandArgumentException("Error : Number of epochs must be strictly positive (>=1).");
+  }
+
+  if (getInt(NB_EPOCHS_ERROR) < 1) {
+    throw CommandArgumentException("Error : Number of epochs to show errors must be strictly positive (>=1).");
+  }
+
+  if (getInt(SEED) < 0) {
+    throw CommandArgumentException("Error : random seed mus be positive (>=0).");
+  }
+}
+
+void Parameters::checkParametersNormalization() {
+
+  // Check denormalization parameters
+
+  // If normalizationIndices were not specified, it's all attributes
+  if (!isStringSet(NORMALIZATION_FILE) && !isIntVectorSet(NORMALIZATION_INDICES) && isDoubleVectorSet(MUS)) {
+    vector<int> normalizationIndicesTemp;
+    for (int i = 0; i < getInt(NB_ATTRIBUTES); ++i) {
+      normalizationIndicesTemp.push_back(i);
+    }
+    setIntVector(NORMALIZATION_INDICES, normalizationIndicesTemp);
+  }
+
+  // Check if mus and sigmas are both given or both not
+  if ((isDoubleVectorSet(MUS) || isDoubleVectorSet(SIGMAS)) &&
+      !(isDoubleVectorSet(MUS) && isDoubleVectorSet(SIGMAS))) {
+    throw CommandArgumentException("Error : One of Mus(--mus) and sigmas(--sigmas) is given but not the other.");
+  }
+
+  if (isStringSet(NORMALIZATION_FILE) && isDoubleVectorSet(MUS) || isStringSet(NORMALIZATION_FILE) && isIntVectorSet(NORMALIZATION_INDICES)) {
+    throw CommandArgumentException("Error : normlization file (--normalization_file) and mus or normalizationIndices (--normalization_indices) are both given.");
+  }
+
+  // Mus, sigmas and normalizationIndices must have the same size and not be empty
+  if (isDoubleVectorSet(MUS) && (getDoubleVector(MUS).size() != getDoubleVector(SIGMAS).size() || getDoubleVector(MUS).size() != getIntVector(NORMALIZATION_INDICES).size() || getDoubleVector(MUS).empty())) {
+    throw CommandArgumentException("Error : mus (--mus), sigmas (--sigmas) and normalization indices (--normalization_indices) don't have the same size or are empty.");
+  }
+
+  // Check normalizationIndices
+  if (isIntVectorSet(NORMALIZATION_INDICES)) {
+    vector<int> tempVect = getIntVector(NORMALIZATION_INDICES);
+    std::set<int> uniqueIndices(tempVect.begin(), tempVect.end());
+    if (uniqueIndices.size() != getIntVector(NORMALIZATION_INDICES).size() ||
+        *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= getInt(NB_ATTRIBUTES) ||
+        *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
+      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) must be a list composed of integers between [0, nb_attributes-1] without repeted elements.");
+    }
+  }
+}
+
+void Parameters::setDefaultNbQuantLevels() {
+  setDefaultInt(NB_QUANT_LEVELS, 50);
+}
+
+void Parameters::setDefaultFidex() {
+  setDefaultInt(NB_DIMLP_NETS, 1);
+  setDefaultInt(MAX_ITERATIONS, 10);
+  setDefaultInt(MIN_COVERING, 2);
+  setDefaultInt(MAX_FAILED_ATTEMPTS, 30);
+  setDefaultFloat(MIN_FIDELITY, 1.0);
+  setDefaultFloat(DROPOUT_DIM, 0.0f);
+  setDefaultFloat(DROPOUT_HYP, 0.0f);
+  setDefaultFloat(HI_KNOT, 5.0f);
+  setDefaultInt(SEED, 0);
+  if (isStringSet(WEIGHTS_FILE)) {
+    setWeightsFiles(); // must be called to initialize
+  }
+}
+
+void Parameters::setDefaultDecisionThreshold() {
+  setDefaultFloat(DECISION_THRESHOLD, -1.0f);
+  setDefaultInt(POSITIVE_CLASS_INDEX, -1);
+}
+
+void Parameters::setDefaultDimlpTrn() {
+  setDefaultFloat(LEARNING_RATE, 0.1f);
+  setDefaultFloat(MOMENTUM, 0.6f);
+  setDefaultFloat(FLAT, 0.01f);
+  setDefaultFloat(ERROR_THRESH, -1111111111.0f);
+  setDefaultFloat(ACC_THRESH, 11111111111111.0f);
+  setDefaultFloat(ABS_ERROR_THRESH, 0.0f);
+  setDefaultInt(NB_EPOCHS_ERROR, 10);
+  setDefaultInt(NB_EPOCHS, 1500);
+  setDefaultBool(WITH_RULE_EXTRACTION, false);
+  setDefaultInt(SEED, 0);
+}

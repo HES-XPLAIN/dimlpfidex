@@ -67,19 +67,10 @@ void checkDimlpBTParametersLogicValues(Parameters &p) {
   p.setDefaultString(TRAIN_PRED_OUTFILE, "dimlpBTTrain.out", true);
   p.setDefaultString(TEST_PRED_OUTFILE, "dimlpBTTest.out", true);
   p.setDefaultString(WEIGHTS_GENERIC_OUTFILENAME, "dimlpBT", true);
-  p.setDefaultInt(NB_QUANT_LEVELS, 50);
-  p.setDefaultFloat(LEARNING_RATE, 0.1f);
-  p.setDefaultFloat(MOMENTUM, 0.6f);
-  p.setDefaultFloat(FLAT, 0.01f);
-  p.setDefaultFloat(ERROR_THRESH, -1111111111.0f);
-  p.setDefaultFloat(ACC_THRESH, 11111111111111.0f);
-  p.setDefaultFloat(ABS_ERROR_THRESH, 0.0f);
-  p.setDefaultInt(NB_EPOCHS_ERROR, 10);
-  p.setDefaultInt(NB_EPOCHS, 1500);
-  p.setDefaultBool(WITH_RULE_EXTRACTION, false);
+  p.setDefaultNbQuantLevels();
+  p.setDefaultDimlpTrn();
   p.setDefaultInt(NB_DIMLP_NETS, 25);
   p.setDefaultInt(NB_EX_PER_NET, 0);
-  p.setDefaultInt(SEED, 0);
 
   // this sections check if values comply with program logic
 
@@ -89,50 +80,9 @@ void checkDimlpBTParametersLogicValues(Parameters &p) {
   p.assertStringExists(TRAIN_DATA_FILE);
 
   // verifying logic between parameters, values range and so on...
-
-  if (p.getInt(NB_ATTRIBUTES) < 1) {
-    throw CommandArgumentException("Error : Number of attributes must be strictly positive (>=1).");
-  }
-
-  if (p.getInt(NB_CLASSES) < 2) {
-    throw CommandArgumentException("Error : Number of classes must be greater than 1.");
-  }
-
-  if (p.getInt(NB_QUANT_LEVELS) <= 2) {
-    throw CommandArgumentException("Error : Number of stairs in staircase activation function must be greater than 2.");
-  }
-
-  if (p.getFloat(LEARNING_RATE) <= 0) {
-    throw CommandArgumentException("The learning parameter must be strictly positive (>0).");
-  }
-
-  if (p.getFloat(MOMENTUM) < 0) {
-    throw CommandArgumentException("The momentum parameter must be positive (>=0).");
-  }
-
-  if (p.getFloat(FLAT) < 0) {
-    throw CommandArgumentException("The flat parameter must be positive (>=0).");
-  }
-
-  if (p.getFloat(ERROR_THRESH) < 0 && p.getFloat(ERROR_THRESH) != -1111111111.0f) {
-    throw CommandArgumentException("The error threshold must be positive (>=0).");
-  }
-
-  if ((p.getFloat(ACC_THRESH) <= 0 || p.getFloat(ACC_THRESH) > 1) && p.getFloat(ACC_THRESH) != 11111111111111.0f) {
-    throw CommandArgumentException("The accuracy threshold must be between ]0,1].");
-  }
-
-  if (p.getFloat(ABS_ERROR_THRESH) < 0) {
-    throw CommandArgumentException("The delta error parameter (ABS_ERROR_THRESH) must be positive (>=0, 0=no delta).");
-  }
-
-  if (p.getInt(NB_EPOCHS) < 1) {
-    throw CommandArgumentException("Error : Number of epochs must be strictly positive (>=1).");
-  }
-
-  if (p.getInt(NB_EPOCHS_ERROR) < 1) {
-    throw CommandArgumentException("Error : Number of epochs to show errors must be strictly positive (>=1).");
-  }
+  p.checkParametersCommon();
+  p.checkParametersDimlpTrn();
+  p.checkParametersNormalization();
 
   if (p.getInt(NB_DIMLP_NETS) < 1) {
     throw CommandArgumentException("Error : Number of dimlp nets must be strictly positive (>=1).");
@@ -140,49 +90,6 @@ void checkDimlpBTParametersLogicValues(Parameters &p) {
 
   if (p.getInt(NB_EX_PER_NET) < 0) {
     throw CommandArgumentException("Error : Number of examples per net must be positive (>=0, 0=all examples).");
-  }
-
-  if (p.getInt(SEED) < 0) {
-    throw CommandArgumentException("Error : random seed mus be positive (>=0).");
-  }
-
-  // ----------------------------------------------------------------------
-
-  // Check denormalization parameters
-
-  // If normalizationIndices were not specified, it's all attributes
-  if (!p.isStringSet(NORMALIZATION_FILE) && !p.isIntVectorSet(NORMALIZATION_INDICES) && p.isDoubleVectorSet(MUS)) {
-    vector<int> normalizationIndicesTemp;
-    for (int i = 0; i < p.getInt(NB_ATTRIBUTES); ++i) {
-      normalizationIndicesTemp.push_back(i);
-    }
-    p.setIntVector(NORMALIZATION_INDICES, normalizationIndicesTemp);
-  }
-
-  // Check if mus and sigmas are both given or both not
-  if ((p.isDoubleVectorSet(MUS) || p.isDoubleVectorSet(SIGMAS)) &&
-      !(p.isDoubleVectorSet(MUS) && p.isDoubleVectorSet(SIGMAS))) {
-    throw CommandArgumentException("Error : One of Mus(--mus) and sigmas(--sigmas) is given but not the other.");
-  }
-
-  if (p.isStringSet(NORMALIZATION_FILE) && p.isDoubleVectorSet(MUS) || p.isStringSet(NORMALIZATION_FILE) && p.isIntVectorSet(NORMALIZATION_INDICES)) {
-    throw CommandArgumentException("Error : normlization file (--normalization_file) and mus or normalizationIndices (--normalization_indices) are both given.");
-  }
-
-  // Mus, sigmas and normalizationIndices must have the same size and not be empty
-  if (p.isDoubleVectorSet(MUS) && (p.getDoubleVector(MUS).size() != p.getDoubleVector(SIGMAS).size() || p.getDoubleVector(MUS).size() != p.getIntVector(NORMALIZATION_INDICES).size() || p.getDoubleVector(MUS).empty())) {
-    throw CommandArgumentException("Error : mus (--mus), sigmas (--sigmas) and normalization indices (--normalization_indices) don't have the same size or are empty.");
-  }
-
-  // Check normalizationIndices
-  if (p.isIntVectorSet(NORMALIZATION_INDICES)) {
-    vector<int> tempVect = p.getIntVector(NORMALIZATION_INDICES);
-    std::set<int> uniqueIndices(tempVect.begin(), tempVect.end());
-    if (uniqueIndices.size() != p.getIntVector(NORMALIZATION_INDICES).size() ||
-        *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= p.getInt(NB_ATTRIBUTES) ||
-        *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
-      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) must be a list composed of integers between [0, nb_attributes-1] without repeted elements.");
-    }
   }
 }
 

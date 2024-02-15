@@ -266,6 +266,20 @@ public:
   void assertDoubleVectorExists(ParameterCode id);
   void assertIntVectorExists(ParameterCode id);
   void assertStringExists(ParameterCode id) const;
+
+  // check common parameters
+  void checkAttributeAndClassCounts();
+  void checkParametersCommon();
+  void checkParametersFidex();
+  void checkParametersDecisionThreshold();
+  void checkParametersDimlpTrn();
+  void checkParametersNormalization();
+
+  // set common default parameters
+  void setDefaultNbQuantLevels();
+  void setDefaultFidex();
+  void setDefaultDecisionThreshold();
+  void setDefaultDimlpTrn();
 };
 
 inline ostream &operator<<(ostream &stream, const Parameters &p) {

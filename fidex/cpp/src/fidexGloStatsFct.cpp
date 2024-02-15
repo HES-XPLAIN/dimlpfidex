@@ -76,8 +76,7 @@ void computeTFPN(int decision, int positiveClassIndex, int testTrueClass, int &n
  */
 void checkStatsParametersLogicValues(Parameters &p) {
   // setting default values
-  p.setDefaultFloat(DECISION_THRESHOLD, -1.0f);
-  p.setDefaultInt(POSITIVE_CLASS_INDEX, -1);
+  p.setDefaultDecisionThreshold();
 
   // this sections check if values comply with program logic
 
@@ -89,30 +88,8 @@ void checkStatsParametersLogicValues(Parameters &p) {
   p.assertIntExists(NB_CLASSES);
 
   // verifying logic between parameters, values range and so on...
-
-  if (p.getInt(NB_ATTRIBUTES) < 1) {
-    throw CommandArgumentException("Error : Number of attributes must be strictly positive (>=1).");
-  }
-
-  if (p.getInt(NB_CLASSES) < 1) {
-    throw CommandArgumentException("Error : Number of classes must be strictly positive (>=1).");
-  }
-
-  if ((p.getFloat(DECISION_THRESHOLD) < 0.0f || p.getFloat(DECISION_THRESHOLD) > 1.0f) && p.getFloat(DECISION_THRESHOLD) != -1.0f) {
-    throw CommandArgumentException("Error : Decision threshold must be beetween [0.0, 1.0].");
-  }
-
-  if (p.getInt(POSITIVE_CLASS_INDEX) < 0 && p.getInt(POSITIVE_CLASS_INDEX) != -1) {
-    throw CommandArgumentException("Error : Positive class index must be positive (>=0)");
-  }
-
-  if (p.getInt(POSITIVE_CLASS_INDEX) >= p.getInt(NB_CLASSES)) {
-    throw CommandArgumentException("Error : The index of positive class cannot be greater or equal to the number of classes (" + to_string(p.getInt(NB_CLASSES)) + ").");
-  }
-
-  if (p.getFloat(DECISION_THRESHOLD) != -1 && p.getInt(POSITIVE_CLASS_INDEX) == -1) {
-    throw CommandArgumentException("Error : The positive class index has to be given with option --positive_class_index if the decision threshold is given (--decision_threshold)");
-  }
+  p.checkAttributeAndClassCounts();
+  p.checkParametersDecisionThreshold();
 }
 
 int fidexGloStats(const string &command) {

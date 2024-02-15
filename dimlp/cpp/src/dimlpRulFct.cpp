@@ -53,7 +53,7 @@ void showDimlpRulParams()
  */
 void checkDimlpRulParametersLogicValues(Parameters &p) {
   // setting default values
-  p.setDefaultInt(NB_QUANT_LEVELS, 50);
+  p.setDefaultNbQuantLevels();
   p.setDefaultString(GLOBAL_RULES_OUTFILE, "dimlp.rls", true);
 
   // this sections check if values comply with program logic
@@ -65,57 +65,8 @@ void checkDimlpRulParametersLogicValues(Parameters &p) {
   p.assertStringExists(WEIGHTS_FILE);
 
   // verifying logic between parameters, values range and so on...
-
-  if (p.getInt(NB_ATTRIBUTES) < 1) {
-    throw CommandArgumentException("Error : Number of attributes must be strictly positive (>=1).");
-  }
-
-  if (p.getInt(NB_CLASSES) < 2) {
-    throw CommandArgumentException("Error : Number of classes must be greater than 1.");
-  }
-
-  if (p.getInt(NB_QUANT_LEVELS) <= 2) {
-    throw CommandArgumentException("Error : Number of stairs in staircase activation function must be greater than 2.");
-  }
-
-  // ----------------------------------------------------------------------
-
-  // Check denormalization parameters
-
-  // If normalizationIndices were not specified, it's all attributes
-  if (!p.isStringSet(NORMALIZATION_FILE) && !p.isIntVectorSet(NORMALIZATION_INDICES) && p.isDoubleVectorSet(MUS)) {
-    vector<int> normalizationIndicesTemp;
-    for (int i = 0; i < p.getInt(NB_ATTRIBUTES); ++i) {
-      normalizationIndicesTemp.push_back(i);
-    }
-    p.setIntVector(NORMALIZATION_INDICES, normalizationIndicesTemp);
-  }
-
-  // Check if mus and sigmas are both given or both not
-  if ((p.isDoubleVectorSet(MUS) || p.isDoubleVectorSet(SIGMAS)) &&
-      !(p.isDoubleVectorSet(MUS) && p.isDoubleVectorSet(SIGMAS))) {
-    throw CommandArgumentException("Error : One of Mus(--mus) and sigmas(--sigmas) is given but not the other.");
-  }
-
-  if (p.isStringSet(NORMALIZATION_FILE) && p.isDoubleVectorSet(MUS) || p.isStringSet(NORMALIZATION_FILE) && p.isIntVectorSet(NORMALIZATION_INDICES)) {
-    throw CommandArgumentException("Error : normlization file (--normalization_file) and mus or normalizationIndices (--normalization_indices) are both given.");
-  }
-
-  // Mus, sigmas and normalizationIndices must have the same size and not be empty
-  if (p.isDoubleVectorSet(MUS) && (p.getDoubleVector(MUS).size() != p.getDoubleVector(SIGMAS).size() || p.getDoubleVector(MUS).size() != p.getIntVector(NORMALIZATION_INDICES).size() || p.getDoubleVector(MUS).empty())) {
-    throw CommandArgumentException("Error : mus (--mus), sigmas (--sigmas) and normalization indices (--normalization_indices) don't have the same size or are empty.");
-  }
-
-  // Check normalizationIndices
-  if (p.isIntVectorSet(NORMALIZATION_INDICES)) {
-    vector<int> tempVect = p.getIntVector(NORMALIZATION_INDICES);
-    std::set<int> uniqueIndices(tempVect.begin(), tempVect.end());
-    if (uniqueIndices.size() != p.getIntVector(NORMALIZATION_INDICES).size() ||
-        *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= p.getInt(NB_ATTRIBUTES) ||
-        *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
-      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) must be a list composed of integers between [0, nb_attributes-1] without repeted elements.");
-    }
-  }
+  p.checkParametersCommon();
+  p.checkParametersNormalization();
 }
 
 int dimlpRul(const string &command) {
