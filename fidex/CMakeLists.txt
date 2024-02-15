@@ -73,4 +73,4 @@ set_target_properties(
     fidex PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/dimlpfidex
 )
 
-target_link_libraries(fidex PUBLIC)
+target_link_libraries(fidex PUBLIC common)
