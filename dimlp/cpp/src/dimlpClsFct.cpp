@@ -164,7 +164,7 @@ int dimlpCls(const string &command) {
     // Parsing the command
     vector<string> commandList;
     string s;
-    stringstream ss(command);
+    stringstream ss(" " + command);
 
     while (getline(ss, s, ' ')) {
       commandList.push_back(s);
