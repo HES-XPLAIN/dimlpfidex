@@ -116,7 +116,7 @@ int dimlpBT(const string &command) {
     size_t nbParam = commandList.size();
     if (nbParam < 2) {
       showDimlpBTParams();
-      exit(1);
+      return 0;
     }
 
     // Import parameters

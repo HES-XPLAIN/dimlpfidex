@@ -162,7 +162,7 @@ int dimlpCls(const string &command) {
     size_t nbParam = commandList.size();
     if (nbParam < 2) {
       showDimlpClsParams();
-      exit(1);
+      return 0;
     }
 
     // Import parameters

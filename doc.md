@@ -33,6 +33,8 @@ Advices :
 ### Launch fidex from Python library :
 - Need to include the library before :
 from dimlpfidex import fidex or from dimlpfidex import dimlp
+If using Windows :
+import os
+dir_path = os.path.abspath('dimlpfidex')
+os.add_dll_directory(dir_path)
 - root_folder is not bin but it is where we launch Python
-- We need to add a word in front, exemple : fidex.fidexGloRules("fidexGloRules --json_config_file fidexTests/templates/config_fidexGloRules.json")
-Juste mettre un espace devant suffit.

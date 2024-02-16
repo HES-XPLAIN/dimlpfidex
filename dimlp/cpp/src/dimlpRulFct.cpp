@@ -94,7 +94,7 @@ int dimlpRul(const string &command) {
     size_t nbParam = commandList.size();
     if (nbParam < 2) {
       showDimlpRulParams();
-      exit(1);
+      return 0;
     }
 
     // Import parameters

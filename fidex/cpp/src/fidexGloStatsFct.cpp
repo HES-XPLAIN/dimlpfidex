@@ -115,7 +115,7 @@ int fidexGloStats(const string &command) {
     std::size_t nbParam = commandList.size();
     if (nbParam < 2) {
       showStatsParams();
-      exit(1);
+      return 0;
     }
 
     // Import parameters
