@@ -308,6 +308,10 @@ void Parameters::parseArg(const string &param, const string &arg) {
     setFloat(MIN_FIDELITY, arg);
     break;
 
+  case LOWEST_MIN_FIDELITY:
+    setFloat(LOWEST_MIN_FIDELITY, arg);
+    break;
+
   case DROPOUT_DIM:
     setFloat(DROPOUT_DIM, arg);
     break;
@@ -804,6 +808,10 @@ void Parameters::checkParametersFidex() {
     throw CommandArgumentException("Error : Minimum fidelity has to be between [0.0, 1.0]");
   }
 
+  if (getFloat(LOWEST_MIN_FIDELITY) < 0.0f || getFloat(LOWEST_MIN_FIDELITY) > 1.0f) {
+    throw CommandArgumentException("Error : Minimum fidelity has to be between [0.0, 1.0]");
+  }
+
   if (getFloat(DROPOUT_DIM) < 0.0f || getFloat(DROPOUT_DIM) > 1.0f) {
     throw CommandArgumentException("Error : Dropout dim must be between [0.0, 1.0].");
   }
@@ -925,6 +933,7 @@ void Parameters::setDefaultFidex() {
   setDefaultInt(MIN_COVERING, 2);
   setDefaultInt(MAX_FAILED_ATTEMPTS, 30);
   setDefaultFloat(MIN_FIDELITY, 1.0);
+  setDefaultFloat(LOWEST_MIN_FIDELITY, 0.75);
   setDefaultFloat(DROPOUT_DIM, 0.0f);
   setDefaultFloat(DROPOUT_HYP, 0.0f);
   setDefaultFloat(HI_KNOT, 5.0f);

@@ -5,7 +5,6 @@
     "test_class_file": "test_true_classes.txt",
     "global_rules_file": "new_rules.txt",
     "attributes_file": "attributes.txt",
-    "weights_file": "weights.wts",
     "nb_attributes": 31,
     "nb_classes": 7,
     "stats_file": "stats.txt",

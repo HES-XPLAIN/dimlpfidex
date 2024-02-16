@@ -30,8 +30,9 @@ void showFidexParams() {
   std::cout << "--max_iterations <max iteration number, also the max possible number of attributs in a rule (10 by default, should put 25 if working with images)>" << std::endl;
   std::cout << "--min_covering <minimum covering number (2 by default)>" << std::endl;
   std::cout << "--covering_strategy <decrement by 1 the min covering number each time the minimal covering size is not reached (False by default)>" << std::endl;
-  std::cout << "--max_failed_attempts <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
+  std::cout << "--max_failed_attempts <maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used (30 by default)>" << std::endl;
   std::cout << "--min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>" << std::endl;
+  std::cout << "--lowest_min_fidelity <minimal min_fidelity to which we agree to go down during covering_strategy (0.75 by default)>" << std::endl;
   std::cout << "--dropout_dim <dimension dropout parameter (None by default)>" << std::endl;
   std::cout << "--dropout_hyp <hyperplan dropout parameter (None by default)>" << std::endl;
   std::cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
@@ -45,6 +46,170 @@ void showFidexParams() {
 
   std::cout << "\n-------------------------------------------------\n"
             << std::endl;
+}
+
+/**
+ * @brief Attempts to compute a rule with Fidex algorithm based on given parameters and updates the rule object if successful.
+ *
+ * @param fidex Reference to the Fidex object used for computation.
+ * @param rule Reference to the Rule object to be potentially updated by the computation.
+ * @param mainSampleValues A vector of double values representing the main sample values.
+ * @param mainSamplePred An integer representing the predicted class of the main sample.
+ * @param minFidelity A float representing the minimum fidelity threshold for rule creation.
+ * @param minNbCover An integer representing the minimum number of samples a rule must cover.
+ * @param mainSampleClass An integer representing the class of the main sample.
+ * @param mainSamplePredValue A double representing the predicted value of the main sample.
+ * @param verbose A boolean flag for verbose output. Default is false.
+ * @param foundRule A boolean indicating whether a rule was found in a previous attempt. Default is false.
+ * @return true If a rule meeting the criteria is successfully computed.
+ * @return false If no rule meeting the criteria can be computed.
+ */
+bool tryComputeFidex(Fidex &fidex, Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, double mainSamplePredValue, bool verbose = false, bool foundRule = false) {
+  fidex.setMainSamplePredValue(mainSamplePredValue);
+  if (verbose) {
+    if (foundRule) {
+      std::cout << "A rule has been found. ";
+    } else {
+      std::cout << "Fidelity is too low. ";
+    }
+    std::cout << "Restarting fidex with a minimum covering of " << minNbCover << " and a minimum accepted fidelity of " << minFidelity << "." << std::endl;
+  }
+
+  bool ruleCreated = fidex.compute(rule, true, mainSampleValues, mainSamplePred, minFidelity, minNbCover, mainSampleClass);
+  std::cout << "Final fidelity : " << rule.getFidelity() << endl;
+  return ruleCreated;
+}
+
+/**
+ * @brief Performs a dichotomic (binary) search to find a rule with the best covering that meets the minimum fidelity criteria.
+ *
+ * @param fidex Reference to the Fidex object used for computation.
+ * @param bestRule Reference to the Rule object to store the best rule found during the search.
+ * @param mainSampleValues A vector of double values representing the main sample values.
+ * @param mainSamplePred An integer representing the predicted class of the main sample.
+ * @param minFidelity A float representing the minimum fidelity threshold for rule creation.
+ * @param mainSampleClass An integer representing the class of the main sample.
+ * @param mainSamplePredValue A double representing the predicted value of the main sample.
+ * @param left The starting point of the search range.
+ * @param right The ending point of the search range.
+ * @return The best covering found that meets the minimum fidelity criteria. Returns -1 if no such covering is found.
+ */
+int dichotomicSearch(Fidex &fidex, Rule &bestRule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int mainSampleClass, double mainSamplePredValue, int left, int right) {
+  int bestCovering = -1;
+  int currentMinNbCover = right + 1;
+  bool foundRule = false;
+  while (currentMinNbCover != ceil((right + left) / 2.0) && left <= right) {
+    currentMinNbCover = static_cast<int>(ceil((right + left) / 2.0));
+    Rule tempRule;
+    if (tryComputeFidex(fidex, tempRule, mainSampleValues, mainSamplePred, minFidelity, currentMinNbCover, mainSampleClass, mainSamplePredValue, true, foundRule)) {
+      bestCovering = currentMinNbCover;
+      bestRule = tempRule;
+      left = currentMinNbCover + 1;
+      foundRule = true;
+    } else {
+      right = currentMinNbCover - 1;
+      foundRule = false;
+    }
+  }
+  return bestCovering;
+}
+
+/**
+ * @brief Attempts to compute a rule multiple times up to a maximum number of failed attempts, adjusting fidelity if necessary.
+ *
+ * @param fidex Reference to the Fidex object used for computation.
+ * @param rule Reference to the Rule object to be potentially updated by the computation.
+ * @param mainSampleValues A vector of double values representing the main sample values.
+ * @param mainSamplePred An integer representing the predicted class of the main sample.
+ * @param minFidelity A reference to a float representing the current minimum fidelity threshold for rule creation. May be adjusted.
+ * @param minNbCover An integer representing the minimum number of samples a rule must cover.
+ * @param mainSampleClass An integer representing the class of the main sample.
+ * @param mainSamplePredValue A double representing the predicted value of the main sample.
+ * @param maxFailedAttempts An integer representing the maximum number of attempts to make before giving up.
+ * @param hasDropout A boolean indicating whether dropout settings are being used.
+ * @return true If a rule meeting the criteria is successfully computed within the maximum number of attempts.
+ * @return false If no rule meeting the criteria can be computed within the maximum number of attempts.
+ */
+bool retryComputeFidex(Fidex &fidex, Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, double mainSamplePredValue, int maxFailedAttempts, bool hasDropout) {
+  int counterFailed = 0; // Number of times we failed to find a rule with maximal fidexlity when minNbCover is 1
+  bool ruleCreated = false;
+  do {
+    ruleCreated = tryComputeFidex(fidex, rule, mainSampleValues, mainSamplePred, minFidelity, minNbCover, mainSampleClass, mainSamplePredValue, true);
+    if (!ruleCreated) {
+      counterFailed += 1;
+    }
+    if (counterFailed >= maxFailedAttempts) {
+      std::cout << "\nWARNING Fidelity is too low after trying " << std::to_string(maxFailedAttempts) << " times with a minimum covering of " << minNbCover << " and a minimum accepted fidelity of " << minFidelity << "! You may want to try again." << std::endl;
+      if (hasDropout) {
+        std::cout << "Try to not use dropout." << std::endl;
+      }
+    }
+  } while (!ruleCreated && counterFailed < maxFailedAttempts);
+
+  return ruleCreated;
+}
+
+/**
+ * @brief Launches the Fidex algorithm with specified parameters to attempt creating a rule that meets given criteria.
+ *
+ * @param fidex Reference to the Fidex object used for computation.
+ * @param params Reference to the Parameters object containing various settings for the computation.
+ * @param rule Reference to the Rule object to be potentially updated by the computation.
+ * @param mainSampleValues A vector of double values representing the main sample values.
+ * @param mainSamplePred An integer representing the predicted class of the main sample.
+ * @param mainSamplePredValue A double representing the predicted value of the main sample.
+ * @param mainSampleClass An integer representing the class of the main sample.
+ */
+void launchFidex(Fidex &fidex, Parameters &params, Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, double mainSamplePredValue, int mainSampleClass) {
+
+  int minNbCover = params.getInt(MIN_COVERING);
+  float minFidelity = params.getFloat(MIN_FIDELITY);
+  int maxFailedAttempts = params.getInt(MAX_FAILED_ATTEMPTS);
+  bool ruleCreated = false;
+  bool hasDropout = params.getFloat(DROPOUT_DIM) > 0.001 || params.getFloat(DROPOUT_HYP) > 0.001;
+
+  fidex.setShowInitialFidelity(true);
+
+  // Try to find a rule
+  if (!tryComputeFidex(fidex, rule, mainSampleValues, mainSamplePred, minFidelity, minNbCover, mainSampleClass, mainSamplePredValue)) {
+    // If no rule is found
+
+    // With covering strategy
+    if (params.getBool(COVERING_STRATEGY)) {
+      int right = minNbCover - 1;
+      int bestCovering = -1;
+      Rule bestRule;
+
+      // Dichotomic search to find a rule with best covering
+      if (right > 0) {
+        bestCovering = dichotomicSearch(fidex, bestRule, mainSampleValues, mainSamplePred, minFidelity, mainSampleClass, mainSamplePredValue, 1, right);
+      }
+
+      // Coundn't find a rule with minimal fidelity 1, we search for a lower minimal fidelity
+      if (bestCovering == -1) {
+        float currentMinFidelity = minFidelity;
+        while (!ruleCreated && currentMinFidelity > params.getFloat(LOWEST_MIN_FIDELITY)) {
+          currentMinFidelity -= 0.05f;
+          ruleCreated = tryComputeFidex(fidex, rule, mainSampleValues, mainSamplePred, currentMinFidelity, 1, mainSampleClass, mainSamplePredValue, true);
+        }
+        // Coundn't find a rule, we retry maxFailedAttempts times
+        if (!ruleCreated) {
+          retryComputeFidex(fidex, rule, mainSampleValues, mainSamplePred, currentMinFidelity, 1, mainSampleClass, mainSamplePredValue, maxFailedAttempts, hasDropout);
+        }
+
+      } else { // If we found a correct rule during dichotomic search
+        rule = bestRule;
+      }
+      std::cout << endl;
+      // Without covering strategy
+    } else {
+      std::cout << "\nWARNING Fidelity is too low! You may want to try again." << std::endl;
+      std::cout << "If you can't find a rule with the wanted fidelity, try a lowest minimal covering or a lower fidelity" << std::endl;
+      std::cout << "You can also try to use the min cover strategy (--covering_strategy)" << std::endl;
+      std::cout << "If this is not enough, put the min covering to 1 and do not use dropout.\n"
+                << std::endl;
+    }
+  }
 }
 
 /**
@@ -153,13 +318,6 @@ int fidex(const string &command) {
     int nbDimlpNets = params->getInt(NB_DIMLP_NETS);
     int nbQuantLevels = params->getInt(NB_QUANT_LEVELS);
     float hiKnot = params->getFloat(HI_KNOT);
-    float minFidelity = params->getFloat(MIN_FIDELITY);
-    float dropoutDim = params->getFloat(DROPOUT_DIM);
-    float dropoutHyp = params->getFloat(DROPOUT_HYP);
-    bool hasdd = dropoutDim > 0.001;
-    bool hasdh = dropoutHyp > 0.001;
-    bool minCoverStrategy = params->getBool(COVERING_STRATEGY);
-    int maxFailedAttempts = params->getInt(MAX_FAILED_ATTEMPTS);
 
     string weightsFile;
     if (params->isStringSet(WEIGHTS_FILE)) {
@@ -346,9 +504,6 @@ int fidex(const string &command) {
 
     // We compute rule for each test sample
     for (int currentSample = 0; currentSample < nbTestSamples; currentSample++) {
-      int counterFailed = 0; // Number of times we failed to find a rule with maximal fidexlity when minNbCover is 1
-      int currentMinNbCover = minNbCover;
-      bool ruleCreated = false;
       Rule rule;
 
       vector<double> mainSampleValues = mainSamplesValues[currentSample];
@@ -362,51 +517,18 @@ int fidex(const string &command) {
       }
 
       lines.push_back("Rule for sample " + std::to_string(currentSample) + " :\n");
-      fidex.setMainSamplePredValue(mainSamplePredValue);
-      do {
 
-        if (currentMinNbCover == minNbCover) {
-          if (nbTestSamples > 1) {
-            std::cout << "Computation of rule for sample " << currentSample << " : " << endl
-                      << endl;
-          }
+      if (nbTestSamples > 1) {
+        std::cout << "Computation of rule for sample " << currentSample << " : " << endl
+                  << endl;
+      }
 
-          if (nbTestSamples == 1) {
-            std::cout << "Searching for discriminating hyperplans..." << std::endl;
-          }
-          fidex.setShowInitialFidelity(true);
-        }
+      if (nbTestSamples == 1) {
+        std::cout << "Searching for discriminating hyperplans..." << std::endl;
+      }
 
-        ruleCreated = fidex.compute(rule, true, mainSampleValues, mainSamplePred, minFidelity, currentMinNbCover, mainSampleClass);
-
-        std::cout << "Final fidelity : " << rule.getFidelity() << endl;
-
-        if (!ruleCreated) {
-          if (minCoverStrategy) {
-            if (currentMinNbCover >= 2) {
-              currentMinNbCover -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
-              std::cout << "Fidelity is too low. Restarting fidex with a minimum covering of " << currentMinNbCover << "." << std::endl;
-            } else {
-              counterFailed += 1;
-              std::cout << "Fidelity is too low. Restarting fidex with a minimum covering of " << currentMinNbCover << "." << std::endl;
-            }
-            if (counterFailed >= maxFailedAttempts) {
-              std::cout << "WARNING Fidelity is too low after trying " << std::to_string(maxFailedAttempts) << " times with a minimum covering of 1! You may want to try again." << std::endl;
-              if (hasdd || hasdh) {
-                std::cout << "Try to not use dropout." << std::endl;
-              }
-            }
-          } else {
-            std::cout << "WARNING Fidelity is too low! You may want to try again." << std::endl;
-            std::cout << "If you can't find a rule with the wanted fidelity, try a lowest minimal covering or a lower fidelity" << std::endl;
-            std::cout << "You can also try to use the min cover strategy (--covering_strategy)" << std::endl;
-            std::cout << "If this is not enough, put the min covering to 1 and do not use dropout.\n"
-                      << std::endl;
-          }
-        } else {
-          std::cout << endl;
-        }
-      } while (!ruleCreated && minCoverStrategy && counterFailed < maxFailedAttempts); // Restart Fidex if we use the strategy and fidelity is not high enough
+      // Launch fidexAlgo
+      launchFidex(fidex, *params, rule, mainSampleValues, mainSamplePred, mainSamplePredValue, mainSampleClass);
 
       meanFidelity += rule.getFidelity();
       meanAccuracy += rule.getAccuracy();
@@ -418,12 +540,6 @@ int fidex(const string &command) {
         std::cout << "Discriminating hyperplans generated." << endl
                   << endl;
       }
-
-      std::cout << "Rule accuracy : " << std::to_string(rule.getAccuracy()) << endl
-                << endl;
-
-      std::cout << "Rule confidence : " << std::to_string(rule.getConfidence()) << endl
-                << endl;
 
       std::string line;
 
