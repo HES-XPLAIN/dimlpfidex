@@ -36,6 +36,12 @@ private:
   mt19937 _rnd;
   currentExecutionSpecs specs;
 
+  // utils
+
+  bool tryComputeFidex(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, double mainSamplePredValue, bool verbose, bool detailedVerbose = false, bool foundRule = false);
+  int dichotomicSearch(Rule &bestRule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int mainSampleClass, double mainSamplePredValue, int left, int right, bool verbose);
+  bool retryComputeFidex(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, double mainSamplePredValue, int maxFailedAttempts, bool hasDropout, bool verbose);
+
 public:
   Fidex() = default;
   Fidex(DataSetFid &_trainDataset, Parameters &parameters, Hyperspace &Hyperspace);
@@ -73,6 +79,9 @@ public:
     specs.showInitialFidelity = false;
     specs.mainSamplePredValue = -1.0;
   }
+
+  // utils
+  void launchFidex(Parameters &params, Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, double mainSamplePredValue, int mainSampleClass, bool verbose = false);
 };
 
 #endif

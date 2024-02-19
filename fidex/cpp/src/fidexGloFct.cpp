@@ -40,8 +40,10 @@ void showParams() {
   std::cout << "--nb_dimlp_nets <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
   std::cout << "--max_iterations <max iteration number, also the max possible number of attributs in a rule (10 by default, should put 25 if working with images)>" << std::endl;
   std::cout << "--min_covering <minimum covering number (2 by default)>" << std::endl;
+  std::cout << "--covering_strategy <if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (False by default)>" << std::endl;
   std::cout << "--max_failed_attempts <maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used (30 by default)>" << std::endl;
   std::cout << "--min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>" << std::endl;
+  std::cout << "--lowest_min_fidelity <minimal min_fidelity to which we agree to go down during covering_strategy (0.75 by default)>" << std::endl;
   std::cout << "--dropout_dim <dimension dropout parameter (None by default)>" << std::endl;
   std::cout << "--dropout_hyp <hyperplan dropout parameter (None by default)>" << std::endl;
   std::cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
@@ -55,42 +57,20 @@ void showParams() {
             << std::endl;
 }
 
-void launchFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Parameters &p, Hyperspace &hyperspace, vector<double> &mainSampleValues, int mainSamplePred, double mainSamplePredValue, int mainSampleClass, const vector<string> &attributeNames, const vector<string> &classNames) {
+void executeFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Parameters &p, Hyperspace &hyperspace, vector<double> &mainSampleValues, int mainSamplePred, double mainSamplePredValue, int mainSampleClass, const vector<string> &attributeNames, const vector<string> &classNames) {
 
   std::cout << "\nWe launch Fidex." << std::endl;
-  std::cout << "\nLocal rule :" << std::endl;
   lines.emplace_back("\nWe launch Fidex.\n");
-  lines.emplace_back("Local rule :\n");
 
   Rule rule;
-  bool ruleCreated;
-  int counterFailed;
-  int currentMinNbCov = p.getInt(MIN_COVERING);
-  float minFidelity = p.getFloat(MIN_FIDELITY);
-  int maxFailedAttempts = p.getInt(MAX_FAILED_ATTEMPTS);
 
   auto fidex = Fidex(trainDataset, p, hyperspace);
 
-  ruleCreated = false;
-  counterFailed = 0; // If we can't find a good rule after a lot of tries
+  // Launch fidexAlgo
+  fidex.launchFidex(p, rule, mainSampleValues, mainSamplePred, mainSamplePredValue, mainSampleClass);
 
-  fidex.setMainSamplePredValue(mainSamplePredValue);
-
-  while (!ruleCreated) {
-    ruleCreated = fidex.compute(rule, true, mainSampleValues, mainSamplePred, minFidelity, currentMinNbCov, mainSampleClass);
-
-    if (currentMinNbCov >= 2) {
-      currentMinNbCov -= 1;
-    } else {
-      counterFailed += 1;
-    }
-
-    if (counterFailed >= maxFailedAttempts) {
-      lines.emplace_back("\nNo rule has been found.\n");
-      break;
-    }
-  }
-
+  std::cout << "\nLocal rule :" << std::endl;
+  lines.emplace_back("Local rule :\n");
   std::cout << rule.toString(attributeNames, classNames) << std::endl;
   lines.emplace_back(rule.toString(attributeNames, classNames) + "\n");
 }
@@ -124,6 +104,7 @@ void checkParametersLogicValues(Parameters &p) {
     // setting default values
     p.setDefaultNbQuantLevels();
     p.setDefaultFidex();
+    p.setDefaultBool(COVERING_STRATEGY, false);
 
     // this sections check if values comply with program logic
 
@@ -544,7 +525,7 @@ int fidexGlo(const string &command) {
         } else {
           mainSampleClass = -1;
         }
-        launchFidex(lines, trainDataset, *params, hyperspace, mainSampleValues, mainSamplePred, mainSamplePredValue, mainSampleClass, attributeNames, classNames);
+        executeFidex(lines, trainDataset, *params, hyperspace, mainSampleValues, mainSamplePred, mainSamplePredValue, mainSampleClass, attributeNames, classNames);
       }
 
       lines.emplace_back("\n--------------------------------------------------------------------\n");
