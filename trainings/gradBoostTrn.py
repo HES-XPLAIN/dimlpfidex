@@ -3,7 +3,6 @@ import sys
 from .trnFun import get_data, get_data_class, output_data, output_stats, trees_to_rules, check_parameters_common, check_int, check_strictly_positive, check_positive, check_bool, check_parameters_decision_trees, validate_string_param
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import metrics
-from sklearn.tree import export_text
 
 def gradBoostTrn(*args, **kwargs):
     try:
@@ -239,7 +238,8 @@ def gradBoostTrn(*args, **kwargs):
             # Output accuracy statistics
             output_stats(stats_file, acc_train, acc_test)
             from_grad_boost = True
-            trees_to_rules(model.estimators_[:,0], rules_file, from_grad_boost)
+
+            trees_to_rules(model.estimators_.flatten(), rules_file, from_grad_boost)
 
             end_time = time.time()
             full_time = end_time - start_time

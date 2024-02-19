@@ -686,10 +686,10 @@ def recurse(tree, node, parent_path, feature_names, output_rules_file, k_dict, f
         k = k_dict["value"]
         k += 1
         k_dict["value"] = k
-        cover_value = tree.value[node] # Get cover values for this rule
         if from_grad_boost:
             output_rules_file.write(f"Rule {k}: {parent_path} -> value {tree.value[node][0]}\n") # Write rule
         else:
+            cover_value = tree.value[node] # Get cover values for this rule
             output_rules_file.write(f"Rule {k}: {parent_path} -> class {np.argmax(cover_value)} Covering: {[int(num) for num in cover_value[0]]}\n") # Write rule
 
 def trees_to_rules(trees, rules_file, from_grad_boost=False):
