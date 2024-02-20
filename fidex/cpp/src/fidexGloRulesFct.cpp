@@ -437,7 +437,7 @@ tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> 
     return make_tuple(0, 0);
   }
 
-  int counter = 1;
+  int counter = 0;
   auto nbRules = static_cast<int>(rules.size());
   double meanCovSize = 0;
   double meanNbAntecedents = 0;
