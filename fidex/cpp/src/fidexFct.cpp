@@ -329,7 +329,7 @@ int fidex(const string &command) {
     std::cout << "Hyperspace created" << endl
               << endl;
 
-    auto fidex = Fidex(*trainDatas, *params, hyperspace);
+    auto fidex = Fidex(*trainDatas, *params, hyperspace, true);
 
     // Stats
     double meanFidelity = 0;
@@ -364,7 +364,8 @@ int fidex(const string &command) {
       }
 
       // Launch fidexAlgo
-      fidex.launchFidex(rule, true, mainSampleValues, mainSamplePred, mainSamplePredValue, mainSampleClass, true);
+      fidex.setMainSamplePredValue(mainSamplePredValue);
+      fidex.launchFidex(rule, mainSampleValues, mainSamplePred, mainSampleClass, true);
 
       meanFidelity += rule.getFidelity();
       meanAccuracy += rule.getAccuracy();

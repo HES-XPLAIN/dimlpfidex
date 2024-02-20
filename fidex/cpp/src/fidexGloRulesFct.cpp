@@ -86,7 +86,7 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
     int localNbRulesNotFound = 0;
     Hyperspace hyperspace(hyperlocus);
     int threadId = omp_get_thread_num();
-    auto fidex = Fidex(trainDataset, p, hyperspace);
+    auto fidex = Fidex(trainDataset, p, hyperspace, false);
 
     string consoleFile = "";
     if (p.isStringSet(CONSOLE_FILE)) {
@@ -116,7 +116,7 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
         }
       }
 
-      ruleCreated = fidex.launchFidex(rule, false, mainSampleValues, mainSamplePred, -1, -1);
+      ruleCreated = fidex.launchFidex(rule, mainSampleValues, mainSamplePred, -1);
 
       if (!ruleCreated) {
         localNbRulesNotFound += 1;
@@ -312,7 +312,7 @@ vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const vector<v
   int minNbCover = p.getInt(MIN_COVERING);
   auto nbDatas = static_cast<int>(trainDataset.getDatas().size());
   vector<int> notCoveredSamples(nbDatas);
-  auto fidex = Fidex(trainDataset, p, hyperspace);
+  auto fidex = Fidex(trainDataset, p, hyperspace, false);
   string consoleFile = "";
   if (p.isStringSet(CONSOLE_FILE)) {
     consoleFile = p.getString(CONSOLE_FILE);
@@ -346,7 +346,7 @@ vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const vector<v
     vector<double> &mainSampleValues = trainData[idSample];
     int mainSamplePred = trainPreds[idSample];
 
-    ruleCreated = fidex.launchFidex(rule, false, mainSampleValues, mainSamplePred, -1, -1);
+    ruleCreated = fidex.launchFidex(rule, mainSampleValues, mainSamplePred, -1);
 
     if (!ruleCreated) {
       nbRulesNotFound += 1;

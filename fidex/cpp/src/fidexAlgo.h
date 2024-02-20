@@ -33,21 +33,22 @@ private:
   DataSetFid *_trainDataset;
   Parameters *_parameters;
   Hyperspace *_hyperspace;
+  bool _usingTestSamples;
   mt19937 _rnd;
   currentExecutionSpecs specs;
 
   // utils
 
-  bool tryComputeFidex(Rule &rule, bool withTestSample, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, double mainSamplePredValue, bool verbose, bool detailedVerbose = false, bool foundRule = false);
-  int dichotomicSearch(Rule &bestRule, bool withTestSample, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int mainSampleClass, double mainSamplePredValue, int left, int right, bool verbose);
-  bool retryComputeFidex(Rule &rule, bool withTestSample, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, double mainSamplePredValue, bool verbose);
+  bool tryComputeFidex(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, bool verbose, bool detailedVerbose = false, bool foundRule = false);
+  int dichotomicSearch(Rule &bestRule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int mainSampleClass, int left, int right, bool verbose);
+  bool retryComputeFidex(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, bool verbose);
 
 public:
   Fidex() = default;
-  Fidex(DataSetFid &_trainDataset, Parameters &parameters, Hyperspace &Hyperspace);
+  Fidex(DataSetFid &_trainDataset, Parameters &parameters, Hyperspace &Hyperspace, bool usingTestSamples);
 
   // execute algo
-  bool compute(Rule &rule, bool withTestSample, vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover, int mainSampleClass = -1);
+  bool compute(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover, int mainSampleClass = -1);
 
   // Setters
   void setShowInitialFidelity(bool value) {
@@ -75,13 +76,8 @@ public:
     return specs.nbIt;
   }
 
-  void resetExecutionSpecs() {
-    specs.showInitialFidelity = false;
-    specs.mainSamplePredValue = -1.0;
-  }
-
   // utils
-  bool launchFidex(Rule &rule, bool withTestSample, vector<double> &mainSampleValues, int mainSamplePred, double mainSamplePredValue, int mainSampleClass, bool verbose = false);
+  bool launchFidex(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, int mainSampleClass, bool verbose = false);
 };
 
 #endif
