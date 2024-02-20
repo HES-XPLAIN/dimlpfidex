@@ -684,7 +684,6 @@ void RealHyp::RuleExtraction(
   Aborted = 0;
 
   SavedRules = std::make_shared<RuleProcessing>(NbIn, NbHyp, data, ClassPatNet, Descr);
-
   cout << "*** BUILDING DECISION TREE ...\n"
        << endl;
 

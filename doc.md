@@ -38,6 +38,8 @@ import os
 dir_path = os.path.abspath('dimlpfidex')
 os.add_dll_directory(dir_path)
 - root_folder is not bin but it is where we launch Python
+- Lists must be inbetween ""
+- booleans in uppurcase or inbetween "" ? Verify
 
 ### paramètres FidexGloRules :
 train_file : données avec lesquelles tu as entrainé ton modèle

@@ -135,11 +135,19 @@ def crossValid(*args, **kwargs):
             print("attributes_file : file of attributes")
             print("max_iterations : maximum fidex and fidexGlo iteration number (100 by default)")
             print("min_covering : minimum fidex and fidexGlo covering number (2 by default)")
+            print("covering_strategy <if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (False by default for Fidex, true by default for fidexGloRules)>")
+            print("min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>")
+            print("lowest_min_fidelity <minimal min_fidelity to which we agree to go down during covering_strategy (0.75 by default)>")
             print("dropout_dim : dimension dropout parameter for fidex and fidexGlo")
             print("dropout_hyp : hyperplan dropout parameter for fidex and fidexGlo")
             print("seed : 0 = random (default)")
             print("positive_class_index <index of positive class sample to compute true/false positive/negative rates and ROC curve (None by default, put 0 for first class)")
             print("decision_threshold <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>")
+            print("normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>")
+            print("mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>")
+            print("sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>")
+            print("normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)>")
+            print("nb_threads <number of threads used for computing the fidexGloRules algorithm (default=1, this means by default its a sequential execution)>")
 
             print("----------------------------")
             print("Optional parameters if not training with decision trees :")
@@ -287,11 +295,19 @@ def crossValid(*args, **kwargs):
             attributes_file = kwargs.get('attributes_file')
             max_iterations = kwargs.get('max_iterations')
             min_covering = kwargs.get('min_covering')
+            covering_strategy = kwargs.get('covering_strategy')
+            min_fidelity = kwargs.get('min_fidelity')
+            lowest_min_fidelity = kwargs.get('lowest_min_fidelity')
             dropout_dim = kwargs.get('dropout_dim')
             dropout_hyp = kwargs.get('dropout_hyp')
             positive_class_index = kwargs.get('positive_class_index')
             decision_threshold = kwargs.get('decision_threshold')
             seed = kwargs.get('seed')
+            normalization_file = kwargs.get('normalization_file')
+            mus = kwargs.get('mus')
+            sigmas = kwargs.get('sigmas')
+            normalization_indices = kwargs.get('normalization_indices')
+            nb_threads = kwargs.get('nb_threads')
 
             hiknot = 5
             nb_quant_levels = kwargs.get('nb_quant_levels')
@@ -384,7 +400,8 @@ def crossValid(*args, **kwargs):
             obligatory_dimlp_args = ['dimlpRul']
 
             optional_args = ['class_file', 'root_folder', 'crossVal_folder', 'K', 'N', 'fidexGlo_heuristic', 'crossVal_stats', 'attributes_file',
-                        'max_iterations', 'min_covering', 'dropout_dim', 'dropout_hyp', 'seed', 'positive_class_index', 'decision_threshold']
+                        'max_iterations', 'min_covering', 'covering_strategy', 'min_fidelity', 'lowest_min_fidelity', 'dropout_dim', 'dropout_hyp',
+                        'seed', 'positive_class_index', 'decision_threshold', 'normalization_file', 'mus', 'sigmas', 'normalization_indices', 'nb_threads']
 
             optional_non_dt_args = ['nb_quant_levels']
 
@@ -504,6 +521,11 @@ def crossValid(*args, **kwargs):
                 max_iterations = 100
             if min_covering is None:
                 min_covering = 2
+
+            if min_fidelity is None:
+                min_fidelity = 1.0
+            if lowest_min_fidelity is None:
+                lowest_min_fidelity = 0.75
 
             if seed is None:
                 seed = 0
@@ -1012,6 +1034,13 @@ def crossValid(*args, **kwargs):
                                 outputStatsFile.write(f"The tolerance for the early stopping is {gb_tol_var} \n")
                     outputStatsFile.write(f"The max fidex and fidexGlo iteration number is {max_iterations}\n")
                     outputStatsFile.write(f"The minimum fidex and fidexGlo covering number is {min_covering}\n")
+                    outputStatsFile.write(f"The minimum fidex and fidexGlo accepted fidelity is {min_fidelity}\n")
+                    if covering_strategy is None:
+                        outputStatsFile.write("The covering strategy is set for fidexGloRules\n")
+                    elif covering_strategy:
+                        outputStatsFile.write("The covering strategy is set\n")
+
+                    outputStatsFile.write(f"The minimum fidex and fidexGlo accepted fidelity during covering strategy is {lowest_min_fidelity}\n")
                     if is_fidexglo:
                         outputStatsFile.write(f"The fidexGlo heuristic is {fidexglo_heuristic}\n")
                     if dropout_hyp:
@@ -1024,6 +1053,8 @@ def crossValid(*args, **kwargs):
                         outputStatsFile.write("There is no dimension dropout\n")
                     if decision_threshold is not None :
                         outputStatsFile.write(f"We use a decision threshold of {decision_threshold} with positive class of index {positive_class_index}\n")
+                    if normalization_file is not None or normalization_indices is not None:
+                        outputStatsFile.write("We denormalize the rules\n")
 
                     outputStatsFile.write("---------------------------------------------------------\n\n")
 
@@ -1248,6 +1279,15 @@ def crossValid(*args, **kwargs):
                         if is_dimlprul:
                             dimlp_command += "--with_rule_extraction true --global_rules_outfile " + folder_path_from_root + separator + "dimlpRules.rls "
 
+                        if normalization_file is not None:
+                            dimlp_command += "--normalization_file " + normalization_file + " "
+                        if mus is not None:
+                            dimlp_command += "--mus " + mus + " "
+                        if sigmas is not None:
+                            dimlp_command += "--sigmas " + sigmas + " "
+                        if normalization_indices is not None:
+                            dimlp_command += "--normalization_indices " + normalization_indices + " "
+
                         dimlp_command += "--console_file " + str(crossval_folder_temp) + separator + "consoleTemp.txt" # To not show console result
 
                         if train_method == "dimlp":
@@ -1388,6 +1428,10 @@ def crossValid(*args, **kwargs):
                             fidex_command +=  " --attributes_file " + attributes_file
                         fidex_command +=  " --max_iterations " + str(max_iterations)
                         fidex_command +=  " --min_covering " + str(min_covering)
+                        fidex_command +=  " --min_fidelity " + str(min_fidelity)
+                        fidex_command +=  " --lowest_min_fidelity " + str(lowest_min_fidelity)
+                        if covering_strategy is not None:
+                            fidex_command +=  " --covering_strategy " + str(covering_strategy)
                         if dropout_dim != None:
                             fidex_command +=  " --dropout_dim " + str(dropout_dim)
                         if dropout_hyp != None:
@@ -1415,6 +1459,15 @@ def crossValid(*args, **kwargs):
                             fidex_command += " --positive_class_index " + str(positive_class_index)
                         if decision_threshold is not None:
                             fidex_command += " --decision_threshold " + str(decision_threshold)
+
+                        if normalization_file is not None:
+                            fidex_command += " --normalization_file " + normalization_file
+                        if mus is not None:
+                            fidex_command += " --mus " + mus
+                        if sigmas is not None:
+                            fidex_command += " --sigmas " + sigmas
+                        if normalization_indices is not None:
+                            fidex_command += " --normalization_indices " + normalization_indices
 
                         print("Enter in fidex function")
                         res_fid = fidex.fidex(fidex_command)
@@ -1461,6 +1514,10 @@ def crossValid(*args, **kwargs):
                             fidexglo_rules_command +=  " --attributes_file " + attributes_file
                         fidexglo_rules_command +=  " --max_iterations " + str(max_iterations)
                         fidexglo_rules_command +=  " --min_covering " + str(min_covering)
+                        fidexglo_rules_command +=  " --min_fidelity " + str(min_fidelity)
+                        fidexglo_rules_command +=  " --lowest_min_fidelity " + str(lowest_min_fidelity)
+                        if covering_strategy is not None:
+                            fidexglo_rules_command +=  " --covering_strategy " + str(covering_strategy)
                         if dropout_dim != None:
                             fidexglo_rules_command +=  " --dropout_dim " + str(dropout_dim)
                         if dropout_hyp != None:
@@ -1485,6 +1542,16 @@ def crossValid(*args, **kwargs):
                         if decision_threshold is not None:
                             fidexglo_rules_command += " --decision_threshold " + str(decision_threshold)
 
+                        if normalization_file is not None:
+                            fidexglo_rules_command += " --normalization_file " + normalization_file
+                        if mus is not None:
+                            fidexglo_rules_command += " --mus " + mus
+                        if sigmas is not None:
+                            fidexglo_rules_command += " --sigmas " + sigmas
+                        if normalization_indices is not None:
+                            fidexglo_rules_command += " --normalization_indices " + normalization_indices
+                        if nb_threads is not None:
+                            fidexglo_rules_command += " --nb_threads " + str(nb_threads)
                         print("Enter in fidexGloRules function")
                         res_fid_glo_rules = fidex.fidexGloRules(fidexglo_rules_command)
                         if res_fid_glo_rules == -1:
