@@ -934,6 +934,7 @@ void Parameters::setDefaultFidex() {
   setDefaultInt(MAX_FAILED_ATTEMPTS, 30);
   setDefaultFloat(MIN_FIDELITY, 1.0);
   setDefaultFloat(LOWEST_MIN_FIDELITY, 0.75);
+  setDefaultBool(COVERING_STRATEGY, true);
   setDefaultFloat(DROPOUT_DIM, 0.0f);
   setDefaultFloat(DROPOUT_HYP, 0.0f);
   setDefaultFloat(HI_KNOT, 5.0f);

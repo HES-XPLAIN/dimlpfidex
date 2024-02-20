@@ -135,7 +135,7 @@ def crossValid(*args, **kwargs):
             print("attributes_file : file of attributes")
             print("max_iterations : maximum fidex and fidexGlo iteration number (100 by default)")
             print("min_covering : minimum fidex and fidexGlo covering number (2 by default)")
-            print("covering_strategy <if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (False by default for Fidex, true by default for fidexGloRules)>")
+            print("covering_strategy <if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (True by default)>")
             print("min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>")
             print("lowest_min_fidelity <minimal min_fidelity to which we agree to go down during covering_strategy (0.75 by default)>")
             print("dropout_dim : dimension dropout parameter for fidex and fidexGlo")
@@ -526,6 +526,8 @@ def crossValid(*args, **kwargs):
                 min_fidelity = 1.0
             if lowest_min_fidelity is None:
                 lowest_min_fidelity = 0.75
+            if covering_strategy is None:
+                covering_strategy = True
 
             if seed is None:
                 seed = 0
@@ -1035,12 +1037,9 @@ def crossValid(*args, **kwargs):
                     outputStatsFile.write(f"The max fidex and fidexGlo iteration number is {max_iterations}\n")
                     outputStatsFile.write(f"The minimum fidex and fidexGlo covering number is {min_covering}\n")
                     outputStatsFile.write(f"The minimum fidex and fidexGlo accepted fidelity is {min_fidelity}\n")
-                    if covering_strategy is None:
-                        outputStatsFile.write("The covering strategy is set for fidexGloRules\n")
-                    elif covering_strategy:
+                    if covering_strategy:
                         outputStatsFile.write("The covering strategy is set\n")
-
-                    outputStatsFile.write(f"The minimum fidex and fidexGlo accepted fidelity during covering strategy is {lowest_min_fidelity}\n")
+                        outputStatsFile.write(f"The minimum fidex and fidexGlo accepted fidelity during covering strategy is {lowest_min_fidelity}\n")
                     if is_fidexglo:
                         outputStatsFile.write(f"The fidexGlo heuristic is {fidexglo_heuristic}\n")
                     if dropout_hyp:
@@ -1430,8 +1429,7 @@ def crossValid(*args, **kwargs):
                         fidex_command +=  " --min_covering " + str(min_covering)
                         fidex_command +=  " --min_fidelity " + str(min_fidelity)
                         fidex_command +=  " --lowest_min_fidelity " + str(lowest_min_fidelity)
-                        if covering_strategy is not None:
-                            fidex_command +=  " --covering_strategy " + str(covering_strategy)
+                        fidex_command +=  " --covering_strategy " + str(covering_strategy)
                         if dropout_dim != None:
                             fidex_command +=  " --dropout_dim " + str(dropout_dim)
                         if dropout_hyp != None:
@@ -1516,8 +1514,7 @@ def crossValid(*args, **kwargs):
                         fidexglo_rules_command +=  " --min_covering " + str(min_covering)
                         fidexglo_rules_command +=  " --min_fidelity " + str(min_fidelity)
                         fidexglo_rules_command +=  " --lowest_min_fidelity " + str(lowest_min_fidelity)
-                        if covering_strategy is not None:
-                            fidexglo_rules_command +=  " --covering_strategy " + str(covering_strategy)
+                        fidexglo_rules_command +=  " --covering_strategy " + str(covering_strategy)
                         if dropout_dim != None:
                             fidexglo_rules_command +=  " --dropout_dim " + str(dropout_dim)
                         if dropout_hyp != None:

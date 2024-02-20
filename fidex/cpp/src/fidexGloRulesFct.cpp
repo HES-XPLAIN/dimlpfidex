@@ -394,7 +394,6 @@ void checkRulesParametersLogicValues(Parameters &p) {
   p.setDefaultDecisionThreshold();
   p.setDefaultFidex();
   p.setDefaultInt(NB_THREADS, 1);
-  p.setDefaultBool(COVERING_STRATEGY, true);
 
   // this sections check if values comply with program logic
 

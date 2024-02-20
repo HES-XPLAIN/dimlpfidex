@@ -29,7 +29,7 @@ void showFidexParams() {
   std::cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
   std::cout << "--max_iterations <max iteration number, also the max possible number of attributs in a rule (10 by default, should put 25 if working with images)>" << std::endl;
   std::cout << "--min_covering <minimum covering number (2 by default)>" << std::endl;
-  std::cout << "--covering_strategy <if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (False by default)>" << std::endl;
+  std::cout << "--covering_strategy <if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (True by default)>" << std::endl;
   std::cout << "--max_failed_attempts <maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used (30 by default)>" << std::endl;
   std::cout << "--min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>" << std::endl;
   std::cout << "--lowest_min_fidelity <minimal min_fidelity to which we agree to go down during covering_strategy (0.75 by default)>" << std::endl;
@@ -58,7 +58,6 @@ void checkFidexParametersLogicValues(Parameters &p) {
   p.setDefaultNbQuantLevels();
   p.setDefaultDecisionThreshold();
   p.setDefaultFidex();
-  p.setDefaultBool(COVERING_STRATEGY, false);
 
   // this sections check if values comply with program logic
 
