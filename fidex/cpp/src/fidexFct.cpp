@@ -364,7 +364,7 @@ int fidex(const string &command) {
       }
 
       // Launch fidexAlgo
-      fidex.launchFidex(*params, rule, mainSampleValues, mainSamplePred, mainSamplePredValue, mainSampleClass, true);
+      fidex.launchFidex(rule, true, mainSampleValues, mainSamplePred, mainSamplePredValue, mainSampleClass, true);
 
       meanFidelity += rule.getFidelity();
       meanAccuracy += rule.getAccuracy();

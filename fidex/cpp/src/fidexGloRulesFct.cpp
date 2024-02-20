@@ -39,7 +39,9 @@ void showRulesParams() {
   cout << "--sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << endl;
   cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)>" << endl;
   cout << "--nb_threads <number of threads used for computing the algorithm (default=1, this means by default its a sequential execution)>" << endl;
+  cout << "--covering_strategy <if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (True by default)>" << endl;
   cout << "--min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>" << endl;
+  cout << "--lowest_min_fidelity <minimal min_fidelity to which we agree to go down when computing a rule (0.75 by default)>" << endl;
   cout << "--seed <seed (0=random, default)>";
 
   cout << "\n-------------------------------------------------\n"
@@ -78,23 +80,18 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
     double t2;
     int cnt = 0;
     bool ruleCreated;
-    int counterFailed;
     int localNbProblems = 0;
     vector<Rule> localRules;
     vector<int>::iterator it;
     int localNbRulesNotFound = 0;
     Hyperspace hyperspace(hyperlocus);
-    int currentMinCovering = minCovering;
     int threadId = omp_get_thread_num();
-    float minFidelity = p.getFloat(MIN_FIDELITY);
     auto fidex = Fidex(trainDataset, p, hyperspace);
 
     string consoleFile = "";
     if (p.isStringSet(CONSOLE_FILE)) {
       consoleFile = p.getString(CONSOLE_FILE);
     }
-
-    int maxFailedAttempts = p.getInt(MAX_FAILED_ATTEMPTS);
 
 #pragma omp critical
     {
@@ -109,8 +106,6 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
       vector<vector<double>> &trainData = trainDataset.getDatas();
       vector<double> &mainSampleValues = trainData[idSample];
       int mainSamplePred = trainPreds[idSample];
-      ruleCreated = false;
-      counterFailed = 0; // If we can't find a good rule after a lot of tries
       cnt += 1;
 
       if (omp_get_thread_num() == 0 && ((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && consoleFile.empty()) {
@@ -121,39 +116,24 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
         }
       }
 
-      while (!ruleCreated) {
-        ruleCreated = fidex.compute(rule, false, mainSampleValues, mainSamplePred, minFidelity, currentMinCovering);
-        if (currentMinCovering >= 2) {
-          currentMinCovering -= 1;
-        } else {
-          counterFailed += 1;
-        }
+      ruleCreated = fidex.launchFidex(rule, false, mainSampleValues, mainSamplePred, -1, -1);
 
-        if (currentMinCovering < 2) {
-          counterFailed += 1;
-        }
-
-        if (counterFailed >= maxFailedAttempts) {
-          localNbRulesNotFound += 1;
-
+      if (!ruleCreated) {
+        localNbRulesNotFound += 1;
 #pragma omp critical
-          {
-            // ignore samples that cannot be covered after "maxFailedAttempts" attempts
-            it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
-            if (it != notCoveredSamples.end()) {
-              notCoveredSamples.erase(it);
-            }
+        {
+          // ignore samples that cannot be covered after "maxFailedAttempts" attempts
+          it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
+          if (it != notCoveredSamples.end()) {
+            notCoveredSamples.erase(it);
           }
-          break;
         }
-      }
-
-      if ((currentMinCovering + 1) < minCovering) {
-        localNbProblems += 1;
-      }
-
-      if (ruleCreated) {
+      } else {
         localRules.push_back(rule);
+      }
+
+      if (rule.getNbCoveredSamples() < minCovering) {
+        localNbProblems += 1;
       }
     }
 
@@ -324,7 +304,6 @@ vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const vector<v
   int idSample;
   bool ruleCreated;
   int nbProblems = 0;
-  int currentMinNbCov;
   int nbRulesNotFound = 0;
   vector<Rule> chosenRules;
   int seed = p.getInt(SEED);
@@ -333,13 +312,11 @@ vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const vector<v
   int minNbCover = p.getInt(MIN_COVERING);
   auto nbDatas = static_cast<int>(trainDataset.getDatas().size());
   vector<int> notCoveredSamples(nbDatas);
-  float minFidelity = p.getFloat(MIN_FIDELITY);
   auto fidex = Fidex(trainDataset, p, hyperspace);
   string consoleFile = "";
   if (p.isStringSet(CONSOLE_FILE)) {
     consoleFile = p.getString(CONSOLE_FILE);
   }
-  int maxFailedAttempts = p.getInt(MAX_FAILED_ATTEMPTS);
 
   if (seed == 0) {
     auto currentTime = high_resolution_clock::now();
@@ -368,25 +345,14 @@ vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const vector<v
     vector<vector<double>> &trainData = trainDataset.getDatas();
     vector<double> &mainSampleValues = trainData[idSample];
     int mainSamplePred = trainPreds[idSample];
-    currentMinNbCov = minNbCover;
-    ruleCreated = false;
-    int counterFailed = 0; // If we can't find a good rule after a lot of tries
 
-    while (!ruleCreated) {
-      ruleCreated = fidex.compute(rule, false, mainSampleValues, mainSamplePred, minFidelity, currentMinNbCov);
+    ruleCreated = fidex.launchFidex(rule, false, mainSampleValues, mainSamplePred, -1, -1);
 
-      if (currentMinNbCov >= 2) {
-        currentMinNbCov -= 1; // If we didnt found a rule with desired covering, we check with a lower covering
-      } else {
-        counterFailed += 1;
-      }
-      if (counterFailed >= maxFailedAttempts) {
-        nbRulesNotFound += 1;
-        break;
-      }
-      if (currentMinNbCov + 1 < minNbCover) {
-        nbProblems += 1;
-      }
+    if (!ruleCreated) {
+      nbRulesNotFound += 1;
+    }
+    if (rule.getNbCoveredSamples() < minNbCover) {
+      nbProblems += 1;
     }
 
     if (ruleCreated) {
@@ -428,6 +394,7 @@ void checkRulesParametersLogicValues(Parameters &p) {
   p.setDefaultDecisionThreshold();
   p.setDefaultFidex();
   p.setDefaultInt(NB_THREADS, 1);
+  p.setDefaultBool(COVERING_STRATEGY, true);
 
   // this sections check if values comply with program logic
 

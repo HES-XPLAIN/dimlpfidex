@@ -38,9 +38,9 @@ private:
 
   // utils
 
-  bool tryComputeFidex(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, double mainSamplePredValue, bool verbose, bool detailedVerbose = false, bool foundRule = false);
-  int dichotomicSearch(Rule &bestRule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int mainSampleClass, double mainSamplePredValue, int left, int right, bool verbose);
-  bool retryComputeFidex(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, double mainSamplePredValue, int maxFailedAttempts, bool hasDropout, bool verbose);
+  bool tryComputeFidex(Rule &rule, bool withTestSample, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, double mainSamplePredValue, bool verbose, bool detailedVerbose = false, bool foundRule = false);
+  int dichotomicSearch(Rule &bestRule, bool withTestSample, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int mainSampleClass, double mainSamplePredValue, int left, int right, bool verbose);
+  bool retryComputeFidex(Rule &rule, bool withTestSample, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, double mainSamplePredValue, bool verbose);
 
 public:
   Fidex() = default;
@@ -81,7 +81,7 @@ public:
   }
 
   // utils
-  void launchFidex(Parameters &params, Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, double mainSamplePredValue, int mainSampleClass, bool verbose = false);
+  bool launchFidex(Rule &rule, bool withTestSample, vector<double> &mainSampleValues, int mainSamplePred, double mainSamplePredValue, int mainSampleClass, bool verbose = false);
 };
 
 #endif

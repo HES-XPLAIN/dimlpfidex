@@ -67,7 +67,7 @@ void executeFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Par
   auto fidex = Fidex(trainDataset, p, hyperspace);
 
   // Launch fidexAlgo
-  fidex.launchFidex(p, rule, mainSampleValues, mainSamplePred, mainSamplePredValue, mainSampleClass);
+  fidex.launchFidex(rule, true, mainSampleValues, mainSamplePred, mainSamplePredValue, mainSampleClass);
 
   std::cout << "\nLocal rule :" << std::endl;
   lines.emplace_back("Local rule :\n");
