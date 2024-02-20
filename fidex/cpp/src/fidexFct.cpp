@@ -110,19 +110,26 @@ int fidex(const string &command) {
 
     // Import parameters
     unique_ptr<Parameters> params;
+    std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, TRAIN_PRED_FILE, TRAIN_CLASS_FILE, TEST_DATA_FILE,
+                                              WEIGHTS_FILE, RULES_FILE, RULES_OUTFILE, NB_ATTRIBUTES, NB_CLASSES,
+                                              ROOT_FOLDER, NB_DIMLP_NETS, TEST_PRED_FILE, TEST_CLASS_FILE, ATTRIBUTES_FILE,
+                                              STATS_FILE, CONSOLE_FILE, MAX_ITERATIONS, MIN_COVERING, COVERING_STRATEGY,
+                                              MAX_FAILED_ATTEMPTS, MIN_FIDELITY, LOWEST_MIN_FIDELITY, DROPOUT_DIM, DROPOUT_HYP,
+                                              NB_QUANT_LEVELS, DECISION_THRESHOLD, POSITIVE_CLASS_INDEX, NORMALIZATION_FILE, MUS,
+                                              SIGMAS, NORMALIZATION_INDICES, SEED};
     if (commandList[1].compare("--json_config_file") == 0) {
       if (commandList.size() < 3) {
         throw CommandArgumentException("JSON config file name/path is missing");
       }
 
       try {
-        params = std::unique_ptr<Parameters>(new Parameters(commandList[2]));
+        params = std::unique_ptr<Parameters>(new Parameters(commandList[2], validParams));
       } catch (const std::out_of_range &) {
         throw CommandArgumentException("JSON config file name/path is invalid");
       }
     } else {
       // Read parameters from CLI
-      params = std::unique_ptr<Parameters>(new Parameters(commandList));
+      params = std::unique_ptr<Parameters>(new Parameters(commandList, validParams));
     }
 
     // getting all program arguments from CLI

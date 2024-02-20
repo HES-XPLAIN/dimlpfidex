@@ -468,16 +468,13 @@ void RealHyp::DeepSearch(DataSet &data, std::shared_ptr<Rule> path, std::shared_
 {
   Rule newLeftPath;
   Rule newRightPath;
-
   std::shared_ptr<StringInt> newListPat = data.Select(path, subSet);
-
   if (newListPat->GetNbEl() == 0) {
     newListPat->Del();
     path->Del();
 
     return;
   }
-
   if (AreSameClass(newListPat, ClassPatNet) == 1) {
     newListPat->Del();
     SaveRule(path);
@@ -485,7 +482,6 @@ void RealHyp::DeepSearch(DataSet &data, std::shared_ptr<Rule> path, std::shared_
 
     return;
   }
-
   SetCountPatDiscr(newListPat, path);
 
   std::shared_ptr<Ante> ant = FindMostDiscrAnt(0);
@@ -703,7 +699,7 @@ void RealHyp::RuleExtraction(
   }
 
   SavedRules->Clean();
-
+  std::cout << "4" << std::endl;
   if (SavedRules->CountAnt() == 0) {
     cout << "*** NO RULES !\n"
          << std::endl;

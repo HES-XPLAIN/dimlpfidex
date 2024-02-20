@@ -77,7 +77,6 @@ enum ParameterCode {
   WITH_FIDEX,
   WITH_MINIMAL_VERSION,
   H,
-  INVALID,
   _NB_PARAMETERS // internal use only, do not consider it as a usable parameter
 };
 
@@ -157,7 +156,7 @@ private:
   StringInt archInd;
 
   // private parser
-  void parseArg(const string &param, const string &arg);
+  void parseArg(const string &param, const string &arg, const std::vector<ParameterCode> &validParams);
 
   // path checker
   void checkFilesIntegrity();
@@ -181,11 +180,15 @@ private:
     throw CommandArgumentException("Parameters error: argument (ID " + getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid path. The directory or file specified could not be found.");
   }
 
+  [[noreturn]] void throwInvalidParameter(ParameterCode wrongValue) const {
+    throw CommandArgumentException("Parameters error: argument (ID " + getParameterName(wrongValue) + ") is not a valid parameter for this execution.");
+  }
+
 public:
   // constructor
   Parameters() = default;
-  explicit Parameters(const vector<string> &args);
-  explicit Parameters(const string &jsonfile);
+  explicit Parameters(const vector<string> &args, const std::vector<ParameterCode> &validParams);
+  explicit Parameters(const string &jsonfile, const std::vector<ParameterCode> &validParams);
 
   // setters handle formatting from string argument
   void setInt(ParameterCode id, const string &value);

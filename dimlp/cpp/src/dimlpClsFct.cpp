@@ -167,19 +167,21 @@ int dimlpCls(const string &command) {
 
     // Import parameters
     unique_ptr<Parameters> params;
+    std::vector<ParameterCode> validParams = {TEST_DATA_FILE, WEIGHTS_FILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER, TEST_CLASS_FILE,
+                                              TEST_PRED_OUTFILE, CONSOLE_FILE, STATS_FILE, HID_FILE, H, NB_QUANT_LEVELS};
     if (commandList[1].compare("--json_config_file") == 0) {
       if (commandList.size() < 3) {
         throw CommandArgumentException("JSON config file name/path is missing");
       }
 
       try {
-        params = std::unique_ptr<Parameters>(new Parameters(commandList[2]));
+        params = std::unique_ptr<Parameters>(new Parameters(commandList[2], validParams));
       } catch (const std::out_of_range &) {
         throw CommandArgumentException("JSON config file name/path is invalid");
       }
     } else {
       // Read parameters from CLI
-      params = std::unique_ptr<Parameters>(new Parameters(commandList));
+      params = std::unique_ptr<Parameters>(new Parameters(commandList, validParams));
     }
 
     // getting all program arguments from CLI

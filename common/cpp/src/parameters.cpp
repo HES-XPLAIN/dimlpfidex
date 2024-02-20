@@ -6,7 +6,7 @@
  *
  * @param args program arguments
  */
-Parameters::Parameters(const vector<string> &args) {
+Parameters::Parameters(const vector<string> &args, const std::vector<ParameterCode> &validParams) {
   for (int p = 1; p < args.size(); p++) {
     string param = args[p];
 
@@ -23,7 +23,7 @@ Parameters::Parameters(const vector<string> &args) {
         throw CommandArgumentException("There is a parameter without -- (" + args[p + 1] + ").");
       }
 
-      parseArg(param, arg);
+      parseArg(param, arg, validParams);
     }
   }
 
@@ -35,7 +35,7 @@ Parameters::Parameters(const vector<string> &args) {
  *
  * @param jsonfile JSON config file name
  */
-Parameters::Parameters(const string &jsonfile) {
+Parameters::Parameters(const string &jsonfile, const std::vector<ParameterCode> &validParams) {
   ifstream ifs;
   ifs.open(jsonfile);
   vector<string> args;
@@ -55,7 +55,7 @@ Parameters::Parameters(const string &jsonfile) {
       value = to_string(item.value());
     }
 
-    parseArg(item.key(), value);
+    parseArg(item.key(), value, validParams);
   }
 
   checkFilesIntegrity();
@@ -93,6 +93,9 @@ void Parameters::checkFilesIntegrity() {
   sanitizePath(RULES_OUTFILE, false);
   sanitizePath(GLOBAL_RULES_OUTFILE, false);
   sanitizePath(EXPLANATION_FILE, false);
+
+  // Complete the path of WEIGHTS_GENERIC_FILENAME
+  completePath(WEIGHTS_GENERIC_FILENAME);
 }
 
 /**
@@ -106,7 +109,7 @@ void Parameters::checkFilesIntegrity() {
  * @param param parameter name (ex: nb_threads, min_fidelity etc...)
  * @param arg parameter's associated value
  */
-void Parameters::parseArg(const string &param, const string &arg) {
+void Parameters::parseArg(const string &param, const string &arg, const std::vector<ParameterCode> &validParams) {
   ParameterCode option;
   auto it = parameterNames.find(param);
   if (it != parameterNames.end()) {
@@ -117,11 +120,16 @@ void Parameters::parseArg(const string &param, const string &arg) {
       if (checkInt(numberPart)) {
         option = H;
       } else {
-        option = INVALID;
+        throw CommandArgumentException("Illegal option : " + param);
       }
     } else {
-      option = INVALID;
+      throw CommandArgumentException("Illegal option : " + param);
     }
+  }
+
+  // Check for invalid parameter
+  if (std::find(validParams.begin(), validParams.end(), option) == validParams.end()) {
+    throwInvalidParameter(option);
   }
 
   switch (option) {
@@ -188,7 +196,6 @@ void Parameters::parseArg(const string &param, const string &arg) {
 
   case WEIGHTS_GENERIC_FILENAME:
     setString(WEIGHTS_GENERIC_FILENAME, arg);
-    completePath(WEIGHTS_GENERIC_FILENAME);
     break;
 
   case WEIGHTS_GENERIC_OUTFILENAME:

@@ -39,7 +39,6 @@ void testSetter() {
   p.setString(RULES_OUTFILE, DEFAULT_TXT_OUT_RULES_FILE);
   p.sanitizePath(RULES_OUTFILE, false);
   testAssert("Parameter sanitize path of output file", true);
-
 }
 
 void testGetter() {
@@ -94,11 +93,11 @@ void testArgsParser() {
       "--train_data_file", DEFAULT_TRAIN_FILE,
       "--heuristic", "1",
       "--dropout_hyp", "0.4"};
-
-  Parameters p = Parameters(args);
+  std::vector<ParameterCode> validParams;
+  auto p = Parameters(args, validParams);
 
   testAssert("Parameter by user args: parse int", p.getInt(HEURISTIC) == 1);
-  testAssert("Parameter by user args: parse string", p.getString(TRAIN_DATA_FILE).compare(DEFAULT_ROOT_FOLDER+DEFAULT_TRAIN_FILE) == 0);
+  testAssert("Parameter by user args: parse string", p.getString(TRAIN_DATA_FILE).compare(DEFAULT_ROOT_FOLDER + DEFAULT_TRAIN_FILE) == 0);
   testAssert("Parameter by user args: parse float", p.getFloat(DROPOUT_HYP) == 0.4f);
 
   try {
@@ -106,7 +105,7 @@ void testArgsParser() {
         "executableNameToIgnore", // this line has to be present
         "--nb_threads", "1.5"};
 
-    Parameters p = Parameters(args);
+    auto p = Parameters(args, validParams);
 
   } catch (ErrorHandler &e) {
     std::string expectedMessage = getInvalidDataTypeExceptionMessage(NB_THREADS, "1.5", "integer");
@@ -145,8 +144,9 @@ void testJsonParser() {
   std::stringstream buffer1;
   std::stringstream buffer2;
 
-  Parameters pJson = Parameters("fidexTests/templates/default_config.json");
-  Parameters pArgs = Parameters(args);
+  std::vector<ParameterCode> validParams;
+  auto pJson = Parameters("fidexTests/templates/default_config.json", validParams);
+  auto pArgs = Parameters(args, validParams);
 
   testAssert("Parameters: JSON & user args are equal", buffer1.str().compare(buffer2.str()) == 0);
 }

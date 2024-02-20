@@ -120,19 +120,22 @@ int fidexGloStats(const string &command) {
 
     // Import parameters
     unique_ptr<Parameters> params;
+    std::vector<ParameterCode> validParams = {TEST_DATA_FILE, TEST_PRED_FILE, TEST_CLASS_FILE,
+                                              GLOBAL_RULES_FILE, GLOBAL_RULES_OUTFILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER, ATTRIBUTES_FILE,
+                                              STATS_FILE, GLOBAL_RULES_OUTFILE, CONSOLE_FILE, DECISION_THRESHOLD, POSITIVE_CLASS_INDEX};
     if (commandList[1].compare("--json_config_file") == 0) {
       if (commandList.size() < 3) {
         throw CommandArgumentException("JSON config file name/path is missing");
       }
 
       try {
-        params = std::unique_ptr<Parameters>(new Parameters(commandList[2]));
+        params = std::unique_ptr<Parameters>(new Parameters(commandList[2], validParams));
       } catch (const std::out_of_range &) {
         throw CommandArgumentException("JSON config file name/path is invalid");
       }
     } else {
       // Read parameters from CLI
-      params = std::unique_ptr<Parameters>(new Parameters(commandList));
+      params = std::unique_ptr<Parameters>(new Parameters(commandList, validParams));
     }
 
     // getting all program arguments from CLI
@@ -197,8 +200,8 @@ int fidexGloStats(const string &command) {
         classNames = testDatas->getClassNames();
       }
     }
-    // Get rules
 
+    // Get rules
     vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
     vector<string> lines;                                                            // Lines for the output stats
     vector<string> statsLines;
