@@ -22,15 +22,28 @@ void getAntecedents(vector<tuple<int, bool, double>> &antecedents, int &ruleClas
     if (tokens[id].find("<") != std::string::npos) {
       ineq = false;
       std::vector<std::string> antToken = splitString(tokens[id], "<");
+      if (antToken.size() < 2) {
+        throw FileContentError("Error : The rule '" + line + "' is not on the good format.");
+      }
       attributeName += antToken[0];
-      val = std::stod(antToken[1]);
+      try {
+        val = std::stod(antToken[1]);
+      } catch (const std::invalid_argument &) {
+        throw FileContentError("Error : The rule is not on the good format. The value " + antToken[1] + " is not a number.");
+      }
     } else {
       ineq = true;
       std::vector<std::string> antToken = splitString(tokens[id], ">=");
+      if (antToken.size() < 2) {
+        throw FileContentError("Error : The rule '" + line + "' is not on the good format.");
+      }
       attributeName += antToken[0];
-      val = std::stod(antToken[1]);
+      try {
+        val = std::stod(antToken[1]);
+      } catch (const std::invalid_argument &) {
+        throw FileContentError("Error : The rule is not on the good format. The value " + antToken[1] + " is not a number.");
+      }
     }
-
     if (attributsInFile) {
       bool foundName = false;
       for (size_t idAtr = 0; idAtr < attributeNames.size(); idAtr++) {
@@ -41,7 +54,7 @@ void getAntecedents(vector<tuple<int, bool, double>> &antecedents, int &ruleClas
         }
       }
       if (!foundName) {
-        throw FileContentError("Error : attribute name found in Rules file is not contained into attribute file.");
+        throw FileContentError("Error : attribute " + attributeName + " found in Rules file is not contained into attribute file.");
       }
       attr = attributeIdx;
     } else {
@@ -61,7 +74,7 @@ void getAntecedents(vector<tuple<int, bool, double>> &antecedents, int &ruleClas
       }
     }
     if (!foundClassName) {
-      throw FileContentError("Error : class name found in Rules file is not contained into attribute file.");
+      throw FileContentError("Error : class name " + tokens[id + 1] + " found in Rules file is not contained into attribute file.");
     }
 
   } else {
