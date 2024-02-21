@@ -29,7 +29,7 @@ void showDimlpTrnParams()
   cout << "--valid_class_file <file of validation classes>" << std::endl;
   cout << "--weights_outfile <output weight file (dimlp.wts by default)>" << std::endl;
   cout << "--train_pred_outfile <output train prediction file (dimlpTrain.out by default)>" << std::endl;
-  cout << "--test_pred_file <output test prediction file (dimlpTest.out by default)>" << std::endl;
+  cout << "--test_pred_outfile <output test prediction file (dimlpTest.out by default)>" << std::endl;
   cout << "--valid_pred_outfile <output validation prediction file (dimlpValidation.out by default)>" << std::endl;
   cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
   cout << "--stats_file <output file with train, test and validation accuracy>" << std::endl;
@@ -156,7 +156,11 @@ int dimlpTrn(const string &command) {
 
     // Import parameters
     unique_ptr<Parameters> params;
-    std::vector<ParameterCode> validParams;
+    std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER, ATTRIBUTES_FILE, VALID_DATA_FILE,
+                                              TEST_DATA_FILE, WEIGHTS_FILE, TRAIN_CLASS_FILE, TEST_CLASS_FILE, VALID_CLASS_FILE, WEIGHTS_OUTFILE,
+                                              TRAIN_PRED_OUTFILE, TEST_PRED_OUTFILE, VALID_PRED_OUTFILE, CONSOLE_FILE, STATS_FILE, H, WITH_RULE_EXTRACTION,
+                                              GLOBAL_RULES_OUTFILE, LEARNING_RATE, MOMENTUM, FLAT, NB_QUANT_LEVELS, ERROR_THRESH, ACC_THRESH,
+                                              ABS_ERROR_THRESH, NB_EPOCHS, NB_EPOCHS_ERROR, NORMALIZATION_FILE, MUS, SIGMAS, NORMALIZATION_INDICES, SEED};
     if (commandList[1].compare("--json_config_file") == 0) {
       if (commandList.size() < 3) {
         throw CommandArgumentException("JSON config file name/path is missing");
