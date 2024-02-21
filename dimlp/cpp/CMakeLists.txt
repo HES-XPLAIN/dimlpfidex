@@ -160,21 +160,6 @@ FILE(GLOB DIMLP_RUL_SRC
     src/virtHyp.h
 )
 
-FILE(GLOB FCT_SRC
-    src/dimlpPredFct.cpp
-    src/dimlpPredFct.h
-    src/dimlpClsFct.cpp
-    src/dimlpClsFct.h
-    src/dimlpRulFct.cpp
-    src/dimlpRulFct.h
-    src/dimlpTrnFct.cpp
-    src/dimlpTrnFct.h
-    src/dimlpBTFct.cpp
-    src/dimlpBTFct.h
-    src/densClsFct.cpp
-    src/densClsFct.h
-)
-
 # make variables visible to external CMakeLists.txt
 set(DIMLP_COMMON_SRC "${DIMLP_COMMON_SRC}" CACHE INTERNAL "")
 set(DIMLP_TRN_SRC "${DIMLP_TRN_SRC}" CACHE INTERNAL "")
@@ -183,15 +168,14 @@ set(DIMLP_CLS_SRC "${DIMLP_CLS_SRC}" CACHE INTERNAL "")
 set(DIMLP_BT_SRC "${DIMLP_BT_SRC}" CACHE INTERNAL "")
 set(DENS_CLS_SRC "${DENS_CLS_SRC}" CACHE INTERNAL "")
 set(DIMLP_RUL_SRC "${DIMLP_RUL_SRC}" CACHE INTERNAL "")
-set(FCT_SRC "${FCT_SRC}" CACHE INTERNAL "")
 
 # build executables
-add_executable(dimlpTrn ${COMMON_SRC} ${DIMLP_COMMON_SRC} ${DIMLP_TRN_SRC} src/dimlpTrn.cpp)
-add_executable(dimlpPred ${COMMON_SRC} ${DIMLP_COMMON_SRC} ${DIMLP_PRED_SRC} src/dimlpPred.cpp)
-add_executable(dimlpCls ${COMMON_SRC} ${DIMLP_COMMON_SRC} ${DIMLP_CLS_SRC} src/dimlpCls.cpp)
-add_executable(dimlpBT ${COMMON_SRC} ${DIMLP_COMMON_SRC} ${DIMLP_BT_SRC} src/dimlpBT.cpp)
-add_executable(densCls ${COMMON_SRC} ${DIMLP_COMMON_SRC} ${DENS_CLS_SRC} src/densCls.cpp)
-add_executable(dimlpRul ${COMMON_SRC} ${DIMLP_COMMON_SRC} ${DIMLP_RUL_SRC} src/dimlpRul.cpp)
+add_executable(dimlpTrn ${DIMLP_COMMON_SRC} ${DIMLP_TRN_SRC} src/dimlpTrn.cpp)
+add_executable(dimlpPred ${DIMLP_COMMON_SRC} ${DIMLP_PRED_SRC} src/dimlpPred.cpp)
+add_executable(dimlpCls ${DIMLP_COMMON_SRC} ${DIMLP_CLS_SRC} src/dimlpCls.cpp)
+add_executable(dimlpBT ${DIMLP_COMMON_SRC} ${DIMLP_BT_SRC} src/dimlpBT.cpp)
+add_executable(densCls ${DIMLP_COMMON_SRC} ${DENS_CLS_SRC} src/densCls.cpp)
+add_executable(dimlpRul ${DIMLP_COMMON_SRC} ${DIMLP_RUL_SRC} src/dimlpRul.cpp)
 add_dependencies(dimlpTrn common)
 add_dependencies(dimlpPred common)
 add_dependencies(dimlpCls common)
