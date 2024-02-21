@@ -78,18 +78,28 @@ void DataSet::SecondLecture(const std::string &nameFile) {
 
 ///////////////////////////////////////////////////////////////////
 
-void DataSet::Del()
+void DataSet::Del() {
+  for (int p = 0; p < NbEx; p++) {
+    // Use delete[] to free the memory allocated for each array of attributes
+    // This corresponds to the allocation with new float[NbAttr] for each example
+    delete[] Set[p];
+  }
 
-{
-  for (int p = 0; p < NbEx; p++)
-    delete Set[p];
+  // Free the memory for the array of pointers itself
+  // This corresponds to the allocation with new float *[NbEx]
+  delete[] Set;
 
-  delete Set;
+  // Set the pointer to nullptr to avoid dangling pointers
+  Set = nullptr;
+
+  // Reset the number of examples and attributes in the dataset to 0
+  NbEx = 0;
+  NbAttr = 0;
 }
 
 ///////////////////////////////////////////////////////////////////
 
-std::shared_ptr<StringInt> DataSet::Select(std::shared_ptr<Rule> r)
+std::shared_ptr<StringInt> DataSet::Select(std::shared_ptr<DimlpRule> r)
 
 {
   int a;
@@ -138,7 +148,7 @@ std::shared_ptr<StringInt> DataSet::Select(std::shared_ptr<Rule> r)
 
 ////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<StringInt> DataSet::Select(std::shared_ptr<Rule> r, std::shared_ptr<StringInt> subSet)
+std::shared_ptr<StringInt> DataSet::Select(std::shared_ptr<DimlpRule> r, std::shared_ptr<StringInt> subSet)
 
 {
   int a;

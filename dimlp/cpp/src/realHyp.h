@@ -49,7 +49,7 @@ class RealHyp {
   int Aborted;
   //----------------------------------------------------------------
 
-  void SaveRule(std::shared_ptr<Rule> path) const { SavedRules->Insert(path); }
+  void SaveRule(std::shared_ptr<DimlpRule> path) const { SavedRules->Insert(path); }
 
   int MaxOnPos(const std::vector<int> &vec) const;
   int GiveIndMax(const int *vec, int nbEl) const;
@@ -68,11 +68,11 @@ class RealHyp {
   std::shared_ptr<Ante> FindMostDiscrAnt(int sel) const;
 
   int ComputeCorrect(std::shared_ptr<StringInt> listPatLeft, std::shared_ptr<StringInt> listPatRight);
-  void SetCountPatDiscr(std::shared_ptr<StringInt> listPat, std::shared_ptr<Rule> r) const;
-  void SetCountPatDiscr2(DataSet &data, std::shared_ptr<Rule> r);
+  void SetCountPatDiscr(std::shared_ptr<StringInt> listPat, std::shared_ptr<DimlpRule> r) const;
+  void SetCountPatDiscr2(DataSet &data, std::shared_ptr<DimlpRule> r);
 
-  void DeepSearch(DataSet &data, std::shared_ptr<Rule> path, std::shared_ptr<StringInt> subSet);
-  void DeepSearch2(DataSet &data, std::shared_ptr<Rule> path);
+  void DeepSearch(DataSet &data, std::shared_ptr<DimlpRule> path, std::shared_ptr<StringInt> subSet);
+  void DeepSearch2(DataSet &data, std::shared_ptr<DimlpRule> path);
 
   //----------------------------------------------------------------
 

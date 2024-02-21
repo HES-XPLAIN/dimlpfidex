@@ -3,8 +3,8 @@ project(dimlp)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-#set(CMAKE_CXX_FLAGS "-O3")
-set(CMAKE_CXX_FLAGS "-O3 -fsanitize=address -fsanitize=leak -fsanitize=undefined")
+set(CMAKE_CXX_FLAGS "-O3")
+#set(CMAKE_CXX_FLAGS "-O3 -fsanitize=address -fsanitize=leak -fsanitize=undefined")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 FILE(GLOB DIMLP_COMMON_SRC
@@ -53,8 +53,8 @@ FILE(GLOB DIMLP_TRN_SRC
     src/realHyp.h
     src/realHyp2.cpp
     src/realHyp2.h
-    src/rule.cpp
-    src/rule.h
+    src/dimlpRule.cpp
+    src/dimlpRule.h
     src/rulePro.cpp
     src/rulePro.h
     src/thresD.cpp
@@ -92,8 +92,8 @@ FILE(GLOB DIMLP_BT_SRC
     src/realHyp.h
     src/realHyp2.cpp
     src/realHyp2.h
-    src/rule.cpp
-    src/rule.h
+    src/dimlpRule.cpp
+    src/dimlpRule.h
     src/rulePro.cpp
     src/rulePro.h
     src/thresD.cpp
@@ -121,8 +121,8 @@ FILE(GLOB DENS_CLS_SRC
     src/realHyp.h
     src/realHyp2.cpp
     src/realHyp2.h
-    src/rule.cpp
-    src/rule.h
+    src/dimlpRule.cpp
+    src/dimlpRule.h
     src/rulePro.cpp
     src/rulePro.h
     src/thresD.cpp
@@ -148,8 +148,8 @@ FILE(GLOB DIMLP_RUL_SRC
     src/realHyp.h
     src/realHyp2.cpp
     src/realHyp2.h
-    src/rule.cpp
-    src/rule.h
+    src/dimlpRule.cpp
+    src/dimlpRule.h
     src/rulePro.cpp
     src/rulePro.h
     src/thresD.cpp

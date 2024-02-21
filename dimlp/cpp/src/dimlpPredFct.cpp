@@ -252,6 +252,10 @@ int dimlpPred(const string &command) {
 
     BpNN::resetInitRandomGen();
 
+    if (Test.GetNbEx() > 0) {
+      Test.Del();
+    }
+
   } catch (const ErrorHandler &e) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
     std::cerr << e.what() << endl;

@@ -420,6 +420,19 @@ int densCls(const string &command) {
 
     BpNN::resetInitRandomGen();
 
+    Train.Del();
+    TrainClass.Del();
+
+    if (Test.GetNbEx() > 0) {
+      Test.Del();
+      TestClass.Del();
+    }
+
+    if (Valid.GetNbEx() > 0) {
+      Valid.Del();
+      ValidClass.Del();
+    }
+
   } catch (const ErrorHandler &e) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
     std::cerr << e.what() << endl;

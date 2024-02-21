@@ -30,7 +30,7 @@ class RuleProcessing
   StringInt AntInd;
 
   struct Saved {
-    std::shared_ptr<Rule> OneRule;
+    std::shared_ptr<DimlpRule> OneRule;
     std::shared_ptr<StringInt> Carried;
     std::shared_ptr<Saved> Next;
   };
@@ -50,7 +50,7 @@ class RuleProcessing
   void RemCurrentRule() const;
   int GoToSavedAndRemRule(int indPrune);
   void GoToRuleAndRemAnt(int indPrune);
-  void RemSevThres(std::shared_ptr<Rule> r) const;
+  void RemSevThres(std::shared_ptr<DimlpRule> r) const;
   void ComputeGain();
   void RulePruneByMinCar();
   void FastRulePrune(int nbIt);
@@ -59,11 +59,11 @@ class RuleProcessing
   //----------------------------------------------------------------
 
 public:
-  int IsRuleEmpty(std::shared_ptr<Rule> rule) const;
+  int IsRuleEmpty(std::shared_ptr<DimlpRule> rule) const;
   int GetNbRules() const { return NbRules; }
   void GoToBeg() { Current = First; }
   void GoToNext() { Current = Current->Next; }
-  std::shared_ptr<Rule> GetRule() const { return Current->OneRule; }
+  std::shared_ptr<DimlpRule> GetRule() const { return Current->OneRule; }
   void Save() { Memory = Current; }
   void Previous() { Current = Memory; }
 
@@ -74,7 +74,7 @@ public:
   void MixPrune();
   void EnlargeAndPrune();
 
-  void Insert(std::shared_ptr<Rule> r);
+  void Insert(std::shared_ptr<DimlpRule> r);
   void Del();
 
   RuleProcessing(

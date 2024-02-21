@@ -286,7 +286,7 @@ void CleanRuleStruct::ComputeAcc(
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::SetSevInfo(std::shared_ptr<Rule> rule, int indClean)
+void CleanRuleStruct::SetSevInfo(std::shared_ptr<DimlpRule> rule, int indClean)
 
 {
   std::shared_ptr<StringInt> carried;
@@ -357,7 +357,7 @@ void CleanRuleStruct::CreateStructures() {
   int a;
   int r;
   int allAnt;
-  std::shared_ptr<Rule> rule;
+  std::shared_ptr<DimlpRule> rule;
 
   Clean.resize(NbRules + 1);
 

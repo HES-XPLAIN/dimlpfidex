@@ -19,7 +19,7 @@ Parameters::Parameters(const vector<string> &args, const std::vector<ParameterCo
       }
       const string arg = args[p];
 
-      if (p + 1 < args.size() && args[p + 1].substr(0, 2) != "--") {
+      if (p + 1 < args.size() && (args[p + 1].substr(0, 2) != "--" && args[p + 1].substr(0, 2) != "")) {
         throw CommandArgumentException("There is a parameter without -- (" + args[p + 1] + ").");
       }
 

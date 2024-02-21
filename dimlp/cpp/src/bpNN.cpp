@@ -579,10 +579,8 @@ float BpNN::ComputeError(
   const int nbOut = target.GetNbAttr();
   for (p = 0, sum = 0.0, good = 0, bad = 0; p < nbPat; p++) {
     ForwardOneExample1(data, p);
-
     ptrOut.assign(VecLayer[NbWeightLayers - 1]->GetUp(), VecLayer[NbWeightLayers - 1]->GetUp() + nbOut);
     ptrTar.assign(target.GetExample(p), target.GetExample(p) + nbOut);
-
     ansNet = Max(ptrOut);
     ansTar = Max(ptrTar);
 
@@ -593,7 +591,6 @@ float BpNN::ComputeError(
     else
       bad++;
   }
-
   *accuracy = static_cast<float>(good) + static_cast<float>(bad);
   *accuracy = (float)good / *accuracy;
 

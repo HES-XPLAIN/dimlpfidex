@@ -1,8 +1,8 @@
-#include "rule.h"
+#include "dimlpRule.h"
 
 ///////////////////////////////////////////////////////////////////
 
-int Rule::GetNbAntWithout()
+int DimlpRule::GetNbAntWithout()
 
 {
   int a;
@@ -17,7 +17,7 @@ int Rule::GetNbAntWithout()
 
 ///////////////////////////////////////////////////////////////////
 
-void Rule::DeleteRule()
+void DimlpRule::DeleteRule()
 
 {
   int a;
@@ -28,7 +28,7 @@ void Rule::DeleteRule()
 
 ///////////////////////////////////////////////////////////////////
 
-void Rule::Insert(int var, float val, char rel)
+void DimlpRule::Insert(int var, float val, char rel)
 
 {
   if (NbAnt == 0) {
@@ -59,7 +59,7 @@ void Rule::Insert(int var, float val, char rel)
 
 ///////////////////////////////////////////////////////////////////
 
-Rule *Rule::Copy(std::shared_ptr<Rule> r)
+DimlpRule *DimlpRule::Copy(std::shared_ptr<DimlpRule> r)
 
 {
   int a;

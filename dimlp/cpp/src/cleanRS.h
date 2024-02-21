@@ -92,7 +92,7 @@ class CleanRuleStruct {
       int *wrong,
       float *acc) const;
 
-  void SetSevInfo(std::shared_ptr<Rule> rule, int indClean);
+  void SetSevInfo(std::shared_ptr<DimlpRule> rule, int indClean);
   void CreateWrongVect();
   void CreateStructures();
 

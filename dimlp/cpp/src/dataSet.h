@@ -3,7 +3,7 @@
 
 #include "../../../common/cpp/src/errorHandler.h"
 #include "../../../common/cpp/src/stringI.h"
-#include "rule.h"
+#include "dimlpRule.h"
 #include <algorithm>
 #include <cmath>
 #include <fstream>
@@ -44,8 +44,8 @@ public:
   int GetNbEx() const { return NbEx; }
   int GetNbAttr() const { return NbAttr; }
 
-  std::shared_ptr<StringInt> Select(std::shared_ptr<Rule> r);
-  std::shared_ptr<StringInt> Select(std::shared_ptr<Rule> r, std::shared_ptr<StringInt> subSet);
+  std::shared_ptr<StringInt> Select(std::shared_ptr<DimlpRule> r);
+  std::shared_ptr<StringInt> Select(std::shared_ptr<DimlpRule> r, std::shared_ptr<StringInt> subSet);
 
   void ExtractDataAndTarget(DataSet &data1, int nbAttr1,
                             DataSet &data2, int nbAttr2) const;

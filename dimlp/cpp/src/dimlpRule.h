@@ -1,11 +1,11 @@
-#ifndef RULE_H
-#define RULE_H
+#ifndef DIMLPRULE_H
+#define DIMLPRULE_H
 
 #include <memory>
 
 ////////////////////////////////////////////////////////////////////////
 
-class Rule {
+class DimlpRule {
   struct Antecedent {
     int Var;
     float Val;
@@ -39,14 +39,13 @@ public:
   int GetNbAntWithout();
   void DeleteRule();
   void Insert(int var, float val, char rel);
-  Rule *Copy(std::shared_ptr<Rule> r);
+  DimlpRule *Copy(std::shared_ptr<DimlpRule> r);
 
   void Del() {
     NbAnt = 0;
   }
 
-  Rule() = default;
-  ~Rule() = default;
+  DimlpRule() = default;
 };
 
 #endif

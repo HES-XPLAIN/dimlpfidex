@@ -2,20 +2,20 @@
 #define ANTE_H
 
 #ifndef RULE
-#include "rule.h"
+#include "dimlpRule.h"
 #endif
 ////////////////////////////////////////////////////////////////////////
 
-class Ante : public Rule {
+class Ante : public DimlpRule {
 
   //----------------------------------------------------------------
 
 public:
-  int GetVarAnte() const { return Rule::GetVar(); }
-  float GetValAnte() const { return Rule::GetVal(); }
-  char GetRelAnte() const { return Rule::GetRel(); }
+  int GetVarAnte() const { return DimlpRule::GetVar(); }
+  float GetValAnte() const { return DimlpRule::GetVal(); }
+  char GetRelAnte() const { return DimlpRule::GetRel(); }
 
-  void DelAnte() { Rule::Del(); }
+  void DelAnte() { DimlpRule::Del(); }
 
   Ante(int var, float val, char rel);
 };
