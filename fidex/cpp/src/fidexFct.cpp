@@ -376,46 +376,11 @@ int fidex(const string &command) {
                   << endl;
       }
 
-      std::string line;
-
-      for (int i = 0; i < rule.getNbAntecedants(); i++) {
-        Antecedant currentAntecedant = rule.getAntecedants()[i];
-        if (params->isStringSet(ATTRIBUTES_FILE)) {
-          line += attributeNames[currentAntecedant.getAttribute()];
-        } else {
-          line += "X" + std::to_string(currentAntecedant.getAttribute());
-        }
-        if (currentAntecedant.getInequality()) {
-          line += ">=";
-        } else {
-          line += "<";
-        }
-        line += formattingDoubleToString(currentAntecedant.getValue()) + " ";
-      }
-
-      if (hasClassNames) {
-        line += "-> " + classNames[rule.getOutputClass()];
-      } else {
-        line += "-> class " + std::to_string(rule.getOutputClass());
-      }
-      std::cout << "Extracted rule :" << std::endl;
-      std::cout << line << endl;
-      lines.push_back(line);
-      line = "Train Covering size : " + std::to_string(rule.getNbCoveredSamples());
-      std::cout << line << endl;
-      lines.push_back(line);
-      line = "Train Fidelity : " + formattingDoubleToString(rule.getFidelity());
-      std::cout << line << endl;
-      lines.push_back(line);
-      line = "Train Accuracy : " + formattingDoubleToString(rule.getAccuracy());
-      std::cout << line << endl;
-      lines.push_back(line);
-      if (rule.getConfidence() != -1) {
-        line = "Train Confidence : " + formattingDoubleToString(rule.getConfidence());
-        std::cout << line << endl;
-        lines.push_back(line);
-      }
+      stringstream stream;
+      lines.push_back(rule.toString(attributeNames, classNames));
       std::cout << std::endl;
+      std::cout << "Extracted rule :" << std::endl;
+      std::cout << rule.toString(attributeNames, classNames) << std::endl;
 
       if (rule.getNbCoveredSamples() < minNbCover) {
         std::cout << "The minimum covering of " << minNbCover << " is not achieved." << std::endl;

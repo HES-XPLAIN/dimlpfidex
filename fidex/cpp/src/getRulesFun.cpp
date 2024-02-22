@@ -2,14 +2,6 @@
 
 using namespace std;
 
-struct RuleInfo {
-  vector<tuple<int, bool, double>> antecedents;
-  int ruleClass;
-  int covSize;
-  double ruleFidelity;
-  double ruleAccuracy;
-};
-
 void getAntecedents(vector<tuple<int, bool, double>> &antecedents, int &ruleClass, const std::string &line, bool attributsInFile, vector<string> attributeNames, bool hasClassNames, vector<string> classNames) {
   std::vector<std::string> tokens = splitString(line, " ");
   int id = 2;
