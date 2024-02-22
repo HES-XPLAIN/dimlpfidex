@@ -28,10 +28,10 @@
 //   return hyperlocus;
 // }
 
-vector<vector<double>> calcHypLocus(const std::string &dataFileWeights, int nbQuantLevels, double hiKnot, bool display) {
+vector<vector<double>> calcHypLocus(const std::string &dataFileWeights, int nbQuantLevels, double hiKnot, bool verbose) {
 
   double lowKnot = -hiKnot;
-  if (display) {
+  if (verbose) {
     cout << "\nParameters of hyperLocus :\n"
          << endl;
     cout << "- Number of stairs " << nbQuantLevels << endl;
@@ -47,7 +47,7 @@ vector<vector<double>> calcHypLocus(const std::string &dataFileWeights, int nbQu
   vector<double> biais = weightDatas.getInBiais();
   vector<double> weights = weightDatas.getInWeights();
 
-  if (display) {
+  if (verbose) {
     cout << "Weight file imported" << endl
          << endl;
 
@@ -72,7 +72,7 @@ vector<vector<double>> calcHypLocus(const std::string &dataFileWeights, int nbQu
       matHypLocus[i][j] = (knots[j] - biais[i]) / weights[i]; // Placement of the hyperplan
     }
   }
-  if (display) {
+  if (verbose) {
     cout << "HyperLocus computed" << endl
          << endl;
   }

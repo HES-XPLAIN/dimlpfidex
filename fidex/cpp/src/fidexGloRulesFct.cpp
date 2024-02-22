@@ -11,8 +11,9 @@ void showRulesParams() {
   cout << "Obligatory parameters : \n"
        << endl;
   cout << "fidexGloRules --train_data_file <train data file> --train_pred_file <train prediction file> --train_class_file <train true class file, not mendatory if classes are specified in train data file> ";
-  cout << "--weights_file <weights file. In case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file] ";
-  cout << "--rules_file <rules file to be converted to hyperlocus> [Not mendatory if a weights file is given] ";
+  cout << "--weights_file <weights file when not using bagging> [Not mendatory if a rules file is given with --rules_file] ";
+  cout << "--weights_generic_filename <weights file in case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file] ";
+  cout << "--rules_file <rules file to be converted to hyperlocus> [Not mendatory if a weights file or a weights_generic_filename is given] ";
   cout << "--global_rules_outfile <Rules output file> ";
   cout << "--heuristic <Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo> ";
   cout << "--nb_attributes <number of attributes> ";
@@ -515,11 +516,11 @@ int fidexGloRules(const string &command) {
 
     // Import parameters
     unique_ptr<Parameters> params;
-    std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, TRAIN_PRED_FILE, TRAIN_CLASS_FILE, WEIGHTS_FILE, RULES_FILE, GLOBAL_RULES_OUTFILE,
-                                              HEURISTIC, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER, NB_DIMLP_NETS, ATTRIBUTES_FILE, CONSOLE_FILE,
+    std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, TRAIN_PRED_FILE, TRAIN_CLASS_FILE, WEIGHTS_FILE, WEIGHTS_GENERIC_FILENAME, RULES_FILE, GLOBAL_RULES_OUTFILE,
+                                              HEURISTIC, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER, ATTRIBUTES_FILE, CONSOLE_FILE,
                                               MAX_ITERATIONS, MIN_COVERING, DROPOUT_DIM, DROPOUT_HYP, MAX_FAILED_ATTEMPTS, NB_QUANT_LEVELS,
                                               DECISION_THRESHOLD, POSITIVE_CLASS_INDEX, NORMALIZATION_FILE, MUS, SIGMAS, NORMALIZATION_INDICES,
-                                              NB_THREADS, COVERING_STRATEGY, MIN_FIDELITY, LOWEST_MIN_FIDELITY, SEED};
+                                              NB_THREADS, COVERING_STRATEGY, MIN_FIDELITY, LOWEST_MIN_FIDELITY, NB_DIMLP_NETS, SEED};
     if (commandList[1].compare("--json_config_file") == 0) {
       if (commandList.size() < 3) {
         throw CommandArgumentException("JSON config file name/path is missing");
@@ -630,37 +631,27 @@ int fidexGloRules(const string &command) {
       inputRulesFile = params->getString(RULES_FILE);
     }
     vector<string> weightsFiles;
-    if (params->isStringSet(WEIGHTS_FILE)) {
+    if (params->isStringSet(WEIGHTS_GENERIC_FILENAME)) {
       weightsFiles = params->getWeightsFiles();
     }
-    int nbDimlpNets = params->getInt(NB_DIMLP_NETS);
     int nbQuantLevels = params->getInt(NB_QUANT_LEVELS);
     int nbAttributes = params->getInt(NB_ATTRIBUTES);
     float hiKnot = params->getFloat(HI_KNOT);
 
     if (params->isStringSet(WEIGHTS_FILE)) {
-      if (nbDimlpNets > 1) {
-        cout << "\nParameters of hyperLocus :" << endl;
-        cout << "\t- Number of stairs " << nbQuantLevels << endl;
-        cout << "\t- Interval : [-" << hiKnot << "," << hiKnot << "]" << endl
-             << endl;
-        cout << "Computing all hyperlocuses..." << endl;
-      }
-
-      cout << "Size of weight files:" << weightsFiles.size() << endl;
+      matHypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
+    } else if (params->isStringSet(WEIGHTS_GENERIC_FILENAME)) {
+      std::cout << "\nParameters of hyperLocus :\n"
+                << std::endl;
+      std::cout << "- Number of stairs " << nbQuantLevels << std::endl;
+      std::cout << "- Interval : [-" << hiKnot << "," << hiKnot << "]" << std::endl
+                << std::endl;
+      std::cout << "Computation of all hyperlocus" << std::endl;
       for (string wf : weightsFiles) {
-        vector<vector<double>> hypLocus;
-        if (nbDimlpNets > 1) {
-          hypLocus = calcHypLocus(wf, nbQuantLevels, hiKnot, false); // Get hyperlocus
-        } else {
-          hypLocus = calcHypLocus(wf, nbQuantLevels, hiKnot); // Get hyperlocus
-        }
-        matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end()); // Concatenate hypLocus to matHypLocus
+        std::vector<std::vector<double>> hypLocus = calcHypLocus(wf, nbQuantLevels, hiKnot, false); // Get hyperlocus
+        matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end());                    // Concatenate hypLocus to matHypLocus
       }
-      if (nbDimlpNets > 1) {
-        cout << "All hyperlocus created" << endl;
-      }
-
+      std::cout << "All hyperlocus created" << std::endl;
     } else {
       if (params->isStringSet(ATTRIBUTES_FILE)) {
         matHypLocus = calcHypLocus(inputRulesFile, nbAttributes, attributeNames);
