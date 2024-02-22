@@ -71,7 +71,7 @@ int RuleProcessing::Min(const std::vector<int> &tab, int nbRules) const
 
 ///////////////////////////////////////////////////////////////////
 
-int RuleProcessing::IsRuleEmpty(std::shared_ptr<Rule> rule) const
+int RuleProcessing::IsRuleEmpty(std::shared_ptr<DimlpRule> rule) const
 
 {
   int r;
@@ -93,7 +93,7 @@ int RuleProcessing::CountAnt()
   int r;
   int nbAnt;
   int count;
-  std::shared_ptr<Rule> rule;
+  std::shared_ptr<DimlpRule> rule;
 
   for (r = 0, count = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
     rule = GetRule();
@@ -131,7 +131,7 @@ void RuleProcessing::SetCarriedField()
 
 {
   int r;
-  std::shared_ptr<Rule> rule;
+  std::shared_ptr<DimlpRule> rule;
 
   for (r = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
     rule = GetRule();
@@ -149,7 +149,7 @@ void RuleProcessing::DelListCar()
 
 {
   int r;
-  std::shared_ptr<Rule> rule;
+  std::shared_ptr<DimlpRule> rule;
   std::shared_ptr<StringInt> carried;
 
   for (r = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
@@ -174,7 +174,7 @@ int RuleProcessing::CheckAllCarried(int toDrop)
 
   int nbEx = Data.GetNbEx();
   std::vector<int> checkTab(nbEx, 0);
-  std::shared_ptr<Rule> rule;
+  std::shared_ptr<DimlpRule> rule;
   std::shared_ptr<StringInt> carriedEx;
 
   for (r = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
@@ -208,7 +208,7 @@ void RuleProcessing::SetCountAntRules()
 
 {
   int r;
-  std::shared_ptr<Rule> rule;
+  std::shared_ptr<DimlpRule> rule;
 
   for (r = 0, GoToBeg(); r < NbRules; r++, GoToNext()) {
     rule = GetRule();
@@ -228,7 +228,7 @@ int RuleProcessing::GoToSavedAndRemRule(int indPrune)
 
 {
   int r;
-  std::shared_ptr<Rule> rule;
+  std::shared_ptr<DimlpRule> rule;
 
   if (CheckAllCarried(indPrune) == 1) {
     for (r = 0, GoToBeg(); r < indPrune; r++, GoToNext())
@@ -318,7 +318,7 @@ void RuleProcessing::GoToRuleAndRemAnt(int indPrune)
   int indRule;
   int indAnt;
   int remAnt;
-  std::shared_ptr<Rule> rule;
+  std::shared_ptr<DimlpRule> rule;
   std::shared_ptr<StringInt> newCarried;
 
   for (r = 0, RuleInd.GoToBeg(); r < indPrune; r++, RuleInd.GoToNext())
@@ -361,7 +361,7 @@ void RuleProcessing::ComputeGain()
   int nbAnt;
   int remAnt;
   int diff;
-  std::shared_ptr<Rule> rule;
+  std::shared_ptr<DimlpRule> rule;
   std::shared_ptr<StringInt> oldCarried;
   std::shared_ptr<StringInt> newCarried;
 
@@ -451,7 +451,7 @@ void RuleProcessing::MixPrune()
 
 ////////////////////////////////////////////////////////////////////////
 
-void RuleProcessing::RemSevThres(std::shared_ptr<Rule> r) const
+void RuleProcessing::RemSevThres(std::shared_ptr<DimlpRule> r) const
 
 {
   int a;
@@ -548,7 +548,7 @@ void RuleProcessing::Clean()
 
 ////////////////////////////////////////////////////////////////////////
 
-void RuleProcessing::Insert(std::shared_ptr<Rule> r)
+void RuleProcessing::Insert(std::shared_ptr<DimlpRule> r)
 
 {
   int a;
@@ -558,7 +558,7 @@ void RuleProcessing::Insert(std::shared_ptr<Rule> r)
     Current = First;
 
   First = std::make_shared<Saved>();
-  auto ru = std::make_shared<Rule>();
+  auto ru = std::make_shared<DimlpRule>();
 
   for (a = 0, r->GoToBeg(); a < nbAnt; a++, r->GoToNext()) {
     ru->Insert(r->GetVar(), r->GetVal(), r->GetRel());
@@ -592,7 +592,7 @@ void RuleProcessing::Del()
 void RuleProcessing::RemCurrentRule() const
 
 {
-  std::shared_ptr<Rule> rule = GetRule();
+  std::shared_ptr<DimlpRule> rule = GetRule();
   int nbAnt = rule->GetNbAnt();
   int a;
 
@@ -618,10 +618,10 @@ int RuleProcessing::TryEnlargedThres()
   std::vector<int> vecCarried;
   float val;
   float thres;
-  Rule oneCopy;
-  std::shared_ptr<Rule> anotherCopy;
-  std::shared_ptr<Rule> rule;
-  std::vector<std::shared_ptr<Rule>> enlarged;
+  DimlpRule oneCopy;
+  std::shared_ptr<DimlpRule> anotherCopy;
+  std::shared_ptr<DimlpRule> rule;
+  std::vector<std::shared_ptr<DimlpRule>> enlarged;
 
   OneVarThresDescr *oneVarDescr;
   std::shared_ptr<StringInt> carried;
@@ -674,16 +674,16 @@ int RuleProcessing::TryEnlargedThres()
           oneCopy.SetThres(thres);
 
           oneCopy.SavePtrAnt();
-          carriedMod = Data.Select(std::make_shared<Rule>(oneCopy));
+          carriedMod = Data.Select(std::make_shared<DimlpRule>(oneCopy));
           oneCopy.PrevPtrAnt();
 
           nbCarriedMod = carriedMod->GetNbEl();
 
           if (nbCarriedMod > nbCarried && AreSameClass(carriedMod, ClassPatNet) == 1) {
-            anotherCopy = std::make_shared<Rule>();
+            anotherCopy = std::make_shared<DimlpRule>();
 
             oneCopy.SavePtrAnt();
-            anotherCopy->Copy(std::make_shared<Rule>(oneCopy));
+            anotherCopy->Copy(std::make_shared<DimlpRule>(oneCopy));
             oneCopy.PrevPtrAnt();
 
             vecCarried[nbEnlarged] = nbCarriedMod;

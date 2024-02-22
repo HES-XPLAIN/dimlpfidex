@@ -20,7 +20,7 @@ class BagDimlp : public Dimlp {
   int ShowErrParam;
   int NbEpochsParam;
   int NbLayers;
-  const char *WeightFile;
+  const std::string &WeightFile;
 
   std::vector<int> NbNeurons;
 
@@ -43,10 +43,10 @@ public:
   void TrainAll(
       DataSet &test,
       DataSet &testTar,
-      const char genericWeightsFile[],
-      const char *accuracyFile,
+      const std::string &genericWeightsFile,
+      const std::string &accuracyFile,
       int seed = 0);
-  void DefNetsWithWeights(const char *prefix);
+  void DefNetsWithWeights(const std::string &prefix);
 
   std::shared_ptr<VirtualHyp> MakeGlobalVirt(int nbBins, int nbIn, int multiple);
 
@@ -54,7 +54,7 @@ public:
   void ForwardOneExample1(DataSet &data, int index) override;
   void ForwardOneExample1() override;
 
-  void ComputeAcc(DataSet &data, DataSet &target, float *accuracy, int tW, const char predFile[]);
+  void ComputeAcc(DataSet &data, DataSet &target, float *accuracy, int tW, const std::string &predFile);
 
   BagDimlp(
       float eta,
@@ -69,7 +69,7 @@ public:
       int nbLayers,
       std::vector<int> nbNeurons,
       int nbDimlpNets,
-      const char weightFile[],
+      const std::string &weightFile,
       int seed = 0);
 
   BagDimlp(
@@ -77,7 +77,7 @@ public:
       int nbLayers,
       std::vector<int> nbNeurons,
       int nbDimlpNets,
-      const char weightFile[],
+      const std::string &weightFile,
       int seed = 0);
 };
 

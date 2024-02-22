@@ -3,7 +3,6 @@ import sys
 from .trnFun import get_data, get_data_class, output_data, output_stats, trees_to_rules, check_parameters_common, check_int, check_strictly_positive, check_positive, check_bool, check_parameters_decision_trees, validate_string_param
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import metrics
-from sklearn.tree import export_text
 
 def gradBoostTrn(*args, **kwargs):
     try:
@@ -23,11 +22,11 @@ def gradBoostTrn(*args, **kwargs):
             print("----------------------------")
             print("Optional parameters :")
             print("root_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
-            print("train_pred_file : output train prediction file name without extension (predTrain by default)")
-            print("test_pred_file : output test prediction file name without extension (predTest by default)")
+            print("train_pred_file : output train prediction file name (predTrain.out by default)")
+            print("test_pred_file : output test prediction file name (predTest.out by default)")
             print("stats_file : output file name with train and test accuracy (stats.txt by default)")
             print("console_file : file where you redirect console result")
-            print("rules_file : output gradient boosting rules file without extension (GB_rules.rls by default)")
+            print("rules_file : output gradient boosting rules file (GB_rules.rls by default)")
             print("----------------------------")
             print("Gradient boosting parameters (optional)")
             print("n_estimators : number of generated trees in the forest (100 by default)")
@@ -122,8 +121,7 @@ def gradBoostTrn(*args, **kwargs):
 
             n_estimators_var, min_samples_split_var, min_samples_leaf_var, min_weight_fraction_leaf_var, min_impurity_decrease_var, seed_var, max_features_var, verbose_var, max_leaf_nodes_var, warm_start_var, ccp_alpha_var = check_parameters_decision_trees(n_estimators_var, min_samples_split_var, min_samples_leaf_var, min_weight_fraction_leaf_var, min_impurity_decrease_var, seed_var, max_features_var, verbose_var, max_leaf_nodes_var, warm_start_var, ccp_alpha_var)
 
-            rules_file = validate_string_param(rules_file, "rules_file", default="GB_rules")
-            rules_file += ".rls"
+            rules_file = validate_string_param(rules_file, "rules_file", default="GB_rules.rls")
 
             if loss_var is None:
                 loss_var = "log_loss"
@@ -240,7 +238,8 @@ def gradBoostTrn(*args, **kwargs):
             # Output accuracy statistics
             output_stats(stats_file, acc_train, acc_test)
             from_grad_boost = True
-            trees_to_rules(model.estimators_[:,0], rules_file, from_grad_boost)
+
+            trees_to_rules(model.estimators_.flatten(), rules_file, from_grad_boost)
 
             end_time = time.time()
             full_time = end_time - start_time

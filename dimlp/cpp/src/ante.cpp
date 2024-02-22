@@ -2,11 +2,11 @@
 
 ///////////////////////////////////////////////////////////////////
 
-Ante::Ante(int var, float val, char rel) : Rule()
+Ante::Ante(int var, float val, char rel) : DimlpRule()
 
 {
-  Rule::Insert(var, val, rel);
-  Rule::GoToBeg();
+  DimlpRule::Insert(var, val, rel);
+  DimlpRule::GoToBeg();
 }
 
 ///////////////////////////////////////////////////////////////////

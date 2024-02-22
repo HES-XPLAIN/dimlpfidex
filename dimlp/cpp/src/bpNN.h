@@ -100,7 +100,7 @@ public:
   int Max(const std::vector<float> &vec) const;
   std::shared_ptr<Layer> GetLayer(int indLayer) { return VecLayer[indLayer]; }
 
-  void SaveWeights(const char *str) const;
+  void SaveWeights(const std::string &str) const;
 
   virtual void ForwardOneExample1(DataSet &data, int index);
   virtual void ForwardOneExample1(float *ex);
@@ -137,7 +137,7 @@ public:
                   DataSet &testTar,
                   DataSet &valid,
                   DataSet &validTar,
-                  const char *accuracyFile,
+                  const std::string &accuracyFile,
                   bool fromBT = false);
 
   //------------------------------------------------------------------------
@@ -159,14 +159,14 @@ public:
       int nbLayers,
       const std::vector<int> &nbNeurons,
       const std::string &saveFile,
-      const char printNetType[],
+      const std::string &printNetType,
       int seed = 0);
 
   BpNN(
       const std::string &readFile,
       int nbLayers,
       const std::vector<int> &nbNeurons,
-      const char printNetType[]);
+      const std::string &printNetType);
 
   BpNN(
       const std::string &readFile,
@@ -181,7 +181,7 @@ public:
       int nbLayers,
       const std::vector<int> &nbNeurons,
       const std::string &saveFile,
-      const char printNetType[],
+      const std::string &printNetType,
       int seed = 0);
 };
 

@@ -25,19 +25,16 @@ def svmTrn(*args, **kwargs):
             print("----------------------------")
             print("Optional parameters :")
             print("root_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
-            print("train_pred_file : output train prediction file name without extension(predTrain by default)")
-            print("test_pred_file : output test prediction file name without extension(predTest by default)")
-            print("weights_file : output weights file name without extension (weights by default)")
+            print("train_pred_file : output train prediction file name (predTrain.out by default)")
+            print("test_pred_file : output test prediction file name (predTest.out by default)")
+            print("weights_file : output weights file name (weights.wts by default)")
             print("stats_file : output file name with train and test accuracy (stats.txt by default)")
             print("console_file : file where you redirect console result")
-            print("output_roc : output ROC curve without extension(roc_curve.png by default)")
+            print("output_roc : output ROC curve (roc_curve.png by default)")
             print("nb_quant_levels : number of stairs in staircase activation function (50 by default)")
             print("K : Parameter to improve dynamics (1 by default)")
             print("positive_class_index : index of positive class (0 for first one, None by default, if None, no roc calculation)")
             print("return_roc : whether to return ROC statistics (False by default)")
-            print("with_decision_threshold : Boolean, whether to compute decision threshold (only if roc curve is computed, False by default)")
-            print("test_class_threshold_file : new test class file with the new threshold (test_class_threshold.txt by default)")
-            print("train_class_threshold_file : new train class file with the new threshold (train_class_threshold.txt by default)")
 
             print("----------------------------")
             print("SVM parameters (optional)")
@@ -97,9 +94,6 @@ def svmTrn(*args, **kwargs):
             decision_function_shape_var = kwargs.get('decision_function_shape')
             break_ties_var = kwargs.get('break_ties')
             return_roc = kwargs.get('return_roc')
-            with_decision_threshold = kwargs.get('with_decision_threshold')
-            test_class_threshold_file = kwargs.get('test_class_threshold_file')
-            train_class_threshold_file = kwargs.get('train_class_threshold_file')
 
             # Redirect output in file
             if console_file != None:
@@ -116,8 +110,7 @@ def svmTrn(*args, **kwargs):
 
             valid_args = ['train_data_file', 'train_class_file', 'test_data_file', 'test_class_file', 'positive_class_index', 'train_pred_file', 'test_pred_file', 'nb_attributes', 'nb_classes', 'weights_file',
                         'stats_file', 'output_roc', 'K', 'nb_quant_levels', 'C', 'kernel', 'degree', 'gamma', 'coef0', 'shrinking',
-                        'tol', 'cache_size', 'class_weight', 'verbose', 'max_iterations', 'decision_function_shape', 'break_ties', 'root_folder', 'console_file', 'return_roc',
-                        'with_decision_threshold', 'test_class_threshold_file', 'train_class_threshold_file']
+                        'tol', 'cache_size', 'class_weight', 'verbose', 'max_iterations', 'decision_function_shape', 'break_ties', 'root_folder', 'console_file', 'return_roc']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
@@ -127,8 +120,7 @@ def svmTrn(*args, **kwargs):
             root_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes  = check_parameters_common(root_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
             weights_file, K, quant = check_parameters_dimlp_layer(weights_file, K, quant)
 
-            output_roc = validate_string_param(output_roc, "output_roc", default="roc_curve")
-            output_roc += ".png"
+            output_roc = validate_string_param(output_roc, "output_roc", default="roc_curve.png")
 
             if c_var is None:
                 c_var = 1.0
@@ -203,11 +195,6 @@ def svmTrn(*args, **kwargs):
                 return_roc = False
             elif not check_bool(return_roc):
                 raise ValueError('Error, parameter return_roc is not boolean.')
-
-            if with_decision_threshold is None:
-                with_decision_threshold = False
-            elif not check_bool(with_decision_threshold):
-                raise ValueError('Error, parameter with_decision_threshold is not boolean.')
 
             if (root_folder is not None):
                 train_data_file = root_folder + "/" + train_data_file
@@ -290,14 +277,6 @@ def svmTrn(*args, **kwargs):
             full_time = "{:.6f}".format(full_time).rstrip("0").rstrip(".")
 
             print(f"\nFull execution time = {full_time} sec")
-
-
-            if with_roc and with_decision_threshold:
-                train_pred_proba =  model.predict_proba(train_data_h1)
-                from trainings.decisionThreshold import decisionThreshold
-                decisionThreshold(with_roc_computation = False, test_class_file = test_class_file_init, test_pred_file = test_pred_proba.tolist(), train_pred_file = train_pred_proba.tolist(),
-                                  train_class_threshold_file = train_class_threshold_file, test_class_threshold_file = test_class_threshold_file, positive_class_index = positive_class_index,
-                                  nb_classes = nb_classes ,fpr = fpr.tolist(), tpr = tpr.tolist(), auc_score = auc_score, root_folder = root_folder)
 
 
             # Redirect output to terminal

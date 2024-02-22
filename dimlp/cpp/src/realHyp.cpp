@@ -100,7 +100,7 @@ void RealHyp::SetConfirmedVirt2()
 
 {
   const int nbRules = SavedRules->GetNbRules();
-  std::shared_ptr<Rule> rule;
+  std::shared_ptr<DimlpRule> rule;
   int *hyp;
   int a;
   int h;
@@ -367,7 +367,7 @@ void RealHyp::SetRealHyp(DataSet &data)
 
 ////////////////////////////////////////////////////////////////////////
 
-void RealHyp::SetCountPatDiscr(std::shared_ptr<StringInt> listPat, std::shared_ptr<Rule> r) const
+void RealHyp::SetCountPatDiscr(std::shared_ptr<StringInt> listPat, std::shared_ptr<DimlpRule> r) const
 
 {
   int a;
@@ -463,21 +463,18 @@ std::shared_ptr<Ante> RealHyp::FindMostDiscrAnt(int sel) const
 
 ////////////////////////////////////////////////////////////////////////
 
-void RealHyp::DeepSearch(DataSet &data, std::shared_ptr<Rule> path, std::shared_ptr<StringInt> subSet)
+void RealHyp::DeepSearch(DataSet &data, std::shared_ptr<DimlpRule> path, std::shared_ptr<StringInt> subSet)
 
 {
-  Rule newLeftPath;
-  Rule newRightPath;
-
+  DimlpRule newLeftPath;
+  DimlpRule newRightPath;
   std::shared_ptr<StringInt> newListPat = data.Select(path, subSet);
-
   if (newListPat->GetNbEl() == 0) {
     newListPat->Del();
     path->Del();
 
     return;
   }
-
   if (AreSameClass(newListPat, ClassPatNet) == 1) {
     newListPat->Del();
     SaveRule(path);
@@ -485,7 +482,6 @@ void RealHyp::DeepSearch(DataSet &data, std::shared_ptr<Rule> path, std::shared_
 
     return;
   }
-
   SetCountPatDiscr(newListPat, path);
 
   std::shared_ptr<Ante> ant = FindMostDiscrAnt(0);
@@ -507,8 +503,8 @@ void RealHyp::DeepSearch(DataSet &data, std::shared_ptr<Rule> path, std::shared_
   path->Del();
   ant->DelAnte();
 
-  DeepSearch(data, std::make_shared<Rule>(newLeftPath), newListPat);
-  DeepSearch(data, std::make_shared<Rule>(newRightPath), newListPat);
+  DeepSearch(data, std::make_shared<DimlpRule>(newLeftPath), newListPat);
+  DeepSearch(data, std::make_shared<DimlpRule>(newRightPath), newListPat);
 
   newListPat->Del();
 }
@@ -558,7 +554,7 @@ int RealHyp::ComputeCorrect(
 
 ////////////////////////////////////////////////////////////////////////
 
-void RealHyp::SetCountPatDiscr2(DataSet &data, std::shared_ptr<Rule> r)
+void RealHyp::SetCountPatDiscr2(DataSet &data, std::shared_ptr<DimlpRule> r)
 
 {
   int a;
@@ -570,8 +566,8 @@ void RealHyp::SetCountPatDiscr2(DataSet &data, std::shared_ptr<Rule> r)
   OneVarThresDescr *varDescr;
   std::shared_ptr<StringInt> newListPatLeft;
   std::shared_ptr<StringInt> newListPatRight;
-  auto newLeftPath = std::make_shared<Rule>();
-  auto newRightPath = std::make_shared<Rule>();
+  auto newLeftPath = std::make_shared<DimlpRule>();
+  auto newRightPath = std::make_shared<DimlpRule>();
 
   Descr->ResetAllCountPatDiscr();
   int nbRuleAnt = r->GetNbAnt();
@@ -612,11 +608,11 @@ void RealHyp::SetCountPatDiscr2(DataSet &data, std::shared_ptr<Rule> r)
 
 ////////////////////////////////////////////////////////////////////////
 
-void RealHyp::DeepSearch2(DataSet &data, std::shared_ptr<Rule> path)
+void RealHyp::DeepSearch2(DataSet &data, std::shared_ptr<DimlpRule> path)
 
 {
-  Rule newLeftPath;
-  Rule newRightPath;
+  DimlpRule newLeftPath;
+  DimlpRule newRightPath;
 
   std::shared_ptr<StringInt> newListPat = data.Select(path);
 
@@ -655,8 +651,8 @@ void RealHyp::DeepSearch2(DataSet &data, std::shared_ptr<Rule> path)
   ant->DelAnte();
   newListPat->Del();
 
-  DeepSearch2(data, std::make_shared<Rule>(newLeftPath));
-  DeepSearch2(data, std::make_shared<Rule>(newRightPath));
+  DeepSearch2(data, std::make_shared<DimlpRule>(newLeftPath));
+  DeepSearch2(data, std::make_shared<DimlpRule>(newRightPath));
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -670,10 +666,13 @@ void RealHyp::RuleExtraction(
     const DataSet &test,
     const DataSet &testClass,
     const AttrName &attr,
-    ostream &ruleFile)
+    ostream &ruleFile,
+    const std::vector<double> &mus,
+    const std::vector<double> &sigmas,
+    const std::vector<int> &normalizationIndices)
 
 {
-  Rule empty;
+  DimlpRule empty;
   std::shared_ptr<StringInt> listAll;
   int nbAnt1;
   int nbAnt2;
@@ -681,12 +680,11 @@ void RealHyp::RuleExtraction(
   Aborted = 0;
 
   SavedRules = std::make_shared<RuleProcessing>(NbIn, NbHyp, data, ClassPatNet, Descr);
-
   cout << "*** BUILDING DECISION TREE ...\n"
        << endl;
 
-  listAll = data.Select(std::make_shared<Rule>(empty));
-  DeepSearch(data, std::make_shared<Rule>(empty), listAll);
+  listAll = data.Select(std::make_shared<DimlpRule>(empty));
+  DeepSearch(data, std::make_shared<DimlpRule>(empty), listAll);
   listAll->Del();
   if (Aborted) {
     cout << "*** TREE ABORTED !\n"
@@ -701,7 +699,7 @@ void RealHyp::RuleExtraction(
   }
 
   SavedRules->Clean();
-
+  std::cout << "4" << std::endl;
   if (SavedRules->CountAnt() == 0) {
     cout << "*** NO RULES !\n"
          << std::endl;
@@ -749,8 +747,8 @@ void RealHyp::RuleExtraction(
   cout << "*** BUILDING DECISION TREE ...\n"
        << endl;
 
-  listAll = data.Select(std::make_shared<Rule>(empty));
-  DeepSearch(data, std::make_shared<Rule>(empty), listAll);
+  listAll = data.Select(std::make_shared<DimlpRule>(empty));
+  DeepSearch(data, std::make_shared<DimlpRule>(empty), listAll);
   listAll->Del();
 
   if (Aborted) {
@@ -789,7 +787,11 @@ void RealHyp::RuleExtraction(
       clean2.SetAttr();
       clean2.SetStrClass(0);
     }
-    clean2.WriteRules(0, ruleFile);
+    if (mus.empty()) {
+      clean2.WriteRules(0, ruleFile);
+    } else {
+      clean2.WriteRules(0, ruleFile, mus, sigmas, normalizationIndices);
+    }
   }
 
   else {
@@ -808,7 +810,11 @@ void RealHyp::RuleExtraction(
       clean.SetStrClass(0);
     }
 
-    clean.WriteRules(0, ruleFile);
+    if (mus.empty()) {
+      clean.WriteRules(0, ruleFile);
+    } else {
+      clean.WriteRules(0, ruleFile, mus, sigmas, normalizationIndices);
+    }
   }
   SavedRules->Del();
 

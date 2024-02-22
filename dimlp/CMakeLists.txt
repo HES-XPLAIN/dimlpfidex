@@ -58,6 +58,7 @@ endif()
 
 # Build binding lib
 pybind11_add_module(dimlp
+    ${DIMLP_COMMON_SRC}
     ${COMMON_SRC}
     ${DIMLP_TRN_SRC}
     ${DIMLP_PRED_SRC}
@@ -66,7 +67,6 @@ pybind11_add_module(dimlp
     ${DENS_CLS_SRC}
     ${DIMLP_RUL_SRC}
     ${CROSS_VALID_SRC}
-    ${FCT_SRC}
     ${PYTHON_FILES}
 )
 
@@ -74,4 +74,4 @@ set_target_properties(
     dimlp PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/dimlpfidex
 )
 
-target_link_libraries(dimlp PUBLIC)
+target_link_libraries(dimlp PUBLIC common)

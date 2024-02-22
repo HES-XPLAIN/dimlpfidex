@@ -1,9 +1,9 @@
-#ifndef HYPERSPACE_H
-#define HYPERSPACE_H
+#ifndef HYPERSPACEGLO_H
+#define HYPERSPACEGLO_H
 
-#include "../../../fidexCommon/cpp/src/checkFun.h"
-#include "../../../fidexCommon/cpp/src/errorHandler.h"
-#include "../../../fidexCommon/cpp/src/hyperbox.h"
+#include "../../../common/cpp/src/errorHandler.h"
+#include "../../../common/cpp/src/rule.h"
+#include "hyperbox.h"
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -12,24 +12,21 @@
 #include <tuple>
 #include <vector>
 
-namespace FidexNameSpace {
-class Hyperspace {
+using namespace std;
 
-  std::vector<std::vector<double>> hyperLocus; // All the possible hyperplans
-  std::shared_ptr<Hyperbox> hyperbox;
+class Hyperspace {
+  vector<vector<double>> hyperLocus; // All the possible hyperplans
+  shared_ptr<Hyperbox> hyperbox;
 
 public:
   Hyperspace();
-  explicit Hyperspace(const std::vector<std::vector<double>> &matHypLocus);
+  explicit Hyperspace(const vector<vector<double>> &matHypLocus);
 
-  std::shared_ptr<Hyperbox> getHyperbox() const;
-  std::vector<std::vector<double>> getHyperLocus() const;
-  void ruleExtraction(std::vector<double> *mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, std::vector<std::string> &lines,
-                      bool hasAttributeNames, std::vector<std::string> *attributeNames, bool hasClassNames, std::vector<std::string> *classNames,
-                      const std::vector<double> *mus = nullptr, const std::vector<double> *sigmas = nullptr, const std::vector<int> *normalization_indices = nullptr);
-  double computeRuleAccuracy(std::vector<int> *trainPreds, std::vector<int> *trainTrueClass, bool mainSampleCorrect = false) const;
-  double computeRuleConfidence(std::vector<std::vector<double>> *trainOutputValuesPredictions, const int rulePred, double mainSamplePredValueOnRulePred) const;
+  shared_ptr<Hyperbox> getHyperbox() const;
+  vector<vector<double>> getHyperLocus() const;
+  Rule ruleExtraction(vector<double> &mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, const vector<double> &mus = std::vector<double>(), const vector<double> &sigmas = std::vector<double>(), const vector<int> &normalizationIndices = std::vector<int>());
+  double computeRuleAccuracy(vector<int> &trainPreds, vector<int> &trainTrueClass, bool hasTrueClasses, bool mainSampleCorrect = false) const;
+  double computeRuleConfidence(vector<vector<double>> &trainOutputValuesPredictions, const int mainSamplePred, double mainSamplePredValue = -1.0) const;
 };
-} // namespace FidexNameSpace
 
 #endif

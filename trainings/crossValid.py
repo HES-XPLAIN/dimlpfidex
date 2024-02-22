@@ -17,7 +17,6 @@ if sys.platform == 'win32':
 
 from dimlpfidex import dimlp
 from dimlpfidex import fidex
-from dimlpfidex import fidexGlo
 from trainings.svmTrn import svmTrn
 from trainings.mlpTrn import mlpTrn
 from trainings.randForestsTrn import randForestsTrn
@@ -122,7 +121,7 @@ def crossValid(*args, **kwargs):
             print("nb_classes : number of output neurons")
 
             print("----------------------------")
-            print("Obligatory parameters if training with dimlp and DimlpBT :")
+            print("Obligatory parameters if training with dimlp and dimlpBT :")
             print("dimlpRul : 1(with dimlpRul) or 0")
 
             print("----------------------------")
@@ -136,11 +135,19 @@ def crossValid(*args, **kwargs):
             print("attributes_file : file of attributes")
             print("max_iterations : maximum fidex and fidexGlo iteration number (100 by default)")
             print("min_covering : minimum fidex and fidexGlo covering number (2 by default)")
+            print("covering_strategy <if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (True by default)>")
+            print("min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>")
+            print("lowest_min_fidelity <minimal min_fidelity to which we agree to go down during covering_strategy (0.75 by default)>")
             print("dropout_dim : dimension dropout parameter for fidex and fidexGlo")
             print("dropout_hyp : hyperplan dropout parameter for fidex and fidexGlo")
             print("seed : 0 = random (default)")
             print("positive_class_index <index of positive class sample to compute true/false positive/negative rates and ROC curve (None by default, put 0 for first class)")
             print("decision_threshold <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>")
+            print("normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>")
+            print("mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>")
+            print("sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>")
+            print("normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)>")
+            print("nb_threads <number of threads used for computing the fidexGloRules algorithm (default=1, this means by default its a sequential execution)>")
 
             print("----------------------------")
             print("Optional parameters if not training with decision trees :")
@@ -154,8 +161,8 @@ def crossValid(*args, **kwargs):
             print("learning_rate : back-propagation learning parameter (0.1 by default)")
             print("momentum : back-propagation momentum parameter (0.6 by default)")
             print("flat : back-propagation flat spot elimination parameter (0.01 by default)")
-            print("error_thresh : error threshold (-1111111111.0 by default)")
-            print("acc_thresh : accuracy threshold (11111111111111.0 by default)")
+            print("error_thresh : error threshold (None by default)")
+            print("acc_thresh : accuracy threshold (None by default)")
             print("abs_error_thresh : absolute difference error threshold (0 by default)")
             print("nb_epochs : number of train epochs (1500 by default)")
             print("nb_epochs_error : number of train epochs to show error (10 by default)")
@@ -247,7 +254,7 @@ def crossValid(*args, **kwargs):
             print("Exemple with Dimlp :")
             print('crossValid(train_method="dimlp", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, dimlpRul=1, nb_attributes=16, nb_classes=2, H2=5, root_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLP")')
             print("----------------------------")
-            print("Exemple with DimlpBT :")
+            print("Exemple with dimlpBT :")
             print('crossValid(train_method="dimlpBT", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, dimlpRul=1, nb_attributes=16, nb_classes=2, H2=5, root_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLPBT")')
             print("----------------------------")
             print("Exemple with SVM :")
@@ -288,11 +295,19 @@ def crossValid(*args, **kwargs):
             attributes_file = kwargs.get('attributes_file')
             max_iterations = kwargs.get('max_iterations')
             min_covering = kwargs.get('min_covering')
+            covering_strategy = kwargs.get('covering_strategy')
+            min_fidelity = kwargs.get('min_fidelity')
+            lowest_min_fidelity = kwargs.get('lowest_min_fidelity')
             dropout_dim = kwargs.get('dropout_dim')
             dropout_hyp = kwargs.get('dropout_hyp')
             positive_class_index = kwargs.get('positive_class_index')
             decision_threshold = kwargs.get('decision_threshold')
             seed = kwargs.get('seed')
+            normalization_file = kwargs.get('normalization_file')
+            mus = kwargs.get('mus')
+            sigmas = kwargs.get('sigmas')
+            normalization_indices = kwargs.get('normalization_indices')
+            nb_threads = kwargs.get('nb_threads')
 
             hiknot = 5
             nb_quant_levels = kwargs.get('nb_quant_levels')
@@ -385,7 +400,8 @@ def crossValid(*args, **kwargs):
             obligatory_dimlp_args = ['dimlpRul']
 
             optional_args = ['class_file', 'root_folder', 'crossVal_folder', 'K', 'N', 'fidexGlo_heuristic', 'crossVal_stats', 'attributes_file',
-                        'max_iterations', 'min_covering', 'dropout_dim', 'dropout_hyp', 'seed', 'positive_class_index', 'decision_threshold']
+                        'max_iterations', 'min_covering', 'covering_strategy', 'min_fidelity', 'lowest_min_fidelity', 'dropout_dim', 'dropout_hyp',
+                        'seed', 'positive_class_index', 'decision_threshold', 'normalization_file', 'mus', 'sigmas', 'normalization_indices', 'nb_threads']
 
             optional_non_dt_args = ['nb_quant_levels']
 
@@ -505,6 +521,13 @@ def crossValid(*args, **kwargs):
                 max_iterations = 100
             if min_covering is None:
                 min_covering = 2
+
+            if min_fidelity is None:
+                min_fidelity = 1.0
+            if lowest_min_fidelity is None:
+                lowest_min_fidelity = 0.75
+            if covering_strategy is None:
+                covering_strategy = True
 
             if seed is None:
                 seed = 0
@@ -1013,6 +1036,10 @@ def crossValid(*args, **kwargs):
                                 outputStatsFile.write(f"The tolerance for the early stopping is {gb_tol_var} \n")
                     outputStatsFile.write(f"The max fidex and fidexGlo iteration number is {max_iterations}\n")
                     outputStatsFile.write(f"The minimum fidex and fidexGlo covering number is {min_covering}\n")
+                    outputStatsFile.write(f"The minimum fidex and fidexGlo accepted fidelity is {min_fidelity}\n")
+                    if covering_strategy:
+                        outputStatsFile.write("The covering strategy is set\n")
+                        outputStatsFile.write(f"The minimum fidex and fidexGlo accepted fidelity during covering strategy is {lowest_min_fidelity}\n")
                     if is_fidexglo:
                         outputStatsFile.write(f"The fidexGlo heuristic is {fidexglo_heuristic}\n")
                     if dropout_hyp:
@@ -1025,6 +1052,8 @@ def crossValid(*args, **kwargs):
                         outputStatsFile.write("There is no dimension dropout\n")
                     if decision_threshold is not None :
                         outputStatsFile.write(f"We use a decision threshold of {decision_threshold} with positive class of index {positive_class_index}\n")
+                    if normalization_file is not None or normalization_indices is not None:
+                        outputStatsFile.write("We denormalize the rules\n")
 
                     outputStatsFile.write("---------------------------------------------------------\n\n")
 
@@ -1223,7 +1252,7 @@ def crossValid(*args, **kwargs):
                         if attributes_file is not None:
                             dimlp_command += " --attributes_file " + attributes_file
                         if pretrained_weights is not None:
-                            dimlp_command += " --pretrained_weights_file " + pretrained_weights
+                            dimlp_command += " --weights_file " + pretrained_weights
                         dimlp_command += " --seed " + str(seed)
                         dimlp_command += " --nb_quant_levels " + str(nb_quant_levels)
                         for key, value in hk.items():
@@ -1234,31 +1263,40 @@ def crossValid(*args, **kwargs):
                         dimlp_command += "--train_class_file " + folder_path_from_root + separator + "trainTarget.txt "
                         dimlp_command += "--test_class_file " + folder_path_from_root + separator + "testTarget.txt "
 
-                        dimlp_command += "--train_pred_file " + folder_path_from_root + separator + "train.out "   # Output train pred file
-                        dimlp_command += "--test_pred_file " + folder_path_from_root + separator + "test.out "    # Output test pred file
+                        dimlp_command += "--train_pred_outfile " + folder_path_from_root + separator + "train.out "   # Output train pred file
+                        dimlp_command += "--test_pred_outfile " + folder_path_from_root + separator + "test.out "    # Output test pred file
                         dimlp_command += "--stats_file " + folder_path_from_root + separator + "stats.txt "    # Output stats file
 
                         if train_method == "dimlp":
                             dimlp_command += "--valid_data_file " + folder_path_from_root + separator + "valid.txt "
                             dimlp_command += "--valid_class_file " + folder_path_from_root + separator + "validTarget.txt "
-                            dimlp_command += "--valid_pred_file " + folder_path_from_root + separator + "valid.out "   # Output validation pred file
-                            dimlp_command += "--weights_file " + folder_path_from_root + separator + "weights.wts " # Output weight file
+                            dimlp_command += "--valid_pred_outfile " + folder_path_from_root + separator + "valid.out "   # Output validation pred file
+                            dimlp_command += "--weights_outfile " + folder_path_from_root + separator + "weights.wts " # Output weight file
                         else:
-                            dimlp_command += "--weights_generic_filename " + folder_path_from_root + separator + "weightsBT " # Output weight generic filename
+                            dimlp_command += "--weights_generic_outfilename " + folder_path_from_root + separator + "weightsBT " # Output weight generic filename
 
                         if is_dimlprul:
-                            dimlp_command += "--with_rule_extraction --global_rules_outfile " + folder_path_from_root + separator + "dimlpRules.rls "
+                            dimlp_command += "--with_rule_extraction true --global_rules_outfile " + folder_path_from_root + separator + "dimlpRules.rls "
+
+                        if normalization_file is not None:
+                            dimlp_command += "--normalization_file " + normalization_file + " "
+                        if mus is not None:
+                            dimlp_command += "--mus " + mus + " "
+                        if sigmas is not None:
+                            dimlp_command += "--sigmas " + sigmas + " "
+                        if normalization_indices is not None:
+                            dimlp_command += "--normalization_indices " + normalization_indices + " "
 
                         dimlp_command += "--console_file " + str(crossval_folder_temp) + separator + "consoleTemp.txt" # To not show console result
 
                         if train_method == "dimlp":
-                            print("Enter in DimlpTrn function")
+                            print("Enter in dimlpTrn function")
                             res = dimlp.dimlpTrn(dimlp_command)
                         else:
-                            print("Enter in DimlpBT function")
+                            print("Enter in dimlpBT function")
                             res = dimlp.dimlpBT(dimlp_command)
                         if (res == -1):
-                            raise ValueError('Error during training with Dimlp or DimlpBT.')
+                            raise ValueError('Error during training with Dimlp or dimlpBT.')
 
                     # Training with svm
                     elif train_method == "svm":
@@ -1389,6 +1427,9 @@ def crossValid(*args, **kwargs):
                             fidex_command +=  " --attributes_file " + attributes_file
                         fidex_command +=  " --max_iterations " + str(max_iterations)
                         fidex_command +=  " --min_covering " + str(min_covering)
+                        fidex_command +=  " --min_fidelity " + str(min_fidelity)
+                        fidex_command +=  " --lowest_min_fidelity " + str(lowest_min_fidelity)
+                        fidex_command +=  " --covering_strategy " + str(covering_strategy)
                         if dropout_dim != None:
                             fidex_command +=  " --dropout_dim " + str(dropout_dim)
                         if dropout_hyp != None:
@@ -1416,6 +1457,15 @@ def crossValid(*args, **kwargs):
                             fidex_command += " --positive_class_index " + str(positive_class_index)
                         if decision_threshold is not None:
                             fidex_command += " --decision_threshold " + str(decision_threshold)
+
+                        if normalization_file is not None:
+                            fidex_command += " --normalization_file " + normalization_file
+                        if mus is not None:
+                            fidex_command += " --mus " + mus
+                        if sigmas is not None:
+                            fidex_command += " --sigmas " + sigmas
+                        if normalization_indices is not None:
+                            fidex_command += " --normalization_indices " + normalization_indices
 
                         print("Enter in fidex function")
                         res_fid = fidex.fidex(fidex_command)
@@ -1462,6 +1512,9 @@ def crossValid(*args, **kwargs):
                             fidexglo_rules_command +=  " --attributes_file " + attributes_file
                         fidexglo_rules_command +=  " --max_iterations " + str(max_iterations)
                         fidexglo_rules_command +=  " --min_covering " + str(min_covering)
+                        fidexglo_rules_command +=  " --min_fidelity " + str(min_fidelity)
+                        fidexglo_rules_command +=  " --lowest_min_fidelity " + str(lowest_min_fidelity)
+                        fidexglo_rules_command +=  " --covering_strategy " + str(covering_strategy)
                         if dropout_dim != None:
                             fidexglo_rules_command +=  " --dropout_dim " + str(dropout_dim)
                         if dropout_hyp != None:
@@ -1486,9 +1539,18 @@ def crossValid(*args, **kwargs):
                         if decision_threshold is not None:
                             fidexglo_rules_command += " --decision_threshold " + str(decision_threshold)
 
+                        if normalization_file is not None:
+                            fidexglo_rules_command += " --normalization_file " + normalization_file
+                        if mus is not None:
+                            fidexglo_rules_command += " --mus " + mus
+                        if sigmas is not None:
+                            fidexglo_rules_command += " --sigmas " + sigmas
+                        if normalization_indices is not None:
+                            fidexglo_rules_command += " --normalization_indices " + normalization_indices
+                        if nb_threads is not None:
+                            fidexglo_rules_command += " --nb_threads " + str(nb_threads)
                         print("Enter in fidexGloRules function")
-                        print(fidexglo_rules_command)
-                        res_fid_glo_rules = fidexGlo.fidexGloRules(fidexglo_rules_command)
+                        res_fid_glo_rules = fidex.fidexGloRules(fidexglo_rules_command)
                         if res_fid_glo_rules == -1:
                             raise ValueError('Error during execution of FidexGloRules.')
 
@@ -1513,7 +1575,7 @@ def crossValid(*args, **kwargs):
                             fidexglo_stats_command += " --positive_class_index " + str(positive_class_index)
 
                         print("Enter in fidexGloStats function")
-                        res_fid_glo_stats = fidexGlo.fidexGloStats(fidexglo_stats_command)
+                        res_fid_glo_stats = fidex.fidexGloStats(fidexglo_stats_command)
                         if res_fid_glo_stats == -1:
                             raise ValueError('Error during execution of FidexGloStats.')
                         # Get statistics from fidexGlo
@@ -1629,7 +1691,7 @@ def crossValid(*args, **kwargs):
                     plt.close(viz.figure_)
 
                 mean_current_exec_values_dimlp = []
-                if is_dimlprul: # For DimlpRul
+                if is_dimlprul: # For dimlpRul
                     nb_fold_with_rules_dimlp = k-nb_no_rules_current_exec_dimlp
 
                     mean_current_exec_values_dimlp.append(mean_nb_rules_dimlp / nb_fold_with_rules_dimlp)
@@ -2428,6 +2490,6 @@ def crossValid(*args, **kwargs):
 
 
 # Exemple Dimlp : crossValid(train_method="dimlp", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, dimlpRul=1, nb_attributes=16, nb_classes=2, H2=5, root_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLP", K=3, N=2, seed=33)
-# Exemple DimlpBT : crossValid(train_method="dimlpBT", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, dimlpRul=1, nb_attributes=16, nb_classes=2, H2=5, root_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLPBT", K=3, N=2, seed=33)
+# Exemple dimlpBT : crossValid(train_method="dimlpBT", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, dimlpRul=1, nb_attributes=16, nb_classes=2, H2=5, root_folder="dimlp/datafiles", crossVal_folder="CrossValidationDIMLPBT", K=3, N=2, seed=33)
 # Exemple SVM : crossValid(train_method="svm", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, nb_attributes=16, nb_classes=2, root_folder="dimlp/datafiles", crossVal_folder="CrossValidationSVM", K=3, N=2, seed=33)
 # Exemple MLP : crossValid(train_method="mlp", algo="both", data_file="datanorm", class_file="dataclass2", positive_class_index=1, nb_attributes=16, nb_classes=2, root_folder="dimlp/datafiles", crossVal_folder="CrossValidationMLP", K=3, N=2, seed=33)

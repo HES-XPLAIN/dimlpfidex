@@ -20,7 +20,7 @@ def computeRocCurve(*args, **kwargs):
             print("Optional parameters :")
             print("estimator : name of estimator")
             print("root_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
-            print("output_roc : output ROC curve without extension(roc_curve.png by default)")
+            print("output_roc : output ROC curve (roc_curve.png by default)")
             print("stats_file : stats file to save AUC score")
 
         else:
@@ -67,8 +67,7 @@ def computeRocCurve(*args, **kwargs):
 
             stats_file = validate_string_param(stats_file, "stats_file", allow_none=True)
 
-            output_roc = validate_string_param(output_roc, "output_roc", default="roc_curve")
-            output_roc += ".png"
+            output_roc = validate_string_param(output_roc, "output_roc", default="roc_curve.png")
 
             if (root_folder is not None):
                 output_roc = root_folder + "/" + output_roc

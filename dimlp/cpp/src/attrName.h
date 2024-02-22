@@ -1,7 +1,8 @@
 #ifndef ATTRNAME_H
 #define ATTRNAME_H
 
-#include "../../../fidexCommon/cpp/src/errorHandler.h"
+#include "../../../common/cpp/src/checkFun.h"
+#include "../../../common/cpp/src/errorHandler.h"
 #include <fstream>
 #include <iostream>
 #include <string.h>
@@ -24,7 +25,7 @@ public:
   std::vector<std::string> GetListAttr() const { return VarNames; }
   std::vector<std::string> GetListClasses() const { return ClassNames; }
 
-  AttrName(const char *fileAttr, int nbAttr, int nbClasses);
+  AttrName(const std::string &fileAttr, int nbAttr, int nbClasses);
   AttrName() = default;
 };
 

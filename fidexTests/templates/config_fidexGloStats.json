@@ -1,0 +1,14 @@
+{
+    "root_folder": "fidexTests/dataset/data",
+    "test_data_file": "test.txt",
+    "test_pred_file": "test.out",
+    "test_class_file": "test_true_classes.txt",
+    "global_rules_file": "new_rules.txt",
+    "attributes_file": "attributes.txt",
+    "nb_attributes": 31,
+    "nb_classes": 7,
+    "stats_file": "stats.txt",
+    "global_rules_outfile": "new_rules_with_test_stats.txt",
+    "positive_class_index": 1,
+    "decision_threshold": -1.0
+}

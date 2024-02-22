@@ -291,6 +291,9 @@ def get_attribute_file(attribute_file, nb_attributes, nb_classes=None):
         with open(attribute_file, "r") as attr_file:
             # Read all lines and filter out empty ones
             lines = [line.strip() for line in attr_file if line.strip()]
+            for line in lines:
+                if len(line.split()) > 1:
+                    raise ValueError(f"Error in file {attribute_file} : an attribute has spaces inbetween.")
 
             # Check if there is the good amount of attributes and classes
             if (not has_classes and len(lines) < nb_attributes): # Number of classes not specified, if there is too many attributes, it's stored in classes
@@ -492,9 +495,9 @@ def check_parameters_common(root_folder, train_data_file, test_data_file, train_
     :type test_data_file: str
     :param test_class_file: The file name for testing class labels.
     :type test_class_file: str
-    :param train_pred_file: The file name for saving training predictions, defaults to "predTrain" and add .out.
+    :param train_pred_file: The file name for saving training predictions, defaults to "predTrain.out".
     :type train_pred_file: str, optional
-    :param test_pred_file: The file name for saving testing predictions, defaults to "predTest" and add .out.
+    :param test_pred_file: The file name for saving testing predictions, defaults to "predTest.out".
     :type test_pred_file: str, optional
     :param stats_file: The file name for saving statistics, defaults to "stats.txt".
     :type stats_file: str, optional
@@ -509,10 +512,8 @@ def check_parameters_common(root_folder, train_data_file, test_data_file, train_
     root_folder = validate_string_param(root_folder, "root_folder", allow_none=True)
     train_data_file = validate_string_param(train_data_file, "train_data_file")
     test_data_file = validate_string_param(test_data_file, "test_data_file")
-    train_pred_file = validate_string_param(train_pred_file, "train_pred_file", default="predTrain")
-    train_pred_file += ".out"
-    test_pred_file = validate_string_param(test_pred_file, "test_pred_file", default="predTest")
-    test_pred_file += ".out"
+    train_pred_file = validate_string_param(train_pred_file, "train_pred_file", default="predTrain.out")
+    test_pred_file = validate_string_param(test_pred_file, "test_pred_file", default="predTest.out")
     stats_file = validate_string_param(stats_file, "stats_file", default="stats.txt")
 
     # Check nb_attributes and nb_classes
@@ -537,7 +538,7 @@ def check_parameters_dimlp_layer(weights_file, k, quant):
     if they are not provided. It specifically checks the weights file name, scaling factor 'k',
     and number of stairs in staircase activation function ('quant').
 
-    :param weights_file: The file name for saving weights, without extension. Defaults to "weights" if not provided, and add .wts.
+    :param weights_file: The file name for saving weights. Defaults to "weights.wts" if not provided.
     :type weights_file: str, optional
     :param k: The scaling factor for the layer. Defaults to 1 if not provided.
     :type k: float, optional
@@ -547,8 +548,7 @@ def check_parameters_dimlp_layer(weights_file, k, quant):
     :rtype: tuple
     :raises ValueError: If any provided parameter is invalid.
     """
-    weights_file = validate_string_param(weights_file, "weights_file", default="weights")
-    weights_file += ".wts"
+    weights_file = validate_string_param(weights_file, "weights_file", default="weights.wts")
 
     if k is None:
         k = 1
@@ -686,10 +686,10 @@ def recurse(tree, node, parent_path, feature_names, output_rules_file, k_dict, f
         k = k_dict["value"]
         k += 1
         k_dict["value"] = k
-        cover_value = tree.value[node] # Get cover values for this rule
         if from_grad_boost:
             output_rules_file.write(f"Rule {k}: {parent_path} -> value {tree.value[node][0]}\n") # Write rule
         else:
+            cover_value = tree.value[node] # Get cover values for this rule
             output_rules_file.write(f"Rule {k}: {parent_path} -> class {np.argmax(cover_value)} Covering: {[int(num) for num in cover_value[0]]}\n") # Write rule
 
 def trees_to_rules(trees, rules_file, from_grad_boost=False):

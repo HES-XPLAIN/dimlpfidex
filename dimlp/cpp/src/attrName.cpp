@@ -26,17 +26,13 @@ int AttrName::FirstLect() const
   if (k == NbAttr + NbClasses || k == NbAttr)
     return 1;
 
-  cout << FileAttr;
-  cout << ": Problem with number of attributes or number of classes.\n"
-       << std::endl;
+  throw FileContentError(std::string(FileAttr) + ": Problem with number of attributes or number of classes." + std::string(FileAttr));
   return 0;
 }
 
 ///////////////////////////////////////////////////////////////////
 
-void AttrName::SecondLect()
-
-{
+void AttrName::SecondLect() {
   filebuf buf;
 
   if (buf.open(FileAttr, ios_base::in) == nullptr) {
@@ -48,16 +44,31 @@ void AttrName::SecondLect()
   VarNames.clear();
   string varName;
   int k = 0;
-  while (k < NbAttr) {
-    inFile >> varName;
+  while (k < NbAttr && std::getline(inFile, varName)) {
+
+    while (!varName.empty() && (varName.back() == '\n' || varName.back() == '\r')) { // Remove line breaks
+      varName.pop_back();
+    }
+
+    if (hasSpaceBetweenWords(varName)) {
+      throw FileContentError("Error in file " + std::string(FileAttr) + " : an attribute has spaces inbetween. Maybe replace it by an underscore.");
+    }
     VarNames.push_back(varName);
     k++;
   }
-
   ClassNames.clear();
   string className;
   bool hasClasses = false;
-  while (inFile >> className) {
+
+  while (std::getline(inFile, className)) {
+
+    while (!className.empty() && (className.back() == '\n' || className.back() == '\r')) { // Remove line breaks
+      className.pop_back();
+    }
+
+    if (hasSpaceBetweenWords(className)) {
+      throw FileContentError("Error in file " + std::string(FileAttr) + " : a class has spaces inbetween. Maybe replace it by an underscore.");
+    }
     hasClasses = true;
     ClassNames.push_back(className);
   }
@@ -84,7 +95,7 @@ int AttrName::ReadAttr()
 
 ///////////////////////////////////////////////////////////////////
 
-AttrName::AttrName(const char *fileAttr, int nbAttr, int nbClasses) : NbAttr(nbAttr), NbClasses(nbClasses), FileAttr(fileAttr)
+AttrName::AttrName(const std::string &fileAttr, int nbAttr, int nbClasses) : NbAttr(nbAttr), NbClasses(nbClasses), FileAttr(fileAttr)
 
 {
 }

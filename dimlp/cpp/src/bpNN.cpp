@@ -171,13 +171,13 @@ void BpNN::SaveWeights() const
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::SaveWeights(const char *strSave) const
+void BpNN::SaveWeights(const std::string &strSave) const
 
 {
   filebuf buf;
 
   if (buf.open(strSave, ios_base::out) == nullptr) {
-    throw CannotOpenFileError("Error : Cannot open save file " + std::string(strSave));
+    throw CannotOpenFileError("Error : Cannot open save file " + strSave);
   }
   ostream outFile(&buf);
 
@@ -201,7 +201,7 @@ void BpNN::ReadWeights() const
   filebuf buf;
 
   if (buf.open(ReadFile, ios_base::in) == nullptr) {
-    throw CannotOpenFileError("Cannot open input file " + std::string(ReadFile));
+    throw CannotOpenFileError("Cannot open input file " + ReadFile);
   }
 
   istream inFile(&buf);
@@ -579,10 +579,8 @@ float BpNN::ComputeError(
   const int nbOut = target.GetNbAttr();
   for (p = 0, sum = 0.0, good = 0, bad = 0; p < nbPat; p++) {
     ForwardOneExample1(data, p);
-
     ptrOut.assign(VecLayer[NbWeightLayers - 1]->GetUp(), VecLayer[NbWeightLayers - 1]->GetUp() + nbOut);
     ptrTar.assign(target.GetExample(p), target.GetExample(p) + nbOut);
-
     ansNet = Max(ptrOut);
     ansTar = Max(ptrTar);
 
@@ -593,7 +591,6 @@ float BpNN::ComputeError(
     else
       bad++;
   }
-
   *accuracy = static_cast<float>(good) + static_cast<float>(bad);
   *accuracy = (float)good / *accuracy;
 
@@ -609,7 +606,7 @@ void BpNN::TrainPhase(
     DataSet &testTar,
     DataSet &valid,
     DataSet &validTar,
-    const char *accuracyFile,
+    const std::string &accuracyFile,
     bool fromBT)
 
 {
@@ -747,7 +744,7 @@ void BpNN::TrainPhase(
     cout << "\n\n*** ACCURACY ON TESTING SET = " << accTest << "" << std::endl;
   }
   // Output accuracy stats in file
-  if (accuracyFile != nullptr) {
+  if (!accuracyFile.empty()) {
     ofstream accFile(accuracyFile, ios::app);
     if (accFile.is_open()) {
       accFile << "Sum squared error on training set = " << err << "" << std::endl;
@@ -765,7 +762,7 @@ void BpNN::TrainPhase(
       }
       accFile.close();
     } else {
-      throw CannotOpenFileError("Error : Cannot open accuracy file " + std::string(accuracyFile));
+      throw CannotOpenFileError("Error : Cannot open accuracy file " + accuracyFile);
     }
   }
 
@@ -788,7 +785,7 @@ BpNN::BpNN(
     int nbLayers,
     const std::vector<int> &nbNeurons,
     const std::string &saveFile,
-    const char printNetType[],
+    const std::string &printNetType,
     int seed)
 
 {
@@ -821,7 +818,7 @@ BpNN::BpNN(
     const std::string &readFile,
     int nbLayers,
     const std::vector<int> &nbNeurons,
-    const char printNetType[])
+    const std::string &printNetType)
     : ReadFile(readFile), NbLayers(nbLayers), NbWeightLayers(nbLayers - 1) {
 
   cout << "\n\n-----------------------------------------";
@@ -855,7 +852,7 @@ BpNN::BpNN(
     int nbLayers,
     const std::vector<int> &nbNeurons,
     const std::string &saveFile,
-    const char printNetType[],
+    const std::string &printNetType,
     int seed)
     : ReadFile(readFile) {
   InitRandomGen(seed);
