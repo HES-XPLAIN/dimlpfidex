@@ -84,4 +84,12 @@ inline bool operator!=(const Rule &r1, const Rule &r2) {
   return !r1.isEqual(r2);
 }
 
+// FUNCTIONS TO HANDLE RULES FILES
+std::string getAntStrPatternWithAttrIds(int nbAttributes);
+std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attributeNames);
+std::string getStrPatternWithClassIds(int nbClasses);
+std::string getStrPatternWithClassNames(const std::vector<std::string> &classNames);
+vector<bool> getRulePatternsFromString(const std::string &str, int nbAttributes, const std::vector<std::string> &attributeNames, int nbClasses, const std::vector<std::string> &classNames);
+vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, int nbAttributes, const std::vector<std::string> &attributeNames, int nbClasses, const std::vector<std::string> &classNames);
+
 #endif
