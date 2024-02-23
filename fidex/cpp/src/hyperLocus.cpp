@@ -83,6 +83,7 @@ std::vector<std::vector<double>> calcHypLocus(const std::string &rulesFile, cons
 
   std::string line;
   std::regex Xpattern("X(\\d+)([<>]=?)(-?[\\d.]+)");
+
   std::regex attributesPattern;
   std::regex pattern;
 
@@ -120,7 +121,7 @@ std::vector<std::vector<double>> calcHypLocus(const std::string &rulesFile, cons
     }
   }
   if (!isXPatternFound && !isAttributeNamesPatternFound) {
-    throw FileContentError("Error : in file " + rulesFile + ", antecedant of rule not in good format, it should be in the form X3<=45.3 or in the form SMOKING>0");
+    throw FileContentError("Format error in file " + rulesFile + ". The antecedent of a rule must follow one of the formats: 'Xi<=value' or 'attribute_name>value', where 'i' is the attribute ID (in range [0, nbAttributes-1]) and 'value' is a real number. The comparison symbols allowed are '<=' and '>'.");
   } else if (isXPatternFound) {
     pattern = Xpattern;
   } else {

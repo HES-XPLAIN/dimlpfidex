@@ -161,3 +161,180 @@ bool Rule::isEqual(const Rule &other) const {
 
   return true;
 }
+
+/**
+ * @brief Generates a regular expression pattern for matching an antecedent of rule using the ids of the attributes.
+ *
+ * @param nbAttributes The number of attributes that can appear in the rule.
+ * @return std::regex The compiled regular expression object that can be used to match an antecedant with attribute's ids.
+ */
+std::string getAntStrPatternWithAttrIds(int nbAttributes) {
+  string pattern;
+  for (int i = 0; i < nbAttributes; i++) {
+    if (!pattern.empty()) {
+      pattern += "|";
+    }
+    pattern += std::to_string(i);
+  }
+  std::string idPattern("X(" + pattern + ")([<>]=?)(-?[\\d.]+)");
+  return idPattern;
+}
+
+/**
+ * @brief Generates a regular expression pattern for matching an antecedent using the names of the attributes.
+ *
+ * @param attributeNames Vector of the names of the attributes that can appear in the rule.
+ * @return std::regex The compiled regular expression object that can be used to match an antecedant with attribute's names.
+ */
+std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attributeNames) {
+  string attrPattern;
+  for (const auto &attr : attributeNames) {
+    if (!attrPattern.empty()) {
+      attrPattern += "|";
+    }
+    attrPattern += attr;
+  }
+  std::string attributesPattern("(" + attrPattern + ")([<>]=?)(-?[\\d.]+)");
+  return attributesPattern;
+}
+
+/**
+ * @brief Generates a regular expression pattern for matching a class of rule using the ids of the classes.
+ *
+ * @param nbClasses The number of classes that can appear in the rule.
+ * @return std::regex The compiled regular expression object that can be used to match a rule class id.
+ */
+std::string getStrPatternWithClassIds(int nbClasses) {
+  string pattern;
+  for (int i = 0; i < nbClasses; i++) {
+    if (!pattern.empty()) {
+      pattern += "|";
+    }
+    pattern += std::to_string(i);
+  }
+  std::string idPattern("-> class (" + pattern + ")");
+  return idPattern;
+}
+
+/**
+ * @brief Generates a regular expression pattern for matching a class of rule using the names of the classes.
+ *
+ * @param classNames Vector of the names of the attributes that can appear in the rule.
+ * @return std::regex The compiled regular expression object that can be used to match a rule class name.
+ */
+std::string getStrPatternWithClassNames(const std::vector<std::string> &classNames) {
+  string classPattern;
+  for (const auto &cl : classNames) {
+    if (!classPattern.empty()) {
+      classPattern += "|";
+    }
+    classPattern += cl;
+  }
+  std::string classesPattern("-> (" + classPattern + ")");
+  return classesPattern;
+}
+
+/**
+ * @brief Checks if a string rule verify pattern with attribute names, attribute ids, class names and class ids. It needs to verify the entire rule, not just one antecedant.
+ *
+ * @param str The string rule to check.
+ * @param nbAttributes The number of attributes that can appear in the rule.
+ * @param attributeNames Vector of the names of the attributes that can appear in the rule.
+ * @param nbClasses The number of classes that can appear in the rule.
+ * @param classNames Vector of the names of the attributes that can appear in the rule.
+ * @return vector<bool> Each boolean tells if a pattern is verified in the rule.
+ */
+vector<bool> getRulePatternsFromString(const std::string &str, int nbAttributes, const std::vector<std::string> &attributeNames, int nbClasses, const std::vector<std::string> &classNames) {
+  bool withAttrIdsPattern = false;
+  bool withAttrNamesPattern = false;
+  bool withClassIdsPattern = false;
+  bool withClassNamesPattern = false;
+  std::regex pattern;
+
+  pattern = ": (" + getAntStrPatternWithAttrIds(nbAttributes) + " )*" + "->";
+  if (regex_search(str, pattern)) {
+    withAttrIdsPattern = true;
+  }
+
+  if (!attributeNames.empty()) {
+    pattern = ": (" + getAntStrPatternWithAttrNames(attributeNames) + " )*" + "->";
+    if (regex_search(str, pattern)) {
+      withAttrNamesPattern = true;
+    }
+  }
+
+  if (regex_search(str, std::regex(getStrPatternWithClassIds(nbClasses)))) {
+    withClassIdsPattern = true;
+  }
+  if (!classNames.empty()) {
+    if (regex_search(str, std::regex(getStrPatternWithClassNames(classNames)))) {
+      withClassNamesPattern = true;
+    }
+  }
+  return std::vector<bool>{withAttrIdsPattern, withAttrNamesPattern, withClassIdsPattern, withClassNamesPattern};
+}
+
+vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, int nbAttributes, const std::vector<std::string> &attributeNames, int nbClasses, const std::vector<std::string> &classNames) {
+  bool withAttrIdsPattern = true;
+  bool withAttrNamesPattern = true;
+  bool withClassIdsPattern = true;
+  bool withClassNamesPattern = true;
+
+  bool foundARule = false;
+
+  ifstream fileDta(rulesFile);
+
+  if (!fileDta) {
+    throw FileNotFoundError("Error : file " + rulesFile + " not found");
+  }
+
+  std::string line;
+  while (getline(fileDta, line)) {
+    if (line.find("Rule") == 0) { // If line begins with "Rule"
+
+      foundARule = true;
+      vector<bool> checkPatterns = getRulePatternsFromString(line, nbAttributes, attributeNames, nbClasses, classNames);
+
+      bool withAttrIdsPatternTemp = checkPatterns[0];
+      bool withAttrNamesPatternTemp = checkPatterns[1];
+      bool withClassIdsPatternTemp = checkPatterns[2];
+      bool withClassNamesPatternTemp = checkPatterns[3];
+
+      // If no pattern matches this rule
+      if (!withAttrIdsPatternTemp && !withAttrNamesPatternTemp) {
+        throw FileContentError("Error : in file " + rulesFile + ", the rule " + line + " is not on a good format. Maybe an attribute name or id is wrong or you forgot to add the attribute file");
+      }
+      if (!withClassIdsPatternTemp && !withClassNamesPatternTemp) {
+        throw FileContentError("Error : in file " + rulesFile + ", the rule " + line + " is not on a good format. Maybe a class name or id is wrong or you forgot to add the attribute file");
+      }
+
+      if (!withAttrIdsPatternTemp) {
+        withAttrIdsPattern = false;
+      }
+      if (!withAttrNamesPatternTemp) {
+        withAttrNamesPattern = false;
+      }
+      if (!withClassIdsPatternTemp) {
+        withClassIdsPattern = false;
+      }
+      if (!withClassNamesPatternTemp) {
+        withClassNamesPattern = false;
+      }
+
+      // If no pattern matches each rule
+      if (!withAttrIdsPattern && !withAttrNamesPattern) {
+        throw FileContentError("Error : in file " + rulesFile + ", the rules are not always using the same convention for attributes, or a given attribute name or attribute id is wrong.");
+      }
+      if (!withClassIdsPattern && !withClassNamesPattern) {
+        throw FileContentError("Error : in file " + rulesFile + ", the rules are not always using the same convention for classes, or a given class name or class id is wrong.");
+      }
+    }
+  }
+
+  // If there is no rule in the file
+  if (!foundARule) {
+    throw FileContentError("Error : there is no rule in the file " + rulesFile + ".");
+  }
+
+  return std::vector<bool>{withAttrNamesPattern, withClassNamesPattern};
+}

@@ -207,6 +207,9 @@ int fidexGloStats(const string &command) {
     vector<string> statsLines;
     lines.emplace_back("Global statistics of the rule set : "); // Lines for the output stats
     vector<string> stringRules;
+    std::vector<Rule> rulesV2;
+    getRulesPlus(rulesV2, statsLines, stringRules, rulesFile, attributeNames, classNames, nbAttributes, nbClasses);
+    return 0;
     getRules(rules, statsLines, stringRules, rulesFile, params->isStringSet(ATTRIBUTES_FILE), attributeNames, hasClassNames, classNames);
     for (auto l : statsLines) {
       lines.emplace_back(l);
