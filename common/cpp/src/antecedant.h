@@ -27,7 +27,7 @@ public:
 
   void setAttribute(int val) { attribute = val; }
   void setInequality(bool val) { inequality = val; }
-  void setHyperlocus(double val) { value = val; }
+  void setValue(double val) { value = val; }
 
   bool isEqual(Antecedant other) const;
 };

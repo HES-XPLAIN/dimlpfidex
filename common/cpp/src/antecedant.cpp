@@ -5,12 +5,12 @@
  *
  * @param attribute attribute's integer ID equivalent.
  * @param inequality if true, the inequality is "<=", else it is ">".
- * @param hyperlocus
+ * @param value
  */
 Antecedant::Antecedant(int attribute, bool inequality, double value) {
   setAttribute(attribute);
   setInequality(inequality);
-  setHyperlocus(value);
+  setValue(value);
 }
 
 bool Antecedant::isEqual(const Antecedant other) const {
