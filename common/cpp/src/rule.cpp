@@ -235,7 +235,7 @@ std::string getStrPatternWithClassNames(const std::vector<std::string> &classNam
 }
 
 /**
- * @brief Checks if a string rule verify pattern with attribute names, attribute ids, class names and class ids. It needs to verify the entire rule, not just one antecedant.
+ * @brief Checks if a string rule verify pattern with attribute names, attribute ids, class names and class ids. It verifies the entire rule, not just one antecedant.
  *
  * @param str The string rule to check.
  * @param nbAttributes The number of attributes that can appear in the rule.
@@ -244,7 +244,7 @@ std::string getStrPatternWithClassNames(const std::vector<std::string> &classNam
  * @param classNames Vector of the names of the attributes that can appear in the rule.
  * @return vector<bool> Each boolean tells if a pattern is verified in the rule.
  */
-vector<bool> getRulePatternsFromString(const std::string &str, int nbAttributes, const std::vector<std::string> &attributeNames, int nbClasses, const std::vector<std::string> &classNames) {
+std::vector<bool> getRulePatternsFromString(const std::string &str, int nbAttributes, const std::vector<std::string> &attributeNames, int nbClasses, const std::vector<std::string> &classNames) {
   bool withAttrIdsPattern = false;
   bool withAttrNamesPattern = false;
   bool withClassIdsPattern = false;
@@ -274,7 +274,17 @@ vector<bool> getRulePatternsFromString(const std::string &str, int nbAttributes,
   return std::vector<bool>{withAttrIdsPattern, withAttrNamesPattern, withClassIdsPattern, withClassNamesPattern};
 }
 
-vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, int nbAttributes, const std::vector<std::string> &attributeNames, int nbClasses, const std::vector<std::string> &classNames) {
+/**
+ * @brief Checks if a rules file verify contains rules with attribute names or attribute ids and with class names or class ids. A rule needs to start with "Rule"
+ *
+ * @param rulesFile The rules file to check.
+ * @param nbAttributes The number of attributes that can appear in a rule.
+ * @param attributeNames Vector of the names of the attributes that can appear in a rule.
+ * @param nbClasses The number of classes that can appear in a rule.
+ * @param classNames Vector of the names of the attributes that can appear in a rule.
+ * @return vector<bool> Both boolean tells if there is attribute names or ids and class names or ids.
+ */
+std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, int nbAttributes, const std::vector<std::string> &attributeNames, int nbClasses, const std::vector<std::string> &classNames) {
   bool withAttrIdsPattern = true;
   bool withAttrNamesPattern = true;
   bool withClassIdsPattern = true;
@@ -293,7 +303,7 @@ vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, int nbAt
     if (line.find("Rule") == 0) { // If line begins with "Rule"
 
       foundARule = true;
-      vector<bool> checkPatterns = getRulePatternsFromString(line, nbAttributes, attributeNames, nbClasses, classNames);
+      std::vector<bool> checkPatterns = getRulePatternsFromString(line, nbAttributes, attributeNames, nbClasses, classNames);
 
       bool withAttrIdsPatternTemp = checkPatterns[0];
       bool withAttrNamesPatternTemp = checkPatterns[1];
@@ -337,4 +347,83 @@ vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, int nbAt
   }
 
   return std::vector<bool>{withAttrNamesPattern, withClassNamesPattern};
+}
+
+/**
+ * @brief Converts a well-formatted rule string to a Rule object.
+ *
+ * @param rule The generated rule.
+ * @param str The string rule to convert.
+ * @param withAttributeNames Whether rule contains attribute names
+ * @param withClassNames Whether rule contains class names
+ * @param nbAttributes The number of attributes that can appear in a rule.
+ * @param attributeNames Vector of the names of the attributes that can appear in the rule.
+ * @param nbClasses The number of classes that can appear in a rule.
+ * @param classNames Vector of the names of the classes that can appear in the rule.
+ * @return true If the rule is created.
+ * @return false If the rule couldn't be created.
+ */
+bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, bool withClassNames, int nbAttributes, const std::vector<std::string> &attributeNames, int nbClasses, const std::vector<std::string> &classNames) {
+  std::regex attributePattern;
+  std::regex classPattern;
+  if (withAttributeNames) {
+    attributePattern = getAntStrPatternWithAttrNames(attributeNames);
+  } else {
+    attributePattern = getAntStrPatternWithAttrIds(nbAttributes);
+  }
+
+  if (withClassNames) {
+    classPattern = getStrPatternWithClassNames(classNames);
+  } else {
+    classPattern = getStrPatternWithClassIds(nbClasses);
+  }
+
+  std::vector<Antecedant> antecedants;
+  bool isRule = false;
+
+  istringstream iss(str);
+  string token;
+  while (iss >> token) {
+    smatch match;
+    if (regex_match(token, match, attributePattern)) {
+      isRule = true;
+      Antecedant antecedant;
+      if (!withAttributeNames) {
+        antecedant.setAttribute(stoi(match[1]));
+      } else {
+        auto it = find(attributeNames.begin(), attributeNames.end(), match[1]);
+        antecedant.setAttribute(static_cast<int>(distance(attributeNames.begin(), it)));
+      }
+      if (match[2] == ">=") {
+        antecedant.setInequality(true);
+      } else {
+        antecedant.setInequality(false);
+      }
+      antecedant.setValue(stod(match[3]));
+      antecedants.push_back(antecedant);
+    } else if (token == "->") {
+      std::string classString = token;
+      iss >> token;
+      classString += " " + token;
+      if (!withClassNames) {
+        iss >> token;
+        classString += " " + token;
+      }
+      if (regex_match(classString, match, classPattern)) {
+        isRule = true;
+        if (!withClassNames) {
+          rule.setOutputClass(stoi(match[1]));
+        } else {
+          auto it = find(classNames.begin(), classNames.end(), match[1]);
+          rule.setOutputClass(static_cast<int>(distance(classNames.begin(), it)));
+        }
+      }
+    }
+  }
+  if (isRule) {
+    rule.setAntecedants(antecedants);
+    return true
+  }
+
+  return false;
 }

@@ -76,7 +76,7 @@ void getAntecedents(vector<tuple<int, bool, double>> &antecedents, int &ruleClas
 
 void getRulesPlus(vector<Rule> &rules, vector<string> &statsLines, vector<string> &stringRules, const std::string &rulesFile, const vector<string> &attributeNames, const vector<string> &classNames, int nbAttributes, int nbClasses) {
 
-  Rule rule;
+  std::vector<Rule> rules;
   // Open rules file
   fstream rulesData;
   rulesData.open(rulesFile, ios::in); // Read data file
@@ -84,29 +84,7 @@ void getRulesPlus(vector<Rule> &rules, vector<string> &statsLines, vector<string
     throw FileNotFoundError("Error : file " + rulesFile + " not found.");
   }
 
-  // Get id and attributes patterns
-  std::regex Xpattern("X(\\d+)([<>]=?)(-?[\\d.]+)");
-  std::regex attributesPattern;
-  std::regex pattern;
-
-  // Check if attribute names are provided
-  if (!attributeNames.empty()) {
-    // Create attribute names pattern
-    string attrPattern;
-    for (const auto &attr : attributeNames) {
-      if (!attrPattern.empty()) {
-        attrPattern += "|";
-      }
-      attrPattern += attr;
-    }
-    attributesPattern = std::regex("(" + attrPattern + ")([<>]=?)(-?[\\d.]+)");
-  }
-
   // Check if the file has attribute names or ids
-  bool isXPatternFound = false;
-  bool isAttributeNamesPatternFound = false;
-  std::string line;
-  std::regex currentPattern;
   vector<bool> checkPatterns = getRulesPatternsFromRuleFile(rulesFile, nbAttributes, attributeNames, nbClasses, classNames);
   bool attributesInFile = checkPatterns[0];
   bool classesInFile = checkPatterns[1];
@@ -122,44 +100,15 @@ void getRulesPlus(vector<Rule> &rules, vector<string> &statsLines, vector<string
     std::cout << "There is class ids in file" << std::endl;
   }
 
-  /*
-while (getline(rulesData, line)) {
-
-
-
-  vector<bool>checkPatterns = getRulePatternsFromString(line, nbAttributes, attributeNames, nbClasses, classNames);
-
-  bool withAttrIdsPattern = checkPatterns[0];
-  bool withAttrNamesPattern = checkPatterns[1];
-  bool withClassIdsPattern = checkPatterns[2];
-  bool withClassNamesPattern = checkPatterns[3];
-
-  if (withAttrIdsPattern){
-    std::cout << "pattern attrId trouvé" << std::endl;
+  std::string line;
+  while (getline(rulesData, line)) {
     std::cout << line << std::endl;
+    Rule rule;
+    if (stringToRule(rule, line, attributesInFile, classesInFile, nbAttributes, attributeNames, nbClasses, classNames)) {
+      std::cout << rule.toString(attributeNames, classNames) << std::endl;
+      rules.push_back(rule);
+    }
   }
-  if (withAttrNamesPattern){
-    std::cout << "pattern attrName trouvé" << std::endl;
-    std::cout << line << std::endl;
-  }
-  if (withClassIdsPattern){
-    std::cout << "pattern classId trouvé" << std::endl;
-    std::cout << line << std::endl;
-  }
-  if (withClassNamesPattern){
-    std::cout << "pattern className trouvé" << std::endl;
-    std::cout << line << std::endl;
-  }*/
-
-  /*
-  if (regex_search(line, Xpattern)) {
-    isXPatternFound = true;
-    break;
-  } else if (regex_search(line, attributesPattern)) {
-    isAttributeNamesPatternFound = true;
-    break;
-  }
-}*/
 
   /*
   if (!isXPatternFound && !isAttributeNamesPatternFound) {
