@@ -18,11 +18,11 @@ class Rule {
 private:
   vector<Antecedant> antecedants;
   vector<int> coveredSamples;
-  int outputClass;
-  int coveringSize;
-  double fidelity;
-  double accuracy;
-  double confidence;
+  int outputClass = -1;
+  int coveringSize = -1;
+  double fidelity = -1;
+  double accuracy = -1;
+  double confidence = -1;
 
   // define to ease JSON lib use
   NLOHMANN_DEFINE_TYPE_INTRUSIVE(Rule, antecedants, coveredSamples, outputClass, coveringSize, fidelity, accuracy, confidence)
@@ -92,7 +92,7 @@ inline bool operator!=(const Rule &r1, const Rule &r2) {
   return !r1.isEqual(r2);
 }
 
-// FUNCTIONS TO HANDLE RULES FILES
+// FUNCTIONS TO HANDLE RULES PATTERNS AND FILES
 std::string getAntStrPatternWithAttrIds(int nbAttributes);
 std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attributeNames);
 std::string getStrPatternWithClassIds(int nbClasses);
@@ -101,6 +101,6 @@ std::vector<bool> getRulePatternsFromString(const std::string &str, int nbAttrib
 std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, int nbAttributes, const std::vector<std::string> &attributeNames, int nbClasses, const std::vector<std::string> &classNames);
 bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, bool withClassNames, int nbAttributes, const std::vector<std::string> &attributeNames, int nbClasses, const std::vector<std::string> &classNames);
 void getRulesPlus(std::vector<Rule> &rules, const std::string &rulesFile, const vector<string> &attributeNames, const vector<string> &classNames, int nbAttributes, int nbClasses);
-tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> &rules, const vector<string> &attributes, const vector<string> &classes);
+tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> &rules, const vector<string> &attributeNames, const vector<string> &classeNames);
 
 #endif

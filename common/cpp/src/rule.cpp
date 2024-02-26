@@ -56,7 +56,7 @@ string Rule::toString(const vector<string> &attributes, const vector<string> &cl
     result << "-> class " << getOutputClass() << endl;
   }
 
-  result << "   Train Covering size : " << nbCoveredSamples
+  result << "   Train Covering size : " << std::to_string(nbCoveredSamples)
          << endl
          << "   Train Fidelity : " << formattingDoubleToString(_fidelity)
          << endl
@@ -477,7 +477,7 @@ void getRulesPlus(std::vector<Rule> &rules, const std::string &rulesFile, const 
  * @param classes list of class names, used to write Rule's class with class explicit name instead of its numerical representation.
  * @return tuple<double, double>
  */
-tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> &rules, const vector<string> &attributes, const vector<string> &classes) {
+tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> &rules, const vector<string> &attributeNames, const vector<string> &classeNames) {
   if (rules.empty()) {
     cout << "Warning: cannot write to file \"" << filename << "\", generated rules list is empty.";
     return make_tuple(0, 0);
@@ -494,7 +494,7 @@ tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> 
     meanCovSize += static_cast<double>(r.getCoveredSamples().size());
     meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
     counter++;
-    stream << "Rule " << counter << ": " << r.toString(attributes, classes);
+    stream << "Rule " << counter << ": " << r.toString(attributeNames, classeNames);
     stream << endl;
   }
 
