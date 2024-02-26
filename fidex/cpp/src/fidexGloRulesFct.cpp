@@ -133,7 +133,7 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
         localRules.push_back(rule);
       }
 
-      if (rule.getNbCoveredSamples() < minCovering) {
+      if (rule.getCoveringSize() < minCovering) {
         localNbProblems += 1;
       }
     }
@@ -352,7 +352,7 @@ vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const vector<v
     if (!ruleCreated) {
       nbRulesNotFound += 1;
     }
-    if (rule.getNbCoveredSamples() < minNbCover) {
+    if (rule.getCoveringSize() < minNbCover) {
       nbProblems += 1;
     }
 
@@ -426,7 +426,6 @@ void checkRulesParametersLogicValues(Parameters &p) {
  *
  * @param filename name of the file to be written/overwritten.
  * @param rules list of Rules object to be written in "filename".
- * @param hasConfidence whether or not Rule's confidence is written in file.
  * @param attributes list of the attributes names, used to write Rules's Antecedants with attributes explicit name instead of a "X" variable.
  * @param classes list of class names, used to write Rule's class with class explicit name instead of its numerical representation.
  * @return tuple<double, double>

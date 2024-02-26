@@ -368,7 +368,7 @@ int fidex(const string &command) {
       meanFidelity += rule.getFidelity();
       meanAccuracy += rule.getAccuracy();
       meanConfidence += rule.getConfidence();
-      meanCovSize += static_cast<double>(rule.getNbCoveredSamples());
+      meanCovSize += static_cast<double>(rule.getCoveringSize());
       meanNbAntecedentsPerRule += static_cast<double>(rule.getNbAntecedants());
 
       if (nbTestSamples == 1) {
@@ -382,7 +382,7 @@ int fidex(const string &command) {
       std::cout << "Extracted rule :" << std::endl;
       std::cout << rule.toString(attributeNames, classNames) << std::endl;
 
-      if (rule.getNbCoveredSamples() < minNbCover) {
+      if (rule.getCoveringSize() < minNbCover) {
         std::cout << "The minimum covering of " << minNbCover << " is not achieved." << std::endl;
       }
       int nbIt = fidex.getNbIt();

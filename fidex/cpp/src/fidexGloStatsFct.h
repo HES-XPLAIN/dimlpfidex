@@ -4,6 +4,7 @@
 #include "../../../common/cpp/src/dataSet.h"
 #include "../../../common/cpp/src/errorHandler.h"
 #include "../../../common/cpp/src/parameters.h"
+#include "../../../common/cpp/src/rule.h"
 #include "getRulesFun.h"
 #include <fstream>
 #include <iostream>
