@@ -74,56 +74,6 @@ void getAntecedents(vector<tuple<int, bool, double>> &antecedents, int &ruleClas
   }
 }
 
-void getRulesPlus(vector<Rule> &rules, vector<string> &statsLines, vector<string> &stringRules, const std::string &rulesFile, const vector<string> &attributeNames, const vector<string> &classNames, int nbAttributes, int nbClasses) {
-
-  std::vector<Rule> rules;
-  // Open rules file
-  fstream rulesData;
-  rulesData.open(rulesFile, ios::in); // Read data file
-  if (rulesData.fail()) {
-    throw FileNotFoundError("Error : file " + rulesFile + " not found.");
-  }
-
-  // Check if the file has attribute names or ids
-  vector<bool> checkPatterns = getRulesPatternsFromRuleFile(rulesFile, nbAttributes, attributeNames, nbClasses, classNames);
-  bool attributesInFile = checkPatterns[0];
-  bool classesInFile = checkPatterns[1];
-  if (attributesInFile) {
-    std::cout << "There is attribute names in file" << std::endl;
-  } else {
-    std::cout << "There is attribute ids in file" << std::endl;
-  }
-
-  if (classesInFile) {
-    std::cout << "There is class names in file" << std::endl;
-  } else {
-    std::cout << "There is class ids in file" << std::endl;
-  }
-
-  std::string line;
-  while (getline(rulesData, line)) {
-    std::cout << line << std::endl;
-    Rule rule;
-    if (stringToRule(rule, line, attributesInFile, classesInFile, nbAttributes, attributeNames, nbClasses, classNames)) {
-      std::cout << rule.toString(attributeNames, classNames) << std::endl;
-      rules.push_back(rule);
-    }
-  }
-
-  /*
-  if (!isXPatternFound && !isAttributeNamesPatternFound) {
-    throw FileContentError("Format error in file " + rulesFile + ". The antecedent of a rule must follow one of the formats: 'Xi<=value' or 'attribute_name>value', where 'i' is the attribute ID (in range [0, nbAttributes-1]) and 'value' is a real number. The comparison symbols allowed are '<=' and '>'.");
-  } else if (isXPatternFound) {
-    pattern = Xpattern;
-  } else {
-    pattern = attributesPattern;
-  }*/
-
-  // Return to the beginning of the file
-  rulesData.clear();
-  rulesData.seekg(0, ios::beg);
-}
-
 ////////////////////////////////////////////////////////
 
 void getRules(vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> &rules, vector<string> &statsLines, vector<string> &stringRules, const std::string &rulesFile, bool hasAttributeNames, const vector<string> &attributeNames, bool hasClassNames, const vector<string> &classNames) {

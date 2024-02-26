@@ -12,6 +12,7 @@
 Rule::Rule(const vector<Antecedant> &antecedants, const vector<int> &coveredSamples, int outClass, double fidelity, double accuracy, double confidence) {
   setAntecedants(antecedants);
   setCoveredSamples(coveredSamples);
+  setCoveringSize(static_cast<int>(coveredSamples.size()));
   setOutputClass(outClass);
   setFidelity(fidelity);
   setAccuracy(accuracy);
@@ -28,7 +29,7 @@ Rule::Rule(const vector<Antecedant> &antecedants, const vector<int> &coveredSamp
 string Rule::toString(const vector<string> &attributes, const vector<string> &classes) const {
   stringstream result;
   int _outputClass = getOutputClass();
-  auto nbCoveredSamples = static_cast<int>(getCoveredSamples().size());
+  auto nbCoveredSamples = getCoveringSize();
   double _fidelity = getFidelity();
   double _accuracy = getAccuracy();
   double _confidence = getConfidence();
@@ -266,10 +267,8 @@ std::vector<bool> getRulePatternsFromString(const std::string &str, int nbAttrib
   if (regex_search(str, std::regex(getStrPatternWithClassIds(nbClasses)))) {
     withClassIdsPattern = true;
   }
-  if (!classNames.empty()) {
-    if (regex_search(str, std::regex(getStrPatternWithClassNames(classNames)))) {
-      withClassNamesPattern = true;
-    }
+  if (!classNames.empty() && regex_search(str, std::regex(getStrPatternWithClassNames(classNames)))) {
+    withClassNamesPattern = true;
   }
   return std::vector<bool>{withAttrIdsPattern, withAttrNamesPattern, withClassIdsPattern, withClassNamesPattern};
 }
@@ -422,8 +421,49 @@ bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, b
   }
   if (isRule) {
     rule.setAntecedants(antecedants);
-    return true
+    return true;
   }
 
   return false;
+}
+
+/**
+ * @brief Get the Rules from a rules file
+ *
+ * @param rules Rules obtained from the file.
+ * @param rulesFile Rules file.
+ * @param attributeNames Vector of the names of the attributes that can appear in the rule.
+ * @param classNames Vector of the names of the classes that can appear in the rule.
+ * @param nbAttributes The number of attributes that can appear in a rule.
+ * @param nbClasses The number of classes that can appear in a rule.
+ */
+void getRulesPlus(std::vector<Rule> &rules, const std::string &rulesFile, const vector<string> &attributeNames, const vector<string> &classNames, int nbAttributes, int nbClasses) {
+
+  // Open rules file
+  fstream rulesData;
+  rulesData.open(rulesFile, ios::in); // Read data file
+  if (rulesData.fail()) {
+    throw FileNotFoundError("Error : file " + rulesFile + " not found.");
+  }
+
+  // Check if the file has attribute names or ids
+  vector<bool> checkPatterns = getRulesPatternsFromRuleFile(rulesFile, nbAttributes, attributeNames, nbClasses, classNames);
+  bool attributesInFile = checkPatterns[0];
+  bool classesInFile = checkPatterns[1];
+
+  std::string line;
+  while (getline(rulesData, line)) {
+    Rule rule;
+    if (stringToRule(rule, line, attributesInFile, classesInFile, nbAttributes, attributeNames, nbClasses, classNames)) {
+      getline(rulesData, line); // Cov size
+      rule.setCoveringSize(stoi(splitString(line, " ")[4]));
+      getline(rulesData, line); // Fidelity
+      rule.setFidelity(stoi(splitString(line, " ")[3]));
+      getline(rulesData, line); // Accuracy
+      rule.setAccuracy(stod(splitString(line, " ")[3]));
+      getline(rulesData, line); // Confidence
+      rule.setConfidence(stod(splitString(line, " ")[3]));
+      rules.push_back(rule);
+    }
+  }
 }
