@@ -101,8 +101,8 @@ std::string getStrPatternWithClassNames(const std::vector<std::string> &classNam
 std::vector<bool> getRulePatternsFromString(const std::string &str, DataSetFid &dataset);
 std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, DataSetFid &dataset, bool withClasses = true);
 bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, bool withClassNames, DataSetFid &dataset);
-void getRulesPlus(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset);
+void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset);
 tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> &rules, const vector<string> &attributeNames, const vector<string> &classNames);
-void getActivatedRulesPlus(vector<int> &activatedRules, vector<Rule> &rules, vector<double> &testValues);
+void getActivatedRules(vector<int> &activatedRules, vector<Rule> &rules, vector<double> &testValues);
 
 #endif

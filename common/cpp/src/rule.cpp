@@ -434,7 +434,7 @@ bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, b
  * @param nbAttributes The number of attributes that can appear in a rule.
  * @param nbClasses The number of classes that can appear in a rule.
  */
-void getRulesPlus(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset) {
+void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset) {
 
   // Open rules file
   fstream rulesData;
@@ -523,7 +523,7 @@ tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> 
  * @param rules vector of rules.
  * @param testValues values of test sample for which we search activated rules.
  */
-void getActivatedRulesPlus(vector<int> &activatedRules, vector<Rule> &rules, vector<double> &testValues) {
+void getActivatedRules(vector<int> &activatedRules, vector<Rule> &rules, vector<double> &testValues) {
   int attr;
   bool ineq;
   double val;

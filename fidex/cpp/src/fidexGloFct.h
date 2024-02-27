@@ -6,7 +6,6 @@
 #include "../../../common/cpp/src/parameters.h"
 #include "../../../common/cpp/src/rule.h"
 #include "fidexAlgo.h"
-#include "getRulesFun.h"
 #include "hyperLocus.h"
 #include <algorithm>
 #include <fstream>

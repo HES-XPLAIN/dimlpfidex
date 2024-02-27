@@ -215,7 +215,7 @@ int fidexGloStats(const string &command) {
     getline(rulesData, statsLine);
     statsLine += "\n";
     std::vector<Rule> rules;
-    getRulesPlus(rules, rulesFile, *testDatas);
+    getRules(rules, rulesFile, *testDatas);
     lines.emplace_back(statsLine);
     std::cout << "Data imported." << endl
               << endl;
@@ -274,7 +274,7 @@ int fidexGloStats(const string &command) {
       // Find rules activated by this sample
       bool noCorrectRuleWithAllSameClass = false; // If there is no correct rule activated but all rules have same class
       vector<int> activatedRules;
-      getActivatedRulesPlus(activatedRules, rules, testValues);
+      getActivatedRules(activatedRules, rules, testValues);
 
       // Check which rules are correct
       vector<int> correctRules;

@@ -27,8 +27,6 @@ FILE(GLOB FIDEX_SRC
 FILE(GLOB FIDEXGLO_SRC
     src/fidexGloFct.cpp
     src/fidexGloFct.h
-    src/getRulesFun.cpp
-    src/getRulesFun.h
 )
 
 FILE(GLOB FIDEXGLORULES_SRC
@@ -39,8 +37,6 @@ FILE(GLOB FIDEXGLORULES_SRC
 FILE(GLOB FIDEXGLOSTATS_SRC
     src/fidexGloStatsFct.cpp
     src/fidexGloStatsFct.h
-    src/getRulesFun.cpp
-    src/getRulesFun.h
 )
 
 # make variables visible to external CMakeLists.txt
