@@ -212,7 +212,7 @@ int fidexGloStats(const string &command) {
     if (rulesData.fail()) {
       throw FileNotFoundError("Error : file " + rulesFile + " not found.");
     }
-    getline(rulesData, statsLine); // Skip first line;
+    getline(rulesData, statsLine);
     statsLine += "\n";
     std::vector<Rule> rules;
     getRulesPlus(rules, rulesFile, *testDatas);
