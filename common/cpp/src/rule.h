@@ -4,6 +4,7 @@
 #include "../../../json/single_include/nlohmann/json.hpp"
 #include "antecedant.h"
 #include "checkFun.h"
+#include "dataSet.h"
 #include <algorithm>
 #include <cmath>
 #include <fstream>
@@ -97,10 +98,10 @@ std::string getAntStrPatternWithAttrIds(int nbAttributes);
 std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attributeNames);
 std::string getStrPatternWithClassIds(int nbClasses);
 std::string getStrPatternWithClassNames(const std::vector<std::string> &classNames);
-std::vector<bool> getRulePatternsFromString(const std::string &str, int nbAttributes, const std::vector<std::string> &attributeNames, int nbClasses, const std::vector<std::string> &classNames);
-std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, int nbAttributes, const std::vector<std::string> &attributeNames, int nbClasses, const std::vector<std::string> &classNames);
-bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, bool withClassNames, int nbAttributes, const std::vector<std::string> &attributeNames, int nbClasses, const std::vector<std::string> &classNames);
-void getRulesPlus(std::vector<Rule> &rules, const std::string &rulesFile, const vector<string> &attributeNames, const vector<string> &classNames, int nbAttributes, int nbClasses);
-tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> &rules, const vector<string> &attributeNames, const vector<string> &classeNames);
+std::vector<bool> getRulePatternsFromString(const std::string &str, DataSetFid &dataset);
+std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, DataSetFid &dataset, bool withClasses = true);
+bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, bool withClassNames, DataSetFid &dataset);
+void getRulesPlus(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset);
+tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> &rules, const vector<string> &attributeNames, const vector<string> &classNames);
 
 #endif

@@ -892,6 +892,16 @@ vector<string> &DataSetFid::getClassNames() {
 }
 
 /**
+ * @brief Return whether the dataset contains attributeNames
+ *
+ * @return true
+ * @return false
+ */
+bool DataSetFid::getHasAttributeNames() const {
+  return hasAttributes;
+}
+
+/**
  * @brief Return whether the dataset contains classNames
  *
  * @return true

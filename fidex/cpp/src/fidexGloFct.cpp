@@ -333,11 +333,7 @@ int fidexGlo(const string &command) {
         }
         std::cout << "All hyperlocus created" << std::endl;
       } else {
-        if (params->isStringSet(ATTRIBUTES_FILE)) {
-          matHypLocus = calcHypLocus(inputRulesFile, nbAttributes, attributeNames);
-        } else {
-          matHypLocus = calcHypLocus(inputRulesFile, nbAttributes);
-        }
+        matHypLocus = calcHypLocus(inputRulesFile, *testDatas);
       }
 
       // Number of neurons in the first hidden layer (May be the number of input variables or a multiple)

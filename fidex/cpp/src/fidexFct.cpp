@@ -308,11 +308,7 @@ int fidex(const string &command) {
       }
       std::cout << "All hyperlocus created" << std::endl;
     } else {
-      if (params->isStringSet(ATTRIBUTES_FILE)) {
-        matHypLocus = calcHypLocus(inputRulesFile, nbAttributes, attributeNames);
-      } else {
-        matHypLocus = calcHypLocus(inputRulesFile, nbAttributes);
-      }
+      matHypLocus = calcHypLocus(inputRulesFile, *testDatas);
     }
 
     Hyperspace hyperspace(matHypLocus); // Initialize hyperbox and get hyperplans
