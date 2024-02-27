@@ -407,13 +407,6 @@ int fidexGloStats(const string &command) {
       ofstream outputFile(params->getString(GLOBAL_RULES_OUTFILE));
       if (outputFile.is_open()) {
         outputFile << statsLine;
-        if (!params->isStringSet(ATTRIBUTES_FILE)) {
-          outputFile << "The name of the attributes and classes are not specified" << std::endl;
-        } else if (!hasClassNames) {
-          outputFile << "The name of the attributes is specified" << std::endl;
-        } else {
-          outputFile << "The name of the attributes and classes are specified" << std::endl;
-        }
 
         for (int r = 0; r < rules.size(); r++) { // For each rule
           vector<int> sampleIds;
@@ -444,7 +437,7 @@ int fidexGloStats(const string &command) {
           }
           vector<string> trainStats = splitString(rules[r].toString(attributeNames, classNames), "\n");
           outputFile << "\n"
-                     << trainStats[0] << "" << std::endl;
+                     << "Rule " << std::to_string(r + 1) << ": " << trainStats[0] << "" << std::endl;
           outputFile << trainStats[1] << " --- Test Covering size : " << coverSize << "" << std::endl;
           if (coverSize == 0) {
             outputFile << trainStats[2] << "" << std::endl;
