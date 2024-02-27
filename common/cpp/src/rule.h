@@ -103,5 +103,6 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
 bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, bool withClassNames, DataSetFid &dataset);
 void getRulesPlus(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset);
 tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> &rules, const vector<string> &attributeNames, const vector<string> &classNames);
+void getActivatedRulesPlus(vector<int> &activatedRules, vector<Rule> &rules, vector<double> &testValues);
 
 #endif

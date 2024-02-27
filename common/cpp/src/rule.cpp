@@ -515,3 +515,33 @@ tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> 
 
   return make_tuple(meanCovSize, meanNbAntecedents);
 }
+
+/**
+ * @brief Get the indices of the rules activated by a test sample.
+ *
+ * @param activatedRules vector of rule indices activated.
+ * @param rules vector of rules.
+ * @param testValues values of test sample for which we search activated rules.
+ */
+void getActivatedRulesPlus(vector<int> &activatedRules, vector<Rule> &rules, vector<double> &testValues) {
+  int attr;
+  bool ineq;
+  double val;
+  for (int r = 0; r < rules.size(); r++) { // For each rule
+    bool notActivated = false;
+    for (const auto &antecedent : rules[r].getAntecedants()) { // For each antecedant
+      attr = antecedent.getAttribute();
+      ineq = antecedent.getInequality();
+      val = antecedent.getValue();
+      if (ineq == 0 && testValues[attr] >= val) { // If the inequality is not verified
+        notActivated = true;
+      }
+      if (ineq == 1 && testValues[attr] < val) {
+        notActivated = true;
+      }
+    }
+    if (!notActivated) {
+      activatedRules.push_back(r);
+    }
+  }
+}

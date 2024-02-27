@@ -43,3 +43,5 @@ os.add_dll_directory(dir_path)
 
 ### paramètres FidexGloRules :
 train_file : données avec lesquelles tu as entrainé ton modèle
+
+### Explain every statistics

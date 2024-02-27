@@ -29,17 +29,17 @@ void showStatsParams() {
             << std::endl;
 }
 
-void getCovering(vector<int> &sampleIds, tuple<vector<tuple<int, bool, double>>, int, int, double, double> &rule, vector<vector<double>> &testValues) {
+void getCovering(vector<int> &sampleIds, const Rule &rule, vector<vector<double>> &testValues) {
   // Get covering index samples
   int attr;
   bool ineq;
   double val;
   for (int id = 0; id < testValues.size(); id++) {
     bool notCovered = false;
-    for (const auto &antecedent : get<0>(rule)) { // For each antecedant
-      attr = get<0>(antecedent);
-      ineq = get<1>(antecedent);
-      val = get<2>(antecedent);
+    for (const auto &antecedent : rule.getAntecedants()) { // For each antecedant
+      attr = antecedent.getAttribute();
+      ineq = antecedent.getInequality();
+      val = antecedent.getValue();
       if (ineq == 0 && testValues[id][attr] >= val) { // If the inequality is not verified
         notCovered = true;
       }
@@ -202,18 +202,21 @@ int fidexGloStats(const string &command) {
     }
 
     // Get rules
-    vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
-    vector<string> lines;                                                            // Lines for the output stats
-    vector<string> statsLines;
+    vector<string> lines;                                       // Lines for the output stats
     lines.emplace_back("Global statistics of the rule set : "); // Lines for the output stats
-    vector<string> stringRules;
-    std::vector<Rule> rulesV2;
-    getRulesPlus(rulesV2, rulesFile, *testDatas);
-    return 0;
-    getRules(rules, statsLines, stringRules, rulesFile, params->isStringSet(ATTRIBUTES_FILE), attributeNames, hasClassNames, classNames);
-    for (auto l : statsLines) {
-      lines.emplace_back(l);
+
+    // Get statistic line at the top of the rulesfile
+    std::string statsLine;
+    fstream rulesData;
+    rulesData.open(rulesFile, ios::in); // Read data file
+    if (rulesData.fail()) {
+      throw FileNotFoundError("Error : file " + rulesFile + " not found.");
     }
+    getline(rulesData, statsLine); // Skip first line;
+    statsLine += "\n";
+    std::vector<Rule> rules;
+    getRulesPlus(rules, rulesFile, *testDatas);
+    lines.emplace_back(statsLine);
     std::cout << "Data imported." << endl
               << endl;
 
@@ -271,7 +274,7 @@ int fidexGloStats(const string &command) {
       // Find rules activated by this sample
       bool noCorrectRuleWithAllSameClass = false; // If there is no correct rule activated but all rules have same class
       vector<int> activatedRules;
-      getActivatedRules(activatedRules, rules, testValues);
+      getActivatedRulesPlus(activatedRules, rules, testValues);
 
       // Check which rules are correct
       vector<int> correctRules;
@@ -285,24 +288,24 @@ int fidexGloStats(const string &command) {
         }
       } else { // There is some activated rules
         for (int v : activatedRules) {
-          if (get<2>(rules[v]) == testPred) { // Check if the class of the rule is the predicted one
+          if (rules[v].getOutputClass() == testPred) { // Check if the class of the rule is the predicted one
             correctRules.push_back(v);
           }
         }
         if (correctRules.empty()) { // If there is no correct rule
           meanNbWrongActivatedRules += static_cast<double>(activatedRules.size());
 
-          int ancientClass = get<2>(rules[activatedRules[0]]);
+          int ancientClass = rules[activatedRules[0]].getOutputClass();
           bool allSameClass = true; // Check if all the rules choose the same class
           for (int v : activatedRules) {
-            if (get<2>(rules[v]) != ancientClass) {
+            if (rules[v].getOutputClass() != ancientClass) {
               allSameClass = false;
               break;
             }
           }
           if (allSameClass) {
             explainabilityTotal++; // If all decisions are the same, we have an explanation
-            int decision = get<2>(rules[activatedRules[0]]);
+            int decision = rules[activatedRules[0]].getOutputClass();
             if (decision == testTrueClass) { // If those decisions are the true class, this is accurate
               accuracy++;
             }
@@ -403,9 +406,7 @@ int fidexGloStats(const string &command) {
     if (params->isStringSet(GLOBAL_RULES_OUTFILE)) {
       ofstream outputFile(params->getString(GLOBAL_RULES_OUTFILE));
       if (outputFile.is_open()) {
-        for (string l : statsLines) {
-          outputFile << l;
-        }
+        outputFile << statsLine;
         if (!params->isStringSet(ATTRIBUTES_FILE)) {
           outputFile << "The name of the attributes and classes are not specified" << std::endl;
         } else if (!hasClassNames) {
@@ -424,9 +425,9 @@ int fidexGloStats(const string &command) {
           for (int sampleId : sampleIds) {
             int samplePred = testPreds[sampleId];
             double sampleOutputPred = 0.0;
-            int classRule = get<2>(rules[r]);
+            int classRule = rules[r].getOutputClass();
             sampleOutputPred = testOutputValuesPredictions[sampleId][classRule];
-            int rulePred = get<2>(rules[r]);
+            int rulePred = rules[r].getOutputClass();
             int trueClass = testTrueClasses[sampleId];
             if (samplePred == rulePred) {
               ruleFidelity += 1;
@@ -441,7 +442,7 @@ int fidexGloStats(const string &command) {
             ruleAccuracy /= static_cast<double>(coverSize);
             ruleConfidence /= static_cast<double>(coverSize);
           }
-          vector<string> trainStats = splitString(stringRules[r], "\n");
+          vector<string> trainStats = splitString(rules[r].toString(attributeNames, classNames), "\n");
           outputFile << "\n"
                      << trainStats[0] << "" << std::endl;
           outputFile << trainStats[1] << " --- Test Covering size : " << coverSize << "" << std::endl;
