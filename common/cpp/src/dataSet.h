@@ -77,6 +77,7 @@ public:
   void setAttributes(const std::string &attributesFile, int nbAttributes, int nbClasses = -1);
   std::vector<std::string> &getAttributeNames();
   std::vector<std::string> &getClassNames();
+  bool getHasAttributeNames() const;
   bool getHasClassNames() const;
 
   std::vector<std::vector<double>> getWeights() const;
