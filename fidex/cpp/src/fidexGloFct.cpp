@@ -353,7 +353,7 @@ int fidexGlo(const string &command) {
     vector<string> lines;
     std::string statsLine;
     lines.emplace_back("Global statistics of the rule set : ");
-    getRulesPlus(rules, params->getString(GLOBAL_RULES_FILE), *testDatas);
+    getRules(rules, params->getString(GLOBAL_RULES_FILE), *testDatas);
     // Get stats line
     fstream rulesData;
     rulesData.open(params->getString(GLOBAL_RULES_FILE), ios::in); // Read data file
@@ -411,7 +411,7 @@ int fidexGlo(const string &command) {
                 << std::endl;
       // Find rules activated by this sample
       vector<int> activatedRules;
-      getActivatedRulesPlus(activatedRules, rules, testSamplesValues[currentSample]);
+      getActivatedRules(activatedRules, rules, testSamplesValues[currentSample]);
       // Check which rules are correct
       vector<int> correctRules;
       vector<int> notcorrectRules;
