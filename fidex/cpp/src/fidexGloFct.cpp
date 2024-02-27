@@ -349,12 +349,19 @@ int fidexGlo(const string &command) {
     }
 
     // Get rules
-    vector<tuple<vector<tuple<int, bool, double>>, int, int, double, double>> rules; // A rule is on the form : <[X0<0.606994 X15>=0.545037], 12(cov size), 0(class), 1(fidelity), 0.92(accuracy)>
+    vector<Rule> rules;
     vector<string> lines;
+    std::string statsLine;
     lines.emplace_back("Global statistics of the rule set : ");
-    vector<string> stringRules;
-
-    getRules(rules, lines, stringRules, params->getString(GLOBAL_RULES_FILE), params->isStringSet(ATTRIBUTES_FILE), attributeNames, hasClassNames, classNames);
+    getRulesPlus(rules, params->getString(GLOBAL_RULES_FILE), *testDatas);
+    // Get stats line
+    fstream rulesData;
+    rulesData.open(params->getString(GLOBAL_RULES_FILE), ios::in); // Read data file
+    if (rulesData.fail()) {
+      throw FileNotFoundError("Error : file " + params->getString(GLOBAL_RULES_FILE) + " not found.");
+    }
+    getline(rulesData, statsLine);
+    lines.emplace_back(statsLine);
 
     std::cout << "Files imported" << endl
               << endl;
@@ -404,7 +411,7 @@ int fidexGlo(const string &command) {
                 << std::endl;
       // Find rules activated by this sample
       vector<int> activatedRules;
-      getActivatedRules(activatedRules, rules, testSamplesValues[currentSample]);
+      getActivatedRulesPlus(activatedRules, rules, testSamplesValues[currentSample]);
       // Check which rules are correct
       vector<int> correctRules;
       vector<int> notcorrectRules;
@@ -424,17 +431,17 @@ int fidexGlo(const string &command) {
 
       } else { // There are some activated rules
         for (int v : activatedRules) {
-          if (get<2>(rules[v]) == testSamplesPreds[currentSample]) { // Check if the class of the rule is the predicted one
+          if (rules[v].getOutputClass() == testSamplesPreds[currentSample]) { // Check if the class of the rule is the predicted one
             correctRules.push_back(v);
           } else {
             notcorrectRules.push_back(v);
           }
         }
         if (correctRules.empty()) { // If there is no correct rule
-          int ancientClass = get<2>(rules[activatedRules[0]]);
+          int ancientClass = rules[activatedRules[0]].getOutputClass();
           bool allSameClass = true; // Check if all the rules choose the same class
           for (int v : activatedRules) {
-            if (get<2>(rules[v]) != ancientClass) {
+            if (rules[v].getOutputClass() != ancientClass) {
               allSameClass = false;
               break;
             }
@@ -451,8 +458,8 @@ int fidexGlo(const string &command) {
                         << std::endl;
             }
             for (int v = 0; v < activatedRules.size(); v++) {
-              lines.emplace_back("R" + std::to_string(v + 1) + ": " + stringRules[activatedRules[v]]);
-              std::cout << "R" << std::to_string(v + 1) << ": " << stringRules[activatedRules[v]] << std::endl;
+              lines.emplace_back("R" + std::to_string(v + 1) + ": " + rules[activatedRules[v]].toString(attributeNames, classNames));
+              std::cout << "R" << std::to_string(v + 1) << ": " << rules[activatedRules[v]].toString(attributeNames, classNames) << std::endl;
             }
           } else {
             if (minimalVersion) {
@@ -484,8 +491,8 @@ int fidexGlo(const string &command) {
                       << std::endl; // There is no explanation, we choose the model decision
           }
           for (int c = 0; c < correctRules.size(); c++) {
-            lines.emplace_back("R" + std::to_string(c + 1) + ": " + stringRules[correctRules[c]]);
-            std::cout << "R" << std::to_string(c + 1) << ": " << stringRules[correctRules[c]] << std::endl;
+            lines.emplace_back("R" + std::to_string(c + 1) + ": " + rules[correctRules[c]].toString(attributeNames, classNames));
+            std::cout << "R" << std::to_string(c + 1) << ": " << rules[correctRules[c]].toString(attributeNames, classNames) << std::endl;
           }
         }
       }
@@ -497,8 +504,8 @@ int fidexGlo(const string &command) {
           lines.emplace_back("\nActivated rules without correct decision class :");
           std::cout << "\nActivated rules without correct decision class :" << std::endl;
           for (int n = 0; n < notcorrectRules.size(); n++) {
-            lines.emplace_back("F" + std::to_string(n + 1) + ": " + stringRules[notcorrectRules[n]]);
-            std::cout << "F" << std::to_string(n + 1) + ": " << stringRules[notcorrectRules[n]] << std::endl;
+            lines.emplace_back("F" + std::to_string(n + 1) + ": " + rules[notcorrectRules[n]].toString(attributeNames, classNames));
+            std::cout << "F" << std::to_string(n + 1) + ": " << rules[notcorrectRules[n]].toString(attributeNames, classNames) << std::endl;
           }
         } else {
           lines.emplace_back("\nThere is no uncorrect rules.");
