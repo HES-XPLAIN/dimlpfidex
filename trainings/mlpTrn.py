@@ -4,15 +4,36 @@ from sklearn.neural_network import MLPClassifier
 import warnings
 from sklearn.exceptions import ConvergenceWarning
 from sklearn import metrics
+import argparse
+import json
 
 from .trnFun import check_int, check_strictly_positive, check_positive, check_bool, get_data, get_data_class, output_data, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer, validate_string_param
+from .parameters import get_common_parser, get_initial_parser, get_args, sanitizepath, CustomHelpFormatter, int_type
 
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
+
+def get_and_check_parameters(init_args):
+
+    # Get initial attributes with root_folder and json file information
+    args, initial_parser = get_initial_parser(init_args)
+
+    # Add common attributes
+    common_parser = get_common_parser(args, initial_parser)
+    # Add new attributes
+    parser = argparse.ArgumentParser(description="This is a parser for mlpTrn", parents=[common_parser], formatter_class=CustomHelpFormatter, add_help=True)
+    parser.add_argument("--weights_outfile", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output file with weights data", default="weights.wts")
+    parser.add_argument("--nb_quant_levels", type=lambda x: int_type(x, min=3), metavar=">2", help="Number of stairs in staircase activation function", default=50)
+    return get_args(args, init_args, parser) # Return attributes
 
 def mlpTrn(*args, **kwargs):
     try:
 
-        if not kwargs:
+        if args and isinstance(args[0], str):
+            split_args = args[0].split()  # string command to list
+        else:
+            split_args = args
+
+        if kwargs:
             print("---------------------------------------------------------------------")
             print("Please specify arguments using named parameters.")
             print("Warning! The files are localised with respect to root folder dimlpfidex.")
@@ -27,9 +48,9 @@ def mlpTrn(*args, **kwargs):
             print("----------------------------")
             print("Optional parameters :")
             print("root_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
-            print("train_pred_file : output train prediction file name (predTrain.out by default)")
-            print("test_pred_file : output test prediction file name (predTest.out by default)")
-            print("weights_file : output weights file name (weights.wts by default)")
+            print("train_pred_outfile : output train prediction file name (predTrain.out by default)")
+            print("test_pred_outfile : output test prediction file name (predTest.out by default)")
+            print("weights_outfile : output weights file name (weights.wts by default)")
             print("stats_file : output file name with train and test accuracy (stats.txt by default)")
             print("console_file : file where you redirect console result")
             print("nb_quant_levels : number of stairs in staircase activation function (50 by default)")
@@ -62,7 +83,7 @@ def mlpTrn(*args, **kwargs):
             print("----------------------------")
             print("----------------------------")
             print("Here is an example, keep same parameter names :")
-            print('mlpTrn(train_data_file="datanormTrain",train_class_file="dataclass2Train", test_data_file="datanormTest",test_class_file="dataclass2Test", weights_file = "mlp/weights", stats_file = "mlp/stats.txt", train_pred_file = "mlp/predTrain", test_pred_file = "mlp/predTest", nb_attributes=16, nb_classes=2, root_folder = "dimlp/datafiles")')
+            print('mlpTrn(train_data_file="datanormTrain",train_class_file="dataclass2Train", test_data_file="datanormTest",test_class_file="dataclass2Test", weights_outfile = "mlp/weights", stats_file = "mlp/stats.txt", train_pred_outfile = "mlp/predTrain", test_pred_outfile = "mlp/predTest", nb_attributes=16, nb_classes=2, root_folder = "dimlp/datafiles")')
             print("---------------------------------------------------------------------")
 
 
@@ -71,6 +92,11 @@ def mlpTrn(*args, **kwargs):
             start_time = time.time()
 
             # Get parameters
+
+            args = get_and_check_parameters(split_args)
+            print(args)
+            return 0
+
             root_folder = kwargs.get('root_folder')
             train_data_file = kwargs.get('train_data_file')
             train_class_file = kwargs.get('train_class_file')
@@ -80,9 +106,9 @@ def mlpTrn(*args, **kwargs):
             nb_attributes = kwargs.get('nb_attributes')
             nb_classes = kwargs.get('nb_classes')
 
-            train_pred_file = kwargs.get('train_pred_file')
-            test_pred_file = kwargs.get('test_pred_file')
-            weights_file = kwargs.get('weights_file')
+            train_pred_outfile = kwargs.get('train_pred_outfile')
+            test_pred_outfile = kwargs.get('test_pred_outfile')
+            weights_outfile = kwargs.get('weights_outfile')
             stats_file = kwargs.get('stats_file')
 
             K = kwargs.get('K')
@@ -126,7 +152,7 @@ def mlpTrn(*args, **kwargs):
 
             # Check parameters
 
-            valid_args = ['train_data_file', 'train_class_file', 'test_data_file', 'test_class_file', 'train_pred_file', 'test_pred_file', 'nb_attributes', 'nb_classes', 'weights_file',
+            valid_args = ['train_data_file', 'train_class_file', 'test_data_file', 'test_class_file', 'train_pred_outfile', 'test_pred_outfile', 'nb_attributes', 'nb_classes', 'weights_outfile',
                         'stats_file', 'K', 'nb_quant_levels', 'root_folder', 'console_file', 'hidden_layer_sizes', 'activation', 'solver', 'alpha', 'batch_size', 'learning_rate',
                         'learning_rate_init', 'power_t', 'max_iterations', 'shuffle', 'seed', 'tol', 'verbose', 'warm_start', 'momentum', 'nesterovs_momentum', 'early_stopping',
                         'validation_fraction', 'beta_1', 'beta_2', 'epsilon', 'n_iter_no_change', 'max_fun']
@@ -136,8 +162,8 @@ def mlpTrn(*args, **kwargs):
                 if arg_key not in valid_args:
                     raise ValueError(f"Invalid argument : {arg_key}.")
 
-            root_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes = check_parameters_common(root_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
-            weights_file, K, quant = check_parameters_dimlp_layer(weights_file, K, quant)
+            root_folder, train_data_file, test_data_file, train_pred_outfile, test_pred_outfile, stats_file, nb_attributes, nb_classes = check_parameters_common(root_folder, train_data_file, test_data_file, train_pred_outfile, test_pred_outfile, stats_file, nb_attributes, nb_classes)
+            weights_outfile, K, quant = check_parameters_dimlp_layer(weights_outfile, K, quant)
 
             if hidden_layer_sizes_var is None:
                 hidden_layer_sizes_var = (100,)
@@ -261,9 +287,9 @@ def mlpTrn(*args, **kwargs):
             if (root_folder is not None):
                 train_data_file = root_folder + "/" + train_data_file
                 test_data_file = root_folder + "/" + test_data_file
-                train_pred_file = root_folder + "/" + train_pred_file
-                test_pred_file = root_folder + "/" + test_pred_file
-                weights_file = root_folder + "/" + weights_file
+                train_pred_outfile = root_folder + "/" + train_pred_outfile
+                test_pred_outfile = root_folder + "/" + test_pred_outfile
+                weights_outfile = root_folder + "/" + weights_outfile
                 if (stats_file is not None):
                     stats_file = root_folder + "/" + stats_file
 
@@ -290,7 +316,7 @@ def mlpTrn(*args, **kwargs):
 
             # Get weights and biais from first hidden layer as well as data transformed in first hidden layer
 
-            train_data_h1, mu, sigma = compute_first_hidden_layer("train", train_data, K, quant, hiknot, weights_file)
+            train_data_h1, mu, sigma = compute_first_hidden_layer("train", train_data, K, quant, hiknot, weights_outfile)
             test_data_h1 = compute_first_hidden_layer("test", test_data, K, quant, hiknot, mu=mu, sigma=sigma)
 
             # Train mlp
@@ -319,8 +345,8 @@ def mlpTrn(*args, **kwargs):
                             pred.insert(classe, 0.0) # Prediction 0 for the missing class
 
             # Output predictions
-            output_data(train_pred_proba, train_pred_file)
-            output_data(test_pred_proba, test_pred_file)
+            output_data(train_pred_proba, train_pred_outfile)
+            output_data(test_pred_proba, test_pred_outfile)
 
             # Calcul de l'exactitude (accuracy) du modèle
             acc_train = metrics.accuracy_score(train_class, train_pred) * 100

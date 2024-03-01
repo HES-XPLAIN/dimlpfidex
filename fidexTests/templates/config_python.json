@@ -1,0 +1,12 @@
+{
+    "root_folder": "dimlp/datafiles",
+    "train_data_file": "datanormTrain",
+    "train_pred_outfile": "predTrain.out",
+    "train_class_file": "dataclass2Train",
+    "test_data_file": "datanormTest",
+    "test_pred_outfile": "predTest.out",
+    "test_class_file": "dataclass2Test",
+    "nb_attributes": 16,
+    "nb_classes": 2,
+    "stats_file": "stats.txt"
+}

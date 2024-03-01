@@ -367,7 +367,7 @@ def output_data(data, data_file):
     except (IOError):
         raise ValueError(f"Error : Couldn't open file {data_file}.")
 
-def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_file=None, mu=None, sigma=None):
+def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_outfile=None, mu=None, sigma=None):
     """
     Compute the output of the first hidden layer in a neural network model, apply a staircase activation function, and optionally save weights.
 
@@ -385,8 +385,8 @@ def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_f
     :type nb_stairs: int
     :param hiknot: Knots for the staircase activation function.
     :type hiknot: list[float]
-    :param weights_file: File path to save weights, defaults to None, mendatory for training step.
-    :type weights_file: str, optional
+    :param weights_outfile: File path to save weights, defaults to None, mendatory for training step.
+    :type weights_outfile: str, optional
     :param mu: Mean for normalization, calculated if None. Defaults to None.
     :type mu: np.ndarray, optional
     :param sigma: Standard deviation for normalization, calculated if None. Defaults to None.
@@ -397,7 +397,7 @@ def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_f
     """
     input_data = np.array(input_data)
     if step == "train": # Train datas
-        if weights_file is None:
+        if weights_outfile is None:
             raise ValueError("Error : weights file is None during computation of first hidden layer with train data.")
         mu = np.mean(input_data, axis=0) if mu is None else mu  # mean over variables
         sigma = np.std(input_data, axis=0) if sigma is None else sigma # std over variables
@@ -408,7 +408,7 @@ def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_f
 
         # Save weights and bias
         try:
-            with open(weights_file, "w") as my_file:
+            with open(weights_outfile, "w") as my_file:
                 for b in biais:
                     my_file.write(str(b))
                     my_file.write(" ")
@@ -418,9 +418,9 @@ def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_f
                     my_file.write(" ")
                 my_file.close()
         except (FileNotFoundError):
-            raise ValueError(f"Error : File {weights_file} not found.")
+            raise ValueError(f"Error : File {weights_outfile} not found.")
         except (IOError):
-            raise ValueError(f"Error : Couldn't open file {weights_file}.")
+            raise ValueError(f"Error : Couldn't open file {weights_outfile}.")
 
     # Compute new data after first hidden layer
     h = k*(input_data-mu)/sigma # With indices : hij=K*(xij-muj)/sigmaj
@@ -477,7 +477,7 @@ def validate_string_param(param, param_name, default=None, allow_none=False):
         raise ValueError(f'Error: parameter {param_name} has to be a name contained in quotation marks "".')
     return param
 
-def check_parameters_common(root_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes):
+def check_parameters_common(root_folder, train_data_file, test_data_file, train_pred_outfile, test_pred_outfile, stats_file, nb_attributes, nb_classes):
     """
     Validate the common parameters used in a machine learning process.
 
@@ -495,10 +495,10 @@ def check_parameters_common(root_folder, train_data_file, test_data_file, train_
     :type test_data_file: str
     :param test_class_file: The file name for testing class labels.
     :type test_class_file: str
-    :param train_pred_file: The file name for saving training predictions, defaults to "predTrain.out".
-    :type train_pred_file: str, optional
-    :param test_pred_file: The file name for saving testing predictions, defaults to "predTest.out".
-    :type test_pred_file: str, optional
+    :param train_pred_outfile: The file name for saving training predictions, defaults to "predTrain.out".
+    :type train_pred_outfile: str, optional
+    :param test_pred_outfile: The file name for saving testing predictions, defaults to "predTest.out".
+    :type test_pred_outfile: str, optional
     :param stats_file: The file name for saving statistics, defaults to "stats.txt".
     :type stats_file: str, optional
     :param nb_attributes: The number of attributes.
@@ -512,8 +512,8 @@ def check_parameters_common(root_folder, train_data_file, test_data_file, train_
     root_folder = validate_string_param(root_folder, "root_folder", allow_none=True)
     train_data_file = validate_string_param(train_data_file, "train_data_file")
     test_data_file = validate_string_param(test_data_file, "test_data_file")
-    train_pred_file = validate_string_param(train_pred_file, "train_pred_file", default="predTrain.out")
-    test_pred_file = validate_string_param(test_pred_file, "test_pred_file", default="predTest.out")
+    train_pred_outfile = validate_string_param(train_pred_outfile, "train_pred_outfile", default="predTrain.out")
+    test_pred_outfile = validate_string_param(test_pred_outfile, "test_pred_outfile", default="predTest.out")
     stats_file = validate_string_param(stats_file, "stats_file", default="stats.txt")
 
     # Check nb_attributes and nb_classes
@@ -528,9 +528,9 @@ def check_parameters_common(root_folder, train_data_file, test_data_file, train_
     elif not check_strictly_positive(nb_classes) or not check_int(nb_classes):
         raise ValueError('Error : parameter nb_classes has to be a strictly positive integer.')
 
-    return root_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes
+    return root_folder, train_data_file, test_data_file, train_pred_outfile, test_pred_outfile, stats_file, nb_attributes, nb_classes
 
-def check_parameters_dimlp_layer(weights_file, k, quant):
+def check_parameters_dimlp_layer(weights_outfile, k, quant):
     """
     Validate and set default values for the parameters of a DIMLP layer.
 
@@ -538,17 +538,17 @@ def check_parameters_dimlp_layer(weights_file, k, quant):
     if they are not provided. It specifically checks the weights file name, scaling factor 'k',
     and number of stairs in staircase activation function ('quant').
 
-    :param weights_file: The file name for saving weights. Defaults to "weights.wts" if not provided.
-    :type weights_file: str, optional
+    :param weights_outfile: The file name for saving weights. Defaults to "weights.wts" if not provided.
+    :type weights_outfile: str, optional
     :param k: The scaling factor for the layer. Defaults to 1 if not provided.
     :type k: float, optional
     :param quant: The number of stairs in staircase activation function. Defaults to 50 if not provided.
     :type quant: int, optional
-    :return: A tuple of the validated and possibly modified parameters weights_file, k, and quant.
+    :return: A tuple of the validated and possibly modified parameters weights_outfile, k, and quant.
     :rtype: tuple
     :raises ValueError: If any provided parameter is invalid.
     """
-    weights_file = validate_string_param(weights_file, "weights_file", default="weights.wts")
+    weights_outfile = validate_string_param(weights_outfile, "weights_outfile", default="weights.wts")
 
     if k is None:
         k = 1
@@ -560,7 +560,7 @@ def check_parameters_dimlp_layer(weights_file, k, quant):
     elif not check_strictly_positive(quant):
         raise ValueError('Error, parameter nb_quant_levels is not a strictly positive number.')
 
-    return weights_file, k, quant
+    return weights_outfile, k, quant
 
 def check_parameters_decision_trees(n_estimators, min_samples_split, min_samples_leaf, min_weight_fraction_leaf, min_impurity_decrease, seed, max_features, verbose, max_leaf_nodes, warm_start, ccp_alpha):
     """

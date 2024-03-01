@@ -56,9 +56,9 @@ def convKeras(*args, **kwargs):
             print("normalized : whether image datas are normalized between 0 and 1 (false by default, true if with_hsl)")
             print("root_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
             print("nb_epochs : number of epochs during training(80 by default)")
-            print("train_valid_pred_file : output train and validation (in this order) prediction file name (predTrain.out by default)")
-            print("test_pred_file : output test prediction file name (predTest.out by default)")
-            print("weights_file : output weights file name (weights.wts by default)")
+            print("train_valid_pred_outfile : output train and validation (in this order) prediction file name (predTrain.out by default)")
+            print("test_pred_outfile : output test prediction file name (predTest.out by default)")
+            print("weights_outfile : output weights file name (weights.wts by default)")
             print("stats_file : output file name with train and test accuracy (stats.txt by default)")
             print("console_file : file where you redirect console result")
             print("nb_quant_levels : number of stairs in staircase activation function (50 by default)")
@@ -84,9 +84,9 @@ def convKeras(*args, **kwargs):
             valid_class_file = kwargs.get('valid_class_file')
             normalized = kwargs.get('normalized')
             console_file = kwargs.get('console_file')
-            train_valid_pred_file = kwargs.get('train_valid_pred_file')
-            test_pred_file = kwargs.get('test_pred_file')
-            weights_file = kwargs.get('weights_file')
+            train_valid_pred_outfile = kwargs.get('train_valid_pred_outfile')
+            test_pred_outfile = kwargs.get('test_pred_outfile')
+            weights_outfile = kwargs.get('weights_outfile')
             stats_file = kwargs.get('stats_file')
             K = kwargs.get('K')
             quant = kwargs.get('nb_quant_levels')
@@ -106,7 +106,7 @@ def convKeras(*args, **kwargs):
                 except (IOError):
                     raise ValueError(f"Error : Couldn't open file {console_file}.")
 
-            valid_args = ['dataset', 'train_data_file', 'train_class_file', 'test_data_file', 'test_class_file', 'nb_attributes', 'nb_classes', 'valid_ratio', 'valid_data_file', 'valid_class_file', 'normalized', 'root_folder', 'console_file', 'train_valid_pred_file', 'test_pred_file', 'weights_file',
+            valid_args = ['dataset', 'train_data_file', 'train_class_file', 'test_data_file', 'test_class_file', 'nb_attributes', 'nb_classes', 'valid_ratio', 'valid_data_file', 'valid_class_file', 'normalized', 'root_folder', 'console_file', 'train_valid_pred_outfile', 'test_pred_outfile', 'weights_outfile',
                           'stats_file', 'K', 'nb_quant_levels', 'nb_epochs', 'with_hsl', 'with_resnet', 'with_vgg']
 
             # Check if wrong parameters are given
@@ -114,7 +114,7 @@ def convKeras(*args, **kwargs):
                 if arg_key not in valid_args:
                     raise ValueError(f"Invalid argument : {arg_key}.")
 
-            root_folder, train_data_file, test_data_file, train_valid_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes  = check_parameters_common(root_folder, train_data_file, test_data_file, train_valid_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
+            root_folder, train_data_file, test_data_file, train_valid_pred_outfile, test_pred_outfile, stats_file, nb_attributes, nb_classes  = check_parameters_common(root_folder, train_data_file, test_data_file, train_valid_pred_outfile, test_pred_outfile, stats_file, nb_attributes, nb_classes)
 
             if valid_ratio is None:
                 if (valid_data_file is None and valid_class_file is not None) or (valid_data_file is not None and valid_class_file is None):
@@ -164,7 +164,7 @@ def convKeras(*args, **kwargs):
             if with_vgg == True and with_resnet == True:
                 raise ValueError('Error, parameter with_resnet and with_vgg are both True, choose one.')
 
-            weights_file, K, quant = check_parameters_dimlp_layer(weights_file, K, quant)
+            weights_outfile, K, quant = check_parameters_dimlp_layer(weights_outfile, K, quant)
 
             model_checkpoint_weights = "weights.hdf5"
             if (root_folder is not None):
@@ -172,9 +172,9 @@ def convKeras(*args, **kwargs):
                 test_data_file = root_folder + "/" + test_data_file
                 if valid_ratio is None:
                     valid_data_file = root_folder + "/" + valid_data_file
-                train_valid_pred_file = root_folder + "/" + train_valid_pred_file
-                test_pred_file = root_folder + "/" + test_pred_file
-                weights_file = root_folder + "/" + weights_file
+                train_valid_pred_outfile = root_folder + "/" + train_valid_pred_outfile
+                test_pred_outfile = root_folder + "/" + test_pred_outfile
+                weights_outfile = root_folder + "/" + weights_outfile
                 if (stats_file is not None):
                     stats_file = root_folder + "/" + stats_file
                 model_checkpoint_weights = root_folder + "/" + model_checkpoint_weights
@@ -286,7 +286,7 @@ def convKeras(*args, **kwargs):
 
             print("Data loaded")
 
-            x_train_h1, mu, sigma = compute_first_hidden_layer("train", x_train, K, quant, hiknot, weights_file, mu=mu, sigma=sigma)
+            x_train_h1, mu, sigma = compute_first_hidden_layer("train", x_train, K, quant, hiknot, weights_outfile, mu=mu, sigma=sigma)
             x_test_h1 = compute_first_hidden_layer("test", x_test, K, quant, hiknot, mu=mu, sigma=sigma)
             x_val_h1 = compute_first_hidden_layer("test", x_val, K, quant, hiknot, mu=mu, sigma=sigma)
 
@@ -519,8 +519,8 @@ def convKeras(*args, **kwargs):
                             pred.insert(classe, 0.0) # Prediction 0 for the missing class
 
             # Output predictions
-            output_data(train_valid_pred, train_valid_pred_file)
-            output_data(test_pred, test_pred_file)
+            output_data(train_valid_pred, train_valid_pred_outfile)
+            output_data(test_pred, test_pred_outfile)
 
             ##############################################################################
 
