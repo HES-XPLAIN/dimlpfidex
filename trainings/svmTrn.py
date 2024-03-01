@@ -25,9 +25,9 @@ def svmTrn(*args, **kwargs):
             print("----------------------------")
             print("Optional parameters :")
             print("root_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
-            print("train_pred_file : output train prediction file name (predTrain.out by default)")
-            print("test_pred_file : output test prediction file name (predTest.out by default)")
-            print("weights_file : output weights file name (weights.wts by default)")
+            print("train_pred_outfile : output train prediction file name (predTrain.out by default)")
+            print("test_pred_outfile : output test prediction file name (predTest.out by default)")
+            print("weights_outfile : output weights file name (weights.wts by default)")
             print("stats_file : output file name with train and test accuracy (stats.txt by default)")
             print("console_file : file where you redirect console result")
             print("output_roc : output ROC curve (roc_curve.png by default)")
@@ -54,7 +54,7 @@ def svmTrn(*args, **kwargs):
             print("----------------------------")
             print("----------------------------")
             print("Here is an example, keep same parameter names :")
-            print('svmTrn(train_data_file="datanormTrain",train_class_file="dataclass2Train", test_data_file="datanormTest",test_class_file="dataclass2Test", weights_file = "svm/weights", stats_file = "svm/stats.txt", train_pred_file = "svm/predTrain", test_pred_file = "svm/predTest", nb_attributes=16, nb_classes=2, root_folder = "dimlp/datafiles")')
+            print('svmTrn(train_data_file="datanormTrain",train_class_file="dataclass2Train", test_data_file="datanormTest",test_class_file="dataclass2Test", weights_outfile = "svm/weights", stats_file = "svm/stats.txt", train_pred_outfile = "svm/predTrain", test_pred_outfile = "svm/predTest", nb_attributes=16, nb_classes=2, root_folder = "dimlp/datafiles")')
             print("---------------------------------------------------------------------")
         else:
 
@@ -71,9 +71,9 @@ def svmTrn(*args, **kwargs):
             console_file = kwargs.get('console_file')
             positive_class_index = kwargs.get('positive_class_index')
 
-            train_pred_file = kwargs.get('train_pred_file')
-            test_pred_file = kwargs.get('test_pred_file')
-            weights_file = kwargs.get('weights_file')
+            train_pred_outfile = kwargs.get('train_pred_outfile')
+            test_pred_outfile = kwargs.get('test_pred_outfile')
+            weights_outfile = kwargs.get('weights_outfile')
             stats_file = kwargs.get('stats_file')
             output_roc = kwargs.get('output_roc')
 
@@ -108,7 +108,7 @@ def svmTrn(*args, **kwargs):
 
             # Check parameters
 
-            valid_args = ['train_data_file', 'train_class_file', 'test_data_file', 'test_class_file', 'positive_class_index', 'train_pred_file', 'test_pred_file', 'nb_attributes', 'nb_classes', 'weights_file',
+            valid_args = ['train_data_file', 'train_class_file', 'test_data_file', 'test_class_file', 'positive_class_index', 'train_pred_outfile', 'test_pred_outfile', 'nb_attributes', 'nb_classes', 'weights_outfile',
                         'stats_file', 'output_roc', 'K', 'nb_quant_levels', 'C', 'kernel', 'degree', 'gamma', 'coef0', 'shrinking',
                         'tol', 'cache_size', 'class_weight', 'verbose', 'max_iterations', 'decision_function_shape', 'break_ties', 'root_folder', 'console_file', 'return_roc']
 
@@ -117,8 +117,8 @@ def svmTrn(*args, **kwargs):
                 if arg_key not in valid_args:
                     raise ValueError(f"Invalid argument : {arg_key}.")
 
-            root_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes  = check_parameters_common(root_folder, train_data_file, test_data_file, train_pred_file, test_pred_file, stats_file, nb_attributes, nb_classes)
-            weights_file, K, quant = check_parameters_dimlp_layer(weights_file, K, quant)
+            root_folder, train_data_file, test_data_file, train_pred_outfile, test_pred_outfile, stats_file, nb_attributes, nb_classes  = check_parameters_common(root_folder, train_data_file, test_data_file, train_pred_outfile, test_pred_outfile, stats_file, nb_attributes, nb_classes)
+            weights_outfile, K, quant = check_parameters_dimlp_layer(weights_outfile, K, quant)
 
             output_roc = validate_string_param(output_roc, "output_roc", default="roc_curve.png")
 
@@ -199,9 +199,9 @@ def svmTrn(*args, **kwargs):
             if (root_folder is not None):
                 train_data_file = root_folder + "/" + train_data_file
                 test_data_file = root_folder + "/" + test_data_file
-                train_pred_file = root_folder + "/" + train_pred_file
-                test_pred_file = root_folder + "/" + test_pred_file
-                weights_file = root_folder + "/" + weights_file
+                train_pred_outfile = root_folder + "/" + train_pred_outfile
+                test_pred_outfile = root_folder + "/" + test_pred_outfile
+                weights_outfile = root_folder + "/" + weights_outfile
                 output_roc = root_folder + "/" + output_roc
                 if (stats_file is not None):
                     stats_file = root_folder + "/" + stats_file
@@ -234,7 +234,7 @@ def svmTrn(*args, **kwargs):
 
             # Get weights and biais from first hidden layer as well as data transformed in first hidden layer
 
-            train_data_h1, mu, sigma = compute_first_hidden_layer("train", train_data, K, quant, hiknot, weights_file)
+            train_data_h1, mu, sigma = compute_first_hidden_layer("train", train_data, K, quant, hiknot, weights_outfile)
             test_data_h1 = compute_first_hidden_layer("test", test_data, K, quant, hiknot, mu=mu, sigma=sigma)
 
             # Train svm
@@ -247,8 +247,8 @@ def svmTrn(*args, **kwargs):
             test_pred = model.predict(test_data_h1)    # Predict the response for test dataset
 
             # Output predictions
-            output_pred(train_pred, train_pred_file, nb_classes)
-            output_pred(test_pred, test_pred_file, nb_classes)
+            output_pred(train_pred, train_pred_outfile, nb_classes)
+            output_pred(test_pred, test_pred_outfile, nb_classes)
 
             # Compute model Accuracy
             acc_train = metrics.accuracy_score(train_class, train_pred) * 100
@@ -300,4 +300,4 @@ def svmTrn(*args, **kwargs):
         return -1
 
 
-# Exemple : svmTrn(train_data_file="datanormTrain",train_class_file="dataclass2Train", test_data_file="datanormTest",test_class_file="dataclass2Test", nb_attributes=16, nb_classes=2, weights_file = "weights", stats_file = "stats.txt", root_folder = "dimlp/datafiles")
+# Exemple : svmTrn(train_data_file="datanormTrain",train_class_file="dataclass2Train", test_data_file="datanormTest",test_class_file="dataclass2Test", nb_attributes=16, nb_classes=2, weights_outfile = "weights", stats_file = "stats.txt", root_folder = "dimlp/datafiles")
