@@ -9,8 +9,6 @@
 #include "../../../dimlp/cpp/src/dimlpRulFct.h"
 #include "../../../dimlp/cpp/src/dimlpTrnFct.h"
 
-const std::string TEMPLATES_PATH = "tests/templates/";
-
 void testDensCls();
 void testDimlpBT();
 void testDimlpCls();
