@@ -37,6 +37,7 @@ void testFidexGloRules() {
 }
 
 void testFidexGloStats() {
+<<<<<<< HEAD
     std::string command = "--json_config_file " + TEMPLATES_PATH + "config_fidexGloStats.json";
   std::string testName = "Simple fidexGloStats execution";
 
@@ -46,4 +47,7 @@ void testFidexGloStats() {
   } catch (exception &e) {
     testAssert(testName, false);
   }
+=======
+  std::cout << "testFidexGloStats() not implemented." << std::endl;
+>>>>>>> 5d09d4a (Renamed test folder, added dimlp & fidex test's base functions.)
 }
