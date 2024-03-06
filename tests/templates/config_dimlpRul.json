@@ -4,6 +4,7 @@
     "train_class_file": "train_true_classes.txt",
     "test_data_file": "test.txt",
     "test_class_file": "test_true_classes.txt",
+    "console_file": "out/dimlpRul_console.out",
     "test_pred_outfile": "dimlpTest.out",
     "weights_file": "weights.wts",
     "attributes_file": "attributes.txt",

@@ -5,6 +5,7 @@
     "test_data_file": "test.txt",
     "test_class_file": "test_true_classes.txt",
     "train_pred_outfile": "dimlpTrain.out",
+    "console_file": "out/dimlpTrn_console.out",
     "test_pred_outfile": "dimlpTest.out",
     "attributes_file": "attributes.txt",
     "with_rule_extraction": true,

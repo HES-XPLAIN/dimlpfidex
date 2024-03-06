@@ -6,6 +6,7 @@
     "test_class_file": "test_true_classes.txt",
     "train_pred_outfile": "dimlpBTTrain.out",
     "test_pred_outfile": "dimlpBTTest.out",
+    "console_file": "out/dimlpBT_console.out",
     "attributes_file": "attributes.txt",
     "with_rule_extraction": true,
     "global_rules_outfile": "dimlpBT.rls",

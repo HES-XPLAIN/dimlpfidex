@@ -9,6 +9,7 @@
     "rules_outfile": "fidex_rules.txt",
     "attributes_file": "attributes.txt",
     "weights_file": "weights.wts",
+    "console_file": "out/fidex_console.out",
     "nb_attributes": 31,
     "nb_classes": 7,
     "stats_file": "stats.txt",
