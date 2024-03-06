@@ -6,7 +6,10 @@
     "global_rules_outfile": "new_rules.txt",
     "attributes_file": "attributes.txt",
     "weights_file": "weights.wts",
+<<<<<<< HEAD
     "console_file": "out/fidexGloRules_console.out",
+=======
+>>>>>>> 5d09d4a (Renamed test folder, added dimlp & fidex test's base functions.)
     "nb_attributes": 31,
     "nb_classes": 7,
     "nb_dimlp_nets": 1,
