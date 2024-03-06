@@ -1,5 +1,5 @@
 {
-    "root_folder": "fidexTests/dataset/data",
+    "root_folder": "tests/dataset/data",
     "train_data_file": "train.txt",
     "train_pred_file": "train.out",
     "train_class_file": "train_true_classes.txt",
