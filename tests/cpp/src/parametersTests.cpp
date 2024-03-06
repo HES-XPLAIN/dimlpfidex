@@ -145,7 +145,7 @@ void testJsonParser() {
   std::stringstream buffer2;
 
   std::vector<ParameterCode> validParams;
-  auto pJson = Parameters("fidexTests/templates/default_config.json", validParams);
+  auto pJson = Parameters("tests/templates/default_config.json", validParams);
   auto pArgs = Parameters(args, validParams);
 
   testAssert("Parameters: JSON & user args are equal", buffer1.str().compare(buffer2.str()) == 0);
