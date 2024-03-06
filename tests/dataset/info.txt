@@ -1,0 +1,17 @@
+Gender
+Age
+Height
+Weight
+FHWO            family member suffered or suffers from overweight
+FAVC            Frequent consumption of high caloric food
+FCVC            Frequency of consumption of vegetables
+NCP             Number of main meals
+CAEC            Consumption of food between meals
+SMOKE           Smoker or not
+CH2O            Consumption of water daily
+SCC             Calories consumption monitoring
+FAF             Physical activity frequency
+TUE             Time using technology devices
+CALC            Consumption of alcohol
+MTRANS          Transportation used
+OLD             Obesity level deducted
