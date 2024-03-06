@@ -8,10 +8,7 @@
     "nb_attributes": 31,
     "nb_classes": 7,
     "explanation_file": "explanation.txt",
-<<<<<<< HEAD
     "console_file": "out/fidexGlo_console.out",
-=======
->>>>>>> 5d09d4a (Renamed test folder, added dimlp & fidex test's base functions.)
     "with_fidex": "true",
     "with_minimal_version": "false",
     "train_data_file": "train.txt",
