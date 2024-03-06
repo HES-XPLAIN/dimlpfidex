@@ -17,10 +17,10 @@ void showDimlpClsParams()
 
   cout << "Options are: \n"
        << std::endl;
-  cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   cout << "--test_class_file <file of classes>" << std::endl;
   cout << "--test_pred_outfile <output prediction file (dimlp.out by default)>" << std::endl;
-  cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  cout << "--console_file <file with console logs redirection>" << std::endl; // If we want to redirect console result to file
   cout << "--stats_file <output file with test accuracy>" << std::endl;
   cout << "--hid_file <output file with first hidden layer values (dimlp.hid by default)>" << std::endl;
   cout << "--h1 <number of neurons in the first hidden layer> ";

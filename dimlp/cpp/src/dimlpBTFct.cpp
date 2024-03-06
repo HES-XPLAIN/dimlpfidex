@@ -18,13 +18,13 @@ void showDimlpBTParams()
 
   cout << "Options are: \n"
        << std::endl;
-  cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   cout << "--nb_dimlp_nets <number of networks (25 by default)>" << std::endl;
   cout << "--attributes_file <file of attributes>" << std::endl;
   cout << "--test_data_file <testing set file>" << std::endl;
   cout << "--train_class_file <file of train classes>" << std::endl;
   cout << "--test_class_file <file of test classes>" << std::endl;
-  cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  cout << "--console_file <file with console logs redirection>" << std::endl; // If we want to redirect console result to file
   cout << "--weights_generic_outfilename <output weights generic name file(without .wts, dimlpBT by default)>" << std::endl;
   cout << "--train_pred_outfile <output train prediction file (dimlpBTTrain.out by default)>" << std::endl;
   cout << "--test_pred_outfile <output test prediction file (dimlpBTTest.out by default)>" << std::endl;

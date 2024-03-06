@@ -6,7 +6,7 @@ void showParams() {
   std::cout << "\n-------------------------------------------------\n"
             << std::endl;
 
-  std::cout << "Obligatory parameters : \n"
+  std::cout << "Required parameters : \n"
             << std::endl;
 
   std::cout << "fidexGlo --test_data_file <test sample(s) data file with data and prediction(if no --test_pred_file), classes may been added here if launching with fidex(--with_fidex)> ";
@@ -18,18 +18,18 @@ void showParams() {
 
   std::cout << "Options are: \n"
             << std::endl;
-  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   std::cout << "--attributes_file <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it" << std::endl;
   std::cout << "--test_pred_file <test prediction file> if given, --test_data_file needs to have only test datas" << std::endl;
   std::cout << "--explanation_file <Explanation(s) output file>" << std::endl;
-  std::cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  std::cout << "--console_file <file with console logs redirection>" << std::endl; // If we want to redirect console result to file
   std::cout << "--decision_threshold <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
   std::cout << "--positive_class_index <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
   std::cout << "--with_fidex <with Fidex if not rule is given (False by default)>" << std::endl;
   std::cout << "--with_minimal_version <minimal version, only correct activated rules, launch Fidex when no such rule is found(if with fidex) (False by default)>" << std::endl
             << std::endl;
   std::cout << "If using fidex :" << std::endl;
-  std::cout << "Obligatory :" << std::endl;
+  std::cout << "Required :" << std::endl;
   std::cout << "--train_data_file <train data file>" << std::endl;
   std::cout << "--train_pred_file <train prediction file>" << std::endl;
   std::cout << "--train_class_file <train true class file, not mendatory if classes are specified in train data file>" << std::endl;

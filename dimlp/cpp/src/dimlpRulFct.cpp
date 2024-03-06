@@ -20,7 +20,7 @@ void showDimlpRulParams()
 
   cout << "Options are: \n"
        << std::endl;
-  cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   cout << "--attributes_file <file of attributes>" << std::endl;
   cout << "--valid_data_file <validation set file>" << std::endl;
   cout << "--test_data_file <testing set file>" << std::endl;
@@ -28,7 +28,7 @@ void showDimlpRulParams()
   cout << "--test_class_file <file of test classes>" << std::endl;
   cout << "--valid_class_file <file of validation classes>" << std::endl;
   cout << "--global_rules_outfile <rulesFile (dimlp.rls by default)>" << std::endl;
-  cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  cout << "--console_file <file with console logs redirection>" << std::endl; // If we want to redirect console result to file
   cout << "--stats_file <output file with train, test and validation accuracy>" << std::endl;
   cout << "--H1 <number of neurons in the first hidden layer> ";
   cout << "(if not specified this number will be equal to the ";

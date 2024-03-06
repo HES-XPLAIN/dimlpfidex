@@ -39,7 +39,7 @@ def convKeras(*args, **kwargs):
 
     try:
         if not kwargs:
-            print("Obligatory parameters :")
+            print("Required parameters :")
             print("dataset : mnist, cifar100, cifar10 or fer")
             print("train_data_file : train data file")
             print("train_class_file : train class file, not mendatory if classes are specified in train_data_file")
@@ -54,13 +54,13 @@ def convKeras(*args, **kwargs):
             print("valid_class_file : validation class file")
             print("BE CAREFUL if there is validation files, and you want to use fidex algorithms you have to use both train and validation datas for train datas and classes")
             print("normalized : whether image datas are normalized between 0 and 1 (false by default, true if with_hsl)")
-            print("root_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
+            print("root_folder : Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
             print("nb_epochs : number of epochs during training(80 by default)")
             print("train_valid_pred_outfile : output train and validation (in this order) prediction file name (predTrain.out by default)")
             print("test_pred_outfile : output test prediction file name (predTest.out by default)")
             print("weights_outfile : output weights file name (weights.wts by default)")
             print("stats_file : output file name with train and test accuracy (stats.txt by default)")
-            print("console_file : file where you redirect console result")
+            print("console_file : file with console logs redirection")
             print("nb_quant_levels : number of stairs in staircase activation function (50 by default)")
             print("K : Parameter to improve dynamics (1 by default)")
             print("with_hsl : If you want to change 3-channels data from RGB to HSL format (False by default)")

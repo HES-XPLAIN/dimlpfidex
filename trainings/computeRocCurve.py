@@ -11,7 +11,7 @@ def computeRocCurve(*args, **kwargs):
             print("Please specify arguments using named parameters.")
             print("Warning! The files are localised with respect to root folder dimlpfidex.")
             print("----------------------------")
-            print("Obligatory parameters :")
+            print("Required parameters :")
             print("test_class_file : test class file")
             print("test_pred_file : test prediction file")
             print("nb_classes : number of classes")
@@ -19,9 +19,9 @@ def computeRocCurve(*args, **kwargs):
             print("----------------------------")
             print("Optional parameters :")
             print("estimator : name of estimator")
-            print("root_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
+            print("root_folder : Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
             print("output_roc : output ROC curve (roc_curve.png by default)")
-            print("stats_file : stats file to save AUC score")
+            print("stats_file : stats file to save AUC score") #TODO :Warning, not same as the other stats_file description
 
         else:
             # Get parameters

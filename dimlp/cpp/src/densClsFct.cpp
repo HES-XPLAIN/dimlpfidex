@@ -20,12 +20,12 @@ void showDensClsParams()
 
   cout << "Options are: \n"
        << std::endl;
-  cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   cout << "--attributes_file <file of attributes>" << std::endl;
   cout << "--test_data_file <testing set file>" << std::endl;
   cout << "--train_class_file <file of train classes>" << std::endl;
   cout << "--test_class_file <file of test classes>" << std::endl;
-  cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  cout << "--console_file <file with console logs redirection>" << std::endl; // If we want to redirect console result to file
   cout << "--train_pred_outfile <output train prediction file (densClsTrain.out by default)>" << std::endl;
   cout << "--test_pred_outfile <output test prediction file (densClsTest.out by default)>" << std::endl;
   cout << "--stats_file <output file with global train and test accuracy>" << std::endl;

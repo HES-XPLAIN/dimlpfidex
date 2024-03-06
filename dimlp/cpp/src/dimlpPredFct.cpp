@@ -19,9 +19,9 @@ void showDimlpPredParams()
 
   std::cout << "Options are: \n"
             << std::endl;
-  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   std::cout << "--test_pred_outfile <output prediction file (dimlpTest.out by default)>";
-  std::cout << "--console_file <file where you redirect console result>"; // If we want to redirect console result to file
+  std::cout << "--console_file <file with console logs redirection>"; // If we want to redirect console result to file
   std::cout << "--H1 <number of neurons in the first hidden layer> ";
   std::cout << "(if not specified this number will be equal to the ";
   std::cout << "number of input neurons)" << std::endl;

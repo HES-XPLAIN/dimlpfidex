@@ -8,7 +8,7 @@ import argparse
 import json
 
 from .trnFun import check_int, check_strictly_positive, check_positive, check_bool, get_data, get_data_class, output_data, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer, validate_string_param
-from .parameters import get_common_parser, get_initial_parser, get_args, sanitizepath, CustomHelpFormatter, int_type
+from .parameters import get_common_parser, get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, bool_type, enum_type
 
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
@@ -20,9 +20,33 @@ def get_and_check_parameters(init_args):
     # Add common attributes
     common_parser = get_common_parser(args, initial_parser)
     # Add new attributes
-    parser = argparse.ArgumentParser(description="This is a parser for mlpTrn", parents=[common_parser], formatter_class=CustomHelpFormatter, add_help=True)
-    parser.add_argument("--weights_outfile", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output file with weights data", default="weights.wts")
-    parser.add_argument("--nb_quant_levels", type=lambda x: int_type(x, min=3), metavar=">2", help="Number of stairs in staircase activation function", default=50)
+    parser = CustomArgumentParser(description="This is a parser for mlpTrn", parents=[common_parser], formatter_class=CustomHelpFormatter, add_help=True)
+    parser.add_argument("--weights_outfile", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output weights file name", metavar="<str>", default="weights.wts")
+    parser.add_argument("--nb_quant_levels", type=lambda x: int_type(x, min=3), metavar="<int [3,inf[>", help="Number of stairs in staircase activation function", default=50)
+    parser.add_argument("--K", type=lambda x: float_type(x, min=0, min_inclusive=False), metavar="<float ]0,inf[>", help="Parameter to improve dynamics", default=1.0)
+    #parser.add_argument("--hidden_layer_sizes", help="Size of each hidden layers", action=TaggableAction, tag="MLP") #TODO
+    parser.add_argument("--activation", choices=["identity", "logistic", "tanh", "relu"], metavar="<{identity, logistic, tanh, relu}>", help="Activation function", default="relu", action=TaggableAction, tag="MLP")
+    parser.add_argument("--solver", choices=["lbfgs", "sgd", "adam"], metavar="<{lbfgs, sgd, adam}>", help="Solver for weight optimization", default="adam", action=TaggableAction, tag="MLP")
+    parser.add_argument("--alpha", type=lambda x: float_type(x, min=0), metavar="<float [0,inf[>", help="Strength of the L2 regularization term", default=0.0001, action=TaggableAction, tag="MLP")
+    parser.add_argument("--batch_size", type=lambda x: enum_type(x, "auto", int_type=dict(func=int_type, min=1)), metavar="<{auto, int [1,inf[}>", help="Size of minibatches for stochastic optimizers for adam and sgd", default="auto", action=TaggableAction, tag="MLP")
+    parser.add_argument("--learning_rate", choices=["constant", "invscaling", "adaptive"], metavar="<{constant, invscaling, adaptive}>", help="Learning rate schedule for weight updates for sgd solver", default="constant", action=TaggableAction, tag="MLP")
+    parser.add_argument("--learning_rate_init", type=lambda x: float_type(x, min=0, min_inclusive=False), metavar="<float ]0,inf[>", help="Initial learning rate for adam and sgd", default=0.001, action=TaggableAction, tag="MLP")
+    parser.add_argument("--power_t", type=lambda x: float_type(x, min=0), metavar="<float [0,inf[>", help="Exponent for inverse scaling learning rate for sgd", default=0.5, action=TaggableAction, tag="MLP")
+    parser.add_argument("--max_iterations", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Maximum number of iterations", default=200, action=TaggableAction, tag="MLP")
+    parser.add_argument("--shuffle", type=bool_type, metavar="<bool>", help="Whether to shuffle samples in each iteration for sgd and adam", default=True, action=TaggableAction, tag="MLP")
+    parser.add_argument("--seed", type=lambda x: int_type(x, min=0, allow_none=True), metavar="<{int [0,inf[, None}>", help="Random seed for sgd and adam", default=None, action=TaggableAction, tag="MLP")
+    parser.add_argument("--tol", type=lambda x: float_type(x, min=0, min_inclusive=False), metavar="<float ]0,inf[>", help="Tolerance for optimization", default=0.0001, action=TaggableAction, tag="MLP")
+    parser.add_argument("--verbose", type=bool_type, metavar="<bool>", help="Enable verbose output", default=False, action=TaggableAction, tag="MLP")
+    parser.add_argument("--warm_start", type=bool_type, metavar="<bool>", help="Whether to reuse previous solution to fit initialization", default=False, action=TaggableAction, tag="MLP")
+    parser.add_argument("--momentum", type=lambda x: float_type(x, min=0, max=1), metavar="<float [0,1]>", help="Momentum for gradient descent update for sgd", default=0.9, action=TaggableAction, tag="MLP")
+    parser.add_argument("--nesterovs_momentum", type=bool_type, metavar="<bool>", help="Whether to use Nesterov’s momentum for sgd and momentum", default=True, action=TaggableAction, tag="MLP")
+    parser.add_argument("--validation_fraction", type=lambda x: float_type(x, min=0, max=1, max_inclusive=False), metavar="<float [0,1[>", help="Proportion of training data to set aside as validation set for early stopping", default=0.1, action=TaggableAction, tag="MLP")
+    parser.add_argument("--beta_1", type=lambda x: float_type(x, min=0, max=1, max_inclusive=False), metavar="<float [0,1[>", help="Exponential decay rate for estimates of first moment vector in adam", default=0.9, action=TaggableAction, tag="MLP")
+    parser.add_argument("--beta_2", type=lambda x: float_type(x, min=0, max=1, max_inclusive=False), metavar="<float [0,1[>", help="Exponential decay rate for estimates of second moment vector in adam", default=0.999, action=TaggableAction, tag="MLP")
+    parser.add_argument("--epsilon", type=lambda x: float_type(x, min=0, min_inclusive=False), metavar="<float ]0,inf[>", help="Value for numerical stability in adam", default=0.00000001, action=TaggableAction, tag="MLP")
+    parser.add_argument("--n_iter_no_change", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Maximum number of epochs to not meet tol improvement for sgd and adam", default=10, action=TaggableAction, tag="MLP")
+    parser.add_argument("--max_fun", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Maximum number of loss function calls for lbfgs", default=15000, action=TaggableAction, tag="MLP")
+
     return get_args(args, init_args, parser) # Return attributes
 
 def mlpTrn(*args, **kwargs):
@@ -38,7 +62,7 @@ def mlpTrn(*args, **kwargs):
             print("Please specify arguments using named parameters.")
             print("Warning! The files are localised with respect to root folder dimlpfidex.")
             print("----------------------------")
-            print("Obligatory parameters :")
+            print("Required parameters :")
             print("train_data_file : train data file")
             print("train_class_file : train class file, not mendatory if classes are specified in train_data_file")
             print("test_data_file : test data file")
@@ -47,12 +71,12 @@ def mlpTrn(*args, **kwargs):
             print("nb_classes : number of classes")
             print("----------------------------")
             print("Optional parameters :")
-            print("root_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
+            print("root_folder : Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
             print("train_pred_outfile : output train prediction file name (predTrain.out by default)")
             print("test_pred_outfile : output test prediction file name (predTest.out by default)")
             print("weights_outfile : output weights file name (weights.wts by default)")
             print("stats_file : output file name with train and test accuracy (stats.txt by default)")
-            print("console_file : file where you redirect console result")
+            print("console_file : file with console logs redirection")
             print("nb_quant_levels : number of stairs in staircase activation function (50 by default)")
             print("K : Parameter to improve dynamics (1 by default)")
             print("----------------------------")
@@ -61,11 +85,11 @@ def mlpTrn(*args, **kwargs):
             print("activation : activation function, identity, logistic, tanh or relu(default)")
             print("solver : solver for weight optimization, lbfgs, sgd or adam (default)")
             print("alpha : strength of the L2 regularization term, positive float (0.0001 by default)")
-            print("batch_size : size of minibatches for stochastic optimizers for adam and sgd, auto(default) or positive integer")
+            print("batch_size : size of minibatches for stochastic optimizers for adam and sgd, auto(default) or strictly positive integer")
             print("learning_rate : learning rate schedule for weight updates for sgd solver, constant(default), invscaling or adaptive")
-            print("learning_rate_init : initial learning rate for adam and sgd, positive float (0.001 by default)")
+            print("learning_rate_init : initial learning rate for adam and sgd, strictly positive float (0.001 by default)")
             print("power_t : exponent for inverse scaling learning rate for sgd, positive float (0.5 by default)")
-            print("max_iterations : maximum number of iterations, positive integer (200 by default)")
+            print("max_iterations : maximum number of iterations, strictly positive integer (200 by default)")
             print("shuffle : whether to shuffle samples in each iteration for sgd and adam, True(default) or False")
             print("seed : positive integer(seed) or None(default) for sgd and adam")
             print("tol : tolerance for optimization (0.0001 by default)")
@@ -77,7 +101,7 @@ def mlpTrn(*args, **kwargs):
             print("validation_fraction : proportion of training data to set aside as validation set for early stopping, between 0 and 1 excluded (0.1 by default)")
             print("beta_1 : exponential decay rate for estimates of first moment vector in adam, between 0 and 1 excluded (0.9 by default)")
             print("beta_2 : exponential decay rate for estimates of second moment vector in adam, between 0 and 1 excluded (0.999 by default)")
-            print("epsilon : value for numerical stability in adam, positive float (1e-8 by default)")
+            print("epsilon : value for numerical stability in adam, strictly positive float (1e-8 by default)")
             print("n_iter_no_change : maximum number of epochs to not meet tol improvement for sgd and adam, integer >= 1 (10 by default)")
             print("max_fun : maximum number of loss function calls for lbfgs, integer >= 1 (15000 by default)")
             print("----------------------------")
@@ -90,12 +114,10 @@ def mlpTrn(*args, **kwargs):
         else:
 
             start_time = time.time()
-
+            console_file = None # In case a ValueError is raise before initialization of console_file
             # Get parameters
-
             args = get_and_check_parameters(split_args)
             print(args)
-            return 0
 
             root_folder = kwargs.get('root_folder')
             train_data_file = kwargs.get('train_data_file')
@@ -377,3 +399,7 @@ def mlpTrn(*args, **kwargs):
             sys.stdout = sys.__stdout__
         print(error)
         return -1
+
+    """except SystemExit:
+        # Specific handling of systemExit
+        return -1"""

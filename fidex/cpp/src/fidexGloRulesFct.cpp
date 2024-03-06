@@ -8,7 +8,7 @@ void showRulesParams() {
   cout << "\n-------------------------------------------------\n"
        << endl;
 
-  cout << "Obligatory parameters : \n"
+  cout << "Required parameters : \n"
        << endl;
   cout << "fidexGloRules --train_data_file <train data file> --train_pred_file <train prediction file> --train_class_file <train true class file, not mendatory if classes are specified in train data file> ";
   cout << "--weights_file <weights file when not using bagging> [Not mendatory if a rules file is given with --rules_file] ";
@@ -23,10 +23,10 @@ void showRulesParams() {
 
   cout << "Options are: \n"
        << endl;
-  cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << endl;
+  cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << endl;
   cout << "--nb_dimlp_nets <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << endl;
   cout << "--attributes_file <file of attributes>" << endl;
-  cout << "--console_file <file where you redirect console result>" << endl; // If we want to redirect console result to file
+  cout << "--console_file <file with console logs redirection>" << endl; // If we want to redirect console result to file
   cout << "--max_itertions <max iteration number, also the max possible number of attributs in a rule (10 by default, should put 25 if working with images)>" << endl;
   cout << "--min_covering <minimum covering number (2 by default)>" << endl;
   cout << "--dropout_dim <dimension dropout parameter>" << endl;
