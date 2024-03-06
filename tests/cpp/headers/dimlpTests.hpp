@@ -8,6 +8,11 @@
 #include "../../../dimlp/cpp/src/dimlpPredFct.h"
 #include "../../../dimlp/cpp/src/dimlpRulFct.h"
 #include "../../../dimlp/cpp/src/dimlpTrnFct.h"
+<<<<<<< HEAD
+=======
+
+const std::string TEMPLATES_PATH = "tests/templates/";
+>>>>>>> 6adbcd3 (Refactored test folder)
 
 const std::string TEMPLATES_PATH = "tests/templates/";
 void testDensCls();

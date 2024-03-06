@@ -1,6 +1,8 @@
 #include "../headers/dimlpTests.hpp"
 
+
 void testDensCls() {
+<<<<<<< HEAD
   std::string command = "--json_config_file " + TEMPLATES_PATH + "config_densCls.json";
   std::string testName = "Simple densCls execution";
 
@@ -10,6 +12,11 @@ void testDensCls() {
   } catch (exception &e) {
     testAssert(testName, false);
   }
+=======
+  std::cout << "testDensCls() not implemented." << std::endl;
+  std::string command = "--json_config_file " + TEMPLATES_PATH + "config_densCls.json";
+  densCls(command);
+>>>>>>> 6adbcd3 (Refactored test folder)
 }
 
 void testDimlpBT() {
