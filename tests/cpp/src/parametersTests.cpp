@@ -188,6 +188,7 @@ void testJsonParser() {
       DROPOUT_DIM,
       MIN_FIDELITY,
   };
+
   auto pJson = Parameters("tests/templates/default_config.json", validParams);
   auto pArgs = Parameters(args, validParams);
 
