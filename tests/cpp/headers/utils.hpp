@@ -12,10 +12,7 @@
 using Json = nlohmann::json;
 
 // default values to avoid generating litterals redundancy
-<<<<<<< HEAD
 static const std::string TEMPLATES_PATH = "tests/templates/";
-=======
->>>>>>> 5d09d4a (Renamed test folder, added dimlp & fidex test's base functions.)
 static const std::string DATA_FOLDER = "tests/dataset/data/";
 static const std::string DEFAULT_ROOT_FOLDER = DATA_FOLDER;
 
