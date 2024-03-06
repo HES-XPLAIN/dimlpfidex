@@ -6,7 +6,7 @@ void showFidexParams() {
   std::cout << "\n-------------------------------------------------\n"
             << std::endl;
 
-  std::cout << "Obligatory parameters : \n"
+  std::cout << "Required parameters : \n"
             << std::endl;
   std::cout << "fidex --train_data_file <train data file> --train_pred_file <train prediction file> --train_class_file <train true class file, not mendatory if classes are specified in train data file> ";
   std::cout << "--test_data_file <test sample(s) data file with data, prediction(if no --test_pred_file) and true class(if no --test_class_file)> ";
@@ -21,13 +21,13 @@ void showFidexParams() {
 
   std::cout << "Options are: \n"
             << std::endl;
-  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   std::cout << "--nb_dimlp_nets <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
   std::cout << "--test_pred_file <test prediction file> ";
   std::cout << "--test_class_file <test true class file> If at least --test_pred_file is specified, --test_data_file needs to have only test datas and eventually classes on same line (don't add --test_class_file in this case)" << std::endl;
   std::cout << "--attributes_file <file of attributes>" << std::endl;
   std::cout << "--stats_file <output statistic file>" << std::endl;
-  std::cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  std::cout << "--console_file <file with console logs redirection>" << std::endl; // If we want to redirect console result to file
   std::cout << "--max_iterations <max iteration number, also the max possible number of attributs in a rule (10 by default, should put 25 if working with images)>" << std::endl;
   std::cout << "--min_covering <minimum covering number (2 by default)>" << std::endl;
   std::cout << "--covering_strategy <if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (True by default)>" << std::endl;

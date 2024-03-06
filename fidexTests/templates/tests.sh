@@ -673,7 +673,7 @@ print_bold "[$SUCCESS/$TOTAL] tests passed within ${SECONDS} seconds."
 
 
 # -------------------------------------------------
-# Obligatory parameters :
+# Required parameters :
 # --train_data_file <train data file>
 # --train_data_file <train prediction file>
 # --train_class_file <train true class file, not mendatory if classes are specified in train data file>
@@ -685,10 +685,10 @@ print_bold "[$SUCCESS/$TOTAL] tests passed within ${SECONDS} seconds."
 # --nb_classes <number of classes><Options>
 
 # Options are:
-# -S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>
+# -S <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>
 # --nb_dimlp_nets <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>
 # --attributes_file <file of attributes>
-# -r <file where you redirect console result>
+# -r <file with console logs redirection>
 # --max_iterations <max iteration number (100 by default)>
 # --min_covering <minimum covering number (2 by default)>
 # --dropout_dim <dimension dropout parameter>

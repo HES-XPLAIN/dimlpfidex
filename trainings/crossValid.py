@@ -112,7 +112,7 @@ def crossValid(*args, **kwargs):
             print("Warning! The files are localised with respect to root folder dimlpfidex.")
 
             print("----------------------------")
-            print("Obligatory parameters :")
+            print("Required parameters :")
             print("train_method : dimlp, dimlpBT, svm, mlp, randForest or gradBoost")
             print("algo : fidex, fidexGlo or both")
             print("data_file : data file")
@@ -121,12 +121,12 @@ def crossValid(*args, **kwargs):
             print("nb_classes : number of output neurons")
 
             print("----------------------------")
-            print("Obligatory parameters if training with dimlp and dimlpBT :")
+            print("Required parameters if training with dimlp and dimlpBT :")
             print("dimlpRul : 1(with dimlpRul) or 0")
 
             print("----------------------------")
             print("Optional parameters :")
-            print("root_folder : Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
+            print("root_folder : Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
             print("crossVal_folder : Folder name where to save crossValidation data (CrossValidation by default)")
             print("K : K-fold cross-validation (10 by default)")
             print("N : number of times we do the cross-validation (10 by default)")

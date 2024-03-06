@@ -6,7 +6,7 @@ void showStatsParams() {
   std::cout << "\n-------------------------------------------------\n"
             << std::endl;
 
-  std::cout << "Obligatory parameters : \n"
+  std::cout << "Required parameters : \n"
             << std::endl;
   std::cout << "fidexGloStats --test_data_file <test data file> --test_pred_file <test prediction file> --test_class_file <test true class file, not mendatory if classes are specified in test data file> ";
   std::cout << "--global_rules_file <rules input file> ";
@@ -17,11 +17,11 @@ void showStatsParams() {
 
   std::cout << "Options are: \n"
             << std::endl;
-  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   std::cout << "--attributes_file <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it" << std::endl;
   std::cout << "--stats_file <stats output file>" << std::endl;
   std::cout << "--global_rules_outfile <global rules output file with stats on test set> If you want to compute statistics of global rules on tests set" << std::endl;
-  std::cout << "--console_file <file where you redirect console result>" << std::endl; // If we want to redirect console result to file
+  std::cout << "--console_file <file with console logs redirection>" << std::endl; // If we want to redirect console result to file
   std::cout << "--decision_threshold <decision threshold for predictions, use if it was used in FidexGlo, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
   std::cout << "--positive_class_index <index of positive class sample to compute true/false positive/negative rates (None by default, put 0 for first class)>" << std::endl; // If we want to compute TP, FP, TN, FN
 
