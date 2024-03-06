@@ -1,0 +1,10 @@
+{
+    "root_folder": "tests/dataset/data",
+    "test_data_file": "test.txt",
+    "test_pred_outfile": "dimlpTest.out",
+    "weights_file": "weights.wts",
+    "nb_attributes": 31,
+    "nb_classes": 7,
+    "H2": 5,
+    "nb_quant_levels": 50
+}
