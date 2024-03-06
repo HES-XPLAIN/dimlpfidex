@@ -1,0 +1,94 @@
+{
+    "rules": [
+        {
+            "antecedants": [
+                {
+                    "attribute": 0,
+                    "inequality": true,
+                    "value": 0.7231
+                },
+                {
+                    "attribute": 3,
+                    "inequality": false,
+                    "value": 0.0031
+                },
+                {
+                    "attribute": 10,
+                    "inequality": true,
+                    "value": 0.36761
+                }
+            ],
+            "coveredSamples": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16
+            ],
+            "outputClass": 0,
+            "fidelity": 1,
+            "accuracy": 0.63,
+            "confidence": 0.8
+        },
+        {
+            "antecedants": [
+                {
+                    "attribute": 0,
+                    "inequality": true,
+                    "value": 0.9931
+                },
+                {
+                    "attribute": 19,
+                    "inequality": true,
+                    "value": 0.3031
+                }
+            ],
+            "coveredSamples": [
+                1,
+                2,
+                3,
+                4,
+                14,
+                15,
+                16
+            ],
+            "outputClass": 1,
+            "fidelity": 1,
+            "accuracy": 0.63,
+            "confidence": 0.8
+        },
+        {
+            "antecedants": [
+                {
+                    "attribute": 19,
+                    "inequality": true,
+                    "value": 0.0001
+                },
+                {
+                    "attribute": 9,
+                    "inequality": false,
+                    "value": 0.5000
+                }
+            ],
+            "coveredSamples": [
+                99,
+                100
+            ],
+            "outputClass": 0,
+            "fidelity": 1,
+            "accuracy": 0.03,
+            "confidence": 0.3
+        }
+    ]
+}

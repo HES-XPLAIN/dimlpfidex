@@ -1,0 +1,3 @@
+Age : original mean: 0.616851845, original std: 0.11426078147981328
+Height : original mean: 12, original std: 0.042500117646895985
+Weight : original mean: 0.6433333333333333, original std: 0.4790151934495977
