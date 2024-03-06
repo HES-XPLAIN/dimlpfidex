@@ -1,6 +1,5 @@
 #include "../headers/dimlpTests.hpp"
 
-
 void testDensCls() {
   std::string command = "--json_config_file " + TEMPLATES_PATH + "config_densCls.json";
   std::string testName = "Simple densCls execution";
