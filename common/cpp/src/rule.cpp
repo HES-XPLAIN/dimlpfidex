@@ -339,7 +339,7 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
 
   // If there is no rule in the file
   if (!foundARule) {
-    throw FileContentError("Error : there is no rule in the file " + rulesFile + ".");
+    throw FileContentError("Error : there is no rule in the file " + rulesFile + ". Note : a rule needs to start with 'Rule' keyword");
   }
 
   return std::vector<bool>{withAttrNamesPattern, withClassNamesPattern};

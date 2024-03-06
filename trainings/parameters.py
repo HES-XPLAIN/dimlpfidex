@@ -87,6 +87,26 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
         usage = prefix + ' '.join(required_parts + optional_parts + tag_parts) + '\n\n'
 
         return usage
+    # Remove positional arguments and options lines
+    def format_help(self):
+        help_message = super().format_help()
+
+        lines = help_message.split('\n')
+        cleaned_lines = []
+        skip_line = False
+        for line in lines:
+            if 'positional arguments:' in line:
+                skip_line = True
+            elif 'options:' in line:
+                skip_line = True
+                cleaned_lines.append("Parameters:")
+            elif skip_line and '---' in line:
+                skip_line = False
+            else:
+                cleaned_lines.append(line)
+                skip_line = False
+        cleaned_help = '\n'.join(cleaned_lines)
+        return cleaned_help
 
 # Add possibility to add a tag
 class TaggableAction(argparse.Action):
