@@ -17,8 +17,10 @@ void runFidextestsSuite() {
 }
 
 int main() {
+  std::cout << "Running tests... (can take a while to finish)" << endl;
   runDimlpTestsSuite();
   runFidextestsSuite();
   runCommonTestSuite();
+  std::cout << "Tests done." << endl;
   return 0;
 }
