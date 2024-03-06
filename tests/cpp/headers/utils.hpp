@@ -12,6 +12,7 @@
 using Json = nlohmann::json;
 
 // default values to avoid generating litterals redundancy
+static const std::string TEMPLATES_PATH = "tests/templates/";
 static const std::string DATA_FOLDER = "tests/dataset/data/";
 static const std::string DEFAULT_ROOT_FOLDER = DATA_FOLDER;
 
