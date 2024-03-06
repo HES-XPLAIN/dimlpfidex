@@ -8,6 +8,7 @@
     "nb_attributes": 31,
     "nb_classes": 7,
     "explanation_file": "explanation.txt",
+    "console_file": "out/fidexGlo_console.out",
     "with_fidex": "true",
     "with_minimal_version": "false",
     "train_data_file": "train.txt",

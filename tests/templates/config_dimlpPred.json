@@ -2,6 +2,7 @@
     "root_folder": "tests/dataset/data",
     "test_data_file": "test.txt",
     "test_pred_outfile": "dimlpTest.out",
+    "console_file": "out/dimlpPred_console.out",
     "weights_file": "weights.wts",
     "nb_attributes": 31,
     "nb_classes": 7,
