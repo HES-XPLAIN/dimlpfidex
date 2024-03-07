@@ -1,7 +1,36 @@
+Global statistics of the rule set :
+Number of rules : 187, mean sample covering number per rule : 26.048128, mean number of antecedents per rule : 5.887701
+
 Statistics with a test set of 211 samples :
 
-The mean covering size per rule is : 26.8389
-The mean number of antecedents per rule is : 7.08057
-The mean rule fidelity rate is : 1
-The mean rule accuracy is : 0.985295
-The mean rule confidence is : 0.964941
+The global rule fidelity rate is : 1.000000
+The global rule accuracy is : 1.000000
+The explainability rate (when we can find one or more rules, either correct ones or activated ones which all agree on the same class) is : 1.000000
+The default rule rate (when we can't find any rule activated for a sample) is : 0.000000
+The mean number of correct(fidel) activated rules per sample is : 1.000000
+The mean number of wrong(not fidel) activated rules per sample is : 0.000000
+The model test accuracy is : 1.000000
+The model test accuracy when rules and model agree is : 1.000000
+The model test accuracy when activated rules and model agree is : 1.000000
+
+With positive class OLD_Normal_Weight :
+
+Computation with model decision :
+The number of true positive test samples is : 0
+The number of false positive test samples is : 0
+The number of true negative test samples is : 211
+The number of false negative test samples is : 0
+The false positive rate is : 0.000000
+The false negative rate is : N/A
+The precision is : N/A
+The recall is : N/A
+
+Computation with rules decision :
+The number of true positive test samples is : 0
+The number of false positive test samples is : 0
+The number of true negative test samples is : 211
+The number of false negative test samples is : 0
+The false positive rate is : 0.000000
+The false negative rate is : N/A
+The precision is : N/A
+The recall is : N/A

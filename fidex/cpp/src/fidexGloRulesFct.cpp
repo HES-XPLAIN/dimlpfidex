@@ -434,16 +434,16 @@ int fidexGloRules(const string &command) {
 
   try {
     // Parsing the command
-    vector<string> commandList;
+    vector<string> commandList = {"fidexGloRules"};
     string s;
-    stringstream ss(" " + command);
+    stringstream ss(command);
 
-    while (getline(ss, s, ' ')) {
+    while (ss >> s) {
       commandList.push_back(s);
     }
 
     size_t nbParam = commandList.size();
-    if (nbParam < 2) {
+    if (nbParam < 2 || commandList[1] == "-h" || commandList[1] == "--help") {
       showRulesParams();
       return -1;
     }
@@ -458,8 +458,9 @@ int fidexGloRules(const string &command) {
     if (commandList[1].compare("--json_config_file") == 0) {
       if (commandList.size() < 3) {
         throw CommandArgumentException("JSON config file name/path is missing");
+      } else if (commandList.size() > 3) {
+        throw CommandArgumentException("Option " + commandList[1] + " has to be the only option in the command if specified.");
       }
-
       try {
         params = std::unique_ptr<Parameters>(new Parameters(commandList[2], validParams));
       } catch (const std::out_of_range &) {

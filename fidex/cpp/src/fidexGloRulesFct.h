@@ -20,6 +20,6 @@
 
 void showRulesParams();
 void checkRulesParametersLogicValues(Parameters &p);
-int fidexGloRules(const string &command);
+int fidexGloRules(const string &command = "");
 
 #endif

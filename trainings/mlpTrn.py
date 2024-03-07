@@ -67,7 +67,6 @@ def mlpTrn(*args, **kwargs):
             raise ValueError('Error : Add string positional arguments between "" to the command. Ex : mlpTrn("-h") or mlpTrn("--nb_attributes 16 --nb_classes 2")')
         if len(split_args) == 0:
             split_args.append("-h")
-        print(split_args)
         args = get_and_check_parameters(split_args)
         hiknot = 5
         console_file = args.console_file
@@ -75,8 +74,6 @@ def mlpTrn(*args, **kwargs):
         # Redirect output in file
         if console_file != None:
             try:
-                if (args.root_folder is not None):
-                    console_file = args.root_folder + "/" + console_file
                 sys.stdout = open(console_file, 'w+')
             except (FileNotFoundError):
                 raise ValueError(f"Error : File {console_file} not found.")

@@ -13,6 +13,6 @@
 void showDimlpPredParams();
 void checkDimlpPredParametersLogicValues(Parameters &p);
 static void SaveOutputs(DataSet &data, Dimlp *net, int nbOut, int nbWeightLayers, const std::string &outfile);
-int dimlpPred(const std::string &command);
+int dimlpPred(const std::string &command = "");
 
 #endif

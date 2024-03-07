@@ -21,6 +21,6 @@
 void showParams();
 void checkParametersLogicValues(Parameters &p);
 void executeFidex(std::vector<std::string> &lines, DataSetFid &dataset, Parameters &p, Hyperspace &hyperspace, vector<double> &mainSampleValues, int mainSamplePred, double mainSamplePredValue, int mainSampleClass, const vector<string> &attributeNames, const vector<string> &classNames);
-int fidexGlo(const std::string &command);
+int fidexGlo(const std::string &command = "");
 
 #endif

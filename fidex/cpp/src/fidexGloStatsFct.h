@@ -16,6 +16,6 @@
 
 void showStatsParams();
 void checkStatsParametersLogicValues(Parameters &p);
-int fidexGloStats(const std::string &command);
+int fidexGloStats(const std::string &command = "");
 
 #endif
