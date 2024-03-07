@@ -135,6 +135,9 @@ def directory(path:str):
 
 
 def sanitizepath(path:str, file:str, access_type : str = 'r'):
+    # Error ff file is an empty string
+    if not file.strip():
+        raise argparse.ArgumentTypeError(f"'{file}' is not a valid filename.")
     result = os.path.join(path, file)
 
     if (access_type == 'r'):
@@ -260,6 +263,8 @@ def get_initial_parser(init_args):
 
     # verifies if args are coming from JSON config file
     if args.json_config_file is not None:
+        if len(init_args) != 2:
+            raise ValueError("Error : option --json_config_file has to be the only option in the command if specified.")
         to_parse = json_to_args(args.json_config_file)
         args = initial_parser.parse_known_args(to_parse)[0]
 

@@ -13,6 +13,6 @@
 
 void showDimlpRulParams();
 void checkDimlpRulParametersLogicValues(Parameters &p);
-int dimlpRul(const std::string &command);
+int dimlpRul(const std::string &command = "");
 
 #endif

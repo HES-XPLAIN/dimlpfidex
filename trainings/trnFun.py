@@ -100,7 +100,7 @@ def get_data_pred(file_name, nb_classes):
 
                     # Check if all elements are floats and the line has the correct number of predictions
                     if len(elements) != nb_classes:
-                        raise ValueError(f"Error in {file_name}: Incorrect number of parameters per line.")
+                        raise ValueError(f"Error in {file_name}: Incorrect number of predictions per line.")
 
                     try:
                         di = [float(elt) for elt in elements]
@@ -159,10 +159,10 @@ def get_data(file_name, nb_attributes, nb_classes=0, keep_string=False):
                         if len(elements) in [nb_attributes, nb_attributes + 1, nb_attributes + nb_classes]:
                             expected_length = len(elements)
                         else:
-                            raise ValueError(f"Error in {file_name}: Incorrect number of parameters per line.")
+                            raise ValueError(f"Error in {file_name}: Incorrect number of values per line.")
 
                     if len(elements) != expected_length:
-                        raise ValueError(f"Error in {file_name}: Inconsistent number of parameters per line.")
+                        raise ValueError(f"Error in {file_name}: Inconsistent number of values per line.")
 
                     # Determine the format based on the number of elements
                     if len(elements) == nb_attributes:
@@ -189,7 +189,7 @@ def get_data(file_name, nb_attributes, nb_classes=0, keep_string=False):
                         except ValueError:
                             raise ValueError(f"Error in {file_name}: Invalid one-hot format.")
                     else:
-                        raise ValueError(f"Error in {file_name}: Incorrect number of parameters per line.")
+                        raise ValueError(f"Error in {file_name}: Incorrect number of values per line.")
 
                     # Check if when there is classes, there is a class for every data
                     if classes and len(classes) != len(data):

@@ -123,6 +123,9 @@ void Parameters::parseArg(const string &param, const string &arg, const std::vec
         throw CommandArgumentException("Illegal option : " + param);
       }
     } else {
+      if (param == "json_config_file") {
+        throw CommandArgumentException("Option " + param + " has to be the only option in the command if specified.");
+      }
       throw CommandArgumentException("Illegal option : " + param);
     }
   }

@@ -13,6 +13,6 @@
 
 void showDimlpBTParams();
 void checkDimlpBTParametersLogicValues(Parameters &p);
-int dimlpBT(const std::string &command);
+int dimlpBT(const std::string &command = "");
 
 #endif
