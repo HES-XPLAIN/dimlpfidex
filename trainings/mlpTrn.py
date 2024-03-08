@@ -4,11 +4,9 @@ from sklearn.neural_network import MLPClassifier
 import warnings
 from sklearn.exceptions import ConvergenceWarning
 from sklearn import metrics
-import argparse
-import json
 
-from .trnFun import check_int, check_strictly_positive, check_positive, check_bool, get_data, get_data_class, output_data, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer, validate_string_param
-from .parameters import get_common_parser, get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, bool_type, enum_type
+from trainings.trnFun import get_data, get_data_class, output_data, compute_first_hidden_layer, output_stats
+from trainings.parameters import get_common_parser, get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, bool_type, list_type, enum_type
 
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
@@ -24,7 +22,8 @@ def get_and_check_parameters(init_args):
     parser.add_argument("--weights_outfile", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output weights file name", metavar="<str>", default="weights.wts")
     parser.add_argument("--nb_quant_levels", type=lambda x: int_type(x, min=3), metavar="<int [3,inf[>", help="Number of stairs in staircase activation function", default=50)
     parser.add_argument("--K", type=lambda x: float_type(x, min=0, min_inclusive=False), metavar="<float ]0,inf[>", help="Parameter to improve dynamics", default=1.0)
-    parser.add_argument("--hidden_layer_sizes", type=lambda x: int_type(x, min=1), nargs='+', metavar="<list<int [1, inf]>>", help="Size of each hidden layers. If you have more than one, add spaces between them. Ex : 100 50 3", default=100, action=TaggableAction, tag="MLP")
+    #parser.add_argument("--hidden_layer_sizes", type=lambda x: int_type(x, min=1), nargs='+', metavar="<list<int [1, inf]>>", help="Size of each hidden layers. If you have more than one, add spaces between them. Ex : 100 50 3", default=100, action=TaggableAction, tag="MLP")
+    parser.add_argument("--hidden_layer_sizes", type=lambda x: list_type(x, dict(func=int_type, min=1)), metavar="<list<int [1, inf]>>", help="Size of each hidden layers", default=100, action=TaggableAction, tag="MLP")
     parser.add_argument("--activation", choices=["identity", "logistic", "tanh", "relu"], metavar="<{identity, logistic, tanh, relu}>", help="Activation function", default="relu", action=TaggableAction, tag="MLP")
     parser.add_argument("--solver", choices=["lbfgs", "sgd", "adam"], metavar="<{lbfgs, sgd, adam}>", help="Solver for weight optimization", default="adam", action=TaggableAction, tag="MLP")
     parser.add_argument("--alpha", type=lambda x: float_type(x, min=0), metavar="<float [0,inf[>", help="Strength of the L2 regularization term", default=0.0001, action=TaggableAction, tag="MLP")
@@ -50,23 +49,17 @@ def get_and_check_parameters(init_args):
 
     return get_args(args, init_args, parser) # Return attributes
 
-def mlpTrn(*args, **kwargs):
+def mlpTrn(args: str = ""):
     try:
-        console_file = None # In case a ValueError is raise before initialization of console_file
+        console_file = None # In case a ValueError is raised before initialization of console_file
         start_time = time.time()
 
         # Get parameters
-        if not args:
-            args=("-h",)
-            if kwargs:
-                raise ValueError('Error : Add positional arguments between "" to the command, not named arguments. Ex : mlpTrn("-h") or mlpTrn("--nb_attributes 16 --nb_classes 2")')
         split_args = []
-        if args and isinstance(args[0], str):
-            split_args = args[0].split()  # string command to list
+        if len(args) != 0:
+            split_args = args.split()  # string command to list
         else:
-            raise ValueError('Error : Add string positional arguments between "" to the command. Ex : mlpTrn("-h") or mlpTrn("--nb_attributes 16 --nb_classes 2")')
-        if len(split_args) == 0:
-            split_args.append("-h")
+            split_args= ["-h"]
         args = get_and_check_parameters(split_args)
         hiknot = 5
         console_file = args.console_file
@@ -162,3 +155,10 @@ def mlpTrn(*args, **kwargs):
             sys.stdout = sys.__stdout__
         print(error)
         return -1
+
+if __name__ == "__main__":
+    cmdline_args = " ".join(sys.argv[1:])
+    mlpTrn(cmdline_args)
+
+
+# Exemple : mlpTrn("--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles")

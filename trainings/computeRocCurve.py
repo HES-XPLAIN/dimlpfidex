@@ -1,6 +1,6 @@
 # Not working with SVM because process is different to get Roc curve
 
-from .trnFun import get_data_class, get_data_pred, compute_roc, check_int, check_strictly_positive, validate_string_param
+from trainings.trnFun import get_data_class, get_data_pred, compute_roc, check_int, check_strictly_positive, validate_string_param
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -126,3 +126,7 @@ def computeRocCurve(*args, **kwargs):
     except ValueError as error:
         print(error)
         return -1
+
+if __name__ == "__main__":
+    cmdline_args = " ".join(sys.argv[1:])
+    mlpTrn(cmdline_args)

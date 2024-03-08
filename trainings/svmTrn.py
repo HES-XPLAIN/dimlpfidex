@@ -5,7 +5,7 @@ from sklearn import metrics
 import numpy as np
 import matplotlib.pyplot as plt
 
-from .trnFun import get_data, get_data_class, check_int, check_strictly_positive, check_positive, check_bool, output_pred, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer, compute_roc, validate_string_param
+from trainings.trnFun import get_data, get_data_class, check_int, check_strictly_positive, check_positive, check_bool, output_pred, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer, compute_roc, validate_string_param
 
 def svmTrn(*args, **kwargs):
     try:
@@ -299,5 +299,8 @@ def svmTrn(*args, **kwargs):
         print(error)
         return -1
 
+if __name__ == "__main__":
+    cmdline_args = " ".join(sys.argv[1:])
+    mlpTrn(cmdline_args)
 
 # Exemple : svmTrn(train_data_file="datanormTrain",train_class_file="dataclass2Train", test_data_file="datanormTest",test_class_file="dataclass2Test", nb_attributes=16, nb_classes=2, weights_outfile = "weights", stats_file = "stats.txt", root_folder = "dimlp/datafiles")
