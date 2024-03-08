@@ -7,8 +7,11 @@ using namespace std;
 void showDimlpPredParams()
 
 {
-  std::cout << "\n-------------------------------------------------\n"
-            << std::endl;
+  std::cout << "---------------------------------------------------------------------" << std::endl;
+  std::cout << "Warning! The files are localised with respect to root folder dimlpfidex." << std::endl;
+  std::cout << "The arguments can be specified in the command or in a json_config_file with --json_config_file your_config_file.json." << std::endl;
+  std::cout << "----------------------------" << std::endl;
+  std::cout << "Required parameters:" << std::endl;
 
   std::cout << "dimlpPred --test_data_file <test set file (path with respect to specified root folder)> ";
   std::cout << "--weights_file <file of weights> ";
@@ -17,8 +20,10 @@ void showDimlpPredParams()
   std::cout << " <Options>\n"
             << std::endl;
 
-  std::cout << "Options are: \n"
+  std::cout << "----------------------------" << std::endl;
+  std::cout << "Optional parameters: \n"
             << std::endl;
+  std::cout << "--json_config_file <JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path>" << std::endl;
   std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   std::cout << "--test_pred_outfile <output prediction file (dimlpTest.out by default)>";
   std::cout << "--console_file <file with console logs redirection>"; // If we want to redirect console result to file
@@ -28,7 +33,7 @@ void showDimlpPredParams()
   std::cout << "--Hk <number of neurons in the kth hidden layer>" << std::endl;
   std::cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
 
-  std::cout << "\n-------------------------------------------------\n"
+  std::cout << "\n---------------------------------------------------------------------\n"
             << std::endl;
 }
 

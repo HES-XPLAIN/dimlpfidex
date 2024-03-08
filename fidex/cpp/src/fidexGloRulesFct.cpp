@@ -5,11 +5,12 @@
  *
  */
 void showRulesParams() {
-  cout << "\n-------------------------------------------------\n"
-       << endl;
+  std::cout << "---------------------------------------------------------------------" << std::endl;
+  std::cout << "Warning! The files are localised with respect to root folder dimlpfidex." << std::endl;
+  std::cout << "The arguments can be specified in the command or in a json_config_file with --json_config_file your_config_file.json." << std::endl;
+  std::cout << "----------------------------" << std::endl;
+  std::cout << "Required parameters:" << std::endl;
 
-  cout << "Required parameters : \n"
-       << endl;
   cout << "fidexGloRules --train_data_file <train data file> --train_pred_file <train prediction file> --train_class_file <train true class file, not mendatory if classes are specified in train data file> ";
   cout << "--weights_file <weights file when not using bagging> [Not mendatory if a rules file is given with --rules_file] ";
   cout << "--weights_generic_filename <weights file in case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file] ";
@@ -21,8 +22,10 @@ void showRulesParams() {
   cout << "<Options>\n"
        << endl;
 
-  cout << "Options are: \n"
-       << endl;
+  std::cout << "----------------------------" << std::endl;
+  std::cout << "Optional parameters: \n"
+            << endl;
+  std::cout << "--json_config_file <JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path>" << std::endl;
   cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << endl;
   cout << "--nb_dimlp_nets <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << endl;
   cout << "--attributes_file <file of attributes>" << endl;
@@ -45,8 +48,8 @@ void showRulesParams() {
   cout << "--lowest_min_fidelity <minimal min_fidelity to which we agree to go down when computing a rule (0.75 by default)>" << endl;
   cout << "--seed <seed (0=random, default)>";
 
-  cout << "\n-------------------------------------------------\n"
-       << endl;
+  std::cout << "\n---------------------------------------------------------------------\n"
+            << std::endl;
 }
 
 /**

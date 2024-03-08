@@ -3,11 +3,12 @@
 using namespace std;
 
 void showFidexParams() {
-  std::cout << "\n-------------------------------------------------\n"
-            << std::endl;
+  std::cout << "---------------------------------------------------------------------" << std::endl;
+  std::cout << "Warning! The files are localised with respect to root folder dimlpfidex." << std::endl;
+  std::cout << "The arguments can be specified in the command or in a json_config_file with --json_config_file your_config_file.json." << std::endl;
+  std::cout << "----------------------------" << std::endl;
+  std::cout << "Required parameters:" << std::endl;
 
-  std::cout << "Required parameters : \n"
-            << std::endl;
   std::cout << "fidex --train_data_file <train data file> --train_pred_file <train prediction file> --train_class_file <train true class file, not mendatory if classes are specified in train data file> ";
   std::cout << "--test_data_file <test sample(s) data file with data, prediction(if no --test_pred_file) and true class(if no --test_class_file)> ";
   std::cout << "--weights_file <weights file when not using bagging> [Not mendatory if a rules file is given with --rules_file] ";
@@ -19,8 +20,10 @@ void showFidexParams() {
   std::cout << "<Options>\n"
             << std::endl;
 
-  std::cout << "Options are: \n"
+  std::cout << "----------------------------" << std::endl;
+  std::cout << "Optional parameters: \n"
             << std::endl;
+  std::cout << "--json_config_file <JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path>" << std::endl;
   std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   std::cout << "--nb_dimlp_nets <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
   std::cout << "--test_pred_file <test prediction file> ";
@@ -45,7 +48,7 @@ void showFidexParams() {
   std::cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)>" << std::endl;
   std::cout << "--seed <seed (0=random, default)>";
 
-  std::cout << "\n-------------------------------------------------\n"
+  std::cout << "\n---------------------------------------------------------------------\n"
             << std::endl;
 }
 

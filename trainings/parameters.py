@@ -37,6 +37,7 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
             self.add_text("")
             self.add_text("---------------------------------------------------------------------")
             self.add_text("Warning! The files are localised with respect to root folder dimlpfidex.")
+            self.add_text("The arguments can be specified in the command or in a json_config_file with --json_config_file your_config_file.json.")
             self.add_text("----------------------------")
             self.add_text("Required parameters:")
             super(CustomHelpFormatter, self).add_arguments(required_actions)
@@ -55,7 +56,6 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
             self.add_text(tag + " parameters (optional):")
             super(CustomHelpFormatter, self).add_arguments(tag_actions)
             self.add_text("")
-            self.add_text("----------------------------")
             self.add_text("----------------------------")
             self.add_text("Execution example :")
             if tag == "MLP":
@@ -173,6 +173,7 @@ class CustomArgumentParser(argparse.ArgumentParser):
     """
     A custom argument parser that overrides the default exit behavior to raise an exception instead of exiting.
     """
+
     # Remove sys.exit
     def exit(self, status=0, message=None):
         """
@@ -410,7 +411,7 @@ def get_initial_parser(init_args):
     :return: A tuple containing the parsed arguments and the initial parser instance.
     """
     initial_parser = CustomArgumentParser(description="This is a parser for root folder and json handling", add_help=False)
-    initial_parser.add_argument("--json_config_file", type=lambda x: sanitizepath("", x), help="JSON config file", metavar="<str>")
+    initial_parser.add_argument("--json_config_file", type=lambda x: sanitizepath("", x), help="JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path", metavar="<str>")
     initial_parser.add_argument("--root_folder", type=directory, help="Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>", metavar="<str>", default="")
 
     args = initial_parser.parse_known_args(init_args)[0]

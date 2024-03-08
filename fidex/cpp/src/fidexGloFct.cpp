@@ -3,11 +3,11 @@
 using namespace std;
 
 void showParams() {
-  std::cout << "\n-------------------------------------------------\n"
-            << std::endl;
-
-  std::cout << "Required parameters : \n"
-            << std::endl;
+  std::cout << "---------------------------------------------------------------------" << std::endl;
+  std::cout << "Warning! The files are localised with respect to root folder dimlpfidex." << std::endl;
+  std::cout << "The arguments can be specified in the command or in a json_config_file with --json_config_file your_config_file.json." << std::endl;
+  std::cout << "----------------------------" << std::endl;
+  std::cout << "Required parameters:" << std::endl;
 
   std::cout << "fidexGlo --test_data_file <test sample(s) data file with data and prediction(if no --test_pred_file), classes may been added here if launching with fidex(--with_fidex)> ";
   std::cout << "--global_rules_file <ruleset input file> ";
@@ -16,8 +16,10 @@ void showParams() {
   std::cout << "<Options>\n"
             << std::endl;
 
-  std::cout << "Options are: \n"
+  std::cout << "----------------------------" << std::endl;
+  std::cout << "Optional parameters: \n"
             << std::endl;
+  std::cout << "--json_config_file <JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path>" << std::endl;
   std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   std::cout << "--attributes_file <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it" << std::endl;
   std::cout << "--test_pred_file <test prediction file> if given, --test_data_file needs to have only test datas" << std::endl;
@@ -54,7 +56,7 @@ void showParams() {
   std::cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)>" << std::endl;
   std::cout << "--seed <seed (0=random, default)>";
 
-  std::cout << "\n-------------------------------------------------\n"
+  std::cout << "\n---------------------------------------------------------------------\n"
             << std::endl;
 }
 

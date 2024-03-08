@@ -22,7 +22,6 @@ def get_and_check_parameters(init_args):
     parser.add_argument("--weights_outfile", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output weights file name", metavar="<str>", default="weights.wts")
     parser.add_argument("--nb_quant_levels", type=lambda x: int_type(x, min=3), metavar="<int [3,inf[>", help="Number of stairs in staircase activation function", default=50)
     parser.add_argument("--K", type=lambda x: float_type(x, min=0, min_inclusive=False), metavar="<float ]0,inf[>", help="Parameter to improve dynamics", default=1.0)
-    #parser.add_argument("--hidden_layer_sizes", type=lambda x: int_type(x, min=1), nargs='+', metavar="<list<int [1, inf]>>", help="Size of each hidden layers. If you have more than one, add spaces between them. Ex : 100 50 3", default=100, action=TaggableAction, tag="MLP")
     parser.add_argument("--hidden_layer_sizes", type=lambda x: list_type(x, dict(func=int_type, min=1)), metavar="<list<int [1, inf]>>", help="Size of each hidden layers", default=100, action=TaggableAction, tag="MLP")
     parser.add_argument("--activation", choices=["identity", "logistic", "tanh", "relu"], metavar="<{identity, logistic, tanh, relu}>", help="Activation function", default="relu", action=TaggableAction, tag="MLP")
     parser.add_argument("--solver", choices=["lbfgs", "sgd", "adam"], metavar="<{lbfgs, sgd, adam}>", help="Solver for weight optimization", default="adam", action=TaggableAction, tag="MLP")
