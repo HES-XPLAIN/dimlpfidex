@@ -32,7 +32,7 @@ import colorsys
 
 
 
-from .trnFun import compute_first_hidden_layer, output_stats, output_data, check_parameters_dimlp_layer, check_parameters_common, get_data, get_data_class, check_strictly_positive, check_int, check_bool, validate_string_param
+from trainings.trnFun import compute_first_hidden_layer, output_stats, output_data, check_parameters_dimlp_layer, check_parameters_common, get_data, get_data_class, check_strictly_positive, check_int, check_bool, validate_string_param
 
 
 def convKeras(*args, **kwargs):
@@ -567,3 +567,7 @@ def convKeras(*args, **kwargs):
             sys.stdout = sys.__stdout__
         print(error)
         return -1
+
+if __name__ == "__main__":
+    cmdline_args = " ".join(sys.argv[1:])
+    mlpTrn(cmdline_args)

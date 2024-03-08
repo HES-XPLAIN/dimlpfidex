@@ -1,6 +1,6 @@
 import time
 import sys
-from .trnFun import get_data, get_data_class, output_data, output_stats, check_parameters_common, check_int, check_strictly_positive, check_positive, check_bool, trees_to_rules, check_parameters_decision_trees, validate_string_param
+from trainings.trnFun import get_data, get_data_class, output_data, output_stats, check_parameters_common, check_int, check_strictly_positive, check_positive, check_bool, trees_to_rules, check_parameters_decision_trees, validate_string_param
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 import numpy as np
@@ -238,3 +238,7 @@ def randForestsTrn(*args, **kwargs):
             sys.stdout = sys.__stdout__
         print(error)
         return -1
+
+if __name__ == "__main__":
+    cmdline_args = " ".join(sys.argv[1:])
+    mlpTrn(cmdline_args)

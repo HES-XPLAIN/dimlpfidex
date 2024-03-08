@@ -2,16 +2,31 @@ import argparse
 import json
 import os
 import sys
+import re
 
 def get_tag_value(actions):
+    """
+    Retrieves the 'tag' attribute from a list of argparse actions.
+
+    :param actions: A list of argparse actions.
+    :return: The first 'tag' attribute value found among the actions, or None if no tag is present.
+    """
     for action in actions:
         tag_value = getattr(action, 'tag', None)
         if tag_value is not None:
             return tag_value
 
 class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
-
+    """
+    A custom help formatter for argparse that categorizes arguments into required, optional, and tagged parameters
+    and enhances help message formatting.
+    """
     def add_arguments(self, actions):
+        """
+        Organizes and adds argument descriptions to the help message.
+
+        :param actions: A list of argparse actions.
+        """
         # Separate actions
         required_actions = [action for action in actions if action.required and getattr(action, 'tag', None) is None]
         optional_actions = [action for action in actions if not action.required and getattr(action, 'tag', None) is None]
@@ -51,6 +66,12 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
 
     # Show default value in help if necessary
     def _get_help_string(self, action):
+        """
+        Retrieves and optionally appends the default value to the help string of an argparse action.
+
+        :param action: An argparse action.
+        :return: The help string with default value information if applicable.
+        """
         help_string = action.help
 
         if '%(default)' not in action.help:
@@ -60,6 +81,12 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
         return help_string
 
     def _format_action_invocation(self, action):
+        """
+        Formats the display of argument invocation in the help message (e.g., how to use the argument).
+
+        :param action: An argparse action.
+        :return: A string representing how to invoke the action.
+        """
         parts = []
         # Add only options (ex: --train_class_file) and metavar (ex: TRAIN_CLASS_FILE)
         for option_string in action.option_strings:
@@ -69,6 +96,14 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
         return ' '.join(parts)
 
     def _format_usage(self, _, actions, groups, prefix):
+        """
+        Customizes the usage message, categorizing actions into required, optional, and tagged for clarity.
+
+        :param actions: A list of argparse actions.
+        :param groups: A list of argument groups.
+        :param prefix: A prefix string for the usage message.
+        :return: A formatted usage string.
+        """
         if prefix is None:
             prefix = 'Usage: \n'
 
@@ -87,8 +122,14 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
         usage = prefix + ' '.join(required_parts + optional_parts + tag_parts) + '\n\n'
 
         return usage
+
     # Remove positional arguments and options lines
     def format_help(self):
+        """
+        Cleans up and formats the overall help message, removing unnecessary lines and organizing content.
+
+        :return: A cleaned and formatted help message string.
+        """
         help_message = super().format_help()
 
         lines = help_message.split('\n')
@@ -110,21 +151,49 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
 
 # Add possibility to add a tag
 class TaggableAction(argparse.Action):
+    """
+    A custom argparse action that supports tagging, allowing for additional metadata to be associated with arguments.
+
+    :param tag: An optional tag to associate with the action.
+    """
     def __init__(self, *args, **kwargs):
+        """
+        Initializes the TaggableAction with optional tag metadata.
+        """
         self.tag = kwargs.pop('tag', None)
         super(TaggableAction, self).__init__(*args, **kwargs)
 
     def __call__(self, parser, namespace, values, option_string=None):
+        """
+        Sets the argument value on the parser namespace, handling the custom action execution.
+        """
         setattr(namespace, self.dest, values)
 
 class CustomArgumentParser(argparse.ArgumentParser):
+    """
+    A custom argument parser that overrides the default exit behavior to raise an exception instead of exiting.
+    """
     # Remove sys.exit
     def exit(self, status=0, message=None):
+        """
+        Overrides the default 'exit' method to prevent system exit on parsing errors.
+
+        :param status: The exit status code.
+        :param message: The error message to print.
+        :raises ValueError: Always raised to avoid exiting the script.
+        """
         if message:
             self._print_message("\nError:\n" + message, sys.stderr)
         raise ValueError("")
 
 def directory(path:str):
+    """
+    A type function for argparse to validate directory paths.
+
+    :param path: The input path string.
+    :return: The validated directory path.
+    :raises argparse.ArgumentTypeError: If the path is not a valid directory.
+    """
     if path == "":
         return ""
 
@@ -135,7 +204,16 @@ def directory(path:str):
 
 
 def sanitizepath(path:str, file:str, access_type : str = 'r'):
-    # Error ff file is an empty string
+    """
+    Validates and constructs a full file path based on a base path and a filename, checking for file existence based on access type.
+
+    :param path: The base path.
+    :param file: The filename to append to the base path.
+    :param access_type: The file access type ('r' for read, 'w' for write).
+    :return: The constructed and validated file path.
+    :raises argparse.ArgumentTypeError: If the path does not exist or the file is not valid.
+    """
+    # Error if file is an empty string
     if not file.strip():
         raise argparse.ArgumentTypeError(f"'{file}' is not a valid filename.")
     result = os.path.join(path, file)
@@ -157,10 +235,20 @@ def sanitizepath(path:str, file:str, access_type : str = 'r'):
 # that is digestible by the argparse parser
 #! this has not been tested with every datatype possible yet
 def json_to_args(jsonfile: str):
+    """
+    Parses a JSON file and converts it into a list of command-line arguments.
+
+    :param jsonfile: The path to the JSON configuration file.
+    :return: A list of command-line arguments derived from the JSON file.
+    :raises ValueError: If there is an error parsing the JSON file.
+    """
     args = ["--json_config_file", jsonfile]
 
     with open(jsonfile, "r") as f:
-        json_dict = json.load(f)
+        try:
+            json_dict = json.load(f)
+        except ValueError as e:
+            raise ValueError(f"Error : {e}\nPS: This error means that your configuration file {jsonfile} has the error specified above in it.")
 
         for k, v in json_dict.items():
             if isinstance(v, list):
@@ -173,6 +261,16 @@ def json_to_args(jsonfile: str):
     return args
 
 def int_type(value:str, min=float('-inf'), max=float('inf'), allow_none=False):
+    """
+    Validates and converts a string to an integer, with optional range constraints and the option to allow None as a value.
+
+    :param value: The input string to convert.
+    :param min: The minimum acceptable value.
+    :param max: The maximum acceptable value.
+    :param allow_none: Whether to allow 'None' as a valid input.
+    :return: The converted integer.
+    :raises argparse.ArgumentTypeError: If the input is invalid or out of the specified range.
+    """
     if allow_none and value == "None":
         return None
     try:
@@ -188,6 +286,17 @@ def int_type(value:str, min=float('-inf'), max=float('inf'), allow_none=False):
     return ivalue
 
 def float_type(value:str, min=float('-inf'), max=float('inf'), min_inclusive=True, max_inclusive=True):
+    """
+    Validates and converts a string to a float, with optional range constraints.
+
+    :param value: The input string to convert.
+    :param min: The minimum acceptable value.
+    :param max: The maximum acceptable value.
+    :param min_inclusive: Whether the minimum value is inclusive.
+    :param max_inclusive: Whether the maximum value is inclusive.
+    :return: The converted float.
+    :raises argparse.ArgumentTypeError: If the input is invalid or out of the specified range.
+    """
     try:
         fvalue = float(value)
     except ValueError:
@@ -205,6 +314,13 @@ def float_type(value:str, min=float('-inf'), max=float('inf'), min_inclusive=Tru
     return fvalue
 
 def bool_type(value):
+    """
+    Converts a string to a boolean value, recognizing various true/false representations.
+
+    :param value: The input string to convert.
+    :return: The converted boolean value.
+    :raises argparse.ArgumentTypeError: If the input cannot be interpreted as a boolean.
+    """
     if isinstance(value, bool):
         return value
     if value.lower() in ('yes', 'true', 't', 'y', '1'):
@@ -214,6 +330,38 @@ def bool_type(value):
     else:
         raise argparse.ArgumentTypeError(f"{value} is not a boolean.")
 
+def list_type(str_list:str, valid_type:dict):
+    """
+    Converts a string representation of a list into a list of values of a specified type,
+    checking this type.
+
+    :param str_list: The string representation of the list to be converted. The string should be
+                     delimited by commas or spaces, and optionally enclosed in brackets or parentheses.
+    :param valid_type: A dictionary specifying the type to which each element of the list should be converted.
+                       It must contain a 'func' key with a function for type conversion, and can include
+                       additional keys for type-specific constraints.
+
+    :return: A list of values of the specified type, with each element having passed the defined constraints.
+
+    Example usage:
+    list_type("[1, 2, 3]", valid_type={'func': int}) -> [1, 2, 3]
+    list_type("4 5 6", valid_type={'func': int, 'min': 3}) -> [4, 5, 6] with min value constraint applied
+    """
+    # Get type
+    type_func = valid_type['func']  # La fonction de conversion
+    constraints = {k: v for k, v in valid_type.items() if k != 'func'}
+
+    # String to list
+    res_temp = str_list.removeprefix('[').removesuffix(']')
+    res_temp = res_temp.removeprefix('(').removesuffix(')')
+    res_temp_lst = list(filter(None, re.split(r'[,\s]+', res_temp)))
+
+    # Check constraints
+    res_lst = []
+    for v in res_temp_lst:
+        res_lst.append(type_func(v, **constraints))
+    print(res_lst)
+    return res_lst
 
 def enum_type(value:str, *valid_strings, **valid_types):
     """
@@ -236,9 +384,9 @@ def enum_type(value:str, *valid_strings, **valid_types):
     errors = []
     for type_key, type_info in valid_types.items():
         type_func = type_info['func']  # Get the type conversion function
-        kwargs = {k: v for k, v in type_info.items() if k != 'func'}  # Get additional arguments, excluding the function itself
+        constraints = {k: v for k, v in type_info.items() if k != 'func'}  # Get additional arguments, excluding the function itself
         try:
-            result = type_func(value, **kwargs)  # Call the function with kwargs
+            result = type_func(value, **constraints)  # Call the function with constraints
             return result
         except (ValueError, argparse.ArgumentTypeError) as e:
             errors.append(e)
@@ -255,6 +403,12 @@ def enum_type(value:str, *valid_strings, **valid_types):
 
 
 def get_initial_parser(init_args):
+    """
+    Creates and returns an initial argparse parser for parsing root folder and JSON configuration file options.
+
+    :param init_args: Initial command-line arguments.
+    :return: A tuple containing the parsed arguments and the initial parser instance.
+    """
     initial_parser = CustomArgumentParser(description="This is a parser for root folder and json handling", add_help=False)
     initial_parser.add_argument("--json_config_file", type=lambda x: sanitizepath("", x), help="JSON config file", metavar="<str>")
     initial_parser.add_argument("--root_folder", type=directory, help="Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>", metavar="<str>", default="")
@@ -271,6 +425,13 @@ def get_initial_parser(init_args):
     return args, initial_parser
 
 def get_common_parser(args, initial_parser):
+    """
+    Creates and returns a common argparse parser for parsing shared training arguments.
+
+    :param args: Previously parsed arguments.
+    :param initial_parser: The initial parser instance to use as a parent for common arguments.
+    :return: The common argparse parser instance.
+    """
     common_parser = CustomArgumentParser(description="This is a parser for common training arguments", parents=[initial_parser], add_help=False)
     common_parser.add_argument("--train_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Train data file", metavar="<str>", required=True)
     common_parser.add_argument("--train_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Train class file, mendatory if classes are not specified in train_data_file", metavar="<str>")
@@ -286,6 +447,14 @@ def get_common_parser(args, initial_parser):
     return common_parser
 
 def get_args(args, init_args, parser):
+    """
+    Finalizes argument parsing, either from the JSON configuration file or command-line input, using a given parser.
+
+    :param args: Previously parsed arguments.
+    :param init_args: Initial command-line arguments.
+    :param parser: The argparse parser instance to use for final argument parsing.
+    :return: The fully parsed arguments.
+    """
     # verifies if args are coming from JSON config file or CLI
     if args.json_config_file is not None:
         to_parse = json_to_args(args.json_config_file)
