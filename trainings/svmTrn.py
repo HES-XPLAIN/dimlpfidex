@@ -14,7 +14,7 @@ def svmTrn(*args, **kwargs):
             print("---------------------------------------------------------------------")
             print("Please specify arguments using named parameters.")
             print("Warning! The files are localised with respect to root folder dimlpfidex.")
-            print("The arguments can be specified in the command or in a json_config_file with --json_config_file your_config_file.json.")
+            print("The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json.")
             print("----------------------------")
             print("Required parameters :")
             print("train_data_file : train data file")

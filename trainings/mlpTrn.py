@@ -60,6 +60,7 @@ def mlpTrn(args: str = ""):
         else:
             split_args= ["-h"]
         args = get_and_check_parameters(split_args)
+        print(args)
         hiknot = 5
         console_file = args.console_file
 
