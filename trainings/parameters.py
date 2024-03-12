@@ -37,7 +37,7 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
             self.add_text("")
             self.add_text("---------------------------------------------------------------------")
             self.add_text("Warning! The files are localised with respect to root folder dimlpfidex.")
-            self.add_text("The arguments can be specified in the command or in a json_config_file with --json_config_file your_config_file.json.")
+            self.add_text("The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json.")
             self.add_text("----------------------------")
             self.add_text("Required parameters:")
             super(CustomHelpFormatter, self).add_arguments(required_actions)
@@ -76,7 +76,10 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
 
         if '%(default)' not in action.help:
             if action.default is not argparse.SUPPRESS and action.default is not None:
-                help_string += ' (default: %(default)s)'
+                if action.default == "":
+                    help_string += ' (default: \"\")'
+                else:
+                    help_string += ' (default: %(default)s)'
 
         return help_string
 
