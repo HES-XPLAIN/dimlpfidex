@@ -93,7 +93,14 @@ void testArgsParser() {
       "--train_data_file", DEFAULT_TRAIN_FILE,
       "--heuristic", "1",
       "--dropout_hyp", "0.4"};
-  std::vector<ParameterCode> validParams;
+
+  std::vector<ParameterCode> validParams = {
+      ROOT_FOLDER,
+      TRAIN_DATA_FILE,
+      HEURISTIC,
+      DROPOUT_HYP,
+      NB_THREADS};
+
   auto p = Parameters(args, validParams);
 
   testAssert("Parameter by user args: parse int", p.getInt(HEURISTIC) == 1);
@@ -144,7 +151,29 @@ void testJsonParser() {
   std::stringstream buffer1;
   std::stringstream buffer2;
 
-  std::vector<ParameterCode> validParams;
+  std::vector<ParameterCode> validParams = {
+      ROOT_FOLDER,
+      TRAIN_DATA_FILE,
+      TRAIN_PRED_FILE,
+      TRAIN_CLASS_FILE,
+      GLOBAL_RULES_OUTFILE,
+      ATTRIBUTES_FILE,
+      WEIGHTS_FILE,
+      NB_ATTRIBUTES,
+      NB_CLASSES,
+      NB_DIMLP_NETS, 
+      NB_QUANT_LEVELS, 
+      HEURISTIC, 
+      MAX_ITERATIONS, 
+      MIN_COVERING, 
+      MAX_FAILED_ATTEMPTS, 
+      NB_THREADS, 
+      POSITIVE_CLASS_INDEX,
+      SEED, DECISION_THRESHOLD, 
+      DROPOUT_HYP, 
+      DROPOUT_DIM, 
+      MIN_FIDELITY,
+  };
   auto pJson = Parameters("tests/templates/default_config.json", validParams);
   auto pArgs = Parameters(args, validParams);
 
