@@ -7,56 +7,67 @@ using namespace std;
 void showDimlpBTParams()
 
 {
-  std::cout << "---------------------------------------------------------------------" << std::endl;
-  std::cout << "Warning! The files are localised with respect to root folder dimlpfidex." << std::endl;
-  std::cout << "The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json." << std::endl;
-  std::cout << "----------------------------" << std::endl;
-  std::cout << "Required parameters:" << std::endl;
-
-  cout << "dimlpBT --train_data_file <training set file(path with respect to specified root folder)> ";
-  cout << "--nb_attributes <number of input neurons> --nb_classes <number of output neurons>";
-
-  cout << " <Options>\n"
-       << std::endl;
-
-  std::cout << "----------------------------" << std::endl;
-  std::cout << "Optional parameters: \n"
+  std::cout << std::endl
+            << "---------------------------------------------------------------------" << std::endl
             << std::endl;
-  std::cout << "--json_config_file <JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path>" << std::endl;
-  cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  cout << "--nb_dimlp_nets <number of networks (25 by default)>" << std::endl;
-  cout << "--attributes_file <file of attributes>" << std::endl;
-  cout << "--test_data_file <testing set file>" << std::endl;
-  cout << "--train_class_file <file of train classes>" << std::endl;
-  cout << "--test_class_file <file of test classes>" << std::endl;
-  cout << "--console_file <file with console logs redirection>" << std::endl; // If we want to redirect console result to file
-  cout << "--weights_generic_outfilename <output weights generic name file(without .wts, dimlpBT by default)>" << std::endl;
-  cout << "--train_pred_outfile <output train prediction file (dimlpBTTrain.out by default)>" << std::endl;
-  cout << "--test_pred_outfile <output test prediction file (dimlpBTTest.out by default)>" << std::endl;
-  cout << "--stats_file <output file with train, test and validation accuracy and with the global accuracy for train and test>" << std::endl;
-  cout << "--H1 <number of neurons in the first hidden layer> ";
-  cout << "(if not specified this number will be equal to the ";
-  cout << "number of input neurons)" << std::endl;
-  cout << "--Hk <number of neurons in the kth hidden layer>" << std::endl;
-  cout << "--with_rule_extraction (RULE EXTRACTION)" << std::endl;
-  cout << "--global_rules_outfile <extraction ruleFile>" << std::endl; // If we want to extract rules in a rulesFile instead of console
-  cout << "--learning_rate <back-propagation learning parameter (Eta, 0.1 by default)>" << std::endl;
-  cout << "--momentum <back-propagation momentum parameter (Mu, 0.6 by default)>" << std::endl;
-  cout << "--flat <back-propagation flat spot elimination parameter (Flat, 0.01 by default)>" << std::endl;
-  cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
-  cout << "--error_thresh <error threshold (None by default)>" << std::endl;
-  cout << "--acc_thresh <accuracy threshold (None by default)>" << std::endl;
-  cout << "--abs_error_thresh <absolute difference error threshold>" << std::endl;
-  cout << "--nb_epochs <number of epochs (0 by default)>" << std::endl;
-  cout << "--nb_epochs_error <number of epochs to show error (1500 by default)>" << std::endl;
-  cout << "--nb_ex_per_net <number of examples for one single network (all examples by default (value 0, it is recommended not to change this value))>" << std::endl;
-  cout << "--normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << std::endl;
-  cout << "--mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
-  cout << "--sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
-  cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)>" << std::endl;
-  cout << "--seed <seed (0=random, default)>";
+  std::cout << "Warning! The files are localised with respect to root folder dimlpfidex." << std::endl;
+  std::cout << "The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json." << std::endl
+            << std::endl;
 
-  std::cout << "\n---------------------------------------------------------------------\n"
+  std::cout << "----------------------------" << std::endl
+            << std::endl;
+  std::cout << "Required parameters:" << std::endl
+            << std::endl;
+
+  std::cout << "--train_data_file <training set file(path with respect to specified root folder)>" << std::endl;
+  std::cout << "--nb_attributes <number of input neurons> --nb_classes <number of output neurons>" << std::endl;
+
+  std::cout << std::endl
+            << "----------------------------" << std::endl
+            << std::endl;
+  std::cout << "Optional parameters: " << std::endl
+            << std::endl;
+
+  std::cout << "--json_config_file <JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path>" << std::endl;
+  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
+  std::cout << "--nb_dimlp_nets <number of networks (25 by default)>" << std::endl;
+  std::cout << "--attributes_file <file of attributes>" << std::endl;
+  std::cout << "--test_data_file <testing set file>" << std::endl;
+  std::cout << "--train_class_file <file of train classes>" << std::endl;
+  std::cout << "--test_class_file <file of test classes>" << std::endl;
+  std::cout << "--console_file <file with console logs redirection>" << std::endl; // If we want to redirect console result to file
+  std::cout << "--weights_generic_outfilename <output weights generic name file(without .wts, dimlpBT by default)>" << std::endl;
+  std::cout << "--train_pred_outfile <output train prediction file (dimlpBTTrain.out by default)>" << std::endl;
+  std::cout << "--test_pred_outfile <output test prediction file (dimlpBTTest.out by default)>" << std::endl;
+  std::cout << "--stats_file <output file with train, test and validation accuracy and with the global accuracy for train and test>" << std::endl;
+  std::cout << "--H1 <number of neurons in the first hidden layer> (if not specified this number will be equal to the number of input neurons)" << std::endl;
+  std::cout << "--Hk <number of neurons in the kth hidden layer>" << std::endl;
+  std::cout << "--with_rule_extraction (RULE EXTRACTION)" << std::endl;
+  std::cout << "--global_rules_outfile <extraction ruleFile>" << std::endl; // If we want to extract rules in a rulesFile instead of console
+  std::cout << "--learning_rate <back-propagation learning parameter (Eta, 0.1 by default)>" << std::endl;
+  std::cout << "--momentum <back-propagation momentum parameter (Mu, 0.6 by default)>" << std::endl;
+  std::cout << "--flat <back-propagation flat spot elimination parameter (Flat, 0.01 by default)>" << std::endl;
+  std::cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
+  std::cout << "--error_thresh <error threshold (None by default)>" << std::endl;
+  std::cout << "--acc_thresh <accuracy threshold (None by default)>" << std::endl;
+  std::cout << "--abs_error_thresh <absolute difference error threshold>" << std::endl;
+  std::cout << "--nb_epochs <number of epochs (0 by default)>" << std::endl;
+  std::cout << "--nb_epochs_error <number of epochs to show error (1500 by default)>" << std::endl;
+  std::cout << "--nb_ex_per_net <number of examples for one single network (all examples by default (value 0, it is recommended not to change this value))>" << std::endl;
+  std::cout << "--normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << std::endl;
+  std::cout << "--mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
+  std::cout << "--sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
+  std::cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)>" << std::endl;
+  std::cout << "--seed <seed (0=random, default)>" << std::endl;
+
+  std::cout << std::endl
+            << "----------------------------" << std::endl
+            << std::endl;
+  std::cout << "Execution example :" << std::endl
+            << std::endl;
+  std::cout << "dimlp.dimlpBT(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_generic_outfilename dimlpDatanormBT --with_rule_extraction true --global_rules_outfile globalRules.rls --train_pred_outfile predTrain.out --test_pred_outfile predTest.out --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
+            << std::endl;
+  std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
 }
 

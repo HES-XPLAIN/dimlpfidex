@@ -4,6 +4,7 @@
 #include "errorHandler.h"
 #include <algorithm>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <regex>
 #include <set>
@@ -27,4 +28,5 @@ std::tuple<std::vector<int>, bool, std::vector<double>, std::vector<double>> par
 bool hasSpaceBetweenWords(const std::string &str);
 bool exists(const std::string &path);
 std::string getOSSeparator();
+void printOptionDescription(const std::string &option, const std::string &description, int width);
 #endif

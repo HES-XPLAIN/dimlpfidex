@@ -394,3 +394,23 @@ std::string getOSSeparator() {
   return "\\";
 #endif
 }
+
+//////////////////////////////////////////////////////
+
+/**
+ * @brief Prints an option and its description aligned at the specified width. If the option length exceeds
+ * a specified width, the description is printed on the next line with indentation matching the option part.
+ * Otherwise, the option and description are printed on the same line.
+ *
+ * @param option The command line option to be printed (e.g., "--train_data_file <str>").
+ * @param description The description for the command line option.
+ * @param width The fixed width for the start of the description part
+ */
+void printOptionDescription(const std::string &option, const std::string &description, int width) {
+  if (option.length() >= width) {
+    std::cout << option << std::endl;
+    std::cout << std::setw(width) << " " << description << std::endl;
+  } else {
+    std::cout << std::left << std::setw(width) << option << description << std::endl;
+  }
+}
