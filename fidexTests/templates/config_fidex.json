@@ -22,7 +22,7 @@
     "dropout_dim": 0.5,
     "min_fidelity": 1.0,
     "covering_strategy": true,
-    "mus":[1,2],
+    "mus":"[175,12]",
     "sigmas":[1,2],
-    "normalization_indices":[32,18]
+    "normalization_indices": "1 20"
 }

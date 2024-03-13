@@ -12,7 +12,7 @@
     "weights_outfile": "mlp/weights.wts",
     "nb_quant_levels": 50,
     "K": 1.0,
-    "hidden_layer_sizes": "[11,,,2]",
+    "hidden_layer_sizes": "11 2",
     "activation": "relu",
     "solver": "adam",
     "alpha": 0.0001,

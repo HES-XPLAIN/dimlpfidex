@@ -570,4 +570,4 @@ def convKeras(*args, **kwargs):
 
 if __name__ == "__main__":
     cmdline_args = " ".join(sys.argv[1:])
-    mlpTrn(cmdline_args)
+    convKeras(cmdline_args)

@@ -167,7 +167,7 @@ bool Rule::isEqual(const Rule &other) const {
  * @brief Generates a regular expression pattern for matching an antecedent of rule using the ids of the attributes.
  *
  * @param nbAttributes The number of attributes that can appear in the rule.
- * @return std::regex The compiled regular expression object that can be used to match an antecedant with attribute's ids.
+ * @return std::string The compiled regular expression object that can be used to match an antecedant with attribute's ids.
  */
 std::string getAntStrPatternWithAttrIds(int nbAttributes) {
   string pattern;
@@ -185,7 +185,7 @@ std::string getAntStrPatternWithAttrIds(int nbAttributes) {
  * @brief Generates a regular expression pattern for matching an antecedent using the names of the attributes.
  *
  * @param attributeNames Vector of the names of the attributes that can appear in the rule.
- * @return std::regex The compiled regular expression object that can be used to match an antecedant with attribute's names.
+ * @return std::string The compiled regular expression object that can be used to match an antecedant with attribute's names.
  */
 std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attributeNames) {
   string attrPattern;
@@ -203,7 +203,7 @@ std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attrib
  * @brief Generates a regular expression pattern for matching a class of rule using the ids of the classes.
  *
  * @param nbClasses The number of classes that can appear in the rule.
- * @return std::regex The compiled regular expression object that can be used to match a rule class id.
+ * @return std::string The compiled regular expression object that can be used to match a rule class id.
  */
 std::string getStrPatternWithClassIds(int nbClasses) {
   string pattern;
@@ -221,7 +221,7 @@ std::string getStrPatternWithClassIds(int nbClasses) {
  * @brief Generates a regular expression pattern for matching a class of rule using the names of the classes.
  *
  * @param classNames Vector of the names of the attributes that can appear in the rule.
- * @return std::regex The compiled regular expression object that can be used to match a rule class name.
+ * @return std::string The compiled regular expression object that can be used to match a rule class name.
  */
 std::string getStrPatternWithClassNames(const std::vector<std::string> &classNames) {
   string classPattern;

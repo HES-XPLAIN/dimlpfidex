@@ -1,9 +1,7 @@
 import numpy as np
 import os
-import sys
 from .stairObj import StairObj
 from sklearn.tree import _tree
-import time
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, auc, RocCurveDisplay
 
