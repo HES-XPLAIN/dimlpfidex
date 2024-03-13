@@ -470,6 +470,7 @@ void Parameters::setDoubleVector(ParameterCode id, const string &value) {
   if (!checkList(value)) {
     throw CommandArgumentException("Error : invalide type for parameter " + getParameterName(id) + ", list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received " + value + ".");
   }
+
   _doubleVectorParams[id] = getDoubleVectorFromString(value);
 }
 

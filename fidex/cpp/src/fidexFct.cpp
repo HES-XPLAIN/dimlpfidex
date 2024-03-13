@@ -64,9 +64,9 @@ void showFidexParams() {
   printOptionDescription("--decision_threshold <float [0,1]>", "Decision threshold for predictions, need to specify the index of positive class if you want to use it", width);
   printOptionDescription("--positive_class_index <int [0,nb_classes-1]>", "Index of positive class for the usage of decision threshold, index starts at 0", width);
   printOptionDescription("--normalization_file <str>", "File containing the mean and std of some attributes. Used to denormalize the rules if specified", width);
-  printOptionDescription("--mus <list<float ]inf,inf[>>", "List in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules", width);
-  printOptionDescription("--sigmas <list<float ]inf,inf[>>", "List in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules", width);
-  printOptionDescription("--normalization_indices <list<int [0,nb_attributes-1]>>", "List in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1])>", width);
+  printOptionDescription("--mus <list<float ]inf,inf[>>", "Mean or median of each attribute index to denormalize in the rules", width);
+  printOptionDescription("--sigmas <list<float ]inf,inf[>>", "Standard deviation of each attribute index to denormalize in the rules", width);
+  printOptionDescription("--normalization_indices <list<int [0,nb_attributes-1]>>", "Attribute indices to denormalize in the rules, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1])>", width);
   printOptionDescription("--seed <int [0,inf[>", "Seed, 0=random (default: 0)", width);
 
   std::cout << std::endl

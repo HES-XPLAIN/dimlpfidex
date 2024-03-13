@@ -64,24 +64,16 @@ bool checkBool(const std::string &inputTemp) {
 /**
  * @brief Checks if a given string is in the format of a list of floating-point numbers.
  *
- * @param input A string representing a list of floats in the format "[a,b,...,c]" without spaces.
+ * @param input A string representing a list of floats in any format in (a,b), [a,b], a,b
+ * with or without spaces, with or without commas.
  * @return bool Returns true if the string is a valid list of floats, false otherwise.
  */
-bool checkList(const std::string &input) {
-  if (input.size() < 3 || input.front() != '[' || input.back() != ']') {
-    return false;
-  }
+bool checkList(const std::string &str) {
+  std::string floatPattern = "(-?\\d+(\\.\\d+)?)";
 
-  std::istringstream iss(input.substr(1, input.size() - 2)); // remove brackets
-  std::string number;
+  std::regex listPattern("(\\[|\\()?(" + floatPattern + ")([ ,]+" + floatPattern + ")*(\\]|\\))?");
 
-  while (std::getline(iss, number, ',')) {
-    if (!checkFloat(number)) {
-      return false;
-    }
-  }
-
-  return true;
+  return std::regex_match(str, listPattern);
 }
 
 ////////////////////////////////////////////////////////
@@ -156,24 +148,21 @@ std::vector<std::string> splitString(const std::string &str, const std::string &
 //////////////////////////////////////////////////////
 
 /**
- * @brief Parses a string representing a list of floats and returns them as a vector.
+ * @brief Parses a string representing a list of doubles and returns them as a vector.
  *
- * @param str A string in the format "[a,b,...,c]" without spaces representing a list of floats.
- * @return std::vector<float> A vector of floats parsed from the string.
+ * @param str A string in in any format in (a,b), [a,b], a,b with or without spaces,
+ * with or without commas representing a list of floats.
+ * @return std::vector<double> A vector of doubles parsed from the string.
  */
-std::vector<double> getDoubleVectorFromString(const std::string &str) {
-  std::vector<double> result;
-  auto tokens = splitString(str.substr(1, str.size() - 2), ",");
-
-  for (const auto &token : tokens) {
-    try {
-      result.push_back(std::stof(token));
-    } catch (const std::invalid_argument &) {
-      throw CommandArgumentException("Error : Invalid float value in float vector: " + token);
-    }
+std::vector<double> getDoubleVectorFromString(std::string str) {
+  std::regex floatPattern("(-?\\d+(\\.\\d+)?)");
+  std::smatch match;
+  std::vector<double> numbers;
+  while (std::regex_search(str, match, floatPattern)) {
+    numbers.push_back(std::stof(match[0].str()));
+    str = match.suffix().str(); // Continue with the rest of the string
   }
-
-  return result;
+  return numbers;
 }
 
 //////////////////////////////////////////////////////
@@ -181,22 +170,23 @@ std::vector<double> getDoubleVectorFromString(const std::string &str) {
 /**
  * @brief Parses a string representing a list of integers and returns them as a vector.
  *
- * @param str A string in the format "[a,b,...,c]" without spaces representing a list of integers.
+ * @param str A string in any format in (a,b), [a,b], a,b with or without spaces,
+ * with or without commas. representing a list of integers.
  * @return std::vector<int> A vector of integers parsed from the string.
  */
-std::vector<int> getIntVectorFromString(const std::string &str) {
-  std::vector<int> result;
-  auto tokens = splitString(str.substr(1, str.size() - 2), ",");
-
-  for (const auto &token : tokens) {
-    if (checkInt(token)) {
-      result.push_back(std::stoi(token));
+std::vector<int> getIntVectorFromString(std::string str) {
+  std::regex floatPattern("(-?\\d+(\\.\\d+)?)");
+  std::smatch match;
+  std::vector<int> numbers;
+  while (std::regex_search(str, match, floatPattern)) {
+    if (checkInt(match[0])) {
+      numbers.push_back(std::stoi(match[0].str()));
     } else {
-      throw CommandArgumentException("Error : Invalid integer value in int vector: " + token);
+      throw CommandArgumentException("Error : Invalid integer value in int vector: " + match[0].str());
     }
+    str = match.suffix().str(); // Continue with the rest of the string
   }
-
-  return result;
+  return numbers;
 }
 
 //////////////////////////////////////////////////////

@@ -1,486 +1,486 @@
 Rule for sample 0 :
 
-FCVC>=2.641288 CALC_Sometimes>=0.523307 Gender_Female>=0.483212 CH2O>=2.199167 family_history_with_overweight_no<0.49658 FAVC_yes>=0.503062 NCP>=2.983198 MTRANS_Public_Transportation>=0.9707 -> OLD_Obesity_Type_III
-   Train Covering size : 66
+CALC_Sometimes>=0.523307 FCVC>=2.697915 Gender_Female>=0.507739 CH2O>=2.217596 family_history_with_overweight_no<0.49658 MTRANS_Automobile<0.533835 NCP>=2.718601 FAVC_yes>=0.40651 TUE<0.174278 -> OLD_Obesity_Type_III
+   Train Covering size : 12
    Train Fidelity : 1
-   Train Accuracy : 0.985075
-   Train Confidence : 0.979687
+   Train Accuracy : 1
+   Train Confidence : 0.980795
 
 -------------------------------------------------
 
 Rule for sample 1 :
 
-FCVC>=2.660164 Gender_Male<0.467986 CALC_Sometimes>=0.523307 family_history_with_overweight_no<0.472936 MTRANS_Public_Transportation>=0.488402 CH2O<1.978014 NCP>=2.383445 -> OLD_Obesity_Type_III
-   Train Covering size : 42
+Gender_Female>=0.507739 Height>=176.68106 CALC_Sometimes>=0.523307 FCVC>=2.641288 family_history_with_overweight_yes>=0.527848 Height<176.734116 FAVC_yes>=0.116851 -> OLD_Obesity_Type_III
+   Train Covering size : 20
    Train Fidelity : 1
-   Train Accuracy : 0.930233
-   Train Confidence : 0.916853
+   Train Accuracy : 0.857143
+   Train Confidence : 0.937614
 
 -------------------------------------------------
 
 Rule for sample 2 :
 
-FCVC>=2.697915 Gender_Male<0.467986 CALC_Sometimes>=0.465793 family_history_with_overweight_no<0.472936 NCP>=2.965558 MTRANS_Public_Transportation>=0.512517 FAVC_no<0.498072 Height>=1.661164 -> OLD_Obesity_Type_III
-   Train Covering size : 62
+Gender_Female>=0.483212 FCVC>=2.697915 family_history_with_overweight_no<0.49658 CALC_Sometimes>=0.49455 Height>=176.68106 TUE>=0.090572 NCP>=2.665682 CAEC_Sometimes>=0.90986 -> OLD_Obesity_Type_III
+   Train Covering size : 52
    Train Fidelity : 1
-   Train Accuracy : 0.984127
-   Train Confidence : 0.954439
+   Train Accuracy : 0.981132
+   Train Confidence : 0.958571
 
 -------------------------------------------------
 
 Rule for sample 3 :
 
-FCVC>=2.697915 Gender_Male<0.619739 Height>=1.71422 FAF<1.837306 CALC_Sometimes>=0.552064 NCP>=2.983198 CAEC_Sometimes>=0.884362 -> OLD_Obesity_Type_III
-   Train Covering size : 32
+Gender_Male<0.392109 FCVC>=2.697915 Height>=176.71422 NCP<3.036117 NCP>=2.965558 CH2O<1.996443 -> OLD_Obesity_Type_III
+   Train Covering size : 8
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.964383
+   Train Confidence : 0.924753
 
 -------------------------------------------------
 
 Rule for sample 4 :
 
-FCVC>=2.622413 Gender_Male<0.467986 family_history_with_overweight_no<0.49658 CAEC_Frequently<0.519712 CALC_no<0.50141 MTRANS_Public_Transportation>=0.512517 CH2O<1.996443 TUE>=0.098942 NCP>=2.365805 -> OLD_Obesity_Type_III
-   Train Covering size : 43
+Gender_Male<0.467986 FCVC>=2.660164 CALC_Sometimes>=0.523307 family_history_with_overweight_no<0.49658 NCP>=2.983198 CH2O<1.978014 TUE>=0.107313 CAEC_Frequently<0.986679 -> OLD_Obesity_Type_III
+   Train Covering size : 41
    Train Fidelity : 1
-   Train Accuracy : 0.909091
-   Train Confidence : 0.916662
+   Train Accuracy : 0.952381
+   Train Confidence : 0.922504
 
 -------------------------------------------------
 
 Rule for sample 5 :
 
-Gender_Male<0.467986 CALC_no<0.50141 CH2O>=2.272885 Height>=1.608109 FCVC>=2.697915 CH2O<2.696762 NCP>=2.683322 Height<1.734116 -> OLD_Obesity_Type_III
-   Train Covering size : 24
+FCVC>=2.697915 Gender_Male<0.392109 CH2O>=2.180738 CALC_Sometimes>=0.49455 FAF<1.795471 NCP>=2.983198 Height>=176.614741 Height<176.628005 -> OLD_Obesity_Type_III
+   Train Covering size : 8
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.98082
+   Train Confidence : 0.978508
 
 -------------------------------------------------
 
 Rule for sample 6 :
 
-FCVC>=2.622413 Gender_Female>=0.507739 family_history_with_overweight_yes>=0.471392 NCP>=2.965558 CH2O>=2.236026 CALC_Sometimes>=0.552064 FAVC_yes>=0.470878 MTRANS_Automobile<0.506953 MTRANS_Public_Transportation>=0.922471 -> OLD_Obesity_Type_III
-   Train Covering size : 64
+FCVC>=2.67904 Gender_Female>=0.507739 CH2O>=2.180738 CALC_no<0.50141 CH2O<2.75205 CH2O>=2.494038 NCP>=2.683322 MTRANS_Automobile<0.990823 -> OLD_Obesity_Type_III
+   Train Covering size : 30
    Train Fidelity : 1
-   Train Accuracy : 0.984615
-   Train Confidence : 0.980677
+   Train Accuracy : 1
+   Train Confidence : 0.982099
 
 -------------------------------------------------
 
 Rule for sample 7 :
 
-Gender_Female>=0.507739 Height>=1.74738 NCP>=2.965558 family_history_with_overweight_yes>=0.527848 CAEC_Sometimes>=0.501891 TUE>=0.115683 Height<1.754011 -> OLD_Obesity_Type_III
-   Train Covering size : 5
+CALC_Sometimes>=0.49455 Gender_Male<0.467986 FCVC>=2.67904 FAVC_no<0.469106 family_history_with_overweight_no<0.520224 NCP>=2.983198 CAEC_Sometimes>=0.450895 Height>=176.71422 -> OLD_Obesity_Type_III
+   Train Covering size : 41
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.963289
+   Train Confidence : 0.965276
 
 -------------------------------------------------
 
 Rule for sample 8 :
 
-FCVC>=2.660164 Gender_Male<0.467986 CH2O>=2.236026 CALC_Sometimes>=0.465793 Height>=1.727484 NCP>=2.648042 Height<1.820331 -> OLD_Obesity_Type_III
-   Train Covering size : 25
+Gender_Female>=0.507739 CALC_Sometimes>=0.523307 Height>=176.767275 family_history_with_overweight_no<0.472936 MTRANS_Automobile<0.937059 -> OLD_Obesity_Type_III
+   Train Covering size : 14
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.980089
+   Train Confidence : 0.976246
 
 -------------------------------------------------
 
 Rule for sample 9 :
 
-FCVC>=2.67904 Gender_Female>=0.507739 CALC_Sometimes>=0.408279 Height>=1.787171 family_history_with_overweight_yes>=0.866586 -> OLD_Obesity_Type_III
-   Train Covering size : 11
+FCVC>=2.67904 Gender_Male<0.619739 CALC_Sometimes>=0.49455 Height>=176.807067 family_history_with_overweight_yes>=0.979498 -> OLD_Obesity_Type_III
+   Train Covering size : 5
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.973757
+   Train Confidence : 0.975831
 
 -------------------------------------------------
 
 Rule for sample 10 :
 
-CALC_Sometimes>=0.49455 Gender_Female>=0.507739 Height>=1.787171 NCP<3.124316 Height<1.820331 -> OLD_Obesity_Type_III
-   Train Covering size : 8
+FCVC>=2.697915 CH2O>=2.291314 Gender_Male<0.543863 CALC_Sometimes>=0.49455 Height>=176.727484 FAF<1.481713 -> OLD_Obesity_Type_III
+   Train Covering size : 15
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.974215
+   Train Confidence : 0.979829
 
 -------------------------------------------------
 
 Rule for sample 11 :
 
-Gender_Female>=0.507739 CH2O>=2.494038 Height>=1.734116 FAF<1.774554 CALC_Sometimes>=0.523307 FAVC_no<0.932563 -> OLD_Obesity_Type_III
-   Train Covering size : 15
+Gender_Male<0.543863 CH2O>=2.494038 FCVC>=2.641288 Height>=176.727484 FAF<1.565382 -> OLD_Obesity_Type_III
+   Train Covering size : 12
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.983432
+   Train Confidence : 0.983329
 
 -------------------------------------------------
 
 Rule for sample 12 :
 
-FCVC>=2.697915 Gender_Male<0.467986 Height>=1.740748 TUE>=0.140795 FAF<1.983726 CALC_Sometimes>=0.523307 FAF>=1.439879 -> OLD_Obesity_Type_III
-   Train Covering size : 13
+Gender_Female>=0.507739 Height>=176.74738 FCVC>=2.660164 CH2O>=2.254455 Height<176.754011 -> OLD_Obesity_Type_III
+   Train Covering size : 4
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.975523
+   Train Confidence : 0.980326
 
 -------------------------------------------------
 
 Rule for sample 13 :
 
-Gender_Female>=0.507739 CH2O>=2.494038 CALC_no<0.470845 CH2O<2.586185 Height>=1.628005 -> OLD_Obesity_Type_III
-   Train Covering size : 5
+FCVC>=2.697915 CH2O>=2.272885 MTRANS_Public_Transportation>=0.464287 CH2O<2.715191 Gender_Female>=0.507739 CALC_Sometimes>=0.49455 NCP>=2.700961 family_history_with_overweight_yes>=0.979498 -> OLD_Obesity_Type_III
+   Train Covering size : 40
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.981537
+   Train Confidence : 0.980086
 
 -------------------------------------------------
 
 Rule for sample 14 :
 
-Gender_Male<0.467986 FCVC>=2.697915 CH2O>=2.236026 CALC_Sometimes>=0.49455 CH2O<2.641474 Height>=1.628005 -> OLD_Obesity_Type_III
-   Train Covering size : 23
+FCVC>=2.697915 Gender_Male<0.392109 CH2O>=2.199167 CALC_no<0.50141 family_history_with_overweight_no<0.49658 NCP>=2.965558 CH2O<2.733621 CH2O>=2.494038 -> OLD_Obesity_Type_III
+   Train Covering size : 29
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.977221
+   Train Confidence : 0.982205
 
 -------------------------------------------------
 
 Rule for sample 15 :
 
-FCVC>=2.660164 Gender_Male<0.392109 CALC_Sometimes>=0.523307 CH2O>=2.217596 Height>=1.614741 CH2O<2.75205 FAVC_no<0.469106 NCP>=2.648042 Height<1.720852 -> OLD_Obesity_Type_III
-   Train Covering size : 28
+Gender_Male<0.467986 CH2O>=2.494038 CALC_Sometimes>=0.552064 Height>=176.614741 Height<176.628005 NCP>=2.454004 -> OLD_Obesity_Type_III
+   Train Covering size : 7
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.981121
+   Train Confidence : 0.982144
 
 -------------------------------------------------
 
 Rule for sample 16 :
 
-FCVC>=2.697915 Gender_Female>=0.556791 CH2O>=2.217596 CALC_no<0.470845 NCP>=2.965558 family_history_with_overweight_no<0.49658 Height>=1.621373 Height<1.628005 -> OLD_Obesity_Type_III
-   Train Covering size : 6
+FCVC>=2.660164 NCP>=2.983198 MTRANS_Public_Transportation>=0.512517 CH2O>=2.272885 Gender_Female>=0.507739 TUE>=0.015236 CALC_Sometimes>=0.523307 FAVC_yes>=0.503062 family_history_with_overweight_no<0.023695 -> OLD_Obesity_Type_III
+   Train Covering size : 63
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.982108
+   Train Accuracy : 0.984375
+   Train Confidence : 0.981031
 
 -------------------------------------------------
 
 Rule for sample 17 :
 
-Gender_Male<0.543863 CALC_Sometimes>=0.523307 Height>=1.740748 CH2O>=2.217596 FAF<2.234733 family_history_with_overweight_no<0.118272 -> OLD_Obesity_Type_III
-   Train Covering size : 24
+MTRANS_Public_Transportation>=0.512517 FCVC>=2.697915 Gender_Female>=0.507739 family_history_with_overweight_no<0.49658 CALC_Sometimes>=0.465793 NCP>=2.983198 Height>=176.754011 -> OLD_Obesity_Type_III
+   Train Covering size : 18
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.979479
+   Train Confidence : 0.972439
 
 -------------------------------------------------
 
 Rule for sample 18 :
 
-Gender_Female>=0.507739 CALC_Sometimes>=0.49455 family_history_with_overweight_no<0.472936 FCVC>=2.697915 Height>=1.760643 TUE>=0.19939 -> OLD_Obesity_Type_III
-   Train Covering size : 15
+Gender_Female>=0.483212 Height>=176.740748 FAF<1.711803 FAF>=1.439879 -> OLD_Obesity_Type_III
+   Train Covering size : 11
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.976442
+   Train Confidence : 0.976764
 
 -------------------------------------------------
 
 Rule for sample 19 :
 
-FCVC>=2.697915 Gender_Male<0.543863 CALC_no<0.50141 family_history_with_overweight_yes>=0.414936 MTRANS_Public_Transportation>=0.488402 NCP>=2.78916 CH2O<1.959584 -> OLD_Obesity_Type_III
-   Train Covering size : 42
+FCVC>=2.697915 Gender_Male<0.467986 CALC_Sometimes>=0.523307 family_history_with_overweight_yes>=0.471392 NCP>=2.983198 MTRANS_Public_Transportation>=0.488402 CH2O<1.959584 -> OLD_Obesity_Type_III
+   Train Covering size : 41
    Train Fidelity : 1
-   Train Accuracy : 0.930233
-   Train Confidence : 0.91681
+   Train Accuracy : 0.952381
+   Train Confidence : 0.922464
 
 -------------------------------------------------
 
 Rule for sample 20 :
 
-Gender_Male<0.543863 FCVC>=2.641288 family_history_with_overweight_no<0.49658 MTRANS_Public_Transportation>=0.488402 CAEC_Sometimes>=0.501891 CALC_Sometimes>=0.465793 NCP>=2.983198 FAVC_no<0.961529 -> OLD_Obesity_Type_III
-   Train Covering size : 115
+FCVC>=2.697915 CALC_no<0.50141 Gender_Male<0.467986 Height>=176.608109 MTRANS_Public_Transportation>=0.512517 TUE>=0.015236 family_history_with_overweight_yes>=0.527848 CALC_Sometimes>=0.49455 NCP>=2.665682 Height<176.614741 -> OLD_Obesity_Type_III
+   Train Covering size : 3
    Train Fidelity : 1
-   Train Accuracy : 0.956897
-   Train Confidence : 0.95636
+   Train Accuracy : 1
+   Train Confidence : 0.925012
 
 -------------------------------------------------
 
 Rule for sample 21 :
 
-FCVC>=2.697915 Gender_Female>=0.532265 family_history_with_overweight_yes>=0.527848 CALC_no<0.50141 MTRANS_Public_Transportation>=0.512517 Height>=1.614741 TUE>=0.006865 CH2O<1.978014 NCP>=2.401085 -> OLD_Obesity_Type_III
-   Train Covering size : 32
+CALC_Sometimes>=0.465793 Gender_Male<0.467986 FCVC>=2.697915 family_history_with_overweight_no<0.520224 NCP>=2.983198 FAVC_yes>=0.503062 TUE>=0.006865 Height>=176.614741 -> OLD_Obesity_Type_III
+   Train Covering size : 100
    Train Fidelity : 1
-   Train Accuracy : 0.909091
-   Train Confidence : 0.915059
+   Train Accuracy : 0.970297
+   Train Confidence : 0.959568
 
 -------------------------------------------------
 
 Rule for sample 22 :
 
-FCVC>=2.697915 TUE>=0.082201 Gender_Male<0.543863 CALC_Sometimes>=0.49455 family_history_with_overweight_yes>=0.471392 Height>=1.621373 FAVC_yes>=0.503062 NCP>=2.595123 -> OLD_Obesity_Type_III
-   Train Covering size : 97
+FCVC>=2.697915 Gender_Female>=0.507739 family_history_with_overweight_no<0.49658 MTRANS_Public_Transportation>=0.488402 CAEC_Sometimes>=0.476393 FAVC_yes>=0.503062 NCP>=2.947919 CALC_Sometimes>=0.49455 Height>=176.641269 -> OLD_Obesity_Type_III
+   Train Covering size : 76
    Train Fidelity : 1
-   Train Accuracy : 0.959184
-   Train Confidence : 0.956565
+   Train Accuracy : 0.961039
+   Train Confidence : 0.955954
 
 -------------------------------------------------
 
 Rule for sample 23 :
 
-FCVC>=2.67904 Gender_Male<0.467986 CH2O>=2.291314 CH2O<2.75205 Height>=1.787171 -> OLD_Obesity_Type_III
-   Train Covering size : 6
+FCVC>=2.660164 CH2O>=2.272885 Gender_Male<0.467986 Height>=176.760643 Height<176.820331 -> OLD_Obesity_Type_III
+   Train Covering size : 10
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.979753
+   Train Confidence : 0.981096
 
 -------------------------------------------------
 
 Rule for sample 24 :
 
-FCVC>=2.697915 Gender_Female>=0.507739 Height>=1.780539 family_history_with_overweight_yes>=0.979498 -> OLD_Obesity_Type_III
-   Train Covering size : 12
+Gender_Female>=0.507739 Height>=176.787171 family_history_with_overweight_no<0.000051 -> OLD_Obesity_Type_III
+   Train Covering size : 11
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.974973
+   Train Confidence : 0.974868
 
 -------------------------------------------------
 
 Rule for sample 25 :
 
-FCVC>=2.67904 Gender_Female>=0.483212 Height>=1.800435 Height<1.807067 -> OLD_Obesity_Type_III
-   Train Covering size : 2
+Gender_Male<0.467986 NCP>=2.983198 Height>=176.787171 family_history_with_overweight_no<0.000051 -> OLD_Obesity_Type_III
+   Train Covering size : 11
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.968532
+   Train Confidence : 0.972778
 
 -------------------------------------------------
 
 Rule for sample 26 :
 
-FCVC>=2.67904 Gender_Male<0.543863 family_history_with_overweight_yes>=0.527848 Height>=1.800435 -> OLD_Obesity_Type_III
-   Train Covering size : 7
+Gender_Female>=0.507739 Height>=176.787171 family_history_with_overweight_no<0.000051 -> OLD_Obesity_Type_III
+   Train Covering size : 11
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.973136
+   Train Confidence : 0.972569
 
 -------------------------------------------------
 
 Rule for sample 27 :
 
-NCP>=2.947919 FCVC>=2.641288 Gender_Female>=0.483212 CALC_Sometimes>=0.49455 FAVC_yes>=0.503062 family_history_with_overweight_no<0.49658 CH2O>=2.143879 MTRANS_Public_Transportation>=0.9707 -> OLD_Obesity_Type_III
-   Train Covering size : 70
+Gender_Male<0.467986 CALC_no<0.50141 CH2O>=2.291314 Height>=176.641269 FCVC>=2.414781 NCP>=2.736241 CALC_Sometimes>=0.49455 FAF<1.439879 -> OLD_Obesity_Type_III
+   Train Covering size : 28
    Train Fidelity : 1
-   Train Accuracy : 0.985915
-   Train Confidence : 0.978344
+   Train Accuracy : 0.965517
+   Train Confidence : 0.980108
 
 -------------------------------------------------
 
 Rule for sample 28 :
 
-FCVC>=2.697915 Gender_Male<0.543863 CH2O>=2.180738 CALC_no<0.50141 family_history_with_overweight_yes>=0.527848 Height>=1.634637 CALC_Frequently<0.491917 TUE<0.19939 -> OLD_Obesity_Type_III
-   Train Covering size : 10
+CH2O>=2.549326 Gender_Female>=0.458686 CALC_Sometimes>=0.552064 FCVC>=2.528035 Height>=176.634637 FAF<1.837306 SCC_no>=12.926422 NCP>=2.489284 -> OLD_Obesity_Type_III
+   Train Covering size : 33
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.981311
+   Train Accuracy : 0.970588
+   Train Confidence : 0.982496
 
 -------------------------------------------------
 
 Rule for sample 29 :
 
-Gender_Male<0.164478 FCVC>=2.67904 family_history_with_overweight_no<0.543868 NCP>=2.983198 CALC_Sometimes>=0.523307 CH2O<1.959584 MTRANS_Public_Transportation>=0.9707 -> OLD_Obesity_Type_III
-   Train Covering size : 41
+FCVC>=2.67904 Gender_Female>=0.532265 CALC_no<0.50141 family_history_with_overweight_yes>=0.471392 MTRANS_Public_Transportation>=0.512517 CH2O<1.996443 NCP>=2.418725 -> OLD_Obesity_Type_III
+   Train Covering size : 42
    Train Fidelity : 1
-   Train Accuracy : 0.952381
-   Train Confidence : 0.922496
+   Train Accuracy : 0.930233
+   Train Confidence : 0.916842
 
 -------------------------------------------------
 
 Rule for sample 30 :
 
-Gender_Male<0.543863 CALC_no<0.50141 MTRANS_Public_Transportation>=0.512517 family_history_with_overweight_no<0.520224 FCVC>=2.697915 SCC_yes<0.50511 CH2O<1.978014 TUE>=0.098942 NCP>=2.365805 -> OLD_Obesity_Type_III
-   Train Covering size : 42
+Gender_Female>=0.483212 CALC_Sometimes>=0.49455 FCVC>=2.697915 NCP>=2.965558 family_history_with_overweight_yes>=0.527848 FAVC_yes>=0.503062 Height>=176.621373 SMOKE_no>=0.495019 TUE>=0.19939 -> OLD_Obesity_Type_III
+   Train Covering size : 86
    Train Fidelity : 1
-   Train Accuracy : 0.930233
-   Train Confidence : 0.916817
+   Train Accuracy : 0.965517
+   Train Confidence : 0.956827
 
 -------------------------------------------------
 
 Rule for sample 31 :
 
-Gender_Female>=0.507739 Height>=1.654532 CALC_Sometimes>=0.465793 FCVC>=2.622413 family_history_with_overweight_no<0.49658 MTRANS_Public_Transportation>=0.512517 NCP>=2.665682 CAEC_Sometimes>=0.858864 -> OLD_Obesity_Type_III
-   Train Covering size : 69
+FCVC>=2.67904 Gender_Female>=0.507739 CALC_Sometimes>=0.49455 family_history_with_overweight_no<0.543868 NCP>=2.84208 MTRANS_Public_Transportation>=0.440172 Height>=176.654532 CAEC_Sometimes>=0.78237 -> OLD_Obesity_Type_III
+   Train Covering size : 67
    Train Fidelity : 1
-   Train Accuracy : 0.957143
-   Train Confidence : 0.954272
+   Train Accuracy : 0.985294
+   Train Confidence : 0.954558
 
 -------------------------------------------------
 
 Rule for sample 32 :
 
-CALC_no<0.50141 FCVC>=2.622413 Gender_Male<0.619739 family_history_with_overweight_no<0.472936 NCP>=2.84208 MTRANS_Public_Transportation>=0.488402 CH2O<1.978014 -> OLD_Obesity_Type_III
-   Train Covering size : 43
+CALC_Sometimes>=0.49455 FCVC>=2.67904 TUE>=0.090572 family_history_with_overweight_yes>=0.527848 MTRANS_Public_Transportation>=0.488402 Gender_Female>=0.507739 CH2O<1.978014 NCP>=2.401085 -> OLD_Obesity_Type_III
+   Train Covering size : 42
    Train Fidelity : 1
-   Train Accuracy : 0.909091
-   Train Confidence : 0.916642
+   Train Accuracy : 0.930233
+   Train Confidence : 0.916829
 
 -------------------------------------------------
 
 Rule for sample 33 :
 
-Gender_Male<0.392109 FCVC>=2.641288 CALC_Sometimes>=0.49455 family_history_with_overweight_no<0.449291 TUE>=0.006865 Height>=1.654532 NCP>=2.665682 FAVC_yes>=0.020299 -> OLD_Obesity_Type_III
-   Train Covering size : 69
+FCVC>=2.697915 Gender_Male<0.392109 family_history_with_overweight_no<0.472936 CALC_Sometimes>=0.49455 Height>=176.654532 NCP>=2.965558 CAEC_Sometimes>=0.476393 FAVC_yes>=0.052483 -> OLD_Obesity_Type_III
+   Train Covering size : 67
    Train Fidelity : 1
-   Train Accuracy : 0.957143
-   Train Confidence : 0.954267
+   Train Accuracy : 0.985294
+   Train Confidence : 0.954552
 
 -------------------------------------------------
 
 Rule for sample 34 :
 
-Gender_Female>=0.458686 CALC_Sometimes>=0.552064 FCVC>=2.641288 family_history_with_overweight_yes>=0.527848 MTRANS_Public_Transportation>=0.464287 FAVC_no<0.469106 CH2O<1.978014 NCP>=2.365805 -> OLD_Obesity_Type_III
-   Train Covering size : 43
+Gender_Male<0.467986 CALC_no<0.470845 FCVC>=2.697915 family_history_with_overweight_no<0.449291 MTRANS_Public_Transportation>=0.512517 NCP>=2.983198 FAVC_no<0.498072 CALC_Sometimes>=0.49455 TUE>=0.006865 CAEC_Sometimes>=0.884362 -> OLD_Obesity_Type_III
+   Train Covering size : 113
    Train Fidelity : 1
-   Train Accuracy : 0.909091
-   Train Confidence : 0.916642
+   Train Accuracy : 0.973684
+   Train Confidence : 0.956574
 
 -------------------------------------------------
 
 Rule for sample 35 :
 
-FCVC>=2.641288 Gender_Female>=0.507739 family_history_with_overweight_yes>=0.527848 CALC_no<0.50141 NCP>=2.84208 Height>=1.661164 CALC_Frequently<0.491917 FAVC_yes>=0.535247 NCP>=2.965558 -> OLD_Obesity_Type_III
-   Train Covering size : 64
+Gender_Female>=0.532265 FCVC>=2.67904 CALC_Sometimes>=0.49455 CAEC_Sometimes>=0.450895 family_history_with_overweight_no<0.520224 MTRANS_Public_Transportation>=0.512517 NCP>=2.983198 CH2O<1.941155 -> OLD_Obesity_Type_III
+   Train Covering size : 40
    Train Fidelity : 1
-   Train Accuracy : 0.953846
-   Train Confidence : 0.954133
+   Train Accuracy : 0.951219
+   Train Confidence : 0.922454
 
 -------------------------------------------------
 
 Rule for sample 36 :
 
-FCVC>=2.697915 Gender_Female>=0.507739 CALC_Sometimes>=0.49455 CAEC_Sometimes>=0.425397 family_history_with_overweight_no<0.49658 Height>=1.661164 Height<1.667796 -> OLD_Obesity_Type_III
-   Train Covering size : 4
+FCVC>=2.67904 Gender_Female>=0.507739 CALC_Sometimes>=0.523307 NCP>=2.947919 family_history_with_overweight_yes>=0.35848 FAVC_no<0.498072 Height>=176.654532 MTRANS_Automobile<0.990823 -> OLD_Obesity_Type_III
+   Train Covering size : 67
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.932083
+   Train Accuracy : 0.985294
+   Train Confidence : 0.954575
 
 -------------------------------------------------
 
 Rule for sample 37 :
 
-FCVC>=2.697915 Gender_Male<0.392109 family_history_with_overweight_no<0.49658 Height>=1.707588 CAEC_Sometimes>=0.450895 CALC_Frequently<0.491917 TUE>=0.090572 Height<1.74738 -> OLD_Obesity_Type_III
-   Train Covering size : 20
+Gender_Female>=0.507739 CALC_Sometimes>=0.465793 FCVC>=2.697915 Height>=176.700956 family_history_with_overweight_yes>=0.527848 Height<176.720852 -> OLD_Obesity_Type_III
+   Train Covering size : 5
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.953472
+   Train Confidence : 0.932558
 
 -------------------------------------------------
 
 Rule for sample 38 :
 
-FCVC>=2.660164 CH2O>=2.291314 Gender_Male<0.543863 Height>=1.71422 CH2O<2.659903 CALC_Sometimes>=0.954663 -> OLD_Obesity_Type_III
-   Train Covering size : 11
+Gender_Male<0.467986 CH2O>=2.401891 Height>=176.71422 CALC_Sometimes>=0.49455 FAF<2.25565 CH2O<2.715191 -> OLD_Obesity_Type_III
+   Train Covering size : 7
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.97645
+   Train Confidence : 0.980763
 
 -------------------------------------------------
 
 Rule for sample 39 :
 
-FCVC>=2.67904 Gender_Female>=0.507739 CH2O>=2.236026 CH2O<2.715191 NCP>=2.894999 CH2O>=2.604615 CAEC_Frequently<0.893286 -> OLD_Obesity_Type_III
-   Train Covering size : 20
+Gender_Male<0.392109 CH2O>=2.494038 CALC_Sometimes>=0.49455 NCP>=2.983198 Height>=176.621373 CH2O<2.715191 -> OLD_Obesity_Type_III
+   Train Covering size : 25
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.982572
+   Train Confidence : 0.982292
 
 -------------------------------------------------
 
 Rule for sample 40 :
 
-CH2O>=2.549326 Gender_Female>=0.483212 CALC_no<0.470845 FCVC>=2.546911 NCP>=2.700961 family_history_with_overweight_yes>=0.527848 CH2O<2.75205 -> OLD_Obesity_Type_III
-   Train Covering size : 27
+FCVC>=2.622413 Gender_Male<0.543863 CH2O>=2.199167 Height>=176.614741 Height<176.628005 CALC_Sometimes>=0.925906 -> OLD_Obesity_Type_III
+   Train Covering size : 8
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.98222
+   Train Confidence : 0.978516
 
 -------------------------------------------------
 
 Rule for sample 41 :
 
-Gender_Female>=0.458686 CALC_no<0.531974 family_history_with_overweight_no<0.49658 FCVC>=2.641288 CH2O>=2.236026 CH2O<2.623044 CH2O>=2.604615 -> OLD_Obesity_Type_III
-   Train Covering size : 4
+CALC_Sometimes>=0.49455 FCVC>=2.697915 TUE>=0.048718 Gender_Male<0.467986 family_history_with_overweight_yes>=0.527848 NCP>=2.983198 CAEC_Sometimes>=0.476393 FAVC_yes>=0.470878 CH2O<2.733621 Height>=176.614741 -> OLD_Obesity_Type_III
+   Train Covering size : 79
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.982117
+   Train Accuracy : 0.9625
+   Train Confidence : 0.954256
 
 -------------------------------------------------
 
 Rule for sample 42 :
 
-CH2O>=2.401891 FCVC>=2.697915 Gender_Male<0.392109 CALC_Sometimes>=0.49455 FAVC_yes>=0.535247 CH2O<2.586185 MTRANS_Public_Transportation>=0.9707 -> OLD_Obesity_Type_III
-   Train Covering size : 14
+FCVC>=2.67904 CH2O>=2.180738 Gender_Female>=0.507739 CALC_Sometimes>=0.49455 family_history_with_overweight_no<0.520224 FAVC_no<0.527038 NCP>=2.965558 MTRANS_Public_Transportation>=0.9707 -> OLD_Obesity_Type_III
+   Train Covering size : 67
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.980339
+   Train Confidence : 0.979146
 
 -------------------------------------------------
 
 Rule for sample 43 :
 
-FCVC>=2.603537 Gender_Male<0.543863 CALC_Sometimes>=0.49455 FAVC_yes>=0.470878 family_history_with_overweight_no<0.472936 MTRANS_Public_Transportation>=0.464287 NCP>=2.983198 CAEC_Sometimes>=0.90986 -> OLD_Obesity_Type_III
-   Train Covering size : 115
+FCVC>=2.697915 Gender_Male<0.467986 Height>=176.727484 FAF<1.816389 TUE>=0.174278 FAF>=1.439879 -> OLD_Obesity_Type_III
+   Train Covering size : 15
    Train Fidelity : 1
-   Train Accuracy : 0.956897
-   Train Confidence : 0.956406
+   Train Accuracy : 1
+   Train Confidence : 0.959799
 
 -------------------------------------------------
 
 Rule for sample 44 :
 
-FCVC>=2.67904 Gender_Female>=0.483212 Height>=1.727484 family_history_with_overweight_yes>=0.584305 TUE>=0.191019 FAF>=1.460796 CH2O<2.641474 -> OLD_Obesity_Type_III
-   Train Covering size : 15
+CALC_Sometimes>=0.523307 FCVC>=2.697915 Gender_Male<0.543863 family_history_with_overweight_yes>=0.527848 Height>=176.68106 Height<176.734116 SCC_no>=12.073201 -> OLD_Obesity_Type_III
+   Train Covering size : 18
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.949623
+   Train Accuracy : 0.947368
+   Train Confidence : 0.937064
 
 -------------------------------------------------
 
 Rule for sample 45 :
 
-Gender_Female>=0.483212 CH2O>=2.291314 CALC_Sometimes>=0.523307 Height>=1.641269 FAF<1.837306 FCVC>=2.395906 Height>=1.674428 -> OLD_Obesity_Type_III
-   Train Covering size : 27
+FCVC>=2.697915 Gender_Female>=0.483212 CH2O>=2.199167 family_history_with_overweight_no<0.49658 CH2O<2.43875 CALC_Sometimes>=0.437036 MTRANS_Public_Transportation>=0.9707 -> OLD_Obesity_Type_III
+   Train Covering size : 14
    Train Fidelity : 1
-   Train Accuracy : 0.964286
-   Train Confidence : 0.980575
+   Train Accuracy : 1
+   Train Confidence : 0.970305
 
 -------------------------------------------------
 
 Rule for sample 46 :
 
-Gender_Male<0.467986 CH2O>=2.494038 CALC_Sometimes>=0.49455 Height>=1.634637 CH2O<2.659903 -> OLD_Obesity_Type_III
-   Train Covering size : 12
+Gender_Female>=0.507739 CH2O>=2.291314 CALC_Sometimes>=0.49455 CH2O<2.715191 Height>=176.634637 CH2O<2.641474 Height<176.694324 -> OLD_Obesity_Type_III
+   Train Covering size : 9
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.981853
+   Train Confidence : 0.979696
 
 -------------------------------------------------
 
 Rule for sample 47 :
 
-CALC_no<0.50141 Gender_Male<0.543863 family_history_with_overweight_no<0.472936 Height>=1.700956 TUE>=0.107313 CALC_Sometimes>=0.523307 FCVC>=2.546911 Height<1.740748 -> OLD_Obesity_Type_III
-   Train Covering size : 14
+CALC_Sometimes>=0.523307 FCVC>=2.697915 family_history_with_overweight_yes>=0.527848 Gender_Male<0.467986 Height>=176.68106 MTRANS_Automobile<0.480071 Height<176.740748 FAVC_no<0.961529 -> OLD_Obesity_Type_III
+   Train Covering size : 22
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.94008
+   Train Accuracy : 0.956522
+   Train Confidence : 0.93978
 
 -------------------------------------------------
 
 Rule for sample 48 :
 
-FCVC>=2.697915 Gender_Male<0.240355 CALC_Sometimes>=0.552064 Height>=1.740748 family_history_with_overweight_yes>=0.527848 NCP>=2.965558 -> OLD_Obesity_Type_III
+Gender_Female>=0.43416 FCVC>=2.697915 Height>=176.740748 family_history_with_overweight_no<0.49658 NCP>=2.965558 CALC_no<0.01238 -> OLD_Obesity_Type_III
    Train Covering size : 30
    Train Fidelity : 1
    Train Accuracy : 1
@@ -490,37 +490,37 @@ FCVC>=2.697915 Gender_Male<0.240355 CALC_Sometimes>=0.552064 Height>=1.740748 fa
 
 Rule for sample 49 :
 
-FCVC>=2.622413 Gender_Female>=0.507739 CH2O>=2.180738 Height>=1.787171 family_history_with_overweight_no<0.000051 -> OLD_Obesity_Type_III
-   Train Covering size : 9
+FCVC>=2.697915 Gender_Male<0.467986 Height>=176.780539 family_history_with_overweight_no<0.141916 -> OLD_Obesity_Type_III
+   Train Covering size : 12
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.978229
+   Train Confidence : 0.974079
 
 -------------------------------------------------
 
 Rule for sample 50 :
 
-FCVC>=2.697915 CH2O>=2.291314 CH2O<2.42032 Height>=1.621373 Gender_Male<0.088601 -> OLD_Obesity_Type_III
-   Train Covering size : 10
+FCVC>=2.697915 CALC_no<0.531974 Gender_Female>=0.556791 CH2O>=2.217596 CH2O<2.309744 -> OLD_Obesity_Type_III
+   Train Covering size : 3
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.973588
+   Train Confidence : 0.964588
 
 -------------------------------------------------
 
 Rule for sample 51 :
 
-Gender_Female>=0.458686 CH2O>=2.494038 CALC_no<0.409717 Height>=1.674428 FAF<1.690885 FAF>=1.439879 -> OLD_Obesity_Type_III
-   Train Covering size : 7
+FCVC>=2.660164 Gender_Male<0.392109 NCP>=2.983198 Height>=176.740748 FAF<1.795471 CH2O>=2.678333 -> OLD_Obesity_Type_III
+   Train Covering size : 11
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.9833
+   Train Confidence : 0.983602
 
 -------------------------------------------------
 
 Rule for sample 52 :
 
-FCVC>=2.697915 CALC_Sometimes>=0.552064 Gender_Female>=0.409634 Height>=1.740748 FAF<1.983726 TUE>=0.098942 CH2O>=2.75205 -> OLD_Obesity_Type_III
+FCVC>=2.697915 Gender_Male<0.392109 Height>=176.740748 FAF<1.983726 CH2O>=2.715191 -> OLD_Obesity_Type_III
    Train Covering size : 11
    Train Fidelity : 1
    Train Accuracy : 1
@@ -530,567 +530,647 @@ FCVC>=2.697915 CALC_Sometimes>=0.552064 Gender_Female>=0.409634 Height>=1.740748
 
 Rule for sample 53 :
 
-FCVC>=2.660164 CALC_Sometimes>=0.49455 Gender_Male<0.543863 CH2O>=2.236026 Height>=1.674428 TUE<0.19939 -> OLD_Obesity_Type_III
-   Train Covering size : 2
+FCVC>=2.660164 Gender_Male<0.467986 Height>=176.694324 CH2O>=2.236026 CALC_Sometimes>=0.523307 FAF<1.439879 -> OLD_Obesity_Type_III
+   Train Covering size : 16
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.982972
+   Train Accuracy : 0.941176
+   Train Confidence : 0.978909
 
 -------------------------------------------------
 
 Rule for sample 54 :
 
-CH2O>=2.549326 Gender_Male<0.240355 CALC_Sometimes>=0.523307 FCVC>=2.546911 family_history_with_overweight_yes>=0.584305 NCP>=2.965558 FAVC_no<0.527038 Height>=1.674428 -> OLD_Obesity_Type_III
-   Train Covering size : 20
+CH2O>=2.549326 Gender_Female>=0.556791 NCP>=2.965558 CALC_no<0.50141 FCVC>=2.528035 FAF<1.837306 Height>=176.654532 CALC_Frequently<0.026261 -> OLD_Obesity_Type_III
+   Train Covering size : 21
    Train Fidelity : 1
-   Train Accuracy : 0.952381
-   Train Confidence : 0.983739
+   Train Accuracy : 0.954545
+   Train Confidence : 0.982857
 
 -------------------------------------------------
 
 Rule for sample 55 :
 
-CH2O>=2.401891 Gender_Male<0.467986 CH2O<2.715191 FCVC>=2.697915 CALC_no<0.50141 FAVC_yes>=0.503062 TUE<0.182648 -> OLD_Obesity_Type_III
-   Train Covering size : 5
+FCVC>=2.622413 Gender_Female>=0.507739 CALC_Sometimes>=0.49455 family_history_with_overweight_yes>=0.527848 NCP>=2.983198 Height>=176.634637 TUE>=0.057089 FAF<1.460796 -> OLD_Obesity_Type_III
+   Train Covering size : 53
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.981362
+   Train Accuracy : 0.925926
+   Train Confidence : 0.960534
 
 -------------------------------------------------
 
 Rule for sample 56 :
 
-FCVC>=2.67904 NCP>=2.983198 Gender_Female>=0.507739 CH2O>=2.217596 CALC_Sometimes>=0.49455 Height>=1.641269 family_history_with_overweight_yes>=0.471392 SCC_yes<0.142087 -> OLD_Obesity_Type_III
-   Train Covering size : 42
+Gender_Male<0.316232 CH2O>=2.291314 CALC_Sometimes>=0.49455 FCVC>=2.697915 Height>=176.654532 family_history_with_overweight_no<0.49658 TUE<0.19939 -> OLD_Obesity_Type_III
+   Train Covering size : 4
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.98016
+   Train Confidence : 0.980889
 
 -------------------------------------------------
 
 Rule for sample 57 :
 
-Gender_Female>=0.507739 CH2O>=2.494038 CALC_Sometimes>=0.523307 family_history_with_overweight_yes>=0.640761 Height>=1.621373 FAVC_yes>=0.503062 CH2O<2.659903 -> OLD_Obesity_Type_III
-   Train Covering size : 17
+Gender_Male<0.467986 CH2O>=2.291314 CALC_Sometimes>=0.49455 Height>=176.621373 FAF<1.73272 family_history_with_overweight_no<0.49658 NCP>=2.894999 TUE<0.19939 -> OLD_Obesity_Type_III
+   Train Covering size : 12
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.98186
+   Train Confidence : 0.981011
 
 -------------------------------------------------
 
 Rule for sample 58 :
 
-FCVC>=2.697915 Gender_Male<0.467986 family_history_with_overweight_yes>=0.527848 CALC_Sometimes>=0.465793 MTRANS_Automobile<0.506953 Height>=1.641269 Height<1.6479 -> OLD_Obesity_Type_III
-   Train Covering size : 6
+CH2O>=2.549326 FCVC>=2.660164 Gender_Female>=0.483212 CALC_Sometimes>=0.49455 NCP>=2.983198 CH2O<2.733621 family_history_with_overweight_yes>=0.979498 -> OLD_Obesity_Type_III
+   Train Covering size : 26
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.979936
+   Train Confidence : 0.982401
 
 -------------------------------------------------
 
 Rule for sample 59 :
 
-Gender_Female>=0.458686 CALC_no<0.50141 CH2O>=2.291314 Height>=1.614741 NCP>=2.912639 FAF<1.753637 CALC_Frequently<0.52102 FCVC>=2.358155 family_history_with_overweight_no<0.047339 -> OLD_Obesity_Type_III
-   Train Covering size : 57
+FCVC>=2.697915 Gender_Male<0.543863 family_history_with_overweight_no<0.49658 CALC_no<0.470845 CH2O>=2.236026 NCP>=2.983198 MTRANS_Public_Transportation>=0.464287 SCC_yes<0.453249 CALC_Frequently<0.113572 -> OLD_Obesity_Type_III
+   Train Covering size : 63
    Train Fidelity : 1
-   Train Accuracy : 0.982759
-   Train Confidence : 0.980739
+   Train Accuracy : 1
+   Train Confidence : 0.980602
 
 -------------------------------------------------
 
 Rule for sample 60 :
 
-Gender_Male<0.392109 CH2O>=2.494038 CALC_Sometimes>=0.523307 Height>=1.614741 NCP>=2.894999 CH2O<2.696762 -> OLD_Obesity_Type_III
-   Train Covering size : 22
+FCVC>=2.697915 CH2O>=2.180738 Gender_Male<0.771493 CALC_no<0.531974 family_history_with_overweight_no<0.49658 NCP>=2.84208 CH2O<2.715191 CH2O>=2.494038 -> OLD_Obesity_Type_III
+   Train Covering size : 28
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.981985
+   Train Confidence : 0.982216
 
 -------------------------------------------------
 
 Rule for sample 61 :
 
-FCVC>=2.697915 Gender_Female>=0.581317 CH2O>=2.236026 CALC_no<0.531974 CH2O<2.75205 Height>=1.608109 Height<1.6479 CH2O>=2.623044 -> OLD_Obesity_Type_III
-   Train Covering size : 15
+FCVC>=2.697915 CH2O>=2.180738 Gender_Female>=0.507739 CALC_no<0.50141 family_history_with_overweight_no<0.520224 NCP>=2.965558 MTRANS_Automobile<0.506953 CALC_Sometimes>=0.49455 CH2O<2.733621 -> OLD_Obesity_Type_III
+   Train Covering size : 46
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.981978
+   Train Confidence : 0.977537
 
 -------------------------------------------------
 
 Rule for sample 62 :
 
-FCVC>=2.697915 Gender_Male<0.543863 CALC_Sometimes>=0.667092 CH2O>=2.236026 CH2O<2.659903 family_history_with_overweight_yes>=0.471392 MTRANS_Automobile<0.506953 CH2O<2.586185 -> OLD_Obesity_Type_III
-   Train Covering size : 21
+FCVC>=2.697915 Gender_Male<0.467986 CH2O>=2.291314 CALC_Sometimes>=0.465793 Height>=176.614741 CH2O<2.623044 -> OLD_Obesity_Type_III
+   Train Covering size : 22
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.976803
+   Train Confidence : 0.978129
 
 -------------------------------------------------
 
 Rule for sample 63 :
 
-FCVC>=2.697915 CAEC_Sometimes>=0.450895 CALC_Sometimes>=0.49455 Height<1.734116 CH2O<1.941155 NCP>=2.947919 Height>=1.674428 Gender_Male<0.012725 -> OLD_Obesity_Type_III
-   Train Covering size : 14
+Gender_Female>=0.507739 CALC_Sometimes>=0.552064 FCVC>=2.641288 family_history_with_overweight_yes>=0.527848 Height>=176.700956 Height<176.734116 -> OLD_Obesity_Type_III
+   Train Covering size : 10
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.924271
+   Train Confidence : 0.93527
 
 -------------------------------------------------
 
 Rule for sample 64 :
 
-FCVC>=2.641288 CALC_Sometimes>=0.49455 Gender_Female>=0.507739 Height>=1.694324 FAF<1.837306 CAEC_Sometimes>=0.476393 FAF>=1.481713 -> OLD_Obesity_Type_III
-   Train Covering size : 14
+Gender_Male<0.392109 CALC_Sometimes>=0.49455 Height>=176.720852 family_history_with_overweight_yes>=0.584305 CAEC_Sometimes>=0.476393 TUE>=0.098942 FAF>=1.439879 NCP>=2.383445 -> OLD_Obesity_Type_III
+   Train Covering size : 24
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.950332
+   Train Confidence : 0.962136
 
 -------------------------------------------------
 
 Rule for sample 65 :
 
-FCVC>=2.660164 CH2O>=2.180738 Gender_Female>=0.483212 NCP>=2.965558 CALC_no<0.50141 family_history_with_overweight_yes>=0.527848 FAF<1.774554 Height>=1.727484 CH2O>=2.733621 -> OLD_Obesity_Type_III
-   Train Covering size : 13
+Gender_Male<0.543863 Height>=176.727484 NCP>=2.78916 family_history_with_overweight_yes>=0.527848 CAEC_Sometimes>=0.450895 CALC_Sometimes>=0.49455 FCVC>=2.339279 TUE>=0.191019 -> OLD_Obesity_Type_III
+   Train Covering size : 38
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.983601
+   Train Confidence : 0.967895
 
 -------------------------------------------------
 
 Rule for sample 66 :
 
-Gender_Female>=0.507739 FCVC>=2.603537 Height>=1.720852 CH2O>=2.75205 FAF<1.481713 -> OLD_Obesity_Type_III
-   Train Covering size : 8
+CH2O>=2.401891 Gender_Male<0.467986 Height>=176.734116 NCP>=2.8068 CALC_Sometimes>=0.523307 Height<176.74738 -> OLD_Obesity_Type_III
+   Train Covering size : 7
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.983505
+   Train Confidence : 0.982639
 
 -------------------------------------------------
 
 Rule for sample 67 :
 
-Gender_Female>=0.507739 FCVC>=2.641288 CALC_Sometimes>=0.523307 family_history_with_overweight_no<0.520224 NCP>=2.983198 Height>=1.621373 FAVC_no<0.556004 TUE>=0.19939 -> OLD_Obesity_Type_III
-   Train Covering size : 88
+TUE>=0.098942 FCVC>=2.67904 Gender_Male<0.467986 CALC_Sometimes>=0.523307 family_history_with_overweight_no<0.49658 FAVC_yes>=0.438694 NCP>=2.983198 MTRANS_Automobile<0.506953 CAEC_Sometimes>=0.476393 CH2O<2.715191 -> OLD_Obesity_Type_III
+   Train Covering size : 90
    Train Fidelity : 1
-   Train Accuracy : 0.94382
-   Train Confidence : 0.956552
+   Train Accuracy : 0.967033
+   Train Confidence : 0.949966
 
 -------------------------------------------------
 
 Rule for sample 68 :
 
-FCVC>=2.641288 CALC_Sometimes>=0.523307 Gender_Male<0.467986 FAVC_yes>=0.503062 Height>=1.621373 family_history_with_overweight_no<0.472936 NCP>=2.965558 CH2O<1.922725 -> OLD_Obesity_Type_III
-   Train Covering size : 30
+FCVC>=2.697915 Gender_Female>=0.507739 CALC_Sometimes>=0.552064 family_history_with_overweight_no<0.49658 MTRANS_Public_Transportation>=0.440172 CH2O<1.978014 Height<176.727484 Height>=176.641269 -> OLD_Obesity_Type_III
+   Train Covering size : 21
    Train Fidelity : 1
-   Train Accuracy : 0.903226
-   Train Confidence : 0.922033
+   Train Accuracy : 0.909091
+   Train Confidence : 0.92184
 
 -------------------------------------------------
 
 Rule for sample 69 :
 
-FCVC>=2.67904 Gender_Male<0.619739 CALC_Sometimes>=0.552064 NCP>=2.965558 family_history_with_overweight_yes>=0.527848 CH2O<1.978014 MTRANS_Public_Transportation>=0.9707 -> OLD_Obesity_Type_III
-   Train Covering size : 41
+FCVC>=2.697915 Gender_Male<0.467986 CALC_Sometimes>=0.523307 family_history_with_overweight_yes>=0.527848 NCP>=2.983198 MTRANS_Public_Transportation>=0.488402 CH2O<1.849008 -> OLD_Obesity_Type_III
+   Train Covering size : 38
    Train Fidelity : 1
-   Train Accuracy : 0.952381
-   Train Confidence : 0.922456
+   Train Accuracy : 0.948718
+   Train Confidence : 0.922455
 
 -------------------------------------------------
 
 Rule for sample 70 :
 
-Gender_Female>=0.507739 FCVC>=2.697915 family_history_with_overweight_no<0.520224 CALC_no<0.470845 NCP>=2.983198 FAVC_no<0.498072 MTRANS_Automobile<0.506953 CAEC_Sometimes>=0.476393 CH2O<1.941155 -> OLD_Obesity_Type_III
-   Train Covering size : 40
+Gender_Male<0.467986 FCVC>=2.697915 CALC_Sometimes>=0.49455 family_history_with_overweight_yes>=0.527848 MTRANS_Automobile<0.480071 CH2O<1.959584 MTRANS_Public_Transportation>=0.488402 TUE>=0.132425 Height<176.734116 NCP>=2.401085 -> OLD_Obesity_Type_III
+   Train Covering size : 38
    Train Fidelity : 1
-   Train Accuracy : 0.951219
-   Train Confidence : 0.92241
+   Train Accuracy : 0.923077
+   Train Confidence : 0.916149
 
 -------------------------------------------------
 
 Rule for sample 71 :
 
-CALC_Sometimes>=0.49455 FCVC>=2.622413 NCP>=2.947919 Gender_Female>=0.483212 Height>=1.787171 FAF<1.544465 -> OLD_Obesity_Type_III
-   Train Covering size : 5
+FCVC>=2.67904 Gender_Female>=0.507739 CH2O>=2.236026 CALC_no<0.470845 Height>=176.740748 family_history_with_overweight_no<0.49658 FAF<1.565382 -> OLD_Obesity_Type_III
+   Train Covering size : 16
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.978518
+   Train Confidence : 0.979269
 
 -------------------------------------------------
 
 Rule for sample 72 :
 
-Gender_Male<0.543863 CH2O>=2.291314 Height>=1.780539 FAF<1.837306 -> OLD_Obesity_Type_III
-   Train Covering size : 5
+Gender_Female>=0.483212 FCVC>=2.660164 CH2O>=2.217596 CALC_Sometimes>=0.49455 Height>=176.727484 family_history_with_overweight_no<0.472936 CH2O>=2.733621 -> OLD_Obesity_Type_III
+   Train Covering size : 14
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.97875
+   Train Confidence : 0.98397
 
 -------------------------------------------------
 
 Rule for sample 73 :
 
-CH2O>=2.291314 CH2O<2.309744 Gender_Male<0.543863 FAVC_no<0.990495 -> OLD_Obesity_Type_III
-   Train Covering size : 2
+Gender_Male<0.392109 Height>=176.800435 FAF<1.962809 -> OLD_Obesity_Type_III
+   Train Covering size : 3
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.969042
+   Train Confidence : 0.977865
 
 -------------------------------------------------
 
 Rule for sample 74 :
 
-CALC_no<0.50141 FCVC>=2.697915 Gender_Male<0.316232 CH2O>=2.033302 family_history_with_overweight_no<0.49658 NCP>=2.965558 CH2O<2.75205 CALC_Sometimes>=0.465793 MTRANS_Automobile<0.990823 -> OLD_Obesity_Type_III
-   Train Covering size : 51
+FCVC>=2.67904 Gender_Female>=0.507739 CH2O>=2.125449 Height>=176.740748 family_history_with_overweight_yes>=0.471392 CAEC_Sometimes>=0.476393 CH2O<2.512468 -> OLD_Obesity_Type_III
+   Train Covering size : 13
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.974499
+   Train Confidence : 0.969543
 
 -------------------------------------------------
 
 Rule for sample 75 :
 
-FCVC>=2.660164 Gender_Male<0.543863 CH2O>=2.236026 CALC_Sometimes>=0.49455 family_history_with_overweight_no<0.520224 FAVC_yes>=0.535247 TUE<0.191019 NCP>=2.365805 -> OLD_Obesity_Type_III
-   Train Covering size : 12
+FCVC>=2.67904 Gender_Female>=0.458686 family_history_with_overweight_no<0.472936 CALC_Sometimes>=0.580821 Height>=176.654532 CH2O>=2.715191 TUE<0.19939 -> OLD_Obesity_Type_III
+   Train Covering size : 4
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.981054
+   Train Confidence : 0.981128
 
 -------------------------------------------------
 
 Rule for sample 76 :
 
-Gender_Male<0.467986 FCVC>=2.697915 CH2O>=2.180738 CALC_Sometimes>=0.523307 Height>=1.641269 family_history_with_overweight_no<0.472936 TUE<0.182648 -> OLD_Obesity_Type_III
-   Train Covering size : 8
+Gender_Female>=0.507739 CALC_Sometimes>=0.49455 FCVC>=2.697915 CH2O>=2.217596 Height>=176.634637 NCP>=2.718601 FAF<1.481713 -> OLD_Obesity_Type_III
+   Train Covering size : 37
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.981071
+   Train Confidence : 0.979905
 
 -------------------------------------------------
 
 Rule for sample 77 :
 
-FCVC>=2.697915 CALC_Sometimes>=0.49455 CH2O>=2.291314 Gender_Female>=0.532265 CH2O<2.715191 NCP>=2.700961 Height>=1.608109 -> OLD_Obesity_Type_III
-   Train Covering size : 38
+Gender_Male<0.619739 CALC_no<0.470845 CH2O>=2.291314 FCVC>=2.697915 CH2O<2.75205 NCP>=2.718601 CH2O>=2.494038 MTRANS_Automobile<0.963941 -> OLD_Obesity_Type_III
+   Train Covering size : 30
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.980013
+   Train Confidence : 0.982089
 
 -------------------------------------------------
 
 Rule for sample 78 :
 
-Gender_Male<0.467986 Height>=1.614741 CH2O>=2.291314 CALC_Sometimes>=0.523307 FAVC_no<0.498072 family_history_with_overweight_yes>=0.527848 NCP>=2.912639 Height<1.694324 -> OLD_Obesity_Type_III
-   Train Covering size : 32
+Gender_Male<0.467986 Height>=176.621373 FCVC>=2.603537 CH2O>=2.236026 NCP>=2.736241 CALC_no<0.470845 CH2O<2.715191 FAVC_yes>=0.470878 CALC_Sometimes>=0.954663 -> OLD_Obesity_Type_III
+   Train Covering size : 38
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.981026
+   Train Confidence : 0.979388
 
 -------------------------------------------------
 
 Rule for sample 79 :
 
-FCVC>=2.697915 family_history_with_overweight_yes>=0.527848 Gender_Female>=0.507739 CALC_Sometimes>=0.49455 Height>=1.674428 NCP>=2.983198 CAEC_Always<0.968675 -> OLD_Obesity_Type_III
-   Train Covering size : 55
+FCVC>=2.67904 Gender_Male<0.467986 family_history_with_overweight_yes>=0.527848 CALC_no<0.50141 MTRANS_Public_Transportation>=0.512517 Height>=176.621373 CH2O<1.978014 NCP>=2.365805 -> OLD_Obesity_Type_III
+   Train Covering size : 31
    Train Fidelity : 1
-   Train Accuracy : 0.982143
-   Train Confidence : 0.957661
+   Train Accuracy : 0.90625
+   Train Confidence : 0.91498
 
 -------------------------------------------------
 
 Rule for sample 80 :
 
-FCVC>=2.697915 Gender_Male<0.467986 family_history_with_overweight_no<0.472936 MTRANS_Public_Transportation>=0.584862 CH2O<1.867437 CALC_Sometimes>=0.552064 NCP>=2.365805 -> OLD_Obesity_Type_III
-   Train Covering size : 40
+CALC_Sometimes>=0.49455 FCVC>=2.67904 TUE>=0.082201 family_history_with_overweight_yes>=0.527848 Gender_Male<0.316232 Height>=176.661164 FAVC_no<0.498072 MTRANS_Public_Transportation>=0.488402 Height<176.74738 -> OLD_Obesity_Type_III
+   Train Covering size : 39
    Train Fidelity : 1
-   Train Accuracy : 0.926829
-   Train Confidence : 0.916571
+   Train Accuracy : 0.975
+   Train Confidence : 0.944549
 
 -------------------------------------------------
 
 Rule for sample 81 :
 
-CALC_Sometimes>=0.49455 Gender_Female>=0.483212 family_history_with_overweight_yes>=0.527848 Height>=1.667796 MTRANS_Public_Transportation>=0.488402 NCP>=2.983198 FCVC>=2.226026 FAVC_no<0.990495 -> OLD_Obesity_Type_III
-   Train Covering size : 62
+Gender_Male<0.240355 Height>=176.654532 CALC_Sometimes>=0.49455 FCVC>=2.584662 FAF<1.795471 TUE>=0.191019 CAEC_Sometimes>=0.476393 NCP>=2.665682 family_history_with_overweight_yes>=0.527848 MTRANS_Automobile<0.990823 -> OLD_Obesity_Type_III
+   Train Covering size : 55
    Train Fidelity : 1
-   Train Accuracy : 0.920635
-   Train Confidence : 0.94469
+   Train Accuracy : 0.946429
+   Train Confidence : 0.950732
 
 -------------------------------------------------
 
 Rule for sample 82 :
 
-FCVC>=2.660164 Gender_Male<0.467986 family_history_with_overweight_no<0.449291 CALC_Sometimes>=0.49455 TUE>=0.006865 FAVC_no<0.527038 NCP>=2.965558 CH2O<1.959584 MTRANS_Public_Transportation>=0.946585 -> OLD_Obesity_Type_III
-   Train Covering size : 41
+FCVC>=2.697915 Gender_Male<0.467986 family_history_with_overweight_no<0.543868 MTRANS_Public_Transportation>=0.440172 CALC_Sometimes>=0.49455 CH2O<1.978014 Height<176.740748 NCP>=2.383445 -> OLD_Obesity_Type_III
+   Train Covering size : 40
    Train Fidelity : 1
-   Train Accuracy : 0.952381
-   Train Confidence : 0.9225
+   Train Accuracy : 0.926829
+   Train Confidence : 0.916536
 
 -------------------------------------------------
 
 Rule for sample 83 :
 
-FCVC>=2.622413 NCP>=2.983198 FAF<1.753637 Gender_Female>=0.458686 TUE>=0.098942 CALC_Sometimes>=0.523307 Height>=1.667796 Height<1.707588 -> OLD_Obesity_Type_III
-   Train Covering size : 16
+FCVC>=2.67904 Gender_Male<0.543863 CALC_Sometimes>=0.49455 Height>=176.68106 NCP<3.018478 NCP>=2.648042 FAVC_yes>=0.503062 CH2O<2.10702 -> OLD_Obesity_Type_III
+   Train Covering size : 19
    Train Fidelity : 1
-   Train Accuracy : 0.823529
-   Train Confidence : 0.935079
+   Train Accuracy : 0.95
+   Train Confidence : 0.926014
 
 -------------------------------------------------
 
 Rule for sample 84 :
 
-FCVC>=2.67904 Gender_Male<0.316232 Height>=1.727484 FAF<1.983726 CALC_Sometimes>=0.49455 NCP>=2.965558 FAVC_yes>=0.470878 family_history_with_overweight_no<0.000051 -> OLD_Obesity_Type_III
-   Train Covering size : 32
+FCVC>=2.697915 Gender_Male<0.543863 Height>=176.727484 family_history_with_overweight_yes>=0.527848 NCP>=2.965558 CALC_Sometimes>=0.49455 CH2O<1.996443 -> OLD_Obesity_Type_III
+   Train Covering size : 7
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.965507
+   Train Confidence : 0.925117
 
 -------------------------------------------------
 
 Rule for sample 85 :
 
-Gender_Male<0.467986 Height>=1.707588 CAEC_Sometimes>=0.501891 FCVC>=2.641288 FAF<1.858223 FAF>=1.439879 -> OLD_Obesity_Type_III
-   Train Covering size : 18
+FCVC>=2.641288 Gender_Female>=0.507739 CALC_Sometimes>=0.49455 Height>=176.68106 family_history_with_overweight_no<0.49658 NCP>=2.965558 CH2O<1.996443 -> OLD_Obesity_Type_III
+   Train Covering size : 17
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.95397
+   Train Accuracy : 0.944444
+   Train Confidence : 0.923703
 
 -------------------------------------------------
 
 Rule for sample 86 :
 
-FCVC>=2.546911 CALC_Sometimes>=0.49455 NCP>=2.965558 Gender_Male<0.467986 Height>=1.694324 family_history_with_overweight_yes>=0.527848 FAVC_no<0.903597 -> OLD_Obesity_Type_III
-   Train Covering size : 47
+Gender_Female>=0.532265 Height>=176.71422 CALC_Sometimes>=0.49455 family_history_with_overweight_no<0.49658 FAF<2.004644 FCVC>=2.584662 FAF>=1.50263 -> OLD_Obesity_Type_III
+   Train Covering size : 19
    Train Fidelity : 1
-   Train Accuracy : 0.979167
-   Train Confidence : 0.962371
+   Train Accuracy : 1
+   Train Confidence : 0.963163
 
 -------------------------------------------------
 
 Rule for sample 87 :
 
-Gender_Male<0.392109 Height>=1.614741 CH2O>=2.236026 CALC_Sometimes>=0.49455 CH2O<2.715191 CH2O>=2.678333 FAVC_yes>=0.052483 -> OLD_Obesity_Type_III
-   Train Covering size : 8
+FCVC>=2.660164 CH2O>=2.272885 Gender_Female>=0.507739 CH2O<2.715191 CALC_Sometimes>=0.49455 NCP>=2.718601 Height>=176.614741 FAVC_yes>=0.020299 -> OLD_Obesity_Type_III
+   Train Covering size : 38
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.983115
+   Train Confidence : 0.98002
 
 -------------------------------------------------
 
 Rule for sample 88 :
 
-FCVC>=2.67904 CH2O>=2.291314 CALC_Sometimes>=0.523307 Gender_Female>=0.409634 family_history_with_overweight_no<0.449291 CH2O<2.659903 CH2O>=2.623044 -> OLD_Obesity_Type_III
-   Train Covering size : 8
+CALC_Sometimes>=0.523307 FCVC>=2.697915 Gender_Female>=0.507739 family_history_with_overweight_no<0.449291 MTRANS_Public_Transportation>=0.488402 CH2O>=2.199167 CH2O<2.75205 Height<176.608109 -> OLD_Obesity_Type_III
+   Train Covering size : 2
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.982203
+   Train Confidence : 0.982
 
 -------------------------------------------------
 
 Rule for sample 89 :
 
-Gender_Female>=0.507739 NCP>=2.983198 FCVC>=2.641288 CH2O>=2.254455 CALC_Sometimes>=0.465793 CH2O<2.75205 CH2O>=2.494038 NCP<3.018478 -> OLD_Obesity_Type_III
-   Train Covering size : 30
+FCVC>=2.697915 Gender_Male<0.619739 family_history_with_overweight_yes>=0.527848 CALC_Sometimes>=0.523307 MTRANS_Public_Transportation>=0.488402 NCP>=2.78916 CH2O>=2.033302 SCC_no>=12.016319 -> OLD_Obesity_Type_III
+   Train Covering size : 71
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.982098
+   Train Confidence : 0.977251
 
 -------------------------------------------------
 
 Rule for sample 90 :
 
-Gender_Female>=0.507739 CH2O>=2.494038 CALC_Sometimes>=0.49455 Height>=1.614741 CH2O<2.75205 Height<1.6479 CH2O>=2.696762 -> OLD_Obesity_Type_III
-   Train Covering size : 4
+FCVC>=2.697915 Gender_Male<0.467986 family_history_with_overweight_no<0.49658 CALC_Sometimes>=0.552064 MTRANS_Public_Transportation>=0.464287 Height>=176.621373 FAF<1.941892 Height<176.628005 -> OLD_Obesity_Type_III
+   Train Covering size : 7
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.981332
+   Train Confidence : 0.978085
 
 -------------------------------------------------
 
 Rule for sample 91 :
 
-FCVC>=2.697915 Gender_Male<0.543863 CALC_Sometimes>=0.49455 Height>=1.694324 family_history_with_overweight_no<0.449291 NCP>=2.983198 CAEC_Always<0.968675 -> OLD_Obesity_Type_III
-   Train Covering size : 46
+Gender_Female>=0.507739 Height>=176.727484 FCVC>=2.641288 NCP<3.053757 TUE>=0.191019 CAEC_Sometimes>=0.476393 CALC_Sometimes>=0.523307 Height<176.740748 -> OLD_Obesity_Type_III
+   Train Covering size : 8
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.962232
+   Train Confidence : 0.945656
 
 -------------------------------------------------
 
 Rule for sample 92 :
 
-FCVC>=2.603537 CALC_Sometimes>=0.49455 CH2O>=2.494038 CH2O<2.715191 Gender_Male<0.467986 CH2O<2.659903 CH2O>=2.604615 -> OLD_Obesity_Type_III
-   Train Covering size : 12
+FCVC>=2.697915 Gender_Female>=0.483212 Height>=176.734116 CH2O>=2.217596 CALC_Sometimes>=0.523307 Height<176.754011 -> OLD_Obesity_Type_III
+   Train Covering size : 13
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.982238
+   Train Confidence : 0.979337
 
 -------------------------------------------------
 
 Rule for sample 93 :
 
-FCVC>=2.67904 Gender_Male<0.543863 CALC_Sometimes>=0.437036 NCP>=2.894999 Height>=1.740748 family_history_with_overweight_yes>=0.527848 CH2O>=2.678333 -> OLD_Obesity_Type_III
-   Train Covering size : 13
+FCVC>=2.697915 CH2O>=2.180738 Gender_Male<0.467986 Height>=176.740748 CAEC_Sometimes>=0.476393 FAF<1.523548 -> OLD_Obesity_Type_III
+   Train Covering size : 15
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.98422
+   Train Confidence : 0.979154
 
 -------------------------------------------------
 
 Rule for sample 94 :
 
-FCVC>=2.697915 Gender_Male<0.467986 CALC_no<0.470845 Height>=1.740748 family_history_with_overweight_yes>=0.471392 NCP>=2.965558 -> OLD_Obesity_Type_III
-   Train Covering size : 30
+FCVC>=2.67904 Gender_Female>=0.532265 CH2O>=2.051731 Height>=176.740748 CH2O>=2.199167 FAF<1.649051 -> OLD_Obesity_Type_III
+   Train Covering size : 18
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.97252
+   Train Confidence : 0.97841
 
 -------------------------------------------------
 
 Rule for sample 95 :
 
-Gender_Male<0.467986 CALC_no<0.470845 CH2O>=2.272885 CH2O<2.733621 NCP>=2.983198 Height>=1.767275 -> OLD_Obesity_Type_III
-   Train Covering size : 7
+CH2O>=2.365032 Gender_Female>=0.458686 Height>=176.727484 FCVC>=2.358155 CALC_Sometimes>=0.49455 FAF<1.649051 -> OLD_Obesity_Type_III
+   Train Covering size : 19
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.979349
+   Train Confidence : 0.981658
 
 -------------------------------------------------
 
 Rule for sample 96 :
 
-Gender_Male<0.543863 Height>=1.727484 FCVC>=2.660164 family_history_with_overweight_no<0.49658 TUE>=0.174278 CAEC_Frequently<0.519712 CALC_Frequently<0.52102 NCP>=2.365805 -> OLD_Obesity_Type_III
-   Train Covering size : 38
+FCVC>=2.67904 CALC_no<0.50141 Gender_Female>=0.507739 Height>=176.700956 FAF<1.837306 NCP>=2.965558 FAVC_yes>=0.470878 CALC_Sometimes>=0.925906 -> OLD_Obesity_Type_III
+   Train Covering size : 35
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.966312
+   Train Confidence : 0.960904
 
 -------------------------------------------------
 
 Rule for sample 97 :
 
-CH2O>=2.401891 CH2O<2.43875 Gender_Male<0.467986 FCVC>=2.395906 Height>=1.807067 -> OLD_Obesity_Type_III
+FCVC>=2.641288 Gender_Male<0.467986 CH2O>=2.236026 CALC_no<0.50141 CH2O<2.659903 family_history_with_overweight_no<0.49658 FAF>=1.87914 -> OLD_Obesity_Type_III
    Train Covering size : 2
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.978734
+   Train Confidence : 0.980313
 
 -------------------------------------------------
 
 Rule for sample 98 :
 
-Gender_Female>=0.458686 Height>=1.793803 Height<1.813699 FAF<1.481713 -> OLD_Obesity_Type_III
-   Train Covering size : 2
+FCVC>=2.67904 CH2O>=2.291314 Gender_Male<0.467986 family_history_with_overweight_yes>=0.527848 CH2O<2.42032 -> OLD_Obesity_Type_III
+   Train Covering size : 10
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.977803
+   Train Confidence : 0.974084
 
 -------------------------------------------------
 
 Rule for sample 99 :
 
-FCVC>=2.697915 Gender_Female>=0.507739 Height>=1.740748 family_history_with_overweight_yes>=0.471392 CH2O>=2.143879 FAF<1.649051 -> OLD_Obesity_Type_III
-   Train Covering size : 18
+Gender_Female>=0.556791 Height>=176.727484 FCVC>=2.641288 CH2O>=2.696762 CAEC_Frequently<0.519712 family_history_with_overweight_yes>=0.979498 -> OLD_Obesity_Type_III
+   Train Covering size : 15
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.979763
+   Train Confidence : 0.984139
 
 -------------------------------------------------
 
 Rule for sample 100 :
 
-FCVC>=2.697915 Gender_Female>=0.507739 Height>=1.740748 CH2O>=2.236026 family_history_with_overweight_no<0.472936 FAF<1.523548 -> OLD_Obesity_Type_III
-   Train Covering size : 15
+Gender_Male<0.543863 CH2O>=2.494038 CALC_Sometimes>=0.465793 MTRANS_Public_Transportation>=0.512517 FCVC>=2.490284 NCP>=2.718601 SCC_yes<0.50511 family_history_with_overweight_yes>=0.753673 -> OLD_Obesity_Type_III
+   Train Covering size : 51
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.979153
+   Train Accuracy : 0.980769
+   Train Confidence : 0.982469
 
 -------------------------------------------------
 
 Rule for sample 101 :
 
-Gender_Male<0.467986 Height>=1.740748 CH2O>=2.291314 FCVC>=2.358155 Height<1.754011 -> OLD_Obesity_Type_III
-   Train Covering size : 10
+CH2O>=2.549326 CALC_Sometimes>=0.523307 FCVC>=2.660164 MTRANS_Public_Transportation>=0.560747 Gender_Male<0.392109 Height>=176.68106 FAF<1.481713 -> OLD_Obesity_Type_III
+   Train Covering size : 12
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.980632
+   Train Accuracy : 0.923077
+   Train Confidence : 0.983183
 
 -------------------------------------------------
 
 Rule for sample 102 :
 
-FCVC>=2.641288 Gender_Male<0.240355 Height>=1.754011 FAF<1.983726 NCP>=2.965558 -> OLD_Obesity_Type_III
-   Train Covering size : 12
+Gender_Male<0.467986 Height>=176.760643 family_history_with_overweight_no<0.520224 CH2O>=2.733621 -> OLD_Obesity_Type_III
+   Train Covering size : 5
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.974355
+   Train Confidence : 0.984354
 
 -------------------------------------------------
 
 Rule for sample 103 :
 
-Gender_Male<0.467986 FCVC>=2.622413 CH2O>=2.217596 CALC_Sometimes>=0.408279 Height>=1.621373 FAF<1.753637 CH2O<2.659903 -> OLD_Obesity_Type_III
-   Train Covering size : 28
+Gender_Female>=0.507739 FCVC>=2.641288 CH2O>=2.180738 CALC_no<0.50141 CH2O<2.659903 CH2O>=2.604615 -> OLD_Obesity_Type_III
+   Train Covering size : 12
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.97828
+   Train Confidence : 0.982128
 
 -------------------------------------------------
 
 Rule for sample 104 :
 
-FCVC>=2.697915 CALC_Sometimes>=0.523307 Gender_Female>=0.483212 family_history_with_overweight_no<0.49658 CH2O>=2.199167 CH2O<2.696762 NCP>=2.718601 TUE<0.19939 -> OLD_Obesity_Type_III
-   Train Covering size : 5
+FCVC>=2.697915 Gender_Female>=0.483212 CH2O>=2.180738 CALC_no<0.470845 CH2O<2.75205 NCP>=2.84208 CH2O>=2.494038 CH2O<2.715191 -> OLD_Obesity_Type_III
+   Train Covering size : 28
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.981757
+   Train Confidence : 0.982243
 
 -------------------------------------------------
 
 Rule for sample 105 :
 
-Gender_Female>=0.507739 NCP>=2.983198 CALC_no<0.470845 CH2O>=2.291314 CH2O<2.715191 Height>=1.634637 Height<1.687692 -> OLD_Obesity_Type_III
-   Train Covering size : 13
+FCVC>=2.67904 Gender_Male<0.467986 CALC_Sometimes>=0.465793 CH2O>=2.236026 family_history_with_overweight_no<0.49658 CH2O<2.659903 Height>=176.641269 -> OLD_Obesity_Type_III
+   Train Covering size : 19
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.980649
+   Train Confidence : 0.976601
 
 -------------------------------------------------
 
 Rule for sample 106 :
 
-FCVC>=2.622413 Gender_Male<0.467986 CH2O>=2.236026 CALC_Sometimes>=0.552064 CH2O<2.659903 Height>=1.614741 CH2O>=2.604615 -> OLD_Obesity_Type_III
-   Train Covering size : 11
+Gender_Male<0.543863 CH2O>=2.494038 CALC_no<0.50141 Height>=176.621373 CH2O<2.696762 CH2O<2.659903 -> OLD_Obesity_Type_III
+   Train Covering size : 17
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.982184
+   Train Confidence : 0.981883
 
 -------------------------------------------------
 
 Rule for sample 107 :
 
-FCVC>=2.697915 CH2O>=2.291314 Gender_Male<0.543863 CALC_Sometimes>=0.49455 family_history_with_overweight_no<0.472936 CH2O<2.696762 Height>=1.621373 NCP>=2.383445 -> OLD_Obesity_Type_III
-   Train Covering size : 33
+FCVC>=2.67904 Gender_Male<0.392109 CH2O>=2.236026 CALC_Sometimes>=0.465793 CH2O<2.696762 Height>=176.614741 NCP>=2.665682 FAVC_no<0.961529 -> OLD_Obesity_Type_III
+   Train Covering size : 35
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.979523
+   Train Confidence : 0.978976
 
 -------------------------------------------------
 
 Rule for sample 108 :
 
-FCVC>=2.697915 Gender_Male<0.619739 CALC_Sometimes>=0.49455 CH2O>=2.236026 family_history_with_overweight_no<0.520224 CH2O<2.586185 Height>=1.608109 -> OLD_Obesity_Type_III
-   Train Covering size : 20
+Gender_Female>=0.458686 CH2O>=2.494038 CALC_Sometimes>=0.523307 Height>=176.614741 NCP>=2.894999 FAF<1.920975 family_history_with_overweight_yes>=0.979498 -> OLD_Obesity_Type_III
+   Train Covering size : 47
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.976571
+   Train Accuracy : 0.979167
+   Train Confidence : 0.982237
 
 -------------------------------------------------
 
 Rule for sample 109 :
 
-CALC_no<0.470845 Gender_Female>=0.507739 family_history_with_overweight_no<0.49658 FCVC>=2.660164 NCP>=2.965558 CH2O<1.996443 MTRANS_Public_Transportation>=0.898356 -> OLD_Obesity_Type_III
+FCVC>=2.67904 Gender_Female>=0.507739 CALC_Sometimes>=0.465793 family_history_with_overweight_no<0.49658 MTRANS_Public_Transportation>=0.536632 CH2O<1.978014 NCP>=2.436364 -> OLD_Obesity_Type_III
+   Train Covering size : 42
+   Train Fidelity : 1
+   Train Accuracy : 0.930233
+   Train Confidence : 0.91681
+
+-------------------------------------------------
+
+Rule for sample 110 :
+
+Gender_Male<0.392109 CALC_Sometimes>=0.49455 Height>=176.614741 FCVC>=2.641288 family_history_with_overweight_no<0.49658 TUE>=0.031977 NCP>=2.736241 FAVC_yes>=0.084667 -> OLD_Obesity_Type_III
+   Train Covering size : 102
+   Train Fidelity : 1
+   Train Accuracy : 0.941748
+   Train Confidence : 0.956408
+
+-------------------------------------------------
+
+Rule for sample 111 :
+
+Gender_Male<0.543863 FCVC>=2.697915 Height>=176.740748 FAF<1.816389 CH2O>=2.75205 -> OLD_Obesity_Type_III
+   Train Covering size : 11
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.983622
+
+-------------------------------------------------
+
+Rule for sample 112 :
+
+FCVC>=2.697915 Gender_Female>=0.507739 CALC_Sometimes>=0.49455 Height>=176.740748 family_history_with_overweight_yes>=0.584305 CH2O>=2.75205 -> OLD_Obesity_Type_III
+   Train Covering size : 12
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.983949
+
+-------------------------------------------------
+
+Rule for sample 113 :
+
+CALC_Sometimes>=0.49455 FCVC>=2.697915 Gender_Male<0.392109 family_history_with_overweight_yes>=0.302024 CH2O>=2.125449 Height>=176.674428 FAF<1.460796 -> OLD_Obesity_Type_III
+   Train Covering size : 18
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.979414
+
+-------------------------------------------------
+
+Rule for sample 114 :
+
+FCVC>=2.697915 Gender_Female>=0.458686 CALC_Sometimes>=0.49455 Height>=176.740748 CH2O>=2.678333 family_history_with_overweight_no<0.000051 -> OLD_Obesity_Type_III
+   Train Covering size : 13
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.984219
+
+-------------------------------------------------
+
+Rule for sample 115 :
+
+FCVC>=2.697915 Gender_Male<0.543863 family_history_with_overweight_yes>=0.471392 CALC_no<0.50141 MTRANS_Public_Transportation>=0.488402 CH2O<1.959584 NCP>=2.383445 -> OLD_Obesity_Type_III
+   Train Covering size : 42
+   Train Fidelity : 1
+   Train Accuracy : 0.930233
+   Train Confidence : 0.91681
+
+-------------------------------------------------
+
+Rule for sample 116 :
+
+FCVC>=2.67904 Gender_Male<0.467986 CALC_Sometimes>=0.49455 TUE>=0.015236 family_history_with_overweight_yes>=0.584305 NCP>=2.983198 FAVC_yes>=0.535247 MTRANS_Public_Transportation>=0.488402 Height>=176.568317 -> OLD_Obesity_Type_III
+   Train Covering size : 112
+   Train Fidelity : 1
+   Train Accuracy : 0.973451
+   Train Confidence : 0.956582
+
+-------------------------------------------------
+
+Rule for sample 117 :
+
+FCVC>=2.67904 Gender_Female>=0.458686 CALC_Sometimes>=0.523307 family_history_with_overweight_no<0.472936 NCP>=2.983198 CH2O<1.996443 MTRANS_Public_Transportation>=0.898356 -> OLD_Obesity_Type_III
    Train Covering size : 41
    Train Fidelity : 1
    Train Accuracy : 0.952381
@@ -1098,119 +1178,39 @@ CALC_no<0.470845 Gender_Female>=0.507739 family_history_with_overweight_no<0.496
 
 -------------------------------------------------
 
-Rule for sample 110 :
-
-FCVC>=2.697915 Gender_Male<0.543863 family_history_with_overweight_yes>=0.527848 CALC_Sometimes>=0.552064 NCP>=2.965558 FAVC_no<0.498072 CH2O<1.978014 CAEC_Frequently<0.519712 MTRANS_Public_Transportation>=0.9707 -> OLD_Obesity_Type_III
-   Train Covering size : 41
-   Train Fidelity : 1
-   Train Accuracy : 0.952381
-   Train Confidence : 0.922467
-
--------------------------------------------------
-
-Rule for sample 111 :
-
-CALC_Sometimes>=0.49455 Gender_Male<0.392109 CH2O>=2.401891 Height>=1.734116 FAF<2.213816 family_history_with_overweight_yes>=0.866586 -> OLD_Obesity_Type_III
-   Train Covering size : 21
-   Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.98304
-
--------------------------------------------------
-
-Rule for sample 112 :
-
-Gender_Male<0.392109 FCVC>=2.641288 family_history_with_overweight_yes>=0.471392 Height>=1.754011 NCP>=2.965558 CALC_Sometimes>=0.98342 -> OLD_Obesity_Type_III
-   Train Covering size : 18
-   Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.97321
-
--------------------------------------------------
-
-Rule for sample 113 :
-
-Gender_Female>=0.507739 CH2O>=2.291314 Height>=1.727484 FCVC>=2.358155 CALC_Sometimes>=0.465793 FAF<1.460796 -> OLD_Obesity_Type_III
-   Train Covering size : 13
-   Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.980098
-
--------------------------------------------------
-
-Rule for sample 114 :
-
-Gender_Female>=0.507739 Height>=1.740748 FCVC>=2.622413 CH2O>=2.254455 FAF<1.50263 -> OLD_Obesity_Type_III
-   Train Covering size : 12
-   Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.980147
-
--------------------------------------------------
-
-Rule for sample 115 :
-
-Gender_Female>=0.507739 CALC_Sometimes>=0.49455 FCVC>=2.622413 family_history_with_overweight_yes>=0.471392 NCP>=2.983198 CH2O<1.996443 TUE>=0.107313 CAEC_Sometimes>=0.90986 -> OLD_Obesity_Type_III
-   Train Covering size : 42
-   Train Fidelity : 1
-   Train Accuracy : 0.930233
-   Train Confidence : 0.922142
-
--------------------------------------------------
-
-Rule for sample 116 :
-
-Gender_Female>=0.532265 FCVC>=2.660164 family_history_with_overweight_no<0.49658 CALC_Sometimes>=0.49455 TUE>=0.015236 CH2O<1.978014 NCP>=2.683322 MTRANS_Public_Transportation>=0.9707 -> OLD_Obesity_Type_III
-   Train Covering size : 42
-   Train Fidelity : 1
-   Train Accuracy : 0.930233
-   Train Confidence : 0.916805
-
--------------------------------------------------
-
-Rule for sample 117 :
-
-FCVC>=2.697915 Gender_Male<0.316232 CALC_Sometimes>=0.523307 family_history_with_overweight_yes>=0.697217 MTRANS_Automobile<0.506953 CH2O<1.885866 NCP>=2.630402 MTRANS_Walking<0.975331 -> OLD_Obesity_Type_III
-   Train Covering size : 40
-   Train Fidelity : 1
-   Train Accuracy : 0.926829
-   Train Confidence : 0.916534
-
--------------------------------------------------
-
 Rule for sample 118 :
 
-Gender_Female>=0.483212 FCVC>=2.697915 CALC_Sometimes>=0.49455 family_history_with_overweight_no<0.49658 NCP>=2.983198 FAVC_no<0.469106 MTRANS_Public_Transportation>=0.488402 CAEC_Sometimes>=0.90986 -> OLD_Obesity_Type_III
-   Train Covering size : 113
+FCVC>=2.697915 Gender_Male<0.467986 CALC_Sometimes>=0.523307 family_history_with_overweight_yes>=0.527848 MTRANS_Public_Transportation>=0.488402 FAVC_no<0.556004 CH2O<1.996443 NCP>=2.383445 -> OLD_Obesity_Type_III
+   Train Covering size : 42
    Train Fidelity : 1
-   Train Accuracy : 0.973684
-   Train Confidence : 0.956569
+   Train Accuracy : 0.930233
+   Train Confidence : 0.916817
 
 -------------------------------------------------
 
 Rule for sample 119 :
 
-Gender_Female>=0.532265 FCVC>=2.67904 CALC_Sometimes>=0.523307 family_history_with_overweight_no<0.49658 CH2O>=2.143879 Height>=1.614741 Height<1.628005 -> OLD_Obesity_Type_III
-   Train Covering size : 8
+Gender_Female>=0.532265 CALC_Sometimes>=0.523307 CH2O>=2.401891 NCP>=2.983198 Height>=176.614741 FAVC_yes>=0.503062 CH2O<2.678333 -> OLD_Obesity_Type_III
+   Train Covering size : 24
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.978066
+   Train Confidence : 0.980976
 
 -------------------------------------------------
 
 Rule for sample 120 :
 
-FCVC>=2.67904 Gender_Male<0.316232 CH2O>=2.236026 CALC_no<0.531974 FAVC_no<0.498072 CH2O<2.715191 CH2O>=2.475609 CH2O<2.659903 NCP>=2.401085 -> OLD_Obesity_Type_III
-   Train Covering size : 20
+Gender_Male<0.467986 CH2O>=2.401891 CALC_Sometimes>=0.465793 FCVC>=2.528035 CH2O<2.659903 CH2O>=2.549326 NCP>=2.383445 -> OLD_Obesity_Type_III
+   Train Covering size : 17
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.981885
+   Train Confidence : 0.982042
 
 -------------------------------------------------
 
 Rule for sample 121 :
 
-FCVC>=2.697915 Gender_Female>=0.532265 family_history_with_overweight_yes>=0.527848 NCP>=2.983198 CALC_Sometimes>=0.49455 CH2O<1.978014 MTRANS_Public_Transportation>=0.946585 -> OLD_Obesity_Type_III
+FCVC>=2.67904 Gender_Male<0.619739 family_history_with_overweight_yes>=0.471392 CALC_Sometimes>=0.580821 MTRANS_Public_Transportation>=0.488402 NCP>=2.983198 CH2O<1.978014 -> OLD_Obesity_Type_III
    Train Covering size : 41
    Train Fidelity : 1
    Train Accuracy : 0.952381
@@ -1220,87 +1220,87 @@ FCVC>=2.697915 Gender_Female>=0.532265 family_history_with_overweight_yes>=0.527
 
 Rule for sample 122 :
 
-FCVC>=2.67904 Gender_Male<0.392109 CALC_Sometimes>=0.465793 family_history_with_overweight_no<0.472936 MTRANS_Public_Transportation>=0.464287 CH2O<1.996443 NCP>=2.383445 -> OLD_Obesity_Type_III
-   Train Covering size : 42
+FCVC>=2.641288 Gender_Female>=0.483212 family_history_with_overweight_no<0.472936 CALC_Sometimes>=0.465793 FAVC_yes>=0.503062 NCP>=2.965558 MTRANS_Public_Transportation>=0.440172 CAEC_Sometimes>=0.552887 Height>=176.608109 -> OLD_Obesity_Type_III
+   Train Covering size : 105
    Train Fidelity : 1
-   Train Accuracy : 0.930233
-   Train Confidence : 0.91681
+   Train Accuracy : 0.95283
+   Train Confidence : 0.958361
 
 -------------------------------------------------
 
 Rule for sample 123 :
 
-FCVC>=2.697915 Gender_Female>=0.507739 Height>=1.787171 family_history_with_overweight_no<0.023695 -> OLD_Obesity_Type_III
-   Train Covering size : 11
+Gender_Male<0.543863 FCVC>=2.660164 Height>=176.787171 FAF<1.439879 -> OLD_Obesity_Type_III
+   Train Covering size : 4
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.974636
+   Train Confidence : 0.977525
 
 -------------------------------------------------
 
 Rule for sample 124 :
 
-CH2O>=2.530897 CALC_Sometimes>=0.49455 Gender_Male<0.467986 FAF<1.73272 NCP>=2.983198 Height>=1.634637 family_history_with_overweight_no<0.000051 -> OLD_Obesity_Type_III
-   Train Covering size : 33
+Gender_Female>=0.458686 Height>=176.754011 FCVC>=2.584662 CH2O>=2.272885 FAF<1.628134 -> OLD_Obesity_Type_III
+   Train Covering size : 8
    Train Fidelity : 1
-   Train Accuracy : 0.970588
-   Train Confidence : 0.982552
+   Train Accuracy : 1
+   Train Confidence : 0.980218
 
 -------------------------------------------------
 
 Rule for sample 125 :
 
-Gender_Male<0.543863 Height>=1.787171 family_history_with_overweight_no<0.000051 -> OLD_Obesity_Type_III
-   Train Covering size : 11
+NCP>=2.930279 Gender_Female>=0.507739 Height>=176.787171 FAF<1.439879 -> OLD_Obesity_Type_III
+   Train Covering size : 4
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.974609
+   Train Confidence : 0.97746
 
 -------------------------------------------------
 
 Rule for sample 126 :
 
-FCVC>=2.622413 MTRANS_Public_Transportation>=0.464287 CH2O>=2.162308 CALC_Sometimes>=0.49455 Height<1.793803 Gender_Female>=0.507739 family_history_with_overweight_no<0.49658 Height>=1.674428 FAF<1.920975 -> OLD_Obesity_Type_III
-   Train Covering size : 25
+Gender_Male<0.543863 Height>=176.74738 FAF<1.900058 FAF>=1.439879 FCVC>=2.67904 -> OLD_Obesity_Type_III
+   Train Covering size : 6
    Train Fidelity : 1
-   Train Accuracy : 0.961538
-   Train Confidence : 0.980118
+   Train Accuracy : 1
+   Train Confidence : 0.973215
 
 -------------------------------------------------
 
 Rule for sample 127 :
 
-FCVC>=2.697915 Gender_Female>=0.458686 Height>=1.787171 family_history_with_overweight_yes>=0.979498 -> OLD_Obesity_Type_III
-   Train Covering size : 11
+FCVC>=2.67904 CALC_Sometimes>=0.49455 MTRANS_Automobile<0.506953 CH2O>=2.162308 Gender_Male<0.619739 family_history_with_overweight_no<0.472936 Height>=176.807067 -> OLD_Obesity_Type_III
+   Train Covering size : 4
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.974783
+   Train Confidence : 0.982157
 
 -------------------------------------------------
 
 Rule for sample 128 :
 
-FCVC>=2.67904 CALC_Sometimes>=0.49455 Gender_Male<0.467986 Height>=1.740748 CH2O>=2.217596 CH2O<2.641474 -> OLD_Obesity_Type_III
+Gender_Female>=0.483212 FCVC>=2.67904 Height>=176.740748 CH2O>=2.272885 Height<176.754011 -> OLD_Obesity_Type_III
    Train Covering size : 10
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.974021
+   Train Confidence : 0.97982
 
 -------------------------------------------------
 
 Rule for sample 129 :
 
-Gender_Female>=0.483212 Height>=1.760643 family_history_with_overweight_yes>=0.697217 CALC_Sometimes>=0.523307 MTRANS_Public_Transportation>=0.9707 -> OLD_Obesity_Type_III
-   Train Covering size : 15
+FCVC>=2.67904 Gender_Male<0.392109 Height>=176.800435 Height<176.813699 -> OLD_Obesity_Type_III
+   Train Covering size : 4
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.975977
+   Train Confidence : 0.97619
 
 -------------------------------------------------
 
 Rule for sample 130 :
 
-FCVC>=2.697915 Gender_Female>=0.507739 Height>=1.780539 family_history_with_overweight_yes>=0.753673 -> OLD_Obesity_Type_III
+FCVC>=2.697915 Gender_Male<0.543863 Height>=176.780539 family_history_with_overweight_no<0.000051 -> OLD_Obesity_Type_III
    Train Covering size : 12
    Train Fidelity : 1
    Train Accuracy : 1
@@ -1310,107 +1310,137 @@ FCVC>=2.697915 Gender_Female>=0.507739 Height>=1.780539 family_history_with_over
 
 Rule for sample 131 :
 
-FCVC>=2.697915 Gender_Female>=0.532265 CALC_no<0.50141 CH2O>=2.272885 Height>=1.634637 family_history_with_overweight_no<0.472936 Height<1.6479 -> OLD_Obesity_Type_III
-   Train Covering size : 12
+Gender_Male<0.467986 Height>=176.621373 CH2O>=2.291314 CALC_Sometimes>=0.465793 NCP>=2.912639 family_history_with_overweight_no<0.49658 FAF<1.795471 Height<176.694324 -> OLD_Obesity_Type_III
+   Train Covering size : 31
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.980799
+   Train Confidence : 0.980923
 
 -------------------------------------------------
 
 Rule for sample 132 :
 
-Gender_Male<0.467986 CH2O>=2.494038 CH2O<2.75205 CALC_no<0.470845 NCP>=2.983198 FCVC>=2.414781 MTRANS_Public_Transportation>=0.850126 -> OLD_Obesity_Type_III
-   Train Covering size : 30
+Gender_Female>=0.483212 CH2O>=2.494038 CALC_no<0.470845 Height>=176.621373 Height<176.6479 SMOKE_no>=0.429399 TUE<0.191019 -> OLD_Obesity_Type_III
+   Train Covering size : 7
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.981992
+   Train Confidence : 0.98074
 
 -------------------------------------------------
 
 Rule for sample 133 :
 
-Gender_Male<0.619739 CALC_Sometimes>=0.49455 FCVC>=2.67904 CH2O>=2.236026 family_history_with_overweight_yes>=0.527848 CH2O<2.659903 CH2O>=2.604615 -> OLD_Obesity_Type_III
-   Train Covering size : 12
+Gender_Female>=0.483212 FCVC>=2.697915 CH2O>=2.180738 CALC_Sometimes>=0.465793 CH2O<2.659903 family_history_with_overweight_no<0.49658 MTRANS_Automobile<0.480071 CH2O>=2.623044 -> OLD_Obesity_Type_III
+   Train Covering size : 8
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.982145
+   Train Confidence : 0.982165
 
 -------------------------------------------------
 
 Rule for sample 134 :
 
-CH2O>=2.530897 Gender_Male<0.543863 CALC_Sometimes>=0.49455 FCVC>=2.528035 CH2O<2.659903 NCP>=2.401085 -> OLD_Obesity_Type_III
-   Train Covering size : 17
+FCVC>=2.67904 Gender_Male<0.467986 CH2O>=2.236026 CH2O<2.715191 CALC_Sometimes>=0.49455 NCP>=2.718601 FAVC_no<0.556004 CH2O>=2.623044 -> OLD_Obesity_Type_III
+   Train Covering size : 16
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.98206
+   Train Confidence : 0.982674
 
 -------------------------------------------------
 
 Rule for sample 135 :
 
-Gender_Female>=0.458686 FCVC>=2.697915 family_history_with_overweight_yes>=0.527848 CALC_no<0.50141 CH2O>=2.236026 CH2O<2.623044 MTRANS_Public_Transportation>=0.488402 CALC_Frequently<0.491917 NCP>=2.365805 -> OLD_Obesity_Type_III
-   Train Covering size : 25
+FCVC>=2.67904 CALC_Sometimes>=0.49455 TUE>=0.082201 Gender_Female>=0.532265 family_history_with_overweight_no<0.49658 FAVC_yes>=0.470878 NCP>=2.683322 Height>=176.601477 MTRANS_Public_Transportation>=0.946585 -> OLD_Obesity_Type_III
+   Train Covering size : 105
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.977617
+   Train Accuracy : 0.962264
+   Train Confidence : 0.955745
 
 -------------------------------------------------
 
 Rule for sample 136 :
 
-Gender_Male<0.543863 CH2O>=2.291314 CALC_no<0.50141 Height>=1.621373 CH2O<2.42032 FAVC_yes>=0.470878 FCVC>=2.697915 -> OLD_Obesity_Type_III
+FCVC>=2.697915 Gender_Female>=0.507739 CH2O>=2.236026 CALC_no<0.562538 FAVC_yes>=0.503062 FAF<1.983726 CH2O<2.659903 MTRANS_Automobile<0.560716 CH2O<2.42032 -> OLD_Obesity_Type_III
    Train Covering size : 10
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.974425
+   Train Confidence : 0.972063
 
 -------------------------------------------------
 
 Rule for sample 137 :
 
-Gender_Female>=0.556791 CH2O>=2.365032 CALC_Sometimes>=0.49455 FCVC>=2.603537 CH2O<2.659903 CH2O>=2.530897 NCP>=2.418725 -> OLD_Obesity_Type_III
-   Train Covering size : 17
+FCVC>=2.67904 Gender_Male<0.543863 CALC_Sometimes>=0.49455 CH2O>=2.217596 family_history_with_overweight_yes>=0.527848 NCP>=2.965558 FAVC_no<0.498072 Height>=176.574949 CH2O<2.75205 -> OLD_Obesity_Type_III
+   Train Covering size : 43
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.982042
+   Train Confidence : 0.979567
 
 -------------------------------------------------
 
 Rule for sample 138 :
 
-Gender_Male<0.392109 CH2O>=2.401891 CALC_no<0.470845 FCVC>=2.546911 NCP>=2.965558 family_history_with_overweight_no<0.49658 FAVC_yes>=0.470878 MTRANS_Automobile<0.506953 CALC_Sometimes>=0.523307 MTRANS_Walking<0.948193 -> OLD_Obesity_Type_III
-   Train Covering size : 57
+FCVC>=2.67904 Gender_Female>=0.556791 CH2O>=2.236026 CALC_no<0.50141 NCP>=2.965558 CH2O<2.715191 family_history_with_overweight_yes>=0.527848 CALC_Frequently<0.52102 MTRANS_Automobile<0.506953 FAF<1.544465 -> OLD_Obesity_Type_III
+   Train Covering size : 36
    Train Fidelity : 1
-   Train Accuracy : 0.982759
-   Train Confidence : 0.982017
+   Train Accuracy : 1
+   Train Confidence : 0.979551
 
 -------------------------------------------------
 
 Rule for sample 139 :
 
-Gender_Female>=0.507739 CH2O>=2.217596 CALC_Sometimes>=0.523307 FCVC>=2.697915 FAF<1.983726 NCP>=2.965558 CH2O<2.42032 -> OLD_Obesity_Type_III
-   Train Covering size : 10
+CALC_Sometimes>=0.523307 Height<176.694324 Height>=176.621373 TUE>=0.015236 FCVC>=2.697915 family_history_with_overweight_no<0.520224 FAVC_yes>=0.503062 Height<176.641269 -> OLD_Obesity_Type_III
+   Train Covering size : 23
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.969885
+   Train Accuracy : 0.958333
+   Train Confidence : 0.959974
 
 -------------------------------------------------
 
 Rule for sample 140 :
 
-FCVC>=2.697915 Gender_Female>=0.507739 CH2O>=2.180738 CALC_no<0.531974 CH2O<2.659903 CH2O>=2.549326 CH2O<2.567756 -> OLD_Obesity_Type_III
-   Train Covering size : 3
+CALC_Sometimes>=0.49455 Gender_Female>=0.532265 FCVC>=2.697915 CH2O>=2.236026 CH2O<2.659903 Height>=176.628005 -> OLD_Obesity_Type_III
+   Train Covering size : 28
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.981654
+   Train Confidence : 0.978191
 
 -------------------------------------------------
 
 Rule for sample 141 :
 
-FCVC>=2.697915 Gender_Female>=0.507739 CALC_Sometimes>=0.523307 CAEC_Sometimes>=0.450895 NCP>=2.983198 family_history_with_overweight_yes>=0.527848 Height>=1.674428 -> OLD_Obesity_Type_III
+Gender_Male<0.543863 FCVC>=2.67904 family_history_with_overweight_yes>=0.527848 CALC_Sometimes>=0.49455 NCP>=2.84208 Height>=176.674428 Height<176.694324 -> OLD_Obesity_Type_III
+   Train Covering size : 9
+   Train Fidelity : 1
+   Train Accuracy : 0.9
+   Train Confidence : 0.934044
+
+-------------------------------------------------
+
+Rule for sample 142 :
+
+Gender_Female>=0.507739 FCVC>=2.67904 CALC_no<0.50141 family_history_with_overweight_yes>=0.640761 MTRANS_Public_Transportation>=0.560747 CH2O<1.996443 NCP>=2.365805 -> OLD_Obesity_Type_III
+   Train Covering size : 42
+   Train Fidelity : 1
+   Train Accuracy : 0.930233
+   Train Confidence : 0.916853
+
+-------------------------------------------------
+
+Rule for sample 143 :
+
+FCVC>=2.697915 CALC_Sometimes>=0.49455 Gender_Male<0.467986 TUE>=0.015236 family_history_with_overweight_no<0.49658 Height>=176.661164 Height<176.667796 -> OLD_Obesity_Type_III
+   Train Covering size : 4
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.931816
+
+-------------------------------------------------
+
+Rule for sample 144 :
+
+Gender_Male<0.543863 FCVC>=2.697915 CALC_Sometimes>=0.523307 family_history_with_overweight_no<0.49658 Height>=176.674428 NCP>=2.965558 FAVC_no<0.990495 -> OLD_Obesity_Type_III
    Train Covering size : 55
    Train Fidelity : 1
    Train Accuracy : 0.982143
@@ -1418,549 +1448,519 @@ FCVC>=2.697915 Gender_Female>=0.507739 CALC_Sometimes>=0.523307 CAEC_Sometimes>=
 
 -------------------------------------------------
 
-Rule for sample 142 :
-
-Gender_Male<0.316232 FCVC>=2.697915 CALC_Sometimes>=0.465793 family_history_with_overweight_no<0.49658 NCP>=2.983198 Height>=1.674428 FAVC_no<0.990495 -> OLD_Obesity_Type_III
-   Train Covering size : 55
-   Train Fidelity : 1
-   Train Accuracy : 0.982143
-   Train Confidence : 0.957661
-
--------------------------------------------------
-
-Rule for sample 143 :
-
-CALC_no<0.470845 Gender_Female>=0.507739 FCVC>=2.641288 Height>=1.661164 family_history_with_overweight_no<0.49658 NCP>=2.965558 Height<1.687692 CH2O<2.75205 -> OLD_Obesity_Type_III
-   Train Covering size : 13
-   Train Fidelity : 1
-   Train Accuracy : 0.928571
-   Train Confidence : 0.925165
-
--------------------------------------------------
-
-Rule for sample 144 :
-
-Gender_Female>=0.483212 TUE>=0.082201 FCVC>=2.697915 CALC_no<0.470845 CAEC_Sometimes>=0.476393 family_history_with_overweight_no<0.472936 Height>=1.621373 CALC_Frequently<0.491917 FAVC_no<0.498072 NCP>=2.577483 -> OLD_Obesity_Type_III
-   Train Covering size : 97
-   Train Fidelity : 1
-   Train Accuracy : 0.959184
-   Train Confidence : 0.956574
-
--------------------------------------------------
-
 Rule for sample 145 :
 
-Gender_Female>=0.458686 FCVC>=2.697915 family_history_with_overweight_yes>=0.471392 CALC_no<0.50141 MTRANS_Public_Transportation>=0.488402 NCP>=2.983198 Height>=1.621373 CH2O<1.996443 -> OLD_Obesity_Type_III
-   Train Covering size : 30
+Gender_Male<0.392109 FCVC>=2.697915 CALC_Sometimes>=0.552064 family_history_with_overweight_yes>=0.527848 FAVC_no<0.556004 MTRANS_Public_Transportation>=0.488402 Height>=176.614741 FAF<1.962809 NCP>=2.612762 CAEC_Frequently<0.986679 -> OLD_Obesity_Type_III
+   Train Covering size : 93
    Train Fidelity : 1
-   Train Accuracy : 0.935484
-   Train Confidence : 0.922531
+   Train Accuracy : 0.957447
+   Train Confidence : 0.955695
 
 -------------------------------------------------
 
 Rule for sample 146 :
 
-Gender_Female>=0.483212 FCVC>=2.697915 family_history_with_overweight_no<0.472936 MTRANS_Public_Transportation>=0.488402 CALC_Sometimes>=0.49455 CH2O<1.996443 TUE>=0.107313 CH2O>=1.885866 -> OLD_Obesity_Type_III
-   Train Covering size : 2
+Gender_Male<0.467986 FCVC>=2.67904 CALC_Sometimes>=0.49455 family_history_with_overweight_yes>=0.527848 NCP>=2.983198 FAVC_yes>=0.470878 MTRANS_Public_Transportation>=0.512517 CH2O<1.996443 -> OLD_Obesity_Type_III
+   Train Covering size : 41
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.922485
+   Train Accuracy : 0.952381
+   Train Confidence : 0.922543
 
 -------------------------------------------------
 
 Rule for sample 147 :
 
-FCVC>=2.697915 Gender_Male<0.467986 CAEC_Frequently<0.519712 Height>=1.68106 CALC_Sometimes>=0.49455 family_history_with_overweight_no<0.49658 NCP>=2.983198 FAVC_yes>=0.020299 -> OLD_Obesity_Type_III
-   Train Covering size : 52
+FCVC>=2.697915 Gender_Male<0.316232 Height>=176.68106 CALC_Sometimes>=0.552064 family_history_with_overweight_no<0.472936 Height<176.687692 -> OLD_Obesity_Type_III
+   Train Covering size : 4
    Train Fidelity : 1
-   Train Accuracy : 0.981132
-   Train Confidence : 0.958571
+   Train Accuracy : 0.8
+   Train Confidence : 0.922079
 
 -------------------------------------------------
 
 Rule for sample 148 :
 
-CALC_Sometimes>=0.408279 Gender_Male<0.467986 Height>=1.621373 FCVC>=2.67904 family_history_with_overweight_yes>=0.471392 NCP>=2.983198 FAVC_yes>=0.535247 CH2O<1.996443 -> OLD_Obesity_Type_III
-   Train Covering size : 30
+FCVC>=2.641288 Gender_Female>=0.507739 family_history_with_overweight_yes>=0.471392 MTRANS_Public_Transportation>=0.512517 CAEC_Frequently<0.488581 Height>=176.6479 CALC_Sometimes>=0.465793 NCP>=2.700961 FAVC_yes>=0.149036 -> OLD_Obesity_Type_III
+   Train Covering size : 72
    Train Fidelity : 1
-   Train Accuracy : 0.935484
-   Train Confidence : 0.922571
+   Train Accuracy : 0.931507
+   Train Confidence : 0.953711
 
 -------------------------------------------------
 
 Rule for sample 149 :
 
-Gender_Female>=0.507739 CALC_no<0.470845 Height>=1.621373 family_history_with_overweight_yes>=0.527848 MTRANS_Public_Transportation>=0.536632 TUE>=0.015236 NCP>=2.983198 FCVC>=2.697915 SCC_no>=0.463211 CALC_Frequently<0.084468 -> OLD_Obesity_Type_III
-   Train Covering size : 98
+Gender_Female>=0.507739 FCVC>=2.697915 Height>=176.654532 CALC_no<0.50141 family_history_with_overweight_yes>=0.471392 NCP>=2.965558 Height<176.694324 FAVC_no<0.932563 -> OLD_Obesity_Type_III
+   Train Covering size : 21
    Train Fidelity : 1
-   Train Accuracy : 0.969697
-   Train Confidence : 0.959767
+   Train Accuracy : 0.954545
+   Train Confidence : 0.937362
 
 -------------------------------------------------
 
 Rule for sample 150 :
 
-FCVC>=2.67904 Gender_Male<0.392109 CALC_Sometimes>=0.465793 NCP>=2.930279 FAVC_no<0.527038 family_history_with_overweight_yes>=0.414936 Height>=1.654532 TUE>=0.182648 -> OLD_Obesity_Type_III
-   Train Covering size : 63
+CALC_no<0.470845 Gender_Male<0.467986 FCVC>=2.67904 Height>=176.68106 family_history_with_overweight_no<0.449291 MTRANS_Automobile<0.506953 NCP>=2.665682 CALC_Sometimes>=0.523307 CH2O<1.996443 -> OLD_Obesity_Type_III
+   Train Covering size : 16
    Train Fidelity : 1
-   Train Accuracy : 0.984375
-   Train Confidence : 0.952926
+   Train Accuracy : 1
+   Train Confidence : 0.924384
 
 -------------------------------------------------
 
 Rule for sample 151 :
 
-Gender_Female>=0.458686 TUE>=0.082201 Height>=1.740748 FAF<1.753637 NCP>=2.700961 CALC_Sometimes>=0.49455 Height<1.760643 CH2O>=1.904296 -> OLD_Obesity_Type_III
-   Train Covering size : 13
+CALC_Sometimes>=0.523307 Gender_Male<0.316232 Height>=176.740748 family_history_with_overweight_no<0.49658 NCP>=2.983198 FCVC>=2.660164 -> OLD_Obesity_Type_III
+   Train Covering size : 30
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.970924
+   Train Confidence : 0.971426
 
 -------------------------------------------------
 
 Rule for sample 152 :
 
-Gender_Male<0.467986 FCVC>=2.67904 CALC_no<0.50141 family_history_with_overweight_yes>=0.527848 MTRANS_Public_Transportation>=0.488402 CH2O<1.941155 NCP>=2.383445 -> OLD_Obesity_Type_III
-   Train Covering size : 41
+FCVC>=2.697915 Gender_Female>=0.483212 CALC_Sometimes>=0.49455 TUE>=0.090572 family_history_with_overweight_yes>=0.527848 Height>=176.71422 CH2O>=1.849008 FAF<1.607216 -> OLD_Obesity_Type_III
+   Train Covering size : 24
    Train Fidelity : 1
-   Train Accuracy : 0.928571
-   Train Confidence : 0.916748
+   Train Accuracy : 1
+   Train Confidence : 0.971046
 
 -------------------------------------------------
 
 Rule for sample 153 :
 
-FCVC>=2.697915 Gender_Male<0.392109 CALC_Sometimes>=0.523307 Height>=1.68106 CAEC_Sometimes>=0.450895 NCP<3.018478 TUE>=0.082201 Height<1.740748 -> OLD_Obesity_Type_III
-   Train Covering size : 22
+Gender_Female>=0.532265 FCVC>=2.641288 Height>=176.71422 NCP<3.036117 FAF>=1.439879 FAF<1.690885 -> OLD_Obesity_Type_III
+   Train Covering size : 14
    Train Fidelity : 1
-   Train Accuracy : 0.956522
-   Train Confidence : 0.939855
+   Train Accuracy : 1
+   Train Confidence : 0.957866
 
 -------------------------------------------------
 
 Rule for sample 154 :
 
-FCVC>=2.67904 CALC_Sometimes>=0.523307 Gender_Female>=0.507739 Height>=1.68106 NCP<3.018478 FAF<1.816389 FAF>=1.439879 -> OLD_Obesity_Type_III
-   Train Covering size : 20
+FCVC>=2.67904 Gender_Female>=0.507739 family_history_with_overweight_no<0.49658 Height>=176.71422 TUE>=0.174278 CALC_Sometimes>=0.49455 NCP>=2.365805 -> OLD_Obesity_Type_III
+   Train Covering size : 41
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.95095
+   Train Confidence : 0.96488
 
 -------------------------------------------------
 
 Rule for sample 155 :
 
-FCVC>=2.697915 Gender_Male<0.467986 CALC_Sometimes>=0.49455 CH2O>=2.236026 CH2O<2.42032 Height>=1.601477 -> OLD_Obesity_Type_III
-   Train Covering size : 11
+Gender_Female>=0.507739 CALC_no<0.470845 CH2O>=2.291314 Height>=176.621373 Height<176.628005 NCP>=2.365805 -> OLD_Obesity_Type_III
+   Train Covering size : 6
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.972884
+   Train Confidence : 0.981148
 
 -------------------------------------------------
 
 Rule for sample 156 :
 
-FCVC>=2.697915 Gender_Female>=0.483212 CH2O>=2.162308 CH2O<2.715191 CALC_no<0.562538 CH2O>=2.494038 CH2O<2.530897 -> OLD_Obesity_Type_III
-   Train Covering size : 3
+CALC_Sometimes>=0.49455 CH2O>=2.401891 Gender_Female>=0.483212 Height>=176.621373 FAVC_yes>=0.503062 NCP>=2.85972 CH2O<2.715191 -> OLD_Obesity_Type_III
+   Train Covering size : 31
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.980945
+   Train Confidence : 0.981566
 
 -------------------------------------------------
 
 Rule for sample 157 :
 
-FCVC>=2.660164 Gender_Female>=0.483212 CH2O>=2.217596 CALC_Sometimes>=0.523307 CH2O<2.659903 CH2O>=2.623044 -> OLD_Obesity_Type_III
-   Train Covering size : 8
+Gender_Female>=0.483212 FCVC>=2.697915 CAEC_Sometimes>=0.476393 CH2O>=2.272885 CALC_Sometimes>=0.465793 CH2O<2.641474 family_history_with_overweight_yes>=0.527848 CH2O>=2.623044 -> OLD_Obesity_Type_III
+   Train Covering size : 3
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.982224
+   Train Confidence : 0.981704
 
 -------------------------------------------------
 
 Rule for sample 158 :
 
-FCVC>=2.622413 Gender_Female>=0.507739 CAEC_Sometimes>=0.476393 CH2O>=2.475609 NCP>=2.965558 CH2O<2.715191 MTRANS_Public_Transportation>=0.946585 -> OLD_Obesity_Type_III
-   Train Covering size : 28
+FCVC>=2.697915 CALC_Sometimes>=0.49455 Gender_Female>=0.507739 family_history_with_overweight_no<0.49658 NCP>=2.983198 FAVC_no<0.556004 TUE>=0.023607 Height>=176.621373 -> OLD_Obesity_Type_III
+   Train Covering size : 97
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.982256
+   Train Accuracy : 0.969388
+   Train Confidence : 0.96024
 
 -------------------------------------------------
 
 Rule for sample 159 :
 
-FCVC>=2.697915 Gender_Female>=0.483212 CH2O>=2.180738 CALC_Sometimes>=0.49455 CH2O<2.659903 family_history_with_overweight_yes>=0.414936 CH2O>=2.475609 NCP>=2.365805 -> OLD_Obesity_Type_III
-   Train Covering size : 20
+FCVC>=2.697915 Gender_Male<0.467986 CH2O>=2.199167 CALC_no<0.50141 CH2O<2.715191 NCP>=2.718601 family_history_with_overweight_no<0.520224 CH2O>=2.494038 -> OLD_Obesity_Type_III
+   Train Covering size : 28
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.98181
+   Train Confidence : 0.982185
 
 -------------------------------------------------
 
 Rule for sample 160 :
 
-FCVC>=2.697915 Gender_Female>=0.507739 CH2O>=2.199167 CALC_Sometimes>=0.49455 CH2O<2.659903 family_history_with_overweight_yes>=0.471392 Height>=1.621373 -> OLD_Obesity_Type_III
-   Train Covering size : 32
+CH2O>=2.309744 Gender_Female>=0.532265 CALC_Sometimes>=0.523307 FCVC>=2.697915 CH2O<2.659903 Height>=176.621373 -> OLD_Obesity_Type_III
+   Train Covering size : 27
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.976626
+   Train Confidence : 0.979969
 
 -------------------------------------------------
 
 Rule for sample 161 :
 
-FCVC>=2.697915 Gender_Male<0.392109 CH2O>=2.180738 CALC_Sometimes>=0.49455 CH2O<2.641474 family_history_with_overweight_no<0.49658 MTRANS_Public_Transportation>=0.488402 FAVC_yes>=0.503062 CH2O<2.586185 -> OLD_Obesity_Type_III
-   Train Covering size : 25
+CALC_no<0.470845 Height<176.694324 FCVC>=2.697915 Height>=176.621373 TUE>=0.031977 family_history_with_overweight_no<0.472936 Height<176.628005 -> OLD_Obesity_Type_III
+   Train Covering size : 7
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.973343
+   Train Confidence : 0.977672
 
 -------------------------------------------------
 
 Rule for sample 162 :
 
-FCVC>=2.67904 Gender_Male<0.467986 CALC_Sometimes>=0.49455 CH2O>=2.236026 FAVC_yes>=0.470878 MTRANS_Public_Transportation>=0.488402 NCP>=2.665682 family_history_with_overweight_yes>=0.979498 -> OLD_Obesity_Type_III
-   Train Covering size : 63
+Gender_Female>=0.458686 CALC_Sometimes>=0.465793 FCVC>=2.67904 family_history_with_overweight_yes>=0.584305 NCP>=2.983198 FAVC_yes>=0.535247 MTRANS_Public_Transportation>=0.512517 CAEC_Sometimes>=0.90986 -> OLD_Obesity_Type_III
+   Train Covering size : 113
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.980612
+   Train Accuracy : 0.973684
+   Train Confidence : 0.957087
 
 -------------------------------------------------
 
 Rule for sample 163 :
 
-FCVC>=2.622413 Gender_Male<0.543863 CALC_Sometimes>=0.523307 Height>=1.68106 TUE>=0.090572 family_history_with_overweight_no<0.49658 NCP>=2.665682 SCC_no>=0.0366 -> OLD_Obesity_Type_III
-   Train Covering size : 54
+Gender_Male<0.392109 Height>=176.727484 NCP>=2.983198 family_history_with_overweight_yes>=0.527848 CALC_Sometimes>=0.49455 FCVC>=2.358155 FAVC_no<0.961529 -> OLD_Obesity_Type_III
+   Train Covering size : 38
    Train Fidelity : 1
-   Train Accuracy : 0.945455
-   Train Confidence : 0.958115
+   Train Accuracy : 1
+   Train Confidence : 0.96637
 
 -------------------------------------------------
 
 Rule for sample 164 :
 
-CALC_Sometimes>=0.437036 Gender_Male<0.771493 Height>=1.71422 FCVC>=2.641288 family_history_with_overweight_no<0.449291 Height<1.727484 -> OLD_Obesity_Type_III
-   Train Covering size : 3
+FCVC>=2.697915 CALC_no<0.409717 TUE>=0.057089 CH2O<1.867437 NCP>=2.930279 FAF<1.774554 FAF>=1.50263 MTRANS_Automobile<0.990823 -> OLD_Obesity_Type_III
+   Train Covering size : 7
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.940314
+   Train Confidence : 0.923582
 
 -------------------------------------------------
 
 Rule for sample 165 :
 
-FCVC>=2.697915 Gender_Male<0.467986 Height>=1.694324 CALC_Sometimes>=0.49455 FAF<1.837306 NCP>=2.965558 FAVC_yes>=0.084667 -> OLD_Obesity_Type_III
-   Train Covering size : 36
+FCVC>=2.67904 Gender_Female>=0.483212 NCP>=2.983198 CALC_Sometimes>=0.465793 Height>=176.68106 FAF<1.837306 FAVC_no<0.845664 -> OLD_Obesity_Type_III
+   Train Covering size : 42
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.961514
+   Train Accuracy : 0.976744
+   Train Confidence : 0.957461
 
 -------------------------------------------------
 
 Rule for sample 166 :
 
-Gender_Male<0.467986 FCVC>=2.697915 CALC_Sometimes>=0.49455 Height>=1.694324 FAF<1.858223 FAF>=1.460796 -> OLD_Obesity_Type_III
-   Train Covering size : 17
+Gender_Female>=0.507739 Height>=176.68106 FCVC>=2.67904 CALC_Sometimes>=0.465793 FAF<1.774554 family_history_with_overweight_no<0.49658 FAF>=1.439879 -> OLD_Obesity_Type_III
+   Train Covering size : 20
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.952394
+   Train Confidence : 0.951083
 
 -------------------------------------------------
 
 Rule for sample 167 :
 
-FCVC>=2.697915 Gender_Male<0.467986 CH2O>=2.180738 CAEC_Sometimes>=0.476393 CALC_Sometimes>=0.523307 Height>=1.661164 family_history_with_overweight_no<0.49658 NCP>=2.383445 -> OLD_Obesity_Type_III
-   Train Covering size : 34
+FCVC>=2.697915 Gender_Male<0.543863 Height>=176.68106 CALC_Sometimes>=0.49455 CH2O>=2.236026 CH2O<2.659903 -> OLD_Obesity_Type_III
+   Train Covering size : 13
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.979028
+   Train Confidence : 0.975455
 
 -------------------------------------------------
 
 Rule for sample 168 :
 
-FCVC>=2.603537 Gender_Female>=0.507739 family_history_with_overweight_yes>=0.471392 CALC_no<0.50141 TUE>=0.015236 Height>=1.674428 NCP>=2.683322 CALC_Sometimes>=0.465793 CH2O>=2.75205 -> OLD_Obesity_Type_III
-   Train Covering size : 17
+Gender_Male<0.467986 Height>=176.68106 CALC_no<0.50141 CH2O>=2.272885 FCVC>=2.452533 CALC_Sometimes>=0.49455 family_history_with_overweight_no<0.472936 CH2O>=2.75205 -> OLD_Obesity_Type_III
+   Train Covering size : 16
    Train Fidelity : 1
-   Train Accuracy : 0.944444
-   Train Confidence : 0.983617
+   Train Accuracy : 0.941176
+   Train Confidence : 0.983653
 
 -------------------------------------------------
 
 Rule for sample 169 :
 
-FCVC>=2.697915 Gender_Female>=0.507739 family_history_with_overweight_no<0.472936 CH2O>=2.236026 NCP>=2.983198 CALC_no<0.470845 Height>=1.614741 CALC_Frequently<0.550123 FAVC_yes>=0.020299 -> OLD_Obesity_Type_III
-   Train Covering size : 61
+family_history_with_overweight_no<0.425647 FCVC>=2.67904 Gender_Male<0.543863 CALC_Sometimes>=0.49455 CH2O>=2.199167 CH2O<2.75205 NCP>=2.718601 CH2O>=2.678333 -> OLD_Obesity_Type_III
+   Train Covering size : 10
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.980643
+   Train Confidence : 0.982533
 
 -------------------------------------------------
 
 Rule for sample 170 :
 
-FCVC>=2.67904 CALC_Sometimes>=0.49455 Gender_Male<0.619739 family_history_with_overweight_yes>=0.584305 NCP>=2.965558 Height>=1.661164 FAVC_no<0.990495 -> OLD_Obesity_Type_III
-   Train Covering size : 62
+Gender_Male<0.467986 CALC_Sometimes>=0.523307 FCVC>=2.603537 family_history_with_overweight_yes>=0.527848 TUE>=0.015236 Height>=176.634637 NCP>=2.78916 CAEC_Sometimes>=0.476393 Height<176.687692 -> OLD_Obesity_Type_III
+   Train Covering size : 34
    Train Fidelity : 1
-   Train Accuracy : 0.984127
-   Train Confidence : 0.955426
+   Train Accuracy : 0.914286
+   Train Confidence : 0.953438
 
 -------------------------------------------------
 
 Rule for sample 171 :
 
-FCVC>=2.697915 Gender_Female>=0.507739 CH2O>=2.236026 Height>=1.727484 Height<1.754011 Height>=1.740748 -> OLD_Obesity_Type_III
-   Train Covering size : 11
+Gender_Male<0.392109 Height>=176.740748 CALC_Sometimes>=0.552064 family_history_with_overweight_yes>=0.527848 NCP>=2.983198 Height<176.74738 -> OLD_Obesity_Type_III
+   Train Covering size : 7
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.978171
+   Train Confidence : 0.977497
 
 -------------------------------------------------
 
 Rule for sample 172 :
 
-CH2O>=2.365032 Gender_Female>=0.507739 CALC_no<0.470845 NCP>=2.965558 Height>=1.727484 family_history_with_overweight_yes>=0.471392 CH2O<2.42032 -> OLD_Obesity_Type_III
-   Train Covering size : 5
+FCVC>=2.660164 Gender_Female>=0.532265 Height>=176.734116 CH2O>=2.217596 CALC_Sometimes>=0.552064 Height<176.754011 -> OLD_Obesity_Type_III
+   Train Covering size : 13
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.977271
+   Train Confidence : 0.978855
 
 -------------------------------------------------
 
 Rule for sample 173 :
 
-Gender_Female>=0.507739 CH2O>=2.199167 FAF<1.711803 Height>=1.720852 CALC_Sometimes>=0.465793 FAVC_yes>=0.052483 -> OLD_Obesity_Type_III
-   Train Covering size : 23
+FCVC>=2.697915 Gender_Female>=0.507739 Height>=176.734116 CH2O>=2.180738 FAF<1.816389 Height>=176.74738 -> OLD_Obesity_Type_III
+   Train Covering size : 13
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.97828
+   Train Confidence : 0.978183
 
 -------------------------------------------------
 
 Rule for sample 174 :
 
-FCVC>=2.697915 Gender_Male<0.543863 family_history_with_overweight_yes>=0.471392 CALC_Sometimes>=0.523307 NCP>=2.983198 Height>=1.700956 CAEC_Sometimes>=0.90986 -> OLD_Obesity_Type_III
-   Train Covering size : 44
+Gender_Male<0.84737 NCP>=2.983198 Height>=176.621373 CALC_Sometimes>=0.437036 FCVC>=2.584662 family_history_with_overweight_yes>=0.527848 TUE>=0.015236 FAVC_no<0.58497 FAF>=1.460796 -> OLD_Obesity_Type_III
+   Train Covering size : 30
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.962032
+   Train Accuracy : 0.967742
+   Train Confidence : 0.952536
 
 -------------------------------------------------
 
 Rule for sample 175 :
 
-Gender_Male<0.467986 Height>=1.74738 FCVC>=2.603537 TUE>=0.107313 NCP<3.036117 NCP>=2.683322 CALC_no<0.470845 CH2O<2.715191 -> OLD_Obesity_Type_III
-   Train Covering size : 14
+CH2O>=2.291314 Gender_Male<0.467986 CALC_Sometimes>=0.465793 Height>=176.727484 FCVC>=2.339279 CH2O<2.641474 -> OLD_Obesity_Type_III
+   Train Covering size : 10
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.964093
+   Train Confidence : 0.975257
 
 -------------------------------------------------
 
 Rule for sample 176 :
 
-Gender_Female>=0.532265 CH2O>=2.291314 CALC_Sometimes>=0.523307 FCVC>=2.697915 Height>=1.727484 family_history_with_overweight_yes>=0.527848 Height>=1.807067 -> OLD_Obesity_Type_III
-   Train Covering size : 4
+CALC_Sometimes>=0.49455 FCVC>=2.697915 Gender_Female>=0.507739 family_history_with_overweight_no<0.49658 NCP>=2.965558 FAVC_no<0.498072 MTRANS_Public_Transportation>=0.488402 Height>=176.780539 -> OLD_Obesity_Type_III
+   Train Covering size : 12
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.982405
+   Train Confidence : 0.97499
 
 -------------------------------------------------
 
 Rule for sample 177 :
 
-FCVC>=2.697915 Gender_Male<0.619739 CH2O>=2.180738 CAEC_Sometimes>=0.476393 NCP>=2.983198 Height>=1.780539 CH2O<2.75205 -> OLD_Obesity_Type_III
-   Train Covering size : 8
+Gender_Male<0.467986 NCP>=2.983198 CH2O>=2.291314 CALC_Sometimes>=0.523307 CH2O<2.309744 -> OLD_Obesity_Type_III
+   Train Covering size : 2
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.975602
+   Train Confidence : 0.967188
 
 -------------------------------------------------
 
 Rule for sample 178 :
 
-CALC_no<0.50141 FCVC>=2.697915 TUE>=0.06546 family_history_with_overweight_no<0.49658 Gender_Female>=0.507739 Height>=1.734116 NCP>=2.665682 FAF>=1.523548 -> OLD_Obesity_Type_III
-   Train Covering size : 14
+Gender_Female>=0.507739 CALC_no<0.470845 CH2O>=2.291314 Height>=176.727484 CALC_Sometimes>=0.49455 FAF<2.234733 FAVC_no<0.990495 -> OLD_Obesity_Type_III
+   Train Covering size : 26
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.970257
+   Train Confidence : 0.980422
 
 -------------------------------------------------
 
 Rule for sample 179 :
 
-Gender_Male<0.695616 CH2O>=2.494038 CH2O<2.715191 FCVC>=2.509159 CALC_Sometimes>=0.523307 NCP>=2.454004 -> OLD_Obesity_Type_III
-   Train Covering size : 28
+Gender_Male<0.467986 Height>=176.740748 FAF<1.73272 FCVC>=2.584662 CH2O>=2.696762 -> OLD_Obesity_Type_III
+   Train Covering size : 11
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.982278
+   Train Confidence : 0.983607
 
 -------------------------------------------------
 
 Rule for sample 180 :
 
-FCVC>=2.697915 Gender_Male<0.392109 CALC_Sometimes>=0.49455 TUE>=0.082201 Height>=1.734116 FAF<1.816389 FAF>=1.439879 -> OLD_Obesity_Type_III
-   Train Covering size : 13
+TUE>=0.132425 FCVC>=2.67904 CALC_Sometimes>=0.523307 Height<176.754011 NCP>=2.930279 family_history_with_overweight_no<0.49658 Gender_Female>=0.507739 FAVC_yes>=0.503062 Height>=176.734116 -> OLD_Obesity_Type_III
+   Train Covering size : 16
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.968878
+   Train Confidence : 0.969188
 
 -------------------------------------------------
 
 Rule for sample 181 :
 
-Gender_Female>=0.507739 FCVC>=2.67904 Height>=1.74738 family_history_with_overweight_no<0.520224 NCP>=2.965558 CALC_Sometimes>=0.954663 -> OLD_Obesity_Type_III
-   Train Covering size : 23
+FCVC>=2.67904 Gender_Male<0.467986 CH2O>=2.236026 CALC_no<0.440281 FAVC_no<0.498072 Height>=176.727484 NCP>=2.665682 family_history_with_overweight_yes>=0.471392 CALC_Sometimes>=0.925906 -> OLD_Obesity_Type_III
+   Train Covering size : 27
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.972113
+   Train Confidence : 0.980107
 
 -------------------------------------------------
 
 Rule for sample 182 :
 
-FCVC>=2.660164 Gender_Female>=0.507739 Height>=1.740748 CH2O>=2.217596 FAF<1.439879 -> OLD_Obesity_Type_III
-   Train Covering size : 10
+Gender_Female>=0.507739 Height>=176.740748 FCVC>=2.622413 CH2O>=2.272885 FAF<1.439879 -> OLD_Obesity_Type_III
+   Train Covering size : 9
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.977596
+   Train Confidence : 0.979623
 
 -------------------------------------------------
 
 Rule for sample 183 :
 
-Gender_Male<0.543863 CH2O>=2.494038 CALC_Sometimes>=0.465793 CH2O<2.659903 Height>=1.654532 -> OLD_Obesity_Type_III
-   Train Covering size : 4
+Gender_Male<0.543863 CALC_Sometimes>=0.49455 CH2O>=2.291314 Height>=176.641269 CH2O<2.659903 Height<176.694324 -> OLD_Obesity_Type_III
+   Train Covering size : 7
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.982071
+   Train Confidence : 0.979475
 
 -------------------------------------------------
 
 Rule for sample 184 :
 
-Gender_Female>=0.483212 CH2O>=2.494038 CALC_no<0.470845 FCVC>=2.528035 NCP>=2.983198 family_history_with_overweight_no<0.472936 MTRANS_Public_Transportation>=0.464287 SCC_yes<0.453249 Height<1.694324 -> OLD_Obesity_Type_III
-   Train Covering size : 31
+CH2O>=2.549326 Gender_Male<0.543863 CALC_Sometimes>=0.49455 FCVC>=2.528035 Height>=176.634637 FAF<1.837306 NCP>=2.612762 -> OLD_Obesity_Type_III
+   Train Covering size : 33
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.981488
+   Train Accuracy : 0.970588
+   Train Confidence : 0.982333
 
 -------------------------------------------------
 
 Rule for sample 185 :
 
-FCVC>=2.67904 Gender_Male<0.467986 family_history_with_overweight_no<0.49658 CALC_Sometimes>=0.523307 NCP>=2.983198 Height>=1.661164 CAEC_Sometimes>=0.705876 -> OLD_Obesity_Type_III
-   Train Covering size : 62
+Gender_Male<0.467986 CH2O>=2.494038 FCVC>=2.641288 CALC_Sometimes>=0.49455 Height>=176.661164 TUE<0.182648 -> OLD_Obesity_Type_III
+   Train Covering size : 2
    Train Fidelity : 1
-   Train Accuracy : 0.984127
-   Train Confidence : 0.955417
+   Train Accuracy : 1
+   Train Confidence : 0.982805
 
 -------------------------------------------------
 
 Rule for sample 186 :
 
-CH2O>=2.549326 CALC_no<0.50141 Gender_Male<0.695616 FCVC>=2.546911 FAF<1.837306 Height>=1.654532 NCP>=2.665682 CALC_Frequently<0.171779 -> OLD_Obesity_Type_III
-   Train Covering size : 21
+Gender_Female>=0.532265 CH2O>=2.272885 CALC_Sometimes>=0.49455 NCP>=2.85972 FCVC>=2.584662 FAF<1.774554 family_history_with_overweight_no<0.49658 MTRANS_Public_Transportation>=0.9707 -> OLD_Obesity_Type_III
+   Train Covering size : 59
    Train Fidelity : 1
-   Train Accuracy : 0.954545
-   Train Confidence : 0.982747
+   Train Accuracy : 0.983333
+   Train Confidence : 0.98083
 
 -------------------------------------------------
 
 Rule for sample 187 :
 
-FCVC>=2.697915 CH2O>=2.291314 FAF<1.73272 CALC_Sometimes>=0.49455 Gender_Male<0.543863 family_history_with_overweight_no<0.520224 NCP>=2.965558 MTRANS_Automobile<0.480071 Height>=1.628005 -> OLD_Obesity_Type_III
-   Train Covering size : 49
+FCVC>=2.697915 Gender_Male<0.467986 CH2O>=2.180738 Height>=176.614741 CALC_Sometimes>=0.523307 CH2O<2.586185 family_history_with_overweight_no<0.000051 -> OLD_Obesity_Type_III
+   Train Covering size : 24
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.98063
+   Train Confidence : 0.9731
 
 -------------------------------------------------
 
 Rule for sample 188 :
 
-CH2O>=2.549326 FCVC>=2.697915 CH2O<2.623044 NCP>=2.78916 Gender_Female>=0.507739 FAF<1.481713 -> OLD_Obesity_Type_III
-   Train Covering size : 9
+FCVC>=2.697915 Gender_Female>=0.507739 NCP>=2.983198 CAEC_Sometimes>=0.501891 CH2O>=2.217596 CH2O<2.75205 CH2O>=2.530897 MTRANS_Public_Transportation>=0.946585 -> OLD_Obesity_Type_III
+   Train Covering size : 27
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.981888
+   Train Confidence : 0.982194
 
 -------------------------------------------------
 
 Rule for sample 189 :
 
-FCVC>=2.67904 Gender_Male<0.392109 family_history_with_overweight_yes>=0.527848 CALC_no<0.470845 CH2O>=2.236026 CH2O<2.659903 CH2O>=2.604615 -> OLD_Obesity_Type_III
-   Train Covering size : 12
+Gender_Male<0.543863 FCVC>=2.697915 CH2O>=2.180738 CALC_no<0.470845 family_history_with_overweight_no<0.49658 NCP>=2.8068 Height>=176.614741 CALC_Sometimes>=0.523307 CH2O<2.733621 -> OLD_Obesity_Type_III
+   Train Covering size : 44
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.982105
+   Train Confidence : 0.977316
 
 -------------------------------------------------
 
 Rule for sample 190 :
 
-FCVC>=2.697915 Gender_Female>=0.532265 CH2O>=2.236026 CALC_Sometimes>=0.523307 Height>=1.621373 CH2O<2.75205 NCP>=2.700961 Height<1.71422 -> OLD_Obesity_Type_III
-   Train Covering size : 27
+Gender_Male<0.467986 family_history_with_overweight_yes>=0.527848 FCVC>=2.697915 CALC_no<0.440281 MTRANS_Public_Transportation>=0.488402 Height>=176.614741 NCP>=2.648042 CALC_Frequently<0.491917 CAEC_Sometimes>=0.476393 NCP<3.053757 -> OLD_Obesity_Type_III
+   Train Covering size : 101
    Train Fidelity : 1
-   Train Accuracy : 1
-   Train Confidence : 0.981047
+   Train Accuracy : 0.960784
+   Train Confidence : 0.957428
 
 -------------------------------------------------
 
 Rule for sample 191 :
 
-FCVC>=2.67904 Gender_Male<0.467986 CH2O>=2.236026 CALC_Sometimes>=0.523307 Height>=1.628005 CH2O<2.659903 FAF<1.439879 -> OLD_Obesity_Type_III
-   Train Covering size : 23
+Gender_Female>=0.483212 CH2O>=2.494038 CALC_no<0.50141 CH2O<2.659903 TUE<0.19939 -> OLD_Obesity_Type_III
+   Train Covering size : 5
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.978396
+   Train Confidence : 0.981749
 
 -------------------------------------------------
 
 Rule for sample 192 :
 
-FCVC>=2.697915 Gender_Female>=0.507739 CH2O>=2.180738 CH2O<2.696762 CALC_Sometimes>=0.49455 Height>=1.614741 Height<1.6479 -> OLD_Obesity_Type_III
-   Train Covering size : 22
+Gender_Female>=0.409634 CALC_Sometimes>=0.552064 Height>=176.614741 CH2O>=2.401891 NCP>=2.877359 CH2O<2.715191 FAF<1.50263 -> OLD_Obesity_Type_III
+   Train Covering size : 29
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.978419
+   Train Confidence : 0.981361
 
 -------------------------------------------------
 
 Rule for sample 193 :
 
-FCVC>=2.67904 Gender_Female>=0.507739 family_history_with_overweight_no<0.49658 MTRANS_Public_Transportation>=0.464287 NCP>=2.983198 CALC_no<0.531974 FAVC_yes>=0.503062 CAEC_Frequently<0.488581 CALC_Sometimes>=0.49455 SMOKE_yes<0.0145 -> OLD_Obesity_Type_III
-   Train Covering size : 112
+FCVC>=2.660164 Gender_Female>=0.507739 CH2O>=2.217596 NCP>=2.983198 FAF<1.753637 TUE>=0.015236 CALC_Sometimes>=0.523307 TUE<0.182648 -> OLD_Obesity_Type_III
+   Train Covering size : 12
    Train Fidelity : 1
-   Train Accuracy : 0.973451
-   Train Confidence : 0.957136
+   Train Accuracy : 1
+   Train Confidence : 0.980981
 
 -------------------------------------------------
 
 Rule for sample 194 :
 
-FCVC>=2.67904 Gender_Female>=0.507739 CH2O>=2.217596 CAEC_Sometimes>=0.501891 CALC_Sometimes>=0.49455 family_history_with_overweight_yes>=0.527848 FAVC_no<0.527038 Height>=1.634637 Height<1.6479 -> OLD_Obesity_Type_III
-   Train Covering size : 12
+FCVC>=2.697915 Gender_Male<0.467986 CH2O>=2.217596 CALC_no<0.470845 family_history_with_overweight_yes>=0.527848 Height>=176.634637 TUE<0.19939 -> OLD_Obesity_Type_III
+   Train Covering size : 10
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.980876
+   Train Confidence : 0.981281
 
 -------------------------------------------------
 
 Rule for sample 195 :
 
-FCVC>=2.697915 Gender_Male<0.543863 CALC_Sometimes>=0.49455 family_history_with_overweight_no<0.49658 MTRANS_Public_Transportation>=0.488402 NCP>=2.753881 CH2O<1.978014 -> OLD_Obesity_Type_III
-   Train Covering size : 42
+FCVC>=2.641288 CALC_Sometimes>=0.49455 Gender_Male<0.543863 family_history_with_overweight_yes>=0.527848 NCP>=2.983198 FAVC_no<0.527038 MTRANS_Public_Transportation>=0.488402 CH2O<1.941155 -> OLD_Obesity_Type_III
+   Train Covering size : 41
    Train Fidelity : 1
-   Train Accuracy : 0.930233
-   Train Confidence : 0.916813
+   Train Accuracy : 0.928571
+   Train Confidence : 0.922088
 
 -------------------------------------------------
 
 Rule for sample 196 :
 
-FCVC>=2.584662 Gender_Female>=0.483212 CH2O>=2.051731 CALC_no<0.470845 family_history_with_overweight_no<0.472936 Height>=1.614741 CH2O<2.10702 -> OLD_Obesity_Type_III
+FCVC>=2.697915 CALC_Sometimes>=0.523307 Gender_Male<0.543863 CH2O>=2.051731 FAVC_yes>=0.470878 CH2O<2.10702 -> OLD_Obesity_Type_III
    Train Covering size : 2
    Train Fidelity : 1
    Train Accuracy : 1
@@ -1970,140 +1970,140 @@ FCVC>=2.584662 Gender_Female>=0.483212 CH2O>=2.051731 CALC_no<0.470845 family_hi
 
 Rule for sample 197 :
 
-Gender_Male<0.467986 FCVC>=2.697915 CH2O>=2.180738 NCP>=2.965558 CALC_Sometimes>=0.465793 family_history_with_overweight_yes>=0.471392 CH2O<2.42032 -> OLD_Obesity_Type_III
-   Train Covering size : 15
+FCVC>=2.660164 Gender_Male<0.619739 CALC_Sometimes>=0.49455 CH2O>=2.236026 Height>=176.614741 CH2O<2.457179 -> OLD_Obesity_Type_III
+   Train Covering size : 13
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.96819
+   Train Confidence : 0.973463
 
 -------------------------------------------------
 
 Rule for sample 198 :
 
-CH2O>=2.180738 Gender_Female>=0.556791 CAEC_Sometimes>=0.476393 FCVC>=2.67904 CH2O<2.715191 CALC_Sometimes>=0.49455 NCP>=2.8068 family_history_with_overweight_no<0.520224 MTRANS_Automobile<0.533835 FAVC_yes>=0.020299 -> OLD_Obesity_Type_III
-   Train Covering size : 45
+FCVC>=2.67904 CALC_no<0.470845 Gender_Male<0.392109 CH2O>=2.236026 CH2O<2.383461 Height>=176.594845 -> OLD_Obesity_Type_III
+   Train Covering size : 7
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.977147
+   Train Confidence : 0.96926
 
 -------------------------------------------------
 
 Rule for sample 199 :
 
-FCVC>=2.67904 Gender_Female>=0.507739 family_history_with_overweight_yes>=0.471392 CALC_Sometimes>=0.465793 NCP>=2.983198 FAVC_no<0.498072 MTRANS_Public_Transportation>=0.512517 CH2O<1.978014 -> OLD_Obesity_Type_III
-   Train Covering size : 41
+Gender_Female>=0.532265 FCVC>=2.67904 CALC_Sometimes>=0.523307 family_history_with_overweight_yes>=0.527848 NCP>=2.85972 TUE>=0.006865 Height>=176.621373 FAVC_no<0.903597 -> OLD_Obesity_Type_III
+   Train Covering size : 99
    Train Fidelity : 1
-   Train Accuracy : 0.952381
-   Train Confidence : 0.922475
+   Train Accuracy : 0.96
+   Train Confidence : 0.956947
 
 -------------------------------------------------
 
 Rule for sample 200 :
 
-Gender_Female>=0.483212 CH2O>=2.291314 CALC_Sometimes>=0.523307 Height>=1.621373 CH2O<2.659903 FAVC_no<0.469106 FCVC>=2.697915 -> OLD_Obesity_Type_III
-   Train Covering size : 29
+Gender_Male<0.467986 FCVC>=2.697915 family_history_with_overweight_no<0.472936 CALC_no<0.50141 CH2O>=2.272885 CH2O<2.659903 Height>=176.621373 CH2O>=2.494038 -> OLD_Obesity_Type_III
+   Train Covering size : 17
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.979043
+   Train Confidence : 0.981788
 
 -------------------------------------------------
 
 Rule for sample 201 :
 
-Gender_Male<0.543863 CALC_Sometimes>=0.49455 Height>=1.614741 TUE>=0.015236 family_history_with_overweight_yes>=0.471392 NCP>=2.947919 FCVC>=2.697915 CAEC_Sometimes>=0.501891 NCP<3.018478 -> OLD_Obesity_Type_III
-   Train Covering size : 100
+FCVC>=2.697915 Gender_Male<0.619739 family_history_with_overweight_no<0.49658 CH2O>=2.199167 CALC_Sometimes>=0.49455 Height>=176.614741 CH2O<2.659903 -> OLD_Obesity_Type_III
+   Train Covering size : 33
    Train Fidelity : 1
-   Train Accuracy : 0.970297
-   Train Confidence : 0.96017
+   Train Accuracy : 1
+   Train Confidence : 0.97673
 
 -------------------------------------------------
 
 Rule for sample 202 :
 
-FCVC>=2.67904 Gender_Female>=0.483212 CALC_no<0.531974 Height>=1.621373 CH2O>=2.272885 FAF<1.816389 SCC_yes<0.50511 CH2O<2.42032 -> OLD_Obesity_Type_III
-   Train Covering size : 8
+Gender_Male<0.392109 family_history_with_overweight_no<0.472936 FCVC>=2.697915 CALC_Sometimes>=0.523307 CH2O>=2.199167 CH2O<2.42032 -> OLD_Obesity_Type_III
+   Train Covering size : 13
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.972237
+   Train Confidence : 0.968978
 
 -------------------------------------------------
 
 Rule for sample 203 :
 
-Gender_Male<0.392109 Height>=1.707588 NCP<3.018478 CALC_Sometimes>=0.523307 MTRANS_Public_Transportation>=0.488402 FCVC>=2.641288 NCP>=2.648042 FAF<1.544465 -> OLD_Obesity_Type_III
-   Train Covering size : 24
+Gender_Female>=0.483212 Height>=176.71422 CAEC_Sometimes>=0.425397 FCVC>=2.641288 family_history_with_overweight_yes>=0.527848 TUE>=0.107313 CALC_Sometimes>=0.523307 Height<176.74738 -> OLD_Obesity_Type_III
+   Train Covering size : 18
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.966113
+   Train Confidence : 0.956663
 
 -------------------------------------------------
 
 Rule for sample 204 :
 
-Gender_Female>=0.507739 Height>=1.720852 FAF<1.774554 NCP>=2.983198 FAF>=1.460796 FAVC_yes>=0.020299 -> OLD_Obesity_Type_III
-   Train Covering size : 14
+Gender_Male<0.467986 Height>=176.71422 CALC_Sometimes>=0.465793 FCVC>=2.641288 NCP<3.036117 NCP>=2.983198 family_history_with_overweight_no<0.472936 FAVC_yes>=0.052483 -> OLD_Obesity_Type_III
+   Train Covering size : 41
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.958064
+   Train Confidence : 0.964856
 
 -------------------------------------------------
 
 Rule for sample 205 :
 
-Gender_Male<0.467986 Height>=1.720852 NCP>=2.965558 NCP<3.053757 CALC_Sometimes>=0.49455 FAF>=1.439879 CH2O<1.996443 -> OLD_Obesity_Type_III
-   Train Covering size : 6
+Gender_Male<0.392109 FCVC>=2.697915 CALC_Sometimes>=0.49455 Height>=176.68106 NCP<3.036117 NCP>=2.965558 CH2O<1.996443 -> OLD_Obesity_Type_III
+   Train Covering size : 16
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.926052
+   Train Confidence : 0.9246
 
 -------------------------------------------------
 
 Rule for sample 206 :
 
-Gender_Female>=0.507739 CALC_no<0.470845 Height>=1.707588 FCVC>=2.641288 family_history_with_overweight_yes>=0.527848 TUE>=0.098942 CALC_Sometimes>=0.523307 NCP>=2.383445 -> OLD_Obesity_Type_III
-   Train Covering size : 43
+TUE>=0.082201 Gender_Female>=0.532265 CALC_Sometimes>=0.49455 FCVC>=2.67904 family_history_with_overweight_yes>=0.584305 Height>=176.700956 FAF<2.25565 NCP>=2.436364 -> OLD_Obesity_Type_III
+   Train Covering size : 44
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.962997
+   Train Confidence : 0.962073
 
 -------------------------------------------------
 
 Rule for sample 207 :
 
-FCVC>=2.603537 Gender_Male<0.316232 Height>=1.720852 NCP<3.036117 TUE>=0.174278 CAEC_Sometimes>=0.476393 CALC_Frequently<0.462813 FAF<2.25565 NCP>=2.383445 -> OLD_Obesity_Type_III
-   Train Covering size : 39
+FCVC>=2.67904 CALC_no<0.470845 Gender_Female>=0.483212 Height>=176.740748 family_history_with_overweight_yes>=0.527848 FAF<2.297485 NCP>=2.965558 -> OLD_Obesity_Type_III
+   Train Covering size : 30
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.965571
+   Train Confidence : 0.9715
 
 -------------------------------------------------
 
 Rule for sample 208 :
 
-Gender_Male<0.543863 Height>=1.740748 CH2O>=2.051731 FAF<1.795471 Height<1.754011 -> OLD_Obesity_Type_III
-   Train Covering size : 11
+FCVC>=2.697915 Gender_Female>=0.483212 CALC_Sometimes>=0.523307 CH2O>=2.051731 Height>=176.727484 Height<176.754011 -> OLD_Obesity_Type_III
+   Train Covering size : 14
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.974256
+   Train Confidence : 0.975507
 
 -------------------------------------------------
 
 Rule for sample 209 :
 
-CH2O>=2.549326 Gender_Female>=0.483212 Height>=1.734116 Height<1.740748 -> OLD_Obesity_Type_III
-   Train Covering size : 2
+Gender_Male<0.240355 CH2O>=2.494038 Height>=176.727484 FCVC>=2.37703 FAF<1.460796 -> OLD_Obesity_Type_III
+   Train Covering size : 8
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.983475
+   Train Confidence : 0.983448
 
 -------------------------------------------------
 
 Rule for sample 210 :
 
-FCVC>=2.67904 CH2O>=2.180738 Gender_Female>=0.532265 Height>=1.734116 CAEC_Frequently<0.45745 family_history_with_overweight_yes>=0.471392 NCP>=2.683322 CALC_Sometimes>=0.98342 -> OLD_Obesity_Type_III
-   Train Covering size : 28
+Gender_Male<0.392109 CALC_no<0.440281 NCP>=2.965558 CH2O>=2.291314 Height>=176.727484 FCVC>=2.37703 FAF<2.25565 CH2O>=2.733621 -> OLD_Obesity_Type_III
+   Train Covering size : 14
    Train Fidelity : 1
    Train Accuracy : 1
-   Train Confidence : 0.978951
+   Train Confidence : 0.983884
 
 -------------------------------------------------
