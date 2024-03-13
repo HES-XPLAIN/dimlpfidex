@@ -4,6 +4,13 @@ import os
 import sys
 import re
 
+def print_parameters(args):
+    print("Parameters list:")
+    for k in args.__dict__:
+        if args.__dict__[k] is not None:
+            print(" -",k,(60 - len(k))*" ",args.__dict__[k])
+    print("End of Parameters list.", "\n")
+
 def get_tag_value(actions):
     """
     Retrieves the 'tag' attribute from a list of argparse actions.
@@ -187,7 +194,7 @@ class CustomArgumentParser(argparse.ArgumentParser):
         :raises ValueError: Always raised to avoid exiting the script.
         """
         if message:
-            self._print_message("\nError:\n" + message, sys.stderr)
+            self._print_message(message, sys.stderr)
         raise ValueError("")
 
 def directory(path:str):
