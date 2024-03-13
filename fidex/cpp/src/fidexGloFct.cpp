@@ -3,22 +3,29 @@
 using namespace std;
 
 void showParams() {
-  std::cout << "---------------------------------------------------------------------" << std::endl;
+  std::cout << std::endl
+            << "---------------------------------------------------------------------" << std::endl
+            << std::endl;
   std::cout << "Warning! The files are localised with respect to root folder dimlpfidex." << std::endl;
-  std::cout << "The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json." << std::endl;
-  std::cout << "----------------------------" << std::endl;
-  std::cout << "Required parameters:" << std::endl;
-
-  std::cout << "fidexGlo --test_data_file <test sample(s) data file with data and prediction(if no --test_pred_file), classes may been added here if launching with fidex(--with_fidex)> ";
-  std::cout << "--global_rules_file <ruleset input file> ";
-  std::cout << "--nb_attributes <number of attributes> ";
-  std::cout << "--nb_classes <number of classes> ";
-  std::cout << "<Options>\n"
+  std::cout << "The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json." << std::endl
             << std::endl;
 
-  std::cout << "----------------------------" << std::endl;
-  std::cout << "Optional parameters: \n"
+  std::cout << "----------------------------" << std::endl
             << std::endl;
+  std::cout << "Required parameters:" << std::endl
+            << std::endl;
+
+  std::cout << "--test_data_file <test sample(s) data file with data and prediction(if no --test_pred_file), classes may been added here if launching with fidex(--with_fidex)>" << std::endl;
+  std::cout << "--global_rules_file <ruleset input file>" << std::endl;
+  std::cout << "--nb_attributes <int [1,inf[>\n\t\t\tNumber of attributes in dataset" << std::endl;
+  std::cout << "--nb_classes <int [2,inf[>\n\t\t\tNumber of classes in dataset" << std::endl;
+
+  std::cout << std::endl
+            << "----------------------------" << std::endl
+            << std::endl;
+  std::cout << "Optional parameters: " << std::endl
+            << std::endl;
+
   std::cout << "--json_config_file <JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path>" << std::endl;
   std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   std::cout << "--attributes_file <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it" << std::endl;
@@ -26,26 +33,35 @@ void showParams() {
   std::cout << "--explanation_file <Explanation(s) output file>" << std::endl;
   std::cout << "--console_file <file with console logs redirection>" << std::endl; // If we want to redirect console result to file
   std::cout << "--decision_threshold <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
-  std::cout << "--positive_class_index <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
+  std::cout << "--positive_class_index <index of positive class for the usage of decision threshold, index starts at 0>" << std::endl;
   std::cout << "--with_fidex <with Fidex if not rule is given (False by default)>" << std::endl;
   std::cout << "--with_minimal_version <minimal version, only correct activated rules, launch Fidex when no such rule is found(if with fidex) (False by default)>" << std::endl
             << std::endl;
-  std::cout << "If using fidex :" << std::endl;
-  std::cout << "Required :" << std::endl;
+
+  std::cout << "----------------------------" << std::endl
+            << std::endl;
+  std::cout << "If using fidex :" << std::endl
+            << std::endl;
+
+  std::cout << "Required :" << std::endl
+            << std::endl;
   std::cout << "--train_data_file <train data file>" << std::endl;
   std::cout << "--train_pred_file <train prediction file>" << std::endl;
   std::cout << "--train_class_file <train true class file, not mendatory if classes are specified in train data file>" << std::endl;
-  std::cout << "--weights_file <weights file when not using bagging> [Not mendatory if a rules file is given with --rules_file] ";
-  std::cout << "--weights_generic_filename <weights file in case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file] ";
-  std::cout << "--rules_file <rules file to be converted to hyperlocus> [Not mendatory if a weights file or a weights_generic_filename is given] ";
-  std::cout << "Options :" << std::endl;
+  std::cout << "--weights_file <weights file when not using bagging> [Not mendatory if a rules file is given with --rules_file]" << std::endl;
+  std::cout << "--weights_generic_filename <weights file in case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file]" << std::endl;
+  std::cout << "--rules_file <rules file to be converted to hyperlocus> [Not mendatory if a weights file or a weights_generic_filename is given]" << std::endl
+            << std::endl;
+
+  std::cout << "Optional :" << std::endl
+            << std::endl;
   std::cout << "--test_class_file <test true class file, classes can be specified in test data file>" << std::endl;
-  std::cout << "--nb_dimlp_nets <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
+  std::cout << "--nb_dimlp_nets <Number of networks for bagging, necessary to use bagging>" << std::endl;
   std::cout << "--max_iterations <max iteration number, also the max possible number of attributs in a rule (10 by default, should put 25 if working with images)>" << std::endl;
-  std::cout << "--min_covering <minimum covering number (2 by default)>" << std::endl;
-  std::cout << "--covering_strategy <if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (True by default)>" << std::endl;
-  std::cout << "--max_failed_attempts <maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used (30 by default)>" << std::endl;
-  std::cout << "--min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>" << std::endl;
+  std::cout << "--min_covering <minimum covering number (default: 2)>" << std::endl;
+  std::cout << "--covering_strategy <Whether to use this strategy : if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (default: True)>" << std::endl;
+  std::cout << "--max_failed_attempts <maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used (default: 30)>" << std::endl;
+  std::cout << "--min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (default: 1.0)>" << std::endl;
   std::cout << "--lowest_min_fidelity <minimal min_fidelity to which we agree to go down during covering_strategy (0.75 by default)>" << std::endl;
   std::cout << "--dropout_dim <dimension dropout parameter (None by default)>" << std::endl;
   std::cout << "--dropout_hyp <hyperplan dropout parameter (None by default)>" << std::endl;
@@ -54,9 +70,16 @@ void showParams() {
   std::cout << "--mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
   std::cout << "--sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
   std::cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)>" << std::endl;
-  std::cout << "--seed <seed (0=random, default)>";
+  std::cout << "--seed <seed (0=random, default)>" << std::endl;
 
-  std::cout << "\n---------------------------------------------------------------------\n"
+  std::cout << std::endl
+            << "----------------------------" << std::endl
+            << std::endl;
+  std::cout << "Execution example :" << std::endl
+            << std::endl;
+  std::cout << "fidex.fidexGlo(\"--test_data_file datanormTest.txt --test_pred_file predTest.out --global_rules_file globalRules.rls --nb_attributes 16 --nb_classes 2 --explanation_file explanation.txt --root_folder dimlp/datafiles --with_fidex true --train_data_file datanormTrain.txt --train_pred_file predTrain.out --train_class_file dataclass2Train.txt --test_class_file dataclass2Test.txt --weights_file weights.wts\")" << std::endl
+            << std::endl;
+  std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
 }
 

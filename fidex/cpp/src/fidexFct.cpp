@@ -9,57 +9,72 @@ void showFidexParams() {
   std::cout << "Warning! The files are localised with respect to root folder dimlpfidex." << std::endl;
   std::cout << "The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json." << std::endl
             << std::endl;
+
   std::cout << "----------------------------" << std::endl
             << std::endl;
   std::cout << "Required parameters:" << std::endl
             << std::endl;
 
-  std::cout << "fidex --train_data_file <train data file> --train_pred_file <train prediction file> --train_class_file <train true class file, not mendatory if classes are specified in train data file> ";
-  std::cout << "--test_data_file <test sample(s) data file with data, prediction(if no --test_pred_file) and true class(if no --test_class_file)> ";
-  std::cout << "--weights_file <weights file when not using bagging> [Not mendatory if a rules file is given with --rules_file] ";
-  std::cout << "--weights_generic_filename <weights file in case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file] ";
-  std::cout << "--rules_file <rules file to be converted to hyperlocus> [Not mendatory if a weights file or a weights_generic_filename is given] ";
-  std::cout << "--rules_outfile <Rule(s) output file> ";
-  std::cout << "--nb_attributes <number of attributes> ";
-  std::cout << "--nb_classes <number of classes> " << std::endl;
+  int width = 30;
+  printOptionDescription("--train_data_file <str>", "Train data file", width);
+  printOptionDescription("--train_pred_file <str>", "Train prediction file", width);
+  printOptionDescription("--train_class_file <str>", "Train true class file, not mandatory if classes are specified in train data file", width);
+  printOptionDescription("--test_data_file <str>", "Test sample(s) data file with data, prediction(if no --test_pred_file) and true class(if no --test_class_file)", width);
+  printOptionDescription("--weights_file <str>", "Weights file when not using bagging (not mandatory if a rules file is given with --rules_file)", width);
+  printOptionDescription("--weights_generic_filename <str>", "Weights file in case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets (not mandatory if a rules file is given with --rules_file)", width);
+  printOptionDescription("--rules_file <str>", "Rules file to be converted to hyperlocus (not mandatory if a weights file or a weights_generic_filename is given)", width);
+  printOptionDescription("--rules_outfile <str>", "Rule(s) output file", width);
+  printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in dataset", width);
+  printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in dataset", width);
+
+  printOptionDescription("--train_data_file <str>", "Train data file", width);
+  printOptionDescription("--train_pred_file <str>", "Train prediction file", width);
+  printOptionDescription("--train_class_file <str>", "Train true class file, not mendatory if classes are specified in train data file", width);
+  printOptionDescription("--test_data_file <str>", "Test sample(s) data file with data, prediction(if no --test_pred_file) and true class(if no --test_class_file)", width);
+  printOptionDescription("--weights_file <str>", "Weights file when not using bagging (not mendatory if a rules file is given with --rules_file)", width);
+  printOptionDescription("--weights_generic_filename <str>", "Weights file in case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets (not mendatory if a rules file is given with --rules_file)", width);
+  printOptionDescription("--rules_file <str>", "Rules file to be converted to hyperlocus (not mendatory if a weights file or a weights_generic_filename is given)", width);
+  printOptionDescription("--rules_outfile <str>", "Rule(s) output file", width);
+  printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in dataset", width);
+  printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in dataset", width);
 
   std::cout << std::endl
             << "----------------------------" << std::endl
             << std::endl;
   std::cout << "Optional parameters: " << std::endl
             << std::endl;
-  std::cout << "--json_config_file <JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path>" << std::endl;
-  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  std::cout << "--nb_dimlp_nets <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>" << std::endl;
-  std::cout << "--test_pred_file <test prediction file> ";
-  std::cout << "--test_class_file <test true class file> If at least --test_pred_file is specified, --test_data_file needs to have only test datas and eventually classes on same line (don't add --test_class_file in this case)" << std::endl;
-  std::cout << "--attributes_file <file of attributes>" << std::endl;
-  std::cout << "--stats_file <output statistic file>" << std::endl;
-  std::cout << "--console_file <file with console logs redirection>" << std::endl; // If we want to redirect console result to file
-  std::cout << "--max_iterations <max iteration number, also the max possible number of attributs in a rule (10 by default, should put 25 if working with images)>" << std::endl;
-  std::cout << "--min_covering <minimum covering number (2 by default)>" << std::endl;
-  std::cout << "--covering_strategy <if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (True by default)>" << std::endl;
-  std::cout << "--max_failed_attempts <maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used (30 by default)>" << std::endl;
-  std::cout << "--min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>" << std::endl;
-  std::cout << "--lowest_min_fidelity <minimal min_fidelity to which we agree to go down during covering_strategy (0.75 by default)>" << std::endl;
-  std::cout << "--dropout_dim <dimension dropout parameter (None by default)>" << std::endl;
-  std::cout << "--dropout_hyp <hyperplan dropout parameter (None by default)>" << std::endl;
-  std::cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
-  std::cout << "--decision_threshold <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
-  std::cout << "--positive_class_index <index of positive class for the usage of decision threshold (None by default, 0 for first one)>" << std::endl;
-  std::cout << "--normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << std::endl;
-  std::cout << "--mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
-  std::cout << "--sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
-  std::cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)>" << std::endl;
-  std::cout << "--seed <seed (0=random, default)>";
+
+  printOptionDescription("--json_config_file <str>", "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path", width);
+  printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder", width);
+  printOptionDescription("--nb_dimlp_nets <int [1,inf[>", "Number of networks for bagging, necessary to use bagging", width);
+  printOptionDescription("--test_pred_file <str>", "Test prediction file", width);
+  printOptionDescription("--test_class_file <str>", "Test true class file. If at least --test_pred_file is specified, --test_data_file needs to have only test datas and eventually classes on same line (don't add --test_class_file in this case)", width);
+  printOptionDescription("--attributes_file <str>", "File of attributes", width);
+  printOptionDescription("--stats_file <str>", "Output statistic file", width);
+  printOptionDescription("--console_file <str>", "File with console logs redirection", width); // If we want to redirect console result to file
+  printOptionDescription("--max_iterations <int [1,inf[>", "Max iteration number, also the max possible number of attributs in a rule, should be 25 if working with images (default: 10)", width);
+  printOptionDescription("--min_covering <int [1,inf[>", "Minimum covering number (default: 2)", width);
+  printOptionDescription("--covering_strategy <bool>", "Whether to use this strategy : if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (default: True)", width);
+  printOptionDescription("--max_failed_attempts <int [0,inf[>", "Maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used (default: 30)", width);
+  printOptionDescription("--min_fidelity <float [0,1]>", "Minimal rule fidelity accepted when generating a rule (default: 1.0)", width);
+  printOptionDescription("--lowest_min_fidelity <float [0,1]>", "Minimal min_fidelity to which we agree to go down during covering_strategy (default: 0.75)", width);
+  printOptionDescription("--dropout_dim <float [0,1]>", "Dimension dropout parameter (default: 0.0)", width);
+  printOptionDescription("--dropout_hyp <float [0,1]>", "Hyperplan dropout parameter (default: 0.0)", width);
+  printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in staircase activation function (default: 50)", width);
+  printOptionDescription("--decision_threshold <float [0,1]>", "Decision threshold for predictions, need to specify the index of positive class if you want to use it", width);
+  printOptionDescription("--positive_class_index <int [0,nb_classes-1]>", "Index of positive class for the usage of decision threshold, index starts at 0", width);
+  printOptionDescription("--normalization_file <str>", "File containing the mean and std of some attributes. Used to denormalize the rules if specified", width);
+  printOptionDescription("--mus <list<float ]inf,inf[>>", "List in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules", width);
+  printOptionDescription("--sigmas <list<float ]inf,inf[>>", "List in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules", width);
+  printOptionDescription("--normalization_indices <list<int [0,nb_attributes-1]>>", "List in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1])>", width);
+  printOptionDescription("--seed <int [0,inf[>", "Seed, 0=random (default: 0)", width);
 
   std::cout << std::endl
-            << std::endl
             << "----------------------------" << std::endl
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "fidex.fidex(\"--train_data_file datanormTrain.txt --train_pred_file predTrain.out --train_class_file dataclass2Train.txt --test_data_file testSampleDataCombine.txt --nb_attributes 16 --nb_classes 2 --weights_file weights.wts --rules_outfile rule.txt --stats_file stats --root_folder ../fidex/datafiles\")" << std::endl
+  std::cout << "fidex.fidex(\"--train_data_file datanormTrain.txt --train_pred_file predTrain.out --train_class_file dataclass2Train.txt --test_data_file testSampleDataCombine.txt --nb_attributes 16 --nb_classes 2 --weights_file weights.wts --rules_outfile rules.rls --stats_file stats.txt --root_folder fidex/datafiles\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;

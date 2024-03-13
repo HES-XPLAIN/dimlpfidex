@@ -7,33 +7,45 @@ using namespace std;
 void showDimlpPredParams()
 
 {
-  std::cout << "---------------------------------------------------------------------" << std::endl;
+  std::cout << std::endl
+            << "---------------------------------------------------------------------" << std::endl
+            << std::endl;
   std::cout << "Warning! The files are localised with respect to root folder dimlpfidex." << std::endl;
-  std::cout << "The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json." << std::endl;
-  std::cout << "----------------------------" << std::endl;
-  std::cout << "Required parameters:" << std::endl;
-
-  std::cout << "dimlpPred --test_data_file <test set file (path with respect to specified root folder)> ";
-  std::cout << "--weights_file <file of weights> ";
-  std::cout << "--nb_attributes <number of input neurons> --nb_classes <number of output neurons>";
-
-  std::cout << " <Options>\n"
+  std::cout << "The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json." << std::endl
             << std::endl;
 
-  std::cout << "----------------------------" << std::endl;
-  std::cout << "Optional parameters: \n"
+  std::cout << "----------------------------" << std::endl
             << std::endl;
+  std::cout << "Required parameters:" << std::endl
+            << std::endl;
+
+  std::cout << "--test_data_file <test set file (path with respect to specified root folder)>" << std::endl;
+  std::cout << "--weights_file <file of weights>" << std::endl;
+  std::cout << "--nb_attributes <number of input neurons>" << std::endl;
+  std::cout << "--nb_classes <number of output neurons>" << std::endl;
+
+  std::cout << std::endl
+            << "----------------------------" << std::endl
+            << std::endl;
+  std::cout << "Optional parameters: " << std::endl
+            << std::endl;
+
   std::cout << "--json_config_file <JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path>" << std::endl;
   std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
   std::cout << "--test_pred_outfile <output prediction file (dimlpTest.out by default)>";
   std::cout << "--console_file <file with console logs redirection>"; // If we want to redirect console result to file
-  std::cout << "--H1 <number of neurons in the first hidden layer> ";
-  std::cout << "(if not specified this number will be equal to the ";
-  std::cout << "number of input neurons)" << std::endl;
+  std::cout << "--H1 <number of neurons in the first hidden layer> (if not specified this number will be equal to the number of input neurons)" << std::endl;
   std::cout << "--Hk <number of neurons in the kth hidden layer>" << std::endl;
   std::cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
 
-  std::cout << "\n---------------------------------------------------------------------\n"
+  std::cout << std::endl
+            << "----------------------------" << std::endl
+            << std::endl;
+  std::cout << "Execution example :" << std::endl
+            << std::endl;
+  std::cout << "dimlp.dimlpPred(\"--test_data_file datanormTest.txt --weights_file dimlpDatanorm.wts --nb_attributes 16 --H2 5 --nb_classes 2 --test_pred_outfile predTest.out --root_folder dimlp/datafiles\")" << std::endl
+            << std::endl;
+  std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
 }
 

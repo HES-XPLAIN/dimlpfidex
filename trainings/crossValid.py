@@ -135,7 +135,7 @@ def crossValid(*args, **kwargs):
             print("attributes_file : file of attributes")
             print("max_iterations : maximum fidex and fidexGlo iteration number (100 by default)")
             print("min_covering : minimum fidex and fidexGlo covering number (2 by default)")
-            print("covering_strategy <if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (True by default)>")
+            print("covering_strategy <Whether to use this strategy : if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (True by default)>")
             print("min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>")
             print("lowest_min_fidelity <minimal min_fidelity to which we agree to go down during covering_strategy (0.75 by default)>")
             print("dropout_dim : dimension dropout parameter for fidex and fidexGlo")
