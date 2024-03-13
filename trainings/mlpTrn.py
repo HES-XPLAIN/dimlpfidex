@@ -6,7 +6,7 @@ from sklearn.exceptions import ConvergenceWarning
 from sklearn import metrics
 
 from trainings.trnFun import get_data, get_data_class, output_data, compute_first_hidden_layer, output_stats
-from trainings.parameters import get_common_parser, get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, bool_type, list_type, enum_type
+from trainings.parameters import get_common_parser, get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, bool_type, list_type, enum_type, print_parameters
 
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
@@ -17,8 +17,12 @@ def get_and_check_parameters(init_args):
 
     # Add common attributes
     common_parser = get_common_parser(args, initial_parser)
+
+    # set custom formatter printing boundaries 
+    formatter = lambda prog: CustomHelpFormatter(prog, width=150, max_help_position=60)
+
     # Add new attributes
-    parser = CustomArgumentParser(description="This is a parser for mlpTrn", parents=[common_parser], formatter_class=CustomHelpFormatter, add_help=True)
+    parser = CustomArgumentParser(description="This is a parser for mlpTrn", parents=[common_parser], formatter_class=formatter, add_help=True)
     parser.add_argument("--weights_outfile", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output weights file name", metavar="<str>", default="weights.wts")
     parser.add_argument("--nb_quant_levels", type=lambda x: int_type(x, min=3), metavar="<int [3,inf[>", help="Number of stairs in staircase activation function", default=50)
     parser.add_argument("--K", type=lambda x: float_type(x, min=0, min_inclusive=False), metavar="<float ]0,inf[>", help="Parameter to improve dynamics", default=1.0)
@@ -60,7 +64,7 @@ def mlpTrn(args: str = ""):
         else:
             split_args= ["-h"]
         args = get_and_check_parameters(split_args)
-        print(args)
+        print_parameters(args)
         hiknot = 5
         console_file = args.console_file
 
