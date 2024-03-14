@@ -28,5 +28,5 @@ std::tuple<std::vector<int>, bool, std::vector<double>, std::vector<double>> par
 bool hasSpaceBetweenWords(const std::string &str);
 bool exists(const std::string &path);
 std::string getOSSeparator();
-void printOptionDescription(const std::string &option, const std::string &description, int width);
+void printOptionDescription(const std::string &option, const std::string &description, int width = 30);
 #endif

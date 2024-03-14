@@ -1,7 +1,7 @@
-Statistics with a test set of 211 samples :
+Accuracy :
 
-The mean covering size per rule is : 28.0095
-The mean number of antecedents per rule is : 7.09479
-The mean rule fidelity rate is : 1
-The mean rule accuracy is : 0.984399
-The mean rule confidence is : 0.965427
+Sum squared error on training set = 905.006
+Accuracy on training set = 0.698262
+
+Sum squared error on testing set = 4.46195
+Accuracy on testing set = 1
