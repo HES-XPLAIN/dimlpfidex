@@ -120,7 +120,7 @@ int fidex(const std::string &command) {
     }
 
     size_t nbParam = commandList.size();
-    if (nbParam < 2) {
+    if (nbParam < 3) {
       showFidexParams();
       return 0;
     }
@@ -141,7 +141,7 @@ int fidex(const std::string &command) {
         throw CommandArgumentException("Option " + commandList[1] + " has to be the only option in the command if specified.");
       }
       try {
-        params = std::unique_ptr<Parameters>(new Parameters(commandList[2], validParams));
+        params = std::unique_ptr<Parameters>(new Parameters(commandList[3], validParams));
       } catch (const std::out_of_range &) {
         throw CommandArgumentException("JSON config file name/path is invalid");
       }
