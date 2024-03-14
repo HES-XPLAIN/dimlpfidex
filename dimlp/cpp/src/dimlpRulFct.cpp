@@ -22,7 +22,7 @@ void showDimlpRulParams()
             << std::endl;
 
   printOptionDescription("--train_data_file <str>", "Train data file");
-  printOptionDescription("--weights_file", "file of weights");
+  printOptionDescription("--weights_file <str>", "Weights file");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of input neurons");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of output neurons");
 
@@ -32,24 +32,24 @@ void showDimlpRulParams()
   std::cout << "Optional parameters: " << std::endl
             << std::endl;
 
-  printOptionDescription("--json_config_file", "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path");
-  printOptionDescription("--root_folder", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
-  printOptionDescription("--attributes_file", "file of attributes");
-  printOptionDescription("--valid_data_file", "validation set file");
-  printOptionDescription("--test_data_file", "testing set file");
-  printOptionDescription("--train_class_file", "file of train classes");
-  printOptionDescription("--test_class_file", "file of test classes");
-  printOptionDescription("--valid_class_file", "file of validation classes");
-  printOptionDescription("--global_rules_outfile", "rulesFile (dimlp.rls by default)");
-  printOptionDescription("--console_file", "file with console logs redirection"); // If we want to redirect console result to file
-  printOptionDescription("--stats_file", "output file with train, test and validation accuracy");
-  printOptionDescription("--H1", "number of neurons in the first hidden layer> (if not specified this number will be equal to the number of input neurons)");
-  printOptionDescription("--Hk", "number of neurons in the kth hidden layer");
-  printOptionDescription("--nb_quant_levels", "number of stairs in staircase activation function (50 by default)");
-  printOptionDescription("--normalization_file", "file containing the mean and std of some attributes. Used to denormalize the rules if specified");
-  printOptionDescription("--mus", "list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules");
-  printOptionDescription("--sigmas", "list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules");
-  printOptionDescription("--normalization_indices", "list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)");
+  printOptionDescription("--json_config_file <str>", "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path");
+  printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
+  printOptionDescription("--attributes_file <str>", "File of attributes");
+  printOptionDescription("--valid_data_file <str>", "Validation data file");
+  printOptionDescription("--test_data_file <str>", "Test data file");
+  printOptionDescription("--train_class_file <str>", "Train true class file");
+  printOptionDescription("--test_class_file <str>", "Test true class file");
+  printOptionDescription("--valid_class_file <str>", "Validation true class file");
+  printOptionDescription("--global_rules_outfile <str>", "Rules output file (default: dimlp.rls)");
+  printOptionDescription("--console_file <str>", "File with console logs redirection");
+  printOptionDescription("--stats_file <str>", "Output file name with train, test and validation accuracy");
+  printOptionDescription("--H1 <int k*nb_attributes, k in [1,inf[>", "Number of neurons in the first hidden layer (default: nb_attributes)");
+  printOptionDescription("--Hk <int [1,inf[>", "Number of neurons in the kth hidden layer");
+  printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in staircase activation function (default: 50)");
+  printOptionDescription("--normalization_file <str>", "File containing the mean and std of some attributes. Used to denormalize the rules if specified");
+  printOptionDescription("--mus <list<float ]inf,inf[>>", "Mean or median of each attribute index to denormalize in the rules");
+  printOptionDescription("--sigmas <list<float ]inf,inf[>>", "Standard deviation of each attribute index to denormalize in the rules");
+  printOptionDescription("--normalization_indices <list<int [0,nb_attributes-1]>>", "Attribute indices to denormalize in the rules, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1])");
 
   std::cout << std::endl
             << "----------------------------" << std::endl

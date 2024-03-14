@@ -18,10 +18,10 @@ void showDimlpClsParams()
   std::cout << "Required parameters:" << std::endl
             << std::endl;
 
-  std::cout << "--test_data_file <test set file (path with respect to specified root folder)>" << std::endl;
-  std::cout << "--weights_file <file of weights>" << std::endl;
-  std::cout << "--nb_attributes <number of input neurons>" << std::endl;
-  std::cout << "--nb_classes <number of output neurons>" << std::endl;
+  printOptionDescription("--test_data_file <str>", "Test data file");
+  printOptionDescription("--weights_file <str>", "Weights file");
+  printOptionDescription("--nb_attributes <int [1,inf[>", "Number of input neurons");
+  printOptionDescription("--nb_classes <int [2,inf[>", "Number of output neurons");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -29,16 +29,16 @@ void showDimlpClsParams()
   std::cout << "Optional parameters: " << std::endl
             << std::endl;
 
-  std::cout << "--json_config_file <JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path>" << std::endl;
-  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  std::cout << "--test_class_file <file of classes>" << std::endl;
-  std::cout << "--test_pred_outfile <output prediction file (dimlp.out by default)>" << std::endl;
-  std::cout << "--console_file <file with console logs redirection>" << std::endl; // If we want to redirect console result to file
-  std::cout << "--stats_file <output file with test accuracy>" << std::endl;
-  std::cout << "--hid_file <output file with first hidden layer values (dimlp.hid by default)>" << std::endl;
-  std::cout << "--h1 <number of neurons in the first hidden layer> (if not specified this number will be equal to the number of input neurons)" << std::endl;
-  std::cout << "--hk <number of neurons in the kth hidden layer>" << std::endl;
-  std::cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
+  printOptionDescription("--json_config_file <str>", "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path");
+  printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
+  printOptionDescription("--test_class_file <str>", "Test true class file");
+  printOptionDescription("--test_pred_outfile <str>", "Output test prediction file name (default: dimlpTest.out)");
+  printOptionDescription("--console_file <str>", "File with console logs redirection");
+  printOptionDescription("--stats_file <str>", "Output file name with test accuracy");
+  printOptionDescription("--hid_file <str>", "Output file name with first hidden layer values (default: dimlpTest.hid)");
+  printOptionDescription("--H1 <int k*nb_attributes, k in [1,inf[>", "Number of neurons in the first hidden layer (default: nb_attributes)");
+  printOptionDescription("--Hk <int [1,inf[>", "Number of neurons in the kth hidden layer");
+  printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in staircase activation function (default: 50)");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -141,8 +141,8 @@ void SaveFirstHid(
 void checkDimlpClsParametersLogicValues(Parameters &p) {
   // setting default values
   p.setDefaultNbQuantLevels();
-  p.setDefaultString(TEST_PRED_OUTFILE, "dimlp.out", true);
-  p.setDefaultString(HID_FILE, "dimlp.hid", true);
+  p.setDefaultString(TEST_PRED_OUTFILE, "dimlpTest.out", true);
+  p.setDefaultString(HID_FILE, "dimlpTest.hid", true);
 
   // this sections check if values comply with program logic
 
