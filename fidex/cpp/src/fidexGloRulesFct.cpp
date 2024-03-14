@@ -17,16 +17,16 @@ void showRulesParams() {
   std::cout << "Required parameters:" << std::endl
             << std::endl;
 
-  std::cout << "--train_data_file <train data file>" << std::endl;
-  std::cout << "--train_pred_file <train prediction file>" << std::endl;
-  std::cout << "--train_class_file <train true class file, not mendatory if classes are specified in train data file>" << std::endl;
-  std::cout << "--weights_file <weights file when not using bagging> [Not mendatory if a rules file is given with --rules_file]" << std::endl;
-  std::cout << "--weights_generic_filename <weights file in case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets> [Not mendatory if a rules file is given with --rules_file]" << std::endl;
-  std::cout << "--rules_file <rules file to be converted to hyperlocus> [Not mendatory if a weights file or a weights_generic_filename is given]" << std::endl;
-  std::cout << "--global_rules_outfile <Rules output file>" << std::endl;
-  std::cout << "--heuristic <Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo>" << std::endl;
-  std::cout << "--nb_attributes <int [1,inf[>\n\t\t\tNumber of attributes in dataset" << std::endl;
-  std::cout << "--nb_classes <int [2,inf[>\n\t\t\tNumber of classes in dataset" << std::endl;
+  printOptionDescription("--train_data_file <str>", "Train data file");
+  printOptionDescription("--train_pred_file <str>", "Train prediction file");
+  printOptionDescription("--train_class_file <str>", "Train true class file, not mendatory if classes are specified in train data file");
+  printOptionDescription("--weights_file <str>", "Weights file when not using bagging (not mendatory if a rules file is given with --rules_file)");
+  printOptionDescription("--weights_generic_filename <str>", "Weights file in case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets (not mendatory if a rules file is given with --rules_file)");
+  printOptionDescription("--rules_file <str>", "Rules file to be converted to hyperlocus (not mendatory if a weights file or a weights_generic_filename is given)");
+  printOptionDescription("--global_rules_outfile <str>", "Rules output file>");
+  printOptionDescription("--heuristic <int [1,3]>", "Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo");
+  printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in dataset");
+  printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in dataset");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -34,28 +34,28 @@ void showRulesParams() {
   std::cout << "Optional parameters: " << std::endl
             << std::endl;
 
-  std::cout << "--json_config_file <JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path>" << std::endl;
-  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  std::cout << "--nb_dimlp_nets <Number of networks for bagging, necessary to use bagging>" << std::endl;
-  std::cout << "--attributes_file <file of attributes>" << std::endl;
-  std::cout << "--console_file <file with console logs redirection>" << std::endl; // If we want to redirect console result to file
-  std::cout << "--max_itertions <max iteration number, also the max possible number of attributs in a rule (10 by default, should put 25 if working with images)>" << std::endl;
-  std::cout << "--min_covering <minimum covering number (2 by default)>" << std::endl;
-  std::cout << "--dropout_dim <dimension dropout parameter>" << std::endl;
-  std::cout << "--dropout_hyp <hyperplan dropout parameter>" << std::endl;
-  std::cout << "--max_failed_attempts <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>" << std::endl;
-  std::cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
-  std::cout << "--decision_threshold <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
-  std::cout << "--positive_class_index <index of positive class for the usage of decision threshold, index starts at 0>" << std::endl;
-  std::cout << "--normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << std::endl;
-  std::cout << "--mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
-  std::cout << "--sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
-  std::cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)>" << std::endl;
-  std::cout << "--nb_threads <number of threads used for computing the algorithm (default=1, this means by default its a sequential execution)>" << std::endl;
-  std::cout << "--covering_strategy <Whether to use this strategy : if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (True by default)>" << std::endl;
-  std::cout << "--min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>" << std::endl;
-  std::cout << "--lowest_min_fidelity <minimal min_fidelity to which we agree to go down when computing a rule (0.75 by default)>" << std::endl;
-  std::cout << "--seed <seed (0=random, default)>" << std::endl;
+  printOptionDescription("--json_config_file <str>", "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path");
+  printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
+  printOptionDescription("--nb_dimlp_nets <int [1,inf[>", "Number of networks for bagging, necessary to use bagging");
+  printOptionDescription("--attributes_file <str>", "File of attributes");
+  printOptionDescription("--console_file <str>", "File with console logs redirection");
+  printOptionDescription("--max_iterations <int [1,inf[>", "Max iteration number, also the max possible number of attributs in a rule, should be 25 if working with images (default: 10)");
+  printOptionDescription("--min_covering <int [1,inf[>", "Minimum covering number (default: 2)");
+  printOptionDescription("--covering_strategy <bool>", "Whether to use this strategy : if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (default: True)");
+  printOptionDescription("--max_failed_attempts <int [0,inf[>", "Maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used (default: 30)");
+  printOptionDescription("--min_fidelity <float [0,1]>", "Minimal rule fidelity accepted when generating a rule (default: 1.0)");
+  printOptionDescription("--lowest_min_fidelity <float [0,1]>", "Minimal min_fidelity to which we agree to go down during covering_strategy (default: 0.75)");
+  printOptionDescription("--dropout_dim <float [0,1]>", "Dimension dropout parameter (default: 0.0)");
+  printOptionDescription("--dropout_hyp <float [0,1]>", "Hyperplan dropout parameter (default: 0.0)");
+  printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in staircase activation function (default: 50)");
+  printOptionDescription("--decision_threshold <float [0,1]>", "Decision threshold for predictions, you need to specify the index of positive class if you want to use it");
+  printOptionDescription("--positive_class_index <int [0,nb_classes-1]>", "Index of positive class for the usage of decision threshold, index starts at 0");
+  printOptionDescription("--normalization_file <str>", "File containing the mean and std of some attributes. Used to denormalize the rules if specified");
+  printOptionDescription("--mus <list<float ]inf,inf[>>", "Mean or median of each attribute index to denormalize in the rules");
+  printOptionDescription("--sigmas <list<float ]inf,inf[>>", "Standard deviation of each attribute index to denormalize in the rules");
+  printOptionDescription("--normalization_indices <list<int [0,nb_attributes-1]>>", "Attribute indices to denormalize in the rules, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1])");
+  printOptionDescription("--nb_threads <int [1,nb_cores]>", "Number of threads used for computing the algorithm, 1=sequential execution (default: 1)");
+  printOptionDescription("--seed <int [0,inf[>", "Seed, 0=random (default: 0)");
 
   std::cout << std::endl
             << "----------------------------" << std::endl

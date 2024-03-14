@@ -879,7 +879,7 @@ void Parameters::checkParametersDimlpTrn() {
   }
 
   if (getFloat(ABS_ERROR_THRESH) < 0) {
-    throw CommandArgumentException("The delta error parameter (ABS_ERROR_THRESH) must be positive (>=0, 0=no delta).");
+    throw CommandArgumentException("The delta error parameter (ABS_ERROR_THRESH) must be positive (>=0, 0=not using delta).");
   }
 
   if (getInt(NB_EPOCHS) < 1) {

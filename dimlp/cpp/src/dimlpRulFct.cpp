@@ -21,10 +21,10 @@ void showDimlpRulParams()
   std::cout << "Required parameters:" << std::endl
             << std::endl;
 
-  std::cout << "--train_data_file <training set file(path with respect to specified root folder)>" << std::endl;
-  std::cout << "--weights_file <file of weights>" << std::endl;
-  std::cout << "--nb_attributes <number of input neurons>" << std::endl;
-  std::cout << "--nb_classes <number of output neurons>" << std::endl;
+  printOptionDescription("--train_data_file <str>", "Train data file");
+  printOptionDescription("--weights_file", "file of weights");
+  printOptionDescription("--nb_attributes <int [1,inf[>", "Number of input neurons");
+  printOptionDescription("--nb_classes <int [2,inf[>", "Number of output neurons");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -32,24 +32,24 @@ void showDimlpRulParams()
   std::cout << "Optional parameters: " << std::endl
             << std::endl;
 
-  std::cout << "--json_config_file <JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path>" << std::endl;
-  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  std::cout << "--attributes_file <file of attributes>" << std::endl;
-  std::cout << "--valid_data_file <validation set file>" << std::endl;
-  std::cout << "--test_data_file <testing set file>" << std::endl;
-  std::cout << "--train_class_file <file of train classes>" << std::endl;
-  std::cout << "--test_class_file <file of test classes>" << std::endl;
-  std::cout << "--valid_class_file <file of validation classes>" << std::endl;
-  std::cout << "--global_rules_outfile <rulesFile (dimlp.rls by default)>" << std::endl;
-  std::cout << "--console_file <file with console logs redirection>" << std::endl; // If we want to redirect console result to file
-  std::cout << "--stats_file <output file with train, test and validation accuracy>" << std::endl;
-  std::cout << "--H1 <number of neurons in the first hidden layer> (if not specified this number will be equal to the number of input neurons)" << std::endl;
-  std::cout << "--Hk <number of neurons in the kth hidden layer>" << std::endl;
-  std::cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
-  std::cout << "--normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << std::endl;
-  std::cout << "--mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
-  std::cout << "--sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
-  std::cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)>" << std::endl;
+  printOptionDescription("--json_config_file", "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path");
+  printOptionDescription("--root_folder", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
+  printOptionDescription("--attributes_file", "file of attributes");
+  printOptionDescription("--valid_data_file", "validation set file");
+  printOptionDescription("--test_data_file", "testing set file");
+  printOptionDescription("--train_class_file", "file of train classes");
+  printOptionDescription("--test_class_file", "file of test classes");
+  printOptionDescription("--valid_class_file", "file of validation classes");
+  printOptionDescription("--global_rules_outfile", "rulesFile (dimlp.rls by default)");
+  printOptionDescription("--console_file", "file with console logs redirection"); // If we want to redirect console result to file
+  printOptionDescription("--stats_file", "output file with train, test and validation accuracy");
+  printOptionDescription("--H1", "number of neurons in the first hidden layer> (if not specified this number will be equal to the number of input neurons)");
+  printOptionDescription("--Hk", "number of neurons in the kth hidden layer");
+  printOptionDescription("--nb_quant_levels", "number of stairs in staircase activation function (50 by default)");
+  printOptionDescription("--normalization_file", "file containing the mean and std of some attributes. Used to denormalize the rules if specified");
+  printOptionDescription("--mus", "list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules");
+  printOptionDescription("--sigmas", "list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules");
+  printOptionDescription("--normalization_indices", "list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)");
 
   std::cout << std::endl
             << "----------------------------" << std::endl

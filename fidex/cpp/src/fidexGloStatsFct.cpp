@@ -15,12 +15,12 @@ void showStatsParams() {
   std::cout << "Required parameters:" << std::endl
             << std::endl;
 
-  std::cout << "--test_data_file <test data file>" << std::endl;
-  std::cout << "--test_pred_file <test prediction file>" << std::endl;
-  std::cout << "--test_class_file <test true class file, not mendatory if classes are specified in test data file>" << std::endl;
-  std::cout << "--global_rules_file <rules input file>" << std::endl;
-  std::cout << "--nb_attributes <int [1,inf[>\n\t\t\tNumber of attributes in dataset" << std::endl;
-  std::cout << "--nb_classes <int [2,inf[>\n\t\t\tNumber of classes in dataset" << std::endl;
+  printOptionDescription("--test_data_file <str>", "Test data file");
+  printOptionDescription("--test_pred_file <str>", "Test prediction file");
+  printOptionDescription("--test_class_file <str>", "Test true class file, not mendatory if classes are specified in test data file");
+  printOptionDescription("--global_rules_file <str>", "Ruleset input file");
+  printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in dataset");
+  printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in dataset");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -28,14 +28,14 @@ void showStatsParams() {
   std::cout << "Optional parameters: " << std::endl
             << std::endl;
 
-  std::cout << "--json_config_file <JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path>" << std::endl;
-  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  std::cout << "--attributes_file <file of attributes> Mandatory if rules file contains attribute names, if not, do not add it" << std::endl;
-  std::cout << "--stats_file <stats output file>" << std::endl;
-  std::cout << "--global_rules_outfile <global rules output file with stats on test set> If you want to compute statistics of global rules on tests set" << std::endl;
-  std::cout << "--console_file <file with console logs redirection>" << std::endl; // If we want to redirect console result to file
-  std::cout << "--decision_threshold <decision threshold for predictions, use if it was used in FidexGlo, need to specify the index of positive class if you want to use it (None by default)>" << std::endl;
-  std::cout << "--positive_class_index <index of positive class sample to compute true/false positive/negative rates (None by default, put 0 for first class)>" << std::endl; // If we want to compute TP, FP, TN, FN
+  printOptionDescription("--json_config_file <str>", "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path");
+  printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
+  printOptionDescription("--attributes_file <str>", "File of attributes> Mandatory if rules file contains attribute names, if not, do not add it");
+  printOptionDescription("--stats_file <str>", "Output statistic file name");
+  printOptionDescription("--global_rules_outfile <str>", "Global ruleset output file with stats on test set, if you want to compute statistics of global rules on tests set");
+  printOptionDescription("--console_file <str>", "File with console logs redirection");
+  printOptionDescription("--decision_threshold <float [0,1]>", "Decision threshold for predictions, use if it was used in FidexGloRules, you need to specify the index of positive class if you want to use it");
+  printOptionDescription("--positive_class_index <int [0,nb_classes-1]>", "Index of positive class for the usage of decision threshold and to compute true/false positive/negative rates, index starts at 0");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
