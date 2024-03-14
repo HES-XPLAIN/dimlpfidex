@@ -99,7 +99,6 @@ std::string Rule::toString(const std::vector<std::string> &attributes, const std
  * @param filename   path of the JSON file to be parsed
  * @return vector<Rule>
  */
-// TODO test this
 std::vector<Rule> Rule::fromJsonFile(const std::string &filename) {
   std::vector<Rule> result;
   std::ifstream ifs(filename);
@@ -127,7 +126,6 @@ std::vector<Rule> Rule::fromJsonFile(const std::string &filename) {
  * @param filename name of the file to be written
  * @param rules vector of rules to be written
  */
-// TODO test this
 void Rule::toJsonFile(const std::string &filename, const std::vector<Rule> &rules) {
   std::ofstream ofs(filename);
 
