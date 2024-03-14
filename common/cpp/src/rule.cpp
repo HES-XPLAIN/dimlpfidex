@@ -496,8 +496,6 @@ std::tuple<double, double> writeRulesFile(const std::string &filename, const std
     return std::make_tuple(0, 0);
   }
 
-  int counter = 0;
-  auto nbRules = static_cast<int>(rules.size());
   double meanCovSize = 0;
   double meanNbAntecedents = 0;
 
