@@ -85,36 +85,50 @@ std::vector<std::vector<double>> calcHypLocus(const std::string &rulesFile, Data
   vector<vector<double>> matHypLocus(dataset.getNbAttributes());
   vector<set<double>> thresholds(dataset.getNbAttributes()); // Thresholds for each attribute
 
-  // Get pattern for attributes
-  std::regex pattern;
-  bool attributesInFile = getRulesPatternsFromRuleFile(rulesFile, dataset, false)[0];
-  if (attributesInFile) { // If we have attribute names
-    pattern = getAntStrPatternWithAttrNames(dataset.getAttributeNames());
+  // if rule file is in json format
+  if (rulesFile.substr(rulesFile.find_last_of(".") + 1) == "json") {
+    vector<Rule> rules = Rule::fromJsonFile(rulesFile);
+
+    for (Rule rule : rules) {
+      for (Antecedant ant : rule.getAntecedants()) {
+        thresholds[ant.getAttribute()].insert(ant.getValue());
+      }
+    }
+
+  // rules file is in txt format 
   } else {
-    pattern = getAntStrPatternWithAttrIds(dataset.getNbAttributes());
-  }
+    // Get pattern for attributes
+    std::regex pattern;
+    bool attributesInFile = getRulesPatternsFromRuleFile(rulesFile, dataset, false)[0];
+    if (attributesInFile) { // If we have attribute names
+      pattern = getAntStrPatternWithAttrNames(dataset.getAttributeNames());
+    } else {
+      pattern = getAntStrPatternWithAttrIds(dataset.getNbAttributes());
+    }
 
-  ifstream fileDta(rulesFile);
+    ifstream fileDta(rulesFile);
 
-  if (!fileDta) {
-    throw FileNotFoundError("Error : file " + rulesFile + " not found");
-  }
-  // Get thresholds values from rules file
-  while (getline(fileDta, line)) {
-    if (line.find("Rule") == 0) { // If line begins with "Rule"
-      Rule rule;
-      if (stringToRule(rule, line, attributesInFile, false, dataset)) {
-        for (Antecedant ant : rule.getAntecedants()) {
-          thresholds[ant.getAttribute()].insert(ant.getValue());
+    if (!fileDta) {
+      throw FileNotFoundError("Error : file " + rulesFile + " not found");
+    }
+    // Get thresholds values from rules file
+    while (getline(fileDta, line)) {
+      if (line.find("Rule") == 0) { // If line begins with "Rule"
+        Rule rule;
+        if (stringToRule(rule, line, attributesInFile, false, dataset)) {
+          for (Antecedant ant : rule.getAntecedants()) {
+            thresholds[ant.getAttribute()].insert(ant.getValue());
+          }
         }
       }
     }
+
+    fileDta.close(); // close data file
   }
 
   for (size_t i = 0; i < thresholds.size(); ++i) {
     matHypLocus[i].assign(thresholds[i].begin(), thresholds[i].end());
   }
 
-  fileDta.close(); // close data file
   return matHypLocus;
 }

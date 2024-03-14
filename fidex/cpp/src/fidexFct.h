@@ -26,6 +26,8 @@
 void showFidexParams();
 void launchFidex(Fidex &fidex, Parameters &params, Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, double mainSamplePredValue, int mainSampleClass);
 void checkFidexParametersLogicValues(Parameters &p);
-int fidex(const std::string &command = "");
+int fidex(const std::string &command);
+void writeResultsFile(string const &filename, vector<tuple<int, Rule>> &sampleRuleDict, vector<string> attributesNames, vector<string> classNames);
+void writeStatsFile(string const &filename, int nbTestSamples, double meanCovSize, double meanNbAntecedentsPerRule, double meanFidelity, double meanAccuracy, double meanConfidence);
 
 #endif
