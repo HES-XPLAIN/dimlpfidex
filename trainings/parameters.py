@@ -67,7 +67,8 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
             self.add_text("Execution example :")
             if tag == "MLP":
                 self.add_text("mlpTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile mlp/weights.wts --stats_file mlp/stats.txt --train_pred_outfile mlp/predTrain.out --test_pred_outfile mlp/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')")
-
+            elif tag == "SVM":
+                self.add_text("svmTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile svm/weights.wts --stats_file svm/stats.txt --train_pred_outfile svm/predTrain.out --test_pred_outfile svm/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')")
         self.add_text("---------------------------------------------------------------------")
 
 
@@ -271,7 +272,7 @@ def json_to_args(jsonfile: str):
 
     return args
 
-def int_type(value:str, min=float('-inf'), max=float('inf'), allow_none=False):
+def int_type(value:str, min=float('-inf'), max=float('inf'), allow_none=False, allow_value=None):
     """
     Validates and converts a string to an integer, with optional range constraints and the option to allow None as a value.
 
@@ -292,6 +293,11 @@ def int_type(value:str, min=float('-inf'), max=float('inf'), allow_none=False):
         raise argparse.ArgumentTypeError(f"{value} is not an integer")
     ivalue = int(value)
     if ivalue < min or ivalue > max:
+        if allow_value:
+            if ivalue == allow_value:
+                return ivalue
+            else:
+                raise argparse.ArgumentTypeError(f"{ivalue} must be between [{min},{max}] or {allow_value}")
         raise argparse.ArgumentTypeError(f"{ivalue} must be between [{min},{max}]")
 
     return ivalue
