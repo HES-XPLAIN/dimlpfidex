@@ -442,8 +442,14 @@ int fidexGloRules(const string &command) {
       commandList.push_back(s);
     }
 
+  for (string str: commandList) {
+    cout << str << " ";
+  }
+  cout << endl;
+  cout << commandList.size() << endl;
+
     size_t nbParam = commandList.size();
-    if (nbParam < 2) {
+    if (nbParam < 3) {
       showRulesParams();
       return -1;
     }
@@ -455,13 +461,13 @@ int fidexGloRules(const string &command) {
                                               MAX_ITERATIONS, MIN_COVERING, DROPOUT_DIM, DROPOUT_HYP, MAX_FAILED_ATTEMPTS, NB_QUANT_LEVELS,
                                               DECISION_THRESHOLD, POSITIVE_CLASS_INDEX, NORMALIZATION_FILE, MUS, SIGMAS, NORMALIZATION_INDICES,
                                               NB_THREADS, COVERING_STRATEGY, MIN_FIDELITY, LOWEST_MIN_FIDELITY, NB_DIMLP_NETS, SEED};
-    if (commandList[1].compare("--json_config_file") == 0) {
-      if (commandList.size() < 3) {
+    if (commandList[2].compare("--json_config_file") == 0) {
+      if (commandList.size() < 4) {
         throw CommandArgumentException("JSON config file name/path is missing");
       }
 
       try {
-        params = std::unique_ptr<Parameters>(new Parameters(commandList[2], validParams));
+        params = std::unique_ptr<Parameters>(new Parameters(commandList[3], validParams));
       } catch (const std::out_of_range &) {
         throw CommandArgumentException("JSON config file name/path is invalid");
       }

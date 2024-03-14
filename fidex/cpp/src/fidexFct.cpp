@@ -104,7 +104,7 @@ int fidex(const string &command) {
     }
 
     size_t nbParam = commandList.size();
-    if (nbParam < 2) {
+    if (nbParam < 3) {
       showFidexParams();
       return 0;
     }
@@ -118,13 +118,13 @@ int fidex(const string &command) {
                                               MAX_FAILED_ATTEMPTS, MIN_FIDELITY, LOWEST_MIN_FIDELITY, DROPOUT_DIM, DROPOUT_HYP,
                                               NB_QUANT_LEVELS, DECISION_THRESHOLD, POSITIVE_CLASS_INDEX, NORMALIZATION_FILE, MUS,
                                               SIGMAS, NORMALIZATION_INDICES, NB_DIMLP_NETS, SEED};
-    if (commandList[1].compare("--json_config_file") == 0) {
-      if (commandList.size() < 3) {
+    if (commandList[2].compare("--json_config_file") == 0) {
+      if (commandList.size() < 4) {
         throw CommandArgumentException("JSON config file name/path is missing");
       }
 
       try {
-        params = std::unique_ptr<Parameters>(new Parameters(commandList[2], validParams));
+        params = std::unique_ptr<Parameters>(new Parameters(commandList[3], validParams));
       } catch (const std::out_of_range &) {
         throw CommandArgumentException("JSON config file name/path is invalid");
       }
@@ -287,7 +287,6 @@ int fidex(const string &command) {
 
     d1 = clock();
 
-    vector<string> lines;
     // compute hyperspace
     std::cout << "Creation of hyperspace..." << std::endl;
 
@@ -331,6 +330,7 @@ int fidex(const string &command) {
     double meanCovSize = 0;
     double meanNbAntecedentsPerRule = 0;
     double meanAccuracy = 0;
+    vector<tuple<int, Rule>> results;
 
     // We compute rule for each test sample
     for (int currentSample = 0; currentSample < nbTestSamples; currentSample++) {
@@ -345,8 +345,6 @@ int fidex(const string &command) {
       } else {
         mainSampleClass = -1;
       }
-
-      lines.push_back("Rule for sample " + std::to_string(currentSample) + " :\n");
 
       if (nbTestSamples > 1) {
         std::cout << "Computation of rule for sample " << currentSample << " : " << endl
@@ -372,8 +370,8 @@ int fidex(const string &command) {
                   << endl;
       }
 
-      stringstream stream;
-      lines.push_back(rule.toString(attributeNames, classNames));
+      results.push_back(make_tuple(currentSample, rule));
+
       std::cout << std::endl;
       std::cout << "Extracted rule :" << std::endl;
       std::cout << rule.toString(attributeNames, classNames) << std::endl;
@@ -385,10 +383,6 @@ int fidex(const string &command) {
       std::cout << "Result found after " << nbIt << " iterations." << std::endl;
 
       std::cout << "-------------------------------------------------" << std::endl;
-
-      if (nbTestSamples > 1) {
-        lines.emplace_back("-------------------------------------------------\n");
-      }
     }
 
     // Stats
@@ -399,29 +393,8 @@ int fidex(const string &command) {
     meanAccuracy /= static_cast<double>(nbTestSamples);
 
     if (params->isStringSet(STATS_FILE)) {
-      ofstream outputStatsFile(params->getString(STATS_FILE));
-      if (outputStatsFile.is_open()) {
-        outputStatsFile << "Statistics with a test set of " << nbTestSamples << " samples :\n"
-                        << std::endl;
-        outputStatsFile << "The mean covering size per rule is : " << meanCovSize << "" << std::endl;
-        outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntecedentsPerRule << "" << std::endl;
-        outputStatsFile << "The mean rule fidelity rate is : " << meanFidelity << "" << std::endl;
-        outputStatsFile << "The mean rule accuracy is : " << meanAccuracy << "" << std::endl;
-        outputStatsFile << "The mean rule confidence is : " << meanConfidence << "" << std::endl;
-        outputStatsFile.close();
-      } else {
-        throw CannotOpenFileError("Error : Couldn't open stats extraction file " + params->getString(STATS_FILE) + ".");
-      }
-    }
-
-    ofstream outputFile(ruleFile);
-    if (outputFile.is_open()) {
-      for (const auto &line : lines) {
-        outputFile << line << "" << std::endl;
-      }
-      outputFile.close();
-    } else {
-      throw CannotOpenFileError("Error : Couldn't open rule extraction file " + ruleFile + ".");
+      writeStatsFile(params->getString(STATS_FILE), nbTestSamples, meanCovSize,
+                     meanNbAntecedentsPerRule, meanFidelity, meanAccuracy, meanConfidence);
     }
 
     d2 = clock();
@@ -431,6 +404,9 @@ int fidex(const string &command) {
 
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
+
+    writeResultsFile(params->getString(RULES_OUTFILE), results, attributeNames, classNames);
+
     std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
 
     std::cout.rdbuf(cout_buff); // reset to standard output again
@@ -442,6 +418,49 @@ int fidex(const string &command) {
   }
 
   return 0;
+}
+
+// TODO
+void writeResultsFile(string const &filename, vector<tuple<int, Rule>> &sampleRuleDict, vector<string> attributesNames, vector<string> classNames) {
+  ofstream ofs(filename);
+
+  if (!ofs.is_open() || ofs.fail()) {
+    throw FileNotFoundError("JSON file to be written named '" + filename + "' couldn't be opened, cannot proceed.");
+  }
+
+  if (filename.substr(filename.find_last_of(".") + 1) == "json") {
+      Json jsonData({});
+    for (auto &row : sampleRuleDict) {
+      jsonData["results"].push_back({{"sampleId", get<0>(row)},{"rule", get<1>(row)}});
+    }
+    ofs << setw(4) << jsonData << endl;
+
+  } else {
+    for (auto &row : sampleRuleDict) {
+      ofs << "Rule for sample " << get<0>(row) << " :\n\n"
+          << get<1>(row).toString(attributesNames, classNames)
+          << "\n-------------------------------------------------\n\n";
+    }
+  }
+}
+
+// TODO
+void writeStatsFile(string const &filename, int nbTestSamples, double meanCovSize,
+                    double meanNbAntecedentsPerRule, double meanFidelity, double meanAccuracy, double meanConfidence) {
+  ofstream outputStatsFile(filename);
+
+  if (outputStatsFile.is_open()) {
+    outputStatsFile << "Statistics with a test set of " << nbTestSamples << " samples :\n"
+                    << std::endl;
+    outputStatsFile << "The mean covering size per rule is : " << meanCovSize << "" << std::endl;
+    outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntecedentsPerRule << "" << std::endl;
+    outputStatsFile << "The mean rule fidelity rate is : " << meanFidelity << "" << std::endl;
+    outputStatsFile << "The mean rule accuracy is : " << meanAccuracy << "" << std::endl;
+    outputStatsFile << "The mean rule confidence is : " << meanConfidence << "" << std::endl;
+    outputStatsFile.close();
+  } else {
+    throw CannotOpenFileError("Error : Couldn't open stats extraction file " + filename + ".");
+  }
 }
 
 /*

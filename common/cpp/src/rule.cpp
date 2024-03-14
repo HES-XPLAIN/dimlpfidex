@@ -99,7 +99,6 @@ string Rule::toString(const vector<string> &attributes, const vector<string> &cl
  * @param filename   path of the JSON file to be parsed
  * @return vector<Rule>
  */
-// TODO test this
 vector<Rule> Rule::fromJsonFile(const string &filename) {
   vector<Rule> result;
   ifstream ifs(filename);
@@ -127,7 +126,6 @@ vector<Rule> Rule::fromJsonFile(const string &filename) {
  * @param filename name of the file to be written
  * @param rules vector of rules to be written
  */
-// TODO test this
 void Rule::toJsonFile(const string &filename, const vector<Rule> &rules) {
   ofstream ofs(filename);
 
@@ -436,31 +434,35 @@ bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, b
  */
 void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset) {
 
+  if (rulesFile.substr(rulesFile.find_last_of(".") + 1) == "json") {
+    rules = Rule::fromJsonFile(rulesFile);
+  }else {
   // Open rules file
-  fstream rulesData;
-  rulesData.open(rulesFile, ios::in); // Read data file
-  if (rulesData.fail()) {
-    throw FileNotFoundError("Error : file " + rulesFile + " not found.");
-  }
+    fstream rulesData;
+    rulesData.open(rulesFile, ios::in); // Read data file
+    if (rulesData.fail()) {
+      throw FileNotFoundError("Error : file " + rulesFile + " not found.");
+    }
 
-  // Check if the file has attribute names or ids
-  vector<bool> checkPatterns = getRulesPatternsFromRuleFile(rulesFile, dataset);
-  bool attributesInFile = checkPatterns[0];
-  bool classesInFile = checkPatterns[1];
+    // Check if the file has attribute names or ids
+    vector<bool> checkPatterns = getRulesPatternsFromRuleFile(rulesFile, dataset);
+    bool attributesInFile = checkPatterns[0];
+    bool classesInFile = checkPatterns[1];
 
-  std::string line;
-  while (getline(rulesData, line)) {
-    Rule rule;
-    if (stringToRule(rule, line, attributesInFile, classesInFile, dataset)) {
-      getline(rulesData, line); // Cov size
-      rule.setCoveringSize(stoi(splitString(line, " ")[4]));
-      getline(rulesData, line); // Fidelity
-      rule.setFidelity(stoi(splitString(line, " ")[3]));
-      getline(rulesData, line); // Accuracy
-      rule.setAccuracy(stod(splitString(line, " ")[3]));
-      getline(rulesData, line); // Confidence
-      rule.setConfidence(stod(splitString(line, " ")[3]));
-      rules.push_back(rule);
+    std::string line;
+    while (getline(rulesData, line)) {
+      Rule rule;
+      if (stringToRule(rule, line, attributesInFile, classesInFile, dataset)) {
+        getline(rulesData, line); // Cov size
+        rule.setCoveringSize(stoi(splitString(line, " ")[4]));
+        getline(rulesData, line); // Fidelity
+        rule.setFidelity(stoi(splitString(line, " ")[3]));
+        getline(rulesData, line); // Accuracy
+        rule.setAccuracy(stod(splitString(line, " ")[3]));
+        getline(rulesData, line); // Confidence
+        rule.setConfidence(stod(splitString(line, " ")[3]));
+        rules.push_back(rule);
+      }
     }
   }
 }
@@ -480,39 +482,49 @@ tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> 
     return make_tuple(0, 0);
   }
 
-  int counter = 0;
-  auto nbRules = static_cast<int>(rules.size());
   double meanCovSize = 0;
   double meanNbAntecedents = 0;
-  stringstream stream;
-  ofstream file(filename);
 
-  for (Rule r : rules) { // each rule
-    meanCovSize += static_cast<double>(r.getCoveredSamples().size());
-    meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
-    counter++;
-    stream << "Rule " << counter << ": " << r.toString(attributeNames, classNames);
-    stream << endl;
-  }
+  if (filename.substr(filename.find_last_of(".") + 1) == "json") {
+    for (Rule r : rules) { // each rule
+      meanCovSize += static_cast<double>(r.getCoveredSamples().size());
+      meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
+    }
 
-  meanCovSize /= nbRules;
-  meanNbAntecedents /= nbRules;
-
-  if (file.is_open()) {
-    file << "Number of rules : " << nbRules
-         << ", mean sample covering number per rule : " << formattingDoubleToString(meanCovSize)
-         << ", mean number of antecedents per rule : " << formattingDoubleToString(meanNbAntecedents)
-         << endl;
-
-    file << endl
-         << stream.str();
-
-    file.close();
+    Rule::toJsonFile(filename, rules);
 
   } else {
-    throw CannotOpenFileError("Error : Couldn't open rules extraction file \"" + filename + "\".");
-  }
+    int counter = 0;
+    stringstream stream;
+    ofstream file(filename);
+    auto nbRules = static_cast<int>(rules.size());
 
+    for (Rule r : rules) { // each rule
+      meanCovSize += static_cast<double>(r.getCoveredSamples().size());
+      meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
+      counter++;
+      stream << "Rule " << counter << ": " << r.toString(attributeNames, classNames);
+      stream << endl;
+    }
+
+    meanCovSize /= nbRules;
+    meanNbAntecedents /= nbRules;
+
+    if (file.is_open()) {
+      file << "Number of rules : " << nbRules
+           << ", mean sample covering number per rule : " << formattingDoubleToString(meanCovSize)
+           << ", mean number of antecedents per rule : " << formattingDoubleToString(meanNbAntecedents)
+           << endl;
+
+      file << endl
+           << stream.str();
+
+      file.close();
+
+    } else {
+      throw CannotOpenFileError("Error : Couldn't open rules extraction file \"" + filename + "\".");
+    }
+  }
   return make_tuple(meanCovSize, meanNbAntecedents);
 }
 
