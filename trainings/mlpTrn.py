@@ -18,7 +18,7 @@ def get_and_check_parameters(init_args):
     # Add common attributes
     common_parser = get_common_parser(args, initial_parser)
 
-    # set custom formatter printing boundaries 
+    # set custom formatter printing boundaries
     formatter = lambda prog: CustomHelpFormatter(prog, width=150, max_help_position=60)
 
     # Add new attributes
@@ -163,6 +163,3 @@ def mlpTrn(args: str = ""):
 if __name__ == "__main__":
     cmdline_args = " ".join(sys.argv[1:])
     mlpTrn(cmdline_args)
-
-
-# Exemple : mlpTrn("--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles")
