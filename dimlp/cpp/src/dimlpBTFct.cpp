@@ -19,8 +19,9 @@ void showDimlpBTParams()
   std::cout << "Required parameters:" << std::endl
             << std::endl;
 
-  std::cout << "--train_data_file <training set file(path with respect to specified root folder)>" << std::endl;
-  std::cout << "--nb_attributes <number of input neurons> --nb_classes <number of output neurons>" << std::endl;
+  printOptionDescription("--train_data_file <str>", "Train data file");
+  printOptionDescription("--nb_attributes <int [1,inf[>", "Number of input neurons");
+  printOptionDescription("--nb_classes <int [2,inf[>", "Number of output neurons");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -28,37 +29,36 @@ void showDimlpBTParams()
   std::cout << "Optional parameters: " << std::endl
             << std::endl;
 
-  std::cout << "--json_config_file <JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path>" << std::endl;
-  std::cout << "--root_folder <Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>" << std::endl;
-  std::cout << "--nb_dimlp_nets <number of networks (25 by default)>" << std::endl;
-  std::cout << "--attributes_file <file of attributes>" << std::endl;
-  std::cout << "--test_data_file <testing set file>" << std::endl;
-  std::cout << "--train_class_file <file of train classes>" << std::endl;
-  std::cout << "--test_class_file <file of test classes>" << std::endl;
-  std::cout << "--console_file <file with console logs redirection>" << std::endl; // If we want to redirect console result to file
-  std::cout << "--weights_generic_outfilename <output weights generic name file(without .wts, dimlpBT by default)>" << std::endl;
-  std::cout << "--train_pred_outfile <output train prediction file (dimlpBTTrain.out by default)>" << std::endl;
-  std::cout << "--test_pred_outfile <output test prediction file (dimlpBTTest.out by default)>" << std::endl;
-  std::cout << "--stats_file <output file with train, test and validation accuracy and with the global accuracy for train and test>" << std::endl;
-  std::cout << "--H1 <number of neurons in the first hidden layer> (if not specified this number will be equal to the number of input neurons)" << std::endl;
-  std::cout << "--Hk <number of neurons in the kth hidden layer>" << std::endl;
-  std::cout << "--with_rule_extraction (RULE EXTRACTION)" << std::endl;
-  std::cout << "--global_rules_outfile <extraction ruleFile>" << std::endl; // If we want to extract rules in a rulesFile instead of console
-  std::cout << "--learning_rate <back-propagation learning parameter (Eta, 0.1 by default)>" << std::endl;
-  std::cout << "--momentum <back-propagation momentum parameter (Mu, 0.6 by default)>" << std::endl;
-  std::cout << "--flat <back-propagation flat spot elimination parameter (Flat, 0.01 by default)>" << std::endl;
-  std::cout << "--nb_quant_levels <number of stairs in staircase activation function (50 by default)>" << std::endl;
-  std::cout << "--error_thresh <error threshold (None by default)>" << std::endl;
-  std::cout << "--acc_thresh <accuracy threshold (None by default)>" << std::endl;
-  std::cout << "--abs_error_thresh <absolute difference error threshold>" << std::endl;
-  std::cout << "--nb_epochs <number of epochs (0 by default)>" << std::endl;
-  std::cout << "--nb_epochs_error <number of epochs to show error (1500 by default)>" << std::endl;
-  std::cout << "--nb_ex_per_net <number of examples for one single network (all examples by default (value 0, it is recommended not to change this value))>" << std::endl;
-  std::cout << "--normalization_file <file containing the mean and std of some attributes. Used to denormalize the rules if specified>" << std::endl;
-  std::cout << "--mus <list of float in the form [1.1,3.5] without spaces(!) corresponding to mean or median of each attribute index to denormalize in the rules>" << std::endl;
-  std::cout << "--sigmas <list of float in the form [4.5,12] without spaces(!) corresponding to standard deviation of each attribute index to denormalize in the rules>" << std::endl;
-  std::cout << "--normalization_indices <list of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)>" << std::endl;
-  std::cout << "--seed <seed (0=random, default)>" << std::endl;
+  printOptionDescription("--json_config_file <str>", "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path");
+  printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
+  printOptionDescription("--nb_dimlp_nets <int [1,inf[>", "Number of networks (default: 25)");
+  printOptionDescription("--attributes_file <str>", "File of attributes");
+  printOptionDescription("--test_data_file <str>", "Test data file");
+  printOptionDescription("--train_class_file <str>", "Train true class file");
+  printOptionDescription("--test_class_file <str>", "Test true class file");
+  printOptionDescription("--console_file <str>", "File with console logs redirection");
+  printOptionDescription("--weights_generic_outfilename <str>", "Output weights generic name file without extension .wts (default: dimlpBT)");
+  printOptionDescription("--train_pred_outfile <str>", "Output train prediction file name (default: dimlpBTTrain.out)");
+  printOptionDescription("--test_pred_outfile <str>", "Output test prediction file name (default: dimlpBTTest.out)");
+  printOptionDescription("--stats_file <str>", "Output file name with train, test and validation accuracy and with the global train and test accuracy");
+  printOptionDescription("--H1 <int k*nb_attributes, k in [1,inf[>", "Number of neurons in the first hidden layer (default: nb_attributes)");
+  printOptionDescription("--Hk <int [1,inf[>", "Number of neurons in the kth hidden layer");
+  printOptionDescription("--with_rule_extraction <bool>", "Whether to extract rules with dimlpBT algorithm");
+  printOptionDescription("--global_rules_outfile <str>", "Rules output file");
+  printOptionDescription("--momentum <float [0,inf[>", "Back-propagation momentum parameter (default: 0.6)");
+  printOptionDescription("--flat <float [0,inf[>", "Back-propagation flat spot elimination parameter (default: 0.01)");
+  printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in staircase activation function (default: 50)");
+  printOptionDescription("--error_thresh <float [0,inf[>", "Error threshold to stop training");
+  printOptionDescription("--acc_thresh <float ]0,1]>", "Accuracy threshold to stop training");
+  printOptionDescription("--abs_error_thresh <float [0,inf[>", "Absolute difference error threshold, 0 if not using this stopping criteria (default: 0)");
+  printOptionDescription("--nb_epochs <int [1,inf[>", "Number of epochs (default: 1500)");
+  printOptionDescription("--nb_epochs_error <int [1,inf[>", "Number of epochs to show error (default: 10)");
+  printOptionDescription("--nb_ex_per_net <int [1,inf[>", "Number of examples for one single network, 0 for all examples, it is not recommended to change this value (default: 0)");
+  printOptionDescription("--normalization_file <str>", "File containing the mean and std of some attributes. Used to denormalize the rules if specified");
+  printOptionDescription("--mus <list<float ]inf,inf[>>", "Mean or median of each attribute index to denormalize in the rules");
+  printOptionDescription("--sigmas <list<float ]inf,inf[>>", "Standard deviation of each attribute index to denormalize in the rules");
+  printOptionDescription("--normalization_indices <list<int [0,nb_attributes-1]>>", "Attribute indices to denormalize in the rules, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1])");
+  printOptionDescription("--seed <int [0,inf[>", "Seed, 0=random (default: 0)");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
