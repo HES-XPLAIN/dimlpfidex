@@ -4,8 +4,8 @@ from sklearn import svm
 from sklearn import metrics
 import numpy as np
 
-from trainings.trnFun import get_data, get_data_class, check_int, check_strictly_positive, check_positive, check_bool, output_pred, compute_first_hidden_layer, output_stats, check_parameters_common, check_parameters_dimlp_layer, compute_roc, validate_string_param
-from trainings.parameters import get_common_parser, get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, bool_type, list_type, enum_type, print_parameters
+from trainings.trnFun import get_data, get_data_class, output_pred, compute_first_hidden_layer, output_stats, compute_roc
+from trainings.parameters import get_common_parser, get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, bool_type, dict_type, enum_type, print_parameters
 
 def get_and_check_parameters(init_args):
 
@@ -29,12 +29,12 @@ def get_and_check_parameters(init_args):
     parser.add_argument("--C", type=lambda x: float_type(x, min=0, min_inclusive=False), metavar="<float ]0,inf[>", help="Regularization", default=1.0, action=TaggableAction, tag="SVM")
     parser.add_argument("--kernel", choices=["linear", "poly", "rbf", "sigmoid"], metavar="<{linear, poly, rbf, sigmoid}>", help="Kernel", default="rbf", action=TaggableAction, tag="SVM")
     parser.add_argument("--degree", type=lambda x: int_type(x, min=0), metavar="<int [0, inf[>", help="Polynomial degree", default=3, action=TaggableAction, tag="SVM")
-    parser.add_argument("--gamma", type=lambda x: enum_type(x, "scale", "auto", int_type=dict(func=float_type, min=0)), metavar="<{scale, auto, float [0,inf[}>", help="Gamma value", default="scale", action=TaggableAction, tag="SVM")
+    parser.add_argument("--gamma", type=lambda x: enum_type(x, "scale", "auto", _=dict(func=float_type, min=0)), metavar="<{scale, auto, float [0,inf[}>", help="Gamma value", default="scale", action=TaggableAction, tag="SVM")
     parser.add_argument("--coef0", type=float_type, metavar="<float>", help="Term in kernel function", default=0.0, action=TaggableAction, tag="SVM")
     parser.add_argument("--shrinking", type=bool_type, metavar="<bool>", help="Whether to use shrinking heuristic", default=True, action=TaggableAction, tag="SVM")
     parser.add_argument("--tol", type=lambda x: float_type(x, min=0, min_inclusive=False), metavar="<float ]0,inf[>", help="Tolerance for stopping criterion", default=0.001, action=TaggableAction, tag="SVM")
     parser.add_argument("--cache_size", type=lambda x: float_type(x, min=0, min_inclusive=False), metavar="<float ]0,inf[>", help="Kernel cache size(MB)", default=200, action=TaggableAction, tag="SVM")
-    #parser.add_argument("--class_weight", type=lambda x: enum_type(x, "balanced", dict), metavar="<{balanced, dict}>", help="Class balance, for exemple with a dictionnary and 2 classes : {0:1.2, 1:3.5}", action=TaggableAction, tag="SVM")
+    parser.add_argument("--class_weight", type=lambda x: enum_type(x, "balanced", _=dict(func=dict_type)), metavar="<{balanced, dict}>", help="Class balance, for exemple with a dictionnary and 2 classes : {0:1.2, 1:3.5}", action=TaggableAction, tag="SVM")
     parser.add_argument("--verbose", type=bool_type, metavar="<bool>", help="Whether to enable verbose output", default=False, action=TaggableAction, tag="SVM")
     parser.add_argument("--max_iterations", type=lambda x: int_type(x, min=1, allow_value=-1), metavar="<int [1, inf[>", help="Maximal number of iterations, -1 for no limit", default=-1, action=TaggableAction, tag="SVM")
     parser.add_argument("--decision_function_shape", choices=["ovo", "ovr"], metavar="<{ovo(one-vs-one), ovr(one-vs-rest)}>", help="Decision function shape", default="ovr", action=TaggableAction, tag="SVM")
@@ -54,7 +54,6 @@ def svmTrn(args: str = ""):
         else:
             split_args= ["-h"]
         args = get_and_check_parameters(split_args)
-        print_parameters(args)
         hiknot = 5
         console_file = args.console_file
 
@@ -67,9 +66,7 @@ def svmTrn(args: str = ""):
             except (IOError):
                 raise ValueError(f"Error : Couldn't open file {console_file}.")
 
-        class_weight_var = None
-        if class_weight_var is not None and class_weight_var != "balanced" and not isinstance(class_weight_var, dict):
-            raise ValueError('Error, parameter class_weight is not "balanced", a dictionary or None.')
+        print_parameters(args)
 
         # Get data
         train_data, train_class = get_data(args.train_data_file, args.nb_attributes, args.nb_classes)
@@ -102,7 +99,7 @@ def svmTrn(args: str = ""):
 
         # Train svm
         model = svm.SVC(C = args.C, kernel = args.kernel, degree = args.degree, gamma = args.gamma, coef0 = args.coef0, shrinking = args.shrinking,
-                        tol = args.tol, cache_size = args.cache_size, class_weight = class_weight_var, verbose = args.verbose, max_iter = args.max_iterations,
+                        tol = args.tol, cache_size = args.cache_size, class_weight = args.class_weight, verbose = args.verbose, max_iter = args.max_iterations,
                         decision_function_shape = args.decision_function_shape, break_ties = args.break_ties, probability=True) # Create svm Classifier
 
         model.fit(train_data_h1, train_class)   # Train the model using the training sets
