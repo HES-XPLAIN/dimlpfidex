@@ -169,7 +169,8 @@ void testJsonParser() {
       MAX_FAILED_ATTEMPTS, 
       NB_THREADS, 
       POSITIVE_CLASS_INDEX,
-      SEED, DECISION_THRESHOLD, 
+      SEED, 
+      DECISION_THRESHOLD, 
       DROPOUT_HYP, 
       DROPOUT_DIM, 
       MIN_FIDELITY,
@@ -177,5 +178,5 @@ void testJsonParser() {
   auto pJson = Parameters("tests/templates/default_config.json", validParams);
   auto pArgs = Parameters(args, validParams);
 
-  testAssert("Parameters: JSON & user args are equal", buffer1.str().compare(buffer2.str()) == 0);
+  testAssert("Parameter JSON & user args are equal", buffer1.str().compare(buffer2.str()) == 0);
 }
