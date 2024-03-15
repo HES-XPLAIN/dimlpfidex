@@ -104,7 +104,7 @@ int fidex(const string &command) {
     }
 
     size_t nbParam = commandList.size();
-    if (nbParam < 3) {
+    if (nbParam < 2) {
       showFidexParams();
       return 0;
     }
@@ -118,13 +118,13 @@ int fidex(const string &command) {
                                               MAX_FAILED_ATTEMPTS, MIN_FIDELITY, LOWEST_MIN_FIDELITY, DROPOUT_DIM, DROPOUT_HYP,
                                               NB_QUANT_LEVELS, DECISION_THRESHOLD, POSITIVE_CLASS_INDEX, NORMALIZATION_FILE, MUS,
                                               SIGMAS, NORMALIZATION_INDICES, NB_DIMLP_NETS, SEED};
-    if (commandList[2].compare("--json_config_file") == 0) {
-      if (commandList.size() < 4) {
+    if (commandList[1].compare("--json_config_file") == 0) {
+      if (commandList.size() < 3) {
         throw CommandArgumentException("JSON config file name/path is missing");
       }
 
       try {
-        params = std::unique_ptr<Parameters>(new Parameters(commandList[3], validParams));
+        params = std::unique_ptr<Parameters>(new Parameters(commandList[2], validParams));
       } catch (const std::out_of_range &) {
         throw CommandArgumentException("JSON config file name/path is invalid");
       }
