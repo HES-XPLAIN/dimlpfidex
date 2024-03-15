@@ -64,7 +64,6 @@ def mlpTrn(args: str = ""):
         else:
             split_args= ["-h"]
         args = get_and_check_parameters(split_args)
-        print_parameters(args)
         hiknot = 5
         console_file = args.console_file
 
@@ -76,6 +75,8 @@ def mlpTrn(args: str = ""):
                 raise ValueError(f"Error : File {console_file} not found.")
             except (IOError):
                 raise ValueError(f"Error : Couldn't open file {console_file}.")
+
+        print_parameters(args)
 
         # Get data
         train_data, train_class = get_data(args.train_data_file, args.nb_attributes, args.nb_classes)

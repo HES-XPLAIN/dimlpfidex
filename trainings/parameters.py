@@ -3,6 +3,7 @@ import json
 import os
 import sys
 import re
+import ast
 
 def print_parameters(args):
     print("Parameters list:")
@@ -64,13 +65,19 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
             super(CustomHelpFormatter, self).add_arguments(tag_actions)
             self.add_text("")
             self.add_text("----------------------------")
-            self.add_text("Execution example :")
+            self.add_text("Execution example :", raw=True)
             if tag == "MLP":
-                self.add_text("mlpTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile mlp/weights.wts --stats_file mlp/stats.txt --train_pred_outfile mlp/predTrain.out --test_pred_outfile mlp/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')")
+                self.add_text("mlpTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile mlp/weights.wts --stats_file mlp/stats.txt --train_pred_outfile mlp/predTrain.out --test_pred_outfile mlp/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')", raw=True)
             elif tag == "SVM":
-                self.add_text("svmTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile svm/weights.wts --stats_file svm/stats.txt --train_pred_outfile svm/predTrain.out --test_pred_outfile svm/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')")
-        self.add_text("---------------------------------------------------------------------")
+                self.add_text("svmTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile svm/weights.wts --stats_file svm/stats.txt --train_pred_outfile svm/predTrain.out --test_pred_outfile svm/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')", raw=True)
+        self.add_text("---------------------------------------------------------------------", raw=True)
 
+    # To display execution examples on one line
+    def add_text(self, text, raw=False):
+        if raw:
+            self._add_item(lambda x: x + '\n\n', [text])
+        else:
+            super(CustomHelpFormatter, self).add_text(text)
 
     # Show default value in help if necessary
     def _get_help_string(self, action):
@@ -347,6 +354,27 @@ def bool_type(value):
     else:
         raise argparse.ArgumentTypeError(f"{value} is not a boolean.")
 
+def dict_type(value:str):
+    """
+    Validates and converts a string representation of a dictionary into a dictionary.
+
+    :param value_str: The string representation of a dictionary.
+    :return: The dictionary represented by the input string.
+    :raises argparse.ArgumentTypeError: If the input string does not represent a valid dictionary.
+    """
+    try:
+        # Ensure the result is a dictionary
+        result = ast.literal_eval(value)
+        if not isinstance(result, dict):
+            raise ValueError("Input is not a valid dictionary. Use format {0:1.5,1:2}.")
+
+        return result
+    except (ValueError, SyntaxError) as e:
+        # Raise a specific error if conversion fails
+        raise argparse.ArgumentTypeError(f"Could not convert '{value}' to a dictionary. Use format {{0:1.5,1:2}}. Error: {e}")
+
+
+
 def list_type(str_list:str, valid_type:dict):
     """
     Converts a string representation of a list into a list of values of a specified type,
@@ -377,8 +405,9 @@ def list_type(str_list:str, valid_type:dict):
     res_lst = []
     for v in res_temp_lst:
         res_lst.append(type_func(v, **constraints))
-    print(res_lst)
     return res_lst
+
+
 
 def enum_type(value:str, *valid_strings, **valid_types):
     """
@@ -399,7 +428,7 @@ def enum_type(value:str, *valid_strings, **valid_types):
         return value
     # Try each type
     errors = []
-    for type_key, type_info in valid_types.items():
+    for _, type_info in valid_types.items():
         type_func = type_info['func']  # Get the type conversion function
         constraints = {k: v for k, v in type_info.items() if k != 'func'}  # Get additional arguments, excluding the function itself
         try:
@@ -410,7 +439,7 @@ def enum_type(value:str, *valid_strings, **valid_types):
             continue  # Try next type
 
     # Error if the value belongs to no type
-    valid_types_str = '\n'.join([f"Type {type_info['func'].__name__}, error : {errors[idx]}" for idx, (type_key, type_info) in enumerate(valid_types.items())])
+    valid_types_str = '\n'.join([f"Type {type_info['func'].__name__}, error : {errors[idx]}" for idx, (_, type_info) in enumerate(valid_types.items())])
     if len(valid_strings)==0:
         raise argparse.ArgumentTypeError(f"Value must match type constraints:\n {valid_types_str}")
     if len(valid_strings)==1:

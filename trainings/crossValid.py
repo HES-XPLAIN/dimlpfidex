@@ -1304,15 +1304,15 @@ def crossValid(*args, **kwargs):
                         return_roc_var = False
                         if with_roc:
                             return_roc_var = True
-                        res = svmTrn(train_data_file=folder_path_from_root + separator + "train.txt",train_class_file=folder_path_from_root + separator + "trainTarget.txt",
-                                     test_data_file=folder_path_from_root + separator + "test.txt",test_class_file=folder_path_from_root + separator + "testTarget.txt",
-                                     weights_outfile = folder_path_from_root + separator + "weights.wts", stats_file = folder_path_from_root + separator + "stats.txt", nb_attributes = nb_attributes,
-                                     nb_classes = nb_classes, console_file = crossval_folder_temp + separator + "consoleTemp.txt", train_pred_outfile = folder_path_from_root + separator + "train.out",
-                                     test_pred_outfile = folder_path_from_root + separator + "test.out", positive_class_index=positive_class_index,
-                                     output_roc=folder_path_from_root + separator + "ROC_curve", root_folder = root_folder, nb_quant_levels = nb_quant_levels,
-                                     K = svm_k, C = c_var, kernel = kernel_var, degree = degree_var, gamma = gamma_var, coef0 = coef0_var, shrinking = shrinking_var,
-                                     tol = svm_tol_var, cache_size = cache_size_var, class_weight = svm_class_weight_var, max_iterations = svm_max_iterations_var,
-                                     decision_function_shape = decision_function_shape_var, break_ties = break_ties_var, return_roc = return_roc_var)
+                        res = svmTrn(f"--train_data_file {folder_path_from_root + separator + 'train.txt'} --train_class_file {folder_path_from_root + separator + 'trainTarget.txt'} "
+                                     f"--test_data_file {folder_path_from_root + separator + 'test.txt'} --test_class_file {folder_path_from_root + separator + 'testTarget.txt'} "
+                                     f"--weights_outfile {folder_path_from_root + separator + 'weights.wts'} --stats_file {folder_path_from_root + separator + 'stats.txt'} --nb_attributes {nb_attributes} "
+                                     f"--nb_classes {nb_classes} --console_file {crossval_folder_temp + separator + 'consoleTemp.txt'} --train_pred_outfile {folder_path_from_root + separator + 'train.out'} "
+                                     f"--test_pred_outfile {folder_path_from_root + separator + 'test.out'} --positive_class_index {positive_class_index} "
+                                     f"--output_roc {folder_path_from_root + separator + 'ROC_curve'} --root_folder {root_folder} --nb_quant_levels {nb_quant_levels} "
+                                     f"--K {svm_k} --C {c_var} --kernel {kernel_var} --degree {degree_var} --gamma {gamma_var} --coef0 {coef0_var} --shrinking {shrinking_var} "
+                                     f"--tol {svm_tol_var} --cache_size {cache_size_var} --class_weight {svm_class_weight_var} --max_iterations {svm_max_iterations_var} "
+                                     f"--decision_function_shape {decision_function_shape_var} --break_ties {break_ties_var} --return_roc {return_roc_var}")
 
                         if (res == -1):
                             raise ValueError('Error during training with SVM.')
@@ -1327,17 +1327,17 @@ def crossValid(*args, **kwargs):
                         seed_var = seed
                         if seed == 0:
                             seed_var = None
-                        res = mlpTrn(train_data_file=folder_path_from_root + separator + "train.txt",train_class_file=folder_path_from_root + separator + "trainTarget.txt",
-                                     test_data_file=folder_path_from_root + separator + "test.txt",test_class_file=folder_path_from_root + separator + "testTarget.txt",
-                                     weights_outfile = folder_path_from_root + separator + "weights.wts", stats_file = folder_path_from_root + separator + "stats.txt", nb_attributes = nb_attributes,
-                                     nb_classes = nb_classes, console_file = crossval_folder_temp + separator + "consoleTemp.txt", train_pred_outfile = folder_path_from_root + separator + "train.out",
-                                     test_pred_outfile = folder_path_from_root + separator + "test.out", root_folder = root_folder, nb_quant_levels = nb_quant_levels,
-                                     K = mlp_k, hidden_layer_sizes = hidden_layer_sizes_var, activation = activation_var, solver = solver_var, alpha = alpha_var,
-                                     batch_size = batch_size_var, learning_rate = mlp_learning_rate_var, learning_rate_init = learning_rate_init_var, power_t = power_t_var,
-                                     max_iterations = mlp_max_iterations_var, shuffle = shuffle_var, tol = mlp_tol_var, warm_start = mlp_warm_start_var, momentum = mlp_momentum_var,
-                                     nesterovs_momentum = nesterovs_momentum_var, early_stopping = early_stopping_var, validation_fraction = mlp_validation_fraction_var,
-                                     beta_1 = beta_1_var, beta_2 = beta_2_var, epsilon = epsilon_var, n_iter_no_change = mlp_n_iter_no_change_var, max_fun = max_fun_var,
-                                     seed = seed_var)
+                        res = mlpTrn(f"--train_data_file {folder_path_from_root + separator + 'train.txt'} --train_class_file {folder_path_from_root + separator + 'trainTarget.txt'} "
+                                     f"--test_data_file {folder_path_from_root + separator + 'test.txt'} --test_class_file {folder_path_from_root + separator + 'testTarget.txt'} "
+                                     f"--weights_outfile {folder_path_from_root + separator + 'weights.wts'} --stats_file {folder_path_from_root + separator + 'stats.txt'} --nb_attributes {nb_attributes} "
+                                     f"--nb_classes {nb_classes} --console_file {crossval_folder_temp + separator + 'consoleTemp.txt'} --train_pred_outfile {folder_path_from_root + separator + 'train.out'} "
+                                     f"--test_pred_outfile {folder_path_from_root + separator + 'test.out'} --root_folder {root_folder} --nb_quant_levels {nb_quant_levels} "
+                                     f"--K {mlp_k} --hidden_layer_sizes {hidden_layer_sizes_var} --activation {activation_var} --solver {solver_var} --alpha {alpha_var} "
+                                     f"--batch_size {batch_size_var} --learning_rate {mlp_learning_rate_var} --learning_rate_init {learning_rate_init_var} --power_t {power_t_var} "
+                                     f"--max_iterations {mlp_max_iterations_var} --shuffle {shuffle_var} --tol {mlp_tol_var} --warm_start {mlp_warm_start_var} --momentum {mlp_momentum_var} "
+                                     f"--nesterovs_momentum {nesterovs_momentum_var} --early_stopping {early_stopping_var} --validation_fraction {mlp_validation_fraction_var} "
+                                     f"--beta_1 {beta_1_var} --beta_2 {beta_2_var} --epsilon {epsilon_var} --n_iter_no_change {mlp_n_iter_no_change_var} --max_fun {max_fun_var} "
+                                     f"--seed {seed_var}")
 
                         if (res == -1):
                             raise ValueError('Error during training with MLP.')
