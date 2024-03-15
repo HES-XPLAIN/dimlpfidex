@@ -6,7 +6,7 @@
     "test_data_file": "test.txt",
     "test_pred_file": "test.out",
     "test_class_file": "test_true_classes.txt",
-    "rules_outfile": "fidex_rules.txt",
+    "rules_outfile": "fidex_rules.json",
     "attributes_file": "attributes.txt",
     "weights_file": "weights.wts",
     "console_file": "out/fidex_console.out",

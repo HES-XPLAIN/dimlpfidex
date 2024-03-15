@@ -3,7 +3,7 @@
     "train_data_file": "train.txt",
     "train_pred_file": "train.out",
     "train_class_file": "train_true_classes.txt",
-    "global_rules_outfile": "new_rules.txt",
+    "global_rules_outfile": "fidexglorules_rules.json",
     "attributes_file": "attributes.txt",
     "weights_file": "weights.wts",
     "console_file": "out/fidexGloRules_console.out",
