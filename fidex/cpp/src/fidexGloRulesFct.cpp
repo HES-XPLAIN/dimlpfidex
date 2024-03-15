@@ -461,20 +461,10 @@ int fidexGloRules(const string &command) {
       commandList.push_back(s);
     }
 
-  for (string str: commandList) {
-    cout << str << " ";
-  }
-  cout << endl;
-  cout << commandList.size() << endl;
-
     size_t nbParam = commandList.size();
-<<<<<<< HEAD
     if (nbParam < 2 || commandList[1] == "-h" || commandList[1] == "--help") {
-=======
-    if (nbParam < 3) {
->>>>>>> 7f45c3d (Added JSON I/O for fidexGloRules and JSON specific output for Fidex)
       showRulesParams();
-      return -1;
+      return 0;
     }
 
     // Import parameters
@@ -484,14 +474,14 @@ int fidexGloRules(const string &command) {
                                               MAX_ITERATIONS, MIN_COVERING, DROPOUT_DIM, DROPOUT_HYP, MAX_FAILED_ATTEMPTS, NB_QUANT_LEVELS,
                                               DECISION_THRESHOLD, POSITIVE_CLASS_INDEX, NORMALIZATION_FILE, MUS, SIGMAS, NORMALIZATION_INDICES,
                                               NB_THREADS, COVERING_STRATEGY, MIN_FIDELITY, LOWEST_MIN_FIDELITY, NB_DIMLP_NETS, SEED};
-    if (commandList[2].compare("--json_config_file") == 0) {
-      if (commandList.size() < 4) {
+    if (commandList[1].compare("--json_config_file") == 0) {
+      if (commandList.size() < 3) {
         throw CommandArgumentException("JSON config file name/path is missing");
       } else if (commandList.size() > 3) {
         throw CommandArgumentException("Option " + commandList[1] + " has to be the only option in the command if specified.");
       }
       try {
-        params = std::unique_ptr<Parameters>(new Parameters(commandList[3], validParams));
+        params = std::unique_ptr<Parameters>(new Parameters(commandList[2], validParams));
       } catch (const std::out_of_range &) {
         throw CommandArgumentException("JSON config file name/path is invalid");
       }
