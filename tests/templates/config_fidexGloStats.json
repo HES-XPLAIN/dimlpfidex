@@ -3,13 +3,13 @@
     "test_data_file": "test.txt",
     "test_pred_file": "test.out",
     "test_class_file": "test_true_classes.txt",
-    "global_rules_file": "fidexglorules_rules.json",
+    "global_rules_file": "out/fidexglorules_rules.json",
     "attributes_file": "attributes.txt",
     "console_file": "out/fidexGloStats_console.out",
     "nb_attributes": 31,
     "nb_classes": 7,
     "stats_file": "stats.txt",
-    "global_rules_outfile": "new_rules_with_test_stats.txt",
+    "global_rules_outfile": "out/new_rules_with_test_stats.txt",
     "positive_class_index": 1,
     "decision_threshold": -1.0
 }
