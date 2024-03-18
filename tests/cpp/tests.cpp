@@ -1,8 +1,8 @@
 #include "headers/tests.hpp"
 
 void runDimlpTestsSuite() {
-  testDensCls();
   testDimlpBT();
+  testDensCls();
   testDimlpCls();
   testDimlpPred();
   testDimlpRul();
