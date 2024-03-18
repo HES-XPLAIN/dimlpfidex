@@ -7,7 +7,7 @@
     "console_file": "out/dimlpRul_console.out",
     "weights_file": "weights.wts",
     "attributes_file": "attributes.txt",
-    "global_rules_outfile": "dimlp.rls",
+    "global_rules_outfile": "out/dimlp.rls",
     "stats_file": "stats.txt",
     "nb_attributes": 31,
     "nb_classes": 7,
