@@ -8,9 +8,13 @@ from trainings.trnFun import get_data, get_data_class, output_pred, compute_firs
 from trainings.parameters import get_common_parser, get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, bool_type, dict_type, enum_type, print_parameters
 
 def get_and_check_parameters(init_args):
+    # Remove None values and his -- attribute
+    cleaned_args = [arg for i, arg in enumerate(init_args[:-1]) if ((not arg.startswith("--") or init_args[i+1] not in ["None", "none", None]) and arg not in ["None", "none", None])]
+    if init_args and init_args[-1] not in ["None", "none", None]:
+        cleaned_args.append(init_args[-1])
 
     # Get initial attributes with root_folder and json file information
-    args, initial_parser = get_initial_parser(init_args)
+    args, initial_parser = get_initial_parser(cleaned_args)
 
     # Add common attributes
     common_parser = get_common_parser(args, initial_parser)
@@ -40,7 +44,7 @@ def get_and_check_parameters(init_args):
     parser.add_argument("--decision_function_shape", choices=["ovo", "ovr"], metavar="<{ovo(one-vs-one), ovr(one-vs-rest)}>", help="Decision function shape", default="ovr", action=TaggableAction, tag="SVM")
     parser.add_argument("--break_ties", type=bool_type, metavar="<bool>", help="Whether to break tie decision for ovr with more than 2 classes", default=False, action=TaggableAction, tag="SVM")
 
-    return get_args(args, init_args, parser) # Return attributes
+    return get_args(args, cleaned_args, parser) # Return attributes
 
 def svmTrn(args: str = ""):
     try:
