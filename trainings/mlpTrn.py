@@ -11,9 +11,14 @@ from trainings.parameters import get_common_parser, get_initial_parser, get_args
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
 def get_and_check_parameters(init_args):
+    # Remove None values and his -- attribute
+    cleaned_args = [arg for i, arg in enumerate(init_args[:-1]) if ((not arg.startswith("--") or init_args[i+1] not in ["None", "none", None]) and arg not in ["None", "none", None])]
+    if init_args and init_args[-1] not in ["None", "none", None]:
+        cleaned_args.append(init_args[-1])
+
 
     # Get initial attributes with root_folder and json file information
-    args, initial_parser = get_initial_parser(init_args)
+    args, initial_parser = get_initial_parser(cleaned_args)
 
     # Add common attributes
     common_parser = get_common_parser(args, initial_parser)
@@ -36,7 +41,7 @@ def get_and_check_parameters(init_args):
     parser.add_argument("--power_t", type=lambda x: float_type(x, min=0), metavar="<float [0,inf[>", help="Exponent for inverse scaling learning rate for sgd", default=0.5, action=TaggableAction, tag="MLP")
     parser.add_argument("--max_iterations", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Maximum number of iterations", default=200, action=TaggableAction, tag="MLP")
     parser.add_argument("--shuffle", type=bool_type, metavar="<bool>", help="Whether to shuffle samples in each iteration for sgd and adam", default=True, action=TaggableAction, tag="MLP")
-    parser.add_argument("--seed", type=lambda x: int_type(x, min=0, allow_none=True), metavar="<{int [0,inf[, None}>", help="Random seed for sgd and adam", default=None, action=TaggableAction, tag="MLP")
+    parser.add_argument("--seed", type=lambda x: int_type(x, min=0), metavar="<{int [0,inf[}>", help="Random seed for sgd and adam", action=TaggableAction, tag="MLP")
     parser.add_argument("--tol", type=lambda x: float_type(x, min=0, min_inclusive=False), metavar="<float ]0,inf[>", help="Tolerance for optimization", default=0.0001, action=TaggableAction, tag="MLP")
     parser.add_argument("--verbose", type=bool_type, metavar="<bool>", help="Enable verbose output", default=False, action=TaggableAction, tag="MLP")
     parser.add_argument("--warm_start", type=bool_type, metavar="<bool>", help="Whether to reuse previous solution to fit initialization", default=False, action=TaggableAction, tag="MLP")
@@ -49,8 +54,7 @@ def get_and_check_parameters(init_args):
     parser.add_argument("--epsilon", type=lambda x: float_type(x, min=0, min_inclusive=False), metavar="<float ]0,inf[>", help="Value for numerical stability in adam", default=0.00000001, action=TaggableAction, tag="MLP")
     parser.add_argument("--n_iter_no_change", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Maximum number of epochs to not meet tol improvement for sgd and adam", default=10, action=TaggableAction, tag="MLP")
     parser.add_argument("--max_fun", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Maximum number of loss function calls for lbfgs", default=15000, action=TaggableAction, tag="MLP")
-
-    return get_args(args, init_args, parser) # Return attributes
+    return get_args(args, cleaned_args, parser) # Return attributes
 
 def mlpTrn(args: str = ""):
     try:

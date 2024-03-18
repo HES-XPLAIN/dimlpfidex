@@ -70,6 +70,8 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
                 self.add_text("mlpTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile mlp/weights.wts --stats_file mlp/stats.txt --train_pred_outfile mlp/predTrain.out --test_pred_outfile mlp/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')", raw=True)
             elif tag == "SVM":
                 self.add_text("svmTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile svm/weights.wts --stats_file svm/stats.txt --train_pred_outfile svm/predTrain.out --test_pred_outfile svm/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')", raw=True)
+            elif tag == "RF":
+                self.add_text("randForestsTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --stats_file rf/stats.txt --train_pred_outfile rf/predTrain.out --test_pred_outfile rf/predTest.out --rules_outfile rf/RF_rules.rls --root_folder dimlp/datafiles --nb_attributes 16 --nb_classes 2')", raw=True)
         self.add_text("---------------------------------------------------------------------", raw=True)
 
     # To display execution examples on one line
@@ -279,26 +281,20 @@ def json_to_args(jsonfile: str):
 
     return args
 
-def int_type(value:str, min=float('-inf'), max=float('inf'), allow_none=False, allow_value=None):
+def int_type(value:str, min=float('-inf'), max=float('inf'), allow_value=None):
     """
     Validates and converts a string to an integer, with optional range constraints and the option to allow None as a value.
 
     :param value: The input string to convert.
     :param min: The minimum acceptable value.
     :param max: The maximum acceptable value.
-    :param allow_none: Whether to allow 'None' as a valid input.
     :return: The converted integer.
     :raises argparse.ArgumentTypeError: If the input is invalid or out of the specified range.
     """
-    if allow_none and value == "None":
-        return None
     try:
         ivalue = int(value)
     except ValueError:
-        if allow_none:
-            raise argparse.ArgumentTypeError(f"{value} is not an integer or None")
         raise argparse.ArgumentTypeError(f"{value} is not an integer")
-    ivalue = int(value)
     if ivalue < min or ivalue > max:
         if allow_value:
             if ivalue == allow_value:
@@ -325,7 +321,6 @@ def float_type(value:str, min=float('-inf'), max=float('inf'), min_inclusive=Tru
         fvalue = float(value)
     except ValueError:
         raise argparse.ArgumentTypeError(f"{value} is not an float")
-    fvalue = float(value)
     if min_inclusive and max_inclusive and (fvalue < min or fvalue > max):
         raise argparse.ArgumentTypeError(f"{fvalue} must be between [{min},{max}]")
     if min_inclusive and not max_inclusive and (fvalue < min or fvalue >= max):
@@ -435,15 +430,15 @@ def enum_type(value:str, *valid_strings, **valid_types):
             result = type_func(value, **constraints)  # Call the function with constraints
             return result
         except (ValueError, argparse.ArgumentTypeError) as e:
-            errors.append(e)
+            errors.append(str(e))
             continue  # Try next type
 
     # Error if the value belongs to no type
     valid_types_str = '\n'.join([f"Type {type_info['func'].__name__}, error : {errors[idx]}" for idx, (_, type_info) in enumerate(valid_types.items())])
     if len(valid_strings)==0:
-        raise argparse.ArgumentTypeError(f"Value must match type constraints:\n {valid_types_str}")
+        raise argparse.ArgumentTypeError(f"Value must match one of the type constraints:\n{valid_types_str}")
     if len(valid_strings)==1:
-        raise argparse.ArgumentTypeError(f"Value must be '{valid_strings[0]}' or match one of the types:\n {valid_types_str}")
+        raise argparse.ArgumentTypeError(f"Value must be '{valid_strings[0]}' or match one of the types:\n{valid_types_str}")
     else:
         raise argparse.ArgumentTypeError('Value must be one of {0} or match one of the types:\n{1}'.format(', '.join([f"'{v}'" for v in valid_strings]), valid_types_str))
 
