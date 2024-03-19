@@ -10,10 +10,10 @@ std::string getInvalidDataTypeExceptionMessage(ParameterCode id, const string &w
 std::string getAlreadySetArgumentExceptionMessage(ParameterCode id, const string &value);
 std::string getArgumentNotFoundExceptionMessage(ParameterCode id);
 
-void testSetter();
-void testDefaultSetter();
-void testGetter();
-void testArgsParser();
-void testJsonParser();
+uint testSetter();
+uint testDefaultSetter();
+uint testGetter();
+uint testArgsParser();
+uint testJsonParser();
 
 #endif // PARAMETERS_TESTS_H

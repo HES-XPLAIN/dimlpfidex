@@ -9,11 +9,11 @@
 #include "../../../dimlp/cpp/src/dimlpTrnFct.h"
 #include "utils.hpp"
 
-void testDensCls();
-void testDimlpBT();
-void testDimlpCls();
-void testDimlpPred();
-void testDimlpRul();
-void testDimlpTrn();
+uint testDensCls();
+uint testDimlpBT();
+uint testDimlpCls();
+uint testDimlpPred();
+uint testDimlpRul();
+uint testDimlpTrn();
 
 #endif // DIMLP_TESTS_H
