@@ -74,6 +74,10 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
                 self.add_text("randForestsTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --stats_file rf/stats.txt --train_pred_outfile rf/predTrain.out --test_pred_outfile rf/predTest.out --rules_outfile rf/RF_rules.rls --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')", raw=True)
             elif tag == "GB":
                 self.add_text("gradBoostTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --stats_file gb/stats.txt --train_pred_outfile gb/predTrain.out --test_pred_outfile gb/predTest.out --rules_outfile gb/RF_rules.rls --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')", raw=True)
+            elif tag == "ROC":
+                self.add_text("computeRocCurve('--test_class_file dataclass2Test.txt --test_pred_file predTest.out --positive_class_index 1 --output_roc roc_curve.png --stats_file stats.txt --root_folder dimlp/datafiles --nb_classes 2')", raw=True)
+            elif tag == "convKeras":
+                self.add_text("convKeras('--dataset mnist --train_data_file mnistTrainData.txt --train_class_file mnistTrainClass.txt --test_data_file mnistTestData.txt --test_class_file mnistTestClass.txt --valid_data_file mnistValidData.txt --valid_class_file mnistValidClass.txt --nb_attributes 784 --nb_classes 10 --root_folder dimlp/datafiles/Mnist')", raw=True)
         self.add_text("---------------------------------------------------------------------", raw=True)
 
     # To display execution examples on one line
