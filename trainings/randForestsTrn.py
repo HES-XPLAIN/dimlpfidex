@@ -26,10 +26,10 @@ def get_and_check_parameters(init_args):
     parser.add_argument("--n_estimators", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Number of generated trees in the forest", default=100, action=TaggableAction, tag="RF")
     parser.add_argument("--criterion", choices=["gini", "entropy", "log_loss"], metavar="<{gini, entropy, log_loss}>", help="Function to measure split quality", default="gini", action=TaggableAction, tag="RF")
     parser.add_argument("--max_depth", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Maximum depth of the tree", action=TaggableAction, tag="RF")
-    parser.add_argument("--min_samples_split", type=lambda x: enum_type(x, int_type=dict(func=int_type, min=2), float_type=dict(func=float_type, min=0, min_inclusive=False, max=1)), metavar="<int [2,inf[ U float]0,1.0]>", help="Minimum number of samples required to split an internal node, if float, it is a fraction of the number of samples. Put 1.0 for value 1", default=2, action=TaggableAction, tag="RF")
+    parser.add_argument("--min_samples_split", type=lambda x: enum_type(x, int_type=dict(func=int_type, min=2), float_type=dict(func=float_type, min=0, min_inclusive=False, max=1)), metavar="<int [2,inf[ U float]0,1.0]>", help="Minimum number of samples required to split an internal node, if float, it is a fraction of the number of samples.", default=2, action=TaggableAction, tag="RF")
     parser.add_argument("--min_samples_leaf", type=lambda x: enum_type(x, int_type=dict(func=int_type, min=1), float_type=dict(func=float_type, min=0, min_inclusive=False, max=1, max_inclusive=False)), metavar="<int [1,inf[ U float]0,1[>", help="Minimum number of samples required to be at a leaf node, if float, it is a fraction of the number of samples", default=1, action=TaggableAction, tag="RF")
     parser.add_argument("--min_weight_fraction_leaf", type=lambda x: float_type(x, min=0, max=0.5), metavar="<float [0,0.5]>", help="Minimum weighted fraction of the sum total of input samples weights required to be at a leaf node", default=0.0, action=TaggableAction, tag="RF")
-    parser.add_argument("--max_features", type=lambda x: enum_type(x, "sqrt", "log2", "all", _=dict(func=float_type, min=0, min_inclusive=False, max=1)), metavar="<{sqrt, log2, all, float ]0,1]}>", help="Number of features to consider when looking for the best split", default="sqrt", action=TaggableAction, tag="RF")
+    parser.add_argument("--max_features", type=lambda x: enum_type(x, "sqrt", "log2", "all", _=dict(func=float_type, min=0, min_inclusive=False, max=1, max_inclusive=False), int_type=dict(func=int_type, min=1)), metavar="<{sqrt, log2, all, float ]0,1[, int [1,inf[}>", help="Number of features to consider when looking for the best splitif float, it is a fraction of the number of features. 1 stands for 1 feature, for all features put 'all', not 1.0", default="sqrt", action=TaggableAction, tag="RF")
     parser.add_argument("--max_leaf_nodes", type=lambda x: int_type(x, min=2), metavar="<int [2,inf[>", help="Grow trees with max_leaf_nodes in best-first fashion", action=TaggableAction, tag="RF")
     parser.add_argument("--min_impurity_decrease", type=lambda x: float_type(x, min=0), metavar="<float [0,inf[>", help="A node will be split if this split induces a decrease of the impurity greater than or equal to this value", default=0.0, action=TaggableAction, tag="RF")
     parser.add_argument("--bootstrap", type=bool_type, metavar="<bool>", help="Whether bootstrap samples are used when building trees", default=True, action=TaggableAction, tag="RF")
@@ -44,8 +44,10 @@ def get_and_check_parameters(init_args):
 
     return get_args(args, cleaned_args, parser) # Return attributes
 
-def randForestsTrn(args: str = ""):
+def randForestsTrn(args: str = None):
     try:
+        if not args:
+            args = ""
         console_file = None # In case a ValueError is raised before initialization of console_file
         start_time = time.time()
 
@@ -57,8 +59,6 @@ def randForestsTrn(args: str = ""):
             split_args= ["-h"]
         args = get_and_check_parameters(split_args)
         console_file = args.console_file
-        if args.max_features == "all":
-            args.max_features=None
 
         # Redirect output in file
         if console_file != None:
@@ -70,6 +70,9 @@ def randForestsTrn(args: str = ""):
                 raise ValueError(f"Error : Couldn't open file {console_file}.")
 
         print_parameters(args)
+
+        if args.max_features == "all":
+            args.max_features = None
 
         # Get data
         train_data, train_class = get_data(args.train_data_file, args.nb_attributes, args.nb_classes)

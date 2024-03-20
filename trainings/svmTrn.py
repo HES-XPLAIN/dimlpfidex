@@ -46,8 +46,10 @@ def get_and_check_parameters(init_args):
 
     return get_args(args, cleaned_args, parser) # Return attributes
 
-def svmTrn(args: str = ""):
+def svmTrn(args: str = None):
     try:
+        if not args:
+            args = ""
         console_file = None # In case a ValueError is raised before initialization of console_file
         start_time = time.time()
 
