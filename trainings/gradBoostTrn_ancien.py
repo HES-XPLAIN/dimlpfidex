@@ -1,10 +1,10 @@
 import time
 import sys
-from trainings.trnFun import get_data, get_data_class, output_data, output_stats, check_parameters_common, check_int, check_strictly_positive, check_bool, trees_to_rules, check_parameters_decision_trees, validate_string_param
-from sklearn.ensemble import RandomForestClassifier
+from trainings.trnFun import get_data, get_data_class, output_data, output_stats, trees_to_rules, check_parameters_common, check_int, check_strictly_positive, check_positive, check_bool, check_parameters_decision_trees, validate_string_param
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import metrics
 
-def randForestsTrn(*args, **kwargs):
+def gradBoostTrn(*args, **kwargs):
     try:
 
         if not kwargs:
@@ -27,31 +27,33 @@ def randForestsTrn(*args, **kwargs):
             print("test_pred_outfile : output test prediction file name (predTest.out by default)")
             print("stats_file : output file name with train and test accuracy (stats.txt by default)")
             print("console_file : file with console logs redirection")
-            print("rules_outfile : output random forests rules file (RF_rules.rls by default)")
+            print("rules_outfile : output gradient boosting rules file (GB_rules.rls by default)")
             print("----------------------------")
-            print("Random Forests parameters (optional)")
-            print("n_estimators : Number of generated trees in the forest(100 by default)")
-            print("criterion : function to measure split quality, gini(default), entropy or log_loss,")
-            print("max_depth : max depth of the tree, integer (None by default)")
+            print("Gradient boosting parameters (optional)")
+            print("n_estimators : number of generated trees in the forest (100 by default)")
+            print("loss : loss function to be optimized, log_loss(default) or exponential")
+            print("learning_rate : shrinks the contribution of each tree, positive float (0.1 by default)")
+            print("subsample : fraction of samples to be used for fitting the individual base learners, float in ]0,1] (1.0 by default)")
+            print("criterion : function to measure split quality, friedman_mse(default) or squared_error,")
             print("min_samples_split : minimum number of samples required to split an internal node, if float, it is a fraction of the number of samples (2 by default)")
             print("min_samples_leaf : minimum number of samples required to be at a leaf node, if float, it is a fraction of the number of samples (1 by default)")
             print("min_weight_fraction_leaf : minimum weighted fraction of the sum total of input samples weights required to be at a leaf node (0.0 by default)")
-            print('max_features : number of features to consider when looking for the best split, sqrt(default), log2, None(specify "None"), integer or float')
-            print('max_leaf_nodes : grow trees with max_leaf_nodes in best-first fashion, integer (None by default)')
+            print('max_depth : maximum depth of the individual regression estimators, strictly positive integer or "None" (3 by default)')
             print('min_impurity_decrease : a node will be split if this split induces a decrease of the impurity greater than or equal to this value, float (0.0 by default)')
-            print('bootstrap : whether bootstrap samples are used when building trees, True(default) or False (0.0 by default)')
-            print('oob_score : whether to use out-of-bag samples to estimate the generalization score, True, False(default) or callable')
-            print('n_jobs : number of jobs to run in parallel (None by default(1 proc), -1 : all processors)')
+            print('init : estimator object used to compute the initial predictions, "zero"(None by default)')
             print('seed : positive integer(seed) or None(default)')
-            print('verbose : controls the verbosity when fitting and predicting, integer (0 by default)')
-            print('warm_start : whether to reuse the solution of the previous call to fit and add more estimators to the ensemble, True or False(default)')
-            print("class_weight : class balance, 'balanced', 'balanced_subsample, or a dictionary, for exemple with 2 classes : {0:1.2, 1:3.5} (None by default)")
+            print('max_features : number of features to consider when looking for the best split, sqrt(default), log2, None(specify "None"), integer or float')
+            print('verbose : enable verbose output, integer (0 by default)')
+            print('max_leaf_nodes : grow trees with max_leaf_nodes in best-first fashion, integer (None by default)')
+            print('warm_start : whether to reuse previous solution to fit and add more estimators to the ensemble, True or False(default)')
+            print('validation_fraction : proportion of training data to set aside as validation set for early stopping, float (0.1 by default)')
+            print("n_iter_no_change : decide if early stopping will be used to terminate training when validation score is not improving, stopping if validation doesn't improve during this number of iterations (None by default)")
+            print("tol : tolerance for the early stopping (0.0001 by default)")
             print("ccp_alpha : complexity parameter used for Minimal Cost-Complexity Pruning, positive float (0.0 by default)")
-            print("max_samples : number of samples to draw to train each base estimator for bootstrap, if float, it is a fraction of the number of samples (None by default)")
             print("----------------------------")
             print("----------------------------")
             print("Here is an example, keep same parameter names :")
-            print('randForestsTrn(train_data_file="datanormTrain",train_class_file="dataclass2Train", test_data_file="datanormTest",test_class_file="dataclass2Test", stats_file = "rf/stats.txt", train_pred_outfile = "rf/predTrain", test_pred_outfile = "rf/predTest", nb_attributes=16, nb_classes=2, rules_outfile = "rf/RF_rules", root_folder = "dimlp/datafiles")')
+            print('gradBoostTrn(train_data_file="datanormTrain",train_class_file="dataclass2Train", test_data_file="datanormTest",test_class_file="dataclass2Test", stats_file = "gb/stats.txt", train_pred_outfile = "gb/predTrain", test_pred_outfile = "gb/predTest", nb_attributes=16, nb_classes=2, rules_outfile = "gb/GB_rules", root_folder = "dimlp/datafiles")')
             print("---------------------------------------------------------------------")
         else:
 
@@ -73,25 +75,25 @@ def randForestsTrn(*args, **kwargs):
             rules_outfile = kwargs.get('rules_outfile')
 
             n_estimators_var = kwargs.get('n_estimators')
+            loss_var = kwargs.get('loss')
+            learning_rate_var = kwargs.get('learning_rate')
+            subsample_var = kwargs.get('subsample')
             criterion_var = kwargs.get('criterion')
-            max_depth_var = kwargs.get('max_depth')
             min_samples_split_var = kwargs.get('min_samples_split')
             min_samples_leaf_var = kwargs.get('min_samples_leaf')
             min_weight_fraction_leaf_var = kwargs.get('min_weight_fraction_leaf')
-            max_features_var = kwargs.get('max_features')
-            max_leaf_nodes_var = kwargs.get('max_leaf_nodes')
+            max_depth_var = kwargs.get('max_depth')
             min_impurity_decrease_var = kwargs.get('min_impurity_decrease')
-            bootstrap_var = kwargs.get('bootstrap')
-            oob_score_var = kwargs.get('oob_score')
-            n_jobs_var = kwargs.get('n_jobs')
+            init_var = kwargs.get('init')
             seed_var = kwargs.get('seed')
+            max_features_var = kwargs.get('max_features')
             verbose_var = kwargs.get('verbose')
+            max_leaf_nodes_var = kwargs.get('max_leaf_nodes')
             warm_start_var = kwargs.get('warm_start')
-            class_weight_var = kwargs.get('class_weight')
+            validation_fraction_var = kwargs.get('validation_fraction')
+            n_iter_no_change_var = kwargs.get('n_iter_no_change')
+            tol_var = kwargs.get('tol')
             ccp_alpha_var = kwargs.get('ccp_alpha')
-            max_samples_var = kwargs.get('max_samples')
-
-
 
             # Redirect output in file
             if console_file != None:
@@ -105,11 +107,11 @@ def randForestsTrn(*args, **kwargs):
                     raise ValueError(f"Error : Couldn't open file {console_file}.")
 
             # Check parameters
-
-            valid_args = ['train_data_file', 'train_class_file', 'test_data_file', 'test_class_file', 'train_pred_outfile', 'test_pred_outfile', 'nb_attributes', 'nb_classes',
-                        'stats_file', 'root_folder', 'console_file', 'rules_outfile', 'n_estimators', 'criterion', 'max_depth', 'min_samples_split',
-                        'min_samples_leaf', 'min_weight_fraction_leaf', 'max_features', 'max_leaf_nodes', 'min_impurity_decrease', 'bootstrap',
-                        'oob_score', 'n_jobs', 'seed', 'verbose', 'warm_start', 'class_weight', 'ccp_alpha', 'max_samples']
+            valid_args = ['train_data_file', 'train_class_file', 'test_data_file', 'test_class_file', 'train_pred_outfile', 'test_pred_outfile',
+                        'nb_attributes', 'nb_classes', 'stats_file', 'root_folder', 'console_file', 'rules_outfile', 'n_estimators', 'loss', 'learning_rate',
+                        'subsample', 'criterion', 'min_samples_split', 'min_samples_leaf', 'min_weight_fraction_leaf',
+                        'max_depth', 'min_impurity_decrease', 'init', 'seed', 'max_features', 'verbose', 'max_leaf_nodes',
+                        'warm_start', 'validation_fraction', 'n_iter_no_change', 'tol', 'ccp_alpha']
 
             # Check if wrong parameters are given
             for arg_key in kwargs.keys():
@@ -120,34 +122,50 @@ def randForestsTrn(*args, **kwargs):
 
             n_estimators_var, min_samples_split_var, min_samples_leaf_var, min_weight_fraction_leaf_var, min_impurity_decrease_var, seed_var, max_features_var, verbose_var, max_leaf_nodes_var, warm_start_var, ccp_alpha_var = check_parameters_decision_trees(n_estimators_var, min_samples_split_var, min_samples_leaf_var, min_weight_fraction_leaf_var, min_impurity_decrease_var, seed_var, max_features_var, verbose_var, max_leaf_nodes_var, warm_start_var, ccp_alpha_var)
 
-            rules_outfile = validate_string_param(rules_outfile, "rules_outfile", default="RF_rules.rls")
+            rules_outfile = validate_string_param(rules_outfile, "rules_outfile", default="GB_rules.rls")
+
+            if loss_var is None:
+                loss_var = "log_loss"
+            elif loss_var not in {"log_loss", "exponential"}:
+                raise ValueError('Error : parameter loss is not "log_loss" or "exponential".')
+
+            if learning_rate_var is None:
+                learning_rate_var = 0.1
+            elif not check_positive(learning_rate_var):
+                raise ValueError('Error, parameter learning_rate is not a positive float.')
+
+            if subsample_var is None:
+                subsample_var = 1.0
+            elif not check_strictly_positive(subsample_var) or subsample_var > 1:
+                raise ValueError('Error, parameter subsample is not  a float in ]0,1].')
 
             if criterion_var is None:
-                criterion_var = "gini"
-            elif criterion_var not in {"gini", "entropy", "log_loss"}:
-                raise ValueError('Error, parameter criterion is not "gini", "entropy" or "log_loss".')
+                criterion_var = "friedman_mse"
+            elif criterion_var not in {"friedman_mse", "squared_error"}:
+                raise ValueError('Error, parameter criterion is not "friedman_mse" or "squared_error".')
 
-            if max_depth_var is not None and (not check_int(max_depth_var)or not check_strictly_positive(max_depth_var)):
-                raise ValueError('Error, parameter max_depth is specified and is not a strictly positive integer.')
+            if max_depth_var is None:
+                max_depth_var = 3
+            elif max_depth_var == "None":
+                max_depth_var = None
+            elif not check_int(max_depth_var) or not check_strictly_positive(max_depth_var):
+                raise ValueError('Error, parameter max_depth is specified and is not "None" or a strictly positive integer.')
 
-            if bootstrap_var is None:
-                bootstrap_var = True
-            elif not check_bool(bootstrap_var):
-                raise ValueError('Error, parameter bootstrap is not a boolean.')
+            if init_var is not None and init_var != "zero":
+                raise ValueError('Error, parameter init is specified and is not "zero".')
 
-            if oob_score_var is None:
-                oob_score_var = False
-            elif not check_bool(oob_score_var):
-                 raise ValueError('Error, parameter oob_score is not a boolean.')
+            if validation_fraction_var is None:
+                validation_fraction_var = 0.1
+            elif not check_strictly_positive(validation_fraction_var) or validation_fraction_var >= 1:
+                raise ValueError('Error, parameter validation_fraction is not a float in ]0,1[.')
 
-            if n_jobs_var is not None and not check_int(n_jobs_var):
-                 raise ValueError('Error, parameter n_jobs is not an integer.')
+            if n_iter_no_change_var is not None and not (check_int(n_iter_no_change_var) and check_strictly_positive(n_iter_no_change_var)):
+                raise ValueError('Error, parameter n_iter_no_change is not a strictly positive integer.')
 
-            if class_weight_var is not None and not isinstance(class_weight_var, dict) and class_weight_var not in {"balanced", "balanced_subsample"}:
-                raise ValueError('Error, parameter class_weight is not "balanced", "balanced_subsample", a dictionary or None.')
-
-            if  max_samples_var is not None and ((isinstance(max_samples_var, float) and ((max_samples_var <= 0) or max_samples_var > 1)) or not check_strictly_positive(max_samples_var)):
-                raise ValueError('Error, parameter max_samples is not a strictly positive integer or a float in ]0,1].')
+            if tol_var is None:
+                tol_var = 0.0001
+            elif not check_positive(tol_var):
+                raise ValueError('Error, parameter tol is not a positive float.')
 
             if (root_folder is not None):
                 train_data_file = root_folder + "/" + train_data_file
@@ -179,14 +197,16 @@ def randForestsTrn(*args, **kwargs):
             if len(test_data) != len(test_class):
                 raise ValueError('Error, there is not the same amount of test data and test class.')
 
-            # Train RF
-            model = RandomForestClassifier(n_estimators=n_estimators_var, criterion=criterion_var, max_depth=max_depth_var, # Create RF Classifier
-                                            min_samples_split=min_samples_split_var, min_samples_leaf=min_samples_leaf_var, min_weight_fraction_leaf=min_weight_fraction_leaf_var,
-                                            max_features=max_features_var, max_leaf_nodes=max_leaf_nodes_var, min_impurity_decrease=min_impurity_decrease_var, bootstrap=bootstrap_var,
-                                            oob_score=oob_score_var, n_jobs=n_jobs_var, random_state=seed_var, verbose=verbose_var, warm_start=warm_start_var, class_weight=class_weight_var,
-                                            ccp_alpha=ccp_alpha_var, max_samples=max_samples_var)
+            # Train GB
+            model = GradientBoostingClassifier(n_estimators=n_estimators_var, loss=loss_var, learning_rate=learning_rate_var, # Create GB Classifier
+                                               subsample=subsample_var, criterion=criterion_var, min_samples_split=min_samples_split_var,
+                                               min_samples_leaf=min_samples_leaf_var, min_weight_fraction_leaf=min_weight_fraction_leaf_var,
+                                               max_depth=max_depth_var, min_impurity_decrease=min_impurity_decrease_var, init=init_var,
+                                               random_state=seed_var, max_features=max_features_var, verbose=verbose_var,
+                                               max_leaf_nodes=max_leaf_nodes_var, warm_start=warm_start_var, validation_fraction=validation_fraction_var,
+                                               n_iter_no_change=n_iter_no_change_var, tol=tol_var, ccp_alpha=ccp_alpha_var)
 
-            model.fit(train_data, train_class)   # Train the model using the training sets
+            model.fit(train_data, train_class)
 
             # Compute predictions
             train_pred_proba = model.predict_proba(train_data)  # Predict the response for train dataset
@@ -218,7 +238,9 @@ def randForestsTrn(*args, **kwargs):
 
             # Output accuracy statistics
             output_stats(stats_file, acc_train, acc_test)
-            trees_to_rules(model.estimators_, rules_outfile)
+            from_grad_boost = True
+
+            trees_to_rules(model.estimators_.flatten(), rules_outfile, from_grad_boost)
 
             end_time = time.time()
             full_time = end_time - start_time
@@ -241,4 +263,4 @@ def randForestsTrn(*args, **kwargs):
 
 if __name__ == "__main__":
     cmdline_args = " ".join(sys.argv[1:])
-    randForestsTrn(cmdline_args)
+    gradBoostTrn(cmdline_args)

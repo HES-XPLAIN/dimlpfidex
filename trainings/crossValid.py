@@ -1272,16 +1272,16 @@ def crossValid(*args, **kwargs):
                         seed_var = seed
                         if seed == 0:
                             seed_var = None
-                        res = randForestsTrn(train_data_file=folder_path_from_root + separator + "train.txt",train_class_file=folder_path_from_root + separator + "trainTarget.txt",
-                                     test_data_file=folder_path_from_root + separator + "test.txt",test_class_file=folder_path_from_root + separator + "testTarget.txt",
-                                     stats_file = folder_path_from_root + separator + "stats.txt", console_file = crossval_folder_temp + separator + "consoleTemp.txt",
-                                     train_pred_outfile = folder_path_from_root + separator + "train.out", test_pred_outfile = folder_path_from_root + separator + "test.out", nb_attributes = nb_attributes,
-                                     nb_classes = nb_classes, rules_outfile = folder_path_from_root + separator + "treesRules.rls", root_folder = root_folder, n_estimators = n_estimators_var,
-                                     min_samples_split = min_samples_split_var, min_samples_leaf = min_samples_leaf_var, min_weight_fraction_leaf = min_weight_fraction_leaf_var,
-                                     max_features = max_features_var, min_impurity_decrease = min_impurity_decrease_var, max_leaf_nodes = max_leaf_nodes_var,
-                                     warm_start = dt_warm_start_var, ccp_alpha = ccp_alpha_var, criterion = rf_criterion_var, max_depth = rf_max_depth_var,
-                                     bootstrap = bootstrap_var, oob_score = oob_score_var, n_jobs = n_jobs_var, class_weight = rf_class_weight_var,
-                                     max_samples = max_samples_var, seed = seed_var)
+                        res = randForestsTrn(f"--train_data_file {folder_path_from_root + separator + 'train.txt'} --train_class_file {folder_path_from_root + separator + 'trainTarget.txt'} "
+                                     f"--test_data_file {folder_path_from_root + separator + 'test.txt'} --test_class_file {folder_path_from_root + separator + 'testTarget.txt'} "
+                                     f"--stats_file {folder_path_from_root + separator + 'stats.txt'} --console_file {crossval_folder_temp + separator + 'consoleTemp.txt'} "
+                                     f"--train_pred_outfile {folder_path_from_root + separator + 'train.out'} --test_pred_outfile {folder_path_from_root + separator + 'test.out'} --nb_attributes {nb_attributes} "
+                                     f"--nb_classes {nb_classes} --rules_outfile {folder_path_from_root + separator + 'treesRules.rls'} --root_folder {root_folder} --n_estimators {n_estimators_var} "
+                                     f"--min_samples_split {min_samples_split_var} --min_samples_leaf {min_samples_leaf_var} --min_weight_fraction_leaf {min_weight_fraction_leaf_var} "
+                                     f"--max_features {max_features_var} --min_impurity_decrease {min_impurity_decrease_var} --max_leaf_nodes {max_leaf_nodes_var} "
+                                     f"--warm_start {dt_warm_start_var} --ccp_alpha {ccp_alpha_var} --criterion {rf_criterion_var} --max_depth {rf_max_depth_var} "
+                                     f"--bootstrap {bootstrap_var} --oob_score {oob_score_var} --n_jobs {n_jobs_var} --class_weight {rf_class_weight_var} "
+                                     f"--max_samples {max_samples_var} --seed {seed_var}")
 
                         if (res == -1):
                             raise ValueError('Error during training with Random Forests.')
@@ -1292,17 +1292,17 @@ def crossValid(*args, **kwargs):
                         seed_var = seed
                         if seed == 0:
                             seed_var = None
-                        res = gradBoostTrn(train_data_file=folder_path_from_root + separator + "train.txt",train_class_file=folder_path_from_root + separator + "trainTarget.txt",
-                                     test_data_file=folder_path_from_root + separator + "test.txt",test_class_file=folder_path_from_root + separator + "testTarget.txt",
-                                     stats_file = folder_path_from_root + separator + "stats.txt", console_file = crossval_folder_temp + separator + "consoleTemp.txt",
-                                     train_pred_outfile = folder_path_from_root + separator + "train.out", test_pred_outfile = folder_path_from_root + separator + "test.out", nb_attributes = nb_attributes,
-                                     nb_classes = nb_classes, rules_outfile = folder_path_from_root + separator + "treesRules.rls", root_folder = root_folder, n_estimators = n_estimators_var,
-                                     min_samples_split = min_samples_split_var, min_samples_leaf = min_samples_leaf_var, min_weight_fraction_leaf = min_weight_fraction_leaf_var,
-                                     max_features = max_features_var, min_impurity_decrease = min_impurity_decrease_var, max_leaf_nodes = max_leaf_nodes_var,
-                                     warm_start = dt_warm_start_var, ccp_alpha = ccp_alpha_var, loss = loss_var, learning_rate = gb_learning_rate_var,
-                                     subsample = subsample_var, criterion = gb_criterion_var, max_depth = gb_max_depth_var, init = init_var,
-                                     validation_fraction = gb_validation_fraction_var, n_iter_no_change = gb_n_iter_no_change_var, tol = gb_tol_var,
-                                     seed = seed_var)
+                        res = gradBoostTrn(f"--train_data_file {folder_path_from_root + separator + 'train.txt'} --train_class_file {folder_path_from_root + separator + 'trainTarget.txt'} "
+                                     f"--test_data_file {folder_path_from_root + separator + 'test.txt'} --test_class_file {folder_path_from_root + separator + 'testTarget.txt'} "
+                                     f"--stats_file {folder_path_from_root + separator + 'stats.txt'} --console_file {crossval_folder_temp + separator + 'consoleTemp.txt'} "
+                                     f"--train_pred_outfile {folder_path_from_root + separator + 'train.out'} --test_pred_outfile {folder_path_from_root + separator + 'test.out'} --nb_attributes {nb_attributes} "
+                                     f"--nb_classes {nb_classes} --rules_outfile {folder_path_from_root + separator + 'treesRules.rls'} --root_folder {root_folder} --n_estimators {n_estimators_var} "
+                                     f"--min_samples_split {min_samples_split_var} --min_samples_leaf {min_samples_leaf_var} --min_weight_fraction_leaf {min_weight_fraction_leaf_var} "
+                                     f"--max_features {max_features_var} --min_impurity_decrease {min_impurity_decrease_var} --max_leaf_nodes {max_leaf_nodes_var} "
+                                     f"--warm_start {dt_warm_start_var} --ccp_alpha {ccp_alpha_var} --loss {loss_var} --learning_rate {gb_learning_rate_var} "
+                                     f"--subsample {subsample_var} --criterion {gb_criterion_var} --max_depth {gb_max_depth_var} --init {init_var} "
+                                     f"--validation_fraction {gb_validation_fraction_var} --n_iter_no_change {gb_n_iter_no_change_var} --tol {gb_tol_var} "
+                                     f"--seed {seed_var}")
 
                         if (res == -1):
                             raise ValueError('Error during training with Gradient Boosting.')

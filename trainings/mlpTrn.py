@@ -56,8 +56,10 @@ def get_and_check_parameters(init_args):
     parser.add_argument("--max_fun", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Maximum number of loss function calls for lbfgs", default=15000, action=TaggableAction, tag="MLP")
     return get_args(args, cleaned_args, parser) # Return attributes
 
-def mlpTrn(args: str = ""):
+def mlpTrn(args: str = None):
     try:
+        if not args:
+            args = ""
         console_file = None # In case a ValueError is raised before initialization of console_file
         start_time = time.time()
 
