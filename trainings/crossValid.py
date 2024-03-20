@@ -1308,9 +1308,9 @@ def crossValid(*args, **kwargs):
                             raise ValueError('Error during training with Gradient Boosting.')
 
                     if train_method != "svm" and with_roc:
-                        res = computeRocCurve(test_class_file=folder_path_from_root + separator + "testTarget.txt", test_pred_file = folder_path_from_root + separator + "test.out",
-                                              positive_class_index=positive_class_index, nb_classes = nb_classes, output_roc=folder_path_from_root + separator + "ROC_curve",
-                                              stats_file=folder_path_from_root + separator + "stats.txt", root_folder = root_folder)
+                        res = computeRocCurve(f"--test_class_file {folder_path_from_root + separator + 'testTarget.txt'} --test_pred_file {folder_path_from_root + separator + 'test.out'} "
+                                              f"--positive_class_index {positive_class_index} --nb_classes {nb_classes} --output_roc {folder_path_from_root + separator + 'ROC_curve'} "
+                                              f"--stats_file {folder_path_from_root + separator + 'stats.txt'} --root_folder {root_folder} --show_params False")
                         if (res == -1):
                             raise ValueError('Error during computation of ROC curve.')
                         else:

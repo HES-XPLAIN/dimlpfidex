@@ -1,7 +1,7 @@
 import time
 import sys
-from trainings.trnFun import get_data, get_data_class, output_data, output_stats, trees_to_rules, check_parameters_common, check_int, check_strictly_positive, check_positive, check_parameters_decision_trees, validate_string_param
-from trainings.parameters import get_common_parser, get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, bool_type, dict_type, enum_type, print_parameters
+from trainings.trnFun import get_data, get_data_class, output_data, output_stats, trees_to_rules
+from trainings.parameters import get_common_parser, get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, bool_type, enum_type, print_parameters
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import metrics
 
