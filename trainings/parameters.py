@@ -483,7 +483,7 @@ def get_common_parser(args, initial_parser):
     common_parser.add_argument("--test_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test class file, mendatory if classes are not specified in test_data_file", metavar="<str>")
     common_parser.add_argument("--test_pred_outfile", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Output test prediction file name", metavar="<str>", default="predTest.out")
     common_parser.add_argument("--console_file", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="File with console logs redirection", metavar="<str>")
-    common_parser.add_argument("--stats_file", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Output file name with train and test accuracy", metavar="<str>", default="stats.txt")
+    common_parser.add_argument("--stats_file", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Output statistic file name with train and test accuracy", metavar="<str>", default="stats.txt")
     common_parser.add_argument("--nb_attributes", type=lambda x: int_type(x, min=1), help="Number of attributes in dataset", metavar="<int [1,inf[>", required=True)
     common_parser.add_argument("--nb_classes", type=lambda x: int_type(x, min=1), help="Number of classes in dataset", metavar="<int [1,inf[>", required=True)
 

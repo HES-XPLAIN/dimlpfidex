@@ -94,7 +94,7 @@ def svmTrn(args: str = None):
         with_roc = True
         if args.positive_class_index is None:
             with_roc = False
-        elif not isinstance(args.positive_class_index, int) or args.positive_class_index < 0 or args.positive_class_index >= args.nb_classes:
+        elif args.positive_class_index >= args.nb_classes:
             raise ValueError(f'Error : parameter positive_class_index has to be a positive integer smaller than {args.nb_classes}.')
 
 

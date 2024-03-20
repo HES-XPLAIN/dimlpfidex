@@ -1,128 +1,86 @@
 # Not working with SVM because process is different to get Roc curve
 
-from trainings.trnFun import get_data_class, get_data_pred, compute_roc, check_int, check_strictly_positive, validate_string_param
+from trainings.trnFun import get_data_class, get_data_pred, compute_roc
+from trainings.parameters import get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, bool_type, print_parameters
 import numpy as np
-import matplotlib.pyplot as plt
+import sys
 
-def computeRocCurve(*args, **kwargs):
+def get_and_check_parameters(init_args):
+    # Remove None values and his -- attribute
+    cleaned_args = [arg for i, arg in enumerate(init_args[:-1]) if ((not arg.startswith("--") or init_args[i+1] not in ["None", "none", None]) and arg not in ["None", "none", None])]
+    if init_args and init_args[-1] not in ["None", "none", None]:
+        cleaned_args.append(init_args[-1])
+
+    # Get initial attributes with root_folder and json file information
+    args, initial_parser = get_initial_parser(cleaned_args)
+
+    # set custom formatter printing boundaries
+    formatter = lambda prog: CustomHelpFormatter(prog, width=150, max_help_position=60)
+
+    # Add new attributes
+    parser = CustomArgumentParser(description="This is a parser for gradBoostTrn", parents=[initial_parser], formatter_class=formatter, add_help=True)
+    parser.add_argument("--test_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test class file", metavar="<str>", required=True)
+    parser.add_argument("--test_pred_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test prediction file", metavar="<str>", required=True)
+    parser.add_argument("--nb_classes", type=lambda x: int_type(x, min=1), help="Number of classes in dataset", metavar="<int [1,inf[>", required=True)
+    parser.add_argument("--positive_class_index", type=lambda x: int_type(x, min=1), help="Index of positive class, index starts at 0", metavar="<int [1,nb_classes-1]>", required=True)
+    parser.add_argument("--estimator", type=str, help="Name of estimator", metavar="<str>", action=TaggableAction, tag="ROC")
+    parser.add_argument("--output_roc", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output ROC curve file name", metavar="<str>", default="roc_curve.png", action=TaggableAction, tag="ROC")
+    parser.add_argument("--stats_file", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output statistic file name with AUC score", metavar="<str>")
+    parser.add_argument("--show_params", type=bool_type, help="Whether to show parameters", metavar="<bool>", default=True)
+
+    return get_args(args, cleaned_args, parser) # Return attributes
+
+def computeRocCurve(args: str = None):
+
     try:
-        if not kwargs:
-            print("---------------------------------------------------------------------")
-            print("Please specify arguments using named parameters.")
-            print("Warning! The files are localised with respect to root folder dimlpfidex.")
-            print("The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json.")
-            print("----------------------------")
-            print("Required parameters :")
-            print("test_class_file : test class file")
-            print("test_pred_file : test prediction file")
-            print("nb_classes : number of classes")
-            print("positive_class_index : index of positive class (0 for first one)")
-            print("----------------------------")
-            print("Optional parameters :")
-            print("estimator : name of estimator")
-            print("root_folder : Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
-            print("output_roc : output ROC curve (roc_curve.png by default)")
-            print("stats_file : stats file to save AUC score") #TODO :Warning, not same as the other stats_file description
+        if not args:
+            args = ""
 
+        # Get parameters
+        split_args = []
+        if len(args) != 0:
+            split_args = args.split()  # string command to list
         else:
-            # Get parameters
-            root_folder = kwargs.get('root_folder')
-            test_class_file = kwargs.get('test_class_file')
-            test_pred_file = kwargs.get('test_pred_file')
-            nb_classes = kwargs.get('nb_classes')
-            positive_class_index = kwargs.get('positive_class_index')
-            estimator = kwargs.get('estimator')
-            output_roc = kwargs.get('output_roc')
-            stats_file = kwargs.get('stats_file')
+            split_args= ["-h"]
+        args = get_and_check_parameters(split_args)
 
-            # Check parameters
-            valid_args = ['test_class_file', 'test_pred_file', 'nb_classes', 'positive_class_index', 'estimator', 'root_folder', 'output_roc', 'stats_file']
+        if args.show_params:
+            print_parameters(args)
 
-            # Check if wrong parameters are given
-            for arg_key in kwargs.keys():
-                if arg_key not in valid_args:
-                    raise ValueError(f"Invalid argument : {arg_key}.")
+        # Get data
+        test_class = get_data_class(args.test_class_file, args.nb_classes)
+        test_pred = get_data_pred(args.test_pred_file, args.nb_classes)
 
-            root_folder = validate_string_param(root_folder, "root_folder", allow_none=True)
+        if len(test_class) != len(test_pred):
+            raise ValueError('Error, there is not the same amount of test predictions and test class.')
 
-            is_test_class_list = False
-            if test_class_file is None :
-                raise ValueError('Error : test class file missing, add it with option test_class_file="your_test_class_file" or with a list.')
-            elif not isinstance(test_class_file, str) and not isinstance(test_class_file, list):
-                raise ValueError('Error : parameter test_class_file has to be a name contained in quotation marks "" or a list.')
-            elif isinstance(test_class_file, list):
-                is_test_class_list = True
+        if args.positive_class_index is not None and args.positive_class_index >= args.nb_classes:
+            raise ValueError(f'Error : parameter positive_class_index has to be a positive integer smaller than {args.nb_classes}.')
 
-            is_test_pred_list = False
-            if test_pred_file is None:
-                raise ValueError('Error : prediction data file missing, add it with option test_pred_file="your_prediction_data_file" or with a list.')
-            elif not isinstance(test_pred_file, str) and not isinstance(test_pred_file, list):
-                raise ValueError('Error : parameter test_pred_file has to be a name contained in quotation marks "" or a list.')
-            elif isinstance(test_pred_file, list):
-                is_test_pred_list = True
+        test_class_roc = [int(cl == args.positive_class_index) for cl in test_class]
+        test_pred = [p[args.positive_class_index] for p in test_pred]
+        fpr, tpr, auc_score = compute_roc(args.estimator, args.output_roc, test_class_roc, test_pred)
 
-            if nb_classes is None:
-                raise ValueError('Error : number of classes missing, add it with option nb_classes="your_number_of_classes".')
-            elif not check_strictly_positive(nb_classes) or not check_int(nb_classes):
-                raise ValueError('Error : parameter nb_classes has to be a strictly positive integer.')
-
-            stats_file = validate_string_param(stats_file, "stats_file", allow_none=True)
-
-            output_roc = validate_string_param(output_roc, "output_roc", default="roc_curve.png")
-
-            if (root_folder is not None):
-                output_roc = root_folder + "/" + output_roc
-                if stats_file is not None:
-                    stats_file = root_folder + "/" + stats_file
-
-            # Get data
-            if is_test_class_list:
-                test_class = test_class_file
-            elif root_folder is not None:
-                test_class = get_data_class(root_folder + "/" + test_class_file, nb_classes)
+        # Save AUC result in stats file
+        if args.stats_file is not None:
+            with open(args.stats_file, 'r') as file:
+                lines = file.readlines()
+                file.close()
+            last_line = lines[-1]
+            if last_line.startswith("AUC score on testing set"):
+                lines[-1] = f"AUC score on testing set : {auc_score}" # Replace the line
             else:
-                test_class = get_data_class(test_class_file, nb_classes)
-            if is_test_pred_list:
-                test_pred = test_pred_file
-            elif root_folder is not None:
-                test_pred = get_data_pred(root_folder + "/" + test_pred_file, nb_classes)
-            else:
-                test_pred = get_data_pred(test_pred_file, nb_classes)
+                lines.append(f"\nAUC score on testing set : {auc_score}")# Add new line
 
-            if len(test_class) != len(test_pred):
-                raise ValueError('Error, there is not the same amount of test predictions and test class.')
+            with open(args.stats_file, "w") as file:
+                file.writelines(lines)
+                file.close()
 
-            if positive_class_index is None:
-                raise ValueError('Error : positive class index missing, add it with option positive_class_index="your_positive_class_index".')
-            elif not isinstance(positive_class_index, int) or positive_class_index < 0 or positive_class_index >= nb_classes:
-                raise ValueError(f'Error : parameter positive_class_index has to be a positive integer smaller than {nb_classes}.')
-            test_class_roc = [int(cl == positive_class_index) for cl in test_class]
-            test_pred = [p[positive_class_index] for p in test_pred]
-            fpr, tpr, auc_score = compute_roc(estimator, output_roc, test_class_roc, test_pred)
-
-            # Save AUC result in stats file
-            if stats_file is not None:
-                with open(stats_file, 'r') as file:
-                    lines = file.readlines()
-                    file.close()
-                last_line = lines[-1]
-                if last_line.startswith("AUC score on testing set"):
-                    lines[-1] = f"AUC score on testing set : {auc_score}" # Replace the line
-                else:
-                    lines.append(f"\nAUC score on testing set : {auc_score}")# Add new line
-
-                with open(stats_file, "w") as file:
-                    file.writelines(lines)
-                    file.close()
-
-            # Interpolation to get 1000 points (necessary for crossValidation)
-            fpr_interp = np.linspace(0, 1, 1000)
-            tpr_interp = np.interp(fpr_interp, fpr, tpr)
-            tpr_interp[0] = 0
-            return [fpr_interp, tpr_interp, auc_score]
-
-
-
+        # Interpolation to get 1000 points (necessary for crossValidation)
+        fpr_interp = np.linspace(0, 1, 1000)
+        tpr_interp = np.interp(fpr_interp, fpr, tpr)
+        tpr_interp[0] = 0
+        return [fpr_interp, tpr_interp, auc_score]
 
     except ValueError as error:
         print(error)
