@@ -1,11 +1,11 @@
 {
     "root_folder": "tests/dataset/data",
     "train_data_file": "train.txt",
-    "train_pred_file": "train.out",
+    "train_pred_file": "out/dimlp_train.out",
     "train_class_file": "train_true_classes.txt",
     "global_rules_outfile": "out/fidexglorules_rules.json",
     "attributes_file": "attributes.txt",
-    "weights_file": "weights.wts",
+    "weights_file": "out/weights.wts",
     "console_file": "out/fidexGloRules_console.out",
     "nb_attributes": 31,
     "nb_classes": 7,

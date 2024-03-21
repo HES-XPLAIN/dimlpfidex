@@ -1,10 +1,10 @@
 {
     "train_data_file": "tests/dataset/data/train.txt",
-    "train_pred_file": "tests/dataset/data/train.out",
+    "train_pred_file": "tests/dataset/data/out/dimlp_train.out",
     "train_class_file": "tests/dataset/data/train_true_classes.txt",
-    "global_rules_outfile": "tests/dataset/data/new_rules.txt",
+    "global_rules_outfile": "tests/dataset/data/out/default_test.rls",
     "attributes_file": "tests/dataset/data/attributes.txt",
-    "weights_file": "tests/dataset/data/weights.wts",
+    "weights_file": "tests/dataset/data/out/weights.wts",
     "nb_attributes": 31,
     "nb_classes": 7,
     "nb_dimlp_nets": 1,
