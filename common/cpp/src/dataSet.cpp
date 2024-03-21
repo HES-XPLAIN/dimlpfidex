@@ -64,7 +64,7 @@ DataSetFid::DataSetFid(const string &name, const std::string &dataFile, const st
  *        The presence and format of class data (ID or one-hot) are inferred based on the structure of the lines in the file.
  *
  * @param name string containing the name of the dataSet
- * @param dataFile string data file name containing datas, predictions and maybe classes(not mendatory)
+ * @param dataFile string data file name containing datas, predictions and maybe classes(not mandatory)
  * @param nbAttributes int number of attributes
  * @param nbClasses int number of classes
  * @param decisionThres double indicating the decision threshold, useful when choosing the decision (-1 for no threshold)

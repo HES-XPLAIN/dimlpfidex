@@ -47,10 +47,10 @@ void showParams() {
             << std::endl;
   printOptionDescription("--train_data_file <str>", "Train data file");
   printOptionDescription("--train_pred_file <str>", "Train prediction file");
-  printOptionDescription("--train_class_file <str>", "Train true class file, not mendatory if classes are specified in train data file");
-  printOptionDescription("--weights_file <str>", "Weights file when not using bagging (not mendatory if a rules file is given with --rules_file)");
-  printOptionDescription("--weights_generic_filename <str>", "Weights file in case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets (not mendatory if a rules file is given with --rules_file)");
-  printOptionDescription("--rules_file <str>", "Rules file to be converted to hyperlocus (not mendatory if a weights file or a weights_generic_filename is given)");
+  printOptionDescription("--train_class_file <str>", "Train true class file, not mandatory if classes are specified in train data file");
+  printOptionDescription("--weights_file <str>", "Weights file when not using bagging (not mandatory if a rules file is given with --rules_file)");
+  printOptionDescription("--weights_generic_filename <str>", "Weights file in case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets (not mandatory if a rules file is given with --rules_file)");
+  printOptionDescription("--rules_file <str>", "Rules file to be converted to hyperlocus (not mandatory if a weights file or a weights_generic_filename is given)");
 
   std::cout << std::endl
             << "Optional :" << std::endl

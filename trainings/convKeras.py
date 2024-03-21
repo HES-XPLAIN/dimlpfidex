@@ -36,6 +36,19 @@ from trainings.trnFun import compute_first_hidden_layer, output_stats, output_da
 from trainings.parameters import get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, bool_type, print_parameters
 
 def get_and_check_parameters(init_args):
+    """
+    Processes and validates command-line arguments for a convolution model training.
+    This function cleans the input arguments by removing None values ensuring no unnecessary
+    arguments are passed to the parser. It initializes the argument parser with basic
+    configurations and adds various arguments required for the normalization process.
+    It deternines which arguments are required or not and defines their default values.
+
+    :param init_args: A list of command-line arguments passed to the program.
+    :type init_args: list
+
+    :return: A namespace object containing all the arguments that have been parsed and validated.
+    :rtype: argparse.Namespace
+    """
     # Remove None values and his -- attribute
     cleaned_args = [arg for i, arg in enumerate(init_args[:-1]) if ((not arg.startswith("--") or init_args[i+1] not in ["None", "none", None]) and arg not in ["None", "none", None])]
     if init_args and init_args[-1] not in ["None", "none", None]:
@@ -51,14 +64,14 @@ def get_and_check_parameters(init_args):
     parser = CustomArgumentParser(description="This is a parser for convKeras", parents=[initial_parser], formatter_class=formatter, add_help=True)
     parser.add_argument("--dataset", choices=["mnist", "cifar100", "cifar10", "fer"], metavar="<{mnist, cifar100, cifar10, fer}>", help="Dataset")
     parser.add_argument("--train_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Train data file", metavar="<str>", required=True)
-    parser.add_argument("--train_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Train class file, mendatory if classes are not specified in train_data_file", metavar="<str>")
+    parser.add_argument("--train_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Train class file, mandatory if classes are not specified in train_data_file", metavar="<str>")
     parser.add_argument("--test_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test data file", metavar="<str>", required=True)
-    parser.add_argument("--test_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test class file, mendatory if classes are not specified in test_data_file", metavar="<str>")
+    parser.add_argument("--test_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test class file, mandatory if classes are not specified in test_data_file", metavar="<str>")
     parser.add_argument("--nb_attributes", type=lambda x: int_type(x, min=1), help="Number of attributes in dataset", metavar="<int [1,inf[>", required=True)
     parser.add_argument("--nb_classes", type=lambda x: int_type(x, min=1), help="Number of classes in dataset", metavar="<int [1,inf[>", required=True)
     parser.add_argument("--valid_ratio", type=lambda x: float_type(x, min=0, min_inclusive=False, max=1, max_inclusive=False), metavar="<float ]0,inf[>", help="Percentage of train data taken for validation (default: 0.1)")
     parser.add_argument("--valid_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Validation data file", metavar="<str>")
-    parser.add_argument("--valid_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Validation class file, mendatory if classes are not specified in valid_data_file. BE CAREFUL if there is validation files, and you want to use Fidex algorithms later, you will have to use both train and validation datas given here in the train datas and classes of Fidex", metavar="<str>")
+    parser.add_argument("--valid_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Validation class file, mandatory if classes are not specified in valid_data_file. BE CAREFUL if there is validation files, and you want to use Fidex algorithms later, you will have to use both train and validation datas given here in the train datas and classes of Fidex", metavar="<str>")
     parser.add_argument("--normalized", type=bool_type, metavar="<bool>", help="Whether input image datas are normalized between 0 and 1 (default: False, default if with_hsl: True)")
     parser.add_argument("--nb_epochs", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Number of training epochs", default=80)
     parser.add_argument("--train_valid_pred_outfile", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output train and validation (in this order) prediction file name", metavar="<str>", default="predTrain.out")

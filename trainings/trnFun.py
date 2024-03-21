@@ -5,45 +5,6 @@ from sklearn.tree import _tree
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, auc, RocCurveDisplay
 
-def check_strictly_positive(variable):
-    """
-    Checks whether the provided variable is a strictly positive number (either float or integer).
-
-    :param variable: The variable to be checked.
-    :type variable: any type
-    :return: True if the variable is a strictly positive number, False otherwise.
-    :rtype: bool
-    """
-    if isinstance(variable, (float,int)) and variable > 0:
-        return True
-    return False
-
-def check_int(variable):
-    """
-    Checks whether the provided variable is an integer.
-
-    :param variable: The variable to be checked.
-    :type variable: any type
-    :return: True if the variable is an integer, False otherwise.
-    :rtype: bool
-    """
-    if isinstance(variable, int):
-        return True
-    return False
-
-def check_bool(variable):
-    """
-    Checks whether the provided variable is a boolean.
-
-    :param variable: The variable to be checked.
-    :type variable: any type
-    :return: True if the variable is a boolean, False otherwise.
-    :rtype: bool
-    """
-    if isinstance(variable, bool):
-        return True
-    return False
-
 def delete_file(file):
     """
     Delete file
@@ -370,7 +331,7 @@ def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_o
     :type nb_stairs: int
     :param hiknot: Knots for the staircase activation function.
     :type hiknot: list[float]
-    :param weights_outfile: File path to save weights, defaults to None, mendatory for training step.
+    :param weights_outfile: File path to save weights, defaults to None, mandatory for training step.
     :type weights_outfile: str, optional
     :param mu: Mean for normalization, calculated if None. Defaults to None.
     :type mu: np.ndarray, optional
@@ -439,28 +400,6 @@ def output_stats(stats_file, acc_train, acc_test):
             raise ValueError(f"Error : File {stats_file} not found.")
         except (IOError):
             raise ValueError(f"Error : Couldn't open file {stats_file}.")
-
-def validate_string_param(param, param_name, default=None, allow_none=False):
-    """
-    Validate a string parameter. Raises a ValueError if the parameter is invalid.
-
-    :param param: The parameter to validate.
-    :param param_name: The name of the parameter (for error messages).
-    :param default: The default value to return if the parameter is None.
-    :param allow_none: Set to True to allow None as a valid value.
-    :return: The validated parameter, default value, or None.
-    :raises ValueError: If the parameter is invalid.
-    """
-    if param is None:
-        if allow_none:
-            return None
-        elif default is not None:
-            return default
-        else:
-            raise ValueError(f'Error: {param_name} missing, add it with option {param_name}="your_{param_name}_file".')
-    elif not isinstance(param, str):
-        raise ValueError(f'Error: parameter {param_name} has to be a name contained in quotation marks "".')
-    return param
 
 def recurse(tree, node, parent_path, feature_names, output_rules_file, k_dict, from_grad_boost): # parent_path : path taken until current node
     """
