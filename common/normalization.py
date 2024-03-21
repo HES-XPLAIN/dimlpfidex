@@ -8,7 +8,9 @@ import os
 import math
 import re
 
-from trainings.trnFun import get_data, validate_string_param, check_int, check_strictly_positive, check_bool, get_attribute_file
+from trainings.trnFun import get_data, get_attribute_file
+from trainings.parameters import get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, bool_type, list_type, print_parameters
+
 
 
 def gaussian_normalization(data_files, normalization_indices, normalized_file, fill_missing_values, normalization_file=None, attributes=None, missing_value=None, with_median=False, mus=None, sigmas=None):
@@ -214,31 +216,6 @@ def parse_normalization_file(file_name, nb_attributes, attributes=None):
 
     return indices_list, with_median, mus, sigmas
 
-
-def get_and_check_string_data_from_list(data_files, name):
-    """
-    This function checks whether the 'data_files' parameter is either a list of strings or a single string.
-    The function raises a ValueError if the conditions are not met.
-
-    :param data_files: The data to check. It can be either a list of file names (strings) or a single file name (string).
-    :type data_files: list or str
-    :raises ValueError: If 'data_files' is a list but contains non-string elements.
-    :raises ValueError: If 'data_files' is neither a list nor a string.
-    :return: The original 'data_files' if it's a list, or a list containing 'data_files' if it's a single string.
-    :rtype: list
-    """
-    if isinstance(data_files, list):
-        if not data_files:
-            raise ValueError(f"Error : parameter {name} is an empty list")
-        for data in data_files:
-            if not isinstance(data, str):
-                raise ValueError(f'Error: in parameter {name} : Each file name has to be contained in quotation marks "".')
-        return data_files
-    elif not isinstance(data_files, str):
-        raise ValueError(f'Error: parameter {name} has to be a list or a name contained in quotation marks "".')
-    else:
-        return [data_files]
-
 def get_pattern_from_rule_file(rule_file, possible_patterns):
     """
     This function reads through a given rule file and identifies the pattern that matches the rules in the file.
@@ -330,7 +307,52 @@ def denormalize_rule(line, pattern, antecedant_pattern, dimlp_rule, with_attribu
     else: # Rewrite the line
         return line
 
-def normalization(*args, **kwargs):
+def get_and_check_parameters(init_args):
+    """
+    Processes and validates command-line arguments for a data normalization application.
+    This function cleans the input arguments by removing None values ensuring no unnecessary
+    arguments are passed to the parser. It initializes the argument parser with basic
+    configurations and adds various arguments required for the normalization process.
+    It deternines which arguments are required or not and defines their default values.
+
+    :param init_args: A list of command-line arguments passed to the program.
+    :type init_args: list
+
+    :return: A namespace object containing all the arguments that have been parsed and validated.
+    :rtype: argparse.Namespace
+    """
+    # Remove None values and his -- attribute
+    cleaned_args = [arg for i, arg in enumerate(init_args[:-1]) if ((not arg.startswith("--") or init_args[i+1] not in ["None", "none", None]) and arg not in ["None", "none", None])]
+    if init_args and init_args[-1] not in ["None", "none", None]:
+        cleaned_args.append(init_args[-1])
+
+    # Get initial attributes with root_folder and json file information
+    args, initial_parser = get_initial_parser(cleaned_args)
+
+    # set custom formatter printing boundaries
+    formatter = lambda prog: CustomHelpFormatter(prog, width=150, max_help_position=60)
+
+    # Add new attributes
+    parser = CustomArgumentParser(description="This is a parser for normalization", parents=[initial_parser], formatter_class=formatter, add_help=True)
+    parser.add_argument("--nb_attributes", type=lambda x: int_type(x, min=1), help="Number of attributes in dataset", metavar="<int [1,inf[>", required=True)
+    parser.add_argument("--missing_values", type=str, help="String representing a missing value in your data, put 'NaN' (or any string not present in your data) if you do not have any missing value, mandatory for normalization", metavar="<str>", action=TaggableAction, tag="Normalization")
+    parser.add_argument("--nb_classes", type=lambda x: int_type(x, min=1), help="Number of classes in dataset", metavar="<int [1,inf[>")
+    parser.add_argument("--normalization_file", type=lambda x: sanitizepath(args.root_folder, x), help="File containing the mean and standard deviation of some attributes, used for normalization and denormalization if specified", metavar="<str>", action=TaggableAction, tag="Normalization")
+    parser.add_argument("--mus", type=lambda x: list_type(x, dict(func=float_type)), metavar="<list<float>>", help="Mean or median of each attribute index of interest", action=TaggableAction, tag="Normalization")
+    parser.add_argument("--sigmas", type=lambda x: list_type(x, dict(func=float_type)), metavar="<list<float>>", help="Standard deviation of each attribute index of interest", action=TaggableAction, tag="Normalization")
+    parser.add_argument("--normalization_indices", type=lambda x: list_type(x, dict(func=int_type, min=0)), metavar="<list<int [0,nb_attributes-1]>>", help="Indices of the attributes to normalize or denormalize, index starts at 0, only used when no normalization_file is given (default: [0,...,nb_attributes-1])", action=TaggableAction, tag="Normalization")
+    parser.add_argument("--data_files", type=lambda x: [sanitizepath(args.root_folder, file) for file in list_type(x, dict(func=str))], metavar="<list<str>>", help="Data files to normalize, they are normalized with respect to the first one if normalization_file is not specified", action=TaggableAction, tag="Normalization")
+    parser.add_argument("--rule_files", type=lambda x: [sanitizepath(args.root_folder, file) for file in list_type(x, dict(func=str))], metavar="<list<str>>", help="Rule files to denormalize, denormalization is possible only if a normalization_file file or mus, sigmas and normalization_indices are given. Either 'data_files' or 'rule_files' must be specified", action=TaggableAction, tag="Normalization")
+    parser.add_argument("--attributes_file", type=lambda x: sanitizepath(args.root_folder, x), help="File of attributes, mandatory if rules or normalization stats are written with attribute names", metavar="<str>")
+    parser.add_argument("--output_normalization_file", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output file name containing the mean and std of the normalized attributes when normalization_file is not specified", metavar="<str>", default="normalization_stats.txt", action=TaggableAction, tag="Normalization")
+    parser.add_argument("--output_data_files", type=lambda x: [sanitizepath(args.root_folder, file, "w") for file in list_type(x, dict(func=str))], help="Normalized files names, it is mandatory to specify everyone of them if one is specified (default: <original_name>_normalized<original_extension>)", metavar="<list<str>>", action=TaggableAction, tag="Normalization")
+    parser.add_argument("--output_rule_files", type=lambda x: [sanitizepath(args.root_folder, file, "w") for file in list_type(x, dict(func=str))], help="Normalized rule files names, it is mandatory to specify everyone of them if one is specified (default: <original_name>_denormalized<original_extension>)", metavar="<list<str>>", action=TaggableAction, tag="Normalization")
+    parser.add_argument("--with_median", type=bool_type, help="Whether we use median instead of mean to compute normalitzation", metavar="<bool>", default=False, action=TaggableAction, tag="Normalization")
+    parser.add_argument("--fill_missing_values", type=bool_type, help="Whether we fill missing values with mean or median during normalization", metavar="<bool>", default=True, action=TaggableAction, tag="Normalization")
+
+    return get_args(args, cleaned_args, parser) # Return attributes
+
+def normalization(args: str = None):
 
     """
     This function serves two primary purposes: to normalize data files and to denormalize rule files.
@@ -378,324 +400,216 @@ def normalization(*args, **kwargs):
     - For data files: normalization(data_files=["datanormTrain.txt", "datanormTest.txt"], normalization_indices=[0,2,4], nb_attributes=16, missing_values="NaN", root_folder="dimlp/datafiles")
     - For rule files: normalization(normalization_file="normalization_stats.txt", rule_files="globalRulesDatanorm.txt", nb_attributes=16, root_folder="dimlp/datafiles")
 
-    :param args: Non-keyword arguments are not used.
-    :param kwargs: Keyword arguments specifying various options and file paths for the normalization/denormalization process.
+    :param args: arguments specifying various options and file paths for the normalization/denormalization process.
     :return: Returns 0 for successful execution, -1 for errors.
 
     """
 
     try:
+        if not args:
+            args = ""
+        start_time = time.time()
 
-        if not kwargs:
-            print("---------------------------------------------------------------------")
-            print("Please specify arguments using named parameters.")
-            print("Warning! The files are localised with respect to root folder dimlpfidex.")
-            print("The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json.")
-            print("----------------------------")
-            print("Required parameters :")
-            print("nb_attributes : number of attributes")
-            print('missing_values : string representing a missing value in your data, put "NaN" (or any string not in your data) if you do not have any missing value (only when working on data files)')
-            print("----------------------------")
-            print("Optional parameters :")
-            print("nb_classes : mendatory if classes are also present in data file or attribute file")
-            print("root_folder : Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
-            print("normalization_file : file containing the mean and std of some attributes. Used to normalize or denormalize if specified.")
-            print("mus : list of float corresponding to mean or median of each attribute index of interest.")
-            print("sigmas : list of float corresponding to standard deviation of each attribute index of interest.")
-            print("data_files : every data files to normalize contained in a list if there is more than one file. Normalize every file with respect to the first one if normalization_file is not specified.")
-            print("rule_files : every rule files to denormalize contained in a list if there is more than one file. Can only be denormalized if a normalization_file file or mus, sigmas and normalization_indices are given.")
-            print("Either 'data_files' or 'rule_files' must be specified.")
-            print("attributes_file : file containing attribute names (mendatory if rules or normalization stats are written with attribute names)")
-            print("normalization_indices : indices of the attributes(columns) to normalize a data file, contained in a list (first column is index 0, all indices by default, only used when no normalization_file is given).")
-            print("output_normalization_file : name of the output file containing the mean and std of some attributes when normalization_file is not specified (normalization_stats.txt by default).")
-            print("output_data_files : name of the normalized files contained in a list if there is more than one file. Need to specify everyone of them if one is specified (<original_name>_normalized<original_extension> by default)")
-            print("output_rule_files : name of the normalized rule files contained in a list if there is more than one file. Need to specify everyone of them if one is specified (<original_name>_denormalized<original_extension> by default)")
-            print("with_median : boolean, whether we use median instead of mean to compute normalitzation (False by default, only when working on data files)")
-            print("fill_missing_values : boolean, whether we fill missing values with mean or median (True by default, only when working on data files)")
-            print("----------------------------")
-            print("Here is an example with data files, keep same parameter names :")
-            print('normalization(data_files = ["datanormTrain.txt", "datanormTest.txt"], normalization_indices = [0,2,4], nb_attributes=16, missing_values="NaN", root_folder = "dimlp/datafiles")')
-            print("Another example with rule files :")
-            print('normalization(normalization_file = "normalization_stats.txt", rule_files = "globalRulesDatanorm.txt", nb_attributes=16, root_folder = "dimlp/datafiles")')
-            print("---------------------------------------------------------------------")
+        # Get parameters
+        split_args = []
+        if len(args) != 0:
+            split_args = args.split()  # string command to list
         else:
+            split_args= ["-h"]
+        args = get_and_check_parameters(split_args)
 
-            start_time = time.time()
+        # Check parameters
 
-            # Get parameters
-            nb_attributes = kwargs.get('nb_attributes')
-            nb_classes = kwargs.get('nb_classes')
-            missing_values = kwargs.get('missing_values')
-            root_folder = kwargs.get('root_folder')
-            normalization_file = kwargs.get('normalization_file')
-            mus = kwargs.get('mus')
-            sigmas = kwargs.get('sigmas')
-            data_files = kwargs.get('data_files')
-            rule_files = kwargs.get('rule_files')
-            attributes_file = kwargs.get('attributes_file')
-            normalization_indices = kwargs.get('normalization_indices')
-            output_normalization_file = kwargs.get('output_normalization_file')
-            output_data_files = kwargs.get('output_data_files')
-            output_rule_files = kwargs.get('output_rule_files')
-            with_median = kwargs.get('with_median')
-            fill_missing_values = kwargs.get('fill_missing_values')
+        if args.mus is not None :
+            if args.normalization_file is not None:
+                raise ValueError("Error : mus are given but normalization_file is also given.")
+            if args.sigmas is None:
+                raise ValueError("Error : mus are given but sigmas are not given.")
+            if not args.mus:
+                raise ValueError("Error : parameter mus is an empty list")
+        if args.sigmas is not None :
+            if args.normalization_file is not None:
+                raise ValueError("Error : sigmas are given but normalization_file is also given.")
+            if args.mus is None:
+                raise ValueError("Error : sigmas are given but mus are not given.")
+            if not args.sigmas:
+                raise ValueError("Error : parameter sigmas is an empty list")
 
-            # Check parameters
+        if args.normalization_indices is not None:
+            if args.normalization_file is not None:
+                raise ValueError("Error : normalization_indices are given but normalization_file is also given.")
+            if not all(index < args.nb_attributes for index in args.normalization_indices):
+                raise ValueError("Error : parameter normalization_indices has to be a list of positive integers smaller than the number of attributes.")
+            if len(args.normalization_indices) != len(set(args.normalization_indices)):
+                raise ValueError("Error : The same attribute is specified twice in normalization_indices.")
+            if not args.normalization_indices:
+                raise ValueError("Error : parameter normalization_indices is an empty list")
+        else:
+            if args.normalization_file is None:
+                args.normalization_indices = list(range(args.nb_attributes))
 
-            valid_args = ['nb_attributes', 'nb_classes', 'missing_values', 'root_folder', 'normalization_file', 'mus', 'sigmas', 'data_files', 'rule_files', 'attributes_file', 'normalization_indices', 'output_normalization_file',
-                          'output_data_files', 'output_rule_files', 'with_median', 'fill_missing_values']
+        if args.mus is not None and args.sigmas is not None:
+            if len(args.mus) != len(args.sigmas):
+                raise ValueError("Error : mus and sigmas have not the same amount of values.")
+            if len(args.mus) != len(args.normalization_indices):
+                raise ValueError("Error : normalization_indices has not the same amount of values as mus and sigmas. Maybe you forgot to specify it.")
 
-            # Check if wrong parameters are given
-            for arg_key in kwargs.keys():
-                if arg_key not in valid_args:
-                    raise ValueError(f"Invalid argument : {arg_key}.")
+        if args.data_files is not None:
+            if args.missing_values is None:
+                raise ValueError("Error : parameter missing_values missing.")
 
-            if nb_attributes is None:
-                raise ValueError('Error : number of attributes missing, add it with option nb_attributes="your_number_of_attributes".')
-            elif not check_strictly_positive(nb_attributes) or not check_int(nb_attributes):
-                raise ValueError('Error : parameter nb_attributes has to be a strictly positive integer.')
+            if args.output_data_files is None:
+                args.output_data_files = []
+                for data in args.data_files:
+                    base, ext = os.path.splitext(data)
+                    if ext:
+                        args.output_data_files.append(f"{base}_normalized{ext}")
+                    else:
+                        args.output_data_files.append(f"{data}_normalized")
+            if len(args.output_data_files) != len(args.data_files):
+                raise ValueError("Error : the size of output_data_files is not equal to the size of data_files")
 
-            if (nb_classes is not None and (not check_strictly_positive(nb_classes) or not check_int(nb_attributes))):
-                raise ValueError('Error : parameter nb_classes has to be a strictly positive integer.')
+        if args.rule_files is not None:
+            if args.normalization_file is None and args.mus is None:
+                raise ValueError("Error : rule files specified but there is no normalization_file or mus, sigmas and normalization_indices")
+            if args.output_rule_files is None:
+                args.output_rule_files = []
+                for rule_file in args.rule_files:
+                    base, ext = os.path.splitext(rule_file)
+                    if ext:
+                        args.output_rule_files.append(f"{base}_denormalized{ext}")
+                    else:
+                        args.output_rule_files.append(f"{rule_file}_denormalized")
+            if len(args.output_rule_files) != len(args.rule_files):
+                raise ValueError("Error : the size of output_rule_files is not equal to the size of rule_files")
 
-            root_folder = validate_string_param(root_folder, "root_folder", allow_none=True)
-            normalization_file = validate_string_param(normalization_file, "normalization_file", allow_none=True)
+        if (args.rule_files is None and args.data_files is None):
+            raise ValueError("Error : rule_files or data_files must be specified.")
 
-            if mus is not None :
-                if normalization_file is not None:
-                    raise ValueError("Error : mus are given but normalization_file is also given.")
-                if sigmas is None:
-                    raise ValueError("Error : mus are given but sigmas are not given.")
-                if not isinstance(mus, list) or not all(isinstance(mu, (float,int)) for mu in mus):
-                    raise ValueError("Error : parameter mus has to be a list of float.")
-                if not mus:
-                    raise ValueError("Error : parameter mus is an empty list")
-            if sigmas is not None :
-                if normalization_file is not None:
-                    raise ValueError("Error : sigmas are given but normalization_file is also given.")
-                if mus is None:
-                    raise ValueError("Error : sigmas are given but mus are not given.")
-                if not isinstance(sigmas, list) or not all(isinstance(sigma, (float,int)) for sigma in sigmas):
-                    raise ValueError("Error : parameter sigmas has to be a list of float.")
-                if not sigmas:
-                    raise ValueError("Error : parameter sigmas is an empty list")
+        print_parameters(args)
 
-            if data_files:
-                data_files = get_and_check_string_data_from_list(data_files, "data_files")
-            if rule_files:
-                rule_files = get_and_check_string_data_from_list(rule_files, "rule_files")
+        # Get attributes
+        attributes = None
+        has_classes = False
+        if (args.attributes_file is not None):
+            attributes = []
+            attributes, classes = get_attribute_file(args.attributes_file, args.nb_attributes, args.nb_classes)
+            if (len(classes) != 0):
+                has_classes = True
+        if args.normalization_file is not None:
+            # Get normalization_indices, mean/median, std and with_median from normalization file
+            args.normalization_indices, args.with_median, args.mus, args.sigmas = parse_normalization_file(args.normalization_file, args.nb_attributes, attributes)
 
-            attributes_file = validate_string_param(attributes_file, "attributes_file", allow_none=True)
-
-            if normalization_indices is not None:
-                if normalization_file is not None:
-                    raise ValueError("Error : normalization_indices are given but normalization_file is also given.")
-                if not isinstance(normalization_indices, list) or not all(check_int(index) and 0 <= index < nb_attributes for index in normalization_indices):
-                    raise ValueError("Error : parameter normalization_indices has to be a list of positive integers smaller than the number of attributes.")
-                if len(normalization_indices) != len(set(normalization_indices)):
-                    raise ValueError("Error : The same attribute is specified twice in normalization_indices.")
-                if not normalization_indices:
-                    raise ValueError("Error : parameter normalization_indices is an empty list")
+        elif args.mus is None:
+            #Normalize first file and get mean/median and std
+            main_file = args.data_files.pop(0)
+            output_main_file = args.output_data_files.pop(0)
+            if args.nb_classes is not None:
+                main_datas = get_data(main_file, args.nb_attributes, args.nb_classes, keep_string=True)[0]
             else:
-                if normalization_file is None:
-                    normalization_indices = list(range(nb_attributes))
+                main_datas = get_data(main_file, args.nb_attributes, keep_string=True)[0]
 
-            if mus is not None and sigmas is not None:
-                if len(mus) != len(sigmas):
-                    raise ValueError("Error : mus and sigmas have not the same amount of values.")
-                if len(mus) != len(normalization_indices):
-                    raise ValueError("Error : normalization_indices has not the same amount of values as mus and sigmas. Maybe you forgot to specify it.")
+            args.mus, args.sigmas = gaussian_normalization(main_datas, args.normalization_indices, output_main_file, args.fill_missing_values, args.output_normalization_file, attributes, args.missing_values, args.with_median)
 
 
-            output_normalization_file = validate_string_param(output_normalization_file, "output_normalization_file", default="normalization_stats.txt")
-
-            if data_files is not None:
-
-                if missing_values is None:
-                    raise ValueError("Error : parameter missing_values missing.")
+        if args.data_files is not None:
+            #Normalize each data file with mean/median and std obtained above
+            if args.normalization_file is not None:
+                args.output_normalization_file = None
+            for i in range(len(args.data_files)):
+                if args.nb_classes is not None:
+                    data = get_data(args.data_files[i], args.nb_attributes, args.nb_classes, keep_string=True)[0]
                 else:
-                    missing_values = validate_string_param(missing_values, "missing_values")
+                    data = get_data(args.data_files[i], args.nb_attributes, keep_string=True)[0]
 
-                if fill_missing_values is None:
-                    fill_missing_values = True
-                elif not check_bool(fill_missing_values):
-                        raise ValueError("Error : parameter fill_missing_values is not a boolean.")
-
-                if with_median is None:
-                    with_median = False
-                elif not check_bool(with_median):
-                        raise ValueError("Error : parameter with_median is not a boolean.")
-
-                if output_data_files is not None:
-                    output_data_files = get_and_check_string_data_from_list(output_data_files, "output_data_files")
-                else:
-                    output_data_files = []
-                    for data in data_files:
-                        base, ext = os.path.splitext(data)
-                        if ext:
-                            output_data_files.append(f"{base}_normalized{ext}")
-                        else:
-                            output_data_files.append(f"{data}_normalized")
-                if len(output_data_files) != len(data_files):
-                    raise ValueError("Error : the size of output_data_files is not equal to the size of data_files")
-
-            if rule_files is not None:
-                if normalization_file is None and mus is None:
-                    raise ValueError("Error : rule files specified but there is no normalization_file or mus, sigmas and normalization_indices")
-                if output_rule_files is not None:
-                    output_rule_files = get_and_check_string_data_from_list(output_rule_files, "output_rule_files")
-                else:
-                    output_rule_files = []
-                    for rule_file in rule_files:
-                        base, ext = os.path.splitext(rule_file)
-                        if ext:
-                            output_rule_files.append(f"{base}_denormalized{ext}")
-                        else:
-                            output_rule_files.append(f"{rule_file}_denormalized")
-                if len(output_rule_files) != len(rule_files):
-                    raise ValueError("Error : the size of output_rule_files is not equal to the size of rule_files")
-
-            if (rule_files is None and data_files is None):
-                raise ValueError("Error : rule_files or data_files must be specified.")
+                gaussian_normalization(data, args.normalization_indices, args.output_data_files[i], args.fill_missing_values, args.output_normalization_file, attributes, args.missing_values, args.with_median, args.mus, args.sigmas)
 
 
-            if (root_folder):
-                if normalization_file is not None:
-                    normalization_file = root_folder + "/" + normalization_file
-                if output_normalization_file is not None:
-                    output_normalization_file = root_folder + "/" + output_normalization_file
-                if data_files is not None:
-                    data_files = [root_folder + "/" + data for data in data_files]
-                    output_data_files = [root_folder + "/" + out_data for out_data in output_data_files]
-                if rule_files is not None:
-                    rule_files = [root_folder + "/" + rule_file for rule_file in rule_files]
-                    output_rule_files = [root_folder + "/" + out_rule_file for out_rule_file in output_rule_files]
-                if attributes_file is not None:
-                    attributes_file = root_folder + "/" + attributes_file
+        if args.rule_files is not None:
+            #Denormalize each rule file with mean/median and std obtained above
 
+            #Patterns corresponding to rules, there are 6 possible patterns :
+            float_pattern = r'-?\d+(\.\d+)?'
+            int_pattern = r'\d+'
+            if args.attributes_file is not None:
+                attr_pattern = "|".join(map(re.escape, attributes))
+                pattern_fidex_attributes = fr'(?P<first_part>.*?)(?P<antecedants>(({attr_pattern})[<>]=?{float_pattern} )+)(?P<last_part>-> class {int_pattern}.*)'
+                pattern_dimlp_attributes = fr'(?P<first_part>.*?)(?P<antecedants>(\(({attr_pattern}) [<>] {float_pattern}\) )+)(?P<last_part>Class = {int_pattern}.*)'
+                if has_classes:
+                    class_pattern = "|".join(map(re.escape, classes))
+                    pattern_fidex_attributes_and_classes = fr'(?P<first_part>.*?)(?P<antecedants>(({attr_pattern})[<>]=?{float_pattern} )+)(?P<last_part>-> ({class_pattern}).*)'
+                    pattern_dimlp_attributes_and_classes = fr'(?P<first_part>.*?)(?P<antecedants>(\(({attr_pattern}) [<>] {float_pattern}\) )+)(?P<last_part>Class = ({class_pattern}).*)'
 
-            # Get attributes
-            attributes = None
-            has_classes = False
-            if (attributes_file is not None):
-                attributes = []
-                attributes, classes = get_attribute_file(attributes_file, nb_attributes, nb_classes)
-                if (len(classes) != 0):
-                    has_classes = True
-            if normalization_file is not None:
-                # Get normalization_indices, mean/median, std and withMedian from normalization file
-                normalization_indices, with_median, mus, sigmas = parse_normalization_file(normalization_file, nb_attributes, attributes)
+            pattern_fidex_id = fr'(?P<first_part>.*?)(?P<antecedants>(X{int_pattern}[<>]=?{float_pattern} )+)(?P<last_part>-> class {int_pattern}.*)'
+            pattern_dimlp_id = fr'(?P<first_part>.*?)(?P<antecedants>(\(x{int_pattern} [<>] {float_pattern}\) )+)(?P<last_part>Class = {int_pattern}.*)'
 
-            elif mus is None:
-                #Normalize first file and get mean/median and std
-                main_file = data_files.pop(0)
-                output_main_file = output_data_files.pop(0)
-                if nb_classes is not None:
-                    main_datas = get_data(main_file, nb_attributes, nb_classes, keep_string=True)[0]
-                else:
-                    main_datas = get_data(main_file, nb_attributes, keep_string=True)[0]
+            for r in range(len(args.rule_files)): # For each rule file
+                rule_file = args.rule_files[r]
+                output_rule_file = args.output_rule_files[r]
 
-                mus, sigmas = gaussian_normalization(main_datas, normalization_indices, output_main_file, fill_missing_values, output_normalization_file, attributes, missing_values, with_median)
-
-
-            if data_files is not None:
-                #Normalize each data file with mean/median and std obtained above
-                if normalization_file is not None:
-                    output_normalization_file = None
-                for i in range(len(data_files)):
-                    if nb_classes is not None:
-                        data = get_data(data_files[i], nb_attributes, nb_classes, keep_string=True)[0]
-                    else:
-                        data = get_data(data_files[i], nb_attributes, keep_string=True)[0]
-
-                    gaussian_normalization(data, normalization_indices, output_data_files[i], fill_missing_values, output_normalization_file, attributes, missing_values, with_median, mus, sigmas)
-
-
-            if rule_files is not None:
-                #Denormalize each rule file with mean/median and std obtained above
-
-                #Patterns corresponding to rules, there are 6 possible patterns :
-                float_pattern = r'-?\d+(\.\d+)?'
-                int_pattern = r'\d+'
-                if attributes_file is not None:
-                    attr_pattern = "|".join(map(re.escape, attributes))
-                    pattern_fidex_attributes = fr'(?P<first_part>.*?)(?P<antecedants>(({attr_pattern})[<>]=?{float_pattern} )+)(?P<last_part>-> class {int_pattern}.*)'
-                    pattern_dimlp_attributes = fr'(?P<first_part>.*?)(?P<antecedants>(\(({attr_pattern}) [<>] {float_pattern}\) )+)(?P<last_part>Class = {int_pattern}.*)'
+                possible_patterns = [pattern_fidex_id, pattern_dimlp_id]
+                possible_dimlp_patters = [pattern_dimlp_id]
+                possible_patterns_with_attribute_names = []
+                if args.attributes_file is not None:
+                    possible_patterns.append(pattern_fidex_attributes)
+                    possible_patterns.append(pattern_dimlp_attributes)
+                    possible_dimlp_patters.append(pattern_dimlp_attributes)
+                    possible_patterns_with_attribute_names.append(pattern_fidex_attributes)
+                    possible_patterns_with_attribute_names.append(pattern_dimlp_attributes)
                     if has_classes:
-                        class_pattern = "|".join(map(re.escape, classes))
-                        pattern_fidex_attributes_and_classes = fr'(?P<first_part>.*?)(?P<antecedants>(({attr_pattern})[<>]=?{float_pattern} )+)(?P<last_part>-> ({class_pattern}).*)'
-                        pattern_dimlp_attributes_and_classes = fr'(?P<first_part>.*?)(?P<antecedants>(\(({attr_pattern}) [<>] {float_pattern}\) )+)(?P<last_part>Class = ({class_pattern}).*)'
+                        possible_patterns.append(pattern_fidex_attributes_and_classes)
+                        possible_patterns.append(pattern_dimlp_attributes_and_classes)
+                        possible_dimlp_patters.append(pattern_dimlp_attributes_and_classes)
+                        possible_patterns_with_attribute_names.append(pattern_fidex_attributes_and_classes)
+                        possible_patterns_with_attribute_names.append(pattern_dimlp_attributes_and_classes)
 
-                pattern_fidex_id = fr'(?P<first_part>.*?)(?P<antecedants>(X{int_pattern}[<>]=?{float_pattern} )+)(?P<last_part>-> class {int_pattern}.*)'
-                pattern_dimlp_id = fr'(?P<first_part>.*?)(?P<antecedants>(\(x{int_pattern} [<>] {float_pattern}\) )+)(?P<last_part>Class = {int_pattern}.*)'
+                # Check which pattern is in the file
+                pattern = get_pattern_from_rule_file(rule_file, possible_patterns)
 
-                for r in range(len(rule_files)): # For each rule file
-                    rule_file = rule_files[r]
-                    output_rule_file = output_rule_files[r]
+                dimlp_rules = pattern in possible_dimlp_patters
+                with_attribute_names = pattern in possible_patterns_with_attribute_names
 
-                    possible_patterns = [pattern_fidex_id, pattern_dimlp_id]
-                    possible_dimlp_patters = [pattern_dimlp_id]
-                    possible_patterns_with_attribute_names = []
-                    if attributes_file is not None:
-                        possible_patterns.append(pattern_fidex_attributes)
-                        possible_patterns.append(pattern_dimlp_attributes)
-                        possible_dimlp_patters.append(pattern_dimlp_attributes)
-                        possible_patterns_with_attribute_names.append(pattern_fidex_attributes)
-                        possible_patterns_with_attribute_names.append(pattern_dimlp_attributes)
-                        if has_classes:
-                            possible_patterns.append(pattern_fidex_attributes_and_classes)
-                            possible_patterns.append(pattern_dimlp_attributes_and_classes)
-                            possible_dimlp_patters.append(pattern_dimlp_attributes_and_classes)
-                            possible_patterns_with_attribute_names.append(pattern_fidex_attributes_and_classes)
-                            possible_patterns_with_attribute_names.append(pattern_dimlp_attributes_and_classes)
-
-                    # Check which pattern is in the file
-                    pattern = get_pattern_from_rule_file(rule_file, possible_patterns)
-
-                    dimlp_rules = pattern in possible_dimlp_patters
-                    with_attribute_names = pattern in possible_patterns_with_attribute_names
-
-                    # Build antecedant pattern
-                    if dimlp_rules:
-                        if with_attribute_names:
-                            dimlp_attr_pattern = fr'(\()(?P<attribute>{attr_pattern})'
-                        else:
-                            dimlp_attr_pattern = fr'(\(x)(?P<attribute>{int_pattern})'
-                        antecedant_pattern = fr'{dimlp_attr_pattern}(?P<inequality> [<>] )(?P<value>{float_pattern})(?P<last_part>\) )'
+                # Build antecedant pattern
+                if dimlp_rules:
+                    if with_attribute_names:
+                        dimlp_attr_pattern = fr'(\()(?P<attribute>{attr_pattern})'
                     else:
-                        if with_attribute_names:
-                            fidex_attr_pattern = fr'()(?P<attribute>{attr_pattern})'
-                        else:
-                            fidex_attr_pattern = fr'(X)(?P<attribute>{int_pattern})'
-                        antecedant_pattern = fr'{fidex_attr_pattern}(?P<inequality>[<>]=?)(?P<value>{float_pattern})(?P<last_part> )'
+                        dimlp_attr_pattern = fr'(\(x)(?P<attribute>{int_pattern})'
+                    antecedant_pattern = fr'{dimlp_attr_pattern}(?P<inequality> [<>] )(?P<value>{float_pattern})(?P<last_part>\) )'
+                else:
+                    if with_attribute_names:
+                        fidex_attr_pattern = fr'()(?P<attribute>{attr_pattern})'
+                    else:
+                        fidex_attr_pattern = fr'(X)(?P<attribute>{int_pattern})'
+                    antecedant_pattern = fr'{fidex_attr_pattern}(?P<inequality>[<>]=?)(?P<value>{float_pattern})(?P<last_part> )'
 
-                    # Denormalize each rules
-                    try:
-                        with open(rule_file, "r") as file:
-                            try:
-                                with open(output_rule_file, "w") as output_file:
-                                    for line in file:
-                                        #Denormalize rule
-                                        new_line = denormalize_rule(line.rstrip("\n"), pattern, antecedant_pattern, dimlp_rules, with_attribute_names, normalization_indices, attributes, sigmas, mus) + "\n"
-                                        output_file.write(new_line) # Write line in output file
+                # Denormalize each rules
+                try:
+                    with open(rule_file, "r") as file:
+                        try:
+                            with open(output_rule_file, "w") as output_file:
+                                for line in file:
+                                    #Denormalize rule
+                                    new_line = denormalize_rule(line.rstrip("\n"), pattern, antecedant_pattern, dimlp_rules, with_attribute_names, args.normalization_indices, attributes, args.sigmas, args.mus) + "\n"
+                                    output_file.write(new_line) # Write line in output file
 
-                            except FileNotFoundError:
-                                    raise ValueError(f"Error : File {output_file} not found.")
-                            except IOError:
-                                raise ValueError(f"Error : Couldn't open file {output_file}.")
-                    except FileNotFoundError:
-                            raise ValueError(f"Error : File {rule_file} not found.")
-                    except IOError:
-                        raise ValueError(f"Error : Couldn't open file {rule_file}.")
+                        except FileNotFoundError:
+                                raise ValueError(f"Error : File {output_file} not found.")
+                        except IOError:
+                            raise ValueError(f"Error : Couldn't open file {output_file}.")
+                except FileNotFoundError:
+                        raise ValueError(f"Error : File {rule_file} not found.")
+                except IOError:
+                    raise ValueError(f"Error : Couldn't open file {rule_file}.")
 
 
-            end_time = time.time()
-            full_time = end_time - start_time
-            full_time = "{:.6f}".format(full_time).rstrip("0").rstrip(".")
+        end_time = time.time()
+        full_time = end_time - start_time
+        full_time = "{:.6f}".format(full_time).rstrip("0").rstrip(".")
 
-            print(f"\nFull execution time = {full_time} sec")
+        print(f"\nFull execution time = {full_time} sec")
 
-            return 0
+        return 0
 
     except ValueError as error:
         print(error)

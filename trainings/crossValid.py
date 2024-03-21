@@ -22,7 +22,7 @@ from trainings.mlpTrn import mlpTrn
 from trainings.randForestsTrn import randForestsTrn
 from trainings.gradBoostTrn import gradBoostTrn
 from trainings.computeRocCurve import computeRocCurve
-from trainings.trnFun import delete_file, get_data, get_data_class, validate_string_param
+from trainings.trnFun import delete_file, get_data, get_data_class
 
 def create_or_clear_directory(folder_name):
     try:
@@ -116,7 +116,7 @@ def crossValid(*args, **kwargs):
             print("train_method : dimlp, dimlpBT, svm, mlp, randForest or gradBoost")
             print("algo : fidex, fidexGlo or both")
             print("data_file : data file")
-            print("class_file : class file, not mendatory if classes are specified in train file")
+            print("class_file : class file, not mandatory if classes are specified in train file")
             print("nb_attributes : number of input neurons")
             print("nb_classes : number of output neurons")
 
@@ -670,7 +670,10 @@ def crossValid(*args, **kwargs):
             # Get datas in a list
             datas, classes = get_data(data_file, nb_attributes, nb_classes)
             if len(classes) == 0:
-                class_file = validate_string_param(class_file, "classes")
+                if class_file is None:
+                    raise ValueError('Error: class_file missing, add it with option class_file="your_class_file".')
+                elif not isinstance(class_file, str):
+                    raise ValueError('Error: parameter class_file has to be a name contained in quotation marks "".')
                 class_file = root + class_file
                 classes = get_data_class(class_file, nb_classes)
 

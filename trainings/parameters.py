@@ -78,6 +78,11 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
                 self.add_text("computeRocCurve('--test_class_file dataclass2Test.txt --test_pred_file predTest.out --positive_class_index 1 --output_roc roc_curve.png --stats_file stats.txt --root_folder dimlp/datafiles --nb_classes 2')", raw=True)
             elif tag == "convKeras":
                 self.add_text("convKeras('--dataset mnist --train_data_file mnistTrainData.txt --train_class_file mnistTrainClass.txt --test_data_file mnistTestData.txt --test_class_file mnistTestClass.txt --valid_data_file mnistValidData.txt --valid_class_file mnistValidClass.txt --nb_attributes 784 --nb_classes 10 --root_folder dimlp/datafiles/Mnist')", raw=True)
+            elif tag == "Normalization":
+                self.add_text("For datafile normalization :", raw=True)
+                self.add_text("normalization('--data_files [datanormTrain.txt,datanormTest.txt] --normalization_indices [0,2,4] --nb_attributes 16 --missing_values NaN --root_folder dimlp/datafiles')", raw=True)
+                self.add_text("For rulefile denormalization :", raw=True)
+                self.add_text("normalization('--normalization_file normalization_stats.txt --rule_files globalRulesDatanorm.txt --nb_attributes 16 --root_folder dimlp/datafiles')", raw=True)
         self.add_text("---------------------------------------------------------------------", raw=True)
 
     # To display execution examples on one line
@@ -481,10 +486,10 @@ def get_common_parser(args, initial_parser):
     """
     common_parser = CustomArgumentParser(description="This is a parser for common training arguments", parents=[initial_parser], add_help=False)
     common_parser.add_argument("--train_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Train data file", metavar="<str>", required=True)
-    common_parser.add_argument("--train_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Train class file, mendatory if classes are not specified in train_data_file", metavar="<str>")
+    common_parser.add_argument("--train_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Train class file, mandatory if classes are not specified in train_data_file", metavar="<str>")
     common_parser.add_argument("--train_pred_outfile", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Output train prediction file name", metavar="<str>", default="predTrain.out")
     common_parser.add_argument("--test_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test data file", metavar="<str>", required=True)
-    common_parser.add_argument("--test_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test class file, mendatory if classes are not specified in test_data_file", metavar="<str>")
+    common_parser.add_argument("--test_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test class file, mandatory if classes are not specified in test_data_file", metavar="<str>")
     common_parser.add_argument("--test_pred_outfile", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Output test prediction file name", metavar="<str>", default="predTest.out")
     common_parser.add_argument("--console_file", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="File with console logs redirection", metavar="<str>")
     common_parser.add_argument("--stats_file", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Output statistic file name with train and test accuracy", metavar="<str>", default="stats.txt")

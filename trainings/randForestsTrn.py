@@ -6,6 +6,19 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 
 def get_and_check_parameters(init_args):
+    """
+    Processes and validates command-line arguments for a model training with random forests.
+    This function cleans the input arguments by removing None values ensuring no unnecessary
+    arguments are passed to the parser. It initializes the argument parser with basic
+    configurations and adds various arguments required for the normalization process.
+    It deternines which arguments are required or not and defines their default values.
+
+    :param init_args: A list of command-line arguments passed to the program.
+    :type init_args: list
+
+    :return: A namespace object containing all the arguments that have been parsed and validated.
+    :rtype: argparse.Namespace
+    """
     # Remove None values and his -- attribute
     cleaned_args = [arg for i, arg in enumerate(init_args[:-1]) if ((not arg.startswith("--") or init_args[i+1] not in ["None", "none", None]) and arg not in ["None", "none", None])]
     if init_args and init_args[-1] not in ["None", "none", None]:
