@@ -18,11 +18,11 @@ static const std::string DEFAULT_ROOT_FOLDER = DATA_FOLDER;
 
 // default paths
 static const std::string DEFAULT_TRAIN_FILE = "train.txt";
-static const std::string DEFAULT_TRAIN_PRED_FILE = "train.out";
+static const std::string DEFAULT_TRAIN_PRED_FILE = "out/dimlp_train.out";
 static const std::string DEFAULT_TRAIN_TRUE_CLASS_FILE = "train_true_classes.txt";
-static const std::string DEFAULT_WEIGHTS_FILE = "weights.wts";
+static const std::string DEFAULT_WEIGHTS_FILE = "out/weights.wts";
 static const std::string DEFAULT_TXT_IN_RULES_FILE = "rules.txt";
-static const std::string DEFAULT_TXT_OUT_RULES_FILE = "new_rules.txt";
+static const std::string DEFAULT_TXT_OUT_RULES_FILE = "out/param_test_rules.rls";
 static const std::string DEFAULT_JSON_IN_RULES_FILE = "rules.json";
 static const std::string DEFAULT_JSON_OUT_RULES_FILE = "new_rules.json";
 static const std::string DEFAULT_ATTRIBUTES_FILE = "attributes.txt";
