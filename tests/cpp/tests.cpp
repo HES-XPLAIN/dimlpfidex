@@ -3,26 +3,29 @@
 uint runDimlpTestsSuite() {
   uint res = 0;
 
+  res += testDimlpTrn();
   res += testDimlpBT();
   res += testDensCls();
   res += testDimlpCls();
   res += testDimlpPred();
   res += testDimlpRul();
-  res += testDimlpTrn();
 
   return res;
 }
 
+// test avec dimlpTrn weights file
 uint runFidextestsSuite() {
   uint res = 0;
 
   res += testFidex();
-  res += testFidexGlo();
   res += testFidexGloRules();
+  res += testFidexGlo();
   res += testFidexGloStats();
 
   return res;
 }
+
+// TODO test avec dimlpBT weights file
 
 int main() {
   uint res = 0;
