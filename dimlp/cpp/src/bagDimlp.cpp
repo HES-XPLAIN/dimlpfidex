@@ -62,12 +62,15 @@ void BagDimlp::MakeDataSets(
 void BagDimlp::TrainAll(
     DataSet &test,
     DataSet &testTar,
-    const std::string &genericWeightsFile,
+    const std::string &weightsFile,
     const std::string &accuracyFile,
     int seed)
 
 {
   string str1;
+
+  // Remove content from weightsFile
+  std::ofstream(weightsFile, std::ios::out).close();
 
   for (int n = 0; n < NbDimlpNets; n++) {
     cout << "\n\n-------------------------------------------------------";
@@ -95,9 +98,7 @@ void BagDimlp::TrainAll(
                                test, testTar,
                                *(ValData[n]), *(ValDataClass[n]), accuracyFile, fromBT);
 
-    str1 = genericWeightsFile + std::to_string(n + 1) + ".wts";
-
-    VectDimlp[n]->Dimlp::SaveWeights(str1);
+    VectDimlp[n]->Dimlp::SaveWeights(weightsFile, n + 1);
   }
 }
 
