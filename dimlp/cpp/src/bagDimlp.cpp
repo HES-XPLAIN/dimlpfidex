@@ -74,6 +74,9 @@ void BagDimlp::TrainAll(
   // Remove content from weightsFile
   std::ofstream(weightsFile, std::ios::out).close();
 
+  // Remove content from weightsFile
+  std::ofstream(weightsFile, std::ios::out).close();
+
   for (int n = 0; n < NbDimlpNets; n++) {
     std::cout << "\n\n-------------------------------------------------------";
     std::cout << "---------------------------";
