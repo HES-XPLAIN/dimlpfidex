@@ -37,7 +37,7 @@ void showDimlpBTParams()
   printOptionDescription("--train_class_file <str>", "Train true class file");
   printOptionDescription("--test_class_file <str>", "Test true class file");
   printOptionDescription("--console_file <str>", "File with console logs redirection");
-  printOptionDescription("--weights_generic_outfilename <str>", "Output weights generic name file without extension .wts (default: dimlpBT)");
+  printOptionDescription("--weights_outfilename <str>", "Output weights file name file (default: dimlpBT.wts");
   printOptionDescription("--train_pred_outfile <str>", "Output train prediction file name (default: dimlpBTTrain.out)");
   printOptionDescription("--test_pred_outfile <str>", "Output test prediction file name (default: dimlpBTTest.out)");
   printOptionDescription("--stats_file <str>", "Output file name with train, test and validation accuracy and with the global train and test accuracy");
@@ -65,7 +65,7 @@ void showDimlpBTParams()
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "dimlp.dimlpBT(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_generic_outfilename dimlpDatanormBT --with_rule_extraction true --global_rules_outfile globalRules.rls --train_pred_outfile predTrain.out --test_pred_outfile predTest.out --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
+  std::cout << "dimlp.dimlpBT(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_outfilename dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile globalRules.rls --train_pred_outfile predTrain.out --test_pred_outfile predTest.out --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
@@ -82,7 +82,7 @@ void checkDimlpBTParametersLogicValues(Parameters &p) {
   // setting default values
   p.setDefaultString(TRAIN_PRED_OUTFILE, "dimlpBTTrain.out", true);
   p.setDefaultString(TEST_PRED_OUTFILE, "dimlpBTTest.out", true);
-  p.setDefaultString(WEIGHTS_GENERIC_OUTFILENAME, "dimlpBT", true);
+  p.setDefaultString(WEIGHTS_OUTFILENAME, "dimlpBT.wts", true);
   p.setDefaultNbQuantLevels();
   p.setDefaultDimlpTrn();
   p.setDefaultInt(NB_DIMLP_NETS, 25);
@@ -138,7 +138,7 @@ int dimlpBT(const string &command) {
     // Import parameters
     unique_ptr<Parameters> params;
     std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER, NB_DIMLP_NETS, ATTRIBUTES_FILE,
-                                              TEST_DATA_FILE, TRAIN_CLASS_FILE, TEST_CLASS_FILE, CONSOLE_FILE, WEIGHTS_GENERIC_OUTFILENAME,
+                                              TEST_DATA_FILE, TRAIN_CLASS_FILE, TEST_CLASS_FILE, CONSOLE_FILE, WEIGHTS_OUTFILENAME,
                                               TRAIN_PRED_OUTFILE, TEST_PRED_OUTFILE, STATS_FILE, H, WITH_RULE_EXTRACTION, GLOBAL_RULES_OUTFILE,
                                               LEARNING_RATE, MOMENTUM, FLAT, NB_QUANT_LEVELS, ERROR_THRESH, ACC_THRESH, ABS_ERROR_THRESH,
                                               NB_EPOCHS, NB_EPOCHS_ERROR, NB_EX_PER_NET, NORMALIZATION_FILE, MUS, SIGMAS, NORMALIZATION_INDICES, SEED};
@@ -180,7 +180,7 @@ int dimlpBT(const string &command) {
     std::string learnFile = params->getString(TRAIN_DATA_FILE);
     std::string predTrainFile = params->getString(TRAIN_PRED_OUTFILE);
     std::string predTestFile = params->getString(TEST_PRED_OUTFILE);
-    std::string genericWeightsFile = params->getString(WEIGHTS_GENERIC_OUTFILENAME);
+    std::string genericWeightsFile = params->getString(WEIGHTS_OUTFILENAME);
 
     float eta = params->getFloat(LEARNING_RATE);
     float mu = params->getFloat(MOMENTUM);
@@ -507,4 +507,4 @@ int dimlpBT(const string &command) {
   return 0;
 }
 
-// Exemple to launch the code : dimlp.dimlpBT("dimlpBT --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_generic_outfilename dimlpDatanormBT --with_rule_extraction true --global_rules_outfile dimlpDatanormBTRul.rls --train_pred_outfile dimlpDatanormBTTrain.out --test_pred_outfile dimlpDatanormBTTest.out --stats_file dimlpDatanormBTStats --console_file dimlpDatanormBTResult.txt --root_folder dimlp/datafiles");
+// Exemple to launch the code : dimlp.dimlpBT("dimlpBT --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_outfilename dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile dimlpDatanormBTRul.rls --train_pred_outfile dimlpDatanormBTTrain.out --test_pred_outfile dimlpDatanormBTTest.out --stats_file dimlpDatanormBTStats --console_file dimlpDatanormBTResult.txt --root_folder dimlp/datafiles");

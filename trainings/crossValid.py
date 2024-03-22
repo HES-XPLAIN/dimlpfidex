@@ -1200,7 +1200,7 @@ def crossValid(*args, **kwargs):
                             dimlp_command += "--valid_pred_outfile " + folder_path_from_root + separator + "valid.out "   # Output validation pred file
                             dimlp_command += "--weights_outfile " + folder_path_from_root + separator + "weights.wts " # Output weight file
                         else:
-                            dimlp_command += "--weights_generic_outfilename " + folder_path_from_root + separator + "weightsBT " # Output weight generic filename
+                            dimlp_command += "--weights_outfilename " + folder_path_from_root + separator + "weightsBT.wts " # Output weight generic filename
 
                         if is_dimlprul:
                             dimlp_command += "--with_rule_extraction true --global_rules_outfile " + folder_path_from_root + separator + "dimlpRules.rls "
