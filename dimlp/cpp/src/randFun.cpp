@@ -9,18 +9,15 @@
 void IntRandomFunction::StartOnlyOnece(int seed) const
 
 {
+
+  if (seed == 0) {
+    seed = static_cast<int>(std::chrono::system_clock::now().time_since_epoch().count());
+  }
+
 #if defined(__unix__) || defined(__APPLE__)
-  if (seed == 0) {
-    srandom(getpid());
-  } else {
-    srandom(seed);
-  }
+  srandom(seed);
 #elif defined(_WIN32)
-  if (seed == 0) {
-    srand(getpid());
-  } else {
-    srand(seed);
-  }
+  srand(seed);
 #endif
 }
 
@@ -56,18 +53,13 @@ int IntRandomFunction::RandomInteger() const
 void FloatRandomFunction::StartOnlyOnece(int seed) const
 
 {
+  if (seed == 0) {
+    seed = static_cast<int>(std::chrono::system_clock::now().time_since_epoch().count());
+  }
 #if defined(__unix__) || defined(__APPLE__)
-  if (seed == 0) {
-    srand48(getpid());
-  } else {
-    srand48(seed);
-  }
+  srand48(seed);
 #elif defined(_WIN32)
-  if (seed == 0) {
-    srand(getpid());
-  } else {
-    srand(seed);
-  }
+  srand(seed);
 #endif
 }
 
