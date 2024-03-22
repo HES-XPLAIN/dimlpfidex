@@ -171,25 +171,29 @@ void BpNN::SaveWeights() const
 
 ///////////////////////////////////////////////////////////////////
 
-void BpNN::SaveWeights(const std::string &strSave) const
+void BpNN::SaveWeights(const std::string &strSave, int netId) const
 
 {
   filebuf buf;
 
-  if (buf.open(strSave, ios_base::out) == nullptr) {
+  if (buf.open(strSave, ios_base::out | ios_base::app) == nullptr) {
     throw CannotOpenFileError("Error : Cannot open save file " + strSave);
   }
   ostream outFile(&buf);
 
   cout << "\n\n"
        << strSave << ": "
-       << "Writing ..." << std::endl;
+       << "Writing net " << netId << "..." << std::endl;
 
+  outFile << "Network " << netId << " " << std::endl
+          << std::endl;
   for (int n = 0; n < NbWeightLayers; n++)
     VecLayer[n]->WriteWeights(outFile);
 
+  outFile << std::endl;
+
   cout << strSave << ": "
-       << "Written.\n"
+       << "Written network " << netId << ".\n"
        << std::endl;
 }
 

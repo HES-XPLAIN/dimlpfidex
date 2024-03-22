@@ -100,7 +100,7 @@ public:
   int Max(const std::vector<float> &vec) const;
   std::shared_ptr<Layer> GetLayer(int indLayer) { return VecLayer[indLayer]; }
 
-  void SaveWeights(const std::string &str) const;
+  void SaveWeights(const std::string &str, int netId) const;
 
   virtual void ForwardOneExample1(DataSet &data, int index);
   virtual void ForwardOneExample1(float *ex);
