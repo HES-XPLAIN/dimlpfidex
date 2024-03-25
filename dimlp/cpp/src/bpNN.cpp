@@ -210,16 +210,56 @@ void BpNN::ReadWeights() const
 
   istream inFile(&buf);
 
-  cout << "\n\n"
-       << ReadFile << ": "
-       << "Reading ..." << std::endl;
+  std::string line;
+  bool isCurrentNetwork = false;
+  bool containsNetworkMarkers = false;
 
-  for (int n = 0; n < NbLayers - 1; n++)
-    VecLayer[n]->ReadWeights(inFile);
+  while (std::getline(inFile, line)) {
+    if (line.find("Network ") != std::string::npos) {
+      containsNetworkMarkers = true; // Network markers found
+      break;
+    }
+  }
+  inFile.clear();
+  inFile.seekg(0, ios::beg); // Reinitialise cursor to the beginning
 
-  cout << ReadFile << ": "
-       << "Read.\n"
-       << std::endl;
+  // If the file contains network markers, look for the specific network ID.
+  if (containsNetworkMarkers) {
+    std::cout << "\n\n"
+              << ReadFile << " network " << NetId << ": "
+              << "Reading ..." << std::endl;
+    int n = 0;
+    while (std::getline(inFile, line)) {
+      if (line.find("Network " + std::to_string(NetId)) != std::string::npos) {
+        isCurrentNetwork = true; // Start of the desired network block
+        continue;
+      }
+      if (isCurrentNetwork && line.find("Network ") != std::string::npos) {
+        break; // Start of the next network block, stop reading
+      }
+
+      // When in the desired network block
+      if (isCurrentNetwork && !checkStringEmpty(line) && n < NbLayers - 1) {
+        std::string weightsData = line + "\n";
+        if (std::getline(inFile, line)) { // Assuming the next line of weights immediately follows
+          weightsData += line;            // Merge two lines for weights
+          std::istringstream iss(weightsData);
+          VecLayer[n]->ReadWeights(iss);
+          n += 1;
+        }
+      }
+    }
+  } else { // The file contains just one network
+    std::cout << "\n\n"
+              << ReadFile << ": "
+              << "Reading ..." << std::endl;
+    for (int m = 0; m < NbLayers - 1; m++)
+      VecLayer[m]->ReadWeights(inFile);
+  }
+
+  std::cout << ReadFile << ": "
+            << "Read.\n"
+            << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -822,8 +862,9 @@ BpNN::BpNN(
     const std::string &readFile,
     int nbLayers,
     const std::vector<int> &nbNeurons,
-    const std::string &printNetType)
-    : ReadFile(readFile), NbLayers(nbLayers), NbWeightLayers(nbLayers - 1) {
+    const std::string &printNetType,
+    int netId)
+    : ReadFile(readFile), NetId(netId), NbLayers(nbLayers), NbWeightLayers(nbLayers - 1) {
 
   cout << "\n\n-----------------------------------------";
   cout << "-------------------------------------\n"

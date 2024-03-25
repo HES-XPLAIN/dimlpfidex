@@ -115,9 +115,8 @@ void BagDimlp::DefNetsWithWeights(const std::string &prefix)
 
     cout << "\n\nBuilding network " << n + 1 << "" << std::endl;
 
-    str1 = prefix + std::to_string(n + 1) + ".wts";
-    VectDimlp[n] = std::make_shared<Dimlp>(str1, NbLayers, NbNeurons,
-                                           DiscrLevels);
+    VectDimlp[n] = std::make_shared<Dimlp>(prefix, NbLayers, NbNeurons,
+                                           DiscrLevels, n + 1);
   }
 }
 

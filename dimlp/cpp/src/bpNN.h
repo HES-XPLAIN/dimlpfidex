@@ -18,6 +18,7 @@
 #include "layerD4.h"
 #include "layerFdp.h"
 
+#include "../../../common/cpp/src/checkFun.h"
 #include "layerRad.h"
 #include "layerSD.h"
 #include "layerSP3.h"
@@ -46,6 +47,7 @@ class BpNN {
   int ShowErrParam;
   int NbEpochsParam;
 
+  int NetId = 1;
   int NbLayers; // Including Input and Output
   int NbWeightLayers;
   std::vector<int> NbNeurons;
@@ -166,7 +168,8 @@ public:
       const std::string &readFile,
       int nbLayers,
       const std::vector<int> &nbNeurons,
-      const std::string &printNetType);
+      const std::string &printNetType,
+      int netId = 1);
 
   BpNN(
       const std::string &readFile,
