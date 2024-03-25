@@ -87,7 +87,7 @@ void testDefaultSetter() {
 }
 
 void testArgsParser() {
-  vector<string> args = {
+  std::vector<std::string> args = {
       "executableNameToIgnore", // this line has to be present
       "--root_folder", DEFAULT_ROOT_FOLDER,
       "--train_data_file", DEFAULT_TRAIN_FILE,
@@ -101,7 +101,7 @@ void testArgsParser() {
   testAssert("Parameter by user args: parse float", p.getFloat(DROPOUT_HYP) == 0.4f);
 
   try {
-    vector<string> args = {
+    std::vector<std::string> args = {
         "executableNameToIgnore", // this line has to be present
         "--nb_threads", "1.5"};
 
@@ -116,7 +116,7 @@ void testArgsParser() {
 }
 
 void testJsonParser() {
-  vector<string> args = {
+  std::vector<std::string> args = {
       "executableNameToIgnore",
       "--root_folder", DEFAULT_ROOT_FOLDER,
       "--train_data_file", DEFAULT_TRAIN_FILE,

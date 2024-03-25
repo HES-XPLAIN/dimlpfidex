@@ -1,22 +1,21 @@
 #include "hyperbox.h"
-using namespace std;
 
-Hyperbox::Hyperbox(const vector<pair<int, int>> &m_discriminativeHyperplans)
+Hyperbox::Hyperbox(const std::vector<std::pair<int, int>> &m_discriminativeHyperplans)
     : discriminativeHyperplans(m_discriminativeHyperplans) {
 }
 
 Hyperbox::Hyperbox() = default;
 
-void Hyperbox::setCoveredSamples(const vector<int> &m_coveredSamples) {
+void Hyperbox::setCoveredSamples(const std::vector<int> &m_coveredSamples) {
   coveredSamples = m_coveredSamples;
 }
 
-vector<pair<int, int>> Hyperbox::getDiscriminativeHyperplans() const {
+std::vector<std::pair<int, int>> Hyperbox::getDiscriminativeHyperplans() const {
   return discriminativeHyperplans;
 }
 
-void Hyperbox::computeCoveredSamples(const vector<int> &ancienCoveredSamples, int attribut, vector<vector<double>> &trainData, bool mainSampleGreater, double hypValue) {
-  vector<int> newCoveredSamples;
+void Hyperbox::computeCoveredSamples(const std::vector<int> &ancienCoveredSamples, int attribut, std::vector<std::vector<double>> &trainData, bool mainSampleGreater, double hypValue) {
+  std::vector<int> newCoveredSamples;
   for (int idCoveredSample : ancienCoveredSamples) { // We check all already covered samples
     double sampleValue = trainData[idCoveredSample][attribut];
     bool sampleGreater = hypValue <= sampleValue;
@@ -27,11 +26,11 @@ void Hyperbox::computeCoveredSamples(const vector<int> &ancienCoveredSamples, in
   coveredSamples = newCoveredSamples;
 }
 
-vector<int> Hyperbox::getCoveredSamples() const {
+std::vector<int> Hyperbox::getCoveredSamples() const {
   return coveredSamples;
 }
 
-void Hyperbox::computeFidelity(const int mainsamplePred, vector<int> &trainPreds) {
+void Hyperbox::computeFidelity(const int mainsamplePred, std::vector<int> &trainPreds) {
   int coveredTrueClass = 0;                       // Number of samples covered by the hyperbox and of same class as the example
   size_t nbCovered = coveredSamples.size();       // Number of samples covered by the hyperbox
   for (int idSample : coveredSamples) {           // Loop on all covered samples
@@ -52,10 +51,10 @@ void Hyperbox::setFidelity(double x) {
 }
 
 void Hyperbox::discriminateHyperplan(int i, int j) {
-  discriminativeHyperplans.push_back(make_pair(i, j));
+  discriminativeHyperplans.push_back(std::make_pair(i, j));
 }
 
 void Hyperbox::resetDiscriminativeHyperplans() {
-  vector<pair<int, int>> disc;
+  std::vector<std::pair<int, int>> disc;
   discriminativeHyperplans = disc;
 }
