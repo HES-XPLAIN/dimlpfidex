@@ -413,7 +413,7 @@ void printOptionDescription(const std::string &option, const std::string &descri
  * @param fileWts Reference to the file stream opened for reading the weight file.
  * @return int The number of networks found in the file.
  */
-int countNetworksInFile(std::string weightsFile) {
+int countNetworksInFile(const std::string &weightsFile) {
 
   std::filebuf buf;
 

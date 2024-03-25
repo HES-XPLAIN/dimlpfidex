@@ -16,7 +16,7 @@
 
 void showDimlpTrnParams();
 void checkDimlpTrnParametersLogicValues(Parameters &p);
-static void SaveOutputs(DataSet &data, std::shared_ptr<Dimlp> net, int nbOut, int nbWeightLayers, const string &outfile);
+static void SaveOutputs(DataSet &data, std::shared_ptr<Dimlp> net, int nbOut, int nbWeightLayers, const std::string &outfile);
 int dimlpTrn(const std::string &command = "");
 
 #endif

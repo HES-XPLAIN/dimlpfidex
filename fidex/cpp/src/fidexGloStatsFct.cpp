@@ -1,7 +1,5 @@
 #include "fidexGloStatsFct.h"
 
-using namespace std;
-
 void showStatsParams() {
   std::cout << std::endl
             << "---------------------------------------------------------------------" << std::endl
@@ -48,7 +46,7 @@ void showStatsParams() {
             << std::endl;
 }
 
-void getCovering(vector<int> &sampleIds, const Rule &rule, vector<vector<double>> &testValues) {
+void getCovering(std::vector<int> &sampleIds, const Rule &rule, std::vector<std::vector<double>> &testValues) {
   // Get covering index samples
   int attr;
   bool ineq;
@@ -111,7 +109,7 @@ void checkStatsParametersLogicValues(Parameters &p) {
   p.checkParametersDecisionThreshold();
 }
 
-int fidexGloStats(const string &command) {
+int fidexGloStats(const std::string &command) {
   // Save buffer where we output results
   std::ofstream ofs;
   std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
@@ -124,9 +122,9 @@ int fidexGloStats(const string &command) {
     t1 = clock();
 
     // Parsing the command
-    vector<string> commandList = {"fidexGloStats"};
-    string s;
-    stringstream ss(command);
+    std::vector<std::string> commandList = {"fidexGloStats"};
+    std::string s;
+    std::stringstream ss(command);
 
     while (ss >> s) {
       commandList.push_back(s);
@@ -138,7 +136,7 @@ int fidexGloStats(const string &command) {
     }
 
     // Import parameters
-    unique_ptr<Parameters> params;
+    std::unique_ptr<Parameters> params;
     std::vector<ParameterCode> validParams = {TEST_DATA_FILE, TEST_PRED_FILE, TEST_CLASS_FILE,
                                               GLOBAL_RULES_FILE, GLOBAL_RULES_OUTFILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER, ATTRIBUTES_FILE,
                                               STATS_FILE, GLOBAL_RULES_OUTFILE, CONSOLE_FILE, DECISION_THRESHOLD, POSITIVE_CLASS_INDEX};
@@ -163,7 +161,7 @@ int fidexGloStats(const string &command) {
 
     // Get console results to file
     if (params->isStringSet(CONSOLE_FILE)) {
-      string consoleFile = params->getString(CONSOLE_FILE);
+      std::string consoleFile = params->getString(CONSOLE_FILE);
       ofs.open(consoleFile);
       std::cout.rdbuf(ofs.rdbuf()); // redirect std::cout to file
     }
@@ -186,8 +184,8 @@ int fidexGloStats(const string &command) {
 
     // ----------------------------------------------------------------------
 
-    std::cout << "Importing files..." << endl
-              << endl;
+    std::cout << "Importing files..." << std::endl
+              << std::endl;
 
     // Get test data
 
@@ -201,16 +199,16 @@ int fidexGloStats(const string &command) {
       testDatas.reset(new DataSetFid("testDatas from FidexGloStats", testDataFile, testDataFilePred, nbAttributes, nbClasses, decisionThreshold, positiveClassIndex, params->getString(TEST_CLASS_FILE)));
     }
 
-    vector<vector<double>> &testData = testDatas->getDatas();
-    vector<int> &testPreds = testDatas->getPredictions();
-    vector<int> &testTrueClasses = testDatas->getClasses();
+    std::vector<std::vector<double>> &testData = testDatas->getDatas();
+    std::vector<int> &testPreds = testDatas->getPredictions();
+    std::vector<int> &testTrueClasses = testDatas->getClasses();
 
-    vector<vector<double>> &testOutputValuesPredictions = testDatas->getOutputValuesPredictions();
+    std::vector<std::vector<double>> &testOutputValuesPredictions = testDatas->getOutputValuesPredictions();
     int nbTestData = testDatas->getNbSamples();
 
     // Get attributes
-    vector<string> attributeNames;
-    vector<string> classNames;
+    std::vector<std::string> attributeNames;
+    std::vector<std::string> classNames;
     bool hasClassNames = false;
     if (params->isStringSet(ATTRIBUTES_FILE)) {
       testDatas->setAttributes(params->getString(ATTRIBUTES_FILE), nbAttributes, nbClasses);
@@ -222,13 +220,13 @@ int fidexGloStats(const string &command) {
     }
 
     // Get rules
-    vector<string> lines;                                       // Lines for the output stats
+    std::vector<std::string> lines;                             // Lines for the output stats
     lines.emplace_back("Global statistics of the rule set : "); // Lines for the output stats
 
     // Get statistic line at the top of the rulesfile
     std::string statsLine;
-    fstream rulesData;
-    rulesData.open(rulesFile, ios::in); // Read data file
+    std::fstream rulesData;
+    rulesData.open(rulesFile, std::ios::in); // Read data file
     if (rulesData.fail()) {
       throw FileNotFoundError("Error : file " + rulesFile + " not found.");
     }
@@ -237,13 +235,13 @@ int fidexGloStats(const string &command) {
     std::vector<Rule> rules;
     getRules(rules, rulesFile, *testDatas);
     lines.emplace_back(statsLine);
-    std::cout << "Data imported." << endl
-              << endl;
+    std::cout << "Data imported." << std::endl
+              << std::endl;
 
     // Compute global statistics on test set
 
-    std::cout << "Compute statistics..." << endl
-              << endl;
+    std::cout << "Compute statistics..." << std::endl
+              << std::endl;
     double fidelity = 0;       // Global rule fidelity rate (wrong only if there is activated rules but no correct one(with respect to prediction))
     double accuracy = 0;       // Global rule accuracy (true if there is at least one fidel activated rule and the model is right, or if there is no activated rules and the model is right or if all the activated rules decide the same class and this class is the true one)
     double explainabilityRate; // True if there is an activated rule
@@ -256,7 +254,7 @@ int fidexGloStats(const string &command) {
     int nbFidelRules = 0;
     double accuracyWhenRulesAndModelAgree = 0; // Model accuracy when activated rules and model agree (sample has correct activated rules, then percentage of good predictions on them by the model)
     double modelAccuracy = 0;
-    vector<double> testValues;
+    std::vector<double> testValues;
     int testPred;
     int testTrueClass;
 
@@ -293,11 +291,11 @@ int fidexGloStats(const string &command) {
 
       // Find rules activated by this sample
       bool noCorrectRuleWithAllSameClass = false; // If there is no correct rule activated but all rules have same class
-      vector<int> activatedRules;
+      std::vector<int> activatedRules;
       getActivatedRules(activatedRules, rules, testValues);
 
       // Check which rules are correct
-      vector<int> correctRules;
+      std::vector<int> correctRules;
       if (activatedRules.empty()) { // If there is no activated rule -> we would launch Fidex and so it will be fidel
         defaultRuleRate++;
         fidelity++; // It is true to the model because we choose his prediction
@@ -405,15 +403,15 @@ int fidexGloStats(const string &command) {
       lines.push_back("The recall is : " + ((nbTruePositiveRules + nbFalseNegativeRules != 0) ? std::to_string(float(nbTruePositiveRules) / static_cast<float>(nbTruePositiveRules + nbFalseNegativeRules)) : "N/A"));
     }
 
-    for (string l : lines) {
-      cout << l << endl;
+    for (std::string l : lines) {
+      std::cout << l << std::endl;
     }
 
     // Output statistics
     if (params->isStringSet(STATS_FILE)) {
-      ofstream outputFile(params->getString(STATS_FILE));
+      std::ofstream outputFile(params->getString(STATS_FILE));
       if (outputFile.is_open()) {
-        for (const string &line : lines) {
+        for (const std::string &line : lines) {
           outputFile << line + "" << std::endl;
         }
         outputFile.close();
@@ -424,12 +422,12 @@ int fidexGloStats(const string &command) {
 
     // Compute rules statistics on test set
     if (params->isStringSet(GLOBAL_RULES_OUTFILE)) {
-      ofstream outputFile(params->getString(GLOBAL_RULES_OUTFILE));
+      std::ofstream outputFile(params->getString(GLOBAL_RULES_OUTFILE));
       if (outputFile.is_open()) {
         outputFile << statsLine;
 
         for (int r = 0; r < rules.size(); r++) { // For each rule
-          vector<int> sampleIds;
+          std::vector<int> sampleIds;
           getCovering(sampleIds, rules[r], testData);
           size_t coverSize = sampleIds.size();
           double ruleFidelity = 0;   // porcentage of correct covered samples predictions with respect to the rule prediction
@@ -455,7 +453,7 @@ int fidexGloStats(const string &command) {
             ruleAccuracy /= static_cast<double>(coverSize);
             ruleConfidence /= static_cast<double>(coverSize);
           }
-          vector<string> trainStats = splitString(rules[r].toString(attributeNames, classNames), "\n");
+          std::vector<std::string> trainStats = splitString(rules[r].toString(attributeNames, classNames), "\n");
           outputFile << "\n"
                      << "Rule " << std::to_string(r + 1) << ": " << trainStats[0] << "" << std::endl;
           outputFile << trainStats[1] << " --- Test Covering size : " << coverSize << "" << std::endl;
@@ -485,7 +483,7 @@ int fidexGloStats(const string &command) {
 
   } catch (const ErrorHandler &e) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
-    std::cerr << e.what() << endl;
+    std::cerr << e.what() << std::endl;
     return -1;
   }
 

@@ -17,8 +17,6 @@
 #include <tuple>
 #include <vector>
 
-using namespace std::chrono;
-
 class Fidex {
 
 public:
@@ -34,21 +32,21 @@ private:
   Parameters *_parameters;
   Hyperspace *_hyperspace;
   bool _usingTestSamples;
-  mt19937 _rnd;
+  std::mt19937 _rnd;
   currentExecutionSpecs specs;
 
   // utils
 
-  bool tryComputeFidex(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, bool verbose, bool detailedVerbose = false, bool foundRule = false);
-  int dichotomicSearch(Rule &bestRule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int mainSampleClass, int left, int right, bool verbose);
-  bool retryComputeFidex(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, bool verbose);
+  bool tryComputeFidex(Rule &rule, std::vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, bool verbose, bool detailedVerbose = false, bool foundRule = false);
+  int dichotomicSearch(Rule &bestRule, std::vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int mainSampleClass, int left, int right, bool verbose);
+  bool retryComputeFidex(Rule &rule, std::vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, bool verbose);
 
 public:
   Fidex() = default;
   Fidex(DataSetFid &_trainDataset, Parameters &parameters, Hyperspace &Hyperspace, bool usingTestSamples);
 
   // execute algo
-  bool compute(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover, int mainSampleClass = -1);
+  bool compute(Rule &rule, std::vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover, int mainSampleClass = -1);
 
   // Setters
   void setShowInitialFidelity(bool value) {
@@ -77,7 +75,7 @@ public:
   }
 
   // utils
-  bool launchFidex(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, int mainSampleClass, bool verbose = false);
+  bool launchFidex(Rule &rule, std::vector<double> &mainSampleValues, int mainSamplePred, int mainSampleClass, bool verbose = false);
 };
 
 #endif

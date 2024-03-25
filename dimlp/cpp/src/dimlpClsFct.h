@@ -12,7 +12,7 @@
 
 void showDimlpClsParams();
 void checkDimlpClsParametersLogicValues(Parameters &p);
-static void SaveOutputs(DataSet &data, Dimlp *net, int nbOut, int nbWeightLayers, const string &outfile);
+static void SaveOutputs(DataSet &data, Dimlp *net, int nbOut, int nbWeightLayers, const std::string &outfile);
 int dimlpCls(const std::string &command = "");
 
 #endif

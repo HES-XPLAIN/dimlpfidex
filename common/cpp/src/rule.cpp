@@ -9,7 +9,7 @@
  * @param accuracy double indicating the accuracy of the rule.
  * @param confidence double indicating the confidence of the rule.
  */
-Rule::Rule(const vector<Antecedant> &antecedants, const vector<int> &coveredSamples, int outClass, double fidelity, double accuracy, double confidence) {
+Rule::Rule(const std::vector<Antecedant> &antecedants, const std::vector<int> &coveredSamples, int outClass, double fidelity, double accuracy, double confidence) {
   setAntecedants(antecedants);
   setCoveredSamples(coveredSamples);
   setCoveringSize(static_cast<int>(coveredSamples.size()));
@@ -26,8 +26,8 @@ Rule::Rule(const vector<Antecedant> &antecedants, const vector<int> &coveredSamp
  * @param classes optional vector of string containing all class names, useful to print class name instead of an integer.
  * @return string
  */
-string Rule::toString(const vector<string> &attributes, const vector<string> &classes) const {
-  stringstream result;
+std::string Rule::toString(const std::vector<std::string> &attributes, const std::vector<std::string> &classes) const {
+  std::stringstream result;
   int _outputClass = getOutputClass();
   auto nbCoveredSamples = getCoveringSize();
   double _fidelity = getFidelity();
@@ -38,7 +38,7 @@ string Rule::toString(const vector<string> &attributes, const vector<string> &cl
     if (!attributes.empty()) {
       result << attributes[a.getAttribute()];
     } else {
-      result << "X" + to_string(a.getAttribute());
+      result << "X" + std::to_string(a.getAttribute());
     }
 
     if (a.getInequality()) {
@@ -51,19 +51,19 @@ string Rule::toString(const vector<string> &attributes, const vector<string> &cl
   }
 
   if (!classes.empty()) {
-    result << "-> " << classes[_outputClass] << endl;
+    result << "-> " << classes[_outputClass] << std::endl;
   } else {
-    result << "-> class " << getOutputClass() << endl;
+    result << "-> class " << getOutputClass() << std::endl;
   }
 
   result << "   Train Covering size : " << std::to_string(nbCoveredSamples)
-         << endl
+         << std::endl
          << "   Train Fidelity : " << formattingDoubleToString(_fidelity)
-         << endl
+         << std::endl
          << "   Train Accuracy : " << formattingDoubleToString(_accuracy)
-         << endl
+         << std::endl
          << "   Train Confidence : " << formattingDoubleToString(_confidence)
-         << endl;
+         << std::endl;
 
   return result.str();
 }
@@ -100,9 +100,9 @@ string Rule::toString(const vector<string> &attributes, const vector<string> &cl
  * @return vector<Rule>
  */
 // TODO test this
-vector<Rule> Rule::fromJsonFile(const string &filename) {
-  vector<Rule> result;
-  ifstream ifs(filename);
+std::vector<Rule> Rule::fromJsonFile(const std::string &filename) {
+  std::vector<Rule> result;
+  std::ifstream ifs(filename);
 
   if (!ifs.is_open() || ifs.fail()) {
     throw FileNotFoundError("JSON file to parse named '" + filename + "' was not found or is corrupted, cannot proceed.");
@@ -112,7 +112,7 @@ vector<Rule> Rule::fromJsonFile(const string &filename) {
   Json jsonData = Json::parse(ifs);
 
   if (!jsonData.contains("rules")) {
-    cout << "Parsing error: cannot find 'rules' list in json file." << endl;
+    std::cout << "Parsing error: cannot find 'rules' list in json file." << std::endl;
     return result;
   }
 
@@ -128,15 +128,15 @@ vector<Rule> Rule::fromJsonFile(const string &filename) {
  * @param rules vector of rules to be written
  */
 // TODO test this
-void Rule::toJsonFile(const string &filename, const vector<Rule> &rules) {
-  ofstream ofs(filename);
+void Rule::toJsonFile(const std::string &filename, const std::vector<Rule> &rules) {
+  std::ofstream ofs(filename);
 
   if (!ofs.is_open() || ofs.fail()) {
     throw FileNotFoundError("JSON file to be written named '" + filename + "' couldn't be opened, cannot proceed.");
   }
 
   Json jsonData{{"rules", rules}};
-  ofs << setw(4) << jsonData << endl;
+  ofs << std::setw(4) << jsonData << std::endl;
 }
 
 bool Rule::isEqual(const Rule &other) const {
@@ -170,7 +170,7 @@ bool Rule::isEqual(const Rule &other) const {
  * @return std::string The compiled regular expression object that can be used to match an antecedant with attribute's ids.
  */
 std::string getAntStrPatternWithAttrIds(int nbAttributes) {
-  string pattern;
+  std::string pattern;
   for (int i = 0; i < nbAttributes; i++) {
     if (!pattern.empty()) {
       pattern += "|";
@@ -188,7 +188,7 @@ std::string getAntStrPatternWithAttrIds(int nbAttributes) {
  * @return std::string The compiled regular expression object that can be used to match an antecedant with attribute's names.
  */
 std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attributeNames) {
-  string attrPattern;
+  std::string attrPattern;
   for (const auto &attr : attributeNames) {
     if (!attrPattern.empty()) {
       attrPattern += "|";
@@ -206,7 +206,7 @@ std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attrib
  * @return std::string The compiled regular expression object that can be used to match a rule class id.
  */
 std::string getStrPatternWithClassIds(int nbClasses) {
-  string pattern;
+  std::string pattern;
   for (int i = 0; i < nbClasses; i++) {
     if (!pattern.empty()) {
       pattern += "|";
@@ -224,7 +224,7 @@ std::string getStrPatternWithClassIds(int nbClasses) {
  * @return std::string The compiled regular expression object that can be used to match a rule class name.
  */
 std::string getStrPatternWithClassNames(const std::vector<std::string> &classNames) {
-  string classPattern;
+  std::string classPattern;
   for (const auto &cl : classNames) {
     if (!classPattern.empty()) {
       classPattern += "|";
@@ -288,7 +288,7 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
 
   bool foundARule = false;
 
-  ifstream fileDta(rulesFile);
+  std::ifstream fileDta(rulesFile);
 
   if (!fileDta) {
     throw FileNotFoundError("Error : file " + rulesFile + " not found");
@@ -377,10 +377,10 @@ bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, b
   std::vector<Antecedant> antecedants;
   bool isRule = false;
 
-  istringstream iss(str);
-  string token;
+  std::istringstream iss(str);
+  std::string token;
   while (iss >> token) {
-    smatch match;
+    std::smatch match;
     if (regex_match(token, match, attributePattern)) {
       isRule = true;
       Antecedant antecedant;
@@ -437,14 +437,14 @@ bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, b
 void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset) {
 
   // Open rules file
-  fstream rulesData;
-  rulesData.open(rulesFile, ios::in); // Read data file
+  std::fstream rulesData;
+  rulesData.open(rulesFile, std::ios::in); // Read data file
   if (rulesData.fail()) {
     throw FileNotFoundError("Error : file " + rulesFile + " not found.");
   }
 
   // Check if the file has attribute names or ids
-  vector<bool> checkPatterns = getRulesPatternsFromRuleFile(rulesFile, dataset);
+  std::vector<bool> checkPatterns = getRulesPatternsFromRuleFile(rulesFile, dataset);
   bool attributesInFile = checkPatterns[0];
   bool classesInFile = checkPatterns[1];
 
@@ -474,25 +474,25 @@ void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid
  * @param classes list of class names, used to write Rule's class with class explicit name instead of its numerical representation.
  * @return tuple<double, double>
  */
-tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> &rules, const vector<string> &attributeNames, const vector<string> &classNames) {
+std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames, const std::vector<std::string> &classNames) {
   if (rules.empty()) {
-    cout << "Warning: cannot write to file \"" << filename << "\", generated rules list is empty.";
-    return make_tuple(0, 0);
+    std::cout << "Warning: cannot write to file \"" << filename << "\", generated rules list is empty.";
+    return std::make_tuple(0, 0);
   }
 
   int counter = 0;
   auto nbRules = static_cast<int>(rules.size());
   double meanCovSize = 0;
   double meanNbAntecedents = 0;
-  stringstream stream;
-  ofstream file(filename);
+  std::stringstream stream;
+  std::ofstream file(filename);
 
   for (Rule r : rules) { // each rule
     meanCovSize += static_cast<double>(r.getCoveredSamples().size());
     meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
     counter++;
     stream << "Rule " << counter << ": " << r.toString(attributeNames, classNames);
-    stream << endl;
+    stream << std::endl;
   }
 
   meanCovSize /= nbRules;
@@ -502,9 +502,9 @@ tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> 
     file << "Number of rules : " << nbRules
          << ", mean sample covering number per rule : " << formattingDoubleToString(meanCovSize)
          << ", mean number of antecedents per rule : " << formattingDoubleToString(meanNbAntecedents)
-         << endl;
+         << std::endl;
 
-    file << endl
+    file << std::endl
          << stream.str();
 
     file.close();
@@ -513,7 +513,7 @@ tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> 
     throw CannotOpenFileError("Error : Couldn't open rules extraction file \"" + filename + "\".");
   }
 
-  return make_tuple(meanCovSize, meanNbAntecedents);
+  return std::make_tuple(meanCovSize, meanNbAntecedents);
 }
 
 /**
@@ -523,7 +523,7 @@ tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> 
  * @param rules vector of rules.
  * @param testValues values of test sample for which we search activated rules.
  */
-void getActivatedRules(vector<int> &activatedRules, vector<Rule> &rules, vector<double> &testValues) {
+void getActivatedRules(std::vector<int> &activatedRules, std::vector<Rule> &rules, std::vector<double> &testValues) {
   int attr;
   bool ineq;
   double val;

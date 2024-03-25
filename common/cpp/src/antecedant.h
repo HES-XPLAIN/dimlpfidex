@@ -5,7 +5,6 @@
 #include <iostream>
 #include <ostream>
 
-using namespace std;
 using Json = nlohmann::json;
 
 class Antecedant {
@@ -33,7 +32,7 @@ public:
 };
 
 // OPERATOR OVERLOAD TO EASE PRINTING PURPOSES
-inline ostream &operator<<(ostream &stream, const Antecedant &antecedant) {
+inline std::ostream &operator<<(std::ostream &stream, const Antecedant &antecedant) {
   return stream << " "
                 << antecedant.getAttribute() << " "
                 << antecedant.getInequality() << " "
