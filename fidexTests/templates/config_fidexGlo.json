@@ -14,7 +14,6 @@
     "train_pred_file": "train.out",
     "train_class_file": "train_true_classes.txt",
     "weights_file": "weights.wts",
-    "nb_dimlp_nets": 1,
     "nb_quant_levels": 50,
     "max_iterations": 10,
     "min_covering": 2,

@@ -49,15 +49,13 @@ void showParams() {
   printOptionDescription("--train_pred_file <str>", "Train prediction file");
   printOptionDescription("--train_class_file <str>", "Train true class file, not mandatory if classes are specified in train data file");
   printOptionDescription("--weights_file <str>", "Weights file when not using bagging (not mandatory if a rules file is given with --rules_file)");
-  printOptionDescription("--weights_generic_filename <str>", "Weights file in case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets (not mandatory if a rules file is given with --rules_file)");
-  printOptionDescription("--rules_file <str>", "Rules file to be converted to hyperlocus (not mandatory if a weights file or a weights_generic_filename is given)");
+  printOptionDescription("--rules_file <str>", "Rules file to be converted to hyperlocus (not mandatory if a weights file is given with --weights_file)");
 
   std::cout << std::endl
             << "Optional :" << std::endl
             << std::endl;
 
   printOptionDescription("--test_class_file <str>", "Test true class file, classes can be specified in test data file");
-  printOptionDescription("--nb_dimlp_nets <int [1,inf[>", "Number of networks for bagging, necessary to use bagging");
   printOptionDescription("--max_iterations <int [1,inf[>", "Max iteration number, also the max possible number of attributs in a rule, should be 25 if working with images (default: 10)");
   printOptionDescription("--min_covering <int [1,inf[>", "Minimum covering number (default: 2)");
   printOptionDescription("--covering_strategy <bool>", "Whether to use this strategy : if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (default: True)");
@@ -184,9 +182,9 @@ int fidexGlo(const string &command) {
     std::vector<ParameterCode> validParams = {TEST_DATA_FILE, GLOBAL_RULES_FILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER, ATTRIBUTES_FILE,
                                               TEST_PRED_FILE, EXPLANATION_FILE, CONSOLE_FILE, DECISION_THRESHOLD, POSITIVE_CLASS_INDEX,
                                               WITH_FIDEX, WITH_MINIMAL_VERSION, TRAIN_DATA_FILE, TRAIN_PRED_FILE, TRAIN_CLASS_FILE, WEIGHTS_FILE,
-                                              WEIGHTS_GENERIC_FILENAME, RULES_FILE, TEST_CLASS_FILE, MAX_ITERATIONS, MIN_COVERING, COVERING_STRATEGY,
+                                              RULES_FILE, TEST_CLASS_FILE, MAX_ITERATIONS, MIN_COVERING, COVERING_STRATEGY,
                                               MAX_FAILED_ATTEMPTS, MIN_FIDELITY, LOWEST_MIN_FIDELITY, DROPOUT_DIM, DROPOUT_HYP, NB_QUANT_LEVELS,
-                                              NORMALIZATION_FILE, MUS, SIGMAS, NORMALIZATION_INDICES, NB_DIMLP_NETS, SEED};
+                                              NORMALIZATION_FILE, MUS, SIGMAS, NORMALIZATION_INDICES, SEED};
     if (commandList[1].compare("--json_config_file") == 0) {
       if (commandList.size() < 3) {
         throw CommandArgumentException("JSON config file name/path is missing");
@@ -338,27 +336,11 @@ int fidexGlo(const string &command) {
       if (params->isStringSet(RULES_FILE)) {
         inputRulesFile = params->getString(RULES_FILE);
       }
-      vector<string> weightsFiles;
-      if (params->isStringSet(WEIGHTS_GENERIC_FILENAME)) {
-        weightsFiles = params->getWeightsFiles();
-      }
       int nbQuantLevels = params->getInt(NB_QUANT_LEVELS);
       float hiKnot = params->getFloat(HI_KNOT);
 
       if (params->isStringSet(WEIGHTS_FILE)) {
         matHypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
-      } else if (params->isStringSet(WEIGHTS_GENERIC_FILENAME)) {
-        std::cout << "\nParameters of hyperLocus :\n"
-                  << std::endl;
-        std::cout << "- Number of stairs " << nbQuantLevels << std::endl;
-        std::cout << "- Interval : [-" << hiKnot << "," << hiKnot << "]" << std::endl
-                  << std::endl;
-        std::cout << "Computation of all hyperlocus" << std::endl;
-        for (string wf : weightsFiles) {
-          std::vector<std::vector<double>> hypLocus = calcHypLocus(wf, nbQuantLevels, hiKnot, false); // Get hyperlocus
-          matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end());                    // Concatenate hypLocus to matHypLocus
-        }
-        std::cout << "All hyperlocus created" << std::endl;
       } else {
         matHypLocus = calcHypLocus(inputRulesFile, *testDatas);
       }
