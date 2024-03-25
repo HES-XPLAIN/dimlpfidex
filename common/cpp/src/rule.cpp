@@ -436,7 +436,7 @@ void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid
   // if file is JSON read it properly
   if (rulesFile.substr(rulesFile.find_last_of(".") + 1) == "json") {
     rules = Rule::fromJsonFile(rulesFile);
-  }else {
+  } else {
   // Open rules file
     std::fstream rulesData;
     rulesData.open(rulesFile, std::ios::in); // Read data file
@@ -482,49 +482,39 @@ std::tuple<double, double> writeRulesFile(const std::string &filename, const std
     return std::make_tuple(0, 0);
   }
 
+  int counter = 0;
+  auto nbRules = static_cast<int>(rules.size());
   double meanCovSize = 0;
   double meanNbAntecedents = 0;
+  std::stringstream stream;
+  std::ofstream file(filename);
 
-  if (filename.substr(filename.find_last_of(".") + 1) == "json") {
-    for (Rule r : rules) { // each rule
-      meanCovSize += static_cast<double>(r.getCoveredSamples().size());
-      meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
-    }
+  for (Rule r : rules) { // each rule
+    meanCovSize += static_cast<double>(r.getCoveredSamples().size());
+    meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
+    counter++;
+    stream << "Rule " << counter << ": " << r.toString(attributeNames, classNames);
+    stream << std::endl;
+  }
 
-    Rule::toJsonFile(filename, rules);
+  meanCovSize /= nbRules;
+  meanNbAntecedents /= nbRules;
+
+  if (file.is_open()) {
+    file << "Number of rules : " << nbRules
+         << ", mean sample covering number per rule : " << formattingDoubleToString(meanCovSize)
+         << ", mean number of antecedents per rule : " << formattingDoubleToString(meanNbAntecedents)
+         << std::endl;
+
+    file << std::endl
+         << stream.str();
+
+    file.close();
 
   } else {
-    int counter = 0;
-    std::stringstream stream;
-    std::ofstream file(filename);
-    auto nbRules = static_cast<int>(rules.size());
-
-    for (Rule r : rules) { // each rule
-      meanCovSize += static_cast<double>(r.getCoveredSamples().size());
-      meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
-      counter++;
-      stream << "Rule " << counter << ": " << r.toString(attributeNames, classNames);
-      stream << std::endl;
-    }
-
-    meanCovSize /= nbRules;
-    meanNbAntecedents /= nbRules;
-
-    if (file.is_open()) {
-      file << "Number of rules : " << nbRules
-           << ", mean sample covering number per rule : " << formattingDoubleToString(meanCovSize)
-           << ", mean number of antecedents per rule : " << formattingDoubleToString(meanNbAntecedents)
-           << std::endl;
-
-      file << std::endl
-           << stream.str();
-
-      file.close();
-
-    } else {
-      throw CannotOpenFileError("Error : Couldn't open rules extraction file \"" + filename + "\".");
-    }
+    throw CannotOpenFileError("Error : Couldn't open rules extraction file \"" + filename + "\".");
   }
+
   return std::make_tuple(meanCovSize, meanNbAntecedents);
 }
 
