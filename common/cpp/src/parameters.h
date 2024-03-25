@@ -245,8 +245,6 @@ public:
 
   // special operations
   static std::string getParameterName(ParameterCode id);
-  void setWeightsFiles();
-  void addWeightsFile(const string &file);
   void sanitizePath(ParameterCode id, bool shouldFileExist);
 
   template <typename T>

@@ -31,51 +31,56 @@
 vector<vector<double>> calcHypLocus(const std::string &dataFileWeights, int nbQuantLevels, double hiKnot, bool verbose) {
 
   double lowKnot = -hiKnot;
-  if (verbose) {
-    std::cout << "\nParameters of hyperLocus :\n"
-              << endl;
-    std::cout << "- Number of stairs " << nbQuantLevels << endl;
-    std::cout << "- Interval : [" << lowKnot << "," << hiKnot << "]" << endl
-              << endl;
 
-    std::cout << "Import weight file..." << endl;
-  }
+  std::cout << "\nParameters of hyperLocus :\n"
+            << endl;
+  std::cout << "- Number of stairs " << nbQuantLevels << endl;
+  std::cout << "- Interval : [" << lowKnot << "," << hiKnot << "]" << endl
+            << endl;
+
+  std::cout << "Import weight file..." << endl;
 
   DataSetFid weightDatas("weight datas", dataFileWeights);
 
-  vector<vector<double>> allWeights = weightDatas.getWeights();
-  vector<double> biais = weightDatas.getInBiais();
-  vector<double> weights = weightDatas.getInWeights();
+  int nbNets = weightDatas.getNbNets();
 
-  if (verbose) {
-    std::cout << "Weight file imported" << endl
-              << endl;
+  std::vector<std::vector<double>> matHypLocus;
 
-    std::cout << "computation of hyperLocus" << endl;
-  }
+  for (int n = 0; n < nbNets; n++) {
+    vector<double> biais = weightDatas.getInBiais(n);
+    vector<double> weights = weightDatas.getInWeights(n);
 
-  size_t nbIn = biais.size();      // Number of neurons in the first hidden layer (May be the number of input variables)
-  int nbKnots = nbQuantLevels + 1; // Number of separations per dimension
+    if (nbNets == 1) {
+      std::cout << "Weight file imported" << endl
+                << endl;
 
-  double dist = hiKnot - lowKnot;         // Size of the interval
-  double binWidth = dist / nbQuantLevels; // Width of a box between 2 separations
-
-  vector<vector<double>> matHypLocus(nbIn, vector<double>(nbKnots)); // Matrix of hyperplans (dim x hyp)
-  vector<double> knots(nbKnots);                                     // vector of location of the separations for one dimension (hyperplans will be placed close)
-
-  for (int k = 0; k < nbKnots; k++) {
-    knots[k] = lowKnot + (binWidth * k); // location of each separation within a dimension (hyperplans will be placed close)
-  }
-
-  for (int i = 0; i < nbIn; i++) { // Loop on dimension
-    for (int j = 0; j < nbKnots; j++) {
-      matHypLocus[i][j] = (knots[j] - biais[i]) / weights[i]; // Placement of the hyperplan
+      std::cout << "computation of hyperLocus" << endl;
     }
+
+    size_t nbIn = biais.size();      // Number of neurons in the first hidden layer (May be the number of input variables)
+    int nbKnots = nbQuantLevels + 1; // Number of separations per dimension
+
+    double dist = hiKnot - lowKnot;         // Size of the interval
+    double binWidth = dist / nbQuantLevels; // Width of a box between 2 separations
+
+    vector<vector<double>> matHypLocusTemp(nbIn, vector<double>(nbKnots)); // Matrix of hyperplans (dim x hyp)
+    vector<double> knots(nbKnots);                                         // vector of location of the separations for one dimension (hyperplans will be placed close)
+
+    for (int k = 0; k < nbKnots; k++) {
+      knots[k] = lowKnot + (binWidth * k); // location of each separation within a dimension (hyperplans will be placed close)
+    }
+
+    for (int i = 0; i < nbIn; i++) { // Loop on dimension
+      for (int j = 0; j < nbKnots; j++) {
+        matHypLocusTemp[i][j] = (knots[j] - biais[i]) / weights[i]; // Placement of the hyperplan
+      }
+    }
+    matHypLocus.insert(matHypLocus.end(), matHypLocusTemp.begin(), matHypLocusTemp.end());
   }
-  if (verbose) {
-    cout << "HyperLocus computed" << endl
-         << endl;
-  }
+
+  std::cout << "HyperLocus computed" << std::endl
+            << std::endl;
+
   return matHypLocus;
 }
 

@@ -20,8 +20,7 @@ void showFidexParams() {
   printOptionDescription("--train_class_file <str>", "Train true class file, not mandatory if classes are specified in train data file");
   printOptionDescription("--test_data_file <str>", "Test sample(s) data file with data, prediction(if no --test_pred_file) and true class(if no --test_class_file)");
   printOptionDescription("--weights_file <str>", "Weights file when not using bagging (not mandatory if a rules file is given with --rules_file)");
-  printOptionDescription("--weights_generic_filename <str>", "Weights file in case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets (not mandatory if a rules file is given with --rules_file)");
-  printOptionDescription("--rules_file <str>", "Rules file to be converted to hyperlocus (not mandatory if a weights file or a weights_generic_filename is given)");
+  printOptionDescription("--rules_file <str>", "Rules file to be converted to hyperlocus (not mandatory if a weights file is given with --weights_file)");
   printOptionDescription("--rules_outfile <str>", "Rule(s) output file");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in dataset");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in dataset");
@@ -34,7 +33,6 @@ void showFidexParams() {
 
   printOptionDescription("--json_config_file <str>", "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path");
   printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
-  printOptionDescription("--nb_dimlp_nets <int [1,inf[>", "Number of networks for bagging, necessary to use bagging");
   printOptionDescription("--test_pred_file <str>", "Test prediction file");
   printOptionDescription("--test_class_file <str>", "Test true class file. If at least --test_pred_file is specified, --test_data_file needs to have only test datas and eventually classes on same line (don't add --test_class_file in this case)");
   printOptionDescription("--attributes_file <str>", "File of attributes");
@@ -132,12 +130,12 @@ int fidex(const string &command) {
     // Import parameters
     unique_ptr<Parameters> params;
     std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, TRAIN_PRED_FILE, TRAIN_CLASS_FILE, TEST_DATA_FILE,
-                                              WEIGHTS_FILE, WEIGHTS_GENERIC_FILENAME, RULES_FILE, RULES_OUTFILE, NB_ATTRIBUTES, NB_CLASSES,
+                                              WEIGHTS_FILE, RULES_FILE, RULES_OUTFILE, NB_ATTRIBUTES, NB_CLASSES,
                                               ROOT_FOLDER, TEST_PRED_FILE, TEST_CLASS_FILE, ATTRIBUTES_FILE,
                                               STATS_FILE, CONSOLE_FILE, MAX_ITERATIONS, MIN_COVERING, COVERING_STRATEGY,
                                               MAX_FAILED_ATTEMPTS, MIN_FIDELITY, LOWEST_MIN_FIDELITY, DROPOUT_DIM, DROPOUT_HYP,
                                               NB_QUANT_LEVELS, DECISION_THRESHOLD, POSITIVE_CLASS_INDEX, NORMALIZATION_FILE, MUS,
-                                              SIGMAS, NORMALIZATION_INDICES, NB_DIMLP_NETS, SEED};
+                                              SIGMAS, NORMALIZATION_INDICES, SEED};
     if (commandList[1].compare("--json_config_file") == 0) {
       if (commandList.size() < 3) {
         throw CommandArgumentException("JSON config file name/path is missing");
@@ -190,11 +188,6 @@ int fidex(const string &command) {
     string inputRulesFile;
     if (params->isStringSet(RULES_FILE)) {
       inputRulesFile = params->getString(RULES_FILE);
-    }
-
-    vector<string> weightsFiles;
-    if (params->isStringSet(WEIGHTS_GENERIC_FILENAME)) {
-      weightsFiles = params->getWeightsFiles();
     }
 
     // ----------------------------------------------------------------------
@@ -316,18 +309,6 @@ int fidex(const string &command) {
 
     if (params->isStringSet(WEIGHTS_FILE)) {
       matHypLocus = calcHypLocus(weightsFile, nbQuantLevels, hiKnot); // Get hyperlocus
-    } else if (params->isStringSet(WEIGHTS_GENERIC_FILENAME)) {
-      std::cout << "\nParameters of hyperLocus :\n"
-                << std::endl;
-      std::cout << "- Number of stairs " << nbQuantLevels << std::endl;
-      std::cout << "- Interval : [-" << hiKnot << "," << hiKnot << "]" << std::endl
-                << std::endl;
-      std::cout << "Computation of all hyperlocus" << std::endl;
-      for (string wf : weightsFiles) {
-        std::vector<std::vector<double>> hypLocus = calcHypLocus(wf, nbQuantLevels, hiKnot, false); // Get hyperlocus
-        matHypLocus.insert(matHypLocus.end(), hypLocus.begin(), hypLocus.end());                    // Concatenate hypLocus to matHypLocus
-      }
-      std::cout << "All hyperlocus created" << std::endl;
     } else {
       matHypLocus = calcHypLocus(inputRulesFile, *testDatas);
     }

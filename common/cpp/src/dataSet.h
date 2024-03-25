@@ -21,7 +21,7 @@ private:
   std::vector<int> trueClasses;
   std::vector<int> predictions;
   std::vector<std::vector<double>> outputValuesPredictions;
-  std::vector<std::vector<double>> weights;
+  std::vector<std::vector<std::vector<double>>> weights;
   bool hasDatas = false;
   bool hasPreds = false;
   bool hasClasses = false;
@@ -37,6 +37,7 @@ private:
   int nbSamples = -1;
   int nbClassData = -1;
   int nbPredData = -1;
+  int nbNets = 1;
 
   void setDataLine(const std::string &line, const std::string &dataFile);
   void setPredLine(const std::string &line, const std::string &dataFile);
@@ -60,6 +61,8 @@ public:
   DataSetFid(const std::string &name, const std::string &dataFile, const std::string &predFile, int nbAttributes, int nbClasses, double decisionThresh, int indexPositiveCl, const std::string &trueClassFile = "");
   DataSetFid(const std::string &name, const std::string &dataFile, int nbAttributes, int nbClasses, double decisionThresh, int indexPositiveCl); // dataFile with data, predictions and maybe classes
   explicit DataSetFid(const std::string &name, const std::string &weightFile);
+  void parseSingleNetwork(fstream &fileWts);
+  void parseMultipleNetworks(fstream &fileWts);
 
   void setDataFromFile(const std::string &dataFile, int nbAttributes, int nbClasses);
   void setPredFromFile(const std::string &predFile, int nbClasses, double decisionThreshold = -1, int positiveClassIndex = -1);
@@ -80,9 +83,10 @@ public:
   bool getHasAttributeNames() const;
   bool getHasClassNames() const;
 
-  std::vector<std::vector<double>> getWeights() const;
-  std::vector<double> getInBiais() const;
-  std::vector<double> getInWeights() const;
+  std::vector<std::vector<std::vector<double>>> getWeights() const;
+  std::vector<double> getInBiais(int netId) const;
+  std::vector<double> getInWeights(int netId) const;
+  int getNbNets() const;
 };
 
 #endif

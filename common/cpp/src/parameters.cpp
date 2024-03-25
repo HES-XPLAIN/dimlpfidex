@@ -93,9 +93,6 @@ void Parameters::checkFilesIntegrity() {
   sanitizePath(RULES_OUTFILE, false);
   sanitizePath(GLOBAL_RULES_OUTFILE, false);
   sanitizePath(EXPLANATION_FILE, false);
-
-  // Complete the path of WEIGHTS_GENERIC_FILENAME
-  sanitizePath(WEIGHTS_GENERIC_FILENAME, false);
 }
 
 /**
@@ -195,10 +192,6 @@ void Parameters::parseArg(const string &param, const string &arg, const std::vec
 
   case WEIGHTS_OUTFILE:
     setString(WEIGHTS_OUTFILE, arg);
-    break;
-
-  case WEIGHTS_GENERIC_FILENAME:
-    setString(WEIGHTS_GENERIC_FILENAME, arg);
     break;
 
   case WEIGHTS_OUTFILENAME:
@@ -570,25 +563,6 @@ void Parameters::sanitizePath(ParameterCode id, bool shouldFileExist) {
   }
 }
 
-void Parameters::setWeightsFiles() {
-  if (!isIntSet(NB_DIMLP_NETS)) {
-    cout << "Error: cannot create weights files list for bagging." << endl;
-    throwArgumentNotFoundException(NB_DIMLP_NETS);
-  }
-
-  if (!isStringSet(WEIGHTS_GENERIC_FILENAME)) {
-    cout << "Error: cannot create weights files list for bagging." << endl;
-    throwArgumentNotFoundException(WEIGHTS_GENERIC_FILENAME);
-  }
-
-  int dimlpNets = getInt(NB_DIMLP_NETS);
-  string weigthsGenericFile = getString(WEIGHTS_GENERIC_FILENAME);
-
-  for (int i = 1; i <= dimlpNets; i += 1) {
-    addWeightsFile(weigthsGenericFile + to_string(i) + ".wts");
-  }
-}
-
 // public getters
 int Parameters::getInt(ParameterCode id) {
   assertIntExists(id);
@@ -717,11 +691,6 @@ void Parameters::assertIntVectorExists(ParameterCode id) {
   }
 }
 
-// public special operations
-void Parameters::addWeightsFile(const string &file) {
-  _weightFiles.push_back(file);
-}
-
 // Default setters
 void Parameters::setDefaultInt(ParameterCode id, int defaultValue) {
   if (!isIntSet(id))
@@ -787,21 +756,12 @@ void Parameters::checkParametersCommon() {
 
 void Parameters::checkParametersFidex() {
 
-  int countWeightFilesSet = static_cast<int>(isStringSet(WEIGHTS_FILE)) + static_cast<int>(isStringSet(RULES_FILE)) + static_cast<int>(isStringSet(WEIGHTS_GENERIC_FILENAME));
-  if (countWeightFilesSet > 1) {
-    throw CommandArgumentException("Error: Please choose only one among a weight file(--" + getParameterName(WEIGHTS_FILE) + "), a rules input file(--" + getParameterName(RULES_FILE) + ") and a generic weight filename.(--" + getParameterName(WEIGHTS_GENERIC_FILENAME) + ")");
+  if (isStringSet(WEIGHTS_FILE) && isStringSet(RULES_FILE)) {
+    throw CommandArgumentException("Error: Please choose only one among a weight file(--" + getParameterName(WEIGHTS_FILE) + ") and a rules input file(--" + getParameterName(RULES_FILE) + ")");
   }
 
-  if (countWeightFilesSet == 0) {
-    throw CommandArgumentException("Error : A weight file(--" + getParameterName(WEIGHTS_FILE) + "), a rules file(--" + getParameterName(RULES_FILE) + ") or a generic weight filename(--" + getParameterName(WEIGHTS_GENERIC_FILENAME) + ") has to be given.");
-  }
-
-  if (isStringSet(WEIGHTS_GENERIC_FILENAME)) {
-    if (!isIntSet(NB_DIMLP_NETS)) {
-      throw CommandArgumentException("Error : You need to specify the number of networks when using bagging.");
-    } else if (getInt(NB_DIMLP_NETS) < 1) {
-      throw CommandArgumentException("Error : Number of networks must be strictly positive (>=1).");
-    }
+  if (!isStringSet(WEIGHTS_FILE) && !isStringSet(RULES_FILE)) {
+    throw CommandArgumentException("Error : A weight file(--" + getParameterName(WEIGHTS_FILE) + ") or a rules file(--" + getParameterName(RULES_FILE) + ") has to be given.");
   }
 
   if (getInt(MAX_ITERATIONS) < 1) {
@@ -950,9 +910,6 @@ void Parameters::setDefaultFidex() {
   setDefaultFloat(DROPOUT_HYP, 0.0f);
   setDefaultFloat(HI_KNOT, 5.0f);
   setDefaultInt(SEED, 0);
-  if (isStringSet(WEIGHTS_GENERIC_FILENAME)) {
-    setWeightsFiles(); // must be called to initialize
-  }
 }
 
 void Parameters::setDefaultDecisionThreshold() {
