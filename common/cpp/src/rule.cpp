@@ -496,14 +496,20 @@ std::tuple<double, double> writeRulesFile(const std::string &filename, const std
     return std::make_tuple(0, 0);
   }
 
+  int counter = 0;
+  auto nbRules = static_cast<int>(rules.size());
   double meanCovSize = 0;
   double meanNbAntecedents = 0;
+  std::stringstream stream;
+  std::ofstream file(filename);
 
-  if (filename.substr(filename.find_last_of(".") + 1) == "json") {
-    for (Rule r : rules) { // each rule
-      meanCovSize += static_cast<double>(r.getCoveredSamples().size());
-      meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
-    }
+  for (Rule r : rules) { // each rule
+    meanCovSize += static_cast<double>(r.getCoveredSamples().size());
+    meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
+    counter++;
+    stream << "Rule " << counter << ": " << r.toString(attributeNames, classNames);
+    stream << std::endl;
+  }
 
     Rule::toJsonFile(filename, rules, threshold, positiveIndex);
 
@@ -541,7 +547,7 @@ std::tuple<double, double> writeRulesFile(const std::string &filename, const std
     } else {
       throw CannotOpenFileError("Error : Couldn't open rules extraction file \"" + filename + "\".");
     }
-  }
+
   return std::make_tuple(meanCovSize, meanNbAntecedents);
 }
 
