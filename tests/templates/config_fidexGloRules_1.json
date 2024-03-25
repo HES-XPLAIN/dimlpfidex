@@ -9,7 +9,6 @@
     "console_file": "out/fidexGloRules_1_console.out",
     "nb_attributes": 31,
     "nb_classes": 7,
-    "nb_dimlp_nets": 1,
     "nb_quant_levels": 50,
     "heuristic": 1,
     "max_iterations": 10,

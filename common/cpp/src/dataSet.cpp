@@ -156,39 +156,95 @@ DataSetFid::DataSetFid(const string &name, const std::string &dataFile, int nbAt
 }
 
 /**
- * @brief Construct a new DataSetFid object using a weights file
+ * @brief Construct a new DataSetFid object using a weight file. This constructor is capable of handling both single and multiple network weight files.
  *
- * @param name string containing the name of the dataSet
- * @param weightFile string weight file name
+ * @param name The name of the dataSet.
+ * @param weightFile The name of the weight file.
  */
 DataSetFid::DataSetFid(const std::string &name, const std::string &weightFile) : datasetName(name), hasWeights(true) {
-
-  // Get weights
   fstream fileWts;
-
   string line;
+  bool multipleNetworks = false;
 
   fileWts.open(weightFile, ios::in); // Read weight file
   if (fileWts.fail()) {
     throw FileNotFoundError("Error in dataset " + datasetName + " : file " + weightFile + " not found.");
   }
 
-  while (!fileWts.eof()) {
-    getline(fileWts, line);
+  // Check if weightsfile contains multiple networks
+  while (getline(fileWts, line)) {
+    if (line.find("Network") != string::npos) {
+      multipleNetworks = true;
+      break;
+    }
+  }
+
+  // Reinitialise cursor at the beginning
+  fileWts.clear();
+  fileWts.seekg(0, ios::beg);
+
+  if (!multipleNetworks) {
+    parseSingleNetwork(fileWts);
+  } else {
+    parseMultipleNetworks(fileWts);
+  }
+  nbNets = static_cast<int>(weights.size());
+  fileWts.close(); // close file
+}
+
+/**
+ * @brief Parses a weight file containing a single network's weights and stores them in the weights vector.
+ *
+ * @param fileWts Reference to the file stream opened for reading the weight file.
+ */
+void DataSetFid::parseSingleNetwork(fstream &fileWts) {
+  string line;
+  vector<vector<double>> networkWeights;
+
+  while (getline(fileWts, line)) {
     if (!checkStringEmpty(line)) {
       std::stringstream myLine(line);
       double value;
       vector<double> tempVect;
       while (myLine >> value) {
-        if (myLine.fail()) {
-          throw FileContentError("Error in dataset " + datasetName + " : in file " + weightFile + ", a number is required.");
-        }
         tempVect.push_back(value);
       }
-      weights.push_back(tempVect);
+      networkWeights.push_back(tempVect);
     }
   }
-  fileWts.close(); // close file
+
+  weights.push_back(networkWeights); // Add the network to weights
+}
+
+/**
+ * @brief Parses a weight file containing multiple networks' weights.
+ *
+ * @param fileWts Reference to the file stream opened for reading the weight file.
+ */
+void DataSetFid::parseMultipleNetworks(fstream &fileWts) {
+  string line;
+  vector<vector<double>> networkWeights;
+
+  while (getline(fileWts, line)) {
+    if (line.find("Network") != string::npos) {
+      if (!networkWeights.empty()) {
+        weights.push_back(networkWeights); // Add network to weights
+        networkWeights.clear();
+      }
+    } else if (!checkStringEmpty(line)) {
+      std::stringstream myLine(line);
+      double value;
+      vector<double> tempVect;
+      while (myLine >> value) {
+        tempVect.push_back(value);
+      }
+      networkWeights.push_back(tempVect);
+    }
+  }
+
+  if (!networkWeights.empty()) {
+    weights.push_back(networkWeights); // Add last network to weights
+  }
 }
 
 /**
@@ -713,7 +769,7 @@ int DataSetFid::getNbSamples() const {
  *
  * @return vector<vector<double>>
  */
-vector<vector<double>> DataSetFid::getWeights() const {
+vector<vector<vector<double>>> DataSetFid::getWeights() const {
   if (hasWeights) {
     return weights;
   } else {
@@ -726,9 +782,9 @@ vector<vector<double>> DataSetFid::getWeights() const {
  *
  * @return vector<double>
  */
-vector<double> DataSetFid::getInBiais() const {
+vector<double> DataSetFid::getInBiais(int netId) const {
   if (hasWeights) {
-    return weights[0];
+    return weights[netId][0];
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : weight file not specified for this dataset.");
   }
@@ -739,9 +795,22 @@ vector<double> DataSetFid::getInBiais() const {
  *
  * @return vector<double>
  */
-vector<double> DataSetFid::getInWeights() const {
+vector<double> DataSetFid::getInWeights(int netId) const {
   if (hasWeights) {
-    return weights[1];
+    return weights[netId][1];
+  } else {
+    throw CommandArgumentException("Error in dataset " + datasetName + " : weight file not specified for this dataset.");
+  }
+}
+
+/**
+ * @brief Return the number of training networks
+ *
+ * @return int
+ */
+int DataSetFid::getNbNets() const {
+  if (hasWeights) {
+    return nbNets;
   } else {
     throw CommandArgumentException("Error in dataset " + datasetName + " : weight file not specified for this dataset.");
   }
