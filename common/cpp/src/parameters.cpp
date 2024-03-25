@@ -86,7 +86,6 @@ void Parameters::checkFilesIntegrity() {
   sanitizePath(TEST_PRED_OUTFILE, false);
   sanitizePath(VALID_PRED_OUTFILE, false);
   sanitizePath(WEIGHTS_OUTFILE, false);
-  sanitizePath(WEIGHTS_OUTFILENAME, false);
   sanitizePath(HID_FILE, false);
   sanitizePath(STATS_FILE, false);
   sanitizePath(CONSOLE_FILE, false);
@@ -192,10 +191,6 @@ void Parameters::parseArg(const string &param, const string &arg, const std::vec
 
   case WEIGHTS_OUTFILE:
     setString(WEIGHTS_OUTFILE, arg);
-    break;
-
-  case WEIGHTS_OUTFILENAME:
-    setString(WEIGHTS_OUTFILENAME, arg);
     break;
 
   case HID_FILE:

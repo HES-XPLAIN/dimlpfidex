@@ -36,10 +36,11 @@ Dimlp::Dimlp(
     const std::string &readFile,
     int nbLayers,
     const std::vector<int> &nbNeurons,
-    int discrLevels) :
+    int discrLevels,
+    int netId) :
 
-                       BpNN(readFile, nbLayers, nbNeurons,
-                            netType)
+                 BpNN(readFile, nbLayers, nbNeurons,
+                      netType, netId)
 
 {
   cout << "Number of quantized levels = " << discrLevels << "\n"

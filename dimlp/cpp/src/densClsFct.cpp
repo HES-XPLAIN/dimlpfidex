@@ -21,10 +21,9 @@ void showDensClsParams()
             << std::endl;
 
   printOptionDescription("--train_data_file <str>", "Train data file");
-  printOptionDescription("--weights_generic_filename <str>", "Weights generic name file, for instance give dimlpBT, in that case files need to be dimlpBTi.wts with i between 1 to nb_dimlp_nets");
+  printOptionDescription("--weights_file <str>", "Weights file containing the weights of each network");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of input neurons");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of output neurons");
-  printOptionDescription("--nb_dimlp_nets <int [1,inf[>", "Number of networks");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -57,7 +56,7 @@ void showDensClsParams()
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "dimlp.densCls(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_generic_filename dimlpDatanormBT --with_rule_extraction true --global_rules_outfile globalRules.rls --train_pred_outfile predTrain.out --test_pred_outfile testPred.out --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
+  std::cout << "dimlp.densCls(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --H2 5 --nb_classes 2 --weights_file dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile globalRules.rls --train_pred_outfile predTrain.out --test_pred_outfile testPred.out --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
@@ -83,16 +82,11 @@ void checkDensClsParametersLogicValues(Parameters &p) {
   p.assertIntExists(NB_ATTRIBUTES);
   p.assertIntExists(NB_CLASSES);
   p.assertStringExists(TRAIN_DATA_FILE);
-  p.assertStringExists(WEIGHTS_GENERIC_FILENAME);
-  p.assertIntExists(NB_DIMLP_NETS);
+  p.assertStringExists(WEIGHTS_FILE);
 
   // verifying logic between parameters, values range and so on...
   p.checkParametersCommon();
   p.checkParametersNormalization();
-
-  if (p.getInt(NB_DIMLP_NETS) < 1) {
-    throw CommandArgumentException("Error : Number of dimlp nets must be strictly positive (>=1).");
-  }
 }
 
 int densCls(const string &command) {
@@ -126,7 +120,7 @@ int densCls(const string &command) {
     // Import parameters
     unique_ptr<Parameters> params;
 
-    std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, WEIGHTS_GENERIC_FILENAME, NB_ATTRIBUTES, NB_CLASSES, NB_DIMLP_NETS,
+    std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, WEIGHTS_FILE, NB_ATTRIBUTES, NB_CLASSES,
                                               ROOT_FOLDER, ATTRIBUTES_FILE, TEST_DATA_FILE, TRAIN_CLASS_FILE, TEST_CLASS_FILE,
                                               CONSOLE_FILE, TRAIN_PRED_OUTFILE, TEST_PRED_OUTFILE, STATS_FILE, H, WITH_RULE_EXTRACTION,
                                               GLOBAL_RULES_OUTFILE, NB_QUANT_LEVELS, NORMALIZATION_FILE, MUS, SIGMAS, NORMALIZATION_INDICES};
@@ -168,8 +162,8 @@ int densCls(const string &command) {
     std::string learnFile = params->getString(TRAIN_DATA_FILE);
     std::string predTrainFile = params->getString(TRAIN_PRED_OUTFILE);
     std::string predTestFile = params->getString(TEST_PRED_OUTFILE);
-    std::string weightFile = params->getString(WEIGHTS_GENERIC_FILENAME);
-    int nbDimlpNets = params->getInt(NB_DIMLP_NETS);
+    std::string weightFile = params->getString(WEIGHTS_FILE);
+    int nbDimlpNets = countNetworksInFile(weightFile);
     int quant = params->getInt(NB_QUANT_LEVELS);
 
     int nbLayers;
@@ -460,4 +454,4 @@ int densCls(const string &command) {
   return 0;
 }
 
-// Exemple to launch the code : dimlp.densCls("densCls --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_generic_filename dimlpDatanormBT --with_rule_extraction true --global_rules_outfile dimlpDatanormDensClsRul.rls --train_pred_outfile dimlpDatanormDensClsTrain.out --test_pred_outfile dimlpDatanormDensClsTest.out --stats_file dimlpDatanormDensClsStats --console_file dimlpDatanormDensClsResult.txt --root_folder dimlp/datafiles");
+// Exemple to launch the code : dimlp.densCls("densCls --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --weights_file dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile dimlpDatanormDensClsRul.rls --train_pred_outfile dimlpDatanormDensClsTrain.out --test_pred_outfile dimlpDatanormDensClsTest.out --stats_file dimlpDatanormDensClsStats --console_file dimlpDatanormDensClsResult.txt --root_folder dimlp/datafiles");
