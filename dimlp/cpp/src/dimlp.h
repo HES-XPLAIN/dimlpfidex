@@ -43,7 +43,7 @@ public:
       const std::string &weightFile,
       int seed = 0);
 
-  Dimlp(const std::string &readFile, int nbLayers, const std::vector<int> &nbNeurons, int discrLevels);
+  Dimlp(const std::string &readFile, int nbLayers, const std::vector<int> &nbNeurons, int discrLevels, int netId = 1);
 
   Dimlp(
       const std::string &readFile,

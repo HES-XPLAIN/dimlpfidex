@@ -82,7 +82,7 @@ void checkDimlpBTParametersLogicValues(Parameters &p) {
   // setting default values
   p.setDefaultString(TRAIN_PRED_OUTFILE, "dimlpBTTrain.out", true);
   p.setDefaultString(TEST_PRED_OUTFILE, "dimlpBTTest.out", true);
-  p.setDefaultString(WEIGHTS_OUTFILENAME, "dimlpBT.wts", true);
+  p.setDefaultString(WEIGHTS_OUTFILE, "dimlpBT.wts", true);
   p.setDefaultNbQuantLevels();
   p.setDefaultDimlpTrn();
   p.setDefaultInt(NB_DIMLP_NETS, 25);
@@ -138,7 +138,7 @@ int dimlpBT(const string &command) {
     // Import parameters
     unique_ptr<Parameters> params;
     std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER, NB_DIMLP_NETS, ATTRIBUTES_FILE,
-                                              TEST_DATA_FILE, TRAIN_CLASS_FILE, TEST_CLASS_FILE, CONSOLE_FILE, WEIGHTS_OUTFILENAME,
+                                              TEST_DATA_FILE, TRAIN_CLASS_FILE, TEST_CLASS_FILE, CONSOLE_FILE, WEIGHTS_OUTFILE,
                                               TRAIN_PRED_OUTFILE, TEST_PRED_OUTFILE, STATS_FILE, H, WITH_RULE_EXTRACTION, GLOBAL_RULES_OUTFILE,
                                               LEARNING_RATE, MOMENTUM, FLAT, NB_QUANT_LEVELS, ERROR_THRESH, ACC_THRESH, ABS_ERROR_THRESH,
                                               NB_EPOCHS, NB_EPOCHS_ERROR, NB_EX_PER_NET, NORMALIZATION_FILE, MUS, SIGMAS, NORMALIZATION_INDICES, SEED};
@@ -180,7 +180,7 @@ int dimlpBT(const string &command) {
     std::string learnFile = params->getString(TRAIN_DATA_FILE);
     std::string predTrainFile = params->getString(TRAIN_PRED_OUTFILE);
     std::string predTestFile = params->getString(TEST_PRED_OUTFILE);
-    std::string genericWeightsFile = params->getString(WEIGHTS_OUTFILENAME);
+    std::string genericWeightsFile = params->getString(WEIGHTS_OUTFILE);
 
     float eta = params->getFloat(LEARNING_RATE);
     float mu = params->getFloat(MOMENTUM);

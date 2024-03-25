@@ -48,7 +48,7 @@ void showParams() {
   printOptionDescription("--train_data_file <str>", "Train data file");
   printOptionDescription("--train_pred_file <str>", "Train prediction file");
   printOptionDescription("--train_class_file <str>", "Train true class file, not mandatory if classes are specified in train data file");
-  printOptionDescription("--weights_file <str>", "Weights file when not using bagging (not mandatory if a rules file is given with --rules_file)");
+  printOptionDescription("--weights_file <str>", "Weights file (not mandatory if a rules file is given with --rules_file)");
   printOptionDescription("--rules_file <str>", "Rules file to be converted to hyperlocus (not mandatory if a weights file is given with --weights_file)");
 
   std::cout << std::endl

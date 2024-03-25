@@ -404,3 +404,31 @@ void printOptionDescription(const std::string &option, const std::string &descri
     std::cout << std::left << std::setw(width) << option << description << std::endl;
   }
 }
+
+//////////////////////////////////////////////////////
+
+/**
+ * @brief Counts the number of networks in the weights file.
+ *
+ * @param fileWts Reference to the file stream opened for reading the weight file.
+ * @return int The number of networks found in the file.
+ */
+int countNetworksInFile(std::string weightsFile) {
+
+  std::filebuf buf;
+
+  if (buf.open(weightsFile, std::ios_base::in) == nullptr) {
+    throw CannotOpenFileError("Cannot open weights file " + weightsFile);
+  }
+
+  std::istream fileWts(&buf);
+
+  std::string line;
+  int count = 0;
+  while (std::getline(fileWts, line)) {
+    if (line.find("Network") != std::string::npos) {
+      ++count;
+    }
+  }
+  return count > 0 ? count : 1; // If no "Network" keyword is found, assume there's one network
+}

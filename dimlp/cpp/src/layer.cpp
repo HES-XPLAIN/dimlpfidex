@@ -202,7 +202,6 @@ void Layer::ReadWeights(istream &inFile)
   }
 
   ptrOldW = OldWeights.data();
-
   for (w = 0, ptrW = Weights.data(); w < NbWeights; w++, ptrW++, ptrOldW++) {
     inFile >> *ptrW;
     *ptrOldW = *ptrW;
