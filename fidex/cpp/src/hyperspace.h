@@ -12,21 +12,19 @@
 #include <tuple>
 #include <vector>
 
-using namespace std;
-
 class Hyperspace {
-  vector<vector<double>> hyperLocus; // All the possible hyperplans
-  shared_ptr<Hyperbox> hyperbox;
+  std::vector<std::vector<double>> hyperLocus; // All the possible hyperplans
+  std::shared_ptr<Hyperbox> hyperbox;
 
 public:
   Hyperspace();
-  explicit Hyperspace(const vector<vector<double>> &matHypLocus);
+  explicit Hyperspace(const std::vector<std::vector<double>> &matHypLocus);
 
-  shared_ptr<Hyperbox> getHyperbox() const;
-  vector<vector<double>> getHyperLocus() const;
-  Rule ruleExtraction(vector<double> &mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, const vector<double> &mus = std::vector<double>(), const vector<double> &sigmas = std::vector<double>(), const vector<int> &normalizationIndices = std::vector<int>());
-  double computeRuleAccuracy(vector<int> &trainPreds, vector<int> &trainTrueClass, bool hasTrueClasses, bool mainSampleCorrect = false) const;
-  double computeRuleConfidence(vector<vector<double>> &trainOutputValuesPredictions, const int mainSamplePred, double mainSamplePredValue = -1.0) const;
+  std::shared_ptr<Hyperbox> getHyperbox() const;
+  std::vector<std::vector<double>> getHyperLocus() const;
+  Rule ruleExtraction(std::vector<double> &mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, const std::vector<double> &mus = std::vector<double>(), const std::vector<double> &sigmas = std::vector<double>(), const std::vector<int> &normalizationIndices = std::vector<int>());
+  double computeRuleAccuracy(std::vector<int> &trainPreds, std::vector<int> &trainTrueClass, bool hasTrueClasses, bool mainSampleCorrect = false) const;
+  double computeRuleConfidence(std::vector<std::vector<double>> &trainOutputValuesPredictions, const int mainSamplePred, double mainSamplePredValue = -1.0) const;
 };
 
 #endif

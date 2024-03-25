@@ -12,13 +12,12 @@
 #include <string>
 #include <vector>
 
-using namespace std;
 using Json = nlohmann::json;
 
 class Rule {
 private:
-  vector<Antecedant> antecedants;
-  vector<int> coveredSamples;
+  std::vector<Antecedant> antecedants;
+  std::vector<int> coveredSamples;
   int outputClass = -1;
   int coveringSize = -1;
   double fidelity = -1;
@@ -30,8 +29,8 @@ private:
 
 public:
   Rule() = default;
-  Rule(const vector<Antecedant> &antecedants,
-       const vector<int> &coveredSamples,
+  Rule(const std::vector<Antecedant> &antecedants,
+       const std::vector<int> &coveredSamples,
        int out_class,
        double fidelity,
        double accuracy,
@@ -43,16 +42,16 @@ public:
   void setFidelity(double value) { fidelity = value; };
   void setAccuracy(double value) { accuracy = value; };
   void setConfidence(double value) { confidence = value; };
-  void setAntecedants(vector<Antecedant> const &values) { antecedants = values; };
-  void setCoveredSamples(vector<int> const &values) {
+  void setAntecedants(std::vector<Antecedant> const &values) { antecedants = values; };
+  void setCoveredSamples(std::vector<int> const &values) {
     coveredSamples = values;
     coveringSize = static_cast<int>(values.size());
   };
 
   // GETTERS
-  vector<Antecedant> getAntecedants() const { return antecedants; }
+  std::vector<Antecedant> getAntecedants() const { return antecedants; }
   int getNbAntecedants() const { return static_cast<int>(antecedants.size()); }
-  vector<int> getCoveredSamples() const { return coveredSamples; }
+  std::vector<int> getCoveredSamples() const { return coveredSamples; }
   int getCoveringSize() const { return coveringSize; }
   int getOutputClass() const { return outputClass; }
   double getFidelity() const { return fidelity; }
@@ -65,22 +64,22 @@ public:
     coveredSamples.push_back(value);
     coveringSize += 1;
   };
-  string toString(const vector<string> &attributes, const vector<string> &classes) const;
+  std::string toString(const std::vector<std::string> &attributes, const std::vector<std::string> &classes) const;
   bool isEqual(const Rule &other) const;
-  static vector<Rule> fromJsonFile(const string &filename);
-  static void toJsonFile(const string &filename, const vector<Rule> &rules);
+  static std::vector<Rule> fromJsonFile(const std::string &filename);
+  static void toJsonFile(const std::string &filename, const std::vector<Rule> &rules);
 };
 
 // OPERATOR OVERLOAD TO EASE PRINTING PURPOSES
-inline ostream &operator<<(ostream &stream, const Rule &rule) {
+inline std::ostream &operator<<(std::ostream &stream, const Rule &rule) {
   for (Antecedant a : rule.getAntecedants())
     stream << a;
-  stream << endl;
-  stream << "   #Antecedants: " << rule.getAntecedants().size() << endl
-         << "   #Covered samples: " << rule.getCoveredSamples().size() << endl
-         << "   Confidence: " << rule.getConfidence() << endl
-         << "   Accuracy:   " << rule.getAccuracy() << endl
-         << "   Covering:   " << rule.getCoveredSamples().size() << endl;
+  stream << std::endl;
+  stream << "   #Antecedants: " << rule.getAntecedants().size() << std::endl
+         << "   #Covered samples: " << rule.getCoveredSamples().size() << std::endl
+         << "   Confidence: " << rule.getConfidence() << std::endl
+         << "   Accuracy:   " << rule.getAccuracy() << std::endl
+         << "   Covering:   " << rule.getCoveredSamples().size() << std::endl;
 
   return stream;
 }
@@ -102,7 +101,7 @@ std::vector<bool> getRulePatternsFromString(const std::string &str, DataSetFid &
 std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, DataSetFid &dataset, bool withClasses = true);
 bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, bool withClassNames, DataSetFid &dataset);
 void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset);
-tuple<double, double> writeRulesFile(const string &filename, const vector<Rule> &rules, const vector<string> &attributeNames, const vector<string> &classNames);
-void getActivatedRules(vector<int> &activatedRules, vector<Rule> &rules, vector<double> &testValues);
+std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames, const std::vector<std::string> &classNames);
+void getActivatedRules(std::vector<int> &activatedRules, std::vector<Rule> &rules, std::vector<double> &testValues);
 
 #endif

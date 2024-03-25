@@ -1,7 +1,5 @@
 #include "fidexFct.h"
 
-using namespace std;
-
 void showFidexParams() {
   std::cout << std::endl
             << "---------------------------------------------------------------------" << std::endl
@@ -98,7 +96,7 @@ void checkFidexParametersLogicValues(Parameters &p) {
   }
 }
 
-int fidex(const string &command) {
+int fidex(const std::string &command) {
 
   // Save buffer where we output results
   std::ofstream ofs;
@@ -113,9 +111,9 @@ int fidex(const string &command) {
     t1 = clock();
 
     // Parsing the command
-    vector<string> commandList = {"fidex"};
-    string s;
-    stringstream ss(command);
+    std::vector<std::string> commandList = {"fidex"};
+    std::string s;
+    std::stringstream ss(command);
 
     while (ss >> s) {
       commandList.push_back(s);
@@ -128,7 +126,7 @@ int fidex(const string &command) {
     }
 
     // Import parameters
-    unique_ptr<Parameters> params;
+    std::unique_ptr<Parameters> params;
     std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, TRAIN_PRED_FILE, TRAIN_CLASS_FILE, TEST_DATA_FILE,
                                               WEIGHTS_FILE, RULES_FILE, RULES_OUTFILE, NB_ATTRIBUTES, NB_CLASSES,
                                               ROOT_FOLDER, TEST_PRED_FILE, TEST_CLASS_FILE, ATTRIBUTES_FILE,
@@ -158,11 +156,11 @@ int fidex(const string &command) {
     // Get console results to file
     if (params->isStringSet(CONSOLE_FILE)) {
       ofs.open(params->getString(CONSOLE_FILE));
-      cout.rdbuf(ofs.rdbuf()); // redirect cout to file
+      std::cout.rdbuf(ofs.rdbuf()); // redirect cout to file
     }
 
     // Show chosen parameters
-    cout << *params;
+    std::cout << *params;
 
     // ----------------------------------------------------------------------
 
@@ -180,12 +178,12 @@ int fidex(const string &command) {
     int nbQuantLevels = params->getInt(NB_QUANT_LEVELS);
     float hiKnot = params->getFloat(HI_KNOT);
 
-    string weightsFile;
+    std::string weightsFile;
     if (params->isStringSet(WEIGHTS_FILE)) {
       weightsFile = params->getString(WEIGHTS_FILE);
     }
 
-    string inputRulesFile;
+    std::string inputRulesFile;
     if (params->isStringSet(RULES_FILE)) {
       inputRulesFile = params->getString(RULES_FILE);
     }
@@ -219,10 +217,10 @@ int fidex(const string &command) {
     }
 
     // Get test data
-    vector<int> mainSamplesPreds;
-    vector<int> mainSamplesTrueClass;
-    vector<vector<double>> mainSamplesValues;
-    vector<vector<double>> mainSamplesOutputValuesPredictions;
+    std::vector<int> mainSamplesPreds;
+    std::vector<int> mainSamplesTrueClass;
+    std::vector<std::vector<double>> mainSamplesValues;
+    std::vector<std::vector<double>> mainSamplesOutputValuesPredictions;
     std::unique_ptr<DataSetFid> testDatas;
     bool hasTrueClasses;
     if (!params->isStringSet(TEST_PRED_FILE)) { // If we have only one test data file with data, pred and class
@@ -258,8 +256,8 @@ int fidex(const string &command) {
     int nbTestSamples = testDatas->getNbSamples();
 
     // Get attributes
-    vector<string> attributeNames;
-    vector<string> classNames;
+    std::vector<std::string> attributeNames;
+    std::vector<std::string> classNames;
     bool hasClassNames = false;
     if (params->isStringSet(ATTRIBUTES_FILE)) {
       testDatas->setAttributes(params->getString(ATTRIBUTES_FILE), nbAttributes, nbClasses);
@@ -273,9 +271,9 @@ int fidex(const string &command) {
     impt2 = clock();
     importTime = (float)(impt2 - impt1) / CLOCKS_PER_SEC;
 
-    vector<int> normalizationIndices;
-    vector<double> mus;
-    vector<double> sigmas;
+    std::vector<int> normalizationIndices;
+    std::vector<double> mus;
+    std::vector<double> sigmas;
 
     // Get mus, sigmas and normalizationIndices from normalizationFile for denormalization :
     if (params->isStringSet(NORMALIZATION_FILE)) {
@@ -290,10 +288,10 @@ int fidex(const string &command) {
 
     std::cout << "\nImport time = " << importTime << " sec" << std::endl;
 
-    std::cout << "Files imported" << endl
-              << endl;
-    std::cout << "----------------------------------------------" << endl
-              << endl;
+    std::cout << "Files imported" << std::endl
+              << std::endl;
+    std::cout << "----------------------------------------------" << std::endl
+              << std::endl;
 
     float temps2;
     clock_t d1;
@@ -301,6 +299,7 @@ int fidex(const string &command) {
 
     d1 = clock();
 
+    std::vector<std::string> lines;
     // compute hyperspace
     std::cout << "Creation of hyperspace..." << std::endl;
 
@@ -321,8 +320,8 @@ int fidex(const string &command) {
       throw InternalError("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributs - " + std::to_string(nbAttributes) + ".");
     }
 
-    std::cout << "Hyperspace created" << endl
-              << endl;
+    std::cout << "Hyperspace created" << std::endl
+              << std::endl;
 
     auto fidex = Fidex(*trainDatas, *params, hyperspace, true);
 
@@ -338,7 +337,7 @@ int fidex(const string &command) {
     for (int currentSample = 0; currentSample < nbTestSamples; currentSample++) {
       Rule rule;
 
-      vector<double> mainSampleValues = mainSamplesValues[currentSample];
+      std::vector<double> mainSampleValues = mainSamplesValues[currentSample];
       int mainSamplePred = mainSamplesPreds[currentSample];
       double mainSamplePredValue = mainSamplesOutputValuesPredictions[currentSample][mainSamplePred];
       int mainSampleClass;
@@ -349,8 +348,8 @@ int fidex(const string &command) {
       }
 
       if (nbTestSamples > 1) {
-        std::cout << "Computation of rule for sample " << currentSample << " : " << endl
-                  << endl;
+        std::cout << "Computation of rule for sample " << currentSample << " : " << std::endl
+                  << std::endl;
       }
 
       if (nbTestSamples == 1) {
@@ -368,12 +367,12 @@ int fidex(const string &command) {
       meanNbAntecedentsPerRule += static_cast<double>(rule.getNbAntecedants());
 
       if (nbTestSamples == 1) {
-        std::cout << "Discriminating hyperplans generated." << endl
-                  << endl;
+        std::cout << "Discriminating hyperplans generated." << std::endl
+                  << std::endl;
       }
 
-      results.push_back(make_tuple(currentSample, rule));
-
+      std::stringstream stream;
+      lines.push_back(rule.toString(attributeNames, classNames));
       std::cout << std::endl;
       std::cout << "Extracted rule :" << std::endl;
       std::cout << rule.toString(attributeNames, classNames) << std::endl;
@@ -395,8 +394,29 @@ int fidex(const string &command) {
     meanAccuracy /= static_cast<double>(nbTestSamples);
 
     if (params->isStringSet(STATS_FILE)) {
-      writeStatsFile(params->getString(STATS_FILE), nbTestSamples, meanCovSize,
-                     meanNbAntecedentsPerRule, meanFidelity, meanAccuracy, meanConfidence);
+      std::ofstream outputStatsFile(params->getString(STATS_FILE));
+      if (outputStatsFile.is_open()) {
+        outputStatsFile << "Statistics with a test set of " << nbTestSamples << " samples :\n"
+                        << std::endl;
+        outputStatsFile << "The mean covering size per rule is : " << meanCovSize << "" << std::endl;
+        outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntecedentsPerRule << "" << std::endl;
+        outputStatsFile << "The mean rule fidelity rate is : " << meanFidelity << "" << std::endl;
+        outputStatsFile << "The mean rule accuracy is : " << meanAccuracy << "" << std::endl;
+        outputStatsFile << "The mean rule confidence is : " << meanConfidence << "" << std::endl;
+        outputStatsFile.close();
+      } else {
+        throw CannotOpenFileError("Error : Couldn't open stats extraction file " + params->getString(STATS_FILE) + ".");
+      }
+    }
+
+    std::ofstream outputFile(ruleFile);
+    if (outputFile.is_open()) {
+      for (const auto &line : lines) {
+        outputFile << line << "" << std::endl;
+      }
+      outputFile.close();
+    } else {
+      throw CannotOpenFileError("Error : Couldn't open rule extraction file " + ruleFile + ".");
     }
 
     d2 = clock();
@@ -415,7 +435,7 @@ int fidex(const string &command) {
 
   } catch (const ErrorHandler &e) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
-    std::cerr << e.what() << endl;
+    std::cerr << e.what() << std::endl;
     return -1;
   }
 

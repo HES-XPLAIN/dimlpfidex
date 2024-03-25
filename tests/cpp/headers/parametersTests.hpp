@@ -6,8 +6,8 @@
 #include <sstream>
 #include <string>
 
-std::string getInvalidDataTypeExceptionMessage(ParameterCode id, const string &wrongValue, const string &typeName);
-std::string getAlreadySetArgumentExceptionMessage(ParameterCode id, const string &value);
+std::string getInvalidDataTypeExceptionMessage(ParameterCode id, const std::string &wrongValue, const std::string &typeName);
+std::string getAlreadySetArgumentExceptionMessage(ParameterCode id, const std::string &value);
 std::string getArgumentNotFoundExceptionMessage(ParameterCode id);
 
 uint testSetter();

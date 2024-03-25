@@ -27,7 +27,7 @@
  * @param positiveClassIndex integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
  * @param trueClassFile string class file name
  */
-DataSetFid::DataSetFid(const string &name, const std::string &dataFile, const std::string &predFile, int nbAttributes, int nbClasses, double decisionThresh, int positiveClassId, const std::string &trueClassFile) : datasetName(name) {
+DataSetFid::DataSetFid(const std::string &name, const std::string &dataFile, const std::string &predFile, int nbAttributes, int nbClasses, double decisionThresh, int positiveClassId, const std::string &trueClassFile) : datasetName(name) {
 
   setNbClassAndAttr(nbClasses, nbAttributes);
 
@@ -70,7 +70,7 @@ DataSetFid::DataSetFid(const string &name, const std::string &dataFile, const st
  * @param decisionThres double indicating the decision threshold, useful when choosing the decision (-1 for no threshold)
  * @param positiveClassIndex integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
  */
-DataSetFid::DataSetFid(const string &name, const std::string &dataFile, int nbAttributes, int nbClasses, double decisionThresh, int positiveClassId) : datasetName(name), hasDatas(true), hasPreds(true) {
+DataSetFid::DataSetFid(const std::string &name, const std::string &dataFile, int nbAttributes, int nbClasses, double decisionThresh, int positiveClassId) : datasetName(name), hasDatas(true), hasPreds(true) {
 
   setNbClassAndAttr(nbClasses, nbAttributes);
 
@@ -83,12 +83,12 @@ DataSetFid::DataSetFid(const string &name, const std::string &dataFile, int nbAt
 
   checkThreshold();
 
-  fstream fileDta;
-  fileDta.open(dataFile, ios::in); // Read data file
+  std::fstream fileDta;
+  fileDta.open(dataFile, std::ios::in); // Read data file
   if (fileDta.fail()) {
     throw FileNotFoundError("Error in dataset " + datasetName + " : file " + dataFile + " not found.");
   }
-  string line;
+  std::string line;
   bool firstLine = true;
   while (!fileDta.eof()) {
     getline(fileDta, line);
@@ -162,18 +162,18 @@ DataSetFid::DataSetFid(const string &name, const std::string &dataFile, int nbAt
  * @param weightFile The name of the weight file.
  */
 DataSetFid::DataSetFid(const std::string &name, const std::string &weightFile) : datasetName(name), hasWeights(true) {
-  fstream fileWts;
-  string line;
+  std::fstream fileWts;
+  std::string line;
   bool multipleNetworks = false;
 
-  fileWts.open(weightFile, ios::in); // Read weight file
+  fileWts.open(weightFile, std::ios::in); // Read weight file
   if (fileWts.fail()) {
     throw FileNotFoundError("Error in dataset " + datasetName + " : file " + weightFile + " not found.");
   }
 
   // Check if weightsfile contains multiple networks
   while (getline(fileWts, line)) {
-    if (line.find("Network") != string::npos) {
+    if (line.find("Network") != std::string::npos) {
       multipleNetworks = true;
       break;
     }
@@ -181,7 +181,7 @@ DataSetFid::DataSetFid(const std::string &name, const std::string &weightFile) :
 
   // Reinitialise cursor at the beginning
   fileWts.clear();
-  fileWts.seekg(0, ios::beg);
+  fileWts.seekg(0, std::ios::beg);
 
   if (!multipleNetworks) {
     parseSingleNetwork(fileWts);
@@ -197,15 +197,15 @@ DataSetFid::DataSetFid(const std::string &name, const std::string &weightFile) :
  *
  * @param fileWts Reference to the file stream opened for reading the weight file.
  */
-void DataSetFid::parseSingleNetwork(fstream &fileWts) {
-  string line;
-  vector<vector<double>> networkWeights;
+void DataSetFid::parseSingleNetwork(std::fstream &fileWts) {
+  std::string line;
+  std::vector<std::vector<double>> networkWeights;
 
   while (getline(fileWts, line)) {
     if (!checkStringEmpty(line)) {
       std::stringstream myLine(line);
       double value;
-      vector<double> tempVect;
+      std::vector<double> tempVect;
       while (myLine >> value) {
         tempVect.push_back(value);
       }
@@ -221,12 +221,12 @@ void DataSetFid::parseSingleNetwork(fstream &fileWts) {
  *
  * @param fileWts Reference to the file stream opened for reading the weight file.
  */
-void DataSetFid::parseMultipleNetworks(fstream &fileWts) {
-  string line;
-  vector<vector<double>> networkWeights;
+void DataSetFid::parseMultipleNetworks(std::fstream &fileWts) {
+  std::string line;
+  std::vector<std::vector<double>> networkWeights;
 
   while (getline(fileWts, line)) {
-    if (line.find("Network") != string::npos) {
+    if (line.find("Network") != std::string::npos) {
       if (!networkWeights.empty()) {
         weights.push_back(networkWeights); // Add network to weights
         networkWeights.clear();
@@ -234,7 +234,7 @@ void DataSetFid::parseMultipleNetworks(fstream &fileWts) {
     } else if (!checkStringEmpty(line)) {
       std::stringstream myLine(line);
       double value;
-      vector<double> tempVect;
+      std::vector<double> tempVect;
       while (myLine >> value) {
         tempVect.push_back(value);
       }
@@ -268,10 +268,10 @@ void DataSetFid::setDataFromFile(const std::string &dataFile, int nbAttributes, 
 
   setNbClassAndAttr(nbClasses, nbAttributes);
 
-  string line;
-  fstream fileDta;
+  std::string line;
+  std::fstream fileDta;
 
-  fileDta.open(dataFile, ios::in); // Read data file
+  fileDta.open(dataFile, std::ios::in); // Read data file
   if (fileDta.fail()) {
     throw FileNotFoundError("Error in dataset " + datasetName + " : file " + dataFile + " not found.");
   }
@@ -335,10 +335,10 @@ void DataSetFid::setPredFromFile(const std::string &predFile, int nbClasses, dou
     throw InternalError("Error in dataset " + datasetName + " : predictions have been given two times.");
   }
   hasPreds = true;
-  string line;
-  fstream filePrd;
+  std::string line;
+  std::fstream filePrd;
 
-  filePrd.open(predFile, ios::in); // read predictions data file
+  filePrd.open(predFile, std::ios::in); // read predictions data file
   if (filePrd.fail()) {
     throw FileNotFoundError("Error in dataset " + datasetName + " : file " + predFile + " not found.");
   }
@@ -377,10 +377,10 @@ void DataSetFid::setClassFromFile(const std::string &classFile, int nbClasses) {
 
   setNbClass(nbClasses);
 
-  string line;
-  fstream fileCl;
+  std::string line;
+  std::fstream fileCl;
 
-  fileCl.open(classFile, ios::in); // read true dataclass file
+  fileCl.open(classFile, std::ios::in); // read true dataclass file
   if (fileCl.fail()) {
     throw FileNotFoundError("Error in dataset " + datasetName + " : file " + classFile + " not found.");
   }
@@ -410,10 +410,10 @@ void DataSetFid::setClassFromFile(const std::string &classFile, int nbClasses) {
  * @param line A string containing one line of the data file. This line can include attribute values and, optionally, class information.
  * @param dataFile A string representing the name of the data file. This file may contain lines of data in any of the supported formats.
  */
-void DataSetFid::setDataLine(const string &line, const std::string &dataFile) {
+void DataSetFid::setDataLine(const std::string &line, const std::string &dataFile) {
   std::stringstream myLine(line);
   double valueData;
-  vector<double> valuesData;
+  std::vector<double> valuesData;
   while (myLine >> std::ws) { // Skip leading whitespaces
     if (myLine.peek() == EOF) {
       break; // Reached the end of the stream
@@ -482,11 +482,11 @@ void DataSetFid::setDataLine(const string &line, const std::string &dataFile) {
  * @param line string containing one line of the prediction file
  * @param predFile string prediction file name
  */
-void DataSetFid::setPredLine(const string &line, const std::string &predFile) {
+void DataSetFid::setPredLine(const std::string &line, const std::string &predFile) {
 
   std::stringstream myLine(line);
   double valuePred;
-  vector<double> valuesPred;
+  std::vector<double> valuesPred;
   while (myLine >> std::ws) { // Skip leading whitespaces
     if (myLine.peek() == EOF) {
       break; // Reached the end of the stream
@@ -525,10 +525,10 @@ void DataSetFid::setPredLine(const string &line, const std::string &predFile) {
  * @param classFile A string representing the name of the class file. This file should contain lines in one of the
  *                  supported formats (either class ID or one-hot encoded).
  */
-void DataSetFid::setClassLine(const string &line, const std::string &classFile) {
+void DataSetFid::setClassLine(const std::string &line, const std::string &classFile) {
   std::stringstream myLine(line);
   double valueData;
-  vector<double> valuesData;
+  std::vector<double> valuesData;
   while (myLine >> std::ws) { // Skip leading whitespaces
     if (myLine.peek() == EOF) {
       break; // Reached the end of the stream
@@ -592,7 +592,7 @@ void DataSetFid::setClassLine(const string &line, const std::string &classFile) 
 void DataSetFid::setNbClass(int nbClasses) {
   if (_nbClasses != -1) {
     if (_nbClasses != nbClasses) {
-      throw InternalError("Error in dataset " + datasetName + " : the given number of classes (" + to_string(nbClasses) + ") doesn't match the number given before (" + to_string(_nbClasses) + ").");
+      throw InternalError("Error in dataset " + datasetName + " : the given number of classes (" + std::to_string(nbClasses) + ") doesn't match the number given before (" + std::to_string(_nbClasses) + ").");
     }
   } else {
     if (nbClasses > 0) {
@@ -617,7 +617,7 @@ void DataSetFid::setNbClass(int nbClasses) {
 void DataSetFid::setNbClassAndAttr(int nbClasses, int nbAttributes) {
   if (_nbAttributes != -1) {
     if (_nbAttributes != nbAttributes) {
-      throw InternalError("Error in dataset " + datasetName + " : the given number of attributes (" + to_string(nbAttributes) + ") doesn't match the number given before (" + to_string(_nbAttributes) + ").");
+      throw InternalError("Error in dataset " + datasetName + " : the given number of attributes (" + std::to_string(nbAttributes) + ") doesn't match the number given before (" + std::to_string(_nbAttributes) + ").");
     }
   } else {
     if (nbAttributes > 0) {
@@ -668,7 +668,7 @@ bool DataSetFid::isOneHot(const std::vector<double> &values, int start, int &one
  *
  * @return vector<vector<double>>*
  */
-vector<vector<double>> &DataSetFid::getDatas() {
+std::vector<std::vector<double>> &DataSetFid::getDatas() {
   if (hasDatas) {
     return datas;
   } else {
@@ -681,7 +681,7 @@ vector<vector<double>> &DataSetFid::getDatas() {
  *
  * @return vector<int>*
  */
-vector<int> &DataSetFid::getClasses() {
+std::vector<int> &DataSetFid::getClasses() {
   if (hasClasses) {
     return trueClasses;
   } else {
@@ -704,7 +704,7 @@ bool DataSetFid::getHasClasses() const {
  *
  * @return vector<int>*
  */
-vector<int> &DataSetFid::getPredictions() {
+std::vector<int> &DataSetFid::getPredictions() {
   if (hasPreds) {
     return predictions;
   } else {
@@ -717,7 +717,7 @@ vector<int> &DataSetFid::getPredictions() {
  *
  * @return vector<vector<double>>*
  */
-vector<vector<double>> &DataSetFid::getOutputValuesPredictions() {
+std::vector<std::vector<double>> &DataSetFid::getOutputValuesPredictions() {
   if (hasPreds) {
     return outputValuesPredictions;
   } else {
@@ -769,7 +769,7 @@ int DataSetFid::getNbSamples() const {
  *
  * @return vector<vector<double>>
  */
-vector<vector<vector<double>>> DataSetFid::getWeights() const {
+std::vector<std::vector<std::vector<double>>> DataSetFid::getWeights() const {
   if (hasWeights) {
     return weights;
   } else {
@@ -782,7 +782,7 @@ vector<vector<vector<double>>> DataSetFid::getWeights() const {
  *
  * @return vector<double>
  */
-vector<double> DataSetFid::getInBiais(int netId) const {
+std::vector<double> DataSetFid::getInBiais(int netId) const {
   if (hasWeights) {
     return weights[netId][0];
   } else {
@@ -795,7 +795,7 @@ vector<double> DataSetFid::getInBiais(int netId) const {
  *
  * @return vector<double>
  */
-vector<double> DataSetFid::getInWeights(int netId) const {
+std::vector<double> DataSetFid::getInWeights(int netId) const {
   if (hasWeights) {
     return weights[netId][1];
   } else {
@@ -863,7 +863,7 @@ void DataSetFid::checkThreshold() const {
   }
 
   if (positiveClassIndex >= _nbClasses) {
-    throw CommandArgumentException("Error in dataset " + datasetName + " : The index of positive class cannot be greater or equal to the number of classes (" + to_string(_nbClasses) + ").");
+    throw CommandArgumentException("Error in dataset " + datasetName + " : The index of positive class cannot be greater or equal to the number of classes (" + std::to_string(_nbClasses) + ").");
   }
 }
 
@@ -883,10 +883,10 @@ void DataSetFid::setAttributes(const std::string &attributesFile, int nbAttribut
   }
 
   // Get attributes
-  fstream fileAttr;
-  string line;
+  std::fstream fileAttr;
+  std::string line;
 
-  fileAttr.open(attributesFile, ios::in); // Read attribute file
+  fileAttr.open(attributesFile, std::ios::in); // Read attribute file
   if (fileAttr.fail()) {
     throw FileNotFoundError("Error in dataset " + datasetName + " : file " + attributesFile + " not found.");
   }
@@ -901,7 +901,7 @@ void DataSetFid::setAttributes(const std::string &attributesFile, int nbAttribut
     }
     if (!checkStringEmpty(line)) {
       std::stringstream myLine(line);
-      string attr = myLine.str();
+      std::string attr = myLine.str();
       if (hasSpaceBetweenWords(attr)) {
         throw FileContentError("Error in dataset " + datasetName + ", in file " + attributesFile + " : attribute " + attr + " has spaces inbetween. Maybe replace it by a an underscore.");
       }
@@ -939,7 +939,7 @@ void DataSetFid::setAttributes(const std::string &attributesFile, int nbAttribut
  *
  * @return vector<string>*
  */
-vector<string> &DataSetFid::getAttributeNames() {
+std::vector<std::string> &DataSetFid::getAttributeNames() {
   if (hasAttributes) {
     return attributeNames;
   } else {
@@ -952,7 +952,7 @@ vector<string> &DataSetFid::getAttributeNames() {
  *
  * @return vector<string>*
  */
-vector<string> &DataSetFid::getClassNames() {
+std::vector<std::string> &DataSetFid::getClassNames() {
   if (hasClassNames) {
     return classNames;
   } else {

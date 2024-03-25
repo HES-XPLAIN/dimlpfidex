@@ -140,31 +140,31 @@ static const std::unordered_map<std::string, ParameterCode> parameterNames = {
 
 class Parameters {
 private:
-  map<ParameterCode, int> _intParams;
-  map<ParameterCode, float> _floatParams;
-  map<ParameterCode, double> _doubleParams;
-  map<ParameterCode, bool> _boolParams;
-  map<ParameterCode, vector<double>> _doubleVectorParams;
-  map<ParameterCode, vector<int>> _intVectorParams;
-  map<ParameterCode, string> _stringParams;
-  vector<string> _weightFiles;
+  std::map<ParameterCode, int> _intParams;
+  std::map<ParameterCode, float> _floatParams;
+  std::map<ParameterCode, double> _doubleParams;
+  std::map<ParameterCode, bool> _boolParams;
+  std::map<ParameterCode, std::vector<double>> _doubleVectorParams;
+  std::map<ParameterCode, std::vector<int>> _intVectorParams;
+  std::map<ParameterCode, std::string> _stringParams;
+  std::vector<std::string> _weightFiles;
   StringInt arch;
   StringInt archInd;
 
   // private parser
-  void parseArg(const string &param, const string &arg, const std::vector<ParameterCode> &validParams);
+  void parseArg(const std::string &param, const std::string &arg, const std::vector<ParameterCode> &validParams);
 
   // path checker
   void checkFilesIntegrity();
-  void checkPath(ParameterCode id, const string &path) const;
+  void checkPath(ParameterCode id, const std::string &path) const;
   void completePath(ParameterCode id);
 
   // throwables
-  [[noreturn]] void throwInvalidDataTypeException(ParameterCode id, const string &wrongValue, const string &typeName) const {
+  [[noreturn]] void throwInvalidDataTypeException(ParameterCode id, const std::string &wrongValue, const std::string &typeName) const {
     throw CommandArgumentException("Parsing error: argument (ID " + getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid " + typeName + ".");
   }
 
-  [[noreturn]] void throwAlreadySetArgumentException(ParameterCode id, const string &value) const {
+  [[noreturn]] void throwAlreadySetArgumentException(ParameterCode id, const std::string &value) const {
     throw CommandArgumentException("Parsing error: argument (ID " + getParameterName(id) + ") with value \"" + value + "\" is already set, cannot override it.");
   }
 
@@ -172,7 +172,7 @@ private:
     throw CommandArgumentException("Parameters error: argument (ID " + getParameterName(id) + ") requested was not found, try to rerun including it.");
   }
 
-  [[noreturn]] void throwInvalidFileOrDirectory(ParameterCode id, const string &wrongValue) const {
+  [[noreturn]] void throwInvalidFileOrDirectory(ParameterCode id, const std::string &wrongValue) const {
     throw CommandArgumentException("Parameters error: argument (ID " + getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid path. The directory or file specified could not be found.");
   }
 
@@ -183,53 +183,53 @@ private:
 public:
   // constructor
   Parameters() = default;
-  explicit Parameters(const vector<string> &args, const std::vector<ParameterCode> &validParams);
-  explicit Parameters(const string &jsonfile, const std::vector<ParameterCode> &validParams);
+  explicit Parameters(const std::vector<std::string> &args, const std::vector<ParameterCode> &validParams);
+  explicit Parameters(const std::string &jsonfile, const std::vector<ParameterCode> &validParams);
 
   // setters handle formatting from string argument
-  void setInt(ParameterCode id, const string &value);
+  void setInt(ParameterCode id, const std::string &value);
   void setInt(ParameterCode id, int value);
-  void setFloat(ParameterCode id, const string &value);
+  void setFloat(ParameterCode id, const std::string &value);
   void setFloat(ParameterCode id, float value);
-  void setDouble(ParameterCode id, const string &value);
+  void setDouble(ParameterCode id, const std::string &value);
   void setDouble(ParameterCode id, double value);
-  void setBool(ParameterCode id, string value);
+  void setBool(ParameterCode id, std::string value);
   void setBool(ParameterCode id, bool value);
-  void setDoubleVector(ParameterCode id, const string &value);
-  void setDoubleVector(ParameterCode id, const vector<double> &value);
-  void setIntVector(ParameterCode id, const string &value);
-  void setIntVector(ParameterCode id, const vector<int> &value);
-  void setString(ParameterCode id, const string &value);
-  void setArch(ParameterCode id, const string &value, const string &param);
+  void setDoubleVector(ParameterCode id, const std::string &value);
+  void setDoubleVector(ParameterCode id, const std::vector<double> &value);
+  void setIntVector(ParameterCode id, const std::string &value);
+  void setIntVector(ParameterCode id, const std::vector<int> &value);
+  void setString(ParameterCode id, const std::string &value);
+  void setArch(ParameterCode id, const std::string &value, const std::string &param);
 
   // default setter if value not set
   void setDefaultInt(ParameterCode id, int value);
   void setDefaultFloat(ParameterCode id, float value);
   void setDefaultDouble(ParameterCode id, double value);
   void setDefaultBool(ParameterCode id, bool value);
-  void setDefaultDoubleVector(ParameterCode id, const string &defaultValue);
-  void setDefaultIntVector(ParameterCode id, const string &defaultValue);
-  void setDefaultString(ParameterCode id, const string &defaultValue, bool withRoot = false);
+  void setDefaultDoubleVector(ParameterCode id, const std::string &defaultValue);
+  void setDefaultIntVector(ParameterCode id, const std::string &defaultValue);
+  void setDefaultString(ParameterCode id, const std::string &defaultValue, bool withRoot = false);
 
   // getters
   int getInt(ParameterCode id);
   float getFloat(ParameterCode id);
   double getDouble(ParameterCode id);
   bool getBool(ParameterCode id);
-  vector<double> getDoubleVector(ParameterCode id);
-  vector<int> getIntVector(ParameterCode id);
-  string getString(ParameterCode id);
-  vector<string> getWeightsFiles() const;
+  std::vector<double> getDoubleVector(ParameterCode id);
+  std::vector<int> getIntVector(ParameterCode id);
+  std::string getString(ParameterCode id);
+  std::vector<std::string> getWeightsFiles() const;
   StringInt getArch() const;
   StringInt getArchInd() const;
 
-  map<ParameterCode, int> getAllInts() const { return _intParams; }
-  map<ParameterCode, float> getAllFloats() const { return _floatParams; }
-  map<ParameterCode, double> getAllDoubles() const { return _doubleParams; }
-  map<ParameterCode, bool> getAllBools() const { return _boolParams; }
-  map<ParameterCode, vector<double>> getAllDoubleVectors() const { return _doubleVectorParams; }
-  map<ParameterCode, vector<int>> getAllIntVectors() const { return _intVectorParams; }
-  map<ParameterCode, string> getAllStrings() const { return _stringParams; }
+  std::map<ParameterCode, int> getAllInts() const { return _intParams; }
+  std::map<ParameterCode, float> getAllFloats() const { return _floatParams; }
+  std::map<ParameterCode, double> getAllDoubles() const { return _doubleParams; }
+  std::map<ParameterCode, bool> getAllBools() const { return _boolParams; }
+  std::map<ParameterCode, std::vector<double>> getAllDoubleVectors() const { return _doubleVectorParams; }
+  std::map<ParameterCode, std::vector<int>> getAllIntVectors() const { return _intVectorParams; }
+  std::map<ParameterCode, std::string> getAllStrings() const { return _stringParams; }
 
   bool isIntSet(ParameterCode id);
   bool isFloatSet(ParameterCode id);
@@ -281,54 +281,54 @@ public:
   void setDefaultDimlpTrn();
 };
 
-inline ostream &operator<<(ostream &stream, const Parameters &p) {
+inline std::ostream &operator<<(std::ostream &stream, const Parameters &p) {
   int pad = 100;
-  stream << "Parameters list:" << endl;
+  stream << "Parameters list:" << std::endl;
 
   for (auto const &x : p.getAllStrings()) {
-    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << x.second << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << std::setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << x.second << std::endl;
   }
 
   for (auto const &x : p.getAllInts()) {
-    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << to_string(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << std::setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << std::to_string(x.second) << std::endl;
   }
 
   for (auto const &x : p.getAllFloats()) {
-    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << to_string(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << std::setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << std::to_string(x.second) << std::endl;
   }
 
   for (auto const &x : p.getAllDoubles()) {
-    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << to_string(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << std::setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << std::to_string(x.second) << std::endl;
   }
 
   for (auto const &x : p.getAllBools()) {
-    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << to_string(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << std::setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << std::to_string(x.second) << std::endl;
   }
 
   for (auto const &x : p.getAllIntVectors()) {
-    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << p.vectorToString(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << std::setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << p.vectorToString(x.second) << std::endl;
   }
 
   for (auto const &x : p.getAllDoubleVectors()) {
-    stream << " - " << Parameters::getParameterName(x.first) << setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << p.vectorToString(x.second) << endl;
+    stream << " - " << Parameters::getParameterName(x.first) << std::setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << p.vectorToString(x.second) << std::endl;
   }
   StringInt arch = p.getArch();
   StringInt archInd = p.getArchInd();
   arch.GoToBeg();
   archInd.GoToBeg();
   for (int _ = 0; _ < arch.GetNbEl(); _++, arch.GoToNext(), archInd.GoToNext()) {
-    stream << " - H" << archInd.GetVal() << setw(pad - static_cast<int>(std::to_string(archInd.GetVal()).length() + 1)) << arch.GetVal() << endl;
+    stream << " - H" << archInd.GetVal() << std::setw(pad - static_cast<int>(std::to_string(archInd.GetVal()).length() + 1)) << arch.GetVal() << std::endl;
   }
 
   if (p.isStringSet(WEIGHTS_FILE)) {
-    stream << "  WEIGHTS_FILES (list)" << endl;
-    for (string f : p.getWeightsFiles()) {
-      stream << "     " << f << endl;
+    stream << "  WEIGHTS_FILES (list)" << std::endl;
+    for (std::string f : p.getWeightsFiles()) {
+      stream << "     " << f << std::endl;
     }
   }
 
-  stream << "End of Parameters list." << endl
-         << endl;
+  stream << "End of Parameters list." << std::endl
+         << std::endl;
 
   return stream;
 }

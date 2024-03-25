@@ -11,8 +11,6 @@
 #include <sstream>
 #include <vector>
 
-using namespace std;
-
 class DataSetFid {
 
 private:
@@ -61,8 +59,8 @@ public:
   DataSetFid(const std::string &name, const std::string &dataFile, const std::string &predFile, int nbAttributes, int nbClasses, double decisionThresh, int indexPositiveCl, const std::string &trueClassFile = "");
   DataSetFid(const std::string &name, const std::string &dataFile, int nbAttributes, int nbClasses, double decisionThresh, int indexPositiveCl); // dataFile with data, predictions and maybe classes
   explicit DataSetFid(const std::string &name, const std::string &weightFile);
-  void parseSingleNetwork(fstream &fileWts);
-  void parseMultipleNetworks(fstream &fileWts);
+  void parseSingleNetwork(std::fstream &fileWts);
+  void parseMultipleNetworks(std::fstream &fileWts);
 
   void setDataFromFile(const std::string &dataFile, int nbAttributes, int nbClasses);
   void setPredFromFile(const std::string &predFile, int nbClasses, double decisionThreshold = -1, int positiveClassIndex = -1);

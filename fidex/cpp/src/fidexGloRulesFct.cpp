@@ -84,7 +84,7 @@ void showRulesParams() {
  * @param hyperlocus 2D vector of doubles used to compute Fidex alorithm
  */
 // TODO: implement dicotomic min covering
-void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetFid &trainDataset, Parameters &p, const vector<vector<double>> &hyperlocus) {
+void generateRules(std::vector<Rule> &rules, std::vector<int> &notCoveredSamples, DataSetFid &trainDataset, Parameters &p, const std::vector<std::vector<double>> &hyperlocus) {
   int nbProblems = 0;
   int nbRulesNotFound = 0;
   int nbDatas = trainDataset.getNbSamples();
@@ -99,38 +99,38 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
     int cnt = 0;
     bool ruleCreated;
     int localNbProblems = 0;
-    vector<Rule> localRules;
-    vector<int>::iterator it;
+    std::vector<Rule> localRules;
+    std::vector<int>::iterator it;
     int localNbRulesNotFound = 0;
     Hyperspace hyperspace(hyperlocus);
     int threadId = omp_get_thread_num();
     auto fidex = Fidex(trainDataset, p, hyperspace, false);
 
-    string consoleFile = "";
+    std::string consoleFile = "";
     if (p.isStringSet(CONSOLE_FILE)) {
       consoleFile = p.getString(CONSOLE_FILE);
     }
 
 #pragma omp critical
     {
-      cout << "Thread #" << threadId << " initialized, please wait for it to be done." << endl;
+      std::cout << "Thread #" << threadId << " initialized, please wait for it to be done." << std::endl;
     }
 
     t1 = omp_get_wtime();
 
 #pragma omp for
     for (int idSample = 0; idSample < nbDatas; idSample++) {
-      vector<int> &trainPreds = trainDataset.getPredictions();
-      vector<vector<double>> &trainData = trainDataset.getDatas();
-      vector<double> &mainSampleValues = trainData[idSample];
+      std::vector<int> &trainPreds = trainDataset.getPredictions();
+      std::vector<std::vector<double>> &trainData = trainDataset.getDatas();
+      std::vector<double> &mainSampleValues = trainData[idSample];
       int mainSamplePred = trainPreds[idSample];
       cnt += 1;
 
       if (omp_get_thread_num() == 0 && ((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && consoleFile.empty()) {
 #pragma omp critical
         {
-          cout << "Processing : " << int((double(idSample) / (nbDatas / nbThreadsUsed)) * 100) << "%\r";
-          cout.flush();
+          std::cout << "Processing : " << int((double(idSample) / (nbDatas / nbThreadsUsed)) * 100) << "%\r";
+          std::cout.flush();
         }
       }
 
@@ -163,7 +163,7 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
 #pragma omp ordered
       {
         if (i == threadId) {
-          cout << "Thread #" << threadId << " ended " << cnt << " iterations in " << (t2 - t1) << " seconds." << endl;
+          std::cout << "Thread #" << threadId << " ended " << cnt << " iterations in " << (t2 - t1) << " seconds." << std::endl;
           rules.insert(rules.end(), localRules.begin(), localRules.end());
           nbProblems += localNbProblems;
           nbRulesNotFound += localNbRulesNotFound;
@@ -172,11 +172,11 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
     }
   } // end of parallel section
 
-  cout << endl
-       << rules.size() << " rules created." << endl
-       << "Number of sample with lower covering than " << minCovering << " is " << nbProblems << endl
-       << "Number of rules not found is " << nbRulesNotFound << endl
-       << "Fidex rules computed" << endl;
+  std::cout << std::endl
+            << rules.size() << " rules created." << std::endl
+            << "Number of sample with lower covering than " << minCovering << " is " << nbProblems << std::endl
+            << "Number of rules not found is " << nbRulesNotFound << std::endl
+            << "Fidex rules computed" << std::endl;
 }
 
 /**
@@ -197,29 +197,29 @@ void generateRules(vector<Rule> &rules, vector<int> &notCoveredSamples, DataSetF
  * @param hyperlocus 2D vector of doubles used to compute Fidex alorithm
  * @return vector<Rule>
  */
-vector<Rule> heuristic_1(DataSetFid &trainDataset, Parameters &p, const vector<vector<double>> &hyperlocus) {
-  vector<Rule> rules;
-  vector<Rule> chosenRules;
+std::vector<Rule> heuristic_1(DataSetFid &trainDataset, Parameters &p, const std::vector<std::vector<double>> &hyperlocus) {
+  std::vector<Rule> rules;
+  std::vector<Rule> chosenRules;
   int nbDatas = trainDataset.getNbSamples();
-  vector<int> notCoveredSamples(nbDatas);
+  std::vector<int> notCoveredSamples(nbDatas);
   iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
   generateRules(rules, notCoveredSamples, trainDataset, p, hyperlocus);
 
-  cout << "Computing global ruleset..." << endl;
+  std::cout << "Computing global ruleset..." << std::endl;
 
   // remove duplicates
   rules.erase(unique(rules.begin(), rules.end()), rules.end());
 
   // While there is some not covered samples
-  vector<int>::iterator ite;
-  vector<int> currentRuleSamples;
+  std::vector<int>::iterator ite;
+  std::vector<int> currentRuleSamples;
 
   while (!notCoveredSamples.empty()) {
     Rule bestRule;
     int bestRuleIndex = 0;
     int bestCovering = INT_MAX;
-    vector<int> remainingSamples;
-    vector<int> difference(notCoveredSamples.size());
+    std::vector<int> remainingSamples;
+    std::vector<int> difference(notCoveredSamples.size());
 
     for (int i = 0; i < rules.size(); i++) {
       currentRuleSamples = rules[i].getCoveredSamples();
@@ -245,7 +245,7 @@ vector<Rule> heuristic_1(DataSetFid &trainDataset, Parameters &p, const vector<v
     rules.erase(rules.begin() + bestRuleIndex); // Remove this rule
   }
 
-  cout << chosenRules.size() << " rules selected." << endl;
+  std::cout << chosenRules.size() << " rules selected." << std::endl;
 
   return chosenRules;
 }
@@ -260,11 +260,11 @@ vector<Rule> heuristic_1(DataSetFid &trainDataset, Parameters &p, const vector<v
  * @param hyperlocus 2D vector of doubles used to compute Fidex alorithm
  * @return vector<Rule>
  */
-vector<Rule> heuristic_2(DataSetFid &trainDataset, Parameters &p, const vector<vector<double>> &hyperlocus) {
-  vector<Rule> rules;
-  vector<Rule> chosenRules;
+std::vector<Rule> heuristic_2(DataSetFid &trainDataset, Parameters &p, const std::vector<std::vector<double>> &hyperlocus) {
+  std::vector<Rule> rules;
+  std::vector<Rule> chosenRules;
   int nbDatas = trainDataset.getNbSamples();
-  vector<int> notCoveredSamples(nbDatas);
+  std::vector<int> notCoveredSamples(nbDatas);
   iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
 
   // getting rules and not covered samples
@@ -280,11 +280,11 @@ vector<Rule> heuristic_2(DataSetFid &trainDataset, Parameters &p, const vector<v
 
   // While there is some not covered samples
   int i = 0;
-  vector<int>::iterator ite;
-  vector<int> currentRuleSamples;
+  std::vector<int>::iterator ite;
+  std::vector<int> currentRuleSamples;
 
   while (!notCoveredSamples.empty()) {
-    vector<int> difference(notCoveredSamples.size());
+    std::vector<int> difference(notCoveredSamples.size());
     currentRuleSamples = rules[i].getCoveredSamples();
 
     // Delete covered samples
@@ -304,7 +304,7 @@ vector<Rule> heuristic_2(DataSetFid &trainDataset, Parameters &p, const vector<v
     i += 1;
   }
 
-  cout << chosenRules.size() << " rules selected." << endl;
+  std::cout << chosenRules.size() << " rules selected." << std::endl;
 
   return chosenRules;
 }
@@ -317,51 +317,51 @@ vector<Rule> heuristic_2(DataSetFid &trainDataset, Parameters &p, const vector<v
  * @param hyperlocus
  * @return vector<Rule>
  */
-vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const vector<vector<double>> &hyperlocus) {
+std::vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const std::vector<std::vector<double>> &hyperlocus) {
   Rule rule;
   int idSample;
   bool ruleCreated;
   int nbProblems = 0;
   int nbRulesNotFound = 0;
-  vector<Rule> chosenRules;
+  std::vector<Rule> chosenRules;
   int seed = p.getInt(SEED);
-  vector<int> chosenRuleSamples;
+  std::vector<int> chosenRuleSamples;
   Hyperspace hyperspace(hyperlocus);
   int minNbCover = p.getInt(MIN_COVERING);
   auto nbDatas = static_cast<int>(trainDataset.getDatas().size());
-  vector<int> notCoveredSamples(nbDatas);
+  std::vector<int> notCoveredSamples(nbDatas);
   auto fidex = Fidex(trainDataset, p, hyperspace, false);
-  string consoleFile = "";
+  std::string consoleFile = "";
   if (p.isStringSet(CONSOLE_FILE)) {
     consoleFile = p.getString(CONSOLE_FILE);
   }
 
   if (seed == 0) {
-    auto currentTime = high_resolution_clock::now();
+    auto currentTime = std::chrono::high_resolution_clock::now();
     auto seedValue = currentTime.time_since_epoch().count();
     seed = static_cast<int>(seedValue);
   }
 
-  mt19937 gen(seed);
+  std::mt19937 gen(seed);
 
   iota(begin(notCoveredSamples), end(notCoveredSamples), 0);      // Vector from 0 to nbDatas-1
   shuffle(begin(notCoveredSamples), end(notCoveredSamples), gen); //  Sort data randomly
 
-  cout << "Computing rules..." << endl
-       << endl;
+  std::cout << "Computing rules..." << std::endl
+            << std::endl;
 
   // While there is some not covered samples
   while (!notCoveredSamples.empty()) {
 
     if (int(nbDatas / 100) != 0 && (nbDatas - notCoveredSamples.size()) % int(nbDatas / 100) == 0 && consoleFile.empty()) {
-      cout << "Processing: " << int((double(nbDatas - notCoveredSamples.size()) / nbDatas) * 100) << "%\r";
-      cout.flush();
+      std::cout << "Processing: " << int((double(nbDatas - notCoveredSamples.size()) / nbDatas) * 100) << "%\r";
+      std::cout.flush();
     }
 
     idSample = notCoveredSamples[0];
-    vector<int> &trainPreds = trainDataset.getPredictions();
-    vector<vector<double>> &trainData = trainDataset.getDatas();
-    vector<double> &mainSampleValues = trainData[idSample];
+    std::vector<int> &trainPreds = trainDataset.getPredictions();
+    std::vector<std::vector<double>> &trainData = trainDataset.getDatas();
+    std::vector<double> &mainSampleValues = trainData[idSample];
     int mainSamplePred = trainPreds[idSample];
 
     ruleCreated = fidex.launchFidex(rule, mainSampleValues, mainSamplePred, -1);
@@ -389,14 +389,14 @@ vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const vector<v
     }
   }
 
-  cout << endl;
+  std::cout << std::endl;
 
   // remove duplicates
   chosenRules.erase(unique(chosenRules.begin(), chosenRules.end()), chosenRules.end());
 
-  cout << "Number of sample with lower covering than " << minNbCover << " : " << nbProblems << endl
-       << "Number of rules not found : " << nbRulesNotFound << endl
-       << chosenRules.size() << " rules selected." << endl;
+  std::cout << "Number of sample with lower covering than " << minNbCover << " : " << nbProblems << std::endl
+            << "Number of rules not found : " << nbRulesNotFound << std::endl
+            << chosenRules.size() << " rules selected." << std::endl;
 
   return chosenRules;
 }
@@ -430,7 +430,7 @@ void checkRulesParametersLogicValues(Parameters &p) {
   p.checkParametersNormalization();
 
   if (p.getInt(NB_THREADS) < 1 || p.getInt(NB_THREADS) > omp_get_max_threads()) {
-    throw CommandArgumentException("Error : Number threads must be between 1 and #CPU cores of your machine (which is " + to_string(omp_get_max_threads()) + ")");
+    throw CommandArgumentException("Error : Number threads must be between 1 and #CPU cores of your machine (which is " + std::to_string(omp_get_max_threads()) + ")");
   }
 
   if (!(p.getInt(HEURISTIC) > 0 && p.getInt(HEURISTIC) < 4)) {
@@ -444,16 +444,16 @@ void checkRulesParametersLogicValues(Parameters &p) {
  * @param command list of arguments included by the user.
  * @return int
  */
-int fidexGloRules(const string &command) {
+int fidexGloRules(const std::string &command) {
   // Save buffer where we output results
-  ofstream ofs;
-  streambuf *cout_buff = cout.rdbuf(); // Save old buf
+  std::ofstream ofs;
+  std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
 
   try {
     // Parsing the command
-    vector<string> commandList = {"fidexGloRules"};
-    string s;
-    stringstream ss(command);
+    std::vector<std::string> commandList = {"fidexGloRules"};
+    std::string s;
+    std::stringstream ss(command);
 
     while (ss >> s) {
       commandList.push_back(s);
@@ -466,7 +466,7 @@ int fidexGloRules(const string &command) {
     }
 
     // Import parameters
-    unique_ptr<Parameters> params;
+    std::unique_ptr<Parameters> params;
     std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, TRAIN_PRED_FILE, TRAIN_CLASS_FILE, WEIGHTS_FILE, RULES_FILE, GLOBAL_RULES_OUTFILE,
                                               HEURISTIC, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER, ATTRIBUTES_FILE, CONSOLE_FILE,
                                               MAX_ITERATIONS, MIN_COVERING, DROPOUT_DIM, DROPOUT_HYP, MAX_FAILED_ATTEMPTS, NB_QUANT_LEVELS,
@@ -494,14 +494,14 @@ int fidexGloRules(const string &command) {
     // Get console results to file
     if (params->isStringSet(CONSOLE_FILE)) {
       ofs.open(params->getString(CONSOLE_FILE));
-      cout.rdbuf(ofs.rdbuf()); // redirect cout to file
+      std::cout.rdbuf(ofs.rdbuf()); // redirect cout to file
     }
 
     // Show chosen parameters
     std::cout << *params;
 
     // Import files
-    cout << "Importing files..." << endl;
+    std::cout << "Importing files..." << std::endl;
 
     std::unique_ptr<DataSetFid> trainDatas;
     if (!params->isStringSet(TRAIN_CLASS_FILE)) {
@@ -534,8 +534,8 @@ int fidexGloRules(const string &command) {
     }
 
     // Get attributes
-    vector<string> attributeNames;
-    vector<string> classNames;
+    std::vector<std::string> attributeNames;
+    std::vector<std::string> classNames;
     bool hasClassNames = false;
 
     if (params->isStringSet(ATTRIBUTES_FILE)) {
@@ -547,9 +547,9 @@ int fidexGloRules(const string &command) {
       }
     }
 
-    vector<int> normalizationIndices;
-    vector<double> mus;
-    vector<double> sigmas;
+    std::vector<int> normalizationIndices;
+    std::vector<double> mus;
+    std::vector<double> sigmas;
 
     // Get mus, sigmas and normalizationIndices from normalizationFile for denormalization :
     if (params->isStringSet(NORMALIZATION_FILE)) {
@@ -562,23 +562,23 @@ int fidexGloRules(const string &command) {
       params->setDoubleVector(SIGMAS, sigmas);
     }
 
-    cout << "Files imported" << endl
-         << endl;
+    std::cout << "Files imported" << std::endl
+              << std::endl;
 
     // compute hyperspace
 
-    cout << "Creation of hyperspace..." << endl;
+    std::cout << "Creation of hyperspace..." << std::endl;
 
-    vector<vector<double>> matHypLocus;
-    string weightsFile;
+    std::vector<std::vector<double>> matHypLocus;
+    std::string weightsFile;
     if (params->isStringSet(WEIGHTS_FILE)) {
       weightsFile = params->getString(WEIGHTS_FILE);
     }
-    string attributesFile;
+    std::string attributesFile;
     if (params->isStringSet(ATTRIBUTES_FILE)) {
       attributesFile = params->getString(ATTRIBUTES_FILE);
     }
-    string inputRulesFile;
+    std::string inputRulesFile;
     if (params->isStringSet(RULES_FILE)) {
       inputRulesFile = params->getString(RULES_FILE);
     }
@@ -597,30 +597,30 @@ int fidexGloRules(const string &command) {
 
     // Check size of hyperlocus
     if (nbIn == 0 || nbIn % nbAttributes != 0) {
-      throw InternalError("Error : the size of hyperLocus - " + to_string(nbIn) + " is not a multiple of the number of attributs - " + to_string(nbAttributes));
+      throw InternalError("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributs - " + std::to_string(nbAttributes));
     }
 
-    cout << "Hyperspace created." << endl
-         << endl;
+    std::cout << "Hyperspace created." << std::endl
+              << std::endl;
 
     // Samples not yet covered by any rules
-    vector<int> notCoveredSamples(nbDatas);
+    std::vector<int> notCoveredSamples(nbDatas);
     iota(begin(notCoveredSamples), end(notCoveredSamples), 0); // Vector from 0 to nbDatas-1
-    vector<Rule> chosenRules;                                  // antecedents, cover vector, class, rule accuracy, rule confidence
+    std::vector<Rule> chosenRules;                             // antecedents, cover vector, class, rule accuracy, rule confidence
 
     //--------------------------------------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------------------------------------
 
     // Initialize random number generator
 
-    const auto start = high_resolution_clock::now();
+    const auto start = std::chrono::high_resolution_clock::now();
     int heuristic = params->getInt(HEURISTIC);
     auto trainDataset = *trainDatas.get();
     auto parameters = *params.get();
-    vector<Rule> generatedRules;
+    std::vector<Rule> generatedRules;
 
-    cout << "Computing fidex rules..." << endl
-         << endl;
+    std::cout << "Computing fidex rules..." << std::endl
+              << std::endl;
 
     switch (heuristic) {
     case 1:
@@ -636,41 +636,41 @@ int fidexGloRules(const string &command) {
       break;
 
     default:
-      cout << "Heuristic not recognised." << endl;
+      std::cout << "Heuristic not recognised." << std::endl;
       return -1;
       break;
     }
 
-    cout << "Global ruleset Computed." << endl;
+    std::cout << "Global ruleset Computed." << std::endl;
 
-    const auto end_h = high_resolution_clock::now();
-    const duration<double> diff_h = end_h - start;
+    const auto end_h = std::chrono::high_resolution_clock::now();
+    const std::chrono::duration<double> diff_h = end_h - start;
 
-    cout << "\nheuristic #" << heuristic << " ended in "
-         << diff_h.count() << " sec\n"
-         << endl;
+    std::cout << "\nheuristic #" << heuristic << " ended in "
+              << diff_h.count() << " sec\n"
+              << std::endl;
 
-    cout << "Rules extraction..."
-         << endl;
+    std::cout << "Rules extraction..."
+              << std::endl;
 
     sort(generatedRules.begin(), generatedRules.end(), [](const Rule &r1, const Rule &r2) {
       return r1.getCoveredSamples().size() > r2.getCoveredSamples().size();
     });
 
-    tuple<double, double> stats = writeRulesFile(params->getString(GLOBAL_RULES_OUTFILE), generatedRules, attributeNames, classNames);
+    std::tuple<double, double> stats = writeRulesFile(params->getString(GLOBAL_RULES_OUTFILE), generatedRules, attributeNames, classNames);
 
-    cout << "Mean covering size per rule : " << get<0>(stats) << endl;
-    cout << "Mean number of antecedents per rule : " << get<1>(stats) << endl;
+    std::cout << "Mean covering size per rule : " << std::get<0>(stats) << std::endl;
+    std::cout << "Mean number of antecedents per rule : " << std::get<1>(stats) << std::endl;
 
-    const auto end = high_resolution_clock::now();
-    duration<double> diff = end - start;
-    cout << "\nFull execution time = " << diff.count() << " sec" << endl;
+    const auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> diff = end - start;
+    std::cout << "\nFull execution time = " << diff.count() << " sec" << std::endl;
 
-    cout.rdbuf(cout_buff); // reset to standard output again
+    std::cout.rdbuf(cout_buff); // reset to standard output again
 
   } catch (const ErrorHandler &e) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
-    std::cerr << e.what() << endl;
+    std::cerr << e.what() << std::endl;
     return -1;
   }
 

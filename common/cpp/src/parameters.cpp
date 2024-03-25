@@ -6,9 +6,9 @@
  *
  * @param args program arguments
  */
-Parameters::Parameters(const vector<string> &args, const std::vector<ParameterCode> &validParams) {
+Parameters::Parameters(const std::vector<std::string> &args, const std::vector<ParameterCode> &validParams) {
   for (int p = 1; p < args.size(); p++) {
-    string param = args[p];
+    std::string param = args[p];
 
     if (param.substr(0, 2) == "--") {
       param = param.substr(2);
@@ -17,7 +17,7 @@ Parameters::Parameters(const vector<string> &args, const std::vector<ParameterCo
       if (p >= args.size()) {
         throw CommandArgumentException("Missing something at the end of the command.");
       }
-      const string arg = args[p];
+      const std::string arg = args[p];
 
       if (p + 1 < args.size() && (args[p + 1].substr(0, 2) != "--" && args[p + 1].substr(0, 2) != "")) {
         throw CommandArgumentException("There is a parameter without -- (" + args[p + 1] + ").");
@@ -35,10 +35,10 @@ Parameters::Parameters(const vector<string> &args, const std::vector<ParameterCo
  *
  * @param jsonfile JSON config file name
  */
-Parameters::Parameters(const string &jsonfile, const std::vector<ParameterCode> &validParams) {
-  ifstream ifs;
+Parameters::Parameters(const std::string &jsonfile, const std::vector<ParameterCode> &validParams) {
+  std::ifstream ifs;
   ifs.open(jsonfile);
-  vector<string> args;
+  std::vector<std::string> args;
 
   if (!ifs.is_open() || ifs.fail()) {
     throw FileNotFoundError("JSON file to parse named '" + jsonfile + "' was not found, cannot proceed.");
@@ -47,10 +47,10 @@ Parameters::Parameters(const string &jsonfile, const std::vector<ParameterCode> 
   Json jsonData = Json::parse(ifs);
 
   for (auto &item : jsonData.items()) {
-    string value;
+    std::string value;
 
     if (item.value().is_string()) {
-      value = static_cast<string>(item.value());
+      value = static_cast<std::string>(item.value());
     } else {
       value = to_string(item.value());
     }
@@ -105,7 +105,7 @@ void Parameters::checkFilesIntegrity() {
  * @param param parameter name (ex: nb_threads, min_fidelity etc...)
  * @param arg parameter's associated value
  */
-void Parameters::parseArg(const string &param, const string &arg, const std::vector<ParameterCode> &validParams) {
+void Parameters::parseArg(const std::string &param, const std::string &arg, const std::vector<ParameterCode> &validParams) {
   ParameterCode option;
   auto it = parameterNames.find(param);
   if (it != parameterNames.end()) {
@@ -367,7 +367,7 @@ void Parameters::parseArg(const string &param, const string &arg, const std::vec
   }
 }
 
-void Parameters::setInt(ParameterCode id, const string &value) {
+void Parameters::setInt(ParameterCode id, const std::string &value) {
   if (isIntSet(id)) {
     throwAlreadySetArgumentException(id, value);
   }
@@ -381,13 +381,13 @@ void Parameters::setInt(ParameterCode id, const string &value) {
 
 void Parameters::setInt(ParameterCode id, int value) {
   if (isIntSet(id)) {
-    throwAlreadySetArgumentException(id, to_string(value));
+    throwAlreadySetArgumentException(id, std::to_string(value));
   }
 
   _intParams[id] = value;
 }
 
-void Parameters::setFloat(ParameterCode id, const string &value) {
+void Parameters::setFloat(ParameterCode id, const std::string &value) {
   if (isFloatSet(id)) {
     throwAlreadySetArgumentException(id, value);
   }
@@ -401,19 +401,19 @@ void Parameters::setFloat(ParameterCode id, const string &value) {
 
 void Parameters::setFloat(ParameterCode id, float value) {
   if (isFloatSet(id)) {
-    throwAlreadySetArgumentException(id, to_string(value));
+    throwAlreadySetArgumentException(id, std::to_string(value));
   }
 
   _floatParams[id] = value;
 }
 
-void Parameters::checkPath(ParameterCode id, const string &path) const {
+void Parameters::checkPath(ParameterCode id, const std::string &path) const {
   if (!exists(path)) {
     throwInvalidFileOrDirectory(id, path);
   }
 }
 
-void Parameters::setDouble(ParameterCode id, const string &value) {
+void Parameters::setDouble(ParameterCode id, const std::string &value) {
   if (isDoubleSet(id)) {
     throwAlreadySetArgumentException(id, value);
   }
@@ -427,13 +427,13 @@ void Parameters::setDouble(ParameterCode id, const string &value) {
 
 void Parameters::setDouble(ParameterCode id, double value) {
   if (isDoubleSet(id)) {
-    throwAlreadySetArgumentException(id, to_string(value));
+    throwAlreadySetArgumentException(id, std::to_string(value));
   }
 
   _doubleParams[id] = value;
 }
 
-void Parameters::setBool(ParameterCode id, string value) {
+void Parameters::setBool(ParameterCode id, std::string value) {
   if (isBoolSet(id)) {
     throwAlreadySetArgumentException(id, value);
   }
@@ -450,7 +450,7 @@ void Parameters::setBool(ParameterCode id, string value) {
 void Parameters::setBool(ParameterCode id, bool value) {
   _boolParams[id] = value;
 }
-void Parameters::setDoubleVector(ParameterCode id, const string &value) {
+void Parameters::setDoubleVector(ParameterCode id, const std::string &value) {
   if (isDoubleVectorSet(id)) {
     throwAlreadySetArgumentException(id, value);
   }
@@ -462,11 +462,11 @@ void Parameters::setDoubleVector(ParameterCode id, const string &value) {
   _doubleVectorParams[id] = getDoubleVectorFromString(value);
 }
 
-void Parameters::setDoubleVector(ParameterCode id, const vector<double> &value) {
+void Parameters::setDoubleVector(ParameterCode id, const std::vector<double> &value) {
   _doubleVectorParams[id] = value;
 }
 
-void Parameters::setIntVector(ParameterCode id, const string &value) {
+void Parameters::setIntVector(ParameterCode id, const std::string &value) {
   if (isIntVectorSet(id)) {
     throwAlreadySetArgumentException(id, value);
   }
@@ -477,18 +477,18 @@ void Parameters::setIntVector(ParameterCode id, const string &value) {
   _intVectorParams[id] = getIntVectorFromString(value);
 }
 
-void Parameters::setIntVector(ParameterCode id, const vector<int> &value) {
+void Parameters::setIntVector(ParameterCode id, const std::vector<int> &value) {
   _intVectorParams[id] = value;
 }
 
-void Parameters::setString(ParameterCode id, const string &value) {
+void Parameters::setString(ParameterCode id, const std::string &value) {
   if (isStringSet(id)) {
     throwAlreadySetArgumentException(id, value);
   }
   _stringParams[id] = value;
 }
 
-void Parameters::setArch(ParameterCode id, const string &value, const string &param) {
+void Parameters::setArch(ParameterCode id, const std::string &value, const std::string &param) {
   if (checkInt(value)) {
     arch.Insert(stoi(value));
 
@@ -515,10 +515,10 @@ void Parameters::completePath(ParameterCode id) {
     return;
   }
 
-  string fullPath;
-  string target = getString(id);
-  string separator = getOSSeparator();
-  string root = isStringSet(ROOT_FOLDER) ? getString(ROOT_FOLDER) : "";
+  std::string fullPath;
+  std::string target = getString(id);
+  std::string separator = getOSSeparator();
+  std::string root = isStringSet(ROOT_FOLDER) ? getString(ROOT_FOLDER) : "";
 
   if (target.empty() || target.back() == separator[0]) {
     throwInvalidFileOrDirectory(id, target);
@@ -579,17 +579,17 @@ bool Parameters::getBool(ParameterCode id) {
   return _boolParams[id];
 }
 
-vector<double> Parameters::getDoubleVector(ParameterCode id) {
+std::vector<double> Parameters::getDoubleVector(ParameterCode id) {
   assertDoubleVectorExists(id);
   return _doubleVectorParams[id];
 }
 
-vector<int> Parameters::getIntVector(ParameterCode id) {
+std::vector<int> Parameters::getIntVector(ParameterCode id) {
   assertIntVectorExists(id);
   return _intVectorParams[id];
 }
 
-string Parameters::getString(ParameterCode id) {
+std::string Parameters::getString(ParameterCode id) {
   assertStringExists(id);
   return _stringParams[id];
 }
@@ -639,7 +639,7 @@ bool Parameters::isStringSet(ParameterCode id) const {
   return _stringParams.find(id) != _stringParams.end();
 }
 
-vector<string> Parameters::getWeightsFiles() const {
+std::vector<std::string> Parameters::getWeightsFiles() const {
   return _weightFiles;
 }
 
@@ -707,17 +707,17 @@ void Parameters::setDefaultBool(ParameterCode id, bool defaultValue) {
     setBool(id, defaultValue);
 }
 
-void Parameters::setDefaultDoubleVector(ParameterCode id, const string &defaultValue) {
+void Parameters::setDefaultDoubleVector(ParameterCode id, const std::string &defaultValue) {
   if (!isDoubleVectorSet(id))
     setDoubleVector(id, defaultValue);
 }
 
-void Parameters::setDefaultIntVector(ParameterCode id, const string &defaultValue) {
+void Parameters::setDefaultIntVector(ParameterCode id, const std::string &defaultValue) {
   if (!isIntVectorSet(id))
     setIntVector(id, defaultValue);
 }
 
-void Parameters::setDefaultString(ParameterCode id, const string &defaultValue, bool withRoot) {
+void Parameters::setDefaultString(ParameterCode id, const std::string &defaultValue, bool withRoot) {
   if (!isStringSet(id)) {
     std::string value = defaultValue;
     if (withRoot) {
@@ -803,7 +803,7 @@ void Parameters::checkParametersDecisionThreshold() {
   }
 
   if (getInt(POSITIVE_CLASS_INDEX) >= getInt(NB_CLASSES)) {
-    throw CommandArgumentException("Error : The index of positive class cannot be greater or equal to the number of classes (" + to_string(getInt(NB_CLASSES)) + ").");
+    throw CommandArgumentException("Error : The index of positive class cannot be greater or equal to the number of classes (" + std::to_string(getInt(NB_CLASSES)) + ").");
   }
 
   if (getFloat(DECISION_THRESHOLD) != -1 && getInt(POSITIVE_CLASS_INDEX) == -1) {
@@ -856,7 +856,7 @@ void Parameters::checkParametersNormalization() {
 
   // If normalizationIndices were not specified, it's all attributes
   if (!isStringSet(NORMALIZATION_FILE) && !isIntVectorSet(NORMALIZATION_INDICES) && isDoubleVectorSet(MUS)) {
-    vector<int> normalizationIndicesTemp;
+    std::vector<int> normalizationIndicesTemp;
     for (int i = 0; i < getInt(NB_ATTRIBUTES); ++i) {
       normalizationIndicesTemp.push_back(i);
     }
@@ -880,12 +880,12 @@ void Parameters::checkParametersNormalization() {
 
   // Check normalizationIndices
   if (isIntVectorSet(NORMALIZATION_INDICES)) {
-    vector<int> tempVect = getIntVector(NORMALIZATION_INDICES);
+    std::vector<int> tempVect = getIntVector(NORMALIZATION_INDICES);
     std::set<int> uniqueIndices(tempVect.begin(), tempVect.end());
     if (uniqueIndices.size() != getIntVector(NORMALIZATION_INDICES).size() ||
         *std::max_element(uniqueIndices.begin(), uniqueIndices.end()) >= getInt(NB_ATTRIBUTES) ||
         *std::min_element(uniqueIndices.begin(), uniqueIndices.end()) < 0) {
-      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) must be a list composed of integers between [0, nb_attributes-1(" + to_string(getInt(NB_ATTRIBUTES) - 1) + ")] without repeted elements.");
+      throw CommandArgumentException("Error : parameter normalization indices (--normalization_indices) must be a list composed of integers between [0, nb_attributes-1(" + std::to_string(getInt(NB_ATTRIBUTES) - 1) + ")] without repeted elements.");
     }
   }
 }

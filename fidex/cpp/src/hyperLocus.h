@@ -12,7 +12,7 @@
 #include <sstream>
 #include <string.h>
 
-std::vector<std::vector<double>> calcHypLocus(const std::string &dataFileWeights, int nbQuantLevels, double hiKnot, bool verbose = true);
+std::vector<std::vector<double>> calcHypLocus(const std::string &dataFileWeights, int nbQuantLevels, double hiKnot);
 std::vector<std::vector<double>> calcHypLocus(const std::string &rulesFile, DataSetFid &dataset);
 
 #endif

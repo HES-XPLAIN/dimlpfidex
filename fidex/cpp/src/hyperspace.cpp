@@ -1,21 +1,20 @@
 #include "hyperspace.h"
-using namespace std;
 
-Hyperspace::Hyperspace(const vector<vector<double>> &matHypLocus) : hyperLocus(matHypLocus) {
+Hyperspace::Hyperspace(const std::vector<std::vector<double>> &matHypLocus) : hyperLocus(matHypLocus) {
 
-  vector<pair<int, int>> discriminativeHyperplans;
-  hyperbox = make_shared<Hyperbox>(discriminativeHyperplans);
+  std::vector<std::pair<int, int>> discriminativeHyperplans;
+  hyperbox = std::make_shared<Hyperbox>(discriminativeHyperplans);
 }
 
-vector<vector<double>> Hyperspace::getHyperLocus() const {
+std::vector<std::vector<double>> Hyperspace::getHyperLocus() const {
   return hyperLocus;
 }
 
-shared_ptr<Hyperbox> Hyperspace::getHyperbox() const {
+std::shared_ptr<Hyperbox> Hyperspace::getHyperbox() const {
   return hyperbox;
 }
 
-Rule Hyperspace::ruleExtraction(vector<double> &mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, const vector<double> &mus, const vector<double> &sigmas, const vector<int> &normalizationIndices) {
+Rule Hyperspace::ruleExtraction(std::vector<double> &mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, const std::vector<double> &mus, const std::vector<double> &sigmas, const std::vector<int> &normalizationIndices) {
 
   bool denormalizing = false;
   // Check if we need to denormalize
@@ -31,7 +30,7 @@ Rule Hyperspace::ruleExtraction(vector<double> &mainSampleData, const int mainSa
   double hypValue;
   int attribut;
   bool inequalityBool;
-  vector<Antecedant> antecedants;
+  std::vector<Antecedant> antecedants;
 
   for (int k = 0; k < hyperbox->getDiscriminativeHyperplans().size(); k++) {
 
@@ -65,11 +64,11 @@ Rule Hyperspace::ruleExtraction(vector<double> &mainSampleData, const int mainSa
   return Rule(antecedants, hyperbox->getCoveredSamples(), mainSamplePred, hyperbox->getFidelity(), ruleAccuracy, ruleConfidence);
 }
 
-double Hyperspace::computeRuleAccuracy(vector<int> &trainPreds, vector<int> &trainTrueClass, bool hasTrueClasses, bool mainSampleCorrect) const { // Percentage of correct model prediction on samples covered by the rule
+double Hyperspace::computeRuleAccuracy(std::vector<int> &trainPreds, std::vector<int> &trainTrueClass, bool hasTrueClasses, bool mainSampleCorrect) const { // Percentage of correct model prediction on samples covered by the rule
 
   int idSample;
   int total = 0; // Number of indexes predicted good
-  vector<int> coveredSamples = hyperbox->getCoveredSamples();
+  std::vector<int> coveredSamples = hyperbox->getCoveredSamples();
 
   for (int i = 0; i < coveredSamples.size(); i++) {
     idSample = coveredSamples[i];
@@ -91,12 +90,12 @@ double Hyperspace::computeRuleAccuracy(vector<int> &trainPreds, vector<int> &tra
   return float(total) / float(nbCovered);
 }
 
-double Hyperspace::computeRuleConfidence(vector<vector<double>> &trainOutputValuesPredictions, const int rulePred, double mainSamplePredValueOnRulePred) const { // Mean output value of prediction of class chosen by the rule(which is the main sample prediction) for the covered samples
+double Hyperspace::computeRuleConfidence(std::vector<std::vector<double>> &trainOutputValuesPredictions, const int rulePred, double mainSamplePredValueOnRulePred) const { // Mean output value of prediction of class chosen by the rule(which is the main sample prediction) for the covered samples
 
   int idSample;
   double total = 0; // Number of indexes predicted good
 
-  vector<int> coveredSamples = hyperbox->getCoveredSamples();
+  std::vector<int> coveredSamples = hyperbox->getCoveredSamples();
   // Value of output prediction for class mainSamplePred(rule class)
   for (int i = 0; i < coveredSamples.size(); i++) {
     idSample = coveredSamples[i];

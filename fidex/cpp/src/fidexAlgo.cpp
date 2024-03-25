@@ -4,7 +4,7 @@ Fidex::Fidex(DataSetFid &trainDataset, Parameters &parameters, Hyperspace &hyper
   int seed = parameters.getInt(SEED);
 
   if (seed == 0) {
-    auto currentTime = high_resolution_clock::now();
+    auto currentTime = std::chrono::high_resolution_clock::now();
     auto seedValue = currentTime.time_since_epoch().count();
     _rnd.seed(seedValue);
   } else {
@@ -12,7 +12,7 @@ Fidex::Fidex(DataSetFid &trainDataset, Parameters &parameters, Hyperspace &hyper
   }
 }
 
-bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover, int mainSampleClass) {
+bool Fidex::compute(Rule &rule, std::vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover, int mainSampleClass) {
 
   specs.nbIt = 0;
 
@@ -21,10 +21,10 @@ bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSample
 
   Hyperspace *hyperspace = _hyperspace;
   int nbAttributes = _trainDataset->getNbAttributes();
-  vector<int> &trainPreds = _trainDataset->getPredictions();
-  vector<int> &trainTrueClass = _trainDataset->getClasses();
-  vector<vector<double>> &trainData = _trainDataset->getDatas();
-  vector<vector<double>> &trainOutputValuesPredictions = _trainDataset->getOutputValuesPredictions();
+  std::vector<int> &trainPreds = _trainDataset->getPredictions();
+  std::vector<int> &trainTrueClass = _trainDataset->getClasses();
+  std::vector<std::vector<double>> &trainData = _trainDataset->getDatas();
+  std::vector<std::vector<double>> &trainOutputValuesPredictions = _trainDataset->getOutputValuesPredictions();
   auto nbInputs = static_cast<int>(hyperspace->getHyperLocus().size());
   int maxIterations = _parameters->getInt(MAX_ITERATIONS);
   double dropoutDim = _parameters->getFloat(DROPOUT_DIM);
@@ -36,9 +36,9 @@ bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSample
     hasTrueClasses = false;
   }
 
-  vector<int> normalizationIndices;
-  vector<double> mus;
-  vector<double> sigmas;
+  std::vector<int> normalizationIndices;
+  std::vector<double> mus;
+  std::vector<double> sigmas;
 
   if (_parameters->isIntVectorSet(NORMALIZATION_INDICES)) {
     normalizationIndices = _parameters->getIntVector(NORMALIZATION_INDICES);
@@ -57,10 +57,10 @@ bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSample
     throw InternalError("Error during computation of Fidex: Execution with a test sample but no sample prediction value has been given.");
   }
 
-  uniform_real_distribution<double> dis(0.0, 1.0);
+  std::uniform_real_distribution<double> dis(0.0, 1.0);
 
   // Compute initial covering
-  vector<int> coveredSamples(trainData.size());        // Samples covered by the hyperbox
+  std::vector<int> coveredSamples(trainData.size());   // Samples covered by the hyperbox
   iota(begin(coveredSamples), end(coveredSamples), 0); // Vector from 0 to len(coveredSamples)-1
 
   // Store covering and compute initial fidelty
@@ -69,14 +69,14 @@ bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSample
   hyperspace->getHyperbox()->resetDiscriminativeHyperplans();             // We reset hyperbox discriminativeHyperplans
 
   if (_usingTestSamples && showInitialFidelity) {
-    std::cout << "Initial fidelity : " << hyperspace->getHyperbox()->getFidelity() << endl;
+    std::cout << "Initial fidelity : " << hyperspace->getHyperbox()->getFidelity() << std::endl;
   }
 
   int nbIt = 0;
 
   while (hyperspace->getHyperbox()->getFidelity() < minFidelity && nbIt < maxIterations) { // While fidelity of our hyperbox is not high enough
-    unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                                     // best hyperbox to choose for next step
-    unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());
+    std::unique_ptr<Hyperbox> bestHyperbox(new Hyperbox());                                // best hyperbox to choose for next step
+    std::unique_ptr<Hyperbox> currentHyperbox(new Hyperbox());
     double mainSampleValue;
     int attribut;
     int dimension;
@@ -85,11 +85,11 @@ bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSample
     int minHyp = -1; // Index of first hyperplan without any change of the best hyperplan
     int maxHyp = -1;
     // Randomize dimensions
-    vector<int> dimensions(nbInputs);
+    std::vector<int> dimensions(nbInputs);
     iota(begin(dimensions), end(dimensions), 0); // Vector from 0 to nbIn-1
     shuffle(begin(dimensions), end(dimensions), _rnd);
 
-    vector<int> currentCovSamp;
+    std::vector<int> currentCovSamp;
     for (int d = 0; d < nbInputs; d++) { // Loop on all dimensions
       if (bestHyperbox->getFidelity() >= minFidelity) {
         break;
@@ -205,7 +205,7 @@ bool Fidex::compute(Rule &rule, vector<double> &mainSampleValues, int mainSample
  * @return true If a rule meeting the criteria is successfully computed.
  * @return false If no rule meeting the criteria can be computed.
  */
-bool Fidex::tryComputeFidex(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, bool verbose, bool detailedVerbose, bool foundRule) {
+bool Fidex::tryComputeFidex(Rule &rule, std::vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, bool verbose, bool detailedVerbose, bool foundRule) {
   if (detailedVerbose && verbose) {
     if (foundRule) {
       std::cout << "A rule has been found. ";
@@ -217,7 +217,7 @@ bool Fidex::tryComputeFidex(Rule &rule, vector<double> &mainSampleValues, int ma
 
   bool ruleCreated = compute(rule, mainSampleValues, mainSamplePred, minFidelity, minNbCover, mainSampleClass);
   if (verbose) {
-    std::cout << "Final fidelity : " << rule.getFidelity() << endl;
+    std::cout << "Final fidelity : " << rule.getFidelity() << std::endl;
   }
   return ruleCreated;
 }
@@ -235,7 +235,7 @@ bool Fidex::tryComputeFidex(Rule &rule, vector<double> &mainSampleValues, int ma
  * @param verbose A boolean flag for detailed verbose output.
  * @return The best covering found that meets the minimum fidelity criteria. Returns -1 if no such covering is found.
  */
-int Fidex::dichotomicSearch(Rule &bestRule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int mainSampleClass, int left, int right, bool verbose) {
+int Fidex::dichotomicSearch(Rule &bestRule, std::vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int mainSampleClass, int left, int right, bool verbose) {
   int bestCovering = -1;
   int currentMinNbCover = right + 1;
   bool foundRule = false;
@@ -268,7 +268,7 @@ int Fidex::dichotomicSearch(Rule &bestRule, vector<double> &mainSampleValues, in
  * @return true If a rule meeting the criteria is successfully computed within the maximum number of attempts.
  * @return false If no rule meeting the criteria can be computed within the maximum number of attempts.
  */
-bool Fidex::retryComputeFidex(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, bool verbose) {
+bool Fidex::retryComputeFidex(Rule &rule, std::vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, bool verbose) {
   int counterFailed = 0; // Number of times we failed to find a rule with maximal fidexlity when minNbCover is 1
   int maxFailedAttempts = _parameters->getInt(MAX_FAILED_ATTEMPTS);
   bool ruleCreated = false;
@@ -300,7 +300,7 @@ bool Fidex::retryComputeFidex(Rule &rule, vector<double> &mainSampleValues, int 
  *  @return true If a rule meeting the criteria is successfully computed.
  * @return false If no rule meeting the criteria can be computed.
  */
-bool Fidex::launchFidex(Rule &rule, vector<double> &mainSampleValues, int mainSamplePred, int mainSampleClass, bool verbose) {
+bool Fidex::launchFidex(Rule &rule, std::vector<double> &mainSampleValues, int mainSamplePred, int mainSampleClass, bool verbose) {
 
   int minNbCover = _parameters->getInt(MIN_COVERING);
   float minFidelity = _parameters->getFloat(MIN_FIDELITY);
@@ -342,7 +342,7 @@ bool Fidex::launchFidex(Rule &rule, vector<double> &mainSampleValues, int mainSa
         rule = bestRule;
       }
       if (verbose) {
-        std::cout << endl;
+        std::cout << std::endl;
       }
       // Without covering strategy
     } else if (verbose) {

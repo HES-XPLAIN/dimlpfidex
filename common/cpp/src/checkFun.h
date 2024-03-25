@@ -29,5 +29,5 @@ bool hasSpaceBetweenWords(const std::string &str);
 bool exists(const std::string &path);
 std::string getOSSeparator();
 void printOptionDescription(const std::string &option, const std::string &description, int width = 30);
-int countNetworksInFile(std::string weightsFile);
+int countNetworksInFile(const std::string &weightsFile);
 #endif
