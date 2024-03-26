@@ -435,12 +435,36 @@ int countNetworksInFile(const std::string &weightsFile) {
 
 //////////////////////////////////////////////////////
 
-std::string removeBOM(const std::string &data) {
-  if (data.size() >= 3 &&
-      static_cast<unsigned char>(data[0]) == 0xEF &&
-      static_cast<unsigned char>(data[1]) == 0xBB &&
-      static_cast<unsigned char>(data[2]) == 0xBF) {
-    return data.substr(3); // Supprime les trois premiers octets
+/**
+ * @brief Parses a line from a file and converts it into a vector of double values. It can handle data separated
+ * by a space, a comma(CSV), a semicolon(;) or a tab
+ *
+ *
+ * @param str The string to parse.
+ * @param fileName The name of the file from which the string was read. Used for error reporting.
+ * @return std::vector<double> A vector of double values parsed from the string.
+ * @throws FileContentError if a token cannot be converted to a double.
+ */
+std::vector<double> parseFileLine(std::string str, const std::string &fileName) {
+
+  std::vector<double> valuesData;
+
+  std::regex re("([ \\t]+)|[,;]");
+  std::sregex_token_iterator first{str.begin(), str.end(), re, -1}; //  -1 makes the regex split, it keeps only what was not matched
+  std::sregex_token_iterator last;
+  std::vector<std::string> stringTokens{first, last};
+
+  for (const std::string &strToken : stringTokens) {
+    try {
+      if (!checkStringEmpty(strToken)) {
+        valuesData.push_back(std::stod(strToken));
+      }
+    } catch (const std::invalid_argument &) {
+      throw FileContentError("Error : Non number found in file " + fileName + " : " + strToken + ".");
+    } catch (const std::out_of_range &) {
+      throw FileContentError("Error: Number out of range in file " + fileName + " : " + strToken + ".");
+    }
   }
-  return data; // Aucun BOM détecté, retourne la chaîne originale
+
+  return valuesData;
 }

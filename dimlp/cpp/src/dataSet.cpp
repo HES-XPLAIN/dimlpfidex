@@ -236,7 +236,7 @@ DataSet::DataSet(const std::string &nameFile, int nbAttr) : NbAttr(nbAttr)
  */
 DataSet::DataSet(const std::string &nameFile, int nbIn, int nbOut) {
   filebuf buf;
-  std::vector<float> lineValues;
+  std::vector<double> lineValues;
 
   std::cout << "\n----------------------------------------------------------\n"
             << std::endl;
@@ -248,30 +248,13 @@ DataSet::DataSet(const std::string &nameFile, int nbIn, int nbOut) {
   cout << nameFile << ": Reading and creating dataset structures ..." << std::endl;
 
   string line;
-  std::vector<std::vector<float>> tempSet; // Use a temporary vector to store data
+  std::vector<std::vector<double>> tempSet; // Use a temporary vector to store data
 
   int lineSize = -1;
 
   while (getline(inFile, line)) {
 
-    lineValues.clear();
-    std::regex re("([ \\t]+)|[,;]");
-    std::sregex_token_iterator first{line.begin(), line.end(), re, -1}, last; //  -1 makes the regex split, it keeps only what was not matched
-    std::vector<std::string> stringTokens{first, last};
-
-    for (const std::string &strToken : stringTokens) {
-      std::string cleanedToken = removeBOM(strToken);
-      try {
-        if (!checkStringEmpty(cleanedToken)) {
-          lineValues.push_back(std::stof(cleanedToken));
-        }
-      } catch (const std::invalid_argument &) {
-        throw FileContentError("Error : Non number found in file " + nameFile + " : " + cleanedToken + ".");
-      } catch (const std::out_of_range &) {
-        throw FileContentError("Error: Number out of range in file " + nameFile + " : " + cleanedToken + ".");
-      }
-    }
-
+    lineValues = parseFileLine(line, nameFile);
     auto currentLineSize = static_cast<int>(lineValues.size());
 
     if (lineSize != -1 && currentLineSize != lineSize) {
@@ -323,7 +306,7 @@ DataSet::DataSet(const std::string &nameFile, int nbIn, int nbOut) {
 
     // Convert class ID format to one-hot format if necessary
     if (lineValues.size() == 1 || lineValues.size() == nbIn + 1) {
-      std::vector<float> oneHot(nbOut, 0.0f);
+      std::vector<double> oneHot(nbOut, 0.0f);
       auto classID = static_cast<int>(lineValues.back()); // Obtain class ID
       oneHot[classID] = 1.0f;
 

@@ -411,19 +411,9 @@ void DataSetFid::setClassFromFile(const std::string &classFile, int nbClasses) {
  * @param dataFile A string representing the name of the data file. This file may contain lines of data in any of the supported formats.
  */
 void DataSetFid::setDataLine(const std::string &line, const std::string &dataFile) {
-  std::stringstream myLine(line);
-  double valueData;
-  std::vector<double> valuesData;
-  while (myLine >> std::ws) { // Skip leading whitespaces
-    if (myLine.peek() == EOF) {
-      break; // Reached the end of the stream
-    }
-    myLine >> valueData;
-    if (myLine.fail()) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + dataFile + ", a number is required.");
-    }
-    valuesData.push_back(valueData);
-  }
+
+  std::vector<double> valuesData = parseFileLine(line, dataFile);
+
   auto lineSize = static_cast<int>(valuesData.size());
 
   // Identify class format (one-hot, id, one-hot_combined, id_combined)
@@ -484,19 +474,7 @@ void DataSetFid::setDataLine(const std::string &line, const std::string &dataFil
  */
 void DataSetFid::setPredLine(const std::string &line, const std::string &predFile) {
 
-  std::stringstream myLine(line);
-  double valuePred;
-  std::vector<double> valuesPred;
-  while (myLine >> std::ws) { // Skip leading whitespaces
-    if (myLine.peek() == EOF) {
-      break; // Reached the end of the stream
-    }
-    myLine >> valuePred;
-    if (myLine.fail()) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + predFile + ", a number is required.");
-    }
-    valuesPred.push_back(valuePred);
-  }
+  std::vector<double> valuesPred = parseFileLine(line, predFile);
   outputValuesPredictions.push_back(valuesPred);
 
   if (static_cast<int>(valuesPred.size()) != _nbClasses) {
@@ -526,19 +504,8 @@ void DataSetFid::setPredLine(const std::string &line, const std::string &predFil
  *                  supported formats (either class ID or one-hot encoded).
  */
 void DataSetFid::setClassLine(const std::string &line, const std::string &classFile) {
-  std::stringstream myLine(line);
-  double valueData;
-  std::vector<double> valuesData;
-  while (myLine >> std::ws) { // Skip leading whitespaces
-    if (myLine.peek() == EOF) {
-      break; // Reached the end of the stream
-    }
-    myLine >> valueData;
-    if (myLine.fail() || valueData != std::floor(valueData)) {
-      throw FileContentError("Error in dataset " + datasetName + " : in file " + classFile + ", an integer is required.");
-    }
-    valuesData.push_back(valueData);
-  }
+  std::vector<double> valuesData = parseFileLine(line, classFile);
+
   auto lineSize = static_cast<int>(valuesData.size());
 
   if (classFormat == "") {
