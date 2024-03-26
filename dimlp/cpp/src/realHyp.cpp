@@ -5,8 +5,6 @@
 #define FROMREAL 1
 #include "cleanRS.h"
 
-using namespace std;
-
 ////////////////////////////////////////////////////////////////////////
 
 int RealHyp::MaxOnPos(const std::vector<int> &vec) const
@@ -52,8 +50,8 @@ void RealHyp::SetConfirmedVirt(DataSet &data)
   int indVirt;
   const float *pat;
 
-  cout << "\n\n*** EXCLUDING UNRELEVANT HYPER-PLANES ...\n"
-       << std::endl;
+  std::cout << "\n\n*** EXCLUDING UNRELEVANT HYPER-PLANES ...\n"
+            << std::endl;
 
   for (v = 0; v < NbIn; v++) {
     ConfBefFirstHyp[v] = 0;
@@ -75,8 +73,8 @@ void RealHyp::SetConfirmedVirt(DataSet &data)
       else if (indVirt == -1)
         ConfBefFirstHyp[v] = 1;
       else
-        cout << "*** ELSE WARNING !\n"
-             << std::endl;
+        std::cout << "*** ELSE WARNING !\n"
+                  << std::endl;
     }
   }
 
@@ -90,8 +88,8 @@ void RealHyp::SetConfirmedVirt(DataSet &data)
         count++;
   }
 
-  cout << "*** RELEVANT VIRTUAL HYPER-PLANES = " << count << "\n"
-       << std::endl;
+  std::cout << "*** RELEVANT VIRTUAL HYPER-PLANES = " << count << "\n"
+            << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -111,8 +109,8 @@ void RealHyp::SetConfirmedVirt2()
   int nbAnt;
   float val;
 
-  cout << "\n\n*** EXCLUDING UNRELEVANT HYPER-PLANES FROM RULES ...\n"
-       << std::endl;
+  std::cout << "\n\n*** EXCLUDING UNRELEVANT HYPER-PLANES FROM RULES ...\n"
+            << std::endl;
 
   for (v = 0; v < NbIn; v++) {
     hyp = ConfirmedVirt[v].data();
@@ -137,7 +135,7 @@ void RealHyp::SetConfirmedVirt2()
         indVirt = Virt->GetInd(var, val);
 
         if (indVirt == -1) {
-          cout << "Warning ... " << var << " " << val << "" << std::endl;
+          std::cout << "Warning ... " << var << " " << val << "" << std::endl;
         }
 
         else
@@ -156,8 +154,8 @@ void RealHyp::SetConfirmedVirt2()
         count++;
   }
 
-  cout << "*** RELEVANT VIRTUAL HYPER-PLANES = " << count << "\n"
-       << std::endl;
+  std::cout << "*** RELEVANT VIRTUAL HYPER-PLANES = " << count << "\n"
+            << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -345,9 +343,9 @@ void RealHyp::SetRealHyp(DataSet &data)
   int modulo;
   const int nbEx = data.GetNbEx();
 
-  cout << "*** ESTIMATING RELEVANCE OF DISCRIMINANT HYPER-PLANES ";
-  cout << "WITH AVAILABLE EXAMPLES ...\n"
-       << endl;
+  std::cout << "*** ESTIMATING RELEVANCE OF DISCRIMINANT HYPER-PLANES ";
+  std::cout << "WITH AVAILABLE EXAMPLES ...\n"
+            << std::endl;
 
   if (nbEx >= 10)
     modulo = nbEx / 10;
@@ -356,13 +354,13 @@ void RealHyp::SetRealHyp(DataSet &data)
 
   for (p = 0; p < nbEx; p++) {
     if (p % modulo == 0)
-      cout << p << endl;
+      std::cout << p << std::endl;
 
     OneExRealHyp(data, p);
   }
 
-  cout << p << "\n\n"
-       << std::endl;
+  std::cout << p << "\n\n"
+            << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -666,7 +664,7 @@ void RealHyp::RuleExtraction(
     const DataSet &test,
     const DataSet &testClass,
     const AttrName &attr,
-    ostream &ruleFile,
+    std::ostream &ruleFile,
     const std::vector<double> &mus,
     const std::vector<double> &sigmas,
     const std::vector<int> &normalizationIndices)
@@ -680,17 +678,17 @@ void RealHyp::RuleExtraction(
   Aborted = 0;
 
   SavedRules = std::make_shared<RuleProcessing>(NbIn, NbHyp, data, ClassPatNet, Descr);
-  cout << "*** BUILDING DECISION TREE ...\n"
-       << endl;
+  std::cout << "*** BUILDING DECISION TREE ...\n"
+            << std::endl;
 
   listAll = data.Select(std::make_shared<DimlpRule>(empty));
   DeepSearch(data, std::make_shared<DimlpRule>(empty), listAll);
   listAll->Del();
   if (Aborted) {
-    cout << "*** TREE ABORTED !\n"
-         << std::endl;
-    cout << "*** TRYING AN ALTERNATIVE ALGORITHM \n"
-         << endl;
+    std::cout << "*** TREE ABORTED !\n"
+              << std::endl;
+    std::cout << "*** TRYING AN ALTERNATIVE ALGORITHM \n"
+              << std::endl;
 
     SavedRules->Del();
     Descr->Del();
@@ -701,20 +699,20 @@ void RealHyp::RuleExtraction(
   SavedRules->Clean();
   std::cout << "4" << std::endl;
   if (SavedRules->CountAnt() == 0) {
-    cout << "*** NO RULES !\n"
-         << std::endl;
-    cout << "--- Number of rules = 0" << std::endl;
-    cout << "--- Number of antecedents = 0" << std::endl;
-    cout << "--- Number of antecedents per rule = 0" << std::endl;
-    cout << "--- Number of examples per rule = 0" << std::endl;
+    std::cout << "*** NO RULES !\n"
+              << std::endl;
+    std::cout << "--- Number of rules = 0" << std::endl;
+    std::cout << "--- Number of antecedents = 0" << std::endl;
+    std::cout << "--- Number of antecedents per rule = 0" << std::endl;
+    std::cout << "--- Number of examples per rule = 0" << std::endl;
 
-    cout << "*** NO RULES !\n"
-         << std::endl;
+    std::cout << "*** NO RULES !\n"
+              << std::endl;
 
-    cout << "--- Number of rules = 0" << std::endl;
-    cout << "--- Number of antecedents = 0" << std::endl;
-    cout << "--- Number of antecedents per rule = 0" << std::endl;
-    cout << "--- Number of examples per rule = 0" << std::endl;
+    std::cout << "--- Number of rules = 0" << std::endl;
+    std::cout << "--- Number of antecedents = 0" << std::endl;
+    std::cout << "--- Number of antecedents per rule = 0" << std::endl;
+    std::cout << "--- Number of examples per rule = 0" << std::endl;
 
     SavedRules->Del();
 
@@ -722,18 +720,18 @@ void RealHyp::RuleExtraction(
 
     return;
   }
-  cout << "\n\n*** PRUNING ANTECEDENTS AND PRUNING RULES ...\n"
-       << endl;
+  std::cout << "\n\n*** PRUNING ANTECEDENTS AND PRUNING RULES ...\n"
+            << std::endl;
   SavedRules->MixPrune();
 
-  cout << "\n\n*** EXPANDING RULES ...\n"
-       << endl;
+  std::cout << "\n\n*** EXPANDING RULES ...\n"
+            << std::endl;
   SavedRules->EnlargeAndPrune();
 
   nbAnt1 = SavedRules->CountAnt();
 
-  cout << "\n\n*** RETRYING RULE EXTRACTION ...\n"
-       << endl;
+  std::cout << "\n\n*** RETRYING RULE EXTRACTION ...\n"
+            << std::endl;
 
   CleanRuleStruct clean(data, train, trainClass,
                         valid, validClass, test, testClass,
@@ -744,41 +742,41 @@ void RealHyp::RuleExtraction(
   SetRealHyp(data);
 
   SavedRules->Del();
-  cout << "*** BUILDING DECISION TREE ...\n"
-       << endl;
+  std::cout << "*** BUILDING DECISION TREE ...\n"
+            << std::endl;
 
   listAll = data.Select(std::make_shared<DimlpRule>(empty));
   DeepSearch(data, std::make_shared<DimlpRule>(empty), listAll);
   listAll->Del();
 
   if (Aborted) {
-    cout << "*** TREE ABORTED !\n"
-         << std::endl;
+    std::cout << "*** TREE ABORTED !\n"
+              << std::endl;
     Aborted = 0;
     goto A;
   }
 
   SavedRules->Clean();
 
-  cout << "\n\n*** PRUNING ANTECEDENTS AND PRUNING RULES ...\n"
-       << endl;
+  std::cout << "\n\n*** PRUNING ANTECEDENTS AND PRUNING RULES ...\n"
+            << std::endl;
   SavedRules->MixPrune();
 
-  cout << "\n\n*** EXPANDING RULES ...\n"
-       << endl;
+  std::cout << "\n\n*** EXPANDING RULES ...\n"
+            << std::endl;
   SavedRules->EnlargeAndPrune();
 
   nbAnt2 = SavedRules->CountAnt();
   if (nbAnt2 < nbAnt1) {
-    cout << "\n\n*** RULE SET IMPROVED BY " << nbAnt1 - nbAnt2;
-    cout << " ANTECEDENTS" << std::endl;
+    std::cout << "\n\n*** RULE SET IMPROVED BY " << nbAnt1 - nbAnt2;
+    std::cout << " ANTECEDENTS" << std::endl;
 
     clean.Del();
     CleanRuleStruct clean2(data, train, trainClass,
                            valid, validClass, test, testClass,
                            SavedRules, Bpnn, Out, NbOut);
-    cout << "\n\n*** WRITING IF-THEN RULES ...\n"
-         << endl;
+    std::cout << "\n\n*** WRITING IF-THEN RULES ...\n"
+              << std::endl;
 
     if (attr.IsFileAttr()) {
       clean2.SetAttr(attr.GetListAttr());
@@ -795,12 +793,12 @@ void RealHyp::RuleExtraction(
   }
 
   else {
-    cout << "\n\n*** RULE SET DOES NOT IMPROVE (" << nbAnt1 - nbAnt2 << ")" << std::endl;
+    std::cout << "\n\n*** RULE SET DOES NOT IMPROVE (" << nbAnt1 - nbAnt2 << ")" << std::endl;
   A:
-    cout << "\n    (WRITING PREVIOUS ONE)" << std::endl;
+    std::cout << "\n    (WRITING PREVIOUS ONE)" << std::endl;
 
-    cout << "\n\n*** WRITING IF-THEN RULES ...\n"
-         << std::endl;
+    std::cout << "\n\n*** WRITING IF-THEN RULES ...\n"
+              << std::endl;
 
     if (attr.IsFileAttr()) {
       clean.SetAttr(attr.GetListAttr());

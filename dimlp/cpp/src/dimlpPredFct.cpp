@@ -1,7 +1,5 @@
 #include "dimlpPredFct.h"
 
-using namespace std;
-
 ////////////////////////////////////////////////////////////
 
 void showDimlpPredParams()
@@ -59,9 +57,9 @@ static void SaveOutputs(
     const std::string &outfile)
 
 {
-  filebuf buf;
+  std::filebuf buf;
 
-  if (buf.open(outfile, ios_base::out) == nullptr) {
+  if (buf.open(outfile, std::ios_base::out) == nullptr) {
     throw CannotOpenFileError("Error : Cannot open output file " + outfile);
   }
 
@@ -72,7 +70,7 @@ static void SaveOutputs(
             << outfile << ": "
             << "Writing ..." << std::endl;
 
-  ostream outFile(&buf);
+  std::ostream outFile(&buf);
   for (int p = 0; p < data.GetNbEx(); p++) {
     net->ForwardOneExample1(data, p);
 
@@ -112,7 +110,7 @@ void checkDimlpPredParametersLogicValues(Parameters &p) {
   p.checkParametersCommon();
 }
 
-int dimlpPred(const string &command) {
+int dimlpPred(const std::string &command) {
 
   // Save buffer where we output results
   std::ofstream ofs;
@@ -126,9 +124,9 @@ int dimlpPred(const string &command) {
     t1 = clock();
 
     // Parsing the command
-    vector<string> commandList = {"dimlpPred"};
-    string s;
-    stringstream ss(command);
+    std::vector<std::string> commandList = {"dimlpPred"};
+    std::string s;
+    std::stringstream ss(command);
 
     while (ss >> s) {
       commandList.push_back(s);
@@ -141,7 +139,7 @@ int dimlpPred(const string &command) {
     }
 
     // Import parameters
-    unique_ptr<Parameters> params;
+    std::unique_ptr<Parameters> params;
     std::vector<ParameterCode> validParams = {TEST_DATA_FILE, WEIGHTS_FILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER,
                                               TEST_PRED_OUTFILE, CONSOLE_FILE, H, NB_QUANT_LEVELS};
     if (commandList[1].compare("--json_config_file") == 0) {
@@ -276,7 +274,7 @@ int dimlpPred(const string &command) {
 
   } catch (const ErrorHandler &e) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
-    std::cerr << e.what() << endl;
+    std::cerr << e.what() << std::endl;
     return -1;
   }
   return 0;

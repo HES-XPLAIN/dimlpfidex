@@ -6,7 +6,6 @@
 #include "bagDimlp.h"
 
 #include <fstream>
-using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
@@ -38,8 +37,8 @@ void BagDimlp::MakeDataSets(
     }
 
     count = static_cast<int>(std::count(busy.begin(), busy.end(), 0));
-    cout << "Network " << n + 1 << " Number of Validation Examples = ";
-    cout << count << "" << std::endl;
+    std::cout << "Network " << n + 1 << " Number of Validation Examples = ";
+    std::cout << count << "" << std::endl;
 
     // indVal = new int[count];
     std::vector<int> indVal(count);
@@ -67,20 +66,20 @@ void BagDimlp::TrainAll(
     int seed)
 
 {
-  string str1;
+  std::string str1;
 
   // Remove content from weightsFile
   std::ofstream(weightsFile, std::ios::out).close();
 
   for (int n = 0; n < NbDimlpNets; n++) {
-    cout << "\n\n-------------------------------------------------------";
-    cout << "---------------------------";
+    std::cout << "\n\n-------------------------------------------------------";
+    std::cout << "---------------------------";
 
-    cout << "\n\nTraining network " << n + 1 << "" << std::endl;
+    std::cout << "\n\nTraining network " << n + 1 << "" << std::endl;
 
     // Output accuracy on file
     if (!accuracyFile.empty()) {
-      ofstream accFile(accuracyFile, ios::app);
+      std::ofstream accFile(accuracyFile, std::ios::app);
       if (accFile.is_open()) {
         accFile << "Network " << n + 1 << " : \n"
                 << std::endl;
@@ -107,13 +106,13 @@ void BagDimlp::TrainAll(
 void BagDimlp::DefNetsWithWeights(const std::string &prefix)
 
 {
-  string str1;
+  std::string str1;
 
   for (int n = 0; n < NbDimlpNets; n++) {
-    cout << "\n\n-------------------------------------------------------";
-    cout << "---------------------------";
+    std::cout << "\n\n-------------------------------------------------------";
+    std::cout << "---------------------------";
 
-    cout << "\n\nBuilding network " << n + 1 << "" << std::endl;
+    std::cout << "\n\nBuilding network " << n + 1 << "" << std::endl;
 
     VectDimlp[n] = std::make_shared<Dimlp>(prefix, NbLayers, NbNeurons,
                                            DiscrLevels, n + 1);
@@ -207,19 +206,19 @@ void BagDimlp::ComputeAcc(
   int bad;
   std::vector<float> ptrOut;
   std::vector<float> ptrTar;
-  ofstream buf;
+  std::ofstream buf;
 
   const int nbPat = data.GetNbEx();
   const int nbOut = target.GetNbAttr();
 
   if (toWrite) {
-    cout << "\n\n"
-         << predFile << ": "
-         << "Writing ..." << std::endl;
+    std::cout << "\n\n"
+              << predFile << ": "
+              << "Writing ..." << std::endl;
   }
   buf.open(predFile);
   if (!buf)
-    cout << "Cannot open file for writing";
+    std::cout << "Cannot open file for writing";
 
   for (p = 0, good = 0, bad = 0; p < nbPat; p++) {
     BagDimlp::ForwardOneExample1(data, p);
@@ -244,9 +243,9 @@ void BagDimlp::ComputeAcc(
     }
   }
   if (toWrite) {
-    cout << predFile << ": "
-         << "Written.\n"
-         << std::endl;
+    std::cout << predFile << ": "
+              << "Written.\n"
+              << std::endl;
   }
 
   *accuracy = static_cast<float>(good) + static_cast<float>(bad);
@@ -268,7 +267,7 @@ BagDimlp::BagDimlp(
     int nbLayers,
     std::vector<int> nbNeurons,
     int nbDimlpNets,
-    const string &weightFile,
+    const std::string &weightFile,
     int seed) :
 
                 Dimlp(eta, mu, flat, errParam, accuracyParam, deltaErrParam,
@@ -284,8 +283,8 @@ BagDimlp::BagDimlp(
   for (int n = 0; n < nbLayers; n++)
     NbNeurons[n] = nbNeurons[n];
 
-  cout << "Number of networks = " << nbDimlpNets << "\n"
-       << std::endl;
+  std::cout << "Number of networks = " << nbDimlpNets << "\n"
+            << std::endl;
 
   VectData.resize(nbDimlpNets);
   VectDataClass.resize(nbDimlpNets);
@@ -305,7 +304,7 @@ BagDimlp::BagDimlp(
     int nbLayers,
     std::vector<int> nbNeurons,
     int nbDimlpNets,
-    const string &weightFile,
+    const std::string &weightFile,
     int seed) :
 
                 Dimlp(0, 0, 0, 0, 0, 0, discrLevels, 0, 0, nbLayers, nbNeurons, weightFile, seed),
@@ -317,8 +316,8 @@ BagDimlp::BagDimlp(
   for (int n = 0; n < nbLayers; n++)
     NbNeurons[n] = nbNeurons[n];
 
-  cout << "Number of networks = " << nbDimlpNets << "\n"
-       << std::endl;
+  std::cout << "Number of networks = " << nbDimlpNets << "\n"
+            << std::endl;
 
   VectDimlp.resize(nbDimlpNets);
 

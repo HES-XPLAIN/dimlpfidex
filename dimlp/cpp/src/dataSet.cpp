@@ -1,5 +1,4 @@
 #include "dataSet.h"
-using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
@@ -17,16 +16,16 @@ void DataSet::InsertExample(const std::vector<float> &example, int index) {
 int DataSet::FirstLecture(const std::string &nameFile) const
 
 {
-  filebuf buf;
+  std::filebuf buf;
   int count;
   float x;
   std::cout << "\n----------------------------------------------------------\n"
             << std::endl;
-  if (buf.open(nameFile, ios_base::in) == nullptr) {
+  if (buf.open(nameFile, std::ios_base::in) == nullptr) {
     throw CannotOpenFileError("Error : Cannot open input file " + nameFile);
   }
 
-  istream inFile(&buf);
+  std::istream inFile(&buf);
 
   std::cout << nameFile << ": "
             << "Reading ..." << std::endl;
@@ -36,8 +35,8 @@ int DataSet::FirstLecture(const std::string &nameFile) const
     count++;
   }
 
-  if ((inFile.rdstate() == ifstream::badbit) || (inFile.rdstate() == ifstream::failbit)) {
-    throw FileContentError("Error : File position " + to_string(count + 1) + ": problem in input file " + nameFile);
+  if ((inFile.rdstate() == std::ifstream::badbit) || (inFile.rdstate() == std::ifstream::failbit)) {
+    throw FileContentError("Error : File position " + std::to_string(count + 1) + ": problem in input file " + nameFile);
   }
 
   if (count % NbAttr != 0) {
@@ -46,7 +45,7 @@ int DataSet::FirstLecture(const std::string &nameFile) const
 
   std::cout << nameFile << ": "
             << "Read.\n"
-            << endl;
+            << std::endl;
 
   return count / NbAttr;
 }
@@ -54,14 +53,14 @@ int DataSet::FirstLecture(const std::string &nameFile) const
 ///////////////////////////////////////////////////////////////////
 
 void DataSet::SecondLecture(const std::string &nameFile) {
-  filebuf buf;
+  std::filebuf buf;
   std::vector<float> oneExample;
 
   std::cout << nameFile << ": "
             << "Creating dataset structures ..." << std::endl;
 
-  buf.open(nameFile, ios_base::in);
-  istream inFile(&buf);
+  buf.open(nameFile, std::ios_base::in);
+  std::istream inFile(&buf);
 
   oneExample.resize(NbAttr);
 
@@ -218,7 +217,7 @@ DataSet::DataSet(const std::string &nameFile, int nbAttr) : NbAttr(nbAttr)
   Set = new float *[NbEx];
 
   std::cout << "Number of patterns in file " << nameFile << ": ";
-  std::cout << NbEx << endl;
+  std::cout << NbEx << std::endl;
 
   SecondLecture(nameFile);
 }
@@ -235,19 +234,19 @@ DataSet::DataSet(const std::string &nameFile, int nbAttr) : NbAttr(nbAttr)
  * @throws FileContentError If there is a problem with the file format or content.
  */
 DataSet::DataSet(const std::string &nameFile, int nbIn, int nbOut) {
-  filebuf buf;
+  std::filebuf buf;
   std::vector<double> lineValues;
 
   std::cout << "\n----------------------------------------------------------\n"
             << std::endl;
-  if (buf.open(nameFile, ios_base::in) == nullptr) {
+  if (buf.open(nameFile, std::ios_base::in) == nullptr) {
     throw CannotOpenFileError("Error : Cannot open input file " + nameFile);
   }
 
-  istream inFile(&buf);
-  cout << nameFile << ": Reading and creating dataset structures ..." << std::endl;
+  std::istream inFile(&buf);
+  std::cout << nameFile << ": Reading and creating dataset structures ..." << std::endl;
 
-  string line;
+  std::string line;
   std::vector<std::vector<double>> tempSet; // Use a temporary vector to store data
 
   int lineSize = -1;
@@ -321,8 +320,8 @@ DataSet::DataSet(const std::string &nameFile, int nbIn, int nbOut) {
     tempSet.push_back(lineValues);
   }
 
-  cout << nameFile << ": Read.\n"
-       << endl;
+  std::cout << nameFile << ": Read.\n"
+            << std::endl;
 
   // Create the final Set based on the temporary vector
   NbEx = static_cast<int>(tempSet.size());
@@ -333,8 +332,8 @@ DataSet::DataSet(const std::string &nameFile, int nbIn, int nbOut) {
     std::copy(tempSet[i].begin(), tempSet[i].end(), Set[i]);
   }
 
-  cout << "Number of patterns in file " << nameFile << ": ";
-  cout << NbEx << endl;
+  std::cout << "Number of patterns in file " << nameFile << ": ";
+  std::cout << NbEx << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////

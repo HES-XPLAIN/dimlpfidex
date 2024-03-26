@@ -1,5 +1,4 @@
 #include "dimlpClsFct.h"
-using namespace std;
 
 ////////////////////////////////////////////////////////////
 
@@ -61,20 +60,20 @@ static void SaveOutputs(
     const std::string &outfile)
 
 {
-  filebuf buf;
+  std::filebuf buf;
 
-  if (buf.open(outfile, ios_base::out) == nullptr) {
+  if (buf.open(outfile, std::ios_base::out) == nullptr) {
     throw CannotOpenFileError("Error : Cannot open output file " + outfile);
   }
 
   std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
   const float *out = layer->GetUp();
 
-  cout << "\n\n"
-       << outfile << ": "
-       << "Writing ..." << std::endl;
+  std::cout << "\n\n"
+            << outfile << ": "
+            << "Writing ..." << std::endl;
 
-  ostream outFile(&buf);
+  std::ostream outFile(&buf);
 
   for (int p = 0; p < data.GetNbEx(); p++) {
     net->ForwardOneExample1(data, p);
@@ -86,9 +85,9 @@ static void SaveOutputs(
     outFile << "" << std::endl;
   }
 
-  cout << outfile << ": "
-       << "Written.\n"
-       << std::endl;
+  std::cout << outfile << ": "
+            << "Written.\n"
+            << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
@@ -101,20 +100,20 @@ void SaveFirstHid(
     const std::string &firsthidFile)
 
 {
-  filebuf buf;
+  std::filebuf buf;
 
-  if (buf.open(firsthidFile, ios_base::out) == nullptr) {
+  if (buf.open(firsthidFile, std::ios_base::out) == nullptr) {
     throw CannotOpenFileError("Error : Cannot open output file " + outfile);
   }
 
   std::shared_ptr<Layer> layer = net->GetLayer(0);
   const float *hid = layer->GetUp();
 
-  cout << "\n\n"
-       << firsthidFile << ": "
-       << "Writing ..." << std::endl;
+  std::cout << "\n\n"
+            << firsthidFile << ": "
+            << "Writing ..." << std::endl;
 
-  ostream outFile(&buf);
+  std::ostream outFile(&buf);
 
   for (int p = 0; p < data.GetNbEx(); p++) {
     net->ForwardOneExample1(data, p);
@@ -126,9 +125,9 @@ void SaveFirstHid(
     outFile << "" << std::endl;
   }
 
-  cout << firsthidFile << ": "
-       << "Written.\n"
-       << std::endl;
+  std::cout << firsthidFile << ": "
+            << "Written.\n"
+            << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
@@ -156,7 +155,7 @@ void checkDimlpClsParametersLogicValues(Parameters &p) {
   p.checkParametersCommon();
 }
 
-int dimlpCls(const string &command) {
+int dimlpCls(const std::string &command) {
   // Save buffer where we output results
   std::ofstream ofs;
   std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
@@ -169,9 +168,9 @@ int dimlpCls(const string &command) {
     t1 = clock();
 
     // Parsing the command
-    vector<string> commandList = {"dimlpCls"};
-    string s;
-    stringstream ss(command);
+    std::vector<std::string> commandList = {"dimlpCls"};
+    std::string s;
+    std::stringstream ss(command);
 
     while (ss >> s) {
       commandList.push_back(s);
@@ -184,7 +183,7 @@ int dimlpCls(const string &command) {
     }
 
     // Import parameters
-    unique_ptr<Parameters> params;
+    std::unique_ptr<Parameters> params;
     std::vector<ParameterCode> validParams = {TEST_DATA_FILE, WEIGHTS_FILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER, TEST_CLASS_FILE,
                                               TEST_PRED_OUTFILE, CONSOLE_FILE, STATS_FILE, HID_FILE, H, NB_QUANT_LEVELS};
     if (commandList[1].compare("--json_config_file") == 0) {
@@ -322,12 +321,12 @@ int dimlpCls(const string &command) {
 
     float err = net.Error(Test, TestClass, &acc);
 
-    cout << "\n\n*** SUM SQUARED ERROR = " << err;
-    cout << "\n\n*** ACCURACY = " << acc << "" << std::endl;
+    std::cout << "\n\n*** SUM SQUARED ERROR = " << err;
+    std::cout << "\n\n*** ACCURACY = " << acc << "" << std::endl;
 
     // Output accuracy stats in file
     if (params->isStringSet(STATS_FILE)) {
-      ofstream accFile(params->getString(STATS_FILE));
+      std::ofstream accFile(params->getString(STATS_FILE));
       if (accFile.is_open()) {
         accFile << "Sum squared error = " << err << "" << std::endl;
         accFile << "Accuracy = " << acc;
@@ -340,8 +339,8 @@ int dimlpCls(const string &command) {
     SaveOutputs(Test, &net, nbOut, nbWeightLayers, predFile);
     SaveFirstHid(Test, &net, vecNbNeurons[1], predFile, hidFile);
 
-    cout << "\n-------------------------------------------------\n"
-         << std::endl;
+    std::cout << "\n-------------------------------------------------\n"
+              << std::endl;
 
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
@@ -358,7 +357,7 @@ int dimlpCls(const string &command) {
 
   } catch (const ErrorHandler &e) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
-    std::cerr << e.what() << endl;
+    std::cerr << e.what() << std::endl;
     return -1;
   }
 
