@@ -236,7 +236,6 @@ DataSet::DataSet(const std::string &nameFile, int nbAttr) : NbAttr(nbAttr)
  */
 DataSet::DataSet(const std::string &nameFile, int nbIn, int nbOut) {
   filebuf buf;
-  float x;
   std::vector<float> lineValues;
 
   std::cout << "\n----------------------------------------------------------\n"
@@ -254,19 +253,29 @@ DataSet::DataSet(const std::string &nameFile, int nbIn, int nbOut) {
   int lineSize = -1;
 
   while (getline(inFile, line)) {
-    std::istringstream lineStream(line);
+
     lineValues.clear();
-    while (lineStream >> x) {
-      lineValues.push_back(x);
-    }
-    if (lineStream.fail() && !lineStream.eof()) {
-      throw FileContentError("Error : Non number found in file " + nameFile + ".");
+    std::regex re("([ \\t]+)|[,;]");
+    std::sregex_token_iterator first{line.begin(), line.end(), re, -1}, last; //  -1 makes the regex split, it keeps only what was not matched
+    std::vector<std::string> stringTokens{first, last};
+
+    for (const std::string &strToken : stringTokens) {
+      std::string cleanedToken = removeBOM(strToken);
+      try {
+        if (!checkStringEmpty(cleanedToken)) {
+          lineValues.push_back(std::stof(cleanedToken));
+        }
+      } catch (const std::invalid_argument &) {
+        throw FileContentError("Error : Non number found in file " + nameFile + " : " + cleanedToken + ".");
+      } catch (const std::out_of_range &) {
+        throw FileContentError("Error: Number out of range in file " + nameFile + " : " + cleanedToken + ".");
+      }
     }
 
     auto currentLineSize = static_cast<int>(lineValues.size());
 
     if (lineSize != -1 && currentLineSize != lineSize) {
-      throw FileContentError("Error : Inconsistent line lengths in file " + nameFile + ".");
+      throw FileContentError("Error : Inconsistent line lengths in file " + nameFile + ", line : " + line + ".");
     }
 
     // Apply specific checks based on currentLineSize
@@ -276,11 +285,11 @@ DataSet::DataSet(const std::string &nameFile, int nbIn, int nbOut) {
         lineSize = currentLineSize;
       }
       if (lineValues.back() != std::floor(lineValues[0])) {
-        throw FileContentError("Error : Class ID is not an integer in file " + nameFile + ".");
+        throw FileContentError("Error : Class ID (" + std::to_string(lineValues.back()) + ") is not an integer in file " + nameFile + ".");
       }
       auto classID = static_cast<int>(lineValues[0]);
       if (classID < 0 || classID >= nbOut) {
-        throw FileContentError("Error : Class ID out of range in file " + nameFile + ".");
+        throw FileContentError("Error : Class ID (" + std::to_string(classID) + ") out of range in file " + nameFile + ".");
       }
     } else if (currentLineSize == nbIn + 1) {
       if (NbAttr == 0) {
@@ -288,11 +297,11 @@ DataSet::DataSet(const std::string &nameFile, int nbIn, int nbOut) {
         lineSize = currentLineSize;
       }
       if (lineValues.back() != std::floor(lineValues.back())) {
-        throw FileContentError("Error : Class ID is not an integer in file " + nameFile + ".");
+        throw FileContentError("Error : Class ID (" + std::to_string(lineValues.back()) + ") is not an integer in file " + nameFile + ".");
       }
       auto classID = static_cast<int>(lineValues.back());
       if (classID < 0 || classID >= nbOut) {
-        throw FileContentError("Error : Class ID out of range in file " + nameFile + ".");
+        throw FileContentError("Error : Class ID (" + std::to_string(classID) + ") out of range in file " + nameFile + ".");
       }
     } else if (currentLineSize == nbOut || currentLineSize == nbIn + nbOut) {
       if (NbAttr == 0) {
@@ -301,7 +310,7 @@ DataSet::DataSet(const std::string &nameFile, int nbIn, int nbOut) {
       }
       auto oneHotCount = static_cast<int>(std::count(lineValues.end() - nbOut, lineValues.end(), 1.0f));
       if (oneHotCount != 1 || std::count_if(lineValues.end() - nbOut, lineValues.end(), [](float val) { return val != 0.0f && val != 1.0f; }) > 0) {
-        throw FileContentError("Error : Invalid one-hot encoding in file " + nameFile);
+        throw FileContentError("Error : Invalid one-hot encoding in file " + nameFile + ", line : " + line + ".");
       }
     } else if (currentLineSize == nbIn) {
       if (NbAttr == 0) {
@@ -309,7 +318,7 @@ DataSet::DataSet(const std::string &nameFile, int nbIn, int nbOut) {
         lineSize = currentLineSize;
       }
     } else {
-      throw FileContentError("Error : Invalid line length in file " + nameFile);
+      throw FileContentError("Error : Invalid line length in file " + nameFile + ", line : " + line + ".");
     }
 
     // Convert class ID format to one-hot format if necessary
