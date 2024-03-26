@@ -432,3 +432,15 @@ int countNetworksInFile(const std::string &weightsFile) {
   }
   return count > 0 ? count : 1; // If no "Network" keyword is found, assume there's one network
 }
+
+//////////////////////////////////////////////////////
+
+std::string removeBOM(const std::string &data) {
+  if (data.size() >= 3 &&
+      static_cast<unsigned char>(data[0]) == 0xEF &&
+      static_cast<unsigned char>(data[1]) == 0xBB &&
+      static_cast<unsigned char>(data[2]) == 0xBF) {
+    return data.substr(3); // Supprime les trois premiers octets
+  }
+  return data; // Aucun BOM détecté, retourne la chaîne originale
+}

@@ -1,6 +1,7 @@
 #ifndef DATASET_H
 #define DATASET_H
 
+#include "../../../common/cpp/src/checkFun.h"
 #include "../../../common/cpp/src/errorHandler.h"
 #include "../../../common/cpp/src/stringI.h"
 #include "dimlpRule.h"
@@ -8,6 +9,7 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <regex>
 #include <sstream>
 #include <vector>
 
