@@ -1,20 +1,19 @@
 #include "attrName.h"
-using namespace std;
 
 ///////////////////////////////////////////////////////////////////
 
 int AttrName::FirstLect() const
 
 {
-  filebuf buf;
+  std::filebuf buf;
   std::string str;
   int k;
 
-  if (buf.open(FileAttr, ios_base::in) == nullptr) {
+  if (buf.open(FileAttr, std::ios_base::in) == nullptr) {
     throw CannotOpenFileError("Cannot open file of attribute names " + std::string(FileAttr));
   }
 
-  istream inFile(&buf);
+  std::istream inFile(&buf);
 
   for (k = 0;; k++) {
     if (inFile >> str)
@@ -33,16 +32,16 @@ int AttrName::FirstLect() const
 ///////////////////////////////////////////////////////////////////
 
 void AttrName::SecondLect() {
-  filebuf buf;
+  std::filebuf buf;
 
-  if (buf.open(FileAttr, ios_base::in) == nullptr) {
+  if (buf.open(FileAttr, std::ios_base::in) == nullptr) {
     throw CannotOpenFileError("Cannot open file of attribute names " + std::string(FileAttr));
   }
 
-  istream inFile(&buf);
+  std::istream inFile(&buf);
 
   VarNames.clear();
-  string varName;
+  std::string varName;
   int k = 0;
   while (k < NbAttr && std::getline(inFile, varName)) {
 
@@ -57,7 +56,7 @@ void AttrName::SecondLect() {
     k++;
   }
   ClassNames.clear();
-  string className;
+  std::string className;
   bool hasClasses = false;
 
   while (std::getline(inFile, className)) {

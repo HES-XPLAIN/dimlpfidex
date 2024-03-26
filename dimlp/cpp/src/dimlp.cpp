@@ -1,5 +1,4 @@
 #include "dimlp.h"
-using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 const std::string &netType = "Discretized Interpretable Multi-Layer Perceptron";
@@ -24,8 +23,8 @@ Dimlp::Dimlp(
                      netType, seed)
 
 {
-  cout << "Number of quantized levels = " << discrLevels << "\n"
-       << endl;
+  std::cout << "Number of quantized levels = " << discrLevels << "\n"
+            << std::endl;
 
   DefineDimlp(discrLevels);
 }
@@ -43,8 +42,8 @@ Dimlp::Dimlp(
                       netType, netId)
 
 {
-  cout << "Number of quantized levels = " << discrLevels << "\n"
-       << endl;
+  std::cout << "Number of quantized levels = " << discrLevels << "\n"
+            << std::endl;
 
   DefineDimlp(discrLevels);
   ReadWeights();
@@ -71,8 +70,8 @@ Dimlp::Dimlp(
                 BpNN(readFile, eta, mu, flat, errParam, accuracyParam, deltaErrParam,
                      showErrParam, nbEpochsParam, nbLayers, nbNeurons, weightFile,
                      netType, seed) {
-  cout << "Number of quantized levels = " << discrLevels << "\n"
-       << endl;
+  std::cout << "Number of quantized levels = " << discrLevels << "\n"
+            << std::endl;
 
   DefineDimlp(discrLevels);
   ReadWeights();

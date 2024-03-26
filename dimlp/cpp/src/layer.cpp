@@ -1,6 +1,5 @@
 #include "layer.h"
 
-using namespace std;
 ///////////////////////////////////////////////////////////////////
 
 void Layer::AssignParam(
@@ -188,7 +187,7 @@ void Layer::AdaptBiasSpec2()
 
 ///////////////////////////////////////////////////////////////////
 
-void Layer::ReadWeights(istream &inFile)
+void Layer::ReadWeights(std::istream &inFile)
 
 {
   int w;
@@ -210,7 +209,7 @@ void Layer::ReadWeights(istream &inFile)
 
 ///////////////////////////////////////////////////////////////////
 
-void Layer::WriteWeights(ostream &outFile)
+void Layer::WriteWeights(std::ostream &outFile)
 
 {
   int w;

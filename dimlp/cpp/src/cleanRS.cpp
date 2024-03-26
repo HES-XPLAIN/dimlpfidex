@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-using namespace std;
-
 ////////////////////////////////////////////////////////////////////////
 
 void CleanRuleStruct::ResetFlag() const
@@ -220,8 +218,8 @@ float CleanRuleStruct::GlobalAcc(DataSet &data, int *vecWrong, int nbEl) const
   for (e = 0, count = 0; e < nbEl; e++) {
     if (vecWrong[e] == -1) // -1 -> Non Carried
     {
-      cout << "Warning ***\n"
-           << std::endl;
+      std::cout << "Warning ***\n"
+                << std::endl;
 
       Bpnn->ForwardOneExample1(data, e);
       clNet = Bpnn->Max(std::vector<float>(Out, Out + NbOut));
@@ -407,7 +405,7 @@ void CleanRuleStruct::CreateStructures() {
 
 void CleanRuleStruct::WriteRules(
     int def,
-    ostream &ruleFile,
+    std::ostream &ruleFile,
     const std::vector<double> &mus,
     const std::vector<double> &sigmas,
     const std::vector<int> &normalizationIndices)
@@ -950,7 +948,7 @@ void CleanRuleStruct::ElseRepTest()
 
   float trueAcc = (float)sumCor / (float)sumCov;
 
-  cout << "VERIFYING: " << trueAcc << "(" << sumCor << " " << sumCov << ")";
+  std::cout << "VERIFYING: " << trueAcc << "(" << sumCor << " " << sumCov << ")";
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1333,12 +1331,12 @@ void CleanRuleStruct::WriteNumb() const
     if (CheckAnt(r))
       n++;
 
-  cout << "\nNumber of rules = " << n;
+  std::cout << "\nNumber of rules = " << n;
 
   for (r = 0, n = 0; r < NbRules; r++)
     n += CheckAnt(r);
 
-  cout << "\nNumber of antecedents = " << n << "" << std::endl;
+  std::cout << "\nNumber of antecedents = " << n << "" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1502,7 +1500,7 @@ std::string CleanRuleStruct::ItoA(int n) const {
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::SetAttr(vector<string> listAttr) const
+void CleanRuleStruct::SetAttr(std::vector<std::string> listAttr) const
 
 {
   int a;
@@ -1537,7 +1535,7 @@ void CleanRuleStruct::SetAttr() {
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::SetStrClass(vector<string> listClass, int def) const
+void CleanRuleStruct::SetStrClass(std::vector<std::string> listClass, int def) const
 
 {
   for (int r = 0; r < NbRules + def; r++) {
@@ -1579,23 +1577,23 @@ int CleanRuleStruct::DefDef() const
   for (i = 0, count = 0; i < r; i++)
     count += Clean[i]->NbAnt;
 
-  cout << "\nUnordered rules = " << NbRules << "" << std::endl;
-  cout << "Unordered rules - default rule = " << r << "" << std::endl;
-  cout << "True antecedents = " << count << "\n"
-       << std::endl;
+  std::cout << "\nUnordered rules = " << NbRules << "" << std::endl;
+  std::cout << "Unordered rules - default rule = " << r << "" << std::endl;
+  std::cout << "True antecedents = " << count << "\n"
+            << std::endl;
 
   for (i = 0, count = 0; i < NbRules; i++)
     count += Clean[i]->NbAnt;
 
-  cout << "Antecedents = " << count << "\n"
-       << std::endl;
+  std::cout << "Antecedents = " << count << "\n"
+            << std::endl;
 
   return r;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::UnordAccWithDef(ostream &ruleFile)
+void CleanRuleStruct::UnordAccWithDef(std::ostream &ruleFile)
 
 {
   int r;
@@ -1627,8 +1625,8 @@ void CleanRuleStruct::UnordAccWithDef(ostream &ruleFile)
       if (IsExampleCarried(Test, p, Clean[r]) == 1) {
         z = 1;
 
-        cout << p + 1 << ": "
-             << "-- R" << r + 1 << " " << 1 + Clean[r]->Classification << " " << clNet + 1 << " " << ClassPatNetTest[p] + 1 << "" << std::endl;
+        std::cout << p + 1 << ": "
+                  << "-- R" << r + 1 << " " << 1 + Clean[r]->Classification << " " << clNet + 1 << " " << ClassPatNetTest[p] + 1 << "" << std::endl;
 
         Clean[r]->NbCarriedTest += 1;
 
@@ -1643,10 +1641,10 @@ void CleanRuleStruct::UnordAccWithDef(ostream &ruleFile)
     }
 
     if (z == 0)
-      cout << p + 1 << ": "
-           << "-- Default"
-           << " " << 1 + Clean[nbRules]->Classification << " " << clNet + 1 << " " << ClassPatNetTest[p] + 1 << "" << std::endl;
-    cout << "" << std::endl;
+      std::cout << p + 1 << ": "
+                << "-- Default"
+                << " " << 1 + Clean[nbRules]->Classification << " " << clNet + 1 << " " << ClassPatNetTest[p] + 1 << "" << std::endl;
+    std::cout << "" << std::endl;
 
     if (c == 0) /* Default */
     {
@@ -1724,11 +1722,11 @@ void CleanRuleStruct::UnordAccWithDef(ostream &ruleFile)
     }
   }
 
-  cout << "--- Accuracy on testing set = " << (float)globalAcc * 100.0 / (float)nbEx << "" << std::endl;
-  cout << "--- Fidelity = " << (float)fidelity * 100.0 / (float)nbEx << "" << std::endl;
-  cout << "--- Acc on Fid = " << (float)globalWithout * 100.0 / (float)fidelity << "" << std::endl;
-  cout << "--- Contradictions = " << (float)contr * 100.0 / (float)nbEx << "\n"
-       << std::endl;
+  std::cout << "--- Accuracy on testing set = " << (float)globalAcc * 100.0 / (float)nbEx << "" << std::endl;
+  std::cout << "--- Fidelity = " << (float)fidelity * 100.0 / (float)nbEx << "" << std::endl;
+  std::cout << "--- Acc on Fid = " << (float)globalWithout * 100.0 / (float)fidelity << "" << std::endl;
+  std::cout << "--- Contradictions = " << (float)contr * 100.0 / (float)nbEx << "\n"
+            << std::endl;
 
   ruleFile << "---------------------------------------------------------\n"
            << std::endl;
@@ -1775,7 +1773,7 @@ void CleanRuleStruct::UnordAccWithDef(ostream &ruleFile)
 
 ////////////////////////////////////////////////////////////////////////
 
-void CleanRuleStruct::UnordAccWithDef2(ostream &ruleFile)
+void CleanRuleStruct::UnordAccWithDef2(std::ostream &ruleFile)
 
 {
   int r;
@@ -1800,10 +1798,10 @@ void CleanRuleStruct::UnordAccWithDef2(ostream &ruleFile)
 
   ResetSomeFields();
 
-  cout << "CLASSIFICATION ON THE TESTING SET\n"
-       << std::endl;
-  cout << "(Case: Activated Rule -- Rule Class, Net Class, True Class):\n"
-       << std::endl;
+  std::cout << "CLASSIFICATION ON THE TESTING SET\n"
+            << std::endl;
+  std::cout << "(Case: Activated Rule -- Rule Class, Net Class, True Class):\n"
+            << std::endl;
 
   for (int p = 0; p < nbEx; p++) {
     std::vector<int> vectRulCar(nbRules);
@@ -1815,12 +1813,12 @@ void CleanRuleStruct::UnordAccWithDef2(ostream &ruleFile)
       if (IsExampleCarried(Test, p, Clean[r]) == 1) {
         z = 1;
 
-        cout << p + 1 << ": R" << r + 1 << " -- " << 1 + Clean[r]->Classification << " " << clNet + 1 << " " << ClassPatNetTest[p] + 1;
+        std::cout << p + 1 << ": R" << r + 1 << " -- " << 1 + Clean[r]->Classification << " " << clNet + 1 << " " << ClassPatNetTest[p] + 1;
         if (Clean[r]->Classification != clNet)
-          cout << " ***";
+          std::cout << " ***";
         if ((Clean[r]->Classification == clNet) && (clNet != ClassPatNetTest[p]))
-          cout << " ---";
-        cout << "" << std::endl;
+          std::cout << " ---";
+        std::cout << "" << std::endl;
         Clean[r]->NbCarriedTest += 1;
 
         vectRulCar[c] = r;
@@ -1834,13 +1832,13 @@ void CleanRuleStruct::UnordAccWithDef2(ostream &ruleFile)
     }
 
     if (z == 0) {
-      cout << p + 1 << ": "
-           << " -- Net Class: " << clNet + 1 << " True Class: " << ClassPatNetTest[p] + 1;
+      std::cout << p + 1 << ": "
+                << " -- Net Class: " << clNet + 1 << " True Class: " << ClassPatNetTest[p] + 1;
       if (clNet != ClassPatNetTest[p])
-        cout << " ---";
-      cout << "" << std::endl;
+        std::cout << " ---";
+      std::cout << "" << std::endl;
     }
-    cout << "" << std::endl;
+    std::cout << "" << std::endl;
 
     if (z == 0) /* Default */
     {

@@ -1,7 +1,5 @@
 #include "dimlpRulFct.h"
 
-using namespace std;
-
 const int BPNN = 1;
 
 ////////////////////////////////////////////////////////////
@@ -87,7 +85,7 @@ void checkDimlpRulParametersLogicValues(Parameters &p) {
   p.checkParametersNormalization();
 }
 
-int dimlpRul(const string &command) {
+int dimlpRul(const std::string &command) {
 
   // Save buffer where we output results
   std::ofstream ofs;
@@ -101,9 +99,9 @@ int dimlpRul(const string &command) {
     t1 = clock();
 
     // Parsing the command
-    vector<string> commandList = {"dimlpRul"};
-    string s;
-    stringstream ss(command);
+    std::vector<std::string> commandList = {"dimlpRul"};
+    std::string s;
+    std::stringstream ss(command);
 
     while (ss >> s) {
       commandList.push_back(s);
@@ -116,7 +114,7 @@ int dimlpRul(const string &command) {
     }
 
     // Import parameters
-    unique_ptr<Parameters> params;
+    std::unique_ptr<Parameters> params;
     std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, WEIGHTS_FILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER,
                                               ATTRIBUTES_FILE, VALID_DATA_FILE, TEST_DATA_FILE, TRAIN_CLASS_FILE,
                                               TEST_CLASS_FILE, VALID_CLASS_FILE, GLOBAL_RULES_OUTFILE, CONSOLE_FILE,
@@ -318,26 +316,26 @@ int dimlpRul(const string &command) {
 
     errTrain = net->Error(Train, TrainClass, &accTrain);
 
-    cout << "\n\n*** SUM SQUARED ERROR ON TRAINING SET = " << errTrain;
-    cout << "\n\n*** ACCURACY ON TRAINING SET = " << accTrain << "" << std::endl;
+    std::cout << "\n\n*** SUM SQUARED ERROR ON TRAINING SET = " << errTrain;
+    std::cout << "\n\n*** ACCURACY ON TRAINING SET = " << accTrain << "" << std::endl;
 
     if (Valid.GetNbEx() > 0) {
       errValid = net->Error(Valid, ValidClass, &accValid);
 
-      cout << "\n\n*** SUM SQUARED ERROR ON VALIDATION SET = " << errValid;
-      cout << "\n\n*** ACCURACY ON VALIDATION SET = " << accValid << "" << std::endl;
+      std::cout << "\n\n*** SUM SQUARED ERROR ON VALIDATION SET = " << errValid;
+      std::cout << "\n\n*** ACCURACY ON VALIDATION SET = " << accValid << "" << std::endl;
     }
 
     if (Test.GetNbEx() > 0) {
       errTest = net->Error(Test, TestClass, &accTest);
 
-      cout << "\n\n*** SUM SQUARED ERROR ON TESTING SET = " << errTest;
-      cout << "\n\n*** ACCURACY ON TESTING SET = " << accTest << "" << std::endl;
+      std::cout << "\n\n*** SUM SQUARED ERROR ON TESTING SET = " << errTest;
+      std::cout << "\n\n*** ACCURACY ON TESTING SET = " << accTest << "" << std::endl;
     }
 
     // Output accuracy stats in file
     if (params->isStringSet(STATS_FILE)) {
-      ofstream accFile(params->getString(STATS_FILE));
+      std::ofstream accFile(params->getString(STATS_FILE));
       if (accFile.is_open()) {
         accFile << "Sum squared error on training set = " << errTrain << "" << std::endl;
         accFile << "Accuracy on training set = " << accTrain << "\n"
@@ -358,41 +356,41 @@ int dimlpRul(const string &command) {
       }
     }
 
-    cout << "\n-------------------------------------------------\n"
-         << std::endl;
+    std::cout << "\n-------------------------------------------------\n"
+              << std::endl;
 
     // ----------------------------------------------------------------------
 
     All = Train;
 
-    cout << "Extraction Part :: " << std::endl;
+    std::cout << "Extraction Part :: " << std::endl;
 
     if (Valid.GetNbEx() > 0) {
       DataSet all2(All, Valid);
       All = all2;
     }
 
-    cout << "\n\n****************************************************\n"
-         << std::endl;
-    cout << "*** RULE EXTRACTION" << std::endl;
+    std::cout << "\n\n****************************************************\n"
+              << std::endl;
+    std::cout << "*** RULE EXTRACTION" << std::endl;
 
-    vector<string> attributeNames;
+    std::vector<std::string> attributeNames;
 
     if (params->isStringSet(ATTRIBUTES_FILE)) {
       AttrName attr(params->getString(ATTRIBUTES_FILE), nbIn, nbOut);
 
       if (attr.ReadAttr())
-        cout << "\n\n"
-             << params->getString(ATTRIBUTES_FILE) << ": Read file of attributes.\n"
-             << std::endl;
+        std::cout << "\n\n"
+                  << params->getString(ATTRIBUTES_FILE) << ": Read file of attributes.\n"
+                  << std::endl;
 
       Attr = attr;
       attributeNames = Attr.GetListAttr();
     }
 
-    vector<int> normalizationIndices;
-    vector<double> mus;
-    vector<double> sigmas;
+    std::vector<int> normalizationIndices;
+    std::vector<double> mus;
+    std::vector<double> sigmas;
 
     // Get mus, sigmas and normalizationIndices from normalizationFile for denormalization :
     if (params->isStringSet(NORMALIZATION_FILE)) {
@@ -408,13 +406,13 @@ int dimlpRul(const string &command) {
     RealHyp ryp(All, net, quant, nbIn,
                 vecNbNeurons[1] / nbIn, nbWeightLayers);
 
-    filebuf buf;
+    std::filebuf buf;
 
-    if (buf.open(rulesFile, ios_base::out) == nullptr) {
+    if (buf.open(rulesFile, std::ios_base::out) == nullptr) {
       throw CannotOpenFileError("Error : Cannot open rules file " + rulesFile);
     }
 
-    ostream rulesFileost(&buf);
+    std::ostream rulesFileost(&buf);
 
     if (params->isDoubleVectorSet(MUS)) {
       ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
@@ -437,10 +435,10 @@ int dimlpRul(const string &command) {
       }
     }
 
-    cout << "\n\n"
-         << rulesFile << ": "
-         << "Written.\n"
-         << std::endl;
+    std::cout << "\n\n"
+              << rulesFile << ": "
+              << "Written.\n"
+              << std::endl;
 
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
@@ -465,7 +463,7 @@ int dimlpRul(const string &command) {
 
   } catch (const ErrorHandler &e) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
-    std::cerr << e.what() << endl;
+    std::cerr << e.what() << std::endl;
     return -1;
   }
   return 0;
