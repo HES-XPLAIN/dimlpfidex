@@ -1,5 +1,4 @@
 #include "densClsFct.h"
-using namespace std;
 
 const int BPNN = 1;
 
@@ -89,7 +88,7 @@ void checkDensClsParametersLogicValues(Parameters &p) {
   p.checkParametersNormalization();
 }
 
-int densCls(const string &command) {
+int densCls(const std::string &command) {
 
   // Save buffer where we output results
   std::ofstream ofs;
@@ -103,9 +102,9 @@ int densCls(const string &command) {
     t1 = clock();
 
     // Parsing the command
-    vector<string> commandList = {"densCls"};
-    string s;
-    stringstream ss(command);
+    std::vector<std::string> commandList = {"densCls"};
+    std::string s;
+    std::stringstream ss(command);
 
     while (ss >> s) {
       commandList.push_back(s);
@@ -118,7 +117,7 @@ int densCls(const string &command) {
     }
 
     // Import parameters
-    unique_ptr<Parameters> params;
+    std::unique_ptr<Parameters> params;
 
     std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, WEIGHTS_FILE, NB_ATTRIBUTES, NB_CLASSES,
                                               ROOT_FOLDER, ATTRIBUTES_FILE, TEST_DATA_FILE, TRAIN_CLASS_FILE, TEST_CLASS_FILE,
@@ -295,17 +294,17 @@ int densCls(const string &command) {
     float accTest;
 
     net->ComputeAcc(Train, TrainClass, &acc, 1, predTrainFile);
-    cout << "\n\n*** GLOBAL ACCURACY ON TRAINING SET = " << acc << "\n"
-         << std::endl;
+    std::cout << "\n\n*** GLOBAL ACCURACY ON TRAINING SET = " << acc << "\n"
+              << std::endl;
 
     if (Test.GetNbEx() != 0) {
       net->ComputeAcc(Test, TestClass, &accTest, 1, predTestFile);
-      cout << "*** GLOBAL ACCURACY ON TESTING SET = " << accTest << "" << std::endl;
+      std::cout << "*** GLOBAL ACCURACY ON TESTING SET = " << accTest << "" << std::endl;
     }
 
     // Output accuracy stats in file
     if (params->isStringSet(STATS_FILE)) {
-      ofstream accFile(params->getString(STATS_FILE));
+      std::ofstream accFile(params->getString(STATS_FILE));
       if (accFile.is_open()) {
         accFile << "Global accuracy on training set = " << acc << "" << std::endl;
         if (Test.GetNbEx() != 0) {
@@ -318,22 +317,22 @@ int densCls(const string &command) {
     }
 
     if (params->getBool(WITH_RULE_EXTRACTION)) {
-      vector<string> attributeNames;
+      std::vector<std::string> attributeNames;
       if (params->isStringSet(ATTRIBUTES_FILE)) {
         AttrName attr(params->getString(ATTRIBUTES_FILE), nbIn, nbOut);
 
         if (attr.ReadAttr())
-          cout << "\n\n"
-               << params->getString(ATTRIBUTES_FILE) << ": Read file of attributes.\n"
-               << std::endl;
+          std::cout << "\n\n"
+                    << params->getString(ATTRIBUTES_FILE) << ": Read file of attributes.\n"
+                    << std::endl;
 
         Attr = attr;
         attributeNames = Attr.GetListAttr();
       }
 
-      vector<int> normalizationIndices;
-      vector<double> mus;
-      vector<double> sigmas;
+      std::vector<int> normalizationIndices;
+      std::vector<double> mus;
+      std::vector<double> sigmas;
 
       // Get mus, sigmas and normalizationIndices from normalizationFile for denormalization :
       if (params->isStringSet(NORMALIZATION_FILE)) {
@@ -348,9 +347,9 @@ int densCls(const string &command) {
 
       All = Train;
 
-      cout << "\n\n****************************************************\n"
-           << std::endl;
-      cout << "*** RULE EXTRACTION" << std::endl;
+      std::cout << "\n\n****************************************************\n"
+                << std::endl;
+      std::cout << "*** RULE EXTRACTION" << std::endl;
 
       std::shared_ptr<VirtualHyp> globVirt = net->MakeGlobalVirt(quant, nbIn,
                                                                  vecNbNeurons[1] / nbIn);
@@ -360,13 +359,13 @@ int densCls(const string &command) {
                   nbWeightLayers);
 
       if (params->isStringSet(GLOBAL_RULES_OUTFILE)) {
-        filebuf buf;
+        std::filebuf buf;
 
-        if (buf.open(params->getString(GLOBAL_RULES_OUTFILE), ios_base::out) == nullptr) {
+        if (buf.open(params->getString(GLOBAL_RULES_OUTFILE), std::ios_base::out) == nullptr) {
           throw CannotOpenFileError("Error : Cannot open rules file " + params->getString(GLOBAL_RULES_OUTFILE));
         }
 
-        ostream rulesFileost(&buf);
+        std::ostream rulesFileost(&buf);
         if (params->isDoubleVectorSet(MUS)) {
           ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                              Test, TestClass, Attr, rulesFileost, mus, sigmas, normalizationIndices);
@@ -393,17 +392,17 @@ int densCls(const string &command) {
           }
         }
 
-        cout << "\n\n"
-             << params->getString(GLOBAL_RULES_OUTFILE) << ": "
-             << "Written.\n"
-             << std::endl;
+        std::cout << "\n\n"
+                  << params->getString(GLOBAL_RULES_OUTFILE) << ": "
+                  << "Written.\n"
+                  << std::endl;
       } else {
         if (params->isDoubleVectorSet(MUS)) {
           ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                             Test, TestClass, Attr, cout, mus, sigmas, normalizationIndices);
+                             Test, TestClass, Attr, std::cout, mus, sigmas, normalizationIndices);
         } else {
           ryp.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                             Test, TestClass, Attr, cout);
+                             Test, TestClass, Attr, std::cout);
         }
 
         if (ryp.TreeAborted()) {
@@ -416,10 +415,10 @@ int densCls(const string &command) {
                         nbWeightLayers);
           if (params->isDoubleVectorSet(MUS)) {
             ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                                Test, TestClass, Attr, cout, mus, sigmas, normalizationIndices);
+                                Test, TestClass, Attr, std::cout, mus, sigmas, normalizationIndices);
           } else {
             ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                                Test, TestClass, Attr, cout);
+                                Test, TestClass, Attr, std::cout);
           }
         }
       }
@@ -448,7 +447,7 @@ int densCls(const string &command) {
 
   } catch (const ErrorHandler &e) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
-    std::cerr << e.what() << endl;
+    std::cerr << e.what() << std::endl;
     return -1;
   }
   return 0;

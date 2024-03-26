@@ -1,7 +1,5 @@
 #include "dimlpTrnFct.h"
 
-using namespace std;
-
 const int BPNN = 1;
 
 ////////////////////////////////////////////////////////////
@@ -83,23 +81,23 @@ static void SaveOutputs(
     std::shared_ptr<Dimlp> net,
     int nbOut,
     int nbWeightLayers,
-    const string &outfile)
+    const std::string &outfile)
 
 {
-  filebuf buf;
+  std::filebuf buf;
 
-  if (buf.open(outfile, ios_base::out) == nullptr) {
+  if (buf.open(outfile, std::ios_base::out) == nullptr) {
     throw CannotOpenFileError("Error : Cannot open output file " + outfile);
   }
 
   std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
   const float *out = layer->GetUp();
 
-  cout << "\n\n"
-       << outfile << ": "
-       << "Writing ..." << std::endl;
+  std::cout << "\n\n"
+            << outfile << ": "
+            << "Writing ..." << std::endl;
 
-  ostream outFile(&buf);
+  std::ostream outFile(&buf);
 
   for (int p = 0; p < data.GetNbEx(); p++) {
     net->ForwardOneExample1(data, p);
@@ -111,9 +109,9 @@ static void SaveOutputs(
     outFile << "" << std::endl;
   }
 
-  cout << outfile << ": "
-       << "Written.\n"
-       << std::endl;
+  std::cout << outfile << ": "
+            << "Written.\n"
+            << std::endl;
 }
 
 ////////////////////////////////////////////////////////////
@@ -145,7 +143,7 @@ void checkDimlpTrnParametersLogicValues(Parameters &p) {
   p.checkParametersNormalization();
 }
 
-int dimlpTrn(const string &command) {
+int dimlpTrn(const std::string &command) {
   // Save buffer where we output results
   std::ofstream ofs;
   std::streambuf *cout_buff = std::cout.rdbuf(); // Save old buf
@@ -158,9 +156,9 @@ int dimlpTrn(const string &command) {
     t1 = clock();
 
     // Parsing the command
-    vector<string> commandList = {"dimlpTrn"};
-    string s;
-    stringstream ss(command);
+    std::vector<std::string> commandList = {"dimlpTrn"};
+    std::string s;
+    std::stringstream ss(command);
 
     while (ss >> s) {
       commandList.push_back(s);
@@ -173,7 +171,7 @@ int dimlpTrn(const string &command) {
     }
 
     // Import parameters
-    unique_ptr<Parameters> params;
+    std::unique_ptr<Parameters> params;
     std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER, ATTRIBUTES_FILE, VALID_DATA_FILE,
                                               TEST_DATA_FILE, WEIGHTS_FILE, TRAIN_CLASS_FILE, TEST_CLASS_FILE, VALID_CLASS_FILE, WEIGHTS_OUTFILE,
                                               TRAIN_PRED_OUTFILE, TEST_PRED_OUTFILE, VALID_PRED_OUTFILE, CONSOLE_FILE, STATS_FILE, H, WITH_RULE_EXTRACTION,
@@ -386,7 +384,7 @@ int dimlpTrn(const string &command) {
                                     nbLayers, vecNbNeurons, outputWeightFile, seed);
 
     if (params->isStringSet(STATS_FILE)) {
-      ofstream accFile(params->getString(STATS_FILE));
+      std::ofstream accFile(params->getString(STATS_FILE));
       if (accFile.is_open()) {
         accFile << "Accuracy : \n"
                 << std::endl;
@@ -407,14 +405,14 @@ int dimlpTrn(const string &command) {
     }
 
     if (params->getBool(WITH_RULE_EXTRACTION)) {
-      vector<string> attributeNames;
+      std::vector<std::string> attributeNames;
       if (params->isStringSet(ATTRIBUTES_FILE)) {
         AttrName attr(params->getString(ATTRIBUTES_FILE), nbIn, nbOut);
 
         if (attr.ReadAttr())
-          cout << "\n\n"
-               << params->getString(ATTRIBUTES_FILE) << ": Read file of attributes.\n"
-               << std::endl;
+          std::cout << "\n\n"
+                    << params->getString(ATTRIBUTES_FILE) << ": Read file of attributes.\n"
+                    << std::endl;
 
         Attr = attr;
         attributeNames = Attr.GetListAttr();
@@ -422,7 +420,7 @@ int dimlpTrn(const string &command) {
 
       All = Train;
       if (params->isStringSet(GLOBAL_RULES_OUTFILE)) {
-        cout << "Extraction Part :: " << std::endl;
+        std::cout << "Extraction Part :: " << std::endl;
       }
 
       if (Valid.GetNbEx() > 0) {
@@ -430,9 +428,9 @@ int dimlpTrn(const string &command) {
         All = all2;
       }
 
-      vector<int> normalizationIndices;
-      vector<double> mus;
-      vector<double> sigmas;
+      std::vector<int> normalizationIndices;
+      std::vector<double> mus;
+      std::vector<double> sigmas;
 
       // Get mus, sigmas and normalizationIndices from normalizationFile for denormalization :
       if (params->isStringSet(NORMALIZATION_FILE)) {
@@ -445,18 +443,18 @@ int dimlpTrn(const string &command) {
         params->setDoubleVector(SIGMAS, sigmas);
       }
 
-      cout << "\n\n****************************************************\n"
-           << endl;
-      cout << "*** RULE EXTRACTION" << std::endl;
+      std::cout << "\n\n****************************************************\n"
+                << std::endl;
+      std::cout << "*** RULE EXTRACTION" << std::endl;
       RealHyp ryp1(All, net, quant, nbIn,
                    vecNbNeurons[1] / nbIn, nbWeightLayers);
       if (params->isStringSet(GLOBAL_RULES_OUTFILE)) {
-        filebuf buf;
+        std::filebuf buf;
 
-        if (buf.open(params->getString(GLOBAL_RULES_OUTFILE), ios_base::out) == nullptr) {
+        if (buf.open(params->getString(GLOBAL_RULES_OUTFILE), std::ios_base::out) == nullptr) {
           throw CannotOpenFileError("Error : Cannot open rules file " + params->getString(GLOBAL_RULES_OUTFILE));
         }
-        ostream rulesFileost(&buf);
+        std::ostream rulesFileost(&buf);
         if (params->isDoubleVectorSet(MUS)) {
           ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
                               Test, TestClass, Attr, rulesFileost, mus, sigmas, normalizationIndices);
@@ -480,19 +478,19 @@ int dimlpTrn(const string &command) {
 
         } else
 
-          cout << "\n\n"
-               << params->getString(GLOBAL_RULES_OUTFILE) << ": "
-               << "Written.\n"
-               << std::endl;
+          std::cout << "\n\n"
+                    << params->getString(GLOBAL_RULES_OUTFILE) << ": "
+                    << "Written.\n"
+                    << std::endl;
       }
 
       else {
         if (params->isDoubleVectorSet(MUS)) {
           ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                              Test, TestClass, Attr, cout, mus, sigmas, normalizationIndices);
+                              Test, TestClass, Attr, std::cout, mus, sigmas, normalizationIndices);
         } else {
           ryp1.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                              Test, TestClass, Attr, cout);
+                              Test, TestClass, Attr, std::cout);
         }
 
         if (ryp1.TreeAborted()) {
@@ -502,10 +500,10 @@ int dimlpTrn(const string &command) {
 
           if (params->isDoubleVectorSet(MUS)) {
             ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                                Test, TestClass, Attr, cout, mus, sigmas, normalizationIndices);
+                                Test, TestClass, Attr, std::cout, mus, sigmas, normalizationIndices);
           } else {
             ryp2.RuleExtraction(All, Train, TrainClass, Valid, ValidClass,
-                                Test, TestClass, Attr, cout);
+                                Test, TestClass, Attr, std::cout);
           }
         }
       }
@@ -534,7 +532,7 @@ int dimlpTrn(const string &command) {
 
   } catch (const ErrorHandler &e) {
     std::cout.rdbuf(cout_buff); // reset to standard output again
-    std::cerr << e.what() << endl;
+    std::cerr << e.what() << std::endl;
     return -1;
   }
 
