@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import re
 from .stairObj import StairObj
 from sklearn.tree import _tree
 import matplotlib.pyplot as plt
@@ -42,7 +43,7 @@ def get_data_pred(file_name, nb_classes):
             for line in my_file:
                 line = line.strip()
                 if line:
-                    elements = line.split()
+                    elements = re.split(r'[ ,;\t]+', line)
 
                     # Check if all elements are floats and the line has the correct number of predictions
                     if len(elements) != nb_classes:
@@ -91,7 +92,7 @@ def get_data(file_name, nb_attributes, nb_classes=0, keep_string=False):
             for line in my_file:
                 line = line.strip()
                 if line:
-                    elements = line.split()
+                    elements = re.split(r'[ ,;\t]+', line)
 
                     # Check if all elements are numbers (int or float)
                     if not keep_string:
@@ -174,7 +175,7 @@ def get_data_class(file_name, nb_classes):
             for line in my_file:
                 line = line.strip()
                 if line:
-                    elements = line.split()
+                    elements = re.split(r'[ ,;\t]+', line)
 
                     # Determine the format based on the first line
                     if expected_elements is None:
