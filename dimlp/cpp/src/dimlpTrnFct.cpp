@@ -44,8 +44,9 @@ void showDimlpTrnParams()
   printOptionDescription("--valid_pred_outfile <str>", "Output validation prediction file name (default: dimlpValidation.out)");
   printOptionDescription("--console_file <str>", "File with console logs redirection");
   printOptionDescription("--stats_file <str>", "Output file name with train, test and validation accuracy");
-  printOptionDescription("--H1 <int k*nb_attributes, k in [1,inf[>", "Number of neurons in the first hidden layer (default: nb_attributes)");
-  printOptionDescription("--Hk <int [1,inf[>", "Number of neurons in the kth hidden layer");
+  printOptionDescription("--first_hidden_layer <int k*nb_attributes, k in [1,inf[>", "Number of neurons in the first hidden layer (default: nb_attributes)");
+  printOptionDescription("--hidden_layers <list<int [1,inf[>>", "Number of neurons in each hidden layer, from the second layer through to the last");
+  printOptionDescription("--hidden_layers_outfile <str>", "Output hidden layers file name (default: hidden_layers.out)");
   printOptionDescription("--with_rule_extraction <bool>", "Whether to extract rules with dimlp algorithm");
   printOptionDescription("--global_rules_outfile <str>", "Rules output file");
   printOptionDescription("--learning_rate <float ]0,inf[>", "Back-propagation learning parameter (default: 0.1)");
@@ -68,7 +69,7 @@ void showDimlpTrnParams()
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "dimlp.dimlpTrn(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --H2 5 --nb_classes 2 --weights_outfile dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile globalRules.rls --train_pred_outfile predTrain.out --test_pred_outfile predTest.out --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
+  std::cout << "dimlp.dimlpTrn(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --hidden_layers 5 --nb_classes 2 --weights_outfile dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile globalRules.rls --train_pred_outfile predTrain.out --test_pred_outfile predTest.out --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
@@ -174,7 +175,7 @@ int dimlpTrn(const std::string &command) {
     std::unique_ptr<Parameters> params;
     std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER, ATTRIBUTES_FILE, VALID_DATA_FILE,
                                               TEST_DATA_FILE, WEIGHTS_FILE, TRAIN_CLASS_FILE, TEST_CLASS_FILE, VALID_CLASS_FILE, WEIGHTS_OUTFILE,
-                                              TRAIN_PRED_OUTFILE, TEST_PRED_OUTFILE, VALID_PRED_OUTFILE, CONSOLE_FILE, STATS_FILE, H, WITH_RULE_EXTRACTION,
+                                              TRAIN_PRED_OUTFILE, TEST_PRED_OUTFILE, VALID_PRED_OUTFILE, CONSOLE_FILE, STATS_FILE, FIRST_HIDDEN_LAYER, HIDDEN_LAYERS, HIDDEN_LAYERS_OUTFILE, WITH_RULE_EXTRACTION,
                                               GLOBAL_RULES_OUTFILE, LEARNING_RATE, MOMENTUM, FLAT, NB_QUANT_LEVELS, ERROR_THRESH, ACC_THRESH,
                                               ABS_ERROR_THRESH, NB_EPOCHS, NB_EPOCHS_ERROR, NORMALIZATION_FILE, MUS, SIGMAS, NORMALIZATION_INDICES, SEED};
     if (commandList[1].compare("--json_config_file") == 0) {
@@ -509,6 +510,9 @@ int dimlpTrn(const std::string &command) {
       }
     }
 
+    // Save hidden layers sizes
+    params->writeHiddenLayersFile();
+
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
     std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
@@ -541,9 +545,9 @@ int dimlpTrn(const std::string &command) {
 
 /* Exemples to launch the code :
 
-./dimlpTrn --train_data_file irisTrainData.txt --train_class_file irisTrainClass.txt --test_data_file irisTestData.txt --test_class_file irisTestClass.txt --weights_outfile weights.wts --nb_attributes 4 --H2 5 --nb_classes 3 --train_pred_outfile predTrain.out --test_pred_outfile predTest.out --with_rule_extraction true --global_rules_outfile rules.rls --stats_file stats --console_file results.txt --root_folder ../dimlp/datafiles/IrisDataset --attributes_file attributes.txt
-./dimlpTrn --train_data_file spamTrainData.txt --train_class_file spamTrainClass.txt --test_data_file spamTestData.txt --test_class_file spamTestClass.txt --weights_outfile spam.wts --nb_attributes 57 --H2 5 --nb_classes 2 --train_pred_outfile spamTrainPred.out --test_pred_outfile spamTestPred.out --with_rule_extraction true --global_rules_outfile spamTrn.rls --stats_file spamTrnStats --console_file spamTrnResult.txt --root_folder ../dimlp/datafiles/spamDataset --attributes_file attributes.txt
-./dimlpTrn --train_data_file isoletTrainData.txt --train_class_file isoletTrainClass.txt --test_data_file isoletTestData.txt --test_class_file isoletTestClass.txt --weights_outfile isoletV3.wts --nb_attributes 617 --H2 5 --nb_classes 26 --train_pred_outfile isoletTrainPredV3.out --test_pred_outfile isoletTestPredV3.out --with_rule_extraction true --global_rules_outfile isoletTrnV3.rls --stats_file isoletTrnStatsV3 --console_file isoletTrnResultV3.txt --root_folder ../dimlp/datafiles/isoletDataset --attributes_file attributes.txt
-./dimlpTrn --train_data_file Train/X_train.txt --train_class_file Train/y_train.txt --test_data_file test/X_test.txt --test_class_file Test/y_test.txt --weights_outfile HAPT.wts --nb_attributes 561 --H2 5 --nb_classes 12 --train_pred_outfile Train/pred_train.out --test_pred_outfile Test/pred_test.out --with_rule_extraction true --global_rules_outfile HAPTTrain.rls --stats_file HAPTTrnStats --console_file HAPTTrnResult.txt --root_folder ../dimlp/datafiles/HAPTDataset --attributes_file attributes.txt
+./dimlpTrn --train_data_file irisTrainData.txt --train_class_file irisTrainClass.txt --test_data_file irisTestData.txt --test_class_file irisTestClass.txt --weights_outfile weights.wts --nb_attributes 4 --hidden_layers 5 --nb_classes 3 --train_pred_outfile predTrain.out --test_pred_outfile predTest.out --with_rule_extraction true --global_rules_outfile rules.rls --stats_file stats --console_file results.txt --root_folder ../dimlp/datafiles/IrisDataset --attributes_file attributes.txt
+./dimlpTrn --train_data_file spamTrainData.txt --train_class_file spamTrainClass.txt --test_data_file spamTestData.txt --test_class_file spamTestClass.txt --weights_outfile spam.wts --nb_attributes 57 --hidden_layers 5 --nb_classes 2 --train_pred_outfile spamTrainPred.out --test_pred_outfile spamTestPred.out --with_rule_extraction true --global_rules_outfile spamTrn.rls --stats_file spamTrnStats --console_file spamTrnResult.txt --root_folder ../dimlp/datafiles/spamDataset --attributes_file attributes.txt
+./dimlpTrn --train_data_file isoletTrainData.txt --train_class_file isoletTrainClass.txt --test_data_file isoletTestData.txt --test_class_file isoletTestClass.txt --weights_outfile isoletV3.wts --nb_attributes 617 --hidden_layers 5 --nb_classes 26 --train_pred_outfile isoletTrainPredV3.out --test_pred_outfile isoletTestPredV3.out --with_rule_extraction true --global_rules_outfile isoletTrnV3.rls --stats_file isoletTrnStatsV3 --console_file isoletTrnResultV3.txt --root_folder ../dimlp/datafiles/isoletDataset --attributes_file attributes.txt
+./dimlpTrn --train_data_file Train/X_train.txt --train_class_file Train/y_train.txt --test_data_file test/X_test.txt --test_class_file Test/y_test.txt --weights_outfile HAPT.wts --nb_attributes 561 --hidden_layers 5 --nb_classes 12 --train_pred_outfile Train/pred_train.out --test_pred_outfile Test/pred_test.out --with_rule_extraction true --global_rules_outfile HAPTTrain.rls --stats_file HAPTTrnStats --console_file HAPTTrnResult.txt --root_folder ../dimlp/datafiles/HAPTDataset --attributes_file attributes.txt
 
 */

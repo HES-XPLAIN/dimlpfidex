@@ -74,7 +74,10 @@ enum ParameterCode {
   NORMALIZATION_INDICES,
   WITH_FIDEX,
   WITH_MINIMAL_VERSION,
-  H,
+  FIRST_HIDDEN_LAYER,
+  HIDDEN_LAYERS,
+  HIDDEN_LAYERS_OUTFILE,
+  HIDDEN_LAYERS_FILE,
   _NB_PARAMETERS // internal use only, do not consider it as a usable parameter
 };
 
@@ -136,7 +139,10 @@ static const std::unordered_map<std::string, ParameterCode> parameterNames = {
     {"normalization_indices", NORMALIZATION_INDICES},
     {"with_fidex", WITH_FIDEX},
     {"with_minimal_version", WITH_MINIMAL_VERSION},
-    {"H", H}};
+    {"first_hidden_layer", FIRST_HIDDEN_LAYER},
+    {"hidden_layers", HIDDEN_LAYERS},
+    {"hidden_layers_outfile", HIDDEN_LAYERS_OUTFILE},
+    {"hidden_layers_file", HIDDEN_LAYERS_FILE}};
 
 class Parameters {
 private:
@@ -148,8 +154,6 @@ private:
   std::map<ParameterCode, std::vector<int>> _intVectorParams;
   std::map<ParameterCode, std::string> _stringParams;
   std::vector<std::string> _weightFiles;
-  StringInt arch;
-  StringInt archInd;
 
   // private parser
   void parseArg(const std::string &param, const std::string &arg, const std::vector<ParameterCode> &validParams);
@@ -200,7 +204,6 @@ public:
   void setIntVector(ParameterCode id, const std::string &value);
   void setIntVector(ParameterCode id, const std::vector<int> &value);
   void setString(ParameterCode id, const std::string &value);
-  void setArch(ParameterCode id, const std::string &value, const std::string &param);
 
   // default setter if value not set
   void setDefaultInt(ParameterCode id, int value);
@@ -219,9 +222,8 @@ public:
   std::vector<double> getDoubleVector(ParameterCode id);
   std::vector<int> getIntVector(ParameterCode id);
   std::string getString(ParameterCode id);
-  std::vector<std::string> getWeightsFiles() const;
-  StringInt getArch() const;
-  StringInt getArchInd() const;
+  StringInt getArch();
+  StringInt getArchInd();
 
   std::map<ParameterCode, int> getAllInts() const { return _intParams; }
   std::map<ParameterCode, float> getAllFloats() const { return _floatParams; }
@@ -242,6 +244,8 @@ public:
   // special operations
   static std::string getParameterName(ParameterCode id);
   void sanitizePath(ParameterCode id, bool shouldFileExist);
+  void writeHiddenLayersFile();
+  void readHiddenLayersFile(StringInt &arch, StringInt &archInd);
 
   template <typename T>
   std::string vectorToString(const std::vector<T> &vec) const {
@@ -311,20 +315,6 @@ inline std::ostream &operator<<(std::ostream &stream, const Parameters &p) {
 
   for (auto const &x : p.getAllDoubleVectors()) {
     stream << " - " << Parameters::getParameterName(x.first) << std::setw(pad - static_cast<int>(Parameters::getParameterName(x.first).size())) << p.vectorToString(x.second) << std::endl;
-  }
-  StringInt arch = p.getArch();
-  StringInt archInd = p.getArchInd();
-  arch.GoToBeg();
-  archInd.GoToBeg();
-  for (int _ = 0; _ < arch.GetNbEl(); _++, arch.GoToNext(), archInd.GoToNext()) {
-    stream << " - H" << archInd.GetVal() << std::setw(pad - static_cast<int>(std::to_string(archInd.GetVal()).length() + 1)) << arch.GetVal() << std::endl;
-  }
-
-  if (p.isStringSet(WEIGHTS_FILE)) {
-    stream << "  WEIGHTS_FILES (list)" << std::endl;
-    for (std::string f : p.getWeightsFiles()) {
-      stream << "     " << f << std::endl;
-    }
   }
 
   stream << "End of Parameters list." << std::endl

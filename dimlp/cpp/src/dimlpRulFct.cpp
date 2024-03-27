@@ -23,6 +23,7 @@ void showDimlpRulParams()
   printOptionDescription("--weights_file <str>", "Weights file");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of input neurons");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of output neurons");
+  printOptionDescription("--hidden_layers_file <str>", "Hidden layers file name");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -41,8 +42,6 @@ void showDimlpRulParams()
   printOptionDescription("--global_rules_outfile <str>", "Rules output file (default: dimlp.rls)");
   printOptionDescription("--console_file <str>", "File with console logs redirection");
   printOptionDescription("--stats_file <str>", "Output file name with train, test and validation accuracy");
-  printOptionDescription("--H1 <int k*nb_attributes, k in [1,inf[>", "Number of neurons in the first hidden layer (default: nb_attributes)");
-  printOptionDescription("--Hk <int [1,inf[>", "Number of neurons in the kth hidden layer");
   printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in staircase activation function (default: 50)");
   printOptionDescription("--normalization_file <str>", "File containing the mean and std of some attributes. Used to denormalize the rules if specified");
   printOptionDescription("--mus <list<float ]inf,inf[>>", "Mean or median of each attribute index to denormalize in the rules");
@@ -54,7 +53,7 @@ void showDimlpRulParams()
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "dimlp.dimlpRul(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --weights_file dimlpDatanorm.wts --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --H2 5 --nb_classes 2 --global_rules_outfile globalRules.rls --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
+  std::cout << "dimlp.dimlpRul(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --weights_file dimlpDatanorm.wts --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --hidden_layers_file hidden_layers.out --nb_classes 2 --global_rules_outfile globalRules.rls --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
@@ -79,6 +78,7 @@ void checkDimlpRulParametersLogicValues(Parameters &p) {
   p.assertIntExists(NB_CLASSES);
   p.assertStringExists(TRAIN_DATA_FILE);
   p.assertStringExists(WEIGHTS_FILE);
+  p.assertStringExists(HIDDEN_LAYERS_FILE);
 
   // verifying logic between parameters, values range and so on...
   p.checkParametersCommon();
@@ -118,7 +118,7 @@ int dimlpRul(const std::string &command) {
     std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, WEIGHTS_FILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER,
                                               ATTRIBUTES_FILE, VALID_DATA_FILE, TEST_DATA_FILE, TRAIN_CLASS_FILE,
                                               TEST_CLASS_FILE, VALID_CLASS_FILE, GLOBAL_RULES_OUTFILE, CONSOLE_FILE,
-                                              STATS_FILE, H, NB_QUANT_LEVELS, NORMALIZATION_FILE, MUS, SIGMAS, NORMALIZATION_INDICES};
+                                              STATS_FILE, HIDDEN_LAYERS_FILE, NB_QUANT_LEVELS, NORMALIZATION_FILE, MUS, SIGMAS, NORMALIZATION_INDICES};
     if (commandList[1].compare("--json_config_file") == 0) {
       if (commandList.size() < 3) {
         throw CommandArgumentException("JSON config file name/path is missing");
@@ -161,8 +161,9 @@ int dimlpRul(const std::string &command) {
     int nbLayers;
     int nbWeightLayers;
     std::vector<int> vecNbNeurons;
-    StringInt arch = params->getArch();
-    StringInt archInd = params->getArchInd();
+    StringInt arch;
+    StringInt archInd;
+    params->readHiddenLayersFile(arch, archInd);
 
     DataSet Train;
     DataSet Test;
@@ -469,4 +470,4 @@ int dimlpRul(const std::string &command) {
   return 0;
 }
 
-// Exemple to launch the code : dimlp.dimlpRul("dimlpRul --train_data_file datanormTrain --train_class_file dataclass2Train --weights_file dimlpDatanorm.wts --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --global_rules_outfile dimlpDatanormRul.rls --stats_file dimlpDatanormRulStats --console_file dimlpDatanormRulResult.txt --root_folder dimlp/datafiles")
+// Exemple to launch the code : dimlp.dimlpRul("dimlpRul --train_data_file datanormTrain --train_class_file dataclass2Train --weights_file dimlpDatanorm.wts --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --hidden_layers_file hidden_layers.out --nb_classes 2 --global_rules_outfile dimlpDatanormRul.rls --stats_file dimlpDatanormRulStats --console_file dimlpDatanormRulResult.txt --root_folder dimlp/datafiles")
