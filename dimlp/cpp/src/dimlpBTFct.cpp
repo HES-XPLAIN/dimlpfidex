@@ -40,8 +40,9 @@ void showDimlpBTParams()
   printOptionDescription("--train_pred_outfile <str>", "Output train prediction file name (default: dimlpBTTrain.out)");
   printOptionDescription("--test_pred_outfile <str>", "Output test prediction file name (default: dimlpBTTest.out)");
   printOptionDescription("--stats_file <str>", "Output file name with train, test and validation accuracy and with the global train and test accuracy");
-  printOptionDescription("--H1 <int k*nb_attributes, k in [1,inf[>", "Number of neurons in the first hidden layer (default: nb_attributes)");
-  printOptionDescription("--Hk <int [1,inf[>", "Number of neurons in the kth hidden layer");
+  printOptionDescription("--first_hidden_layer <int k*nb_attributes, k in [1,inf[>", "Number of neurons in the first hidden layer (default: nb_attributes)");
+  printOptionDescription("--hidden_layers <list<int [1,inf[>>", "Number of neurons in each hidden layer, from the second layer through to the last");
+  printOptionDescription("--hidden_layers_outfile <str>", "Output hidden layers file name (default: hidden_layers.out)");
   printOptionDescription("--with_rule_extraction <bool>", "Whether to extract rules with dimlpBT algorithm");
   printOptionDescription("--global_rules_outfile <str>", "Rules output file");
   printOptionDescription("--momentum <float [0,inf[>", "Back-propagation momentum parameter (default: 0.6)");
@@ -64,7 +65,7 @@ void showDimlpBTParams()
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "dimlp.dimlpBT(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_outfile dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile globalRules.rls --train_pred_outfile predTrain.out --test_pred_outfile predTest.out --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
+  std::cout << "dimlp.dimlpBT(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --hidden_layers 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_outfile dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile globalRules.rls --train_pred_outfile predTrain.out --test_pred_outfile predTest.out --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
@@ -138,7 +139,7 @@ int dimlpBT(const std::string &command) {
     std::unique_ptr<Parameters> params;
     std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER, NB_DIMLP_NETS, ATTRIBUTES_FILE,
                                               TEST_DATA_FILE, TRAIN_CLASS_FILE, TEST_CLASS_FILE, CONSOLE_FILE, WEIGHTS_OUTFILE,
-                                              TRAIN_PRED_OUTFILE, TEST_PRED_OUTFILE, STATS_FILE, H, WITH_RULE_EXTRACTION, GLOBAL_RULES_OUTFILE,
+                                              TRAIN_PRED_OUTFILE, TEST_PRED_OUTFILE, STATS_FILE, FIRST_HIDDEN_LAYER, HIDDEN_LAYERS, HIDDEN_LAYERS_OUTFILE, WITH_RULE_EXTRACTION, GLOBAL_RULES_OUTFILE,
                                               LEARNING_RATE, MOMENTUM, FLAT, NB_QUANT_LEVELS, ERROR_THRESH, ACC_THRESH, ABS_ERROR_THRESH,
                                               NB_EPOCHS, NB_EPOCHS_ERROR, NB_EX_PER_NET, NORMALIZATION_FILE, MUS, SIGMAS, NORMALIZATION_INDICES, SEED};
     if (commandList[1].compare("--json_config_file") == 0) {
@@ -478,6 +479,9 @@ int dimlpBT(const std::string &command) {
       }
     }
 
+    // Save hidden layers sizes
+    params->writeHiddenLayersFile();
+
     t2 = clock();
     temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
     std::cout << "\nFull execution time = " << temps << " sec" << std::endl;
@@ -506,4 +510,4 @@ int dimlpBT(const std::string &command) {
   return 0;
 }
 
-// Exemple to launch the code : dimlp.dimlpBT("dimlpBT --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_outfilename dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile dimlpDatanormBTRul.rls --train_pred_outfile dimlpDatanormBTTrain.out --test_pred_outfile dimlpDatanormBTTest.out --stats_file dimlpDatanormBTStats --console_file dimlpDatanormBTResult.txt --root_folder dimlp/datafiles");
+// Exemple to launch the code : dimlp.dimlpBT("dimlpBT --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --hidden_layers 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_outfilename dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile dimlpDatanormBTRul.rls --train_pred_outfile dimlpDatanormBTTrain.out --test_pred_outfile dimlpDatanormBTTest.out --stats_file dimlpDatanormBTStats --console_file dimlpDatanormBTResult.txt --root_folder dimlp/datafiles");

@@ -21,6 +21,7 @@ void showDimlpPredParams()
   printOptionDescription("--weights_file <str>", "Weights file");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of input neurons");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of output neurons");
+  printOptionDescription("--hidden_layers_file <str>", "Hidden layers file name");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -32,8 +33,6 @@ void showDimlpPredParams()
   printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
   printOptionDescription("--test_pred_outfile <str>", "Output test prediction file name (default: dimlpTest.out)");
   printOptionDescription("--console_file <str>", "File with console logs redirection");
-  printOptionDescription("--H1 <int k*nb_attributes, k in [1,inf[>", "Number of neurons in the first hidden layer (default: nb_attributes)");
-  printOptionDescription("--Hk <int [1,inf[>", "Number of neurons in the kth hidden layer");
   printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in staircase activation function (default: 50)");
 
   std::cout << std::endl
@@ -41,7 +40,7 @@ void showDimlpPredParams()
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "dimlp.dimlpPred(\"--test_data_file datanormTest.txt --weights_file dimlpDatanorm.wts --nb_attributes 16 --H2 5 --nb_classes 2 --test_pred_outfile predTest.out --root_folder dimlp/datafiles\")" << std::endl
+  std::cout << "dimlp.dimlpPred(\"--test_data_file datanormTest.txt --weights_file dimlpDatanorm.wts --nb_attributes 16 --hidden_layers_file hidden_layers.out --nb_classes 2 --test_pred_outfile predTest.out --root_folder dimlp/datafiles\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
@@ -105,6 +104,7 @@ void checkDimlpPredParametersLogicValues(Parameters &p) {
   p.assertIntExists(NB_CLASSES);
   p.assertStringExists(TEST_DATA_FILE);
   p.assertStringExists(WEIGHTS_FILE);
+  p.assertStringExists(HIDDEN_LAYERS_FILE);
 
   // verifying logic between parameters, values range and so on...
   p.checkParametersCommon();
@@ -141,7 +141,7 @@ int dimlpPred(const std::string &command) {
     // Import parameters
     std::unique_ptr<Parameters> params;
     std::vector<ParameterCode> validParams = {TEST_DATA_FILE, WEIGHTS_FILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER,
-                                              TEST_PRED_OUTFILE, CONSOLE_FILE, H, NB_QUANT_LEVELS};
+                                              TEST_PRED_OUTFILE, CONSOLE_FILE, HIDDEN_LAYERS_FILE, NB_QUANT_LEVELS};
     if (commandList[1].compare("--json_config_file") == 0) {
       if (commandList.size() < 3) {
         throw CommandArgumentException("JSON config file name/path is missing");
@@ -185,8 +185,9 @@ int dimlpPred(const std::string &command) {
     int nbLayers;
     int nbWeightLayers;
     std::vector<int> vecNbNeurons;
-    StringInt arch = params->getArch();
-    StringInt archInd = params->getArchInd();
+    StringInt arch;
+    StringInt archInd;
+    params->readHiddenLayersFile(arch, archInd);
 
     if (params->isStringSet(TEST_DATA_FILE)) {
       DataSet test(testFile, nbIn, nbOut);
@@ -280,4 +281,4 @@ int dimlpPred(const std::string &command) {
   return 0;
 }
 
-// Exemple to launch the code : ./dimlpPred --test_data_file datanormTest --weights_file dimlpDatanorm.wts --nb_attributes 16 --H2 5 --nb_classes 2 --nb_quant_levels 50 --test_pred_outfile dimlpDatanormTest.out --console_file dimlpDatanormPredResult.txt --root_folder ../dimlp/datafiles
+// Exemple to launch the code : ./dimlpPred --test_data_file datanormTest --weights_file dimlpDatanorm.wts --nb_attributes 16 --hidden_layers_file hidden_layers.out --nb_classes 2 --nb_quant_levels 50 --test_pred_outfile dimlpDatanormTest.out --console_file dimlpDatanormPredResult.txt --root_folder ../dimlp/datafiles
