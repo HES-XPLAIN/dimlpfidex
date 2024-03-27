@@ -13,6 +13,6 @@
     "global_rules_outfile": "dimlpBT.rls",
     "nb_attributes": 31,
     "nb_classes": 7,
-    "H2": 5,
+    "hidden_layers_file": "hidden_layers.out",
     "nb_quant_levels": 50
 }

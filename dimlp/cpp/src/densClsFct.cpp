@@ -23,6 +23,7 @@ void showDensClsParams()
   printOptionDescription("--weights_file <str>", "Weights file containing the weights of each network");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of input neurons");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of output neurons");
+  printOptionDescription("--hidden_layers_file <str>", "Hidden layers file name");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -40,8 +41,6 @@ void showDensClsParams()
   printOptionDescription("--train_pred_outfile <str>", "Output train prediction file name (default: densClsTrain.out)");
   printOptionDescription("--test_pred_outfile <str>", "Output test prediction file name (default: densClsTest.out)");
   printOptionDescription("--stats_file <str>", "Output file name with global train and test accuracy");
-  printOptionDescription("--H1 <int k*nb_attributes, k in [1,inf[>", "Number of neurons in the first hidden layer (default: nb_attributes)");
-  printOptionDescription("--Hk <int [1,inf[>", "Number of neurons in the kth hidden layer");
   printOptionDescription("--with_rule_extraction <bool>", "Whether to extract rules with dimlpBT algorithm");
   printOptionDescription("--global_rules_outfile <str>", "Rules output file");
   printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in staircase activation function (default: 50)");
@@ -55,7 +54,7 @@ void showDensClsParams()
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "dimlp.densCls(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --H2 5 --nb_classes 2 --weights_file dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile globalRules.rls --train_pred_outfile predTrain.out --test_pred_outfile testPred.out --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
+  std::cout << "dimlp.densCls(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --hidden_layers_file hidden_layers.out --nb_classes 2 --weights_file dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile globalRules.rls --train_pred_outfile predTrain.out --test_pred_outfile testPred.out --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
@@ -82,6 +81,7 @@ void checkDensClsParametersLogicValues(Parameters &p) {
   p.assertIntExists(NB_CLASSES);
   p.assertStringExists(TRAIN_DATA_FILE);
   p.assertStringExists(WEIGHTS_FILE);
+  p.assertStringExists(HIDDEN_LAYERS_FILE);
 
   // verifying logic between parameters, values range and so on...
   p.checkParametersCommon();
@@ -121,7 +121,7 @@ int densCls(const std::string &command) {
 
     std::vector<ParameterCode> validParams = {TRAIN_DATA_FILE, WEIGHTS_FILE, NB_ATTRIBUTES, NB_CLASSES,
                                               ROOT_FOLDER, ATTRIBUTES_FILE, TEST_DATA_FILE, TRAIN_CLASS_FILE, TEST_CLASS_FILE,
-                                              CONSOLE_FILE, TRAIN_PRED_OUTFILE, TEST_PRED_OUTFILE, STATS_FILE, H, WITH_RULE_EXTRACTION,
+                                              CONSOLE_FILE, TRAIN_PRED_OUTFILE, TEST_PRED_OUTFILE, STATS_FILE, HIDDEN_LAYERS_FILE, WITH_RULE_EXTRACTION,
                                               GLOBAL_RULES_OUTFILE, NB_QUANT_LEVELS, NORMALIZATION_FILE, MUS, SIGMAS, NORMALIZATION_INDICES};
     if (commandList[1].compare("--json_config_file") == 0) {
       if (commandList.size() < 3) {
@@ -168,8 +168,9 @@ int densCls(const std::string &command) {
     int nbLayers;
     int nbWeightLayers;
     std::vector<int> vecNbNeurons;
-    StringInt arch = params->getArch();
-    StringInt archInd = params->getArchInd();
+    StringInt arch;
+    StringInt archInd;
+    params->readHiddenLayersFile(arch, archInd);
 
     DataSet Train;
     DataSet Test;
@@ -453,4 +454,4 @@ int densCls(const std::string &command) {
   return 0;
 }
 
-// Exemple to launch the code : dimlp.densCls("densCls --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --H2 5 --nb_classes 2 --weights_file dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile dimlpDatanormDensClsRul.rls --train_pred_outfile dimlpDatanormDensClsTrain.out --test_pred_outfile dimlpDatanormDensClsTest.out --stats_file dimlpDatanormDensClsStats --console_file dimlpDatanormDensClsResult.txt --root_folder dimlp/datafiles");
+// Exemple to launch the code : dimlp.densCls("densCls --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --hidden_layers_file hidden_layers.out --nb_classes 2 --weights_file dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile dimlpDatanormDensClsRul.rls --train_pred_outfile dimlpDatanormDensClsTrain.out --test_pred_outfile dimlpDatanormDensClsTest.out --stats_file dimlpDatanormDensClsStats --console_file dimlpDatanormDensClsResult.txt --root_folder dimlp/datafiles");
