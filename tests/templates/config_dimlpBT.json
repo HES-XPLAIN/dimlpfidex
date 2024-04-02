@@ -10,7 +10,7 @@
     "attributes_file": "attributes.txt",
     "with_rule_extraction": true,
     "global_rules_outfile": "out/dimlpBT.rls",
-    "weights_generic_outfilename": "out/dimlpBT",
+    "weights_outfile": "out/dimlpBT",
     "stats_file": "out/dimlpBT_stats.txt",
     "nb_attributes": 31,
     "nb_classes": 7,

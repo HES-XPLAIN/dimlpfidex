@@ -92,12 +92,12 @@ uint testDefaultSetter() {
   res += testAssert("Parameter get default value", value.compare(p.getString(ROOT_FOLDER)) == 0);
   p.setString(TEST_DATA_FILE, value);
   p.setDefaultString(TEST_DATA_FILE, new_value);
-  res +=testAssert("Parameter value not overrided", new_value.compare(p.getString(TEST_DATA_FILE)) != 0);
+  res += testAssert("Parameter value not overrided", new_value.compare(p.getString(TEST_DATA_FILE)) != 0);
 
   return res;
 }
 
-void testArgsParser() {
+uint testArgsParser() {
   std::vector<std::string> args = {
       "executableNameToIgnore", // this line has to be present
       "--root_folder", DEFAULT_ROOT_FOLDER,
@@ -113,6 +113,7 @@ void testArgsParser() {
       NB_THREADS};
 
   auto p = Parameters(args, validParams);
+  uint res = 0;
 
   res += testAssert("Parameter by user args: parse int", p.getInt(HEURISTIC) == 1);
   res += testAssert("Parameter by user args: parse string", p.getString(TRAIN_DATA_FILE).compare(DEFAULT_ROOT_FOLDER + DEFAULT_TRAIN_FILE) == 0);
@@ -135,7 +136,7 @@ void testArgsParser() {
   return res;
 }
 
-void testJsonParser() {
+uint testJsonParser() {
   std::vector<std::string> args = {
       "executableNameToIgnore",
       "--root_folder", DEFAULT_ROOT_FOLDER,

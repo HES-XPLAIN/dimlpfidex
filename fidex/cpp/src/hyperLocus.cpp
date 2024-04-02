@@ -92,7 +92,7 @@ std::vector<std::vector<double>> calcHypLocus(const std::string &rulesFile, Data
 
   // if rule file is in json format
   if (rulesFile.substr(rulesFile.find_last_of(".") + 1) == "json") {
-    vector<Rule> rules = Rule::fromJsonFile(rulesFile);
+    std::vector<Rule> rules = Rule::fromJsonFile(rulesFile);
 
     for (Rule rule : rules) {
       for (Antecedant ant : rule.getAntecedants()) {
@@ -100,7 +100,7 @@ std::vector<std::vector<double>> calcHypLocus(const std::string &rulesFile, Data
       }
     }
 
-  // rules file is in txt format 
+    // rules file is in txt format
   } else {
     // Get pattern for attributes
     std::regex pattern;
@@ -111,7 +111,7 @@ std::vector<std::vector<double>> calcHypLocus(const std::string &rulesFile, Data
       pattern = getAntStrPatternWithAttrIds(dataset.getNbAttributes());
     }
 
-  std::ifstream fileDta(rulesFile);
+    std::ifstream fileDta(rulesFile);
 
     if (!fileDta) {
       throw FileNotFoundError("Error : file " + rulesFile + " not found");

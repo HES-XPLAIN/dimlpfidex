@@ -39,7 +39,7 @@ uint testExec(const std::string &testName, const std::string &command, int (*fn)
   try {
     int code = fn(command);
     return testAssert(testName, code == 0);
-  } catch (exception &e) {
+  } catch (std::exception &e) {
     return testAssert(testName, false);
   }
 }

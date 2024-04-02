@@ -14,7 +14,6 @@
     "nb_attributes": 31,
     "nb_classes": 7,
     "stats_file": "out/stats.txt",
-    "nb_dimlp_nets": 1,
     "nb_quant_levels": 50,
     "max_iterations": 10,
     "min_covering": 2,
