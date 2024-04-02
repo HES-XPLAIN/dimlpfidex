@@ -299,7 +299,6 @@ int fidex(const std::string &command) {
 
     d1 = clock();
 
-    std::vector<std::string> lines;
     // compute hyperspace
     std::cout << "Creation of hyperspace..." << std::endl;
 
@@ -394,29 +393,8 @@ int fidex(const std::string &command) {
     meanAccuracy /= static_cast<double>(nbTestSamples);
 
     if (params->isStringSet(STATS_FILE)) {
-      std::ofstream outputStatsFile(params->getString(STATS_FILE));
-      if (outputStatsFile.is_open()) {
-        outputStatsFile << "Statistics with a test set of " << nbTestSamples << " samples :\n"
-                        << std::endl;
-        outputStatsFile << "The mean covering size per rule is : " << meanCovSize << "" << std::endl;
-        outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntecedentsPerRule << "" << std::endl;
-        outputStatsFile << "The mean rule fidelity rate is : " << meanFidelity << "" << std::endl;
-        outputStatsFile << "The mean rule accuracy is : " << meanAccuracy << "" << std::endl;
-        outputStatsFile << "The mean rule confidence is : " << meanConfidence << "" << std::endl;
-        outputStatsFile.close();
-      } else {
-        throw CannotOpenFileError("Error : Couldn't open stats extraction file " + params->getString(STATS_FILE) + ".");
-      }
-    }
-
-    std::ofstream outputFile(ruleFile);
-    if (outputFile.is_open()) {
-      for (const auto &line : lines) {
-        outputFile << line << "" << std::endl;
-      }
-      outputFile.close();
-    } else {
-      throw CannotOpenFileError("Error : Couldn't open rule extraction file " + ruleFile + ".");
+      writeStatsFile(params->getString(STATS_FILE), nbTestSamples, meanCovSize,
+                     meanNbAntecedentsPerRule, meanFidelity, meanAccuracy, meanConfidence);
     }
 
     d2 = clock();
