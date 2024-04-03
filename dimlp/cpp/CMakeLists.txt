@@ -169,6 +169,13 @@ set(DIMLP_BT_SRC "${DIMLP_BT_SRC}" CACHE INTERNAL "")
 set(DENS_CLS_SRC "${DENS_CLS_SRC}" CACHE INTERNAL "")
 set(DIMLP_RUL_SRC "${DIMLP_RUL_SRC}" CACHE INTERNAL "")
 
+add_library(dimlpTrnLib STATIC ${DIMLP_COMMON_SRC} ${DIMLP_TRN_SRC})
+add_library(dimlpPredLib STATIC ${DIMLP_COMMON_SRC} ${DIMLP_PRED_SRC})
+add_library(dimlpClsLib STATIC ${DIMLP_COMMON_SRC} ${DIMLP_CLS_SRC})
+add_library(dimlpBTLib STATIC ${DIMLP_COMMON_SRC} ${DIMLP_BT_SRC})
+add_library(densClsLib STATIC ${DIMLP_COMMON_SRC} ${DENS_CLS_SRC})
+add_library(dimlpRulLib STATIC ${DIMLP_COMMON_SRC} ${DIMLP_RUL_SRC})
+
 # build executables
 add_executable(dimlpTrn ${DIMLP_COMMON_SRC} ${DIMLP_TRN_SRC} src/dimlpTrn.cpp)
 add_executable(dimlpPred ${DIMLP_COMMON_SRC} ${DIMLP_PRED_SRC} src/dimlpPred.cpp)
@@ -188,6 +195,13 @@ target_link_libraries(dimlpCls common)
 target_link_libraries(dimlpBT common)
 target_link_libraries(densCls common)
 target_link_libraries(dimlpRul common)
+
+target_link_libraries(dimlpTrnLib common)
+target_link_libraries(dimlpPredLib common)
+target_link_libraries(dimlpClsLib common)
+target_link_libraries(dimlpBTLib common)
+target_link_libraries(densClsLib common)
+target_link_libraries(dimlpRulLib common)
 
 set_target_properties(
     dimlpTrn PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
