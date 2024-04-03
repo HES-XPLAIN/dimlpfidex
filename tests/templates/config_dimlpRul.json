@@ -1,0 +1,16 @@
+{
+    "root_folder": "tests/dataset/data",
+    "train_data_file": "train.txt",
+    "train_class_file": "train_true_classes.txt",
+    "test_data_file": "test.txt",
+    "test_class_file": "test_true_classes.txt",
+    "console_file": "out/dimlpRul_console.out",
+    "weights_file": "out/weights.wts",
+    "attributes_file": "attributes.txt",
+    "global_rules_outfile": "out/dimlp.rls",
+    "stats_file": "out/dimlpRul_stats.txt",
+    "nb_attributes": 31,
+    "nb_classes": 7,
+    "hidden_layers_file": "out/hidden_layers.out",
+    "nb_quant_levels": 50
+}

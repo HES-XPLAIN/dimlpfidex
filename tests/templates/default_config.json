@@ -1,0 +1,23 @@
+{
+    "train_data_file": "tests/dataset/data/train.txt",
+    "train_pred_file": "tests/dataset/data/out/dimlp_train.out",
+    "train_class_file": "tests/dataset/data/train_true_classes.txt",
+    "global_rules_outfile": "tests/dataset/data/out/default_test.rls",
+    "attributes_file": "tests/dataset/data/attributes.txt",
+    "weights_file": "tests/dataset/data/out/weights.wts",
+    "nb_attributes": 31,
+    "nb_classes": 7,
+    "nb_dimlp_nets": 1,
+    "nb_quant_levels": 50,
+    "heuristic": 1,
+    "max_iterations": 100,
+    "min_covering": 2,
+    "max_failed_attempts": 10,
+    "nb_threads": 4,
+    "positive_class_index": -1,
+    "seed": 0,
+    "decision_threshold": -1.0,
+    "dropout_hyp": 0.3,
+    "dropout_dim": 0.3,
+    "min_fidelity": 1.0
+}
