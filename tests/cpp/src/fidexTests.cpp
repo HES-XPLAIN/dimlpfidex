@@ -1,7 +1,7 @@
 #include "../headers/fidexTests.hpp"
 
-uint testFidex() {
-  uint res = 0;
+int testFidex() {
+  int res = 0;
 
   std::string command = "--json_config_file " + TEMPLATES_PATH + "config_fidex_1.json";
   std::string testName = "Simple fidex execution (with dimlpTrn weights)";
@@ -14,8 +14,8 @@ uint testFidex() {
   return res;
 }
 
-uint testFidexGlo() {
-  uint res = 0;
+int testFidexGlo() {
+  int res = 0;
 
   std::string command = "--json_config_file " + TEMPLATES_PATH + "config_fidexGlo_1.json";
   std::string testName = "Simple fidexGlo execution (with dimlpTrn weights)";
@@ -28,8 +28,8 @@ uint testFidexGlo() {
   return res;
 }
 
-uint testFidexGloRules() {
-  uint res = 0;
+int testFidexGloRules() {
+  int res = 0;
 
   std::string command = "--json_config_file " + TEMPLATES_PATH + "config_fidexGloRules_1.json";
   std::string testName = "Simple fidexGloRules execution (with dimlpTrn weights)";
@@ -42,7 +42,7 @@ uint testFidexGloRules() {
   return res;
 }
 
-uint testFidexGloStats() {
+int testFidexGloStats() {
   std::string command = "--json_config_file " + TEMPLATES_PATH + "config_fidexGloStats.json";
   std::string testName = "Simple fidexGloStats execution";
 

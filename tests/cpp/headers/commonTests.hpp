@@ -4,7 +4,7 @@
 #include "parametersTests.hpp"
 #include "utils.hpp"
 
-uint runParametersTestSuite();
-uint runCommonTestSuite();
+int runParametersTestSuite();
+int runCommonTestSuite();
 
 #endif // FIDEXCOMMON_TESTS_H

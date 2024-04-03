@@ -1,7 +1,7 @@
 #include "../headers/commonTests.hpp"
 
-uint runParametersTestSuite() {
-  uint res = 0;
+int runParametersTestSuite() {
+  int res = 0;
   
   res += testSetter();
   res += testGetter();
@@ -13,6 +13,6 @@ uint runParametersTestSuite() {
 }
 
 // main function calling all classes tests
-uint runCommonTestSuite() {
+int runCommonTestSuite() {
   return runParametersTestSuite();
 }
