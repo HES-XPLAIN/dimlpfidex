@@ -8,9 +8,9 @@
 #include "../../../fidex/cpp/src/fidexGloStatsFct.h"
 #include "utils.hpp"
 
-uint testFidex();
-uint testFidexGlo();
-uint testFidexGloRules();
-uint testFidexGloStats();
+int testFidex();
+int testFidexGlo();
+int testFidexGloRules();
+int testFidexGloStats();
 
 #endif // FIDEX_TESTS_H
