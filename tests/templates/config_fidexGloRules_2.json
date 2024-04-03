@@ -3,7 +3,7 @@
     "train_data_file": "train.txt",
     "train_pred_file": "out/dimlp_train.out",
     "train_class_file": "train_true_classes.txt",
-    "global_rules_outfile": "out/fidexglorules_rules.json",
+    "global_rules_outfile": "out/fidexglorules_2_rules.txt",
     "attributes_file": "attributes.txt",
     "console_file": "out/fidexGloRules_2_console.out",
     "weights_file": "out/dimlpBT",

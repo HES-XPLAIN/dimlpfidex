@@ -16,7 +16,7 @@
     "nb_classes": 7,
     "first_hidden_layer": 31,
     "hidden_layers": [5],
-    "hidden_layers_outfile": "hidden_layers.out",
+    "hidden_layers_outfile": "out/hidden_layers.out",
     "learning_rate": 0.1,
     "momentum": 0.6,
     "flat": 0.01,
