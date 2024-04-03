@@ -177,7 +177,7 @@ dmypy.json
 
 autoexe.sh
 !dimlpfidex_gui/*
-!fidexTests/dataset/data/*
-fidexTests/dataset/out/
+!tests/dataset/data/*
+tests/dataset/data/out/*
 compile_commands.json
 /data/
