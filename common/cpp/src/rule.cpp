@@ -530,9 +530,12 @@ std::tuple<double, double> writeRulesFile(const std::string &filename, const std
       file << "Number of rules : " << nbRules
            << ", mean sample covering number per rule : " << formattingDoubleToString(meanCovSize)
            << ", mean number of antecedents per rule : " << formattingDoubleToString(meanNbAntecedents)
-           << std::endl;
-
-      file << std::endl
+           << std::endl
+           << "Decision threshold used : " << threshold
+           << std::endl
+           << "Index of the positive class : " << positiveIndex
+           << std::endl
+           << std::endl
            << stream.str();
 
       file.close();
