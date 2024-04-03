@@ -14,6 +14,6 @@
     "global_rules_outfile": "out/densCls.rls",
     "nb_attributes": 31,
     "nb_classes": 7,
-    "hidden_layers_file": "hidden_layers.out",
+    "hidden_layers_file": "out/hidden_layers.out",
     "nb_quant_levels": 50
 }

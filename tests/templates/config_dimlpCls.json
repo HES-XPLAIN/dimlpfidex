@@ -9,6 +9,6 @@
     "hid_file": "out/dimlp.hid",
     "nb_attributes": 31,
     "nb_classes": 7,
-    "H2": 5,
+    "hidden_layers_file": "out/hidden_layers.out",
     "nb_quant_levels": 50
 }

@@ -657,7 +657,12 @@ int fidexGloRules(const std::string &command) {
       return r1.getCoveredSamples().size() > r2.getCoveredSamples().size();
     });
 
-    std::tuple<double, double> stats = writeRulesFile(params->getString(GLOBAL_RULES_OUTFILE), generatedRules, attributeNames, classNames);
+    std::tuple<double, double> stats = writeRulesFile(params->getString(GLOBAL_RULES_OUTFILE),
+                                                      generatedRules,
+                                                      attributeNames,
+                                                      classNames,
+                                                      params->getFloat(DECISION_THRESHOLD),
+                                                      params->getInt(POSITIVE_CLASS_INDEX));
 
     std::cout << "Mean covering size per rule : " << std::get<0>(stats) << std::endl;
     std::cout << "Mean number of antecedents per rule : " << std::get<1>(stats) << std::endl;

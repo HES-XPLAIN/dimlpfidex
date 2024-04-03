@@ -10,7 +10,6 @@
     "attributes_file": "attributes.txt",
     "weights_file": "out/weights.wts",
     "console_file": "out/fidex_1_console.out",
-    "normalization_file": "normalization_stats.txt",
     "nb_attributes": 31,
     "nb_classes": 7,
     "stats_file": "out/stats.txt",
@@ -20,9 +19,11 @@
     "max_failed_attempts": 30,
     "positive_class_index": 1,
     "seed": 0,
-    "decision_threshold": -1.0,
     "dropout_hyp": 0.5,
     "dropout_dim": 0.5,
     "min_fidelity": 1.0,
-    "covering_strategy": true
+    "covering_strategy": true,
+    "mus":"[175,12]",
+    "sigmas":[1,2],
+    "normalization_indices": "1 20"
 }

@@ -126,17 +126,28 @@ std::vector<Rule> Rule::fromJsonFile(const std::string &filename) {
  * @param filename name of the file to be written
  * @param rules vector of rules to be written
  */
-void Rule::toJsonFile(const std::string &filename, const std::vector<Rule> &rules) {
+void Rule::toJsonFile(const std::string &filename, const std::vector<Rule> &rules, float threshold, int positiveIndex) {
   std::ofstream ofs(filename);
 
   if (!ofs.is_open() || ofs.fail()) {
     throw FileNotFoundError("JSON file to be written named '" + filename + "' couldn't be opened, cannot proceed.");
   }
 
-  Json jsonData{{"rules", rules}};
+  Json jsonData;
+
+  jsonData["threshold"] = threshold;
+  jsonData["positive index class"] = positiveIndex;
+  jsonData["rules"] = rules;
+
   ofs << std::setw(4) << jsonData << std::endl;
 }
 
+/**
+ * @brief Compares a rule with another to determine whether they're the identical or not
+ *
+ * @param other other rule for comparison
+ * @return bool if they're indeed identical or not
+ */
 bool Rule::isEqual(const Rule &other) const {
   double epsilon = 10e-6;
 
@@ -437,7 +448,7 @@ void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid
   if (rulesFile.substr(rulesFile.find_last_of(".") + 1) == "json") {
     rules = Rule::fromJsonFile(rulesFile);
   } else {
-  // Open rules file
+    // Open rules file
     std::fstream rulesData;
     rulesData.open(rulesFile, std::ios::in); // Read data file
     if (rulesData.fail()) {
@@ -474,10 +485,13 @@ void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid
  * @param rules list of Rules object to be written in "filename".
  * @param attributes list of the attributes names, used to write Rules's Antecedants with attributes explicit name instead of a "X" variable.
  * @param classes list of class names, used to write Rule's class with class explicit name instead of its numerical representation.
+ * @param threshold defined threshold (defaults to -1.0)
+ * @param positiveIndex index defining which is the positive class in dataset
  * @return tuple<double, double>
  */
-std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames, const std::vector<std::string> &classNames) {
-    if (rules.empty()) {
+std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames,
+                                          const std::vector<std::string> &classNames, float threshold, int positiveIndex) {
+  if (rules.empty()) {
     std::cout << "Warning: cannot write to file \"" << filename << "\", generated rules list is empty.";
     return std::make_tuple(0, 0);
   }
@@ -493,7 +507,7 @@ std::tuple<double, double> writeRulesFile(const std::string &filename, const std
       meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
     }
 
-    Rule::toJsonFile(filename, rules);
+    Rule::toJsonFile(filename, rules, threshold, positiveIndex);
 
   } else {
     int counter = 0;
