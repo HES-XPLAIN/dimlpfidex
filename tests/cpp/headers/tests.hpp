@@ -5,8 +5,8 @@
 #include "fidexTests.hpp"
 #include "dimlpTests.hpp"
 
-uint runDimlpTestsSuite();
-uint runFidextestsSuite();
-uint runFidextestsSuite();
+int runDimlpTestsSuite();
+int runFidextestsSuite();
+int runFidextestsSuite();
 
 #endif // TESTS_H

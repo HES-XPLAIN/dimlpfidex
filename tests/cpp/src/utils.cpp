@@ -35,7 +35,7 @@ std::map<std::string, std::string> remove(const std::map<std::string, std::strin
   return result;
 }
 
-uint testExec(const std::string &testName, const std::string &command, int (*fn)(const std::string&)) {
+int testExec(const std::string &testName, const std::string &command, int (*fn)(const std::string&)) {
   try {
     int code = fn(command);
     return testAssert(testName, code == 0);
@@ -44,7 +44,7 @@ uint testExec(const std::string &testName, const std::string &command, int (*fn)
   }
 }
 
-uint testAssert(const std::string &testName, bool condition) {
+int testAssert(const std::string &testName, bool condition) {
   if (condition) {
     std::cout << GREEN << "[" << testName << "] "
               << "passed" << RESET << std::endl;

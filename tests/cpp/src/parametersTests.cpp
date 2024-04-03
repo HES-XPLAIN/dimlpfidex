@@ -1,8 +1,8 @@
 #include "../headers/parametersTests.hpp"
 
-uint testSetter() {
+int testSetter() {
   Parameters p;
-  uint res = 0;
+  int res = 0;
 
   p.setInt(HEURISTIC, 1);
   testAssert("Parameter is set", p.isIntSet(HEURISTIC));
@@ -44,9 +44,9 @@ uint testSetter() {
   return res;
 }
 
-uint testGetter() {
+int testGetter() {
   Parameters p;
-  uint res = 0;
+  int res = 0;
 
   p.setString(ROOT_FOLDER, "folder/");
   p.setInt(HEURISTIC, 1);
@@ -80,9 +80,9 @@ uint testGetter() {
   return res;
 }
 
-uint testDefaultSetter() {
+int testDefaultSetter() {
   Parameters p;
-  uint res = 0;
+  int res = 0;
 
   std::string value = "somewhere/over/the/rainbow/";
   std::string new_value = "/tmp/";
@@ -97,7 +97,7 @@ uint testDefaultSetter() {
   return res;
 }
 
-uint testArgsParser() {
+int testArgsParser() {
   std::vector<std::string> args = {
       "executableNameToIgnore", // this line has to be present
       "--root_folder", DEFAULT_ROOT_FOLDER,
@@ -113,7 +113,7 @@ uint testArgsParser() {
       NB_THREADS};
 
   auto p = Parameters(args, validParams);
-  uint res = 0;
+  int res = 0;
 
   res += testAssert("Parameter by user args: parse int", p.getInt(HEURISTIC) == 1);
   res += testAssert("Parameter by user args: parse string", p.getString(TRAIN_DATA_FILE).compare(DEFAULT_ROOT_FOLDER + DEFAULT_TRAIN_FILE) == 0);
@@ -136,7 +136,7 @@ uint testArgsParser() {
   return res;
 }
 
-uint testJsonParser() {
+int testJsonParser() {
   std::vector<std::string> args = {
       "executableNameToIgnore",
       "--root_folder", DEFAULT_ROOT_FOLDER,

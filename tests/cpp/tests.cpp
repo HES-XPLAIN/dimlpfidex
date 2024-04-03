@@ -1,7 +1,7 @@
 #include "headers/tests.hpp"
 
-uint runDimlpTestsSuite() {
-  uint res = 0;
+int runDimlpTestsSuite() {
+  int res = 0;
 
   res += testDimlpTrn();
   res += testDimlpBT();
@@ -14,8 +14,8 @@ uint runDimlpTestsSuite() {
 }
 
 // test avec dimlpTrn weights file
-uint runFidextestsSuite() {
-  uint res = 0;
+int runFidextestsSuite() {
+  int res = 0;
 
   res += testFidex();
   res += testFidexGloRules();
@@ -28,7 +28,7 @@ uint runFidextestsSuite() {
 // TODO test avec dimlpBT weights file
 
 int main() {
-  uint res = 0;
+  int res = 0;
   std::cout << "Running tests... (can take a while to finish)" << std::endl;
 
   res += runDimlpTestsSuite();

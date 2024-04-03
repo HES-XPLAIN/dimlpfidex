@@ -15,11 +15,11 @@
 #include "../../../dimlp/cpp/src/dimlpRulFct.h"
 #include "../../../dimlp/cpp/src/dimlpTrnFct.h"
 
-uint testDensCls();
-uint testDimlpBT();
-uint testDimlpCls();
-uint testDimlpPred();
-uint testDimlpRul();
-uint testDimlpTrn();
+int testDensCls();
+int testDimlpBT();
+int testDimlpCls();
+int testDimlpPred();
+int testDimlpRul();
+int testDimlpTrn();
 
 #endif // DIMLP_TESTS_H
