@@ -67,7 +67,7 @@ public:
   std::string toString(const std::vector<std::string> &attributes, const std::vector<std::string> &classes) const;
   bool isEqual(const Rule &other) const;
   static std::vector<Rule> fromJsonFile(const std::string &filename);
-  static void toJsonFile(const std::string &filename, const std::vector<Rule> &rules);
+  static void toJsonFile(const std::string &filename, const std::vector<Rule> &rules, float threshold, int positiveIndex);
 };
 
 // OPERATOR OVERLOAD TO EASE PRINTING PURPOSES
@@ -101,7 +101,8 @@ std::vector<bool> getRulePatternsFromString(const std::string &str, DataSetFid &
 std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, DataSetFid &dataset, bool withClasses = true);
 bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, bool withClassNames, DataSetFid &dataset);
 void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset);
-std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames, const std::vector<std::string> &classNames);
+std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames,
+                                          const std::vector<std::string> &classNames, float threshold, int positiveIndex);
 void getActivatedRules(std::vector<int> &activatedRules, std::vector<Rule> &rules, std::vector<double> &testValues);
 
 #endif

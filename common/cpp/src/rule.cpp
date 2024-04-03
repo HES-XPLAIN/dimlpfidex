@@ -99,7 +99,6 @@ std::string Rule::toString(const std::vector<std::string> &attributes, const std
  * @param filename   path of the JSON file to be parsed
  * @return vector<Rule>
  */
-// TODO test this
 std::vector<Rule> Rule::fromJsonFile(const std::string &filename) {
   std::vector<Rule> result;
   std::ifstream ifs(filename);
@@ -127,18 +126,28 @@ std::vector<Rule> Rule::fromJsonFile(const std::string &filename) {
  * @param filename name of the file to be written
  * @param rules vector of rules to be written
  */
-// TODO test this
-void Rule::toJsonFile(const std::string &filename, const std::vector<Rule> &rules) {
+void Rule::toJsonFile(const std::string &filename, const std::vector<Rule> &rules, float threshold, int positiveIndex) {
   std::ofstream ofs(filename);
 
   if (!ofs.is_open() || ofs.fail()) {
     throw FileNotFoundError("JSON file to be written named '" + filename + "' couldn't be opened, cannot proceed.");
   }
 
-  Json jsonData{{"rules", rules}};
+  Json jsonData;
+
+  jsonData["threshold"] = threshold;
+  jsonData["positive index class"] = positiveIndex;
+  jsonData["rules"] = rules;
+
   ofs << std::setw(4) << jsonData << std::endl;
 }
 
+/**
+ * @brief Compares a rule with another to determine whether they're the identical or not
+ *
+ * @param other other rule for comparison
+ * @return bool if they're indeed identical or not
+ */
 bool Rule::isEqual(const Rule &other) const {
   double epsilon = 10e-6;
 
@@ -435,32 +444,36 @@ bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, b
  * @param nbClasses The number of classes that can appear in a rule.
  */
 void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset) {
+  // if file is JSON read it properly
+  if (rulesFile.substr(rulesFile.find_last_of(".") + 1) == "json") {
+    rules = Rule::fromJsonFile(rulesFile);
+  } else {
+    // Open rules file
+    std::fstream rulesData;
+    rulesData.open(rulesFile, std::ios::in); // Read data file
+    if (rulesData.fail()) {
+      throw FileNotFoundError("Error : file " + rulesFile + " not found.");
+    }
 
-  // Open rules file
-  std::fstream rulesData;
-  rulesData.open(rulesFile, std::ios::in); // Read data file
-  if (rulesData.fail()) {
-    throw FileNotFoundError("Error : file " + rulesFile + " not found.");
-  }
+    // Check if the file has attribute names or ids
+    std::vector<bool> checkPatterns = getRulesPatternsFromRuleFile(rulesFile, dataset);
+    bool attributesInFile = checkPatterns[0];
+    bool classesInFile = checkPatterns[1];
 
-  // Check if the file has attribute names or ids
-  std::vector<bool> checkPatterns = getRulesPatternsFromRuleFile(rulesFile, dataset);
-  bool attributesInFile = checkPatterns[0];
-  bool classesInFile = checkPatterns[1];
-
-  std::string line;
-  while (getline(rulesData, line)) {
-    Rule rule;
-    if (stringToRule(rule, line, attributesInFile, classesInFile, dataset)) {
-      getline(rulesData, line); // Cov size
-      rule.setCoveringSize(stoi(splitString(line, " ")[4]));
-      getline(rulesData, line); // Fidelity
-      rule.setFidelity(stoi(splitString(line, " ")[3]));
-      getline(rulesData, line); // Accuracy
-      rule.setAccuracy(stod(splitString(line, " ")[3]));
-      getline(rulesData, line); // Confidence
-      rule.setConfidence(stod(splitString(line, " ")[3]));
-      rules.push_back(rule);
+    std::string line;
+    while (getline(rulesData, line)) {
+      Rule rule;
+      if (stringToRule(rule, line, attributesInFile, classesInFile, dataset)) {
+        getline(rulesData, line); // Cov size
+        rule.setCoveringSize(stoi(splitString(line, " ")[4]));
+        getline(rulesData, line); // Fidelity
+        rule.setFidelity(stoi(splitString(line, " ")[3]));
+        getline(rulesData, line); // Accuracy
+        rule.setAccuracy(stod(splitString(line, " ")[3]));
+        getline(rulesData, line); // Confidence
+        rule.setConfidence(stod(splitString(line, " ")[3]));
+        rules.push_back(rule);
+      }
     }
   }
 }
@@ -472,9 +485,12 @@ void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid
  * @param rules list of Rules object to be written in "filename".
  * @param attributes list of the attributes names, used to write Rules's Antecedants with attributes explicit name instead of a "X" variable.
  * @param classes list of class names, used to write Rule's class with class explicit name instead of its numerical representation.
+ * @param threshold defined threshold (defaults to -1.0)
+ * @param positiveIndex index defining which is the positive class in dataset
  * @return tuple<double, double>
  */
-std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames, const std::vector<std::string> &classNames) {
+std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames,
+                                          const std::vector<std::string> &classNames, float threshold, int positiveIndex) {
   if (rules.empty()) {
     std::cout << "Warning: cannot write to file \"" << filename << "\", generated rules list is empty.";
     return std::make_tuple(0, 0);
@@ -484,35 +500,50 @@ std::tuple<double, double> writeRulesFile(const std::string &filename, const std
   auto nbRules = static_cast<int>(rules.size());
   double meanCovSize = 0;
   double meanNbAntecedents = 0;
-  std::stringstream stream;
-  std::ofstream file(filename);
 
-  for (Rule r : rules) { // each rule
-    meanCovSize += static_cast<double>(r.getCoveredSamples().size());
-    meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
-    counter++;
-    stream << "Rule " << counter << ": " << r.toString(attributeNames, classNames);
-    stream << std::endl;
-  }
+  if (filename.substr(filename.find_last_of(".") + 1) == "json") {
+    for (Rule r : rules) { // each rule
+      meanCovSize += static_cast<double>(r.getCoveredSamples().size());
+      meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
+    }
 
-  meanCovSize /= nbRules;
-  meanNbAntecedents /= nbRules;
-
-  if (file.is_open()) {
-    file << "Number of rules : " << nbRules
-         << ", mean sample covering number per rule : " << formattingDoubleToString(meanCovSize)
-         << ", mean number of antecedents per rule : " << formattingDoubleToString(meanNbAntecedents)
-         << std::endl;
-
-    file << std::endl
-         << stream.str();
-
-    file.close();
+    Rule::toJsonFile(filename, rules, threshold, positiveIndex);
 
   } else {
-    throw CannotOpenFileError("Error : Couldn't open rules extraction file \"" + filename + "\".");
-  }
+    int counter = 0;
+    std::stringstream stream;
+    std::ofstream file(filename);
+    auto nbRules = static_cast<int>(rules.size());
 
+    for (Rule r : rules) { // each rule
+      meanCovSize += static_cast<double>(r.getCoveredSamples().size());
+      meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
+      counter++;
+      stream << "Rule " << counter << ": " << r.toString(attributeNames, classNames);
+      stream << std::endl;
+    }
+
+    meanCovSize /= nbRules;
+    meanNbAntecedents /= nbRules;
+
+    if (file.is_open()) {
+      file << "Number of rules : " << nbRules
+           << ", mean sample covering number per rule : " << formattingDoubleToString(meanCovSize)
+           << ", mean number of antecedents per rule : " << formattingDoubleToString(meanNbAntecedents)
+           << std::endl
+           << "Decision threshold used : " << threshold
+           << std::endl
+           << "Index of the positive class : " << positiveIndex
+           << std::endl
+           << std::endl
+           << stream.str();
+
+      file.close();
+
+    } else {
+      throw CannotOpenFileError("Error : Couldn't open rules extraction file \"" + filename + "\".");
+    }
+  }
   return std::make_tuple(meanCovSize, meanNbAntecedents);
 }
 
