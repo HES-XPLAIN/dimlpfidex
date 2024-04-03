@@ -226,15 +226,23 @@ int fidexGloStats(const std::string &command) {
     // Get statistic line at the top of the rulesfile
     std::string statsLine;
     std::fstream rulesData;
-    rulesData.open(rulesFile, std::ios::in); // Read data file
-    if (rulesData.fail()) {
-      throw FileNotFoundError("Error : file " + rulesFile + " not found.");
-    }
-    getline(rulesData, statsLine);
-    statsLine += "\n";
     std::vector<Rule> rules;
-    getRules(rules, rulesFile, *testDatas);
-    lines.emplace_back(statsLine);
+
+    if (rulesFile.substr(rulesFile.find_last_of(".") + 1) == "json") {
+      rules = Rule::fromJsonFile(rulesFile);
+    } else {
+      rulesData.open(rulesFile, std::ios::in); // Read data file
+
+      if (rulesData.fail()) {
+        throw FileNotFoundError("Error : file " + rulesFile + " not found.");
+      }
+      
+      getline(rulesData, statsLine);
+      statsLine += "\n";
+      getRules(rules, rulesFile, *testDatas);
+      lines.emplace_back(statsLine);
+    }
+
     std::cout << "Data imported." << std::endl
               << std::endl;
 
