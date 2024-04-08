@@ -119,7 +119,7 @@ std::vector<Rule> Rule::fromJsonFile(const std::string &filename, Parameters &pa
   float threshold = jsonData["threshold"];
   result = jsonData["rules"];
 
-  //TODO: make this work
+  // TODO: make this work
   params.setInt(POSITIVE_CLASS_INDEX, index);
   params.setFloat(DECISION_THRESHOLD, threshold);
 
@@ -536,9 +536,8 @@ std::tuple<double, double> writeRulesFile(const std::string &filename, const std
            << ", mean number of antecedents per rule : " << formattingDoubleToString(meanNbAntecedents)
            << std::endl;
       if (threshold != -1) {
-        file << "Decision threshold used : " << threshold
-             << std::endl
-             << "Index of the positive class : " << positiveIndex;
+        file << "Using a decision threshold of " << threshold << " for class " << positiveIndex
+             << std::endl;
       } else {
         file << "No decision threshold is used.";
       }
@@ -607,16 +606,14 @@ void getThresholdFromRulesFile(const std::string &filePath, float &decisionThres
   }
 
   while (std::getline(file, line)) {
-    std::string token;
+    std::string tokenThresh;
+    std::string tokenClass;
 
-    if (line.find("Decision threshold used :") != std::string::npos) {
+    if (line.find("Using a decision threshold of") != std::string::npos) {
       std::istringstream iss(line);
-      iss >> token >> token >> token >> token >> token; // Get decision threshold
-      decisionThreshold = std::stod(token);
-      std::getline(file, line);
-      std::istringstream iss2(line);
-      iss2 >> token >> token >> token >> token >> token >> token >> token; // Get positive index
-      positiveClassIndex = std::stoi(token);
+      iss >> tokenThresh >> tokenThresh >> tokenThresh >> tokenThresh >> tokenThresh >> tokenThresh >> tokenClass >> tokenClass >> tokenClass; // Get decision threshold
+      decisionThreshold = std::stof(tokenThresh);
+      positiveClassIndex = std::stoi(tokenClass);
     }
   }
 
