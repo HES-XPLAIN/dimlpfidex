@@ -5,6 +5,7 @@
 #include "antecedant.h"
 #include "checkFun.h"
 #include "dataSet.h"
+#include "parameters.h"
 #include <algorithm>
 #include <cmath>
 #include <fstream>
@@ -66,7 +67,7 @@ public:
   };
   std::string toString(const std::vector<std::string> &attributes, const std::vector<std::string> &classes) const;
   bool isEqual(const Rule &other) const;
-  static std::vector<Rule> fromJsonFile(const std::string &filename);
+  static std::vector<Rule> fromJsonFile(const std::string &filename, Parameters &params);
   static void toJsonFile(const std::string &filename, const std::vector<Rule> &rules, float threshold, int positiveIndex);
 };
 
@@ -100,7 +101,7 @@ std::string getStrPatternWithClassNames(const std::vector<std::string> &classNam
 std::vector<bool> getRulePatternsFromString(const std::string &str, DataSetFid &dataset);
 std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, DataSetFid &dataset, bool withClasses = true);
 bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, bool withClassNames, DataSetFid &dataset);
-void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset);
+void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset, Parameters &params);
 std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames,
                                           const std::vector<std::string> &classNames, float threshold, int positiveIndex);
 void getActivatedRules(std::vector<int> &activatedRules, std::vector<Rule> &rules, std::vector<double> &testValues);
