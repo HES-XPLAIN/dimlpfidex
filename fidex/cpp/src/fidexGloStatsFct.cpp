@@ -406,14 +406,13 @@ int fidexGloStats(const std::string &command) {
     lines.push_back("Statistics with a test set of " + std::to_string(nbTestData) + " samples :\n");
     if (decisionThreshold < 0.0) {
       lines.emplace_back("No decision threshold is used.");
+      if (positiveClassIndex < 0) {
+        lines.emplace_back("No positive index class is used.");
+      } else {
+        lines.push_back("Positive index class used : " + std::to_string(positiveClassIndex));
+      }
     } else {
-      lines.push_back("Decision threshold used : " + std::to_string(decisionThreshold));
-    }
-
-    if (positiveClassIndex < 0) {
-      lines.emplace_back("No positive index class is used.");
-    } else {
-      lines.push_back("Positive index class used : " + std::to_string(positiveClassIndex));
+      lines.push_back("Using a decision threshold of " + std::to_string(decisionThreshold) + " for class " + std::to_string(positiveClassIndex));
     }
 
     lines.push_back("The global rule fidelity rate is : " + std::to_string(fidelity));
@@ -484,8 +483,7 @@ int fidexGloStats(const std::string &command) {
           if (decisionThreshold < 0.0) {
             outputFile << "No decision threshold is used.\n";
           } else {
-            outputFile << "Decision threshold used : " + std::to_string(decisionThreshold) << "\n";
-            outputFile << "Positive index class used : " << positiveClassIndex << "\n";
+            outputFile << "Using a decision threshold of " << decisionThreshold << " for class " << positiveClassIndex << "\n";
           }
 
           for (int r = 0; r < rules.size(); r++) { // For each rule

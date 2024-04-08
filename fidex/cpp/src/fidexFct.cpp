@@ -411,8 +411,7 @@ int fidex(const std::string &command) {
         if (params->getFloat(DECISION_THRESHOLD) < 0.0) {
           outputStatsFile << "No decision threshold is used.\n";
         } else {
-          outputStatsFile << "Decision threshold used : " << params->getFloat(DECISION_THRESHOLD) << "\n";
-          outputStatsFile << "Positive index class used : " << params->getInt(POSITIVE_CLASS_INDEX) << "\n";
+          outputStatsFile << "Using a decision threshold of " << params->getFloat(DECISION_THRESHOLD) << " for class " << params->getInt(POSITIVE_CLASS_INDEX) << "\n";
         }
 
         outputStatsFile << "The mean covering size per rule is : " << meanCovSize << "" << std::endl;
@@ -435,8 +434,7 @@ int fidex(const std::string &command) {
         if (params->getFloat(DECISION_THRESHOLD) < 0.0) {
           outputFile << "No decision threshold is used.\n";
         } else {
-          outputFile << "Decision threshold used : " << params->getFloat(DECISION_THRESHOLD) << "\n";
-          outputFile << "Positive index class used : " << params->getInt(POSITIVE_CLASS_INDEX) << "\n";
+          outputFile << "Using a decision threshold of " << params->getFloat(DECISION_THRESHOLD) << " for class " << params->getInt(POSITIVE_CLASS_INDEX) << "\n";
         }
 
         outputFile << std::endl;
