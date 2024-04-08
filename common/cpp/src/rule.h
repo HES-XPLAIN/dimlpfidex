@@ -104,5 +104,6 @@ void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid
 std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames,
                                           const std::vector<std::string> &classNames, float threshold, int positiveIndex);
 void getActivatedRules(std::vector<int> &activatedRules, std::vector<Rule> &rules, std::vector<double> &testValues);
+void getThresholdFromRulesFile(const std::string &filePath, float &decisionThreshold, int &positiveClassIndex);
 
 #endif

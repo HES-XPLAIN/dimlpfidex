@@ -32,8 +32,7 @@ void showStatsParams() {
   printOptionDescription("--stats_file <str>", "Output statistic file name");
   printOptionDescription("--global_rules_outfile <str>", "Global ruleset output file with stats on test set, if you want to compute statistics of global rules on tests set");
   printOptionDescription("--console_file <str>", "File with console logs redirection");
-  printOptionDescription("--decision_threshold <float [0,1]>", "Decision threshold for predictions, use if it was used in FidexGloRules, you need to specify the index of positive class if you want to use it");
-  printOptionDescription("--positive_class_index <int [0,nb_classes-1]>", "Index of positive class for the usage of decision threshold and to compute true/false positive/negative rates, index starts at 0");
+  printOptionDescription("--positive_class_index <int [0,nb_classes-1]>", "Index of positive class to compute true/false positive/negative rates, index starts at 0. If it is specified in the rules file, it has to be the same value.");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -93,7 +92,7 @@ void computeTFPN(int decision, int positiveClassIndex, int testTrueClass, int &n
  */
 void checkStatsParametersLogicValues(Parameters &p) {
   // setting default values
-  p.setDefaultDecisionThreshold();
+  p.setDefaultInt(POSITIVE_CLASS_INDEX, -1);
 
   // this sections check if values comply with program logic
 
@@ -106,7 +105,13 @@ void checkStatsParametersLogicValues(Parameters &p) {
 
   // verifying logic between parameters, values range and so on...
   p.checkAttributeAndClassCounts();
-  p.checkParametersDecisionThreshold();
+  if (p.getInt(POSITIVE_CLASS_INDEX) < 0 && p.getInt(POSITIVE_CLASS_INDEX) != -1) {
+    throw CommandArgumentException("Error : Positive class index must be positive (>=0)");
+  }
+
+  if (p.getInt(POSITIVE_CLASS_INDEX) >= p.getInt(NB_CLASSES)) {
+    throw CommandArgumentException("Error : The index of positive class cannot be greater or equal to the number of classes (" + std::to_string(p.getInt(NB_CLASSES)) + ").");
+  }
 }
 
 int fidexGloStats(const std::string &command) {
@@ -139,7 +144,7 @@ int fidexGloStats(const std::string &command) {
     std::unique_ptr<Parameters> params;
     std::vector<ParameterCode> validParams = {TEST_DATA_FILE, TEST_PRED_FILE, TEST_CLASS_FILE,
                                               GLOBAL_RULES_FILE, GLOBAL_RULES_OUTFILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER, ATTRIBUTES_FILE,
-                                              STATS_FILE, GLOBAL_RULES_OUTFILE, CONSOLE_FILE, DECISION_THRESHOLD, POSITIVE_CLASS_INDEX};
+                                              STATS_FILE, GLOBAL_RULES_OUTFILE, CONSOLE_FILE, POSITIVE_CLASS_INDEX};
     if (commandList[1].compare("--json_config_file") == 0) {
       if (commandList.size() < 3) {
         throw CommandArgumentException("JSON config file name/path is missing");
@@ -179,8 +184,18 @@ int fidexGloStats(const std::string &command) {
     std::string testDataFilePred = params->getString(TEST_PRED_FILE);
     std::string rulesFile = params->getString(GLOBAL_RULES_FILE);
 
-    double decisionThreshold = params->getFloat(DECISION_THRESHOLD);
-    int positiveClassIndex = params->getInt(POSITIVE_CLASS_INDEX);
+    // Get decision threshold and positive class index
+    float decisionThreshold;
+    int positiveClassIndex;
+    getThresholdFromRulesFile(rulesFile, decisionThreshold, positiveClassIndex);
+
+    int positiveClassIndexParam = params->getInt(POSITIVE_CLASS_INDEX);
+    if (positiveClassIndexParam != -1) {
+      if (positiveClassIndex != -1 && positiveClassIndex != positiveClassIndexParam) {
+        throw CommandArgumentException("The positive class index must be the same as the one specified in the rules file (" + std::to_string(positiveClassIndex) + ").");
+      }
+      positiveClassIndex = positiveClassIndexParam;
+    }
 
     // ----------------------------------------------------------------------
 
@@ -233,7 +248,7 @@ int fidexGloStats(const std::string &command) {
 
       double meanCovering = 0;
       double meanNbAntecedantsPerRule = 0;
-      int nbRules = rules.size();
+      auto nbRules = static_cast<int>(rules.size());
 
       for (Rule r : rules) {
         meanCovering += static_cast<double>(r.getCoveredSamples().size());
@@ -390,16 +405,16 @@ int fidexGloStats(const std::string &command) {
     accuracyWhenActivatedRulesAndModelAgree /= nbActivatedRulesAndModelAgree;
 
     lines.push_back("Statistics with a test set of " + std::to_string(nbTestData) + " samples :\n");
-    if (params->getFloat(DECISION_THRESHOLD) < 0.0) {
-      lines.push_back("No decision threshold is used.");
+    if (decisionThreshold < 0.0) {
+      lines.emplace_back("No decision threshold is used.");
     } else {
-      lines.push_back("Decision threshold used : " + std::to_string(params->getFloat(DECISION_THRESHOLD)));
+      lines.push_back("Decision threshold used : " + std::to_string(decisionThreshold));
     }
 
-    if (params->getInt(POSITIVE_CLASS_INDEX) < 0) {
-      lines.push_back("No positive index class is used.");
+    if (positiveClassIndex < 0) {
+      lines.emplace_back("No positive index class is used.");
     } else {
-      lines.push_back("Positive index class used : " + std::to_string(params->getInt(POSITIVE_CLASS_INDEX)));
+      lines.push_back("Positive index class used : " + std::to_string(positiveClassIndex));
     }
 
     lines.push_back("The global rule fidelity rate is : " + std::to_string(fidelity));
@@ -461,22 +476,17 @@ int fidexGloStats(const std::string &command) {
       std::string ruleFile = params->getString(GLOBAL_RULES_OUTFILE);
 
       if (ruleFile.substr(ruleFile.find_last_of('.') + 1) == "json") {
-        Rule::toJsonFile(ruleFile, rules, params->getFloat(DECISION_THRESHOLD), params->getInt(POSITIVE_CLASS_INDEX));
+        Rule::toJsonFile(ruleFile, rules, decisionThreshold, positiveClassIndex);
       } else {
         std::ofstream outputFile(ruleFile);
         if (outputFile.is_open()) {
           outputFile << statsLine;
 
-          if (params->getFloat(DECISION_THRESHOLD) < 0.0) {
+          if (decisionThreshold < 0.0) {
             outputFile << "No decision threshold is used.\n";
           } else {
-            outputFile << "Decision threshold used : " + std::to_string(params->getFloat(DECISION_THRESHOLD)) << "\n";
-          }
-
-          if (params->getInt(POSITIVE_CLASS_INDEX) < 0) {
-            outputFile << "No positive index class is used.\n";
-          } else {
-            outputFile << "Positive index class used : " << params->getInt(POSITIVE_CLASS_INDEX) << "\n";
+            outputFile << "Decision threshold used : " + std::to_string(decisionThreshold) << "\n";
+            outputFile << "Positive index class used : " << positiveClassIndex << "\n";
           }
 
           for (int r = 0; r < rules.size(); r++) { // For each rule
