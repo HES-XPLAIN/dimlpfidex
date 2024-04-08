@@ -99,7 +99,7 @@ std::string Rule::toString(const std::vector<std::string> &attributes, const std
  * @param filename   path of the JSON file to be parsed
  * @return vector<Rule>
  */
-std::vector<Rule> Rule::fromJsonFile(const std::string &filename) {
+std::vector<Rule> Rule::fromJsonFile(const std::string &filename, Parameters &params) {
   std::vector<Rule> result;
   std::ifstream ifs(filename);
 
@@ -110,12 +110,18 @@ std::vector<Rule> Rule::fromJsonFile(const std::string &filename) {
   // this throws an exception if input is not valid JSON
   Json jsonData = Json::parse(ifs);
 
-  if (!jsonData.contains("rules")) {
+  if (!jsonData.contains("rules") || !jsonData.contains("positive index class") || !jsonData.contains("threshold")) {
     std::cout << "Parsing error: cannot find 'rules' list in json file." << std::endl;
     return result;
   }
 
+  int index = jsonData["positive index class"];
+  float threshold = jsonData["threshold"];
   result = jsonData["rules"];
+
+  //TODO: make this work
+  params.setInt(POSITIVE_CLASS_INDEX, index);
+  params.setFloat(DECISION_THRESHOLD, threshold);
 
   return result;
 }
@@ -443,10 +449,10 @@ bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, b
  * @param nbAttributes The number of attributes that can appear in a rule.
  * @param nbClasses The number of classes that can appear in a rule.
  */
-void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset) {
+void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset, Parameters &params) {
   // if file is JSON read it properly
   if (rulesFile.substr(rulesFile.find_last_of(".") + 1) == "json") {
-    rules = Rule::fromJsonFile(rulesFile);
+    rules = Rule::fromJsonFile(rulesFile, params);
   } else {
     // Open rules file
     std::fstream rulesData;

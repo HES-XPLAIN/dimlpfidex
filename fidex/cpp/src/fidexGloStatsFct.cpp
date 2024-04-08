@@ -244,7 +244,7 @@ int fidexGloStats(const std::string &command) {
     std::vector<Rule> rules;
 
     if (rulesFile.substr(rulesFile.find_last_of(".") + 1) == "json") {
-      rules = Rule::fromJsonFile(rulesFile);
+      rules = Rule::fromJsonFile(rulesFile, *params);
 
       double meanCovering = 0;
       double meanNbAntecedantsPerRule = 0;
@@ -257,7 +257,6 @@ int fidexGloStats(const std::string &command) {
       meanCovering /= nbRules;
       meanNbAntecedantsPerRule /= nbRules;
 
-      // TODO add missing line
       statsLine += "Number of rules : " + std::to_string(nbRules);
       statsLine += ", mean sample covering number per rule : ";
       statsLine += std::to_string(meanCovering) + ", mean number of antecedents per rule : ";
@@ -270,7 +269,7 @@ int fidexGloStats(const std::string &command) {
       }
       getline(rulesData, statsLine);
       statsLine += "\n";
-      getRules(rules, rulesFile, *testDatas);
+      getRules(rules, rulesFile, *testDatas, *params);
     }
     lines.emplace_back(statsLine);
 
