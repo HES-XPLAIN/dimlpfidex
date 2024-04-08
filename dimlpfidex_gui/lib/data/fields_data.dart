@@ -402,208 +402,199 @@ const List<Field> fidexGloFields = [
   seedFld,
 ];
 
-//Stopped here
+
 const List<Field> fidexGloRulesFields = [
+  rootFolderFld,
   Field(
     "Train data file",
-    "train_data_file",
-    Datatype.string,
-    isRequired: true,
+    "--train_data_file",
+    Datatype.filePath,
+    description: "Train data file.",
   ),
   Field(
     "Train prediction file",
-    "train_pred_file",
-    Datatype.string,
-    isRequired: true,
+    "--train_pred_file",
+    Datatype.filePath,
+    description: "Train prediction file.",
   ),
   Field(
-    "Train class file",
-    "train_class_file",
-    Datatype.string,
+    "Train true class file",
+    "--train_class_file",
+    Datatype.filePath,
     description:
-        "Not mendatory if classes are specified in the train data file",
+        "Train true class file, not mandatory if classes are specified in train data file.",
   ),
   Field(
     "Weights file",
-    "weights_file",
-    Datatype.string,
+    "--weights_file",
+    Datatype.filePath,
     description:
-        "Weights file. In case of bagging, put prefix of files, ex: dimlpBT, files need to be in the form dimlpBTi.wts, i=1,2,3,... and you need to specify the number of networks with --nb_dimlp_nets [Not mendatory if a rules file is given with --rules_file]",
+        "Weights file (not mandatory if a rules file is given with --rules_file).",
   ),
   Field(
-    "Rules file",
-    "rules_file",
-    Datatype.string,
-    description: "Rules file to be converted to hyperlocus",
+    "Rules file to be converted to hyperlocus",
+    "--rules_file",
+    Datatype.filePath,
+    description:
+        "Rules file to be converted to hyperlocus (not mandatory if a weights file is given with --weights_file).",
   ),
-  Field("Global rules output file", "global_rules_outfile", Datatype.string),
+  Field(
+    "Rules output file",
+    "--global_rules_outfile",
+    Datatype.filePath,
+    description: "Rules output file.",
+    isRequired: true,
+  ),
   Field(
     "Heuristic",
-    "heuristic",
+    "--heuristic",
     Datatype.integer,
     description:
-        "Heuristic 1: optimal fidexGlo, 2: fast fidexGlo, 3: very fast fidexGlo",
-  ),
-  Field(
-    "Number of attributes",
-    "nb_attributes",
-    Datatype.integer,
-    isRequired: true,
-  ),
-  Field(
-    "Number of classes",
-    "nb_classes",
-    Datatype.integer,
-    isRequired: true,
-  ),
-  // Options
-  Field(
-    "Root folder",
-    "root_folder",
-    Datatype.directoryPath,
-    description:
-        "Folder based on the main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder",
-  ),
-  Field(
-    "Number of networks for bagging",
-    "nb_dimlp_nets",
-    Datatype.integer,
-    description:
-        "Number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)",
-    defaultValue: "1",
+        "Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo.",
     minValue: "1",
-    maxValue: "∞",
+    maxValue: "3",
+    isRequired: true,
   ),
-  Field("Attributes file", "attributes_file", Datatype.string),
-  Field("Console file", "console_file", Datatype.string),
+  nbAttributesFld,
+  nbClassesFld,
+  Field(
+    "JSON file to configure all parameters",
+    "--json_config_file",
+    Datatype.filePath,
+    description:
+        "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path.",
+  ),
+  Field(
+    "File of attributes",
+    "--attributes_file",
+    Datatype.filePath,
+    description: "File of attributes.",
+  ),
+  Field(
+    "File with console logs redirection",
+    "--console_file",
+    Datatype.filePath,
+    description: "File with console logs redirection.",
+  ),
   Field(
     "Max iteration number",
-    "max_iterations",
+    "--max_iterations",
     Datatype.integer,
-    description:
-        "Max iteration number, also the max possible number of attributes in a rule (10 by default, should put 25 if working with images)",
+    minValue: "1",
     defaultValue: "10",
-    minValue: "1",
-    maxValue: "1000",
-  ),
-  Field(
-    "Min covering number",
-    "min_covering",
-    Datatype.integer,
-    description: "Minimum covering number (2 by default)",
-    defaultValue: "2",
-    minValue: "1",
-    maxValue: "Number of samples",
-  ),
-  Field("Dimension dropout", "dropout_dim", Datatype.doublePrecision),
-  Field("Hyperplan dropout", "dropout_hyp", Datatype.doublePrecision),
-  Field(
-    "Max failed attempts",
-    "max_failed_attempts",
-    Datatype.integer,
     description:
-        "Maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)",
-    defaultValue: "30",
+        "Max iteration number, also the max possible number of attributs in a rule, should be 25 if working with images.",
+  ),
+  Field(
+    "Minimum covering number",
+    "--min_covering",
+    Datatype.integer,
     minValue: "1",
-    maxValue: "1000",
+    maxValue: "inf",
+    defaultValue: "2",
+    description: "Minimum covering number.",
+  ),
+  Field(
+    "Whether to use this strategy",
+    "--covering_strategy",
+    Datatype.boolean,
+    description:
+        "Whether to use this strategy : if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (default: True).",
+  ),
+  Field(
+    "Maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used",
+    "--max_failed_attempts",
+    Datatype.integer,
+    minValue: "0",
+    maxValue: "inf",
+    defaultValue: "30",
+    description:
+        "Maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used.",
+  ),
+  Field(
+    "Minimal rule fidelity accepted when generating a rule",
+    "--min_fidelity",
+    Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "1.0",
+    defaultValue: "1.0",
+    description: "Minimal rule fidelity accepted when generating a rule.",
+  ),
+  Field(
+    "Minimal min_fidelity to which we agree to go down during covering_strategy",
+    "--lowest_min_fidelity",
+    Datatype.doublePrecision,
+    minValue: "0",
+    maxValue: "1",
+    defaultValue: "0.75",
+    description:
+        "Minimal min_fidelity to which we agree to go down during covering_strategy.",
+  ),
+  Field(
+    "Dimension dropout parameter",
+    "--dropout_dim",
+    Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "1.0",
+    defaultValue: "0.0",
+    description: "Dimension dropout parameter.",
+  ),
+  Field(
+    "Hyperplan dropout parameter",
+    "--dropout_hyp",
+    Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "1.0",
+    defaultValue: "0.0",
+    description: "Hyperplan dropout parameter.",
   ),
   Field(
     "Number of stairs in staircase activation function",
-    "nb_quant_levels",
+    "--nb_quant_levels",
     Datatype.integer,
-    description:
-        "Number of stairs in staircase activation function (50 by default)",
+    minValue: "3",
+    maxValue: "inf",
     defaultValue: "50",
-    minValue: "1",
-    maxValue: "1000",
+    description: "Number of stairs in staircase activation function.",
   ),
   Field(
-    "Decision threshold",
-    "decision_threshold",
+    "Decision threshold for predictions",
+    "--decision_threshold",
     Datatype.doublePrecision,
+    minValue: "0",
+    maxValue: "1",
     description:
-        "Decision threshold for predictions, need to specify the index of the positive class if you want to use it (None by default)",
+        "Decision threshold for predictions, you need to specify the index of positive class if you want to use it.",
   ),
   Field(
-    "Positive class index",
-    "positive_class_index",
+    "Index of positive class for the usage of decision threshold",
+    "--positive_class_index",
     Datatype.integer,
+    minValue: "0",
+    maxValue: "# classes - 1",
     description:
-        "Index of positive class for the usage of the decision threshold (None by default, 0 for the first one)",
+        "Index of positive class for the usage of decision threshold, index starts at 0.",
   ),
   Field(
-    "Normalization file",
-    "normalization_file",
-    Datatype.string,
+    "File containing the mean and std of some attributes",
+    "--normalization_file",
+    Datatype.filePath,
     description:
-        "File containing the mean and std of some attributes. Used to denormalize the rules if specified",
+        "File containing the mean and std of some attributes. Used to denormalize the rules if specified.",
   ),
-  Field(
-    "Mus",
-    "mus",
-    Datatype.string,
-    description:
-        "List of float in the form [1.1,3.5] without spaces(!) corresponding to the mean or median of each attribute index to denormalize in the rules",
-  ),
-  Field(
-    "Sigmas",
-    "sigmas",
-    Datatype.string,
-    description:
-        "List of float in the form [4.5,12] without spaces(!) corresponding to the standard deviation of each attribute index to denormalize in the rules",
-  ),
-  Field(
-    "Normalization indices",
-    "normalization_indices",
-    Datatype.string,
-    description:
-        "List of integers in the form [0,3,7] without spaces(!) corresponding to attribute indices to denormalize in the rules (first column is index 0, all indices by default, only used when no normalization_file is given)",
-  ),
+  musFld,
+  sigmasFld,
+  normalizationIndicesFld,
   Field(
     "Number of threads used for computing the algorithm",
-    "nb_threads",
+    "--nb_threads",
     Datatype.integer,
-    description:
-        "Number of threads used for computing the algorithm (default=1, this means by default it's a sequential execution)",
-    defaultValue: "1",
     minValue: "1",
-    maxValue: "#CPUs available",
-  ),
-  Field(
-    "Covering strategy",
-    "covering_strategy",
-    Datatype.boolean,
+    maxValue: "# CPU cores",
     description:
-        "If no rule is found with min_covering, find the best rule with the best covering using dichotomic search. Decreases min_fidelity if needed (True by default)",
-    defaultValue: "true",
+        "Number of threads used for computing the algorithm, 1=sequential execution.",
   ),
-  Field(
-    "Min fidelity",
-    "min_fidelity",
-    Datatype.doublePrecision,
-    description:
-        "Minimal rule fidelity accepted when generating a rule [0,1] (1 by default)",
-    defaultValue: "1",
-    minValue: "0",
-    maxValue: "1",
-  ),
-  Field(
-    "Lowest min fidelity",
-    "lowest_min_fidelity",
-    Datatype.doublePrecision,
-    description:
-        "Minimal min_fidelity to which we agree to go down when computing a rule (0.75 by default)",
-    defaultValue: "0.75",
-    minValue: "0",
-    maxValue: "1",
-  ),
-  Field(
-    "Seed",
-    "seed",
-    Datatype.integer,
-    description: "Seed (0=random, default)",
-    defaultValue: "0",
-  ),
+  seedFld
 ];
 
 const List<Field> fidexGloStatsFields = [

@@ -75,8 +75,6 @@ class _AppPageState extends State<AppPage> with TickerProviderStateMixin {
                 fields: fidexGloStatsFields, tabController: _tabController)
           }),
           NestedTabBar(tabs: {
-            "TEST":
-                FormView(fields: testFields, tabController: _tabController),
             "DimlpCls":
                 FormView(fields: dimlpClsFields, tabController: _tabController),
             "DimlpTrn": FormView(fields: dimlpTrnFields, tabController: _tabController),
