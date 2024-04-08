@@ -355,15 +355,38 @@ int fidexGlo(const std::string &command) {
     std::vector<Rule> rules;
     std::vector<std::string> lines;
     std::string statsLine;
-    lines.emplace_back("Global statistics of the rule set : ");
-    getRules(rules, params->getString(GLOBAL_RULES_FILE), *testDatas, decisionThreshold, positiveClassIndex);
-    // Get stats line
     std::fstream rulesData;
-    rulesData.open(params->getString(GLOBAL_RULES_FILE), std::ios::in); // Read data file
-    if (rulesData.fail()) {
-      throw FileNotFoundError("Error : file " + params->getString(GLOBAL_RULES_FILE) + " not found.");
+    std::string rulesFile = params->getString(GLOBAL_RULES_FILE);
+    lines.emplace_back("Global statistics of the rule set : ");
+
+    if (rulesFile.substr(rulesFile.find_last_of(".") + 1) == "json") {
+      rules = Rule::fromJsonFile(rulesFile, decisionThreshold, positiveClassIndex);
+
+      double meanCovering = 0;
+      double meanNbAntecedantsPerRule = 0;
+      auto nbRules = static_cast<int>(rules.size());
+
+      for (Rule r : rules) {
+        meanCovering += static_cast<double>(r.getCoveredSamples().size());
+        meanNbAntecedantsPerRule += static_cast<double>(r.getAntecedants().size());
+      }
+      meanCovering /= nbRules;
+      meanNbAntecedantsPerRule /= nbRules;
+
+      statsLine += "Number of rules : " + std::to_string(nbRules);
+      statsLine += ", mean sample covering number per rule : ";
+      statsLine += std::to_string(meanCovering) + ", mean number of antecedents per rule : ";
+      statsLine += std::to_string(meanNbAntecedantsPerRule) + "\n";
+
+    } else {
+      rulesData.open(rulesFile, std::ios::in); // Read data file
+      if (rulesData.fail()) {
+        throw FileNotFoundError("Error : file " + rulesFile + " not found.");
+      }
+      getline(rulesData, statsLine);
+      statsLine += "\n";
+      getRules(rules, rulesFile, *testDatas, decisionThreshold, positiveClassIndex);
     }
-    getline(rulesData, statsLine);
     lines.emplace_back(statsLine);
 
     std::cout << "Files imported" << std::endl

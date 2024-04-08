@@ -25,7 +25,6 @@ int runFidextestsSuite() {
   return res;
 }
 
-// TODO test avec dimlpBT weights file
 
 int main() {
   int res = 0;
