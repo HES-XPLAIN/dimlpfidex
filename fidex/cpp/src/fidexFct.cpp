@@ -19,7 +19,7 @@ void showFidexParams() {
   printOptionDescription("--test_data_file <str>", "Test sample(s) data file with data, prediction(if no --test_pred_file) and true class(if no --test_class_file)");
   printOptionDescription("--weights_file <str>", "Weights file (not mandatory if a rules file is given with --rules_file)");
   printOptionDescription("--rules_file <str>", "Rules file to be converted to hyperlocus (not mandatory if a weights file is given with --weights_file)");
-  printOptionDescription("--rules_outfile <str>", "Rule(s) output file");
+  printOptionDescription("--rules_outfile <str>", "Rule(s) output file. If a .json filename is given, rules are saved in a special json format");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in dataset");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in dataset");
 
@@ -412,11 +412,6 @@ int fidex(const std::string &command) {
           outputStatsFile << "No decision threshold is used.\n";
         } else {
           outputStatsFile << "Decision threshold used : " << params->getFloat(DECISION_THRESHOLD) << "\n";
-        }
-
-        if (params->getInt(POSITIVE_CLASS_INDEX) < 0) {
-          outputStatsFile << "No positive index class is used.\n";
-        } else {
           outputStatsFile << "Positive index class used : " << params->getInt(POSITIVE_CLASS_INDEX) << "\n";
         }
 
@@ -441,11 +436,6 @@ int fidex(const std::string &command) {
           outputFile << "No decision threshold is used.\n";
         } else {
           outputFile << "Decision threshold used : " << params->getFloat(DECISION_THRESHOLD) << "\n";
-        }
-
-        if (params->getInt(POSITIVE_CLASS_INDEX) < 0) {
-          outputFile << "No positive index class is used.\n";
-        } else {
           outputFile << "Positive index class used : " << params->getInt(POSITIVE_CLASS_INDEX) << "\n";
         }
 
