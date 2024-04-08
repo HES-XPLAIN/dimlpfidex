@@ -331,6 +331,7 @@ int fidex(const std::string &command) {
     double meanCovSize = 0;
     double meanNbAntecedentsPerRule = 0;
     double meanAccuracy = 0;
+    std::vector<Rule> rules;
 
     // We compute rule for each test sample
     for (int currentSample = 0; currentSample < nbTestSamples; currentSample++) {
@@ -374,6 +375,7 @@ int fidex(const std::string &command) {
 
       std::stringstream stream;
       lines.push_back(rule.toString(attributeNames, classNames));
+      rules.push_back(rule);
       std::cout << std::endl;
       std::cout << "Extracted rule :" << std::endl;
       std::cout << rule.toString(attributeNames, classNames) << std::endl;
@@ -400,9 +402,24 @@ int fidex(const std::string &command) {
 
     if (params->isStringSet(STATS_FILE)) {
       std::ofstream outputStatsFile(params->getString(STATS_FILE));
+
       if (outputStatsFile.is_open()) {
+
         outputStatsFile << "Statistics with a test set of " << nbTestSamples << " samples :\n"
                         << std::endl;
+
+        if (params->getFloat(DECISION_THRESHOLD) < 0.0) {
+          outputStatsFile << "No decision threshold is used.\n";
+        } else {
+          outputStatsFile << "Decision threshold used : " << params->getFloat(DECISION_THRESHOLD) << "\n";
+        }
+
+        if (params->getInt(POSITIVE_CLASS_INDEX) < 0) {
+          outputStatsFile << "No positive index class is used.\n";
+        } else {
+          outputStatsFile << "Positive index class used : " << params->getInt(POSITIVE_CLASS_INDEX) << "\n";
+        }
+
         outputStatsFile << "The mean covering size per rule is : " << meanCovSize << "" << std::endl;
         outputStatsFile << "The mean number of antecedents per rule is : " << meanNbAntecedentsPerRule << "" << std::endl;
         outputStatsFile << "The mean rule fidelity rate is : " << meanFidelity << "" << std::endl;
@@ -414,14 +431,33 @@ int fidex(const std::string &command) {
       }
     }
 
-    std::ofstream outputFile(ruleFile);
-    if (outputFile.is_open()) {
-      for (const auto &line : lines) {
-        outputFile << line << "" << std::endl;
-      }
-      outputFile.close();
+    if (ruleFile.substr(ruleFile.find_last_of('.') + 1) == "json") {
+      Rule::toJsonFile(ruleFile, rules, params->getFloat(DECISION_THRESHOLD), params->getInt(POSITIVE_CLASS_INDEX));
     } else {
-      throw CannotOpenFileError("Error : Couldn't open rule extraction file " + ruleFile + ".");
+      std::ofstream outputFile(ruleFile);
+
+      if (outputFile.is_open()) {
+        if (params->getFloat(DECISION_THRESHOLD) < 0.0) {
+          outputFile << "No decision threshold is used.\n";
+        } else {
+          outputFile << "Decision threshold used : " << params->getFloat(DECISION_THRESHOLD) << "\n";
+        }
+
+        if (params->getInt(POSITIVE_CLASS_INDEX) < 0) {
+          outputFile << "No positive index class is used.\n";
+        } else {
+          outputFile << "Positive index class used : " << params->getInt(POSITIVE_CLASS_INDEX) << "\n";
+        }
+
+        outputFile << std::endl;
+
+        for (const auto &line : lines) {
+          outputFile << line << "" << std::endl;
+        }
+        outputFile.close();
+      } else {
+        throw CannotOpenFileError("Error : Couldn't open rule extraction file " + ruleFile + ".");
+      }
     }
 
     d2 = clock();
