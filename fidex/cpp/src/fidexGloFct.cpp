@@ -30,8 +30,6 @@ void showParams() {
   printOptionDescription("--test_pred_file <str>", "Test prediction file> if given, --test_data_file needs to have only test datas");
   printOptionDescription("--explanation_file <str>", "Explanation(s) output file name");
   printOptionDescription("--console_file <str>", "File with console logs redirection");
-  printOptionDescription("--decision_threshold <float [0,1]>", "Decision threshold for predictions, you need to specify the index of positive class if you want to use it");
-  printOptionDescription("--positive_class_index <int [0,nb_classes-1]>", "Index of positive class for the usage of decision threshold, index starts at 0");
   printOptionDescription("--with_fidex <bool>", "Whether to use Fidex if no rule is found in global rules (default: False)");
   printOptionDescription("--with_minimal_version <bool>", "Whether to use minimal version, which only gets correct activated rules and if with_fidex, launches Fidex when no such rule is found (default: False)");
 
@@ -106,8 +104,6 @@ void executeFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Par
  */
 void checkParametersLogicValues(Parameters &p) {
   // setting default values
-  p.setDefaultFloat(DECISION_THRESHOLD, -1.0f);
-  p.setDefaultInt(POSITIVE_CLASS_INDEX, -1);
   p.setDefaultBool(WITH_FIDEX, false);
   p.setDefaultBool(WITH_MINIMAL_VERSION, false);
 
@@ -121,7 +117,6 @@ void checkParametersLogicValues(Parameters &p) {
 
   // verifying logic between parameters, values range and so on...
   p.checkAttributeAndClassCounts();
-  p.checkParametersDecisionThreshold();
 
   // If using Fidex :
   if (p.getBool(WITH_FIDEX)) {
@@ -178,7 +173,7 @@ int fidexGlo(const std::string &command) {
     // Import parameters
     std::unique_ptr<Parameters> params;
     std::vector<ParameterCode> validParams = {TEST_DATA_FILE, GLOBAL_RULES_FILE, NB_ATTRIBUTES, NB_CLASSES, ROOT_FOLDER, ATTRIBUTES_FILE,
-                                              TEST_PRED_FILE, EXPLANATION_FILE, CONSOLE_FILE, DECISION_THRESHOLD, POSITIVE_CLASS_INDEX,
+                                              TEST_PRED_FILE, EXPLANATION_FILE, CONSOLE_FILE,
                                               WITH_FIDEX, WITH_MINIMAL_VERSION, TRAIN_DATA_FILE, TRAIN_PRED_FILE, TRAIN_CLASS_FILE, WEIGHTS_FILE,
                                               RULES_FILE, TEST_CLASS_FILE, MAX_ITERATIONS, MIN_COVERING, COVERING_STRATEGY,
                                               MAX_FAILED_ATTEMPTS, MIN_FIDELITY, LOWEST_MIN_FIDELITY, DROPOUT_DIM, DROPOUT_HYP, NB_QUANT_LEVELS,
@@ -219,10 +214,11 @@ int fidexGlo(const std::string &command) {
     int nbAttributes = params->getInt(NB_ATTRIBUTES);
     int nbClasses = params->getInt(NB_CLASSES);
     std::string testSamplesDataFile = params->getString(TEST_DATA_FILE);
-    double decisionThreshold = params->getFloat(DECISION_THRESHOLD);
-    int positiveClassIndex = params->getInt(POSITIVE_CLASS_INDEX);
     bool withFidex = params->getBool(WITH_FIDEX);
     bool minimalVersion = params->getBool(WITH_MINIMAL_VERSION);
+    float decisionThreshold;
+    int positiveClassIndex;
+    getThresholdFromRulesFile(params->getString(GLOBAL_RULES_FILE), decisionThreshold, positiveClassIndex);
 
     // ----------------------------------------------------------------------
 
@@ -300,8 +296,8 @@ int fidexGlo(const std::string &command) {
                                         params->getString(TRAIN_PRED_FILE),
                                         params->getInt(NB_ATTRIBUTES),
                                         params->getInt(NB_CLASSES),
-                                        params->getFloat(DECISION_THRESHOLD),
-                                        params->getInt(POSITIVE_CLASS_INDEX)));
+                                        decisionThreshold,
+                                        positiveClassIndex));
 
         if (!trainDatas->getHasClasses()) {
           throw CommandArgumentException("The train true classes file has to be given with option --train_class_file or classes have to be given in the train data file.");
@@ -312,8 +308,8 @@ int fidexGlo(const std::string &command) {
                                         params->getString(TRAIN_PRED_FILE),
                                         params->getInt(NB_ATTRIBUTES),
                                         params->getInt(NB_CLASSES),
-                                        params->getFloat(DECISION_THRESHOLD),
-                                        params->getInt(POSITIVE_CLASS_INDEX),
+                                        decisionThreshold,
+                                        positiveClassIndex,
                                         params->getString(TRAIN_CLASS_FILE)));
       }
 
@@ -377,7 +373,7 @@ int fidexGlo(const std::string &command) {
                 << std::endl;
     }
 
-    if (params->getFloat(DECISION_THRESHOLD) != -1) {
+    if (decisionThreshold != -1) {
       std::string classDecision;
       if (hasClassNames) {
         classDecision = classNames[positiveClassIndex];
