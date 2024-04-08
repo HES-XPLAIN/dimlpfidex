@@ -226,12 +226,28 @@ int fidexGloStats(const std::string &command) {
     // Get statistic line at the top of the rulesfile
     std::string statsLine;
     std::fstream rulesData;
-      std::vector<Rule> rules;
+    std::vector<Rule> rules;
 
     if (rulesFile.substr(rulesFile.find_last_of(".") + 1) == "json") {
       rules = Rule::fromJsonFile(rulesFile);
-      //TODO continue here
-      // statsLine += rules;
+
+      double meanCovering = 0;
+      double meanNbAntecedantsPerRule = 0;
+      int nbRules = rules.size();
+
+      for (Rule r : rules) {
+        meanCovering += static_cast<double>(r.getCoveredSamples().size());
+        meanNbAntecedantsPerRule += static_cast<double>(r.getAntecedants().size());
+      }
+      meanCovering /= nbRules;
+      meanNbAntecedantsPerRule /= nbRules;
+
+      // TODO add missing line
+      statsLine += "Number of rules : " + std::to_string(nbRules);
+      statsLine += ", mean sample covering number per rule : ";
+      statsLine += std::to_string(meanCovering) + ", mean number of antecedents per rule : ";
+      statsLine += std::to_string(meanNbAntecedantsPerRule) + "\n";
+
     } else {
       rulesData.open(rulesFile, std::ios::in); // Read data file
       if (rulesData.fail()) {
@@ -240,8 +256,8 @@ int fidexGloStats(const std::string &command) {
       getline(rulesData, statsLine);
       statsLine += "\n";
       getRules(rules, rulesFile, *testDatas);
-      lines.emplace_back(statsLine);
     }
+    lines.emplace_back(statsLine);
 
     std::cout << "Data imported." << std::endl
               << std::endl;
@@ -374,6 +390,18 @@ int fidexGloStats(const std::string &command) {
     accuracyWhenActivatedRulesAndModelAgree /= nbActivatedRulesAndModelAgree;
 
     lines.push_back("Statistics with a test set of " + std::to_string(nbTestData) + " samples :\n");
+    if (params->getFloat(DECISION_THRESHOLD) < 0.0) {
+      lines.push_back("No decision threshold is used.");
+    } else {
+      lines.push_back("Decision threshold used : " + std::to_string(params->getFloat(DECISION_THRESHOLD)));
+    }
+
+    if (params->getInt(POSITIVE_CLASS_INDEX) < 0) {
+      lines.push_back("No positive index class is used.");
+    } else {
+      lines.push_back("Positive index class used : " + std::to_string(params->getInt(POSITIVE_CLASS_INDEX)));
+    }
+
     lines.push_back("The global rule fidelity rate is : " + std::to_string(fidelity));
     lines.push_back("The global rule accuracy is : " + std::to_string(accuracy));
     lines.push_back("The explainability rate (when we can find one or more rules, either correct ones or activated ones which all agree on the same class) is : " + std::to_string(explainabilityRate));
@@ -430,56 +458,74 @@ int fidexGloStats(const std::string &command) {
 
     // Compute rules statistics on test set
     if (params->isStringSet(GLOBAL_RULES_OUTFILE)) {
-      std::ofstream outputFile(params->getString(GLOBAL_RULES_OUTFILE));
-      if (outputFile.is_open()) {
-        outputFile << statsLine;
+      std::string ruleFile = params->getString(GLOBAL_RULES_OUTFILE);
 
-        for (int r = 0; r < rules.size(); r++) { // For each rule
-          std::vector<int> sampleIds;
-          getCovering(sampleIds, rules[r], testData);
-          size_t coverSize = sampleIds.size();
-          double ruleFidelity = 0;   // porcentage of correct covered samples predictions with respect to the rule prediction
-          double ruleAccuracy = 0;   // porcentage of correct covered samples predictions with respect to the samples true class
-          double ruleConfidence = 0; // mean output prediction score of covered samples
-          for (int sampleId : sampleIds) {
-            int samplePred = testPreds[sampleId];
-            double sampleOutputPred = 0.0;
-            int classRule = rules[r].getOutputClass();
-            sampleOutputPred = testOutputValuesPredictions[sampleId][classRule];
-            int rulePred = rules[r].getOutputClass();
-            int trueClass = testTrueClasses[sampleId];
-            if (samplePred == rulePred) {
-              ruleFidelity += 1;
-            }
-            if (samplePred == trueClass) {
-              ruleAccuracy += 1;
-            }
-            ruleConfidence += sampleOutputPred;
-          }
-          if (coverSize != 0) {
-            ruleFidelity /= static_cast<double>(coverSize);
-            ruleAccuracy /= static_cast<double>(coverSize);
-            ruleConfidence /= static_cast<double>(coverSize);
-          }
-          std::vector<std::string> trainStats = splitString(rules[r].toString(attributeNames, classNames), "\n");
-          outputFile << "\n"
-                     << "Rule " << std::to_string(r + 1) << ": " << trainStats[0] << "" << std::endl;
-          outputFile << trainStats[1] << " --- Test Covering size : " << coverSize << "" << std::endl;
-          if (coverSize == 0) {
-            outputFile << trainStats[2] << "" << std::endl;
-            outputFile << trainStats[3] << "" << std::endl;
-            outputFile << trainStats[4] << "" << std::endl;
-            outputFile << "" << std::endl;
-          } else {
-            outputFile << trainStats[2] << " --- Test Fidelity : " << formattingDoubleToString(ruleFidelity) << "" << std::endl;
-            outputFile << trainStats[3] << " --- Test Accuracy : " << formattingDoubleToString(ruleAccuracy) << "" << std::endl;
-            outputFile << trainStats[4] << " --- Test Confidence : " << formattingDoubleToString(ruleConfidence) << "" << std::endl;
-            outputFile << "" << std::endl;
-          }
-        }
-        outputFile.close();
+      if (ruleFile.substr(ruleFile.find_last_of('.') + 1) == "json") {
+        Rule::toJsonFile(ruleFile, rules, params->getFloat(DECISION_THRESHOLD), params->getInt(POSITIVE_CLASS_INDEX));
       } else {
-        throw CannotOpenFileError("Error : Couldn't open global rules file with statistics on test set " + params->getString(GLOBAL_RULES_OUTFILE) + ".");
+        std::ofstream outputFile(ruleFile);
+        if (outputFile.is_open()) {
+          outputFile << statsLine;
+
+          if (params->getFloat(DECISION_THRESHOLD) < 0.0) {
+            outputFile << "No decision threshold is used.\n";
+          } else {
+            outputFile << "Decision threshold used : " + std::to_string(params->getFloat(DECISION_THRESHOLD)) << "\n";
+          }
+
+          if (params->getInt(POSITIVE_CLASS_INDEX) < 0) {
+            outputFile << "No positive index class is used.\n";
+          } else {
+            outputFile << "Positive index class used : " << params->getInt(POSITIVE_CLASS_INDEX) << "\n";
+          }
+
+          for (int r = 0; r < rules.size(); r++) { // For each rule
+            std::vector<int> sampleIds;
+            getCovering(sampleIds, rules[r], testData);
+            size_t coverSize = sampleIds.size();
+            double ruleFidelity = 0;   // porcentage of correct covered samples predictions with respect to the rule prediction
+            double ruleAccuracy = 0;   // porcentage of correct covered samples predictions with respect to the samples true class
+            double ruleConfidence = 0; // mean output prediction score of covered samples
+            for (int sampleId : sampleIds) {
+              int samplePred = testPreds[sampleId];
+              double sampleOutputPred = 0.0;
+              int classRule = rules[r].getOutputClass();
+              sampleOutputPred = testOutputValuesPredictions[sampleId][classRule];
+              int rulePred = rules[r].getOutputClass();
+              int trueClass = testTrueClasses[sampleId];
+              if (samplePred == rulePred) {
+                ruleFidelity += 1;
+              }
+              if (samplePred == trueClass) {
+                ruleAccuracy += 1;
+              }
+              ruleConfidence += sampleOutputPred;
+            }
+            if (coverSize != 0) {
+              ruleFidelity /= static_cast<double>(coverSize);
+              ruleAccuracy /= static_cast<double>(coverSize);
+              ruleConfidence /= static_cast<double>(coverSize);
+            }
+            std::vector<std::string> trainStats = splitString(rules[r].toString(attributeNames, classNames), "\n");
+            outputFile << "\n"
+                       << "Rule " << std::to_string(r + 1) << ": " << trainStats[0] << "" << std::endl;
+            outputFile << trainStats[1] << " --- Test Covering size : " << coverSize << "" << std::endl;
+            if (coverSize == 0) {
+              outputFile << trainStats[2] << "" << std::endl;
+              outputFile << trainStats[3] << "" << std::endl;
+              outputFile << trainStats[4] << "" << std::endl;
+              outputFile << "" << std::endl;
+            } else {
+              outputFile << trainStats[2] << " --- Test Fidelity : " << formattingDoubleToString(ruleFidelity) << "" << std::endl;
+              outputFile << trainStats[3] << " --- Test Accuracy : " << formattingDoubleToString(ruleAccuracy) << "" << std::endl;
+              outputFile << trainStats[4] << " --- Test Confidence : " << formattingDoubleToString(ruleConfidence) << "" << std::endl;
+              outputFile << "" << std::endl;
+            }
+          }
+          outputFile.close();
+        } else {
+          throw CannotOpenFileError("Error : Couldn't open global rules file with statistics on test set " + params->getString(GLOBAL_RULES_OUTFILE) + ".");
+        }
       }
     }
 
