@@ -83,7 +83,6 @@ void showRulesParams() {
  * @param p class containing all used defined parameters that influences the program execution.
  * @param hyperlocus 2D vector of doubles used to compute Fidex alorithm
  */
-// TODO: implement dicotomic min covering
 void generateRules(std::vector<Rule> &rules, std::vector<int> &notCoveredSamples, DataSetFid &trainDataset, Parameters &p, const std::vector<std::vector<double>> &hyperlocus) {
   int nbProblems = 0;
   int nbRulesNotFound = 0;
