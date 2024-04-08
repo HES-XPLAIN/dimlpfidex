@@ -402,6 +402,7 @@ void printOptionDescription(const std::string &option, const std::string &descri
     std::cout << std::setw(width) << " " << description << std::endl;
   } else {
     std::cout << std::left << std::setw(width) << option << description << std::endl;
+    std::cout << std::right; // Reinitialize alignment
   }
 }
 
