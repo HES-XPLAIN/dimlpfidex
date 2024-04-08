@@ -244,7 +244,7 @@ int fidexGloStats(const std::string &command) {
     std::vector<Rule> rules;
 
     if (rulesFile.substr(rulesFile.find_last_of(".") + 1) == "json") {
-      rules = Rule::fromJsonFile(rulesFile, *params);
+      rules = Rule::fromJsonFile(rulesFile, decisionThreshold, positiveClassIndex);
 
       double meanCovering = 0;
       double meanNbAntecedantsPerRule = 0;
@@ -269,7 +269,7 @@ int fidexGloStats(const std::string &command) {
       }
       getline(rulesData, statsLine);
       statsLine += "\n";
-      getRules(rules, rulesFile, *testDatas, *params);
+      getRules(rules, rulesFile, *testDatas, decisionThreshold, positiveClassIndex);
     }
     lines.emplace_back(statsLine);
 

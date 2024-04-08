@@ -99,7 +99,7 @@ std::string Rule::toString(const std::vector<std::string> &attributes, const std
  * @param filename   path of the JSON file to be parsed
  * @return vector<Rule>
  */
-std::vector<Rule> Rule::fromJsonFile(const std::string &filename, Parameters &params) {
+std::vector<Rule> Rule::fromJsonFile(const std::string &filename, float &decisionThreshold, int &positiveClassIndex) {
   std::vector<Rule> result;
   std::ifstream ifs(filename);
 
@@ -115,13 +115,9 @@ std::vector<Rule> Rule::fromJsonFile(const std::string &filename, Parameters &pa
     return result;
   }
 
-  int index = jsonData["positive index class"];
-  float threshold = jsonData["threshold"];
+  positiveClassIndex = jsonData["positive index class"];
+  decisionThreshold = jsonData["threshold"];
   result = jsonData["rules"];
-
-  // TODO: make this work
-  params.setInt(POSITIVE_CLASS_INDEX, index);
-  params.setFloat(DECISION_THRESHOLD, threshold);
 
   return result;
 }
@@ -449,10 +445,10 @@ bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, b
  * @param nbAttributes The number of attributes that can appear in a rule.
  * @param nbClasses The number of classes that can appear in a rule.
  */
-void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset, Parameters &params) {
+void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset, float &decisionThreshold, int &positiveClassIndex) {
   // if file is JSON read it properly
   if (rulesFile.substr(rulesFile.find_last_of(".") + 1) == "json") {
-    rules = Rule::fromJsonFile(rulesFile, params);
+    rules = Rule::fromJsonFile(rulesFile, decisionThreshold, positiveClassIndex);
   } else {
     // Open rules file
     std::fstream rulesData;
@@ -601,21 +597,27 @@ void getThresholdFromRulesFile(const std::string &filePath, float &decisionThres
   std::ifstream file(filePath);
   std::string line;
 
-  if (!file) {
-    throw FileNotFoundError("Error : file " + filePath + " not found");
-  }
+  if (filePath.substr(filePath.find_last_of('.') + 1) == "json") {
+    std::vector<Rule> rules;
+    rules = Rule::fromJsonFile(filePath, decisionThreshold, positiveClassIndex);
+  } else {
 
-  while (std::getline(file, line)) {
-    std::string tokenThresh;
-    std::string tokenClass;
-
-    if (line.find("Using a decision threshold of") != std::string::npos) {
-      std::istringstream iss(line);
-      iss >> tokenThresh >> tokenThresh >> tokenThresh >> tokenThresh >> tokenThresh >> tokenThresh >> tokenClass >> tokenClass >> tokenClass; // Get decision threshold
-      decisionThreshold = std::stof(tokenThresh);
-      positiveClassIndex = std::stoi(tokenClass);
+    if (!file) {
+      throw FileNotFoundError("Error : file " + filePath + " not found");
     }
-  }
 
-  file.close();
+    while (std::getline(file, line)) {
+      std::string tokenThresh;
+      std::string tokenClass;
+
+      if (line.find("Using a decision threshold of") != std::string::npos) {
+        std::istringstream iss(line);
+        iss >> tokenThresh >> tokenThresh >> tokenThresh >> tokenThresh >> tokenThresh >> tokenThresh >> tokenClass >> tokenClass >> tokenClass; // Get decision threshold
+        decisionThreshold = std::stof(tokenThresh);
+        positiveClassIndex = std::stoi(tokenClass);
+      }
+    }
+
+    file.close();
+  }
 }
