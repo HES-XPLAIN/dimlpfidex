@@ -22,7 +22,7 @@ void showRulesParams() {
   printOptionDescription("--train_class_file <str>", "Train true class file, not mandatory if classes are specified in train data file");
   printOptionDescription("--weights_file <str>", "Weights file (not mandatory if a rules file is given with --rules_file)");
   printOptionDescription("--rules_file <str>", "Rules file to be converted to hyperlocus (not mandatory if a weights file is given with --weights_file)");
-  printOptionDescription("--global_rules_outfile <str>", "Rules output file>");
+  printOptionDescription("--global_rules_outfile <str>", "Rules output file. If a .json filename is given, rules are saved in a special json format>");
   printOptionDescription("--heuristic <int [1,3]>", "Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in dataset");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in dataset");
