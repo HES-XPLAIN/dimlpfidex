@@ -67,7 +67,7 @@ public:
   };
   std::string toString(const std::vector<std::string> &attributes, const std::vector<std::string> &classes) const;
   bool isEqual(const Rule &other) const;
-  static std::vector<Rule> fromJsonFile(const std::string &filename, Parameters &params);
+  static std::vector<Rule> fromJsonFile(const std::string &filename, float &decisionThreshold, int &positiveClassIndex);
   static void toJsonFile(const std::string &filename, const std::vector<Rule> &rules, float threshold, int positiveIndex);
 };
 
@@ -101,7 +101,7 @@ std::string getStrPatternWithClassNames(const std::vector<std::string> &classNam
 std::vector<bool> getRulePatternsFromString(const std::string &str, DataSetFid &dataset);
 std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, DataSetFid &dataset, bool withClasses = true);
 bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, bool withClassNames, DataSetFid &dataset);
-void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset, Parameters &params);
+void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset, float &decisionThreshold, int &positiveClassIndex);
 std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames,
                                           const std::vector<std::string> &classNames, float threshold, int positiveIndex);
 void getActivatedRules(std::vector<int> &activatedRules, std::vector<Rule> &rules, std::vector<double> &testValues);
