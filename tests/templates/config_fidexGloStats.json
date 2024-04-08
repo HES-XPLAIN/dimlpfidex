@@ -8,6 +8,7 @@
     "console_file": "out/fidexGloStats_console.out",
     "nb_attributes": 31,
     "nb_classes": 7,
+    "positive_class_index": -1,
     "stats_file": "out/fidexGloStats_stats.txt",
     "global_rules_outfile": "out/new_rules_with_test_stats.txt"
 }

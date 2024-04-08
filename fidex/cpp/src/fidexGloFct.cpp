@@ -356,7 +356,7 @@ int fidexGlo(const std::string &command) {
     std::vector<std::string> lines;
     std::string statsLine;
     lines.emplace_back("Global statistics of the rule set : ");
-    getRules(rules, params->getString(GLOBAL_RULES_FILE), *testDatas, *params);
+    getRules(rules, params->getString(GLOBAL_RULES_FILE), *testDatas, decisionThreshold, positiveClassIndex);
     // Get stats line
     std::fstream rulesData;
     rulesData.open(params->getString(GLOBAL_RULES_FILE), std::ios::in); // Read data file
