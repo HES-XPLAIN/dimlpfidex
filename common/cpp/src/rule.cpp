@@ -578,3 +578,41 @@ void getActivatedRules(std::vector<int> &activatedRules, std::vector<Rule> &rule
     }
   }
 }
+
+/**
+ * @brief Extract the decision threshold and the index of the positive class from a rules file.
+ *
+ * @param filePath The path to the file containing the rules.
+ * @param decisionThreshold Reference to a double variable where the decision threshold will be stored.
+ *                          Set to -1.0 if not found in the file.
+ * @param positiveClassIndex Reference to an int variable where the index of the positive class will be stored.
+ *                           Set to -1 if not found in the file.
+ * @throws FileNotFoundError If the file specified by filePath cannot be opened.
+ */
+void getThresholdFromRulesFile(const std::string &filePath, float &decisionThreshold, int &positiveClassIndex) {
+  decisionThreshold = -1.0;
+  positiveClassIndex = -1;
+
+  std::ifstream file(filePath);
+  std::string line;
+
+  if (!file) {
+    throw FileNotFoundError("Error : file " + filePath + " not found");
+  }
+
+  while (std::getline(file, line)) {
+    std::string token;
+
+    if (line.find("Decision threshold used :") != std::string::npos) {
+      std::istringstream iss(line);
+      iss >> token >> token >> token >> token >> token; // Get decision threshold
+      decisionThreshold = std::stod(token);
+      std::getline(file, line);
+      std::istringstream iss2(line);
+      iss2 >> token >> token >> token >> token >> token >> token >> token; // Get positive index
+      positiveClassIndex = std::stoi(token);
+    }
+  }
+
+  file.close();
+}
