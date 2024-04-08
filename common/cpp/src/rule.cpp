@@ -496,8 +496,6 @@ std::tuple<double, double> writeRulesFile(const std::string &filename, const std
     return std::make_tuple(0, 0);
   }
 
-  int counter = 0;
-  auto nbRules = static_cast<int>(rules.size());
   double meanCovSize = 0;
   double meanNbAntecedents = 0;
 
@@ -530,11 +528,15 @@ std::tuple<double, double> writeRulesFile(const std::string &filename, const std
       file << "Number of rules : " << nbRules
            << ", mean sample covering number per rule : " << formattingDoubleToString(meanCovSize)
            << ", mean number of antecedents per rule : " << formattingDoubleToString(meanNbAntecedents)
-           << std::endl
-           << "Decision threshold used : " << threshold
-           << std::endl
-           << "Index of the positive class : " << positiveIndex
-           << std::endl
+           << std::endl;
+      if (threshold != -1) {
+        file << "Decision threshold used : " << threshold
+             << std::endl
+             << "Index of the positive class : " << positiveIndex;
+      } else {
+        file << "No decision threshold is used.";
+      }
+      file << std::endl
            << std::endl
            << stream.str();
 
