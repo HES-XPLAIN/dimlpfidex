@@ -118,7 +118,7 @@ Future<void> _resetForm(BuildContext context, TabController tabController,
 Future<void> _generateJson(
     GlobalKey<FormBuilderState> key, BuildContext context) async {
   Map<String, dynamic> values = Map.from(key.currentState!.value)
-    ..removeWhere((key, value) => value == null);
+    ..removeWhere((key, value) => value == null || (value.runtimeType == (List<dynamic>) && value[0] == null));
 
   try {
     JsonEncoder encoder = const JsonEncoder.withIndent("  ");
@@ -130,7 +130,8 @@ Future<void> _generateJson(
       _produceFileForOS(json, context);
     }
   } on JsonUnsupportedObjectError catch (e) {
-    showSnackBar(context, "JSON generation as failed... (error: $e)", color: Colors.red[500]!);
+    showSnackBar(context, "JSON generation as failed... (error: $e)",
+        color: Colors.red[500]!);
   }
 }
 
