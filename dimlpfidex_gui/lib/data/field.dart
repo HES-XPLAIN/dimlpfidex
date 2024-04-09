@@ -6,6 +6,7 @@ enum Datatype {
   integer,
   doublePrecision, // actually, doubles are used instead
   string,
+  restrictedChoiceString,
   filePath,
   boolean,
   directoryPath,
@@ -23,6 +24,7 @@ class Field {
   final String defaultValue;
   final String minValue;
   final String maxValue;
+  final List<String> items;
 
   const Field(
       this.label,
@@ -32,6 +34,7 @@ class Field {
       this.defaultValue = "",
       this.minValue = "",
       this.maxValue = "",
+      this.items = const [],
       this.description = "No description available"});
 
   Widget toInputField() {
