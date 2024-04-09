@@ -41,16 +41,22 @@ class _InputFieldState extends State<InputField> {
     switch (field.datatype) {
       case Datatype.integer || Datatype.doublePrecision:
         return _buildNumericField(context);
+
+      case Datatype.restrictedChoiceString:
+        return _buildStringDropdownField(context);
+
       case Datatype.boolean:
         return _buildBooleanField(context);
+
       case Datatype.filePath || Datatype.directoryPath:
-        // TODO: differenciate file and directory
         return _buildFilePathPickerField(context);
+
       case Datatype.listInteger ||
             Datatype.listDoublePrecision ||
             Datatype.listString:
         return _buildTextField(
             context, _listInputValidator, _listValueTransformer);
+
       default:
         return _buildTextField(context, _basicInputValidator, null);
     }
@@ -171,6 +177,27 @@ class _InputFieldState extends State<InputField> {
                 validator: (value) => validator(value),
                 valueTransformer: (value) =>
                     valueTransformer?.call(value, field.datatype) ?? value,
+              ))
+        ]));
+  }
+
+  Widget _buildStringDropdownField(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          ConstrainedBox(
+              constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.5),
+              child: FormBuilderDropdown<String>(
+                key: inputFieldKey,
+                name: field.jsonLabel,
+                items: field.items
+                    .map((item) => DropdownMenuItem(
+                        alignment: Alignment.center,
+                        value: item,
+                        child: Text(item)))
+                    .toList(),
+                decoration: InputDecoration(label: Text(field.label)),
               ))
         ]));
   }
@@ -307,8 +334,8 @@ class _InputFieldState extends State<InputField> {
   List<dynamic> _listValueTransformer(String? value, Datatype datatype) {
     String formattedValue;
 
-    if (datatype == Datatype.listString && value != null) {
-      List<String> words = value.split(RegExp(r'\s*,\s*|\s+'));
+    if (datatype == Datatype.listString) {
+      List<String> words = value!.split(RegExp(r'\s*,\s*|\s+'));
       words = [for (String word in words) "\"$word\""];
       formattedValue = words.toString();
     } else {
@@ -320,7 +347,7 @@ class _InputFieldState extends State<InputField> {
 
   void _askForPath(BuildContext context, Datatype type) async {
     String? path;
-    
+
     try {
       switch (type) {
         case Datatype.filePath:
