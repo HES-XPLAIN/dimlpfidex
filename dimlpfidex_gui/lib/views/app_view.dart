@@ -33,6 +33,7 @@ class _AppPageState extends State<AppPage> with TickerProviderStateMixin {
     Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Text("Home")),
     Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Text("Fidex")),
     Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Text("Dimlp")),
+    Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Text("Python")),
     Padding(
         padding: EdgeInsets.symmetric(vertical: 10), child: Text("Glossary"))
   ];
@@ -77,13 +78,30 @@ class _AppPageState extends State<AppPage> with TickerProviderStateMixin {
           NestedTabBar(tabs: {
             "DimlpCls":
                 FormView(fields: dimlpClsFields, tabController: _tabController),
-            "DimlpTrn": FormView(fields: dimlpTrnFields, tabController: _tabController),
-            "DimlpPred": FormView(fields: dimlpPredFields, tabController: _tabController),
-            "DimlpRul": FormView(fields: dimlpRulFields, tabController: _tabController),
-            "DimlpBT": FormView(fields: dimlpBTFields, tabController: _tabController)
+            "DimlpTrn":
+                FormView(fields: dimlpTrnFields, tabController: _tabController),
+            "DimlpPred": FormView(
+                fields: dimlpPredFields, tabController: _tabController),
+            "DimlpRul":
+                FormView(fields: dimlpRulFields, tabController: _tabController),
+            "DimlpBT":
+                FormView(fields: dimlpBTFields, tabController: _tabController)
+          }),
+          NestedTabBar(tabs: {
+            "ComputeRocCurve": FormView(
+                fields: computeRocCurveFields, tabController: _tabController),
+            "ConvKeras": FormView(
+                fields: convKerasFields, tabController: _tabController),
+            "GradBoostTrn": FormView(
+                fields: gradBoostTrnFields, tabController: _tabController),
+            "MlpTrn":
+                FormView(fields: mlpTrnFields, tabController: _tabController),
+            "RandForestsTrn": FormView(
+                fields: randForestsTrnFields, tabController: _tabController),
+            "SvmTrn":
+                FormView(fields: svmTrnFields, tabController: _tabController)
           }),
           const GlossaryView(fields: {
-
             "Fidex": fidexFields,
             "Fidex Glo": fidexGloFields,
             "Fidex Glo Stats": fidexGloStatsFields,
@@ -93,6 +111,12 @@ class _AppPageState extends State<AppPage> with TickerProviderStateMixin {
             "DimlpPred": dimlpPredFields,
             "DimlpRul": dimlpRulFields,
             "DimlpBT": dimlpBTFields,
+            "ComputeRocCurve": computeRocCurveFields,
+            "ConvKeras": convKerasFields,
+            "GradBoostTrn": gradBoostTrnFields,
+            "MlpTrn": mlpTrnFields,
+            "RandForestsTrn": randForestsTrnFields,
+            "SvmTrn": svmTrnFields
           })
         ],
       ),
