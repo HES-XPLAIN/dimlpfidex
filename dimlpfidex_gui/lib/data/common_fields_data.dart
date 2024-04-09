@@ -10,7 +10,7 @@ const rootFolderFld = Field(
 
 const trainDataFileFld = Field(
   "Train data file",
-  "--train_data_file",
+  "train_data_file",
   Datatype.filePath,
   isRequired: true,
   description: "Path of file containing the train portion of the dataset.",
@@ -18,7 +18,7 @@ const trainDataFileFld = Field(
 
 const trainPredFileFld = Field(
   "Train prediction file",
-  "--train_pred_file",
+  "train_pred_file",
   Datatype.filePath,
   isRequired: true,
   description:
@@ -27,7 +27,7 @@ const trainPredFileFld = Field(
 
 const nbAttributesFld = Field(
   "Number of attributes in dataset",
-  "--nb_attributes",
+  "nb_attributes",
   Datatype.integer,
   isRequired: true,
   minValue: "1",
@@ -36,7 +36,7 @@ const nbAttributesFld = Field(
 );
 const nbClassesFld = Field(
   "Number of classes in dataset",
-  "--nb_classes",
+  "nb_classes",
   Datatype.integer,
   isRequired: true,
   minValue: "2",
@@ -46,7 +46,7 @@ const nbClassesFld = Field(
 
 const rulesOutputFileFld = Field(
   "Rule(s) output file",
-  "--rules_outfile",
+  "rules_outfile",
   Datatype.filePath,
   description: "Path/name of rule(s) output file.",
 );
