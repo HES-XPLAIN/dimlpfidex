@@ -83,12 +83,41 @@ def get_and_check_parameters(init_args):
     parser.add_argument("--K", type=lambda x: float_type(x, min=0, min_inclusive=False), metavar="<float ]0,inf[>", help="Parameter to improve dynamics", default=1.0)
     parser.add_argument("--with_hsl", type=bool_type, metavar="<bool>", help="Whether to change 3-channels data from RGB to HSL format", default=False, action=TaggableAction, tag="convKeras")
     parser.add_argument("--with_resnet", type=bool_type, metavar="<bool>", help="Whether to train with ResNet", default=False, action=TaggableAction, tag="convKeras")
-    parser.add_argument("--with_vgg", type=bool_type, metavar="<bool>", help="Whether to train with VGG)", default=False, action=TaggableAction, tag="convKeras")
+    parser.add_argument("--with_vgg", type=bool_type, metavar="<bool>", help="Whether to train with VGG", default=False, action=TaggableAction, tag="convKeras")
 
     return get_args(args, cleaned_args, parser) # Return attributes
 
 def convKeras(args: str = None):
+    """
+    Trains a convolutional neural network (CNN) model using the Keras library with optional support for popular architectures like ResNet and VGG.
+    This function processes data preprocessing that includes normalization and a staircase activation function that allows for the characterization
+    of discriminating hyperplanes, which are used in Fidex. This allows us to then use Fidex for comprehensible rule extraction. It accommodates
+    various datasets including MNIST, CIFAR-10, and CIFAR-100, and allows for extensive customization through command-line arguments.
 
+    Note:
+    - It's mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.
+    - Validation data can either be specified directly or split from the training data based on a provided ratio.
+    - if validation files are given, and you want to use Fidex algorithms later, you will have to use both train and
+      validation datas given here in the train datas and classes of Fidex.
+    - Parameters can be specified using the command line or a JSON configuration file.
+    - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
+
+    Formats:
+    - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:
+      1. Only attributes (floats).
+      2. Attributes (floats) followed by an integer class ID.
+      3. Attributes (floats) followed by one-hot encoded class.
+    - Class files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:
+      1. Integer class ID.
+      2. One-hot encoded class.
+
+    Example of how to call the function:
+    convKeras('--dataset mnist --train_data_file mnistTrainData.txt --train_class_file mnistTrainClass.txt --test_data_file mnistTestData.txt --test_class_file mnistTestClass.txt --valid_data_file mnistValidData.txt --valid_class_file mnistValidClass.txt --nb_attributes 784 --nb_classes 10 --root_folder dimlp/datafiles/Mnist')
+
+    :param args: A single string containing either the path to a JSON configuration file with all specified arguments or all arguments for the function, formatted like command-line input.
+                 This includes dataset selection, file paths, training parameters, and options for model architecture and output files.
+    :return: Returns 0 for successful execution, -1 for any errors encountered during the process.
+    """
     try:
         if not args:
             args = ""

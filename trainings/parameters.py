@@ -6,6 +6,14 @@ import re
 import ast
 
 def print_parameters(args):
+    """
+    Prints the list of parameters passed to the program.
+
+    This function iterates over all arguments contained within `args` (expected to be an argparse Namespace)
+    and prints them to the standard output along with their values, provided they are not None.
+
+    :param args: A Namespace containing the program's arguments.
+    """
     print("Parameters list:")
     for k in args.__dict__:
         if args.__dict__[k] is not None:
@@ -87,6 +95,15 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
 
     # To display execution examples on one line
     def add_text(self, text, raw=False):
+        """
+        Adds custom text to the help message. This method allows for raw text addition,
+        bypassing the standard formatting applied by argparse.
+
+        :param text: The text to be added to the help message.
+        :type text: str
+        :param raw: If True, adds the text without any formatting. If False, the standard formatting is applied.
+        :type raw: bool
+        """
         if raw:
             self._add_item(lambda x: x + '\n\n', [text])
         else:
@@ -220,7 +237,7 @@ class CustomArgumentParser(argparse.ArgumentParser):
 
 def directory(path:str):
     """
-    A type function for argparse to validate directory paths.
+    An argparse type function that validates if the provided path is a directory.
 
     :param path: The input path string.
     :return: The validated directory path.
@@ -456,9 +473,9 @@ def enum_type(value:str, *valid_strings, **valid_types):
 
 def get_initial_parser(init_args):
     """
-    Creates and returns an initial argparse parser for parsing root folder and JSON configuration file options.
+    Creates and returns an initial argument parser for handling the root folder and JSON configuration file options.
 
-    :param init_args: Initial command-line arguments.
+    :param init_args: The initial command-line arguments.
     :return: A tuple containing the parsed arguments and the initial parser instance.
     """
     initial_parser = CustomArgumentParser(description="This is a parser for root folder and json handling", add_help=False)
@@ -478,11 +495,11 @@ def get_initial_parser(init_args):
 
 def get_common_parser(args, initial_parser):
     """
-    Creates and returns a common argparse parser for parsing shared training arguments.
+    Creates and returns a common argument parser for handling shared training arguments.
 
-    :param args: Previously parsed arguments.
-    :param initial_parser: The initial parser instance to use as a parent for common arguments.
-    :return: The common argparse parser instance.
+    :param args: The arguments previously parsed by the initial parser.
+    :param initial_parser: The instance of the initial parser to use as a parent for common arguments.
+    :return: The instance of the common argument parser.
     """
     common_parser = CustomArgumentParser(description="This is a parser for common training arguments", parents=[initial_parser], add_help=False)
     common_parser.add_argument("--train_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Train data file", metavar="<str>", required=True)
@@ -502,8 +519,8 @@ def get_args(args, init_args, parser):
     """
     Finalizes argument parsing, either from the JSON configuration file or command-line input, using a given parser.
 
-    :param args: Previously parsed arguments.
-    :param init_args: Initial command-line arguments.
+    :param args: The arguments previously parsed by the initial parser.
+    :param init_args: The initial command-line arguments.
     :param parser: The argparse parser instance to use for final argument parsing.
     :return: The fully parsed arguments.
     """

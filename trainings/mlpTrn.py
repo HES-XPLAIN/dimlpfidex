@@ -70,6 +70,33 @@ def get_and_check_parameters(init_args):
     return get_args(args, cleaned_args, parser) # Return attributes
 
 def mlpTrn(args: str = None):
+    """
+    Trains an MLP model with data preprocessing that includes normalization and a staircase activation function that allows
+    for the characterization of discriminating hyperplanes, which are used in Fidex. This allows us to then use Fidex for comprehensible rule extraction.
+    The function offers a wide range of customization through command-line arguments, allowing for the specification of MLP parameters, output options, and more.
+
+    Note:
+    - It's mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.
+    - True train and test class labels must be provided, either within the data files or separately through class files.
+    - Parameters can be defined directly via the command line or through a JSON configuration file.
+    - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
+
+    Formats:
+    - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:
+      1. Only attributes (floats).
+      2. Attributes (floats) followed by an integer class ID.
+      3. Attributes (floats) followed by one-hot encoded class.
+    - Class files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:
+      1. Integer class ID.
+      2. One-hot encoded class.
+
+    Example of how to call the function:
+    mlpTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile mlp/weights.wts --stats_file mlp/stats.txt --train_pred_outfile mlp/predTrain.out --test_pred_outfile mlp/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')
+
+    :param args: A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
+                 This includes file paths, MLP parameters, and options for output and for the staircase activation process.
+    :return: Returns 0 for successful execution, -1 for errors encountered during the process.
+    """
     try:
         if not args:
             args = ""
