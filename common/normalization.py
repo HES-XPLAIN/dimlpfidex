@@ -371,11 +371,10 @@ def normalization(args: str = None):
     The function generates new normalized and/or denormalized files.
 
     Note:
-    - Specify the number of attributes in the data and the symbol representing missing data.
+    - It's mandatory to specify the number of attributes in the data and the symbol representing missing data.
     - Choose whether to replace missing data or not.
     - If normalizing training data, it is advisable to normalize test/validation files simultaneously for consistency.
-    - If no keyword arguments are provided, the function displays the usage instructions, detailing the required and optional parameters.
-      This guide assists users in correctly specifying arguments for the function.
+    - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
 
     When to use :
     - It's good to normalize data before training with Dimlp and dimlpBT.
@@ -386,7 +385,7 @@ def normalization(args: str = None):
     - normalization_file file: Each line contains the mean/median and standard deviation for an attribute.
       Format: '2 : original mean: 0.8307, original std: 0.0425'
       Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
-    - Data files (data_files): Should contain one sample per line, with numbers separated by spaces. Supported formats:
+    - Data files (data_files): Should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:
       1. Only attributes (floats).
       2. Attributes (floats) followed by an integer class ID.
       3. Attributes (floats) followed by one-hot encoded class.
@@ -397,10 +396,11 @@ def normalization(args: str = None):
     - Attribute file (attributes_file): Each line corresponds to an attribute's name, with optional class names at the end.
 
     Examples of how to call the function:
-    - For data files: normalization(data_files=["datanormTrain.txt", "datanormTest.txt"], normalization_indices=[0,2,4], nb_attributes=16, missing_values="NaN", root_folder="dimlp/datafiles")
-    - For rule files: normalization(normalization_file="normalization_stats.txt", rule_files="globalRulesDatanorm.txt", nb_attributes=16, root_folder="dimlp/datafiles")
+    - For data files: normalization("--data_files [datanormTrain.txt,datanormTest.txt] --normalization_indices [0,2,4] --nb_attributes 16 --missing_values NaN --root_folder dimlp/datafiles")
+    - For rule files: normalization("--normalization_file normalization_stats.txt --rule_files globalRulesDatanorm.txt --nb_attributes 16 --root_folder dimlp/datafiles")
 
-    :param args: arguments specifying various options and file paths for the normalization/denormalization process.
+    :param args: A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
+                This includes file paths for the normalization/denormalization process and other options.
     :return: Returns 0 for successful execution, -1 for errors.
 
     """

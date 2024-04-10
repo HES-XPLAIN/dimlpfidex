@@ -44,7 +44,30 @@ def get_and_check_parameters(init_args):
     return get_args(args, cleaned_args, parser) # Return attributes
 
 def computeRocCurve(args: str = None):
+    """
+    Computes and plots the Receiver Operating Characteristic (ROC) curve for a given set of test predictions and true class labels.
+    The function supports various customizations through command-line arguments, including specifying input files, choosing the
+    positive class index, and output options.
 
+    Note:
+    - The function is not compatible with SVM models directly due to the different process required for generating ROC curves for them.
+    - It's mandatory to specify the number of classes, the index of the positive class, and provide the test class labels and prediction scores.
+    - Parameters can be specified using the command line or a JSON configuration file.
+    - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
+
+    Formats:
+    - The class file should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:
+      1. Integer class ID.
+      2. One-hot encoded class.
+    - The prediction file should contain the prediction scores for the test set, with one sample per line, with scores (float) for each class separated either by spaces, tabs, semicolons or commas.
+
+    Example of how to call the function:
+    computeRocCurve('--test_class_file dataclass2Test.txt --test_pred_file predTest.out --positive_class_index 1 --output_roc roc_curve.png --stats_file stats.txt --root_folder dimlp/datafiles --nb_classes 2')
+
+    :param args: A single string containing either the path to a JSON configuration file with all specified arguments or all arguments for the function, formatted like command-line input.
+                 This includes file paths, the positive class index, and options for the output and statistical analysis.
+    :return: Returns 0 for successful execution, -1 for any errors encountered during the process. Additionally, it returns an array containing interpolated false positive rates (FPR), true positive rates (TPR), and the area under the ROC curve (AUC) for further analysis or cross-validation purposes.
+    """
     try:
         if not args:
             args = ""
