@@ -614,3 +614,8 @@ def normalization(args: str = None):
     except ValueError as error:
         print(error)
         return -1
+
+
+if __name__ == "__main__":
+    cmdline_args = " ".join(sys.argv[1:])
+    normalization(cmdline_args)
