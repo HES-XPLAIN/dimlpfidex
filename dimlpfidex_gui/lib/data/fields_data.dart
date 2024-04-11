@@ -14,7 +14,7 @@ const List<Field> testFields = [
   Field(
     "Data files to normalize",
     "data_files",
-    Datatype.filePathList,
+    Datatype.listFilePath,
     description:
         "Data files to normalize, they are normalized with respect to the first one if normalization_file is not specified",
   ),
@@ -47,7 +47,7 @@ const List<Field> testFields = [
   Field(
     "Random dict",
     "random_dict",
-    Datatype.dictIntegerDoublePrecision,
+    Datatype.dictionary,
     description: "Dictionary",
     defaultValue: "{1:2, 3:4, 5:6}",
   ),
@@ -2139,7 +2139,7 @@ const List<Field> svmTrnFields = [
   Field(
     "Class balance",
     "class_weight",
-    Datatype.dictIntegerDoublePrecision,
+    Datatype.dictionary,
     description:
         "Class balance, for example with a dictionary and 2 classes: {0:1.2, 1:3.5}",
   ),

@@ -48,8 +48,11 @@ class _InputFieldState extends State<InputField> {
       case Datatype.boolean:
         return _buildBooleanField(context);
 
-      case Datatype.filePath || Datatype.filePathList || Datatype.directoryPath:
+      case Datatype.filePath || Datatype.directoryPath:
         return _buildFilePathPickerField(context);
+
+      case Datatype.listFilePath:
+       return _buildFilePathPickerField(context);
 
       case Datatype.listInteger ||
             Datatype.listDoublePrecision ||
@@ -57,9 +60,9 @@ class _InputFieldState extends State<InputField> {
         return _buildTextField(
             context, _listInputValidator, _listValueTransformer);
 
-      case Datatype.dictIntegerDoublePrecision:
+      case Datatype.dictionary:
         return _buildTextField(
-            context, _dictInputValidator, _dictValueTransformer);
+            context, _dictInputValidator, _iterableAsStringValueTransformer);
 
       default:
         return _buildTextField(
@@ -220,11 +223,11 @@ class _InputFieldState extends State<InputField> {
                 name: field.jsonLabel,
                 decoration: InputDecoration(label: Text(field.label)),
                 keyboardType: TextInputType.multiline,
-                validator: (field.datatype == Datatype.filePathList)
+                validator: (field.datatype == Datatype.listFilePath)
                     ? (value) => _listInputValidator(value)
                     : null,
-                valueTransformer: (field.datatype == Datatype.filePathList)
-                    ? (value) => _listValueTransformer(value)
+                valueTransformer: (field.datatype == Datatype.listFilePath)
+                    ? (value) => _iterableAsStringValueTransformer(value)
                     : null,
               )),
           if (!kIsWeb)
@@ -332,7 +335,7 @@ class _InputFieldState extends State<InputField> {
     }
 
     if (field.datatype != Datatype.listString &&
-        field.datatype != Datatype.filePathList) {
+        field.datatype != Datatype.listFilePath) {
       if (RegExp("[^0-9, .]").hasMatch(value)) {
         return "There's a syntax error in your input";
       }
@@ -340,7 +343,7 @@ class _InputFieldState extends State<InputField> {
 
     try {
       if (field.datatype != Datatype.listString &&
-          field.datatype != Datatype.filePathList) {
+          field.datatype != Datatype.listFilePath) {
         json.decode("[$value]") as List<dynamic>;
       }
     } on FormatException {
@@ -362,52 +365,24 @@ class _InputFieldState extends State<InputField> {
       return "There's a syntax error in your input";
     }
 
-    try {
-      List<String> words;
-      Map<String, double> decomposedStr = {};
-      // removing curly braces and spaces
-      value = value.replaceAll(RegExp(r'(\{|\}|\ )+'), '');
-
-      // splitting string into pairs
-      words = value.split(',');
-
-      // converting to map
-      for (String item in words) {
-        String k = '\"${item.split(':')[0]}\"';
-        double v = double.parse(item.split(':')[1]);
-        decomposedStr[k] = v;
-      }
-
-      value = decomposedStr.toString();
-      json.decode(value) as Map<String, dynamic>;
-    } on FormatException {
-      return "There's a JSON syntax error in your input";
-    }
-
     return null;
   }
 
-  Map<String, dynamic>? _dictValueTransformer(String? value) {
+  // for iterables like lists or dictionaries that are represented by strings
+  String? _iterableAsStringValueTransformer(String? value) {
     if (value == null || value.isEmpty) return null;
 
-    List<String> words;
-    Map<String, double> decomposedStr = {};
-    // removing curly braces and spaces
-    value = value.replaceAll(RegExp(r'(\{|\}|\ )+'), '');
+    // removing  spaces
+    value = value.replaceAll(RegExp(r',(\ )+'), ',');
 
-    // splitting string into pairs
-    words = value.split(',');
-
-    // converting to map
-    for (String item in words) {
-      String k = '\"${item.split(':')[0]}\"';
-      double v = double.parse(item.split(':')[1]);
-      decomposedStr[k] = v;
+    if (field.datatype == Datatype.listFilePath) {
+      // ensure no single brackets are present and surround value with brackets
+      value = "[${value.replaceAll(RegExp(r'\[|\]'), '')}]";
+    } else if (field.datatype == Datatype.dictionary){
+      value = "{${value.replaceAll(RegExp(r'\{|\}'), '')}}";
     }
 
-    value = decomposedStr.toString();
-
-    return json.decode(value) as Map<String, dynamic>;
+    return value;
   }
 
   List<dynamic>? _listValueTransformer(String? value) {
@@ -419,11 +394,6 @@ class _InputFieldState extends State<InputField> {
     if (field.datatype == Datatype.listString) {
       // add double quotes to words
       words = value.split(RegExp(r'\s*,\s*|\s+'));
-      words = [for (String word in words) "\"$word\""];
-      formattedValue = words.toString();
-    } else if (field.datatype == Datatype.filePathList) {
-      // add double quotes to words
-      words = value.split(RegExp(r'(,\ |,)+'));
       words = [for (String word in words) "\"$word\""];
       formattedValue = words.toString();
     } else {
@@ -438,7 +408,7 @@ class _InputFieldState extends State<InputField> {
 
     try {
       switch (type) {
-        case Datatype.filePathList:
+        case Datatype.listFilePath:
           await openFiles().then((files) => path = files
               .map((file) => file.path)
               .toList()

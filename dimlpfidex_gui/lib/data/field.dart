@@ -8,13 +8,13 @@ enum Datatype {
   string,
   restrictedChoiceString,
   filePath,
-  filePathList,
   boolean,
   directoryPath,
-  dictIntegerDoublePrecision,
-  listInteger,
-  listDoublePrecision,
+  dictionary,
   listString,
+  listInteger,
+  listFilePath,
+  listDoublePrecision,
 }
 
 class Field {
