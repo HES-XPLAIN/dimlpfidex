@@ -8,8 +8,10 @@ enum Datatype {
   string,
   restrictedChoiceString,
   filePath,
+  filePathList,
   boolean,
   directoryPath,
+  dictIntegerDoublePrecision,
   listInteger,
   listDoublePrecision,
   listString,
@@ -26,10 +28,7 @@ class Field {
   final String maxValue;
   final List<String> items;
 
-  const Field(
-      this.label,
-      this.jsonLabel,
-      this.datatype,
+  const Field(this.label, this.jsonLabel, this.datatype,
       {this.isRequired = false,
       this.defaultValue = "",
       this.minValue = "",
@@ -71,6 +70,13 @@ class Field {
         const DataCell(Text("Is required")),
         DataCell(Text(isRequired.toString()))
       ]),
+      if (datatype == Datatype.restrictedChoiceString)
+        DataRow(cells: [
+          const DataCell(Text("Choices")),
+          DataCell(Text(items.isEmpty
+              ? "None"
+              : items.toString().replaceAll(RegExp(r'(\[|\])+'), '')))
+        ]),
       DataRow(cells: [
         const DataCell(Text("Default value")),
         DataCell(Text(defaultValue != "" ? defaultValue : "None"))
@@ -80,7 +86,8 @@ class Field {
           const DataCell(Text("Min value")),
           DataCell(Text(minValue != "" ? minValue : "None"))
         ]),
-         DataRow(cells: [
+      if (datatype == Datatype.integer || datatype == Datatype.doublePrecision)
+        DataRow(cells: [
           const DataCell(Text("Max value")),
           DataCell(Text(maxValue != "" ? maxValue : "None"))
         ])

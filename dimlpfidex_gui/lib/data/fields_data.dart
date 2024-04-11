@@ -1,7 +1,57 @@
 import 'package:dimlpfidex_gui/data/field.dart';
 import 'package:dimlpfidex_gui/data/common_fields_data.dart';
 
-// TODO: complete datas (must have)
+const List<Field> testFields = [
+  rootFolderFld,
+  Field(
+    "Normalization file",
+    "normalization_file",
+    Datatype.filePath,
+    defaultValue: "normalization.txt",
+  ),
+  seedFld,
+  dropoutDimFld,
+  Field(
+    "Data files to normalize",
+    "data_files",
+    Datatype.filePathList,
+    description:
+        "Data files to normalize, they are normalized with respect to the first one if normalization_file is not specified",
+  ),
+  Field("Dropdown", "dropdown", Datatype.restrictedChoiceString,
+      description: "Random dropdown",
+      items: [
+        "choice one",
+        "choice two",
+        "choice three",
+        "choice four",
+        "choice five"
+      ]),
+  Field(
+    "Using dichotomic search",
+    "search-strategy",
+    Datatype.boolean,
+    description:
+        "Whether or not to use the dichotomic search strategy, can increase speed.",
+    defaultValue: "true",
+  ),
+  musFld,
+  sigmasFld,
+  Field(
+    "Enums",
+    "enums",
+    Datatype.listString,
+    description: "List of words",
+    defaultValue: "hello, my, name, is, test",
+  ),
+  Field(
+    "Random dict",
+    "random_dict",
+    Datatype.dictIntegerDoublePrecision,
+    description: "Dictionary",
+    defaultValue: "{1:2, 3:4, 5:6}",
+  ),
+];
 
 const List<Field> fidexFields = [
   rootFolderFld,
@@ -121,34 +171,9 @@ const List<Field> fidexFields = [
     description:
         "Minimal min_fidelity to which we agree to go down during covering_strategy (default: 0.75)",
   ),
-  Field(
-    "Dimension dropout parameter",
-    "dropout_dim",
-    Datatype.doublePrecision,
-    minValue: "0",
-    maxValue: "1",
-    defaultValue: "0.0",
-    description: "Dimension dropout parameter (default: 0.0)",
-  ),
-  Field(
-    "Hyperplan dropout parameter",
-    "dropout_hyp",
-    Datatype.doublePrecision,
-    minValue: "0",
-    maxValue: "1",
-    defaultValue: "0.0",
-    description: "Hyperplan dropout parameter (default: 0.0)",
-  ),
-  Field(
-    "Number of stairs in staircase activation function",
-    "nb_quant_levels",
-    Datatype.integer,
-    minValue: "3",
-    maxValue: "inf",
-    defaultValue: "50",
-    description:
-        "Number of stairs in staircase activation function (default: 50)",
-  ),
+  dropoutDimFld,
+  dropoutHypFld,
+  nbQuantLevelsFld,
   Field(
     "Decision threshold for predictions",
     "decision_threshold",
@@ -335,30 +360,9 @@ const List<Field> fidexGloFields = [
     description:
         "Minimal min_fidelity to which we agree to go down during covering_strategy (default: 0.75).",
   ),
-  Field(
-    "Dimension dropout parameter",
-    "dropout_dim",
-    Datatype.doublePrecision,
-    minValue: "0",
-    maxValue: "1",
-    description: "Dimension dropout parameter (default: 0.0).",
-  ),
-  Field(
-    "Hyperplan dropout parameter",
-    "dropout_hyp",
-    Datatype.doublePrecision,
-    minValue: "0",
-    maxValue: "1",
-    description: "Hyperplan dropout parameter (default: 0.0).",
-  ),
-  Field(
-    "Number of stairs in staircase activation function",
-    "nb_quant_levels",
-    Datatype.integer,
-    minValue: "3",
-    description:
-        "Number of stairs in staircase activation function (default: 50).",
-  ),
+  dropoutDimFld,
+  dropoutHypFld,
+  nbQuantLevelsFld,
   Field(
     "File containing the mean and std of some attributes",
     "normalization_file",
@@ -477,33 +481,9 @@ const List<Field> fidexGloRulesFields = [
     description:
         "Minimal min_fidelity to which we agree to go down during covering_strategy.",
   ),
-  Field(
-    "Dimension dropout parameter",
-    "dropout_dim",
-    Datatype.doublePrecision,
-    minValue: "0.0",
-    maxValue: "1.0",
-    defaultValue: "0.0",
-    description: "Dimension dropout parameter.",
-  ),
-  Field(
-    "Hyperplan dropout parameter",
-    "dropout_hyp",
-    Datatype.doublePrecision,
-    minValue: "0.0",
-    maxValue: "1.0",
-    defaultValue: "0.0",
-    description: "Hyperplan dropout parameter.",
-  ),
-  Field(
-    "Number of stairs in staircase activation function",
-    "nb_quant_levels",
-    Datatype.integer,
-    minValue: "3",
-    maxValue: "inf",
-    defaultValue: "50",
-    description: "Number of stairs in staircase activation function.",
-  ),
+  dropoutDimFld,
+  dropoutHypFld,
+  nbQuantLevelsFld,
   Field(
     "Decision threshold for predictions",
     "decision_threshold",
@@ -760,15 +740,7 @@ const List<Field> dimlpTrnFields = [
     defaultValue: "0.1",
     description: "Back-propagation flat spot elimination parameter.",
   ),
-  Field(
-    "Number of stairs in staircase activation function",
-    "nb_quant_levels",
-    Datatype.integer,
-    minValue: "3",
-    defaultValue: "50",
-    maxValue: "inf",
-    description: "Number of stairs in staircase activation function.",
-  ),
+  nbQuantLevelsFld,
   Field(
     "Error threshold",
     "error_thresh",
@@ -935,15 +907,7 @@ const List<Field> dimlpRulFields = [
     description:
         "Path/name of output file with train, test and validation accuracy.",
   ),
-  Field(
-    "Number of stairs in staircase activation function",
-    "nb_quant_levels",
-    Datatype.integer,
-    minValue: "3",
-    defaultValue: "50",
-    maxValue: "inf",
-    description: "Number of stairs in staircase activation function.",
-  ),
+  nbQuantLevelsFld,
   Field(
     "Normalization file",
     "normalization_file",
@@ -1078,15 +1042,7 @@ const List<Field> dimlpBTFields = [
     defaultValue: "0.01",
     description: "Back-propagation flat spot elimination parameter.",
   ),
-  Field(
-    "Number of stairs in staircase activation function",
-    "nb_quant_levels",
-    Datatype.integer,
-    minValue: "3",
-    maxValue: "inf",
-    defaultValue: "50",
-    description: "Number of stairs in staircase activation function.",
-  ),
+  nbQuantLevelsFld,
   Field(
     "Error threshold to stop training",
     "error_thresh",
@@ -1220,15 +1176,7 @@ const List<Field> dimlpClsFields = [
     defaultValue: "dimlpTest.hid",
     description: "Path of output file with first hidden layer values.",
   ),
-  Field(
-    "Number of stairs in staircase activation function",
-    "nb_quant_levels",
-    Datatype.integer,
-    minValue: "3",
-    maxValue: "inf",
-    defaultValue: "50",
-    description: "Number of stairs in staircase activation function.",
-  ),
+  nbQuantLevelsFld,
 ];
 
 const List<Field> computeRocCurveFields = [
@@ -1384,14 +1332,7 @@ const List<Field> convKerasFields = [
         "Output statistic file name with train and test accuracy (default: stats.txt)",
   ),
   consoleFileFld,
-  Field(
-    "Number of stairs in staircase activation function",
-    "nb_quant_levels",
-    Datatype.integer,
-    minValue: "3",
-    description:
-        "Number of stairs in staircase activation function (default: 50)",
-  ),
+  nbQuantLevelsFld,
   Field(
     "Parameter to improve dynamics",
     "K",
@@ -1684,14 +1625,7 @@ const List<Field> mlpTrnFields = [
     defaultValue: "weights.wts",
     description: "Output weights file name (default: weights.wts)",
   ),
-  Field(
-    "Number of stairs in staircase activation function",
-    "nb_quant_levels",
-    Datatype.integer,
-    minValue: "3",
-    description:
-        "Number of stairs in staircase activation function (default: 50)",
-  ),
+  nbQuantLevelsFld,
   Field(
     "Parameter to improve dynamics",
     "K",
@@ -2103,14 +2037,7 @@ const List<Field> svmTrnFields = [
     defaultValue: "roc_curve.png",
     description: "Output ROC curve file name (default: roc_curve.png)",
   ),
-  Field(
-    "Number of stairs in staircase activation function",
-    "nb_quant_levels",
-    Datatype.integer,
-    minValue: "3",
-    description:
-        "Number of stairs in staircase activation function (default: 50)",
-  ),
+  nbQuantLevelsFld,
   Field(
     "Parameter to improve dynamics",
     "K",
@@ -2136,60 +2063,83 @@ const List<Field> svmTrnFields = [
     "Regularization",
     "C",
     Datatype.doublePrecision,
-    description: "Regularization (default: 1.0)",
+    minValue: "0.0",
+    maxValue: "inf",
+    defaultValue: "1.0",
+    description: "Regularization.",
   ),
   Field(
     "Kernel",
     "kernel",
-    Datatype.string,
+    Datatype.restrictedChoiceString,
     defaultValue: "rbf",
-    description: "Kernel (default: rbf)",
+    items: ["linear", "poly", "rbf", "sigmoid"],
+    description: "Kernel type.",
   ),
   Field(
     "Polynomial degree",
     "degree",
     Datatype.integer,
-    description: "Polynomial degree (default: 3)",
+    minValue: "0",
+    maxValue: "inf",
+    defaultValue: "3",
+    description: "Polynomial degree.",
+  ),
+  // TODO restricted string + int
+  Field(
+    "Gamma predefined value (do not use with the custom field below)",
+    "gamma_1",
+    Datatype.restrictedChoiceString,
+    defaultValue: "scale",
+    items: ["", "scale", "auto"],
+    description: "Gamma predefined value.",
   ),
   Field(
-    "Gamma value",
-    "gamma",
-    Datatype.string,
-    defaultValue: "scale",
-    description: "Gamma value (default: scale)",
+    "Gamma custom value (do not use with the predefined field above)",
+    "gamma_2",
+    Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "inf",
+    description: "Gamma custom floating point value.",
   ),
   Field(
     "Term in kernel function",
     "coef0",
     Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "inf",
     defaultValue: "0.0",
-    description: "Term in kernel function (default: 0.0)",
+    description: "Term in kernel function.",
   ),
   Field(
     "Whether to use shrinking heuristic",
     "shrinking",
     Datatype.boolean,
     defaultValue: "true",
-    description: "Whether to use shrinking heuristic (default: True)",
+    description: "Whether to use shrinking heuristic.",
   ),
   Field(
     "Tolerance for stopping criterion",
     "tol",
     Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "inf",
     defaultValue: "0.001",
-    description: "Tolerance for stopping criterion (default: 0.001)",
+    description: "Tolerance for stopping criterion.",
   ),
   Field(
     "Kernel cache size(MB)",
     "cache_size",
     Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "inf",
     defaultValue: "200",
-    description: "Kernel cache size(MB) (default: 200)",
+    description: "Kernel cache size(MB).",
   ),
   Field(
     "Class balance",
     "class_weight",
-    Datatype.string,
+    Datatype.dictIntegerDoublePrecision,
     description:
         "Class balance, for example with a dictionary and 2 classes: {0:1.2, 1:3.5}",
   ),
@@ -2198,28 +2148,117 @@ const List<Field> svmTrnFields = [
     "verbose",
     Datatype.boolean,
     defaultValue: "false",
-    description: "Whether to enable verbose output (default: False)",
+    description: "Whether to enable verbose output.",
   ),
   Field(
     "Maximal number of iterations, -1 for no limit",
     "max_iterations",
     Datatype.integer,
+    minValue: "-1",
+    maxValue: "inf",
     defaultValue: "-1",
-    description: "Maximal number of iterations, -1 for no limit (default: -1)",
+    description: "Maximal number of iterations, -1 for no limit.",
   ),
   Field(
     "Decision function shape",
     "decision_function_shape",
-    Datatype.string,
+    Datatype.restrictedChoiceString,
     defaultValue: "ovr",
-    description: "Decision function shape (default: ovr)",
+    items: ["ovr (one-vs-rest)", "ovo (one-vs-one)"],
+    description: "Decision function shape.",
   ),
   Field(
-    "Whether to break tie decision for ovr with more than 2 classes",
+    "Whether to break tie decision for ovr with more than 2 classes.",
     "break_ties",
     Datatype.boolean,
     defaultValue: "false",
     description:
-        "Whether to break tie decision for ovr with more than 2 classes (default: False)",
+        "Whether to break tie decision for ovr with more than 2 classes.",
+  ),
+];
+
+const List<Field> normalizationFields = [
+  rootFolderFld,
+  nbAttributesFld,
+  nbClassesFld,
+  Field(
+    "File of attributes",
+    "attributes_file",
+    Datatype.filePath,
+    description:
+        "File of attributes, mandatory if rules or normalization stats are written with attribute names",
+  ),
+  Field(
+    "String representing a missing value in your data",
+    "missing_values",
+    Datatype.string,
+    description:
+        "String representing a missing value in your data, put 'NaN' (or any string not present in your data) if you do not have any missing value, mandatory for normalization",
+  ),
+  Field(
+    "File containing the mean and standard deviation of some attributes",
+    "normalization_file",
+    Datatype.filePath,
+    description:
+        "File containing the mean and standard deviation of some attributes, used for normalization and denormalization if specified",
+  ),
+  musFld,
+  sigmasFld,
+  normalizationIndicesFld,
+  //TODO filepathlist
+  // Field(
+  //   "Data files to normalize",
+  //   "data_files",
+  //   Datatype.filePathList,
+  //   description:
+  //       "Data files to normalize, they are normalized with respect to the first one if normalization_file is not specified",
+  // ),
+  //TODO filepathlist
+  // Field(
+  //   "Rule files to denormalize",
+  //   "rule_files",
+  //   Datatype.filePathList,
+  //   description:
+  //       "Rule files to denormalize, denormalization is possible only if a normalization_file file or mus, sigmas and normalization_indices are given. Either 'data_files' or 'rule_files' must be specified",
+  // ),
+  Field(
+    "Output file name containing the mean and std of the normalized attributes",
+    "output_normalization_file",
+    Datatype.filePath,
+    defaultValue: "normalization_stats.txt",
+    description:
+        "Output file name containing the mean and std of the normalized attributes when normalization_file is not specified (default: normalization_stats.txt)",
+  ),
+  //TODO filepathlist
+  // Field(
+  //   "Normalized files names",
+  //   "output_data_files",
+  //   Datatype.filePathList,
+  //   description:
+  //       "Normalized files names, it is mandatory to specify everyone of them if one is specified (default: <original_name>_normalized<original_extension>)",
+  // ),
+  //TODO filepathlist
+  // Field(
+  //   "Normalized rule files names",
+  //   "output_rule_files",
+  //   Datatype.filePathList,
+  //   description:
+  //       "Normalized rule files names, it is mandatory to specify everyone of them if one is specified (default: <original_name>_denormalized<original_extension>)",
+  // ),
+  Field(
+    "Whether we use median instead of mean to compute normalization",
+    "with_median",
+    Datatype.boolean,
+    defaultValue: "false",
+    description:
+        "Whether we use median instead of mean to compute normalitzation",
+  ),
+  Field(
+    "Whether we fill missing values with mean or median during normalization",
+    "fill_missing_values",
+    Datatype.boolean,
+    defaultValue: "true",
+    description:
+        "Whether we fill missing values with mean or median during normalization",
   ),
 ];

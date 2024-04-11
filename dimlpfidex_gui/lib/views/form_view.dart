@@ -118,7 +118,21 @@ Future<void> _resetForm(BuildContext context, TabController tabController,
 Future<void> _generateJson(
     GlobalKey<FormBuilderState> key, BuildContext context) async {
   Map<String, dynamic> values = Map.from(key.currentState!.value)
-    ..removeWhere((key, value) => value == null || (value.runtimeType == (List<dynamic>) && value[0] == null));
+    ..removeWhere((dynamic key, dynamic value) => value == null || value == "");
+
+  // handle sketchy edge case
+  if (values.containsKey("gamma_1") && values.containsKey("gamma_2")) {
+    showSnackBar(context,
+        "Cannot generate JSON with both gamma fields set. Please fill only one of them",
+        color: Colors.red[500]!);
+    return;
+  } else if (values.containsKey("gamma_2")) {
+    values["gamma"] = values["gamma_2"];
+    values.remove("gamma_2");
+  } else if (values.containsKey("gamma_1")) {
+    values["gamma"] = values["gamma_1"];
+    values.remove("gamma_1");
+  }
 
   try {
     JsonEncoder encoder = const JsonEncoder.withIndent("  ");

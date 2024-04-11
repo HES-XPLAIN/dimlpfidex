@@ -44,6 +44,35 @@ const nbClassesFld = Field(
   description: "Number of classes in dataset.",
 );
 
+const nbQuantLevelsFld = Field(
+  "# stairs in staircase activation function",
+  "nb_quant_levels",
+  Datatype.integer,
+  minValue: "3",
+  maxValue: "inf",
+  defaultValue: "50",
+  description: "Number of stairs in staircase activation function.",
+);
+
+const dropoutDimFld = Field(
+  "Dimension dropout parameter",
+  "dropout_dim",
+  Datatype.doublePrecision,
+  minValue: "0.0",
+  maxValue: "1.0",
+  defaultValue: "0.0",
+  description: "Dimension dropout parameter.",
+);
+const dropoutHypFld = Field(
+  "Hyperplan dropout parameter",
+  "dropout_hyp",
+  Datatype.doublePrecision,
+  minValue: "0.0",
+  maxValue: "1.0",
+    defaultValue: "0.0",
+  description: "Hyperplan dropout parameter.",
+);
+
 const rulesOutputFileFld = Field(
   "Rule(s) output file",
   "rules_outfile",

@@ -48,7 +48,7 @@ class _InputFieldState extends State<InputField> {
       case Datatype.boolean:
         return _buildBooleanField(context);
 
-      case Datatype.filePath || Datatype.directoryPath:
+      case Datatype.filePath || Datatype.filePathList || Datatype.directoryPath:
         return _buildFilePathPickerField(context);
 
       case Datatype.listInteger ||
@@ -57,8 +57,13 @@ class _InputFieldState extends State<InputField> {
         return _buildTextField(
             context, _listInputValidator, _listValueTransformer);
 
+      case Datatype.dictIntegerDoublePrecision:
+        return _buildTextField(
+            context, _dictInputValidator, _dictValueTransformer);
+
       default:
-        return _buildTextField(context, _basicInputValidator, null);
+        return _buildTextField(
+            context, _basicInputValidator, _basicInputTransformer);
     }
   }
 
@@ -123,7 +128,9 @@ class _InputFieldState extends State<InputField> {
                             border: const OutlineInputBorder()),
                         validator: (value) => _numericInputValidator(value),
                         valueTransformer: (value) {
-                          if (value != null) {
+                          if (value == null || value.isEmpty) {
+                            return null;
+                          } else {
                             switch (field.datatype) {
                               case Datatype.integer:
                                 return int.parse(value);
@@ -133,7 +140,6 @@ class _InputFieldState extends State<InputField> {
                                 break;
                             }
                           }
-                          return null;
                         },
                       )),
                   SizedBox(
@@ -162,7 +168,7 @@ class _InputFieldState extends State<InputField> {
   }
 
   Widget _buildTextField(BuildContext context, Function(String?) validator,
-      Function(String?, Datatype)? valueTransformer) {
+      Function(String?)? valueTransformer) {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
@@ -176,7 +182,7 @@ class _InputFieldState extends State<InputField> {
                 keyboardType: TextInputType.multiline,
                 validator: (value) => validator(value),
                 valueTransformer: (value) =>
-                    valueTransformer?.call(value, field.datatype) ?? value,
+                    valueTransformer?.call(value) ?? value,
               ))
         ]));
   }
@@ -214,6 +220,12 @@ class _InputFieldState extends State<InputField> {
                 name: field.jsonLabel,
                 decoration: InputDecoration(label: Text(field.label)),
                 keyboardType: TextInputType.multiline,
+                validator: (field.datatype == Datatype.filePathList)
+                    ? (value) => _listInputValidator(value)
+                    : null,
+                valueTransformer: (field.datatype == Datatype.filePathList)
+                    ? (value) => _listValueTransformer(value)
+                    : null,
               )),
           if (!kIsWeb)
             Tooltip(
@@ -283,13 +295,18 @@ class _InputFieldState extends State<InputField> {
     return null;
   }
 
+  String? _basicInputTransformer(String? value) {
+    if (value == null || value.isEmpty) return null;
+    return value;
+  }
+
   String? _numericInputValidator(String? value) {
     double? minValue = double.tryParse(field.minValue);
     double? maxValue = double.tryParse(field.maxValue);
 
-    if (field.isRequired && value == null) {
+    if (field.isRequired && (value == null || value.isEmpty)) {
       return "This field is required";
-    } else if (value == null) {
+    } else if (value == null || value.isEmpty) {
       return null;
     }
 
@@ -310,18 +327,20 @@ class _InputFieldState extends State<InputField> {
   String? _listInputValidator(String? value) {
     if (field.isRequired && value == null) {
       return "This field is required";
-    } else if (value == null) {
+    } else if (value == null || value == "") {
       return null;
     }
 
-    if (field.datatype != Datatype.listString) {
+    if (field.datatype != Datatype.listString &&
+        field.datatype != Datatype.filePathList) {
       if (RegExp("[^0-9, .]").hasMatch(value)) {
         return "There's a syntax error in your input";
       }
     }
 
     try {
-      if (field.datatype != Datatype.listString) {
+      if (field.datatype != Datatype.listString &&
+          field.datatype != Datatype.filePathList) {
         json.decode("[$value]") as List<dynamic>;
       }
     } on FormatException {
@@ -331,11 +350,80 @@ class _InputFieldState extends State<InputField> {
     return null;
   }
 
-  List<dynamic> _listValueTransformer(String? value, Datatype datatype) {
-    String formattedValue;
+  String? _dictInputValidator(String? value) {
+    if (field.isRequired && value == null) {
+      return "This field is required";
+    } else if (value == null || value == "") {
+      return null;
+    }
 
-    if (datatype == Datatype.listString) {
-      List<String> words = value!.split(RegExp(r'\s*,\s*|\s+'));
+    if (!RegExp(r'^\{?(([0-9]+\:[0-9]+(\.[0-9]+)*)(,|\ )*)+\}?$')
+        .hasMatch(value)) {
+      return "There's a syntax error in your input";
+    }
+
+    try {
+      List<String> words;
+      Map<String, double> decomposedStr = {};
+      // removing curly braces and spaces
+      value = value.replaceAll(RegExp(r'(\{|\}|\ )+'), '');
+
+      // splitting string into pairs
+      words = value.split(',');
+
+      // converting to map
+      for (String item in words) {
+        String k = '\"${item.split(':')[0]}\"';
+        double v = double.parse(item.split(':')[1]);
+        decomposedStr[k] = v;
+      }
+
+      value = decomposedStr.toString();
+      json.decode(value) as Map<String, dynamic>;
+    } on FormatException {
+      return "There's a JSON syntax error in your input";
+    }
+
+    return null;
+  }
+
+  Map<String, dynamic>? _dictValueTransformer(String? value) {
+    if (value == null || value.isEmpty) return null;
+
+    List<String> words;
+    Map<String, double> decomposedStr = {};
+    // removing curly braces and spaces
+    value = value.replaceAll(RegExp(r'(\{|\}|\ )+'), '');
+
+    // splitting string into pairs
+    words = value.split(',');
+
+    // converting to map
+    for (String item in words) {
+      String k = '\"${item.split(':')[0]}\"';
+      double v = double.parse(item.split(':')[1]);
+      decomposedStr[k] = v;
+    }
+
+    value = decomposedStr.toString();
+
+    return json.decode(value) as Map<String, dynamic>;
+  }
+
+  List<dynamic>? _listValueTransformer(String? value) {
+    if (value == null || value.isEmpty) return null;
+
+    String formattedValue;
+    List<String> words;
+
+    if (field.datatype == Datatype.listString) {
+      // add double quotes to words
+      words = value.split(RegExp(r'\s*,\s*|\s+'));
+      words = [for (String word in words) "\"$word\""];
+      formattedValue = words.toString();
+    } else if (field.datatype == Datatype.filePathList) {
+      // add double quotes to words
+      words = value.split(RegExp(r'(,\ |,)+'));
       words = [for (String word in words) "\"$word\""];
       formattedValue = words.toString();
     } else {
@@ -350,6 +438,13 @@ class _InputFieldState extends State<InputField> {
 
     try {
       switch (type) {
+        case Datatype.filePathList:
+          await openFiles().then((files) => path = files
+              .map((file) => file.path)
+              .toList()
+              .toString()
+              .replaceAll(RegExp(r'(\[|\])+'), ''));
+
         case Datatype.filePath:
           path = await openFile().then((value) => value!.path);
           break;
