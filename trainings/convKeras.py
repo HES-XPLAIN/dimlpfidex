@@ -20,7 +20,7 @@ import tensorflow as tf
 from tensorflow import keras
 from keras.models     import Sequential
 from keras.layers     import Dense, Dropout, Activation, Flatten, BatchNormalization, Lambda
-from keras.layers     import Convolution2D, DepthwiseConv2D, LocallyConnected2D, MaxPooling2D, GlobalAveragePooling2D
+from keras.layers     import Convolution2D, DepthwiseConv2D, MaxPooling2D, GlobalAveragePooling2D
 from keras.models     import load_model, Model
 from keras.applications import ResNet50, VGG16
 
