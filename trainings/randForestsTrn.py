@@ -59,9 +59,9 @@ def get_and_check_parameters(init_args):
 
 def randForestsTrn(args: str = None):
     """
-    Trains a random forests decision trees model and outputs rules extracted from the generated trees for the characterization of discriminating hyperplanes,
-    which are used in Fidex. This allows us to then use Fidex for comprehensible rule extraction. The function offers a wide range of
-    customization through command-line arguments, allowing for the specification of random forests parameters, output options, and more.
+    Trains a random forests decision trees model. The nodes of the trees represent the discriminating hyperplanes used in Fidex. This allows
+    us to then use Fidex for comprehensible rule extraction. The function offers a wide range of customization through command-line arguments,
+    allowing for the specification of random forests parameters, output options, and more.
 
     Note:
     - It's mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.
