@@ -244,7 +244,7 @@ int fidexGloStats(const std::string &command) {
     // Get statistic line at the top of the rulesfile
     std::string statsLine;
     std::fstream rulesData;
-      std::vector<Rule> rules;
+    std::vector<Rule> rules;
 
     if (rulesFile.substr(rulesFile.find_last_of(".") + 1) == "json") {
       rules = Rule::fromJsonFile(rulesFile, decisionThreshold, positiveClassIndex);
