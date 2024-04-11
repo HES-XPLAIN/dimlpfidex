@@ -7,31 +7,51 @@
 
 using Json = nlohmann::json;
 
+/**
+ * @brief Represents an antecedent condition in a rule-based system.
+ *
+ * This class encapsulates an attribute along with a condition (inequality)
+ * that determines whether a given sample satisfies the antecedent. The condition
+ * is defined in terms of greater than or less than/equal to a specified value.
+ */
 class Antecedant {
 private:
-  int attribute;
-  bool inequality; // true if attribute >= value false if attribute < value
-  double value;
+  int attribute;   ///< Integer ID representing the attribute.
+  bool inequality; ///< True if the condition is '>=', False if '<'.
+  double value;    ///< The comparison value for the condition.
 
   NLOHMANN_DEFINE_TYPE_INTRUSIVE(Antecedant, attribute, inequality, value)
 
 public:
   Antecedant() = default;
+  /**
+   * @brief Constructs a new Antecedant object with specified parameters.
+   *
+   * @param attribute Integer ID of the attribute.
+   * @param inequality True for '>=', false for '<'.
+   * @param value The value to compare against.
+   */
   Antecedant(int attribute, bool inequality, double value);
 
-  // GETTERS
+  // Getters
   int getAttribute() const { return attribute; }
   bool getInequality() const { return inequality; }
   double getValue() const { return value; }
 
+  // Setters
   void setAttribute(int val) { attribute = val; }
   void setInequality(bool val) { inequality = val; }
   void setValue(double val) { value = val; }
 
+  /**
+   * @brief Checks equality with another Antecedant object.
+   * @param other The other Antecedant to compare with.
+   * @return True if both Antecedant objects are equal, False otherwise.
+   */
   bool isEqual(Antecedant other) const;
 };
 
-// OPERATOR OVERLOAD TO EASE PRINTING PURPOSES
+// Operator overloads
 inline std::ostream &operator<<(std::ostream &stream, const Antecedant &antecedant) {
   return stream << " "
                 << antecedant.getAttribute() << " "
