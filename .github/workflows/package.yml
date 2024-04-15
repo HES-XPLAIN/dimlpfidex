@@ -65,11 +65,7 @@ jobs:
         run: |
           git submodule update --init
 
-      - name: Compile
-        run: |
-          python buildcpp.py
-
-      - name: Build archives
+      - name: Compile and Build archives
         run: |
           python -m build
 
