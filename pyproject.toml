@@ -42,8 +42,8 @@ classifiers=[
 requires-python = ">= 3.8.1"
 
 [build-system]
-requires = ["hatchling", "pybind11"]
-build-backend = "hatchling.build"
+requires = ["scikit-build-core", "pybind11"]
+build-backend = "scikit_build_core.build"
 
 [tool.rye]
 managed = true
@@ -51,55 +51,13 @@ dev-dependencies = [
     "pre-commit>=3.5.0",
 ]
 
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.hatch.build.targets.wheel]
-#script = "buildcpp.py"
-ignore-vcs = true
-packages = [
+[tool.scikit-build]
+wheel.packages = [
 #    "dimlp",
     "dimlpfidex",
+#    "example",
 #    "fidex",
 #    "common",
     "trainings",
 ]
-artifacts = [
-    "**/*.so",
-    "**/*.pyd",
-    "**/*.dll",
-]
 
-[tool.hatch.build.targets.sdist]
-packages = [
-    "dimlp",
-#    "dimlpfidex",
-    "example",
-    "fidex",
-    "common",
-    "trainings",
-]
-include = [
-    "example/**/CMakeLists.txt",
-    "example/cpp/src/*.cpp",
-    "example/cpp/include/*.hpp",
-    "example/pybind/*",
-    "dimlp/**/CMakeLists.txt",
-    "dimlp/cpp/src/*.cpp",
-    "dimlp/cpp/src/*.h",
-    "dimlp/pybind/*",
-    "fidex/**/CMakeLists.txt",
-    "fidex/cpp/src/*.cpp",
-    "fidex/cpp/src/*.h",
-    "fidex/pybind/*",
-    "*.py",
-    "*.txt",
-]
-
-[tool.hatch.build.targets.sdist.force-include]
-"buildcpp.py" = "buildcpp.py"
-"example.py" = "example.py"
-"CMakeLists.txt" = "CMakeLists.txt"
-".clang-format" = ".clang-format"
-".editorconfig" = ".editorconfig"
-".pre-commit-config.yaml" = ".pre-commit-config.yaml"
