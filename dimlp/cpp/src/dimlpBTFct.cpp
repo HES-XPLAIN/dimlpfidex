@@ -36,7 +36,7 @@ void showDimlpBTParams()
   printOptionDescription("--train_class_file <str>", "Train true class file");
   printOptionDescription("--test_class_file <str>", "Test true class file");
   printOptionDescription("--console_file <str>", "File with console logs redirection");
-  printOptionDescription("--weights_outfilename <str>", "Output weights file name file (default: dimlpBT.wts");
+  printOptionDescription("--weights_outfile <str>", "Output weights file name file (default: dimlpBT.wts)");
   printOptionDescription("--train_pred_outfile <str>", "Output train prediction file name (default: dimlpBTTrain.out)");
   printOptionDescription("--test_pred_outfile <str>", "Output test prediction file name (default: dimlpBTTest.out)");
   printOptionDescription("--stats_file <str>", "Output file name with train, test and validation accuracy and with the global train and test accuracy");
@@ -154,7 +154,7 @@ int dimlpBT(const std::string &command) {
       } catch (const std::out_of_range &e) {
         throw CommandArgumentException("Some value inside your JSON config file '" + commandList[2] + "' is out of range.\n(Probably due to a too large or too tiny numeric value).");
       } catch (const std::exception &e) {
-        std::string msg(e.what()) ;
+        std::string msg(e.what());
         throw CommandArgumentException("Unknown JSON config file error: " + msg);
       }
     } else {
