@@ -59,4 +59,4 @@ jobs:
 
       - name: Compile
         run: |
-          python buildcpp.py
+          python -m build
