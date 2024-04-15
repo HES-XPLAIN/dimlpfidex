@@ -1,0 +1,9 @@
+{
+    "root_folder": "data/BCWDataset",
+    "test_pred_file": "predTest.out",
+    "test_class_file": "testClass.txt",
+    "nb_classes": 2,
+    "positive_class_index": 0,
+    "stats_file": "rocStats.txt",
+    "output_roc": "outRoc.png"
+}

@@ -1,0 +1,120 @@
+
+
+---------------------------------------------------------
+
+Rule 1: (MEAN_AREA < 0.153001) (AREA_ERROR < 1.44167) (WORST_RADIUS < 0.1168) (WORST_TEXTURE < 0.553276) (WORST_CONCAVE_POINTS < 0.727507) Class = BENIGN (233)
+
+Rule 2: (WORST_RADIUS < 0.222718) (WORST_TEXTURE < -0.0790827) (WORST_CONCAVE_POINTS < 0.727507) Class = BENIGN (185)
+
+Rule 3: (MEAN_TEXTURE < -0.0657054) (MEAN_CONCAVITY < -0.110343) Class = BENIGN (173)
+
+Rule 4: (MEAN_CONCAVITY > -0.110343) (WORST_RADIUS > 0.222718) Class = MALIGNANT (123)
+
+Rule 5: (WORST_CONCAVE_POINTS > 0.727507) Class = MALIGNANT (113)
+
+Rule 6: (MEAN_RADIUS > 0.32866) (MEAN_TEXTURE > -0.488725) (MEAN_CONCAVE_POINTS > 0.0112268) Class = MALIGNANT (108)
+
+Rule 7: (MEAN_TEXTURE > 0.467641) (MEAN_CONCAVE_POINTS > 0.16323) Class = MALIGNANT (77)
+
+Rule 8: (MEAN_CONCAVITY > -0.110343) (PERIMETER_ERROR > 0.324851) (WORST_TEXTURE > -0.0790827) Class = MALIGNANT (69)
+
+Rule 9: (MEAN_TEXTURE > 0.467641) (MEAN_AREA > 0.153001) Class = MALIGNANT (64)
+
+Rule 10: (MEAN_CONCAVE_POINTS < 0.0112268) (AREA_ERROR < -0.0406662) (WORST_TEXTURE > 0.203037) Class = BENIGN (64)
+
+Rule 11: (MEAN_TEXTURE > 0.467641) (MEAN_TEXTURE < 1.0776) (MEAN_CONCAVITY > 0.19382) Class = MALIGNANT (40)
+
+Rule 12: (MEAN_RADIUS < 0.0389372) (MEAN_TEXTURE > 1.3661) Class = BENIGN (17)
+
+Rule 13: (MEAN_TEXTURE > 0.467641) (MEAN_CONCAVITY < 0.19382) (MEAN_CONCAVE_POINTS > -0.146022) (MEAN_FRACTAL_DIMENSION < 0.0840577) Class = MALIGNANT (10)
+
+Rule 14: (MEAN_TEXTURE > 0.467641) (MEAN_CONCAVITY < 0.19382) (MEAN_FRACTAL_DIMENSION > 0.0840577) Class = BENIGN (10)
+
+Rule 15: (MEAN_RADIUS > 0.0389372) (MEAN_TEXTURE < 0.467641) (COMPACTNESS_ERROR > -0.417064) (WORST_TEXTURE > 0.553276) Class = MALIGNANT (8)
+
+Rule 16: (MEAN_RADIUS > 0.0389372) (MEAN_TEXTURE < 0.467641) (MEAN_CONCAVE_POINTS < 0.0112268) (PERIMETER_ERROR > 0.0601552) Class = BENIGN (4)
+
+Rule 17: (RADIUS_ERROR > 2.90946) Class = MALIGNANT (4)
+
+Rule 18: (MEAN_CONCAVE_POINTS > -0.146022) (MEAN_CONCAVE_POINTS < 0.0112268) (COMPACTNESS_ERROR < 0.14164) (WORST_TEXTURE > 0.383084) Class = MALIGNANT (3)
+
+Rule 19: (MEAN_RADIUS < 0.0389372) (MEAN_TEXTURE > -0.0657054) (MEAN_TEXTURE < 0.467641) (RADIUS_ERROR < 0.696283) (PERIMETER_ERROR > 0.0601552) (COMPACTNESS_ERROR < 0.14164) Class = MALIGNANT (2)
+
+Rule 20: (MEAN_RADIUS > 0.32866) (MEAN_CONCAVE_POINTS < -0.146022) (AREA_ERROR < -0.0406662) (WORST_TEXTURE < 0.553276) Class = MALIGNANT (1)
+
+---------------------------------------------------------
+
+Training set:
+
+---------------------------------------------------------
+
+Rule    1:   233   230     3     0.987124       Class = BENIGN
+Rule    2:   185   182     3     0.983784       Class = BENIGN
+Rule    3:   173   171     2     0.988439       Class = BENIGN
+Rule    4:   123   123     0            1       Class = MALIGNANT
+Rule    5:   113   113     0            1       Class = MALIGNANT
+Rule    6:   108   108     0            1       Class = MALIGNANT
+Rule    7:    77    77     0            1       Class = MALIGNANT
+Rule    8:    69    69     0            1       Class = MALIGNANT
+Rule    9:    64    64     0            1       Class = MALIGNANT
+Rule   10:    64    62     2      0.96875       Class = BENIGN
+Rule   11:    40    40     0            1       Class = MALIGNANT
+Rule   12:    17    17     0            1       Class = BENIGN
+Rule   13:    10    10     0            1       Class = MALIGNANT
+Rule   14:    10    10     0            1       Class = BENIGN
+Rule   15:     8     8     0            1       Class = MALIGNANT
+Rule   16:     4     4     0            1       Class = BENIGN
+Rule   17:     4     4     0            1       Class = MALIGNANT
+Rule   18:     3     3     0            1       Class = MALIGNANT
+Rule   19:     2     2     0            1       Class = MALIGNANT
+Rule   20:     1     1     0            1       Class = MALIGNANT
+
+---------------------------------------------------------
+
+Accuracy of rules on training set = 0.989011
+
+---------------------------------------------------------
+
+---------------------------------------------------------
+
+--- Number of rules = 20
+--- Number of antecedents = 61
+--- Number of antecedents per rule = 3.05
+--- Number of examples per rule = 65.4
+
+---------------------------------------------------------
+
+--- Accuracy of rules on testing set = 0.938596
+--- Fidelity on testing set (109/114) = 0.95614
+--- Accuracy when rules and network agree (107/109) = 0.981651
+
+--- Default rule activations rate (network classification) = 0.00877193
+
+---------------------------------------------------------
+
+Testing set:
+
+---------------------------------------------------------
+
+Rule    1:    62    61     1     0.983871       Class = BENIGN
+Rule    2:    43    43     0            1       Class = BENIGN
+Rule    3:    42    41     1      0.97619       Class = BENIGN
+Rule    4:    31    31     0            1       Class = MALIGNANT
+Rule    5:    29    27     2     0.931035       Class = MALIGNANT
+Rule    6:    27    27     0            1       Class = MALIGNANT
+Rule    7:    17    17     0            1       Class = MALIGNANT
+Rule    8:    18    18     0            1       Class = MALIGNANT
+Rule    9:    18    18     0            1       Class = MALIGNANT
+Rule   10:    21    16     5     0.761905       Class = BENIGN
+Rule   11:     9     9     0            1       Class = MALIGNANT
+Rule   12:     5     4     1          0.8       Class = BENIGN
+Rule   13:     1     1     0            1       Class = MALIGNANT
+Rule   14:     5     5     0            1       Class = BENIGN
+Rule   15:     1     1     0            1       Class = MALIGNANT
+Rule   16:     0     0     0                     Class = BENIGN
+Rule   17:     5     5     0            1       Class = MALIGNANT
+Rule   18:     0     0     0                     Class = MALIGNANT
+Rule   19:     1     0     1            0       Class = MALIGNANT
+Rule   20:     0     0     0                     Class = MALIGNANT
+
+---------------------------------------------------------

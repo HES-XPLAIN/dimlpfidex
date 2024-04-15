@@ -1,0 +1,282 @@
+Accuracy for Bag training :
+
+Network 1 :
+
+Sum squared error on training set = 0.144967
+Accuracy on training set = 1
+
+Sum squared error on validation set = 5.4928
+Accuracy on validation set = 0.976744
+
+Sum squared error on testing set = 3.13889
+Accuracy on testing set = 0.991228
+
+Network 2 :
+
+Sum squared error on training set = 0.0614275
+Accuracy on training set = 1
+
+Sum squared error on validation set = 11.0528
+Accuracy on validation set = 0.965517
+
+Sum squared error on testing set = 4.57248
+Accuracy on testing set = 0.973684
+
+Network 3 :
+
+Sum squared error on training set = 0.0900969
+Accuracy on training set = 1
+
+Sum squared error on validation set = 9.75997
+Accuracy on validation set = 0.960452
+
+Sum squared error on testing set = 3.93211
+Accuracy on testing set = 0.973684
+
+Network 4 :
+
+Sum squared error on training set = 0.143906
+Accuracy on training set = 1
+
+Sum squared error on validation set = 6.98313
+Accuracy on validation set = 0.970238
+
+Sum squared error on testing set = 2.74179
+Accuracy on testing set = 0.982456
+
+Network 5 :
+
+Sum squared error on training set = 0.490889
+Accuracy on training set = 1
+
+Sum squared error on validation set = 7.13634
+Accuracy on validation set = 0.977778
+
+Sum squared error on testing set = 7.33777
+Accuracy on testing set = 0.95614
+
+Network 6 :
+
+Sum squared error on training set = 0.0831003
+Accuracy on training set = 1
+
+Sum squared error on validation set = 6.51932
+Accuracy on validation set = 0.982759
+
+Sum squared error on testing set = 3.68776
+Accuracy on testing set = 0.982456
+
+Network 7 :
+
+Sum squared error on training set = 0.119194
+Accuracy on training set = 1
+
+Sum squared error on validation set = 7.77378
+Accuracy on validation set = 0.977012
+
+Sum squared error on testing set = 3.41254
+Accuracy on testing set = 0.982456
+
+Network 8 :
+
+Sum squared error on training set = 0.0784477
+Accuracy on training set = 1
+
+Sum squared error on validation set = 9.93427
+Accuracy on validation set = 0.972527
+
+Sum squared error on testing set = 2.90596
+Accuracy on testing set = 0.991228
+
+Network 9 :
+
+Sum squared error on training set = 0.113629
+Accuracy on training set = 1
+
+Sum squared error on validation set = 10.1274
+Accuracy on validation set = 0.966667
+
+Sum squared error on testing set = 3.88686
+Accuracy on testing set = 0.982456
+
+Network 10 :
+
+Sum squared error on training set = 0.0546398
+Accuracy on training set = 1
+
+Sum squared error on validation set = 10.5063
+Accuracy on validation set = 0.965714
+
+Sum squared error on testing set = 4.07069
+Accuracy on testing set = 0.982456
+
+Network 11 :
+
+Sum squared error on training set = 0.163107
+Accuracy on training set = 1
+
+Sum squared error on validation set = 6.47785
+Accuracy on validation set = 0.976879
+
+Sum squared error on testing set = 3.59855
+Accuracy on testing set = 0.982456
+
+Network 12 :
+
+Sum squared error on training set = 0.252892
+Accuracy on training set = 1
+
+Sum squared error on validation set = 8.4423
+Accuracy on validation set = 0.970238
+
+Sum squared error on testing set = 3.93462
+Accuracy on testing set = 0.982456
+
+Network 13 :
+
+Sum squared error on training set = 0.424149
+Accuracy on training set = 1
+
+Sum squared error on validation set = 9.83755
+Accuracy on validation set = 0.95858
+
+Sum squared error on testing set = 2.52202
+Accuracy on testing set = 0.991228
+
+Network 14 :
+
+Sum squared error on training set = 0.0434304
+Accuracy on training set = 1
+
+Sum squared error on validation set = 10.2616
+Accuracy on validation set = 0.957055
+
+Sum squared error on testing set = 3.306
+Accuracy on testing set = 0.982456
+
+Network 15 :
+
+Sum squared error on training set = 0.0561117
+Accuracy on training set = 1
+
+Sum squared error on validation set = 9.96587
+Accuracy on validation set = 0.964286
+
+Sum squared error on testing set = 4.50029
+Accuracy on testing set = 0.973684
+
+Network 16 :
+
+Sum squared error on training set = 2.20604
+Accuracy on training set = 0.997802
+
+Sum squared error on validation set = 7.66893
+Accuracy on validation set = 0.962733
+
+Sum squared error on testing set = 2.96462
+Accuracy on testing set = 0.982456
+
+Network 17 :
+
+Sum squared error on training set = 2.07286
+Accuracy on training set = 0.997802
+
+Sum squared error on validation set = 4.53556
+Accuracy on validation set = 0.974194
+
+Sum squared error on testing set = 4.94914
+Accuracy on testing set = 0.973684
+
+Network 18 :
+
+Sum squared error on training set = 0.0635483
+Accuracy on training set = 1
+
+Sum squared error on validation set = 6.42147
+Accuracy on validation set = 0.982143
+
+Sum squared error on testing set = 2.83817
+Accuracy on testing set = 0.991228
+
+Network 19 :
+
+Sum squared error on training set = 2.1081
+Accuracy on training set = 0.997802
+
+Sum squared error on validation set = 9.07257
+Accuracy on validation set = 0.965318
+
+Sum squared error on testing set = 3.97534
+Accuracy on testing set = 0.964912
+
+Network 20 :
+
+Sum squared error on training set = 0.184492
+Accuracy on training set = 1
+
+Sum squared error on validation set = 5.15261
+Accuracy on validation set = 0.981707
+
+Sum squared error on testing set = 1.84707
+Accuracy on testing set = 0.991228
+
+Network 21 :
+
+Sum squared error on training set = 0.134788
+Accuracy on training set = 1
+
+Sum squared error on validation set = 3.93434
+Accuracy on validation set = 0.993865
+
+Sum squared error on testing set = 3.86341
+Accuracy on testing set = 0.973684
+
+Network 22 :
+
+Sum squared error on training set = 0.0837409
+Accuracy on training set = 1
+
+Sum squared error on validation set = 7.6971
+Accuracy on validation set = 0.97619
+
+Sum squared error on testing set = 4.76732
+Accuracy on testing set = 0.973684
+
+Network 23 :
+
+Sum squared error on training set = 0.0746088
+Accuracy on training set = 1
+
+Sum squared error on validation set = 6.93628
+Accuracy on validation set = 0.97619
+
+Sum squared error on testing set = 3.79934
+Accuracy on testing set = 0.973684
+
+Network 24 :
+
+Sum squared error on training set = 0.155811
+Accuracy on training set = 1
+
+Sum squared error on validation set = 8.69599
+Accuracy on validation set = 0.960227
+
+Sum squared error on testing set = 4.79845
+Accuracy on testing set = 0.964912
+
+Network 25 :
+
+Sum squared error on training set = 0.810766
+Accuracy on training set = 1
+
+Sum squared error on validation set = 3.32481
+Accuracy on validation set = 0.987952
+
+Sum squared error on testing set = 3.51457
+Accuracy on testing set = 0.982456
+
+-------------------------------------------------------
+-------------------------------------------------------
+
+Global accuracy on training set = 0.989011
+Global accuracy on testing set = 0.982456

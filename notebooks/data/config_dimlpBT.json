@@ -1,0 +1,18 @@
+{
+    "root_folder": "data/BCWDataset",
+    "train_data_file": "trainData.txt",
+    "train_class_file": "trainClass.txt",
+    "test_data_file": "testData.txt",
+    "test_class_file": "testClass.txt",
+    "attributes_file": "attributes.txt",
+    "train_pred_outfile": "predTrain.out",
+    "test_pred_outfile": "predTest.out",
+    "console_file": "resultDimlpBT.txt",
+    "with_rule_extraction": true,
+    "global_rules_outfile": "dimlpBTRules.rls",
+    "weights_outfile": "Weights/weights.wts",
+    "stats_file": "stats.txt",
+    "nb_attributes": 30,
+    "nb_classes": 2,
+    "hidden_layers": [5]
+}

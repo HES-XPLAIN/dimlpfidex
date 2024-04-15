@@ -1,0 +1,26 @@
+
+Parameters :
+
+- Max iteration number : 100
+- Min size of covering : 2
+- We don't use dimension dropout
+
+- We don't use hyperplan dropout
+
+Import files...
+Files imported
+
+Creation of hyperspace...
+
+Parameters of hyperLocus :
+
+- Number of stairs 50
+- Interval : [-5,5]
+
+Computation of all hyperlocus
+All hyperlocus created
+Hyperspace created
+
+Optimal FidexGlo
+
+Computing fidex rules...

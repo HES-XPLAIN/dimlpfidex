@@ -1,0 +1,569 @@
+Rule for sample 0 :
+
+WORST_AREA>=1.392625 -> MALIGNANT Covering size : 41 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.999739
+-------------------------------------------------
+
+Rule for sample 1 :
+
+MEAN_RADIUS>=0.760023 -> MALIGNANT Covering size : 93 Fidelity : 1.000000 Accuracy : 0.989362 Confidence : 0.991092
+-------------------------------------------------
+
+Rule for sample 2 :
+
+MEAN_AREA>=2.333916 -> MALIGNANT Covering size : 12 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.999900
+-------------------------------------------------
+
+Rule for sample 3 :
+
+MEAN_AREA>=0.508243 -> MALIGNANT Covering size : 98 Fidelity : 1.000000 Accuracy : 0.989899 Confidence : 0.989670
+-------------------------------------------------
+
+Rule for sample 4 :
+
+WORST_PERIMETER<-0.629729 -> BENIGN Covering size : 132 Fidelity : 1.000000 Accuracy : 0.992481 Confidence : 0.993538
+-------------------------------------------------
+
+Rule for sample 5 :
+
+MEAN_CONCAVE_POINTS<-1.032721 -> BENIGN Covering size : 35 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.997589
+-------------------------------------------------
+
+Rule for sample 6 :
+
+WORST_CONCAVE_POINTS>=0.976436 -> MALIGNANT Covering size : 84 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.990109
+-------------------------------------------------
+
+Rule for sample 7 :
+
+MEAN_CONCAVE_POINTS>=0.965770 -> MALIGNANT Covering size : 84 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.994609
+-------------------------------------------------
+
+Rule for sample 8 :
+
+MEAN_RADIUS>=0.727267 -> MALIGNANT Covering size : 96 Fidelity : 1.000000 Accuracy : 0.989691 Confidence : 0.989462
+-------------------------------------------------
+
+Rule for sample 9 :
+
+WORST_AREA>=0.673670 -> MALIGNANT Covering size : 89 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.998281
+-------------------------------------------------
+
+Rule for sample 10 :
+
+MEAN_SYMMETRY<-2.203454 -> BENIGN Covering size : 2 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.997976
+-------------------------------------------------
+
+Rule for sample 11 :
+
+AREA_ERROR<-0.434426 MEAN_AREA>=-0.104268 -> BENIGN Covering size : 9 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.932667
+-------------------------------------------------
+
+Rule for sample 12 :
+
+WORST_AREA<-0.132686 WORST_TEXTURE<-1.164363 -> BENIGN Covering size : 47 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.989252
+-------------------------------------------------
+
+Rule for sample 13 :
+
+WORST_RADIUS<-0.732505 -> BENIGN Covering size : 100 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.995485
+-------------------------------------------------
+
+Rule for sample 14 :
+
+WORST_AREA>=-0.010494 AREA_ERROR>=-0.194936 -> MALIGNANT Covering size : 132 Fidelity : 1.000000 Accuracy : 0.992481 Confidence : 0.981906
+-------------------------------------------------
+
+Rule for sample 15 :
+
+CONCAVITY_ERROR<-0.726753 -> BENIGN Covering size : 60 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.995706
+-------------------------------------------------
+
+Rule for sample 16 :
+
+MEAN_RADIUS>=1.432113 -> MALIGNANT Covering size : 51 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.998677
+-------------------------------------------------
+
+Rule for sample 17 :
+
+MEAN_RADIUS>=2.039176 -> MALIGNANT Covering size : 14 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.997672
+-------------------------------------------------
+
+Rule for sample 18 :
+
+WORST_RADIUS>=0.412802 -> MALIGNANT Covering size : 115 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.993372
+-------------------------------------------------
+
+Rule for sample 19 :
+
+MEAN_CONCAVE_POINTS<-0.707865 -> BENIGN Covering size : 122 Fidelity : 1.000000 Accuracy : 0.991870 Confidence : 0.993077
+-------------------------------------------------
+
+Rule for sample 20 :
+
+MEAN_CONCAVE_POINTS<-0.675386 -> BENIGN Covering size : 132 Fidelity : 1.000000 Accuracy : 0.992481 Confidence : 0.992064
+-------------------------------------------------
+
+Rule for sample 21 :
+
+WORST_PERIMETER>=0.333544 -> MALIGNANT Covering size : 128 Fidelity : 1.000000 Accuracy : 0.992248 Confidence : 0.988960
+-------------------------------------------------
+
+Rule for sample 22 :
+
+MEAN_PERIMETER<-1.277231 -> BENIGN Covering size : 23 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.994176
+-------------------------------------------------
+
+Rule for sample 23 :
+
+WORST_RADIUS<-0.754960 -> BENIGN Covering size : 96 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.994723
+-------------------------------------------------
+
+Rule for sample 24 :
+
+MEAN_RADIUS<-1.072105 -> BENIGN Covering size : 48 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.994907
+-------------------------------------------------
+
+Rule for sample 25 :
+
+MEAN_PERIMETER<-0.881145 -> BENIGN Covering size : 70 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.994777
+-------------------------------------------------
+
+Rule for sample 26 :
+
+WORST_AREA<-0.658950 -> BENIGN Covering size : 105 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.994056
+-------------------------------------------------
+
+Rule for sample 27 :
+
+WORST_PERIMETER<-0.676305 -> BENIGN Covering size : 118 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.994895
+-------------------------------------------------
+
+Rule for sample 28 :
+
+WORST_PERIMETER<-0.642983 -> BENIGN Covering size : 130 Fidelity : 1.000000 Accuracy : 0.992366 Confidence : 0.993835
+-------------------------------------------------
+
+Rule for sample 29 :
+
+WORST_RADIUS>=0.313710 -> MALIGNANT Covering size : 123 Fidelity : 1.000000 Accuracy : 0.991935 Confidence : 0.983695
+-------------------------------------------------
+
+Rule for sample 30 :
+
+MEAN_CONCAVE_POINTS<-0.936300 -> BENIGN Covering size : 56 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.997041
+-------------------------------------------------
+
+Rule for sample 31 :
+
+WORST_PERIMETER<-0.467189 TEXTURE_ERROR>=0.426833 -> BENIGN Covering size : 67 Fidelity : 1.000000 Accuracy : 0.985294 Confidence : 0.984632
+-------------------------------------------------
+
+Rule for sample 32 :
+
+WORST_CONCAVE_POINTS>=1.217062 -> MALIGNANT Covering size : 69 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.988147
+-------------------------------------------------
+
+Rule for sample 33 :
+
+RADIUS_ERROR<-0.790269 -> BENIGN Covering size : 53 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.989820
+-------------------------------------------------
+
+Rule for sample 34 :
+
+MEAN_CONCAVE_POINTS<-0.720666 -> BENIGN Covering size : 121 Fidelity : 1.000000 Accuracy : 0.991803 Confidence : 0.993029
+-------------------------------------------------
+
+Rule for sample 35 :
+
+WORST_RADIUS<-0.852919 -> BENIGN Covering size : 75 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.995946
+-------------------------------------------------
+
+Rule for sample 36 :
+
+WORST_PERIMETER<-0.605488 -> BENIGN Covering size : 143 Fidelity : 1.000000 Accuracy : 0.993056 Confidence : 0.992760
+-------------------------------------------------
+
+Rule for sample 37 :
+
+MEAN_RADIUS>=1.586424 -> MALIGNANT Covering size : 35 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.998491
+-------------------------------------------------
+
+Rule for sample 38 :
+
+MEAN_CONCAVE_POINTS>=0.965770 -> MALIGNANT Covering size : 84 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.994608
+-------------------------------------------------
+
+Rule for sample 39 :
+
+WORST_PERIMETER<-0.690731 -> BENIGN Covering size : 112 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.995309
+-------------------------------------------------
+
+Rule for sample 40 :
+
+WORST_RADIUS<-0.290400 AREA_ERROR>=-0.394571 -> BENIGN Covering size : 62 Fidelity : 1.000000 Accuracy : 0.984127 Confidence : 0.985791
+-------------------------------------------------
+
+Rule for sample 41 :
+
+MEAN_SYMMETRY<-1.550743 -> BENIGN Covering size : 16 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.986244
+-------------------------------------------------
+
+Rule for sample 42 :
+
+WORST_AREA>=0.147360 -> MALIGNANT Covering size : 126 Fidelity : 1.000000 Accuracy : 0.992126 Confidence : 0.980780
+-------------------------------------------------
+
+Rule for sample 43 :
+
+AREA_ERROR<-0.633379 -> BENIGN Covering size : 23 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.997608
+-------------------------------------------------
+
+Rule for sample 44 :
+
+MEAN_CONCAVE_POINTS<-0.708314 -> BENIGN Covering size : 122 Fidelity : 1.000000 Accuracy : 0.991870 Confidence : 0.993153
+-------------------------------------------------
+
+Rule for sample 45 :
+
+MEAN_CONCAVE_POINTS<-1.061598 -> BENIGN Covering size : 30 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.997894
+-------------------------------------------------
+
+Rule for sample 46 :
+
+RADIUS_ERROR<-0.841134 -> BENIGN Covering size : 31 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.984790
+-------------------------------------------------
+
+Rule for sample 47 :
+
+MEAN_CONCAVE_POINTS<-0.576005 WORST_COMPACTNESS<-0.208626 -> BENIGN Covering size : 152 Fidelity : 1.000000 Accuracy : 0.993464 Confidence : 0.992339
+-------------------------------------------------
+
+Rule for sample 48 :
+
+MEAN_PERIMETER<-1.134476 -> BENIGN Covering size : 38 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.994085
+-------------------------------------------------
+
+Rule for sample 49 :
+
+MEAN_COMPACTNESS>=2.682956 -> MALIGNANT Covering size : 7 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.991991
+-------------------------------------------------
+
+Rule for sample 50 :
+
+MEAN_AREA>=0.583897 -> MALIGNANT Covering size : 96 Fidelity : 1.000000 Accuracy : 0.989691 Confidence : 0.991204
+-------------------------------------------------
+
+Rule for sample 51 :
+
+WORST_PERIMETER<-0.604999 -> BENIGN Covering size : 143 Fidelity : 1.000000 Accuracy : 0.993056 Confidence : 0.992762
+-------------------------------------------------
+
+Rule for sample 52 :
+
+MEAN_CONCAVE_POINTS<-0.675386 -> BENIGN Covering size : 132 Fidelity : 1.000000 Accuracy : 0.992481 Confidence : 0.992067
+-------------------------------------------------
+
+Rule for sample 53 :
+
+MEAN_CONCAVE_POINTS<-0.710053 -> BENIGN Covering size : 122 Fidelity : 1.000000 Accuracy : 0.991870 Confidence : 0.993135
+-------------------------------------------------
+
+Rule for sample 54 :
+
+WORST_RADIUS<-0.734862 -> BENIGN Covering size : 100 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.995479
+-------------------------------------------------
+
+Rule for sample 55 :
+
+MEAN_CONCAVE_POINTS<-0.707865 -> BENIGN Covering size : 122 Fidelity : 1.000000 Accuracy : 0.991870 Confidence : 0.993136
+-------------------------------------------------
+
+Rule for sample 56 :
+
+WORST_TEXTURE<-1.485465 -> BENIGN Covering size : 24 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.979329
+-------------------------------------------------
+
+Rule for sample 57 :
+
+RADIUS_ERROR<-1.000961 -> BENIGN Covering size : 7 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.998418
+-------------------------------------------------
+
+Rule for sample 58 :
+
+WORST_RADIUS<-0.290400 MEAN_SYMMETRY<0.169522 -> BENIGN Covering size : 146 Fidelity : 1.000000 Accuracy : 0.993197 Confidence : 0.990259
+-------------------------------------------------
+
+Rule for sample 59 :
+
+WORST_PERIMETER<-0.652086 -> BENIGN Covering size : 127 Fidelity : 1.000000 Accuracy : 0.992188 Confidence : 0.994330
+-------------------------------------------------
+
+Rule for sample 60 :
+
+WORST_AREA>=0.444592 -> MALIGNANT Covering size : 107 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.994933
+-------------------------------------------------
+
+Rule for sample 61 :
+
+WORST_RADIUS>=1.525088 -> MALIGNANT Covering size : 43 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.999743
+-------------------------------------------------
+
+Rule for sample 62 :
+
+MEAN_RADIUS<-1.088060 -> BENIGN Covering size : 48 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.994749
+-------------------------------------------------
+
+Rule for sample 63 :
+
+WORST_PERIMETER>=0.264908 -> MALIGNANT Covering size : 133 Fidelity : 1.000000 Accuracy : 0.985075 Confidence : 0.983948
+-------------------------------------------------
+
+Rule for sample 64 :
+
+WORST_AREA<-0.712431 -> BENIGN Covering size : 89 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.995450
+-------------------------------------------------
+
+Rule for sample 65 :
+
+WORST_RADIUS>=1.469475 -> MALIGNANT Covering size : 45 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.999752
+-------------------------------------------------
+
+Rule for sample 66 :
+
+WORST_CONCAVE_POINTS>=1.059319 -> MALIGNANT Covering size : 77 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.989463
+-------------------------------------------------
+
+Rule for sample 67 :
+
+WORST_AREA<-0.327105 MEAN_CONCAVE_POINTS<-0.045652 -> BENIGN Covering size : 209 Fidelity : 1.000000 Accuracy : 0.995238 Confidence : 0.991217
+-------------------------------------------------
+
+Rule for sample 68 :
+
+CONCAVITY_ERROR<-0.830516 -> BENIGN Covering size : 39 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.996502
+-------------------------------------------------
+
+Rule for sample 69 :
+
+MEAN_CONCAVITY<-0.853815 -> BENIGN Covering size : 74 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.995921
+-------------------------------------------------
+
+Rule for sample 70 :
+
+WORST_RADIUS<-0.284978 MEAN_AREA>=-0.750293 -> BENIGN Covering size : 135 Fidelity : 1.000000 Accuracy : 0.985294 Confidence : 0.982528
+-------------------------------------------------
+
+Rule for sample 71 :
+
+WORST_PERIMETER<-0.694741 -> BENIGN Covering size : 111 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.995855
+-------------------------------------------------
+
+Rule for sample 72 :
+
+WORST_AREA>=0.120919 -> MALIGNANT Covering size : 127 Fidelity : 1.000000 Accuracy : 0.992188 Confidence : 0.980915
+-------------------------------------------------
+
+Rule for sample 73 :
+
+AREA_ERROR>=0.904533 -> MALIGNANT Covering size : 54 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.990009
+-------------------------------------------------
+
+Rule for sample 74 :
+
+WORST_RADIUS<-0.286716 MEAN_PERIMETER>=-0.267653 -> BENIGN Covering size : 13 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.947389
+-------------------------------------------------
+
+Rule for sample 75 :
+
+WORST_PERIMETER>=0.272904 -> MALIGNANT Covering size : 132 Fidelity : 1.000000 Accuracy : 0.992481 Confidence : 0.985762
+-------------------------------------------------
+
+Rule for sample 76 :
+
+RADIUS_ERROR<-0.804000 -> BENIGN Covering size : 45 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.988717
+-------------------------------------------------
+
+Rule for sample 77 :
+
+WORST_RADIUS<-0.909625 -> BENIGN Covering size : 65 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.995620
+-------------------------------------------------
+
+Rule for sample 78 :
+
+MEAN_CONCAVE_POINTS<-0.668681 -> BENIGN Covering size : 136 Fidelity : 1.000000 Accuracy : 0.992701 Confidence : 0.991741
+-------------------------------------------------
+
+Rule for sample 79 :
+
+MEAN_CONCAVE_POINTS<-0.708784 -> BENIGN Covering size : 122 Fidelity : 1.000000 Accuracy : 0.991870 Confidence : 0.992962
+-------------------------------------------------
+
+Rule for sample 80 :
+
+WORST_AREA>=0.139229 -> MALIGNANT Covering size : 126 Fidelity : 1.000000 Accuracy : 0.992126 Confidence : 0.980781
+-------------------------------------------------
+
+Rule for sample 81 :
+
+WORST_RADIUS<-0.727008 -> BENIGN Covering size : 100 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.995295
+-------------------------------------------------
+
+Rule for sample 82 :
+
+MEAN_AREA>=0.537730 -> MALIGNANT Covering size : 97 Fidelity : 1.000000 Accuracy : 0.989796 Confidence : 0.989372
+-------------------------------------------------
+
+Rule for sample 83 :
+
+WORST_RADIUS>=0.308690 -> MALIGNANT Covering size : 124 Fidelity : 1.000000 Accuracy : 0.992000 Confidence : 0.983299
+-------------------------------------------------
+
+Rule for sample 84 :
+
+AREA_ERROR<-0.634724 -> BENIGN Covering size : 23 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.997545
+-------------------------------------------------
+
+Rule for sample 85 :
+
+MEAN_SYMMETRY<-1.577057 -> BENIGN Covering size : 14 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.981614
+-------------------------------------------------
+
+Rule for sample 86 :
+
+WORST_PERIMETER>=0.336844 -> MALIGNANT Covering size : 128 Fidelity : 1.000000 Accuracy : 0.984496 Confidence : 0.985818
+-------------------------------------------------
+
+Rule for sample 87 :
+
+MEAN_RADIUS>=1.564760 -> MALIGNANT Covering size : 37 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.998558
+-------------------------------------------------
+
+Rule for sample 88 :
+
+MEAN_CONCAVE_POINTS<-0.415737 MEAN_CONCAVITY>=-0.429457 -> BENIGN Covering size : 32 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.986081
+-------------------------------------------------
+
+Rule for sample 89 :
+
+MEAN_CONCAVE_POINTS<-0.715644 -> BENIGN Covering size : 122 Fidelity : 1.000000 Accuracy : 0.991870 Confidence : 0.993155
+-------------------------------------------------
+
+Rule for sample 90 :
+
+MEAN_CONCAVE_POINTS<-0.708314 -> BENIGN Covering size : 122 Fidelity : 1.000000 Accuracy : 0.991870 Confidence : 0.993143
+-------------------------------------------------
+
+Rule for sample 91 :
+
+WORST_CONCAVITY<-0.727301 MEAN_PERIMETER<0.143173 -> BENIGN Covering size : 115 Fidelity : 1.000000 Accuracy : 0.991379 Confidence : 0.993723
+-------------------------------------------------
+
+Rule for sample 92 :
+
+MEAN_CONCAVE_POINTS<-0.936300 -> BENIGN Covering size : 56 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.996842
+-------------------------------------------------
+
+Rule for sample 93 :
+
+MEAN_RADIUS>=0.826268 -> MALIGNANT Covering size : 91 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.995620
+-------------------------------------------------
+
+Rule for sample 94 :
+
+MEAN_CONCAVITY>=0.711955 CONCAVITY_ERROR<0.593010 -> MALIGNANT Covering size : 49 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.983948
+-------------------------------------------------
+
+Rule for sample 95 :
+
+WORST_CONCAVE_POINTS>=1.034062 -> MALIGNANT Covering size : 80 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.989826
+-------------------------------------------------
+
+Rule for sample 96 :
+
+WORST_RADIUS<-0.860839 -> BENIGN Covering size : 73 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.995722
+-------------------------------------------------
+
+Rule for sample 97 :
+
+WORST_RADIUS>=0.813795 -> MALIGNANT Covering size : 90 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.998190
+-------------------------------------------------
+
+Rule for sample 98 :
+
+AREA_ERROR>=2.604040 -> MALIGNANT Covering size : 7 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.999889
+-------------------------------------------------
+
+Rule for sample 99 :
+
+MEAN_CONCAVITY<-0.528111 MEAN_PERIMETER<0.137911 -> BENIGN Covering size : 177 Fidelity : 1.000000 Accuracy : 0.988764 Confidence : 0.987656
+-------------------------------------------------
+
+Rule for sample 100 :
+
+MEAN_CONCAVE_POINTS>=1.196653 -> MALIGNANT Covering size : 54 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.993717
+-------------------------------------------------
+
+Rule for sample 101 :
+
+MEAN_CONCAVE_POINTS<-0.670681 -> BENIGN Covering size : 134 Fidelity : 1.000000 Accuracy : 0.992593 Confidence : 0.992125
+-------------------------------------------------
+
+Rule for sample 102 :
+
+COMPACTNESS_ERROR<-1.041743 -> BENIGN Covering size : 18 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.997861
+-------------------------------------------------
+
+Rule for sample 103 :
+
+MEAN_CONCAVITY>=0.383741 MEAN_CONCAVITY<0.493153 -> MALIGNANT Covering size : 7 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.949760
+-------------------------------------------------
+
+Rule for sample 104 :
+
+MEAN_SMOOTHNESS<-2.146222 -> BENIGN Covering size : 3 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.993906
+-------------------------------------------------
+
+Rule for sample 105 :
+
+WORST_RADIUS<-0.286716 WORST_FRACTAL_DIMENSION<-0.039550 -> BENIGN Covering size : 147 Fidelity : 1.000000 Accuracy : 0.986486 Confidence : 0.990865
+-------------------------------------------------
+
+Rule for sample 106 :
+
+MEAN_PERIMETER<-0.828139 -> BENIGN Covering size : 81 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.994949
+-------------------------------------------------
+
+Rule for sample 107 :
+
+MEAN_PERIMETER>=0.570389 -> MALIGNANT Covering size : 104 Fidelity : 1.000000 Accuracy : 0.990476 Confidence : 0.989037
+-------------------------------------------------
+
+Rule for sample 108 :
+
+RADIUS_ERROR<-0.827191 -> BENIGN Covering size : 35 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.983835
+-------------------------------------------------
+
+Rule for sample 109 :
+
+WORST_RADIUS>=0.774327 -> MALIGNANT Covering size : 94 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.997395
+-------------------------------------------------
+
+Rule for sample 110 :
+
+WORST_CONCAVE_POINTS>=0.933526 -> MALIGNANT Covering size : 92 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.989909
+-------------------------------------------------
+
+Rule for sample 111 :
+
+MEAN_CONCAVE_POINTS>=0.612394 WORST_AREA>=-0.173681 -> MALIGNANT Covering size : 105 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.990893
+-------------------------------------------------
+
+Rule for sample 112 :
+
+WORST_AREA>=0.162478 -> MALIGNANT Covering size : 124 Fidelity : 1.000000 Accuracy : 0.992000 Confidence : 0.982991
+-------------------------------------------------
+
+Rule for sample 113 :
+
+WORST_PERIMETER<-0.616971 -> BENIGN Covering size : 137 Fidelity : 1.000000 Accuracy : 0.992754 Confidence : 0.992643
+-------------------------------------------------

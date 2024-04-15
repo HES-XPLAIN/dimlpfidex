@@ -1,0 +1,13 @@
+{
+    "root_folder": "data/BCWDataset",
+    "test_data_file": "testData.txt",
+    "test_pred_file": "predTest.out",
+    "test_class_file": "testClass.txt",
+    "global_rules_file": "globalRules.rls",
+    "attributes_file": "attributes.txt",
+    "nb_attributes": 30,
+    "nb_classes": 2,
+    "positive_class_index": 0,
+    "stats_file": "fidexGloStats.txt",
+    "global_rules_outfile": "globalRules.rls"
+}

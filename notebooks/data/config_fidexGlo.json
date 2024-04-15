@@ -1,0 +1,17 @@
+{
+    "root_folder": "data/BCWDataset",
+    "test_data_file": "testData.txt",
+    "test_pred_file": "predTest.out",
+    "test_class_file": "testClass.txt",
+    "global_rules_file": "globalRules.rls",
+    "attributes_file": "attributes.txt",
+    "nb_attributes": 30,
+    "nb_classes": 2,
+    "explanation_file": "explanations.txt",
+    "console_file": "fidexGloResults.txt",
+    "with_fidex": "true",
+    "train_data_file": "trainData.txt",
+    "train_pred_file": "predTrain.out",
+    "train_class_file": "trainClass.txt",
+    "weights_file": "Weights/weights.wts"
+}
