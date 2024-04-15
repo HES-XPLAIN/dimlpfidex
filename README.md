@@ -102,31 +102,9 @@ To activate the virtualenv, use the standard methods:
 
 To leave the virtualenv, use `deactivate`.
 
-### Compile
+### Compile and Package
 
-To compile:
-
-```shell
-python buildcpp.py
-```
-
-If CMake complains about not finding pybind11, ensure to activate the shell first.
-
-**Note**: If you still have an issue on Windows, try the following commands to
-build manually:
-
-```shell
-mkdir build && cd build
-$path = 'C:\\Users\\<Username>\\<path_to>\\.venv\\Lib\\site-packages'
-cmake.exe -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH="$path" ..
-cmake.exe --build .
-```
-
-Adjust the path to the virtual environment accordingly.
-
-### Package
-
-Create archives for distribution:
+Compile and create archives for distribution:
 
 ```shell
 python -m build
