@@ -17,6 +17,7 @@ dependencies = [
     "build>=1.0.3",
 ]
 readme = "README.md"
+license = { text = "BSD License (BSD-3-Clause)" }
 homepage = "https://hes-xplain.github.io/"
 repository = "https://github.com/HES-XPLAIN/dimlpfidex"
 keywords = ["machine learning", "xai"]
