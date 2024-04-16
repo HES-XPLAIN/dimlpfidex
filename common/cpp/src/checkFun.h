@@ -12,7 +12,6 @@
 #include <string>
 #include <sys/stat.h>
 #include <tuple>
-#include <unistd.h>
 #include <vector>
 
 bool checkInt(const std::string &input);
