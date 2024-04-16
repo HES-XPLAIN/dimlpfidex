@@ -34,7 +34,7 @@ DataSetFid::DataSetFid(const std::string &name, const std::string &dataFile, con
   if (decisionThresh != -1 && !std::isnan(decisionThresh)) {
     decisionThreshold = decisionThresh;
   }
-  if (positiveClassId != -1 && !std::isnan(positiveClassId)) {
+  if (positiveClassId != -1 && !std::isnan(static_cast<double>(positiveClassId))) {
     positiveClassIndex = positiveClassId;
   }
 
@@ -77,7 +77,7 @@ DataSetFid::DataSetFid(const std::string &name, const std::string &dataFile, int
   if (decisionThresh != -1 && !std::isnan(decisionThresh)) {
     decisionThreshold = decisionThresh;
   }
-  if (positiveClassId != -1 && !std::isnan(positiveClassId)) {
+  if (positiveClassId != -1 && !std::isnan(static_cast<double>(positiveClassId))) {
     positiveClassIndex = positiveClassId;
   }
 
@@ -321,7 +321,7 @@ void DataSetFid::setPredFromFile(const std::string &predFile, int nbClasses, dou
       throw InternalError("Error in dataset " + datasetName + " : decision threshold has been given two times.");
     }
   }
-  if (positiveClassId != -1 && !std::isnan(positiveClassId)) {
+  if (positiveClassId != -1 && !std::isnan(static_cast<double>(positiveClassId))) {
     if (positiveClassIndex != -1) {
       positiveClassIndex = positiveClassId;
     } else {
