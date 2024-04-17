@@ -35,7 +35,7 @@ def get_and_check_parameters(init_args):
     parser.add_argument("--test_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test class file", metavar="<str>", required=True)
     parser.add_argument("--test_pred_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test prediction file", metavar="<str>", required=True)
     parser.add_argument("--nb_classes", type=lambda x: int_type(x, min=1), help="Number of classes in dataset", metavar="<int [1,inf[>", required=True)
-    parser.add_argument("--positive_class_index", type=lambda x: int_type(x, min=1), help="Index of positive class, index starts at 0", metavar="<int [1,nb_classes-1]>", required=True)
+    parser.add_argument("--positive_class_index", type=lambda x: int_type(x, min=0), help="Index of positive class, index starts at 0", metavar="<int [0,nb_classes-1]>", required=True)
     parser.add_argument("--estimator", type=str, help="Name of estimator", metavar="<str>", action=TaggableAction, tag="ROC")
     parser.add_argument("--output_roc", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output ROC curve file name", metavar="<str>", default="roc_curve.png", action=TaggableAction, tag="ROC")
     parser.add_argument("--stats_file", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output statistic file name with AUC score", metavar="<str>")
