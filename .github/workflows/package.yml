@@ -72,7 +72,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: artifact-dist
+          name: artifact-dist-${{ matrix.os }}-${{ matrix.python-version }}
           path: dist/*
 
   publish:
@@ -86,7 +86,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: artifact-dist
+          name: artifact-dist-${{ matrix.os }}-${{ matrix.python-version }}
           path: dist
 
 #      - name: Publish distribution 📦 to Test PyPI
@@ -107,7 +107,7 @@ jobs:
     needs: publish
     steps:
       - name: Delete artifacts
-        uses: geekyeggo/delete-artifact@v2
+        uses: geekyeggo/delete-artifact@v5
         with:
           failOnError: false
           name: |
