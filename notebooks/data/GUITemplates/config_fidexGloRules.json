@@ -1,5 +1,5 @@
 {
-    "root_folder": "data/GUIDataset/",
+    "root_folder": "notebooks/data/GUIDataset/",
     "train_data_file": "train.txt",
     "train_pred_file": "dimlp_train.out",
     "train_class_file": "train_true_classes.txt",
