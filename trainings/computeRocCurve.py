@@ -38,7 +38,7 @@ def get_and_check_parameters(init_args):
     parser.add_argument("--positive_class_index", type=lambda x: int_type(x, min=0), help="Index of positive class, index starts at 0", metavar="<int [0,nb_classes-1]>", required=True)
     parser.add_argument("--estimator", type=str, help="Name of estimator", metavar="<str>", action=TaggableAction, tag="ROC")
     parser.add_argument("--output_roc", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output ROC curve file name", metavar="<str>", default="roc_curve.png", action=TaggableAction, tag="ROC")
-    parser.add_argument("--stats_file", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output statistic file name with AUC score", metavar="<str>")
+    parser.add_argument("--stats_file", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output statistic file name with AUC score, can be the training stats file", metavar="<str>")
     parser.add_argument("--show_params", type=bool_type, help="Whether to show parameters", metavar="<bool>", default=True)
 
     return get_args(args, cleaned_args, parser) # Return attributes
@@ -99,14 +99,18 @@ def computeRocCurve(args: str = None):
 
         # Save AUC result in stats file
         if args.stats_file is not None:
-            with open(args.stats_file, 'r') as file:
-                lines = file.readlines()
-                file.close()
-            last_line = lines[-1]
-            if last_line.startswith("AUC score on testing set"):
+            try:
+                with open(args.stats_file, 'r') as file:
+                    lines = file.readlines()
+                    file.close()
+            except FileNotFoundError:
+                lines = []
+            if lines and lines[-1].startswith("AUC score on testing set"):
                 lines[-1] = f"AUC score on testing set : {auc_score}" # Replace the line
-            else:
+            elif lines:
                 lines.append(f"\nAUC score on testing set : {auc_score}")# Add new line
+            else:
+                lines.append(f"AUC score on testing set : {auc_score}")# Add new line
 
             with open(args.stats_file, "w") as file:
                 file.writelines(lines)
