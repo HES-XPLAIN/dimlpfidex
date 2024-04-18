@@ -1,9 +1,9 @@
 {
     "root_folder": "data/BCWDataset",
-    "train_data_file": "trainData.txt",
+    "train_data_file": "trainData_normalized.txt",
     "train_pred_file": "predTrain.out",
     "train_class_file": "trainClass.txt",
-    "test_data_file": "testData.txt",
+    "test_data_file": "testData_normalized.txt",
     "test_class_file": "testClass.txt",
     "test_pred_file": "predTest.out",
     "rules_outfile": "fidexRules.rls",
@@ -11,6 +11,7 @@
     "weights_file": "Weights/weights.wts",
     "stats_file": "fidexStats.txt",
     "console_file": "fidexResult.txt",
+    "normalization_file": "normalization_stats.txt",
     "nb_attributes": 30,
     "nb_classes": 2
 }

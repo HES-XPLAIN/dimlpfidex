@@ -13,5 +13,6 @@
     "train_data_file": "trainData.txt",
     "train_pred_file": "predTrain.out",
     "train_class_file": "trainClass.txt",
-    "weights_file": "Weights/weights.wts"
+    "weights_file": "Weights/weights.wts",
+    "normalization_file": "normalization_stats.txt"
 }

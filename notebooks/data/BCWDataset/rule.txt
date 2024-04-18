@@ -1,3 +1,0 @@
-Rule for sample 0 :
-
-WORST_PERIMETER<-0.156935 TEXTURE_ERROR<-0.204349 -> BENIGN Covering size : 115 Fidelity : 1.000000 Accuracy : 1.000000 Confidence : 0.991087

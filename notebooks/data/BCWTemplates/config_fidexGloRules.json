@@ -1,12 +1,13 @@
 {
     "root_folder": "data/BCWDataset",
-    "train_data_file": "trainData.txt",
+    "train_data_file": "trainData_normalized.txt",
     "train_pred_file": "predTrain.out",
     "train_class_file": "trainClass.txt",
     "global_rules_outfile": "globalRules.rls",
     "attributes_file": "attributes.txt",
     "weights_file": "Weights/weights.wts",
     "console_file": "fidexGloRulesResult.txt",
+    "normalization_file": "normalization_stats.txt",
     "nb_attributes": 30,
     "nb_classes": 2,
     "heuristic": 1
