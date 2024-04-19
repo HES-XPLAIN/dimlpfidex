@@ -66,8 +66,8 @@ class _AppPageState extends State<AppPage> with TickerProviderStateMixin {
         children: [
           const MainMenuView(),
           NestedTabBar(tabs: {
-            "tests":
-                FormView(fields: testFields, tabController: _tabController),
+            // "tests":
+            //     FormView(fields: testFields, tabController: _tabController),
             "Fidex":
                 FormView(fields: fidexFields, tabController: _tabController),
             "Fidex Glo":
