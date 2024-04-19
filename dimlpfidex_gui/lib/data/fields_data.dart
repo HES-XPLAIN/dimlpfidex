@@ -1,90 +1,90 @@
 import 'package:dimlpfidex_gui/data/field.dart';
 import 'package:dimlpfidex_gui/data/common_fields_data.dart';
 
-const List<Field> testFields = [
-  rootFolderFld,
-  Field(
-    "Normalization file",
-    "normalization_file",
-    Datatype.filePath,
-    defaultValue: "normalization.txt",
-  ),
-  seedFld,
-  dropoutDimFld,
-  Field(
-    "Data files to normalize",
-    "data_files",
-    Datatype.listFilePath,
-    description:
-        "Data files to normalize, they are normalized with respect to the first one if normalization_file is not specified",
-  ),
-  Field("Dropdown", "dropdown", Datatype.restrictedChoiceString,
-      description: "Random dropdown",
-      items: [
-        "choice one",
-        "choice two",
-        "choice three",
-        "choice four",
-        "choice five"
-      ]),
-  Field(
-    "Using dichotomic search",
-    "search-strategy",
-    Datatype.boolean,
-    description:
-        "Whether or not to use the dichotomic search strategy, can increase speed.",
-    defaultValue: "true",
-  ),
-  musFld,
-  sigmasFld,
-  Field(
-    "Enums",
-    "enums",
-    Datatype.listString,
-    description: "List of words",
-    defaultValue: "hello, my, name, is, test",
-  ),
-  Field(
-    "Random dict",
-    "random_dict",
-    Datatype.dictionary,
-    description: "Dictionary",
-    defaultValue: "{1:2, 3:4, 5:6}",
-  ),
-];
+// const List<Field> testFields = [
+//   rootFolderFld,
+//   Field(
+//     "Normalization file",
+//     "normalization_file",
+//     Datatype.filePath,
+//     defaultValue: "normalization.txt",
+//   ),
+//   seedFld,
+//   dropoutDimFld,
+//   Field(
+//     "Data files to normalize",
+//     "data_files",
+//     Datatype.listFilePath,
+//     description:
+//         "Data files to normalize, they are normalized with respect to the first one if normalization_file is not specified",
+//   ),
+//   Field("Dropdown", "dropdown", Datatype.restrictedChoiceString,
+//       description: "Random dropdown",
+//       items: [
+//         "choice one",
+//         "choice two",
+//         "choice three",
+//         "choice four",
+//         "choice five"
+//       ]),
+//   Field(
+//     "Using dichotomic search",
+//     "search-strategy",
+//     Datatype.boolean,
+//     description:
+//         "Whether or not to use the dichotomic search strategy, can increase speed.",
+//     defaultValue: "true",
+//   ),
+//   musFld,
+//   sigmasFld,
+//   Field(
+//     "Enums",
+//     "enums",
+//     Datatype.listString,
+//     description: "List of words",
+//     defaultValue: "hello, my, name, is, test",
+//   ),
+//   Field(
+//     "Random dict",
+//     "random_dict",
+//     Datatype.dictionary,
+//     description: "Dictionary",
+//     defaultValue: "{1:2, 3:4, 5:6}",
+//   ),
+// ];
 
 const List<Field> fidexFields = [
   rootFolderFld,
   trainDataFileFld,
   trainPredFileFld,
   Field(
-    "Train true class file",
+    "Train true classes file",
     "train_class_file",
     Datatype.filePath,
     description:
-        "Train true class file, not mandatory if classes are specified in train data file",
+        "Train true classes file, not mandatory if classes are specified in train data file.",
   ),
   Field(
-    "Test sample(s) data file",
+    "Test data file",
     "test_data_file",
     Datatype.filePath,
     isRequired: true,
     description:
-        "Test sample(s) data file with data, prediction (if no --test_pred_file) and true class (if no --test_class_file)",
+        "Test sample(s) data file with data, prediction (if no Test prediction file is specified) and true class (if no Test true classes file is specified).",
   ),
   Field(
     "Weights file",
     "weights_file",
     Datatype.filePath,
     description:
-        "Weights file (not mandatory if a rules file is given with --rules_file)",
+        "Weights file (not mandatory if a rules file is given with Rules file).",
   ),
   Field(
     "Rules file",
     "rules_file",
     Datatype.filePath,
     description:
-        "Rules file to be converted to hyperlocus (not mandatory if a weights file is given with --weights_file)",
+        "Rules file to be converted to hyperlocus (not mandatory if a weights file is given with weights file).",
   ),
   rulesOutputFileFld,
   nbAttributesFld,
@@ -93,37 +93,37 @@ const List<Field> fidexFields = [
     "Test prediction file",
     "test_pred_file",
     Datatype.filePath,
-    description: "Test prediction file",
+    description: "Path/name to file containing predictions concerning the test portion of a dataset.",
   ),
   Field(
-    "Test true class file",
+    "Test true classes file",
     "test_class_file",
     Datatype.filePath,
     description:
-        "Test true class file. If at least --test_pred_file is specified, --test_data_file needs to have only test datas and eventually classes on same line (don't add --test_class_file in this case)",
+        "Test true class file. If at least Test prediction file is specified, Test data file needs to have only test datas and eventually classes on same line (don't add Test true classes file in this case).",
   ),
   Field(
-    "File of attributes",
+    "Attributes file",
     "attributes_file",
     Datatype.filePath,
-    description: "File of attributes",
+    description: "File containing labels of attributes and classes.",
   ),
   Field(
-    "Output statistic file name",
+    "Output stats file",
     "stats_file",
     Datatype.filePath,
-    description: "Output statistic file name",
+    description: "Name/path of file generated containing information concerning the algorithm execution.",
   ),
   consoleFileFld,
   Field(
-    "Max iteration number",
+    "Maximum iteration number",
     "max_iterations",
     Datatype.integer,
     minValue: "1",
     maxValue: "inf",
     defaultValue: "10",
     description:
-        "Max iteration number, also the max possible number of attributs in a rule, should be 25 if working with images.",
+        "Maximum iteration number, also the maximum possible number of attributes in a rule, should be 25 if working with images.",
   ),
   Field(
     "Minimum covering number",
@@ -132,14 +132,15 @@ const List<Field> fidexFields = [
     minValue: "1",
     maxValue: "inf",
     defaultValue: "2",
-    description: "Minimum covering number.",
+    description: "Minimum number of samples covered by the generated rules.",
   ),
   Field(
-    "Whether to use this strategy",
+    "Use covering strategy",
     "covering_strategy",
     Datatype.boolean,
+    defaultValue: "true",
     description:
-        "Whether to use this strategy : if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (default: True)",
+        "Whether to use the covering strategy: if no rule is found with minimum covering, find best rule with best covering using dichotomic search. Decreases minimum fidelity if needed.",
   ),
   Field(
     "Maximum number of failed attempts",
@@ -149,27 +150,27 @@ const List<Field> fidexFields = [
     maxValue: "inf",
     defaultValue: "30",
     description:
-        "Maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used (default: 30)",
+        "Maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used.",
   ),
   Field(
     "Minimal rule fidelity accepted",
     "min_fidelity",
     Datatype.doublePrecision,
-    minValue: "0",
-    maxValue: "1",
+    minValue: "0.0",
+    maxValue: "1.0",
     defaultValue: "1.0",
     description:
-        "Minimal rule fidelity accepted when generating a rule (default: 1.0)",
+        "Minimal rule fidelity accepted when generating a rule.",
   ),
   Field(
-    "Minimal min_fidelity",
+    "Lowest minimal rule fidelity accepted",
     "lowest_min_fidelity",
     Datatype.doublePrecision,
-    minValue: "0",
-    maxValue: "1",
+    minValue: "0.0",
+    maxValue: "1.0",
     defaultValue: "0.75",
     description:
-        "Minimal min_fidelity to which we agree to go down during covering_strategy (default: 0.75)",
+        "Minimal min_fidelity to which we agree to go down during covering_strategy.",
   ),
   dropoutDimFld,
   dropoutHypFld,
@@ -178,26 +179,26 @@ const List<Field> fidexFields = [
     "Decision threshold for predictions",
     "decision_threshold",
     Datatype.doublePrecision,
-    minValue: "0",
-    maxValue: "1",
+    minValue: "0.0",
+    maxValue: "1.0",
     description:
-        "Decision threshold for predictions, you need to specify the index of positive class if you want to use it",
+        "Decision threshold for predictions, you need to specify the index of positive class if you want to use it.",
   ),
   Field(
     "Index of positive class",
     "positive_class_index",
     Datatype.integer,
     minValue: "0",
-    maxValue: "nb_classes - 1",
+    maxValue: "# classes - 1",
     description:
-        "Index of positive class for the usage of decision threshold, index starts at 0",
+        "Index of positive class for the usage of decision threshold, index starts at 0.",
   ),
   Field(
-    "File containing the mean and std",
+    "File containing the mean and standard deviation",
     "normalization_file",
     Datatype.filePath,
     description:
-        "File containing the mean and std of some attributes. Used to denormalize the rules if specified",
+        "File containing the mean and standard deviation of some attributes. Used to denormalize the rules if specified.",
   ),
   musFld,
   sigmasFld,
@@ -208,22 +209,16 @@ const List<Field> fidexFields = [
 const List<Field> fidexGloFields = [
   rootFolderFld,
   Field(
-    "Test sample(s) data file with data and prediction",
+    "Test data file",
     "test_data_file",
     Datatype.filePath,
     description:
-        "Test sample(s) data file with data and prediction. If no --test_pred_file is specified, classes may be included here if launching with fidex(--with_fidex).",
-  ),
-  Field(
-    "Ruleset input file",
-    "global_rules_file",
-    Datatype.filePath,
-    description: "Ruleset input file.",
+        "Test sample(s) data file with data and prediction. If no test prediction file is specified, classes may be included here if launching with fidex ('with fidex' option).",
   ),
   nbAttributesFld,
   nbClassesFld,
   Field(
-    "File of attributes",
+    "Attributes file",
     "attributes_file",
     Datatype.filePath,
     description:
@@ -234,7 +229,7 @@ const List<Field> fidexGloFields = [
     "test_pred_file",
     Datatype.filePath,
     description:
-        "Test prediction file. If given, --test_data_file needs to have only test data.",
+        "Test prediction file. If given, test data file needs to have only test data.",
   ),
   Field(
     "Explanation(s) output file name",
@@ -244,7 +239,7 @@ const List<Field> fidexGloFields = [
   ),
   consoleFileFld,
   Field(
-    "Decision threshold for predictions",
+    "Decision threshold",
     "decision_threshold",
     Datatype.doublePrecision,
     minValue: "0",
@@ -291,30 +286,31 @@ const List<Field> fidexGloFields = [
     "weights_file",
     Datatype.filePath,
     description:
-        "Weights file. Not mandatory if a rules file is given with --rules_file.",
+        "Weights file. Not mandatory if a rules file is given with 'rules file'.",
   ),
   Field(
     "Rules file",
     "rules_file",
     Datatype.filePath,
     description:
-        "Rules file to be converted to hyperlocus. Not mandatory if a weights file is given with --weights_file.",
+        "Rules file to be converted to hyperlocus. Not mandatory if a weights file is given with 'weights file'.",
   ),
   Field(
-    "Test true class file",
+    "Test true classes file",
     "test_class_file",
     Datatype.filePath,
     description:
-        "Test true class file. Classes can be specified in the test data file.",
+        "Test true classes file. Classes can be specified in the test data file.",
   ),
   Field(
     "Max iteration number",
     "max_iterations",
     Datatype.integer,
     minValue: "1",
+    maxValue: "inf",
     defaultValue: "10",
     description:
-        "Max iteration number, also the max possible number of attributes in a rule. Should be 25 if working with images (default: 10).",
+        "Max iteration number, also the max possible number of attributes in a rule. Should be 25 if working with images.",
   ),
   Field(
     "Minimum covering number",
@@ -329,9 +325,9 @@ const List<Field> fidexGloFields = [
     "Use covering stategy",
     "covering_strategy",
     Datatype.boolean,
-    defaultValue: "false",
+    defaultValue: "true",
     description:
-        "Whether to use this strategy: if no rule is found with min_covering, find the best rule with the best covering using dichotomic search. Decreases min_fidelity if needed (default: True).",
+        "Whether to use this strategy: if no rule is found with min_covering, find the best rule with the best covering using dichotomic search. Decreases min_fidelity if needed.",
   ),
   Field(
     "Maximum number of failed attempts to find Fidex rule",
@@ -339,26 +335,28 @@ const List<Field> fidexGloFields = [
     Datatype.integer,
     minValue: "0",
     maxValue: "inf",
+    defaultValue: "30",
     description:
-        "Maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used (default: 30).",
+        "Maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used.",
   ),
   Field(
     "Minimal rule fidelity accepted when generating a rule",
     "min_fidelity",
     Datatype.doublePrecision,
-    minValue: "0",
-    maxValue: "1",
+    minValue: "0.0",
+    maxValue: "1.0",
+    defaultValue: "1.0",
     description:
-        "Minimal rule fidelity accepted when generating a rule (default: 1.0).",
+        "Minimal rule fidelity accepted when generating a rule.",
   ),
   Field(
     "Minimal min_fidelity to which we agree to go down during covering_strategy",
     "lowest_min_fidelity",
     Datatype.doublePrecision,
-    minValue: "0",
-    maxValue: "1",
+    minValue: "0.0",
+    maxValue: "1.0",
     description:
-        "Minimal min_fidelity to which we agree to go down during covering_strategy (default: 0.75).",
+        "Minimal min_fidelity to which we agree to go down during covering_strategy.",
   ),
   dropoutDimFld,
   dropoutHypFld,
@@ -381,25 +379,25 @@ const List<Field> fidexGloRulesFields = [
   trainDataFileFld,
   trainPredFileFld,
   Field(
-    "Train true class file",
+    "Train true classes file",
     "train_class_file",
     Datatype.filePath,
     description:
-        "Train true class file, not mandatory if classes are specified in train data file.",
+        "Train true class file, not mandatory if classes are specified in 'train data file'.",
   ),
   Field(
     "Weights file",
     "weights_file",
     Datatype.filePath,
     description:
-        "Weights file (not mandatory if a rules file is given with --rules_file).",
+        "Weights file (not mandatory if a rules file is given with 'rules file').",
   ),
   Field(
-    "Rules file to be converted to hyperlocus",
+    "Rules file",
     "rules_file",
     Datatype.filePath,
     description:
-        "Rules file to be converted to hyperlocus (not mandatory if a weights file is given with --weights_file).",
+        "Rules file to be converted to hyperlocus (not mandatory if a weights file is given with 'weights file').",
   ),
   Field(
     "Rules output file",
@@ -413,9 +411,10 @@ const List<Field> fidexGloRulesFields = [
     "heuristic",
     Datatype.integer,
     description:
-        "Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo.",
+        "Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo. (Faster algorithms are less efficient).",
     minValue: "1",
     maxValue: "3",
+    defaultValue: "1",
     isRequired: true,
   ),
   nbAttributesFld,
@@ -432,6 +431,7 @@ const List<Field> fidexGloRulesFields = [
     "max_iterations",
     Datatype.integer,
     minValue: "1",
+    maxValue: "inf",
     defaultValue: "10",
     description:
         "Max iteration number, also the max possible number of attributs in a rule, should be 25 if working with images.",
@@ -446,14 +446,15 @@ const List<Field> fidexGloRulesFields = [
     description: "Minimum covering number.",
   ),
   Field(
-    "Whether to use this strategy",
+    "Use covering strategy",
     "covering_strategy",
     Datatype.boolean,
+    defaultValue: "true",
     description:
-        "Whether to use this strategy : if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (default: True).",
+        "Whether to use covering strategy : if no rule is found with 'minimum covering', find best rule with best covering using dichotomic search. Decreases min_fidelity if needed.",
   ),
   Field(
-    "Maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used",
+    "Maximum failed attempts",
     "max_failed_attempts",
     Datatype.integer,
     minValue: "0",
@@ -463,7 +464,7 @@ const List<Field> fidexGloRulesFields = [
         "Maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used.",
   ),
   Field(
-    "Minimal rule fidelity accepted when generating a rule",
+    "Minimal rule fidelity",
     "min_fidelity",
     Datatype.doublePrecision,
     minValue: "0.0",
@@ -472,11 +473,11 @@ const List<Field> fidexGloRulesFields = [
     description: "Minimal rule fidelity accepted when generating a rule.",
   ),
   Field(
-    "Minimal min_fidelity to which we agree to go down during covering_strategy",
+    "Lowest minimum fidelity",
     "lowest_min_fidelity",
     Datatype.doublePrecision,
-    minValue: "0",
-    maxValue: "1",
+    minValue: "0.0",
+    maxValue: "1.0",
     defaultValue: "0.75",
     description:
         "Minimal min_fidelity to which we agree to go down during covering_strategy.",
@@ -485,16 +486,16 @@ const List<Field> fidexGloRulesFields = [
   dropoutHypFld,
   nbQuantLevelsFld,
   Field(
-    "Decision threshold for predictions",
+    "Decision threshold",
     "decision_threshold",
     Datatype.doublePrecision,
-    minValue: "0",
-    maxValue: "1",
+    minValue: "0.0",
+    maxValue: "1.0",
     description:
         "Decision threshold for predictions, you need to specify the index of positive class if you want to use it.",
   ),
   Field(
-    "Index of positive class for the usage of decision threshold",
+    "Index of positive class",
     "positive_class_index",
     Datatype.integer,
     minValue: "0",
@@ -541,11 +542,11 @@ const List<Field> fidexGloStatsFields = [
     isRequired: true,
   ),
   Field(
-    "Test true class file",
+    "Test true classes file",
     "test_class_file",
     Datatype.filePath,
     description:
-        "Test true class file, not mandatory if classes are specified in test data file.",
+        "Test true classes file, not mandatory if classes are specified in test data file.",
   ),
   Field(
     "Ruleset input file",
@@ -593,10 +594,11 @@ const List<Field> fidexGloStatsFields = [
     description:
         "Index of positive class for the usage of decision threshold and to compute true/false positive/negative rates, index starts at 0.",
     minValue: "0",
-    maxValue: "nb_classes-1",
+    maxValue: "# classes - 1",
   ),
 ];
 
+// TODO continue checking from here 
 const List<Field> dimlpTrnFields = [
   rootFolderFld,
   trainDataFileFld,
