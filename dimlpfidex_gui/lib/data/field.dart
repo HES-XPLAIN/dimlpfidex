@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 enum Datatype {
   integer,
-  doublePrecision, // actually, doubles are used instead
+  doublePrecision,
   string,
   restrictedChoiceString,
   filePath,
