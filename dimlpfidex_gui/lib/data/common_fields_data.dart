@@ -122,6 +122,9 @@ const seedFld = Field(
   "Seed",
   "seed",
   Datatype.integer,
+  minValue: "0",
+  maxValue: "inf",
+  defaultValue: "0",
   description:
       "Seed for random generation, 0=random. Anything else than 0 is a arbitrary seed that can be reused to obtain the same randomly generated sequence and therefore getting same results.",
 );
