@@ -26,7 +26,7 @@ const trainPredFileFld = Field(
 );
 
 const nbAttributesFld = Field(
-  "Number of attributes in dataset",
+  "Number of attributes",
   "nb_attributes",
   Datatype.integer,
   isRequired: true,
@@ -35,7 +35,7 @@ const nbAttributesFld = Field(
   description: "Number of attributes in dataset.",
 );
 const nbClassesFld = Field(
-  "Number of classes in dataset",
+  "Number of classes",
   "nb_classes",
   Datatype.integer,
   isRequired: true,
@@ -45,7 +45,7 @@ const nbClassesFld = Field(
 );
 
 const nbQuantLevelsFld = Field(
-  "# stairs in staircase activation function",
+  "Number of stairs in staircase function",
   "nb_quant_levels",
   Datatype.integer,
   minValue: "3",
@@ -55,7 +55,7 @@ const nbQuantLevelsFld = Field(
 );
 
 const dropoutDimFld = Field(
-  "Dimension dropout parameter",
+  "Dimension dropout",
   "dropout_dim",
   Datatype.doublePrecision,
   minValue: "0.0",
@@ -64,7 +64,7 @@ const dropoutDimFld = Field(
   description: "Dimension dropout parameter.",
 );
 const dropoutHypFld = Field(
-  "Hyperplan dropout parameter",
+  "Hyperplan dropout",
   "dropout_hyp",
   Datatype.doublePrecision,
   minValue: "0.0",
@@ -74,7 +74,7 @@ const dropoutHypFld = Field(
 );
 
 const rulesOutputFileFld = Field(
-  "Rule(s) output file",
+  "Rules output file",
   "rules_outfile",
   Datatype.filePath,
   description: "Path/name of rule(s) output file.",
@@ -126,5 +126,5 @@ const seedFld = Field(
   maxValue: "inf",
   defaultValue: "0",
   description:
-      "Seed for random generation, 0=random. Anything else than 0 is a arbitrary seed that can be reused to obtain the same randomly generated sequence and therefore getting same results.",
+      "Seed for random number generation, 0=random. Anything else than 0 is a arbitrary seed that can be reused to obtain the same randomly generated sequence and therefore getting same results.",
 );
