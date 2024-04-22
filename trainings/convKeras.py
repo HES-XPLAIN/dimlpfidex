@@ -161,7 +161,7 @@ def convKeras(args: str = None):
         if args.with_vgg == True and args.with_resnet == True:
             raise ValueError('Error, parameter with_resnet and with_vgg are both True, choose one.')
 
-        model_checkpoint_weights = "weights.hdf5"
+        model_checkpoint_weights = "weights.keras"
         if (args.root_folder is not None):
             model_checkpoint_weights = os.path.join(args.root_folder, model_checkpoint_weights)
 
@@ -255,6 +255,7 @@ def convKeras(args: str = None):
             size1d = 48
             nb_channels = 1
 
+
         if args.dataset in {"fer", "cifar10"}:
             nb_var = len(x_train[0])
             # (x-mu)/sigma entre -5 et 5
@@ -268,6 +269,7 @@ def convKeras(args: str = None):
                 sigma_val = (255-127.5)/hiknot
                 mu = np.full(nb_var, mu_val)
                 sigma = np.full(nb_var, sigma_val)
+
 
         print("Data loaded")
 
@@ -291,6 +293,13 @@ def convKeras(args: str = None):
         # x_test = test.reshape(test.shape[0], 1, size1d, size1d)
         x_test_h1 = x_test_h1.reshape(x_test_h1.shape[0], size1d, size1d, nb_channels)
         x_val_h1 = x_val_h1.reshape(x_val_h1.shape[0], size1d, size1d, nb_channels)
+
+        if (args.dataset == "fer" and args.with_vgg):
+            # B&W to RGB
+            x_train_h1 = np.repeat(x_train_h1, 3, axis=-1)
+            x_test_h1 = np.repeat(x_test_h1, 3, axis=-1)
+            x_val_h1 = np.repeat(x_val_h1, 3, axis=-1)
+            nb_channels = 3
 
         #y_train = np.loadtxt("mnistTrainClass")
         y_train = y_train.astype('int32')
