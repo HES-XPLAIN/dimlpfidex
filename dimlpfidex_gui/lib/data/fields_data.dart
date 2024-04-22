@@ -1,8 +1,9 @@
 import 'package:dimlpfidex_gui/data/field.dart';
 import 'package:dimlpfidex_gui/data/common_fields_data.dart';
 
-// TODO Handle differenciation between float and int
+// TODO: Handle differenciation between float and int
 // TODO: handle this input to fit float & int options
+// TODO: Add the empty option in restricted choices list
 
 // const List<Field> testFields = [
 //   rootFolderFld,
@@ -980,8 +981,7 @@ const List<Field> dimlpBTFields = [
     Datatype.integer,
     minValue: "1",
     maxValue: "# attributes",
-    description:
-        "Number of neurons in the first hidden layer.",
+    description: "Number of neurons in the first hidden layer.",
   ),
   Field(
     "Number of neurons in each hidden layer",
@@ -1056,6 +1056,7 @@ const List<Field> dimlpBTFields = [
     Datatype.integer,
     minValue: "1",
     maxValue: "inf",
+    defaultValue: "1500",
     description: "Number of epochs.",
   ),
   Field(
@@ -1064,12 +1065,14 @@ const List<Field> dimlpBTFields = [
     Datatype.integer,
     minValue: "1",
     maxValue: "inf",
+    defaultValue: "10",
     description: "Number of epochs to show error.",
   ),
   Field(
     "Number of examples for one single network",
     "nb_ex_per_net",
     Datatype.integer,
+    defaultValue: "0",
     minValue: "1",
     maxValue: "inf",
     description:
@@ -1146,7 +1149,7 @@ const List<Field> dimlpClsFields = [
   ),
   consoleFileFld,
   Field(
-    "Stats file",
+    "Output statistics file",
     "stats_file",
     Datatype.filePath,
     description: "Path of output file name containing statistics.",
@@ -1188,13 +1191,13 @@ const List<Field> computeRocCurveFields = [
     isRequired: true,
   ),
   Field(
-    "Output statistic file name with AUC score",
+    "Output statistic file",
     "stats_file",
     Datatype.filePath,
     description: "Output statistic file name with AUC score",
   ),
   Field(
-    "Whether to show parameters",
+    "Show parameters",
     "show_params",
     Datatype.boolean,
     defaultValue: "true",
@@ -1207,7 +1210,7 @@ const List<Field> computeRocCurveFields = [
     description: "Name of estimator",
   ),
   Field(
-    "Output ROC curve file name",
+    "Output ROC curve file",
     "output_roc",
     Datatype.filePath,
     defaultValue: "roc_curve.png",
@@ -1230,8 +1233,9 @@ const List<Field> convKerasFields = [
   Field(
     "Dataset",
     "dataset",
-    Datatype.string,
-    description: "Dataset",
+    Datatype.restrictedChoiceString,
+    items: ["mnist", "cifar100", "cifar10", "fer"],
+    description: "Chosen dataset",
   ),
   Field(
     "Train class file",
@@ -1252,6 +1256,8 @@ const List<Field> convKerasFields = [
     "valid_ratio",
     Datatype.doublePrecision,
     minValue: "0",
+    maxValue: "inf",
+    defaultValue: "0.1",
     description: "Percentage of train data taken for validation",
   ),
   Field(
@@ -1268,23 +1274,23 @@ const List<Field> convKerasFields = [
         "Validation class file, mandatory if classes are not specified in valid_data_file. BE CAREFUL if there is validation files, and you want to use Fidex algorithms later, you will have to use both train and validation datas given here in the train datas and classes of Fidex",
   ),
   Field(
-    "Whether input image datas are normalized between 0 and 1",
+    "Image datas are normalized",
     "normalized",
     Datatype.boolean,
     defaultValue: "false",
-    description:
-        "Whether input image datas are normalized between 0 and 1",
+    description: "Whether input image datas are normalized between 0 and 1",
   ),
   Field(
     "Number of training epochs",
     "nb_epochs",
     Datatype.integer,
     minValue: "1",
+    maxValue: "inf",
     defaultValue: "80",
     description: "Number of training epochs",
   ),
   Field(
-    "Output train and validation (in this order) prediction file name",
+    "Output train and validation prediction file",
     "train_valid_pred_outfile",
     Datatype.filePath,
     defaultValue: "predTrain.out",
@@ -1292,26 +1298,25 @@ const List<Field> convKerasFields = [
         "Output train and validation (in this order) prediction file name",
   ),
   Field(
-    "Output test prediction file name",
+    "Output test prediction file",
     "test_pred_outfile",
     Datatype.filePath,
     defaultValue: "predTest.out",
     description: "Output test prediction file name",
   ),
   Field(
-    "Output weights file name",
+    "Output weights file",
     "weights_outfile",
     Datatype.filePath,
     defaultValue: "weights.wts",
     description: "Output weights file name",
   ),
   Field(
-    "Output statistic file name with train and test accuracy",
+    "Output statistic file",
     "stats_file",
     Datatype.filePath,
     defaultValue: "stats.txt",
-    description:
-        "Output statistic file name with train and test accuracy",
+    description: "Output statistic file name with train and test accuracy",
   ),
   consoleFileFld,
   nbQuantLevelsFld,
@@ -1320,26 +1325,26 @@ const List<Field> convKerasFields = [
     "K",
     Datatype.doublePrecision,
     minValue: "0",
+    maxValue: "inf",
     defaultValue: "1.0",
     description: "Parameter to improve dynamics",
   ),
   Field(
-    "Whether to change 3-channels data from RGB to HSL format",
+    "Convert RGB to HSL",
     "with_hsl",
     Datatype.boolean,
     defaultValue: "false",
-    description:
-        "Whether to change 3-channels data from RGB to HSL format",
+    description: "Whether to change 3-channels data from RGB to HSL format",
   ),
   Field(
-    "Whether to train with ResNet",
+    "Train with ResNet",
     "with_resnet",
     Datatype.boolean,
     defaultValue: "false",
     description: "Whether to train with ResNet",
   ),
   Field(
-    "Whether to train with VGG",
+    "Train with VGG",
     "with_vgg",
     Datatype.boolean,
     defaultValue: "false",
@@ -1350,13 +1355,6 @@ const List<Field> convKerasFields = [
 const List<Field> gradBoostTrnFields = [
   rootFolderFld,
   trainDataFileFld,
-  Field(
-    "Test data file",
-    "test_data_file",
-    Datatype.filePath,
-    description: "Test data file",
-    isRequired: true,
-  ),
   nbAttributesFld,
   nbClassesFld,
   Field(
@@ -1367,7 +1365,7 @@ const List<Field> gradBoostTrnFields = [
         "Train class file, mandatory if classes are not specified in train_data_file",
   ),
   Field(
-    "Output train prediction file name",
+    "Output train prediction file",
     "train_pred_outfile",
     Datatype.filePath,
     defaultValue: "predTrain.out",
@@ -1381,7 +1379,7 @@ const List<Field> gradBoostTrnFields = [
         "Test class file, mandatory if classes are not specified in test_data_file",
   ),
   Field(
-    "Output test prediction file name",
+    "Output test prediction file",
     "test_pred_outfile",
     Datatype.filePath,
     defaultValue: "predTest.out",
@@ -1389,7 +1387,7 @@ const List<Field> gradBoostTrnFields = [
   ),
   consoleFileFld,
   Field(
-    "Output statistic file name with train and test accuracy",
+    "Output statistics file",
     "stats_file",
     Datatype.filePath,
     defaultValue: "stats.txt",
@@ -1397,7 +1395,7 @@ const List<Field> gradBoostTrnFields = [
   ),
   rulesOutputFileFld,
   Field(
-    "Number of generated trees in the forest",
+    "Number of generated trees",
     "n_estimators",
     Datatype.integer,
     minValue: "1",
@@ -1405,23 +1403,24 @@ const List<Field> gradBoostTrnFields = [
     description: "Number of generated trees in the forest.",
   ),
   Field(
-    "Loss function to be optimized",
+    "Loss function",
     "loss",
-    Datatype.string,
+    Datatype.restrictedChoiceString,
     defaultValue: "log_loss",
-    description:
-        "Loss function to be optimized. Choices are 'log_loss' or 'exponential'.",
+    items: ["log_loss", "exponential"],
+    description: "Loss function to be optimized.",
   ),
   Field(
-    "Shrinks the contribution of each tree",
+    "Learning rate",
     "learning_rate",
     Datatype.doublePrecision,
     minValue: "0",
+    maxValue: "inf",
     defaultValue: "0.1",
     description: "Shrinks the contribution of each tree",
   ),
   Field(
-    "Fraction of samples to be used for fitting the individual base learners",
+    "Fraction of samples to be used",
     "subsample",
     Datatype.doublePrecision,
     minValue: "0.0",
@@ -1433,36 +1432,42 @@ const List<Field> gradBoostTrnFields = [
   Field(
     "Function to measure split quality",
     "criterion",
-    Datatype.string,
+    Datatype.restrictedChoiceString,
     defaultValue: "friedman_mse",
-    description:
-        "Function to measure split quality. Choices are 'friedman_mse' or 'squared_error'.",
+    items: ["friedman_mse", "squared_error"],
+    description: "Function to measure split quality.",
   ),
   Field(
-    "Maximum depth of the individual regression estimators",
+    "Maximum depth",
     "max_depth",
-    Datatype.string,
+    Datatype.integer, // TODO add category too ("no_max_depth")
+    minValue: "2",
+    maxValue: "inf",
     defaultValue: "3",
     description: "Maximum depth of the individual regression estimators.",
   ),
   Field(
-    "Minimum number of samples required to split an internal node",
+    "Minimum number of samples to split a node",
     "min_samples_split",
-    Datatype.string,
+    Datatype.integer, // TODO float & integer
+    minValue: "2",
+    maxValue: "inf",
     defaultValue: "2",
     description:
         "Minimum number of samples required to split an internal node, if float, it is a fraction of the number of samples.",
   ),
   Field(
-    "Minimum number of samples required to be at a leaf node",
+    "Minimum number of samples at leaf node",
     "min_samples_leaf",
-    Datatype.string,
+    Datatype.integer,// TODO float & integer
     defaultValue: "1",
+    minValue: "1",
+    maxValue: "inf",
     description:
         "Minimum number of samples required to be at a leaf node, if float, it is a fraction of the number of samples.",
   ),
   Field(
-    "Minimum weighted fraction of the sum total of input samples weights required to be at a leaf node",
+    "Minimum weighted fraction",
     "min_weight_fraction_leaf",
     Datatype.doublePrecision,
     minValue: "0",
@@ -1472,15 +1477,16 @@ const List<Field> gradBoostTrnFields = [
         "Minimum weighted fraction of the sum total of input samples weights required to be at a leaf node.",
   ),
   Field(
-    "Number of features to consider when looking for the best split",
+    "Maximum number of features",
     "max_features",
-    Datatype.string,
+    Datatype.restrictedChoiceString,
     defaultValue: "sqrt",
+    items: ["sqrt", "log2", "all"], // TODO add float option
     description:
         "Number of features to consider when looking for the best split if float, it is a fraction of the number of features. 1 stands for 1 feature, for all features put 'all', not 1.0.",
   ),
   Field(
-    "Grow trees with max_leaf_nodes in best-first fashion",
+    "Maximum leaf nodes",
     "max_leaf_nodes",
     Datatype.integer,
     minValue: "2",
@@ -1500,13 +1506,14 @@ const List<Field> gradBoostTrnFields = [
   Field(
     "Estimator object used to compute the initial predictions",
     "init",
-    Datatype.string,
+    Datatype.restrictedChoiceString,
+    items: ["zero"],
     defaultValue: "zero",
     description: "Estimator object used to compute the initial predictions",
   ),
   seedFld,
   Field(
-    "Controls the verbosity when fitting and predicting",
+    "Verbosity level",
     "verbose",
     Datatype.integer,
     minValue: "0",
@@ -1515,7 +1522,7 @@ const List<Field> gradBoostTrnFields = [
     description: "Controls the verbosity when fitting and predicting.",
   ),
   Field(
-    "Whether to reuse the solution of the previous call to fit and add more estimators to the ensemble",
+    "Reuse the previous solution",
     "warm_start",
     Datatype.boolean,
     defaultValue: "false",
@@ -1523,7 +1530,7 @@ const List<Field> gradBoostTrnFields = [
         "Whether to reuse the solution of the previous call to fit and add more estimators to the ensemble.",
   ),
   Field(
-    "Proportion of training data to set aside as validation set for early stopping",
+    "Proportion of training data",
     "validation_fraction",
     Datatype.doublePrecision,
     minValue: "0.0",
@@ -1533,7 +1540,7 @@ const List<Field> gradBoostTrnFields = [
         "Proportion of training data to set aside as validation set for early stopping.",
   ),
   Field(
-    "Decide if early stopping will be used to terminate training when validation score is not improving",
+    "Number of iterations with no improvements",
     "n_iter_no_change",
     Datatype.integer,
     minValue: "1",
@@ -1551,7 +1558,7 @@ const List<Field> gradBoostTrnFields = [
     description: "Tolerance for the early stopping.",
   ),
   Field(
-    "Complexity parameter used for Minimal Cost-Complexity Pruning",
+    "Complexity parameter",
     "ccp_alpha",
     Datatype.doublePrecision,
     minValue: "0",
@@ -1589,7 +1596,7 @@ const List<Field> mlpTrnFields = [
         "Test class file, mendatory if classes are not specified in test_data_file",
   ),
   Field(
-    "Output test prediction file name",
+    "Output test prediction file",
     "test_pred_outfile",
     Datatype.filePath,
     defaultValue: "predTest.out",
@@ -1601,11 +1608,10 @@ const List<Field> mlpTrnFields = [
     "stats_file",
     Datatype.filePath,
     defaultValue: "stats.txt",
-    description:
-        "Output file name with train and test accuracy",
+    description: "Output file name with train and test accuracy",
   ),
   Field(
-    "Output weights file name",
+    "Output weights file",
     "weights_outfile",
     Datatype.filePath,
     defaultValue: "weights.wts",
@@ -1616,6 +1622,8 @@ const List<Field> mlpTrnFields = [
     "Parameter to improve dynamics",
     "K",
     Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "inf",
     defaultValue: "1.0",
     description: "Parameter to improve dynamics",
   ),
@@ -1623,70 +1631,82 @@ const List<Field> mlpTrnFields = [
     "Size of each hidden layers",
     "hidden_layer_sizes",
     Datatype.listInteger,
+    minValue: "1",
+    maxValue: "inf",
     defaultValue: "100",
     description: "Size of each hidden layers",
   ),
   Field(
     "Activation function",
     "activation",
-    Datatype.string, // TODO
+    Datatype.restrictedChoiceString,
+    items: ["relu", "identity", "tanh", "logistic"],
     defaultValue: "relu",
     description: "Activation function",
   ),
   Field(
     "Solver for weight optimization",
     "solver",
-    Datatype.string, // TODO
+    Datatype.restrictedChoiceString,
     defaultValue: "adam",
+    items: ["adam", "lbfgs", "sgd"],
     description: "Solver for weight optimization",
   ),
   Field(
     "Strength of the L2 regularization term",
     "alpha",
     Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "inf",
     defaultValue: "0.0001",
     description: "Strength of the L2 regularization term",
   ),
   Field(
-    "Size of minibatches for stochastic optimizers for adam and sgd",
+    "Size of minibatches",
     "batch_size",
-    Datatype.integer, //TODO
-    defaultValue: "auto",
+    Datatype.integer, //TODO auto or int
+    minValue: "0",
+    maxValue: "inf",
     description:
         "Size of minibatches for stochastic optimizers for adam and sgd",
   ),
   Field(
-    "Learning rate schedule for weight updates for sgd solver",
+    "Learning rate schedule",
     "learning_rate",
-    Datatype.string, // TODO
+    Datatype.restrictedChoiceString,
     defaultValue: "constant",
-    description:
-        "Learning rate schedule for weight updates for sgd solver",
+    items: ["constant", "invscalling", "adaptative"],
+    description: "Learning rate schedule for weight updates for sgd solver",
   ),
   Field(
     "Initial learning rate for adam and sgd",
     "learning_rate_init",
     Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "inf",
     defaultValue: "0.001",
     description: "Initial learning rate for adam and sgd",
   ),
   Field(
-    "Exponent for inverse scaling learning rate for sgd",
+    "Exponent for inverse scaling learning rate",
     "power_t",
     Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "inf",
     defaultValue: "0.5",
-    description:
-        "Exponent for inverse scaling learning rate for sgd",
+    description: "Exponent for inverse scaling learning rate for sgd",
   ),
   Field(
     "Maximum number of iterations",
     "max_iterations",
     Datatype.integer,
+    minValue: "0",
+    maxValue: "inf",
     defaultValue: "200",
     description: "Maximum number of iterations",
   ),
   Field(
-    "Whether to shuffle samples in each iteration for sgd and adam",
+    "Shuffle samples",
     "shuffle",
     Datatype.boolean,
     defaultValue: "true",
@@ -1698,6 +1718,8 @@ const List<Field> mlpTrnFields = [
     "Tolerance for optimization",
     "tol",
     Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "inf",
     defaultValue: "0.0001",
     description: "Tolerance for optimization",
   ),
@@ -1709,30 +1731,30 @@ const List<Field> mlpTrnFields = [
     description: "Enable verbose output",
   ),
   Field(
-    "Whether to reuse previous solution to fit initialization",
+    "Reuse previous solution",
     "warm_start",
     Datatype.boolean,
     defaultValue: "false",
-    description:
-        "Whether to reuse previous solution to fit initialization",
+    description: "Whether to reuse previous solution to fit initialization",
   ),
   Field(
-    "Momentum for gradient descent update for sgd",
+    "Momentum for gradient descent",
     "momentum",
     Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "1.0",
     defaultValue: "0.9",
     description: "Momentum for gradient descent update for sgd",
   ),
   Field(
-    "Whether to use Nesterov’s momentum for sgd and momentum",
+    "Use Nesterov’s momentum",
     "nesterovs_momentum",
     Datatype.boolean,
     defaultValue: "true",
-    description:
-        "Whether to use Nesterov’s momentum for sgd and momentum",
+    description: "Whether to use Nesterov’s momentum for sgd and momentum",
   ),
   Field(
-    "Whether to use early stopping to terminate training when validation score is not improving for sgd and adam",
+    "Use early stopping",
     "early_stopping",
     Datatype.boolean,
     defaultValue: "false",
@@ -1740,63 +1762,68 @@ const List<Field> mlpTrnFields = [
         "Whether to use early stopping to terminate training when validation score is not improving for sgd and adam",
   ),
   Field(
-    "Proportion of training data to set aside as validation set for early stopping",
+    "Portion of dataset as validation data",
     "validation_fraction",
     Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "1.0",
     defaultValue: "0.1",
     description:
         "Proportion of training data to set aside as validation set for early stopping",
   ),
   Field(
-    "Exponential decay rate for estimates of first moment vector in adam",
+    "First exponential decay rate",
     "beta_1",
     Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "1.0",
     defaultValue: "0.9",
     description:
         "Exponential decay rate for estimates of first moment vector in adam",
   ),
   Field(
-    "Exponential decay rate for estimates of second moment vector in adam",
+    "Second exponential decay rate",
     "beta_2",
     Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "1.0",
     defaultValue: "0.999",
     description:
         "Exponential decay rate for estimates of second moment vector in adam",
   ),
   Field(
-    "Value for numerical stability in adam",
+    "Value for numerical stability",
     "epsilon",
     Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "inf",
     defaultValue: "1e-08",
     description: "Value for numerical stability in adam",
   ),
   Field(
-    "Maximum number of epochs to not meet tol improvement for sgd and adam",
+    "Maximum number of epochs",
     "n_iter_no_change",
     Datatype.integer,
+    minValue: "1",
+    maxValue: "inf",
     defaultValue: "10",
     description:
         "Maximum number of epochs to not meet tol improvement for sgd and adam",
   ),
   Field(
-    "Maximum number of loss function calls for lbfgs",
+    "Maximum number of loss function calls",
     "max_fun",
     Datatype.integer,
+    minValue: "1",
+    maxValue: "inf",
     defaultValue: "15000",
-    description:
-        "Maximum number of loss function calls for lbfgs",
+    description: "Maximum number of loss function calls for lbfgs",
   ),
 ];
 
 const List<Field> randForestsTrnFields = [
   rootFolderFld,
-  Field(
-    "Train data file",
-    "train_data_file",
-    Datatype.filePath,
-    description: "Train data file",
-    isRequired: true,
-  ),
+  trainDataFileFld,
   Field(
     "Test data file",
     "test_data_file",
@@ -1833,8 +1860,7 @@ const List<Field> randForestsTrnFields = [
     "stats_file",
     Datatype.filePath,
     defaultValue: "stats.txt",
-    description:
-        "Output file name with train and test accuracy.",
+    description: "Output file name with train and test accuracy.",
   ),
   rulesOutputFileFld,
   Field(
@@ -1927,8 +1953,7 @@ const List<Field> randForestsTrnFields = [
     "bootstrap",
     Datatype.boolean,
     defaultValue: "true",
-    description:
-        "Whether bootstrap samples are used when building trees",
+    description: "Whether bootstrap samples are used when building trees",
   ),
   Field(
     "Whether to use out-of-bag samples",
@@ -1945,8 +1970,7 @@ const List<Field> randForestsTrnFields = [
     defaultValue: "1",
     minValue: "-1",
     maxValue: "# CPUs available",
-    description:
-        "Number of jobs to run in parallel, -1 = using all processors",
+    description: "Number of jobs to run in parallel, -1 = using all processors",
   ),
   seedFld,
   Field(
@@ -2033,8 +2057,7 @@ const List<Field> svmTrnFields = [
     "stats_file",
     Datatype.filePath,
     defaultValue: "stats.txt",
-    description:
-        "Output file name with train and test accuracy",
+    description: "Output file name with train and test accuracy",
   ),
   Field(
     "Output weights file name",
