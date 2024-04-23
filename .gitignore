@@ -176,7 +176,7 @@ dmypy.json
 .pyre/
 
 autoexe.sh
-!dimlpfidex_gui/
+!dimlpfidex_gui/*
 !tests/dataset/data/
 tests/dataset/data/out/
 compile_commands.json
