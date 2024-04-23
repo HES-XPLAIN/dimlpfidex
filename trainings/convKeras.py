@@ -294,7 +294,7 @@ def convKeras(args: str = None):
         x_test_h1 = x_test_h1.reshape(x_test_h1.shape[0], size1d, size1d, nb_channels)
         x_val_h1 = x_val_h1.reshape(x_val_h1.shape[0], size1d, size1d, nb_channels)
 
-        if (args.dataset == "fer" and args.with_vgg):
+        if (args.dataset == "fer" and (args.with_vgg or args.with_resnet)):
             # B&W to RGB
             x_train_h1 = np.repeat(x_train_h1, 3, axis=-1)
             x_test_h1 = np.repeat(x_test_h1, 3, axis=-1)
