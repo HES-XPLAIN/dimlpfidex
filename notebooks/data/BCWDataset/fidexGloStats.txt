@@ -1,0 +1,38 @@
+Global statistics of the rule set :
+Number of rules : 25, mean sample covering number per rule : 86.28, mean number of antecedents per rule : 1.88
+
+Statistics with a test set of 114 samples :
+
+No decision threshold is used.
+Positive index class used : 0
+The global rule fidelity rate is : 0.956140
+The global rule accuracy is : 0.973684
+The explainability rate (when we can find one or more rules, either correct ones or activated ones which all agree on the same class) is : 0.991228
+The default rule rate (when we can't find any rule activated for a sample) is : 0.008772
+The mean number of correct(fidel) activated rules per sample is : 4.850877
+The mean number of wrong(not fidel) activated rules per sample is : 0.096491
+The model test accuracy is : 0.964912
+The model test accuracy when rules and model agree is : 0.990826
+The model test accuracy when activated rules and model agree is : 0.990741
+
+With positive class MALIGNANT :
+
+Computation with model decision :
+The number of true positive test samples is : 38
+The number of false positive test samples is : 3
+The number of true negative test samples is : 72
+The number of false negative test samples is : 1
+The false positive rate is : 0.040000
+The false negative rate is : 0.025641
+The precision is : 0.926829
+The recall is : 0.974359
+
+Computation with rules decision :
+The number of true positive test samples is : 36
+The number of false positive test samples is : 0
+The number of true negative test samples is : 75
+The number of false negative test samples is : 3
+The false positive rate is : 0.000000
+The false negative rate is : 0.076923
+The precision is : 1.000000
+The recall is : 0.923077

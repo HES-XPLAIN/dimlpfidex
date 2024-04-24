@@ -1,0 +1,1141 @@
+No decision threshold is used.
+
+Rule for sample 0 :
+
+WORST_PERIMETER>=114.331783 SYMMETRY_ERROR>=0.015489 -> MALIGNANT
+   Train Covering size : 87
+   Train Fidelity : 1
+   Train Accuracy : 0.988636
+   Train Confidence : 0.984405
+
+-------------------------------------------------
+
+Rule for sample 1 :
+
+WORST_SYMMETRY>=0.466922 -> MALIGNANT
+   Train Covering size : 9
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.941376
+
+-------------------------------------------------
+
+Rule for sample 2 :
+
+MEAN_RADIUS>=18.764344 -> MALIGNANT
+   Train Covering size : 60
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.995305
+
+-------------------------------------------------
+
+Rule for sample 3 :
+
+WORST_CONCAVITY<0.031683 -> BENIGN
+   Train Covering size : 31
+   Train Fidelity : 1
+   Train Accuracy : 0.96875
+   Train Confidence : 0.980302
+
+-------------------------------------------------
+
+Rule for sample 4 :
+
+WORST_RADIUS>=20.002936 -> MALIGNANT
+   Train Covering size : 99
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.994463
+
+-------------------------------------------------
+
+Rule for sample 5 :
+
+WORST_RADIUS>=19.98155 -> MALIGNANT
+   Train Covering size : 99
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.994384
+
+-------------------------------------------------
+
+Rule for sample 6 :
+
+PERIMETER_ERROR<1.239723 -> BENIGN
+   Train Covering size : 41
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.986699
+
+-------------------------------------------------
+
+Rule for sample 7 :
+
+MEAN_CONCAVE_POINTS>=0.123703 -> MALIGNANT
+   Train Covering size : 25
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.995457
+
+-------------------------------------------------
+
+Rule for sample 8 :
+
+WORST_CONCAVE_POINTS>=0.178512 -> MALIGNANT
+   Train Covering size : 87
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.989144
+
+-------------------------------------------------
+
+Rule for sample 9 :
+
+MEAN_AREA>=1440.245647 -> MALIGNANT
+   Train Covering size : 12
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.995952
+
+-------------------------------------------------
+
+Rule for sample 10 :
+
+MEAN_CONCAVITY<0.024897 -> BENIGN
+   Train Covering size : 88
+   Train Fidelity : 1
+   Train Accuracy : 0.988764
+   Train Confidence : 0.987187
+
+-------------------------------------------------
+
+Rule for sample 11 :
+
+MEAN_AREA<359.918464 -> BENIGN
+   Train Covering size : 62
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.992256
+
+-------------------------------------------------
+
+Rule for sample 12 :
+
+MEAN_PERIMETER>=138.899469 -> MALIGNANT
+   Train Covering size : 17
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.995604
+
+-------------------------------------------------
+
+Rule for sample 13 :
+
+WORST_PERIMETER<85.161906 -> BENIGN
+   Train Covering size : 127
+   Train Fidelity : 1
+   Train Accuracy : 0.992188
+   Train Confidence : 0.991658
+
+-------------------------------------------------
+
+Rule for sample 14 :
+
+WORST_CONCAVE_POINTS<0.080121 -> BENIGN
+   Train Covering size : 157
+   Train Fidelity : 1
+   Train Accuracy : 0.987342
+   Train Confidence : 0.987523
+
+-------------------------------------------------
+
+Rule for sample 15 :
+
+FRACTAL_DIMENSION_ERROR>=0.013603 -> BENIGN
+   Train Covering size : 3
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.967569
+
+-------------------------------------------------
+
+Rule for sample 16 :
+
+MEAN_PERIMETER<71.074953 -> BENIGN
+   Train Covering size : 73
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.992149
+
+-------------------------------------------------
+
+Rule for sample 17 :
+
+WORST_AREA>=1227.117305 -> MALIGNANT
+   Train Covering size : 100
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.994101
+
+-------------------------------------------------
+
+Rule for sample 18 :
+
+RADIUS_ERROR<0.165793 -> BENIGN
+   Train Covering size : 25
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.984436
+
+-------------------------------------------------
+
+Rule for sample 19 :
+
+AREA_ERROR<11.92515 -> BENIGN
+   Train Covering size : 31
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.993187
+
+-------------------------------------------------
+
+Rule for sample 20 :
+
+MEAN_RADIUS<10.057657 -> BENIGN
+   Train Covering size : 41
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.992188
+
+-------------------------------------------------
+
+Rule for sample 21 :
+
+WORST_COMPACTNESS<0.135826 -> BENIGN
+   Train Covering size : 94
+   Train Fidelity : 1
+   Train Accuracy : 0.978947
+   Train Confidence : 0.986374
+
+-------------------------------------------------
+
+Rule for sample 22 :
+
+TEXTURE_ERROR<0.473359 -> BENIGN
+   Train Covering size : 10
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.962771
+
+-------------------------------------------------
+
+Rule for sample 23 :
+
+MEAN_CONCAVE_POINTS<0.021293 -> BENIGN
+   Train Covering size : 120
+   Train Fidelity : 1
+   Train Accuracy : 0.991736
+   Train Confidence : 0.989738
+
+-------------------------------------------------
+
+Rule for sample 24 :
+
+WORST_AREA<480.260982 -> BENIGN
+   Train Covering size : 96
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.99188
+
+-------------------------------------------------
+
+Rule for sample 25 :
+
+WORST_AREA>=1541.834926 -> MALIGNANT
+   Train Covering size : 63
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.995664
+
+-------------------------------------------------
+
+Rule for sample 26 :
+
+MEAN_CONCAVE_POINTS<0.021612 -> BENIGN
+   Train Covering size : 122
+   Train Fidelity : 1
+   Train Accuracy : 0.99187
+   Train Confidence : 0.98943
+
+-------------------------------------------------
+
+Rule for sample 27 :
+
+WORST_RADIUS<14.865215 PERIMETER_ERROR>=4.04567 -> BENIGN
+   Train Covering size : 5
+   Train Fidelity : 1
+   Train Accuracy : 0.833333
+   Train Confidence : 0.972544
+
+-------------------------------------------------
+
+Rule for sample 28 :
+
+MEAN_AREA>=997.128251 -> MALIGNANT
+   Train Covering size : 76
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.994292
+
+-------------------------------------------------
+
+Rule for sample 29 :
+
+WORST_PERIMETER>=114.331783 RADIUS_ERROR<0.27151 -> MALIGNANT
+   Train Covering size : 5
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.876715
+
+-------------------------------------------------
+
+Rule for sample 30 :
+
+MEAN_RADIUS>=18.59288 -> MALIGNANT
+   Train Covering size : 64
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.995301
+
+-------------------------------------------------
+
+Rule for sample 31 :
+
+WORST_CONCAVITY<0.191024 WORST_AREA<607.073179 -> BENIGN
+   Train Covering size : 133
+   Train Fidelity : 1
+   Train Accuracy : 0.992537
+   Train Confidence : 0.99148
+
+-------------------------------------------------
+
+Rule for sample 32 :
+
+WORST_CONCAVE_POINTS<0.099303 WORST_PERIMETER<110.311773 -> BENIGN
+   Train Covering size : 220
+   Train Fidelity : 1
+   Train Accuracy : 0.986425
+   Train Confidence : 0.986419
+
+-------------------------------------------------
+
+Rule for sample 33 :
+
+MEAN_COMPACTNESS<0.0568 -> BENIGN
+   Train Covering size : 71
+   Train Fidelity : 1
+   Train Accuracy : 0.986111
+   Train Confidence : 0.985667
+
+-------------------------------------------------
+
+Rule for sample 34 :
+
+WORST_COMPACTNESS>=0.48716 -> MALIGNANT
+   Train Covering size : 34
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.988971
+
+-------------------------------------------------
+
+Rule for sample 35 :
+
+WORST_PERIMETER>=113.135569 WORST_COMPACTNESS>=0.400367 -> MALIGNANT
+   Train Covering size : 45
+   Train Fidelity : 1
+   Train Accuracy : 0.978261
+   Train Confidence : 0.991045
+
+-------------------------------------------------
+
+Rule for sample 36 :
+
+WORST_CONCAVE_POINTS<0.072897 -> BENIGN
+   Train Covering size : 137
+   Train Fidelity : 1
+   Train Accuracy : 0.985507
+   Train Confidence : 0.987527
+
+-------------------------------------------------
+
+Rule for sample 37 :
+
+WORST_CONCAVE_POINTS<0.07522 -> BENIGN
+   Train Covering size : 143
+   Train Fidelity : 1
+   Train Accuracy : 0.986111
+   Train Confidence : 0.987822
+
+-------------------------------------------------
+
+Rule for sample 38 :
+
+WORST_CONCAVITY<0.112517 -> BENIGN
+   Train Covering size : 109
+   Train Fidelity : 1
+   Train Accuracy : 0.981818
+   Train Confidence : 0.985936
+
+-------------------------------------------------
+
+Rule for sample 39 :
+
+WORST_AREA<490.987795 -> BENIGN
+   Train Covering size : 100
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.990762
+
+-------------------------------------------------
+
+Rule for sample 40 :
+
+WORST_CONCAVITY<0.105684 -> BENIGN
+   Train Covering size : 102
+   Train Fidelity : 1
+   Train Accuracy : 0.980583
+   Train Confidence : 0.986546
+
+-------------------------------------------------
+
+Rule for sample 41 :
+
+MEAN_CONCAVITY>=0.145877 COMPACTNESS_ERROR<0.02601 -> MALIGNANT
+   Train Covering size : 21
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.991065
+
+-------------------------------------------------
+
+Rule for sample 42 :
+
+MEAN_CONCAVE_POINTS<0.000568 -> BENIGN
+   Train Covering size : 8
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.994667
+
+-------------------------------------------------
+
+Rule for sample 43 :
+
+PERIMETER_ERROR<1.239723 -> BENIGN
+   Train Covering size : 41
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.986704
+
+-------------------------------------------------
+
+Rule for sample 44 :
+
+MEAN_RADIUS<10.838094 -> BENIGN
+   Train Covering size : 62
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.99208
+
+-------------------------------------------------
+
+Rule for sample 45 :
+
+WORST_CONCAVE_POINTS>=0.18051 -> MALIGNANT
+   Train Covering size : 86
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.989177
+
+-------------------------------------------------
+
+Rule for sample 46 :
+
+WORST_PERIMETER>=113.135569 WORST_TEXTURE>=33.292585 -> MALIGNANT
+   Train Covering size : 23
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.991612
+
+-------------------------------------------------
+
+Rule for sample 47 :
+
+WORST_CONCAVE_POINTS>=0.175998 -> MALIGNANT
+   Train Covering size : 93
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.989364
+
+-------------------------------------------------
+
+Rule for sample 48 :
+
+WORST_CONCAVITY<0.048128 -> BENIGN
+   Train Covering size : 46
+   Train Fidelity : 1
+   Train Accuracy : 0.978723
+   Train Confidence : 0.984195
+
+-------------------------------------------------
+
+Rule for sample 49 :
+
+MEAN_RADIUS>=21.140421 -> MALIGNANT
+   Train Covering size : 15
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.995501
+
+-------------------------------------------------
+
+Rule for sample 50 :
+
+WORST_CONCAVE_POINTS<0.071426 -> BENIGN
+   Train Covering size : 131
+   Train Fidelity : 1
+   Train Accuracy : 0.992424
+   Train Confidence : 0.987925
+
+-------------------------------------------------
+
+Rule for sample 51 :
+
+MEAN_CONCAVE_POINTS<0.032519 MEAN_AREA<843.597606 -> BENIGN
+   Train Covering size : 212
+   Train Fidelity : 1
+   Train Accuracy : 0.985915
+   Train Confidence : 0.984164
+
+-------------------------------------------------
+
+Rule for sample 52 :
+
+WORST_CONCAVE_POINTS<0.060875 -> BENIGN
+   Train Covering size : 96
+   Train Fidelity : 1
+   Train Accuracy : 0.989691
+   Train Confidence : 0.987663
+
+-------------------------------------------------
+
+Rule for sample 53 :
+
+WORST_CONCAVE_POINTS<0.08012 -> BENIGN
+   Train Covering size : 157
+   Train Fidelity : 1
+   Train Accuracy : 0.987342
+   Train Confidence : 0.987547
+
+-------------------------------------------------
+
+Rule for sample 54 :
+
+WORST_CONCAVITY<0.145534 RADIUS_ERROR<0.381762 -> BENIGN
+   Train Covering size : 118
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.989313
+
+-------------------------------------------------
+
+Rule for sample 55 :
+
+WORST_CONCAVE_POINTS>=0.177759 -> MALIGNANT
+   Train Covering size : 88
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.989339
+
+-------------------------------------------------
+
+Rule for sample 56 :
+
+WORST_CONCAVE_POINTS<0.081245 -> BENIGN
+   Train Covering size : 160
+   Train Fidelity : 1
+   Train Accuracy : 0.987578
+   Train Confidence : 0.987371
+
+-------------------------------------------------
+
+Rule for sample 57 :
+
+WORST_COMPACTNESS<0.139797 -> BENIGN
+   Train Covering size : 101
+   Train Fidelity : 1
+   Train Accuracy : 0.980392
+   Train Confidence : 0.982908
+
+-------------------------------------------------
+
+Rule for sample 58 :
+
+WORST_CONCAVE_POINTS<0.043495 -> BENIGN
+   Train Covering size : 51
+   Train Fidelity : 1
+   Train Accuracy : 0.980769
+   Train Confidence : 0.985418
+
+-------------------------------------------------
+
+Rule for sample 59 :
+
+MEAN_CONCAVE_POINTS<0.022253 -> BENIGN
+   Train Covering size : 128
+   Train Fidelity : 1
+   Train Accuracy : 0.992248
+   Train Confidence : 0.98942
+
+-------------------------------------------------
+
+Rule for sample 60 :
+
+WORST_CONCAVITY<0.10708 -> BENIGN
+   Train Covering size : 104
+   Train Fidelity : 1
+   Train Accuracy : 0.980952
+   Train Confidence : 0.98659
+
+-------------------------------------------------
+
+Rule for sample 61 :
+
+WORST_RADIUS>=21.567531 -> MALIGNANT
+   Train Covering size : 74
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.995324
+
+-------------------------------------------------
+
+Rule for sample 62 :
+
+MEAN_CONCAVE_POINTS<0.028367 WORST_SMOOTHNESS>=0.102211 -> BENIGN
+   Train Covering size : 152
+   Train Fidelity : 1
+   Train Accuracy : 0.986928
+   Train Confidence : 0.987374
+
+-------------------------------------------------
+
+Rule for sample 63 :
+
+MEAN_COMPACTNESS<0.040711 -> BENIGN
+   Train Covering size : 22
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.993373
+
+-------------------------------------------------
+
+Rule for sample 64 :
+
+MEAN_RADIUS>=20.009195 -> MALIGNANT
+   Train Covering size : 35
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.995349
+
+-------------------------------------------------
+
+Rule for sample 65 :
+
+RADIUS_ERROR<0.14351 -> BENIGN
+   Train Covering size : 13
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.993251
+
+-------------------------------------------------
+
+Rule for sample 66 :
+
+MEAN_CONCAVE_POINTS<0.032519 WORST_PERIMETER<100.673906 -> BENIGN
+   Train Covering size : 193
+   Train Fidelity : 1
+   Train Accuracy : 0.989691
+   Train Confidence : 0.987635
+
+-------------------------------------------------
+
+Rule for sample 67 :
+
+WORST_RADIUS>=25.940417 -> MALIGNANT
+   Train Covering size : 16
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.996022
+
+-------------------------------------------------
+
+Rule for sample 68 :
+
+WORST_PERIMETER<86.707162 -> BENIGN
+   Train Covering size : 143
+   Train Fidelity : 1
+   Train Accuracy : 0.993056
+   Train Confidence : 0.989973
+
+-------------------------------------------------
+
+Rule for sample 69 :
+
+MEAN_COMPACTNESS<0.057423 -> BENIGN
+   Train Covering size : 74
+   Train Fidelity : 1
+   Train Accuracy : 0.986667
+   Train Confidence : 0.986306
+
+-------------------------------------------------
+
+Rule for sample 70 :
+
+WORST_AREA>=929.770798 MEAN_AREA<723.657124 -> MALIGNANT
+   Train Covering size : 12
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.941475
+
+-------------------------------------------------
+
+Rule for sample 71 :
+
+MEAN_CONCAVE_POINTS<0.032519 MEAN_SYMMETRY<0.151322 -> BENIGN
+   Train Covering size : 38
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.983875
+
+-------------------------------------------------
+
+Rule for sample 72 :
+
+MEAN_CONCAVE_POINTS<0.020845 -> BENIGN
+   Train Covering size : 116
+   Train Fidelity : 1
+   Train Accuracy : 0.991453
+   Train Confidence : 0.989725
+
+-------------------------------------------------
+
+Rule for sample 73 :
+
+AREA_ERROR<12.454306 -> BENIGN
+   Train Covering size : 35
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.993423
+
+-------------------------------------------------
+
+Rule for sample 74 :
+
+WORST_COMPACTNESS>=0.56297 -> MALIGNANT
+   Train Covering size : 23
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.990648
+
+-------------------------------------------------
+
+Rule for sample 75 :
+
+MEAN_FRACTAL_DIMENSION<0.051229 -> MALIGNANT
+   Train Covering size : 3
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.984672
+
+-------------------------------------------------
+
+Rule for sample 76 :
+
+CONCAVITY_ERROR<0.008589 -> BENIGN
+   Train Covering size : 52
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.99242
+
+-------------------------------------------------
+
+Rule for sample 77 :
+
+WORST_PERIMETER>=120.394493 MEAN_FRACTAL_DIMENSION>=0.052977 -> MALIGNANT
+   Train Covering size : 122
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.990748
+
+-------------------------------------------------
+
+Rule for sample 78 :
+
+WORST_COMPACTNESS<0.127279 -> BENIGN
+   Train Covering size : 88
+   Train Fidelity : 1
+   Train Accuracy : 0.977528
+   Train Confidence : 0.985938
+
+-------------------------------------------------
+
+Rule for sample 79 :
+
+WORST_PERIMETER>=138.817481 -> MALIGNANT
+   Train Covering size : 84
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.995245
+
+-------------------------------------------------
+
+Rule for sample 80 :
+
+PERIMETER_ERROR<1.23365 -> BENIGN
+   Train Covering size : 38
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.986196
+
+-------------------------------------------------
+
+Rule for sample 81 :
+
+WORST_AREA>=862.53738 WORST_FRACTAL_DIMENSION>=0.089362 -> MALIGNANT
+   Train Covering size : 59
+   Train Fidelity : 1
+   Train Accuracy : 0.983333
+   Train Confidence : 0.988815
+
+-------------------------------------------------
+
+Rule for sample 82 :
+
+WORST_CONCAVE_POINTS<0.08012 -> BENIGN
+   Train Covering size : 157
+   Train Fidelity : 1
+   Train Accuracy : 0.987342
+   Train Confidence : 0.987542
+
+-------------------------------------------------
+
+Rule for sample 83 :
+
+MEAN_AREA<269.364244 -> BENIGN
+   Train Covering size : 22
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.992904
+
+-------------------------------------------------
+
+Rule for sample 84 :
+
+WORST_PERIMETER<97.476512 WORST_SYMMETRY<0.279816 -> BENIGN
+   Train Covering size : 125
+   Train Fidelity : 1
+   Train Accuracy : 0.984127
+   Train Confidence : 0.983645
+
+-------------------------------------------------
+
+Rule for sample 85 :
+
+WORST_CONCAVE_POINTS<0.08012 -> BENIGN
+   Train Covering size : 157
+   Train Fidelity : 1
+   Train Accuracy : 0.987342
+   Train Confidence : 0.987536
+
+-------------------------------------------------
+
+Rule for sample 86 :
+
+CONCAVE_POINTS_ERROR<0.003349 -> BENIGN
+   Train Covering size : 15
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.994213
+
+-------------------------------------------------
+
+Rule for sample 87 :
+
+WORST_COMPACTNESS<0.139417 -> BENIGN
+   Train Covering size : 100
+   Train Fidelity : 1
+   Train Accuracy : 0.980198
+   Train Confidence : 0.98246
+
+-------------------------------------------------
+
+Rule for sample 88 :
+
+MEAN_CONCAVE_POINTS>=0.086583 -> MALIGNANT
+   Train Covering size : 86
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.994106
+
+-------------------------------------------------
+
+Rule for sample 89 :
+
+WORST_PERIMETER<78.298558 -> BENIGN
+   Train Covering size : 72
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.99255
+
+-------------------------------------------------
+
+Rule for sample 90 :
+
+WORST_CONCAVE_POINTS<0.08012 -> BENIGN
+   Train Covering size : 157
+   Train Fidelity : 1
+   Train Accuracy : 0.987342
+   Train Confidence : 0.98754
+
+-------------------------------------------------
+
+Rule for sample 91 :
+
+MEAN_CONCAVITY<0.018432 -> BENIGN
+   Train Covering size : 59
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.992635
+
+-------------------------------------------------
+
+Rule for sample 92 :
+
+PERIMETER_ERROR>=8.394672 -> MALIGNANT
+   Train Covering size : 11
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.995165
+
+-------------------------------------------------
+
+Rule for sample 93 :
+
+MEAN_PERIMETER<65.167121 -> BENIGN
+   Train Covering size : 46
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.992536
+
+-------------------------------------------------
+
+Rule for sample 94 :
+
+WORST_CONCAVE_POINTS<0.081245 -> BENIGN
+   Train Covering size : 160
+   Train Fidelity : 1
+   Train Accuracy : 0.987578
+   Train Confidence : 0.98739
+
+-------------------------------------------------
+
+Rule for sample 95 :
+
+MEAN_COMPACTNESS<0.0568 -> BENIGN
+   Train Covering size : 71
+   Train Fidelity : 1
+   Train Accuracy : 0.972222
+   Train Confidence : 0.980814
+
+-------------------------------------------------
+
+Rule for sample 96 :
+
+WORST_CONCAVE_POINTS<0.05783 -> BENIGN
+   Train Covering size : 86
+   Train Fidelity : 1
+   Train Accuracy : 0.988506
+   Train Confidence : 0.987735
+
+-------------------------------------------------
+
+Rule for sample 97 :
+
+AREA_ERROR>=111.698317 -> MALIGNANT
+   Train Covering size : 24
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.995568
+
+-------------------------------------------------
+
+Rule for sample 98 :
+
+MEAN_CONCAVITY<0.056123 MEAN_TEXTURE<20.041205 -> BENIGN
+   Train Covering size : 155
+   Train Fidelity : 1
+   Train Accuracy : 0.99359
+   Train Confidence : 0.986403
+
+-------------------------------------------------
+
+Rule for sample 99 :
+
+AREA_ERROR>=50.084474 WORST_SYMMETRY>=0.293184 -> MALIGNANT
+   Train Covering size : 54
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.995007
+
+-------------------------------------------------
+
+Rule for sample 100 :
+
+MEAN_COMPACTNESS<0.051482 -> BENIGN
+   Train Covering size : 49
+   Train Fidelity : 1
+   Train Accuracy : 0.98
+   Train Confidence : 0.984571
+
+-------------------------------------------------
+
+Rule for sample 101 :
+
+WORST_CONCAVITY<0.118255 -> BENIGN
+   Train Covering size : 115
+   Train Fidelity : 1
+   Train Accuracy : 0.982759
+   Train Confidence : 0.986662
+
+-------------------------------------------------
+
+Rule for sample 102 :
+
+WORST_AREA>=1230.097445 -> MALIGNANT
+   Train Covering size : 98
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.994681
+
+-------------------------------------------------
+
+Rule for sample 103 :
+
+WORST_AREA>=1319.439217 -> MALIGNANT
+   Train Covering size : 84
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.995173
+
+-------------------------------------------------
+
+Rule for sample 104 :
+
+WORST_TEXTURE<16.482161 -> BENIGN
+   Train Covering size : 22
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.982985
+
+-------------------------------------------------
+
+Rule for sample 105 :
+
+WORST_CONCAVE_POINTS<0.077713 -> BENIGN
+   Train Covering size : 147
+   Train Fidelity : 1
+   Train Accuracy : 0.986486
+   Train Confidence : 0.987607
+
+-------------------------------------------------
+
+Rule for sample 106 :
+
+COMPACTNESS_ERROR<0.00892 -> BENIGN
+   Train Covering size : 37
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.9906
+
+-------------------------------------------------
+
+Rule for sample 107 :
+
+AREA_ERROR>=106.673098 -> MALIGNANT
+   Train Covering size : 24
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.995558
+
+-------------------------------------------------
+
+Rule for sample 108 :
+
+MEAN_AREA>=1096.631994 -> MALIGNANT
+   Train Covering size : 59
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.99529
+
+-------------------------------------------------
+
+Rule for sample 109 :
+
+WORST_CONCAVE_POINTS>=0.180765 -> MALIGNANT
+   Train Covering size : 86
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.989183
+
+-------------------------------------------------
+
+Rule for sample 110 :
+
+WORST_CONCAVITY<0.145534 MEAN_COMPACTNESS>=0.063184 -> BENIGN
+   Train Covering size : 62
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.986949
+
+-------------------------------------------------
+
+Rule for sample 111 :
+
+MEAN_COMPACTNESS>=0.233772 -> MALIGNANT
+   Train Covering size : 13
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.993931
+
+-------------------------------------------------
+
+Rule for sample 112 :
+
+WORST_AREA<501.97251 -> BENIGN
+   Train Covering size : 105
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.990959
+
+-------------------------------------------------
+
+Rule for sample 113 :
+
+WORST_PERIMETER<82.680232 -> BENIGN
+   Train Covering size : 98
+   Train Fidelity : 1
+   Train Accuracy : 1
+   Train Confidence : 0.99246
+
+-------------------------------------------------
