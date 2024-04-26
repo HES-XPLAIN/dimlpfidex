@@ -320,7 +320,8 @@ def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_o
 
     This function normalizes the input data and applies a linear transformation based on provided or calculated
     mean (mu) and standard deviation (sigma). If in 'train' mode, it calculates and optionally saves the weights
-    and biases. The transformed data is then passed through a staircase activation function.
+    and biases. The transformed data is then passed through a staircase activation function.The input data should
+    be nbSamples x nbAttributes
 
     :param step: 'train' for training step, otherwise for testing step.
     :type step: str

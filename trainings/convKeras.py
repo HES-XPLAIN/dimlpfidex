@@ -18,10 +18,9 @@ np.random.seed(seed=None) #Seed not working
 
 import tensorflow as tf
 from tensorflow import keras
-from keras.models     import Sequential
+from keras.models     import Sequential, load_model, Model
 from keras.layers     import Dense, Dropout, Activation, Flatten, BatchNormalization, Lambda
 from keras.layers     import Convolution2D, DepthwiseConv2D, MaxPooling2D, GlobalAveragePooling2D
-from keras.models     import load_model, Model
 from keras.applications import ResNet50, VGG16
 
 from keras.callbacks  import ModelCheckpoint
@@ -257,9 +256,10 @@ def convKeras(args: str = None):
             size1d = 48
             nb_channels = 1
 
-
+        print(x_train.shape)
         if args.dataset in {"fer", "cifar10"}:
             nb_var = len(x_train[0])
+            print(nb_var)
             # (x-mu)/sigma entre -5 et 5
             if args.normalized:
                 mu_val = 0.5
@@ -274,7 +274,7 @@ def convKeras(args: str = None):
 
 
         print("Data loaded")
-
+        # Data are flattend : nbSamples x nbAttributes (not nbSamples x 32x32x3 for example)
         x_train_h1, mu, sigma = compute_first_hidden_layer("train", x_train, args.K, args.nb_quant_levels, hiknot, args.weights_outfile, mu=mu, sigma=sigma)
         x_test_h1 = compute_first_hidden_layer("test", x_test, args.K, args.nb_quant_levels, hiknot, mu=mu, sigma=sigma)
         x_val_h1 = compute_first_hidden_layer("test", x_val, args.K, args.nb_quant_levels, hiknot, mu=mu, sigma=sigma)
