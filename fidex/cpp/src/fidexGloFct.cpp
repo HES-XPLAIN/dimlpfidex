@@ -189,7 +189,7 @@ int fidexGlo(const std::string &command) {
       } catch (const std::out_of_range &e) {
         throw CommandArgumentException("Some value inside your JSON config file '" + commandList[2] + "' is out of range.\n(Probably due to a too large or too tiny numeric value).");
       } catch (const std::exception &e) {
-        std::string msg(e.what()) ;
+        std::string msg(e.what());
         throw CommandArgumentException("Unknown JSON config file error: " + msg);
       }
     } else {
@@ -388,7 +388,9 @@ int fidexGlo(const std::string &command) {
       }
       getline(rulesData, statsLine);
       statsLine += "\n";
+      std::cout << "Lancement de GetRules" << std::endl;
       getRules(rules, rulesFile, *testDatas, decisionThreshold, positiveClassIndex);
+      std::cout << "Fin de GetRules" << std::endl;
     }
     lines.emplace_back(statsLine);
 
