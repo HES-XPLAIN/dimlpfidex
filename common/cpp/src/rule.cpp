@@ -306,16 +306,45 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
   }
 
   std::string line;
+
+  std::regex antecedantsPatternIds;
+  antecedantsPatternIds = ": (" + getAntStrPatternWithAttrIds(dataset.getNbAttributes()) + " )*" + "->";
+  std::regex antecedantsPatternNames;
+  if (dataset.getHasAttributeNames()) {
+    antecedantsPatternNames = ": (" + getAntStrPatternWithAttrNames(dataset.getAttributeNames()) + " )*" + "->";
+  }
+  auto patternWithClassIds = std::regex(getStrPatternWithClassIds(dataset.getNbClasses()));
+  std::regex patternWithClassNames;
+  if (dataset.getHasClassNames()) {
+    patternWithClassNames = std::regex(getStrPatternWithClassNames(dataset.getClassNames()));
+  }
+  int i = -1;
   while (getline(fileDta, line)) {
+    i++;
+    if (i % 100 == 0) {
+      std::cout << i << std::endl;
+    }
     if (line.find("Rule") == 0) { // If line begins with "Rule"
 
       foundARule = true;
-      std::vector<bool> checkPatterns = getRulePatternsFromString(line, dataset);
-
-      bool withAttrIdsPatternTemp = checkPatterns[0];
-      bool withAttrNamesPatternTemp = checkPatterns[1];
-      bool withClassIdsPatternTemp = checkPatterns[2];
-      bool withClassNamesPatternTemp = checkPatterns[3];
+      bool withAttrIdsPatternTemp = false;
+      bool withAttrNamesPatternTemp = false;
+      bool withClassIdsPatternTemp = false;
+      bool withClassNamesPatternTemp = false;
+      if (regex_search(line, antecedantsPatternIds)) {
+        withAttrIdsPatternTemp = true;
+      }
+      if (dataset.getHasAttributeNames()) {
+        if (regex_search(line, antecedantsPatternNames)) {
+          withAttrNamesPatternTemp = true;
+        }
+      }
+      if (regex_search(line, patternWithClassIds)) {
+        withClassIdsPatternTemp = true;
+      }
+      if (dataset.getHasClassNames() && regex_search(line, patternWithClassNames)) {
+        withClassNamesPatternTemp = true;
+      }
 
       // If no pattern matches this rule
       if (!withAttrIdsPatternTemp && !withAttrNamesPatternTemp) {
@@ -352,6 +381,9 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
   if (!foundARule) {
     throw FileContentError("Error : there is no rule in the file " + rulesFile + ". Note : a rule needs to start with 'Rule' keyword");
   }
+
+  std::cout << withAttrNamesPattern << std::endl;
+  std::cout << withClassNamesPattern << std::endl;
 
   return std::vector<bool>{withAttrNamesPattern, withClassNamesPattern};
 }
@@ -458,9 +490,25 @@ void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid
     }
 
     // Check if the file has attribute names or ids
+    std::cout << "Lancement de getRulesPatternsFromRuleFile" << std::endl;
+    float thetemps;
+    clock_t thet1;
+    clock_t thet2;
+
+    thet1 = clock();
     std::vector<bool> checkPatterns = getRulesPatternsFromRuleFile(rulesFile, dataset);
+    std::cout << "Fin de getRulesPatternsFromRuleFile" << std::endl;
+    thet2 = clock();
+    thetemps = (float)(thet2 - thet1) / CLOCKS_PER_SEC;
+    std::cout << "\nFull execution time getRulesPatternsFromRuleFile = " << thetemps << " sec" << std::endl;
     bool attributesInFile = checkPatterns[0];
     bool classesInFile = checkPatterns[1];
+
+    float thethetemps;
+    clock_t thethet1;
+    clock_t thethet2;
+
+    thethet1 = clock();
 
     std::string line;
     while (getline(rulesData, line)) {
@@ -477,6 +525,9 @@ void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid
         rules.push_back(rule);
       }
     }
+    thethet2 = clock();
+    thethetemps = (float)(thethet2 - thethet1) / CLOCKS_PER_SEC;
+    std::cout << "\nFull execution time getRules ensuite = " << thethetemps << " sec" << std::endl;
   }
 }
 

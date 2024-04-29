@@ -1,10 +1,9 @@
-import pandas as pd
 import numpy as np
 import sys
 import time
 from sklearn.model_selection import train_test_split
 sys.path.append('../../trainings')
-from trainings.trnFun import compute_first_hidden_layer, output_data, output_stats
+from trainings.trnFun import compute_first_hidden_layer, output_data, output_stats, get_data, get_data_class
 from tensorflow import keras
 from keras.models import Sequential, load_model
 from keras.layers import Conv1D, MaxPooling1D, Flatten, Dense, Dropout, BatchNormalization
@@ -16,91 +15,43 @@ K = 1.0
 nb_quant_levels = 100
 hiknot = 5
 weights_outfile = "weights.wts"
-segment_size = 250
 nb_channels = 6
+segment_size = 250
+nb_attributes = nb_channels*segment_size
 nb_classes = 8
 nb_epochs = 80
 model_checkpoint_weights = "weightsModel.keras"
 stats_file = "stats.txt"
 train_valid_pred_outfile = "predTrain.out"
 test_pred_outfile = "predTest.out"
+train_data_file = "trainData.txt"
+train_class_file = "trainClass.txt"
+test_data_file = "testData.txt"
+test_class_file = "testClass.txt"
 
 
 
 print("Data loading ...")
-data_folder = "Data/"
-file_paths = [data_folder+str(i)+".csv" for i in range(501,519)]
+x_train_full_temp, y_train_full_temp = get_data(train_data_file, nb_attributes, nb_classes)
+x_train_full = np.array(x_train_full_temp)
+del x_train_full_temp
+y_train_full_temp = get_data_class(train_class_file, nb_classes)
+y_train_full = np.array(y_train_full_temp)
+del y_train_full_temp
 
-data_segments = []
-class_labels = []
+if len(x_train_full) != len(y_train_full):
+    raise ValueError('Error, there is not the same amount of train data and train class.')
 
-# Read each file
-for file_path in file_paths:
-    df = pd.read_csv(file_path)
-
-    # Get attributes and classes, ignore timestamp
-    classes = df.iloc[:, -1]
-    attributes = df.iloc[:, 1:-1]
-
-    # Create segments of segment_size datas with same class
-    current_class = None
-    segment = []
-
-    for index, row in attributes.iterrows():
-        row_class = classes.iloc[index]
-        if current_class is None:
-            current_class = row_class
-
-        # Finished segment
-        if row_class != current_class or len(segment) == segment_size:
-            if len(segment) < segment_size:
-                # Zero Padding if necessary
-                while len(segment) < segment_size:
-                    segment.append([0]*6)
-            # Add class and segment to the lists
-            data_segments.append(segment)
-            class_labels.append(current_class)
-            # Reinitialize
-            segment = []
-            current_class = row_class
-
-        # Add row to actual segment
-        segment.append(row.tolist())
-
-    # Add last segment if necessary
-    if len(segment) > 0:
-        if len(segment) < segment_size:
-            while len(segment) < segment_size:
-                segment.append([0]*6)  # Zero Padding
-        data_segments.append(segment)
-        class_labels.append(current_class)
-
-data_segments = np.array(data_segments)
-class_labels = np.array(class_labels)
-
-print("Nombre of samples : ", len(data_segments))
-
-# Shuffle data
-indices = np.arange(data_segments.shape[0])
-np.random.shuffle(indices)
-data_segments = data_segments[indices]
-class_labels = class_labels[indices] -1 # We start class indices at 0
+x_test, y_test = get_data(test_data_file, nb_attributes, nb_classes)
+y_test = get_data_class(test_class_file, nb_classes)
+x_test, y_test = np.array(x_test), np.array(y_test)
 
 # Split in train(70%), test(20%) and validation sets(10%)
-x_train, x_temp, y_train, y_temp = train_test_split(data_segments, class_labels, test_size=0.3, random_state=42)
-x_val, x_test, y_val, y_test = train_test_split(x_temp, y_temp, test_size=(2/3), random_state=42)
+x_train, x_val, y_train, y_val = train_test_split(x_train_full, y_train_full, test_size=(1/8), random_state=42)
 
 print(f"Training set: {x_train.shape}, {y_train.shape}")
 print(f"Validation set: {x_val.shape}, {y_val.shape}")
 print(f"Test set: {x_test.shape}, {y_test.shape}")
-
-x_train = x_train.reshape(x_train.shape[0],x_train.shape[1]*x_train.shape[2])
-x_val = x_val.reshape(x_val.shape[0],x_val.shape[1]*x_val.shape[2])
-x_test = x_test.reshape(x_test.shape[0],x_test.shape[1]*x_test.shape[2])
-
-print(f"Training set flattened: {x_train.shape}, {y_train.shape}")
-print(f"Validation set flattened: {x_val.shape}, {y_val.shape}")
-print(f"Test set flattened: {x_test.shape}, {y_test.shape}")
 
 
 print("Data loaded.")

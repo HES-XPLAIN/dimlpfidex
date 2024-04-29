@@ -46,7 +46,7 @@ def imageAnalyser(dataSet):
     try:
         start_time = time.time()
 
-        id_samples = range(0,5)
+        id_samples = range(0,100)
         show_images = False
         if dataSet == "Mnist":
             image_folder_from_base = "dimlp/datafiles/Mnist"
@@ -97,15 +97,15 @@ def imageAnalyser(dataSet):
             normalized = True # Data between 0 and 1
             with_hsl = False
 
-            image_folder_from_base = "dimlp/datafiles/FER"
+            image_folder_from_base = "dimlp/datafiles/FER/ResNet"
             #image_folder_from_base = "/mnt/d/dimlpfidex/FER"
-            test_data_file = image_folder_from_base + "/testData.txt"
-            test_class_file = image_folder_from_base + "/testClass.txt"
+            test_data_file = image_folder_from_base + "/../testData.txt"
+            test_class_file = image_folder_from_base + "/../testClass.txt"
             test_pred_file = image_folder_from_base + "/predTest.out"
             global_rules = "globalRulesWithTestStats.txt"
 
-            train_data_file = "trainData.txt"
-            train_class_file = "trainClass.txt"
+            train_data_file = "/../trainData.txt"
+            train_class_file = "/../trainClass.txt"
             train_pred_file = "predTrain.out"
 
             with_file = False #Using of rule file or of weights to launch Fidex
@@ -120,7 +120,7 @@ def imageAnalyser(dataSet):
 
         nb_attributes = size1d*size1d*nb_channels
 
-        image_save_folder = image_folder_from_base + "/imagesTest"
+        image_save_folder = image_folder_from_base + "/images"
 
         test_data = get_data(test_data_file)
         test_class = get_data(test_class_file)
@@ -246,6 +246,6 @@ def imageAnalyser(dataSet):
         return -1
 
 #dataSet = "Mnist"
-dataSet = "Cifar10"
-#dataSet = "fer"
+#dataSet = "Cifar10"
+dataSet = "fer"
 imageAnalyser(dataSet)
