@@ -462,7 +462,8 @@ void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid
     std::string line;
     while (getline(rulesData, line)) {
       Rule rule;
-      if (stringToRule(rule, line, attributesInFile, classesInFile, dataset)) {
+      bool isRule = stringToRule(rule, line, attributesInFile, classesInFile, dataset);
+      if (isRule) {
         getline(rulesData, line); // Cov size
         rule.setCoveringSize(stoi(splitString(line, " ")[4]));
         getline(rulesData, line); // Fidelity
@@ -474,9 +475,6 @@ void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid
         rules.push_back(rule);
       }
     }
-    thethet2 = clock();
-    thethetemps = (float)(thethet2 - thethet1) / CLOCKS_PER_SEC;
-    std::cout << "\nFull execution time getRules ensuite = " << thethetemps << " sec" << std::endl;
   }
 }
 

@@ -58,6 +58,7 @@ void showParams() {
   printOptionDescription("--max_failed_attempts <int [0,inf[>", "Maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used (default: 30)");
   printOptionDescription("--min_fidelity <float [0,1]>", "Minimal rule fidelity accepted when generating a rule (default: 1.0)");
   printOptionDescription("--lowest_min_fidelity <float [0,1]>", "Minimal min_fidelity to which we agree to go down during covering_strategy (default: 0.75)");
+  printOptionDescription("--nb_fidex_rules <int [1,inf[>", "Number of Fidex rules to compute per sample when launching Fidex (default: 1)");
   printOptionDescription("--dropout_dim <float [0,1]>", "Dimension dropout parameter (default: 0.0)");
   printOptionDescription("--dropout_hyp <float [0,1]>", "Hyperplan dropout parameter (default: 0.0)");
   printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in staircase activation function (default: 50)");
@@ -79,22 +80,38 @@ void showParams() {
 }
 
 void executeFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Parameters &p, Hyperspace &hyperspace, std::vector<double> &mainSampleValues, int mainSamplePred, double mainSamplePredValue, int mainSampleClass, const std::vector<std::string> &attributeNames, const std::vector<std::string> &classNames) {
+  int nbFidexRules = p.getInt(NB_FIDEX_RULES);
+  if (nbFidexRules == 1) {
+    std::cout << "\nWe launch Fidex." << std::endl;
+    lines.emplace_back("\nWe launch Fidex.\n");
+  } else {
+    std::cout << "\nWe launch Fidex " << std::to_string(nbFidexRules) << " times." << std::endl;
+    lines.emplace_back("\nWe launch Fidex " + std::to_string(nbFidexRules) + " times.\n");
+  }
 
-  std::cout << "\nWe launch Fidex." << std::endl;
-  lines.emplace_back("\nWe launch Fidex.\n");
-
-  Rule rule;
+  std::vector<Rule> rules;
 
   auto fidex = Fidex(trainDataset, p, hyperspace, true);
 
-  // Launch fidexAlgo
-  fidex.setMainSamplePredValue(mainSamplePredValue);
-  fidex.launchFidex(rule, mainSampleValues, mainSamplePred, mainSampleClass);
+  for (int i = 0; i < nbFidexRules; i++) {
+    Rule rule;
 
-  std::cout << "\nLocal rule :" << std::endl;
-  lines.emplace_back("Local rule :\n");
-  std::cout << rule.toString(attributeNames, classNames) << std::endl;
-  lines.emplace_back(rule.toString(attributeNames, classNames) + "\n");
+    // Launch fidexAlgo
+    fidex.setMainSamplePredValue(mainSamplePredValue);
+    fidex.launchFidex(rule, mainSampleValues, mainSamplePred, mainSampleClass);
+    rules.push_back(rule);
+  }
+  if (nbFidexRules == 1) {
+    std::cout << "\nLocal rule :" << std::endl;
+    lines.emplace_back("Local rule :\n");
+  } else {
+    std::cout << "\nLocal rules :" << std::endl;
+    lines.emplace_back("Local rules :\n");
+  }
+  for (Rule rule : rules) {
+    std::cout << rule.toString(attributeNames, classNames) << std::endl;
+    lines.emplace_back(rule.toString(attributeNames, classNames) + "\n");
+  }
 }
 
 /**
@@ -123,6 +140,7 @@ void checkParametersLogicValues(Parameters &p) {
     // setting default values
     p.setDefaultNbQuantLevels();
     p.setDefaultFidex();
+    p.setDefaultInt(NB_FIDEX_RULES, 1);
 
     // this sections check if values comply with program logic
 
@@ -132,6 +150,9 @@ void checkParametersLogicValues(Parameters &p) {
 
     // verifying logic between parameters, values range and so on...
     p.checkParametersFidex();
+    if (p.getInt(NB_FIDEX_RULES) < 1) {
+      throw CommandArgumentException("Error : Number of Fidex rules must be strictly positive (>=1).");
+    }
     p.checkParametersNormalization();
 
     if (p.isStringSet(TEST_CLASS_FILE) && !p.isStringSet(TEST_PRED_FILE)) {
@@ -176,7 +197,7 @@ int fidexGlo(const std::string &command) {
                                               TEST_PRED_FILE, EXPLANATION_FILE, CONSOLE_FILE,
                                               WITH_FIDEX, WITH_MINIMAL_VERSION, TRAIN_DATA_FILE, TRAIN_PRED_FILE, TRAIN_CLASS_FILE, WEIGHTS_FILE,
                                               RULES_FILE, TEST_CLASS_FILE, MAX_ITERATIONS, MIN_COVERING, COVERING_STRATEGY,
-                                              MAX_FAILED_ATTEMPTS, MIN_FIDELITY, LOWEST_MIN_FIDELITY, DROPOUT_DIM, DROPOUT_HYP, NB_QUANT_LEVELS,
+                                              MAX_FAILED_ATTEMPTS, MIN_FIDELITY, NB_FIDEX_RULES, LOWEST_MIN_FIDELITY, DROPOUT_DIM, DROPOUT_HYP, NB_QUANT_LEVELS,
                                               NORMALIZATION_FILE, MUS, SIGMAS, NORMALIZATION_INDICES, SEED};
     if (commandList[1].compare("--json_config_file") == 0) {
       if (commandList.size() < 3) {
@@ -477,6 +498,7 @@ int fidexGlo(const std::string &command) {
               break;
             }
           }
+
           if (allSameClass && !minimalVersion) {
             notShowUncorrectRules = true;
             if (activatedRules.size() > 1) {
@@ -492,7 +514,7 @@ int fidexGlo(const std::string &command) {
               lines.emplace_back("R" + std::to_string(v + 1) + ": " + rules[activatedRules[v]].toString(attributeNames, classNames));
               std::cout << "R" << std::to_string(v + 1) << ": " << rules[activatedRules[v]].toString(attributeNames, classNames) << std::endl;
             }
-          } else {
+          } else { // If minimalVersion or uncorrected rules are not all same class (only if we don't have correct rules)
             if (minimalVersion) {
               std::cout << "There is no correct activated rule for this sample." << std::endl;
             } else {
