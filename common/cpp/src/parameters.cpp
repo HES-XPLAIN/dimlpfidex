@@ -214,6 +214,10 @@ void Parameters::parseArg(const std::string &param, const std::string &arg, cons
     setInt(NB_QUANT_LEVELS, arg);
     break;
 
+  case NB_FIDEX_RULES:
+    setInt(NB_FIDEX_RULES, arg);
+    break;
+
   case GLOBAL_RULES_OUTFILE:
     setString(GLOBAL_RULES_OUTFILE, arg);
     break;
