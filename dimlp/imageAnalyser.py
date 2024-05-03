@@ -166,9 +166,9 @@ def imageAnalyser(dataSet):
         rules = []
         with open(explanation_file, "r") as my_file:
             for line in my_file:
-                if line.startswith("R1: Rule "):
+                if line.startswith("R1: "):
                     rules.append(line.strip())
-                if line.startswith("Local rule :"):
+                if line.startswith("Local rule"):
                     # Search next non empty line
                     next_line = next(my_file, '').strip()
                     while not next_line:

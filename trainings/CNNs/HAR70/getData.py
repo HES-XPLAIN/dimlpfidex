@@ -33,7 +33,7 @@ def output_class(classes, class_file):
 segment_size = 250
 
 print("Data loading ...")
-data_folder = "Data/"
+data_folder = "datafiles/"
 file_paths = [data_folder+str(i)+".csv" for i in range(501,519)]
 
 data_segments = []

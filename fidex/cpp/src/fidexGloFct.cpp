@@ -409,9 +409,7 @@ int fidexGlo(const std::string &command) {
       }
       getline(rulesData, statsLine);
       statsLine += "\n";
-      std::cout << "Lancement de GetRules" << std::endl;
       getRules(rules, rulesFile, *testDatas, decisionThreshold, positiveClassIndex);
-      std::cout << "Fin de GetRules" << std::endl;
     }
     lines.emplace_back(statsLine);
 
