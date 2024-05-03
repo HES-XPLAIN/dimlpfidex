@@ -196,7 +196,7 @@ std::string getAntStrPatternWithAttrIds(int nbAttributes) {
  * @brief Generates a regular expression pattern for matching an antecedent using the names of the attributes.
  *
  * @param attributeNames Vector of the names of the attributes that can appear in the rule.
- * @return std::string The compiled regular expression object that can be used to match an antecedant with attribute's names.
+ * * @return std::string The compiled regular expression object that can be used to match an antecedant with attribute's names.
  */
 std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attributeNames) {
   std::string attrPattern;
@@ -235,14 +235,14 @@ std::string getStrPatternWithClassIds(int nbClasses) {
  * @return std::string The compiled regular expression object that can be used to match a rule class name.
  */
 std::string getStrPatternWithClassNames(const std::vector<std::string> &classNames) {
-  std::string classPattern;
+  std::string clPattern;
   for (const auto &cl : classNames) {
-    if (!classPattern.empty()) {
-      classPattern += "|";
+    if (!clPattern.empty()) {
+      clPattern += "|";
     }
-    classPattern += cl;
+    clPattern += cl;
   }
-  std::string classesPattern("-> (" + classPattern + ")");
+  std::string classesPattern("-> (" + clPattern + ")");
   return classesPattern;
 }
 
@@ -270,6 +270,7 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
   }
 
   std::string line;
+  Rule rule;
 
   std::regex antecedantsPatternIds(": (" + getAntStrPatternWithAttrIds(dataset.getNbAttributes()) + " )*" + "->");
   std::regex antecedantsPatternNames;
@@ -351,26 +352,14 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
  * @return true If the rule is created.
  * @return false If the rule couldn't be created.
  */
-bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, bool withClassNames, DataSetFid &dataset) {
-  std::regex attributePattern;
-  std::regex classPattern;
-  if (withAttributeNames) {
-    attributePattern = getAntStrPatternWithAttrNames(dataset.getAttributeNames());
-  } else {
-    attributePattern = getAntStrPatternWithAttrIds(dataset.getNbAttributes());
-  }
-
-  if (withClassNames) {
-    classPattern = getStrPatternWithClassNames(dataset.getClassNames());
-  } else {
-    classPattern = getStrPatternWithClassIds(dataset.getNbClasses());
-  }
+bool stringToRule(Rule &rule, const std::string &str, const std::regex &attributePattern, const std::regex &classPattern, bool withAttributeNames, bool withClassNames, DataSetFid &dataset) {
 
   std::vector<Antecedant> antecedants;
   bool isRule = false;
 
   std::istringstream iss(str);
   std::string token;
+
   while (iss >> token) {
     std::smatch match;
     if (regex_match(token, match, attributePattern)) {
@@ -408,6 +397,7 @@ bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, b
       }
     }
   }
+
   if (isRule) {
     rule.setAntecedants(antecedants);
     return true;
@@ -439,30 +429,29 @@ void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid
     }
 
     // Check if the file has attribute names or ids
-    std::cout << "Lancement de getRulesPatternsFromRuleFile" << std::endl;
-    float thetemps;
-    clock_t thet1;
-    clock_t thet2;
-
-    thet1 = clock();
     std::vector<bool> checkPatterns = getRulesPatternsFromRuleFile(rulesFile, dataset);
-    std::cout << "Fin de getRulesPatternsFromRuleFile" << std::endl;
-    thet2 = clock();
-    thetemps = (float)(thet2 - thet1) / CLOCKS_PER_SEC;
-    std::cout << "\nFull execution time getRulesPatternsFromRuleFile = " << thetemps << " sec" << std::endl;
     bool attributesInFile = checkPatterns[0];
     bool classesInFile = checkPatterns[1];
 
-    float thethetemps;
-    clock_t thethet1;
-    clock_t thethet2;
+    std::regex attributePattern;
+    std::regex classPattern;
+    if (attributesInFile) {
+      attributePattern = getAntStrPatternWithAttrNames(dataset.getAttributeNames());
+    } else {
+      attributePattern = getAntStrPatternWithAttrIds(dataset.getNbAttributes());
+    }
 
-    thethet1 = clock();
+    if (classesInFile) {
+      classPattern = getStrPatternWithClassNames(dataset.getClassNames());
+    } else {
+      classPattern = getStrPatternWithClassIds(dataset.getNbClasses());
+    }
 
     std::string line;
     while (getline(rulesData, line)) {
       Rule rule;
-      bool isRule = stringToRule(rule, line, attributesInFile, classesInFile, dataset);
+      bool isRule = stringToRule(rule, line, attributePattern, classPattern, attributesInFile, classesInFile, dataset);
+
       if (isRule) {
         getline(rulesData, line); // Cov size
         rule.setCoveringSize(stoi(splitString(line, " ")[4]));

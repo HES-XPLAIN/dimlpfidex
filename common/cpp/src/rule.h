@@ -98,9 +98,8 @@ std::string getAntStrPatternWithAttrIds(int nbAttributes);
 std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attributeNames);
 std::string getStrPatternWithClassIds(int nbClasses);
 std::string getStrPatternWithClassNames(const std::vector<std::string> &classNames);
-std::vector<bool> getRulePatternsFromString(const std::string &str, DataSetFid &dataset);
 std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, DataSetFid &dataset, bool withClasses = true);
-bool stringToRule(Rule &rule, const std::string &str, bool withAttributeNames, bool withClassNames, DataSetFid &dataset);
+bool stringToRule(Rule &rule, const std::string &str, const std::regex &attributePattern, const std::regex &classPattern, bool withAttributeNames, bool withClassNames, DataSetFid &dataset);
 void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset, float &decisionThreshold, int &positiveClassIndex);
 std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames,
                                           const std::vector<std::string> &classNames, float threshold, int positiveIndex);
