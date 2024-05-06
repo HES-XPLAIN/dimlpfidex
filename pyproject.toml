@@ -52,6 +52,9 @@ dev-dependencies = [
 ]
 
 [tool.scikit-build]
+cmake.verbose = true
+logging.level = "INFO"
+build-dir = "build"
 wheel.packages = [
 #    "dimlp",
     "dimlpfidex",
@@ -60,4 +63,3 @@ wheel.packages = [
 #    "common",
     "trainings",
 ]
-
