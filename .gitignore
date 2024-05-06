@@ -38,6 +38,7 @@ bin/
 out*.txt
 datafiles/
 .vscode/
+.vs/
 
 # CMake
 /cmake-build-debug
