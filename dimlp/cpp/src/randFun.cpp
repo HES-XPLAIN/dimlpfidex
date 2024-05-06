@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <sys/types.h>
+#if defined(__unix__) || defined(__APPLE__)
 #include <unistd.h>
+#endif
 
 #include "randFun.h"
 
