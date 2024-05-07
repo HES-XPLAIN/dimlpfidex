@@ -29,7 +29,12 @@ Install with your package manager:
 
 #### Windows
 
-* Install [MinGW-W64](https://www.mingw-w64.org/) with the [online installer](https://github.com/Vuniverse0/mingwInstaller/releases) (64 bit, win32, ucrt)
+* Install [Visual Studio Community](https://visualstudio.microsoft.com/vs/) with the "Desktop development with C++" component:
+
+```shell
+winget install Microsoft.VisualStudio.2022.Community
+```
+
 * Install [CMake](https://cmake.org/):
 
 ```shell
@@ -104,7 +109,14 @@ To leave the virtualenv, use `deactivate`.
 
 ### Compile and Package
 
-Compile and create archives for distribution:
+Compile:
+
+```shell
+mkdir build && cd build
+cmake .. && cmake --build .
+```
+
+Create archives for distribution:
 
 ```shell
 python -m build
