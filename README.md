@@ -116,6 +116,8 @@ mkdir build && cd build
 cmake .. && cmake --build .
 ```
 
+To speed up the compilation process, you can also add `-j X` with `X` being your number of CPU cores.
+
 Create archives for distribution:
 
 ```shell
