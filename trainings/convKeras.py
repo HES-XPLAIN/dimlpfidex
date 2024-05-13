@@ -454,7 +454,7 @@ def convKeras(args: str = None):
             # Add a dropout layer with 0.5 dropout rate
             model.add(Dropout(0.5))
             # Add a dense layer with 7 neurons (one for each class) and softmax activation function
-            model.add(Dense(7, activation='softmax'))
+            model.add(Dense(args.nb_classes, activation='softmax'))
 
             model.summary()
             # Compile the model with categorical cross-entropy loss, adam optimizer, and accuracy metric
