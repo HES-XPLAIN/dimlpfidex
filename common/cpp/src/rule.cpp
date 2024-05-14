@@ -188,7 +188,7 @@ std::string getAntStrPatternWithAttrIds(int nbAttributes) {
     }
     pattern += std::to_string(i);
   }
-  std::string idPattern("X(" + pattern + ")([<>]=?)(-?[\\d.]+)");
+  std::string idPattern("X(" + pattern + ")([<>]=?)(-?[\\d.]+([eE][+-])?\\d+)?");
   return idPattern;
 }
 
@@ -206,7 +206,7 @@ std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attrib
     }
     attrPattern += attr;
   }
-  std::string attributesPattern("(" + attrPattern + ")([<>]=?)(-?[\\d.]+)");
+  std::string attributesPattern("(" + attrPattern + ")([<>]=?)(-?[\\d.]+([eE][+-])?\\d+)?");
   return attributesPattern;
 }
 
