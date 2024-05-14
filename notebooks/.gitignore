@@ -1,2 +1,3 @@
 **/out
-data/OCDDataset/*.txt
+!data/OCDDataset/ObesityDataSet.csv
+data/OCDDataset/*
