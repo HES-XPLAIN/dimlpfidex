@@ -1,3 +1,4 @@
 **/out
 !data/OCDDataset/ObesityDataSet.csv
+!data/BCWDataset/*
 data/OCDDataset/*
