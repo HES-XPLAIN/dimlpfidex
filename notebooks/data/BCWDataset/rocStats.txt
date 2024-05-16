@@ -1,1 +1,0 @@
-AUC score on testing set : 0.9972649572649572

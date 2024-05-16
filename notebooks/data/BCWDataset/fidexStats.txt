@@ -1,8 +1,0 @@
-Statistics with a test set of 114 samples :
-
-No decision threshold is used.
-The mean covering size per rule is : 76.4211
-The mean number of antecedents per rule is : 1.17544
-The mean rule fidelity rate is : 1
-The mean rule accuracy is : 0.992817
-The mean rule confidence is : 0.987495

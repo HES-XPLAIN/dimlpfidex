@@ -1,9 +1,0 @@
-No decision threshold is used.
-
-Rule for sample 0 :
-
-MEAN_PERIMETER>=114.837974 -> MALIGNANT
-   Train Covering size : 84
-   Train Fidelity : 1
-   Train Accuracy : 0.988235
-   Train Confidence : 0.987915
