@@ -57,7 +57,7 @@ def get_and_check_parameters(init_args):
 
     # Add new attributes
     parser = CustomArgumentParser(description="This is a parser for convKeras", parents=[initial_parser], formatter_class=formatter, add_help=True)
-    parser.add_argument("--dataset", choices=["mnist", "cifar100", "cifar10", "fer"], metavar="<{mnist, cifar100, cifar10, fer}>", help="Dataset")
+    parser.add_argument("--dataset", choices=["mnist", "cifar100", "cifar10", "fer", "cracks"], metavar="<{mnist, cifar100, cifar10, fer}>", help="Dataset")
     parser.add_argument("--train_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Train data file", metavar="<str>", required=True)
     parser.add_argument("--train_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Train class file, mandatory if classes are not specified in train_data_file", metavar="<str>")
     parser.add_argument("--test_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test data file", metavar="<str>", required=True)
@@ -245,8 +245,12 @@ def convKeras(args: str = None):
             size1d = 48
             nb_channels = 1
 
+        elif args.dataset == "cracks":
+            size1d = 64
+            nb_channels = 1
+
         print(x_train.shape)
-        if args.dataset in {"fer", "cifar10"}:
+        if args.dataset in {"fer", "cifar10", "cracks"}:
             nb_var = len(x_train[0])
             print(nb_var)
             # (x-mu)/sigma entre -5 et 5
@@ -273,7 +277,7 @@ def convKeras(args: str = None):
         x_test_h1 = x_test_h1.reshape(x_test_h1.shape[0], size1d, size1d, nb_channels)
         x_val_h1 = x_val_h1.reshape(x_val_h1.shape[0], size1d, size1d, nb_channels)
 
-        if (args.dataset == "fer" and (args.with_vgg or args.with_resnet)):
+        if ((args.dataset == "fer" or args.dataset == "cracks") and (args.with_vgg or args.with_resnet)):
             # B&W to RGB
             x_train_h1 = np.repeat(x_train_h1, 3, axis=-1)
             x_test_h1 = np.repeat(x_test_h1, 3, axis=-1)
