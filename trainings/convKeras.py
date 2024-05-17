@@ -19,15 +19,11 @@ np.random.seed(seed=None) #Seed not working
 import tensorflow as tf
 from tensorflow import keras
 from keras.models     import Sequential, load_model, Model
-from keras.layers     import Dense, Dropout, Activation, Flatten, BatchNormalization, Lambda
+from keras.layers     import Dense, Dropout, Flatten, BatchNormalization, Lambda
 from keras.layers     import Convolution2D, DepthwiseConv2D, MaxPooling2D, GlobalAveragePooling2D
 from keras.applications import ResNet50, VGG16
 
 from keras.callbacks  import ModelCheckpoint
-from keras.datasets import mnist
-from keras.datasets import cifar100
-from keras.datasets import cifar10
-import colorsys
 
 
 
@@ -236,31 +232,14 @@ def convKeras(args: str = None):
 
 
         if args.dataset == "mnist":
-            #(x_train, y_train), (x_test, y_test) = mnist.load_data()
-
-            #x_train = x_train[0:1000]
-            #y_train = y_train[0:1000]
-            #x_test = x_test[0:300]
-            #y_test = y_test[0:300]
 
             size1d = 28
             nb_channels = 1
 
-        elif args.dataset == "cifar100":
-            #(x_train, y_train), (x_test, y_test) = cifar100.load_data(label_mode="fine")
-
-            #x_train = x_train[0:1000]
-            #y_train = y_train[0:1000]
-            #x_test = x_test[0:300]
-            #y_test = y_test[0:300]
+        elif args.dataset == "cifar100" or args.dataset == "cifar10":
 
             size1d = 32
             nb_channels = 3
-
-        elif args.dataset == "cifar10":
-            size1d = 32
-            nb_channels = 3
-
 
         elif args.dataset == "fer":
             size1d = 48
@@ -289,20 +268,8 @@ def convKeras(args: str = None):
         x_test_h1 = compute_first_hidden_layer("test", x_test, args.K, args.nb_quant_levels, hiknot, mu=mu, sigma=sigma)
         x_val_h1 = compute_first_hidden_layer("test", x_val, args.K, args.nb_quant_levels, hiknot, mu=mu, sigma=sigma)
 
-        #y_train_h1 = compute_first_hidden_layer("test", y_train_flattened, args.K, args.nb_quant_levels, mu=mu, sigma=sigma)
-        #print("change Ytrain to array")
-        #y_train_h1 = np.array(y_train_h1)
-        #print("changed")
-        #y_train_h1 = y_train_h1.reshape(y_train.shape)
-
-        #train   = np.loadtxt("trainMnist784WC")
-
-        # x_train = train.reshape(train.shape[0], 1, size1d, size1d)
         x_train_h1 = x_train_h1.reshape(x_train_h1.shape[0], size1d, size1d, nb_channels)
 
-        #test   = np.loadtxt("testMnist2")
-
-        # x_test = test.reshape(test.shape[0], 1, size1d, size1d)
         x_test_h1 = x_test_h1.reshape(x_test_h1.shape[0], size1d, size1d, nb_channels)
         x_val_h1 = x_val_h1.reshape(x_val_h1.shape[0], size1d, size1d, nb_channels)
 
@@ -313,10 +280,8 @@ def convKeras(args: str = None):
             x_val_h1 = np.repeat(x_val_h1, 3, axis=-1)
             nb_channels = 3
 
-        #y_train = np.loadtxt("mnistTrainClass")
         y_train = y_train.astype('int32')
 
-        #y_test  = np.loadtxt("mnistTestClass")
         y_test  = y_test.astype('int32')
 
         y_val = y_val.astype('int32')
@@ -326,21 +291,6 @@ def convKeras(args: str = None):
         y_test = keras.utils.to_categorical(y_test, args.nb_classes)
         y_val = keras.utils.to_categorical(y_val, args.nb_classes)
 
-        ##############################################################################
-
-        """
-        if dataset == "mnist":
-            x_val   = x_train_h1[50000:]
-            x_train_h1_train = x_train_h1[0:50000]
-            y_val   = y_train[50000:]
-            y_train = y_train[0:50000]
-
-        elif dataset == "cifar":
-            x_val   = x_train_h1[40000:]
-            x_train_h1_train = x_train_h1[0:40000]
-            y_val   = y_train[40000:]
-            y_train = y_train[0:40000]
-        """
         ##############################################################################
         print("Training model...")
 
@@ -361,26 +311,6 @@ def convKeras(args: str = None):
 
             model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.00001), loss='categorical_crossentropy', metrics=['acc'])
             model.summary()
-
-
-            """# charge pre-trained model ResNet50 with imageNet weights
-            base_model = ResNet50(weights='imagenet', include_top=False, input_shape=(size1d, size1d, nb_channels))
-
-            x = base_model.output
-            x = GlobalAveragePooling2D()(x)
-            x = Dense(256, activation='relu')(x)
-            x = Dropout(0.3)(x)
-            predictions = Dense(nb_classes, activation='softmax')(x)
-
-            model = Model(inputs=base_model.input, outputs=predictions)
-
-            # Frees layers of Resnet
-            for layer in base_model.layers:
-                layer.trainable = False
-
-            model.summary()
-
-            model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])"""
 
         elif args.with_vgg:
             # charge pre-trained model vgg with imageNet weights
@@ -464,13 +394,6 @@ def convKeras(args: str = None):
 
             model = Sequential()
 
-            # model.add(Convolution2D(32, (5, 5), activation='relu', data_format="channels_first", input_shape=(1, size1d, size1d)))
-            # model.add(MaxPooling2D(pool_size=(2, 2), data_format="channels_first"))
-
-            # # model.add(Convolution2D(32, (3, 3), activation='sigmoid'))
-            # model.add(DepthwiseConv2D((5, 5), data_format="channels_first", activation='relu'))
-            # model.add(MaxPooling2D(pool_size=(2, 2), data_format="channels_first"))
-
             model.add(Convolution2D(32, (5, 5), activation='relu', input_shape=(size1d, size1d, nb_channels)))
             model.add(Dropout(0.3))
             model.add(MaxPooling2D(pool_size=(2, 2)))
@@ -479,14 +402,10 @@ def convKeras(args: str = None):
             model.add(Dropout(0.3))
             model.add(MaxPooling2D(pool_size=(2, 2)))
 
-
-            # model.add(Convolution2D(32, (3, 3), activation='relu'))
-
             model.add(Flatten())
 
             model.add(Dense(256, activation='sigmoid'))
             model.add(Dropout(0.3))
-            # model.add(Dense(128, activation='sigmoid'))
 
             model.add(Dense(args.nb_classes, activation='sigmoid'))
 
@@ -497,10 +416,7 @@ def convKeras(args: str = None):
         ##############################################################################
 
         checkpointer = ModelCheckpoint(filepath=model_checkpoint_weights, verbose=1, save_best_only=True)
-        #x_train_h1 = keras.applications.resnet50.preprocess_input(x_train_h1)
-        #x_val_h1 = keras.applications.resnet50.preprocess_input(x_val_h1)
         model.fit(x_train_h1, y_train, batch_size=32, epochs=args.nb_epochs, validation_data=(x_val_h1, y_val), callbacks=[checkpointer], verbose=2)
-        #model.fit(x_train_h1_train, y_train, batch_size=32, epochs=nb_epochs, validation_data=(x_test_h1, y_test), callbacks=[checkpointer], verbose=2)
 
         ##############################################################################
 
