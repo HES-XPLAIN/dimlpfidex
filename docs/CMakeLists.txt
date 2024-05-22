@@ -27,12 +27,16 @@ set(DOXYFILE_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 configure_file(${DOXYFILE_IN} ${DOXYFILE_OUT} @ONLY)
 
 file(MAKE_DIRECTORY ${DOXYGEN_OUTPUT_DIR})
+
+# Only regenerate Doxygen when the Doxyfile or public headers change
 add_custom_command(OUTPUT ${DOXYGEN_INDEX_FILE}
                    DEPENDS ${DIMLPFIDEX_PUBLIC_HEADERS}
                    COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE_OUT}
                    MAIN_DEPENDENCY ${DOXYFILE_OUT} ${DOXYFILE_IN}
-                   COMMENT "Generating docs")
+                   COMMENT "Generating docs"
+                   VERBATIM)
 
+# add target so we can run the job easily
 add_custom_target(Doxygen ALL DEPENDS ${DOXYGEN_INDEX_FILE})
 
 find_package(Sphinx REQUIRED)
@@ -42,10 +46,22 @@ set(SPHINX_BUILD ${CMAKE_BINARY_DIR}/docs/sphinx)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/_static)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/_templates)
 
-add_custom_target(Sphinx ALL
+# Only regenerate Sphinx when:
+# - Doxygen has rerun
+# - Our doc files have been updated
+# - The Sphinx config has been updated
+add_custom_target(OUTPUT ${SPHINX_INDEX_FILE}
                   COMMAND
                   ${SPHINX_EXECUTABLE} -b html
                   -Dbreathe_projects.dimlpfidex=${DOXYGEN_OUTPUT_DIR}
                   ${SPHINX_SOURCE} ${SPHINX_BUILD}
                   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                  DEPENDS
+                   # Other docs files to track should go here
+                  ${CMAKE_CURRENT_SOURCE_DIR}/index.rst
+                  ${DOXYGEN_INDEX_FILE}
+                  MAIN_DEPENDENCY ${SPHINX_SOURCE}/conf.py
                   COMMENT "Generating documentation with Sphinx")
+
+# add target so we can run the job easily
+add_custom_target(Sphinx ALL DEPENDS ${SPHINX_INDEX_FILE})
