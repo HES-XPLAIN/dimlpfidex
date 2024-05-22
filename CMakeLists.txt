@@ -66,4 +66,5 @@ add_subdirectory("tests")
 add_subdirectory("json")
 
 # documentation
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/docs" ${CMAKE_MODULE_PATH})
 add_subdirectory("docs")

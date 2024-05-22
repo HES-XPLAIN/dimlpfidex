@@ -19,7 +19,7 @@ string(REPLACE ";" " " DOXYGEN_DIRS_STR "${DOXYGEN_DIRS}")
 set(DOXYGEN_INPUT_DIR ${DOXYGEN_DIRS_STR})
 
 set(DOXYGEN_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/docs/doxygen)
-set(DOXYGEN_INDEX_FILE ${DOXYGEN_OUTPUT_DIR}/html/index.html)
+set(DOXYGEN_INDEX_FILE ${DOXYGEN_OUTPUT_DIR}/index.html)
 set(DOXYFILE_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
 set(DOXYFILE_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 
@@ -34,3 +34,17 @@ add_custom_command(OUTPUT ${DOXYGEN_INDEX_FILE}
                    COMMENT "Generating docs")
 
 add_custom_target(Doxygen ALL DEPENDS ${DOXYGEN_INDEX_FILE})
+
+find_package(Sphinx REQUIRED)
+
+set(SPHINX_SOURCE ${CMAKE_CURRENT_SOURCE_DIR})
+set(SPHINX_BUILD ${CMAKE_BINARY_DIR}/docs/sphinx)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/_static)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/_templates)
+
+add_custom_target(Sphinx ALL
+                  COMMAND
+                  ${SPHINX_EXECUTABLE} -b html
+                  ${SPHINX_SOURCE} ${SPHINX_BUILD}
+                  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                  COMMENT "Generating documentation with Sphinx")
