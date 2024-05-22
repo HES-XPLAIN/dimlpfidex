@@ -2,6 +2,7 @@
 
 /**
  * @brief Construct a new DataSetFid object using three separate data files: one for data, one for predictions, and optionally one for classes.
+ *
  *        - The data file should contain the attributes of each sample, and optionally, the class information can also be included in this file.
  *          If class information is included in the data file, there is no need to provide a separate class file.
  *        - The prediction file should contain the prediction scores for each class per sample.
@@ -300,6 +301,7 @@ void DataSetFid::setDataFromFile(const std::string &dataFile, int nbAttributes, 
 
 /**
  * @brief Add predictions to the dataset using a prediction file.
+ *
  *        The prediction file should contain one line per data sample, each line consisting of a series of numerical values separated by spaces
  *        representing the prediction scores for each class.
  *        The number of values per line should match the specified number of classes.
@@ -357,6 +359,7 @@ void DataSetFid::setPredFromFile(const std::string &predFile, int nbClasses, dou
 
 /**
  * @brief Add classes from a specified file into the dataset.
+ *
  *        The class file can contain lines in different formats:
  *        1. Class ID format: Each line contains a single integer representing the class ID.
  *        2. One-hot format: Each line contains a sequence of integers in a one-hot encoding scheme,
@@ -399,6 +402,7 @@ void DataSetFid::setClassFromFile(const std::string &classFile, int nbClasses) {
 
 /**
  * @brief Read a data line from a data file and save it in datas and trueClasses if it contains class information.
+ *
  *        This function supports different data formats. It can process lines containing:
  *        - Only attributes: A sequence of numerical values.
  *        - Attributes followed by class IDs: A sequence of numerical values followed by an integer representing the class ID.
@@ -464,6 +468,7 @@ void DataSetFid::setDataLine(const std::string &line, const std::string &dataFil
 
 /**
  * @brief Read a prediction line from the prediction file and save it in predictions.
+ *
  *        Each line in the prediction file should contain a sequence of numerical values representing the prediction scores for each class.
  *        The number of values in each line must match the number of classes specified for the dataset.
  *        If a decision threshold is set, the function also determines the predicted class based on this threshold.
@@ -490,6 +495,7 @@ void DataSetFid::setPredLine(const std::string &line, const std::string &predFil
 
 /**
  * @brief Read a class line from the class file and save it in trueClasses.
+ *
  *        This function is designed to handle two formats of class representation in the file:
  *        1. Class ID format: The line contains a single integer representing the class ID.
  *        2. One-hot format: The line contains a sequence of integers in a one-hot encoding scheme,
@@ -599,6 +605,7 @@ void DataSetFid::setNbClassAndAttr(int nbClasses, int nbAttributes) {
 
 /**
  * @brief Checks if a portion of a std::vector<double> follows a one-hot encoding scheme.
+ *
  *        In one-hot encoding, all elements must be either 0.0 or 1.0, with exactly one element being 1.0.
  *
  * @param values The vector of double values to check for one-hot encoding.

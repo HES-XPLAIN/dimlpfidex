@@ -36,6 +36,10 @@ public:
  */
 class CommandArgumentException : public ErrorHandler {
 public:
+  /**
+   * @brief Constructs a CommandArgumentException with a custom message.
+   * @param message The message detailing the cause of the exception.
+   */
   explicit CommandArgumentException(const std::string &message) : ErrorHandler("CommandArgumentException: " + message) {}
 };
 
@@ -44,6 +48,10 @@ public:
  */
 class FileNotFoundError : public ErrorHandler {
 public:
+  /**
+   * @brief Constructs a FileNotFoundError with a custom message.
+   * @param message The message detailing the cause of the exception.
+   */
   explicit FileNotFoundError(const std::string &message) : ErrorHandler("FileNotFoundError: " + message) {}
 };
 
@@ -52,6 +60,10 @@ public:
  */
 class CannotOpenFileError : public ErrorHandler {
 public:
+  /**
+   * @brief Constructs a CannotOpenFileError with a custom message.
+   * @param message The message detailing the cause of the exception.
+   */
   explicit CannotOpenFileError(const std::string &message) : ErrorHandler("CannotOpenFileError: " + message) {}
 };
 
@@ -60,6 +72,10 @@ public:
  */
 class FileFormatError : public ErrorHandler {
 public:
+  /**
+   * @brief Constructs a FileFormatError with a custom message.
+   * @param message The message detailing the cause of the exception.
+   */
   explicit FileFormatError(const std::string &message) : ErrorHandler("FileFormatError: " + message) {}
 };
 
@@ -68,6 +84,10 @@ public:
  */
 class FileContentError : public ErrorHandler {
 public:
+  /**
+   * @brief Constructs a FileContentError with a custom message.
+   * @param message The message detailing the cause of the exception.
+   */
   explicit FileContentError(const std::string &message) : ErrorHandler("FileContentError: " + message) {}
 };
 
@@ -76,6 +96,10 @@ public:
  */
 class InternalError : public ErrorHandler {
 public:
+  /**
+   * @brief Constructs an InternalError with a custom message.
+   * @param message The message detailing the cause of the exception.
+   */
   explicit InternalError(const std::string &message) : ErrorHandler("InternalError: " + message) {}
 };
 
@@ -84,6 +108,10 @@ public:
  */
 class CannotCreateDirectoryError : public ErrorHandler {
 public:
+  /**
+   * @brief Constructs a CannotCreateDirectoryError with a custom message.
+   * @param message The message detailing the cause of the exception.
+   */
   explicit CannotCreateDirectoryError(const std::string &message) : ErrorHandler("CannotCreateDirectoryError: " + message) {}
 };
 

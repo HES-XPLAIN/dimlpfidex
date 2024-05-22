@@ -2,6 +2,11 @@
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Insert a new element with the given value at the end of the list.
+ *
+ * @param val The value to insert.
+ */
 void StringInt::Insert(int val)
 
 {
@@ -28,6 +33,11 @@ void StringInt::Insert(int val)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Find the index of the maximum value in the list.
+ *
+ * @return int The index of the maximum value.
+ */
 int StringInt::FindIndMax()
 
 {
@@ -60,6 +70,11 @@ int StringInt::FindIndMax()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Find the index of the minimum value in the list.
+ *
+ * @return int The index of the minimum value.
+ */
 int StringInt::FindIndMin()
 
 {
@@ -89,6 +104,12 @@ int StringInt::FindIndMin()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Delete the value at the specified index and set it to a new value.
+ *
+ * @param indPrune The index of the value to delete.
+ * @param newSet The new value to set.
+ */
 void StringInt::DelVal(int indPrune, int newSet)
 
 {

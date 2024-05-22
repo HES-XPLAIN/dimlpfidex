@@ -1,11 +1,12 @@
 #include "rule.h"
 
 /**
- * @brief Construct a new Rule:: Rule object
+ * @brief Constructs a Rule object.
  *
  * @param antecedants vector of antecedants to insert inside a rule.
  * @param coveredSamples vector of integers containing the covered samples IDs.
  * @param outClass integer indicating which class is targetted by the rule.
+ * @param fidelity double indicating the fidelity of the rule.
  * @param accuracy double indicating the accuracy of the rule.
  * @param confidence double indicating the confidence of the rule.
  */
@@ -22,9 +23,9 @@ Rule::Rule(const std::vector<Antecedant> &antecedants, const std::vector<int> &c
 /**
  * @brief Builds a string presenting every element and value contained by a given rule.
  *
- * @param attributes optional vector of string containing all attributes names, useful to print attribute names instead of integers.
- * @param classes optional vector of string containing all class names, useful to print class name instead of an integer.
- * @return string
+ * @param attributes Optional vector of strings containing all attributes names, useful to print attribute names instead of integers.
+ * @param classes Optional vector of strings containing all class names, useful to print class names instead of an integer.
+ * @return std::string A string representation of the rule.
  */
 std::string Rule::toString(const std::vector<std::string> &attributes, const std::vector<std::string> &classes) const {
   std::stringstream result;
@@ -96,8 +97,10 @@ std::string Rule::toString(const std::vector<std::string> &attributes, const std
  *     ]
  *   }
  *
- * @param filename   path of the JSON file to be parsed
- * @return vector<Rule>
+ * @param filename Path of the JSON file to be parsed.
+ * @param decisionThreshold Reference to a float where the decision threshold will be stored.
+ * @param positiveClassIndex Reference to an int where the positive class index will be stored.
+ * @return std::vector<Rule> A vector of parsed rules.
  */
 std::vector<Rule> Rule::fromJsonFile(const std::string &filename, float &decisionThreshold, int &positiveClassIndex) {
   std::vector<Rule> result;
@@ -123,10 +126,12 @@ std::vector<Rule> Rule::fromJsonFile(const std::string &filename, float &decisio
 }
 
 /**
- * @brief writes automatically a vector of rules into a JSON file
+ * @brief Writes a vector of rules into a JSON file.
  *
- * @param filename name of the file to be written
- * @param rules vector of rules to be written
+ * @param filename Name of the file to be written.
+ * @param rules Vector of rules to be written.
+ * @param threshold Decision threshold.
+ * @param positiveIndex Positive class index.
  */
 void Rule::toJsonFile(const std::string &filename, const std::vector<Rule> &rules, float threshold, int positiveIndex) {
   std::ofstream ofs(filename);
@@ -145,10 +150,10 @@ void Rule::toJsonFile(const std::string &filename, const std::vector<Rule> &rule
 }
 
 /**
- * @brief Compares a rule with another to determine whether they're the identical or not
+ * @brief Compares a rule with another to determine whether they're identical or not.
  *
- * @param other other rule for comparison
- * @return bool if they're indeed identical or not
+ * @param other Other rule for comparison.
+ * @return bool Returns true if they're identical, false otherwise.
  */
 bool Rule::isEqual(const Rule &other) const {
   double epsilon = 10e-6;
@@ -207,10 +212,10 @@ std::string generateRegexSmallerPositive(int maxNumber) {
 }
 
 /**
- * @brief Generates a regular expression pattern for matching an antecedent of rule using the ids of the attributes.
+ * @brief Generates a regular expression pattern for matching an antecedent of a rule using the ids of the attributes.
  *
  * @param nbAttributes The number of attributes that can appear in the rule.
- * @return std::string The compiled regular expression object that can be used to match an antecedant with attribute's ids.
+ * @return std::string The compiled regular expression object that can be used to match an antecedant with attribute ids.
  */
 std::string getAntStrPatternWithAttrIds(int nbAttributes) {
   std::string pattern = generateRegexSmallerPositive(nbAttributes);
@@ -219,10 +224,10 @@ std::string getAntStrPatternWithAttrIds(int nbAttributes) {
 }
 
 /**
- * @brief Generates a regular expression pattern for matching an antecedent using the names of the attributes.
+ * @brief Generates a regular expression pattern for matching an antecedant using the names of the attributes.
  *
  * @param attributeNames Vector of the names of the attributes that can appear in the rule.
- * * @return std::string The compiled regular expression object that can be used to match an antecedant with attribute's names.
+ * @return std::string The compiled regular expression object that can be used to match an antecedant with attribute names.
  */
 std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attributeNames) {
   std::string attrPattern;
@@ -251,7 +256,7 @@ std::string getStrPatternWithClassIds(int nbClasses) {
 /**
  * @brief Generates a regular expression pattern for matching a class of rule using the names of the classes.
  *
- * @param classNames Vector of the names of the attributes that can appear in the rule.
+ * @param classNames Vector of the names of the classes that can appear in the rule.
  * @return std::string The compiled regular expression object that can be used to match a rule class name.
  */
 std::string getStrPatternWithClassNames(const std::vector<std::string> &classNames) {
@@ -267,14 +272,14 @@ std::string getStrPatternWithClassNames(const std::vector<std::string> &classNam
 }
 
 /**
- * @brief Checks if a rules file verify contains rules with attribute names or attribute ids and with class names or class ids. A rule needs to start with "Rule"
+ * @brief Checks if a rules file contains rules with attribute names or attribute ids and with class names or class ids. A rule needs to start with "Rule".
  *
  * @param rulesFile The rules file to check.
- * @param nbAttributes The number of attributes that can appear in a rule.
- * @param attributeNames Vector of the names of the attributes that can appear in a rule.
- * @param nbClasses The number of classes that can appear in a rule.
- * @param classNames Vector of the names of the attributes that can appear in a rule.
- * @return vector<bool> Both boolean tells if there is attribute names or ids and class names or ids.
+ * @param dataset The dataset containing information about the attributes and classes.
+ * @param withClasses Whether to check for class patterns as well.
+ * @return std::vector<bool> Both booleans tell if there are attribute names or ids and class names or ids.
+ * @throws FileNotFoundError If the rules file cannot be opened.
+ * @throws FileContentError If the rules in the file are not properly formatted.
  */
 std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, DataSetFid &dataset, bool withClasses) {
   bool hasAttrIds = true;
@@ -310,7 +315,7 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
       bool matched = false;
       if (regex_search(line, antecedantsPatternIds)) {
         matched = true;
-        hasAttrIds &= true; // Stays true only if it was already true, can't become true is it's false
+        hasAttrIds &= true; // Stays true only if it was already true, can't become true if it's false
       } else {
         hasAttrIds = false;
       }
@@ -321,7 +326,7 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
         hasAttrNames = false;
       }
       if (!matched) {
-        throw FileContentError("Error : in file " + rulesFile + ", the rule " + line + " is not on a good format. Maybe an attribute name or id is wrong or you forgot to add the attribute file");
+        throw FileContentError("Error : in file " + rulesFile + ", the rule " + line + " is not in a good format. Maybe an attribute name or id is wrong or you forgot to add the attribute file");
       }
       matched = false;
       if (regex_search(line, patternWithClassIds)) {
@@ -337,7 +342,7 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
         hasClassNames = false;
       }
       if (!matched) {
-        throw FileContentError("Error : in file " + rulesFile + ", the rule " + line + " is not on a good format. Maybe a class name or id is wrong or you forgot to add the attribute file");
+        throw FileContentError("Error : in file " + rulesFile + ", the rule " + line + " is not in a good format. Maybe a class name or id is wrong or you forgot to add the attribute file");
       }
 
       // If no pattern matches each rule
@@ -352,7 +357,7 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
 
   // If there is no rule in the file
   if (!foundARule) {
-    throw FileContentError("Error : there is no rule in the file " + rulesFile + ". Note : a rule needs to start with 'Rule' keyword");
+    throw FileContentError("Error : there is no rule in the file " + rulesFile + ". Note: a rule needs to start with 'Rule' keyword");
   }
 
   return std::vector<bool>{hasAttrNames, hasClassNames};
@@ -363,14 +368,13 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
  *
  * @param rule The generated rule.
  * @param str The string rule to convert.
- * @param withAttributeNames Whether rule contains attribute names
- * @param withClassNames Whether rule contains class names
- * @param nbAttributes The number of attributes that can appear in a rule.
- * @param attributeNames Vector of the names of the attributes that can appear in the rule.
- * @param nbClasses The number of classes that can appear in a rule.
- * @param classNames Vector of the names of the classes that can appear in the rule.
- * @return true If the rule is created.
- * @return false If the rule couldn't be created.
+ * @param attributePattern The regex pattern to match attribute names or ids.
+ * @param classPattern The regex pattern to match class names or ids.
+ * @param withAttributeNames Whether the rule contains attribute names.
+ * @param withClassNames Whether the rule contains class names.
+ * @param dataset The dataset containing information about the attributes and classes.
+ * @return bool Returns true if the rule is created, false otherwise.
+
  */
 bool stringToRule(Rule &rule, const std::string &str, const std::regex &attributePattern, const std::regex &classPattern, bool withAttributeNames, bool withClassNames, DataSetFid &dataset) {
 
@@ -427,14 +431,15 @@ bool stringToRule(Rule &rule, const std::string &str, const std::regex &attribut
 }
 
 /**
- * @brief Get the Rules from a rules file
+ * @brief Get the rules from a rules file.
  *
- * @param rules Rules obtained from the file.
- * @param rulesFile Rules file.
- * @param attributeNames Vector of the names of the attributes that can appear in the rule.
- * @param classNames Vector of the names of the classes that can appear in the rule.
- * @param nbAttributes The number of attributes that can appear in a rule.
- * @param nbClasses The number of classes that can appear in a rule.
+ * @param rules Vector to store the rules obtained from the file.
+ * @param rulesFile Path to the rules file.
+ * @param dataset The dataset containing information about the attributes and classes.
+ * @param decisionThreshold Reference to a float where the decision threshold will be stored.
+ * @param positiveClassIndex Reference to an int where the positive class index will be stored.
+ * @throws FileNotFoundError If the rules file cannot be opened.
+ * @throws FileContentError If the rules in the file are not properly formatted.
  */
 void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset, float &decisionThreshold, int &positiveClassIndex) {
   // if file is JSON read it properly
@@ -488,15 +493,15 @@ void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid
 }
 
 /**
- * @brief writes a list of rules into a given file. Returns tuple of two integers representing the mean covering size and the mean number of antecedants.
+ * @brief Writes a list of rules into a given file. Returns a tuple of two doubles representing the mean covering size and the mean number of antecedants.
  *
- * @param filename name of the file to be written/overwritten.
- * @param rules list of Rules object to be written in "filename".
- * @param attributes list of the attributes names, used to write Rules's Antecedants with attributes explicit name instead of a "X" variable.
- * @param classes list of class names, used to write Rule's class with class explicit name instead of its numerical representation.
- * @param threshold defined threshold (defaults to -1.0)
- * @param positiveIndex index defining which is the positive class in dataset
- * @return tuple<double, double>
+ * @param filename Name of the file to be written/overwritten.
+ * @param rules List of Rule objects to be written in "filename".
+ * @param attributeNames List of attribute names, used to write Rule's antecedants with attribute names instead of a "X" variable.
+ * @param classNames List of class names, used to write Rule's class with class names instead of numerical representation.
+ * @param threshold Decision threshold.
+ * @param positiveIndex Index defining the positive class in the dataset.
+ * @return std::tuple<double, double> A tuple containing the mean covering size and the mean number of antecedants.
  */
 std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames,
                                           const std::vector<std::string> &classNames, float threshold, int positiveIndex) {
@@ -560,9 +565,9 @@ std::tuple<double, double> writeRulesFile(const std::string &filename, const std
 /**
  * @brief Get the indices of the rules activated by a test sample.
  *
- * @param activatedRules vector of rule indices activated.
- * @param rules vector of rules.
- * @param testValues values of test sample for which we search activated rules.
+ * @param activatedRules Vector to store indices of activated rules.
+ * @param rules Vector of rules to check.
+ * @param testValues Values of the test sample for which we search activated rules.
  */
 void getActivatedRules(std::vector<int> &activatedRules, std::vector<Rule> &rules, std::vector<double> &testValues) {
   int attr;
@@ -570,10 +575,10 @@ void getActivatedRules(std::vector<int> &activatedRules, std::vector<Rule> &rule
   double val;
   for (int r = 0; r < rules.size(); r++) { // For each rule
     bool notActivated = false;
-    for (const auto &antecedent : rules[r].getAntecedants()) { // For each antecedant
-      attr = antecedent.getAttribute();
-      ineq = antecedent.getInequality();
-      val = antecedent.getValue();
+    for (const auto &antecedant : rules[r].getAntecedants()) { // For each antecedant
+      attr = antecedant.getAttribute();
+      ineq = antecedant.getInequality();
+      val = antecedant.getValue();
       if (ineq == 0 && testValues[attr] >= val) { // If the inequality is not verified
         notActivated = true;
       }
@@ -591,7 +596,7 @@ void getActivatedRules(std::vector<int> &activatedRules, std::vector<Rule> &rule
  * @brief Extract the decision threshold and the index of the positive class from a rules file.
  *
  * @param filePath The path to the file containing the rules.
- * @param decisionThreshold Reference to a double variable where the decision threshold will be stored.
+ * @param decisionThreshold Reference to a float variable where the decision threshold will be stored.
  *                          Set to -1.0 if not found in the file.
  * @param positiveClassIndex Reference to an int variable where the index of the positive class will be stored.
  *                           Set to -1 if not found in the file.

@@ -1,7 +1,13 @@
 #include "antecedant.h"
 
 /**
- * @details Initializes the Antecedant object with the provided attribute ID, inequality flag, and comparison value.
+ * @brief Constructs a new Antecedant object with specified parameters.
+ *
+ * Initializes the Antecedant object with the provided attribute ID, inequality flag, and comparison value.
+ *
+ * @param attribute Integer ID of the attribute.
+ * @param inequality True for '>=', false for '<'.
+ * @param value The value to compare against.
  */
 Antecedant::Antecedant(int attribute, bool inequality, double value) {
   setAttribute(attribute);
@@ -10,9 +16,14 @@ Antecedant::Antecedant(int attribute, bool inequality, double value) {
 }
 
 /**
- * @details Compares this antecedant with another for equality. Two antecedants are considered equal if they
+ * @brief Checks equality with another Antecedant object.
+ *
+ * Compares this antecedant with another for equality. Two antecedants are considered equal if they
  * have the same attribute ID, the same inequality condition, and a comparison value that differs by less
  * than a specified epsilon (10^-6).
+ *
+ * @param other The other Antecedant to compare with.
+ * @return True if both Antecedant objects are equal, False otherwise.
  */
 bool Antecedant::isEqual(const Antecedant other) const {
   double epsilon = 10e-6;
