@@ -64,3 +64,6 @@ add_subdirectory("dimlp")
 add_subdirectory("fidex")
 add_subdirectory("tests")
 add_subdirectory("json")
+
+# documentation
+add_subdirectory("docs")
