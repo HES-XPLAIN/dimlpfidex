@@ -16,6 +16,8 @@ dependencies = [
     "tensorflow-io-gcs-filesystem>=0.31.0",
     "matplotlib>=3.7.4",
     "build>=1.0.3",
+    "breathe>=4.35.0",
+    "sphinx-rtd-theme>=2.0.0",
 ]
 readme = "README.md"
 license = { text = "BSD License (BSD-3-Clause)" }
