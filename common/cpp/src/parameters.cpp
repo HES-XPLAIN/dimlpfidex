@@ -3,8 +3,8 @@
 /**
  * @brief Construct a new Parameters object containing all arguments passed by CLI.
  *
- *
- * @param args program arguments
+ * @param args Program arguments.
+ * @param validParams Valid parameter codes.
  */
 Parameters::Parameters(const std::vector<std::string> &args, const std::vector<ParameterCode> &validParams) {
   for (int p = 1; p < args.size(); p++) {
@@ -33,7 +33,8 @@ Parameters::Parameters(const std::vector<std::string> &args, const std::vector<P
 /**
  * @brief Construct a new Parameters object containing all arguments passed by JSON config file.
  *
- * @param jsonfile JSON config file name
+ * @param jsonfile JSON config file name.
+ * @param validParams Valid parameter codes.
  */
 Parameters::Parameters(const std::string &jsonfile, const std::vector<ParameterCode> &validParams) {
   std::ifstream ifs;
@@ -62,7 +63,7 @@ Parameters::Parameters(const std::string &jsonfile, const std::vector<ParameterC
 }
 
 /**
- * @brief Ensures that every file/path is valid, every file related data should be added in this function
+ * @brief Ensures that every file/path is valid, every file related data should be added in this function.
  *
  */
 void Parameters::checkFilesIntegrity() {
@@ -97,15 +98,16 @@ void Parameters::checkFilesIntegrity() {
 }
 
 /**
- * @brief parse a given parameter name & its value in order to add it to the Parameter class
+ * @brief Parses a given parameter name & its value in order to add it to the Parameter class.
  *
  * To add a new parameter you must follow this workflow:
- *    - Add a new element in the ParameterCode enum in Paramerters.h
- *    - Add a new element in the unordered_map with the parameter litteral name and its enum in Paramerters.h
- *    - Adapt the code below to accept your new argument in the switch case
+ *    - Add a new element in the ParameterCode enum in Paramerters.h.
+ *    - Add a new element in the unordered_map with the parameter literal name and its enum in Paramerters.h.
+ *    - Adapt the code below to accept your new argument in the switch case.
  *
- * @param param parameter name (ex: nb_threads, min_fidelity etc...)
- * @param arg parameter's associated value
+ * @param param Parameter name (ex: nb_threads, min_fidelity etc...).
+ * @param arg Parameter's associated value.
+ * @param validParams Vector of valid parameter codes.
  */
 void Parameters::parseArg(const std::string &param, const std::string &arg, const std::vector<ParameterCode> &validParams) {
   ParameterCode option;
@@ -126,8 +128,10 @@ void Parameters::parseArg(const std::string &param, const std::string &arg, cons
 
   switch (option) {
 
+    // Handle each parameter case
+
   case TRAIN_DATA_FILE:
-    setString(TRAIN_DATA_FILE, arg); // Parameter after -T
+    setString(TRAIN_DATA_FILE, arg);
     break;
 
   case TRAIN_PRED_FILE:
@@ -139,7 +143,7 @@ void Parameters::parseArg(const std::string &param, const std::string &arg, cons
     break;
 
   case TEST_DATA_FILE:
-    setString(TEST_DATA_FILE, arg); // Parameter after -T
+    setString(TEST_DATA_FILE, arg);
     break;
 
   case TEST_PRED_FILE:
@@ -376,6 +380,13 @@ void Parameters::parseArg(const std::string &param, const std::string &arg, cons
   }
 }
 
+/**
+ * @brief Sets an integer parameter from a string value.
+ *
+ * @param id The parameter code to set.
+ * @param value The string value to convert and set as the integer parameter.
+ * @throws CommandArgumentException if the parameter is already set or if the value is not a valid integer.
+ */
 void Parameters::setInt(ParameterCode id, const std::string &value) {
   if (isIntSet(id)) {
     throwAlreadySetArgumentException(id, value);
@@ -388,6 +399,13 @@ void Parameters::setInt(ParameterCode id, const std::string &value) {
   }
 }
 
+/**
+ * @brief Sets an integer parameter.
+ *
+ * @param id The parameter code to set.
+ * @param value The integer value to set.
+ * @throws CommandArgumentException if the parameter is already set.
+ */
 void Parameters::setInt(ParameterCode id, int value) {
   if (isIntSet(id)) {
     throwAlreadySetArgumentException(id, std::to_string(value));
@@ -396,6 +414,13 @@ void Parameters::setInt(ParameterCode id, int value) {
   _intParams[id] = value;
 }
 
+/**
+ * @brief Sets a float parameter from a string value.
+ *
+ * @param id The parameter code to set.
+ * @param value The string value to convert and set as the float parameter.
+ * @throws CommandArgumentException if the parameter is already set or if the value is not a valid float.
+ */
 void Parameters::setFloat(ParameterCode id, const std::string &value) {
   if (isFloatSet(id)) {
     throwAlreadySetArgumentException(id, value);
@@ -408,6 +433,13 @@ void Parameters::setFloat(ParameterCode id, const std::string &value) {
   }
 }
 
+/**
+ * @brief Sets a float parameter.
+ *
+ * @param id The parameter code to set.
+ * @param value The float value to set.
+ * @throws CommandArgumentException if the parameter is already set.
+ */
 void Parameters::setFloat(ParameterCode id, float value) {
   if (isFloatSet(id)) {
     throwAlreadySetArgumentException(id, std::to_string(value));
@@ -416,12 +448,26 @@ void Parameters::setFloat(ParameterCode id, float value) {
   _floatParams[id] = value;
 }
 
+/**
+ * @brief Checks if the specified path exists.
+ *
+ * @param id The parameter code associated with the path.
+ * @param path The path to check.
+ * @throws CommandArgumentException if the path does not exist.
+ */
 void Parameters::checkPath(ParameterCode id, const std::string &path) const {
   if (!exists(path)) {
     throwInvalidFileOrDirectory(id, path);
   }
 }
 
+/**
+ * @brief Sets a double parameter from a string value.
+ *
+ * @param id The parameter code to set.
+ * @param value The string value to convert and set as the double parameter.
+ * @throws CommandArgumentException if the parameter is already set or if the value is not a valid double.
+ */
 void Parameters::setDouble(ParameterCode id, const std::string &value) {
   if (isDoubleSet(id)) {
     throwAlreadySetArgumentException(id, value);
@@ -434,6 +480,13 @@ void Parameters::setDouble(ParameterCode id, const std::string &value) {
   }
 }
 
+/**
+ * @brief Sets a double parameter.
+ *
+ * @param id The parameter code to set.
+ * @param value The double value to set.
+ * @throws CommandArgumentException if the parameter is already set.
+ */
 void Parameters::setDouble(ParameterCode id, double value) {
   if (isDoubleSet(id)) {
     throwAlreadySetArgumentException(id, std::to_string(value));
@@ -442,6 +495,13 @@ void Parameters::setDouble(ParameterCode id, double value) {
   _doubleParams[id] = value;
 }
 
+/**
+ * @brief Sets a boolean parameter from a string value.
+ *
+ * @param id The parameter code to set.
+ * @param value The string value to convert and set as the boolean parameter.
+ * @throws CommandArgumentException if the parameter is already set or if the value is not a valid boolean.
+ */
 void Parameters::setBool(ParameterCode id, std::string value) {
   if (isBoolSet(id)) {
     throwAlreadySetArgumentException(id, value);
@@ -456,9 +516,27 @@ void Parameters::setBool(ParameterCode id, std::string value) {
   }
 }
 
+/**
+ * @brief Sets a boolean parameter.
+ *
+ * @param id The parameter code to set.
+ * @param value The boolean value to set.
+ * @throws CommandArgumentException if the parameter is already set.
+ */
 void Parameters::setBool(ParameterCode id, bool value) {
+  if (isBoolSet(id)) {
+    throwAlreadySetArgumentException(id, std::to_string(value));
+  }
   _boolParams[id] = value;
 }
+
+/**
+ * @brief Sets a double vector parameter from a string value.
+ *
+ * @param id The parameter code to set.
+ * @param value The string value to convert and set as the double vector parameter.
+ * @throws CommandArgumentException if the parameter is already set or if the value is not a valid list of doubles.
+ */
 void Parameters::setDoubleVector(ParameterCode id, const std::string &value) {
   if (isDoubleVectorSet(id)) {
     throwAlreadySetArgumentException(id, value);
@@ -471,10 +549,26 @@ void Parameters::setDoubleVector(ParameterCode id, const std::string &value) {
   _doubleVectorParams[id] = getDoubleVectorFromString(value);
 }
 
+/**
+ * @brief Sets a double vector parameter.
+ *
+ * @param id The parameter code to set.
+ * @param value The vector of double values to set.
+ */
 void Parameters::setDoubleVector(ParameterCode id, const std::vector<double> &value) {
+  if (isDoubleVectorSet(id)) {
+    throwAlreadySetArgumentException(id, vectorToString(value));
+  }
   _doubleVectorParams[id] = value;
 }
 
+/**
+ * @brief Sets an integer vector parameter from a string value.
+ *
+ * @param id The parameter code to set.
+ * @param value The string value to convert and set as the integer vector parameter.
+ * @throws CommandArgumentException if the parameter is already set or if the value is not a valid list of integers.
+ */
 void Parameters::setIntVector(ParameterCode id, const std::string &value) {
   if (isIntVectorSet(id)) {
     throwAlreadySetArgumentException(id, value);
@@ -486,10 +580,26 @@ void Parameters::setIntVector(ParameterCode id, const std::string &value) {
   _intVectorParams[id] = getIntVectorFromString(value);
 }
 
+/**
+ * @brief Sets an integer vector parameter.
+ *
+ * @param id The parameter code to set.
+ * @param value The vector of integer values to set.
+ */
 void Parameters::setIntVector(ParameterCode id, const std::vector<int> &value) {
+  if (isIntVectorSet(id)) {
+    throwAlreadySetArgumentException(id, vectorToString(value));
+  }
   _intVectorParams[id] = value;
 }
 
+/**
+ * @brief Sets a string parameter.
+ *
+ * @param id The parameter code to set.
+ * @param value The string value to set.
+ * @throws CommandArgumentException if the parameter is already set.
+ */
 void Parameters::setString(ParameterCode id, const std::string &value) {
   if (isStringSet(id)) {
     throwAlreadySetArgumentException(id, value);
@@ -498,9 +608,9 @@ void Parameters::setString(ParameterCode id, const std::string &value) {
 }
 
 /**
- * @brief Completes the path of a given parameter with the ROOT_FOLDER, also checks if the given parameter is not empty
+ * @brief Completes the path of a given parameter with the ROOT_FOLDER, also checks if the given parameter is not empty.
  *
- * @param id is the given parameter to be completed
+ * @param id Parameter code to be completed.
  */
 void Parameters::completePath(ParameterCode id) {
   // avoid error cases
@@ -527,13 +637,13 @@ void Parameters::completePath(ParameterCode id) {
 }
 
 /**
- * @brief handles every aspect of parameters that represents files:
+ * @brief Handles every aspect of parameters that represents files:
  *
- * -  Checks if a file exists if "shouldFileExist" is set to true
- * -  appends the ROOT_FOLDER path to every file if ROOT_FOLDER is set
+ * - Checks if a file exists if "shouldFileExist" is set to true.
+ * - Appends the ROOT_FOLDER path to every file if ROOT_FOLDER is set.
  *
- * @param id parameter id to be processed
- * @param shouldFileExist whether it should check the existance of the file itself or only the path
+ * @param id Parameter code to be processed.
+ * @param shouldFileExist Flag indicating whether the file should exist.
  */
 void Parameters::sanitizePath(ParameterCode id, bool shouldFileExist) {
   // ignore if target is not set and avoid duplicating the root path for no reason
@@ -552,41 +662,96 @@ void Parameters::sanitizePath(ParameterCode id, bool shouldFileExist) {
 }
 
 // public getters
+
+/**
+ * @brief Gets the integer value for the given parameter code.
+ *
+ * @param id The parameter code.
+ * @return int The integer value associated with the parameter code.
+ * @throws CommandArgumentException if the parameter is not set.
+ */
 int Parameters::getInt(ParameterCode id) {
   assertIntExists(id);
   return _intParams[id];
 }
 
+/**
+ * @brief Gets the float value for the given parameter code.
+ *
+ * @param id The parameter code.
+ * @return float The float value associated with the parameter code.
+ * @throws CommandArgumentException if the parameter is not set.
+ */
 float Parameters::getFloat(ParameterCode id) {
   assertFloatExists(id);
   return _floatParams[id];
 }
 
+/**
+ * @brief Gets the double value for the given parameter code.
+ *
+ * @param id The parameter code.
+ * @return double The double value associated with the parameter code.
+ * @throws CommandArgumentException if the parameter is not set.
+ */
 double Parameters::getDouble(ParameterCode id) {
   assertDoubleExists(id);
   return _doubleParams[id];
 }
 
+/**
+ * @brief Gets the boolean value for the given parameter code.
+ *
+ * @param id The parameter code.
+ * @return bool The boolean value associated with the parameter code.
+ * @throws CommandArgumentException if the parameter is not set.
+ */
 bool Parameters::getBool(ParameterCode id) {
   assertBoolExists(id);
   return _boolParams[id];
 }
 
+/**
+ * @brief Gets the vector of double values for the given parameter code.
+ *
+ * @param id The parameter code.
+ * @return std::vector<double> The vector of double values associated with the parameter code.
+ * @throws CommandArgumentException if the parameter is not set.
+ */
 std::vector<double> Parameters::getDoubleVector(ParameterCode id) {
   assertDoubleVectorExists(id);
   return _doubleVectorParams[id];
 }
 
+/**
+ * @brief Gets the vector of integer values for the given parameter code.
+ *
+ * @param id The parameter code.
+ * @return std::vector<int> The vector of integer values associated with the parameter code.
+ * @throws CommandArgumentException if the parameter is not set.
+ */
 std::vector<int> Parameters::getIntVector(ParameterCode id) {
   assertIntVectorExists(id);
   return _intVectorParams[id];
 }
 
+/**
+ * @brief Gets the string value for the given parameter code.
+ *
+ * @param id The parameter code.
+ * @return std::string The string value associated with the parameter code.
+ * @throws CommandArgumentException if the parameter is not set.
+ */
 std::string Parameters::getString(ParameterCode id) {
   assertStringExists(id);
   return _stringParams[id];
 }
 
+/**
+ * @brief Gets the architecture of hidden layers.
+ *
+ * @return StringInt The architecture of hidden layers.
+ */
 StringInt Parameters::getArch() {
   StringInt arch;
   if (isIntSet(FIRST_HIDDEN_LAYER)) {
@@ -600,6 +765,11 @@ StringInt Parameters::getArch() {
   return arch;
 }
 
+/**
+ * @brief Gets the indices of the architecture of hidden layers.
+ *
+ * @return StringInt The indices of the architecture of hidden layers.
+ */
 StringInt Parameters::getArchInd() {
   StringInt archInd;
   if (isIntSet(FIRST_HIDDEN_LAYER)) {
@@ -614,6 +784,12 @@ StringInt Parameters::getArchInd() {
   return archInd;
 }
 
+/**
+ * @brief Gets the name of the parameter associated with the given parameter code.
+ *
+ * @param id The parameter code.
+ * @return std::string The name of the parameter.
+ */
 std::string Parameters::getParameterName(ParameterCode id) {
   for (const auto &pair : parameterNames) {
     if (pair.second == id) {
@@ -623,71 +799,156 @@ std::string Parameters::getParameterName(ParameterCode id) {
   return "unknown";
 }
 
+/**
+ * @brief Checks if an integer parameter is set.
+ *
+ * @param id The parameter code.
+ * @return bool True if the parameter is set, false otherwise.
+ */
 bool Parameters::isIntSet(ParameterCode id) {
   return _intParams.find(id) != _intParams.end();
 }
 
+/**
+ * @brief Checks if a float parameter is set.
+ *
+ * @param id The parameter code.
+ * @return bool True if the parameter is set, false otherwise.
+ */
 bool Parameters::isFloatSet(ParameterCode id) {
   return _floatParams.find(id) != _floatParams.end();
 }
 
+/**
+ * @brief Checks if a double parameter is set.
+ *
+ * @param id The parameter code.
+ * @return bool True if the parameter is set, false otherwise.
+ */
 bool Parameters::isDoubleSet(ParameterCode id) {
   return _doubleParams.find(id) != _doubleParams.end();
 }
 
+/**
+ * @brief Checks if a boolean parameter is set.
+ *
+ * @param id The parameter code.
+ * @return bool True if the parameter is set, false otherwise.
+ */
 bool Parameters::isBoolSet(ParameterCode id) {
   return _boolParams.find(id) != _boolParams.end();
 }
 
+/**
+ * @brief Checks if a double vector parameter is set.
+ *
+ * @param id The parameter code.
+ * @return bool True if the parameter is set, false otherwise.
+ */
 bool Parameters::isDoubleVectorSet(ParameterCode id) {
   return _doubleVectorParams.find(id) != _doubleVectorParams.end();
 }
 
+/**
+ * @brief Checks if an integer vector parameter is set.
+ *
+ * @param id The parameter code.
+ * @return bool True if the parameter is set, false otherwise.
+ */
 bool Parameters::isIntVectorSet(ParameterCode id) {
   return _intVectorParams.find(id) != _intVectorParams.end();
 }
 
+/**
+ * @brief Checks if a string parameter is set.
+ *
+ * @param id The parameter code.
+ * @return bool True if the parameter is set, false otherwise.
+ */
 bool Parameters::isStringSet(ParameterCode id) const {
   return _stringParams.find(id) != _stringParams.end();
 }
 
 // public assertions
+
+/**
+ * @brief Asserts that a string parameter is set.
+ *
+ * @param id The parameter code.
+ * @throws CommandArgumentException if the parameter is not set.
+ */
 void Parameters::assertStringExists(ParameterCode id) const {
   if (!isStringSet(id)) {
     throwArgumentNotFoundException(id);
   }
 }
 
+/**
+ * @brief Asserts that an integer parameter is set.
+ *
+ * @param id The parameter code.
+ * @throws CommandArgumentException if the parameter is not set.
+ */
 void Parameters::assertIntExists(ParameterCode id) {
   if (!isIntSet(id)) {
     throwArgumentNotFoundException(id);
   }
 }
 
+/**
+ * @brief Asserts that a float parameter is set.
+ *
+ * @param id The parameter code.
+ * @throws CommandArgumentException if the parameter is not set.
+ */
 void Parameters::assertFloatExists(ParameterCode id) {
   if (!isFloatSet(id)) {
     throwArgumentNotFoundException(id);
   }
 }
 
+/**
+ * @brief Asserts that a double parameter is set.
+ *
+ * @param id The parameter code.
+ * @throws CommandArgumentException if the parameter is not set.
+ */
 void Parameters::assertDoubleExists(ParameterCode id) {
   if (!isDoubleSet(id)) {
     throwArgumentNotFoundException(id);
   }
 }
 
+/**
+ * @brief Asserts that a boolean parameter is set.
+ *
+ * @param id The parameter code.
+ * @throws CommandArgumentException if the parameter is not set.
+ */
 void Parameters::assertBoolExists(ParameterCode id) {
   if (!isBoolSet(id)) {
     throwArgumentNotFoundException(id);
   }
 }
 
+/**
+ * @brief Asserts that a double vector parameter is set.
+ *
+ * @param id The parameter code.
+ * @throws CommandArgumentException if the parameter is not set.
+ */
 void Parameters::assertDoubleVectorExists(ParameterCode id) {
   if (!isDoubleVectorSet(id)) {
     throwArgumentNotFoundException(id);
   }
 }
 
+/**
+ * @brief Asserts that an integer vector parameter is set.
+ *
+ * @param id The parameter code.
+ * @throws CommandArgumentException if the parameter is not set.
+ */
 void Parameters::assertIntVectorExists(ParameterCode id) {
   if (!isIntVectorSet(id)) {
     throwArgumentNotFoundException(id);
@@ -695,36 +956,80 @@ void Parameters::assertIntVectorExists(ParameterCode id) {
 }
 
 // Default setters
+
+/**
+ * @brief Sets a default integer value for the given parameter code if not already set.
+ *
+ * @param id The parameter code.
+ * @param defaultValue The default value to set.
+ */
 void Parameters::setDefaultInt(ParameterCode id, int defaultValue) {
   if (!isIntSet(id))
     setInt(id, defaultValue);
 }
 
+/**
+ * @brief Sets a default float value for the given parameter code if not already set.
+ *
+ * @param id The parameter code.
+ * @param defaultValue The default value to set.
+ */
 void Parameters::setDefaultFloat(ParameterCode id, float defaultValue) {
   if (!isFloatSet(id))
     setFloat(id, defaultValue);
 }
 
+/**
+ * @brief Sets a default double value for the given parameter code if not already set.
+ *
+ * @param id The parameter code.
+ * @param defaultValue The default value to set.
+ */
 void Parameters::setDefaultDouble(ParameterCode id, double defaultValue) {
   if (!isDoubleSet(id))
     setDouble(id, defaultValue);
 }
 
+/**
+ * @brief Sets a default boolean value for the given parameter code if not already set.
+ *
+ * @param id The parameter code.
+ * @param defaultValue The default value to set.
+ */
 void Parameters::setDefaultBool(ParameterCode id, bool defaultValue) {
   if (!isBoolSet(id))
     setBool(id, defaultValue);
 }
 
+/**
+ * @brief Sets a default double vector value for the given parameter code if not already set.
+ *
+ * @param id The parameter code.
+ * @param defaultValue The default value to set.
+ */
 void Parameters::setDefaultDoubleVector(ParameterCode id, const std::string &defaultValue) {
   if (!isDoubleVectorSet(id))
     setDoubleVector(id, defaultValue);
 }
 
+/**
+ * @brief Sets a default integer vector value for the given parameter code if not already set.
+ *
+ * @param id The parameter code.
+ * @param defaultValue The default value to set.
+ */
 void Parameters::setDefaultIntVector(ParameterCode id, const std::string &defaultValue) {
   if (!isIntVectorSet(id))
     setIntVector(id, defaultValue);
 }
 
+/**
+ * @brief Sets a default string value for the given parameter code if not already set.
+ *
+ * @param id The parameter code.
+ * @param defaultValue The default value to set.
+ * @param withRoot Whether to prepend the ROOT_FOLDER to the default value.
+ */
 void Parameters::setDefaultString(ParameterCode id, const std::string &defaultValue, bool withRoot) {
   if (!isStringSet(id)) {
     std::string value = defaultValue;
@@ -737,6 +1042,11 @@ void Parameters::setDefaultString(ParameterCode id, const std::string &defaultVa
   }
 }
 
+/**
+ * @brief Checks the attribute and class counts for validity.
+ *
+ * @throws CommandArgumentException if the number of attributes or classes is invalid.
+ */
 void Parameters::checkAttributeAndClassCounts() {
 
   if (getInt(NB_ATTRIBUTES) < 1) {
@@ -748,6 +1058,11 @@ void Parameters::checkAttributeAndClassCounts() {
   }
 }
 
+/**
+ * @brief Checks common parameters for validity.
+ *
+ * @throws CommandArgumentException if any common parameter is invalid.
+ */
 void Parameters::checkParametersCommon() {
 
   checkAttributeAndClassCounts();
@@ -757,6 +1072,11 @@ void Parameters::checkParametersCommon() {
   }
 }
 
+/**
+ * @brief Checks Fidex-specific parameters for validity.
+ *
+ * @throws CommandArgumentException if any Fidex parameter is invalid.
+ */
 void Parameters::checkParametersFidex() {
 
   if (isStringSet(WEIGHTS_FILE) && isStringSet(RULES_FILE)) {
@@ -800,6 +1120,11 @@ void Parameters::checkParametersFidex() {
   }
 }
 
+/**
+ * @brief Checks decision threshold and positive class index parameters for validity.
+ *
+ * @throws CommandArgumentException if any parameter is invalid.
+ */
 void Parameters::checkParametersDecisionThreshold() {
 
   if ((getFloat(DECISION_THRESHOLD) < 0.0f || getFloat(DECISION_THRESHOLD) > 1.0f) && getFloat(DECISION_THRESHOLD) != -1.0f) {
@@ -819,6 +1144,11 @@ void Parameters::checkParametersDecisionThreshold() {
   }
 }
 
+/**
+ * @brief Checks Dimlp training specific parameters for validity.
+ *
+ * @throws CommandArgumentException if any Dimlp training parameter is invalid.
+ */
 void Parameters::checkParametersDimlpTrn() {
 
   if (getFloat(LEARNING_RATE) <= 0) {
@@ -870,6 +1200,11 @@ void Parameters::checkParametersDimlpTrn() {
   }
 }
 
+/**
+ * @brief Checks normalization parameters for validity.
+ *
+ * @throws CommandArgumentException if any normalization parameter is invalid.
+ */
 void Parameters::checkParametersNormalization() {
 
   // Check denormalization parameters
@@ -910,10 +1245,16 @@ void Parameters::checkParametersNormalization() {
   }
 }
 
+/**
+ * @brief Sets the default number of quantization levels.
+ */
 void Parameters::setDefaultNbQuantLevels() {
   setDefaultInt(NB_QUANT_LEVELS, 50);
 }
 
+/**
+ * @brief Sets the default values of Fidex parameters.
+ */
 void Parameters::setDefaultFidex() {
   setDefaultInt(MAX_ITERATIONS, 10);
   setDefaultInt(MIN_COVERING, 2);
@@ -927,11 +1268,17 @@ void Parameters::setDefaultFidex() {
   setDefaultInt(SEED, 0);
 }
 
+/**
+ * @brief Sets the default values of decision threshold and positive class index parameters.
+ */
 void Parameters::setDefaultDecisionThreshold() {
   setDefaultFloat(DECISION_THRESHOLD, -1.0f);
   setDefaultInt(POSITIVE_CLASS_INDEX, -1);
 }
 
+/**
+ * @brief Sets the default values of Dimlp training parameters.
+ */
 void Parameters::setDefaultDimlpTrn() {
   setDefaultFloat(LEARNING_RATE, 0.1f);
   setDefaultFloat(MOMENTUM, 0.6f);
@@ -947,7 +1294,7 @@ void Parameters::setDefaultDimlpTrn() {
 }
 
 /**
- * @brief Write the configuration of hidden layers in a file
+ * @brief Write the configuration of hidden layers to a file.
  *
  */
 void Parameters::writeHiddenLayersFile() {
@@ -981,7 +1328,7 @@ void Parameters::writeHiddenLayersFile() {
 }
 
 /**
- * @brief Reads, checks and store the hidden layers configuration file.
+ * @brief Reads, checks, and stores the hidden layers configuration file.
  *
  * Format of the file:
  * The file format should include pairs of strictly positive integers on each line, where the first integer represents

@@ -146,24 +146,48 @@ static const std::unordered_map<std::string, ParameterCode> parameterNames = {
     {"hidden_layers_outfile", HIDDEN_LAYERS_OUTFILE},
     {"hidden_layers_file", HIDDEN_LAYERS_FILE}};
 
+/**
+ * @brief The Parameters class manages configuration parameters for each program.
+ *
+ * This class handles the parsing, validation, and storage of parameters passed via
+ * command-line arguments or a JSON configuration file. It supports various data types
+ * and provides utility functions to ensure parameters are correctly set and valid.
+ */
 class Parameters {
 private:
-  std::map<ParameterCode, int> _intParams;
-  std::map<ParameterCode, float> _floatParams;
-  std::map<ParameterCode, double> _doubleParams;
-  std::map<ParameterCode, bool> _boolParams;
-  std::map<ParameterCode, std::vector<double>> _doubleVectorParams;
-  std::map<ParameterCode, std::vector<int>> _intVectorParams;
-  std::map<ParameterCode, std::string> _stringParams;
-  std::vector<std::string> _weightFiles;
+  std::map<ParameterCode, int> _intParams;                          ///< Integer parameters.
+  std::map<ParameterCode, float> _floatParams;                      ///< Float parameters.
+  std::map<ParameterCode, double> _doubleParams;                    ///< Double parameters.
+  std::map<ParameterCode, bool> _boolParams;                        ///< Boolean parameters.
+  std::map<ParameterCode, std::vector<double>> _doubleVectorParams; ///< Vector of double parameters.
+  std::map<ParameterCode, std::vector<int>> _intVectorParams;       ///< Vector of integer parameters.
+  std::map<ParameterCode, std::string> _stringParams;               ///< String parameters.
+  std::vector<std::string> _weightFiles;                            ///< Weight files.
 
   // private parser
+  /**
+   * @brief Parses a given parameter name & its value.
+   */
   void parseArg(const std::string &param, const std::string &arg, const std::vector<ParameterCode> &validParams);
 
   // path checker
+
+  /**
+   * @brief Ensures that every file/path is valid.
+   */
   void checkFilesIntegrity();
+
+  /**
+   * @brief Checks if the specified path exists.
+   */
   void checkPath(ParameterCode id, const std::string &path) const;
+
+  /**
+   * @brief Completes the path of a given parameter with the ROOT_FOLDER.
+   */
   void completePath(ParameterCode id);
+
+  //////////////////////////////////////////////////////
 
   // throwables
   [[noreturn]] void throwInvalidDataTypeException(ParameterCode id, const std::string &wrongValue, const std::string &typeName) const {
@@ -189,66 +213,293 @@ private:
 public:
   // constructor
   Parameters() = default;
+
+  /**
+   * @brief Construct a new Parameters object containing all arguments passed by CLI.
+   */
   explicit Parameters(const std::vector<std::string> &args, const std::vector<ParameterCode> &validParams);
+
+  /**
+   * @brief Construct a new Parameters object containing all arguments passed by JSON config file.
+   */
   explicit Parameters(const std::string &jsonfile, const std::vector<ParameterCode> &validParams);
 
+  //////////////////////////////////////////////////////
+
   // setters handle formatting from string argument
+
+  /**
+   * @brief Sets an integer parameter from a string value.
+   */
   void setInt(ParameterCode id, const std::string &value);
+
+  /**
+   * @brief Sets an integer parameter.
+   */
   void setInt(ParameterCode id, int value);
+
+  /**
+   * @brief Sets a float parameter from a string value.
+   */
   void setFloat(ParameterCode id, const std::string &value);
+
+  /**
+   * @brief Sets a float parameter.
+   */
   void setFloat(ParameterCode id, float value);
+
+  /**
+   * @brief Sets a double parameter from a string value.
+   */
   void setDouble(ParameterCode id, const std::string &value);
+
+  /**
+   * @brief Sets a double parameter.
+   */
   void setDouble(ParameterCode id, double value);
+
+  /**
+   * @brief Sets a boolean parameter from a string value.
+   */
   void setBool(ParameterCode id, std::string value);
+
+  /**
+   * @brief Sets a boolean parameter.
+   */
   void setBool(ParameterCode id, bool value);
+
+  /**
+   * @brief Sets a double vector parameter from a string value.
+   */
   void setDoubleVector(ParameterCode id, const std::string &value);
+
+  /**
+   * @brief Sets a double vector parameter.
+   */
   void setDoubleVector(ParameterCode id, const std::vector<double> &value);
+
+  /**
+   * @brief Sets an integer vector parameter from a string value.
+   */
   void setIntVector(ParameterCode id, const std::string &value);
+
+  /**
+   * @brief Sets an integer vector parameter.
+   */
   void setIntVector(ParameterCode id, const std::vector<int> &value);
+
+  /**
+   * @brief Sets a string parameter.
+   */
   void setString(ParameterCode id, const std::string &value);
 
+  //////////////////////////////////////////////////////
+
   // default setter if value not set
+
+  /**
+   * @brief Sets a default integer value for the given parameter code if not already set.
+   */
   void setDefaultInt(ParameterCode id, int value);
+
+  /**
+   * @brief Sets a default float value for the given parameter code if not already set.
+   */
   void setDefaultFloat(ParameterCode id, float value);
+
+  /**
+   * @brief Sets a default double value for the given parameter code if not already set.
+   */
   void setDefaultDouble(ParameterCode id, double value);
+
+  /**
+   * @brief Sets a default boolean value for the given parameter code if not already set.
+   */
   void setDefaultBool(ParameterCode id, bool value);
+
+  /**
+   * @brief Sets a default double vector value for the given parameter code if not already set.
+   */
   void setDefaultDoubleVector(ParameterCode id, const std::string &defaultValue);
+
+  /**
+   * @brief Sets a default integer vector value for the given parameter code if not already set.
+   */
   void setDefaultIntVector(ParameterCode id, const std::string &defaultValue);
+
+  /**
+   * @brief Sets a default string value for the given parameter code if not already set.
+   */
   void setDefaultString(ParameterCode id, const std::string &defaultValue, bool withRoot = false);
 
+  //////////////////////////////////////////////////////
+
   // getters
+
+  /**
+   * @brief Gets the integer value for the given parameter code.
+   */
   int getInt(ParameterCode id);
+
+  /**
+   * @brief Gets the float value for the given parameter code.
+   */
   float getFloat(ParameterCode id);
+
+  /**
+   * @brief Gets the double value for the given parameter code.
+   */
   double getDouble(ParameterCode id);
+
+  /**
+   * @brief Gets the boolean value for the given parameter code.
+   */
   bool getBool(ParameterCode id);
+
+  /**
+   * @brief Gets the vector of double values for the given parameter code.
+   */
   std::vector<double> getDoubleVector(ParameterCode id);
+
+  /**
+   * @brief Gets the vector of integer values for the given parameter code.
+   */
   std::vector<int> getIntVector(ParameterCode id);
+
+  /**
+   * @brief Gets the string value for the given parameter code.
+   */
   std::string getString(ParameterCode id);
+
+  /**
+   * @brief Gets the architecture of hidden layers.
+   */
   StringInt getArch();
+
+  /**
+   * @brief Gets the indices of the architecture of hidden layers.
+   */
   StringInt getArchInd();
 
+  //////////////////////////////////////////////////////
+
+  /**
+   * @brief Gets all integer parameters.
+   *
+   * @return A map of all integer parameters.
+   */
   std::map<ParameterCode, int> getAllInts() const { return _intParams; }
+
+  /**
+   * @brief Gets all float parameters.
+   *
+   * @return A map of all float parameters.
+   */
   std::map<ParameterCode, float> getAllFloats() const { return _floatParams; }
+
+  /**
+   * @brief Gets all double parameters.
+   *
+   * @return A map of all double parameters.
+   */
   std::map<ParameterCode, double> getAllDoubles() const { return _doubleParams; }
+
+  /**
+   * @brief Gets all boolean parameters.
+   *
+   * @return A map of all boolean parameters.
+   */
   std::map<ParameterCode, bool> getAllBools() const { return _boolParams; }
+
+  /**
+   * @brief Gets all double vector parameters.
+   *
+   * @return A map of all double vector parameters.
+   */
   std::map<ParameterCode, std::vector<double>> getAllDoubleVectors() const { return _doubleVectorParams; }
+
+  /**
+   * @brief Gets all integer vector parameters.
+   *
+   * @return A map of all integer vector parameters.
+   */
   std::map<ParameterCode, std::vector<int>> getAllIntVectors() const { return _intVectorParams; }
+
+  /**
+   * @brief Gets all string parameters.
+   *
+   * @return A map of all string parameters.
+   */
   std::map<ParameterCode, std::string> getAllStrings() const { return _stringParams; }
 
+  //////////////////////////////////////////////////////
+
+  /**
+   * @brief Checks if an integer parameter is set.
+   */
   bool isIntSet(ParameterCode id);
+
+  /**
+   * @brief Checks if a float parameter is set.
+   */
   bool isFloatSet(ParameterCode id);
+
+  /**
+   * @brief Checks if a double parameter is set.
+   */
   bool isDoubleSet(ParameterCode id);
+
+  /**
+   * @brief Checks if a boolean parameter is set.
+   */
   bool isBoolSet(ParameterCode id);
+
+  /**
+   * @brief Checks if a double vector parameter is set.
+   */
   bool isDoubleVectorSet(ParameterCode id);
+
+  /**
+   * @brief Checks if an integer vector parameter is set.
+   */
   bool isIntVectorSet(ParameterCode id);
+
+  /**
+   * @brief Checks if a string parameter is set.
+   */
   bool isStringSet(ParameterCode id) const;
 
+  //////////////////////////////////////////////////////
+
   // special operations
+
+  /**
+   * @brief Gets the name of the parameter associated with the given parameter code.
+   */
   static std::string getParameterName(ParameterCode id);
+
+  /**
+   * @brief Handles every aspect of parameters that represents files.
+   */
   void sanitizePath(ParameterCode id, bool shouldFileExist);
+
+  /**
+   * @brief Write the configuration of hidden layers to a file.
+   */
   void writeHiddenLayersFile();
+
+  /**
+   * @brief Reads, checks, and stores the hidden layers configuration file.
+   */
   void readHiddenLayersFile(StringInt &arch, StringInt &archInd);
 
+  /**
+   * @brief Converts a vector of any type to a string representation.
+   *
+   * @tparam T The type of elements in the vector.
+   * @param vec The vector to convert.
+   * @return std::string The string representation of the vector.
+   */
   template <typename T>
   std::string vectorToString(const std::vector<T> &vec) const {
     std::stringstream ss;
@@ -263,30 +514,111 @@ public:
     return ss.str();
   }
 
+  //////////////////////////////////////////////////////
+
   // assertions
-  void assertIntExists(ParameterCode id);
-  void assertFloatExists(ParameterCode id);
-  void assertDoubleExists(ParameterCode id);
-  void assertBoolExists(ParameterCode id);
-  void assertDoubleVectorExists(ParameterCode id);
-  void assertIntVectorExists(ParameterCode id);
+
+  /**
+   * @brief Asserts that a string parameter is set.
+   */
   void assertStringExists(ParameterCode id) const;
 
+  /**
+   * @brief Asserts that an integer parameter is set.
+   */
+  void assertIntExists(ParameterCode id);
+
+  /**
+   * @brief Asserts that a float parameter is set.
+   */
+  void assertFloatExists(ParameterCode id);
+
+  /**
+   * @brief Asserts that a double parameter is set.
+   */
+  void assertDoubleExists(ParameterCode id);
+
+  /**
+   * @brief Asserts that a boolean parameter is set.
+   */
+  void assertBoolExists(ParameterCode id);
+
+  /**
+   * @brief Asserts that a double vector parameter is set.
+   */
+  void assertDoubleVectorExists(ParameterCode id);
+
+  /**
+   * @brief Asserts that an integer vector parameter is set.
+   */
+  void assertIntVectorExists(ParameterCode id);
+
+  //////////////////////////////////////////////////////
+
   // check common parameters
+
+  /**
+   * @brief Checks the attribute and class counts for validity.
+   */
   void checkAttributeAndClassCounts();
+
+  /**
+   * @brief Checks common parameters for validity.
+   */
   void checkParametersCommon();
+
+  /**
+   * @brief Checks Fidex-specific parameters for validity.
+   */
   void checkParametersFidex();
+
+  /**
+   * @brief Checks decision threshold and positive class index parameters for validity.
+   */
   void checkParametersDecisionThreshold();
+
+  /**
+   * @brief Checks Dimlp training specific parameters for validity.
+   */
   void checkParametersDimlpTrn();
+
+  /**
+   * @brief Checks normalization parameters for validity.
+   */
   void checkParametersNormalization();
 
+  //////////////////////////////////////////////////////
+
   // set common default parameters
+
+  /**
+   * @brief Sets the default number of quantization levels.
+   */
   void setDefaultNbQuantLevels();
+
+  /**
+   * @brief Sets the default values of Fidex parameters.
+   */
   void setDefaultFidex();
+
+  /**
+   * @brief Sets the default values of decision threshold and positive class index parameters.
+   */
   void setDefaultDecisionThreshold();
+
+  /**
+   * @brief Sets the default values of Dimlp training parameters.
+   */
   void setDefaultDimlpTrn();
 };
 
+/**
+ * @brief Overloads the stream insertion operator for printing each parameter of Parameters object.
+ *
+ * @param stream The output stream.
+ * @param p The Parameters object to print.
+ * @return std::ostream& The output stream with the Parameters information.
+ */
 inline std::ostream &operator<<(std::ostream &stream, const Parameters &p) {
   int pad = 100;
   stream << "Parameters list:" << std::endl;
