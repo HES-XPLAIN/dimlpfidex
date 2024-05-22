@@ -31,4 +31,4 @@ breathe_projects = {
     "dimlp": "../build/docs/doxygen/xml/",
     "fidex": "../build/docs/doxygen/xml/",
 }
-breathe_default_project = "dimlpfidex"
+breathe_default_project = "common"
