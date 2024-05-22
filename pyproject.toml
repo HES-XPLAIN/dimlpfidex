@@ -4,6 +4,7 @@ version = "0.0.1"
 description = "Discretized Interpretable Multi Layer Perceptron (DIMLP) and related algorithms"
 authors = [
     { name = "Jean-Marc Boutay", email = "jean-marc.boutay@hesge.ch" },
+    { name = "Damian Boquete Costa", email = "damian.boquete-costa@hesge.ch" },
     { name = "Guido Bologna", email = "guido.bologna@hesge.ch" }
 ]
 dependencies = [
