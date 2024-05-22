@@ -10,9 +10,7 @@ Welcome to dimlpfidex's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   common
-   dimlp
-   fidex
+   api/library_root
 
 Indices and tables
 ==================
