@@ -43,6 +43,10 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
 
+      - name: Install Sphinx and breathe (workaround)
+        run: |
+          sudo apt-get install -y python3-sphinx python3-breathe
+
       - name: Install Python dependencies
         run: |
           python -m pip install -U pip
