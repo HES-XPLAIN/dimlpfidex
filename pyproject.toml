@@ -18,6 +18,7 @@ dependencies = [
     "build>=1.0.3",
     "breathe>=4.35.0",
     "exhale>=0.3.7",
+    "sphinx>=7.3.7",
     "sphinx-rtd-theme>=2.0.0",
 ]
 readme = "README.md"
