@@ -45,11 +45,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: 'pip'
 
-      - name: Install Python dependencies
+      - name: Install Python dependencies and build
         run: |
           python -m pip install -U pip
           python -m pip install .
-
-      - name: Compile
-        run: |
-          python -m build
