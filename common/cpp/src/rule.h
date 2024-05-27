@@ -94,6 +94,7 @@ inline bool operator!=(const Rule &r1, const Rule &r2) {
 }
 
 // FUNCTIONS TO HANDLE RULES PATTERNS AND FILES
+std::string generateRegexSmallerPositive(int maxNumber);
 std::string getAntStrPatternWithAttrIds(int nbAttributes);
 std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attributeNames);
 std::string getStrPatternWithClassIds(int nbClasses);

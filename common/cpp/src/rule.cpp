@@ -175,19 +175,45 @@ bool Rule::isEqual(const Rule &other) const {
 }
 
 /**
+ * @brief Generates a regular expression pattern for matching positive integers smaller than the given maximum number.
+ *
+ * @param maxNumber The maximum number (exclusive and positive) for which the pattern will match smaller integers.
+ * @return std::string The generated regular expression pattern as a string.
+ */
+std::string generateRegexSmallerPositive(int maxNumber) {
+  std::ostringstream regexStream;
+  std::string maxStr = std::to_string(maxNumber);
+  auto nbDigits = static_cast<int>(maxStr.length());
+
+  // Accept numbers with fewer digits
+  if (nbDigits > 1) {
+    regexStream << "\\d{1," << (nbDigits - 1) << "}|";
+  }
+
+  // Accept numbers with the same number of digits but starting with lower digits
+  for (int i = 0; i < nbDigits; ++i) {
+    if (maxStr[i] != '0') {
+      regexStream << maxStr.substr(0, i) << "[0-" << (maxStr[i] - '1') << "]\\d{" << (nbDigits - i - 1) << "}|";
+    }
+  }
+
+  // Remove the last '|'
+  std::string regex = regexStream.str();
+  if (!regex.empty() && regex.back() == '|') {
+    regex.pop_back();
+  }
+
+  return regex;
+}
+
+/**
  * @brief Generates a regular expression pattern for matching an antecedent of rule using the ids of the attributes.
  *
  * @param nbAttributes The number of attributes that can appear in the rule.
  * @return std::string The compiled regular expression object that can be used to match an antecedant with attribute's ids.
  */
 std::string getAntStrPatternWithAttrIds(int nbAttributes) {
-  std::string pattern;
-  for (int i = 0; i < nbAttributes; i++) {
-    if (!pattern.empty()) {
-      pattern += "|";
-    }
-    pattern += std::to_string(i);
-  }
+  std::string pattern = generateRegexSmallerPositive(nbAttributes);
   std::string idPattern("X(" + pattern + ")([<>]=?)(-?[\\d.]+([eE][+-])?\\d+)?");
   return idPattern;
 }
@@ -217,13 +243,7 @@ std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attrib
  * @return std::string The compiled regular expression object that can be used to match a rule class id.
  */
 std::string getStrPatternWithClassIds(int nbClasses) {
-  std::string pattern;
-  for (int i = 0; i < nbClasses; i++) {
-    if (!pattern.empty()) {
-      pattern += "|";
-    }
-    pattern += std::to_string(i);
-  }
+  std::string pattern = generateRegexSmallerPositive(nbClasses);
   std::string idPattern("-> class (" + pattern + ")");
   return idPattern;
 }
