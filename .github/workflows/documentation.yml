@@ -3,9 +3,9 @@ name: documentation
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #   - main
 
 env:
   PYTHON_VERSION: '3.11'
