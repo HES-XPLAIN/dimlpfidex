@@ -182,3 +182,7 @@ autoexe.sh
 tests/dataset/data/out/
 compile_commands.json
 /data/
+
+# Sphinx
+docs/api
+

@@ -1,0 +1,12 @@
+pybind11>=2.10.4
+pybind11-global>=2.10.4
+numpy>=1.22
+scikit-learn>=1.2.2
+tensorflow>=2.13
+tensorflow-io-gcs-filesystem>=0.31.0
+matplotlib>=3.7.4
+build>=1.0.3
+breathe>=4.35.0
+exhale>=0.3.7
+sphinx>=7.3.7
+sphinx-rtd-theme>=2.0.0

@@ -21,6 +21,10 @@ set(ENABLE_ASAN FALSE)
 # create compilation database
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# set build options
+option(BUILD_DOCUMENTATION "Build Doxygen documentation" OFF)
+message(STATUS "BUILD_DOCUMENTATION is set to ${BUILD_DOCUMENTATION}")
+
 if(MSVC)
     message(STATUS "MSVC version: ${MSVC_VERSION}")
 
@@ -64,3 +68,9 @@ add_subdirectory("dimlp")
 add_subdirectory("fidex")
 add_subdirectory("tests")
 add_subdirectory("json")
+
+# documentation
+if (BUILD_DOCUMENTATION)
+    set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/docs" ${CMAKE_MODULE_PATH})
+    add_subdirectory("docs")
+endif()
