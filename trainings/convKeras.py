@@ -166,9 +166,7 @@ def convKeras(args: str = None):
         if args.with_vgg == True and args.with_resnet == True:
             raise ValueError('Error, parameter with_resnet and with_vgg are both True, choose one.')
 
-        model_checkpoint_weights = "weightsModel.keras"
-        if args.dataset == "resnet":
-            model_checkpoint_weights = "weightsModel.out"
+        model_checkpoint_weights = "weightsModel.out"
         if (args.root_folder is not None):
             model_checkpoint_weights = os.path.join(args.root_folder, model_checkpoint_weights)
 

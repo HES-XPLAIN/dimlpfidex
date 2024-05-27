@@ -85,7 +85,6 @@ def imageAnalyser(dataSet):
             train_pred_file = "predTrain.out"
 
             with_file = False #Using of rule file or of weights to launch Fidex
-            rules_file = "globalRules.txt"
             weights_file = "weights.wts"
 
             dropout_dim = 0.9
@@ -109,7 +108,6 @@ def imageAnalyser(dataSet):
             train_pred_file = "predTrain.out"
 
             with_file = False #Using of rule file or of weights to launch Fidex
-            rules_file = "globalRules.txt"
             weights_file = "weights.wts"
 
             dropout_dim = 0.9
@@ -117,6 +115,28 @@ def imageAnalyser(dataSet):
             size1d = 48
             nb_channels = 1
             nb_classes = 7
+        elif dataSet == "cracks":
+            normalized = False
+            with_hsl = False
+
+            image_folder_from_base = "dimlp/datafiles/Cracks"
+            test_data_file = image_folder_from_base + "/testData.txt"
+            test_class_file = image_folder_from_base + "/testClass.txt"
+            test_pred_file = image_folder_from_base + "/predTest.out"
+            global_rules = "globalRulesWithTestStats.txt"
+
+            train_data_file = "/trainData.txt"
+            train_class_file = "/trainClass.txt"
+            train_pred_file = "predTrain.out"
+
+            with_file = False #Using of rule file or of weights to launch Fidex
+            weights_file = "weights.wts"
+
+            dropout_dim = 0.9
+            dropout_hyp = 0.9
+            size1d = 64
+            nb_channels = 1
+            nb_classes = 2
 
         nb_attributes = size1d*size1d*nb_channels
 
@@ -247,5 +267,6 @@ def imageAnalyser(dataSet):
 
 #dataSet = "Mnist"
 #dataSet = "Cifar10"
-dataSet = "fer"
+#dataSet = "fer"
+dataSet = "cracks"
 imageAnalyser(dataSet)
