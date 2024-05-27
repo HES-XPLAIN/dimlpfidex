@@ -22,7 +22,7 @@ set(ENABLE_ASAN FALSE)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # set build options
-option(BUILD_DOCUMENTATION "Build Doxygen documentation" ON)
+option(BUILD_DOCUMENTATION "Build Doxygen documentation" OFF)
 message(STATUS "BUILD_DOCUMENTATION is set to ${BUILD_DOCUMENTATION}")
 
 if(MSVC)

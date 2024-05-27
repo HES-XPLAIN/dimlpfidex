@@ -56,7 +56,7 @@ jobs:
         run: |
           mkdir -p build
           cd build
-          cmake ..
+          cmake .. -DBUILD_DOCUMENTATION=ON
           cmake --build .
 
       - name: Upload artifact
