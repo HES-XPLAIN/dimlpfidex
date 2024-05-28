@@ -49,7 +49,7 @@ cmake.exe --version
 
 ### Install Python
 
-Install [Python](https://www.python.org/):
+Install [Python](https://www.python.org/), version 3.8.1 or newer (3.11 is recommended):
 
 #### Manually
 
