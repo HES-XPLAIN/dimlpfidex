@@ -1,6 +1,12 @@
 # dimlpfidex ![build](https://github.com/HES-XPLAIN/dimlpfidex/actions/workflows/build.yml/badge.svg)
 Discretized Interpretable Multi Layer Perceptron (DIMLP) and related algorithms
 
+## Installation
+
+```
+pip install dimlpfidex
+```
+
 ## Contribution
 
 ### Get the project code
@@ -54,8 +60,6 @@ cmake.exe --version
 
 Install [Python](https://www.python.org/), version 3.8.1 or newer (3.11 is recommended):
 
-#### Manually
-
 * **Linux, macOS, Windows/WSL**: Use your package manager to install `python3` and `python3-dev`
 * **Windows**: `winget install Python.Python.3.11`
 
@@ -87,7 +91,7 @@ To leave the virtualenv, use `deactivate`.
 #### Add dependencies
 
 To add new dependencies to the project, add them to the `pyproject.toml` file.
-To add them to the virtualenv, use
+To add them to the virtualenv, use:
 
 ```shell
 pip install .
@@ -98,7 +102,7 @@ pip install .
 Git hooks are used to ensure quality checks are run by all developers every time
 before a commit.
 
-Install with `pip install pre-commit` or`rye sync`.
+Install with `pip install pre-commit`.
 
 To enable pre-commit:
 
