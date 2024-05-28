@@ -29,6 +29,9 @@ Install with your package manager:
 
 #### Windows
 
+> [!TIP]
+> Consider using Windows/WSL instead.
+
 * Install [Visual Studio Community](https://visualstudio.microsoft.com/vs/) with the "Desktop development with C++" component:
 
 ```shell
@@ -56,21 +59,8 @@ Install [Python](https://www.python.org/), version 3.8.1 or newer (3.11 is recom
 * **Linux, macOS, Windows/WSL**: Use your package manager to install `python3` and `python3-dev`
 * **Windows**: `winget install Python.Python.3.11`
 
-> [!IMPORTANT]
+> [!WARNING]
 > On Windows, avoid installing Python through the Microsoft Store as the package has additional permission restrictions.
-
-#### Using Rye
-
-- Install [Rye](https://rye-up.com/) and [add shims](https://rye-up.com/guide/installation/) to your PATH.
-
-Ensure `rye` is accessible in the `$PATH` environment variable.
-Rye will automatically download the suitable Python toolchain as needed.
-
-To check the installation, check the following commands return an output:
-
-```shell
-rye --version
-```
 
 ### Install Python dependencies
 
@@ -85,19 +75,6 @@ pip install .
 > [!NOTE]
 > On Windows, use `.venv\Scripts\activate` instead.
 
-#### Using Rye
-
-Install python dependencies and create a virtualenv in `.venv`:
-
-```shell
-rye sync
-```
-
-#### Add dependencies
-
-To add new dependencies to the project, either add them to the `pyproject.toml` file or use `rye add <dependency>`.
-To add them to the virtualenv, use `pip install .` or `rye sync`.
-
 ### Work with virtualenv
 
 To activate the virtualenv, use the standard methods:
@@ -107,34 +84,14 @@ To activate the virtualenv, use the standard methods:
 
 To leave the virtualenv, use `deactivate`.
 
-### Compile and Package
+#### Add dependencies
 
-Compile:
-
-```shell
-mkdir build && cd build
-cmake .. && cmake --build .
-```
-
-To speed up the compilation process, you can also add `-j X` with `X` being your number of CPU cores.
-
-Create archives for distribution:
+To add new dependencies to the project, add them to the `pyproject.toml` file.
+To add them to the virtualenv, use
 
 ```shell
-python -m build
+pip install .
 ```
-
-### Documentation
-
-Generate documentation:
-
-```shell
-mkdir build && cd build
-cmake -DBUILD_DOCUMENTATION=ON ..
-cmake --build .
-```
-
-To speed up the compilation process, you can also add `-j X` with `X` being your number of CPU cores.
 
 ### Install Pre-commit hooks
 
@@ -154,6 +111,43 @@ Pre-commit hooks can be run manually with:
 ```shell
 pre-commit run --all-files
 ```
+
+### Compile and Package
+
+Compile:
+
+```shell
+mkdir build && cd build
+cmake ..
+cmake --build .
+```
+
+> [!NOTE]
+> On Windows, use `cmake -DCMAKE_PREFIX_PATH="C:\<Absolute\Path\to>\.venv" ..` instead.
+
+> [!TIP]
+> To speed up the compilation process, you can also add `-j X` with `X` being your number of CPU cores.
+
+Create archives for distribution:
+
+```shell
+python -m build
+```
+
+> [!TIP]
+> To speed up the compilation process, you can also add `-j X` with `X` being your number of CPU cores.
+
+## Documentation
+
+Create the documentation:
+
+```shell
+mkdir build && cd build
+cmake -DBUILD_DOCUMENTATION=ON ..
+cmake --build .
+```
+
+The generated HTML documentation will be found in `build/docs/sphinx`.
 
 ## Release
 
