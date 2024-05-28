@@ -124,6 +124,18 @@ Create archives for distribution:
 python -m build
 ```
 
+### Documentation
+
+Generate documentation:
+
+```shell
+mkdir build && cd build
+cmake -DBUILD_DOCUMENTATION=ON ..
+cmake --build .
+```
+
+To speed up the compilation process, you can also add `-j X` with `X` being your number of CPU cores.
+
 ### Install Pre-commit hooks
 
 Git hooks are used to ensure quality checks are run by all developers every time
