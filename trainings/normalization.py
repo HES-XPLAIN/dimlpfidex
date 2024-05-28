@@ -390,7 +390,7 @@ def normalization(args: str = None):
       Dimlp: 'Rule 1: (x2 > 0.785787) (x5 > 0.591247) (x8 < 0.443135) Class = 1 (187)'
       Fidex: 'X1>=0.414584 X10<0.507982 X5>=0.314835 X6>=0.356158 -> class 0'
       In both formats, attribute indices (e.g., X1, x2) and class identifiers can be replaced with attribute names and class names, respectively, then an attribute file is required.
-    - Attribute file (attributes_file): Each line corresponds to an attribute's name, with optional class names at the end.
+    - Attribute file (attributes_file): Each line corresponds to an attribute's name, with optional class names at the end. Names can't have spaces inbetween (replace by _).
 
     Examples of how to call the function:
     - For data files: normalization("--data_files [datanormTrain.txt,datanormTest.txt] --normalization_indices [0,2,4] --nb_attributes 16 --missing_values NaN --root_folder dimlp/datafiles")
