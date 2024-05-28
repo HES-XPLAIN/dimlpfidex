@@ -92,11 +92,11 @@ std::vector<std::vector<double>> calcHypLocus(const std::string &rulesFile, Data
 
   // Get pattern for attributes
   std::regex attributePattern;
-  bool attributesInFile = getRulesPatternsFromRuleFile(rulesFile, dataset, false)[0];
-  if (attributesInFile) { // If we have attribute names
-    attributePattern = getAntStrPatternWithAttrNames(dataset.getAttributeNames());
-  } else {
+  bool attributeIdsInFile = getRulesPatternsFromRuleFile(rulesFile, dataset, false)[0];
+  if (attributeIdsInFile) { // If we have attribute names
     attributePattern = getAntStrPatternWithAttrIds(dataset.getNbAttributes());
+  } else {
+    attributePattern = getAntStrPatternWithAttrNames();
   }
   std::regex classPattern(getStrPatternWithClassIds(dataset.getNbClasses()));
 
@@ -109,7 +109,7 @@ std::vector<std::vector<double>> calcHypLocus(const std::string &rulesFile, Data
   while (getline(fileDta, line)) {
     if (line.find("Rule") == 0) { // If line begins with "Rule"
       Rule rule;
-      if (stringToRule(rule, line, attributePattern, classPattern, attributesInFile, false, dataset)) {
+      if (stringToRule(rule, line, attributePattern, classPattern, !attributeIdsInFile, false, dataset)) {
         for (Antecedant ant : rule.getAntecedants()) {
           thresholds[ant.getAttribute()].insert(ant.getValue());
         }

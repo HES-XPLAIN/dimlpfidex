@@ -258,7 +258,7 @@ std::string getAntStrPatternWithAttrIds(int nbAttributes);
 /**
  * @brief Generates a regular expression pattern for matching an antecedant using the names of the attributes.
  */
-std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attributeNames);
+std::string getAntStrPatternWithAttrNames();
 
 /**
  * @brief Generates a regular expression pattern for matching a class of a rule using the IDs of the classes.
@@ -268,7 +268,7 @@ std::string getStrPatternWithClassIds(int nbClasses);
 /**
  * @brief Generates a regular expression pattern for matching a class of a rule using the names of the classes.
  */
-std::string getStrPatternWithClassNames(const std::vector<std::string> &classNames);
+std::string getStrPatternWithClassNames();
 
 /**
  * @brief Checks if a rules file contains rules with attribute names or attribute IDs and with class names or class IDs. A rule needs to start with "Rule".

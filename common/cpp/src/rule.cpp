@@ -226,17 +226,10 @@ std::string getAntStrPatternWithAttrIds(int nbAttributes) {
 /**
  * @brief Generates a regular expression pattern for matching an antecedant using the names of the attributes.
  *
- * @param attributeNames Vector of the names of the attributes that can appear in the rule.
  * @return std::string The compiled regular expression object that can be used to match an antecedant with attribute names.
  */
-std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attributeNames) {
-  std::string attrPattern;
-  for (const auto &attr : attributeNames) {
-    if (!attrPattern.empty()) {
-      attrPattern += "|";
-    }
-    attrPattern += attr;
-  }
+std::string getAntStrPatternWithAttrNames() {
+  std::string attrPattern = "[^\\s]+";
   std::string attributesPattern("(" + attrPattern + ")([<>]=?)(-?(\\d+\\.?\\d*|\\.\\d+)([eE][+-]?\\d+)?)");
   return attributesPattern;
 }
@@ -249,35 +242,28 @@ std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attrib
  */
 std::string getStrPatternWithClassIds(int nbClasses) {
   std::string pattern = generateRegexSmallerPositive(nbClasses);
-  std::string idPattern("-> class (" + pattern + ")");
+  std::string idPattern("-> class (" + pattern + "\\b\\s*)");
   return idPattern;
 }
 
 /**
  * @brief Generates a regular expression pattern for matching a class of rule using the names of the classes.
  *
- * @param classNames Vector of the names of the classes that can appear in the rule.
  * @return std::string The compiled regular expression object that can be used to match a rule class name.
  */
-std::string getStrPatternWithClassNames(const std::vector<std::string> &classNames) {
-  std::string clPattern;
-  for (const auto &cl : classNames) {
-    if (!clPattern.empty()) {
-      clPattern += "|";
-    }
-    clPattern += cl;
-  }
+std::string getStrPatternWithClassNames() {
+  std::string clPattern = "[^\\s]+";
   std::string classesPattern("-> (" + clPattern + ")");
   return classesPattern;
 }
 
 /**
- * @brief Checks if a rules file contains rules with attribute names or attribute ids and with class names or class ids. A rule needs to start with "Rule".
+ * @brief Checks if a rules file contains rules with attribute ids or attribute names and with class ids or class names. A rule needs to start with "Rule".
  *
  * @param rulesFile The rules file to check.
  * @param dataset The dataset containing information about the attributes and classes.
  * @param withClasses Whether to check for class patterns as well.
- * @return std::vector<bool> Both booleans tell if there are attribute names or ids and class names or ids.
+ * @return std::vector<bool> Both booleans tell if there are attribute ids or names and class ids or names.
  * @throws FileNotFoundError If the rules file cannot be opened.
  * @throws FileContentError If the rules in the file are not properly formatted.
  */
@@ -300,12 +286,12 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
   std::regex antecedantsPatternIds(": (" + getAntStrPatternWithAttrIds(dataset.getNbAttributes()) + " )*" + "->");
   std::regex antecedantsPatternNames;
   if (dataset.getHasAttributeNames()) {
-    antecedantsPatternNames = ": (" + getAntStrPatternWithAttrNames(dataset.getAttributeNames()) + " )*" + "->";
+    antecedantsPatternNames = ": (" + getAntStrPatternWithAttrNames() + " )*" + "->";
   }
   auto patternWithClassIds = std::regex(getStrPatternWithClassIds(dataset.getNbClasses()));
   std::regex patternWithClassNames;
   if (dataset.getHasClassNames()) {
-    patternWithClassNames = std::regex(getStrPatternWithClassNames(dataset.getClassNames()));
+    patternWithClassNames = std::regex(getStrPatternWithClassNames());
   }
 
   while (getline(fileDta, line)) {
@@ -326,7 +312,7 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
         hasAttrNames = false;
       }
       if (!matched) {
-        throw FileContentError("Error : in file " + rulesFile + ", the rule " + line + " is not in a good format. Maybe an attribute name or id is wrong or you forgot to add the attribute file");
+        throw FileContentError("Error : in file " + rulesFile + ", the rule " + line + " is not in a good format. Maybe an attribute or class id is wrong or you forgot to add the attribute file.");
       }
       matched = false;
       if (regex_search(line, patternWithClassIds)) {
@@ -342,7 +328,7 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
         hasClassNames = false;
       }
       if (!matched) {
-        throw FileContentError("Error : in file " + rulesFile + ", the rule " + line + " is not in a good format. Maybe a class name or id is wrong or you forgot to add the attribute file");
+        throw FileContentError("Error : in file " + rulesFile + ", the rule " + line + " is not in a good format. Maybe a class id is wrong or you forgot to add the attribute file.");
       }
 
       // If no pattern matches each rule
@@ -360,7 +346,7 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
     throw FileContentError("Error : there is no rule in the file " + rulesFile + ". Note: a rule needs to start with 'Rule' keyword");
   }
 
-  return std::vector<bool>{hasAttrNames, hasClassNames};
+  return std::vector<bool>{hasAttrIds, hasClassIds};
 }
 
 /**
@@ -393,7 +379,11 @@ bool stringToRule(Rule &rule, const std::string &str, const std::regex &attribut
         antecedant.setAttribute(stoi(match[1]));
       } else {
         auto it = find(dataset.getAttributeNames().begin(), dataset.getAttributeNames().end(), match[1]);
-        antecedant.setAttribute(static_cast<int>(distance(dataset.getAttributeNames().begin(), it)));
+        if (it != dataset.getAttributeNames().end()) {
+          antecedant.setAttribute(static_cast<int>(distance(dataset.getAttributeNames().begin(), it)));
+        } else {
+          throw FileContentError("Error : in rulefile, the rule " + str + " contains unknown named attribute " + std::string(match[1]) + ". If the attributes in the rules are not named, do not specify an attribute file.");
+        }
       }
       if (match[2] == ">=") {
         antecedant.setInequality(true);
@@ -416,7 +406,11 @@ bool stringToRule(Rule &rule, const std::string &str, const std::regex &attribut
           rule.setOutputClass(stoi(match[1]));
         } else {
           auto it = find(dataset.getClassNames().begin(), dataset.getClassNames().end(), match[1]);
-          rule.setOutputClass(static_cast<int>(distance(dataset.getClassNames().begin(), it)));
+          if (it != dataset.getClassNames().end()) {
+            rule.setOutputClass(static_cast<int>(distance(dataset.getClassNames().begin(), it)));
+          } else {
+            throw FileContentError("Error : in rulefile, the rule " + str + " contains unknown named class " + std::string(match[1]) + ". If the classes in the rules are not named, do not specify an attribute file.");
+          }
         }
       }
     }
@@ -455,27 +449,27 @@ void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid
 
     // Check if the file has attribute names or ids
     std::vector<bool> checkPatterns = getRulesPatternsFromRuleFile(rulesFile, dataset);
-    bool attributesInFile = checkPatterns[0];
-    bool classesInFile = checkPatterns[1];
+    bool attributeIdsInFile = checkPatterns[0];
+    bool classeIdsInFile = checkPatterns[1];
 
     std::regex attributePattern;
     std::regex classPattern;
-    if (attributesInFile) {
-      attributePattern = getAntStrPatternWithAttrNames(dataset.getAttributeNames());
-    } else {
+    if (attributeIdsInFile) {
       attributePattern = getAntStrPatternWithAttrIds(dataset.getNbAttributes());
+    } else {
+      attributePattern = getAntStrPatternWithAttrNames();
     }
 
-    if (classesInFile) {
-      classPattern = getStrPatternWithClassNames(dataset.getClassNames());
-    } else {
+    if (classeIdsInFile) {
       classPattern = getStrPatternWithClassIds(dataset.getNbClasses());
+    } else {
+      classPattern = getStrPatternWithClassNames();
     }
 
     std::string line;
     while (getline(rulesData, line)) {
       Rule rule;
-      bool isRule = stringToRule(rule, line, attributePattern, classPattern, attributesInFile, classesInFile, dataset);
+      bool isRule = stringToRule(rule, line, attributePattern, classPattern, !attributeIdsInFile, !classeIdsInFile, dataset);
 
       if (isRule) {
         getline(rulesData, line); // Cov size
