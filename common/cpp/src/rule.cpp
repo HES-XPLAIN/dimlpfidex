@@ -219,7 +219,7 @@ std::string generateRegexSmallerPositive(int maxNumber) {
  */
 std::string getAntStrPatternWithAttrIds(int nbAttributes) {
   std::string pattern = generateRegexSmallerPositive(nbAttributes);
-  std::string idPattern("X(" + pattern + ")([<>]=?)(-?[\\d.]+([eE][+-])?\\d+)?");
+  std::string idPattern("X(" + pattern + ")([<>]=?)(-?(\\d+\\.?\\d*|\\.\\d+)([eE][+-]?\\d+)?)");
   return idPattern;
 }
 
@@ -237,7 +237,7 @@ std::string getAntStrPatternWithAttrNames(const std::vector<std::string> &attrib
     }
     attrPattern += attr;
   }
-  std::string attributesPattern("(" + attrPattern + ")([<>]=?)(-?[\\d.]+([eE][+-])?\\d+)?");
+  std::string attributesPattern("(" + attrPattern + ")([<>]=?)(-?(\\d+\\.?\\d*|\\.\\d+)([eE][+-]?\\d+)?)");
   return attributesPattern;
 }
 
