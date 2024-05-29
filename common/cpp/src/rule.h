@@ -184,7 +184,7 @@ public:
   std::string toString(const std::vector<std::string> &attributes, const std::vector<std::string> &classes) const;
 
   /**
-   * @brief Compares a rule with another to determine whether they are identical.
+   * @brief Compares a rule with another to determine whether they're identical.
    */
   bool isEqual(const Rule &other) const;
 
