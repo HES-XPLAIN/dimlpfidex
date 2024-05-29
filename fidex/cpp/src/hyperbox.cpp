@@ -101,11 +101,11 @@ void Hyperbox::setFidelity(double x) {
 /**
  * @brief Adds a new discriminative hyperplane to the hyperbox.
  *
- * @param i Index of the attribute.
- * @param j Hyperplane value.
+ * @param dimVal Index of the attribute.
+ * @param hypVal Hyperplane value.
  */
-void Hyperbox::discriminateHyperplan(int i, int j) {
-  discriminativeHyperplans.push_back(std::make_pair(i, j));
+void Hyperbox::discriminateHyperplan(int dimVal, int hypVal) {
+  discriminativeHyperplans.push_back(std::make_pair(dimVal, hypVal));
 }
 
 /**

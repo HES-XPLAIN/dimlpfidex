@@ -1,7 +1,7 @@
 #include "hyperLocus.h"
 
 /**
- * @brief Calculates the hyperlocus matrix containing all possible hyperplanes, based on the weights training file.
+ * @brief Calculates the hyperlocus matrix containing all possible hyperplanes in the feature space that discriminate between different classes of samples, based on the weights training file.
  *
  * This function calculates the positions of the hyperplanes using the number of quantization levels,
  * the size of the interval, the bias and the weights, and then stores these positions in the hyperlocus matrix.
@@ -68,7 +68,7 @@ std::vector<std::vector<double>> calcHypLocus(const std::string &dataFileWeights
 }
 
 /**
- * @brief Calculates the hyperlocus matrix containing all possible hyperplanes, based on the rules training file.
+ * @brief Calculates the hyperlocus matrix containing all possible hyperplanes in the feature space that discriminate between different classes of samples, based on the rules training file.
  *
  * This function reads a rules file to extract thresholds for each attribute from the
  * antecedents of the rules. These thresholds are then used to build the hyperlocus matrix,
