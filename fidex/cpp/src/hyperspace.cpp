@@ -1,19 +1,45 @@
 #include "hyperspace.h"
 
+/**
+ * @brief Constructs a Hyperspace object with a specified matrix of possible hyperplanes.
+ *
+ * @param matHypLocus Matrix representing all the possible hyperplanes.
+ */
 Hyperspace::Hyperspace(const std::vector<std::vector<double>> &matHypLocus) : hyperLocus(matHypLocus) {
-
   std::vector<std::pair<int, int>> discriminativeHyperplans;
   hyperbox = std::make_shared<Hyperbox>(discriminativeHyperplans);
 }
 
+/**
+ * @brief Gets the matrix of possible hyperplanes in the hyperspace.
+ *
+ * @return Matrix representing all the possible hyperplanes.
+ */
 std::vector<std::vector<double>> Hyperspace::getHyperLocus() const {
   return hyperLocus;
 }
 
+/**
+ * @brief Gets the hyperbox associated with the hyperspace.
+ *
+ * @return Shared pointer to the Hyperbox object.
+ */
 std::shared_ptr<Hyperbox> Hyperspace::getHyperbox() const {
   return hyperbox;
 }
 
+/**
+ * @brief Extracts a rule from the hyperspace based on the main sample data and its prediction.
+ *
+ * @param mainSampleData Data of the main sample.
+ * @param mainSamplePred Prediction of the main sample.
+ * @param ruleAccuracy Accuracy of the rule.
+ * @param ruleConfidence Confidence of the rule.
+ * @param mus Means for the denormalization of the rule values (optional).
+ * @param sigmas Standard deviations for the denormalization of the rule values (optional).
+ * @param normalizationIndices Indices for the denormalization of the rule values (optional).
+ * @return A Rule object representing the extracted rule.
+ */
 Rule Hyperspace::ruleExtraction(std::vector<double> &mainSampleData, const int mainSamplePred, double ruleAccuracy, double ruleConfidence, const std::vector<double> &mus, const std::vector<double> &sigmas, const std::vector<int> &normalizationIndices) {
 
   bool denormalizing = false;
@@ -64,6 +90,15 @@ Rule Hyperspace::ruleExtraction(std::vector<double> &mainSampleData, const int m
   return Rule(antecedants, hyperbox->getCoveredSamples(), mainSamplePred, hyperbox->getFidelity(), ruleAccuracy, ruleConfidence);
 }
 
+/**
+ * @brief Computes the accuracy of the rule with respect to the training predictions and true classes of the covered samples.
+ *
+ * @param trainPreds Predictions of the training data.
+ * @param trainTrueClass True classes of the training data.
+ * @param hasTrueClasses Boolean indicating if true classes are available.
+ * @param mainSampleCorrect Boolean indicating if the main sample is correctly classified.
+ * @return The accuracy of the rule.
+ */
 double Hyperspace::computeRuleAccuracy(std::vector<int> &trainPreds, std::vector<int> &trainTrueClass, bool hasTrueClasses, bool mainSampleCorrect) const { // Percentage of correct model prediction on samples covered by the rule
 
   int idSample;
@@ -87,9 +122,17 @@ double Hyperspace::computeRuleAccuracy(std::vector<int> &trainPreds, std::vector
     nbCovered += 1;
   }
 
-  return float(total) / float(nbCovered);
+  return static_cast<double>(total) / static_cast<double>(nbCovered);
 }
 
+/**
+ * @brief Computes the confidence of the rule with respect to the main sample prediction and training output values of the covered samples.
+ *
+ * @param trainOutputValuesPredictions Output values of the training data predictions.
+ * @param rulePred Prediction of the rule.
+ * @param mainSamplePredValueOnRulePred Output value of the main sample prediction (optional).
+ * @return The confidence of the rule.
+ */
 double Hyperspace::computeRuleConfidence(std::vector<std::vector<double>> &trainOutputValuesPredictions, const int rulePred, double mainSamplePredValueOnRulePred) const { // Mean output value of prediction of class chosen by the rule(which is the main sample prediction) for the covered samples
 
   int idSample;
@@ -108,5 +151,5 @@ double Hyperspace::computeRuleConfidence(std::vector<std::vector<double>> &train
     total += mainSamplePredValueOnRulePred;    // Add test sample prediction value on rule prediction (which is the same as his own prediction)
     nbCovered += 1;
   }
-  return float(total) / float(nbCovered);
+  return total / static_cast<double>(nbCovered);
 }

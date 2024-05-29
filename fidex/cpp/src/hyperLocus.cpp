@@ -1,33 +1,16 @@
 #include "hyperLocus.h"
 
-// Potentially optimized version of hyperlocus computation
-/* vector<vector<double>> compute() {
-   int nbInputs = biases.size();
-   int nbBins = nbQuantLevels;
-   int nbKnots = nbBins + 1;
-
-   int distance = hiKnot - lowKnot;
-   double binWidth = distance / nbBins;
-
-   vector<vector<double>> hyperlocus(nbInputs, vector(nbKnots));
-   vector<double> knots(nbKnots, 0.0);
-
-   bool areKnotsComputed = false;
-
-   for (int i = 0; i < nbInputs; i++) {
-     for (int j = 0; j < nbKnots; j++) {
-       if (!areKnotsComputed) {
-         knots[j] = lowKnot + binWidth * j;
-       }
-
-       hyperlocus[i, j] = (knots[j] - biases[i]) / weights[i];
-     }
-     areKnotsComputed = true;
-   }
-
-   return hyperlocus;
- }*/
-
+/**
+ * @brief Calculates the hyperlocus matrix containing all possible hyperplanes, based on the weights training file.
+ *
+ * This function calculates the positions of the hyperplanes using the number of quantization levels,
+ * the size of the interval, the bias and the weights, and then stores these positions in the hyperlocus matrix.
+ *
+ * @param dataFileWeights Path to the file containing the weights.
+ * @param nbQuantLevels Number of quantization levels.
+ * @param hiKnot Upper bound of the interval.
+ * @return Matrix representing the hyperlocus.
+ */
 std::vector<std::vector<double>> calcHypLocus(const std::string &dataFileWeights, int nbQuantLevels, double hiKnot) {
 
   double lowKnot = -hiKnot;
@@ -84,6 +67,17 @@ std::vector<std::vector<double>> calcHypLocus(const std::string &dataFileWeights
   return matHypLocus;
 }
 
+/**
+ * @brief Calculates the hyperlocus matrix containing all possible hyperplanes, based on the rules training file.
+ *
+ * This function reads a rules file to extract thresholds for each attribute from the
+ * antecedents of the rules. These thresholds are then used to build the hyperlocus matrix,
+ * which contains the positions of the hyperplanes for each attribute in the dataset.
+ *
+ * @param rulesFile Path to the file containing the rules.
+ * @param dataset Reference to the dataset object.
+ * @return Matrix representing the hyperlocus.
+ */
 std::vector<std::vector<double>> calcHypLocus(const std::string &rulesFile, DataSetFid &dataset) {
   std::string line;
 

@@ -119,4 +119,4 @@ inline bool operator!=(const Antecedant &a1, const Antecedant &a2) {
   return !a1.isEqual(a2);
 }
 
-#endif
+#endif // ANTECEDANT_H

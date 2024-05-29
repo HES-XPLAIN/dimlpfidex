@@ -12,7 +12,16 @@
 #include <sstream>
 #include <string.h>
 
+/**
+ * @brief Calculates the hyperlocus matrix containing all possible hyperplanes in the feature
+ * space that discriminate between different classes of samples, based on the weights training file.
+ */
 std::vector<std::vector<double>> calcHypLocus(const std::string &dataFileWeights, int nbQuantLevels, double hiKnot);
+
+/**
+ * @brief Calculates the hyperlocus matrix containing all possible hyperplanes in the feature
+ * space that discriminate between different classes of samples, based on the rules training file.
+ */
 std::vector<std::vector<double>> calcHypLocus(const std::string &rulesFile, DataSetFid &dataset);
 
-#endif
+#endif // HYPERLOCUSFCT_H
