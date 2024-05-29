@@ -143,6 +143,11 @@ python -m build
 
 ## Documentation
 
+Install [Doxygen](https://www.doxygen.nl/):
+
+* **Linux, macOS, Windows/WSL**: Use your package manager to install `doxygen`
+* **Windows**: `winget install DimitriVanHeesch.Doxygen`
+
 Create the documentation:
 
 ```shell
