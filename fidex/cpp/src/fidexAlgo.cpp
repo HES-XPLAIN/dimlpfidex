@@ -1,5 +1,13 @@
 #include "fidexAlgo.h"
 
+/**
+ * @brief Constructs a Fidex object with the given training dataset, parameters, and hyperspace and sets the random seed.
+ *
+ * @param trainDataset Reference to the training dataset.
+ * @param parameters Reference to the parameters object.
+ * @param hyperspace Reference to the hyperspace.
+ * @param usingTestSamples Boolean indicating whether test samples are being used.
+ */
 Fidex::Fidex(DataSetFid &trainDataset, Parameters &parameters, Hyperspace &hyperspace, bool usingTestSamples) : _trainDataset(&trainDataset), _parameters(&parameters), _hyperspace(&hyperspace), _usingTestSamples(usingTestSamples) {
   int seed = parameters.getInt(SEED);
 
@@ -12,6 +20,23 @@ Fidex::Fidex(DataSetFid &trainDataset, Parameters &parameters, Hyperspace &hyper
   }
 }
 
+/**
+ * @brief Executes the Fidex algorithm to compute an explaining rule for the given sample based on the training samples and hyperlocus and directed by the given parameters.
+ *
+ * Fidex builds a rule that meets the specified fidelity and covering criteria. It is driven by
+ * a few other parameters, including dropout and the maximum number of iterations allowed.
+ * It works by identifying hyperplanes in the feature space that discriminate between different classes of samples and constructing
+ * a rule based on these hyperplanes. It updates the provided rule object with the computed rule if successful.
+ *
+ * @param rule Reference to the Rule object to be updated by the computation.
+ * @param mainSampleValues A vector of double values representing the main sample values.
+ * @param mainSamplePred An integer representing the predicted class of the main sample.
+ * @param minFidelity A double representing the minimum fidelity threshold for rule creation.
+ * @param minNbCover An integer representing the minimum number of samples a rule must cover.
+ * @param mainSampleClass An integer representing the class of the main sample. Default is -1.
+ * @return True if a rule meeting the criteria is successfully computed.
+ * @return False if no rule meeting the criteria can be computed.
+ */
 bool Fidex::compute(Rule &rule, std::vector<double> &mainSampleValues, int mainSamplePred, double minFidelity, int minNbCover, int mainSampleClass) {
 
   specs.nbIt = 0;
@@ -63,7 +88,7 @@ bool Fidex::compute(Rule &rule, std::vector<double> &mainSampleValues, int mainS
   std::vector<int> coveredSamples(trainData.size());   // Samples covered by the hyperbox
   iota(begin(coveredSamples), end(coveredSamples), 0); // Vector from 0 to len(coveredSamples)-1
 
-  // Store covering and compute initial fidelty
+  // Store covering and compute initial fidelity
   hyperspace->getHyperbox()->setCoveredSamples(coveredSamples);
   hyperspace->getHyperbox()->computeFidelity(mainSamplePred, trainPreds); // Compute fidelity of initial hyperbox
   hyperspace->getHyperbox()->resetDiscriminativeHyperplans();             // We reset hyperbox discriminativeHyperplans
@@ -82,7 +107,7 @@ bool Fidex::compute(Rule &rule, std::vector<double> &mainSampleValues, int mainS
     int dimension;
     int indexBestHyp = -1;
     int bestDimension = -1;
-    int minHyp = -1; // Index of first hyperplan without any change of the best hyperplan
+    int minHyp = -1; // Index of first hyperplane without any change of the best hyperplane
     int maxHyp = -1;
     // Randomize dimensions
     std::vector<int> dimensions(nbInputs);
@@ -110,14 +135,14 @@ bool Fidex::compute(Rule &rule, std::vector<double> &mainSampleValues, int mainS
         continue; // No data on this dimension
       }
 
-      for (int k = 0; k < nbHyp; k++) { // for each possible hyperplan in this dimension (there is nbSteps+1 hyperplans per dimension)
-        // Test if we dropout this hyperplan
+      for (int k = 0; k < nbHyp; k++) { // for each possible hyperplane in this dimension (there is nbSteps+1 hyperplanes per dimension)
+        // Test if we dropout this hyperplane
         if (hasdh && dis(_rnd) < dropoutHyp) {
-          continue; // Drop this hyperplan if below parameter ex: param=0.2 -> 20% are dropped
+          continue; // Drop this hyperplane if below parameter ex: param=0.2 -> 20% are dropped
         }
 
         double hypValue = hyperspace->getHyperLocus()[dimension][k];
-        bool mainSampleGreater = hypValue <= mainSampleValue;                                                                                     // Check if main sample value is on the right of the hyperplan
+        bool mainSampleGreater = hypValue <= mainSampleValue;                                                                                     // Check if main sample value is on the right of the hyperplane
         currentHyperbox->computeCoveredSamples(hyperspace->getHyperbox()->getCoveredSamples(), attribut, trainData, mainSampleGreater, hypValue); // Compute new cover samples
         currentHyperbox->computeFidelity(mainSamplePred, trainPreds);                                                                             // Compute fidelity
 
@@ -133,10 +158,10 @@ bool Fidex::compute(Rule &rule, std::vector<double> &mainSampleValues, int mainS
           bestDimension = dimension;
         } else if (currentHyperbox->getFidelity() == bestHyperbox->getFidelity() && currentHyperbox->getCoveredSamples().size() == bestHyperbox->getCoveredSamples().size()) {
           if (!maxHypBlocked) {
-            maxHyp = k; // Index of last (for now) hyperplan which is equal to the best.
+            maxHyp = k; // Index of last (for now) hyperplane which is equal to the best.
           }
         } else {
-          maxHypBlocked = true; // we can't increase maxHyp anymmore for this best hyperplan
+          maxHypBlocked = true; // we can't increase maxHyp anymore for this best hyperplane
         }
 
         if (bestHyperbox->getFidelity() >= minFidelity) {
@@ -145,12 +170,12 @@ bool Fidex::compute(Rule &rule, std::vector<double> &mainSampleValues, int mainS
       }
     }
 
-    // Modication of our hyperbox with the best at this iteration and modify discriminative hyperplans
-    if (indexBestHyp != -1 && bestDimension != -1) { // If we found any good dimension with good hyperplan (with enough covering)
+    // Modification of our hyperbox with the best at this iteration and modify discriminative hyperplanes
+    if (indexBestHyp != -1 && bestDimension != -1) { // If we found any good dimension with good hyperplane (with enough covering)
       if (maxHyp != -1) {
         indexBestHyp = (maxHyp + minHyp) / 2;
       }
-      // antecedant is not added if fidelity and covering size did not increase
+      // antecedent is not added if fidelity and covering size did not increase
       if (bestHyperbox->getFidelity() > hyperspace->getHyperbox()->getFidelity() || (bestHyperbox->getFidelity() == hyperspace->getHyperbox()->getFidelity() && bestHyperbox->getCoveredSamples().size() > hyperspace->getHyperbox()->getCoveredSamples().size())) {
         hyperspace->getHyperbox()->setFidelity(bestHyperbox->getFidelity());
         hyperspace->getHyperbox()->setCoveredSamples(bestHyperbox->getCoveredSamples());
@@ -202,8 +227,8 @@ bool Fidex::compute(Rule &rule, std::vector<double> &mainSampleValues, int mainS
  * @param verbose A boolean flag for detailed verbose output.
  * @param detailedVerbose A boolean flag for detailed verbose output. Default is false.
  * @param foundRule A boolean indicating whether a rule was found in a previous attempt. Default is false.
- * @return true If a rule meeting the criteria is successfully computed.
- * @return false If no rule meeting the criteria can be computed.
+ * @return True if a rule meeting the criteria is successfully computed.
+ * @return False if no rule meeting the criteria can be computed.
  */
 bool Fidex::tryComputeFidex(Rule &rule, std::vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, bool verbose, bool detailedVerbose, bool foundRule) {
   if (detailedVerbose && verbose) {
@@ -224,6 +249,9 @@ bool Fidex::tryComputeFidex(Rule &rule, std::vector<double> &mainSampleValues, i
 
 /**
  * @brief Performs a dichotomic (binary) search to find a rule with the best covering that meets the minimum fidelity criteria.
+ *
+ * It adjusts the search range based on the fidelity and covering size of the rules computed in each iteration to find rule with
+ * the best covering size possible.
  *
  * @param bestRule Reference to the Rule object to store the best rule found during the search.
  * @param mainSampleValues A vector of double values representing the main sample values.
@@ -265,8 +293,8 @@ int Fidex::dichotomicSearch(Rule &bestRule, std::vector<double> &mainSampleValue
  * @param minNbCover An integer representing the minimum number of samples a rule must cover.
  * @param mainSampleClass An integer representing the class of the main sample.
  * @param verbose A boolean flag for detailed verbose output.
- * @return true If a rule meeting the criteria is successfully computed within the maximum number of attempts.
- * @return false If no rule meeting the criteria can be computed within the maximum number of attempts.
+ * @return True if a rule meeting the criteria is successfully computed within the maximum number of attempts.
+ * @return False if no rule meeting the criteria can be computed within the maximum number of attempts.
  */
 bool Fidex::retryComputeFidex(Rule &rule, std::vector<double> &mainSampleValues, int mainSamplePred, float minFidelity, int minNbCover, int mainSampleClass, bool verbose) {
   int counterFailed = 0; // Number of times we failed to find a rule with maximal fidexlity when minNbCover is 1
@@ -290,15 +318,20 @@ bool Fidex::retryComputeFidex(Rule &rule, std::vector<double> &mainSampleValues,
 }
 
 /**
- * @brief Launches the Fidex algorithm with specified parameters to attempt creating a rule that meets given minimum covering and minimum fidelity criteria.
+ * @brief Launches the Fidex algorithm with specified parameters to attempt creating a rule for the given sample that meets given minimum covering and minimum fidelity criteria.
+ *
+ * Fidex is based on the training samples and hyperlocus and directed by the given parameters,
+ * including dropout and the maximum number of iterations allowed.
+ * It works by identifying hyperplanes in the feature space that discriminate between different
+ * classes of samples and constructing a rule based on these hyperplanes.
  *
  * @param rule Reference to the Rule object to be potentially updated by the computation.
  * @param mainSampleValues A vector of double values representing the main sample values.
  * @param mainSamplePred An integer representing the predicted class of the main sample.
  * @param mainSampleClass An integer representing the class of the main sample.
  * @param verbose A boolean flag for detailed verbose output. Default is false.
- *  @return true If a rule meeting the criteria is successfully computed.
- * @return false If no rule meeting the criteria can be computed.
+ * @return True if a rule meeting the criteria is successfully computed.
+ * @return False if no rule meeting the criteria can be computed.
  */
 bool Fidex::launchFidex(Rule &rule, std::vector<double> &mainSampleValues, int mainSamplePred, int mainSampleClass, bool verbose) {
 

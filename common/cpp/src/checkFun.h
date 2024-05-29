@@ -93,4 +93,5 @@ int countNetworksInFile(const std::string &weightsFile);
  * @brief Parses a line from a file and converts it into a vector of double values.
  */
 std::vector<double> parseFileLine(std::string str, const std::string &fileName);
-#endif
+
+#endif // CHECKFUNFid_H
