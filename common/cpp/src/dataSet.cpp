@@ -221,7 +221,7 @@ void DataSetFid::parseSingleNetwork(std::fstream &fileWts) {
 }
 
 /**
- * @brief Parses a weight file containing multiple networks’ weights and stores them in the weights vector.
+ * @brief Parses a weight file containing multiple networks' weights and stores them in the weights vector.
  *
  * @param fileWts Reference to the file stream opened for reading the weight file.
  */

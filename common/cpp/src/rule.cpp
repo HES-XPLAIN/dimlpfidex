@@ -70,7 +70,9 @@ std::string Rule::toString(const std::vector<std::string> &attributes, const std
 }
 
 /**
- * @brief Parses a JSON file and returns a vector of the parsed rules. JSON rule format must be like this example:
+ * @brief Parses a JSON file and returns a vector of the parsed rules.
+ *
+ * JSON rule format must be like this example:
  * {
  *   "rules": [
  *       {
