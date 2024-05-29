@@ -174,7 +174,7 @@ public:
   int getNbSamples() const;
 
   /**
-   * @brief Add attributes and optionally classes from an attribute file into the dataset.
+   * @brief Add attributes and eventually classes from attribute file in the dataset.
    */
   void setAttributes(const std::string &attributesFile, int nbAttributes, int nbClasses = -1);
 

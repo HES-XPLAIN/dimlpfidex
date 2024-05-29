@@ -1,7 +1,7 @@
 #include "dataSet.h"
 
 /**
- * @brief Construct a new DataSetFid object using three separate data files: one for data, one for predictions, and optionally one for classes.
+ * @brief Construct a new DataSetFid object using separate data, prediction, and optional class files.
  *
  *        - The data file should contain the attributes of each sample, and optionally, the class information can also be included in this file.
  *          If class information is included in the data file, there is no need to provide a separate class file.
@@ -54,8 +54,9 @@ DataSetFid::DataSetFid(const std::string &name, const std::string &dataFile, con
 }
 
 /**
- * @brief Construct a new DataSetFid object using a data file. The file contains data samples, predictions,
- *        and optionally classes (not mandatory). The format of each sample in the file is as follows:
+ * @brief Construct a new DataSetFid object using a single data file containing data, predictions, and optionally classes.
+ *
+ *        The format of each sample in the file is as follows:
  *        - First Line: Contains data attributes. It may be followed by class information (either as an ID or in one-hot format).
  *        - Second Line: Contains prediction values.
  *        - Third Line (optional): Contains class information, only if it was not included in the first line and if present.
@@ -157,7 +158,9 @@ DataSetFid::DataSetFid(const std::string &name, const std::string &dataFile, int
 }
 
 /**
- * @brief Construct a new DataSetFid object using a weight file. This constructor is capable of handling both single and multiple network weight files.
+ * @brief Construct a new DataSetFid object using a weight file.
+ *
+ * This constructor is capable of handling both single and multiple network weight files.
  *
  * @param name The name of the dataSet.
  * @param weightFile The name of the weight file.
@@ -218,7 +221,7 @@ void DataSetFid::parseSingleNetwork(std::fstream &fileWts) {
 }
 
 /**
- * @brief Parses a weight file containing multiple networks' weights.
+ * @brief Parses a weight file containing multiple networks’ weights and stores them in the weights vector.
  *
  * @param fileWts Reference to the file stream opened for reading the weight file.
  */
@@ -612,8 +615,8 @@ void DataSetFid::setNbClassAndAttr(int nbClasses, int nbAttributes) {
  * @param start The starting index in 'values' from where to check for one-hot encoding.
  * @param oneHotIndex Reference to an integer where the index (relative to 'start') of the 1.0 element in one-hot encoding will be stored.
  *                    This is set only if a valid one-hot encoding is found.
- * @return true If the portion of the vector starting from 'start' follows a one-hot encoding.
- * @return false If the portion of the vector does not follow a one-hot encoding,
+ * @return True if the portion of the vector starting from 'start' follows a one-hot encoding.
+ * @return False if the portion of the vector does not follow a one-hot encoding,
  *               either because there's more than one 1.0, or because an element other than 0.0 or 1.0 is found.
  */
 bool DataSetFid::isOneHot(const std::vector<double> &values, int start, int &oneHotIndex) const {
@@ -640,7 +643,7 @@ bool DataSetFid::isOneHot(const std::vector<double> &values, int start, int &one
 /**
  * @brief Return the samples' data.
  *
- * @return std::vector<std::vector<double>>&
+ * @return The samples' data.
  */
 std::vector<std::vector<double>> &DataSetFid::getDatas() {
   if (hasDatas) {
@@ -653,7 +656,7 @@ std::vector<std::vector<double>> &DataSetFid::getDatas() {
 /**
  * @brief Return the classes of the samples.
  *
- * @return std::vector<int>&
+ * @return The classes of the samples.
  */
 std::vector<int> &DataSetFid::getClasses() {
   if (hasClasses) {
@@ -666,7 +669,7 @@ std::vector<int> &DataSetFid::getClasses() {
 /**
  * @brief Return whether the dataset contains classes.
  *
- * @return bool
+ * @return Whether the dataset contains classes.
  */
 bool DataSetFid::getHasClasses() const {
   return hasClasses;
@@ -675,7 +678,7 @@ bool DataSetFid::getHasClasses() const {
 /**
  * @brief Return the predictions of the samples.
  *
- * @return std::vector<int>&
+ * @return The predictions of the samples.
  */
 std::vector<int> &DataSetFid::getPredictions() {
   if (hasPreds) {
@@ -688,7 +691,7 @@ std::vector<int> &DataSetFid::getPredictions() {
 /**
  * @brief Return the prediction output values of the samples.
  *
- * @return std::vector<std::vector<double>>&
+ * @return The prediction output values of the samples.
  */
 std::vector<std::vector<double>> &DataSetFid::getOutputValuesPredictions() {
   if (hasPreds) {
@@ -701,7 +704,7 @@ std::vector<std::vector<double>> &DataSetFid::getOutputValuesPredictions() {
 /**
  * @brief Return the number of classes in the dataset.
  *
- * @return int
+ * @return The number of classes in the dataset.
  */
 int DataSetFid::getNbClasses() const {
   if (_nbClasses != -1) {
@@ -714,7 +717,7 @@ int DataSetFid::getNbClasses() const {
 /**
  * @brief Return the number of attributes in the dataset.
  *
- * @return int
+ * @return The number of attributes in the dataset.
  */
 int DataSetFid::getNbAttributes() const {
   if (_nbAttributes != -1) {
@@ -727,7 +730,7 @@ int DataSetFid::getNbAttributes() const {
 /**
  * @brief Return the number of samples in the dataset.
  *
- * @return int
+ * @return The number of samples in the dataset.
  */
 int DataSetFid::getNbSamples() const {
   if (hasDatas) {
@@ -740,7 +743,7 @@ int DataSetFid::getNbSamples() const {
 /**
  * @brief Return the weights.
  *
- * @return std::vector<std::vector<std::vector<double>>>
+ * @return The weights.
  */
 std::vector<std::vector<std::vector<double>>> DataSetFid::getWeights() const {
   if (hasWeights) {
@@ -753,7 +756,7 @@ std::vector<std::vector<std::vector<double>>> DataSetFid::getWeights() const {
 /**
  * @brief Return the biases of the first layer.
  *
- * @return std::vector<double>
+ * @return The biases of the first layer.
  */
 std::vector<double> DataSetFid::getInBiais(int netId) const {
   if (hasWeights) {
@@ -766,7 +769,7 @@ std::vector<double> DataSetFid::getInBiais(int netId) const {
 /**
  * @brief Return the weights of the first layer.
  *
- * @return std::vector<double>
+ * @return The weights of the first layer.
  */
 std::vector<double> DataSetFid::getInWeights(int netId) const {
   if (hasWeights) {
@@ -779,7 +782,7 @@ std::vector<double> DataSetFid::getInWeights(int netId) const {
 /**
  * @brief Return the number of training networks.
  *
- * @return int
+ * @return The number of training networks.
  */
 int DataSetFid::getNbNets() const {
   if (hasWeights) {
@@ -910,7 +913,7 @@ void DataSetFid::setAttributes(const std::string &attributesFile, int nbAttribut
 /**
  * @brief Return attribute names.
  *
- * @return std::vector<std::string>&
+ * @return Attribute names.
  */
 std::vector<std::string> &DataSetFid::getAttributeNames() {
   if (hasAttributes) {
@@ -923,7 +926,7 @@ std::vector<std::string> &DataSetFid::getAttributeNames() {
 /**
  * @brief Return class names.
  *
- * @return std::vector<std::string>&
+ * @return Class names.
  */
 std::vector<std::string> &DataSetFid::getClassNames() {
   if (hasClassNames) {
@@ -936,7 +939,7 @@ std::vector<std::string> &DataSetFid::getClassNames() {
 /**
  * @brief Return whether the dataset contains attribute names.
  *
- * @return bool
+ * @return Whether the dataset contains attribute names.
  */
 bool DataSetFid::getHasAttributeNames() const {
   return hasAttributes;
@@ -945,7 +948,7 @@ bool DataSetFid::getHasAttributeNames() const {
 /**
  * @brief Return whether the dataset contains class names.
  *
- * @return bool
+ * @return Whether the dataset contains class names.
  */
 bool DataSetFid::getHasClassNames() const {
   return hasClassNames;

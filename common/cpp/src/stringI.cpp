@@ -36,7 +36,7 @@ void StringInt::Insert(int val)
 /**
  * @brief Find the index of the maximum value in the list.
  *
- * @return int The index of the maximum value.
+ * @return The index of the maximum value.
  */
 int StringInt::FindIndMax()
 
@@ -73,7 +73,7 @@ int StringInt::FindIndMax()
 /**
  * @brief Find the index of the minimum value in the list.
  *
- * @return int The index of the minimum value.
+ * @return The index of the minimum value.
  */
 int StringInt::FindIndMin()
 

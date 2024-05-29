@@ -25,7 +25,7 @@ Rule::Rule(const std::vector<Antecedant> &antecedants, const std::vector<int> &c
  *
  * @param attributes Optional vector of strings containing all attributes names, useful to print attribute names instead of integers.
  * @param classes Optional vector of strings containing all class names, useful to print class names instead of an integer.
- * @return std::string A string representation of the rule.
+ * @return A string representation of the rule.
  */
 std::string Rule::toString(const std::vector<std::string> &attributes, const std::vector<std::string> &classes) const {
   std::stringstream result;
@@ -100,7 +100,7 @@ std::string Rule::toString(const std::vector<std::string> &attributes, const std
  * @param filename Path of the JSON file to be parsed.
  * @param decisionThreshold Reference to a float where the decision threshold will be stored.
  * @param positiveClassIndex Reference to an int where the positive class index will be stored.
- * @return std::vector<Rule> A vector of parsed rules.
+ * @return A vector of parsed rules.
  */
 std::vector<Rule> Rule::fromJsonFile(const std::string &filename, float &decisionThreshold, int &positiveClassIndex) {
   std::vector<Rule> result;
@@ -150,10 +150,10 @@ void Rule::toJsonFile(const std::string &filename, const std::vector<Rule> &rule
 }
 
 /**
- * @brief Compares a rule with another to determine whether they're identical or not.
+ * @brief Compares a rule with another to determine whether they're identical.
  *
  * @param other Other rule for comparison.
- * @return bool Returns true if they're identical, false otherwise.
+ * @return Returns true if they're identical, false otherwise.
  */
 bool Rule::isEqual(const Rule &other) const {
   double epsilon = 10e-6;
@@ -183,7 +183,7 @@ bool Rule::isEqual(const Rule &other) const {
  * @brief Generates a regular expression pattern for matching positive integers smaller than the given maximum number.
  *
  * @param maxNumber The maximum number (exclusive and positive) for which the pattern will match smaller integers.
- * @return std::string The generated regular expression pattern as a string.
+ * @return The generated regular expression pattern as a string.
  */
 std::string generateRegexSmallerPositive(int maxNumber) {
   std::ostringstream regexStream;
@@ -215,7 +215,7 @@ std::string generateRegexSmallerPositive(int maxNumber) {
  * @brief Generates a regular expression pattern for matching an antecedent of a rule using the ids of the attributes.
  *
  * @param nbAttributes The number of attributes that can appear in the rule.
- * @return std::string The compiled regular expression object that can be used to match an antecedant with attribute ids.
+ * @return The compiled regular expression object that can be used to match an antecedant with attribute ids.
  */
 std::string getAntStrPatternWithAttrIds(int nbAttributes) {
   std::string pattern = generateRegexSmallerPositive(nbAttributes);
@@ -226,7 +226,7 @@ std::string getAntStrPatternWithAttrIds(int nbAttributes) {
 /**
  * @brief Generates a regular expression pattern for matching an antecedant using the names of the attributes.
  *
- * @return std::string The compiled regular expression object that can be used to match an antecedant with attribute names.
+ * @return The compiled regular expression object that can be used to match an antecedant with attribute names.
  */
 std::string getAntStrPatternWithAttrNames() {
   std::string attrPattern = "[^\\s]+";
@@ -238,7 +238,7 @@ std::string getAntStrPatternWithAttrNames() {
  * @brief Generates a regular expression pattern for matching a class of rule using the ids of the classes.
  *
  * @param nbClasses The number of classes that can appear in the rule.
- * @return std::string The compiled regular expression object that can be used to match a rule class id.
+ * @return The compiled regular expression object that can be used to match a rule class id.
  */
 std::string getStrPatternWithClassIds(int nbClasses) {
   std::string pattern = generateRegexSmallerPositive(nbClasses);
@@ -249,7 +249,7 @@ std::string getStrPatternWithClassIds(int nbClasses) {
 /**
  * @brief Generates a regular expression pattern for matching a class of rule using the names of the classes.
  *
- * @return std::string The compiled regular expression object that can be used to match a rule class name.
+ * @return The compiled regular expression object that can be used to match a rule class name.
  */
 std::string getStrPatternWithClassNames() {
   std::string clPattern = "[^\\s]+";
@@ -263,7 +263,7 @@ std::string getStrPatternWithClassNames() {
  * @param rulesFile The rules file to check.
  * @param dataset The dataset containing information about the attributes and classes.
  * @param withClasses Whether to check for class patterns as well.
- * @return std::vector<bool> Both booleans tell if there are attribute ids or names and class ids or names.
+ * @return Both booleans tell if there are attribute ids or names and class ids or names.
  * @throws FileNotFoundError If the rules file cannot be opened.
  * @throws FileContentError If the rules in the file are not properly formatted.
  */
@@ -359,7 +359,7 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
  * @param withAttributeNames Whether the rule contains attribute names.
  * @param withClassNames Whether the rule contains class names.
  * @param dataset The dataset containing information about the attributes and classes.
- * @return bool Returns true if the rule is created, false otherwise.
+ * @return Returns true if the rule is created, false otherwise.
 
  */
 bool stringToRule(Rule &rule, const std::string &str, const std::regex &attributePattern, const std::regex &classPattern, bool withAttributeNames, bool withClassNames, DataSetFid &dataset) {
@@ -495,7 +495,7 @@ void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid
  * @param classNames List of class names, used to write Rule's class with class names instead of numerical representation.
  * @param threshold Decision threshold.
  * @param positiveIndex Index defining the positive class in the dataset.
- * @return std::tuple<double, double> A tuple containing the mean covering size and the mean number of antecedants.
+ * @return A tuple containing the mean covering size and the mean number of antecedants.
  */
 std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames,
                                           const std::vector<std::string> &classNames, float threshold, int positiveIndex) {

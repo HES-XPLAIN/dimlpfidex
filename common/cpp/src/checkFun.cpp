@@ -1,10 +1,10 @@
 #include "checkFun.h"
 
 /**
- * @brief Checks if a given string represents a valid integer (positive or negative).
+ * @brief Checks if a given string represents a valid integer.
  *
  * @param input A string representing the number to be checked.
- * @return bool Returns true if the string is a valid integer, false otherwise.
+ * @return Returns true if the string is a valid integer, false otherwise.
  */
 bool checkInt(const std::string &input) {
   try {
@@ -26,19 +26,19 @@ bool checkInt(const std::string &input) {
  * @brief Checks if a given string represents a valid floating-point number.
  *
  * @param str A string representing the number to be checked.
- * @return bool Returns true if the string is a valid float, false otherwise.
+ * @return Returns true if the string is a valid float, false otherwise.
  */
 bool checkFloat(const std::string &input) {
   try {
-    std::size_t pos;        // Pour stocker la position du dernier caractère traité
-    std::stod(input, &pos); // Convertit la chaîne en double
+    std::size_t pos;        // To store the position of the last processed character
+    std::stod(input, &pos); // Convert string to double
 
     if (pos != input.length()) {
-      return false; // Il reste des caractères non traités dans la chaîne
+      return false; // There are unprocessed characters left in the string
     }
-  } catch (const std::invalid_argument &) { // Gère les arguments invalides
+  } catch (const std::invalid_argument &) { // Handle invalid arguments
     return false;
-  } catch (const std::out_of_range &) { // Gère les cas où la valeur est hors limite
+  } catch (const std::out_of_range &) { // Handles cases where the value is out of range
     return false;
   }
   return true;
@@ -50,7 +50,7 @@ bool checkFloat(const std::string &input) {
  * @brief Checks if a given string is a valid representation of a boolean value.
  *
  * @param input A string input representing a boolean.
- * @return bool Returns true if the string is 'true', 'false', '0', or '1' (case-insensitive), false otherwise.
+ * @return Returns true if the string is 'true', 'false', '0', or '1' (case-insensitive), false otherwise.
  */
 bool checkBool(const std::string &inputTemp) {
   std::string input = inputTemp;
@@ -66,7 +66,7 @@ bool checkBool(const std::string &inputTemp) {
  *
  * @param input A string representing a list of floats in any format in (a,b), [a,b], a,b
  * with or without spaces, with or without commas.
- * @return bool Returns true if the string is a valid list of floats, false otherwise.
+ * @return Returns true if the string is a valid list of floats, false otherwise.
  */
 bool checkList(const std::string &str) {
   std::string floatPattern = "(-?\\d+(\\.\\d+)?)";
@@ -82,7 +82,7 @@ bool checkList(const std::string &str) {
  * @brief Checks if a given string is empty or contains only whitespace characters.
  *
  * @param line A string to be checked.
- * @return bool Returns true if the string is empty or contains only whitespace, false otherwise
+ * @return Returns true if the string is empty or contains only whitespace, false otherwise.
  */
 bool checkStringEmpty(const std::string &line) {
   if (line.length() == 0) {
@@ -101,7 +101,7 @@ bool checkStringEmpty(const std::string &line) {
  * @brief Converts a double value to a string and formats it by removing trailing zeros and decimal point if necessary.
  *
  * @param number The double number to be converted.
- * @return std::string A formatted string representing the number.
+ * @return A formatted string representing the number.
  */
 std::string formattingDoubleToString(double number) {
   std::string str = std::to_string(number);
@@ -121,7 +121,7 @@ std::string formattingDoubleToString(double number) {
  *
  * @param str The string to be split.
  * @param delimiter The string used as the delimiter to split the input string.
- * @return std::vector<std::string> A vector containing the substrings obtained by splitting the input string.
+ * @return A vector containing the substrings obtained by splitting the input string.
  */
 std::vector<std::string> splitString(const std::string &str, const std::string &delimiter) {
   std::vector<std::string> tokens;
@@ -152,7 +152,7 @@ std::vector<std::string> splitString(const std::string &str, const std::string &
  *
  * @param str A string in in any format in (a,b), [a,b], a,b with or without spaces,
  * with or without commas representing a list of floats.
- * @return std::vector<double> A vector of doubles parsed from the string.
+ * @return A vector of doubles parsed from the string.
  */
 std::vector<double> getDoubleVectorFromString(std::string str) {
   std::regex floatPattern("(-?\\d+(\\.\\d+)?)");
@@ -172,7 +172,7 @@ std::vector<double> getDoubleVectorFromString(std::string str) {
  *
  * @param str A string in any format in (a,b), [a,b], a,b with or without spaces,
  * with or without commas. representing a list of integers.
- * @return std::vector<int> A vector of integers parsed from the string.
+ * @return A vector of integers parsed from the string.
  */
 std::vector<int> getIntVectorFromString(std::string str) {
   std::regex floatPattern("(-?\\d+(\\.\\d+)?)");
@@ -339,8 +339,8 @@ std::tuple<std::vector<int>, bool, std::vector<double>, std::vector<double>> par
  * start or end of the string and is surrounded by non-space characters. Returns true if such a space is found.
  *
  * @param str The string to check.
- * @return true If a space is found between words.
- * @return false If no space is found between words.
+ * @return True if a space is found between words.
+ * @return False if no space is found between words.
  */
 bool hasSpaceBetweenWords(const std::string &str) {
   for (size_t i = 0; i < str.length(); ++i) {
@@ -361,8 +361,8 @@ bool hasSpaceBetweenWords(const std::string &str) {
  * @brief Checks if a given file or directory is valid.
  *
  *
- * @param path path of the file or directory to be checked
- * @return whether the file or directory exists or not
+ * @param path path of the file or directory to be checked.
+ * @return Whether the file or directory exists or not.
  */
 bool exists(const std::string &path) {
   struct stat buffer;
@@ -372,9 +372,9 @@ bool exists(const std::string &path) {
 //////////////////////////////////////////////////////
 
 /**
- * @brief Gets the OS's default filesystem separator character
+ * @brief Gets the OS's default filesystem separator character.
  *
- * @return std::string
+ * @return The separator as a string.
  */
 std::string getOSSeparator() {
 // define separator depending on OS
@@ -388,13 +388,15 @@ std::string getOSSeparator() {
 //////////////////////////////////////////////////////
 
 /**
- * @brief Prints an option and its description aligned at the specified width. If the option length exceeds
+ * @brief Prints an option and its description aligned at the specified width.
+ *
+ * If the option length exceeds
  * a specified width, the description is printed on the next line with indentation matching the option part.
  * Otherwise, the option and description are printed on the same line.
  *
  * @param option The command line option to be printed (e.g., "--train_data_file <str>").
  * @param description The description for the command line option.
- * @param width The fixed width for the start of the description part
+ * @param width The fixed width for the start of the description part.
  */
 void printOptionDescription(const std::string &option, const std::string &description, int width) {
   if (option.length() >= width) {
@@ -412,7 +414,7 @@ void printOptionDescription(const std::string &option, const std::string &descri
  * @brief Counts the number of networks in the weights file.
  *
  * @param fileWts Reference to the file stream opened for reading the weight file.
- * @return int The number of networks found in the file.
+ * @return The number of networks found in the file.
  */
 int countNetworksInFile(const std::string &weightsFile) {
 
@@ -437,13 +439,14 @@ int countNetworksInFile(const std::string &weightsFile) {
 //////////////////////////////////////////////////////
 
 /**
- * @brief Parses a line from a file and converts it into a vector of double values. It can handle data separated
- * by a space, a comma(CSV), a semicolon(;) or a tab
+ * @brief Parses a line from a file and converts it into a vector of double values.
+ *
+ * It can handle data separated by a space, a comma(CSV), a semicolon(;) or a tab.
  *
  *
  * @param str The string to parse.
  * @param fileName The name of the file from which the string was read. Used for error reporting.
- * @return std::vector<double> A vector of double values parsed from the string.
+ * @return A vector of double values parsed from the string.
  * @throws FileContentError if a token cannot be converted to a double.
  */
 std::vector<double> parseFileLine(std::string str, const std::string &fileName) {
