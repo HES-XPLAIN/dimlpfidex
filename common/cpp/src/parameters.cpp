@@ -637,7 +637,7 @@ void Parameters::completePath(ParameterCode id) {
 }
 
 /**
- * @brief Handles every aspect of parameters that represents files:
+ * @brief Handles every aspect of parameters that represents files.
  *
  * - Checks if a file exists if "shouldFileExist" is set to true.
  * - Appends the ROOT_FOLDER path to every file if ROOT_FOLDER is set.
@@ -667,7 +667,7 @@ void Parameters::sanitizePath(ParameterCode id, bool shouldFileExist) {
  * @brief Gets the integer value for the given parameter code.
  *
  * @param id The parameter code.
- * @return int The integer value associated with the parameter code.
+ * @return The integer value associated with the parameter code.
  * @throws CommandArgumentException if the parameter is not set.
  */
 int Parameters::getInt(ParameterCode id) {
@@ -679,7 +679,7 @@ int Parameters::getInt(ParameterCode id) {
  * @brief Gets the float value for the given parameter code.
  *
  * @param id The parameter code.
- * @return float The float value associated with the parameter code.
+ * @return The float value associated with the parameter code.
  * @throws CommandArgumentException if the parameter is not set.
  */
 float Parameters::getFloat(ParameterCode id) {
@@ -691,7 +691,7 @@ float Parameters::getFloat(ParameterCode id) {
  * @brief Gets the double value for the given parameter code.
  *
  * @param id The parameter code.
- * @return double The double value associated with the parameter code.
+ * @return The double value associated with the parameter code.
  * @throws CommandArgumentException if the parameter is not set.
  */
 double Parameters::getDouble(ParameterCode id) {
@@ -703,7 +703,7 @@ double Parameters::getDouble(ParameterCode id) {
  * @brief Gets the boolean value for the given parameter code.
  *
  * @param id The parameter code.
- * @return bool The boolean value associated with the parameter code.
+ * @return The boolean value associated with the parameter code.
  * @throws CommandArgumentException if the parameter is not set.
  */
 bool Parameters::getBool(ParameterCode id) {
@@ -715,7 +715,7 @@ bool Parameters::getBool(ParameterCode id) {
  * @brief Gets the vector of double values for the given parameter code.
  *
  * @param id The parameter code.
- * @return std::vector<double> The vector of double values associated with the parameter code.
+ * @return The vector of double values associated with the parameter code.
  * @throws CommandArgumentException if the parameter is not set.
  */
 std::vector<double> Parameters::getDoubleVector(ParameterCode id) {
@@ -727,7 +727,7 @@ std::vector<double> Parameters::getDoubleVector(ParameterCode id) {
  * @brief Gets the vector of integer values for the given parameter code.
  *
  * @param id The parameter code.
- * @return std::vector<int> The vector of integer values associated with the parameter code.
+ * @return The vector of integer values associated with the parameter code.
  * @throws CommandArgumentException if the parameter is not set.
  */
 std::vector<int> Parameters::getIntVector(ParameterCode id) {
@@ -739,7 +739,7 @@ std::vector<int> Parameters::getIntVector(ParameterCode id) {
  * @brief Gets the string value for the given parameter code.
  *
  * @param id The parameter code.
- * @return std::string The string value associated with the parameter code.
+ * @return The string value associated with the parameter code.
  * @throws CommandArgumentException if the parameter is not set.
  */
 std::string Parameters::getString(ParameterCode id) {
@@ -750,7 +750,7 @@ std::string Parameters::getString(ParameterCode id) {
 /**
  * @brief Gets the architecture of hidden layers.
  *
- * @return StringInt The architecture of hidden layers.
+ * @return The architecture of hidden layers.
  */
 StringInt Parameters::getArch() {
   StringInt arch;
@@ -768,7 +768,7 @@ StringInt Parameters::getArch() {
 /**
  * @brief Gets the indices of the architecture of hidden layers.
  *
- * @return StringInt The indices of the architecture of hidden layers.
+ * @return The indices of the architecture of hidden layers.
  */
 StringInt Parameters::getArchInd() {
   StringInt archInd;
@@ -788,7 +788,7 @@ StringInt Parameters::getArchInd() {
  * @brief Gets the name of the parameter associated with the given parameter code.
  *
  * @param id The parameter code.
- * @return std::string The name of the parameter.
+ * @return The name of the parameter.
  */
 std::string Parameters::getParameterName(ParameterCode id) {
   for (const auto &pair : parameterNames) {
@@ -803,7 +803,7 @@ std::string Parameters::getParameterName(ParameterCode id) {
  * @brief Checks if an integer parameter is set.
  *
  * @param id The parameter code.
- * @return bool True if the parameter is set, false otherwise.
+ * @return True if the parameter is set, false otherwise.
  */
 bool Parameters::isIntSet(ParameterCode id) {
   return _intParams.find(id) != _intParams.end();
@@ -813,7 +813,7 @@ bool Parameters::isIntSet(ParameterCode id) {
  * @brief Checks if a float parameter is set.
  *
  * @param id The parameter code.
- * @return bool True if the parameter is set, false otherwise.
+ * @return True if the parameter is set, false otherwise.
  */
 bool Parameters::isFloatSet(ParameterCode id) {
   return _floatParams.find(id) != _floatParams.end();
@@ -823,7 +823,7 @@ bool Parameters::isFloatSet(ParameterCode id) {
  * @brief Checks if a double parameter is set.
  *
  * @param id The parameter code.
- * @return bool True if the parameter is set, false otherwise.
+ * @return True if the parameter is set, false otherwise.
  */
 bool Parameters::isDoubleSet(ParameterCode id) {
   return _doubleParams.find(id) != _doubleParams.end();
@@ -833,7 +833,7 @@ bool Parameters::isDoubleSet(ParameterCode id) {
  * @brief Checks if a boolean parameter is set.
  *
  * @param id The parameter code.
- * @return bool True if the parameter is set, false otherwise.
+ * @return True if the parameter is set, false otherwise.
  */
 bool Parameters::isBoolSet(ParameterCode id) {
   return _boolParams.find(id) != _boolParams.end();
@@ -843,7 +843,7 @@ bool Parameters::isBoolSet(ParameterCode id) {
  * @brief Checks if a double vector parameter is set.
  *
  * @param id The parameter code.
- * @return bool True if the parameter is set, false otherwise.
+ * @return True if the parameter is set, false otherwise.
  */
 bool Parameters::isDoubleVectorSet(ParameterCode id) {
   return _doubleVectorParams.find(id) != _doubleVectorParams.end();
@@ -853,7 +853,7 @@ bool Parameters::isDoubleVectorSet(ParameterCode id) {
  * @brief Checks if an integer vector parameter is set.
  *
  * @param id The parameter code.
- * @return bool True if the parameter is set, false otherwise.
+ * @return True if the parameter is set, false otherwise.
  */
 bool Parameters::isIntVectorSet(ParameterCode id) {
   return _intVectorParams.find(id) != _intVectorParams.end();
@@ -863,7 +863,7 @@ bool Parameters::isIntVectorSet(ParameterCode id) {
  * @brief Checks if a string parameter is set.
  *
  * @param id The parameter code.
- * @return bool True if the parameter is set, false otherwise.
+ * @return True if the parameter is set, false otherwise.
  */
 bool Parameters::isStringSet(ParameterCode id) const {
   return _stringParams.find(id) != _stringParams.end();
