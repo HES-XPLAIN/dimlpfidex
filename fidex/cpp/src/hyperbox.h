@@ -73,7 +73,7 @@ public:
   /**
    * @brief Adds a new discriminative hyperplane to the hyperbox.
    */
-  void discriminateHyperplan(int i, int j);
+  void discriminateHyperplan(int dimVal, int hypVal);
 };
 
 #endif // HYPERBOX_H
