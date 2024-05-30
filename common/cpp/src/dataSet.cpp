@@ -16,7 +16,7 @@
  *        - Class file (optional): Only needed if class information is not included in the data file. Each line should contain either a single class ID
  *          or a series of integers in a one-hot encoding scheme.
  *
- *        Each number in a line are separated by a space.
+ *        Each number in a line are separated by a space, a comma(CSV), a semicolon(;) or a tab.
  *        The number of attributes and classes in the dataset are used to validate the format and content of the data and class files.
  *
  * @param name string containing the name of the dataSet
@@ -61,7 +61,7 @@ DataSetFid::DataSetFid(const std::string &name, const std::string &dataFile, con
  *        - Second Line: Contains prediction values.
  *        - Third Line (optional): Contains class information, only if it was not included in the first line and if present.
  *        There is a blank line between each sample in the file.
- *        Each data in a line is separated by a space
+ *        Each data in a line is separated by a space, a comma(CSV), a semicolon(;) or a tab.
  *
  *        The presence and format of class data (ID or one-hot) are inferred based on the structure of the lines in the file.
  *
@@ -254,7 +254,7 @@ void DataSetFid::parseMultipleNetworks(std::fstream &fileWts) {
 /**
  * @brief Get data from dataFile and save it in datas and trueClasses if it contains class information.
  *
- *        The file should contain one sample per line. Each number in line is separated by a space. Each sample can be in one of the following formats:
+ *        The file should contain one sample per line. Each number in line is separated by a space, a comma(CSV), a semicolon(;) or a tab. Each sample can be in one of the following formats:
  *        1. Attributes only: Each line contains each float attribute.
  *        2. Attributes with Class ID: Each line contains all the float attributes followed by an integer class ID.
  *        3. Attributes with One-Hot Class Encoding: Each line contains all the float attributes followed by a one-hot encoding of the class.
@@ -305,8 +305,8 @@ void DataSetFid::setDataFromFile(const std::string &dataFile, int nbAttributes, 
 /**
  * @brief Add predictions to the dataset using a prediction file.
  *
- *        The prediction file should contain one line per data sample, each line consisting of a series of numerical values separated by spaces
- *        representing the prediction scores for each class.
+ *        The prediction file should contain one line per data sample, each line consisting of a series of numerical values separated
+ *        by a space, a comma(CSV), a semicolon(;) or a tab representing the prediction scores for each class.
  *        The number of values per line should match the specified number of classes.
  *        If a decision threshold is provided, the function uses it to determine the predicted class based on the threshold.
  *
@@ -367,7 +367,7 @@ void DataSetFid::setPredFromFile(const std::string &predFile, int nbClasses, dou
  *        1. Class ID format: Each line contains a single integer representing the class ID.
  *        2. One-hot format: Each line contains a sequence of integers in a one-hot encoding scheme,
  *           where exactly one value is 1 (indicating the class ID) and all others are 0.
- *        Each number in a line is separated by a space
+ *        Each number in a line is separated by a space, a comma(CSV), a semicolon(;) or a tab.
  *
  *        The function determines the format of each line based on the 'nbClasses' parameter and the structure of the data in the line.
  *
@@ -411,7 +411,7 @@ void DataSetFid::setClassFromFile(const std::string &classFile, int nbClasses) {
  *        - Attributes followed by class IDs: A sequence of numerical values followed by an integer representing the class ID.
  *        - Attributes followed by one-hot encoded classes: A sequence of numerical values followed by a one-hot encoding representing the class.
  *          The number of elements in this encoding should match the total number of classes, with exactly one '1' and the rest '0's.
- *        Each data in a line is separated by a space
+ *        Each data in a line is separated by a space, a comma(CSV), a semicolon(;) or a tab.
  *        The format of the class representation (ID or one-hot encoding) is determined based on the structure of the data in the line.
  *
  * @param line A string containing one line of the data file. This line can include attribute values and, optionally, class information.
@@ -475,7 +475,7 @@ void DataSetFid::setDataLine(const std::string &line, const std::string &dataFil
  *        Each line in the prediction file should contain a sequence of numerical values representing the prediction scores for each class.
  *        The number of values in each line must match the number of classes specified for the dataset.
  *        If a decision threshold is set, the function also determines the predicted class based on this threshold.
- *        Each line should contain numbers separated by spaces.
+ *        Each line should contain numbers separated by a space, a comma(CSV), a semicolon(;) or a tab.
  *
  * @param line string containing one line of the prediction file
  * @param predFile string prediction file name
@@ -503,7 +503,7 @@ void DataSetFid::setPredLine(const std::string &line, const std::string &predFil
  *        1. Class ID format: The line contains a single integer representing the class ID.
  *        2. One-hot format: The line contains a sequence of integers in a one-hot encoding scheme,
  *           where exactly one value is 1 (indicating the class ID) and all others are 0.
- *        Each data in a line is separated by a space
+ *        Each data in a line is separated by a space, a comma(CSV), a semicolon(;) or a tab.
  *
  *        The function automatically determines the format based on the structure of the data in the line.
  *
