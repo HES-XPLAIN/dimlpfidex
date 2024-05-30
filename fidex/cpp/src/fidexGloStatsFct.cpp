@@ -1,10 +1,13 @@
 #include "fidexGloStatsFct.h"
 
+/**
+ * @brief Displays the parameters for fidexGloStats.
+ */
 void showStatsParams() {
   std::cout << std::endl
             << "---------------------------------------------------------------------" << std::endl
             << std::endl;
-  std::cout << "Warning! The files are localised with respect to root folder dimlpfidex." << std::endl;
+  std::cout << "Warning! The files are located with respect to the root folder dimlpfidex." << std::endl;
   std::cout << "The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json." << std::endl
             << std::endl;
 
@@ -30,7 +33,7 @@ void showStatsParams() {
   printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
   printOptionDescription("--attributes_file <str>", "File of attributes> Mandatory if rules file contains attribute names, if not, do not add it");
   printOptionDescription("--stats_file <str>", "Output statistic file name");
-  printOptionDescription("--global_rules_outfile <str>", "Global ruleset output file with stats on test set, if you want to compute statistics of global rules on tests set");
+  printOptionDescription("--global_rules_outfile <str>", "Global ruleset output file with stats on test set, if you want to compute statistics of global rules on the test set");
   printOptionDescription("--console_file <str>", "File with console logs redirection");
   printOptionDescription("--positive_class_index <int [0,nb_classes-1]>", "Index of positive class to compute true/false positive/negative rates, index starts at 0. If it is specified in the rules file, it has to be the same value.");
 
@@ -45,6 +48,13 @@ void showStatsParams() {
             << std::endl;
 }
 
+/**
+ * @brief Determines which samples are covered by a given rule.
+ *
+ * @param sampleIds Vector to store the IDs of the samples covered by the rule.
+ * @param rule The rule used to determine coverage.
+ * @param testValues Matrix of test sample values.
+ */
 void getCovering(std::vector<int> &sampleIds, const Rule &rule, std::vector<std::vector<double>> &testValues) {
   // Get covering index samples
   int attr;
@@ -69,6 +79,17 @@ void getCovering(std::vector<int> &sampleIds, const Rule &rule, std::vector<std:
   }
 }
 
+/**
+ * @brief Computes the number of true positives, false positives, true negatives, and false negatives based on the model's or rules's decision and the true class.
+ *
+ * @param decision The predicted class by the model or by the rules.
+ * @param positiveClassIndex The index of the positive class.
+ * @param testTrueClass The true class of the test sample.
+ * @param nbTruePositive Counter for true positives.
+ * @param nbFalsePositive Counter for false positives.
+ * @param nbTrueNegative Counter for true negatives.
+ * @param nbFalseNegative Counter for false negatives.
+ */
 void computeTFPN(int decision, int positiveClassIndex, int testTrueClass, int &nbTruePositive, int &nbFalsePositive, int &nbTrueNegative, int &nbFalseNegative) {
   if (decision == positiveClassIndex) { // Positive prediction
     if (decision == testTrueClass) {
@@ -86,9 +107,9 @@ void computeTFPN(int decision, int positiveClassIndex, int testTrueClass, int &n
 }
 
 /**
- * @brief Used to set default hyperparameters values and to check the sanity of all used values like boundaries and logic.
+ * @brief Sets default hyperparameters and checks the logic and validity of the parameters of fidexGloStats.
  *
- * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
+ * @param p Reference to the Parameters object containing all hyperparameters.
  */
 void checkStatsParametersLogicValues(Parameters &p) {
   // setting default values
@@ -114,6 +135,71 @@ void checkStatsParametersLogicValues(Parameters &p) {
   }
 }
 
+/**
+ * @brief Computes the statistics of the global ruleset obtained from fidexGloRules on a test dataset.
+ *
+ * The statistics computed for the ruleset are:
+ * - The global rule fidelity rate.
+ * - The global rule accuracy.
+ * - The explainability rate (when we can find one or more rules, either correct ones or activated ones which all agree on the same class).
+ * - The default rule rate (when we can't find any rule activated for a sample).
+ * - The mean number of correct (fidel) activated rules per sample.
+ * - The mean number of wrong (not fidel) activated rules per sample.
+ * - The model test accuracy.
+ * - The model test accuracy when rules and model agree.
+ * - The model test accuracy when activated rules and model agree.
+ *
+ * If there is a positive class, additional statistics are computed with both the model decision and the rules decision:
+ * - The number of true positive test samples.
+ * - The number of false positive test samples.
+ * - The number of true negative test samples.
+ * - The number of false negative test samples.
+ * - The false positive rate.
+ * - The false negative rate.
+ * - The precision.
+ * - The recall.
+ *
+ * Notes:
+ * - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
+ * - It's mandatory to specify the number of attributes and classes in the data, as well as the test dataset.
+ * - True test class labels must be provided, either within the data file or separately through a class file.
+ * - Test predictions are also mandatory.
+ * - The path of the file containing the global ruleset must be provided.
+ * - The path of the global rules output file must be provided to compute statistics of the rules on the test set.
+ * - If the positive class index is specified, the true/false positive/negative rates are computed.
+ * - Parameters can be defined directly via the command line or through a JSON configuration file.
+ * - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
+ *
+ * File formats:
+ * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
+ *   1. Only attributes (floats).
+ *   2. Attributes (floats) followed by an integer class ID.
+ *   3. Attributes (floats) followed by one-hot encoded class.
+ * - Class files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons, or commas. Supported formats:
+ *   1. Integer class ID.
+ *   2. One-hot encoded class.
+ * - Prediction files should contain one line per data sample, each line consisting of a series of numerical values separated
+ *   by a space, a comma (CSV), a semicolon (;), or a tab representing the prediction scores for each class.
+ * - Global rule file: This file is generated by fidexGloRules. The first line contains general statistics in the form:
+ *   'Number of rules : 1171, mean sample covering number per rule : 236.923997, mean number of antecedents per rule : 13.020495'
+ *   The second line indicates if a decision threshold has been used. If no, it says: 'No decision threshold is used.'
+ *   and if yes, it says something like 'Using a decision threshold of 0.3 for class 0'.
+ *   Then there is an empty line and each rule is numbered starting from 1 and separated from each other by an empty line. A rule is in the form:
+ *   Rule 1: X2531>=175.95 X2200>=181.05 X1828>=175.95 X2590>=178.5 X1257>=183.6 X2277>=170.85 X1816>=173.4 X3040>=183.6 -> class 0
+ *   Train Covering size : 127
+ *   Train Fidelity : 1
+ *   Train Accuracy : 1
+ *   Train Confidence : 0.999919
+ * - Attributes file: Each line corresponds to one attribute, each attribute must be specified. Classes can be specified
+ *   after the attributes but are not mandatory. Each attribute or class must be in one word without spaces (you can use _ to replace a space).
+ *   The order is important as the first attribute/class name will represent the first attribute/class in the dataset.
+ *
+ * Example of how to call the function:
+ * fidex.fidexGloStats("--test_data_file datanormTest.txt --test_pred_file predTest.out --test_class_file dataclass2Test.txt --global_rules_file globalRules.rls --nb_attributes 16 --nb_classes 2 --stats_file stats.txt --root_folder dimlp/datafiles")
+ *
+ * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths and options for output.
+ * @return Returns 0 for successful execution, -1 for errors encountered during the process.
+ */
 int fidexGloStats(const std::string &command) {
   // Save buffer where we output results
   std::ofstream ofs;
@@ -156,7 +242,7 @@ int fidexGloStats(const std::string &command) {
       } catch (const std::out_of_range &e) {
         throw CommandArgumentException("Some value inside your JSON config file '" + commandList[2] + "' is out of range.\n(Probably due to a too large or too tiny numeric value).");
       } catch (const std::exception &e) {
-        std::string msg(e.what()) ;
+        std::string msg(e.what());
         throw CommandArgumentException("Unknown JSON config file error: " + msg);
       }
     } else {
@@ -554,7 +640,7 @@ int fidexGloStats(const std::string &command) {
   return 0;
 }
 
-/* Exemples pour lancer le code :
+/* Examples of how to call the function:
 
 ./fidexGloStats --test_data_file datanorm --test_pred_file dimlp.out --test_class_file dataclass2 --global_rules_file globalRules.txt --nb_attributes 16 --nb_classes 2 --stats_file stats.txt --root_folder ../fidex/datafiles
 ./fidexGloStats --test_data_file datanormTest --test_pred_file dimlpDatanormTest.out --test_class_file dataclass2Test --global_rules_file globalRulesDatanorm.txt --nb_attributes 16 --nb_classes 2 --stats_file stats.txt --root_folder ../fidex/datafiles

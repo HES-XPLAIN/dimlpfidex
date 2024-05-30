@@ -1,11 +1,14 @@
 #include "fidexGloFct.h"
 
+/**
+ * @brief Displays the parameters for fidexGlo.
+ */
 void showParams() {
   std::cout << std::endl
             << "---------------------------------------------------------------------" << std::endl
             << std::endl;
   std::cout << "Warning! The files are localised with respect to root folder dimlpfidex." << std::endl;
-  std::cout << "The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json." << std::endl
+  std::cout << "The arguments can be specified in the command or in a JSON configuration file with --json_config_file your_config_file.json." << std::endl
             << std::endl;
 
   std::cout << "----------------------------" << std::endl
@@ -13,7 +16,7 @@ void showParams() {
   std::cout << "Required parameters:" << std::endl
             << std::endl;
 
-  printOptionDescription("--test_data_file <str>", "Test sample(s) data file with data and prediction(if no --test_pred_file), classes may been added here if launching with fidex(--with_fidex)");
+  printOptionDescription("--test_data_file <str>", "Test sample(s) data file with data and prediction (if no --test_pred_file), classes may be added here if launching with fidex (--with_fidex)");
   printOptionDescription("--global_rules_file <str>", "Ruleset input file");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in dataset");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in dataset");
@@ -25,9 +28,9 @@ void showParams() {
             << std::endl;
 
   printOptionDescription("--json_config_file <str>", "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path");
-  printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
-  printOptionDescription("--attributes_file <str>", "File of attributes> Mandatory if rules file contains attribute names, if not, do not add it");
-  printOptionDescription("--test_pred_file <str>", "Test prediction file> if given, --test_data_file needs to have only test datas");
+  printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, its path will be configured with respect to this root folder");
+  printOptionDescription("--attributes_file <str>", "File of attributes. Mandatory if rules file contains attribute names; if not, do not add it");
+  printOptionDescription("--test_pred_file <str>", "Test prediction file; if given, --test_data_file needs to have only test data");
   printOptionDescription("--explanation_file <str>", "Explanation(s) output file name");
   printOptionDescription("--console_file <str>", "File with console logs redirection");
   printOptionDescription("--with_fidex <bool>", "Whether to use Fidex if no rule is found in global rules (default: False)");
@@ -52,7 +55,7 @@ void showParams() {
             << std::endl;
 
   printOptionDescription("--test_class_file <str>", "Test true class file, classes can be specified in test data file");
-  printOptionDescription("--max_iterations <int [1,inf[>", "Max iteration number, also the max possible number of attributs in a rule, should be 25 if working with images (default: 10)");
+  printOptionDescription("--max_iterations <int [1,inf[>", "Max iteration number, also the max possible number of attributes in a rule, should be 25 if working with images (default: 10)");
   printOptionDescription("--min_covering <int [1,inf[>", "Minimum covering number (default: 2)");
   printOptionDescription("--covering_strategy <bool>", "Whether to use this strategy : if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (default: True)");
   printOptionDescription("--max_failed_attempts <int [0,inf[>", "Maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used (default: 30)");
@@ -60,7 +63,7 @@ void showParams() {
   printOptionDescription("--lowest_min_fidelity <float [0,1]>", "Minimal min_fidelity to which we agree to go down during covering_strategy (default: 0.75)");
   printOptionDescription("--nb_fidex_rules <int [1,inf[>", "Number of Fidex rules to compute per sample when launching Fidex (default: 1)");
   printOptionDescription("--dropout_dim <float [0,1]>", "Dimension dropout parameter (default: 0.0)");
-  printOptionDescription("--dropout_hyp <float [0,1]>", "Hyperplan dropout parameter (default: 0.0)");
+  printOptionDescription("--dropout_hyp <float [0,1]>", "Hyperplane dropout parameter (default: 0.0)");
   printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in staircase activation function (default: 50)");
   printOptionDescription("--normalization_file <str>", "File containing the mean and std of some attributes. Used to denormalize the rules if specified");
   printOptionDescription("--mus <list<float ]inf,inf[>>", "Mean or median of each attribute index to denormalize in the rules");
@@ -79,6 +82,24 @@ void showParams() {
             << std::endl;
 }
 
+/**
+ * @brief Executes the Fidex algorithm to extract an explanation rule for a given sample.
+ *
+ * This function launches the Fidex algorithm based on the specified parameters, dataset, and hyperspace.
+ * It constructs one or multiple explanation rules for the given sample. The results are stored in the
+ * provided lines vector, and relevant information is printed to the console.
+ *
+ * @param lines Reference to a vector of strings where the resulting explanation rules and logs will be stored.
+ * @param trainDataset Reference to the DataSetFid object containing the training data.
+ * @param p Reference to the Parameters object containing all hyperparameters and settings.
+ * @param hyperspace Reference to the Hyperspace object constructed from the hyperlocus.
+ * @param mainSampleValues Reference to a vector of double values representing the main sample's attributes.
+ * @param mainSamplePred Integer representing the predicted class of the main sample.
+ * @param mainSamplePredValue Double representing the prediction value for the main sample.
+ * @param mainSampleClass Integer representing the true class of the main sample (or -1 if not available).
+ * @param attributeNames Reference to a vector of strings containing the attribute names.
+ * @param classNames Reference to a vector of strings containing the class names.
+ */
 void executeFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Parameters &p, Hyperspace &hyperspace, std::vector<double> &mainSampleValues, int mainSamplePred, double mainSamplePredValue, int mainSampleClass, const std::vector<std::string> &attributeNames, const std::vector<std::string> &classNames) {
   int nbFidexRules = p.getInt(NB_FIDEX_RULES);
   if (nbFidexRules == 1) {
@@ -115,9 +136,9 @@ void executeFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Par
 }
 
 /**
- * @brief Used to set default hyperparameters values and to check the sanity of all used values like boundaries and logic.
+ * @brief Sets default hyperparameters and checks the logic and validity of the parameters of fidexGlo.
  *
- * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
+ * @param p Reference to the Parameters object containing all hyperparameters.
  */
 void checkParametersLogicValues(Parameters &p) {
   // setting default values
@@ -165,6 +186,65 @@ void checkParametersLogicValues(Parameters &p) {
   }
 }
 
+/**
+ * @brief Executes the FidexGlo algorithm with specified parameters to extract explanation rules for each test sample.
+ *
+ * For each test sample, FidexGlo extracts explanation rules from the global ruleset created by the fidexGloRules algorithm.
+ * If no rule is found in the ruleset and the 'with_fidex' parameter is true, Fidex is called to obtain a local rule.
+ *
+ * Notes:
+ * - It's mandatory to specify the number of attributes and classes in the data, as well as the test dataset.
+ * - If using Fidex, train data needs to be provided, otherwise it's not useful. The notes below suppose train dataset is mandatory.
+ * - True train class labels must be provided, either within the data files or separately through class files. Test classes are given the same way if present.
+ * - Train and test predictions are mandatory, either within the data file for test or separately through prediction file for both.
+ * - The path of the file containing the global ruleset must be provided.
+ * - If using Fidex, the weights file or rules_file (when training with decision trees) obtained from the model training must be provided.
+ * - If using Fidex, normalization parameters can be specified to denormalize the rules if data were normalized beforehand.
+ * - The parameter 'explanation_file' has to be provided to extract the explanations in a file.
+ * - Parameters can be defined directly via the command line or through a JSON configuration file.
+ * - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
+ *
+ * File formats:
+ * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
+ *   1. Only attributes (floats).
+ *   2. Attributes (floats) followed by an integer class ID.
+ *   3. Attributes (floats) followed by one-hot encoded class.
+ * - Test data files can also include predictions. The format of each sample in the file will be as follows:
+ *   - First Line: Contains data attributes. It may be followed by class information (either as an ID or in one-hot format).
+ *   - Second Line: Contains prediction values.
+ *   - Third Line (optional): Contains class information, only if it was not included in the first line and if present.
+ * - Class files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons, or commas. Supported formats:
+ *   1. Integer class ID.
+ *   2. One-hot encoded class.
+ * - Prediction files should contain one line per data sample, each line consisting of a series of numerical values separated
+ *   by a space, a comma (CSV), a semicolon (;), or a tab representing the prediction scores for each class.
+ * - Global rulefile: This file is generated by fidexGloRules. The first line contains general statistics in the form:
+ *   'Number of rules : 1171, mean sample covering number per rule : 236.923997, mean number of antecedents per rule : 13.020495'
+ *   The second line tells if a decision threshold has been used. If no, it says: 'No decision threshold is used.'
+ *   and if yes, it says something in the form 'Using a decision threshold of 0.3 for class 0'.
+ *   Then there is an empty line and each rule is numbered starting from 1 and separated from each other by an empty line. A rule is in the form:
+ *   Rule 1: X2531>=175.95 X2200>=181.05 X1828>=175.95 X2590>=178.5 X1257>=183.6 X2277>=170.85 X1816>=173.4 X3040>=183.6 -> class 0
+ *   Train Covering size : 127
+ *   Train Fidelity : 1
+ *   Train Accuracy : 1
+ *   Train Confidence : 0.999919
+ * - Weights file: This file should be obtained by training with Dimlp, SVM, MLP, or a CNN from dimlpfidex because an additional special Dimlp layer is needed.
+ *   The first row represents bias values of the Dimlp layer and the second row are values of the weight matrix between the previous layer and the Dimlp layer.
+ *   Each value is separated by a space. As an example, if the layers are of size 4, the biases are: b1 b2 b3 b4 and the weights are w1 w2 w3 w4.
+ * - Rule file: This file should be obtained directly by training with Random Forests or Gradient Boosting from dimlpfidex because rules need to be extracted from the trees.
+ * - Attributes file: Each line corresponds to one attribute, each attribute must be specified. Classes can be specified
+ *   after the attributes but are not mandatory. Each attribute or class must be in one word without spaces (you can use _ to replace a space).
+ *   The order is important as the first attribute/class name will represent the first attribute/class in the dataset.
+ * - Normalization file: Each line contains the mean/median and standard deviation for an attribute.
+ *   Format: '2 : original mean: 0.8307, original std: 0.0425'
+ *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
+ *
+ * Example of how to call the function:
+ * fidex.fidexGlo("--test_data_file datanormTest.txt --test_pred_file predTest.out --global_rules_file globalRules.rls --nb_attributes 16 --nb_classes 2 --explanation_file explanation.txt --root_folder dimlp/datafiles --with_fidex true --train_data_file datanormTrain.txt --train_pred_file predTrain.out --train_class_file dataclass2Train.txt --test_class_file dataclass2Test.txt --weights_file weights.wts")
+ *
+ * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
+ * @return Returns 0 for successful execution, -1 for errors encountered during the process.
+ */
 int fidexGlo(const std::string &command) {
   // Save buffer where we output results
   std::ofstream ofs;
@@ -339,7 +419,7 @@ int fidexGlo(const std::string &command) {
 
       int nbTrainSamples = trainDatas->getNbSamples();
       if (params->getInt(MIN_COVERING) > nbTrainSamples) {
-        throw CommandArgumentException("Error : invalide type for parameter --min_covering, strictly positive integer smaller or equal than the number of train data samples requested.");
+        throw CommandArgumentException("Error : Invalide value for parameter --min_covering, strictly positive integer smaller or equal than the number of train data samples requested.");
       }
 
       // compute hyperspace
@@ -368,7 +448,7 @@ int fidexGlo(const std::string &command) {
 
       // Check size of hyperlocus
       if (nbIn == 0 || nbIn % nbAttributes != 0) {
-        throw InternalError("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributs - " + std::to_string(nbAttributes));
+        throw InternalError("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributes - " + std::to_string(nbAttributes));
       }
 
       std::cout << "Hyperspace created." << std::endl
@@ -456,15 +536,15 @@ int fidexGlo(const std::string &command) {
       } else {
         currentPred = std::to_string(currentPredId);
       }
-      lines.emplace_back("The model predict class " + currentPred + " with probability " + std::to_string(testSamplesOutputValuesPredictions[currentSample][currentPredId]) + "\n");
-      std::cout << "The model predict class " << currentPred << " with probability " << std::to_string(testSamplesOutputValuesPredictions[currentSample][currentPredId]) << std::endl
+      lines.emplace_back("The model predicts class " + currentPred + " with probability " + std::to_string(testSamplesOutputValuesPredictions[currentSample][currentPredId]) + "\n");
+      std::cout << "The model predicts class " << currentPred << " with probability " << std::to_string(testSamplesOutputValuesPredictions[currentSample][currentPredId]) << std::endl
                 << std::endl;
       // Find rules activated by this sample
       std::vector<int> activatedRules;
       getActivatedRules(activatedRules, rules, testSamplesValues[currentSample]);
       // Check which rules are correct
       std::vector<int> correctRules;
-      std::vector<int> notcorrectRules;
+      std::vector<int> notCorrectRules;
       bool notShowUncorrectRules = false;
       if (activatedRules.empty()) { // If there is no activated rule
         std::cout << "There is no rule activated" << std::endl;
@@ -484,7 +564,7 @@ int fidexGlo(const std::string &command) {
           if (rules[v].getOutputClass() == testSamplesPreds[currentSample]) { // Check if the class of the rule is the predicted one
             correctRules.push_back(v);
           } else {
-            notcorrectRules.push_back(v);
+            notCorrectRules.push_back(v);
           }
         }
         if (correctRules.empty()) { // If there is no correct rule
@@ -500,12 +580,12 @@ int fidexGlo(const std::string &command) {
           if (allSameClass && !minimalVersion) {
             notShowUncorrectRules = true;
             if (activatedRules.size() > 1) {
-              lines.emplace_back("We didn't found any rule with same prediction as the model (class " + std::to_string(testSamplesPreds[currentSample]) + "), but we found " + std::to_string(activatedRules.size()) + " rules with class " + std::to_string(ancientClass) + " :\n");
-              std::cout << "We didn't found any rule with same prediction as the model (class " << std::to_string(testSamplesPreds[currentSample]) << "), but we found " << std::to_string(activatedRules.size()) << " rules with class " << std::to_string(ancientClass) << " :" << std::endl
+              lines.emplace_back("We didn't find any rule with the same prediction as the model (class " + std::to_string(testSamplesPreds[currentSample]) + "), but we found " + std::to_string(activatedRules.size()) + " rules with class " + std::to_string(ancientClass) + " :\n");
+              std::cout << "We didn't find any rule with the same prediction as the model (class " << std::to_string(testSamplesPreds[currentSample]) << "), but we found " << std::to_string(activatedRules.size()) << " rules with class " << std::to_string(ancientClass) << " :" << std::endl
                         << std::endl;
             } else {
-              lines.emplace_back("We didn't found any rule with same prediction as the model (class " + std::to_string(testSamplesPreds[currentSample]) + "), but we found 1 rule with class " + std::to_string(ancientClass) + " :\n");
-              std::cout << "We didn't found any rule with same prediction as the model (class " << std::to_string(testSamplesPreds[currentSample]) << "), but we found 1 rule with class " << std::to_string(ancientClass) << " :" << std::endl
+              lines.emplace_back("We didn't find any rule with the same prediction as the model (class " + std::to_string(testSamplesPreds[currentSample]) + "), but we found 1 rule with class " + std::to_string(ancientClass) + " :\n");
+              std::cout << "We didn't find any rule with the same prediction as the model (class " << std::to_string(testSamplesPreds[currentSample]) << "), but we found 1 rule with class " << std::to_string(ancientClass) << " :" << std::endl
                         << std::endl;
             }
             for (int v = 0; v < activatedRules.size(); v++) {
@@ -551,16 +631,16 @@ int fidexGlo(const std::string &command) {
         notShowUncorrectRules = true;
       }
       if (!notShowUncorrectRules) {
-        if (!notcorrectRules.empty()) {
+        if (!notCorrectRules.empty()) {
           lines.emplace_back("\nActivated rules without correct decision class :");
           std::cout << "\nActivated rules without correct decision class :" << std::endl;
-          for (int n = 0; n < notcorrectRules.size(); n++) {
-            lines.emplace_back("F" + std::to_string(n + 1) + ": " + rules[notcorrectRules[n]].toString(attributeNames, classNames));
-            std::cout << "F" << std::to_string(n + 1) + ": " << rules[notcorrectRules[n]].toString(attributeNames, classNames) << std::endl;
+          for (int n = 0; n < notCorrectRules.size(); n++) {
+            lines.emplace_back("F" + std::to_string(n + 1) + ": " + rules[notCorrectRules[n]].toString(attributeNames, classNames));
+            std::cout << "F" << std::to_string(n + 1) + ": " << rules[notCorrectRules[n]].toString(attributeNames, classNames) << std::endl;
           }
         } else {
-          lines.emplace_back("\nThere is no uncorrect rules.");
-          std::cout << "\nThere is no uncorrect rules." << std::endl;
+          lines.emplace_back("\nThere are no incorrect rules.");
+          std::cout << "\nThere are no uncorrect rules." << std::endl;
         }
       }
 
@@ -623,4 +703,4 @@ int fidexGlo(const std::string &command) {
   return 0;
 }
 
-// Exemple pour lancer le code : ./fidexGlo --test_data_file datanormTest --test_pred_file dimlpDatanormTest.out --global_rules_file globalRulesDatanorm.txt --nb_attributes 16 --nb_classes 2 --explanation_file explanation.txt --root_folder ../fidex/datafiles --with_fidex true --train_data_file datanormTrain --train_pred_file dimlpDatanormTrain.out --train_class_file dataclass2Train --test_class_file dataclass2Test --weights_file dimlpDatanorm.wts
+// Example of how to call the function: : ./fidexGlo --test_data_file datanormTest --test_pred_file dimlpDatanormTest.out --global_rules_file globalRulesDatanorm.txt --nb_attributes 16 --nb_classes 2 --explanation_file explanation.txt --root_folder ../fidex/datafiles --with_fidex true --train_data_file datanormTrain --train_pred_file dimlpDatanormTrain.out --train_class_file dataclass2Train --test_class_file dataclass2Test --weights_file dimlpDatanorm.wts

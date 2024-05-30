@@ -1,5 +1,8 @@
 #include "fidexFct.h"
 
+/**
+ * @brief Displays the parameters for fidex.
+ */
 void showFidexParams() {
   std::cout << std::endl
             << "---------------------------------------------------------------------" << std::endl
@@ -16,10 +19,10 @@ void showFidexParams() {
   printOptionDescription("--train_data_file <str>", "Train data file");
   printOptionDescription("--train_pred_file <str>", "Train prediction file");
   printOptionDescription("--train_class_file <str>", "Train true class file, not mandatory if classes are specified in train data file");
-  printOptionDescription("--test_data_file <str>", "Test sample(s) data file with data, prediction(if no --test_pred_file) and true class(if no --test_class_file)");
+  printOptionDescription("--test_data_file <str>", "Test sample(s) data file with data, prediction(if no --test_pred_file) and eventually true class(if no --test_class_file)");
   printOptionDescription("--weights_file <str>", "Weights file (not mandatory if a rules file is given with --rules_file)");
   printOptionDescription("--rules_file <str>", "Rules file to be converted to hyperlocus (not mandatory if a weights file is given with --weights_file)");
-  printOptionDescription("--rules_outfile <str>", "Rule(s) output file. If a .json filename is given, rules are saved in a special json format");
+  printOptionDescription("--rules_outfile <str>", "Rule(s) output file. If a .json filename is given, rules are saved in a special JSON format");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in dataset");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in dataset");
 
@@ -65,9 +68,9 @@ void showFidexParams() {
 }
 
 /**
- * @brief Used to set default hyperparameters values and to check the sanity of all used values like boundaries and logic.
+ * @brief Sets default hyperparameters and checks the logic and validity of the parameters of fidex.
  *
- * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
+ * @param p Reference to the Parameters object containing all hyperparameters.
  */
 void checkFidexParametersLogicValues(Parameters &p) {
   // setting default values
@@ -95,6 +98,57 @@ void checkFidexParametersLogicValues(Parameters &p) {
     throw CommandArgumentException("Error : The test prediction data file(--test_pred_file) needs to be specified if the test class data file(--test_class_file) is given.");
   }
 }
+
+/**
+ * @brief Executes the Fidex algorithm with specified parameters to extract an explanation rule for one or several given samples.
+ *
+ * Fidex is based on the training samples and hyperlocus and directed by the given parameters,
+ * including dropout and the maximum number of iterations allowed.
+ * It works by identifying hyperplanes in the feature space that discriminate between different
+ * classes of samples and constructing a rule for each test sample based on these hyperplanes covering this sample
+ * and as many other samples as possible.
+ *
+ * Note:
+ * - It's mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.
+ * - True train class labels must be provided, either within the data files or separately through class files. Test classes are given the same way if present.
+ * - Train and test predictions are mandatory, either within the data file for test or separately through prediction file for both.
+ * - The weights file or rules_file (when training with decision trees) obtained from the model training must be provided.
+ * - The path of the file containing the computed rules must be provided. It can be generated as a JSON if a JSON extension is specified.
+ * - Normalization parameters can be specified to denormalize the rules if data were normalized beforehand.
+ * - Parameters can be defined directly via the command line or through a JSON configuration file.
+ * - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
+ *
+ * Formats:
+ * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
+ *   1. Only attributes (floats).
+ *   2. Attributes (floats) followed by an integer class ID.
+ *   3. Attributes (floats) followed by one-hot encoded class.
+ * - Test data files can also include predictions. The format of each sample in the file will be as follows:
+ *   - First Line: Contains data attributes. It may be followed by class information (either as an ID or in one-hot format).
+ *   - Second Line: Contains prediction values.
+ *   - Third Line (optional): Contains class information, only if it was not included in the first line and if present.
+ * - Class files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons, or commas. Supported formats:
+ *   1. Integer class ID.
+ *   2. One-hot encoded class.
+ * - Prediction files should contain one line per data sample, each line consisting of a series of numerical values separated
+ *   by a space, a comma (CSV), a semicolon (;), or a tab representing the prediction scores for each class.
+ * - Weights file: This file should be obtained by training with Dimlp, SVM, MLP, or a CNN from dimlpfidex because an additional special Dimlp layer is needed.
+ *   The first row represents bias values of the Dimlp layer and the second row are values of the weight matrix between the previous layer and the Dimlp layer.
+ *   Each value is separated by a space. As an example, if the layers are of size 4, the biases are: b1 b2 b3 b4 and the weights are w1 w2 w3 w4.
+ * - Rule file: This file should be obtained directly by training with Random Forests or Gradient Boosting from dimlpfidex because rules need to be extracted from the trees.
+ * - Attributes file: Each line corresponds to one attribute, each attribute must be specified. Classes can be specified
+ *   after the attributes but are not mandatory. Each attribute or class must be in one word without spaces (you can use _ to replace a space).
+ *   The order is important as the first attribute/class name will represent the first attribute/class in the dataset.
+ * - Normalization file: Each line contains the mean/median and standard deviation for an attribute.
+ *   Format: '2 : original mean: 0.8307, original std: 0.0425'
+ *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
+ *
+ * Example of how to call the function:
+ * fidex.fidex('--train_data_file datanorm --train_pred_file dimlp.out --train_class_file dataclass2 --test_data_file testSampleDataCombine --nb_attributes 16 --nb_classes 2 --weights_file dimlp.wts --nb_quant_levels 50 --rules_outfile rule.txt --stats_file stats --max_iterations 100 --min_covering 25 --dropout_dim 0.5 --dropout_hyp 0.5 --root_folder fidex/datafiles')
+ *
+ * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
+ * @return Returns 0 for successful execution, -1 for errors encountered during the process.
+ */
 
 int fidex(const std::string &command) {
 
@@ -145,7 +199,7 @@ int fidex(const std::string &command) {
       } catch (const std::out_of_range &e) {
         throw CommandArgumentException("Some value inside your JSON config file '" + commandList[2] + "' is out of range.\n(Probably due to a too large or too tiny numeric value).");
       } catch (const std::exception &e) {
-        std::string msg(e.what()) ;
+        std::string msg(e.what());
         throw CommandArgumentException("Unknown JSON config file error: " + msg);
       }
     } else {
@@ -480,28 +534,5 @@ int fidex(const std::string &command) {
   ./fidex --train_data_file datanorm --train_pred_file dimlp.out --train_class_file dataclass2 --test_data_file testData.txt --nb_attributes 16 --nb_classes 2 --test_pred_file testPred.txt --test_class_file testClass.txt --weights_file dimlp.wts --nb_quant_levels 50 --rules_outfile rule.txt --stats_file stats --max_iterations 100 --min_covering 25 --dropout_dim 0.5 --dropout_hyp 0.5 --root_folder ../fidex/datafiles
   ./fidex --train_data_file isoletTrainData.txt --train_pred_file isoletTrainPredV2.out --train_class_file isoletTrainClass.txt --test_data_file isoletTestData.txt --nb_attributes 16 --nb_classes 2 --test_pred_file isoletTestPredV2.out --test_class_file isoletTestClass.txt --weights_file isoletV2.wts --nb_quant_levels 50 --rules_outfile ruleFidex.txt --stats_file stats --max_iterations 100 --min_covering 25 --dropout_dim 0.5 --dropout_hyp 0.5 --root_folder ../dimlp/datafiles/isoletDataset
   ./fidex --train_data_file Train/X_train.txt --train_pred_file Train/pred_trainV2.out --train_class_file Train/y_train.txt --test_data_file Test/X_test.txt --nb_attributes 16 --nb_classes 2 --test_pred_file Test/pred_testV2.out --test_class_file Test/y_test.txt --weights_file HAPTV2.wts --nb_quant_levels 50 --rules_outfile ruleFidexV2.txt --stats_file stats --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --root_folder ../dimlp/datafiles/HAPTDataset
-
-
-  #include <profileapi.h>
-
-  LARGE_INTEGER frequency;        - ticks per second
-  LARGE_INTEGER t1, t2;           - ticks
-  double elapsedTime;
-
-  get ticks per second
-  QueryPerformanceFrequency(&frequency);
-
-  start timer
-  QueryPerformanceCounter(&t1);
-
-  do something
-  ...
-
-  stop timer
-  QueryPerformanceCounter(&j2WB2);
-
-  compute and print the elapsed time in millisec
-  elapsedTimeWB2 = (j2WB2.QuadPart - j1WB2.QuadPart) * 1000.0 / frequencyWB2.QuadPart;
-  std::printf("\npart 2 : Full execution time = %f sec\n", elapsedTimeWB2);
 
 */

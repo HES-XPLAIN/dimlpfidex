@@ -1,8 +1,7 @@
 #include "fidexGloRulesFct.h"
 
 /**
- * @brief shows all program arguments and details into the terminal.
- *
+ * @brief Displays the parameters for fidexGloRules.
  */
 void showRulesParams() {
   std::cout << std::endl
@@ -22,8 +21,8 @@ void showRulesParams() {
   printOptionDescription("--train_class_file <str>", "Train true class file, not mandatory if classes are specified in train data file");
   printOptionDescription("--weights_file <str>", "Weights file (not mandatory if a rules file is given with --rules_file)");
   printOptionDescription("--rules_file <str>", "Rules file to be converted to hyperlocus (not mandatory if a weights file is given with --weights_file)");
-  printOptionDescription("--global_rules_outfile <str>", "Rules output file. If a .json filename is given, rules are saved in a special json format>");
-  printOptionDescription("--heuristic <int [1,3]>", "Heuristic 1: optimal fidexGlo, 2: fast fidexGlo 3: very fast fidexGlo");
+  printOptionDescription("--global_rules_outfile <str>", "Rules output file. If a .json filename is given, rules are saved in a special JSON format>");
+  printOptionDescription("--heuristic <int [1,3]>", "Heuristic 1: optimal fidexGlo, 2: fast fidexGlo, 3: very fast fidexGlo");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in dataset");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in dataset");
 
@@ -34,17 +33,17 @@ void showRulesParams() {
             << std::endl;
 
   printOptionDescription("--json_config_file <str>", "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path");
-  printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
+  printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be configured with respect to this root folder");
   printOptionDescription("--attributes_file <str>", "File of attributes");
   printOptionDescription("--console_file <str>", "File with console logs redirection");
-  printOptionDescription("--max_iterations <int [1,inf[>", "Max iteration number, also the max possible number of attributs in a rule, should be 25 if working with images (default: 10)");
+  printOptionDescription("--max_iterations <int [1,inf[>", "Max iteration number, also the max possible number of attributes in a rule, should be 25 if working with images (default: 10)");
   printOptionDescription("--min_covering <int [1,inf[>", "Minimum covering number (default: 2)");
   printOptionDescription("--covering_strategy <bool>", "Whether to use this strategy : if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (default: True)");
   printOptionDescription("--max_failed_attempts <int [0,inf[>", "Maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used (default: 30)");
   printOptionDescription("--min_fidelity <float [0,1]>", "Minimal rule fidelity accepted when generating a rule (default: 1.0)");
   printOptionDescription("--lowest_min_fidelity <float [0,1]>", "Minimal min_fidelity to which we agree to go down during covering_strategy (default: 0.75)");
   printOptionDescription("--dropout_dim <float [0,1]>", "Dimension dropout parameter (default: 0.0)");
-  printOptionDescription("--dropout_hyp <float [0,1]>", "Hyperplan dropout parameter (default: 0.0)");
+  printOptionDescription("--dropout_hyp <float [0,1]>", "Hyperplane dropout parameter (default: 0.0)");
   printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in staircase activation function (default: 50)");
   printOptionDescription("--decision_threshold <float [0,1]>", "Decision threshold for predictions, you need to specify the index of positive class if you want to use it");
   printOptionDescription("--positive_class_index <int [0,nb_classes-1]>", "Index of positive class for the usage of decision threshold, index starts at 0");
@@ -67,21 +66,24 @@ void showRulesParams() {
 }
 
 /**
- * @brief executes fidex algorithm on all provided samples in the following way:
+ * @brief Executes the Fidex algorithm on all provided samples.
  *
- *    - Initialize the number of threads chosen by the user and splits evenly all samples to be covered between them.
- *    - Computes fidex until a rule is created or until the max failed attempts limit is reached
- *      -> For each failed attempt, the current minimal covering to be reached is lowered until the limit of 2 is reached.
- *      -> Each rule that have been found with a covering that is lower than the minimal covering setted by the used are counted.
- *      -> If the max failed attempts limit is reached, then the sample computed is removed from the not covered samples vector as it's considered as unreachable
- *    - The computed rule is added to the list of rules
+ *    This function works in the following way:
  *
+ *    - Initializes the number of threads chosen by the user and splits evenly all samples to be covered between them.
+ *    - Computes Fidex until a rule is created or until the max failed attempts limit is reached.
+ *      -> First attempt to generate a rule with a covering greater or equal to 'min_covering' and a fidelity greater or equal to 'min_fidelity'.
+ *      -> If the attempt fails and the 'covering_strategy' is on, Fidex is computed to find a rule with the maximum possible minimal covering that can be lower than 'min_covering'.
+ *      -> If all attempts fail, the targeted fidelity is gradually lowered until it succeeds or 'lowest_min_fidelity' is reached.
+ *      -> Each failed attempt at the lowest minimal fidelity is counted.
+ *      -> If the max failed attempts limit is reached, the sample is removed from the not covered samples vector as it's considered as unreachable.
+ *    - The computed rule is added to the list of rules.
  *
- * @param rules Empty vector of rules to be filled once the function has finished
- * @param notCoveredSamples vector with all samples to be covered or ignored if the algorithm isn't able to find one in "maxFailedAttempts" attempts.
- * @param trainDataset class containing all usable data to compute the algorithm.
- * @param p class containing all used defined parameters that influences the program execution.
- * @param hyperlocus 2D vector of doubles used to compute Fidex alorithm
+ * @param rules Empty vector of rules to be filled once the function has finished.
+ * @param notCoveredSamples Vector with all samples to be covered or ignored if the algorithm isn't able to find one in "maxFailedAttempts" attempts with a minimal covering of 1.
+ * @param trainDataset Class containing all usable train data to compute the algorithm.
+ * @param p Class containing all user-defined parameters that influence the program execution.
+ * @param hyperlocus 2D vector of doubles representing all the possible hyperplanes used to compute the Fidex algorithm.
  */
 void generateRules(std::vector<Rule> &rules, std::vector<int> &notCoveredSamples, DataSetFid &trainDataset, Parameters &p, const std::vector<std::vector<double>> &hyperlocus) {
   int nbProblems = 0;
@@ -139,7 +141,7 @@ void generateRules(std::vector<Rule> &rules, std::vector<int> &notCoveredSamples
         localNbRulesNotFound += 1;
 #pragma omp critical
         {
-          // ignore samples that cannot be covered after "maxFailedAttempts" attempts
+          // ignore samples that cannot be covered after "maxFailedAttempts" attempts with a minimum covering of 1
           it = find(notCoveredSamples.begin(), notCoveredSamples.end(), idSample);
           if (it != notCoveredSamples.end()) {
             notCoveredSamples.erase(it);
@@ -173,28 +175,29 @@ void generateRules(std::vector<Rule> &rules, std::vector<int> &notCoveredSamples
 
   std::cout << std::endl
             << rules.size() << " rules created." << std::endl
-            << "Number of sample with lower covering than " << minCovering << " is " << nbProblems << std::endl
+            << "Number of samples with lower covering than " << minCovering << " is " << nbProblems << std::endl
             << "Number of rules not found is " << nbRulesNotFound << std::endl
             << "Fidex rules computed" << std::endl;
 }
 
 /**
- * @brief Filters the list of generated rules to remove duplicates and keep the rules that best fits and covers not covered samples.
+ * @brief Generates a list of rules covering all training samples using the best and slowest heuristic.
+ *
+ * Generates rules for each training sample and filters the list of generated rules to remove duplicates and keep the rules that best fit and cover all training samples.
  * This is performed in the following way:
  *
- *    - Duplicated rules are removed
- *    - While all samples are not covered, it checks every rule's covered samples vector and checks how many of the not covered ones are present in it.
- *    - If the rule covers samples that are not considered covered yet and covers more than the rule that is considered being the best, it's saved as the
- *      best rule to be added to the filtered ones.
- *    - When all the rules are checked, the best one is removed from the rules to check, it is saved in the chosen rules vector and the samples
- *      it covers are removed from the ones that are considered not covered.
+ *  - Rules are generated for each sample.
+ *  - Duplicated rules are removed.
+ *  - While not all samples are covered by the rules, it checks every rule's covered samples vector and checks how many of the not covered ones are present in it.
+ *  - If the rule covers some samples that are not considered covered yet and covers more than the previous best rule, it's saved as the
+ *    best rule to be added to the filtered ones.
+ *  - When all the rules are checked, the best one is removed from the rules to check, it is saved in the chosen rules vector and the samples
+ *    it covers are removed from the ones that are considered not covered.
  *
- *
- *
- * @param trainDataset class containing all usable data to compute the algorithm.
- * @param p class containing all used defined parameters that influences the program execution.
- * @param hyperlocus 2D vector of doubles used to compute Fidex alorithm
- * @return vector<Rule>
+ * @param trainDataset Class containing all usable data to compute the algorithm.
+ * @param p Class containing all user-defined parameters that influence the program execution.
+ * @param hyperlocus 2D vector of doubles representing all the possible hyperplanes used to compute the Fidex algorithm.
+ * @return A vector containing the computed rules.
  */
 std::vector<Rule> heuristic_1(DataSetFid &trainDataset, Parameters &p, const std::vector<std::vector<double>> &hyperlocus) {
   std::vector<Rule> rules;
@@ -209,7 +212,7 @@ std::vector<Rule> heuristic_1(DataSetFid &trainDataset, Parameters &p, const std
   // remove duplicates
   rules.erase(unique(rules.begin(), rules.end()), rules.end());
 
-  // While there is some not covered samples
+  // While there are some not covered samples
   std::vector<int>::iterator ite;
   std::vector<int> currentRuleSamples;
 
@@ -250,14 +253,16 @@ std::vector<Rule> heuristic_1(DataSetFid &trainDataset, Parameters &p, const std
 }
 
 /**
- * @brief Faster version of the first heuristic, only difference is that it doesn't check every rule before choosing the best one.
- * It directly selects if one or more not covered sample is covered.
+ * @brief Generates a list of rules covering all training samples using a faster but less optimal heuristic.
  *
+ * Generates rules for each training sample and filters the list of generated rules to remove duplicates and keep the rules that fit and cover all training samples.
+ * This is a faster version of the first heuristic 'heuristic_1', the only difference is that it doesn't check every generated rule before choosing the best one.
+ * After removing duplicates, it directly selects a rule if one or more not already covered samples are covered by the rule, until all samples are covered.
  *
- * @param trainDataset class containing all usable data to compute the algorithm.
- * @param p class containing all used defined parameters that influences the program execution.
- * @param hyperlocus 2D vector of doubles used to compute Fidex alorithm
- * @return vector<Rule>
+ * @param trainDataset Class containing all usable data to compute the algorithm.
+ * @param p Class containing all user-defined parameters that influences the program execution.
+ * @param hyperlocus 2D vector of doubles representing all the possible hyperplanes used to compute the Fidex algorithm.
+ * @return A vector containing the computed rules.
  */
 std::vector<Rule> heuristic_2(DataSetFid &trainDataset, Parameters &p, const std::vector<std::vector<double>> &hyperlocus) {
   std::vector<Rule> rules;
@@ -277,7 +282,7 @@ std::vector<Rule> heuristic_2(DataSetFid &trainDataset, Parameters &p, const std
   // remove duplicates
   rules.erase(unique(rules.begin(), rules.end()), rules.end());
 
-  // While there is some not covered samples
+  // While there are some not covered samples
   int i = 0;
   std::vector<int>::iterator ite;
   std::vector<int> currentRuleSamples;
@@ -309,12 +314,15 @@ std::vector<Rule> heuristic_2(DataSetFid &trainDataset, Parameters &p, const std
 }
 
 /**
- * @brief this heuristic generate rules for every sample and
+ * @brief Generates a list of rules covering all training samples. This is the fastest heuristic but cannot be parallelized.
  *
- * @param trainDataset
- * @param p
- * @param hyperlocus
- * @return vector<Rule>
+ * Fastest heuristic that selects a random sample in the not covered ones, computes its rule, adds it to the computed rules, and removes each sample covered by this rule.
+ * When all samples are covered, it removes duplicates.
+ *
+ * @param trainDataset Class containing all usable data to compute the algorithm.
+ * @param p Class containing all user-defined parameters that influences the program execution.
+ * @param hyperlocus 2D vector of doubles representing all the possible hyperplanes used to compute the Fidex algorithm.
+ * @return A vector containing the computed rules.
  */
 std::vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const std::vector<std::vector<double>> &hyperlocus) {
   Rule rule;
@@ -349,7 +357,7 @@ std::vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const std
   std::cout << "Computing rules..." << std::endl
             << std::endl;
 
-  // While there is some not covered samples
+  // While there are some not covered samples
   while (!notCoveredSamples.empty()) {
 
     if (int(nbDatas / 100) != 0 && (nbDatas - notCoveredSamples.size()) % int(nbDatas / 100) == 0 && consoleFile.empty()) {
@@ -376,6 +384,7 @@ std::vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const std
       chosenRules.push_back(rule); // We add the new rule
       chosenRuleSamples = rule.getCoveredSamples();
 
+      // Remove samples covered by this rule
       notCoveredSamples.erase(
           remove_if(notCoveredSamples.begin(), notCoveredSamples.end(), [&chosenRuleSamples](int sample) {
             return find(chosenRuleSamples.begin(), chosenRuleSamples.end(), sample) != chosenRuleSamples.end();
@@ -393,7 +402,7 @@ std::vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const std
   // remove duplicates
   chosenRules.erase(unique(chosenRules.begin(), chosenRules.end()), chosenRules.end());
 
-  std::cout << "Number of sample with lower covering than " << minNbCover << " : " << nbProblems << std::endl
+  std::cout << "Number of samples with lower covering than " << minNbCover << " : " << nbProblems << std::endl
             << "Number of rules not found : " << nbRulesNotFound << std::endl
             << chosenRules.size() << " rules selected." << std::endl;
 
@@ -401,9 +410,9 @@ std::vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const std
 }
 
 /**
- * @brief Used to set default hyperparameters values and to check the sanity of all used values like boundaries and logic.
+ * @brief Sets default hyperparameters and checks the logic and validity of the parameters of fidexGloRules.
  *
- * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
+ * @param p Reference to the Parameters object containing all hyperparameters.
  */
 void checkRulesParametersLogicValues(Parameters &p) {
   // setting default values
@@ -429,19 +438,67 @@ void checkRulesParametersLogicValues(Parameters &p) {
   p.checkParametersNormalization();
 
   if (p.getInt(NB_THREADS) < 1 || p.getInt(NB_THREADS) > omp_get_max_threads()) {
-    throw CommandArgumentException("Error : Number threads must be between 1 and #CPU cores of your machine (which is " + std::to_string(omp_get_max_threads()) + ")");
+    throw CommandArgumentException("Error : Number of threads must be between 1 and the number of CPU cores on your machine (which is " + std::to_string(omp_get_max_threads()) + ")");
   }
 
   if (!(p.getInt(HEURISTIC) > 0 && p.getInt(HEURISTIC) < 4)) {
-    throw CommandArgumentException("Error : Heuristic must be 1, 2 or 3.");
+    throw CommandArgumentException("Error : Heuristic must be 1, 2, or 3.");
   }
 }
 
 /**
- * @brief Computes the fidex global algorithm.
+ * @brief Executes the FidexGloRules algorithm with specified parameters to extract a ruleset from a dataset of training samples.
  *
- * @param command list of arguments included by the user.
- * @return int
+ * FidexGloRules computes a rule for each training sample by calling Fidex. Fidex is based on the training samples and hyperlocus
+ * and directed by the given parameters, including dropout and the maximum number of iterations allowed.
+ * It works by identifying hyperplanes in the feature space that discriminate between different
+ * classes of samples and constructing a rule for the training sample based on these hyperplanes covering this sample
+ * and as many other training samples as possible. Then, a heuristic is used to remove the duplicated and unnecessary rules.
+ *
+ * The Fidex algorithm is computed until a rule is created or until the max failed attempts limit is reached.
+ *  -> First attempt to generate a rule with a covering greater or equal to 'min_covering' and a fidelity greater or equal to 'min_fidelity'.
+ *  -> If the attempt fails and the 'covering_strategy' is on, Fidex is computed to find a rule with the maximum possible minimal covering that can be lower than 'min_covering'.
+ *  -> If all attempts fail, the targeted fidelity is gradually lowered until it succeeds or 'lowest_min_fidelity' is reached.
+ *  -> Each failed attempt at the lowest minimal fidelity is counted.
+ *  -> If the max failed attempts limit is reached, then the rule couldn't be computed for this sample.
+ *
+ * Notes:
+ * - It's mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.
+ * - True train class labels must be provided, either within the data files or separately through class files.
+ * - Train predictions are also mandatory.
+ * - A heuristic needs to be chosen; the first one should always be chosen if the execution time permits it.
+ * - The weights file or rules_file (when training with decision trees) obtained from the model training must be provided.
+ * - The path of the file containing the computed rules must be provided. It can be generated as a JSON if a JSON extension is specified.
+ * - Normalization parameters can be specified to denormalize the rules if data were normalized beforehand.
+ * - Parameters can be defined directly via the command line or through a JSON configuration file.
+ * - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
+ *
+ * File formats:
+ * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
+ *   1. Only attributes (floats).
+ *   2. Attributes (floats) followed by an integer class ID.
+ *   3. Attributes (floats) followed by one-hot encoded class.
+ * - Class files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons, or commas. Supported formats:
+ *   1. Integer class ID.
+ *   2. One-hot encoded class.
+ * - Prediction files should contain one line per data sample, each line consisting of a series of numerical values separated
+ *   by a space, a comma (CSV), a semicolon (;), or a tab representing the prediction scores for each class.
+ * - Weights file: This file should be obtained by training with Dimlp, SVM, MLP, or a CNN from dimlpfidex because an additional special Dimlp layer is needed.
+ *   The first row represents bias values of the Dimlp layer and the second row are values of the weight matrix between the previous layer and the Dimlp layer.
+ *   Each value is separated by a space. As an example, if the layers are of size 4, the biases are: b1 b2 b3 b4 and the weights are w1 w2 w3 w4.
+ * - Rule file: This file should be obtained directly by training with Random Forests or Gradient Boosting from dimlpfidex because rules need to be extracted from the trees.
+ * - Attributes file: Each line corresponds to one attribute, each attribute must be specified. Classes can be specified
+ *   after the attributes but are not mandatory. Each attribute or class must be in one word without spaces (you can use _ to replace a space).
+ *   The order is important as the first attribute/class name will represent the first attribute/class in the dataset.
+ * - Normalization file: Each line contains the mean/median and standard deviation for an attribute.
+ *   Format: '2 : original mean: 0.8307, original std: 0.0425'
+ *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
+ *
+ * Example of how to call the function:
+ * fidex.fidexGloRules("--train_data_file datanormTrain.txt --train_pred_file predTrain.out --train_class_file dataclass2Train.txt --weights_file weights.wts --nb_attributes 16 --nb_classes 2 --heuristic 1 --global_rules_outfile globalRules.rls --root_folder dimlp/datafiles")
+ *
+ * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
+ * @return Returns 0 for successful execution, -1 for errors encountered during the process.
  */
 int fidexGloRules(const std::string &command) {
   // Save buffer where we output results
@@ -482,7 +539,7 @@ int fidexGloRules(const std::string &command) {
       } catch (const std::out_of_range &e) {
         throw CommandArgumentException("Some value inside your JSON config file '" + commandList[2] + "' is out of range.\n(Probably due to a too large or too tiny numeric value).");
       } catch (const std::exception &e) {
-        std::string msg(e.what()) ;
+        std::string msg(e.what());
         throw CommandArgumentException("Unknown JSON config file error: " + msg);
       }
     } else {
@@ -532,7 +589,7 @@ int fidexGloRules(const std::string &command) {
     int nbDatas = trainDatas->getNbSamples();
 
     if (params->getInt(MIN_COVERING) > nbDatas) {
-      throw CommandArgumentException("Error : invalide type for parameter --min_covering, strictly positive integer smaller or equal than the number of train data samples requested.");
+      throw CommandArgumentException("Error : invalid type for parameter --min_covering, strictly positive integer smaller or equal than the number of train data samples requested.");
     }
 
     // Get attributes
@@ -599,7 +656,7 @@ int fidexGloRules(const std::string &command) {
 
     // Check size of hyperlocus
     if (nbIn == 0 || nbIn % nbAttributes != 0) {
-      throw InternalError("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributs - " + std::to_string(nbAttributes));
+      throw InternalError("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributes - " + std::to_string(nbAttributes));
     }
 
     std::cout << "Hyperspace created." << std::endl
@@ -684,7 +741,7 @@ int fidexGloRules(const std::string &command) {
   return 0;
 }
 
-/* Exemples pour lancer le code :
+/* Examples of how to call the function:
 
 ./fidexGloRules --train_data_file datanormTrain --train_pred_file dimlpDatanormTrain.out --train_class_file dataclass2Train --weights_file dimlpDatanorm.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 --global_rules_outfile globalRulesDatanorm.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesResult --root_folder ../fidex/datafiles
 

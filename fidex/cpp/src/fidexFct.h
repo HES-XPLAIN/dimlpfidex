@@ -23,9 +23,16 @@
 #include <unordered_map>
 #include <vector>
 
+/**
+ * @brief Displays the parameters for fidex.
+ */
 void showFidexParams();
-void launchFidex(Fidex &fidex, Parameters &params, Rule &rule, std::vector<double> &mainSampleValues, int mainSamplePred, double mainSamplePredValue, int mainSampleClass);
+
+/**
+ * @brief Sets default hyperparameters and checks the logic and validity of the parameters of fidex.
+ */
 void checkFidexParametersLogicValues(Parameters &p);
+
 int fidex(const std::string &command = "");
 
-#endif
+#endif // FIDEXFCT_H
