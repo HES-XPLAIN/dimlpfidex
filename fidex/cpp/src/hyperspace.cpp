@@ -1,9 +1,9 @@
 #include "hyperspace.h"
 
 /**
- * @brief Constructs a Hyperspace object with a specified matrix of possible hyperplanes.
+ * @brief Constructs a Hyperspace object with a specified 2D vector of doubles of possible hyperplanes.
  *
- * @param matHypLocus Matrix representing all the possible hyperplanes.
+ * @param matHypLocus 2D vector of doubles representing all the possible hyperplanes.
  */
 Hyperspace::Hyperspace(const std::vector<std::vector<double>> &matHypLocus) : hyperLocus(matHypLocus) {
   std::vector<std::pair<int, int>> discriminativeHyperplans;
@@ -11,9 +11,9 @@ Hyperspace::Hyperspace(const std::vector<std::vector<double>> &matHypLocus) : hy
 }
 
 /**
- * @brief Gets the matrix of possible hyperplanes in the hyperspace.
+ * @brief Gets the 2D vector of doubles of possible hyperplanes in the hyperspace.
  *
- * @return Matrix representing all the possible hyperplanes.
+ * @return 2D vector of doubles representing all the possible hyperplanes.
  */
 std::vector<std::vector<double>> Hyperspace::getHyperLocus() const {
   return hyperLocus;

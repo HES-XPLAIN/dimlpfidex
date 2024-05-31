@@ -64,13 +64,13 @@ const dropoutDimFld = Field(
   description: "Dimension dropout parameter.",
 );
 const dropoutHypFld = Field(
-  "Hyperplan dropout",
+  "Hyperplane dropout",
   "dropout_hyp",
   Datatype.doublePrecision,
   minValue: "0.0",
   maxValue: "1.0",
     defaultValue: "0.0",
-  description: "Hyperplan dropout parameter.",
+  description: "Hyperplane dropout parameter.",
 );
 
 const rulesOutputFileFld = Field(

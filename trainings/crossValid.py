@@ -109,7 +109,7 @@ def crossValid(*args, **kwargs):
         if not kwargs:
             print("---------------------------------------------------------------------")
             print("Please specify arguments using named parameters.")
-            print("Warning! The files are localised with respect to root folder dimlpfidex.")
+            print("Warning! The files are located with respect to the root folder dimlpfidex.")
 
             print("----------------------------")
             print("Required parameters :")
@@ -139,7 +139,7 @@ def crossValid(*args, **kwargs):
             print("min_fidelity <minimal rule fidelity accepted when generating a rule [0,1] (1 by default)>")
             print("lowest_min_fidelity <minimal min_fidelity to which we agree to go down during covering_strategy (0.75 by default)>")
             print("dropout_dim : dimension dropout parameter for fidex and fidexGlo")
-            print("dropout_hyp : hyperplan dropout parameter for fidex and fidexGlo")
+            print("dropout_hyp : hyperplane dropout parameter for fidex and fidexGlo")
             print("seed : 0 = random (default)")
             print("positive_class_index <index of positive class sample to compute true/false positive/negative rates and ROC curve (None by default, put 0 for first class)")
             print("decision_threshold <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>")
@@ -971,9 +971,9 @@ def crossValid(*args, **kwargs):
                     if is_fidexglo:
                         outputStatsFile.write(f"The fidexGlo heuristic is {fidexglo_heuristic}\n")
                     if dropout_hyp:
-                        outputStatsFile.write(f"The hyperplan dropout parameter for fidex and fidexGlo is {dropout_hyp}\n")
+                        outputStatsFile.write(f"The hyperplane dropout parameter for fidex and fidexGlo is {dropout_hyp}\n")
                     else:
-                        outputStatsFile.write("There is no hyperplan dropout\n")
+                        outputStatsFile.write("There is no hyperplane dropout\n")
                     if dropout_dim:
                         outputStatsFile.write(f"The dimension dropout parameter for fidex and fidexGlo is {dropout_dim}\n")
                     else:

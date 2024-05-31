@@ -19,14 +19,14 @@
  *        Each number in a line are separated by a space, a comma(CSV), a semicolon(;) or a tab.
  *        The number of attributes and classes in the dataset are used to validate the format and content of the data and class files.
  *
- * @param name string containing the name of the dataSet
- * @param dataFile string data file name
- * @param predFile string prediction file name
- * @param nbAttributes int number of attributes
- * @param nbClasses int number of classes
- * @param decisionThresh double indicating the decision threshold, useful when choosing the decision (-1 for no threshold)
- * @param positiveClassIndex integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
- * @param trueClassFile string class file name
+ * @param name The name of the dataSet.
+ * @param dataFile The data file name.
+ * @param predFile The prediction file name.
+ * @param nbAttributes The number of attributes.
+ * @param nbClasses The number of classes.
+ * @param decisionThresh A double indicating the decision threshold, useful when choosing the decision (-1 for no threshold).
+ * @param positiveClassIndex An integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold).
+ * @param trueClassFile The class file name.
  */
 DataSetFid::DataSetFid(const std::string &name, const std::string &dataFile, const std::string &predFile, int nbAttributes, int nbClasses, double decisionThresh, int positiveClassId, const std::string &trueClassFile) : datasetName(name) {
 
@@ -65,12 +65,12 @@ DataSetFid::DataSetFid(const std::string &name, const std::string &dataFile, con
  *
  *        The presence and format of class data (ID or one-hot) are inferred based on the structure of the lines in the file.
  *
- * @param name string containing the name of the dataSet
- * @param dataFile string data file name containing data, predictions and maybe classes(not mandatory)
- * @param nbAttributes int number of attributes
- * @param nbClasses int number of classes
- * @param decisionThresh double indicating the decision threshold, useful when choosing the decision (-1 for no threshold)
- * @param positiveClassIndex integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
+ * @param name A string containing the name of the dataSet.
+ * @param dataFile The data file name containing data, predictions and maybe classes(not mandatory).
+ * @param nbAttributes The number of attributes.
+ * @param nbClasses The number of classes.
+ * @param decisionThresh A double indicating the decision threshold, useful when choosing the decision (-1 for no threshold).
+ * @param positiveClassIndex An integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold).
  */
 DataSetFid::DataSetFid(const std::string &name, const std::string &dataFile, int nbAttributes, int nbClasses, double decisionThresh, int positiveClassId) : datasetName(name), hasDatas(true), hasPreds(true) {
 
@@ -260,9 +260,9 @@ void DataSetFid::parseMultipleNetworks(std::fstream &fileWts) {
  *        3. Attributes with One-Hot Class Encoding: Each line contains all the float attributes followed by a one-hot encoding of the class.
  *           The number of elements in this encoding should match the total number of classes, with exactly one '1' and the rest '0's.
  *
- * @param dataFile string representing the name of the data file. This file should contain data in one of the supported formats.
- * @param nbAttributes int specifying the number of attributes
- * @param nbClasses int specifying the number of classes
+ * @param dataFile A string representing the name of the data file. This file should contain data in one of the supported formats.
+ * @param nbAttributes The number of attributes.
+ * @param nbClasses The number of classes.
  */
 void DataSetFid::setDataFromFile(const std::string &dataFile, int nbAttributes, int nbClasses) {
   if (hasDatas == true) {
@@ -310,10 +310,10 @@ void DataSetFid::setDataFromFile(const std::string &dataFile, int nbAttributes, 
  *        The number of values per line should match the specified number of classes.
  *        If a decision threshold is provided, the function uses it to determine the predicted class based on the threshold.
  *
- * @param predFile string prediction file name
- * @param nbClasses int number of classes
- * @param decisionThresh optional double indicating the decision threshold, useful when choosing the decision (-1 for no threshold)
- * @param positiveClassIndex optional integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold)
+ * @param predFile The prediction file name.
+ * @param nbClasses The number of classes.
+ * @param decisionThresh An optional double indicating the decision threshold, useful when choosing the decision (-1 for no threshold).
+ * @param positiveClassIndex An optional integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold).
  */
 void DataSetFid::setPredFromFile(const std::string &predFile, int nbClasses, double decisionThresh, int positiveClassId) {
 
@@ -371,7 +371,7 @@ void DataSetFid::setPredFromFile(const std::string &predFile, int nbClasses, dou
  *
  *        The function determines the format of each line based on the 'nbClasses' parameter and the structure of the data in the line.
  *
- * @param classFile A string representing the name of the class file. This file should contain class data
+ * @param classFile A string representing the name of the class file. This file should contain class data.
  *                  in one of the supported formats (either class ID or one-hot encoded).
  * @param nbClasses An int specifying the number of classes.
  */
@@ -477,8 +477,8 @@ void DataSetFid::setDataLine(const std::string &line, const std::string &dataFil
  *        If a decision threshold is set, the function also determines the predicted class based on this threshold.
  *        Each line should contain numbers separated by a space, a comma(CSV), a semicolon(;) or a tab.
  *
- * @param line string containing one line of the prediction file
- * @param predFile string prediction file name
+ * @param line A string containing one line of the prediction file.
+ * @param predFile The prediction file name.
  */
 void DataSetFid::setPredLine(const std::string &line, const std::string &predFile) {
 
@@ -846,9 +846,9 @@ void DataSetFid::checkThreshold() const {
 /**
  * @brief Add attributes and eventually classes from attribute file in the dataset.
  *
- * @param attributesFile string attribute file name
- * @param nbAttributes int number of attributes
- * @param nbClasses optional int number of classes
+ * @param attributesFile The attribute file name.
+ * @param nbAttributes The number of attributes.
+ * @param nbClasses The number of classes (optional).
  */
 void DataSetFid::setAttributes(const std::string &attributesFile, int nbAttributes, int nbClasses) {
   hasAttributes = true;

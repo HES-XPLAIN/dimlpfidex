@@ -106,56 +106,56 @@ public:
   /**
    * @brief Gets the antecedents of the rule.
    *
-   * @return std::vector<Antecedant> The antecedents of the rule.
+   * @return The antecedents of the rule.
    */
   std::vector<Antecedant> getAntecedants() const { return antecedants; }
 
   /**
    * @brief Gets the number of antecedents in the rule.
    *
-   * @return int The number of antecedents.
+   * @return The number of antecedents.
    */
   int getNbAntecedants() const { return static_cast<int>(antecedants.size()); }
 
   /**
    * @brief Gets the covered samples of the rule.
    *
-   * @return std::vector<int> The covered samples.
+   * @return The covered samples.
    */
   std::vector<int> getCoveredSamples() const { return coveredSamples; }
 
   /**
    * @brief Gets the covering size of the rule.
    *
-   * @return int The covering size.
+   * @return The covering size.
    */
   int getCoveringSize() const { return coveringSize; }
 
   /**
    * @brief Gets the output class of the rule.
    *
-   * @return int The output class.
+   * @return The output class.
    */
   int getOutputClass() const { return outputClass; }
 
   /**
    * @brief Gets the fidelity of the rule.
    *
-   * @return double The fidelity.
+   * @return The fidelity.
    */
   double getFidelity() const { return fidelity; }
 
   /**
    * @brief Gets the accuracy of the rule.
    *
-   * @return double The accuracy.
+   * @return The accuracy.
    */
   double getAccuracy() const { return accuracy; }
 
   /**
    * @brief Gets the confidence of the rule.
    *
-   * @return double The confidence.
+   * @return The confidence.
    */
   double getConfidence() const { return confidence; }
 
@@ -226,7 +226,7 @@ inline std::ostream &operator<<(std::ostream &stream, const Rule &rule) {
  *
  * @param r1 The first Rule object.
  * @param r2 The second Rule object.
- * @return bool Returns true if the rules are identical, false otherwise.
+ * @return Returns true if the rules are identical, false otherwise.
  */
 inline bool operator==(const Rule &r1, const Rule &r2) {
   return r1.isEqual(r2);
@@ -237,7 +237,7 @@ inline bool operator==(const Rule &r1, const Rule &r2) {
  *
  * @param r1 The first Rule object.
  * @param r2 The second Rule object.
- * @return bool Returns true if the rules are not identical, false otherwise.
+ * @return Returns true if the rules are not identical, false otherwise.
  */
 inline bool operator!=(const Rule &r1, const Rule &r2) {
   return !r1.isEqual(r2);

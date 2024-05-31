@@ -48,3 +48,8 @@ train_file : données avec lesquelles tu as entrainé ton modèle
 
 ### Datafiles format
 Categorisation of attributes (ex : Smoker/No_Smoker)
+
+### Parler de :
+- Expliquer les différentes stats de tous les algos
+- Topo sur la normalisation (importance, quand l'utiliser et quand ne pas...)
+- Algo de Guido pour la génération de règles

@@ -9,7 +9,7 @@ void showDimlpBTParams()
   std::cout << std::endl
             << "---------------------------------------------------------------------" << std::endl
             << std::endl;
-  std::cout << "Warning! The files are localised with respect to root folder dimlpfidex." << std::endl;
+  std::cout << "Warning! The files are located with respect to the root folder dimlpfidex." << std::endl;
   std::cout << "The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json." << std::endl
             << std::endl;
 

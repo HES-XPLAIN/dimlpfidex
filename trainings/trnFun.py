@@ -76,7 +76,7 @@ def get_data(file_name, nb_attributes, nb_classes=0, keep_string=False):
     :type nb_attributes: int
     :param nb_classes: The number of classes, defaults to 0.
     :type nb_classes: int, optional
-    :param keep_string : Whether to keep data on string format (allows non numericals)
+    :param keep_string : Whether to keep data on string format (allows non numericals).
     :type keep_string : bool
     :raises ValueError: If the file is not found, cannot be opened, or if the data format is incorrect.
     :return: A tuple containing two lists of list of float, one for data (attributes) and one for classes.
@@ -222,11 +222,11 @@ def get_attribute_file(attribute_file, nb_attributes, nb_classes=None):
     contain at least 'nb_attributes' non-empty lines and if there is not exactly
     nb_attributes + nb_classes lines when nb_classes is specified.
 
-    Format of attribute_file : one attribute per line followed eventually by one class per line
+    Format of attribute_file : one attribute per line followed eventually by one class per line.
 
-    :param attribute_file: Path to the file to be read
-    :param nb_attributes: Number of non-empty lines to be included in 'attributes'
-    :return: A tuple of two lists: (attributes, classes)
+    :param attribute_file: Path to the file to be read.
+    :param nb_attributes: Number of non-empty lines to be included in 'attributes'.
+    :return: A tuple of two lists: (attributes, classes).
     """
     attributes = []
     classes = []
@@ -321,7 +321,7 @@ def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_o
     This function normalizes the input data and applies a linear transformation based on provided or calculated
     mean (mu) and standard deviation (sigma). If in 'train' mode, it calculates and optionally saves the weights
     and biases. The transformed data is then passed through a staircase activation function.The input data should
-    be nbSamples x nbAttributes
+    be nbSamples x nbAttributes.
 
     :param step: 'train' for training step, otherwise for testing step.
     :type step: str

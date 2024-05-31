@@ -15,8 +15,10 @@
 #include <unordered_map>
 #include <vector>
 
-// to add a new parameter, just add a new parameter code BEFORE "_NB_PARAMETERS"
-enum ParameterCode {
+/**
+ * @brief Enumeration of parameter codes used to identify different parameters.
+ */
+enum ParameterCode { // to add a new parameter, just add a new parameter code BEFORE "_NB_PARAMETERS"
   TRAIN_DATA_FILE,
   TRAIN_PRED_FILE,
   TRAIN_PRED_OUTFILE,
@@ -82,6 +84,9 @@ enum ParameterCode {
   _NB_PARAMETERS // internal use only, do not consider it as a usable parameter
 };
 
+/**
+ * @brief Maps parameter names to their corresponding ParameterCode values.
+ */
 static const std::unordered_map<std::string, ParameterCode> parameterNames = {
     {"train_data_file", TRAIN_DATA_FILE},
     {"train_pred_file", TRAIN_PRED_FILE},
@@ -190,22 +195,38 @@ private:
   //////////////////////////////////////////////////////
 
   // throwables
+
+  /**
+   * @brief Throws an exception for an invalid data type.
+   */
   [[noreturn]] void throwInvalidDataTypeException(ParameterCode id, const std::string &wrongValue, const std::string &typeName) const {
     throw CommandArgumentException("Parsing error: argument (ID " + getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid " + typeName + ".");
   }
 
+  /**
+   * @brief Throws an exception when an argument is already set.
+   */
   [[noreturn]] void throwAlreadySetArgumentException(ParameterCode id, const std::string &value) const {
     throw CommandArgumentException("Parsing error: argument (ID " + getParameterName(id) + ") with value \"" + value + "\" is already set, cannot override it.");
   }
 
+  /**
+   * @brief Throws an exception when an argument is not found.
+   */
   [[noreturn]] void throwArgumentNotFoundException(ParameterCode id) const {
     throw CommandArgumentException("Parameters error: argument (ID " + getParameterName(id) + ") requested was not found, try to rerun including it.");
   }
 
+  /**
+   * @brief Throws an exception for an invalid file or directory.
+   */
   [[noreturn]] void throwInvalidFileOrDirectory(ParameterCode id, const std::string &wrongValue) const {
     throw CommandArgumentException("Parameters error: argument (ID " + getParameterName(id) + ") with value \"" + wrongValue + "\" is not a valid path. The directory or file specified could not be found.");
   }
 
+  /**
+   * @brief Throws an exception for an invalid parameter.
+   */
   [[noreturn]] void throwInvalidParameter(ParameterCode wrongValue) const {
     throw CommandArgumentException("Parameters error: argument (ID " + getParameterName(wrongValue) + ") is not a valid parameter for this execution.");
   }

@@ -7,7 +7,7 @@ void showRulesParams() {
   std::cout << std::endl
             << "---------------------------------------------------------------------" << std::endl
             << std::endl;
-  std::cout << "Warning! The files are localised with respect to root folder dimlpfidex." << std::endl;
+  std::cout << "Warning! The files are located with respect to the root folder dimlpfidex." << std::endl;
   std::cout << "The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json." << std::endl
             << std::endl;
 
@@ -463,8 +463,9 @@ void checkRulesParametersLogicValues(Parameters &p) {
  *  -> If the max failed attempts limit is reached, then the rule couldn't be computed for this sample.
  *
  * Notes:
- * - It's mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.
- * - True train class labels must be provided, either within the data files or separately through class files.
+ * - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
+ * - It's mandatory to specify the number of attributes and classes in the data, as well as the train dataset.
+ * - True train class labels must be provided, either within the data file or separately through a class file.
  * - Train predictions are also mandatory.
  * - A heuristic needs to be chosen; the first one should always be chosen if the execution time permits it.
  * - The weights file or rules_file (when training with decision trees) obtained from the model training must be provided.

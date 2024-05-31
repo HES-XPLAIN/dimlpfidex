@@ -692,7 +692,7 @@ print_bold "[$SUCCESS/$TOTAL] tests passed within ${SECONDS} seconds."
 # --max_iterations <max iteration number (100 by default)>
 # --min_covering <minimum covering number (2 by default)>
 # --dropout_dim <dimension dropout parameter>
-# --dropout_hyp <hyperplan dropout parameter>
+# --dropout_hyp <hyperplane dropout parameter>
 # --max_failed_attempts <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>
 # --nb_quant_levels <number of stairs in staircase activation function (50 by default)>
 # -t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>
