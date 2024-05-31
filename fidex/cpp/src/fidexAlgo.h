@@ -20,10 +20,9 @@
 /**
  * @brief Class to implement the Fidex algorithm for rule extraction.
  *
- * Fidex is an algorithm designed to extract a rule that explains the decisions
- * of a machine learning model on a specific sample. It works by identifying hyperplanes in the feature
- * space that discriminate between different classes of samples and constructing
- * a rule based on these hyperplanes.
+ * Fidex is an algorithm designed to extract a rule that explains the decisions of a machine learning
+ * model on a specific sample. It works by identifying hyperplanes in the feature space that discriminate
+ * between different classes of samples and constructing a rule based on these hyperplanes.
  */
 class Fidex {
 

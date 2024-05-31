@@ -52,7 +52,7 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
         if required_actions:
             self.add_text("")
             self.add_text("---------------------------------------------------------------------")
-            self.add_text("Warning! The files are localised with respect to root folder dimlpfidex.")
+            self.add_text("Warning! The files are located with respect to the root folder dimlpfidex.")
             self.add_text("The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json.")
             self.add_text("----------------------------")
             self.add_text("Required parameters:")

@@ -33,6 +33,9 @@ void showFidexParams();
  */
 void checkFidexParametersLogicValues(Parameters &p);
 
+/**
+ * @brief Executes the Fidex algorithm with specified parameters to extract an explanation rule for one or several given samples.
+ */
 int fidex(const std::string &command = "");
 
 #endif // FIDEXFCT_H

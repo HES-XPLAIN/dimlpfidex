@@ -1295,7 +1295,6 @@ void Parameters::setDefaultDimlpTrn() {
 
 /**
  * @brief Write the configuration of hidden layers to a file.
- *
  */
 void Parameters::writeHiddenLayersFile() {
   std::string fileName = getString(HIDDEN_LAYERS_OUTFILE);

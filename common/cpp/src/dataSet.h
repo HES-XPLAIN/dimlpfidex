@@ -17,33 +17,33 @@
 class DataSetFid {
 
 private:
-  std::string datasetName;                                  ///< Name of the dataset
-  std::vector<std::vector<double>> datas;                   ///< Data samples
-  std::vector<int> trueClasses;                             ///< True class labels for the data samples
-  std::vector<int> predictions;                             ///< Predictions for the data samples
-  std::vector<std::vector<double>> outputValuesPredictions; ///< Raw prediction values for the data samples
-  std::vector<std::vector<std::vector<double>>> weights;    ///< Weights for the dataset
-  bool hasDatas = false;                                    ///< Flag indicating if data is loaded
-  bool hasPreds = false;                                    ///< Flag indicating if predictions are loaded
-  bool hasClasses = false;                                  ///< Flag indicating if classes are loaded
-  bool hasWeights = false;                                  ///< Flag indicating if weights are loaded
+  std::string datasetName;                                  ///< Name of the dataset.
+  std::vector<std::vector<double>> datas;                   ///< Data samples.
+  std::vector<int> trueClasses;                             ///< True class labels for the data samples.
+  std::vector<int> predictions;                             ///< Predictions for the data samples.
+  std::vector<std::vector<double>> outputValuesPredictions; ///< Raw prediction values for the data samples.
+  std::vector<std::vector<std::vector<double>>> weights;    ///< Weights for the dataset.
+  bool hasDatas = false;                                    ///< Flag indicating if data is loaded.
+  bool hasPreds = false;                                    ///< Flag indicating if predictions are loaded.
+  bool hasClasses = false;                                  ///< Flag indicating if classes are loaded.
+  bool hasWeights = false;                                  ///< Flag indicating if weights are loaded.
 
-  std::string classFormat = ""; ///< Format of the class representation (one-hot, id, one-hot_combined, id_combined)
+  std::string classFormat = ""; ///< Format of the class representation (one-hot, id, one-hot_combined, id_combined).
 
-  double decisionThreshold = -1; ///< Decision threshold for classifying samples
-  int positiveClassIndex = -1;   ///< Index of the positive class used for threshold-based classification
+  double decisionThreshold = -1; ///< Decision threshold for classifying samples.
+  int positiveClassIndex = -1;   ///< Index of the positive class used for threshold-based classification.
 
-  int _nbClasses = -1;    ///< Number of classes in the dataset
-  int _nbAttributes = -1; ///< Number of attributes in the dataset
-  int nbSamples = -1;     ///< Number of samples in the dataset
-  int nbClassData = -1;   ///< Number of class data entries
-  int nbPredData = -1;    ///< Number of prediction data entries
-  int nbNets = 1;         ///< Number of networks used in training found in the weight file
+  int _nbClasses = -1;    ///< Number of classes in the dataset.
+  int _nbAttributes = -1; ///< Number of attributes in the dataset.
+  int nbSamples = -1;     ///< Number of samples in the dataset.
+  int nbClassData = -1;   ///< Number of class data entries.
+  int nbPredData = -1;    ///< Number of prediction data entries.
+  int nbNets = 1;         ///< Number of networks used in training found in the weight file.
 
-  std::vector<std::string> attributeNames; ///< Names of the attributes
-  std::vector<std::string> classNames;     ///< Names of the classes
-  bool hasAttributes = false;              ///< Flag indicating if attribute names are loaded
-  bool hasClassNames = false;              ///< Flag indicating if class names are loaded
+  std::vector<std::string> attributeNames; ///< Names of the attributes.
+  std::vector<std::string> classNames;     ///< Names of the classes.
+  bool hasAttributes = false;              ///< Flag indicating if attribute names are loaded.
+  bool hasClassNames = false;              ///< Flag indicating if class names are loaded.
 
   /**
    * @brief Read a data line from a data file and save it in datas and trueClasses if it contains class information.

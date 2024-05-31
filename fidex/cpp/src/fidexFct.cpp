@@ -7,7 +7,7 @@ void showFidexParams() {
   std::cout << std::endl
             << "---------------------------------------------------------------------" << std::endl
             << std::endl;
-  std::cout << "Warning! The files are localised with respect to root folder dimlpfidex." << std::endl;
+  std::cout << "Warning! The files are located with respect to the root folder dimlpfidex." << std::endl;
   std::cout << "The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json." << std::endl
             << std::endl;
 
@@ -39,14 +39,14 @@ void showFidexParams() {
   printOptionDescription("--attributes_file <str>", "File of attributes");
   printOptionDescription("--stats_file <str>", "Output statistic file name");
   printOptionDescription("--console_file <str>", "File with console logs redirection");
-  printOptionDescription("--max_iterations <int [1,inf[>", "Max iteration number, also the max possible number of attributs in a rule, should be 25 if working with images (default: 10)");
+  printOptionDescription("--max_iterations <int [1,inf[>", "Max iteration number, also the max possible number of attributes in a rule, should be 25 if working with images (default: 10)");
   printOptionDescription("--min_covering <int [1,inf[>", "Minimum covering number (default: 2)");
   printOptionDescription("--covering_strategy <bool>", "Whether to use this strategy : if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (default: True)");
   printOptionDescription("--max_failed_attempts <int [0,inf[>", "Maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used (default: 30)");
   printOptionDescription("--min_fidelity <float [0,1]>", "Minimal rule fidelity accepted when generating a rule (default: 1.0)");
   printOptionDescription("--lowest_min_fidelity <float [0,1]>", "Minimal min_fidelity to which we agree to go down during covering_strategy (default: 0.75)");
   printOptionDescription("--dropout_dim <float [0,1]>", "Dimension dropout parameter (default: 0.0)");
-  printOptionDescription("--dropout_hyp <float [0,1]>", "Hyperplan dropout parameter (default: 0.0)");
+  printOptionDescription("--dropout_hyp <float [0,1]>", "Hyperplane dropout parameter (default: 0.0)");
   printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in staircase activation function (default: 50)");
   printOptionDescription("--decision_threshold <float [0,1]>", "Decision threshold for predictions, you need to specify the index of positive class if you want to use it");
   printOptionDescription("--positive_class_index <int [0,nb_classes-1]>", "Index of positive class for the usage of decision threshold, index starts at 0");
@@ -108,9 +108,17 @@ void checkFidexParametersLogicValues(Parameters &p) {
  * classes of samples and constructing a rule for each test sample based on these hyperplanes covering this sample
  * and as many other samples as possible.
  *
- * Note:
+ * The Fidex algorithm is computed until a rule is created or until the max failed attempts limit is reached.
+ *  -> First attempt to generate a rule with a covering greater or equal to 'min_covering' and a fidelity greater or equal to 'min_fidelity'.
+ *  -> If the attempt failed and the 'covering_strategy' is on, Fidex is computed to find a rule with the max possible minimal covering that can be lower than 'min_covering'.
+ *  -> If all attempts failed, the targeted fidelity is gradually lowered until it succeed or 'lowest_min_fidelity' is reached.
+ *  -> Each failed attempt on lowest minimal fidelity are counted.
+ *  -> If the max failed attempts limit is reached, then the rule couldn't be computed for this sample.
+ *
+ * Notes:
+ * - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
  * - It's mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.
- * - True train class labels must be provided, either within the data files or separately through class files. Test classes are given the same way if present.
+ * - True train class labels must be provided, either within the data file or separately through a class file. Test classes are given the same way if present.
  * - Train and test predictions are mandatory, either within the data file for test or separately through prediction file for both.
  * - The weights file or rules_file (when training with decision trees) obtained from the model training must be provided.
  * - The path of the file containing the computed rules must be provided. It can be generated as a JSON if a JSON extension is specified.
@@ -118,7 +126,7 @@ void checkFidexParametersLogicValues(Parameters &p) {
  * - Parameters can be defined directly via the command line or through a JSON configuration file.
  * - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
  *
- * Formats:
+ * File formats:
  * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
  *   1. Only attributes (floats).
  *   2. Attributes (floats) followed by an integer class ID.
@@ -374,7 +382,7 @@ int fidex(const std::string &command) {
 
     // Check size of hyperlocus
     if (nbIn == 0 || nbIn % nbAttributes != 0) {
-      throw InternalError("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributs - " + std::to_string(nbAttributes) + ".");
+      throw InternalError("Error : the size of hyperLocus - " + std::to_string(nbIn) + " is not a multiple of the number of attributes - " + std::to_string(nbAttributes) + ".");
     }
 
     std::cout << "Hyperspace created" << std::endl
@@ -525,9 +533,7 @@ int fidex(const std::string &command) {
   return 0;
 }
 
-/*
-
-  Exemple pour lancer le code :
+/* Examples of how to call the function:
 
   ./fidex --train_data_file datanorm --train_pred_file dimlp.out --train_class_file dataclass2 --test_data_file testSampleDataCombine --nb_attributes 16 --nb_classes 2 --weights_file dimlp.wts --nb_quant_levels 50 --rules_outfile rule.txt --stats_file stats --max_iterations 100 --min_covering 25 --dropout_dim 0.5 --dropout_hyp 0.5 --root_folder ../fidex/datafiles
 

@@ -65,13 +65,14 @@ def svmTrn(args: str = None):
     for the characterization of discriminating hyperplanes, which are used in Fidex. This allows us to then use Fidex for comprehensible rule extraction.
     The function offers a wide range of customization through command-line arguments, allowing for the specification of SVM parameters, output options, and more.
 
-    Note:
+    Notes:
+    - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
     - It's mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.
-    - True train and test class labels must be provided, either within the data files or separately through class files.
+    - True train and test class labels must be provided, either within the data file or separately through a class file.
     - Parameters can be defined directly via the command line or through a JSON configuration file.
     - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
 
-    Formats:
+    File formats:
     - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:
       1. Only attributes (floats).
       2. Attributes (floats) followed by an integer class ID.

@@ -143,11 +143,11 @@ def parse_normalization_file(file_name, nb_attributes, attributes=None):
                       where [attribute_name] is a string from the 'attributes' list (if provided),
                       [attribute_index] is an integer (if 'attributes' is not provided),
                       and [value] is a floating-point number.
-    :param nb_attributes: Number of attributes
-    :param attributes: List of attribute names (optional)
+    :param nb_attributes: Number of attributes.
+    :param attributes: List of attribute names (optional).
     :raises ValueError: If the file is not found, cannot be opened, is not in the correct format,
                         or if there is an inconsistency in using mean or median across different lines.
-    :return: Tuple of (indices_list, with_median, mean_median_values, std_values)
+    :return: Tuple of (indices_list, with_median, mean_median_values, std_values).
     """
 
     with_median = None
@@ -367,7 +367,8 @@ def normalization(args: str = None):
 
     The function generates new normalized and/or denormalized files.
 
-    Note:
+    Notes:
+    - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
     - It's mandatory to specify the number of attributes in the data and the symbol representing missing data.
     - Choose whether to replace missing data or not.
     - If normalizing training data, it is advisable to normalize test/validation files simultaneously for consistency.
@@ -378,7 +379,7 @@ def normalization(args: str = None):
     - It's not necessary to normalize data before training with convKeras, MLP and SVM because a normalization is done during the process.
     - It's not necessary to normalize before training with GradientBoosting and RandomForests because decision trees don't need normalization.
 
-    Formats:
+    File formats:
     - normalization_file file: Each line contains the mean/median and standard deviation for an attribute.
       Format: '2 : original mean: 0.8307, original std: 0.0425'
       Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.

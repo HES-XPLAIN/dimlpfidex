@@ -93,7 +93,8 @@ def convKeras(args: str = None):
     of discriminating hyperplanes, which are used in Fidex. This allows us to then use Fidex for comprehensible rule extraction. It accommodates
     various datasets including MNIST, CIFAR-10, and CIFAR-100, and allows for extensive customization through command-line arguments.
 
-    Note:
+    Notes:
+    - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
     - It's mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.
     - Validation data can either be specified directly or split from the training data based on a provided ratio.
     - if validation files are given, and you want to use Fidex algorithms later, you will have to use both train and
@@ -101,7 +102,7 @@ def convKeras(args: str = None):
     - Parameters can be specified using the command line or a JSON configuration file.
     - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
 
-    Formats:
+    File formats:
     - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:
       1. Only attributes (floats).
       2. Attributes (floats) followed by an integer class ID.

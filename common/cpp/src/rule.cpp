@@ -3,12 +3,12 @@
 /**
  * @brief Constructs a Rule object.
  *
- * @param antecedants vector of antecedants to insert inside a rule.
- * @param coveredSamples vector of integers containing the covered samples IDs.
- * @param outClass integer indicating which class is targetted by the rule.
- * @param fidelity double indicating the fidelity of the rule.
- * @param accuracy double indicating the accuracy of the rule.
- * @param confidence double indicating the confidence of the rule.
+ * @param antecedants Vector of antecedants to insert inside a rule.
+ * @param coveredSamples Vector of integers containing the covered samples IDs.
+ * @param outClass Integer indicating which class is targetted by the rule.
+ * @param fidelity Double indicating the fidelity of the rule.
+ * @param accuracy Double indicating the accuracy of the rule.
+ * @param confidence Double indicating the confidence of the rule.
  */
 Rule::Rule(const std::vector<Antecedant> &antecedants, const std::vector<int> &coveredSamples, int outClass, double fidelity, double accuracy, double confidence) {
   setAntecedants(antecedants);

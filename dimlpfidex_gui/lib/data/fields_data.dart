@@ -432,7 +432,7 @@ const List<Field> fidexGloRulesFields = [
     maxValue: "inf",
     defaultValue: "10",
     description:
-        "Max iteration number, also the max possible number of attributs in a rule, should be 25 if working with images.",
+        "Max iteration number, also the max possible number of attributes in a rule, should be 25 if working with images.",
   ),
   Field(
     "Minimum covering number",
@@ -573,7 +573,7 @@ const List<Field> fidexGloStatsFields = [
     "global_rules_outfile",
     Datatype.filePath,
     description:
-        "Global ruleset output file with stats on test set, if you want to compute statistics of global rules on tests set.",
+        "Global ruleset output file with stats on test set, if you want to compute statistics of global rules on the test set.",
   ),
   consoleFileFld,
   Field(
