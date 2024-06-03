@@ -501,7 +501,7 @@ void checkRulesParametersLogicValues(Parameters &p) {
  *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
  *
  * Example of how to call the function:<br>
- * fidex.fidexGloRules('--train_data_file datanormTrain.txt --train_pred_file predTrain.out --train_class_file dataclass2Train.txt --weights_file weights.wts --nb_attributes 16 --nb_classes 2 --heuristic 1 --global_rules_outfile globalRules.rls --root_folder dimlp/datafiles')</tt>
+ * fidex.fidexGloRules('\-- \--train_data_file datanormTrain.txt \-- \--train_pred_file predTrain.out \-- \--train_class_file dataclass2Train.txt \-- \--weights_file weights.wts \-- \--nb_attributes 16 \-- \--nb_classes 2 \-- \--heuristic 1 \-- \--global_rules_outfile globalRules.rls \-- \--root_folder dimlp/datafiles')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.
