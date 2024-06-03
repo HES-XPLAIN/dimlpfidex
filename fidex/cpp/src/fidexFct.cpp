@@ -108,7 +108,7 @@ void checkFidexParametersLogicValues(Parameters &p) {
  * classes of samples and constructing a rule for each test sample based on these hyperplanes covering this sample
  * and as many other samples as possible.
  *
- * The "Fidex" algorithm is computed until a rule is created or until the max failed attempts limit is reached.<br>
+ * The @Fidex algorithm is computed until a rule is created or until the max failed attempts limit is reached.<br>
  * - First attempt to generate a rule with a covering greater or equal to 'min_covering' and a fidelity greater or equal to 'min_fidelity'.<br>
  * - If the attempt failed and the 'covering_strategy' is on, Fidex is computed to find a rule with the max possible minimal covering that can be lower than 'min_covering'.<br>
  * - If all attempts failed, the targeted fidelity is gradually lowered until it succeed or 'lowest_min_fidelity' is reached.<br>
@@ -162,8 +162,8 @@ void checkFidexParametersLogicValues(Parameters &p) {
  *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
  *
  * Example of how to call the function:<br>
- * <tt>from dimlpfidex import fidex<br>
- * fidex.fidex('-\-train_data_file datanorm -\-train_pred_file dimlp.out -\-train_class_file dataclass2 -\-test_data_file testSampleDataCombine -\-nb_attributes 16 -\-nb_classes 2 -\-weights_file dimlp.wts -\-nb_quant_levels 50 -\-rules_outfile rule.txt -\-stats_file stats -\-max_iterations 100 -\-min_covering 25 -\-dropout_dim 0.5 -\-dropout_hyp 0.5 -\-root_folder fidex/datafiles')</tt>
+ * <tt>from dimlpfidex import fidex</tt><br>
+ * <tt>fidex.fidex('-\-train_data_file datanorm -\-train_pred_file dimlp.out -\-train_class_file dataclass2 -\-test_data_file testSampleDataCombine -\-nb_attributes 16 -\-nb_classes 2 -\-weights_file dimlp.wts -\-nb_quant_levels 50 -\-rules_outfile rule.txt -\-stats_file stats -\-max_iterations 100 -\-min_covering 25 -\-dropout_dim 0.5 -\-dropout_hyp 0.5 -\-root_folder fidex/datafiles')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.

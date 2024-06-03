@@ -71,6 +71,13 @@ def randForestsTrn(args: str = None):
     - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
     - It's not necessary to normalize data before training because decision trees don't need normalization.
 
+    Outputs:
+    - train_pred_outfile : File containing the model's train predictions.
+    - test_pred_outfile : File containing the model's test predictions.
+    - rules_outfile : File containing the model's trained rules.
+    - stats_file : File containing train and test accuracy.
+    - console_file : If specified, contains the console output.
+
     File formats:
     - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:
       1. Only attributes (floats).

@@ -227,12 +227,12 @@ void checkParametersLogicValues(Parameters &p) {
  *   'Number of rules : 1171, mean sample covering number per rule : 236.923997, mean number of antecedents per rule : 13.020495'<br>
  *   The second line indicates if a decision threshold has been used. If no, it says: 'No decision threshold is used.'
  *   and if yes, it says something like 'Using a decision threshold of 0.3 for class 0'.
- *   Then there is an empty line and each rule is numbered starting from 1 and separated from each other by an empty line. A rule is in the form (without the ""):<br>
- *   "Rule 1: X2531>=175.95 X2200>=181.05 X1828>=175.95 X2590>=178.5 X1257>=183.6 X2277>=170.85 X1816>=173.4 X3040>=183.6 -> class 0
- *   Train Covering size : 127
- *   Train Fidelity : 1
- *   Train Accuracy : 1
- *   Train Confidence : 0.999919"
+ *   Then there is an empty line and each rule is numbered starting from 1 and separated from each other by an empty line. A rule is in the form:<br>
+ *   @Rule 1: X2531>=175.95 X2200>=181.05 X1828>=175.95 X2590>=178.5 X1257>=183.6 X2277>=170.85 X1816>=173.4 X3040>=183.6 -> class 0<br>
+ *   Train Covering size : 127<br>
+ *   Train Fidelity : 1<br>
+ *   Train Accuracy : 1<br>
+ *   Train Confidence : 0.999919
  * - Weights file: This file should be obtained by training with Dimlp, SVM, MLP, or a CNN from dimlpfidex because an additional special Dimlp layer is needed.
  *   The first row represents bias values of the Dimlp layer and the second row are values of the weight matrix between the previous layer and the Dimlp layer.
  *   Each value is separated by a space. As an example, if the layers are of size 4, the biases are: b1 b2 b3 b4 and the weights are w1 w2 w3 w4.
@@ -245,8 +245,8 @@ void checkParametersLogicValues(Parameters &p) {
  *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
  *
  * Example of how to call the function:<br>
- * <tt>from dimlpfidex import fidex<br>
- * fidex.fidexGlo('-\-test_data_file datanormTest.txt -\-test_pred_file predTest.out -\-global_rules_file globalRules.rls -\-nb_attributes 16 -\-nb_classes 2 -\-explanation_file explanation.txt -\-root_folder dimlp/datafiles -\-with_fidex true -\-train_data_file datanormTrain.txt -\-train_pred_file predTrain.out -\-train_class_file dataclass2Train.txt -\-test_class_file dataclass2Test.txt -\-weights_file weights.wts')</tt>
+ * <tt>from dimlpfidex import fidex</tt><br>
+ * <tt>fidex.fidexGlo('-\-test_data_file datanormTest.txt -\-test_pred_file predTest.out -\-global_rules_file globalRules.rls -\-nb_attributes 16 -\-nb_classes 2 -\-explanation_file explanation.txt -\-root_folder dimlp/datafiles -\-with_fidex true -\-train_data_file datanormTrain.txt -\-train_pred_file predTrain.out -\-train_class_file dataclass2Train.txt -\-test_class_file dataclass2Test.txt -\-weights_file weights.wts')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.
