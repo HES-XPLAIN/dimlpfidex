@@ -63,6 +63,7 @@ def computeRocCurve(args: str = None):
     - The prediction file should contain the prediction scores for the test set, with one sample per line, with scores (float) for each class separated either by spaces, tabs, semicolons or commas.
 
     Example of how to call the function:
+    from trainings.computeRocCurve import computeRocCurve
     computeRocCurve('--test_class_file dataclass2Test.txt --test_pred_file predTest.out --positive_class_index 1 --output_roc roc_curve.png --stats_file stats.txt --root_folder dimlp/datafiles --nb_classes 2')
 
     :param args: A single string containing either the path to a JSON configuration file with all specified arguments or all arguments for the function, formatted like command-line input.
@@ -128,5 +129,23 @@ def computeRocCurve(args: str = None):
         return -1
 
 if __name__ == "__main__":
+    """
+    Entry point for the script. Parses command-line arguments and initiates the ROC curve computation process.
+
+    The script is designed to be run from the command line with various arguments that control the ROC curve computation,
+    including file paths for test class labels and predictions, the index of the positive class, the number of classes,
+    and output options.
+
+    Usage:
+        python script.py [options]
+
+    Example:
+        python script.py --test_class_file dataclass2Test.txt --test_pred_file predTest.out \
+                         --positive_class_index 1 --output_roc roc_curve.png --stats_file stats.txt \
+                         --root_folder dimlp/datafiles --nb_classes 2
+
+    :param sys.argv: List of command-line arguments passed to the script.
+    :type sys.argv: list
+    """
     cmdline_args = " ".join(sys.argv[1:])
     computeRocCurve(cmdline_args)

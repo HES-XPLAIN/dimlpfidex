@@ -501,7 +501,8 @@ void checkRulesParametersLogicValues(Parameters &p) {
  *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
  *
  * Example of how to call the function:<br>
- * <tt>fidex.fidexGloRules('-\-train_data_file datanormTrain.txt -\-train_pred_file predTrain.out -\-train_class_file dataclass2Train.txt -\-weights_file weights.wts -\-nb_attributes 16 -\-nb_classes 2 -\-heuristic 1 -\-global_rules_outfile globalRules.rls -\-root_folder dimlp/datafiles')</tt>
+ * <tt>from dimlpfidex import fidex
+ * fidex.fidexGloRules('-\-train_data_file datanormTrain.txt -\-train_pred_file predTrain.out -\-train_class_file dataclass2Train.txt -\-weights_file weights.wts -\-nb_attributes 16 -\-nb_classes 2 -\-heuristic 1 -\-global_rules_outfile globalRules.rls -\-root_folder dimlp/datafiles')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.
@@ -746,14 +747,3 @@ int fidexGloRules(const std::string &command) {
 
   return 0;
 }
-
-/* Examples of how to call the function:
-
-./fidexGloRules --train_data_file datanormTrain --train_pred_file dimlpDatanormTrain.out --train_class_file dataclass2Train --weights_file dimlpDatanorm.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 --global_rules_outfile globalRulesDatanorm.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesResult --root_folder ../fidex/datafiles
-
-./fidexGloRules --train_data_file covidTrainData.txt --train_pred_file covidTrainPred.out --train_class_file covidTrainClass.txt --weights_file covid.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 --global_rules_outfile globalRulesCovid.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesCovidResult --root_folder ../dimlp/datafiles/covidDataset
-./fidexGloRules --train_data_file spamTrainData.txt --train_pred_file spamTrainPred.out --train_class_file spamTrainClass.txt --weights_file spam.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 --global_rules_outfile globalRulesSpam.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesSpamResult --root_folder ../dimlp/datafiles/spamDataset
-./fidexGloRules --train_data_file isoletTrainData.txt --train_pred_file isoletTrainPredV2.out --train_class_file isoletTrainClass.txt --weights_file isoletV2.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 5 --global_rules_outfile globalRulesIsoletV2.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesIsoletResultV2 --root_folder ../dimlp/datafiles/isoletDataset
-./fidexGloRules --train_data_file Train/X_train.txt --train_pred_file Train/pred_trainV2.out --train_class_file Train/y_train.txt --weights_file HAPTV2.wts --nb_attributes 16 --nb_classes 2 --nb_quant_levels 50 5 --global_rules_outfile globalRulesHAPTV2.txt --heuristic 1 --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --console_file rulesHAPTResultV2 --root_folder ../dimlp/datafiles/HAPTDataset
-
-*/

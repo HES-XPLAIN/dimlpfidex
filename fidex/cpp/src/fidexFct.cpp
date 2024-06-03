@@ -124,7 +124,7 @@ void checkFidexParametersLogicValues(Parameters &p) {
  * - The path of the file containing the computed rules must be provided. It can be generated as a JSON if a JSON extension is specified.
  * - Normalization parameters can be specified to denormalize the rules if data were normalized beforehand.
  * - Parameters can be defined directly via the command line or through a JSON configuration file.
- * - Providing no command-line arguments or using -h/-\-help displays usage instructions, detailing both required and optional parameters for user guidance.
+ * - Providing no command-line arguments or using <tt>-h/-\-help</tt> displays usage instructions, detailing both required and optional parameters for user guidance.
  *
  * File formats:
  * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
@@ -152,7 +152,8 @@ void checkFidexParametersLogicValues(Parameters &p) {
  *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
  *
  * Example of how to call the function:<br>
- * <tt>fidex.fidex('-\-train_data_file datanorm -\-train_pred_file dimlp.out -\-train_class_file dataclass2 -\-test_data_file testSampleDataCombine -\-nb_attributes 16 -\-nb_classes 2 -\-weights_file dimlp.wts -\-nb_quant_levels 50 -\-rules_outfile rule.txt -\-stats_file stats -\-max_iterations 100 -\-min_covering 25 -\-dropout_dim 0.5 -\-dropout_hyp 0.5 -\-root_folder fidex/datafiles')</tt>
+ * <tt>from dimlpfidex import fidex
+ * fidex.fidex('-\-train_data_file datanorm -\-train_pred_file dimlp.out -\-train_class_file dataclass2 -\-test_data_file testSampleDataCombine -\-nb_attributes 16 -\-nb_classes 2 -\-weights_file dimlp.wts -\-nb_quant_levels 50 -\-rules_outfile rule.txt -\-stats_file stats -\-max_iterations 100 -\-min_covering 25 -\-dropout_dim 0.5 -\-dropout_hyp 0.5 -\-root_folder fidex/datafiles')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.
@@ -532,13 +533,3 @@ int fidex(const std::string &command) {
 
   return 0;
 }
-
-/* Examples of how to call the function:
-
-  ./fidex --train_data_file datanorm --train_pred_file dimlp.out --train_class_file dataclass2 --test_data_file testSampleDataCombine --nb_attributes 16 --nb_classes 2 --weights_file dimlp.wts --nb_quant_levels 50 --rules_outfile rule.txt --stats_file stats --max_iterations 100 --min_covering 25 --dropout_dim 0.5 --dropout_hyp 0.5 --root_folder ../fidex/datafiles
-
-  ./fidex --train_data_file datanorm --train_pred_file dimlp.out --train_class_file dataclass2 --test_data_file testData.txt --nb_attributes 16 --nb_classes 2 --test_pred_file testPred.txt --test_class_file testClass.txt --weights_file dimlp.wts --nb_quant_levels 50 --rules_outfile rule.txt --stats_file stats --max_iterations 100 --min_covering 25 --dropout_dim 0.5 --dropout_hyp 0.5 --root_folder ../fidex/datafiles
-  ./fidex --train_data_file isoletTrainData.txt --train_pred_file isoletTrainPredV2.out --train_class_file isoletTrainClass.txt --test_data_file isoletTestData.txt --nb_attributes 16 --nb_classes 2 --test_pred_file isoletTestPredV2.out --test_class_file isoletTestClass.txt --weights_file isoletV2.wts --nb_quant_levels 50 --rules_outfile ruleFidex.txt --stats_file stats --max_iterations 100 --min_covering 25 --dropout_dim 0.5 --dropout_hyp 0.5 --root_folder ../dimlp/datafiles/isoletDataset
-  ./fidex --train_data_file Train/X_train.txt --train_pred_file Train/pred_trainV2.out --train_class_file Train/y_train.txt --test_data_file Test/X_test.txt --nb_attributes 16 --nb_classes 2 --test_pred_file Test/pred_testV2.out --test_class_file Test/y_test.txt --weights_file HAPTV2.wts --nb_quant_levels 50 --rules_outfile ruleFidexV2.txt --stats_file stats --max_iterations 100 --min_covering 2 --dropout_dim 0.5 --dropout_hyp 0.5 --root_folder ../dimlp/datafiles/HAPTDataset
-
-*/

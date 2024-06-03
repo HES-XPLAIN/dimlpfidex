@@ -24,8 +24,8 @@ def delete_file(file):
 def get_data_pred(file_name, nb_classes):
     """
     Add predictions to the dataset using a prediction file.
-    The prediction file should contain one line per data sample, each line consisting of a series of numerical values separated by spaces
-    representing the prediction scores scores for each class.
+    The prediction file should contain one line per data sample, each line consisting of a series of numerical values separated by spaces,
+    tabs, semicolons or commas, representing the prediction scores scores for each class.
     The number of values per line should match the specified number of classes.
 
     :param file_name: The path of the file to read data from.
@@ -64,7 +64,7 @@ def get_data(file_name, nb_attributes, nb_classes=0, keep_string=False):
     """
     Get data from file and separate it into attributes and classes(if there are some classes).
 
-    The file should contain one sample per line. Each number in line is separated by a space. Each sample can be in one of the following formats:
+    The file should contain one sample per line. Each number in line is separated by a space, a tab, a semicolon or a comma. Each sample can be in one of the following formats:
     1. Attributes only: Each line contains each float attribute.
     2. Attributes with Class ID: Each line contains all the float attributes followed by an integer class ID.
     3. Attributes with One-Hot Class Encoding: Each line contains all the float attributes followed by a one-hot encoding of the class.
@@ -155,9 +155,9 @@ def get_data_class(file_name, nb_classes):
 
     1. Class ID format: Each line contains a single integer representing the class ID.
        The class ID must be a non-negative integer less than the number of classes.
-    2. One-Hot Encoding format: Each line contains numbers separated by spaces, representing a one-hot encoding of the class.
+    2. One-Hot Encoding format: Each line contains numbers separated by spaces, tabs, semicolons or commas, representing a one-hot encoding of the class.
        The number of elements in each line should match the total number of classes, with exactly one '1' and the rest '0's.
-    Each number in line is separated by a space.
+    Each number in line is separated by a space, a tab, a semicolon or a comma.
 
     :param file_name: The name of the file to read class data from.
     :type file_name: str

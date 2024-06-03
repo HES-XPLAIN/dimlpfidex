@@ -92,6 +92,7 @@ def mlpTrn(args: str = None):
       2. One-hot encoded class.
 
     Example of how to call the function:
+    from trainings.mlpTrn import mlpTrn
     mlpTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile mlp/weights.wts --stats_file mlp/stats.txt --train_pred_outfile mlp/predTrain.out --test_pred_outfile mlp/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')
 
     :param args: A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
@@ -209,5 +210,24 @@ def mlpTrn(args: str = None):
         return -1
 
 if __name__ == "__main__":
+    """
+    Entry point for the script. Parses command-line arguments and initiates the training process for the MLP model.
+
+    The script is designed to be run from the command line with various arguments that control the training process,
+    including data file paths, model hyperparameters, and output options.
+
+    Usage:
+        python script.py [options]
+
+    Example:
+        python script.py --train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt \
+                         --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt \
+                         --weights_outfile mlp/weights.wts --stats_file mlp/stats.txt \
+                         --train_pred_outfile mlp/predTrain.out --test_pred_outfile mlp/predTest.out \
+                         --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles
+
+    :param sys.argv: List of command-line arguments passed to the script.
+    :type sys.argv: list
+    """
     cmdline_args = " ".join(sys.argv[1:])
     mlpTrn(cmdline_args)

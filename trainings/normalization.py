@@ -394,6 +394,7 @@ def normalization(args: str = None):
     - Attribute file (attributes_file): Each line corresponds to an attribute's name, with optional class names at the end. Names can't have spaces inbetween (replace by _).
 
     Examples of how to call the function:
+    from trainings.normalization import normalization
     - For data files: normalization("--data_files [datanormTrain.txt,datanormTest.txt] --normalization_indices [0,2,4] --nb_attributes 16 --missing_values NaN --root_folder dimlp/datafiles")
     - For rule files: normalization("--normalization_file normalization_stats.txt --rule_files globalRulesDatanorm.txt --nb_attributes 16 --root_folder dimlp/datafiles")
 
@@ -615,5 +616,21 @@ def normalization(args: str = None):
 
 
 if __name__ == "__main__":
+    """
+    Entry point for the normalization script. Parses command-line arguments and initiates the normalization or denormalization process for the specified data or rule files.
+
+    The script is designed to be run from the command line with various arguments that control the normalization and denormalization process,
+    including file paths for data, rules, normalization statistics, and other parameters.
+
+    Usage:
+        python script.py [options]
+
+    Example:
+        python script.py --data_files [datanormTrain.txt,datanormTest.txt] --normalization_indices [0,2,4] \
+                         --nb_attributes 16 --missing_values NaN --root_folder dimlp/datafiles
+
+    :param sys.argv: List of command-line arguments passed to the script.
+    :type sys.argv: list
+    """
     cmdline_args = " ".join(sys.argv[1:])
     normalization(cmdline_args)
