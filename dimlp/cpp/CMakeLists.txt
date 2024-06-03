@@ -1,15 +1,5 @@
 project(dimlp)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-if(NOT MSVC)
-    set(CMAKE_CXX_FLAGS "-O3")
-    # Warning, these flags slows down the execution
-    # set(CMAKE_CXX_FLAGS "-O3 -fsanitize=address -fsanitize=leak -fsanitize=undefined")
-endif()
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
 FILE(GLOB DIMLP_COMMON_SRC
     src/dataSet.cpp
     src/dataSet.h

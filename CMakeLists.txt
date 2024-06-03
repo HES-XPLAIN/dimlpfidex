@@ -13,6 +13,8 @@ if(NOT MSVC)
     set(CMAKE_CXX_FLAGS "-O3")
     set(CMAKE_CXX_FLAGS_RELEASE "-O3")
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    # Warning, these flags slows down the execution
+    # set(CMAKE_CXX_FLAGS "-O3 -fsanitize=address -fsanitize=leak -fsanitize=undefined")
 endif()
 
 # Enable AddressSanitizer
