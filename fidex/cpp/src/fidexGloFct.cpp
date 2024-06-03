@@ -203,7 +203,7 @@ void checkParametersLogicValues(Parameters &p) {
  * - If using Fidex, normalization parameters can be specified to denormalize the rules if data were normalized beforehand.
  * - The parameter 'explanation_file' has to be provided to extract the explanations in a file.
  * - Parameters can be defined directly via the command line or through a JSON configuration file.
- * - Providing no command-line arguments or using -h/&ndash;&ndash;help displays usage instructions, detailing both required and optional parameters for user guidance.
+ * - Providing no command-line arguments or using -h/&#45;&#45;help displays usage instructions, detailing both required and optional parameters for user guidance.
  *
  * File formats:
  * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
@@ -223,8 +223,8 @@ void checkParametersLogicValues(Parameters &p) {
  *   'Number of rules : 1171, mean sample covering number per rule : 236.923997, mean number of antecedents per rule : 13.020495'<br>
  *   The second line indicates if a decision threshold has been used. If no, it says: 'No decision threshold is used.'
  *   and if yes, it says something like 'Using a decision threshold of 0.3 for class 0'.
- *   Then there is an empty line and each rule is numbered starting from 1 and separated from each other by an empty line. A rule is in the form:<br>
- *   "Rule" 1: X2531>=175.95 X2200>=181.05 X1828>=175.95 X2590>=178.5 X1257>=183.6 X2277>=170.85 X1816>=173.4 X3040>=183.6 -> class 0<br>
+ *   Then there is an empty line and each rule is numbered starting from 1 and separated from each other by an empty line. A rule is in the form:
+ *   \n "Rule" 1: X2531>=175.95 X2200>=181.05 X1828>=175.95 X2590>=178.5 X1257>=183.6 X2277>=170.85 X1816>=173.4 X3040>=183.6 -> class 0<br>
  *   Train Covering size : 127<br>
  *   Train Fidelity : 1<br>
  *   Train Accuracy : 1<br>
@@ -241,7 +241,7 @@ void checkParametersLogicValues(Parameters &p) {
  *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
  *
  * Example of how to call the function:<br>
- * fidex.fidexGlo('&ndash;&ndash;test_data_file datanormTest.txt &ndash;&ndash;test_pred_file predTest.out &ndash;&ndash;global_rules_file globalRules.rls &ndash;&ndash;nb_attributes 16 &ndash;&ndash;nb_classes 2 &ndash;&ndash;explanation_file explanation.txt &ndash;&ndash;root_folder dimlp/datafiles &ndash;&ndash;with_fidex true &ndash;&ndash;train_data_file datanormTrain.txt &ndash;&ndash;train_pred_file predTrain.out &ndash;&ndash;train_class_file dataclass2Train.txt &ndash;&ndash;test_class_file dataclass2Test.txt &ndash;&ndash;weights_file weights.wts')
+ * <tt>fidex.fidexGlo('&#45;&#45;test_data_file datanormTest.txt &#45;&#45;test_pred_file predTest.out &#45;&#45;global_rules_file globalRules.rls &#45;&#45;nb_attributes 16 &#45;&#45;nb_classes 2 &#45;&#45;explanation_file explanation.txt &#45;&#45;root_folder dimlp/datafiles &#45;&#45;with_fidex true &#45;&#45;train_data_file datanormTrain.txt &#45;&#45;train_pred_file predTrain.out &#45;&#45;train_class_file dataclass2Train.txt &#45;&#45;test_class_file dataclass2Test.txt &#45;&#45;weights_file weights.wts')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.
