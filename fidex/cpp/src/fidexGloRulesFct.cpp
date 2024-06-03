@@ -477,7 +477,7 @@ void checkRulesParametersLogicValues(Parameters &p) {
  * - The path of the file containing the computed rules must be provided. It can be generated as a JSON if a JSON extension is specified.
  * - Normalization parameters can be specified to denormalize the rules if data were normalized beforehand.
  * - Parameters can be defined directly via the command line or through a JSON configuration file.
- * - Providing no command-line arguments or using -h/&ndash;&ndash;help displays usage instructions, detailing both required and optional parameters for user guidance.
+ * - Providing no command-line arguments or using -h/\-\-help displays usage instructions, detailing both required and optional parameters for user guidance.
  *
  * File formats:
  * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
@@ -501,7 +501,7 @@ void checkRulesParametersLogicValues(Parameters &p) {
  *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
  *
  * Example of how to call the function:<br>
- * fidex.fidexGloRules('&ndash;&ndash;train_data_file datanormTrain.txt &ndash;&ndash;train_pred_file predTrain.out &ndash;&ndash;train_class_file dataclass2Train.txt &ndash;&ndash;weights_file weights.wts &ndash;&ndash;nb_attributes 16 &ndash;&ndash;nb_classes 2 &ndash;&ndash;heuristic 1 &ndash;&ndash;global_rules_outfile globalRules.rls &ndash;&ndash;root_folder dimlp/datafiles')
+ * fidex.fidexGloRules('\-\-train_data_file datanormTrain.txt \-\-train_pred_file predTrain.out \-\-train_class_file dataclass2Train.txt \-\-weights_file weights.wts \-\-nb_attributes 16 \-\-nb_classes 2 \-\-heuristic 1 \-\-global_rules_outfile globalRules.rls \-\-root_folder dimlp/datafiles')
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.
