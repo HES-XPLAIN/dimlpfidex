@@ -326,10 +326,15 @@ bool Fidex::retryComputeFidex(Rule &rule, std::vector<double> &mainSampleValues,
  * classes of samples and constructing a rule based on these hyperplanes.
  *
  * Computes Fidex until a rule is created or until the max failed attempts limit is reached.
+ * \par
  *   -> First attempt to generate a rule with a covering greater or equal to 'min_covering' and a fidelity greater or equal to 'min_fidelity'.
+ * \par
  *   -> If the attempt failed and the 'covering_strategy' is on, Fidex is computed to find a rule with the max possible minimal covering that can be lower than 'min_covering'.
+ * \par
  *   -> If all attempts failed, the targeted fidelity is gradually lowered until it succeed or 'lowest_min_fidelity' is reached.
+ * \par
  *   -> Each failed attempt on lowest minimal fidelity are counted.
+ * \par
  *   -> If the max failed attempts limit is reached, then the rule couldn't be computed for this sample.
  *
  * @param rule Reference to the Rule object to be potentially updated by the computation.
