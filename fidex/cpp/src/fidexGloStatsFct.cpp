@@ -170,6 +170,11 @@ void checkStatsParametersLogicValues(Parameters &p) {
  * - Parameters can be defined directly via the command line or through a JSON configuration file.
  * - Providing no command-line arguments or using <tt>-h/-\-help</tt> displays usage instructions, detailing both required and optional parameters for user guidance.
  *
+ * Outputs:
+ * - stats_file : If specified, contains the statistics of the global ruleset seen above.
+ * - global_rules_outfile : If specified, edits the global ruleset file by adding the statistics of global rules on test set.
+ * - console_file : If specified, contains the console output.
+ *
  * File formats:
  * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
  *   1. Only attributes (floats).
@@ -195,7 +200,7 @@ void checkStatsParametersLogicValues(Parameters &p) {
  *   The order is important as the first attribute/class name will represent the first attribute/class in the dataset.
  *
  * Example of how to call the function:<br>
- * <tt>from dimlpfidex import fidex
+ * <tt>from dimlpfidex import fidex<br>
  * fidex.fidexGloStats('-\-test_data_file datanormTest.txt -\-test_pred_file predTest.out -\-test_class_file dataclass2Test.txt -\-global_rules_file globalRules.rls -\-nb_attributes 16 -\-nb_classes 2 -\-stats_file stats.txt -\-root_folder dimlp/datafiles')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths and options for output.

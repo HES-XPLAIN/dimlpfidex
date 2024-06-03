@@ -71,6 +71,7 @@ def gradBoostTrn(args: str = None):
     - True train and test class labels must be provided, either within the data file or separately through a class file.
     - Parameters can be defined directly via the command line or through a JSON configuration file.
     - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
+    - It's not necessary to normalize data before training because decision trees don't need normalization.
 
     File formats:
     - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:

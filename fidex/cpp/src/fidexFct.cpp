@@ -126,6 +126,16 @@ void checkFidexParametersLogicValues(Parameters &p) {
  * - Parameters can be defined directly via the command line or through a JSON configuration file.
  * - Providing no command-line arguments or using <tt>-h/-\-help</tt> displays usage instructions, detailing both required and optional parameters for user guidance.
  *
+ * Outputs:
+ * - rules_outfile : File containing the obtained explanation rule for every test sample. It's generated as a JSON if a JSON extension is specified.
+ * - stats_file : If specified, contains the statistics of the test set :
+ *   1. The mean covering size per rule.
+ *   2. The mean number of antecedents per rule.
+ *   3. The mean rule fidelity rate.
+ *   4. The mean rule accuracy.
+ *   5. The mean rule confidence.
+ * - console_file : If specified, contains the console output.
+ *
  * File formats:
  * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
  *   1. Only attributes (floats).
@@ -152,7 +162,7 @@ void checkFidexParametersLogicValues(Parameters &p) {
  *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
  *
  * Example of how to call the function:<br>
- * <tt>from dimlpfidex import fidex
+ * <tt>from dimlpfidex import fidex<br>
  * fidex.fidex('-\-train_data_file datanorm -\-train_pred_file dimlp.out -\-train_class_file dataclass2 -\-test_data_file testSampleDataCombine -\-nb_attributes 16 -\-nb_classes 2 -\-weights_file dimlp.wts -\-nb_quant_levels 50 -\-rules_outfile rule.txt -\-stats_file stats -\-max_iterations 100 -\-min_covering 25 -\-dropout_dim 0.5 -\-dropout_hyp 0.5 -\-root_folder fidex/datafiles')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
