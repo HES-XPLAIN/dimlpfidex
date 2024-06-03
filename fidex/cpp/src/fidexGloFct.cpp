@@ -228,7 +228,7 @@ void checkParametersLogicValues(Parameters &p) {
  *   The second line indicates if a decision threshold has been used. If no, it says: 'No decision threshold is used.'
  *   and if yes, it says something like 'Using a decision threshold of 0.3 for class 0'.
  *   Then there is an empty line and each rule is numbered starting from 1 and separated from each other by an empty line. A rule is in the form:<br>
- *   @Rule 1: X2531>=175.95 X2200>=181.05 X1828>=175.95 X2590>=178.5 X1257>=183.6 X2277>=170.85 X1816>=173.4 X3040>=183.6 -> class 0<br>
+ *   %Rule 1: X2531>=175.95 X2200>=181.05 X1828>=175.95 X2590>=178.5 X1257>=183.6 X2277>=170.85 X1816>=173.4 X3040>=183.6 -> class 0<br>
  *   Train Covering size : 127<br>
  *   Train Fidelity : 1<br>
  *   Train Accuracy : 1<br>
@@ -244,8 +244,10 @@ void checkParametersLogicValues(Parameters &p) {
  *   Format: '2 : original mean: 0.8307, original std: 0.0425'<br>
  *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
  *
- * Example of how to call the function:<br>
- * <tt>from dimlpfidex import fidex</tt><br>
+ * Example of how to call the function:
+ * @par
+ * <tt>from dimlpfidex import fidex</tt>
+ * @par
  * <tt>fidex.fidexGlo('-\-test_data_file datanormTest.txt -\-test_pred_file predTest.out -\-global_rules_file globalRules.rls -\-nb_attributes 16 -\-nb_classes 2 -\-explanation_file explanation.txt -\-root_folder dimlp/datafiles -\-with_fidex true -\-train_data_file datanormTrain.txt -\-train_pred_file predTrain.out -\-train_class_file dataclass2Train.txt -\-test_class_file dataclass2Test.txt -\-weights_file weights.wts')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
