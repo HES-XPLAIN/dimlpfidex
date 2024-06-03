@@ -460,7 +460,7 @@ void checkRulesParametersLogicValues(Parameters &p) {
  * classes of samples and constructing a rule for the training sample based on these hyperplanes covering this sample
  * and as many other training samples as possible. Then, a heuristic is used to remove the duplicated and unnecessary rules.
  *
- * The @Fidex algorithm is computed until a rule is created or until the max failed attempts limit is reached.<br>
+ * The %Fidex algorithm is computed until a rule is created or until the max failed attempts limit is reached.<br>
  * - First attempt to generate a rule with a covering greater or equal to 'min_covering' and a fidelity greater or equal to 'min_fidelity'.<br>
  * - If the attempt fails and the 'covering_strategy' is on, Fidex is computed to find a rule with the maximum possible minimal covering that can be lower than 'min_covering'.<br>
  * - If all attempts fail, the targeted fidelity is gradually lowered until it succeeds or 'lowest_min_fidelity' is reached.<br>
@@ -504,8 +504,10 @@ void checkRulesParametersLogicValues(Parameters &p) {
  *   Format: '2 : original mean: 0.8307, original std: 0.0425'<br>
  *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
  *
- * Example of how to call the function:<br>
- * <tt>from dimlpfidex import fidex</tt><br>
+ * Example of how to call the function:
+ * @par
+ * <tt>from dimlpfidex import fidex</tt>
+ * @par
  * <tt>fidex.fidexGloRules('-\-train_data_file datanormTrain.txt -\-train_pred_file predTrain.out -\-train_class_file dataclass2Train.txt -\-weights_file weights.wts -\-nb_attributes 16 -\-nb_classes 2 -\-heuristic 1 -\-global_rules_outfile globalRules.rls -\-root_folder dimlp/datafiles')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
