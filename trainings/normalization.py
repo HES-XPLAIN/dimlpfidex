@@ -379,6 +379,11 @@ def normalization(args: str = None):
     - It's not necessary to normalize data before training with convKeras, MLP and SVM because a normalization is done during the process.
     - It's not necessary to normalize data before training with GradientBoosting and RandomForests because decision trees don't need normalization.
 
+    Outputs :
+    - output_normalization_file : File containing the mean and std of the normalized attributes.
+    - output_data_files : Files containing the original data files normalized.
+    - output_rule_files : Files containing the original rule files denormalized.
+
     File formats:
     - normalization_file file: Each line contains the mean/median and standard deviation for an attribute.
       Format: '2 : original mean: 0.8307, original std: 0.0425'
