@@ -203,7 +203,7 @@ void checkParametersLogicValues(Parameters &p) {
  * - If using Fidex, normalization parameters can be specified to denormalize the rules if data were normalized beforehand.
  * - The parameter 'explanation_file' has to be provided to extract the explanations in a file.
  * - Parameters can be defined directly via the command line or through a JSON configuration file.
- * - Providing no command-line arguments or using -h/&#45;&#45;help displays usage instructions, detailing both required and optional parameters for user guidance.
+ * - Providing no command-line arguments or using <tt>-h/--help</tt> displays usage instructions, detailing both required and optional parameters for user guidance.
  *
  * File formats:
  * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
@@ -224,11 +224,11 @@ void checkParametersLogicValues(Parameters &p) {
  *   The second line indicates if a decision threshold has been used. If no, it says: 'No decision threshold is used.'
  *   and if yes, it says something like 'Using a decision threshold of 0.3 for class 0'.
  *   Then there is an empty line and each rule is numbered starting from 1 and separated from each other by an empty line. A rule is in the form:
- *   \n "Rule" 1: X2531>=175.95 X2200>=181.05 X1828>=175.95 X2590>=178.5 X1257>=183.6 X2277>=170.85 X1816>=173.4 X3040>=183.6 -> class 0<br>
+ *   'Rule 1: X2531>=175.95 X2200>=181.05 X1828>=175.95 X2590>=178.5 X1257>=183.6 X2277>=170.85 X1816>=173.4 X3040>=183.6 -> class 0<br>
  *   Train Covering size : 127<br>
  *   Train Fidelity : 1<br>
  *   Train Accuracy : 1<br>
- *   Train Confidence : 0.999919
+ *   Train Confidence : 0.999919'
  * - Weights file: This file should be obtained by training with Dimlp, SVM, MLP, or a CNN from dimlpfidex because an additional special Dimlp layer is needed.
  *   The first row represents bias values of the Dimlp layer and the second row are values of the weight matrix between the previous layer and the Dimlp layer.
  *   Each value is separated by a space. As an example, if the layers are of size 4, the biases are: b1 b2 b3 b4 and the weights are w1 w2 w3 w4.
@@ -241,7 +241,7 @@ void checkParametersLogicValues(Parameters &p) {
  *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
  *
  * Example of how to call the function:<br>
- * <tt>fidex.fidexGlo('&#45;&#45;test_data_file datanormTest.txt &#45;&#45;test_pred_file predTest.out &#45;&#45;global_rules_file globalRules.rls &#45;&#45;nb_attributes 16 &#45;&#45;nb_classes 2 &#45;&#45;explanation_file explanation.txt &#45;&#45;root_folder dimlp/datafiles &#45;&#45;with_fidex true &#45;&#45;train_data_file datanormTrain.txt &#45;&#45;train_pred_file predTrain.out &#45;&#45;train_class_file dataclass2Train.txt &#45;&#45;test_class_file dataclass2Test.txt &#45;&#45;weights_file weights.wts')</tt>
+ * <tt>fidex.fidexGlo('--test_data_file datanormTest.txt --test_pred_file predTest.out --global_rules_file globalRules.rls --nb_attributes 16 --nb_classes 2 --explanation_file explanation.txt --root_folder dimlp/datafiles --with_fidex true --train_data_file datanormTrain.txt --train_pred_file predTrain.out --train_class_file dataclass2Train.txt --test_class_file dataclass2Test.txt --weights_file weights.wts')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.
