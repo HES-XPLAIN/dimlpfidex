@@ -101,6 +101,7 @@ def convKeras(args: str = None):
       validation datas given here in the train datas and classes of Fidex.
     - Parameters can be specified using the command line or a JSON configuration file.
     - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
+    - It's not necessary to normalize data before training because a normalization is done during the process.
 
     File formats:
     - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:

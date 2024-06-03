@@ -205,6 +205,10 @@ void checkParametersLogicValues(Parameters &p) {
  * - Parameters can be defined directly via the command line or through a JSON configuration file.
  * - Providing no command-line arguments or using <tt>-h/-\-help</tt> displays usage instructions, detailing both required and optional parameters for user guidance.
  *
+ * Outputs:
+ * - explanation_file : File containing the explanations for every test sample. An explanation is composed of one or many explanation rules.
+ * - console_file : If specified, contains the console output.
+ *
  * File formats:
  * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
  *   1. Only attributes (floats).
@@ -241,7 +245,7 @@ void checkParametersLogicValues(Parameters &p) {
  *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
  *
  * Example of how to call the function:<br>
- * <tt>from dimlpfidex import fidex
+ * <tt>from dimlpfidex import fidex<br>
  * fidex.fidexGlo('-\-test_data_file datanormTest.txt -\-test_pred_file predTest.out -\-global_rules_file globalRules.rls -\-nb_attributes 16 -\-nb_classes 2 -\-explanation_file explanation.txt -\-root_folder dimlp/datafiles -\-with_fidex true -\-train_data_file datanormTrain.txt -\-train_pred_file predTrain.out -\-train_class_file dataclass2Train.txt -\-test_class_file dataclass2Test.txt -\-weights_file weights.wts')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
