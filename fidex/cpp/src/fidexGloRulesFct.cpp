@@ -460,12 +460,12 @@ void checkRulesParametersLogicValues(Parameters &p) {
  * classes of samples and constructing a rule for the training sample based on these hyperplanes covering this sample
  * and as many other training samples as possible. Then, a heuristic is used to remove the duplicated and unnecessary rules.
  *
- * The \c Fidex algorithm is computed until a rule is created or until the max failed attempts limit is reached.<br>
- * -> First attempt to generate a rule with a covering greater or equal to 'min_covering' and a fidelity greater or equal to 'min_fidelity'.<br>
- * -> If the attempt fails and the 'covering_strategy' is on, Fidex is computed to find a rule with the maximum possible minimal covering that can be lower than 'min_covering'.<br>
- * -> If all attempts fail, the targeted fidelity is gradually lowered until it succeeds or 'lowest_min_fidelity' is reached.<br>
- * -> Each failed attempt at the lowest minimal fidelity is counted.<br>
- * -> If the max failed attempts limit is reached, then the rule couldn't be computed for this sample.
+ * The "Fidex" algorithm is computed until a rule is created or until the max failed attempts limit is reached.<br>
+ * - First attempt to generate a rule with a covering greater or equal to 'min_covering' and a fidelity greater or equal to 'min_fidelity'.<br>
+ * - If the attempt fails and the 'covering_strategy' is on, Fidex is computed to find a rule with the maximum possible minimal covering that can be lower than 'min_covering'.<br>
+ * - If all attempts fail, the targeted fidelity is gradually lowered until it succeeds or 'lowest_min_fidelity' is reached.<br>
+ * - Each failed attempt at the lowest minimal fidelity is counted.<br>
+ * - If the max failed attempts limit is reached, then the rule couldn't be computed for this sample.
  *
  * Notes:
  * - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
@@ -477,7 +477,7 @@ void checkRulesParametersLogicValues(Parameters &p) {
  * - The path of the file containing the computed rules must be provided. It can be generated as a JSON if a JSON extension is specified.
  * - Normalization parameters can be specified to denormalize the rules if data were normalized beforehand.
  * - Parameters can be defined directly via the command line or through a JSON configuration file.
- * - Providing no command-line arguments or using -h/\--\--help displays usage instructions, detailing both required and optional parameters for user guidance.
+ * - Providing no command-line arguments or using -h/&ndash;&ndash;help displays usage instructions, detailing both required and optional parameters for user guidance.
  *
  * File formats:
  * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
@@ -501,7 +501,7 @@ void checkRulesParametersLogicValues(Parameters &p) {
  *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
  *
  * Example of how to call the function:<br>
- * fidex.fidexGloRules('\--\--train_data_file datanormTrain.txt \--\--train_pred_file predTrain.out \--\--train_class_file dataclass2Train.txt \--\--weights_file weights.wts \--\--nb_attributes 16 \--\--nb_classes 2 \--\--heuristic 1 \--\--global_rules_outfile globalRules.rls \--\--root_folder dimlp/datafiles')`
+ * fidex.fidexGloRules('&ndash;&ndash;train_data_file datanormTrain.txt &ndash;&ndash;train_pred_file predTrain.out &ndash;&ndash;train_class_file dataclass2Train.txt &ndash;&ndash;weights_file weights.wts &ndash;&ndash;nb_attributes 16 &ndash;&ndash;nb_classes 2 &ndash;&ndash;heuristic 1 &ndash;&ndash;global_rules_outfile globalRules.rls &ndash;&ndash;root_folder dimlp/datafiles')
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.
