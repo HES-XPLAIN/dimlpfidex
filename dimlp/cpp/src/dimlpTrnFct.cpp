@@ -23,6 +23,8 @@ void showDimlpTrnParams()
             << std::endl;
 
   printOptionDescription("--train_data_file <str>", "Train data file");
+  printOptionDescription("--train_class_file <str>", "Train true class file, not mandatory if classes are specified in train data file");
+  printOptionDescription("--stats_file <str>", "Output file name with train, test and validation accuracy");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of input neurons");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of output neurons");
 
@@ -38,7 +40,6 @@ void showDimlpTrnParams()
   printOptionDescription("--valid_data_file <str>", "Validation data file");
   printOptionDescription("--test_data_file <str>", "Test data file");
   printOptionDescription("--weights_file <str>", "Pretrained weights file");
-  printOptionDescription("--train_class_file <str>", "Train true class file");
   printOptionDescription("--test_class_file <str>", "Test true class file");
   printOptionDescription("--valid_class_file <str>", "Validation true class file");
   printOptionDescription("--weights_outfile <str>", "Output weights file name (default: dimlp.wts)");
@@ -46,10 +47,9 @@ void showDimlpTrnParams()
   printOptionDescription("--test_pred_outfile <str>", "Output test prediction file name (default: dimlpTest.out)");
   printOptionDescription("--valid_pred_outfile <str>", "Output validation prediction file name (default: dimlpValidation.out)");
   printOptionDescription("--console_file <str>", "File with console logs redirection");
-  printOptionDescription("--stats_file <str>", "Output file name with train, test and validation accuracy");
   printOptionDescription("--first_hidden_layer <int k*nb_attributes, k in [1,inf[>", "Number of neurons in the first hidden layer (default: nb_attributes)");
   printOptionDescription("--hidden_layers <list<int [1,inf[>>", "Number of neurons in each hidden layer, from the second layer through to the last");
-  printOptionDescription("--hidden_layers_outfile <str>", "Output hidden layers file name (default: hidden_layers.out)");
+  printOptionDescription("--hidden_layers_outfile <str>", "Output hidden layers' sizes file name (default: hidden_layers.out)");
   printOptionDescription("--with_rule_extraction <bool>", "Whether to extract rules with dimlp algorithm");
   printOptionDescription("--global_rules_outfile <str>", "Rules output file");
   printOptionDescription("--learning_rate <float ]0,inf[>", "Back-propagation learning parameter (default: 0.1)");
@@ -107,6 +107,76 @@ void checkDimlpTrnParametersLogicValues(Parameters &p) {
   p.checkParametersNormalization();
 }
 
+/**
+ * @brief Executes the Dimlp training process with specified parameters and optionally performs rule extraction with the Dimlp algorithm.
+ *
+ * The function performs the following steps:
+ * 1. Parses the command string to extract parameters.
+ * 2. Sets up the neural network and other necessary objects.
+ * 3. Trains the network with the provided training dataset.
+ * 4. Saves the network's predictions for the training, test, and validation datasets if specified.
+ * 5. Optionally extracts rules from the trained network.
+ * 6. Saves the configuration of hidden layers and the total execution time.
+ *
+ * Notes:
+ * - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
+ * - It's mandatory to specify the number of attributes and classes in the data, as well as the train dataset.
+ * - True train class labels must be provided, either within the data file or separately through a class file. Test classes are given the same way if present.
+ * - Validation data and classes can optionally be given in the same way to train with validation.
+ * - The name of the stats output file must be specified.
+ * - Data should be normalized beforehand. You can use the normalization function to do so as it generates a normalization file that will allow you to easily denormalize the rules obtained by Fidex or Dimlp.
+ * - Normalization parameters can be specified to denormalize the Dimlp explaining rules if data were normalized beforehand.
+ * - Parameters can be defined directly via the command line or through a JSON configuration file.
+ * - Providing no command-line arguments or using <tt>-h/-\-help</tt> displays usage instructions, detailing both required and optional parameters for user guidance.
+ *
+ * Outputs:
+ * - weights_outfile : File containing the training weights of the model.
+ * - train_pred_outfile : File containing the model's train predictions.
+ * - test_pred_outfile : If specified, contains the model's test predictions.
+ * - valid_pred_outfile : If specified, contains the model's validation predictions.
+ * - stats_file : File containing train accuracy and possibly test and validation accuracy.
+ * - hidden_layers_outfile : File containing the number of nodes in each hidden layer.
+ * - global_rules_outfile : If specified and if computing rules, contains the explanation rules with statistics.
+ * - console_file : If specified, contains the console output.
+ *
+ * File formats:
+ * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
+ *   1. Only attributes (floats).
+ *   2. Attributes (floats) followed by an integer class ID.
+ *   3. Attributes (floats) followed by one-hot encoded class.
+ * - Class files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons, or commas. Supported formats:
+ *   1. Integer class ID.
+ *   2. One-hot encoded class.
+ * - Weights file: It can contain one or more networks (for DimlpBT). If there is more than one network, each network is separated by a "Network <id>" marker.
+ *   For each network, the biases of the first layer are on the first line followed by the weights of the first layer on the second line.
+ *   This pattern continues for each layer of the network. For example, with 2 networks:<br>
+ *   Network 1
+ *   0.1 0.2 0.3  # Biases of the first layer
+ *   0.4 0.5 0.6 0.7 0.8 0.9  # Weights of the first layer
+ *   0.15 0.25  # Biases of the second layer
+ *   0.35 0.45 0.55 0.65  # Weights of the second layer
+ *
+ *   Network 2
+ *   0.11 0.22 0.33  # Biases of first layer of the network 2
+ *   0.44 0.55 0.66 0.77 0.88 0.99  # Weights of first layer of the network 2
+ *   0.155 0.255  # Biases of second layer of the network 2
+ *   0.355 0.455 0.555 0.655 # Weights of second layer of the network 2
+ * - Attributes file: Each line corresponds to one attribute, each attribute must be specified. Classes can be specified
+ *   after the attributes but are not mandatory. Each attribute or class must be in one word without spaces (you can use _ to replace a space).
+ *   The order is important as the first attribute/class name will represent the first attribute/class in the dataset.
+ * - Normalization file: Each line contains the mean/median and standard deviation for an attribute.<br>
+ *   Format: '2 : original mean: 0.8307, original std: 0.0425'<br>
+ *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
+ *
+ * Example of how to call the function:
+ * @par
+ * <tt>from dimlpfidex import dimlp</tt>
+ * @par
+ * <tt>dimlp.dimlpTrn('-\-train_data_file datanormTrain.txt -\-train_class_file dataclass2Train.txt -\-test_data_file datanormTest.txt -\-test_class_file dataclass2Test.txt -\-nb_attributes 16 -\-hidden_layers 5 -\-nb_classes 2 -\-weights_outfile dimlpDatanormBT.wts -\-with_rule_extraction true -\-global_rules_outfile globalRules.rls -\-train_pred_outfile predTrain.out -\-test_pred_outfile predTest.out -\-stats_file stats.txt -\-root_folder dimlp/datafiles')</tt>
+ *
+ * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, training parameters, and options for output.
+ * @return Returns 0 for successful execution, -1 for errors encountered during the process.
+ */
 int dimlpTrn(const std::string &command) {
   // Save buffer where we output results
   std::ofstream ofs;
