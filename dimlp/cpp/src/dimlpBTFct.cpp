@@ -45,7 +45,7 @@ void showDimlpBTParams()
   printOptionDescription("--stats_file <str>", "Output file name with train, test and validation accuracy and with the global train and test accuracy");
   printOptionDescription("--first_hidden_layer <int k*nb_attributes, k in [1,inf[>", "Number of neurons in the first hidden layer (default: nb_attributes)");
   printOptionDescription("--hidden_layers <list<int [1,inf[>>", "Number of neurons in each hidden layer, from the second layer through to the last");
-  printOptionDescription("--hidden_layers_outfile <str>", "Output hidden layers file name (default: hidden_layers.out)");
+  printOptionDescription("--hidden_layers_outfile <str>", "Output hidden layers' sizes file name (default: hidden_layers.out)");
   printOptionDescription("--with_rule_extraction <bool>", "Whether to extract rules with dimlpBT algorithm");
   printOptionDescription("--global_rules_outfile <str>", "Rules output file");
   printOptionDescription("--momentum <float [0,inf[>", "Back-propagation momentum parameter (default: 0.6)");
