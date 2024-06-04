@@ -2,6 +2,9 @@
 
 ////////////////////////////////////////////////////////////
 
+/**
+ * @brief Displays the parameters for dimlpCls.
+ */
 void showDimlpClsParams()
 
 {
@@ -43,49 +46,9 @@ void showDimlpClsParams()
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "dimlp.dimlpCls(\"--test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_file weights.wts --nb_attributes 16 --hidden_layers_file hidden_layers.out --nb_classes 2 --test_pred_outfile predTest.out --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
+  std::cout << "dimlp.dimlpCls(\"--test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_file dimlpDatanorm.wts --nb_attributes 16 --hidden_layers_file hidden_layers.out --nb_classes 2 --test_pred_outfile predTest.out --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
-            << std::endl;
-}
-
-////////////////////////////////////////////////////////////
-
-static void SaveOutputs(
-    DataSet &data,
-    Dimlp *net,
-    int nbOut,
-    int nbWeightLayers,
-    const std::string &outfile)
-
-{
-  std::filebuf buf;
-
-  if (buf.open(outfile, std::ios_base::out) == nullptr) {
-    throw CannotOpenFileError("Error : Cannot open output file " + outfile);
-  }
-
-  std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
-  const float *out = layer->GetUp();
-
-  std::cout << "\n\n"
-            << outfile << ": "
-            << "Writing ..." << std::endl;
-
-  std::ostream outFile(&buf);
-
-  for (int p = 0; p < data.GetNbEx(); p++) {
-    net->ForwardOneExample1(data, p);
-
-    for (int o = 0; o < nbOut; o++) {
-      outFile << out[o] << " ";
-    }
-
-    outFile << "" << std::endl;
-  }
-
-  std::cout << outfile << ": "
-            << "Written.\n"
             << std::endl;
 }
 
@@ -132,9 +95,9 @@ void SaveFirstHid(
 ////////////////////////////////////////////////////////////
 
 /**
- * @brief Used to set default hyperparameters values and to check the sanity of all used values like boundaries and logic.
+ * @brief Sets default hyperparameters and checks the logic and validity of the parameters of dimlpCls.
  *
- * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
+ * @param p Reference to the Parameters object containing all hyperparameters.
  */
 void checkDimlpClsParametersLogicValues(Parameters &p) {
   // setting default values
@@ -340,7 +303,7 @@ int dimlpCls(const std::string &command) {
       }
     }
 
-    SaveOutputs(Test, &net, nbOut, nbWeightLayers, predFile);
+    SaveOutputs(Test, std::make_shared<Dimlp>(net), nbOut, nbWeightLayers, predFile);
     SaveFirstHid(Test, &net, vecNbNeurons[1], predFile, hidFile);
 
     std::cout << "\n-------------------------------------------------\n"

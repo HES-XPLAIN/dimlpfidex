@@ -11,7 +11,14 @@
 #include <unordered_map>
 #include <vector>
 
+/**
+ * @brief Displays the parameters for dimlpRul.
+ */
 void showDimlpRulParams();
+
+/**
+ * @brief Sets default hyperparameters and checks the logic and validity of the parameters of dimlpRul.
+ */
 void checkDimlpRulParametersLogicValues(Parameters &p);
 int dimlpRul(const std::string &command = "");
 

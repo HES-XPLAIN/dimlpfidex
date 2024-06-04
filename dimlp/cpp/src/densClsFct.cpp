@@ -4,6 +4,9 @@ const int BPNN = 1;
 
 ////////////////////////////////////////////////////////////
 
+/**
+ * @brief Displays the parameters for densCls.
+ */
 void showDensClsParams()
 
 {
@@ -63,9 +66,9 @@ void showDensClsParams()
 ////////////////////////////////////////////////////////////
 
 /**
- * @brief Used to set default hyperparameters values and to check the sanity of all used values like boundaries and logic.
+ * @brief Sets default hyperparameters and checks the logic and validity of the parameters of densCls.
  *
- * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
+ * @param p Reference to the Parameters object containing all hyperparameters.
  */
 void checkDensClsParametersLogicValues(Parameters &p) {
   // setting default values
@@ -456,5 +459,3 @@ int densCls(const std::string &command) {
   }
   return 0;
 }
-
-// Exemple to launch the code : dimlp.densCls("densCls --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --hidden_layers_file hidden_layers.out --nb_classes 2 --weights_file dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile dimlpDatanormDensClsRul.rls --train_pred_outfile dimlpDatanormDensClsTrain.out --test_pred_outfile dimlpDatanormDensClsTest.out --stats_file dimlpDatanormDensClsStats --console_file dimlpDatanormDensClsResult.txt --root_folder dimlp/datafiles");

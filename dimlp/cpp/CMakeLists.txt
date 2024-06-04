@@ -40,6 +40,8 @@ FILE(GLOB DIMLP_TRN_SRC
     src/attrName.h
     src/cleanRS.cpp
     src/cleanRS.h
+    src/dimlpCommonFun.cpp
+    src/dimlpCommonFun.h
     src/oneVarTD.cpp
     src/oneVarTD.h
     src/realHyp.cpp
@@ -61,11 +63,15 @@ FILE(GLOB DIMLP_TRN_SRC
 FILE(GLOB DIMLP_PRED_SRC
     src/dimlpPredFct.cpp
     src/dimlpPredFct.h
+    src/dimlpCommonFun.cpp
+    src/dimlpCommonFun.h
 )
 
 FILE(GLOB DIMLP_CLS_SRC
     src/dimlpClsFct.cpp
     src/dimlpClsFct.h
+    src/dimlpCommonFun.cpp
+    src/dimlpCommonFun.h
 )
 
 FILE(GLOB DIMLP_BT_SRC

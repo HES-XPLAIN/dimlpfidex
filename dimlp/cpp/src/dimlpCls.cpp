@@ -2,6 +2,16 @@
 
 ////////////////////////////////////////////////////////////
 
+/**
+ * @brief Entry point for dimlpCls executable.
+ *
+ * This function serves as the entry point for dimlpCls executable. It constructs a string command
+ * from the command line arguments and then calls the dimlpCls function with this command.
+ *
+ * @param nbParam Number of command line arguments.
+ * @param param Array of command line arguments.
+ * @return Exit status of the program.
+ */
 int main(int nbParam, char **param)
 
 {
@@ -12,5 +22,5 @@ int main(int nbParam, char **param)
       command += param[p];
     }
   }
-  dimlpCls(command);
+  return dimlpCls(command);
 }

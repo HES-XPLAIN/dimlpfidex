@@ -2,6 +2,9 @@
 
 ////////////////////////////////////////////////////////////
 
+/**
+ * @brief Displays the parameters for dimlpPred.
+ */
 void showDimlpPredParams()
 
 {
@@ -48,49 +51,10 @@ void showDimlpPredParams()
 
 ////////////////////////////////////////////////////////////
 
-static void SaveOutputs(
-    DataSet &data,
-    Dimlp *net,
-    int nbOut,
-    int nbWeightLayers,
-    const std::string &outfile)
-
-{
-  std::filebuf buf;
-
-  if (buf.open(outfile, std::ios_base::out) == nullptr) {
-    throw CannotOpenFileError("Error : Cannot open output file " + outfile);
-  }
-
-  std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
-  const float *out = layer->GetUp();
-
-  std::cout << "\n\n"
-            << outfile << ": "
-            << "Writing ..." << std::endl;
-
-  std::ostream outFile(&buf);
-  for (int p = 0; p < data.GetNbEx(); p++) {
-    net->ForwardOneExample1(data, p);
-
-    for (int o = 0; o < nbOut; o++) {
-      outFile << out[o] << " ";
-    }
-
-    outFile << "" << std::endl;
-  }
-
-  std::cout << outfile << ": "
-            << "Written.\n"
-            << std::endl;
-}
-
-////////////////////////////////////////////////////////////
-
 /**
- * @brief Used to set default hyperparameters values and to check the sanity of all used values like boundaries and logic.
+ * @brief Sets default hyperparameters and checks the logic and validity of the parameters of dimlpPred.
  *
- * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
+ * @param p Reference to the Parameters object containing all hyperparameters.
  */
 void checkDimlpPredParametersLogicValues(Parameters &p) {
   // setting default values
@@ -257,9 +221,9 @@ int dimlpPred(const std::string &command) {
 
     // ----------------------------------------------------------------------
 
-    Dimlp net(weightFile, nbLayers, vecNbNeurons, quant);
+    std::shared_ptr<Dimlp> net = std::make_shared<Dimlp>(weightFile, nbLayers, vecNbNeurons, quant);
 
-    SaveOutputs(Test, &net, nbOut, nbWeightLayers, predFile);
+    SaveOutputs(Test, net, nbOut, nbWeightLayers, predFile);
 
     std::cout << "\n-------------------------------------------------\n"
               << std::endl;
@@ -283,5 +247,3 @@ int dimlpPred(const std::string &command) {
   }
   return 0;
 }
-
-// Exemple to launch the code : ./dimlpPred --test_data_file datanormTest --weights_file dimlpDatanorm.wts --nb_attributes 16 --hidden_layers_file hidden_layers.out --nb_classes 2 --nb_quant_levels 50 --test_pred_outfile dimlpDatanormTest.out --console_file dimlpDatanormPredResult.txt --root_folder ../dimlp/datafiles

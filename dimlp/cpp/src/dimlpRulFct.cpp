@@ -4,6 +4,9 @@ const int BPNN = 1;
 
 ////////////////////////////////////////////////////////////
 
+/**
+ * @brief Displays the parameters for dimlpRul.
+ */
 void showDimlpRulParams()
 
 {
@@ -62,9 +65,9 @@ void showDimlpRulParams()
 ////////////////////////////////////////////////////////////
 
 /**
- * @brief Used to set default hyperparameters values and to check the sanity of all used values like boundaries and logic.
+ * @brief Sets default hyperparameters and checks the logic and validity of the parameters of dimlpRul.
  *
- * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
+ * @param p Reference to the Parameters object containing all hyperparameters.
  */
 void checkDimlpRulParametersLogicValues(Parameters &p) {
   // setting default values
@@ -472,5 +475,3 @@ int dimlpRul(const std::string &command) {
   }
   return 0;
 }
-
-// Exemple to launch the code : dimlp.dimlpRul("dimlpRul --train_data_file datanormTrain --train_class_file dataclass2Train --weights_file dimlpDatanorm.wts --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --hidden_layers_file hidden_layers.out --nb_classes 2 --global_rules_outfile dimlpDatanormRul.rls --stats_file dimlpDatanormRulStats --console_file dimlpDatanormRulResult.txt --root_folder dimlp/datafiles")

@@ -3,6 +3,7 @@
 
 #include "../../../common/cpp/src/parameters.h"
 #include "dimlp.h"
+#include "dimlpCommonFun.h"
 #include "realHyp2.h"
 
 #include <fstream>
@@ -14,9 +15,15 @@
 #include <unordered_map>
 #include <vector>
 
+/**
+ * @brief Displays the parameters for dimlpTrn.
+ */
 void showDimlpTrnParams();
+
+/**
+ * @brief Sets default hyperparameters and checks the logic and validity of the parameters of dimlpTrn.
+ */
 void checkDimlpTrnParametersLogicValues(Parameters &p);
-static void SaveOutputs(DataSet &data, std::shared_ptr<Dimlp> net, int nbOut, int nbWeightLayers, const std::string &outfile);
 int dimlpTrn(const std::string &command = "");
 
 #endif
