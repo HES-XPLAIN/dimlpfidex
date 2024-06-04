@@ -3,6 +3,9 @@ const int BPNN = 1;
 
 ////////////////////////////////////////////////////////////
 
+/**
+ * @brief Displays the parameters for dimlpBT.
+ */
 void showDimlpBTParams()
 
 {
@@ -74,9 +77,9 @@ void showDimlpBTParams()
 ////////////////////////////////////////////////////////////
 
 /**
- * @brief Used to set default hyperparameters values and to check the sanity of all used values like boundaries and logic.
+ * @brief Sets default hyperparameters and checks the logic and validity of the parameters of dimlpBT.
  *
- * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
+ * @param p Reference to the Parameters object containing all hyperparameters.
  */
 void checkDimlpBTParametersLogicValues(Parameters &p) {
   // setting default values
@@ -512,5 +515,3 @@ int dimlpBT(const std::string &command) {
   }
   return 0;
 }
-
-// Exemple to launch the code : dimlp.dimlpBT("dimlpBT --train_data_file datanormTrain --train_class_file dataclass2Train --test_data_file datanormTest --test_class_file dataclass2Test --nb_attributes 16 --hidden_layers 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_outfilename dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile dimlpDatanormBTRul.rls --train_pred_outfile dimlpDatanormBTTrain.out --test_pred_outfile dimlpDatanormBTTest.out --stats_file dimlpDatanormBTStats --console_file dimlpDatanormBTResult.txt --root_folder dimlp/datafiles");

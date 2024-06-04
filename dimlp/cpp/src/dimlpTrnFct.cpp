@@ -4,6 +4,9 @@ const int BPNN = 1;
 
 ////////////////////////////////////////////////////////////
 
+/**
+ * @brief Displays the parameters for dimlpTrn.
+ */
 void showDimlpTrnParams()
 
 {
@@ -77,50 +80,10 @@ void showDimlpTrnParams()
 
 ////////////////////////////////////////////////////////////
 
-static void SaveOutputs(
-    DataSet &data,
-    std::shared_ptr<Dimlp> net,
-    int nbOut,
-    int nbWeightLayers,
-    const std::string &outfile)
-
-{
-  std::filebuf buf;
-
-  if (buf.open(outfile, std::ios_base::out) == nullptr) {
-    throw CannotOpenFileError("Error : Cannot open output file " + outfile);
-  }
-
-  std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
-  const float *out = layer->GetUp();
-
-  std::cout << "\n\n"
-            << outfile << ": "
-            << "Writing ..." << std::endl;
-
-  std::ostream outFile(&buf);
-
-  for (int p = 0; p < data.GetNbEx(); p++) {
-    net->ForwardOneExample1(data, p);
-
-    for (int o = 0; o < nbOut; o++) {
-      outFile << out[o] << " ";
-    }
-
-    outFile << "" << std::endl;
-  }
-
-  std::cout << outfile << ": "
-            << "Written.\n"
-            << std::endl;
-}
-
-////////////////////////////////////////////////////////////
-
 /**
- * @brief Used to set default hyperparameters values and to check the sanity of all used values like boundaries and logic.
+ * @brief Sets default hyperparameters and checks the logic and validity of the parameters of dimlpTrn.
  *
- * @param p is the Parameter class containing all hyperparameters that rule the entire algorithm execution.
+ * @param p Reference to the Parameters object containing all hyperparameters.
  */
 void checkDimlpTrnParametersLogicValues(Parameters &p) {
   // setting default values
@@ -545,12 +508,3 @@ int dimlpTrn(const std::string &command) {
 
   return 0;
 }
-
-/* Exemples to launch the code :
-
-./dimlpTrn --train_data_file irisTrainData.txt --train_class_file irisTrainClass.txt --test_data_file irisTestData.txt --test_class_file irisTestClass.txt --weights_outfile weights.wts --nb_attributes 4 --hidden_layers 5 --nb_classes 3 --train_pred_outfile predTrain.out --test_pred_outfile predTest.out --with_rule_extraction true --global_rules_outfile rules.rls --stats_file stats --console_file results.txt --root_folder ../dimlp/datafiles/IrisDataset --attributes_file attributes.txt
-./dimlpTrn --train_data_file spamTrainData.txt --train_class_file spamTrainClass.txt --test_data_file spamTestData.txt --test_class_file spamTestClass.txt --weights_outfile spam.wts --nb_attributes 57 --hidden_layers 5 --nb_classes 2 --train_pred_outfile spamTrainPred.out --test_pred_outfile spamTestPred.out --with_rule_extraction true --global_rules_outfile spamTrn.rls --stats_file spamTrnStats --console_file spamTrnResult.txt --root_folder ../dimlp/datafiles/spamDataset --attributes_file attributes.txt
-./dimlpTrn --train_data_file isoletTrainData.txt --train_class_file isoletTrainClass.txt --test_data_file isoletTestData.txt --test_class_file isoletTestClass.txt --weights_outfile isoletV3.wts --nb_attributes 617 --hidden_layers 5 --nb_classes 26 --train_pred_outfile isoletTrainPredV3.out --test_pred_outfile isoletTestPredV3.out --with_rule_extraction true --global_rules_outfile isoletTrnV3.rls --stats_file isoletTrnStatsV3 --console_file isoletTrnResultV3.txt --root_folder ../dimlp/datafiles/isoletDataset --attributes_file attributes.txt
-./dimlpTrn --train_data_file Train/X_train.txt --train_class_file Train/y_train.txt --test_data_file test/X_test.txt --test_class_file Test/y_test.txt --weights_outfile HAPT.wts --nb_attributes 561 --hidden_layers 5 --nb_classes 12 --train_pred_outfile Train/pred_train.out --test_pred_outfile Test/pred_test.out --with_rule_extraction true --global_rules_outfile HAPTTrain.rls --stats_file HAPTTrnStats --console_file HAPTTrnResult.txt --root_folder ../dimlp/datafiles/HAPTDataset --attributes_file attributes.txt
-
-*/

@@ -1,6 +1,17 @@
 #include "dimlpRulFct.h"
 
 ////////////////////////////////////////////////////////////
+
+/**
+ * @brief Entry point for dimlpRul executable.
+ *
+ * This function serves as the entry point for dimlpRul executable. It constructs a string command
+ * from the command line arguments and then calls the dimlpRul function with this command.
+ *
+ * @param nbParam Number of command line arguments.
+ * @param param Array of command line arguments.
+ * @return Exit status of the program.
+ */
 int main(int nbParam, char **param)
 
 {
@@ -11,5 +22,5 @@ int main(int nbParam, char **param)
       command += param[p];
     }
   }
-  dimlpRul(command);
+  return dimlpRul(command);
 }

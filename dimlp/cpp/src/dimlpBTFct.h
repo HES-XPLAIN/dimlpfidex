@@ -11,7 +11,14 @@
 #include <unordered_map>
 #include <vector>
 
+/**
+ * @brief Displays the parameters for dimlpBT.
+ */
 void showDimlpBTParams();
+
+/**
+ * @brief Sets default hyperparameters and checks the logic and validity of the parameters of dimlpBT.
+ */
 void checkDimlpBTParametersLogicValues(Parameters &p);
 int dimlpBT(const std::string &command = "");
 
