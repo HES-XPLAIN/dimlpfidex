@@ -39,12 +39,6 @@ jobs:
           version: latest
           platform: x64
 
-      - name: Set up GCC (MinGW)
-        if: runner.os == 'Windows'
-        uses: egor-tensin/setup-mingw@v2
-        with:
-          platform: x64
-
       - name: Set up GCC (macOS)
         if: runner.os == 'macOS'
         uses: Dup4/actions-setup-gcc@v1
