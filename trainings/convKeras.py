@@ -111,11 +111,11 @@ def convKeras(args: str = None):
     - console_file : If specified, contains the console output.
 
     File formats:
-    - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:
+    - **Data files**: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:
       1. Only attributes (floats).
       2. Attributes (floats) followed by an integer class ID.
       3. Attributes (floats) followed by one-hot encoded class.
-    - Class files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:
+    - **Class files**: These files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:
       1. Integer class ID.
       2. One-hot encoded class.
 

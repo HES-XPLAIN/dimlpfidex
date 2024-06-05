@@ -61,10 +61,10 @@ def computeRocCurve(args: str = None):
     - output_roc : PNG file containing the ROC curve.
 
     File formats:
-    - The class file should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:
+    - **Class file**: Thesen files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:
       1. Integer class ID.
       2. One-hot encoded class.
-    - The prediction file should contain the prediction scores for the test set, with one sample per line, with scores (float) for each class separated either by spaces, tabs, semicolons or commas.
+    - **Prediction file** : These files should contain the prediction scores for the test set, with one sample per line, with scores (float) for each class separated either by spaces, tabs, semicolons or commas.
 
     Example of how to call the function:
     from trainings.computeRocCurve import computeRocCurve
