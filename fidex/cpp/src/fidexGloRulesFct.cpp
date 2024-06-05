@@ -484,24 +484,24 @@ void checkRulesParametersLogicValues(Parameters &p) {
  * - console_file : If specified, contains the console output.
  *
  * File formats:
- * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
+ * - **Data files**: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
  *   1. Only attributes (floats).
  *   2. Attributes (floats) followed by an integer class ID.
  *   3. Attributes (floats) followed by one-hot encoded class.
- * - Class files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons, or commas. Supported formats:
+ * - **Class files**: These files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons, or commas. Supported formats:
  *   1. Integer class ID.
  *   2. One-hot encoded class.
- * - Prediction files should contain one line per data sample, each line consisting of a series of numerical values separated
+ * - **Prediction files**: These files should contain one line per data sample, each line consisting of a series of numerical values separated
  *   by a space, a comma (CSV), a semicolon (;), or a tab representing the prediction scores for each class.
- * - Weights file: This file should be obtained by training with Dimlp, SVM, MLP, or a CNN from dimlpfidex because an additional special Dimlp layer is needed.
+ * - **Weights file**: This file should be obtained by training with Dimlp, SVM, MLP, or a CNN from dimlpfidex because an additional special Dimlp layer is needed.
  *   If the training was made with more than one network, each network is separated by a "Network <id>" marker.
  *   The first row represents bias values of the Dimlp layer and the second row are values of the weight matrix between the previous layer and the Dimlp layer.
  *   Each value is separated by a space. As an example, if the layers are of size 4, the biases are: b1 b2 b3 b4 and the weights are w1 w2 w3 w4.
- * - Rule file: This file should be obtained directly by training with Random Forests or Gradient Boosting from dimlpfidex because rules need to be extracted from the trees.
- * - Attributes file: Each line corresponds to one attribute, each attribute must be specified. Classes can be specified
+ * - **Rule file**: This file should be obtained directly by training with Random Forests or Gradient Boosting from dimlpfidex because rules need to be extracted from the trees.
+ * - **Attributes file**: Each line corresponds to one attribute, each attribute must be specified. Classes can be specified
  *   after the attributes but are not mandatory. Each attribute or class must be in one word without spaces (you can use _ to replace a space).
  *   The order is important as the first attribute/class name will represent the first attribute/class in the dataset.
- * - Normalization file: Each line contains the mean/median and standard deviation for an attribute.<br>
+ * - **Normalization file**: Each line contains the mean/median and standard deviation for an attribute.<br>
  *   Format: '2 : original mean: 0.8307, original std: 0.0425'<br>
  *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
  *

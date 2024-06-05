@@ -385,18 +385,18 @@ def normalization(args: str = None):
     - output_rule_files : Files containing the original rule files denormalized.
 
     File formats:
-    - normalization_file file: Each line contains the mean/median and standard deviation for an attribute.
+    - **Normalization file**: Each line contains the mean/median and standard deviation for an attribute.
       Format: '2 : original mean: 0.8307, original std: 0.0425'
       Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
-    - Data files (data_files): Should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:
+    - **Data files**: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:
       1. Only attributes (floats).
       2. Attributes (floats) followed by an integer class ID.
       3. Attributes (floats) followed by one-hot encoded class.
-    - Rule files (rule_files): Contain rules in Dimlp or Fidex format. Formats:
+    - **Rule files**: Contain rules in Dimlp or Fidex format. Formats:
       Dimlp: 'Rule 1: (x2 > 0.785787) (x5 > 0.591247) (x8 < 0.443135) Class = 1 (187)'
       Fidex: 'X1>=0.414584 X10<0.507982 X5>=0.314835 X6>=0.356158 -> class 0'
       In both formats, attribute indices (e.g., X1, x2) and class identifiers can be replaced with attribute names and class names, respectively, then an attribute file is required.
-    - Attribute file (attributes_file): Each line corresponds to an attribute's name, with optional class names at the end. Names can't have spaces inbetween (replace by _).
+    - **Attribute file**: Each line corresponds to an attribute's name, with optional class names at the end. Names can't have spaces inbetween (replace by _).
 
     Examples of how to call the function:
     from trainings.normalization import normalization

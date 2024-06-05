@@ -156,17 +156,17 @@ void checkDimlpClsParametersLogicValues(Parameters &p) {
  * - console_file: If specified, contains the console output.
  *
  * File formats:
- * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
+ * - **Data files**: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
  *   1. Only attributes (floats).
  *   2. Attributes (floats) followed by an integer class ID.
  *   3. Attributes (floats) followed by one-hot encoded class.
- * - Class files should contain one class sample per line, with integers separated by spaces, tabs, semicolons, or commas. Supported formats:
+ * - **Class files**: These files should contain one class sample per line, with integers separated by spaces, tabs, semicolons, or commas. Supported formats:
  *   1. Integer class ID.
  *   2. One-hot encoded class.
- * - Weights file: This file should be obtained by training with DimlpTrn and not with DimlpBT(!).
+ * - **Weights file**: This file should be obtained by training with DimlpTrn and not with DimlpBT(!).
  *   The first row represents bias values of the Dimlp layer and the second row are values of the weight matrix between the previous layer and the Dimlp layer.
  *   Each value is separated by a space. As an example, if the layers are of size 4, the biases are: b1 b2 b3 b4 and the weights are w1 w2 w3 w4.
- * - hidden layers file: This file contains the number of nodes in each hidden layer. In each line there is the layer id and the number of its nodes separated by a space. Ex :<br>
+ * - **Hidden layers file**: This file contains the number of nodes in each hidden layer. In each line there is the layer id and the number of its nodes separated by a space. Ex :<br>
  *   1 16<br>
  *   2 5
  *
