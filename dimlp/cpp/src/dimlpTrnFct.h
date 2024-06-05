@@ -30,4 +30,4 @@ void checkDimlpTrnParametersLogicValues(Parameters &p);
  */
 int dimlpTrn(const std::string &command = "");
 
-#endif
+#endif // DIMLPTRNFCT_H

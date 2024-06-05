@@ -6,4 +6,4 @@
 int Compare(const void *x, const void *y);
 int AreSameClass(std::shared_ptr<StringInt> listPat, std::vector<int> classPatNet);
 
-#endif
+#endif // MISC_H

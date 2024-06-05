@@ -5,4 +5,4 @@
 
 float Lmse(int nbTar, std::vector<float> netOut, std::vector<float> target);
 
-#endif
+#endif // ERRFUNCT_H

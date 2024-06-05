@@ -22,4 +22,4 @@ void showDimlpRulParams();
 void checkDimlpRulParametersLogicValues(Parameters &p);
 int dimlpRul(const std::string &command = "");
 
-#endif
+#endif // DIMLPRULFCT_H

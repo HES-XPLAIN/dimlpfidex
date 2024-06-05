@@ -20,4 +20,4 @@ public:
   Ante(int var, float val, char rel);
 };
 
-#endif
+#endif // ANTE_H

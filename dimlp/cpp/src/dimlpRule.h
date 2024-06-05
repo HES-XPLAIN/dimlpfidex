@@ -48,4 +48,4 @@ public:
   DimlpRule() = default;
 };
 
-#endif
+#endif // DIMLPRULE_H

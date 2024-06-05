@@ -81,4 +81,4 @@ public:
       int seed = 0);
 };
 
-#endif
+#endif // BAGDIMLP_H

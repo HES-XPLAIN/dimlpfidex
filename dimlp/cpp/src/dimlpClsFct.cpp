@@ -34,7 +34,7 @@ void showDimlpClsParams()
 
   printOptionDescription("--json_config_file <str>", "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path");
   printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
-  printOptionDescription("--test_class_file <str>", "Test true class file");
+  printOptionDescription("--test_class_file <str>", "Test true class file, classes can be specified in test data file");
   printOptionDescription("--test_pred_outfile <str>", "Output test prediction file name (default: dimlpTest.out)");
   printOptionDescription("--console_file <str>", "File with console logs redirection");
   printOptionDescription("--stats_file <str>", "Output file name with test accuracy");
@@ -54,6 +54,18 @@ void showDimlpClsParams()
 
 ////////////////////////////////////////////////////////////
 
+/**
+ * @brief Saves the values of the first hidden layer for each example in the dataset to a specified file.
+ *
+ * This function performs a forward pass on each data example and writes the values of the first hidden layer to the specified file.
+ *
+ * @param data Reference to the dataset containing the examples.
+ * @param net Pointer to the Dimlp neural network.
+ * @param nbHid Number of neurons in the first hidden layer.
+ * @param outfile Name of the file where the output should be written (used for error messages).
+ * @param firsthidFile Name of the file where the first hidden layer values will be written.
+ * @throws CannotOpenFileError If the output file cannot be opened.
+ */
 void SaveFirstHid(
     DataSet &data,
     Dimlp *net,
@@ -118,6 +130,55 @@ void checkDimlpClsParametersLogicValues(Parameters &p) {
   p.checkParametersCommon();
 }
 
+/**
+ * @brief Executes the Dimlp classification process with specified parameters to obtain test predictions and accuracy, and the values of the first hidden layer for a model trained with dimlpTrn.
+ *
+ * The function performs the following steps:
+ * 1. Parses the command string to extract parameters.
+ * 2. Sets up the neural network and other necessary objects.
+ * 3. Loads the weights from the provided weights file.
+ * 4. Performs predictions and computes the error and accuracy on the provided test dataset.
+ * 5. Saves the network's predictions and the values of the first hidden layer for the test dataset.
+ * 6. Saves the total execution time.
+ *
+ * Notes:
+ * - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
+ * - It's mandatory to specify the number of attributes and classes in the data, as well as the test dataset and weights file.
+ * - The hidden layers configuration file must also be provided to specify the network architecture.
+ * - True test class labels must be provided, either within the data file or separately through a class file.
+ * - Parameters can be defined directly via the command line or through a JSON configuration file.
+ * - Providing no command-line arguments or using <tt>-h/-\-help</tt> displays usage instructions, detailing both required and optional parameters for user guidance.
+ *
+ * Outputs:
+ * - test_pred_outfile: File containing the model's test predictions.
+ * - hid_file: File containing the values of the first hidden layer for the test dataset.
+ * - stats_file: File containing test accuracy and sum squared error.
+ * - console_file: If specified, contains the console output.
+ *
+ * File formats:
+ * - Data files should contain one sample per line, with numbers separated by spaces, tabs, semicolons, or commas. Supported formats:
+ *   1. Only attributes (floats).
+ *   2. Attributes (floats) followed by an integer class ID.
+ *   3. Attributes (floats) followed by one-hot encoded class.
+ * - Class files should contain one class sample per line, with integers separated by spaces, tabs, semicolons, or commas. Supported formats:
+ *   1. Integer class ID.
+ *   2. One-hot encoded class.
+ * - Weights file: This file should be obtained by training with DimlpTrn and not with DimlpBT(!).
+ *   The first row represents bias values of the Dimlp layer and the second row are values of the weight matrix between the previous layer and the Dimlp layer.
+ *   Each value is separated by a space. As an example, if the layers are of size 4, the biases are: b1 b2 b3 b4 and the weights are w1 w2 w3 w4.
+ * - hidden layers file: This file contains the number of nodes in each hidden layer. In each line there is the layer id and the number of its nodes separated by a space. Ex :<br>
+ *   1 16<br>
+ *   2 5
+ *
+ * Example of how to call the function:
+ * @par
+ * <tt>from dimlpfidex import dimlp</tt>
+ * @par
+ * <tt>dimlp.dimlpCls('-\-test_data_file datanormTest.txt -\-test_class_file dataclass2Test.txt -\-weights_file dimlpDatanorm.wts -\-nb_attributes 16 -\-hidden_layers_file hidden_layers.out -\-nb_classes 2 -\-test_pred_outfile predTest.out -\-stats_file stats.txt -\-root_folder dimlp/datafiles')</tt>
+ *
+ * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, classification parameters, and options for output.
+ * @return Returns 0 for successful execution, -1 for errors encountered during the process.
+ */
 int dimlpCls(const std::string &command) {
   // Save buffer where we output results
   std::ofstream ofs;
