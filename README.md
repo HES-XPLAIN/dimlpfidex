@@ -138,9 +138,6 @@ Create archives for distribution:
 python -m build
 ```
 
-> [!TIP]
-> To speed up the compilation process, you can also add `-j X` with `X` being your number of CPU cores.
-
 ## Documentation
 
 Install [Doxygen](https://www.doxygen.nl/):
