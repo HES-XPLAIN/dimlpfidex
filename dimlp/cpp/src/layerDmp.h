@@ -1,5 +1,5 @@
-#ifndef LAYERDMP
-#define LAYERDMP
+#ifndef LAYERDMP_H
+#define LAYERDMP_H
 
 #include "layer.h"
 #include "stairObj.h"
@@ -34,4 +34,4 @@ public:
 
 ///////////////////////////////////////////////////////////////////
 
-#endif
+#endif // LAYERDMP_H

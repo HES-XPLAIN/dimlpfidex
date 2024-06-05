@@ -234,6 +234,7 @@ void checkParametersLogicValues(Parameters &p) {
  *   Train Accuracy : 1<br>
  *   Train Confidence : 0.999919
  * - Weights file: This file should be obtained by training with Dimlp, SVM, MLP, or a CNN from dimlpfidex because an additional special Dimlp layer is needed.
+ *   If the training was made with more than one network, each network is separated by a "Network <id>" marker.
  *   The first row represents bias values of the Dimlp layer and the second row are values of the weight matrix between the previous layer and the Dimlp layer.
  *   Each value is separated by a space. As an example, if the layers are of size 4, the biases are: b1 b2 b3 b4 and the weights are w1 w2 w3 w4.
  * - Rule file: This file should be obtained directly by training with Random Forests or Gradient Boosting from dimlpfidex because rules need to be extracted from the trees.

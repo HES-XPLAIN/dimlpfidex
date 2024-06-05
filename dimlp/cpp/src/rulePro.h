@@ -87,4 +87,4 @@ public:
   RuleProcessing() = default;
 };
 
-#endif
+#endif // RULEPRO_H

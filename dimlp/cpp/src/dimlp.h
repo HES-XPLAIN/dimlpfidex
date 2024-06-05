@@ -62,4 +62,4 @@ public:
       int seed = 0);
 };
 
-#endif
+#endif // DIMLP_H

@@ -9,4 +9,4 @@ float Power3(float x);
 float Power4(float x);
 float Power5(float x);
 
-#endif
+#endif // STANDACT_H

@@ -22,4 +22,4 @@ public:
   ~VectWithRandVal() = default;
 };
 
-#endif
+#endif // VECTWRV_H

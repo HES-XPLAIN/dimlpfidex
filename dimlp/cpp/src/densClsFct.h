@@ -22,4 +22,4 @@ void showDensClsParams();
 void checkDensClsParametersLogicValues(Parameters &p);
 int densCls(const std::string &command = "");
 
-#endif
+#endif // DENSCLSFCT_H

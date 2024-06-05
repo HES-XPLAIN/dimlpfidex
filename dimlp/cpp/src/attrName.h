@@ -29,4 +29,4 @@ public:
   AttrName() = default;
 };
 
-#endif
+#endif // ATTRNAME_H
