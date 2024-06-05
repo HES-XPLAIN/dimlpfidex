@@ -150,16 +150,15 @@ void checkDimlpTrnParametersLogicValues(Parameters &p) {
  * - **Weights file**: It can contain the weights of one or more networks (for DimlpBT). If there is more than one network, each network is separated by a "Network <id>" marker.
  *   For each network, the biases of the first layer are on the first line followed by the weights of the first layer on the second line.
  *   This pattern continues for each layer of the network. Please note that no verification is made on the format. For example, with 2 networks:<br>
- *   Network 1
- *   0.1 0.2 0.3  # Biases of the first layer
- *   0.4 0.5 0.6 0.7 0.8 0.9  # Weights of the first layer
- *   0.15 0.25  # Biases of the second layer
- *   0.35 0.45 0.55 0.65  # Weights of the second layer
- *
- *   Network 2
- *   0.11 0.22 0.33  # Biases of first layer of the network 2
- *   0.44 0.55 0.66 0.77 0.88 0.99  # Weights of first layer of the network 2
- *   0.155 0.255  # Biases of second layer of the network 2
+ *   Network 1<br>
+ *   0.1 0.2 0.3  # Biases of the first layer<br>
+ *   0.4 0.5 0.6 0.7 0.8 0.9  # Weights of the first layer<br>
+ *   0.15 0.25  # Biases of the second layer<br>
+ *   0.35 0.45 0.55 0.65  # Weights of the second layer<br><br>
+ *   Network 2<br>
+ *   0.11 0.22 0.33  # Biases of first layer of the network 2<br>
+ *   0.44 0.55 0.66 0.77 0.88 0.99  # Weights of first layer of the network 2<br>
+ *   0.155 0.255  # Biases of second layer of the network 2<br>
  *   0.355 0.455 0.555 0.655 # Weights of second layer of the network 2
  * - **Attributes file**: Each line corresponds to one attribute, each attribute must be specified. Classes can be specified
  *   after the attributes but are not mandatory. Each attribute or class must be in one word without spaces (you can use _ to replace a space).
