@@ -22,6 +22,7 @@ void showDimlpBTParams()
             << std::endl;
 
   printOptionDescription("--train_data_file <str>", "Train data file");
+  printOptionDescription("--train_class_file <str>", "Train true class file, not mandatory if classes are specified in train data file");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of input neurons");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of output neurons");
 
@@ -36,13 +37,12 @@ void showDimlpBTParams()
   printOptionDescription("--nb_dimlp_nets <int [1,inf[>", "Number of networks (default: 25)");
   printOptionDescription("--attributes_file <str>", "File of attributes");
   printOptionDescription("--test_data_file <str>", "Test data file");
-  printOptionDescription("--train_class_file <str>", "Train true class file");
   printOptionDescription("--test_class_file <str>", "Test true class file");
   printOptionDescription("--console_file <str>", "File with console logs redirection");
   printOptionDescription("--weights_outfile <str>", "Output weights file name file (default: dimlpBT.wts)");
+  printOptionDescription("--stats_file <str>", "Output file name with train, test and validation accuracy and with the global train and test accuracy (default: statsDimlpBT.txt)");
   printOptionDescription("--train_pred_outfile <str>", "Output train prediction file name (default: dimlpBTTrain.out)");
   printOptionDescription("--test_pred_outfile <str>", "Output test prediction file name (default: dimlpBTTest.out)");
-  printOptionDescription("--stats_file <str>", "Output file name with train, test and validation accuracy and with the global train and test accuracy");
   printOptionDescription("--first_hidden_layer <int k*nb_attributes, k in [1,inf[>", "Number of neurons in the first hidden layer (default: nb_attributes)");
   printOptionDescription("--hidden_layers <list<int [1,inf[>>", "Number of neurons in each hidden layer, from the second layer through to the last");
   printOptionDescription("--hidden_layers_outfile <str>", "Output hidden layers' sizes file name (default: hidden_layers.out)");
@@ -68,7 +68,7 @@ void showDimlpBTParams()
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "dimlp.dimlpBT(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --hidden_layers 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_outfile dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile globalRules.rls --train_pred_outfile predTrain.out --test_pred_outfile predTest.out --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
+  std::cout << "dimlp.dimlpBT(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --hidden_layers 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_outfile dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile globalRules.rls --train_pred_outfile predTrain.out --test_pred_outfile predTest.out --root_folder dimlp/datafiles\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
@@ -86,6 +86,7 @@ void checkDimlpBTParametersLogicValues(Parameters &p) {
   p.setDefaultString(TRAIN_PRED_OUTFILE, "dimlpBTTrain.out", true);
   p.setDefaultString(TEST_PRED_OUTFILE, "dimlpBTTest.out", true);
   p.setDefaultString(WEIGHTS_OUTFILE, "dimlpBT.wts", true);
+  p.setDefaultString(STATS_FILE, "statsDimlpBT.txt", true);
   p.setDefaultNbQuantLevels();
   p.setDefaultDimlpTrn();
   p.setDefaultInt(NB_DIMLP_NETS, 25);
@@ -112,6 +113,73 @@ void checkDimlpBTParametersLogicValues(Parameters &p) {
   }
 }
 
+/**
+ * @brief Executes the Dimlp Bagging Training (dimlpBT) process with specified parameters and optionally performs rule extraction with the Dimlp algorithm.
+ *
+ * The function performs the following steps:
+ * 1. Parses the command string to extract parameters.
+ * 2. Sets up the neural network and other necessary objects.
+ * 3. Trains multiple Dimlp networks (bagging).
+ * 4. Computes the error and accuracy on the training and test datasets if provided.
+ * 5. Saves the network's predictions and optionally extracts rules.
+ * 6. Saves the configuration of hidden layers and the total execution time.
+ *
+ * Notes:
+ * - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
+ * - It's mandatory to specify the number of attributes and classes in the data, as well as the training dataset.
+ * - True train class labels must be provided, either within the data file or separately through a class file. Test classes are given the same way if present.
+ * - Data should be normalized beforehand. You can use the normalization function to do so as it generates a normalization file that will permit you to easily denormalize the rules obtained by Fidex or Dimlp.
+ * - Normalization parameters can be specified to denormalize the dimlp explaining rules if data were normalized beforehand.
+ * - Parameters can be defined directly via the command line or through a JSON configuration file.
+ * - Providing no command-line arguments or using <tt>-h/-\-help</tt> displays usage instructions, detailing both required and optional parameters for user guidance.
+ *
+ * Outputs:
+ * - weights_outfile: File containing the training weights of the model.
+ * - train_pred_outfile: File containing the model's train predictions.
+ * - test_pred_outfile: If specified, contains the model's test predictions.
+ * - stats_file: If specified, contains train and validation accuracy, and eventually test accuracy.
+ * - hidden_layers_outfile: File containing the number of nodes in each hidden layer.
+ * - global_rules_outfile: If specified and if computing rules, contains the explanation rules with statistics.
+ * - console_file: If specified, contains the console output.
+ *
+ * File formats:
+ * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
+ *   1. Only attributes (floats).
+ *   2. Attributes (floats) followed by an integer class ID.
+ *   3. Attributes (floats) followed by one-hot encoded class.
+ * - Class files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons, or commas. Supported formats:
+ *   1. Integer class ID.
+ *   2. One-hot encoded class.
+ * - Weights file: It can contain the weights of one or more networks (for DimlpBT). If there is more than one network, each network is separated by a "Network <id>" marker.
+ *   For each network, the biases of the first layer are on the first line followed by the weights of the first layer on the second line.
+ *   This pattern continues for each layer of the network. Please note that no verification is made on the format. For example, with 2 networks:<br>
+ *   Network 1<br>
+ *   0.1 0.2 0.3  # Biases of the first layer<br>
+ *   0.4 0.5 0.6 0.7 0.8 0.9  # Weights of the first layer<br>
+ *   0.15 0.25  # Biases of the second layer<br>
+ *   0.35 0.45 0.55 0.65  # Weights of the second layer<br>
+ *
+ *   Network 2<br>
+ *   0.11 0.22 0.33  # Biases of first layer of the network 2<br>
+ *   0.44 0.55 0.66 0.77 0.88 0.99  # Weights of first layer of the network 2<br>
+ *   0.155 0.255  # Biases of second layer of the network 2<br>
+ *   0.355 0.455 0.555 0.655 # Weights of second layer of the network 2
+ * - Attributes file: Each line corresponds to one attribute, each attribute must be specified. Classes can be specified
+ *   after the attributes but are not mandatory. Each attribute or class must be in one word without spaces (you can use _ to replace a space).
+ *   The order is important as the first attribute/class name will represent the first attribute/class in the dataset.
+ * - Normalization file: Each line contains the mean/median and standard deviation for an attribute.<br>
+ *   Format: '2 : original mean: 0.8307, original std: 0.0425'<br>
+ *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
+ *
+ * Example of how to call the function:
+ * @par
+ * <tt>from dimlpfidex import dimlp</tt>
+ * @par
+ * <tt>dimlp.dimlpBT('-\-train_data_file datanormTrain.txt -\-train_class_file dataclass2Train.txt -\-test_data_file datanormTest.txt -\-test_class_file dataclass2Test.txt -\-nb_attributes 16 -\-hidden_layers 5 -\-nb_classes 2 -\-nb_dimlp_nets 2 -\-weights_outfile dimlpDatanormBT.wts -\-with_rule_extraction true -\-global_rules_outfile globalRules.rls -\-train_pred_outfile predTrain.out -\-test_pred_outfile predTest.out -\-root_folder dimlp/datafiles')</tt>
+ *
+ * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, training parameters, and options for output.
+ * @return Returns 0 for successful execution, -1 for errors encountered during the process.
+ */
 int dimlpBT(const std::string &command) {
   // Save buffer where we output results
   std::ofstream ofs;

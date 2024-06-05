@@ -24,7 +24,6 @@ void showDimlpTrnParams()
 
   printOptionDescription("--train_data_file <str>", "Train data file");
   printOptionDescription("--train_class_file <str>", "Train true class file, not mandatory if classes are specified in train data file");
-  printOptionDescription("--stats_file <str>", "Output file name with train, test and validation accuracy");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of input neurons");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of output neurons");
 
@@ -43,6 +42,7 @@ void showDimlpTrnParams()
   printOptionDescription("--test_class_file <str>", "Test true class file");
   printOptionDescription("--valid_class_file <str>", "Validation true class file");
   printOptionDescription("--weights_outfile <str>", "Output weights file name (default: dimlp.wts)");
+  printOptionDescription("--stats_file <str>", "Output file name with train, test and validation accuracy (default: statsDimlpTrn.txt)");
   printOptionDescription("--train_pred_outfile <str>", "Output train prediction file name (default: dimlpTrain.out)");
   printOptionDescription("--test_pred_outfile <str>", "Output test prediction file name (default: dimlpTest.out)");
   printOptionDescription("--valid_pred_outfile <str>", "Output validation prediction file name (default: dimlpValidation.out)");
@@ -72,7 +72,7 @@ void showDimlpTrnParams()
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "dimlp.dimlpTrn(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --hidden_layers 5 --nb_classes 2 --weights_outfile dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile globalRules.rls --train_pred_outfile predTrain.out --test_pred_outfile predTest.out --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
+  std::cout << "dimlp.dimlpTrn(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --hidden_layers 5 --nb_classes 2 --weights_outfile dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile globalRules.rls --train_pred_outfile predTrain.out --test_pred_outfile predTest.out --root_folder dimlp/datafiles\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
@@ -91,6 +91,7 @@ void checkDimlpTrnParametersLogicValues(Parameters &p) {
   p.setDefaultString(TEST_PRED_OUTFILE, "dimlpTest.out", true);
   p.setDefaultString(VALID_PRED_OUTFILE, "dimlpValidation.out", true);
   p.setDefaultString(WEIGHTS_OUTFILE, "dimlp.wts", true);
+  p.setDefaultString(STATS_FILE, "statsDimlpTrn.txt", true);
   p.setDefaultNbQuantLevels();
   p.setDefaultDimlpTrn();
 
@@ -114,16 +115,15 @@ void checkDimlpTrnParametersLogicValues(Parameters &p) {
  * 1. Parses the command string to extract parameters.
  * 2. Sets up the neural network and other necessary objects.
  * 3. Trains the network with the provided training dataset.
- * 4. Saves the network's predictions for the training, test, and validation datasets if specified.
+ * 4. Saves the network's predictions and accuracies for the training, test, and validation datasets if specified.
  * 5. Optionally extracts rules from the trained network.
  * 6. Saves the configuration of hidden layers and the total execution time.
  *
  * Notes:
  * - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
  * - It's mandatory to specify the number of attributes and classes in the data, as well as the train dataset.
- * - True train class labels must be provided, either within the data file or separately through a class file. Test classes are given the same way if present.
+ * - True train class labels must be provided, either within the data file or separately through a class file. Test and validation classes are given the same way if present.
  * - Validation data and classes can optionally be given in the same way to train with validation.
- * - The name of the stats output file must be specified.
  * - Data should be normalized beforehand. You can use the normalization function to do so as it generates a normalization file that will allow you to easily denormalize the rules obtained by Fidex or Dimlp.
  * - Normalization parameters can be specified to denormalize the Dimlp explaining rules if data were normalized beforehand.
  * - Parameters can be defined directly via the command line or through a JSON configuration file.
@@ -134,7 +134,7 @@ void checkDimlpTrnParametersLogicValues(Parameters &p) {
  * - train_pred_outfile : File containing the model's train predictions.
  * - test_pred_outfile : If specified, contains the model's test predictions.
  * - valid_pred_outfile : If specified, contains the model's validation predictions.
- * - stats_file : File containing train accuracy and possibly test and validation accuracy.
+ * - stats_file : If specified, contains train accuracy and possibly test and validation accuracy.
  * - hidden_layers_outfile : File containing the number of nodes in each hidden layer.
  * - global_rules_outfile : If specified and if computing rules, contains the explanation rules with statistics.
  * - console_file : If specified, contains the console output.
@@ -172,7 +172,7 @@ void checkDimlpTrnParametersLogicValues(Parameters &p) {
  * @par
  * <tt>from dimlpfidex import dimlp</tt>
  * @par
- * <tt>dimlp.dimlpTrn('-\-train_data_file datanormTrain.txt -\-train_class_file dataclass2Train.txt -\-test_data_file datanormTest.txt -\-test_class_file dataclass2Test.txt -\-nb_attributes 16 -\-hidden_layers 5 -\-nb_classes 2 -\-weights_outfile dimlpDatanormBT.wts -\-with_rule_extraction true -\-global_rules_outfile globalRules.rls -\-train_pred_outfile predTrain.out -\-test_pred_outfile predTest.out -\-stats_file stats.txt -\-root_folder dimlp/datafiles')</tt>
+ * <tt>dimlp.dimlpTrn('-\-train_data_file datanormTrain.txt -\-train_class_file dataclass2Train.txt -\-test_data_file datanormTest.txt -\-test_class_file dataclass2Test.txt -\-nb_attributes 16 -\-hidden_layers 5 -\-nb_classes 2 -\-weights_outfile dimlpDatanormBT.wts -\-with_rule_extraction true -\-global_rules_outfile globalRules.rls -\-train_pred_outfile predTrain.out -\-test_pred_outfile predTest.out -\-root_folder dimlp/datafiles')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, training parameters, and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.
