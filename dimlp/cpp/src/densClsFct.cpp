@@ -23,6 +23,7 @@ void showDensClsParams()
             << std::endl;
 
   printOptionDescription("--train_data_file <str>", "Train data file");
+  printOptionDescription("--train_class_file <str>", "Train true class file, not mandatory if classes are specified in train data file");
   printOptionDescription("--weights_file <str>", "Weights file containing the weights of each network");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of input neurons");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of output neurons");
@@ -38,7 +39,6 @@ void showDensClsParams()
   printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
   printOptionDescription("--attributes_file <str>", "File of attributes");
   printOptionDescription("--test_data_file <str>", "Test data file");
-  printOptionDescription("--train_class_file <str>", "Train true class file");
   printOptionDescription("--test_class_file <str>", "Test true class file");
   printOptionDescription("--console_file <str>", "File with console logs redirection");
   printOptionDescription("--train_pred_outfile <str>", "Output train prediction file name (default: densClsTrain.out)");
@@ -91,6 +91,62 @@ void checkDensClsParametersLogicValues(Parameters &p) {
   p.checkParametersNormalization();
 }
 
+/**
+ * @brief Executes the Dense Classification (densCls) process with specified parameters. This function obtains train and, optionally, test predictions and accuracy for a model trained with dimlpBT. It can also perform rule extraction with the Dimlp algorithm.
+ *
+ * The function performs the following steps:
+ * 1. Parses the command string to extract parameters.
+ * 2. Sets up the neural network and other necessary objects.
+ * 3. Computes the global accuracy on the training and test datasets if provided.
+ * 4. Saves the network's predictions and optionally extracts rules.
+ * 5. Saves the total execution time.
+ *
+ * Notes:
+ * - Each file is located with respect to the root folder `dimlpfidex` or to the content of the `root_folder` parameter if specified.
+ * - It's mandatory to specify the number of attributes and classes in the data, as well as the training dataset and weights file.
+ * - The hidden layers configuration file must also be provided to specify the network architecture.
+ * - True train class labels must be provided, either within the data file or separately through a class file. Test classes are given the same way if present.
+ * - Normalization parameters can be specified to denormalize the dimlp explaining rules if data were normalized beforehand.
+ * - Parameters can be defined directly via the command line or through a JSON configuration file.
+ * - Providing no command-line arguments or using <tt>-h/-\-help</tt> displays usage instructions, detailing both required and optional parameters for user guidance.
+ *
+ * Outputs:
+ * - `train_pred_outfile`: File containing the model's train predictions.
+ * - `test_pred_outfile`: File containing the model's test predictions.
+ * - `stats_file`: File containing global train accuracy and test accuracy.
+ * - `global_rules_outfile`: If specified and if computing rules, contains the explanation rules with statistics.
+ * - `console_file`: If specified, contains the console output.
+ *
+ * File formats:
+ * - **Data files** should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
+ *   1. Only attributes (floats).
+ *   2. Attributes (floats) followed by an integer class ID.
+ *   3. Attributes (floats) followed by one-hot encoded class.
+ * - **Class files** should contain one class sample per line, with integers separated by spaces, tabs, semicolons, or commas. Supported formats:
+ *   1. Integer class ID.
+ *   2. One-hot encoded class.
+ * - **Weights file**: This file should be obtained by training with DimlpBT and not with DimlpTrn(!). Each network is separated by a "Network <id>" marker.
+ *   For each network, the first row represents bias values of the Dimlp layer and the second row are values of the weight matrix between the previous layer and the Dimlp layer.
+ *   Each value is separated by a space. As an example, if the layers are of size 4, the biases are: b1 b2 b3 b4 and the weights are w1 w2 w3 w4.
+ * - **hidden layers file**: This file contains the number of nodes in each hidden layer. In each line there is the layer id and the number of its nodes separated by a space. Ex :<br>
+ *   1 16<br>
+ *   2 5
+ * - **Attributes file**: Each line corresponds to one attribute, each attribute must be specified. Classes can be specified
+ *   after the attributes but are not mandatory. Each attribute or class must be in one word without spaces (you can use _ to replace a space).
+ *   The order is important as the first attribute/class name will represent the first attribute/class in the dataset.
+ * - **Normalization file**: Each line contains the mean/median and standard deviation for an attribute.<br>
+ *   Format: '2 : original mean: 0.8307, original std: 0.0425'<br>
+ *   Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
+ *
+ * Example of how to call the function:
+ * @par
+ * <tt>from dimlpfidex import dimlp</tt>
+ * @par
+ * <tt>dimlp.densCls('-\-train_data_file datanormTrain.txt -\-train_class_file dataclass2Train.txt -\-test_data_file datanormTest.txt -\-test_class_file dataclass2Test.txt -\-nb_attributes 16 -\-hidden_layers_file hidden_layers.out -\-nb_classes 2 -\-weights_file dimlpDatanormBT.wts -\-with_rule_extraction true -\-global_rules_outfile globalRules.rls -\-train_pred_outfile predTrain.out -\-test_pred_outfile testPred.out -\-stats_file stats.txt -\-root_folder dimlp/datafiles')</tt>
+ *
+ * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, and options for output.
+ * @return Returns 0 for successful execution, -1 for errors encountered during the process.
+ */
 int densCls(const std::string &command) {
 
   // Save buffer where we output results

@@ -21,6 +21,7 @@ void showDimlpClsParams()
             << std::endl;
 
   printOptionDescription("--test_data_file <str>", "Test data file");
+  printOptionDescription("--test_class_file <str>", "Test true class file, not mandatory if classes are specified in test data file");
   printOptionDescription("--weights_file <str>", "Weights file");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of input neurons");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of output neurons");
@@ -34,7 +35,6 @@ void showDimlpClsParams()
 
   printOptionDescription("--json_config_file <str>", "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path");
   printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
-  printOptionDescription("--test_class_file <str>", "Test true class file, classes can be specified in test data file");
   printOptionDescription("--test_pred_outfile <str>", "Output test prediction file name (default: dimlpTest.out)");
   printOptionDescription("--console_file <str>", "File with console logs redirection");
   printOptionDescription("--stats_file <str>", "Output file name with test accuracy");
@@ -156,7 +156,7 @@ void checkDimlpClsParametersLogicValues(Parameters &p) {
  * - console_file: If specified, contains the console output.
  *
  * File formats:
- * - Data files should contain one sample per line, with numbers separated by spaces, tabs, semicolons, or commas. Supported formats:
+ * - Data files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons, or commas. Supported formats:
  *   1. Only attributes (floats).
  *   2. Attributes (floats) followed by an integer class ID.
  *   3. Attributes (floats) followed by one-hot encoded class.
@@ -176,7 +176,7 @@ void checkDimlpClsParametersLogicValues(Parameters &p) {
  * @par
  * <tt>dimlp.dimlpCls('-\-test_data_file datanormTest.txt -\-test_class_file dataclass2Test.txt -\-weights_file dimlpDatanorm.wts -\-nb_attributes 16 -\-hidden_layers_file hidden_layers.out -\-nb_classes 2 -\-test_pred_outfile predTest.out -\-stats_file stats.txt -\-root_folder dimlp/datafiles')</tt>
  *
- * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, classification parameters, and options for output.
+ * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.
  */
 int dimlpCls(const std::string &command) {
@@ -391,5 +391,3 @@ int dimlpCls(const std::string &command) {
 
   return 0;
 }
-
-// Exemple to launch the code : dimlp.dimlpCls("dimlpCls --test_data_file datanormTest --test_class_file dataclass2Test --weights_file dimlpDatanorm.wts --nb_attributes 16 --hidden_layers_file hidden_layers.out --nb_classes 2 --nb_quant_levels 50 --test_pred_outfile dimlpDatanormTest.out --stats_file dimlpDatanormClsStats --console_file dimlpDatanormClsResult.txt --root_folder dimlp/datafiles");
