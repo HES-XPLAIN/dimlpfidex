@@ -154,7 +154,7 @@ void checkDimlpTrnParametersLogicValues(Parameters &p) {
  *   0.1 0.2 0.3  # Biases of the first layer<br>
  *   0.4 0.5 0.6 0.7 0.8 0.9  # Weights of the first layer<br>
  *   0.15 0.25  # Biases of the second layer<br>
- *   0.35 0.45 0.55 0.65  # Weights of the second layer<br><br>
+ *   0.35 0.45 0.55 0.65  # Weights of the second layer<br>
  *   Network 2<br>
  *   0.11 0.22 0.33  # Biases of first layer of the network 2<br>
  *   0.44 0.55 0.66 0.77 0.88 0.99  # Weights of first layer of the network 2<br>
