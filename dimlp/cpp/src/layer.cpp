@@ -2,6 +2,17 @@
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Assigns parameters for the layer.
+ *
+ * @param eta Learning rate.
+ * @param mu Momentum factor.
+ * @param flat Flatness factor.
+ * @param nbDown Number of neurons in the previous layer.
+ * @param nbUp Number of neurons in this layer.
+ * @param nbWeights Number of weights in this layer.
+ * @param nbWeightsForInit Number of weights for initialization.
+ */
 void Layer::AssignParam(
     float eta,
     float mu,
@@ -23,6 +34,9 @@ void Layer::AssignParam(
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Creates the data structures for the layer.
+ */
 void Layer::CreateStruct()
 
 {
@@ -38,6 +52,9 @@ void Layer::CreateStruct()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Initializes the weights of the layer.
+ */
 void Layer::InitWeights()
 
 {
@@ -66,6 +83,9 @@ void Layer::InitWeights()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Applies the first activation function to the layer's outputs.
+ */
 void Layer::ApplyTransf1() {
   for (float &value : Up) {
     value = Activation1(value);
@@ -74,6 +94,9 @@ void Layer::ApplyTransf1() {
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Applies the second activation function to the layer's outputs.
+ */
 void Layer::ApplyTransf2()
 
 {
@@ -84,6 +107,9 @@ void Layer::ApplyTransf2()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the delta values for the input neurons using the standard method.
+ */
 void Layer::ComputeDeltaDownStand()
 
 {
@@ -110,6 +136,9 @@ void Layer::ComputeDeltaDownStand()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the delta values for the input neurons using a specific method.
+ */
 void Layer::ComputeDeltaDownSpec2()
 
 {
@@ -136,6 +165,9 @@ void Layer::ComputeDeltaDownSpec2()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Updates the bias weights using the standard method.
+ */
 void Layer::AdaptBiasStand()
 
 {
@@ -156,6 +188,9 @@ void Layer::AdaptBiasStand()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Updates the bias weights using a specific method.
+ */
 void Layer::AdaptBiasSpec2()
 
 {
@@ -187,6 +222,10 @@ void Layer::AdaptBiasSpec2()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Reads the weights from a file.
+ * @param inFile Input file stream.
+ */
 void Layer::ReadWeights(std::istream &inFile)
 
 {
@@ -209,6 +248,10 @@ void Layer::ReadWeights(std::istream &inFile)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Writes the weights to a file.
+ * @param outFile Output file stream.
+ */
 void Layer::WriteWeights(std::ostream &outFile)
 
 {
@@ -226,6 +269,9 @@ void Layer::WriteWeights(std::ostream &outFile)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Pushes the current weights to the validated weights.
+ */
 void Layer::PushWeights()
 
 {
@@ -240,6 +286,9 @@ void Layer::PushWeights()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Pops the validated weights to the current weights.
+ */
 void Layer::PopWeights()
 
 {
@@ -254,6 +303,9 @@ void Layer::PopWeights()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Performs forward propagation for a fully connected layer.
+ */
 void Layer::ForwFully()
 
 {
@@ -274,6 +326,9 @@ void Layer::ForwFully()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Performs forward propagation using a specific method.
+ */
 void Layer::ForwSpec()
 
 {
@@ -296,6 +351,9 @@ void Layer::ForwSpec()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Performs forward propagation using a second specific method.
+ */
 void Layer::ForwSpec2()
 
 {
@@ -320,6 +378,9 @@ void Layer::ForwSpec2()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Performs forward propagation for radial basis functions.
+ */
 void Layer::ForwRadial()
 
 {
@@ -343,6 +404,10 @@ void Layer::ForwRadial()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the delta values for the output neurons.
+ * @param target Target values.
+ */
 void Layer::ComputeDeltaOut(const float target[])
 
 {
@@ -356,6 +421,9 @@ void Layer::ComputeDeltaOut(const float target[])
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Updates the weights for a fully connected layer.
+ */
 void Layer::AdaptWeightsFully()
 
 {
@@ -381,6 +449,9 @@ void Layer::AdaptWeightsFully()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Updates the weights using a specific method.
+ */
 void Layer::AdaptWeightsSpec()
 
 {
@@ -410,6 +481,9 @@ void Layer::AdaptWeightsSpec()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Updates the weights using a second specific method.
+ */
 void Layer::AdaptWeightsSpec2()
 
 {
@@ -440,6 +514,16 @@ void Layer::AdaptWeightsSpec2()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructor for the Layer class.
+ * @param eta Learning rate.
+ * @param mu Momentum factor.
+ * @param flat Flatness factor.
+ * @param nbDown Number of neurons in the previous layer.
+ * @param nbUp Number of neurons in this layer.
+ * @param nbWeights Number of weights in this layer.
+ * @param nbWeightsForInit Number of weights for initialization.
+ */
 Layer::Layer(
     float eta,
     float mu,

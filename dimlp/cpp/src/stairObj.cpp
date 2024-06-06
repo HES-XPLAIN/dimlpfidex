@@ -2,6 +2,9 @@
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Initializes the constants for the member variables.
+ */
 void StairObj::InitMemberConstForAnsi()
 
 {
@@ -12,6 +15,9 @@ void StairObj::InitMemberConstForAnsi()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Activates the knots by computing their activation values.
+ */
 void StairObj::ActivateKnots()
 
 {
@@ -31,6 +37,11 @@ void StairObj::ActivateKnots()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the staircase function value for a given input.
+ * @param x Input value.
+ * @return Staircase function value.
+ */
 float StairObj::Funct(float x) const
 
 {
@@ -47,6 +58,10 @@ float StairObj::Funct(float x) const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructs a StairObj with a specified number of bins.
+ * @param nbBins Number of bins for the staircase function.
+ */
 StairObj::StairObj(int nbBins) : NbBins(nbBins), NbKnots(nbBins + 1)
 
 {

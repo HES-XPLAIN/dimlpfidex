@@ -2,6 +2,14 @@
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the sigmoid activation function.
+ *
+ * The sigmoid function is defined as \( \sigma(x) = \frac{1}{1 + e^{-x}} \).
+ *
+ * @param x The input value.
+ * @return The sigmoid of the input value.
+ */
 float Sigmoid(float x)
 
 {
@@ -10,6 +18,14 @@ float Sigmoid(float x)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the hyperbolic tangent activation function.
+ *
+ * The hyperbolic tangent function is defined as \( \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}} \).
+ *
+ * @param x The input value.
+ * @return The hyperbolic tangent of the input value.
+ */
 float HyperTang(float x)
 
 {
@@ -24,6 +40,14 @@ float HyperTang(float x)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the Gaussian activation function.
+ *
+ * The Gaussian function is defined as \( f(x) = e^{-x^2} \).
+ *
+ * @param x The input value.
+ * @return The Gaussian of the input value.
+ */
 float Gaussian(float x)
 
 {
@@ -32,6 +56,14 @@ float Gaussian(float x)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the identity activation function.
+ *
+ * The identity function is defined as \( f(x) = x \).
+ *
+ * @param x The input value.
+ * @return The identity of the input value.
+ */
 float Identity(float x)
 
 {
@@ -40,6 +72,14 @@ float Identity(float x)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the cubic power activation function.
+ *
+ * The cubic power function is defined as \( f(x) = x^3 \).
+ *
+ * @param x The input value.
+ * @return The cubic power of the input value.
+ */
 float Power3(float x)
 
 {
@@ -48,6 +88,14 @@ float Power3(float x)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the quartic power activation function.
+ *
+ * The quartic power function is defined as \( f(x) = x^4 \).
+ *
+ * @param x The input value.
+ * @return The quartic power of the input value.
+ */
 float Power4(float x)
 
 {
@@ -56,6 +104,14 @@ float Power4(float x)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the quintic power activation function.
+ *
+ * The quintic power function is defined as \( f(x) = x^5 \).
+ *
+ * @param x The input value.
+ * @return The quintic power of the input value.
+ */
 float Power5(float x)
 
 {
