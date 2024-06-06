@@ -2,6 +2,12 @@
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Insert an example into the dataset.
+ *
+ * @param example Vector of attribute values.
+ * @param index Index at which to insert the example.
+ */
 void DataSet::InsertExample(const std::vector<float> &example, int index) {
   float **newEx = Set + index;
 
@@ -13,6 +19,14 @@ void DataSet::InsertExample(const std::vector<float> &example, int index) {
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief First pass to read the dataset file and count the number of examples.
+ *
+ * @param nameFile Path to the dataset file.
+ * @return The number of examples in the file.
+ * @throws CannotOpenFileError If the file cannot be opened.
+ * @throws FileContentError If there is an issue with the file content.
+ */
 int DataSet::FirstLecture(const std::string &nameFile) const
 
 {
@@ -52,6 +66,11 @@ int DataSet::FirstLecture(const std::string &nameFile) const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Second pass to read the dataset file and populate the dataset.
+ *
+ * @param nameFile Path to the dataset file.
+ */
 void DataSet::SecondLecture(const std::string &nameFile) {
   std::filebuf buf;
   std::vector<float> oneExample;
@@ -77,6 +96,9 @@ void DataSet::SecondLecture(const std::string &nameFile) {
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Delete the dataset and free memory.
+ */
 void DataSet::Del() {
   for (int p = 0; p < NbEx; p++) {
     // Use delete[] to free the memory allocated for each array of attributes
@@ -98,6 +120,12 @@ void DataSet::Del() {
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Select examples from the dataset based on a given rule.
+ *
+ * @param r Pointer to the rule.
+ * @return Pointer to a StringInt object containing the selected example indices.
+ */
 std::shared_ptr<StringInt> DataSet::Select(std::shared_ptr<DimlpRule> r)
 
 {
@@ -147,6 +175,13 @@ std::shared_ptr<StringInt> DataSet::Select(std::shared_ptr<DimlpRule> r)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Select examples from a subset of the dataset based on a given rule.
+ *
+ * @param r Pointer to the rule.
+ * @param subSet Pointer to a StringInt object containing the subset of example indices.
+ * @return Pointer to a StringInt object containing the selected example indices.
+ */
 std::shared_ptr<StringInt> DataSet::Select(std::shared_ptr<DimlpRule> r, std::shared_ptr<StringInt> subSet)
 
 {
@@ -202,6 +237,11 @@ std::shared_ptr<StringInt> DataSet::Select(std::shared_ptr<DimlpRule> r, std::sh
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Construct a DataSet with a specified number of examples.
+ *
+ * @param nbEx Number of examples.
+ */
 DataSet::DataSet(int nbEx) : NbEx(nbEx)
 
 {
@@ -210,6 +250,12 @@ DataSet::DataSet(int nbEx) : NbEx(nbEx)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Construct a DataSet from a file with a specified number of attributes.
+ *
+ * @param nameFile Path to the dataset file.
+ * @param nbAttr Number of attributes.
+ */
 DataSet::DataSet(const std::string &nameFile, int nbAttr) : NbAttr(nbAttr)
 
 {
@@ -225,8 +271,7 @@ DataSet::DataSet(const std::string &nameFile, int nbAttr) : NbAttr(nbAttr)
 ///////////////////////////////////////////////////////////////////
 
 /**
- * @brief Initlialize dataset. Reads the data file, determines the number of attributes per sample, and creates the dataset.
- *        Validates the format of class data based on its length and converts class IDs to one-hot encoding if necessary.
+ * @brief Construct a DataSet from a file with a specified number of attributes and classes.
  *
  * @param nameFile Path to the data file.
  * @param nbIn Number of input attributes (attributes).
@@ -338,6 +383,12 @@ DataSet::DataSet(const std::string &nameFile, int nbIn, int nbOut) {
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Construct a DataSet from a larger dataset and a list of pattern indices.
+ *
+ * @param bigData Larger dataset.
+ * @param listPat List of pattern indices.
+ */
 DataSet::DataSet(DataSet &bigData, StringInt *listPat) : NbEx(listPat->GetNbEl()), NbAttr(bigData.GetNbAttr())
 
 {
@@ -359,6 +410,12 @@ DataSet::DataSet(DataSet &bigData, StringInt *listPat) : NbEx(listPat->GetNbEl()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Construct a DataSet by merging two datasets.
+ *
+ * @param data1 First dataset.
+ * @param data2 Second dataset.
+ */
 DataSet::DataSet(DataSet &data1, DataSet &data2) : NbEx(data1.GetNbEx() + data2.GetNbEx()), NbAttr(data1.GetNbAttr())
 
 {
@@ -375,6 +432,13 @@ DataSet::DataSet(DataSet &data1, DataSet &data2) : NbEx(data1.GetNbEx() + data2.
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Construct a DataSet from a master dataset and an array of pattern indices.
+ *
+ * @param master Master dataset.
+ * @param indPat Array of pattern indices.
+ * @param nbEx Number of examples.
+ */
 DataSet::DataSet(DataSet &master, const int *indPat, int nbEx) : NbEx(nbEx), NbAttr(master.GetNbAttr()), Set(new float *[nbEx])
 
 {
@@ -384,6 +448,15 @@ DataSet::DataSet(DataSet &master, const int *indPat, int nbEx) : NbEx(nbEx), NbA
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Extract data and target (class) attributes from the current dataset.
+ *
+ * @param data1 Dataset for the attributes.
+ * @param nbAttr1 Number of attributes.
+ * @param data2 Dataset for the targets (classes).
+ * @param nbAttr2 Number of targets (classes).
+ * @throws FileContentError If the class data is missing or invalid.
+ */
 void DataSet::ExtractDataAndTarget(
     DataSet &data1, int nbAttr1, DataSet &data2, int nbAttr2) const {
   int j;

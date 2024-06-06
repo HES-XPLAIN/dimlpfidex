@@ -2,6 +2,10 @@
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Get the number of non-deleted antecedents in the rule.
+ * @return The number of non-deleted antecedents.
+ */
 int DimlpRule::GetNbAntWithout()
 
 {
@@ -17,6 +21,9 @@ int DimlpRule::GetNbAntWithout()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Mark all antecedents in the rule as removed.
+ */
 void DimlpRule::DeleteRule()
 
 {
@@ -28,6 +35,12 @@ void DimlpRule::DeleteRule()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Insert a new antecedent into the rule.
+ * @param var The variable index.
+ * @param val The threshold value.
+ * @param rel The relational operator.
+ */
 void DimlpRule::Insert(int var, float val, char rel)
 
 {
@@ -59,6 +72,11 @@ void DimlpRule::Insert(int var, float val, char rel)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Create a copy of the rule.
+ * @param r Pointer to the rule to copy.
+ * @return A pointer to the copied rule.
+ */
 DimlpRule *DimlpRule::Copy(std::shared_ptr<DimlpRule> r)
 
 {

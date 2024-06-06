@@ -8,6 +8,11 @@
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Initializes the random seed only once.
+ *
+ * @param seed The seed value for the random number generator. If 0, the seed is based on the current time.
+ */
 void IntRandomFunction::StartOnlyOnece(int seed) const
 
 {
@@ -25,6 +30,11 @@ void IntRandomFunction::StartOnlyOnece(int seed) const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructor that initializes the random seed.
+ *
+ * @param seed The seed value for the random number generator.
+ */
 IntRandomFunction::IntRandomFunction(int seed)
 
 {
@@ -33,6 +43,12 @@ IntRandomFunction::IntRandomFunction(int seed)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructor that sets the range for random integers.
+ *
+ * @param lowBound The lower bound of the range.
+ * @param hiBound The upper bound of the range.
+ */
 IntRandomFunction::IntRandomFunction(int lowBound, int hiBound) : LowBound(lowBound), HiBound(hiBound), Diff(hiBound - lowBound + 1)
 
 {
@@ -40,6 +56,11 @@ IntRandomFunction::IntRandomFunction(int lowBound, int hiBound) : LowBound(lowBo
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Generates a random integer within the specified range.
+ *
+ * @return A random integer within the range [lowBound, hiBound].
+ */
 int IntRandomFunction::RandomInteger() const
 
 {
@@ -52,6 +73,11 @@ int IntRandomFunction::RandomInteger() const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Initializes the random seed only once.
+ *
+ * @param seed The seed value for the random number generator. If 0, the seed is based on the current time.
+ */
 void FloatRandomFunction::StartOnlyOnece(int seed) const
 
 {
@@ -67,6 +93,11 @@ void FloatRandomFunction::StartOnlyOnece(int seed) const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructor that initializes the random seed.
+ *
+ * @param seed The seed value for the random number generator.
+ */
 FloatRandomFunction::FloatRandomFunction(int seed)
 
 {
@@ -75,6 +106,12 @@ FloatRandomFunction::FloatRandomFunction(int seed)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructor that sets the range for random floating-point numbers.
+ *
+ * @param lowBound The lower bound of the range.
+ * @param hiBound The upper bound of the range.
+ */
 FloatRandomFunction::FloatRandomFunction(
     float lowBound,
     float hiBound) : LowBound(lowBound), HiBound(hiBound), Diff(hiBound - lowBound)
@@ -84,6 +121,11 @@ FloatRandomFunction::FloatRandomFunction(
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Generates a random float within the specified range.
+ *
+ * @return A random float within the range [lowBound, hiBound].
+ */
 float FloatRandomFunction::RandomFloat() const
 
 {
@@ -96,6 +138,11 @@ float FloatRandomFunction::RandomFloat() const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Generates a random double within the specified range.
+ *
+ * @return A random double within the range [lowBound, hiBound].
+ */
 double FloatRandomFunction::RandomDouble() const
 
 {
