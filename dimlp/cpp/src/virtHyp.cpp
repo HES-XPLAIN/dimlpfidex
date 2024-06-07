@@ -7,6 +7,9 @@
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Creates the structure for storing virtual hyperplanes.
+ */
 void VirtualHyp::CreateVirtualHyp()
 
 {
@@ -23,6 +26,9 @@ void VirtualHyp::CreateVirtualHyp()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets the virtual hyperplanes based on biases and weights.
+ */
 void VirtualHyp::SetVirtualHyp()
 
 {
@@ -48,6 +54,9 @@ void VirtualHyp::SetVirtualHyp()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sorts the virtual hyperplanes for each input variable.
+ */
 void VirtualHyp::SortVirtualHyp()
 
 {
@@ -57,6 +66,9 @@ void VirtualHyp::SortVirtualHyp()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets the epsilon values for slightly shifted virtual hyperplanes.
+ */
 void VirtualHyp::SetEpsVirt()
 
 {
@@ -103,6 +115,13 @@ void VirtualHyp::SetEpsVirt()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Finds the index of the lower nearest knot (threshold) in the virtual hyperplane for a given value.
+ *
+ * @param var The index of the variable.
+ * @param val The value to find the knot index for.
+ * @return The knot index, which represents the position of the nearest knot (threshold) that is less than or equal to the given value.
+ */
 int VirtualHyp::KnotInd(int var, float val) {
   const std::vector<float> &knots = VecVirtHyp[var];
 
@@ -116,6 +135,13 @@ int VirtualHyp::KnotInd(int var, float val) {
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Gets the index of the knot corresponding to a given value in the virtual hyperplanes.
+ *
+ * @param var The index of the variable.
+ * @param val The value to find the index for.
+ * @return The index of the value, or -1 if not found.
+ */
 int VirtualHyp::GetInd(int var, float val)
 
 {
@@ -131,6 +157,15 @@ int VirtualHyp::GetInd(int var, float val)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructs a VirtualHyp object with the given parameters.
+ *
+ * @param nbBins Number of bins for discretization.
+ * @param nbIn Number of input variables.
+ * @param multiple Multiple of the input variables.
+ * @param bias Pointer to the biases.
+ * @param weights Pointer to the weights.
+ */
 VirtualHyp::VirtualHyp(
     int nbBins,
     int nbIn,
@@ -151,6 +186,15 @@ VirtualHyp::VirtualHyp(
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructs a VirtualHyp object by merging multiple VirtualHyp objects.
+ *
+ * @param nbBins Number of bins for discretization.
+ * @param nbIn Number of input variables.
+ * @param multiple Multiple of the input variables.
+ * @param nbNets Number of networks.
+ * @param virt Vector of pointers to the VirtualHyp objects to merge.
+ */
 VirtualHyp::VirtualHyp(
     int nbBins,
     int nbIn,
