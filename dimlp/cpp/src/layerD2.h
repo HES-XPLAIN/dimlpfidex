@@ -10,7 +10,7 @@
 ///////////////////////////////////////////////////////////////////
 
 /**
- * @brief The LayerDimlp2 class represents a layer in a neural network using a staircase activation function.
+ * @brief The LayerDimlp2 class represents a Dimlp layer in a neural network using a staircase activation function.
  *
  * This class inherits from the Layer class and overrides several functions to implement
  * specific behaviors for the forward pass and delta computation.

@@ -10,7 +10,7 @@
 ///////////////////////////////////////////////////////////////////
 
 /**
- * @brief Represents a specialized neural network layer using a staircase activation function, derived from the Layer class, with no weight or bias adaptation.
+ * @brief Represents a specialized neural network Dimlp layer using a staircase activation function, derived from the Layer class, with no weight or bias adaptation.
  *
  * This class implements a layer in the neural network that uses a staircase activation function for its neurons.
  * It overrides specific functions from the base Layer class to provide customized behavior for forward propagation without adapting weights or biases.

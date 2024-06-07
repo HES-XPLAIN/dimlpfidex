@@ -6,6 +6,12 @@ const int LD4 = 1;
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Finds the index of the maximum value in a vector.
+ *
+ * @param vec The vector to search.
+ * @return The index of the maximum value.
+ */
 int BpNN::Max(const std::vector<float> &vec) const
 
 {
@@ -26,10 +32,18 @@ int BpNN::Max(const std::vector<float> &vec) const
 
 int BpNN::initRandomGen = 0;
 
+/**
+ * @brief Resets the random generator initialization flag.
+ */
 void BpNN::resetInitRandomGen() {
   initRandomGen = 0;
 }
 
+/**
+ * @brief Initializes the random generator.
+ *
+ * @param seed Seed for random number generation.
+ */
 void BpNN::InitRandomGen(int seed) const {
 
   if (initRandomGen == 0) {
@@ -46,6 +60,11 @@ void BpNN::InitRandomGen(int seed) const {
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Creates the network structure.
+ *
+ * @param nbNeurons Vector containing the number of neurons in each layer.
+ */
 void BpNN::CreateNetStruct(std::vector<int> nbNeurons)
 
 {
@@ -73,6 +92,9 @@ void BpNN::CreateNetStruct(std::vector<int> nbNeurons)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Writes the architecture parameters to the console.
+ */
 void BpNN::WriteArchParam() const
 
 {
@@ -88,6 +110,20 @@ void BpNN::WriteArchParam() const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Assigns the parameters for the network.
+ *
+ * @param eta Learning rate.
+ * @param mu Momentum rate.
+ * @param flat Flatness parameter.
+ * @param errParam Error threshold parameter.
+ * @param accuracyParam Accuracy threshold parameter.
+ * @param deltaErrParam Delta error threshold parameter.
+ * @param showErrParam Number of epochs between error displays.
+ * @param nbEpochsParam Number of epochs for training.
+ * @param nbLayers Total number of layers including input and output layers.
+ * @param saveFile The file to which the network's weights are saved.
+ */
 void BpNN::AssignParam(
     float eta,
     float mu,
@@ -117,6 +153,9 @@ void BpNN::AssignParam(
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Writes the parameters to the console.
+ */
 void BpNN::WriteParam() const {
   std::cout << "Parameters:\n"
             << std::endl;
@@ -144,6 +183,9 @@ void BpNN::WriteParam() const {
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Saves the weights to a file.
+ */
 void BpNN::SaveWeights() const
 
 {
@@ -169,6 +211,12 @@ void BpNN::SaveWeights() const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Saves the weights to a specified file.
+ *
+ * @param str The file to which the weights are saved.
+ * @param netId The ID of the network.
+ */
 void BpNN::SaveWeights(const std::string &strSave, int netId) const
 
 {
@@ -197,6 +245,9 @@ void BpNN::SaveWeights(const std::string &strSave, int netId) const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Reads the weights from a file.
+ */
 void BpNN::ReadWeights() const
 
 {
@@ -262,6 +313,9 @@ void BpNN::ReadWeights() const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Pushes the weights to a temporary storage.
+ */
 void BpNN::Push() const
 
 {
@@ -271,6 +325,9 @@ void BpNN::Push() const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Pops the weights from the temporary storage.
+ */
 void BpNN::Pop() const
 
 {
@@ -280,6 +337,12 @@ void BpNN::Pop() const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Forwards one example through the network.
+ *
+ * @param data The dataset containing the example.
+ * @param index The index of the example in the dataset.
+ */
 void BpNN::ForwardOneExample1(DataSet &data, int index)
 
 {
@@ -291,6 +354,11 @@ void BpNN::ForwardOneExample1(DataSet &data, int index)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Forwards one example through the network.
+ *
+ * @param ex The example to forward.
+ */
 void BpNN::ForwardOneExample1(float *ex)
 
 {
@@ -303,6 +371,9 @@ void BpNN::ForwardOneExample1(float *ex)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Forwards one example through the network.
+ */
 void BpNN::ForwardOneExample1()
 
 {
@@ -312,6 +383,12 @@ void BpNN::ForwardOneExample1()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Forwards one example through the network.
+ *
+ * @param data The dataset containing the example.
+ * @param index The index of the example in the dataset.
+ */
 void BpNN::ForwardOneExample2(DataSet &data, int index) const
 
 {
@@ -324,6 +401,14 @@ void BpNN::ForwardOneExample2(DataSet &data, int index) const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the error with the same activation by performing the forward pass.
+ *
+ * @param data The dataset containing the examples.
+ * @param target The target dataset.
+ * @param accuracy Pointer to store the accuracy.
+ * @return The computed error.
+ */
 float BpNN::ComputeErrorSameAct(
     DataSet &data,
     DataSet &target,
@@ -366,6 +451,12 @@ float BpNN::ComputeErrorSameAct(
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Backpropagates one example through the network.
+ *
+ * @param target The target dataset.
+ * @param index The index of the example in the dataset.
+ */
 void BpNN::BackOneExample(DataSet &target, int index) const
 
 {
@@ -380,6 +471,13 @@ void BpNN::BackOneExample(DataSet &target, int index) const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Trains the network for one epoch.
+ *
+ * @param data The dataset containing the examples.
+ * @param target The target dataset.
+ * @param r Random function for selecting examples.
+ */
 void BpNN::TrainOneEpoch(DataSet &data, DataSet &target, const IntRandomFunction *r) const
 
 {
@@ -397,6 +495,12 @@ void BpNN::TrainOneEpoch(DataSet &data, DataSet &target, const IntRandomFunction
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Prints the specific error for the Dimlp network.
+ *
+ * @param specErr The specific error.
+ * @param specAcc The specific accuracy.
+ */
 void BpNN::PrintSpecErrDimlp(float specErr, float specAcc) const {
   std::ostringstream oss;
   oss << "    (SSE = " << std::setprecision(12) << specErr << "    ACC = " << std::setprecision(8) << specAcc << ")";
@@ -406,6 +510,9 @@ void BpNN::PrintSpecErrDimlp(float specErr, float specAcc) const {
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Defines a Smlp (standard multilayer perceptron) network.
+ */
 void BpNN::DefineSmlp()
 
 {
@@ -422,6 +529,11 @@ void BpNN::DefineSmlp()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Defines a Dimlp network with a Dimlp layer that uses a staircase activation function.
+ *
+ * @param discrLevels The number of discrete levels.
+ */
 void BpNN::DefineDimlp(int discrLevels)
 
 {
@@ -439,6 +551,11 @@ void BpNN::DefineDimlp(int discrLevels)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Defines a Qmlp (Quantized multilayer perceptron) network with a Dimlp layer that uses a staircase activation function.
+ *
+ * @param discrLevels The number of discrete levels.
+ */
 void BpNN::DefineQmlp(int discrLevels)
 
 {
@@ -456,6 +573,11 @@ void BpNN::DefineQmlp(int discrLevels)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Defines a Fdimlp network with a Dimlp layer and a fuzzy Dimlp layer that use a staircase activation function.
+ *
+ * @param discrLevels The number of discrete levels.
+ */
 void BpNN::DefineFdimlp(int discrLevels)
 
 {
@@ -477,6 +599,11 @@ void BpNN::DefineFdimlp(int discrLevels)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Defines a Fdimlp2 network with a Dimlp layer and a fuzzy Dimlp layer that use a staircase activation function.
+ *
+ * @param discrLevels The number of discrete levels.
+ */
 void BpNN::DefineFdimlp2(int discrLevels)
 
 {
@@ -498,6 +625,11 @@ void BpNN::DefineFdimlp2(int discrLevels)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Defines a SD (Quantized Support Vector Machine Dot product (linear kernel)) network with a layer using an identity activation function and a Dimlp layer with a staircase activation function.
+ *
+ * @param discrLevels The number of discrete levels.
+ */
 void BpNN::DefineSD(int discrLevels)
 
 {
@@ -519,6 +651,11 @@ void BpNN::DefineSD(int discrLevels)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Defines a SP5 network with a layer using a quintic (fifth power) activation function and a Dimlp layer with a staircase activation function.
+ *
+ * @param discrLevels The number of discrete levels.
+ */
 void BpNN::DefineSP5(int discrLevels)
 
 {
@@ -540,6 +677,11 @@ void BpNN::DefineSP5(int discrLevels)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Defines a SP3 network with a layer using a cubic activation function and a Dimlp layer with a staircase activation function.
+ *
+ * @param discrLevels The number of discrete levels.
+ */
 void BpNN::DefineSP3(int discrLevels)
 
 {
@@ -561,6 +703,11 @@ void BpNN::DefineSP3(int discrLevels)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Defines a SR (Quantized Support Vector Machine Radial basis function) network that uses a specialized radial basis function (RBF) layer with a Gaussian activation function and a Dimlp layer with a staircase activation function.
+ *
+ * @param discrLevels The number of discrete levels.
+ */
 void BpNN::DefineSR(int discrLevels)
 
 {
@@ -582,6 +729,11 @@ void BpNN::DefineSR(int discrLevels)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Defines a SP4 network with a layer using a quartic (fourth power) activation function and a Dimlp layer with a staircase activation function.
+ *
+ * @param discrLevels The number of discrete levels.
+ */
 void BpNN::DefineSP4(int discrLevels)
 
 {
@@ -603,6 +755,14 @@ void BpNN::DefineSP4(int discrLevels)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the error and accuracy by performing the forward pass.
+ *
+ * @param data The dataset containing the examples.
+ * @param target The target dataset.
+ * @param accuracy Pointer to store the accuracy.
+ * @return The computed error.
+ */
 float BpNN::ComputeError(
     DataSet &data,
     DataSet &target,
@@ -641,6 +801,18 @@ float BpNN::ComputeError(
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Trains the network.
+ *
+ * @param train The training dataset.
+ * @param trainTar The training target dataset.
+ * @param test The testing dataset.
+ * @param testTar The testing target dataset.
+ * @param valid The validation dataset.
+ * @param validTar The validation target dataset.
+ * @param accuracyFile The file to save accuracy statistics.
+ * @param fromBT Flag to indicate if training is done with bagging.
+ */
 void BpNN::TrainPhase(
     DataSet &train,
     DataSet &trainTar,
@@ -815,6 +987,23 @@ void BpNN::TrainPhase(
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructs a BpNN with the specified parameters.
+ *
+ * @param eta Learning rate for weight updates.
+ * @param mu Momentum rate for weight updates.
+ * @param flat Flatness parameter used in some activation functions.
+ * @param errParam Error threshold parameter.
+ * @param accuracyParam Accuracy threshold parameter.
+ * @param deltaErrParam Delta error threshold parameter.
+ * @param showErrParam Number of epochs between error displays.
+ * @param nbEpochsParam Number of epochs for training.
+ * @param nbLayers Total number of layers including input and output layers.
+ * @param nbNeurons Number of neurons in each layer.
+ * @param saveFile The file to which the network's weights are saved.
+ * @param printNetType The type of network to print.
+ * @param seed Seed for random number generation.
+ */
 BpNN::BpNN(
     float eta,
     float mu,
@@ -856,6 +1045,15 @@ BpNN::BpNN(
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructs a BpNN from a file.
+ *
+ * @param readFile The file from which to read the network's weights.
+ * @param nbLayers Total number of layers including input and output layers.
+ * @param nbNeurons Number of neurons in each layer.
+ * @param printNetType The type of network to print.
+ * @param netId Network ID, used for identifying networks in a file.
+ */
 BpNN::BpNN(
     const std::string &readFile,
     int nbLayers,
@@ -882,6 +1080,24 @@ BpNN::BpNN(
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructs a BpNN with the specified parameters and reads weights from a file.
+ *
+ * @param readFile The file from which to read the network's weights.
+ * @param eta Learning rate for weight updates.
+ * @param mu Momentum rate for weight updates.
+ * @param flat Flatness parameter used in some activation functions.
+ * @param errParam Error threshold parameter.
+ * @param accuracyParam Accuracy threshold parameter.
+ * @param deltaErrParam Delta error threshold parameter.
+ * @param showErrParam Number of epochs between error displays.
+ * @param nbEpochsParam Number of epochs for training.
+ * @param nbLayers Total number of layers including input and output layers.
+ * @param nbNeurons Number of neurons in each layer.
+ * @param saveFile The file to which the network's weights are saved.
+ * @param printNetType The type of network to print.
+ * @param seed Seed for random number generation.
+ */
 BpNN::BpNN(
     const std::string &readFile,
     float eta,
