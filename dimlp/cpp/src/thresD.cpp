@@ -2,6 +2,9 @@
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Resets the discretization pattern count for all variables.
+ */
 void ThresDescr::ResetAllCountPatDiscr()
 
 {
@@ -11,6 +14,9 @@ void ThresDescr::ResetAllCountPatDiscr()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Deletes all thresholds and patterns for all variables.
+ */
 void ThresDescr::Del()
 
 {
@@ -20,6 +26,11 @@ void ThresDescr::Del()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructor for the `ThresDescr` class.
+ *
+ * @param nbVar Number of variables.
+ */
 ThresDescr::ThresDescr(int nbVar) : Descr(nbVar), NbVar(nbVar)
 
 {

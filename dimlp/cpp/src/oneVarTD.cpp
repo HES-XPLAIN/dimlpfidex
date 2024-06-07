@@ -1,6 +1,13 @@
 #include "oneVarTD.h"
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Creates a new element.
+ *
+ * @param thres The threshold value.
+ * @param indPat The index of the pattern.
+ * @return A shared pointer to the created element.
+ */
 std::shared_ptr<OneVarThresDescr::Elem> OneVarThresDescr::CreateElem(float thres, int indPat)
 
 {
@@ -20,6 +27,9 @@ std::shared_ptr<OneVarThresDescr::Elem> OneVarThresDescr::CreateElem(float thres
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Resets the count of patterns for discretization for all elements.
+ */
 void OneVarThresDescr::ResetCountPatDiscr()
 
 {
@@ -31,6 +41,12 @@ void OneVarThresDescr::ResetCountPatDiscr()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Inserts a new threshold and pattern index.
+ *
+ * @param thres The threshold value.
+ * @param indPat The index of the pattern.
+ */
 void OneVarThresDescr::Insert(float thres, int indPat)
 
 {
@@ -57,6 +73,9 @@ void OneVarThresDescr::Insert(float thres, int indPat)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Deletes all elements in the list.
+ */
 void OneVarThresDescr::Del()
 
 {
