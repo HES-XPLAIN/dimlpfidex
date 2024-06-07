@@ -3,6 +3,23 @@
 ////////////////////////////////////////////////////////////////////////
 const std::string &netType = "Discretized Interpretable Multi-Layer Perceptron";
 
+/**
+ * @brief Constructs a Dimlp network with specified parameters.
+ *
+ * @param eta Learning rate.
+ * @param mu Momentum.
+ * @param flat Flatness factor.
+ * @param errParam Error threshold.
+ * @param accuracyParam Accuracy threshold.
+ * @param deltaErrParam Delta error threshold.
+ * @param discrLevels Number of discretized levels.
+ * @param showErrParam Show error parameter.
+ * @param nbEpochsParam Number of epochs.
+ * @param nbLayers Number of layers in the network.
+ * @param nbNeurons Number of neurons in each layer.
+ * @param weightFile File to save weights.
+ * @param seed Seed for random number generation (default: 0).
+ */
 Dimlp::Dimlp(
     float eta,
     float mu,
@@ -31,6 +48,15 @@ Dimlp::Dimlp(
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructs a Dimlp network by reading weights from a file.
+ *
+ * @param readFile File to read weights from.
+ * @param nbLayers Number of layers in the network.
+ * @param nbNeurons Number of neurons in each layer.
+ * @param discrLevels Number of discretized levels.
+ * @param netId Network ID (default: 1).
+ */
 Dimlp::Dimlp(
     const std::string &readFile,
     int nbLayers,
@@ -51,6 +77,24 @@ Dimlp::Dimlp(
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructs a Dimlp network by reading weights from a file and sets training parameters.
+ *
+ * @param readFile File to read weights from.
+ * @param eta Learning rate.
+ * @param mu Momentum.
+ * @param flat Flatness factor.
+ * @param errParam Error threshold.
+ * @param accuracyParam Accuracy threshold.
+ * @param deltaErrParam Delta error threshold.
+ * @param discrLevels Number of discretized levels.
+ * @param showErrParam Show error parameter.
+ * @param nbEpochsParam Number of epochs.
+ * @param nbLayers Number of layers in the network.
+ * @param nbNeurons Number of neurons in each layer.
+ * @param weightFile File to save weights.
+ * @param seed Seed for random number generation (default: 0).
+ */
 Dimlp::Dimlp(
     const std::string &readFile,
     float eta,

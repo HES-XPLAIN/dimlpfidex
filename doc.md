@@ -25,6 +25,7 @@ Advices :
 
 ### Dimlp params
 - If you want to train dimlp with an error or accuracy threshold stopping criterion and without beeing stopped by a number of iterations, you have to put a big number in nb_epochs.
+- Il est important de préciser que pour dimlpPred, dimlpCls et dimlpRul il faut avoir entraîné avec dimlpTrn et pas avec dimlpBT et que pour densCls il faut avoir entraîné avec dimlpBT et pas avec dimlpTrn !
 
 
 ### Note in case performance decrease for fidexGloRules

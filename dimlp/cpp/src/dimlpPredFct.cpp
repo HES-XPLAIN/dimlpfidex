@@ -21,7 +21,7 @@ void showDimlpPredParams()
             << std::endl;
 
   printOptionDescription("--test_data_file <str>", "Test data file");
-  printOptionDescription("--weights_file <str>", "Weights file");
+  printOptionDescription("--weights_file <str>", "Weights file trained with dimlpTrn");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of input neurons");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of output neurons");
   printOptionDescription("--hidden_layers_file <str>", "Hidden layers file name");
