@@ -3,10 +3,12 @@ import "dart:io";
 import "package:dimlpfidex_gui/data/field.dart";
 import "package:dimlpfidex_gui/ui/input_field.dart";
 import "package:dimlpfidex_gui/ui/simple_button.dart";
+import "package:file_selector/file_selector.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_form_builder/flutter_form_builder.dart";
 import "package:path_provider/path_provider.dart";
+import "package:shared_preferences/shared_preferences.dart";
 import "package:universal_html/html.dart" as universal_html;
 
 class FormView extends StatefulWidget {
@@ -166,16 +168,20 @@ void _produceFileForWeb(String json, BuildContext context) {
 }
 
 void _produceFileForOS(String json, BuildContext context) async {
-  Directory? directory = await getDownloadsDirectory();
-  String configFilePath = '${directory!.path}/config.json';
-  File file = File(configFilePath);
+  String pathKey = "generationPath";
+  String? path;
 
-  await file.writeAsString(json).then((value) {
-    showSnackBar(
-        context, 'JSON file successfully generated at ${directory.path}',
-        color: Colors.green[700]!);
-  }).onError((error, stackTrace) {
-    showSnackBar(context, 'JSON file generation error: $error',
-        color: Colors.red[500]!);
-  });
+  await SharedPreferences.getInstance()
+      .then((sp) => sp.getString(pathKey))
+      .then((res) {
+        path = res;
+        return File('$path/config.json');
+      })
+      .then((file) => file.writeAsString(json))
+      .then((_) => showSnackBar(
+          context, 'JSON file successfully generated at $path',
+          color: Colors.green[700]!))
+      .onError((error, _) => showSnackBar(
+          context, 'JSON file generation error: $error',
+          color: Colors.red[500]!));
 }

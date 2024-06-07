@@ -33,7 +33,7 @@ class _AppPageState extends State<AppPage> with TickerProviderStateMixin {
     Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Text("Home")),
     Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Text("Fidex")),
     Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Text("Dimlp")),
-    Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Text("Python")),
+    Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Text("Training methods")),
     Padding(
         padding: EdgeInsets.symmetric(vertical: 10), child: Text("Glossary"))
   ];
