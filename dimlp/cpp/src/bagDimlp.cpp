@@ -9,6 +9,12 @@
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Creates datasets for each Dimlp network in the ensemble using bootstrap sampling.
+ * @param masterTrain The master training dataset.
+ * @param masterClass The master class dataset.
+ * @param nbPat Number of patterns in the dataset.
+ */
 void BagDimlp::MakeDataSets(
     DataSet &masterTrain,
     DataSet &masterClass,
@@ -58,6 +64,14 @@ void BagDimlp::MakeDataSets(
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Trains all Dimlp networks in the ensemble.
+ * @param test The test dataset.
+ * @param testTar The test target dataset.
+ * @param genericWeightsFile Path to the file for saving weights.
+ * @param accuracyFile Path to the file for saving accuracy.
+ * @param seed Seed for random number generation.
+ */
 void BagDimlp::TrainAll(
     DataSet &test,
     DataSet &testTar,
@@ -103,6 +117,10 @@ void BagDimlp::TrainAll(
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Initializes networks with pre-trained weights.
+ * @param prefix Prefix for the weight files.
+ */
 void BagDimlp::DefNetsWithWeights(const std::string &prefix)
 
 {
@@ -121,6 +139,13 @@ void BagDimlp::DefNetsWithWeights(const std::string &prefix)
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Creates a global virtual hyperplane for all networks in the ensemble.
+ * @param nbBins Number of bins.
+ * @param nbIn Number of input neurons.
+ * @param multiple Multiplication factor.
+ * @return Shared pointer to the global virtual hyperplane.
+ */
 std::shared_ptr<VirtualHyp> BagDimlp::MakeGlobalVirt(int nbBins, int nbIn, int multiple)
 
 {
@@ -143,6 +168,16 @@ std::shared_ptr<VirtualHyp> BagDimlp::MakeGlobalVirt(int nbBins, int nbIn, int m
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Performs forward pass using the bagged ensemble of Dimlp networks for a single example.
+ *
+ * This method iterates over all the Dimlp networks in the ensemble (`VectDimlp`),
+ * performs a forward pass on each network, and averages their outputs to produce
+ * a final global output.
+ *
+ * @param data The dataset.
+ * @param index Index of the example.
+ */
 void BagDimlp::ForwardOneExample1(DataSet &data, int index)
 
 {
@@ -152,21 +187,31 @@ void BagDimlp::ForwardOneExample1(DataSet &data, int index)
   for (k = 0; k < NbOut; k++)
     GlobalOut[k] = 0;
 
+  // Perform forward pass for each Dimlp network in the ensemble
   for (int n = 0; n < NbDimlpNets; n++) {
     VectDimlp[n]->ForwardOneExample1(data, index);
 
     ptrOut = (VectDimlp[n]->GetLayer(NbLayers - 2))->GetUp();
 
+    // Accumulate the outputs of each network
     for (k = 0; k < NbOut; k++)
       GlobalOut[k] += ptrOut[k];
   }
 
+  // Average the accumulated outputs to get the final global output
   for (k = 0; k < NbOut; k++)
     GlobalOut[k] = GlobalOut[k] / (float)NbDimlpNets;
 }
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Performs forward pass using the bagged ensemble of Dimlp networks for a single example.
+ *
+ * This method iterates over all the Dimlp networks in the ensemble (`VectDimlp`),
+ * performs a forward pass on each network, and averages their outputs to produce
+ * a final global output.
+ */
 void BagDimlp::ForwardOneExample1()
 
 {
@@ -176,21 +221,32 @@ void BagDimlp::ForwardOneExample1()
   for (k = 0; k < NbOut; k++)
     GlobalOut[k] = 0;
 
+  // Perform forward pass for each Dimlp network in the ensemble
   for (int n = 0; n < NbDimlpNets; n++) {
     VectDimlp[n]->ForwardOneExample1();
 
     ptrOut = (VectDimlp[n]->GetLayer(NbLayers - 2))->GetUp();
 
+    // Accumulate the outputs of each network
     for (k = 0; k < NbOut; k++)
       GlobalOut[k] += ptrOut[k];
   }
 
+  // Average the accumulated outputs to get the final global output
   for (k = 0; k < NbOut; k++)
     GlobalOut[k] = GlobalOut[k] / (float)NbDimlpNets;
 }
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the accuracy of the ensemble on the given dataset.
+ * @param data The dataset.
+ * @param target The target dataset.
+ * @param accuracy Pointer to store the computed accuracy.
+ * @param toWrite Flag to indicate whether to write the predictions to a file.
+ * @param predFile Path to the file for saving predictions.
+ */
 void BagDimlp::ComputeAcc(
     DataSet &data,
     DataSet &target,
@@ -254,6 +310,23 @@ void BagDimlp::ComputeAcc(
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructs a BagDimlp object.
+ * @param eta Learning rate.
+ * @param mu Momentum.
+ * @param flat Flat spot elimination parameter.
+ * @param errParam Error threshold parameter.
+ * @param accuracyParam Accuracy threshold parameter.
+ * @param deltaErrParam Delta error threshold parameter.
+ * @param discrLevels Number of discretization levels.
+ * @param showErrParam Frequency of error display.
+ * @param nbEpochsParam Number of training epochs.
+ * @param nbLayers Number of layers.
+ * @param nbNeurons Vector containing the number of neurons in each layer.
+ * @param nbDimlpNets Number of Dimlp networks in the ensemble.
+ * @param weightFile Path to the file for saving weights.
+ * @param seed Seed for random number generation.
+ */
 BagDimlp::BagDimlp(
     float eta,
     float mu,
@@ -299,6 +372,15 @@ BagDimlp::BagDimlp(
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructs a BagDimlp object with specified discretization levels, layers, and neurons.
+ * @param discrLevels Number of discretization levels.
+ * @param nbLayers Number of layers.
+ * @param nbNeurons Vector containing the number of neurons in each layer.
+ * @param nbDimlpNets Number of Dimlp networks in the ensemble.
+ * @param weightFile Path to the file for saving weights.
+ * @param seed Seed for random number generation.
+ */
 BagDimlp::BagDimlp(
     int discrLevels,
     int nbLayers,
