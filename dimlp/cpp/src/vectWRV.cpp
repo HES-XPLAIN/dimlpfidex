@@ -4,6 +4,12 @@
 #include <iostream>
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Fills the vector with unique indices.
+ *
+ * @param nbElSub Number of elements to select.
+ * @return A shared pointer to the StringInt object containing the selected indices.
+ */
 std::shared_ptr<StringInt> VectWithRandVal::FillWithUniqueInd(int nbElSub)
 
 {
@@ -39,6 +45,12 @@ std::shared_ptr<StringInt> VectWithRandVal::FillWithUniqueInd(int nbElSub)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Appends elements from one list to another.
+ *
+ * @param originalList The original list to append to.
+ * @param toAppend The list of elements to append.
+ */
 void VectWithRandVal::Append(StringInt *originalList, StringInt *toAppend)
 
 {
@@ -55,6 +67,11 @@ void VectWithRandVal::Append(StringInt *originalList, StringInt *toAppend)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructor to initialize the vector with a given number of elements.
+ *
+ * @param nbElAll The total number of elements.
+ */
 VectWithRandVal::VectWithRandVal(int nbElAll) : NbElAll(nbElAll)
 
 {

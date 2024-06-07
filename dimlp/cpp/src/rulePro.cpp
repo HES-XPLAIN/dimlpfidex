@@ -6,6 +6,13 @@
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Finds the maximum value in the table.
+ *
+ * @param tab The table of values.
+ * @param nbRules The number of rules.
+ * @return The index of the maximum value.
+ */
 int RuleProcessing::Max(const std::vector<int> &tab, int nbRules) const
 
 {
@@ -39,6 +46,13 @@ int RuleProcessing::Max(const std::vector<int> &tab, int nbRules) const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Finds the minimum value in the table.
+ *
+ * @param tab The table of values.
+ * @param nbRules The number of rules.
+ * @return The index of the minimum value.
+ */
 int RuleProcessing::Min(const std::vector<int> &tab, int nbRules) const
 
 {
@@ -71,6 +85,12 @@ int RuleProcessing::Min(const std::vector<int> &tab, int nbRules) const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Checks if a rule is empty.
+ *
+ * @param rule The rule to check.
+ * @return 1 if the rule is empty, 0 otherwise.
+ */
 int RuleProcessing::IsRuleEmpty(std::shared_ptr<DimlpRule> rule) const
 
 {
@@ -86,6 +106,11 @@ int RuleProcessing::IsRuleEmpty(std::shared_ptr<DimlpRule> rule) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Counts the total number of antecedents in all the rules.
+ *
+ * @return The total number of antecedents.
+ */
 int RuleProcessing::CountAnt()
 
 {
@@ -109,6 +134,11 @@ int RuleProcessing::CountAnt()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Counts the number of non-empty rules.
+ *
+ * @return The number of non-empty rules.
+ */
 int RuleProcessing::CountRules()
 
 {
@@ -127,6 +157,9 @@ int RuleProcessing::CountRules()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets the carried field for each rule in the rule list.
+ */
 void RuleProcessing::SetCarriedField()
 
 {
@@ -145,6 +178,9 @@ void RuleProcessing::SetCarriedField()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Deletes the carried lists for each rule in the rule list.
+ */
 void RuleProcessing::DelListCar()
 
 {
@@ -165,6 +201,12 @@ void RuleProcessing::DelListCar()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Checks if all examples are carried by the rule list if one of the rule is dropped.
+ *
+ * @param toDrop The index of the rule to drop.
+ * @return 1 if all examples are carried, 0 otherwise.
+ */
 int RuleProcessing::CheckAllCarried(int toDrop)
 
 {
@@ -204,6 +246,9 @@ int RuleProcessing::CheckAllCarried(int toDrop)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets the count of antecedents for each rule in the rule list.
+ */
 void RuleProcessing::SetCountAntRules()
 
 {
@@ -224,6 +269,16 @@ void RuleProcessing::SetCountAntRules()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Removes a rule from the rule list if it can be safely pruned.
+ *
+ * This function checks if all data points are still covered by the remaining rules
+ * after excluding the rule at the specified index. If so, it removes the rule and
+ * deletes the associated data points covered by that rule.
+ *
+ * @param indPrune The index of the rule to prune.
+ * @return 1 if the rule is successfully removed, 0 otherwise.
+ */
 int RuleProcessing::GoToSavedAndRemRule(int indPrune)
 
 {
@@ -246,6 +301,16 @@ int RuleProcessing::GoToSavedAndRemRule(int indPrune)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Prunes the rules by iteratively removing the rule with the most antecedents.
+ *
+ * This function performs a fast pruning of the rules by iteratively identifying and removing
+ * the rule with the maximum number of antecedents. The process is repeated for a specified
+ * number of iterations (`nbIt`). During each iteration, it updates the list of rules and
+ * ensures that all data points remain covered by the remaining rules.
+ *
+ * @param nbIt The number of iterations to perform the pruning.
+ */
 void RuleProcessing::FastRulePrune(int nbIt)
 
 {
@@ -273,6 +338,9 @@ void RuleProcessing::FastRulePrune(int nbIt)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Prunes the rules by selecting the rules with minimum carried examples.
+ */
 void RuleProcessing::RulePruneByMinCar()
 
 {
@@ -310,6 +378,11 @@ void RuleProcessing::RulePruneByMinCar()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Goes to a rule and removes its antecedent.
+ *
+ * @param indPrune The index of the rule to prune.
+ */
 void RuleProcessing::GoToRuleAndRemAnt(int indPrune)
 
 {
@@ -353,6 +426,9 @@ void RuleProcessing::GoToRuleAndRemAnt(int indPrune)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the gain for pruning rules.
+ */
 void RuleProcessing::ComputeGain()
 
 {
@@ -403,6 +479,9 @@ void RuleProcessing::ComputeGain()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Mixes and prunes the rules.
+ */
 void RuleProcessing::MixPrune()
 
 {
@@ -451,6 +530,11 @@ void RuleProcessing::MixPrune()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Removes several thresholds from a rule.
+ *
+ * @param r The rule to remove thresholds from.
+ */
 void RuleProcessing::RemSevThres(std::shared_ptr<DimlpRule> r) const
 
 {
@@ -537,6 +621,9 @@ void RuleProcessing::RemSevThres(std::shared_ptr<DimlpRule> r) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Cleans the rule list by removing unnecessary thresholds.
+ */
 void RuleProcessing::Clean()
 
 {
@@ -548,6 +635,11 @@ void RuleProcessing::Clean()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Inserts a rule into the rule list.
+ *
+ * @param r The rule to insert.
+ */
 void RuleProcessing::Insert(std::shared_ptr<DimlpRule> r)
 
 {
@@ -574,6 +666,9 @@ void RuleProcessing::Insert(std::shared_ptr<DimlpRule> r)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Deletes all rules from the rule list.
+ */
 void RuleProcessing::Del()
 
 {
@@ -589,6 +684,9 @@ void RuleProcessing::Del()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Removes the current rule from the rule list.
+ */
 void RuleProcessing::RemCurrentRule() const
 
 {
@@ -601,6 +699,11 @@ void RuleProcessing::RemCurrentRule() const
 }
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Tries to enlarge the thresholds for the rules in the rule list.
+ *
+ * @return The number of enlarged rules.
+ */
 int RuleProcessing::TryEnlargedThres()
 
 {
@@ -725,6 +828,9 @@ int RuleProcessing::TryEnlargedThres()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Enlarges and prunes the rules.
+ */
 void RuleProcessing::EnlargeAndPrune()
 
 {
@@ -746,6 +852,15 @@ void RuleProcessing::EnlargeAndPrune()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructor for the RuleProcessing class.
+ *
+ * @param nbVar Number of variables.
+ * @param nbHyp Number of hyperplanes.
+ * @param data The dataset for rule processing.
+ * @param classPatNet Vector containing the class patterns of the network.
+ * @param descr Pointer to the threshold descriptor.
+ */
 RuleProcessing::RuleProcessing(
     int nbVar,
     int nbHyp,
