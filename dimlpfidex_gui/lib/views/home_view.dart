@@ -1,4 +1,9 @@
+import 'package:dimlpfidex_gui/ui/input_field.dart';
+import 'package:dimlpfidex_gui/ui/simple_button.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainMenuView extends StatelessWidget {
   const MainMenuView({super.key});
@@ -85,8 +90,71 @@ class MainMenuView extends StatelessWidget {
                   ),
                 ),
               ),
+              ElevatedButton(
+                  onPressed: () => _openSettingsDialog(context),
+                  child: const Icon(Icons.settings))
             ],
           ),
         ));
   }
+}
+
+void _openSettingsDialog(BuildContext context) async {
+  GlobalKey<FormBuilderFieldState> key = GlobalKey<FormBuilderFieldState>();
+  String confKey = "generationPath";
+
+  await SharedPreferences.getInstance().then((sp) {
+    String path = sp.getString(confKey) ?? "";
+
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                      child: FormBuilderTextField(
+                    key: key,
+                    name: confKey,
+                    initialValue: path,
+                    decoration: const InputDecoration(
+                        hintText: "Path where config files will be generated"),
+                    onChanged: (changes) => path = changes ?? "",
+                  )),
+                  IconButton(
+                      onPressed: () async {
+                        getDirectoryPath().then((value) {
+                          if (value != null && value.isNotEmpty) {
+                            key.currentState?.didChange(value);
+                            path = value;
+                          }
+                        }).catchError((e) {
+                          showSnackBar(context, "Something went wrong: $e");
+                        });
+                      },
+                      icon: const Icon(Icons.file_open))
+                ]),
+            actions: [
+              SimpleButton(
+                  onPressed: () {
+                    sp.setString(confKey, path);
+                    Navigator.of(context).pop();
+                    showSnackBar(context,
+                        "Successfully changed generation path to: $path",
+                        color: Colors.green[700]!);
+                  },
+                  label: "Save"),
+              SimpleButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    showSnackBar(context, "Operation cancelled");
+                  },
+                  label: "Cancel",
+                  buttonType: ButtonType.cancel),
+            ],
+          );
+        });
+  });
 }
