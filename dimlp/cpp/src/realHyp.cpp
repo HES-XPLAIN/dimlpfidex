@@ -7,6 +7,12 @@
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Finds the maximum value in a vector of integers.
+ *
+ * @param vec The vector of integers.
+ * @return The maximum value in the vector.
+ */
 int RealHyp::MaxOnPos(const std::vector<int> &vec) const
 
 {
@@ -22,6 +28,13 @@ int RealHyp::MaxOnPos(const std::vector<int> &vec) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Finds the index of the maximum value in an array of integers.
+ *
+ * @param vec The array of integers.
+ * @param nbEl The number of elements in the array.
+ * @return The index of the maximum value in the array.
+ */
 int RealHyp::GiveIndMax(const int *vec, int nbEl) const
 
 {
@@ -40,6 +53,11 @@ int RealHyp::GiveIndMax(const int *vec, int nbEl) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets confirmed virtual hyperplanes based on the dataset.
+ *
+ * @param data The dataset used for confirming virtual hyperplanes.
+ */
 void RealHyp::SetConfirmedVirt(DataSet &data)
 
 {
@@ -94,6 +112,13 @@ void RealHyp::SetConfirmedVirt(DataSet &data)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets the ConfirmedVirt array based on the saved rules.
+ *
+ * This function processes the saved rules to determine which virtual
+ * hyperplanes are relevant and sets the corresponding entries in the
+ * ConfirmedVirt array.
+ */
 void RealHyp::SetConfirmedVirt2()
 
 {
@@ -160,6 +185,14 @@ void RealHyp::SetConfirmedVirt2()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Goes right in the decision tree to identify the discriminant hyperplane.
+ *
+ * @param var The variable index.
+ * @param indPat The index of the pattern.
+ * @param startVirt The starting index for virtual hyperplanes.
+ * @param netAns The network's answer for the pattern.
+ */
 void RealHyp::Gr1(
     int var,
     int indPat,
@@ -192,6 +225,19 @@ void RealHyp::Gr1(
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Adjusts the input variable to the right of a virtual hyperplane and checks for classification changes.
+ *
+ * This function iterates through the virtual hyperplanes to the right of a given starting index for a specific
+ * variable. It adjusts the variable's value to each hyperplane's position, and after each adjustment, it forwards
+ * the example through the neural network to check if the classification changes. If a change is detected, the
+ * hyperplane is marked as relevant.
+ *
+ * @param var The variable index to adjust.
+ * @param indPat The index of the pattern (example) being processed.
+ * @param startVirt The starting index of the virtual hyperplane.
+ * @param netAns The network's initial classification result.
+ */
 void RealHyp::Gr2(
     int var,
     int indPat,
@@ -228,6 +274,14 @@ void RealHyp::Gr2(
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Goes left in the decision tree to identify the discriminant hyperplane.
+ *
+ * @param var The variable index.
+ * @param indPat The index of the pattern.
+ * @param startVirt The starting index for virtual hyperplanes.
+ * @param netAns The network's answer for the pattern.
+ */
 void RealHyp::Gl1(
     int var,
     int indPat,
@@ -266,6 +320,19 @@ void RealHyp::Gl1(
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Adjusts the input variable to the left of a virtual hyperplane and checks for classification changes.
+ *
+ * This function iterates through the virtual hyperplanes to the left of a given starting index for a specific
+ * variable. It adjusts the variable's value to each hyperplane's position, and after each adjustment, it forwards
+ * the example through the neural network to check if the classification changes. If a change is detected, the
+ * hyperplane is marked as relevant.
+ *
+ * @param var The variable index to adjust.
+ * @param indPat The index of the pattern (example) being processed.
+ * @param startVirt The starting index of the virtual hyperplane.
+ * @param netAns The network's initial classification result.
+ */
 void RealHyp::Gl2(
     int var,
     int indPat,
@@ -304,6 +371,12 @@ void RealHyp::Gl2(
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Processes a single example to estimate the relevance of discriminant hyperplanes.
+ *
+ * @param data The dataset containing the example.
+ * @param indPat The index of the pattern in the dataset.
+ */
 void RealHyp::OneExRealHyp(DataSet &data, int indPat)
 
 {
@@ -336,6 +409,11 @@ void RealHyp::OneExRealHyp(DataSet &data, int indPat)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets real hyperplanes based on the dataset.
+ *
+ * @param data The dataset used for setting real hyperplanes.
+ */
 void RealHyp::SetRealHyp(DataSet &data)
 
 {
@@ -365,6 +443,12 @@ void RealHyp::SetRealHyp(DataSet &data)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets the count of patterns that are discriminated by a given rule.
+ *
+ * @param listPat The list of patterns.
+ * @param r The rule being evaluated.
+ */
 void RealHyp::SetCountPatDiscr(std::shared_ptr<StringInt> listPat, std::shared_ptr<DimlpRule> r) const
 
 {
@@ -425,6 +509,12 @@ void RealHyp::SetCountPatDiscr(std::shared_ptr<StringInt> listPat, std::shared_p
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Finds the most discriminant antecedent.
+ *
+ * @param sel The selection threshold for discriminant antecedents.
+ * @return A shared pointer to the most discriminant antecedent.
+ */
 std::shared_ptr<Ante> RealHyp::FindMostDiscrAnt(int sel) const
 
 {
@@ -461,6 +551,13 @@ std::shared_ptr<Ante> RealHyp::FindMostDiscrAnt(int sel) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Recursively performs a deep search for rules in the dataset.
+ *
+ * @param data The dataset being processed.
+ * @param path The current rule path.
+ * @param subSet The subset of patterns being evaluated.
+ */
 void RealHyp::DeepSearch(DataSet &data, std::shared_ptr<DimlpRule> path, std::shared_ptr<StringInt> subSet)
 
 {
@@ -509,6 +606,13 @@ void RealHyp::DeepSearch(DataSet &data, std::shared_ptr<DimlpRule> path, std::sh
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the number of correct classifications for a given rule.
+ *
+ * @param listPatLeft The list of patterns classified to the left.
+ * @param listPatRight The list of patterns classified to the right.
+ * @return The number of correct classifications.
+ */
 int RealHyp::ComputeCorrect(
     std::shared_ptr<StringInt> listPatLeft,
     std::shared_ptr<StringInt> listPatRight)
@@ -552,6 +656,14 @@ int RealHyp::ComputeCorrect(
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets the count of patterns that are discriminated by a given rule.
+ *
+ * This function is a variant that processes the dataset directly.
+ *
+ * @param data The dataset being processed.
+ * @param r The rule being evaluated.
+ */
 void RealHyp::SetCountPatDiscr2(DataSet &data, std::shared_ptr<DimlpRule> r)
 
 {
@@ -606,6 +718,14 @@ void RealHyp::SetCountPatDiscr2(DataSet &data, std::shared_ptr<DimlpRule> r)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Recursively performs a deep search for rules in the dataset.
+ *
+ * This function is a variant that processes the entire dataset.
+ *
+ * @param data The dataset being processed.
+ * @param path The current rule path.
+ */
 void RealHyp::DeepSearch2(DataSet &data, std::shared_ptr<DimlpRule> path)
 
 {
@@ -655,6 +775,32 @@ void RealHyp::DeepSearch2(DataSet &data, std::shared_ptr<DimlpRule> path)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Extracts rules from the dataset and writes them to the provided output stream.
+ *
+ * This method performs the rule extraction process using the specified datasets. It builds a decision tree,
+ * prunes the rules, and then writes the extracted rules in an IF-THEN format to the provided output stream.
+ * The method can optionally denormalize the values using the provided means, standard deviations, and normalization indices.
+ *
+ * The process involves the following steps:
+ * 1. Build an initial decision tree from the dataset.
+ * 2. Prune antecedents and rules to simplify the rule set.
+ * 3. Optionally retry rule extraction with expanded rules.
+ * 4. Write the final set of rules to the output stream.
+ *
+ * @param data The dataset used for rule extraction.
+ * @param train Training dataset.
+ * @param trainClass Training dataset classes.
+ * @param valid Validation dataset.
+ * @param validClass Validation dataset classes.
+ * @param test Testing dataset.
+ * @param testClass Testing dataset classes.
+ * @param attr Attribute names.
+ * @param ruleFile Output stream for writing rules.
+ * @param mus Means for normalization (optional).
+ * @param sigmas Standard deviations for normalization (optional).
+ * @param normalizationIndices Indices for normalization (optional).
+ */
 void RealHyp::RuleExtraction(
     DataSet &data,
     const DataSet &train,
@@ -821,6 +967,16 @@ void RealHyp::RuleExtraction(
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructs a RealHyp object and sets up hyperplanes based on the provided dataset and neural network.
+ *
+ * @param data The dataset used for rule extraction.
+ * @param nn The neural network used for rule extraction.
+ * @param nbBins The number of bins for virtual hyperplanes.
+ * @param nbIn The number of input variables.
+ * @param multiple The multiplicity factor for hyperplanes.
+ * @param nbWeightLayers The number of layers in the neural network.
+ */
 RealHyp::RealHyp(
     DataSet &data,
     std::shared_ptr<BpNN> nn,
@@ -860,6 +1016,17 @@ RealHyp::RealHyp(
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructs a RealHyp object with additional parameters for hyperplanes.
+ *
+ * @param data The dataset used for rule extraction.
+ * @param nn The neural network used for rule extraction.
+ * @param nbBins The number of bins for virtual hyperplanes.
+ * @param nbIn The number of input variables.
+ * @param multiple The multiplicity factor for hyperplanes.
+ * @param nbWeightLayers The number of layers in the neural network.
+ * @param dummy A dummy parameter for distinguishing constructors.
+ */
 RealHyp::RealHyp(
     DataSet &data,
     std::shared_ptr<BpNN> nn,
@@ -896,7 +1063,20 @@ RealHyp::RealHyp(
 }
 
 ////////////////////////////////////////////////////////////////////////
-
+/**
+ * @brief Constructs a RealHyp object with a shared virtual hyperplane representation.
+ *
+ * @param globalVirt Shared virtual hyperplane representation.
+ * @param nbNets Number of neural networks.
+ * @param out Output values from the neural network.
+ * @param nbOut Number of output classes.
+ * @param data The dataset used for rule extraction.
+ * @param nn The neural network used for rule extraction.
+ * @param nbBins The number of bins for virtual hyperplanes.
+ * @param nbIn The number of input variables.
+ * @param multiple The multiplicity factor for hyperplanes.
+ * @param nbWeightLayers The number of layers in the neural network.
+ */
 RealHyp::RealHyp(
     std::shared_ptr<VirtualHyp> globalVirt,
     int nbNets,
@@ -934,6 +1114,21 @@ RealHyp::RealHyp(
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructs a RealHyp object with additional parameters for hyperplanes and a shared virtual hyperplane representation.
+ *
+ * @param globalVirt Shared virtual hyperplane representation.
+ * @param nbNets Number of neural networks.
+ * @param out Output values from the neural network.
+ * @param nbOut Number of output classes.
+ * @param data The dataset used for rule extraction.
+ * @param nn The neural network used for rule extraction.
+ * @param nbBins The number of bins for virtual hyperplanes.
+ * @param nbIn The number of input variables.
+ * @param multiple The multiplicity factor for hyperplanes.
+ * @param nbWeightLayers The number of layers in the neural network.
+ * @param dummy A dummy parameter for distinguishing constructors.
+ */
 RealHyp::RealHyp(
     std::shared_ptr<VirtualHyp> globalVirt,
     int nbNets,

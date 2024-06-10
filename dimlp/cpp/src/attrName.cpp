@@ -2,6 +2,11 @@
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Performs the first read to count the number of attributes and classes.
+ *
+ * @return 1 if the number of attributes and classes matches the expected values, otherwise throws an error.
+ */
 int AttrName::FirstLect() const
 
 {
@@ -31,6 +36,9 @@ int AttrName::FirstLect() const
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Performs the second read to actually store the attribute and class names.
+ */
 void AttrName::SecondLect() {
   std::filebuf buf;
 
@@ -80,6 +88,11 @@ void AttrName::SecondLect() {
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Reads the attribute and class names from the file.
+ *
+ * @return 1 if successful, 0 otherwise.
+ */
 int AttrName::ReadAttr()
 
 {
@@ -94,6 +107,13 @@ int AttrName::ReadAttr()
 
 ///////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructs an AttrName object.
+ *
+ * @param fileAttr The file containing attribute and class names.
+ * @param nbAttr The number of attributes.
+ * @param nbClasses The number of classes.
+ */
 AttrName::AttrName(const std::string &fileAttr, int nbAttr, int nbClasses) : NbAttr(nbAttr), NbClasses(nbClasses), FileAttr(fileAttr)
 
 {
