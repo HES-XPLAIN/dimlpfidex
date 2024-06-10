@@ -1,6 +1,5 @@
 #include "realHyp.h"
 #include "misc.h"
-#define STRINGINT 1
 
 #define FROMREAL 1
 #include "cleanRS.h"

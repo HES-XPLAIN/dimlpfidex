@@ -19,6 +19,7 @@ const int STRINGINT = 1;
 const int THRESDESCR = 1;
 const int RULE = 1;
 const int DATASETS = 1;
+#define STRINGINT 1
 
 ////////////////////////////////////////////////////////////////////////
 
