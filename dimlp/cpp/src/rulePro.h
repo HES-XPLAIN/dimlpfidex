@@ -34,6 +34,9 @@ class RuleProcessing
   StringInt RuleInd; ///< Rule indices for pruning.
   StringInt AntInd;  ///< Antecedent indices for pruning.
 
+  /**
+   * @brief Structure to store a saved rule along with its carried examples and a pointer to the next saved rule.
+   */
   struct Saved {
     std::shared_ptr<DimlpRule> OneRule; ///< Pointer to a rule.
     std::shared_ptr<StringInt> Carried; ///< Pointer to carried examples.

@@ -32,7 +32,7 @@ float Power3(float x);
 float Power4(float x);
 
 /**
- * The quintic power function is defined as \( f(x) = x^5 \).
+ * @brief Computes the quintic power activation function.
  */
 float Power5(float x);
 

@@ -214,7 +214,7 @@ std::string generateRegexSmallerPositive(int maxNumber) {
 }
 
 /**
- * @brief Generates a regular expression pattern for matching an antecedent of a rule using the ids of the attributes.
+ * @brief Generates a regular expression pattern for matching an antecedent of a rule using the IDs of the attributes.
  *
  * @param nbAttributes The number of attributes that can appear in the rule.
  * @return The compiled regular expression object that can be used to match an antecedant with attribute ids.
@@ -237,7 +237,7 @@ std::string getAntStrPatternWithAttrNames() {
 }
 
 /**
- * @brief Generates a regular expression pattern for matching a class of rule using the ids of the classes.
+ * @brief Generates a regular expression pattern for matching a class of a rule using the IDs of the classes.
  *
  * @param nbClasses The number of classes that can appear in the rule.
  * @return The compiled regular expression object that can be used to match a rule class id.
@@ -249,7 +249,7 @@ std::string getStrPatternWithClassIds(int nbClasses) {
 }
 
 /**
- * @brief Generates a regular expression pattern for matching a class of rule using the names of the classes.
+ * @brief Generates a regular expression pattern for matching a class of a rule using the names of the classes.
  *
  * @return The compiled regular expression object that can be used to match a rule class name.
  */
@@ -260,7 +260,7 @@ std::string getStrPatternWithClassNames() {
 }
 
 /**
- * @brief Checks if a rules file contains rules with attribute ids or attribute names and with class ids or class names. A rule needs to start with "Rule".
+ * @brief Checks if a rules file contains rules with attribute names or attribute IDs and with class names or class IDs. A rule needs to start with "Rule".
  *
  * @param rulesFile The rules file to check.
  * @param dataset The dataset containing information about the attributes and classes.

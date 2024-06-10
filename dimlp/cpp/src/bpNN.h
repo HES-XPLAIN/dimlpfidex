@@ -30,6 +30,9 @@
 #include <sstream>
 
 const int LD2 = 1;
+const int LLL = 1;
+const int LD3 = 1;
+const int LD4 = 1;
 
 ///////////////////////////////////////////////////////////////////
 

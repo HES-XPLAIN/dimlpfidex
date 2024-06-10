@@ -12,6 +12,10 @@
  * It provides functions to manipulate and query the list.
  */
 class StringInt {
+
+  /**
+   * @brief Structure representing a single element in the linked list.
+   */
   struct Elem {
     int Val;                    ///< Integer value stored in the node.
     std::shared_ptr<Elem> Next; ///< Pointer to the next node in the list.
