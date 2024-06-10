@@ -4,6 +4,9 @@
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Resets the flag for all rules to 0.
+ */
 void CleanRuleStruct::ResetFlag() const
 
 {
@@ -13,6 +16,9 @@ void CleanRuleStruct::ResetFlag() const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets the flag for all rules to 1.
+ */
 void CleanRuleStruct::SetFlagToOne() const
 
 {
@@ -22,6 +28,12 @@ void CleanRuleStruct::SetFlagToOne() const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Counts the number of rules with a specific flag.
+ *
+ * @param flag The flag to count.
+ * @return The number of rules with the specified flag.
+ */
 int CleanRuleStruct::CountFlaggedRules(int flag) const
 
 {
@@ -37,6 +49,12 @@ int CleanRuleStruct::CountFlaggedRules(int flag) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Counts the number of antecedents with a specific flag.
+ *
+ * @param flag The flag to count.
+ * @return The number of antecedents with the specified flag.
+ */
 int CleanRuleStruct::CountFlaggedAnt(int flag) const
 
 {
@@ -52,6 +70,12 @@ int CleanRuleStruct::CountFlaggedAnt(int flag) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Counts the number of patterns carried by rules with a specific flag.
+ *
+ * @param flag The flag to count.
+ * @return The number of patterns carried by rules with the specified flag.
+ */
 int CleanRuleStruct::CountCarPatByFlags(int flag) const
 
 {
@@ -67,6 +91,12 @@ int CleanRuleStruct::CountCarPatByFlags(int flag) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the average number of patterns carried by rules with a specific flag.
+ *
+ * @param flag The flag to compute the average for.
+ * @return The average number of patterns carried by rules with the specified flag.
+ */
 float CleanRuleStruct::ComputeAvgCar(int flag) const
 
 {
@@ -76,6 +106,12 @@ float CleanRuleStruct::ComputeAvgCar(int flag) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the average number of antecedents in rules with a specific flag.
+ *
+ * @param flag The flag to compute the average for.
+ * @return The average number of antecedents in rules with the specified flag.
+ */
 float CleanRuleStruct::ComputeAvgAnt(int flag) const
 
 {
@@ -85,6 +121,13 @@ float CleanRuleStruct::ComputeAvgAnt(int flag) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Finds the minimum variable index in the antecedents.
+ *
+ * @param ant Array of antecedents.
+ * @param nbAnt Number of antecedents.
+ * @return The index of the antecedent with the minimum variable index.
+ */
 int CleanRuleStruct::FindMinOnAnt(const AssocAnte *ant, int nbAnt) const
 
 {
@@ -116,6 +159,13 @@ int CleanRuleStruct::FindMinOnAnt(const AssocAnte *ant, int nbAnt) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sorts the antecedents of a rule in ascending order.
+ *
+ * @param ant Array of antecedents.
+ * @param nbAnt Number of antecedents.
+ * @param indRule Index of the rule.
+ */
 void CleanRuleStruct::SortAnt(AssocAnte *ant, int nbAnt, int indRule) const
 
 {
@@ -138,6 +188,12 @@ void CleanRuleStruct::SortAnt(AssocAnte *ant, int nbAnt, int indRule) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Finds the index of the rule with the minimum number of antecedents.
+ *
+ * @param start The starting index for the search.
+ * @return The index of the rule with the minimum number of antecedents.
+ */
 int CleanRuleStruct::FindMinAntOnRules(int start) const
 
 {
@@ -159,6 +215,12 @@ int CleanRuleStruct::FindMinAntOnRules(int start) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Finds the index of the rule with the maximum number of carried patterns.
+ *
+ * @param start The starting index for the search.
+ * @return The index of the rule with the maximum number of carried patterns.
+ */
 int CleanRuleStruct::FindMaxOnRules(int start) const
 
 {
@@ -180,6 +242,13 @@ int CleanRuleStruct::FindMaxOnRules(int start) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sorts the rules either by the maximum number of examples covered or by the minimum number of antecedents.
+ *
+ * @param minAnt Flag indicating the sorting criteria:
+ * - If minAnt is 0, the rules are sorted based on the maximum number of examples covered.
+ * - If minAnt is 1, the rules are sorted based on the minimum number of antecedents.
+ */
 void CleanRuleStruct::SortRules(int minAnt)
 
 {
@@ -207,6 +276,14 @@ void CleanRuleStruct::SortRules(int minAnt)
 
 // does not work with contradictions
 
+/**
+ * @brief Computes the global accuracy on a dataset.
+ *
+ * @param data The dataset to compute accuracy on.
+ * @param vecWrong Vector indicating wrong examples.
+ * @param nbEl Number of examples in the dataset.
+ * @return The global accuracy.
+ */
 float CleanRuleStruct::GlobalAcc(DataSet &data, int *vecWrong, int nbEl) const
 
 {
@@ -238,6 +315,18 @@ float CleanRuleStruct::GlobalAcc(DataSet &data, int *vecWrong, int nbEl) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the accuracy on a dataset.
+ *
+ * @param carried The patterns carried by the rule.
+ * @param indWrong Index of wrong examples.
+ * @param data The dataset.
+ * @param dataClass The class labels of the dataset.
+ * @param nbPat Number of patterns.
+ * @param correct Number of correct classifications.
+ * @param wrong Number of wrong classifications.
+ * @param acc Accuracy.
+ */
 void CleanRuleStruct::ComputeAcc(
     std::shared_ptr<StringInt> carried,
     int *indWrong,
@@ -284,6 +373,23 @@ void CleanRuleStruct::ComputeAcc(
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets various information fields for a given rule, including classification, coverage, and accuracy metrics.
+ *
+ * This function updates the fields of a specific rule within the CleanRule list to reflect its classification performance and coverage across different datasets (training, testing, validation).
+ *
+ * The function performs the following steps:
+ * 1. Selects the examples from the entire dataset that are covered by the given rule and determines the predicted class for those examples.
+ * 2. Computes the number of examples covered by the rule (NbAllCarried) and the predicted class (Classification).
+ * 3. Computes accuracy metrics for the rule on the training dataset, including the number of examples covered (NbCarriedTrain), correctly classified (NbCorrectTrain), incorrectly classified (NbWrongTrain), and the accuracy percentage (AccuracyTrain).
+ * 4. Repeats step 3 for the testing dataset, updating the corresponding fields (NbCarriedTest, NbCorrectTest, NbWrongTest, AccuracyTest).
+ * 5. Repeats step 3 for the validation dataset, updating the corresponding fields (NbCarriedValid, NbCorrectValid, NbWrongValid, AccuracyValid).
+ * 6. Updates the Flag field to 0, indicating that the rule is initially unflagged.
+ *
+ * @param rule The rule for which the information is being set.
+ * @param indClean The index of the rule in the CleanRule list.
+
+ */
 void CleanRuleStruct::SetSevInfo(std::shared_ptr<DimlpRule> rule, int indClean)
 
 {
@@ -349,6 +455,31 @@ void CleanRuleStruct::SetSevInfo(std::shared_ptr<DimlpRule> rule, int indClean)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Initializes and sets up the internal data structures for processing and managing rules.
+ *
+ * This function is responsible for creating and populating the `Clean` structure with detailed information about each rule after pruning. It involves the following steps:
+ *
+ * 1. **Initialize Clean Structure**:
+ *    - Resizes the `Clean` vector to accommodate the number of rules plus one additional slot for the default rule.
+ *    - The default rule is initialized with a classification of -1.
+ *
+ * 2. **Iterate Over Pruned Rules**:
+ *    - Iterates over all pruned rules to gather information about each rule.
+ *    - Skips empty rules (rules with no antecedents).
+ *
+ * 3. **Set Antecedent Information**:
+ *    - For each rule, extracts its antecedents and stores them in the `Clean` structure.
+ *    - Sorts the antecedents within each rule.
+ *
+ * 4. **Set Rule Information**:
+ *    - Calls `SetSevInfo` to compute and set several information fields for each rule, including coverage and classification metrics.
+ *
+ * 5. **Sort Rules**:
+ *    - Calls `SortRules` to order the rules based on the number of antecedents or other criteria.
+ *
+ * The `Clean` structure is populated with detailed information about each rule, which is used for further processing and analysis.
+ */
 void CleanRuleStruct::CreateStructures() {
   const int nbPrunedRules = Pruned->GetNbRules();
 
@@ -403,6 +534,15 @@ void CleanRuleStruct::CreateStructures() {
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Writes the rules to a file.
+ *
+ * @param def Flag indicating whether to include the default rule.
+ * @param ruleFile Output stream to write the rules.
+ * @param mus Means for denormalization (optional).
+ * @param sigmas Standard deviations for denormalization (optional).
+ * @param normalizationIndices Indices of normalized attributes (optional).
+ */
 void CleanRuleStruct::WriteRules(
     int def,
     std::ostream &ruleFile,
@@ -616,6 +756,9 @@ void CleanRuleStruct::WriteRules(
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Creates vectors to track incorrectly classified examples.
+ */
 void CleanRuleStruct::CreateWrongVect()
 
 {
@@ -645,6 +788,21 @@ void CleanRuleStruct::CreateWrongVect()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Constructs a CleanRuleStruct object.
+ *
+ * @param all All data.
+ * @param train Training data.
+ * @param trainClass Training class labels.
+ * @param valid Validation data.
+ * @param validClass Validation class labels.
+ * @param test Testing data.
+ * @param testClass Testing class labels.
+ * @param processed Processed rules.
+ * @param bpNn Neural network pointer.
+ * @param out Neural network output.
+ * @param nbOut Number of output classes.
+ */
 CleanRuleStruct::CleanRuleStruct(
     const DataSet &all,
     const DataSet &train,
@@ -676,6 +834,9 @@ CleanRuleStruct::CleanRuleStruct(
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Resets specific fields in the CleanRuleStruct.
+ */
 void CleanRuleStruct::ResetSomeFields() const
 
 {
@@ -698,6 +859,14 @@ void CleanRuleStruct::ResetSomeFields() const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Checks if a given example is covered by a specified rule.
+ *
+ * @param data The dataset containing the examples.
+ * @param index The index of the example in the dataset.
+ * @param rule The rule being checked.
+ * @return 1 if the example is covered by the rule, 0 otherwise.
+ */
 int CleanRuleStruct::IsExampleCarried(
     DataSet &data,
     int index,
@@ -751,6 +920,15 @@ int CleanRuleStruct::IsExampleCarried(
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Represents the rules using else-clauses for various datasets.
+ *
+ * This function resets certain fields and then applies the else-clause
+ * representation for all datasets including the full dataset, training set,
+ * testing set, and validation set. The else-clause ensures that each instance
+ * in the datasets is covered by a rule, providing a classification even when
+ * no specific rule applies to the instance.
+ */
 void CleanRuleStruct::ElseRepresentation()
 
 {
@@ -764,6 +942,11 @@ void CleanRuleStruct::ElseRepresentation()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Ensures 100% fidelity of the rules, meaning all examples are correctly classified by the rules.
+ *
+ * @return 1 if fidelity is 100%, 0 otherwise.
+ */
 int CleanRuleStruct::Fidelity100()
 
 {
@@ -800,6 +983,11 @@ int CleanRuleStruct::Fidelity100()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Ensures 100% fidelity of the rules including the default rule.
+ *
+ * @return 1 if fidelity is 100%, 0 otherwise.
+ */
 int CleanRuleStruct::Fidelity100Def()
 
 {
@@ -832,6 +1020,14 @@ int CleanRuleStruct::Fidelity100Def()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Applies the else-clause representation to the entire dataset.
+ *
+ * This function iterates over all examples in the complete dataset and
+ * applies the else-clause rule to ensure that each example is covered
+ * by a rule. If no specific rule matches an example, the default rule
+ * is applied.
+ */
 void CleanRuleStruct::ElseRepAll()
 
 {
@@ -855,6 +1051,15 @@ void CleanRuleStruct::ElseRepAll()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Applies the else-clause representation to the training dataset.
+ *
+ * This function iterates over all examples in the training dataset and
+ * applies the else-clause rule to ensure that each example is covered
+ * by a rule. If no specific rule matches an example, the default rule
+ * is applied. Additionally, it updates the count of correctly and
+ * incorrectly classified examples.
+ */
 void CleanRuleStruct::ElseRepTrain()
 
 {
@@ -898,6 +1103,15 @@ void CleanRuleStruct::ElseRepTrain()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Applies the else-clause representation to the testing dataset.
+ *
+ * This function iterates over all examples in the testing dataset and
+ * applies the else-clause rule to ensure that each example is covered
+ * by a rule. If no specific rule matches an example, the default rule
+ * is applied. Additionally, it updates the count of correctly and
+ * incorrectly classified examples.
+ */
 void CleanRuleStruct::ElseRepTest()
 
 {
@@ -953,6 +1167,15 @@ void CleanRuleStruct::ElseRepTest()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Applies the else-clause representation to the validation dataset.
+ *
+ * This function iterates over all examples in the validation dataset and
+ * applies the else-clause rule to ensure that each example is covered
+ * by a rule. If no specific rule matches an example, the default rule
+ * is applied. Additionally, it updates the count of correctly and
+ * incorrectly classified examples.
+ */
 void CleanRuleStruct::ElseRepValid()
 
 {
@@ -996,6 +1219,11 @@ void CleanRuleStruct::ElseRepValid()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Randomly prunes antecedents from the rules while maintaining fidelity.
+ *
+ * @return The number of antecedents pruned.
+ */
 int CleanRuleStruct::RandomPruneAnt()
 
 {
@@ -1076,6 +1304,11 @@ int CleanRuleStruct::RandomPruneAnt()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Removes a rule from the list of rules.
+ *
+ * @param r The index of the rule to be removed.
+ */
 void CleanRuleStruct::RemRule(int r) const
 
 {
@@ -1089,6 +1322,12 @@ void CleanRuleStruct::RemRule(int r) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Expands the rules by exploring additional thresholds for antecedents.
+ *
+ * @param descr The threshold descriptor.
+ * @return The number of expansions performed.
+ */
 int CleanRuleStruct::OrderedExpand(ThresDescr *descr)
 
 {
@@ -1181,6 +1420,12 @@ int CleanRuleStruct::OrderedExpand(ThresDescr *descr)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Checks the number of active antecedents in a rule.
+ *
+ * @param indOld The index of the rule to be checked.
+ * @return The number of active antecedents.
+ */
 int CleanRuleStruct::CheckAnt(int indOld) const
 
 {
@@ -1199,6 +1444,9 @@ int CleanRuleStruct::CheckAnt(int indOld) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Creates a new list of clean rules, excluding deleted antecedents.
+ */
 void CleanRuleStruct::CreateNewClean()
 
 {
@@ -1267,6 +1515,11 @@ void CleanRuleStruct::CreateNewClean()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Computes the sum of all examples covered by the rules.
+ *
+ * @return The total number of covered examples.
+ */
 int CleanRuleStruct::SumCarried() const
 
 {
@@ -1281,6 +1534,11 @@ int CleanRuleStruct::SumCarried() const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Prunes rules to remove redundant or unnecessary antecedents.
+ *
+ * @return The number of rules pruned.
+ */
 int CleanRuleStruct::PruneRule()
 
 {
@@ -1321,6 +1579,9 @@ int CleanRuleStruct::PruneRule()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Writes the number of rules and antecedents to the output.
+ */
 void CleanRuleStruct::WriteNumb() const
 
 {
@@ -1341,6 +1602,25 @@ void CleanRuleStruct::WriteNumb() const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Simplifies the rules using else-clauses.
+ *
+ * This function performs a series of operations to simplify the rule set by using
+ * else-clauses. It follows these steps:
+ * 1. Sorts the rules.
+ * 2. Flags all rules for processing.
+ * 3. Iteratively prunes and expands the rules:
+ *    - `RandomPruneAnt()`: Randomly prunes antecedents from the rules.
+ *    - `PruneRule()`: Prunes rules that do not significantly contribute to the classification.
+ *    - `OrderedExpand(ThresDescr *descr)`: Expands the rules by adjusting the thresholds.
+ * 4. Ensures fidelity, which means that the simplified rules still cover all examples correctly.
+ * 5. Creates a new cleaned set of rules.
+ * 6. Sets the default class for cases not covered by any rule.
+ * 7. Prunes the rules again to ensure optimal simplification.
+ * 8. Writes the number of rules and antecedents.
+ *
+ * @param descr Description of thresholds used to expand and adjust the rules.
+ */
 void CleanRuleStruct::SimplifyElse(ThresDescr *descr)
 
 {
@@ -1385,6 +1665,11 @@ void CleanRuleStruct::SimplifyElse(ThresDescr *descr)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets the default rule based on the most frequent class of remaining examples.
+ *
+ * @return The default class.
+ */
 int CleanRuleStruct::SetDefRule()
 
 {
@@ -1447,6 +1732,9 @@ int CleanRuleStruct::SetDefRule()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets the class pattern network for each dataset.
+ */
 void CleanRuleStruct::SetClassPatNet()
 
 {
@@ -1473,6 +1761,12 @@ void CleanRuleStruct::SetClassPatNet()
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Converts an integer to a string.
+ *
+ * @param n The integer to be converted.
+ * @return The string representation of the integer.
+ */
 std::string CleanRuleStruct::ItoA(int n) const {
   int div;
   int mod;
@@ -1500,6 +1794,11 @@ std::string CleanRuleStruct::ItoA(int n) const {
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets the attribute names for the rules.
+ *
+ * @param listAttr List of attribute names.
+ */
 void CleanRuleStruct::SetAttr(std::vector<std::string> listAttr) const
 
 {
@@ -1518,6 +1817,9 @@ void CleanRuleStruct::SetAttr(std::vector<std::string> listAttr) const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets the attribute names for the rules using attribute ids.
+ */
 void CleanRuleStruct::SetAttr() {
   int a;
   int nbAnt;
@@ -1535,6 +1837,12 @@ void CleanRuleStruct::SetAttr() {
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets the class names for the rules.
+ *
+ * @param listClass List of class names.
+ * @param def Default class flag.
+ */
 void CleanRuleStruct::SetStrClass(std::vector<std::string> listClass, int def) const
 
 {
@@ -1545,6 +1853,11 @@ void CleanRuleStruct::SetStrClass(std::vector<std::string> listClass, int def) c
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Sets the class names for the rules using class ids.
+ *
+ * @param def Default class flag.
+ */
 void CleanRuleStruct::SetStrClass(int def) {
   for (int r = 0; r < NbRules + def; r++) {
     std::string str = ItoA(Clean[r]->Classification + 1);
@@ -1554,6 +1867,11 @@ void CleanRuleStruct::SetStrClass(int def) {
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Determines the default rule based on the classification of remaining examples.
+ *
+ * @return The index of the last non-default rule.
+ */
 int CleanRuleStruct::DefDef() const
 
 {
@@ -1593,6 +1911,11 @@ int CleanRuleStruct::DefDef() const
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Evaluates the accuracy of unordered rules with a default rule on the testing set.
+ *
+ * @param ruleFile The output stream for writing the results.
+ */
 void CleanRuleStruct::UnordAccWithDef(std::ostream &ruleFile)
 
 {
@@ -1773,6 +2096,11 @@ void CleanRuleStruct::UnordAccWithDef(std::ostream &ruleFile)
 
 ////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Evaluates the accuracy of unordered rules with a default rule on the testing set (alternative method).
+ *
+ * @param ruleFile The output stream for writing the results.
+ */
 void CleanRuleStruct::UnordAccWithDef2(std::ostream &ruleFile)
 
 {
