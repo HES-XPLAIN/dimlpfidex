@@ -369,7 +369,7 @@ void DataSetFid::setPredFromFile(const std::string &predFile, int nbClasses, dou
  *           where exactly one value is 1 (indicating the class ID) and all others are 0.
  *        Each number in a line is separated by a space, a comma(CSV), a semicolon(;) or a tab.
  *
- *        The function determines the format of each line based on the 'nbClasses' parameter and the structure of the data in the line.
+ *        The function determines the format of each line based on the nbClasses parameter and the structure of the data in the line.
  *
  * @param classFile A string representing the name of the class file. This file should contain class data.
  *                  in one of the supported formats (either class ID or one-hot encoded).

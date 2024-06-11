@@ -2,6 +2,7 @@
 
 ////////////////////////////////////////////////////////////
 
+/// @cond
 /**
  * @brief Entry point for densCls executable.
  *
@@ -24,3 +25,4 @@ int main(int nbParam, char **param)
   }
   return densCls(command);
 }
+/// @endcond
