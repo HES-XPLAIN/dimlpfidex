@@ -2,6 +2,7 @@
 
 ////////////////////////////////////////////////////////////
 
+/// @cond
 /**
  * @brief Entry point for fidex executable.
  *
@@ -24,3 +25,4 @@ int main(int nbParam, char **param)
   }
   return fidex(command);
 }
+/// @endcond

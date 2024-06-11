@@ -87,7 +87,7 @@ float Power3(float x)
 }
 
 ///////////////////////////////////////////////////////////////////
-/// @cond TEST
+
 /**
  * @brief Computes the quartic power activation function.
  *
@@ -101,7 +101,6 @@ float Power4(float x)
 {
   return x * x * x * x;
 }
-/// @endcond
 
 ///////////////////////////////////////////////////////////////////
 
