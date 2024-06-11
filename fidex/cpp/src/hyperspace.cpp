@@ -56,7 +56,7 @@ Rule Hyperspace::ruleExtraction(std::vector<double> &mainSampleData, const int m
   double hypValue;
   int attribut;
   bool inequalityBool;
-  std::vector<Antecedant> antecedants;
+  std::vector<Antecedent> antecedents;
 
   for (int k = 0; k < hyperbox->getDiscriminativeHyperplans().size(); k++) {
 
@@ -85,9 +85,9 @@ Rule Hyperspace::ruleExtraction(std::vector<double> &mainSampleData, const int m
       }
     }
 
-    antecedants.push_back(Antecedant(attribut, inequalityBool, hypValue));
+    antecedents.push_back(Antecedent(attribut, inequalityBool, hypValue));
   }
-  return Rule(antecedants, hyperbox->getCoveredSamples(), mainSamplePred, hyperbox->getFidelity(), ruleAccuracy, ruleConfidence);
+  return Rule(antecedents, hyperbox->getCoveredSamples(), mainSamplePred, hyperbox->getFidelity(), ruleAccuracy, ruleConfidence);
 }
 
 /**

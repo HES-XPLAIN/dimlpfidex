@@ -445,7 +445,7 @@ int fidex(const std::string &command) {
       meanAccuracy += rule.getAccuracy();
       meanConfidence += rule.getConfidence();
       meanCovSize += static_cast<double>(rule.getCoveringSize());
-      meanNbAntecedentsPerRule += static_cast<double>(rule.getNbAntecedants());
+      meanNbAntecedentsPerRule += static_cast<double>(rule.getNbAntecedents());
 
       if (nbTestSamples == 1) {
         std::cout << "Discriminating hyperplans generated." << std::endl

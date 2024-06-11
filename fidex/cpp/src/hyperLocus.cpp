@@ -104,7 +104,7 @@ std::vector<std::vector<double>> calcHypLocus(const std::string &rulesFile, Data
     if (line.find("Rule") == 0) { // If line begins with "Rule"
       Rule rule;
       if (stringToRule(rule, line, attributePattern, classPattern, !attributeIdsInFile, false, dataset)) {
-        for (Antecedant ant : rule.getAntecedants()) {
+        for (Antecedent ant : rule.getAntecedents()) {
           thresholds[ant.getAttribute()].insert(ant.getValue());
         }
       }

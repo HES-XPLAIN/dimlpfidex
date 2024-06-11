@@ -3,15 +3,15 @@
 /**
  * @brief Constructs a Rule object.
  *
- * @param antecedants Vector of antecedents to insert inside a rule.
+ * @param antecedents Vector of antecedents to insert inside a rule.
  * @param coveredSamples Vector of integers containing the covered samples IDs.
  * @param outClass Integer indicating which class is targetted by the rule.
  * @param fidelity Double indicating the fidelity of the rule.
  * @param accuracy Double indicating the accuracy of the rule.
  * @param confidence Double indicating the confidence of the rule.
  */
-Rule::Rule(const std::vector<Antecedant> &antecedants, const std::vector<int> &coveredSamples, int outClass, double fidelity, double accuracy, double confidence) {
-  setAntecedants(antecedants);
+Rule::Rule(const std::vector<Antecedent> &antecedents, const std::vector<int> &coveredSamples, int outClass, double fidelity, double accuracy, double confidence) {
+  setAntecedents(antecedents);
   setCoveredSamples(coveredSamples);
   setCoveringSize(static_cast<int>(coveredSamples.size()));
   setOutputClass(outClass);
@@ -35,7 +35,7 @@ std::string Rule::toString(const std::vector<std::string> &attributes, const std
   double _accuracy = getAccuracy();
   double _confidence = getConfidence();
 
-  for (Antecedant a : getAntecedants()) {
+  for (Antecedent a : getAntecedents()) {
     if (!attributes.empty()) {
       result << attributes[a.getAttribute()];
     } else {
@@ -76,7 +76,7 @@ std::string Rule::toString(const std::vector<std::string> &attributes, const std
  * {
  *   "rules": [
  *       {
- *           "antecedants": [
+ *           "antecedents": [
  *               {
  *                   "attribute": 0,
  *                   "inequality": true,
@@ -160,7 +160,7 @@ void Rule::toJsonFile(const std::string &filename, const std::vector<Rule> &rule
 bool Rule::isEqual(const Rule &other) const {
   double epsilon = 10e-6;
 
-  if (getAntecedants() != other.getAntecedants())
+  if (getAntecedents() != other.getAntecedents())
     return false;
 
   if (getCoveredSamples() != other.getCoveredSamples())
@@ -285,10 +285,10 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
   std::string line;
   Rule rule;
 
-  std::regex antecedantsPatternIds(": (" + getAntStrPatternWithAttrIds(dataset.getNbAttributes()) + " )*" + "->");
-  std::regex antecedantsPatternNames;
+  std::regex antecedentsPatternIds(": (" + getAntStrPatternWithAttrIds(dataset.getNbAttributes()) + " )*" + "->");
+  std::regex antecedentsPatternNames;
   if (dataset.getHasAttributeNames()) {
-    antecedantsPatternNames = ": (" + getAntStrPatternWithAttrNames() + " )*" + "->";
+    antecedentsPatternNames = ": (" + getAntStrPatternWithAttrNames() + " )*" + "->";
   }
   auto patternWithClassIds = std::regex(getStrPatternWithClassIds(dataset.getNbClasses()));
   std::regex patternWithClassNames;
@@ -301,13 +301,13 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
       foundARule = true;
 
       bool matched = false;
-      if (regex_search(line, antecedantsPatternIds)) {
+      if (regex_search(line, antecedentsPatternIds)) {
         matched = true;
         hasAttrIds &= true; // Stays true only if it was already true, can't become true if it's false
       } else {
         hasAttrIds = false;
       }
-      if (dataset.getHasAttributeNames() && regex_search(line, antecedantsPatternNames)) {
+      if (dataset.getHasAttributeNames() && regex_search(line, antecedentsPatternNames)) {
         matched = true;
         hasAttrNames &= true;
       } else {
@@ -366,7 +366,7 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, Dat
  */
 bool stringToRule(Rule &rule, const std::string &str, const std::regex &attributePattern, const std::regex &classPattern, bool withAttributeNames, bool withClassNames, DataSetFid &dataset) {
 
-  std::vector<Antecedant> antecedants;
+  std::vector<Antecedent> antecedents;
   bool isRule = false;
 
   std::istringstream iss(str);
@@ -376,24 +376,24 @@ bool stringToRule(Rule &rule, const std::string &str, const std::regex &attribut
     std::smatch match;
     if (regex_match(token, match, attributePattern)) {
       isRule = true;
-      Antecedant antecedant;
+      Antecedent antecedent;
       if (!withAttributeNames) {
-        antecedant.setAttribute(stoi(match[1]));
+        antecedent.setAttribute(stoi(match[1]));
       } else {
         auto it = find(dataset.getAttributeNames().begin(), dataset.getAttributeNames().end(), match[1]);
         if (it != dataset.getAttributeNames().end()) {
-          antecedant.setAttribute(static_cast<int>(distance(dataset.getAttributeNames().begin(), it)));
+          antecedent.setAttribute(static_cast<int>(distance(dataset.getAttributeNames().begin(), it)));
         } else {
           throw FileContentError("Error : in rulefile, the rule " + str + " contains unknown named attribute " + std::string(match[1]) + ". If the attributes in the rules are not named, do not specify an attribute file.");
         }
       }
       if (match[2] == ">=") {
-        antecedant.setInequality(true);
+        antecedent.setInequality(true);
       } else {
-        antecedant.setInequality(false);
+        antecedent.setInequality(false);
       }
-      antecedant.setValue(stod(match[3]));
-      antecedants.push_back(antecedant);
+      antecedent.setValue(stod(match[3]));
+      antecedents.push_back(antecedent);
     } else if (token == "->") {
       std::string classString = token;
       iss >> token;
@@ -419,7 +419,7 @@ bool stringToRule(Rule &rule, const std::string &str, const std::regex &attribut
   }
 
   if (isRule) {
-    rule.setAntecedants(antecedants);
+    rule.setAntecedents(antecedents);
     return true;
   }
 
@@ -512,7 +512,7 @@ std::tuple<double, double> writeRulesFile(const std::string &filename, const std
   if (filename.substr(filename.find_last_of(".") + 1) == "json") {
     for (Rule r : rules) { // each rule
       meanCovSize += static_cast<double>(r.getCoveredSamples().size());
-      meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
+      meanNbAntecedents += static_cast<double>(r.getAntecedents().size());
     }
 
     Rule::toJsonFile(filename, rules, threshold, positiveIndex);
@@ -525,7 +525,7 @@ std::tuple<double, double> writeRulesFile(const std::string &filename, const std
 
     for (Rule r : rules) { // each rule
       meanCovSize += static_cast<double>(r.getCoveredSamples().size());
-      meanNbAntecedents += static_cast<double>(r.getAntecedants().size());
+      meanNbAntecedents += static_cast<double>(r.getAntecedents().size());
       counter++;
       stream << "Rule " << counter << ": " << r.toString(attributeNames, classNames);
       stream << std::endl;
@@ -571,10 +571,10 @@ void getActivatedRules(std::vector<int> &activatedRules, std::vector<Rule> &rule
   double val;
   for (int r = 0; r < rules.size(); r++) { // For each rule
     bool notActivated = false;
-    for (const auto &antecedant : rules[r].getAntecedants()) { // For each antecedent
-      attr = antecedant.getAttribute();
-      ineq = antecedant.getInequality();
-      val = antecedant.getValue();
+    for (const auto &antecedent : rules[r].getAntecedents()) { // For each antecedent
+      attr = antecedent.getAttribute();
+      ineq = antecedent.getInequality();
+      val = antecedent.getValue();
       if (ineq == 0 && testValues[attr] >= val) { // If the inequality is not verified
         notActivated = true;
       }

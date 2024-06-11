@@ -1,5 +1,5 @@
-#ifndef ANTECEDANT_H
-#define ANTECEDANT_H
+#ifndef ANTECEDENT_H
+#define ANTECEDENT_H
 #include "../../../json/single_include/nlohmann/json.hpp"
 #include <cmath>
 #include <iostream>
@@ -14,20 +14,20 @@ using Json = nlohmann::json;
  * that determines whether a given sample satisfies the antecedent. The condition
  * is defined in terms of greater than or less than/equal to a specified value.
  */
-class Antecedant {
+class Antecedent {
 private:
   int attribute;   ///< Integer ID representing the attribute.
   bool inequality; ///< True if the condition is '>=', False if '<'.
   double value;    ///< The comparison value for the condition.
 
-  NLOHMANN_DEFINE_TYPE_INTRUSIVE(Antecedant, attribute, inequality, value)
+  NLOHMANN_DEFINE_TYPE_INTRUSIVE(Antecedent, attribute, inequality, value)
 
 public:
-  Antecedant() = default;
+  Antecedent() = default;
   /**
-   * @brief Constructs a new Antecedant object with specified parameters.
+   * @brief Constructs a new Antecedent object with specified parameters.
    */
-  Antecedant(int attribute, bool inequality, double value);
+  Antecedent(int attribute, bool inequality, double value);
 
   // Getters
 
@@ -76,47 +76,47 @@ public:
   void setValue(double val) { value = val; }
 
   /**
-   * @brief Checks equality with another Antecedant object.
+   * @brief Checks equality with another Antecedent object.
    */
-  bool isEqual(Antecedant other) const;
+  bool isEqual(Antecedent other) const;
 };
 
 // Operator overloads
 
 /**
- * @brief Overloads the stream insertion operator for easy printing of Antecedant objects.
+ * @brief Overloads the stream insertion operator for easy printing of Antecedent objects.
  *
  * @param stream The output stream.
- * @param antecedant The Antecedant object to print.
- * @return std::ostream& The output stream with the Antecedant information.
+ * @param antecedent The Antecedent object to print.
+ * @return std::ostream& The output stream with the Antecedent information.
  */
-inline std::ostream &operator<<(std::ostream &stream, const Antecedant &antecedant) {
+inline std::ostream &operator<<(std::ostream &stream, const Antecedent &antecedent) {
   return stream << " "
-                << antecedant.getAttribute() << " "
-                << antecedant.getInequality() << " "
-                << antecedant.getValue() << " ";
+                << antecedent.getAttribute() << " "
+                << antecedent.getInequality() << " "
+                << antecedent.getValue() << " ";
 }
 
 /**
- * @brief Overloads the equality operator to compare two Antecedant objects.
+ * @brief Overloads the equality operator to compare two Antecedent objects.
  *
- * @param a1 The first Antecedant object.
- * @param a2 The second Antecedant object.
+ * @param a1 The first Antecedent object.
+ * @param a2 The second Antecedent object.
  * @return bool Returns true if the antecedents are identical, false otherwise.
  */
-inline bool operator==(const Antecedant &a1, const Antecedant &a2) {
+inline bool operator==(const Antecedent &a1, const Antecedent &a2) {
   return a1.isEqual(a2);
 }
 
 /**
- * @brief Overloads the inequality operator to compare two Antecedant objects.
+ * @brief Overloads the inequality operator to compare two Antecedent objects.
  *
- * @param a1 The first Antecedant object.
- * @param a2 The second Antecedant object.
+ * @param a1 The first Antecedent object.
+ * @param a2 The second Antecedent object.
  * @return bool Returns true if the antecedents are not identical, false otherwise.
  */
-inline bool operator!=(const Antecedant &a1, const Antecedant &a2) {
+inline bool operator!=(const Antecedent &a1, const Antecedent &a2) {
   return !a1.isEqual(a2);
 }
 
-#endif // ANTECEDANT_H
+#endif // ANTECEDENT_H

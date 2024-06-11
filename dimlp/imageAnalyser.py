@@ -178,18 +178,18 @@ def imageAnalyser(dataSet):
 
         # Find all matches in the input string
         for id_sample in range(len(rules)):
-            antecedants = []
+            antecedents = []
             matches = re.findall(pattern, rules[id_sample])
 
             # Process each match and store in antecedents
             for match in matches:
                 attribute, inequality, value = match
-                antecedant = {
+                antecedent = {
                     "attribute": int(attribute),
                     "inequality": inequality,
                     "value": float(value)
                 }
-                antecedants.append(antecedant)
+                antecedents.append(antecedent)
 
             # Generate test sample images with colored pixels where the rule is activated
             baseimage = lines_test_data[id_sample]
@@ -210,21 +210,21 @@ def imageAnalyser(dataSet):
                 elif normalized:
                     colorimage = [int(float(v) * 255) for v in colorimage]
 
-            for antecedant in antecedants:
-                if antecedant["inequality"] == "<":
+            for antecedent in antecedents:
+                if antecedent["inequality"] == "<":
                     if nb_channels == 1:
-                        colorimage[antecedant["attribute"]]=[255,0,0]
+                        colorimage[antecedent["attribute"]]=[255,0,0]
                     else:
-                        colorimage[antecedant["attribute"] - (antecedant["attribute"] % 3)]=255
-                        colorimage[antecedant["attribute"] - (antecedant["attribute"] % 3)+1]=0
-                        colorimage[antecedant["attribute"] - (antecedant["attribute"] % 3)+2]=0
+                        colorimage[antecedent["attribute"] - (antecedent["attribute"] % 3)]=255
+                        colorimage[antecedent["attribute"] - (antecedent["attribute"] % 3)+1]=0
+                        colorimage[antecedent["attribute"] - (antecedent["attribute"] % 3)+2]=0
                 else:
                     if nb_channels == 1:
-                        colorimage[antecedant["attribute"]]=[0,255,0]
+                        colorimage[antecedent["attribute"]]=[0,255,0]
                     else:
-                        colorimage[antecedant["attribute"] - (antecedant["attribute"] % 3)]=0
-                        colorimage[antecedant["attribute"] - (antecedant["attribute"] % 3)+1]=255
-                        colorimage[antecedant["attribute"] - (antecedant["attribute"] % 3)+2]=0
+                        colorimage[antecedent["attribute"] - (antecedent["attribute"] % 3)]=0
+                        colorimage[antecedent["attribute"] - (antecedent["attribute"] % 3)+1]=255
+                        colorimage[antecedent["attribute"] - (antecedent["attribute"] % 3)+2]=0
 
             colorimage_array = np.array(colorimage).reshape(size1d, size1d, 3)
             colorimage = Image.fromarray(colorimage_array.astype('uint8'))

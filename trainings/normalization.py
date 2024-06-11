@@ -252,7 +252,7 @@ def get_pattern_from_rule_file(rule_file, possible_patterns):
 
     return pattern
 
-def denormalize_rule(line, pattern, antecedant_pattern, dimlp_rule, with_attribute_names, normalization_indices, attributes, sigmas, mus):
+def denormalize_rule(line, pattern, antecedent_pattern, dimlp_rule, with_attribute_names, normalization_indices, attributes, sigmas, mus):
     """
     This function denormalizes a given rule line based on specified rule patterns and normalization parameters.
     If the line don't correspond to the pattern, it's left unchanged.
@@ -264,8 +264,8 @@ def denormalize_rule(line, pattern, antecedant_pattern, dimlp_rule, with_attribu
     :type line: str
     :param pattern: The regular expression pattern for identifying and parsing the entire rule line.
     :type pattern: str
-    :param antecedant_pattern: The regular expression pattern for identifying each antecedent in the rule.
-    :type antecedant_pattern: str
+    :param antecedent_pattern: The regular expression pattern for identifying each antecedent in the rule.
+    :type antecedent_pattern: str
     :param dimlp_rule: A flag indicating whether the rule is a DIMLP rule or a Fidex rule, which affects attribute indexing and rule pattern.
     :type dimlp_rule: bool
     :param with_attribute_names: A flag indicating whether the rules use attribute names instead of numeric IDs.
@@ -285,20 +285,20 @@ def denormalize_rule(line, pattern, antecedant_pattern, dimlp_rule, with_attribu
     if match:
         new_line = match.group("first_part")
         # Get each antecedent
-        antecedants = match.group('antecedants')
-        antecedants_matches = re.finditer(antecedant_pattern, antecedants)
-        for antecedant_match in antecedants_matches:
-            attribute = antecedant_match.group('attribute')
+        antecedents = match.group('antecedents')
+        antecedents_matches = re.finditer(antecedent_pattern, antecedents)
+        for antecedent_match in antecedents_matches:
+            attribute = antecedent_match.group('attribute')
             attribute_id = attributes.index(attribute) if with_attribute_names else int(attribute)
             if dimlp_rule and not with_attribute_names:
                 attribute_id -= 1 # indexes start at 1 in dimlp rules
-            value = float(antecedant_match.group('value'))
+            value = float(antecedent_match.group('value'))
             if attribute_id in normalization_indices:
                 #Denormalize this antecedent
                 idx = normalization_indices.index(attribute_id)
                 value = value*sigmas[idx]+mus[idx]
             # Reconstuct rule
-            new_line += f"{antecedant_match.group(1)}{attribute}{antecedant_match.group('inequality')}{value:.6f}{antecedant_match.group('last_part')}"
+            new_line += f"{antecedent_match.group(1)}{attribute}{antecedent_match.group('inequality')}{value:.6f}{antecedent_match.group('last_part')}"
         new_line += match.group("last_part")
         return new_line
     else: # Rewrite the line
@@ -537,15 +537,15 @@ def normalization(args: str = None):
             int_pattern = r'\d+'
             if args.attributes_file is not None:
                 attr_pattern = "|".join(map(re.escape, attributes))
-                pattern_fidex_attributes = fr'(?P<first_part>.*?)(?P<antecedants>(({attr_pattern})[<>]=?{float_pattern} )+)(?P<last_part>-> class {int_pattern}.*)'
-                pattern_dimlp_attributes = fr'(?P<first_part>.*?)(?P<antecedants>(\(({attr_pattern}) [<>] {float_pattern}\) )+)(?P<last_part>Class = {int_pattern}.*)'
+                pattern_fidex_attributes = fr'(?P<first_part>.*?)(?P<antecedents>(({attr_pattern})[<>]=?{float_pattern} )+)(?P<last_part>-> class {int_pattern}.*)'
+                pattern_dimlp_attributes = fr'(?P<first_part>.*?)(?P<antecedents>(\(({attr_pattern}) [<>] {float_pattern}\) )+)(?P<last_part>Class = {int_pattern}.*)'
                 if has_classes:
                     class_pattern = "|".join(map(re.escape, classes))
-                    pattern_fidex_attributes_and_classes = fr'(?P<first_part>.*?)(?P<antecedants>(({attr_pattern})[<>]=?{float_pattern} )+)(?P<last_part>-> ({class_pattern}).*)'
-                    pattern_dimlp_attributes_and_classes = fr'(?P<first_part>.*?)(?P<antecedants>(\(({attr_pattern}) [<>] {float_pattern}\) )+)(?P<last_part>Class = ({class_pattern}).*)'
+                    pattern_fidex_attributes_and_classes = fr'(?P<first_part>.*?)(?P<antecedents>(({attr_pattern})[<>]=?{float_pattern} )+)(?P<last_part>-> ({class_pattern}).*)'
+                    pattern_dimlp_attributes_and_classes = fr'(?P<first_part>.*?)(?P<antecedents>(\(({attr_pattern}) [<>] {float_pattern}\) )+)(?P<last_part>Class = ({class_pattern}).*)'
 
-            pattern_fidex_id = fr'(?P<first_part>.*?)(?P<antecedants>(X{int_pattern}[<>]=?{float_pattern} )+)(?P<last_part>-> class {int_pattern}.*)'
-            pattern_dimlp_id = fr'(?P<first_part>.*?)(?P<antecedants>(\(x{int_pattern} [<>] {float_pattern}\) )+)(?P<last_part>Class = {int_pattern}.*)'
+            pattern_fidex_id = fr'(?P<first_part>.*?)(?P<antecedents>(X{int_pattern}[<>]=?{float_pattern} )+)(?P<last_part>-> class {int_pattern}.*)'
+            pattern_dimlp_id = fr'(?P<first_part>.*?)(?P<antecedents>(\(x{int_pattern} [<>] {float_pattern}\) )+)(?P<last_part>Class = {int_pattern}.*)'
 
             for r in range(len(args.rule_files)): # For each rule file
                 rule_file = args.rule_files[r]
@@ -579,13 +579,13 @@ def normalization(args: str = None):
                         dimlp_attr_pattern = fr'(\()(?P<attribute>{attr_pattern})'
                     else:
                         dimlp_attr_pattern = fr'(\(x)(?P<attribute>{int_pattern})'
-                    antecedant_pattern = fr'{dimlp_attr_pattern}(?P<inequality> [<>] )(?P<value>{float_pattern})(?P<last_part>\) )'
+                    antecedent_pattern = fr'{dimlp_attr_pattern}(?P<inequality> [<>] )(?P<value>{float_pattern})(?P<last_part>\) )'
                 else:
                     if with_attribute_names:
                         fidex_attr_pattern = fr'()(?P<attribute>{attr_pattern})'
                     else:
                         fidex_attr_pattern = fr'(X)(?P<attribute>{int_pattern})'
-                    antecedant_pattern = fr'{fidex_attr_pattern}(?P<inequality>[<>]=?)(?P<value>{float_pattern})(?P<last_part> )'
+                    antecedent_pattern = fr'{fidex_attr_pattern}(?P<inequality>[<>]=?)(?P<value>{float_pattern})(?P<last_part> )'
 
                 # Denormalize each rules
                 try:
@@ -594,7 +594,7 @@ def normalization(args: str = None):
                             with open(output_rule_file, "w") as output_file:
                                 for line in file:
                                     #Denormalize rule
-                                    new_line = denormalize_rule(line.rstrip("\n"), pattern, antecedant_pattern, dimlp_rules, with_attribute_names, args.normalization_indices, attributes, args.sigmas, args.mus) + "\n"
+                                    new_line = denormalize_rule(line.rstrip("\n"), pattern, antecedent_pattern, dimlp_rules, with_attribute_names, args.normalization_indices, attributes, args.sigmas, args.mus) + "\n"
                                     output_file.write(new_line) # Write line in output file
 
                         except FileNotFoundError:

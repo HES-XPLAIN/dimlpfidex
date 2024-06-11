@@ -1,7 +1,7 @@
 {
     "rules": [
         {
-            "antecedants": [
+            "antecedents": [
                 {
                     "attribute": 0,
                     "inequality": true,
@@ -42,7 +42,7 @@
             "confidence": 0.8
         },
         {
-            "antecedants": [
+            "antecedents": [
                 {
                     "attribute": 0,
                     "inequality": true,
@@ -69,7 +69,7 @@
             "confidence": 0.8
         },
         {
-            "antecedants": [
+            "antecedents": [
                 {
                     "attribute": 19,
                     "inequality": true,

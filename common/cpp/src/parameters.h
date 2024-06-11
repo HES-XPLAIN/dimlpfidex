@@ -1,7 +1,7 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
 #include "../../../json/single_include/nlohmann/json.hpp"
-#include "antecedant.h"
+#include "antecedent.h"
 #include "checkFun.h"
 #include "errorHandler.h"
 #include "stringI.h"
