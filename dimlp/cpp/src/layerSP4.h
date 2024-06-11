@@ -1,9 +1,7 @@
 #ifndef LAYERSP4_H
 #define LAYERSP4_H
 
-#ifndef LAYER
 #include "layer.h"
-#endif
 
 ///////////////////////////////////////////////////////////////////
 

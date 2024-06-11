@@ -102,7 +102,7 @@ inline std::ostream &operator<<(std::ostream &stream, const Antecedant &anteceda
  *
  * @param a1 The first Antecedant object.
  * @param a2 The second Antecedant object.
- * @return bool Returns true if the antecedants are identical, false otherwise.
+ * @return bool Returns true if the antecedents are identical, false otherwise.
  */
 inline bool operator==(const Antecedant &a1, const Antecedant &a2) {
   return a1.isEqual(a2);
@@ -113,7 +113,7 @@ inline bool operator==(const Antecedant &a1, const Antecedant &a2) {
  *
  * @param a1 The first Antecedant object.
  * @param a2 The second Antecedant object.
- * @return bool Returns true if the antecedants are not identical, false otherwise.
+ * @return bool Returns true if the antecedents are not identical, false otherwise.
  */
 inline bool operator!=(const Antecedant &a1, const Antecedant &a2) {
   return !a1.isEqual(a2);

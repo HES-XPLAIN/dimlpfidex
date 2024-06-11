@@ -1,25 +1,13 @@
 #ifndef REALHYP_H
 #define REALHYP_H
 
-#ifndef BPNN
-#include "bpNN.h"
-#endif
-
-#ifndef VIRT
-#include "virtHyp.h"
-#endif
-
 #include "ante.h"
 #include "attrName.h"
+#include "bpNN.h"
 #include "rulePro.h"
 #include "thresD.h"
+#include "virtHyp.h"
 #include <vector>
-
-const int STRINGINT = 1;
-const int THRESDESCR = 1;
-const int RULE = 1;
-const int DATASETS = 1;
-#define STRINGINT 1
 
 ////////////////////////////////////////////////////////////////////////
 

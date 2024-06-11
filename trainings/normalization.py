@@ -284,7 +284,7 @@ def denormalize_rule(line, pattern, antecedant_pattern, dimlp_rule, with_attribu
     match = re.search(pattern, line) # Get each rule
     if match:
         new_line = match.group("first_part")
-        # Get each antecedant
+        # Get each antecedent
         antecedants = match.group('antecedants')
         antecedants_matches = re.finditer(antecedant_pattern, antecedants)
         for antecedant_match in antecedants_matches:
@@ -294,7 +294,7 @@ def denormalize_rule(line, pattern, antecedant_pattern, dimlp_rule, with_attribu
                 attribute_id -= 1 # indexes start at 1 in dimlp rules
             value = float(antecedant_match.group('value'))
             if attribute_id in normalization_indices:
-                #Denormalize this antecedant
+                #Denormalize this antecedent
                 idx = normalization_indices.index(attribute_id)
                 value = value*sigmas[idx]+mus[idx]
             # Reconstuct rule
@@ -573,7 +573,7 @@ def normalization(args: str = None):
                 dimlp_rules = pattern in possible_dimlp_patters
                 with_attribute_names = pattern in possible_patterns_with_attribute_names
 
-                # Build antecedant pattern
+                # Build antecedent pattern
                 if dimlp_rules:
                     if with_attribute_names:
                         dimlp_attr_pattern = fr'(\()(?P<attribute>{attr_pattern})'

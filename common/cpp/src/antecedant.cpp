@@ -18,7 +18,7 @@ Antecedant::Antecedant(int attribute, bool inequality, double value) {
 /**
  * @brief Checks equality with another Antecedant object.
  *
- * Compares this antecedant with another for equality. Two antecedants are considered equal if they
+ * Compares this antecedent with another for equality. Two antecedents are considered equal if they
  * have the same attribute ID, the same inequality condition, and a comparison value that differs by less
  * than a specified epsilon (10^-6).
  *

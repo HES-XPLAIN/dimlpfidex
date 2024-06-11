@@ -1,7 +1,13 @@
 #include "dimlp.h"
 
 ////////////////////////////////////////////////////////////////////////
-const std::string &netType = "Discretized Interpretable Multi-Layer Perceptron";
+
+/**
+ * @brief Network type for Dimlp.
+ *
+ * This variable defines the type of network as "Discretized Interpretable Multi-Layer Perceptron".
+ */
+const std::string netType = "Discretized Interpretable Multi-Layer Perceptron";
 
 /**
  * @brief Constructs a Dimlp network with specified parameters.

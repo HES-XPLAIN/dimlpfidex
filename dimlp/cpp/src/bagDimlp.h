@@ -4,8 +4,6 @@
 #include "dimlp.h"
 #include "virtHyp.h"
 
-const int VIRT = 1;
-
 /**
  * @brief Implements a bagging ensemble of Dimlp neural networks.
  */

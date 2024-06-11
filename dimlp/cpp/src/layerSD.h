@@ -1,9 +1,7 @@
 #ifndef LAYERSD_H
 #define LAYERSD_H
 
-#ifndef LAYER
 #include "layer.h"
-#endif
 
 ///////////////////////////////////////////////////////////////////
 

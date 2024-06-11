@@ -1,13 +1,8 @@
 #ifndef RULEPRO_H
 #define RULEPRO_H
 
-#ifndef DATASETS
 #include "dataSet.h"
-#endif
-
-#ifndef THRESDESCR
 #include "thresD.h"
-#endif
 
 #include <vector>
 

@@ -3,10 +3,8 @@
 
 #include <iostream>
 
-#ifndef FROMREAL
 #include "bpNN.h"
 #include "rulePro.h"
-#endif
 
 ////////////////////////////////////////////////////////////////////////
 

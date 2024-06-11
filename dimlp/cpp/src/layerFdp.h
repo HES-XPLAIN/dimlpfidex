@@ -1,9 +1,7 @@
 #ifndef LAYERFDP_H
 #define LAYERFDP_H
 
-#ifndef LLL
 #include "layer.h"
-#endif
 
 ///////////////////////////////////////////////////////////////////
 

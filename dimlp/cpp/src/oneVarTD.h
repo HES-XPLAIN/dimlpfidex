@@ -1,9 +1,7 @@
 #ifndef ONEVARTD_H
 #define ONEVARTD_H
 
-#ifndef STRINGINT
 #include "../../../common/cpp/src/stringI.h"
-#endif
 #include <memory>
 
 ///////////////////////////////////////////////////////////////////
