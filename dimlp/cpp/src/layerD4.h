@@ -1,10 +1,9 @@
 #ifndef LAYERD4_H
 #define LAYERD4_H
 
-#ifndef LD4
 #include "layer.h"
 #include "stairObj.h"
-#endif
+
 #include <memory>
 
 ///////////////////////////////////////////////////////////////////

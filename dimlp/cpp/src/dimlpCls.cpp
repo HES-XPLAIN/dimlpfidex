@@ -1,5 +1,3 @@
-/// \defgroup dimlpCls dimlpCls Module
-/// \{
 #include "dimlpClsFct.h"
 
 ////////////////////////////////////////////////////////////
@@ -26,4 +24,3 @@ int main(int nbParam, char **param)
   }
   return dimlpCls(command);
 }
-/// \}

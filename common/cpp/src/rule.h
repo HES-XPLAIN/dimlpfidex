@@ -251,12 +251,12 @@ inline bool operator!=(const Rule &r1, const Rule &r2) {
 std::string generateRegexSmallerPositive(int maxNumber);
 
 /**
- * @brief Generates a regular expression pattern for matching an antecedant of a rule using the IDs of the attributes.
+ * @brief Generates a regular expression pattern for matching an antecedent of a rule using the IDs of the attributes.
  */
 std::string getAntStrPatternWithAttrIds(int nbAttributes);
 
 /**
- * @brief Generates a regular expression pattern for matching an antecedant using the names of the attributes.
+ * @brief Generates a regular expression pattern for matching an antecedent using the names of the attributes.
  */
 std::string getAntStrPatternWithAttrNames();
 
@@ -286,7 +286,7 @@ bool stringToRule(Rule &rule, const std::string &str, const std::regex &attribut
 void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset, float &decisionThreshold, int &positiveClassIndex);
 
 /**
- * @brief Writes a list of rules into a given file. Returns a tuple of two doubles representing the mean covering size and the mean number of antecedants.
+ * @brief Writes a list of rules into a given file. Returns a tuple of two doubles representing the mean covering size and the mean number of antecedents.
  */
 std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames,
                                           const std::vector<std::string> &classNames, float threshold, int positiveIndex);

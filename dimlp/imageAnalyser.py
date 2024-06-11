@@ -125,7 +125,7 @@ def imageAnalyser(dataSet):
         test_data = get_data(test_data_file)
         test_class = get_data(test_class_file)
         test_pred = get_data(test_pred_file)
-        pattern = r'X(\d+)\s*([<>]=?)\s*([\d.]+)' # Regular expression pattern to match antecedants
+        pattern = r'X(\d+)\s*([<>]=?)\s*([\d.]+)' # Regular expression pattern to match antecedents
 
         # Create test files with desired samples
         lines_test_data = [test_data[i] for i in id_samples if i < len(test_data)]
@@ -160,7 +160,7 @@ def imageAnalyser(dataSet):
             raise ValueError('Error during execution of FidexGlo')
 
         # Get one explanation rule for each test sample
-        #import antecedant
+        #import antecedent
         explanation_file = image_folder_from_base + "/explanation.txt"
 
         rules = []
@@ -181,7 +181,7 @@ def imageAnalyser(dataSet):
             antecedants = []
             matches = re.findall(pattern, rules[id_sample])
 
-            # Process each match and store in antecedants
+            # Process each match and store in antecedents
             for match in matches:
                 attribute, inequality, value = match
                 antecedant = {

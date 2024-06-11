@@ -1,9 +1,7 @@
 #ifndef VECTWRV_H
 #define VECTWRV_H
 
-#ifndef STRINGINT
 #include "../../../common/cpp/src/stringI.h"
-#endif
 
 #include <memory>
 #include <vector>

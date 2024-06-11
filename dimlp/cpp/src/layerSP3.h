@@ -1,9 +1,7 @@
 #ifndef LAYERSP3_H
 #define LAYERSP3_H
 
-#ifndef LAYER
 #include "layer.h"
-#endif
 
 ///////////////////////////////////////////////////////////////////
 

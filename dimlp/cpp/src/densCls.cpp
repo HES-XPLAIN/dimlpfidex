@@ -1,3 +1,11 @@
+/**
+ * @file
+ * @ingroup Executables
+ * @brief Entry point for the densCls executable.
+ *
+ * This file contains the main function which serves as the entry point for the densCls executable.
+ */
+
 #include "densClsFct.h"
 
 ////////////////////////////////////////////////////////////

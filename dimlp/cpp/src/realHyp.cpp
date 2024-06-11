@@ -1,8 +1,6 @@
 #include "realHyp.h"
-#include "misc.h"
-
-#define FROMREAL 1
 #include "cleanRS.h"
+#include "misc.h"
 
 ////////////////////////////////////////////////////////////////////////
 

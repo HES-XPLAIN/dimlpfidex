@@ -4,6 +4,8 @@
 #include "bpNN.h"
 #include <vector>
 
+extern const std::string netType; // Extern declaration of the netType variable
+
 /**
  * @brief The Dimlp class represents a Discretized Interpretable Multi-Layer Perceptron.
  *

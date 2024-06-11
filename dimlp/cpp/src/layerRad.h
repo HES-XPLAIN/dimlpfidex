@@ -1,9 +1,7 @@
 #ifndef LAYERRAD_H
 #define LAYERRAD_H
 
-#ifndef LAYER
 #include "layer.h"
-#endif
 
 ///////////////////////////////////////////////////////////////////
 

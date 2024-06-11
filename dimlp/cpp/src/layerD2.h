@@ -1,10 +1,9 @@
 #ifndef LAYERD2_H
 #define LAYERD2_H
 
-#ifndef LD2
 #include "layer.h"
 #include "stairObj.h"
-#endif
+
 #include <memory>
 
 ///////////////////////////////////////////////////////////////////

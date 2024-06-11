@@ -5,9 +5,7 @@
 #include <iostream>
 #include <vector>
 
-#ifndef DATASETS
 #include "dataSet.h"
-#endif
 
 #include "layerD2.h"
 #include "layerDmp.h"
@@ -28,11 +26,6 @@
 #include <fstream>
 #include <iomanip>
 #include <sstream>
-
-const int LD2 = 1;
-const int LLL = 1;
-const int LD3 = 1;
-const int LD4 = 1;
 
 ///////////////////////////////////////////////////////////////////
 

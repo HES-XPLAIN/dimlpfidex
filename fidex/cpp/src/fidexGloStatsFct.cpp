@@ -62,7 +62,7 @@ void getCovering(std::vector<int> &sampleIds, const Rule &rule, std::vector<std:
   double val;
   for (int id = 0; id < testValues.size(); id++) {
     bool notCovered = false;
-    for (const auto &antecedent : rule.getAntecedants()) { // For each antecedant
+    for (const auto &antecedent : rule.getAntecedants()) { // For each antecedent
       attr = antecedent.getAttribute();
       ineq = antecedent.getInequality();
       val = antecedent.getValue();

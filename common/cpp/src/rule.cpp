@@ -3,7 +3,7 @@
 /**
  * @brief Constructs a Rule object.
  *
- * @param antecedants Vector of antecedants to insert inside a rule.
+ * @param antecedants Vector of antecedents to insert inside a rule.
  * @param coveredSamples Vector of integers containing the covered samples IDs.
  * @param outClass Integer indicating which class is targetted by the rule.
  * @param fidelity Double indicating the fidelity of the rule.
@@ -217,7 +217,7 @@ std::string generateRegexSmallerPositive(int maxNumber) {
  * @brief Generates a regular expression pattern for matching an antecedent of a rule using the IDs of the attributes.
  *
  * @param nbAttributes The number of attributes that can appear in the rule.
- * @return The compiled regular expression object that can be used to match an antecedant with attribute ids.
+ * @return The compiled regular expression object that can be used to match an antecedent with attribute ids.
  */
 std::string getAntStrPatternWithAttrIds(int nbAttributes) {
   std::string pattern = generateRegexSmallerPositive(nbAttributes);
@@ -226,9 +226,9 @@ std::string getAntStrPatternWithAttrIds(int nbAttributes) {
 }
 
 /**
- * @brief Generates a regular expression pattern for matching an antecedant using the names of the attributes.
+ * @brief Generates a regular expression pattern for matching an antecedent using the names of the attributes.
  *
- * @return The compiled regular expression object that can be used to match an antecedant with attribute names.
+ * @return The compiled regular expression object that can be used to match an antecedent with attribute names.
  */
 std::string getAntStrPatternWithAttrNames() {
   std::string attrPattern = "[^\\s]+";
@@ -489,15 +489,15 @@ void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid
 }
 
 /**
- * @brief Writes a list of rules into a given file. Returns a tuple of two doubles representing the mean covering size and the mean number of antecedants.
+ * @brief Writes a list of rules into a given file. Returns a tuple of two doubles representing the mean covering size and the mean number of antecedents.
  *
  * @param filename Name of the file to be written/overwritten.
  * @param rules List of Rule objects to be written in "filename".
- * @param attributeNames List of attribute names, used to write Rule's antecedants with attribute names instead of a "X" variable.
+ * @param attributeNames List of attribute names, used to write Rule's antecedents with attribute names instead of a "X" variable.
  * @param classNames List of class names, used to write Rule's class with class names instead of numerical representation.
  * @param threshold Decision threshold.
  * @param positiveIndex Index defining the positive class in the dataset.
- * @return A tuple containing the mean covering size and the mean number of antecedants.
+ * @return A tuple containing the mean covering size and the mean number of antecedents.
  */
 std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames,
                                           const std::vector<std::string> &classNames, float threshold, int positiveIndex) {
@@ -571,7 +571,7 @@ void getActivatedRules(std::vector<int> &activatedRules, std::vector<Rule> &rule
   double val;
   for (int r = 0; r < rules.size(); r++) { // For each rule
     bool notActivated = false;
-    for (const auto &antecedant : rules[r].getAntecedants()) { // For each antecedant
+    for (const auto &antecedant : rules[r].getAntecedants()) { // For each antecedent
       attr = antecedant.getAttribute();
       ineq = antecedant.getInequality();
       val = antecedant.getValue();
