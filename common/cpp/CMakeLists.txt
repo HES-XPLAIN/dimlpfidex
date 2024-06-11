@@ -8,8 +8,8 @@ FILE(GLOB COMMON_SRC
     src/dataSet.cpp
     src/checkFun.cpp
     src/checkFun.h
-    src/antecedant.cpp
-    src/antecedant.h
+    src/antecedent.cpp
+    src/antecedent.h
     src/rule.cpp
     src/rule.h
     src/parameters.cpp

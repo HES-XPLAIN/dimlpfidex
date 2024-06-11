@@ -721,7 +721,7 @@ def crossValid(*args, **kwargs):
                 # Statistics for FidexGlo
                 mean_nb_rules = 0.0
                 mean_nb_cover = 0.0
-                mean_nb_antecedants = 0.0
+                mean_nb_antecedents = 0.0
                 mean_fidel_glo = 0.0
                 mean_rules_acc_glo = 0.0
                 mean_expl_glo = 0.0
@@ -766,7 +766,7 @@ def crossValid(*args, **kwargs):
                 # One execution
                 mean_nb_rules_dimlp = 0.0
                 mean_nb_cover_dimlp = 0.0
-                mean_nb_antecedants_dimlp = 0.0
+                mean_nb_antecedents_dimlp = 0.0
                 mean_fidel_dimlp = 0.0
                 mean_rules_acc_dimlp = 0.0
                 mean_default_rate_dimlp = 0.0
@@ -776,7 +776,7 @@ def crossValid(*args, **kwargs):
                 # All executions
                 mean_nb_rules_dimlp_all = 0.0
                 mean_nb_cover_dimlp_all = 0.0
-                mean_nb_antecedants_dimlp_all = 0.0
+                mean_nb_antecedents_dimlp_all = 0.0
                 mean_fidel_dimlp_all = 0.0
                 mean_rules_acc_dimlp_all = 0.0
                 mean_default_rate_dimlp_all = 0.0
@@ -1337,7 +1337,7 @@ def crossValid(*args, **kwargs):
                         else:
                             mean_nb_rules_dimlp += stats[0]
                             mean_nb_cover_dimlp += stats[3]
-                            mean_nb_antecedants_dimlp += stats[2]
+                            mean_nb_antecedents_dimlp += stats[2]
                             mean_fidel_dimlp += stats[5]
                             mean_rules_acc_dimlp += stats[4]
                             mean_default_rate_dimlp += stats[7]
@@ -1521,7 +1521,7 @@ def crossValid(*args, **kwargs):
                                     else:
                                         raise ValueError("Error in second line of fidexGlo stat file, there is not the mean sample covering number per rule.")
                                     if "antecedents" in values:
-                                        mean_nb_antecedants += float(values[values.index("antecedents") + 4])
+                                        mean_nb_antecedents += float(values[values.index("antecedents") + 4])
                                     else:
                                         raise ValueError("Error in second line of fidexGlo stat file, there is not the mean number of antecedents per rule.")
 
@@ -1623,8 +1623,8 @@ def crossValid(*args, **kwargs):
                     mean_nb_rules_dimlp = 0
                     mean_current_exec_values_dimlp.append(mean_nb_cover_dimlp / nb_fold_with_rules_dimlp)
                     mean_nb_cover_dimlp = 0
-                    mean_current_exec_values_dimlp.append(mean_nb_antecedants_dimlp / nb_fold_with_rules_dimlp)
-                    mean_nb_antecedants_dimlp = 0
+                    mean_current_exec_values_dimlp.append(mean_nb_antecedents_dimlp / nb_fold_with_rules_dimlp)
+                    mean_nb_antecedents_dimlp = 0
                     mean_current_exec_values_dimlp.append(mean_fidel_dimlp / nb_fold_with_rules_dimlp)
                     mean_fidel_dimlp = 0
                     mean_current_exec_values_dimlp.append(mean_rules_acc_dimlp / nb_fold_with_rules_dimlp)
@@ -1658,8 +1658,8 @@ def crossValid(*args, **kwargs):
                     mean_nb_rules = 0
                     mean_current_exec_values_fidexglo.append(mean_nb_cover / k)
                     mean_nb_cover = 0
-                    mean_current_exec_values_fidexglo.append(mean_nb_antecedants / k)
-                    mean_nb_antecedants = 0
+                    mean_current_exec_values_fidexglo.append(mean_nb_antecedents / k)
+                    mean_nb_antecedents = 0
                     mean_current_exec_values_fidexglo.append(mean_fidel_glo / k)
                     mean_fidel_glo = 0
                     mean_current_exec_values_fidexglo.append(mean_rules_acc_glo / k)
@@ -1918,7 +1918,7 @@ def crossValid(*args, **kwargs):
                     multiplier = k-mean_exec_values_dimlp[exec][8] # If there is lack of some datas (sometimes we didnt found any rules), we need to take it into account
                     mean_nb_rules_dimlp_all += multiplier*mean_exec_values_dimlp[exec][0]
                     mean_nb_cover_dimlp_all += multiplier*mean_exec_values_dimlp[exec][1]
-                    mean_nb_antecedants_dimlp_all += multiplier*mean_exec_values_dimlp[exec][2]
+                    mean_nb_antecedents_dimlp_all += multiplier*mean_exec_values_dimlp[exec][2]
                     mean_fidel_dimlp_all += multiplier*mean_exec_values_dimlp[exec][3]
                     mean_rules_acc_dimlp_all += multiplier*mean_exec_values_dimlp[exec][4]
                     mean_default_rate_dimlp_all += multiplier*mean_exec_values_dimlp[exec][5]
@@ -1928,7 +1928,7 @@ def crossValid(*args, **kwargs):
                 divider = n*k-nb_no_rules_dimlp
                 mean_nb_rules_dimlp_all /= divider
                 mean_nb_cover_dimlp_all /= divider
-                mean_nb_antecedants_dimlp_all /= divider
+                mean_nb_antecedents_dimlp_all /= divider
                 mean_fidel_dimlp_all /= divider
                 mean_rules_acc_dimlp_all /= divider
                 mean_default_rate_dimlp_all /= divider
@@ -1937,7 +1937,7 @@ def crossValid(*args, **kwargs):
 
                 std_nb_rules_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,0].astype(float))
                 std_nb_cover_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,1].astype(float))
-                std_nb_antecedants_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,2].astype(float))
+                std_nb_antecedents_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,2].astype(float))
                 std_fidel_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,3].astype(float))
                 std_rules_acc_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,4].astype(float))
                 std_default_rate_dimlp_all = np.std(np.array(mean_exec_values_dimlp)[:,5].astype(float))
@@ -1961,7 +1961,7 @@ def crossValid(*args, **kwargs):
             if is_fidexglo: # For FidexGlo
                 mean_nb_rules_all = np.mean(np.array(mean_exec_values_fidexglo)[:,0].astype(float))
                 mean_nb_cover_all = np.mean(np.array(mean_exec_values_fidexglo)[:,1].astype(float))
-                mean_nb_antecedants_all = np.mean(np.array(mean_exec_values_fidexglo)[:,2].astype(float))
+                mean_nb_antecedents_all = np.mean(np.array(mean_exec_values_fidexglo)[:,2].astype(float))
                 mean_fidel_glo_all = np.mean(np.array(mean_exec_values_fidexglo)[:,3].astype(float))
                 mean_rules_acc_glo_all = np.mean(np.array(mean_exec_values_fidexglo)[:,4].astype(float))
                 mean_expl_glo_all = np.mean(np.array(mean_exec_values_fidexglo)[:,5].astype(float))
@@ -2041,7 +2041,7 @@ def crossValid(*args, **kwargs):
 
                 std_nb_rules_all = np.std(np.array(mean_exec_values_fidexglo)[:,0].astype(float))
                 std_nb_cover_all = np.std(np.array(mean_exec_values_fidexglo)[:,1].astype(float))
-                std_nb_antecedants_all = np.std(np.array(mean_exec_values_fidexglo)[:,2].astype(float))
+                std_nb_antecedents_all = np.std(np.array(mean_exec_values_fidexglo)[:,2].astype(float))
                 std_fidel_glo_all = np.std(np.array(mean_exec_values_fidexglo)[:,3].astype(float))
                 std_rules_acc_glo_all = np.std(np.array(mean_exec_values_fidexglo)[:,4].astype(float))
                 std_expl_glo_all = np.std(np.array(mean_exec_values_fidexglo)[:,5].astype(float))
@@ -2081,8 +2081,8 @@ def crossValid(*args, **kwargs):
                         formatted_std_nb_rules_dimlp_all = formatting(std_nb_rules_dimlp_all)
                         formatted_mean_nb_cover_dimlp_all = formatting(mean_nb_cover_dimlp_all)
                         formatted_std_nb_cover_dimlp_all = formatting(std_nb_cover_dimlp_all)
-                        formatted_mean_nb_antecedants_dimlp_all = formatting(mean_nb_antecedants_dimlp_all)
-                        formatted_std_nb_antecedants_dimlp_all = formatting(std_nb_antecedants_dimlp_all)
+                        formatted_mean_nb_antecedents_dimlp_all = formatting(mean_nb_antecedents_dimlp_all)
+                        formatted_std_nb_antecedents_dimlp_all = formatting(std_nb_antecedents_dimlp_all)
                         formatted_mean_fidel_dimlp_all = formatting(mean_fidel_dimlp_all)
                         formatted_std_fidel_dimlp_all = formatting(std_fidel_dimlp_all)
                         formatted_mean_rules_acc_dimlp_all = formatting(mean_rules_acc_dimlp_all)
@@ -2104,8 +2104,8 @@ def crossValid(*args, **kwargs):
                         outputStatsFile.write(f"The standard deviation of the number of rules is: {formatted_std_nb_rules_dimlp_all}\n")
                         outputStatsFile.write(f"The mean sample covering number per rule is: {formatted_mean_nb_cover_dimlp_all}\n")
                         outputStatsFile.write(f"The standard deviation of the sample covering number per rule is: {formatted_std_nb_cover_dimlp_all}\n")
-                        outputStatsFile.write(f"The mean number of antecedents per rule is: {formatted_mean_nb_antecedants_dimlp_all}\n")
-                        outputStatsFile.write(f"The standard deviation of the number of antecedents per rule is: {formatted_std_nb_antecedants_dimlp_all}\n")
+                        outputStatsFile.write(f"The mean number of antecedents per rule is: {formatted_mean_nb_antecedents_dimlp_all}\n")
+                        outputStatsFile.write(f"The standard deviation of the number of antecedents per rule is: {formatted_std_nb_antecedents_dimlp_all}\n")
                         outputStatsFile.write(f"The mean global rule fidelity rate is: {formatted_mean_fidel_dimlp_all}\n")
                         outputStatsFile.write(f"The standard deviation of the global rule fidelity rate is: {formatted_std_fidel_dimlp_all}\n")
                         outputStatsFile.write(f"The mean global rule accuracy is: {formatted_mean_rules_acc_dimlp_all}\n")
@@ -2127,8 +2127,8 @@ def crossValid(*args, **kwargs):
                         print(f"The standard deviation of the number of rules is: {formatted_std_nb_rules_dimlp_all}")
                         print(f"The mean sample covering number per rule is: {formatted_mean_nb_cover_dimlp_all}")
                         print(f"The standard deviation of the sample covering number per rule is: {formatted_std_nb_cover_dimlp_all}")
-                        print(f"The mean number of antecedents per rule is: {formatted_mean_nb_antecedants_dimlp_all}")
-                        print(f"The standard deviation of the number of antecedents per rule is: {formatted_std_nb_antecedants_dimlp_all}")
+                        print(f"The mean number of antecedents per rule is: {formatted_mean_nb_antecedents_dimlp_all}")
+                        print(f"The standard deviation of the number of antecedents per rule is: {formatted_std_nb_antecedents_dimlp_all}")
                         print(f"The mean global rule fidelity rate is: {formatted_mean_fidel_dimlp_all}")
                         print(f"The standard deviation of the global rule fidelity rate is: {formatted_std_fidel_dimlp_all}")
                         print(f"The mean global rule accuracy is: {formatted_mean_rules_acc_dimlp_all}")
@@ -2192,8 +2192,8 @@ def crossValid(*args, **kwargs):
                         formatted_std_nb_rules_all = formatting(std_nb_rules_all)
                         formatted_mean_nb_cover_all = formatting(mean_nb_cover_all)
                         formatted_std_nb_cover_all = formatting(std_nb_cover_all)
-                        formatted_mean_nb_antecedants_all = formatting(mean_nb_antecedants_all)
-                        formatted_std_nb_antecedants_all = formatting(std_nb_antecedants_all)
+                        formatted_mean_nb_antecedents_all = formatting(mean_nb_antecedents_all)
+                        formatted_std_nb_antecedents_all = formatting(std_nb_antecedents_all)
                         formatted_mean_fidel_glo_all = formatting(mean_fidel_glo_all)
                         formatted_std_fidel_glo_all = formatting(std_fidel_glo_all)
                         formatted_mean_rules_acc_glo_all = formatting(mean_rules_acc_glo_all)
@@ -2253,8 +2253,8 @@ def crossValid(*args, **kwargs):
                         outputStatsFile.write(f"The standard deviation of the number of rules is : {formatted_std_nb_rules_all}\n")
                         outputStatsFile.write(f"The mean sample covering number per rule is : {formatted_mean_nb_cover_all}\n")
                         outputStatsFile.write(f"The standard deviation of the sample covering number per rule is : {formatted_std_nb_cover_all}\n")
-                        outputStatsFile.write(f"The mean number of antecedents per rule is : {formatted_mean_nb_antecedants_all}\n")
-                        outputStatsFile.write(f"The standard deviation of the number of antecedents per rule is : {formatted_std_nb_antecedants_all}\n")
+                        outputStatsFile.write(f"The mean number of antecedents per rule is : {formatted_mean_nb_antecedents_all}\n")
+                        outputStatsFile.write(f"The standard deviation of the number of antecedents per rule is : {formatted_std_nb_antecedents_all}\n")
                         outputStatsFile.write(f"The mean global rule fidelity rate is : {formatted_mean_fidel_glo_all}\n")
                         outputStatsFile.write(f"The standard deviation of the global rule fidelity rate is : {formatted_std_fidel_glo_all}\n")
                         outputStatsFile.write(f"The mean global rule accuracy is : {formatted_mean_rules_acc_glo_all}\n")
@@ -2314,8 +2314,8 @@ def crossValid(*args, **kwargs):
                         print(f"The standard deviation of the number of rules is : {formatted_std_nb_rules_all}")
                         print(f"The mean sample covering number per rule is : {formatted_mean_nb_cover_all}")
                         print(f"The standard deviation of the sample covering number per rule is : {formatted_std_nb_cover_all}")
-                        print(f"The mean number of antecedents per rule is : {formatted_mean_nb_antecedants_all}")
-                        print(f"The standard deviation of the number of antecedents per rule is : {formatted_std_nb_antecedants_all}")
+                        print(f"The mean number of antecedents per rule is : {formatted_mean_nb_antecedents_all}")
+                        print(f"The standard deviation of the number of antecedents per rule is : {formatted_std_nb_antecedents_all}")
                         print(f"The mean global rule fidelity rate is : {formatted_mean_fidel_glo_all}")
                         print(f"The standard deviation of the global rule fidelity rate is : {formatted_std_fidel_glo_all}")
                         print(f"The mean global rule accuracy is : {formatted_mean_rules_acc_glo_all}")

@@ -2,7 +2,7 @@
 #define RULE_H
 // Find better way to include this
 #include "../../../json/single_include/nlohmann/json.hpp"
-#include "antecedant.h"
+#include "antecedent.h"
 #include "checkFun.h"
 #include "dataSet.h"
 #include "parameters.h"
@@ -23,7 +23,7 @@ using Json = nlohmann::json;
  */
 class Rule {
 private:
-  std::vector<Antecedant> antecedants; ///< Vector of antecedents in the rule.
+  std::vector<Antecedent> antecedents; ///< Vector of antecedents in the rule.
   std::vector<int> coveredSamples;     ///< Vector of sample IDs covered by the rule.
   int outputClass = -1;                ///< Class targeted by the rule.
   int coveringSize = -1;               ///< Number of samples covered by the rule.
@@ -32,7 +32,7 @@ private:
   double confidence = -1;              ///< Confidence of the rule.
 
   // define to ease JSON lib use
-  NLOHMANN_DEFINE_TYPE_INTRUSIVE(Rule, antecedants, coveredSamples, outputClass, coveringSize, fidelity, accuracy, confidence)
+  NLOHMANN_DEFINE_TYPE_INTRUSIVE(Rule, antecedents, coveredSamples, outputClass, coveringSize, fidelity, accuracy, confidence)
 
 public:
   Rule() = default;
@@ -40,7 +40,7 @@ public:
   /**
    * @brief Constructs a Rule object.
    */
-  Rule(const std::vector<Antecedant> &antecedants,
+  Rule(const std::vector<Antecedent> &antecedents,
        const std::vector<int> &coveredSamples,
        int out_class,
        double fidelity,
@@ -89,7 +89,7 @@ public:
    *
    * @param values The new antecedents.
    */
-  void setAntecedants(const std::vector<Antecedant> &values) { antecedants = values; }
+  void setAntecedents(const std::vector<Antecedent> &values) { antecedents = values; }
 
   /**
    * @brief Sets the covered samples of the rule and updates the covering size.
@@ -108,14 +108,14 @@ public:
    *
    * @return The antecedents of the rule.
    */
-  std::vector<Antecedant> getAntecedants() const { return antecedants; }
+  std::vector<Antecedent> getAntecedents() const { return antecedents; }
 
   /**
    * @brief Gets the number of antecedents in the rule.
    *
    * @return The number of antecedents.
    */
-  int getNbAntecedants() const { return static_cast<int>(antecedants.size()); }
+  int getNbAntecedents() const { return static_cast<int>(antecedents.size()); }
 
   /**
    * @brief Gets the covered samples of the rule.
@@ -166,7 +166,7 @@ public:
    *
    * @param value The antecedent to add.
    */
-  void addAntecedant(Antecedant value) { antecedants.push_back(value); };
+  void addAntecedent(Antecedent value) { antecedents.push_back(value); };
 
   /**
    * @brief Adds a covered sample to the rule and updates the covering size.
@@ -209,10 +209,10 @@ public:
  * @return std::ostream& The output stream with the Rule information.
  */
 inline std::ostream &operator<<(std::ostream &stream, const Rule &rule) {
-  for (Antecedant a : rule.getAntecedants())
+  for (Antecedent a : rule.getAntecedents())
     stream << a;
   stream << std::endl;
-  stream << "   #Antecedants: " << rule.getAntecedants().size() << std::endl
+  stream << "   #Antecedents: " << rule.getAntecedents().size() << std::endl
          << "   #Covered samples: " << rule.getCoveredSamples().size() << std::endl
          << "   Confidence: " << rule.getConfidence() << std::endl
          << "   Accuracy:   " << rule.getAccuracy() << std::endl

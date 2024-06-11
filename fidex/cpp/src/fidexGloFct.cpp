@@ -476,20 +476,20 @@ int fidexGlo(const std::string &command) {
       rules = Rule::fromJsonFile(rulesFile, decisionThreshold, positiveClassIndex);
 
       double meanCovering = 0;
-      double meanNbAntecedantsPerRule = 0;
+      double meanNbAntecedentsPerRule = 0;
       auto nbRules = static_cast<int>(rules.size());
 
       for (Rule r : rules) {
         meanCovering += static_cast<double>(r.getCoveredSamples().size());
-        meanNbAntecedantsPerRule += static_cast<double>(r.getAntecedants().size());
+        meanNbAntecedentsPerRule += static_cast<double>(r.getAntecedents().size());
       }
       meanCovering /= nbRules;
-      meanNbAntecedantsPerRule /= nbRules;
+      meanNbAntecedentsPerRule /= nbRules;
 
       statsLine += "Number of rules : " + std::to_string(nbRules);
       statsLine += ", mean sample covering number per rule : ";
       statsLine += std::to_string(meanCovering) + ", mean number of antecedents per rule : ";
-      statsLine += std::to_string(meanNbAntecedantsPerRule) + "\n";
+      statsLine += std::to_string(meanNbAntecedentsPerRule) + "\n";
 
     } else {
       rulesData.open(rulesFile, std::ios::in); // Read data file
