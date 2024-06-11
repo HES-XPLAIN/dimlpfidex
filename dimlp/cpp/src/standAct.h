@@ -31,9 +31,11 @@ float Power3(float x);
  */
 float Power4(float x);
 
+/// @cond
 /**
  * @brief Computes the quintic power activation function.
  */
 float Power5(float x);
+/// @endcond
 
 #endif // STANDACT_H
