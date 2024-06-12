@@ -12,12 +12,12 @@ import sys
 import time
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
+os.environ["KERAS_BACKEND"] = "torch"
 
 import numpy as np
 np.random.seed(seed=None) #Seed not working
 
-import tensorflow as tf
-from tensorflow import keras
+import keras
 from keras.models     import Sequential, load_model, Model
 from keras.layers     import Dense, Dropout, Flatten, BatchNormalization, Lambda
 from keras.layers     import Convolution2D, DepthwiseConv2D, MaxPooling2D, GlobalAveragePooling2D
@@ -166,7 +166,7 @@ def convKeras(args: str = None):
         if args.with_vgg == True and args.with_resnet == True:
             raise ValueError('Error, parameter with_resnet and with_vgg are both True, choose one.')
 
-        model_checkpoint_weights = "weightsModel.out"
+        model_checkpoint_weights = "weightsModel.keras"
         if (args.root_folder is not None):
             model_checkpoint_weights = os.path.join(args.root_folder, model_checkpoint_weights)
 
