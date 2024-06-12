@@ -97,6 +97,8 @@ void generateRules(std::vector<Rule> &rules, std::vector<int> &notCoveredSamples
   int minCovering = p.getInt(MIN_COVERING);
   int nbThreadsUsed = p.getInt(NB_THREADS);
 
+  std::vector<int> threadProgress(nbThreadsUsed, 0);
+
 #pragma omp parallel num_threads(nbThreadsUsed)
   {
     Rule rule;
@@ -124,6 +126,7 @@ void generateRules(std::vector<Rule> &rules, std::vector<int> &notCoveredSamples
 
     t1 = omp_get_wtime();
 
+    auto startTime = std::chrono::steady_clock::now();
 #pragma omp for
     for (int idSample = 0; idSample < nbDatas; idSample++) {
       std::vector<int> &trainPreds = trainDataset.getPredictions();
@@ -131,14 +134,6 @@ void generateRules(std::vector<Rule> &rules, std::vector<int> &notCoveredSamples
       std::vector<double> &mainSampleValues = trainData[idSample];
       int mainSamplePred = trainPreds[idSample];
       cnt += 1;
-
-      if (omp_get_thread_num() == 0 && ((nbDatas / nbThreadsUsed) / 100) != 0 && (idSample % int((nbDatas / nbThreadsUsed) / 100)) == 0 && consoleFile.empty()) {
-#pragma omp critical
-        {
-          std::cout << "Processing : " << int((double(idSample) / (nbDatas / nbThreadsUsed)) * 100) << "%\r";
-          std::cout.flush();
-        }
-      }
 
       ruleCreated = fidex.launchFidex(rule, mainSampleValues, mainSamplePred, -1);
 
@@ -158,6 +153,38 @@ void generateRules(std::vector<Rule> &rules, std::vector<int> &notCoveredSamples
 
       if (rule.getCoveringSize() < minCovering) {
         localNbProblems += 1;
+      }
+
+      // Estimate execution time
+
+      if (idSample == 0 || idSample == 9 || idSample == 99 || idSample == 999 || idSample == 9999) {
+        auto now = std::chrono::steady_clock::now();
+        std::chrono::duration<double> elapsed = now - startTime;
+        double avgTimePerSample = elapsed.count() / (idSample + 1);
+        double estimatedTotalTime = (avgTimePerSample * nbDatas) / nbThreadsUsed;
+
+        int hours = static_cast<int>(estimatedTotalTime) / 3600;
+        int minutes = (static_cast<int>(estimatedTotalTime) % 3600) / 60;
+        int seconds = static_cast<int>(estimatedTotalTime) % 60;
+
+#pragma omp critical
+        {
+          std::cout << "Estimated total execution time after " << idSample + 1 << " sample(s): "
+                    << hours << " hours, " << minutes << " minutes, " << seconds << " seconds." << std::endl;
+        }
+      }
+
+      // Update thread progress
+      if ((cnt % (std::max(1, (nbDatas / nbThreadsUsed) / 100))) == 0 && !p.isStringSet(CONSOLE_FILE)) {
+#pragma omp atomic write
+        threadProgress[threadId] = (cnt * 100) / (nbDatas / nbThreadsUsed);
+
+#pragma omp critical
+        {
+          int minProgress = *std::min_element(threadProgress.begin(), threadProgress.end());
+          std::cout << "Overall progress: " << minProgress << "%\r";
+          std::cout.flush();
+        }
       }
     }
 
