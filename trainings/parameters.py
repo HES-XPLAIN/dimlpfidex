@@ -84,8 +84,8 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
                 self.add_text("gradBoostTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --stats_file gb/stats.txt --train_pred_outfile gb/predTrain.out --test_pred_outfile gb/predTest.out --rules_outfile gb/RF_rules.rls --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')", raw=True)
             elif tag == "ROC":
                 self.add_text("computeRocCurve('--test_class_file dataclass2Test.txt --test_pred_file predTest.out --positive_class_index 1 --output_roc roc_curve.png --stats_file stats.txt --root_folder dimlp/datafiles --nb_classes 2')", raw=True)
-            elif tag == "convKeras":
-                self.add_text("convKeras('--dataset mnist --train_data_file mnistTrainData.txt --train_class_file mnistTrainClass.txt --test_data_file mnistTestData.txt --test_class_file mnistTestClass.txt --valid_data_file mnistValidData.txt --valid_class_file mnistValidClass.txt --nb_attributes 784 --nb_classes 10 --root_folder dimlp/datafiles/Mnist')", raw=True)
+            elif tag == "CNN":
+                self.add_text("cnnTrn('--model small --train_data_file trainData.txt --train_class_file trainClass.txt --test_data_file testData.txt --test_class_file testClass.txt --valid_data_file validData.txt --valid_class_file validClass.txt --original_img_size (28,28) --nb_channels 1 --data_format classic --nb_classes 10 --root_folder dimlp/datafiles/Mnist')", raw=True)
             elif tag == "Normalization":
                 self.add_text("For datafile normalization :", raw=True)
                 self.add_text("normalization('--data_files [datanormTrain.txt,datanormTest.txt] --normalization_indices [0,2,4] --nb_attributes 16 --missing_values NaN --root_folder dimlp/datafiles')", raw=True)
@@ -430,7 +430,30 @@ def list_type(str_list:str, valid_type:dict):
         res_lst.append(type_func(v, **constraints))
     return res_lst
 
+def pair_type(str_list: str, valid_type: dict):
+    """
+    Converts a string representation of a pair into a pair of values of a specified type,
+    ensuring that the pair contains exactly 2 elements.
 
+    :param str_list: The string representation of the pair to be converted. The string should be
+                     delimited by commas or spaces, and optionally enclosed in brackets or parentheses.
+    :param valid_type: A dictionary specifying the type to which each element of the pair should be converted.
+                       It must contain a 'func' key with a function for type conversion, and can include
+                       additional keys for type-specific constraints.
+
+    :return: A pair of exactly 2 values of the specified type, with each element having passed the defined constraints.
+             Raises a ValueError if the list does not contain exactly 2 elements.
+
+    Example usage:
+    pair_type("[1, 2]", valid_type={'func': int}) -> (1, 2)
+    pair_type("(4 5)", valid_type={'func': int, 'min': 3}) -> (4, 5) with min value constraint applied
+    """
+    res_lst = list_type(str_list, valid_type)
+
+    if len(res_lst) != 2:
+        raise ValueError("The list must contain exactly 2 elements.")
+
+    return (res_lst[0], res_lst[1])
 
 def enum_type(value:str, *valid_strings, **valid_types):
     """

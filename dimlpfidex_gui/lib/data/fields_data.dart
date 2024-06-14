@@ -1218,7 +1218,7 @@ const List<Field> computeRocCurveFields = [
   ),
 ];
 
-const List<Field> convKerasFields = [
+const List<Field> cnnTrnFields = [
   rootFolderFld,
   trainDataFileFld,
   Field(
