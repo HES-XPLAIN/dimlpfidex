@@ -13,6 +13,7 @@ Advices :
 
 #### JSON templates:
 - add JSON templates for every executable in order to be usable for users
+- Explain how to write a list type (with "")
 
 #### Parameters:
 - add a description of every parameter including its data type, its importance (mandatory or optional) and what it is used for
@@ -49,6 +50,10 @@ train_file : données avec lesquelles tu as entrainé ton modèle
 
 ### Datafiles format
 Categorisation of attributes (ex : Smoker/No_Smoker)
+
+### CNN
+Tell how to add a new model (add in argument model choices and add the model in the code, if not 2D (1D, 3D, etc. change pair_type of original_img_size and model_img_size to a list_type to accept more or less than 2 values))
+Indiquer qu'il est important de diminuer la taille des images au préalable...
 
 ### Parler de :
 - Expliquer les différentes stats de tous les algos

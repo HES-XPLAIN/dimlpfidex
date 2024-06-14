@@ -1,34 +1,24 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Mar 19 11:54:46 2021
-
-@author: guido.bologna
-"""
-
-###############################################################
-
 import os
 import sys
 import time
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = ""
+#os.environ["CUDA_VISIBLE_DEVICES"] = "" // To choose the GPU you want to use
 os.environ["KERAS_BACKEND"] = "torch"
 
 import numpy as np
-np.random.seed(seed=None) #Seed not working
-
+import random
+import torch
 import keras
-from keras.models     import Sequential, load_model, Model
-from keras.layers     import Dense, Dropout, Flatten, BatchNormalization, Lambda
-from keras.layers     import Convolution2D, DepthwiseConv2D, MaxPooling2D, GlobalAveragePooling2D
+from keras import Input
+from keras.models import Sequential, load_model
+from keras.layers import Dense, Dropout, Flatten, BatchNormalization, Resizing, Convolution2D, DepthwiseConv2D, MaxPooling2D
 from keras.applications import ResNet50, VGG16
-
-from keras.callbacks  import ModelCheckpoint
+from keras.callbacks import ModelCheckpoint
 
 
 
 from trainings.trnFun import compute_first_hidden_layer, output_stats, output_data, get_data, get_data_class
-from trainings.parameters import get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, bool_type, print_parameters
+from trainings.parameters import get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, bool_type, print_parameters, pair_type
 
 def get_and_check_parameters(init_args):
     """
@@ -56,18 +46,20 @@ def get_and_check_parameters(init_args):
     formatter = lambda prog: CustomHelpFormatter(prog, width=150, max_help_position=60)
 
     # Add new attributes
-    parser = CustomArgumentParser(description="This is a parser for convKeras", parents=[initial_parser], formatter_class=formatter, add_help=True)
-    parser.add_argument("--dataset", choices=["mnist", "cifar100", "cifar10", "fer", "cracks"], metavar="<{mnist, cifar100, cifar10, fer}>", help="Dataset")
+    parser = CustomArgumentParser(description="This is a parser for cnnTrn", parents=[initial_parser], formatter_class=formatter, add_help=True)
+    parser.add_argument("--original_img_size", type=lambda x: pair_type(x, dict(func=int_type, min=1)), metavar="<pair<int [1, inf[>>", help="Original image size", required=True)
+    parser.add_argument("--nb_channels", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Number of channels in the image (3 for RGB, 1 for B&W)", required=True)
+    parser.add_argument("--model", choices=["small", "large", "vgg", "resnet"], metavar="<{small, large, vgg, resnet}>", help="Model", required=True)
+    parser.add_argument("--data_format", choices=["normalized_01", "classic", "other"], metavar="<{normalized_01, classic, other}>", help="Format of the values of the data, normalized_01 if the data are normalized between 0 and 1, classic if they are between 0 and 255", required=True)
+    parser.add_argument("--model_img_size", type=lambda x: pair_type(x, dict(func=int_type, min=1)), metavar="<pair<int [1, inf[>>", help="Image size in the model. A small size is recommended to speed up the process. The size is modified if necessary", action=TaggableAction, tag="CNN")
     parser.add_argument("--train_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Train data file", metavar="<str>", required=True)
     parser.add_argument("--train_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Train class file, mandatory if classes are not specified in train_data_file", metavar="<str>")
     parser.add_argument("--test_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test data file", metavar="<str>", required=True)
     parser.add_argument("--test_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test class file, mandatory if classes are not specified in test_data_file", metavar="<str>")
-    parser.add_argument("--nb_attributes", type=lambda x: int_type(x, min=1), help="Number of attributes in dataset", metavar="<int [1,inf[>", required=True)
     parser.add_argument("--nb_classes", type=lambda x: int_type(x, min=1), help="Number of classes in dataset", metavar="<int [1,inf[>", required=True)
     parser.add_argument("--valid_ratio", type=lambda x: float_type(x, min=0, min_inclusive=False, max=1, max_inclusive=False), metavar="<float ]0,inf[>", help="Percentage of train data taken for validation (default: 0.1)")
     parser.add_argument("--valid_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Validation data file", metavar="<str>")
     parser.add_argument("--valid_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Validation class file, mandatory if classes are not specified in valid_data_file. BE CAREFUL if there is validation files, and you want to use Fidex algorithms later, you will have to use both train and validation datas given here in the train datas and classes of Fidex", metavar="<str>")
-    parser.add_argument("--normalized", type=bool_type, metavar="<bool>", help="Whether input image datas are normalized between 0 and 1 (default: False, default if with_hsl: True)")
     parser.add_argument("--nb_epochs", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Number of training epochs", default=80)
     parser.add_argument("--train_valid_pred_outfile", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output train and validation (in this order) prediction file name", metavar="<str>", default="predTrain.out")
     parser.add_argument("--test_pred_outfile", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output test prediction file name", metavar="<str>", default="predTest.out")
@@ -76,25 +68,29 @@ def get_and_check_parameters(init_args):
     parser.add_argument("--console_file", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="File with console logs redirection", metavar="<str>")
     parser.add_argument("--nb_quant_levels", type=lambda x: int_type(x, min=3), metavar="<int [3,inf[>", help="Number of stairs in staircase activation function", default=50)
     parser.add_argument("--K", type=lambda x: float_type(x, min=0, min_inclusive=False), metavar="<float ]0,inf[>", help="Parameter to improve dynamics", default=1.0)
-    parser.add_argument("--with_hsl", type=bool_type, metavar="<bool>", help="Whether to change 3-channels data from RGB to HSL format", default=False, action=TaggableAction, tag="convKeras")
-    parser.add_argument("--with_resnet", type=bool_type, metavar="<bool>", help="Whether to train with ResNet", default=False, action=TaggableAction, tag="convKeras")
-    parser.add_argument("--with_vgg", type=bool_type, metavar="<bool>", help="Whether to train with VGG", default=False, action=TaggableAction, tag="convKeras")
+    parser.add_argument("--seed", type=lambda x: int_type(x, min=0), metavar="<{int [0,inf[}>", help="Random seed (0 for random)", action=TaggableAction, tag="CNN", default=0)
 
     return get_args(args, cleaned_args, parser) # Return attributes
 
-def convKeras(args: str = None):
+def cnnTrn(args: str = None):
     """
     Trains a convolutional neural network (CNN) model using the Keras library with optional support for popular architectures like ResNet and VGG.
-    This function processes data preprocessing that includes normalization and a staircase activation function that allows for the characterization
+    This function processes data preprocessing that includes resizing, normalization and a staircase activation function that allows for the characterization
     of discriminating hyperplanes, which are used in Fidex. This allows us to then use Fidex for comprehensible rule extraction. It accommodates
-    various datasets including MNIST, CIFAR-10, and CIFAR-100, and allows for extensive customization through command-line arguments.
+    various types of image datasets including MNIST, CIFAR-10, and CIFAR-100, and allows for extensive customization through command-line arguments.
 
     Notes:
     - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
-    - It's mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.
+    - It's mandatory to specify the number of classes in the data, as well as the train and test datasets.
     - Validation data can either be specified directly or split from the training data based on a provided ratio.
-    - if validation files are given, and you want to use Fidex algorithms later, you will have to use both train and
+    - If validation files are given, and you want to use Fidex algorithms later, you will have to use both train and
       validation datas given here in the train datas and classes of Fidex.
+    - It's mandatory to specify the size of the original images as well as the number of channels (it should be 3 for RGB and 1 for B&W). The number of attributes is inferred from it.
+    - It's mandatory to chose a model. There is a large model, a small one, a VGG16 and a Resnet50 available. You can add any other model you want by modifying the code.
+    - It's mandatory to specify the format of the data values: 'normalized_01' if the data are normalized between 0 and 1, 'classic' if they are between 0 and 255, and 'other' otherwise.
+    - Data is reshaped in 3-channels shape if there is only one and usinf VGG or Resnet.
+    - If Fidex is meant to be executed afterward for rule extraction, resizing images beforhand to a smaller size is recommended as it will take a lot of time because of the number of parameters.
+    - It is also possible to resize the images just for training with the model_img_size parameter. Training with smaller images will be worst but will save a lot of time.
     - Parameters can be specified using the command line or a JSON configuration file.
     - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
     - It's not necessary to normalize data before training because a normalization is done during the process.
@@ -107,7 +103,7 @@ def convKeras(args: str = None):
     - console_file : If specified, contains the console output.
 
     File formats:
-    - **Data files**: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:
+    - **Data files**: These files should contain one sample (image) per line, with numbers separated either by spaces, tabs, semicolons or commas. Each pixel must be given one after the other. Supported formats:
       1. Only attributes (floats).
       2. Attributes (floats) followed by an integer class ID.
       3. Attributes (floats) followed by one-hot encoded class.
@@ -116,8 +112,8 @@ def convKeras(args: str = None):
       2. One-hot encoded class.
 
     Example of how to call the function:
-    from trainings.convKeras import convKeras
-    convKeras('--dataset mnist --train_data_file mnistTrainData.txt --train_class_file mnistTrainClass.txt --test_data_file mnistTestData.txt --test_class_file mnistTestClass.txt --valid_data_file mnistValidData.txt --valid_class_file mnistValidClass.txt --nb_attributes 784 --nb_classes 10 --root_folder dimlp/datafiles/Mnist')
+    from trainings.cnnTrn import cnnTrn
+    cnnTrn('--model small --train_data_file trainData.txt --train_class_file trainClass.txt --test_data_file testData.txt --test_class_file testClass.txt --valid_data_file validData.txt --valid_class_file validClass.txt --original_img_size (28,28) --nb_channels 1 --data_format classic --nb_classes 10 --root_folder dimlp/datafiles/Mnist')
 
     :param args: A single string containing either the path to a JSON configuration file with all specified arguments or all arguments for the function, formatted like command-line input.
                  This includes dataset selection, file paths, training parameters, and options for model architecture and output files.
@@ -148,6 +144,17 @@ def convKeras(args: str = None):
             except (IOError):
                 raise ValueError(f"Error : Couldn't open file {console_file}.")
 
+        # Generate random seed
+        if args.seed != 0:
+            os.environ['PYTHONHASHSEED'] = str(args.seed)
+            random.seed(args.seed)
+            np.random.seed(args.seed)
+            torch.manual_seed(args.seed)
+            torch.cuda.manual_seed(args.seed)
+            torch.cuda.manual_seed_all(args.seed)  # if you are using multi-GPU.
+            torch.backends.cudnn.deterministic = True
+            torch.backends.cudnn.benchmark = False
+
         if args.valid_ratio is None:
             if (args.valid_data_file is None and args.valid_class_file is not None):
                 raise ValueError('Error : parameter valid_data_file missing because valid_class_file was given.')
@@ -157,14 +164,16 @@ def convKeras(args: str = None):
         if args.valid_ratio is None and args.valid_data_file is None:
             args.valid_ratio = 0.1
 
-        if args.normalized is None:
-            args.normalized = False
-
-        if args.with_hsl:
-            args.normalized = True
-
-        if args.with_vgg == True and args.with_resnet == True:
-            raise ValueError('Error, parameter with_resnet and with_vgg are both True, choose one.')
+        img_size = args.model_img_size if args.model_img_size else args.original_img_size
+        if args.model == "vgg":
+            if img_size[0] < 32 or img_size[1] < 32:
+                raise ValueError('Error : The VGG model do not accept an image size smaller than 32 in each coordinate. Use model_img_size to increase the image size in the model.')
+        elif args.model == "small":
+            if img_size[0] < 16 or img_size[1] < 16:
+                raise ValueError('Error : The small model do not accept an image size smaller than 16 in each coordinate. Use model_img_size to increase the image size in the model.')
+        elif args.model == "large":
+            if img_size[0] < 36 or img_size[1] < 36:
+                raise ValueError('Error : The large model do not accept an image size smaller than 36 in each coordinate. Use model_img_size to increase the image size in the model.')
 
         model_checkpoint_weights = "weightsModel.keras"
         if (args.root_folder is not None):
@@ -180,7 +189,8 @@ def convKeras(args: str = None):
         sigma = None
 
         # Get data
-        x_train_full_temp, y_train_full_temp = get_data(args.train_data_file, args.nb_attributes, args.nb_classes)
+        nb_attributes = args.original_img_size[0]*args.original_img_size[1]*args.nb_channels
+        x_train_full_temp, y_train_full_temp = get_data(args.train_data_file, nb_attributes, args.nb_classes)
         x_train_full = np.array(x_train_full_temp)
 
         del x_train_full_temp
@@ -194,7 +204,7 @@ def convKeras(args: str = None):
         if len(x_train_full) != len(y_train_full):
             raise ValueError('Error, there is not the same amount of train data and train class.')
 
-        x_test, y_test = get_data(args.test_data_file, args.nb_attributes, args.nb_classes)
+        x_test, y_test = get_data(args.test_data_file, nb_attributes, args.nb_classes)
         if len(y_test) == 0:
             if args.test_class_file is None:
                 raise ValueError("Error : parameter --test_class_file is required because classes are not contained in test_data_file.")
@@ -207,7 +217,7 @@ def convKeras(args: str = None):
         if args.valid_ratio is None:
             x_train = x_train_full
             y_train = y_train_full
-            x_val, y_val = get_data(args.valid_data_file, args.nb_attributes, args.nb_classes)
+            x_val, y_val = get_data(args.valid_data_file, nb_attributes, args.nb_classes)
             if len(y_val) == 0:
                 if args.valid_class_file is None:
                     raise ValueError("Error : parameter --valid_class_file is required because classes are not contained in valid_data_file.")
@@ -228,41 +238,18 @@ def convKeras(args: str = None):
         classes = set(range(args.nb_classes))
         miss_train_classes = classes - set(y_train) # Check if a class is not represented during training
 
-
-        if args.dataset == "mnist":
-
-            size1d = 28
-            nb_channels = 1
-
-        elif args.dataset == "cifar100" or args.dataset == "cifar10":
-
-            size1d = 32
-            nb_channels = 3
-
-        elif args.dataset == "fer":
-            size1d = 48
-            nb_channels = 1
-
-        elif args.dataset == "cracks":
-            size1d = 64
-            nb_channels = 1
-
-        print(x_train.shape)
-        if args.dataset in {"fer", "cifar10", "cracks"}:
-            nb_var = len(x_train[0])
-            print(nb_var)
-            # (x-mu)/sigma entre -5 et 5
-            if args.normalized:
-                mu_val = 0.5
-                sigma_val = (1-0.5)/hiknot
-                mu = np.full(nb_var, mu_val)
-                sigma = np.full(nb_var, sigma_val)
-            else:
-                mu_val = 127.5
-                sigma_val = (255-127.5)/hiknot
-                mu = np.full(nb_var, mu_val)
-                sigma = np.full(nb_var, sigma_val)
-
+        nb_train_samples = len(x_train[0])
+        # (x-mu)/sigma between -5 and 5
+        if args.data_format == "normalized_01":
+            mu_val = 0.5
+            sigma_val = (1-0.5)/hiknot
+            mu = np.full(nb_train_samples, mu_val)
+            sigma = np.full(nb_train_samples, sigma_val)
+        elif args.data_format == "classic":
+            mu_val = 127.5
+            sigma_val = (255-127.5)/hiknot
+            mu = np.full(nb_train_samples, mu_val)
+            sigma = np.full(nb_train_samples, sigma_val)
 
         print("Data loaded")
         # Data are flattend : nbSamples x nbAttributes (not nbSamples x 32x32x3 for example)
@@ -270,17 +257,17 @@ def convKeras(args: str = None):
         x_test_h1 = compute_first_hidden_layer("test", x_test, args.K, args.nb_quant_levels, hiknot, mu=mu, sigma=sigma)
         x_val_h1 = compute_first_hidden_layer("test", x_val, args.K, args.nb_quant_levels, hiknot, mu=mu, sigma=sigma)
 
-        x_train_h1 = x_train_h1.reshape(x_train_h1.shape[0], size1d, size1d, nb_channels)
+        x_train_h1 = x_train_h1.reshape(x_train_h1.shape[0], args.original_img_size[0], args.original_img_size[1], args.nb_channels)
+        x_test_h1 = x_test_h1.reshape(x_test_h1.shape[0], args.original_img_size[0], args.original_img_size[1], args.nb_channels)
+        x_val_h1 = x_val_h1.reshape(x_val_h1.shape[0], args.original_img_size[0], args.original_img_size[1], args.nb_channels)
 
-        x_test_h1 = x_test_h1.reshape(x_test_h1.shape[0], size1d, size1d, nb_channels)
-        x_val_h1 = x_val_h1.reshape(x_val_h1.shape[0], size1d, size1d, nb_channels)
-
-        if ((args.dataset == "fer" or args.dataset == "cracks") and (args.with_vgg or args.with_resnet)):
+        # VGG and Resnet need 3 channels
+        if (args.nb_channels == 1 and (args.model == "vgg" or args.model == "resnet")):
             # B&W to RGB
             x_train_h1 = np.repeat(x_train_h1, 3, axis=-1)
             x_test_h1 = np.repeat(x_test_h1, 3, axis=-1)
             x_val_h1 = np.repeat(x_val_h1, 3, axis=-1)
-            nb_channels = 3
+            args.nb_channels = 3
 
         y_train = y_train.astype('int32')
 
@@ -296,50 +283,59 @@ def convKeras(args: str = None):
         ##############################################################################
         print("Training model...")
 
-        if args.with_resnet:
+        if args.model == "resnet":
 
-            input_tensor = keras.Input(shape=(224, 224, 3))
-            target_size = (224, 224)
+            input_tensor = keras.Input(shape=(img_size[0], img_size[1], 3))
             model_base = ResNet50(include_top=False, weights="imagenet", input_tensor=input_tensor)
             model = Sequential()
-            model.add(Lambda(lambda image: tf.image.resize(image, target_size)))
+            if args.model_img_size is not None:
+                model.add(Resizing(img_size[0], img_size[1]))
             model.add(model_base)
             model.add(keras.layers.Flatten())
             model.add(Dropout(0.5))
             model.add(BatchNormalization())
             model.add(Dense(args.nb_classes, activation='softmax'))
 
-            model.build((None, size1d, size1d, nb_channels))  # Build the model with the input shape
+            model.build((None, img_size[0], img_size[1], 3))  # Build the model with the input shape
 
             model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.00001), loss='categorical_crossentropy', metrics=['acc'])
             model.summary()
 
-        elif args.with_vgg:
+        elif args.model == "vgg":
+            input_tensor = keras.Input(shape=(img_size[0], img_size[1], 3))
+
             # charge pre-trained model vgg with imageNet weights
-            base_model = VGG16(weights='imagenet', include_top=False)
+            model_base = VGG16(include_top=False, weights="imagenet", input_tensor=input_tensor)
 
-            x = base_model.output
-            x = GlobalAveragePooling2D()(x)
-            x = Dense(256, activation='relu')(x)
-            x = Dropout(0.3)(x)
-            predictions = Dense(args.nb_classes, activation='softmax')(x)
-
-            model = Model(inputs=base_model.input, outputs=predictions)
-
-            # Frees layers of Resnet
-            for layer in base_model.layers:
+            # Freeze layers of VGG
+            for layer in model_base.layers:
                 layer.trainable = False
 
+            model = Sequential()
+            if args.model_img_size is not None:
+                model.add(Resizing(img_size[0], img_size[1]))
+            model.add(model_base)
+            model.add(keras.layers.Flatten())
+            model.add(Dense(256, activation='relu'))
+            model.add(Dropout(0.3))
+            model.add(BatchNormalization())
+            model.add(Dense(args.nb_classes, activation='softmax'))
+
+            model.build((None, img_size[0], img_size[1], 3))  # Build the model with the input shape
+
+            model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.00001), loss='categorical_crossentropy', metrics=['acc'])
             model.summary()
 
-            model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['acc'])
 
-        elif args.dataset == "fer":
+        elif args.model =="large":
             # Define the model architecture
             model = Sequential()
 
+            model.add(Input(shape=(img_size[0], img_size[1], args.nb_channels)))
+            if args.model_img_size is not None:
+                model.add(Resizing(img_size[0], img_size[1]))
             # Add a convolutional layer with 32 filters, 3x3 kernel size, and relu activation function
-            model.add(Convolution2D(32, kernel_size=(3, 3), activation='relu', input_shape=(48,48,1)))
+            model.add(Convolution2D(32, kernel_size=(3, 3), activation='relu'))
             # Add a batch normalization layer
             model.add(BatchNormalization())
             # Add a second convolutional layer with 64 filters, 3x3 kernel size, and relu activation function
@@ -390,13 +386,17 @@ def convKeras(args: str = None):
 
             model.summary()
             # Compile the model with categorical cross-entropy loss, adam optimizer, and accuracy metric
-            model.compile(loss="categorical_crossentropy", optimizer= tf.keras.optimizers.Adam(learning_rate=0.0001), metrics=['accuracy'])
+            model.compile(loss="categorical_crossentropy", optimizer= keras.optimizers.Adam(learning_rate=0.0001), metrics=['accuracy'])
 
-        else:
+        elif args.model == "small":
 
             model = Sequential()
 
-            model.add(Convolution2D(32, (5, 5), activation='relu', input_shape=(size1d, size1d, nb_channels)))
+            model.add(Input(shape=(img_size[0], img_size[1], args.nb_channels)))
+            if args.model_img_size is not None:
+                model.add(Resizing(img_size[0], img_size[1]))
+
+            model.add(Convolution2D(32, (5, 5), activation='relu'))
             model.add(Dropout(0.3))
             model.add(MaxPooling2D(pool_size=(2, 2)))
 
@@ -414,6 +414,9 @@ def convKeras(args: str = None):
             model.summary()
 
             model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
+
+        else:
+            raise ValueError(f"Internal error : No model has been executed, given model : {args.model}.")
 
         ##############################################################################
 
@@ -503,13 +506,13 @@ if __name__ == "__main__":
         python script.py [options]
 
     Example:
-        python script.py --dataset mnist --train_data_file mnistTrainData.txt --train_class_file mnistTrainClass.txt \
-                         --test_data_file mnistTestData.txt --test_class_file mnistTestClass.txt \
-                         --valid_data_file mnistValidData.txt --valid_class_file mnistValidClass.txt \
-                         --nb_attributes 784 --nb_classes 10 --root_folder dimlp/datafiles/Mnist
+        python script.py --model small --train_data_file trainData.txt --train_class_file trainClass.txt \
+                         --test_data_file testData.txt --test_class_file testClass.txt \
+                         --valid_data_file validData.txt --valid_class_file validClass.txt \
+                         --original_img_size (28,28) --nb_channels 1 --data_format classic --nb_classes 10 --root_folder dimlp/datafiles/Mnist
 
     :param sys.argv: List of command-line arguments passed to the script.
     :type sys.argv: list
     """
     cmdline_args = " ".join(sys.argv[1:])
-    convKeras(cmdline_args)
+    cnnTrn(cmdline_args)

@@ -1,0 +1,22 @@
+{
+    "root_folder": "dimlp/datafiles/Mnist",
+    "train_data_file": "trainData.txt",
+    "train_valid_pred_outfile": "predTrain.out",
+    "train_class_file": "trainClass.txt",
+    "test_data_file": "testData.txt",
+    "test_pred_outfile": "predTest.out",
+    "test_class_file": "testClass.txt",
+    "valid_ratio": 0.1,
+    "original_img_size": "[28,28]",
+    "model_img_size": "[16,16]",
+    "data_format": "classic",
+    "nb_channels": 1,
+    "nb_classes": 10,
+    "model": "small",
+    "stats_file": "stats.txt",
+    "weights_outfile": "weights.wts",
+    "nb_epochs": 80,
+    "nb_quant_levels": 50,
+    "K": 1.0,
+    "seed": 0
+}

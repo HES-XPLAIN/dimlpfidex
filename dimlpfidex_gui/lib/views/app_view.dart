@@ -92,8 +92,8 @@ class _AppPageState extends State<AppPage> with TickerProviderStateMixin {
           NestedTabBar(tabs: {
             "ComputeRocCurve": FormView(
                 fields: computeRocCurveFields, tabController: _tabController),
-            "ConvKeras": FormView(
-                fields: convKerasFields, tabController: _tabController),
+            "CnnTrn": FormView(
+                fields: cnnTrnFields, tabController: _tabController),
             "GradBoostTrn": FormView(
                 fields: gradBoostTrnFields, tabController: _tabController),
             "MlpTrn":
@@ -114,7 +114,7 @@ class _AppPageState extends State<AppPage> with TickerProviderStateMixin {
             "DimlpRul": dimlpRulFields,
             "DimlpBT": dimlpBTFields,
             "ComputeRocCurve": computeRocCurveFields,
-            "ConvKeras": convKerasFields,
+            "CnnTrn": cnnTrnFields,
             "GradBoostTrn": gradBoostTrnFields,
             "MlpTrn": mlpTrnFields,
             "RandForestsTrn": randForestsTrnFields,
