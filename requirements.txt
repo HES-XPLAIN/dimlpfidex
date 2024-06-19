@@ -7,6 +7,7 @@ torch>=2.3
 torchvision>=0.18
 matplotlib>=3.7.4
 build>=1.0.3
+cibuildwheel>=2.19.1
 breathe>=4.35.0
 exhale>=0.3.7
 sphinx>=7.3.7
