@@ -32,14 +32,14 @@ def get_and_check_parameters(init_args):
 
     # Add new attributes
     parser = CustomArgumentParser(description="This is a parser for computeRocCurve", parents=[initial_parser], formatter_class=formatter, add_help=True)
-    parser.add_argument("--test_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test class file", metavar="<str>", required=True)
+    parser.add_argument("--test_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Path to the file containing the test true classes of the dataset", metavar="<str>", required=True)
     parser.add_argument("--test_pred_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test prediction file", metavar="<str>", required=True)
-    parser.add_argument("--nb_classes", type=lambda x: int_type(x, min=1), help="Number of classes in dataset", metavar="<int [1,inf[>", required=True)
-    parser.add_argument("--positive_class_index", type=lambda x: int_type(x, min=0), help="Index of positive class, index starts at 0", metavar="<int [0,nb_classes-1]>", required=True)
-    parser.add_argument("--estimator", type=str, help="Name of estimator", metavar="<str>", action=TaggableAction, tag="ROC")
-    parser.add_argument("--output_roc", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output ROC curve file name", metavar="<str>", default="roc_curve.png", action=TaggableAction, tag="ROC")
-    parser.add_argument("--stats_file", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output statistic file name with AUC score, can be the training stats file", metavar="<str>")
-    parser.add_argument("--show_params", type=bool_type, help="Whether to show parameters", metavar="<bool>", default=True)
+    parser.add_argument("--nb_classes", type=lambda x: int_type(x, min=1), help="Number of classes in the dataset", metavar="<int [1,inf[>", required=True)
+    parser.add_argument("--positive_class_index", type=lambda x: int_type(x, min=0), help="Index of the positive class, index starts at 0", metavar="<int [0,nb_classes-1]>", required=True)
+    parser.add_argument("--estimator", type=str, help="Name of the estimator", metavar="<str>", action=TaggableAction, tag="ROC")
+    parser.add_argument("--output_roc", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Path to the file where the output ROC curve will be saved", metavar="<str>", default="roc_curve.png", action=TaggableAction, tag="ROC")
+    parser.add_argument("--stats_file", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Path to the file where the AUC score will be added, it can be the training stats file", metavar="<str>")
+    parser.add_argument("--show_params", type=bool_type, help="Whether to show the parameters", metavar="<bool>", default=True)
 
     return get_args(args, cleaned_args, parser) # Return attributes
 

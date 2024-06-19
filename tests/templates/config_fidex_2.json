@@ -22,6 +22,7 @@
     "dropout_hyp": 0.5,
     "dropout_dim": 0.5,
     "min_fidelity": 1.0,
+    "lowest_min_fidelity": 0.75,
     "covering_strategy": true,
     "mus":"[175,12]",
     "sigmas":[1,2],

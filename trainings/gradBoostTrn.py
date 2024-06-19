@@ -35,7 +35,7 @@ def get_and_check_parameters(init_args):
 
     # Add new attributes
     parser = CustomArgumentParser(description="This is a parser for gradBoostTrn", parents=[common_parser], formatter_class=formatter, add_help=True)
-    parser.add_argument("--rules_outfile", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output gradient boosting rules file", metavar="<str>", default="GB_rules.rls")
+    parser.add_argument("--rules_outfile", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Path to the file where the gradient boosting output rules will be stored", metavar="<str>", default="GB_rules.rls")
     parser.add_argument("--n_estimators", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Number of generated trees in the forest", default=100, action=TaggableAction, tag="GB")
     parser.add_argument("--loss", choices=["log_loss", "exponential"], metavar="<{log_loss, exponential}>", help="Loss function to be optimized", default="log_loss", action=TaggableAction, tag="GB")
     parser.add_argument("--learning_rate", type=lambda x: float_type(x, min=0), metavar="<float [0,inf[>", help="Shrinks the contribution of each tree", default=0.1, action=TaggableAction, tag="GB")
@@ -49,7 +49,7 @@ def get_and_check_parameters(init_args):
     parser.add_argument("--max_leaf_nodes", type=lambda x: int_type(x, min=2), metavar="<int [2,inf[>", help="Grow trees with max_leaf_nodes in best-first fashion", action=TaggableAction, tag="GB")
     parser.add_argument("--min_impurity_decrease", type=lambda x: float_type(x, min=0), metavar="<float [0,inf[>", help="A node will be split if this split induces a decrease of the impurity greater than or equal to this value", default=0.0, action=TaggableAction, tag="GB")
     parser.add_argument("--init", choices=["zero"], metavar="<{zero}>", help="Estimator object used to compute the initial predictions", action=TaggableAction, tag="GB")
-    parser.add_argument("--seed", type=lambda x: int_type(x, min=0), metavar="<{int [0,inf[}>", help="Random seed", action=TaggableAction, tag="GB")
+    parser.add_argument("--seed", type=lambda x: int_type(x, min=0), metavar="<{int [0,inf[}>", help="Seed for random number generation", action=TaggableAction, tag="GB")
     parser.add_argument("--verbose", type=lambda x: int_type(x, min=0), metavar="<int [0,inf[>", help="Controls the verbosity when fitting and predicting", default=0, action=TaggableAction, tag="GB")
     parser.add_argument("--warm_start", type=bool_type, metavar="<bool>", help="Whether to reuse the solution of the previous call to fit and add more estimators to the ensemble", default=False, action=TaggableAction, tag="GB")
     parser.add_argument("--validation_fraction", type=lambda x: float_type(x, min=0, min_inclusive=False, max=1, max_inclusive=False), metavar="<float ]0,1[>", help="Proportion of training data to set aside as validation set for early stopping", default=0.1, action=TaggableAction, tag="GB")

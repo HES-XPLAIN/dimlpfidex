@@ -685,7 +685,7 @@ print_bold "[$SUCCESS/$TOTAL] tests passed within ${SECONDS} seconds."
 # --nb_classes <number of classes><Options>
 
 # Options are:
-# -S <Folder based on main folder dimlpfidex(default folder) where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>
+# -S <Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder>
 # --nb_dimlp_nets <number of networks for bagging, 1 means no bagging, necessary to use bagging (1 by default)>
 # --attributes_file <file of attributes>
 # -r <file where you redirect console result>
@@ -693,7 +693,7 @@ print_bold "[$SUCCESS/$TOTAL] tests passed within ${SECONDS} seconds."
 # --min_covering <minimum covering number (2 by default)>
 # --dropout_dim <dimension dropout parameter>
 # --dropout_hyp <hyperplane dropout parameter>
-# --max_failed_attempts <maximum number of failed attempts to find Fidex rule when covering is 1 (30 by default)>
+# --max_failed_attempts <Maximum number of failed attempts to find a Fidex rule when the covering is 1 and the covering strategy is used (30 by default)>
 # --nb_quant_levels <number of stairs in staircase activation function (50 by default)>
 # -t <decision threshold for predictions, need to specify the index of positive class if you want to use it (None by default)>
 # -x <index of positive class for the usage of decision threshold (None by default, 0 for first one)>

@@ -5,7 +5,7 @@ const rootFolderFld = Field(
   "root_folder",
   Datatype.directoryPath,
   description:
-      "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.",
+      "Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder.",
 );
 
 const trainDataFileFld = Field(
@@ -13,7 +13,7 @@ const trainDataFileFld = Field(
   "train_data_file",
   Datatype.filePath,
   isRequired: true,
-  description: "Path of file containing the train portion of the dataset.",
+  description: "Path to the file containing the train portion of the dataset.",
 );
 
 const trainPredFileFld = Field(
@@ -22,7 +22,7 @@ const trainPredFileFld = Field(
   Datatype.filePath,
   isRequired: true,
   description:
-      "Path of file containing predictions on the train portion of the dataset.",
+      "Path to the file containing predictions on the train portion of the dataset.",
 );
 
 const nbAttributesFld = Field(
@@ -32,7 +32,7 @@ const nbAttributesFld = Field(
   isRequired: true,
   minValue: "1",
   maxValue: "inf",
-  description: "Number of attributes in dataset.",
+  description: "Number of attributes in the dataset.",
 );
 const nbClassesFld = Field(
   "Number of classes",
@@ -41,7 +41,7 @@ const nbClassesFld = Field(
   isRequired: true,
   minValue: "2",
   maxValue: "inf",
-  description: "Number of classes in dataset.",
+  description: "Number of classes in the dataset.",
 );
 
 const nbQuantLevelsFld = Field(
@@ -51,7 +51,7 @@ const nbQuantLevelsFld = Field(
   minValue: "3",
   maxValue: "inf",
   defaultValue: "50",
-  description: "Number of stairs in staircase activation function.",
+  description: "Number of stairs in the staircase activation function.",
 );
 
 const dropoutDimFld = Field(
@@ -61,7 +61,7 @@ const dropoutDimFld = Field(
   minValue: "0.0",
   maxValue: "1.0",
   defaultValue: "0.0",
-  description: "Dimension dropout parameter.",
+  description: "Probability of dropping a dimension during rule extraction.",
 );
 const dropoutHypFld = Field(
   "Hyperplan dropout",
@@ -70,14 +70,7 @@ const dropoutHypFld = Field(
   minValue: "0.0",
   maxValue: "1.0",
     defaultValue: "0.0",
-  description: "Hyperplan dropout parameter.",
-);
-
-const rulesOutputFileFld = Field(
-  "Rules output file",
-  "rules_outfile",
-  Datatype.filePath,
-  description: "Path/name of rule(s) output file.",
+  description: "Probability of dropping a hyperplane during rule extraction.",
 );
 
 const consoleFileFld = Field(
@@ -85,27 +78,27 @@ const consoleFileFld = Field(
   "console_file",
   Datatype.filePath,
   description:
-      "Path of generated file that will contain the terminal output's redirection. If not specified, all output will be shown on your terminal.",
+      "Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal.",
 );
 
 const musFld = Field(
   "Mus",
   "mus",
   Datatype.listDoublePrecision,
-  minValue: "inf",
+  minValue: "-inf",
   maxValue: "inf",
   description:
-      "Mean or median of each attribute index to denormalize in the rules.",
+      "Mean or median of each attribute index to be denormalized in the rules.",
 );
 
 const sigmasFld = Field(
   "Sigmas",
   "sigmas",
   Datatype.listDoublePrecision,
-  minValue: "inf",
+  minValue: "-inf",
   maxValue: "inf",
   description:
-      "Standard deviation of each attribute index to denormalize in the rules.",
+      "Standard deviation of each attribute index to be denormalized in the rules.",
 );
 
 const normalizationIndicesFld = Field(
@@ -115,7 +108,7 @@ const normalizationIndicesFld = Field(
   minValue: "0",
   maxValue: "# attributes - 1",
   description:
-      "Attribute indices to denormalize in the rules, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1]).",
+      "Attribute indices to be denormalized in the rules, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1]).",
 );
 
 const seedFld = Field(
@@ -126,5 +119,5 @@ const seedFld = Field(
   maxValue: "inf",
   defaultValue: "0",
   description:
-      "Seed for random number generation, 0=random. Anything else than 0 is a arbitrary seed that can be reused to obtain the same randomly generated sequence and therefore getting same results.",
+      "Seed for random number generation, 0=random. Anything else than 0 is an arbitrary seed that can be reused to obtain the same randomly generated sequence and therefore getting same results.",
 );

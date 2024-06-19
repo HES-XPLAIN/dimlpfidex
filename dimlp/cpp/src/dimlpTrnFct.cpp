@@ -20,10 +20,10 @@ void showDimlpTrnParams()
   std::cout << "Required parameters:" << std::endl
             << std::endl;
 
-  printOptionDescription("--train_data_file <str>", "Train data file");
-  printOptionDescription("--train_class_file <str>", "Train true class file, not mandatory if classes are specified in train data file");
-  printOptionDescription("--nb_attributes <int [1,inf[>", "Number of input neurons");
-  printOptionDescription("--nb_classes <int [2,inf[>", "Number of output neurons");
+  printOptionDescription("--train_data_file <str>", "Path to the file containing the train portion of the dataset");
+  printOptionDescription("--train_class_file <str>", "Path to the file containing the train true classes of the dataset, not mandatory if classes are specified in train data file");
+  printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in the dataset");
+  printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in the dataset");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -31,39 +31,39 @@ void showDimlpTrnParams()
   std::cout << "Optional parameters: " << std::endl
             << std::endl;
 
-  printOptionDescription("--json_config_file <str>", "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path");
-  printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
-  printOptionDescription("--attributes_file <str>", "File of attributes");
-  printOptionDescription("--valid_data_file <str>", "Validation data file");
-  printOptionDescription("--test_data_file <str>", "Test data file");
-  printOptionDescription("--weights_file <str>", "Pretrained weights file");
-  printOptionDescription("--test_class_file <str>", "Test true class file");
-  printOptionDescription("--valid_class_file <str>", "Validation true class file");
-  printOptionDescription("--weights_outfile <str>", "Output weights file name (default: dimlp.wts)");
-  printOptionDescription("--stats_file <str>", "Output file name with train, test and validation accuracy (default: statsDimlpTrn.txt)");
-  printOptionDescription("--train_pred_outfile <str>", "Output train prediction file name (default: dimlpTrain.out)");
-  printOptionDescription("--test_pred_outfile <str>", "Output test prediction file name (default: dimlpTest.out)");
-  printOptionDescription("--valid_pred_outfile <str>", "Output validation prediction file name (default: dimlpValidation.out)");
-  printOptionDescription("--console_file <str>", "File with console logs redirection");
+  printOptionDescription("--json_config_file <str>", "Path to the JSON file that configures all parameters. If used, this must be the sole argument and must specify the file's relative path");
+  printOptionDescription("--root_folder <str>", "Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder");
+  printOptionDescription("--attributes_file <str>", "Path to the file containing the labels of attributes and classes");
+  printOptionDescription("--valid_data_file <str>", "Path to the file containing the validation portion of the dataset");
+  printOptionDescription("--test_data_file <str>", "Path to the file containing the test portion of the dataset");
+  printOptionDescription("--weights_file <str>", "Path to the file containing pretrained weights");
+  printOptionDescription("--test_class_file <str>", "Path to the file containing the test true classes of the dataset");
+  printOptionDescription("--valid_class_file <str>", "Path to the file containing the validation true classes of the dataset");
+  printOptionDescription("--weights_outfile <str>", "Path to the file where the output trained weights of the model will be stored (default: dimlp.wts)");
+  printOptionDescription("--stats_file <str>", "Path to the file where the train, test and validation accuracy will be stored (default: statsDimlpTrn.txt)");
+  printOptionDescription("--train_pred_outfile <str>", "Path to the file where the train predictions will be stored (default: dimlpTrain.out)");
+  printOptionDescription("--test_pred_outfile <str>", "Path to the file where the test predictions will be stored (default: dimlpTest.out)");
+  printOptionDescription("--valid_pred_outfile <str>", "Path to the file where the validation predictions will be stored (default: dimlpValidation.out)");
+  printOptionDescription("--console_file <str>", "Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal");
   printOptionDescription("--first_hidden_layer <int k*nb_attributes, k in [1,inf[>", "Number of neurons in the first hidden layer (default: nb_attributes)");
-  printOptionDescription("--hidden_layers <list<int [1,inf[>>", "Number of neurons in each hidden layer, from the second layer through to the last");
-  printOptionDescription("--hidden_layers_outfile <str>", "Output hidden layers' sizes file name (default: hidden_layers.out)");
-  printOptionDescription("--with_rule_extraction <bool>", "Whether to extract rules with dimlp algorithm");
-  printOptionDescription("--global_rules_outfile <str>", "Rules output file");
+  printOptionDescription("--hidden_layers <list<int [1,inf[>>", "Number of neurons in each hidden layer, from the second layer to the last");
+  printOptionDescription("--hidden_layers_outfile <str>", "Path to the file where output hidden layers sizes will be stored (default: hidden_layers.out)");
+  printOptionDescription("--with_rule_extraction <bool>", "Whether to extract rules with dimlp algorithm (default: False)");
+  printOptionDescription("--global_rules_outfile <str>", "Path to the file where the output rule(s) will be stored");
   printOptionDescription("--learning_rate <float ]0,inf[>", "Back-propagation learning parameter (default: 0.1)");
   printOptionDescription("--momentum <float [0,inf[>", "Back-propagation momentum parameter (default: 0.6)");
   printOptionDescription("--flat <float [0,inf[>", "Back-propagation flat spot elimination parameter (default: 0.01)");
-  printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in staircase activation function (default: 50)");
+  printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in the staircase activation function (default: 50)");
   printOptionDescription("--error_thresh <float [0,inf[>", "Error threshold to stop training");
   printOptionDescription("--acc_thresh <float ]0,1]>", "Accuracy threshold to stop training");
   printOptionDescription("--abs_error_thresh <float [0,inf[>", "Absolute difference error threshold, 0 if not using this stopping criteria (default: 0)");
-  printOptionDescription("--nb_epochs <int [1,inf[>", "Number of epochs (default: 1500)");
-  printOptionDescription("--nb_epochs_error <int [1,inf[>", "Number of epochs to show error (default: 10)");
-  printOptionDescription("--normalization_file <str>", "File containing the mean and std of some attributes. Used to denormalize the rules if specified");
-  printOptionDescription("--mus <list<float ]inf,inf[>>", "Mean or median of each attribute index to denormalize in the rules");
-  printOptionDescription("--sigmas <list<float ]inf,inf[>>", "Standard deviation of each attribute index to denormalize in the rules");
-  printOptionDescription("--normalization_indices <list<int [0,nb_attributes-1]>>", "Attribute indices to denormalize in the rules, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1])");
-  printOptionDescription("--seed <int [0,inf[>", "Seed, 0=random (default: 0)");
+  printOptionDescription("--nb_epochs <int [1,inf[>", "Number of model training epochs (default: 1500)");
+  printOptionDescription("--nb_epochs_error <int [1,inf[>", "Number of training epochs before showing error (default: 10)");
+  printOptionDescription("--normalization_file <str>", "Path to the file containing the mean and standard deviation of some attributes. Used to denormalize the rules if specified");
+  printOptionDescription("--mus <list<float ]-inf,inf[>>", "Mean or median of each attribute index to be denormalized in the rules");
+  printOptionDescription("--sigmas <list<float ]-inf,inf[>>", "Standard deviation of each attribute index to be denormalized in the rules");
+  printOptionDescription("--normalization_indices <list<int [0,nb_attributes-1]>>", "Attribute indices to be denormalized in the rules, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1])");
+  printOptionDescription("--seed <int [0,inf[>", "Seed for random number generation, 0=random. Anything else than 0 is an arbitrary seed that can be reused to obtain the same randomly generated sequence and therefore getting same results (default: 0)");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
