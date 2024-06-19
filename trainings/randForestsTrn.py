@@ -35,7 +35,7 @@ def get_and_check_parameters(init_args):
 
     # Add new attributes
     parser = CustomArgumentParser(description="This is a parser for randForestsTrn", parents=[common_parser], formatter_class=formatter, add_help=True)
-    parser.add_argument("--rules_outfile", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Output random forests rules file", metavar="<str>", default="RF_rules.rls")
+    parser.add_argument("--rules_outfile", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Path to the file where the random forests output rules will be stored", metavar="<str>", default="RF_rules.rls")
     parser.add_argument("--n_estimators", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Number of generated trees in the forest", default=100, action=TaggableAction, tag="RF")
     parser.add_argument("--criterion", choices=["gini", "entropy", "log_loss"], metavar="<{gini, entropy, log_loss}>", help="Function to measure split quality", default="gini", action=TaggableAction, tag="RF")
     parser.add_argument("--max_depth", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Maximum depth of the tree", action=TaggableAction, tag="RF")
@@ -48,10 +48,10 @@ def get_and_check_parameters(init_args):
     parser.add_argument("--bootstrap", type=bool_type, metavar="<bool>", help="Whether bootstrap samples are used when building trees", default=True, action=TaggableAction, tag="RF")
     parser.add_argument("--oob_score", type=bool_type, metavar="<bool>", help="Whether to use out-of-bag samples to estimate the generalization score", default=False, action=TaggableAction, tag="RF")
     parser.add_argument("--n_jobs", type=int_type, metavar="<int>", help="Number of jobs to run in parallel, -1 = using all processors", default=1, action=TaggableAction, tag="RF")
-    parser.add_argument("--seed", type=lambda x: int_type(x, min=0), metavar="<{int [0,inf[}>", help="Random seed", action=TaggableAction, tag="RF")
+    parser.add_argument("--seed", type=lambda x: int_type(x, min=0), metavar="<{int [0,inf[}>", help="Seed for random number generation", action=TaggableAction, tag="RF")
     parser.add_argument("--verbose", type=lambda x: int_type(x, min=0), metavar="<int [0,inf[>", help="Controls the verbosity when fitting and predicting", default=0, action=TaggableAction, tag="RF")
     parser.add_argument("--warm_start", type=bool_type, metavar="<bool>", help="Whether to reuse the solution of the previous call to fit and add more estimators to the ensemble", default=False, action=TaggableAction, tag="RF")
-    parser.add_argument("--class_weight", type=lambda x: enum_type(x, "balanced", "balanced_subsample", _=dict(func=dict_type)), metavar="<{balanced, dict}>", help="Class balance, for exemple with a dictionnary and 2 classes : {0:1.2, 1:3.5}", action=TaggableAction, tag="RF")
+    parser.add_argument("--class_weight", type=lambda x: enum_type(x, "balanced", "balanced_subsample", _=dict(func=dict_type)), metavar="<{balanced, balanced_subsample, dict}>", help="Class balance, for exemple with a dictionnary and 2 classes : {0:1.2, 1:3.5}", action=TaggableAction, tag="RF")
     parser.add_argument("--ccp_alpha", type=lambda x: float_type(x, min=0), metavar="<float [0,inf[>", help="Complexity parameter used for Minimal Cost-Complexity Pruning", default=0.0, action=TaggableAction, tag="RF")
     parser.add_argument("--max_samples", type=lambda x: enum_type(x, int_type=dict(func=int_type, min=1), float_type=dict(func=float_type, min=0, min_inclusive=False, max=1)), metavar="<int [1,inf[ U float]0,1.0]>", help="Number of samples to draw to train each base estimator for bootstrap, if float, it is a fraction of the number of samples", action=TaggableAction, tag="RF")
 

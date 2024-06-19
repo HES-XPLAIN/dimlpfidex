@@ -16,10 +16,10 @@ void showFidexGloParams() {
   std::cout << "Required parameters:" << std::endl
             << std::endl;
 
-  printOptionDescription("--test_data_file <str>", "Test sample(s) data file with data and prediction (if no --test_pred_file), classes may be added here if launching with fidex (--with_fidex)");
-  printOptionDescription("--global_rules_file <str>", "Ruleset input file");
-  printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in dataset");
-  printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in dataset");
+  printOptionDescription("--test_data_file <str>", "Path to the file containing test sample(s) data, prediction (if no --test_pred_file) and true classes if launching with fidex (--with_fidex and if no --test_class_file)");
+  printOptionDescription("--global_rules_file <str>", "Path to the file containing the global rules obtained with fidexGloRules algorithm.");
+  printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in the dataset");
+  printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in the dataset");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -27,14 +27,14 @@ void showFidexGloParams() {
   std::cout << "Optional parameters: " << std::endl
             << std::endl;
 
-  printOptionDescription("--json_config_file <str>", "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path");
-  printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, its path will be configured with respect to this root folder");
-  printOptionDescription("--attributes_file <str>", "File of attributes. Mandatory if rules file contains attribute names; if not, do not add it");
-  printOptionDescription("--test_pred_file <str>", "Test prediction file; if given, --test_data_file needs to have only test data");
-  printOptionDescription("--explanation_file <str>", "Explanation(s) output file name");
-  printOptionDescription("--console_file <str>", "File with console logs redirection");
-  printOptionDescription("--with_fidex <bool>", "Whether to use Fidex if no rule is found in global rules (default: False)");
-  printOptionDescription("--with_minimal_version <bool>", "Whether to use minimal version, which only gets correct activated rules and if with_fidex, launches Fidex when no such rule is found (default: False)");
+  printOptionDescription("--json_config_file <str>", "Path to the JSON file that configures all parameters. If used, this must be the sole argument and must specify the file's relative path");
+  printOptionDescription("--root_folder <str>", "Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder");
+  printOptionDescription("--attributes_file <str>", "Path to the file containing the labels of attributes and classes. Mandatory if rules file contains attribute names; if not, do not add it");
+  printOptionDescription("--test_pred_file <str>", "Path to the file containing predictions on the test portion of the dataset. If given, --test_data_file needs to have only the test data");
+  printOptionDescription("--explanation_file <str>", "Path to the file where explanation(s) will be stored");
+  printOptionDescription("--console_file <str>", "Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal");
+  printOptionDescription("--with_fidex <bool>", "Whether to use the Fidex algorithm if no rule is found in global rules (default: False)");
+  printOptionDescription("--with_minimal_version <bool>", "Whether to use the minimal version, which only gets correct activated rules and if with_fidex, launches Fidex when no such rule is found (default: False)");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -44,32 +44,32 @@ void showFidexGloParams() {
 
   std::cout << "Required :" << std::endl
             << std::endl;
-  printOptionDescription("--train_data_file <str>", "Train data file");
-  printOptionDescription("--train_pred_file <str>", "Train prediction file");
-  printOptionDescription("--train_class_file <str>", "Train true class file, not mandatory if classes are specified in train data file");
-  printOptionDescription("--weights_file <str>", "Weights file (not mandatory if a rules file is given with --rules_file)");
-  printOptionDescription("--rules_file <str>", "Rules file to be converted to hyperlocus (not mandatory if a weights file is given with --weights_file)");
+  printOptionDescription("--train_data_file <str>", "Path to the file containing the train portion of the dataset");
+  printOptionDescription("--train_pred_file <str>", "Path to the file containing predictions on the train portion of the dataset");
+  printOptionDescription("--train_class_file <str>", "Path to the file containing the train true classes of the dataset, not mandatory if classes are specified in train data file");
+  printOptionDescription("--weights_file <str>", "Path to the file containing the trained weights of the model (not mandatory if a rules file is given with --rules_file)");
+  printOptionDescription("--rules_file <str>", "Path to the file containing the trained rules to be converted to hyperlocus (not mandatory if a weights file is given with --weights_file)");
 
   std::cout << std::endl
             << "Optional :" << std::endl
             << std::endl;
 
-  printOptionDescription("--test_class_file <str>", "Test true class file, classes can be specified in test data file");
-  printOptionDescription("--max_iterations <int [1,inf[>", "Max iteration number, also the max possible number of attributes in a rule, should be 25 if working with images (default: 10)");
-  printOptionDescription("--min_covering <int [1,inf[>", "Minimum covering number (default: 2)");
-  printOptionDescription("--covering_strategy <bool>", "Whether to use this strategy : if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (default: True)");
-  printOptionDescription("--max_failed_attempts <int [0,inf[>", "Maximum number of failed attempts to find Fidex rule when covering is 1 and covering strategy is used (default: 30)");
+  printOptionDescription("--test_class_file <str>", "Path to the file containing the test true classes of the dataset. Classes can be specified in test data file");
+  printOptionDescription("--max_iterations <int [1,inf[>", "Maximum iteration number, also the maximum possible number of attributes in a rule, it should be 25 when working with images (default: 10)");
+  printOptionDescription("--min_covering <int [1,inf[>", "Minimum number of samples covered by the generated rules (default: 2)");
+  printOptionDescription("--covering_strategy <bool>", "Whether to use the covering strategy : if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (default: True)");
+  printOptionDescription("--max_failed_attempts <int [0,inf[>", "Maximum number of failed attempts to find a Fidex rule when the covering is 1 and the covering strategy is used (default: 30)");
   printOptionDescription("--min_fidelity <float [0,1]>", "Minimal rule fidelity accepted when generating a rule (default: 1.0)");
-  printOptionDescription("--lowest_min_fidelity <float [0,1]>", "Minimal min_fidelity to which we agree to go down during covering_strategy (default: 0.75)");
-  printOptionDescription("--nb_fidex_rules <int [1,inf[>", "Number of Fidex rules to compute per sample when launching Fidex (default: 1)");
-  printOptionDescription("--dropout_dim <float [0,1]>", "Dimension dropout parameter (default: 0.0)");
-  printOptionDescription("--dropout_hyp <float [0,1]>", "Hyperplane dropout parameter (default: 0.0)");
-  printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in staircase activation function (default: 50)");
-  printOptionDescription("--normalization_file <str>", "File containing the mean and std of some attributes. Used to denormalize the rules if specified");
-  printOptionDescription("--mus <list<float ]inf,inf[>>", "Mean or median of each attribute index to denormalize in the rules");
-  printOptionDescription("--sigmas <list<float ]inf,inf[>>", "Standard deviation of each attribute index to denormalize in the rules");
-  printOptionDescription("--normalization_indices <list<int [0,nb_attributes-1]>>", "Attribute indices to denormalize in the rules, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1])");
-  printOptionDescription("--seed <int [0,inf[>", "Seed, 0=random (default: 0)");
+  printOptionDescription("--lowest_min_fidelity <float [0,1]>", "Minimal min_fidelity to which we agree to go down during the covering_strategy (default: 0.75)");
+  printOptionDescription("--nb_fidex_rules <int [1,inf[>", "Number of Fidex rules to compute per sample when launching the Fidex algorithm (default: 1)");
+  printOptionDescription("--dropout_dim <float [0,1]>", "Probability of dropping a dimension during rule extraction (default: 0.0)");
+  printOptionDescription("--dropout_hyp <float [0,1]>", "Probability of dropping a hyperplane during rule extraction (default: 0.0)");
+  printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in the staircase activation function (default: 50)");
+  printOptionDescription("--normalization_file <str>", "Path to the file containing the mean and standard deviation of some attributes. Used to denormalize the rules if specified");
+  printOptionDescription("--mus <list<float ]-inf,inf[>>", "Mean or median of each attribute index to be denormalized in the rules");
+  printOptionDescription("--sigmas <list<float ]-inf,inf[>>", "Standard deviation of each attribute index to be denormalized in the rules");
+  printOptionDescription("--normalization_indices <list<int [0,nb_attributes-1]>>", "Attribute indices to be denormalized in the rules, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1])");
+  printOptionDescription("--seed <int [0,inf[>", "Seed for random number generation, 0=random. Anything else than 0 is an arbitrary seed that can be reused to obtain the same randomly generated sequence and therefore getting same results (default: 0)");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -181,7 +181,7 @@ void checkParametersLogicValues(Parameters &p) {
     }
 
     if (p.getInt(NB_QUANT_LEVELS) <= 2) {
-      throw CommandArgumentException("Error : Number of stairs in staircase activation function must be greater than 2.");
+      throw CommandArgumentException("Error : Number of stairs in the staircase activation function must be greater than 2.");
     }
   }
 }

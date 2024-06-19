@@ -1068,7 +1068,7 @@ void Parameters::checkParametersCommon() {
   checkAttributeAndClassCounts();
 
   if (getInt(NB_QUANT_LEVELS) <= 2) {
-    throw CommandArgumentException("Error : Number of stairs in staircase activation function must be greater than 2.");
+    throw CommandArgumentException("Error : Number of stairs in the staircase activation function must be greater than 2.");
   }
 }
 

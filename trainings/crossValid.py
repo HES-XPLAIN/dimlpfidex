@@ -126,7 +126,7 @@ def crossValid(*args, **kwargs):
 
             print("----------------------------")
             print("Optional parameters :")
-            print("root_folder : Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder.")
+            print("root_folder : Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder.")
             print("crossVal_folder : Folder name where to save crossValidation data (CrossValidation by default)")
             print("K : K-fold cross-validation (10 by default)")
             print("N : number of times we do the cross-validation (10 by default)")
@@ -174,7 +174,7 @@ def crossValid(*args, **kwargs):
 
             print("----------------------------")
             print("Optional parameters for svm training:")
-            print("svm_K : Parameter to improve dynamics (1 by default)")
+            print("svm_K : Parameter to improve dynamics by normalizing input data (1 by default)")
             print("C : regularization, (1.0 by default)")
             print("kernel : linear, poly, rbf(default) or sigmoid")
             print("degree : polynomial degree (3 by default)")
@@ -190,7 +190,7 @@ def crossValid(*args, **kwargs):
 
             print("----------------------------")
             print("Optional parameters for mlp training:")
-            print("mlp_K : Parameter to improve dynamics (1 by default)")
+            print("mlp_K : Parameter to improve dynamics by normalizing input data (1 by default)")
             print("hidden_layer_sizes : Size of each hidden layers. Array of shape (n_layers-2) ((100,) by default)")
             print("activation : activation function, identity, logistic, tanh or relu(default)")
             print("solver : solver for weight optimization, lbfgs, sgd or adam (default)")
@@ -823,7 +823,7 @@ def crossValid(*args, **kwargs):
                         outputStatsFile.write(f"The number of train epochs is {nb_epochs}\n")
                         outputStatsFile.write(f"The number of train epochs to show error is {nb_epochs_error}\n")
                     elif train_method == "svm":
-                        outputStatsFile.write(f"The K parameter to improve dynamics is {svm_k}\n")
+                        outputStatsFile.write(f"The K parameter to improve dynamics by normalizing input data is {svm_k}\n")
                         outputStatsFile.write(f"The regularization parameter C is {c_var}\n")
                         outputStatsFile.write(f"The kernel is {kernel_var}\n")
                         if kernel_var == "poly":
@@ -852,7 +852,7 @@ def crossValid(*args, **kwargs):
                         else:
                             outputStatsFile.write("The decision function shape is one-vs-one\n")
                     elif train_method == "mlp":
-                        outputStatsFile.write(f"The K parameter to improve dynamics is {mlp_k}\n")
+                        outputStatsFile.write(f"The K parameter to improve dynamics by normalizing input data is {mlp_k}\n")
                         outputStatsFile.write(f"The size of the hidden layers is {hidden_layer_sizes_var}\n")
                         outputStatsFile.write(f"The activation function is {activation_var}\n")
                         outputStatsFile.write(f"The solver is {solver_var}\n")

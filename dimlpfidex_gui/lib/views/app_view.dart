@@ -88,6 +88,8 @@ class _AppPageState extends State<AppPage> with TickerProviderStateMixin {
                 FormView(fields: dimlpRulFields, tabController: _tabController),
             "DimlpBT":
                 FormView(fields: dimlpBTFields, tabController: _tabController)
+            "DensCls":
+                FormView(fields: densClsFields, tabController: _tabController)
           }),
           NestedTabBar(tabs: {
             "ComputeRocCurve": FormView(
@@ -113,6 +115,7 @@ class _AppPageState extends State<AppPage> with TickerProviderStateMixin {
             "DimlpPred": dimlpPredFields,
             "DimlpRul": dimlpRulFields,
             "DimlpBT": dimlpBTFields,
+            "DensCls": densClsFieldsFields,
             "ComputeRocCurve": computeRocCurveFields,
             "CnnTrn": cnnTrnFields,
             "GradBoostTrn": gradBoostTrnFields,

@@ -502,8 +502,8 @@ def get_initial_parser(init_args):
     :return: A tuple containing the parsed arguments and the initial parser instance.
     """
     initial_parser = CustomArgumentParser(description="This is a parser for root folder and json handling", add_help=False)
-    initial_parser.add_argument("--json_config_file", type=lambda x: sanitizepath("", x), help="JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path", metavar="<str>")
-    initial_parser.add_argument("--root_folder", type=directory, help="Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder>", metavar="<str>", default="")
+    initial_parser.add_argument("--json_config_file", type=lambda x: sanitizepath("", x), help="Path to the JSON file that configures all parameters. If used, this must be the sole argument and must specify the file's relative path", metavar="<str>")
+    initial_parser.add_argument("--root_folder", type=directory, help="Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder>", metavar="<str>", default="")
 
     args = initial_parser.parse_known_args(init_args)[0]
 
@@ -525,16 +525,16 @@ def get_common_parser(args, initial_parser):
     :return: The instance of the common argument parser.
     """
     common_parser = CustomArgumentParser(description="This is a parser for common training arguments", parents=[initial_parser], add_help=False)
-    common_parser.add_argument("--train_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Train data file", metavar="<str>", required=True)
-    common_parser.add_argument("--train_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Train class file, mandatory if classes are not specified in train_data_file", metavar="<str>")
-    common_parser.add_argument("--train_pred_outfile", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Output train prediction file name", metavar="<str>", default="predTrain.out")
-    common_parser.add_argument("--test_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test data file", metavar="<str>", required=True)
-    common_parser.add_argument("--test_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Test class file, mandatory if classes are not specified in test_data_file", metavar="<str>")
-    common_parser.add_argument("--test_pred_outfile", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Output test prediction file name", metavar="<str>", default="predTest.out")
-    common_parser.add_argument("--console_file", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="File with console logs redirection", metavar="<str>")
-    common_parser.add_argument("--stats_file", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Output statistic file name with train and test accuracy", metavar="<str>", default="stats.txt")
-    common_parser.add_argument("--nb_attributes", type=lambda x: int_type(x, min=1), help="Number of attributes in dataset", metavar="<int [1,inf[>", required=True)
-    common_parser.add_argument("--nb_classes", type=lambda x: int_type(x, min=1), help="Number of classes in dataset", metavar="<int [1,inf[>", required=True)
+    common_parser.add_argument("--train_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Path to the file containing the train portion of the dataset", metavar="<str>", required=True)
+    common_parser.add_argument("--train_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train_data_file", metavar="<str>")
+    common_parser.add_argument("--train_pred_outfile", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Path to the file where the train predictions will be stored", metavar="<str>", default="predTrain.out")
+    common_parser.add_argument("--test_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Path to the file containing the test portion of the dataset", metavar="<str>", required=True)
+    common_parser.add_argument("--test_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test_data_file", metavar="<str>")
+    common_parser.add_argument("--test_pred_outfile", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Path to the file where the test predictions will be stored", metavar="<str>", default="predTest.out")
+    common_parser.add_argument("--console_file", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal", metavar="<str>")
+    common_parser.add_argument("--stats_file", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Path to the file where the train and test accuracy will be stored", metavar="<str>", default="stats.txt")
+    common_parser.add_argument("--nb_attributes", type=lambda x: int_type(x, min=1), help="Number of attributes in the dataset", metavar="<int [1,inf[>", required=True)
+    common_parser.add_argument("--nb_classes", type=lambda x: int_type(x, min=1), help="Number of classes in the dataset", metavar="<int [1,inf[>", required=True)
 
     return common_parser
 

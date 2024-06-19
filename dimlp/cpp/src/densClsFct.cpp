@@ -20,12 +20,12 @@ void showDensClsParams()
   std::cout << "Required parameters:" << std::endl
             << std::endl;
 
-  printOptionDescription("--train_data_file <str>", "Train data file");
-  printOptionDescription("--train_class_file <str>", "Train true class file, not mandatory if classes are specified in train data file");
-  printOptionDescription("--weights_file <str>", "Weights file containing the weights of each network trained with dimlpBT");
-  printOptionDescription("--nb_attributes <int [1,inf[>", "Number of input neurons");
-  printOptionDescription("--nb_classes <int [2,inf[>", "Number of output neurons");
-  printOptionDescription("--hidden_layers_file <str>", "Hidden layers file name");
+  printOptionDescription("--train_data_file <str>", "Path to the file containing the train portion of the dataset");
+  printOptionDescription("--train_class_file <str>", "Path to the file containing the train true classes of the dataset, not mandatory if classes are specified in train data file");
+  printOptionDescription("--weights_file <str>", "Path to the file containing the weights of the model trained with dimlpBT");
+  printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in the dataset");
+  printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in the dataset");
+  printOptionDescription("--hidden_layers_file <str>", "Path to the file containing hidden layers sizes");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -33,22 +33,22 @@ void showDensClsParams()
   std::cout << "Optional parameters: " << std::endl
             << std::endl;
 
-  printOptionDescription("--json_config_file <str>", "JSON file to configure all parameters. If used, this must be the sole argument and must specify the file's relative path");
-  printOptionDescription("--root_folder <str>", "Folder based on main folder dimlpfidex(default folder) containg all used files and where generated files will be saved. If a file name is specified with another option, his path will be configured with respect to this root folder");
-  printOptionDescription("--attributes_file <str>", "File of attributes");
-  printOptionDescription("--test_data_file <str>", "Test data file");
-  printOptionDescription("--test_class_file <str>", "Test true class file");
-  printOptionDescription("--console_file <str>", "File with console logs redirection");
-  printOptionDescription("--train_pred_outfile <str>", "Output train prediction file name (default: densClsTrain.out)");
-  printOptionDescription("--test_pred_outfile <str>", "Output test prediction file name (default: densClsTest.out)");
-  printOptionDescription("--stats_file <str>", "Output file name with global train and test accuracy");
-  printOptionDescription("--with_rule_extraction <bool>", "Whether to extract rules with dimlpBT algorithm");
-  printOptionDescription("--global_rules_outfile <str>", "Rules output file");
-  printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in staircase activation function (default: 50)");
-  printOptionDescription("--normalization_file <str>", "File containing the mean and std of some attributes. Used to denormalize the rules if specified");
-  printOptionDescription("--mus <list<float ]inf,inf[>>", "Mean or median of each attribute index to denormalize in the rules");
-  printOptionDescription("--sigmas <list<float ]inf,inf[>>", "Standard deviation of each attribute index to denormalize in the rules");
-  printOptionDescription("--normalization_indices <list<int [0,nb_attributes-1]>>", "Attribute indices to denormalize in the rules, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1])");
+  printOptionDescription("--json_config_file <str>", "Path to the JSON file that configures all parameters. If used, this must be the sole argument and must specify the file's relative path");
+  printOptionDescription("--root_folder <str>", "Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder");
+  printOptionDescription("--attributes_file <str>", "Path to the file containing the labels of attributes and classes");
+  printOptionDescription("--test_data_file <str>", "Path to the file containing the test portion of the dataset");
+  printOptionDescription("--test_class_file <str>", "Path to the file containing the test true classes of the dataset.");
+  printOptionDescription("--console_file <str>", "Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal");
+  printOptionDescription("--train_pred_outfile <str>", "Path to the file where the train predictions will be stored (default: densClsTrain.out)");
+  printOptionDescription("--test_pred_outfile <str>", "Path to the file where the test predictions will be stored (default: densClsTest.out)");
+  printOptionDescription("--stats_file <str>", "Path to the file where the global train and test accuracy will be stored");
+  printOptionDescription("--with_rule_extraction <bool>", "Whether to extract rules with dimlpBT algorithm (default: False)");
+  printOptionDescription("--global_rules_outfile <str>", "Path to the file where the output rule(s) will be stored");
+  printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in the staircase activation function (default: 50)");
+  printOptionDescription("--normalization_file <str>", "Path to the file containing the mean and standard deviation of some attributes. Used to denormalize the rules if specified");
+  printOptionDescription("--mus <list<float ]-inf,inf[>>", "Mean or median of each attribute index to be denormalized in the rules");
+  printOptionDescription("--sigmas <list<float ]-inf,inf[>>", "Standard deviation of each attribute index to be denormalized in the rules");
+  printOptionDescription("--normalization_indices <list<int [0,nb_attributes-1]>>", "Attribute indices to be denormalized in the rules, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1])");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
