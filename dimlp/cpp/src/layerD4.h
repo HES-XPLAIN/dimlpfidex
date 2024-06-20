@@ -35,17 +35,23 @@ class LayerDimlp4 : public Layer {
   /**
    * @brief Overrides the method to prevent weight adaptation.
    */
-  void AdaptWeights() override {}
+  void AdaptWeights() override {
+    // This method intentionally left empty to prevent weight adaptation
+  }
 
   /**
    * @brief Overrides the method to prevent bias adaptation.
    */
-  void AdaptBias() override {}
+  void AdaptBias() override {
+    // This method intentionally left empty to prevent bias adaptation
+  }
 
   /**
    * @brief Overrides the method to prevent delta computation.
    */
-  void ComputeDeltaDown() override {}
+  void ComputeDeltaDown() override {
+    // This method intentionally left empty to prevent delta computation
+  }
 
   //----------------------------------------------------------------
 

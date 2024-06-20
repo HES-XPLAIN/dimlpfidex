@@ -52,7 +52,7 @@ train_file : données avec lesquelles tu as entrainé ton modèle
 Categorisation of attributes (ex : Smoker/No_Smoker)
 
 ### CNN
-Tell how to add a new model (add in argument model choices and add the model in the code, if not 2D (1D, 3D, etc. change pair_type of original_img_size and model_img_size to a list_type to accept more or less than 2 values))
+Tell how to add a new model (add in argument model choices and add the model in the code, if not 2D (1D, 3D, etc. change pair_type of original_input_size and model_input_size to a list_type to accept more or less than 2 values))
 Indiquer qu'il est important de diminuer la taille des images au préalable...
 
 ### Parler de :

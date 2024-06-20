@@ -273,7 +273,7 @@ std::string getStrPatternWithClassNames();
 /**
  * @brief Checks if a rules file contains rules with attribute names or attribute IDs and with class names or class IDs. A rule needs to start with "Rule".
  */
-std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, DataSetFid &dataset, bool withClasses = true);
+std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, const DataSetFid &dataset, bool withClasses = true);
 
 /**
  * @brief Converts a well-formatted rule string to a Rule object.

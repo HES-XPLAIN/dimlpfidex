@@ -18,7 +18,7 @@ from keras.callbacks import ModelCheckpoint
 
 
 from trainings.trnFun import compute_first_hidden_layer, output_stats, output_data, get_data, get_data_class
-from trainings.parameters import get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, bool_type, print_parameters, pair_type
+from trainings.parameters import get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, print_parameters, pair_type
 
 def get_and_check_parameters(init_args):
     """
@@ -47,8 +47,8 @@ def get_and_check_parameters(init_args):
 
     # Add new attributes
     parser = CustomArgumentParser(description="This is a parser for cnnTrn", parents=[initial_parser], formatter_class=formatter, add_help=True)
-    parser.add_argument("--original_img_size", type=lambda x: pair_type(x, dict(func=int_type, min=1)), metavar="<pair<int [1, inf[>>", help="Original image size", required=True)
-    parser.add_argument("--nb_channels", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Number of channels in the image (3 for RGB, 1 for B&W)", required=True)
+    parser.add_argument("--original_input_size", type=lambda x: pair_type(x, dict(func=int_type, min=1)), metavar="<pair<int [1, inf[>>", help="Original input size size", required=True)
+    parser.add_argument("--nb_channels", type=lambda x: int_type(x, min=1), metavar="<int [1,inf[>", help="Number of channels in the input (3 for RGB image, 1 for B&W image)", required=True)
     parser.add_argument("--model", choices=["small", "large", "vgg", "resnet"], metavar="<{small, large, vgg, resnet}>", help="Training model", required=True)
     parser.add_argument("--data_format", choices=["normalized_01", "classic", "other"], metavar="<{normalized_01, classic, other}>", help="Format of the values of the data, normalized_01 if the data are normalized between 0 and 1, classic if they are between 0 and 255", required=True)
     parser.add_argument("--train_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Path to the file containing the train portion of the dataset", metavar="<str>", required=True)
@@ -56,7 +56,7 @@ def get_and_check_parameters(init_args):
     parser.add_argument("--test_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Path to the file containing the test portion of the dataset", metavar="<str>", required=True)
     parser.add_argument("--test_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test_data_file", metavar="<str>")
     parser.add_argument("--nb_classes", type=lambda x: int_type(x, min=1), help="Number of classes in the dataset", metavar="<int [1,inf[>", required=True)
-    parser.add_argument("--model_img_size", type=lambda x: pair_type(x, dict(func=int_type, min=1)), metavar="<pair<int [1, inf[>>", help="Image size in the model. A small size is recommended to speed up the process. The size is modified if necessary", action=TaggableAction, tag="CNN")
+    parser.add_argument("--model_input_size", type=lambda x: pair_type(x, dict(func=int_type, min=1)), metavar="<pair<int [1, inf[>>", help="Image size in the model. A small size is recommended to speed up the process. The size is modified if necessary", action=TaggableAction, tag="CNN")
     parser.add_argument("--valid_ratio", type=lambda x: float_type(x, min=0, min_inclusive=False, max=1, max_inclusive=False), metavar="<float ]0,inf[>", help="Percentage of train data taken for validation (default: 0.1)")
     parser.add_argument("--valid_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Path to the file containing the validation portion of the dataset", metavar="<str>")
     parser.add_argument("--valid_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Path to the file containing the validation true classes of the dataset, mandatory if classes are not specified in valid_data_file. BE CAREFUL if there is validation files, and you want to use Fidex algorithms later, you will have to use both train and validation datas given here in the train datas and classes of Fidex", metavar="<str>")
@@ -78,6 +78,7 @@ def cnnTrn(args: str = None):
     This function processes data preprocessing that includes resizing, normalization and a staircase activation function that allows for the characterization
     of discriminating hyperplanes, which are used in Fidex. This allows us to then use Fidex for comprehensible rule extraction. It accommodates
     various types of image datasets including MNIST, CIFAR-10, and CIFAR-100, and allows for extensive customization through command-line arguments.
+    It's also possible to use other data types.
 
     Notes:
     - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
@@ -85,12 +86,12 @@ def cnnTrn(args: str = None):
     - Validation data can either be specified directly or split from the training data based on a provided ratio.
     - If validation files are given, and you want to use Fidex algorithms later, you will have to use both train and
       validation datas given here in the train datas and classes of Fidex.
-    - It's mandatory to specify the size of the original images as well as the number of channels (it should be 3 for RGB and 1 for B&W). The number of attributes is inferred from it.
+    - It's mandatory to specify the size of the original inputs as well as the number of channels (it should be 3 for RGB and 1 for B&W). The number of attributes is inferred from it.
     - It's mandatory to chose a model. There is a large model, a small one, a VGG16 and a Resnet50 available. You can add any other model you want by modifying the code.
     - It's mandatory to specify the format of the data values: 'normalized_01' if the data are normalized between 0 and 1, 'classic' if they are between 0 and 255, and 'other' otherwise.
     - Data is reshaped in 3-channels shape if there is only one and usinf VGG or Resnet.
-    - If Fidex is meant to be executed afterward for rule extraction, resizing images beforhand to a smaller size is recommended as it will take a lot of time because of the number of parameters.
-    - It is also possible to resize the images just for training with the model_img_size parameter. Training with smaller images will be worst but will save a lot of time.
+    - If Fidex is meant to be executed afterward for rule extraction, resizing inputs beforhand to a smaller size is recommended as it will take a lot of time because of the number of parameters.
+    - It is also possible to resize the inputs just for training with the model_input_size parameter. Training with smaller inputs will be worst but will save a lot of time.
     - Parameters can be specified using the command line or a JSON configuration file.
     - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
     - It's not necessary to normalize data before training because a normalization is done during the process.
@@ -103,7 +104,7 @@ def cnnTrn(args: str = None):
     - console_file : If specified, contains the console output.
 
     File formats:
-    - **Data files**: These files should contain one sample (image) per line, with numbers separated either by spaces, tabs, semicolons or commas. Each pixel must be given one after the other. Supported formats:
+    - **Data files**: These files should contain one sample (input/image) per line, with numbers separated either by spaces, tabs, semicolons or commas. Each pixel must be given one after the other. Supported formats:
       1. Only attributes (floats).
       2. Attributes (floats) followed by an integer class ID.
       3. Attributes (floats) followed by one-hot encoded class.
@@ -113,7 +114,7 @@ def cnnTrn(args: str = None):
 
     Example of how to call the function:
     from trainings.cnnTrn import cnnTrn
-    cnnTrn('--model small --train_data_file trainData.txt --train_class_file trainClass.txt --test_data_file testData.txt --test_class_file testClass.txt --valid_data_file validData.txt --valid_class_file validClass.txt --original_img_size (28,28) --nb_channels 1 --data_format classic --nb_classes 10 --root_folder dimlp/datafiles/Mnist')
+    cnnTrn('--model small --train_data_file trainData.txt --train_class_file trainClass.txt --test_data_file testData.txt --test_class_file testClass.txt --valid_data_file validData.txt --valid_class_file validClass.txt --original_input_size (28,28) --nb_channels 1 --data_format classic --nb_classes 10 --root_folder dimlp/datafiles/Mnist')
 
     :param args: A single string containing either the path to a JSON configuration file with all specified arguments or all arguments for the function, formatted like command-line input.
                  This includes dataset selection, file paths, training parameters, and options for model architecture and output files.
@@ -164,16 +165,16 @@ def cnnTrn(args: str = None):
         if args.valid_ratio is None and args.valid_data_file is None:
             args.valid_ratio = 0.1
 
-        img_size = args.model_img_size if args.model_img_size else args.original_img_size
+        img_size = args.model_input_size if args.model_input_size else args.original_input_size
         if args.model == "vgg":
             if img_size[0] < 32 or img_size[1] < 32:
-                raise ValueError('Error : The VGG model do not accept an image size smaller than 32 in each coordinate. Use model_img_size to increase the image size in the model.')
+                raise ValueError('Error : The VGG model do not accept an input size smaller than 32 in each coordinate. Use model_input_size to increase the input size in the model.')
         elif args.model == "small":
             if img_size[0] < 16 or img_size[1] < 16:
-                raise ValueError('Error : The small model do not accept an image size smaller than 16 in each coordinate. Use model_img_size to increase the image size in the model.')
+                raise ValueError('Error : The small model do not accept an input size smaller than 16 in each coordinate. Use model_input_size to increase the input size in the model.')
         elif args.model == "large":
             if img_size[0] < 36 or img_size[1] < 36:
-                raise ValueError('Error : The large model do not accept an image size smaller than 36 in each coordinate. Use model_img_size to increase the image size in the model.')
+                raise ValueError('Error : The large model do not accept an input size smaller than 36 in each coordinate. Use model_input_size to increase the input size in the model.')
 
         model_checkpoint_weights = "weightsModel.keras"
         if (args.root_folder is not None):
@@ -189,7 +190,7 @@ def cnnTrn(args: str = None):
         sigma = None
 
         # Get data
-        nb_attributes = args.original_img_size[0]*args.original_img_size[1]*args.nb_channels
+        nb_attributes = args.original_input_size[0]*args.original_input_size[1]*args.nb_channels
         x_train_full_temp, y_train_full_temp = get_data(args.train_data_file, nb_attributes, args.nb_classes)
         x_train_full = np.array(x_train_full_temp)
 
@@ -257,9 +258,9 @@ def cnnTrn(args: str = None):
         x_test_h1 = compute_first_hidden_layer("test", x_test, args.K, args.nb_quant_levels, hiknot, mu=mu, sigma=sigma)
         x_val_h1 = compute_first_hidden_layer("test", x_val, args.K, args.nb_quant_levels, hiknot, mu=mu, sigma=sigma)
 
-        x_train_h1 = x_train_h1.reshape(x_train_h1.shape[0], args.original_img_size[0], args.original_img_size[1], args.nb_channels)
-        x_test_h1 = x_test_h1.reshape(x_test_h1.shape[0], args.original_img_size[0], args.original_img_size[1], args.nb_channels)
-        x_val_h1 = x_val_h1.reshape(x_val_h1.shape[0], args.original_img_size[0], args.original_img_size[1], args.nb_channels)
+        x_train_h1 = x_train_h1.reshape(x_train_h1.shape[0], args.original_input_size[0], args.original_input_size[1], args.nb_channels)
+        x_test_h1 = x_test_h1.reshape(x_test_h1.shape[0], args.original_input_size[0], args.original_input_size[1], args.nb_channels)
+        x_val_h1 = x_val_h1.reshape(x_val_h1.shape[0], args.original_input_size[0], args.original_input_size[1], args.nb_channels)
 
         # VGG and Resnet need 3 channels
         if (args.nb_channels == 1 and (args.model == "vgg" or args.model == "resnet")):
@@ -288,7 +289,7 @@ def cnnTrn(args: str = None):
             input_tensor = keras.Input(shape=(img_size[0], img_size[1], 3))
             model_base = ResNet50(include_top=False, weights="imagenet", input_tensor=input_tensor)
             model = Sequential()
-            if args.model_img_size is not None:
+            if args.model_input_size is not None:
                 model.add(Resizing(img_size[0], img_size[1]))
             model.add(model_base)
             model.add(keras.layers.Flatten())
@@ -312,7 +313,7 @@ def cnnTrn(args: str = None):
                 layer.trainable = False
 
             model = Sequential()
-            if args.model_img_size is not None:
+            if args.model_input_size is not None:
                 model.add(Resizing(img_size[0], img_size[1]))
             model.add(model_base)
             model.add(keras.layers.Flatten())
@@ -332,7 +333,7 @@ def cnnTrn(args: str = None):
             model = Sequential()
 
             model.add(Input(shape=(img_size[0], img_size[1], args.nb_channels)))
-            if args.model_img_size is not None:
+            if args.model_input_size is not None:
                 model.add(Resizing(img_size[0], img_size[1]))
             # Add a convolutional layer with 32 filters, 3x3 kernel size, and relu activation function
             model.add(Convolution2D(32, kernel_size=(3, 3), activation='relu'))
@@ -393,7 +394,7 @@ def cnnTrn(args: str = None):
             model = Sequential()
 
             model.add(Input(shape=(img_size[0], img_size[1], args.nb_channels)))
-            if args.model_img_size is not None:
+            if args.model_input_size is not None:
                 model.add(Resizing(img_size[0], img_size[1]))
 
             model.add(Convolution2D(32, (5, 5), activation='relu'))
@@ -509,7 +510,7 @@ if __name__ == "__main__":
         python script.py --model small --train_data_file trainData.txt --train_class_file trainClass.txt \
                          --test_data_file testData.txt --test_class_file testClass.txt \
                          --valid_data_file validData.txt --valid_class_file validClass.txt \
-                         --original_img_size (28,28) --nb_channels 1 --data_format classic --nb_classes 10 --root_folder dimlp/datafiles/Mnist
+                         --original_input_size (28,28) --nb_channels 1 --data_format classic --nb_classes 10 --root_folder dimlp/datafiles/Mnist
 
     :param sys.argv: List of command-line arguments passed to the script.
     :type sys.argv: list
