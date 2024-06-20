@@ -15,6 +15,7 @@ enum Datatype {
   listInteger,
   listFilePath,
   listDoublePrecision,
+  pairInteger
 }
 
 class Field {

@@ -46,7 +46,8 @@ List<dynamic>? listValueTransformer(String? value, Field field) {
     words = [for (String word in words) "\"$word\""];
     formattedValue = words.toString();
   } else {
-    formattedValue = "[$value]";
+    value = "[${value.replaceAll(RegExp(r'\[|\]'), '')}]";
+    formattedValue = value;
   }
 
   return json.decode(formattedValue) as List<dynamic>;

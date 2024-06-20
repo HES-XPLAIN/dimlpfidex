@@ -73,15 +73,22 @@ String? listInputValidator(String? value, Field field) {
 
   if (field.datatype != Datatype.listString &&
       field.datatype != Datatype.listFilePath) {
-    if (RegExp("[^0-9, .]").hasMatch(value)) {
-      return "There's a syntax error in your input";
+    if (RegExp("[a-zA-Z]").hasMatch(value)) {
+      return "An integer collection cannot contain letters";
+    }
+  }
+
+  if (field.datatype == Datatype.pairInteger) {
+    if (!RegExp(r"^\[?([0-9]+((,| )+)[0-9]+)( )*\]?$").hasMatch(value)) {
+      return "Pairs of integers cannot be anything else than a list of only 2 integers";
     }
   }
 
   try {
     if (field.datatype != Datatype.listString &&
         field.datatype != Datatype.listFilePath) {
-      json.decode("[$value]") as List<dynamic>;
+      value = "[${value.replaceAll(RegExp(r'\[|\]'), '')}]";
+      json.decode(value) as List<dynamic>;
     }
   } on FormatException {
     return "There's a JSON syntax error in your input";
@@ -97,7 +104,7 @@ String? dictInputValidator(String? value, Field field) {
     return null;
   }
 
-  if (!RegExp(r'^\{?(([0-9]+\:[0-9]+(\.[0-9]+)*)(,|\ )*)+\}?$')
+  if (!RegExp(r"^\{?(([0-9]+\:[0-9]+(\.[0-9]+)*)(,|\ )*)+\}?$")
       .hasMatch(value)) {
     return "There's a syntax error in your input";
   }

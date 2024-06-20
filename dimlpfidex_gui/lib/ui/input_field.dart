@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
-// TODO(nice to have): improve different inputs decorations
 class InputField extends StatefulWidget {
   final Field field;
 
@@ -57,6 +56,7 @@ class _InputFieldState extends State<InputField> {
 
       case Datatype.listInteger ||
             Datatype.listDoublePrecision ||
+            Datatype.pairInteger ||
             Datatype.listString:
         return _buildTextField(
             context, listInputValidator, listValueTransformer);

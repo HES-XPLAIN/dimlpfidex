@@ -1344,9 +1344,9 @@ const List<Field> computeRocCurveFields = [
 const List<Field> cnnTrnFields = [
   rootFolderFld,
   Field(
-    "Original input size",
-    "original_input_size",
-    Datatype.listInteger, // TODO : change to pair ...
+    "Original image size",
+    "original_img_size",
+    Datatype.pairInteger, // TODO : change to pair ...
     minValue: "1",
     maxValue: "inf",
     isRequired: true,
@@ -1380,8 +1380,8 @@ const List<Field> cnnTrnFields = [
   nbClassesFld,
   Field(
     "Image size in the model",
-    "model_input_size",
-    Datatype.listInteger, // TODO : change to pair ...
+    "model_img_size",
+    Datatype.pairInteger, // TODO : change to pair ...
     minValue: "1",
     maxValue: "inf",
     description: "Image size in the model. A small size is recommended to speed up the process. The size is modified if necessary.",
@@ -2386,7 +2386,7 @@ const List<Field> svmTrnFields = [
     "decision_function_shape",
     Datatype.restrictedChoiceString,
     defaultValue: "ovr",
-    items: ["ovr (one-vs-rest)", "ovo (one-vs-one)"],
+    items: ["ovr", "ovo"],
     description: "Decision function shape.",
   ),
   Field(
