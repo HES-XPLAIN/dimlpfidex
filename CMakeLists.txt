@@ -65,7 +65,7 @@ if(MSVC)
 endif(MSVC)
 
 # Check Python
-find_package(Python COMPONENTS Interpreter Development REQUIRED)
+find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
 if(Python_FOUND)
     message(STATUS "Found Python ${Python_VERSION} ${Python_EXECUTABLE}")
     message(STATUS "Found Python libs: ${Python_LIBRARIES}")
