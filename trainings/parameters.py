@@ -527,14 +527,14 @@ def get_common_parser(args, initial_parser):
     common_parser = CustomArgumentParser(description="This is a parser for common training arguments", parents=[initial_parser], add_help=False)
     common_parser.add_argument("--train_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Path to the file containing the train portion of the dataset", metavar="<str>", required=True)
     common_parser.add_argument("--train_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train_data_file", metavar="<str>")
-    common_parser.add_argument("--train_pred_outfile", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Path to the file where the train predictions will be stored", metavar="<str>", default="predTrain.out")
     common_parser.add_argument("--test_data_file", type=lambda x: sanitizepath(args.root_folder, x), help="Path to the file containing the test portion of the dataset", metavar="<str>", required=True)
     common_parser.add_argument("--test_class_file", type=lambda x: sanitizepath(args.root_folder, x), help="Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test_data_file", metavar="<str>")
-    common_parser.add_argument("--test_pred_outfile", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Path to the file where the test predictions will be stored", metavar="<str>", default="predTest.out")
-    common_parser.add_argument("--console_file", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal", metavar="<str>")
-    common_parser.add_argument("--stats_file", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Path to the file where the train and test accuracy will be stored", metavar="<str>", default="stats.txt")
     common_parser.add_argument("--nb_attributes", type=lambda x: int_type(x, min=1), help="Number of attributes in the dataset", metavar="<int [1,inf[>", required=True)
     common_parser.add_argument("--nb_classes", type=lambda x: int_type(x, min=1), help="Number of classes in the dataset", metavar="<int [1,inf[>", required=True)
+    common_parser.add_argument("--train_pred_outfile", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Path to the file where the train predictions will be stored", metavar="<str>", default="predTrain.out")
+    common_parser.add_argument("--test_pred_outfile", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Path to the file where the test predictions will be stored", metavar="<str>", default="predTest.out")
+    common_parser.add_argument("--stats_file", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Path to the file where the train and test accuracy will be stored", metavar="<str>", default="stats.txt")
+    common_parser.add_argument("--console_file", type=lambda x: sanitizepath(args.root_folder, x, 'w'), help="Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal", metavar="<str>")
 
     return common_parser
 
