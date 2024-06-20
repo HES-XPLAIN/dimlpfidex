@@ -247,7 +247,7 @@ int fidexGloStats(const std::string &command) {
       }
       try {
         params = std::unique_ptr<Parameters>(new Parameters(commandList[2], validParams));
-      } catch (const std::out_of_range &e) {
+      } catch (const std::out_of_range &) {
         throw CommandArgumentException("Some value inside your JSON config file '" + commandList[2] + "' is out of range.\n(Probably due to a too large or too tiny numeric value).");
       } catch (const std::exception &e) {
         std::string msg(e.what());

@@ -269,7 +269,7 @@ std::string getStrPatternWithClassNames() {
  * @throws FileNotFoundError If the rules file cannot be opened.
  * @throws FileContentError If the rules in the file are not properly formatted.
  */
-std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, DataSetFid &dataset, bool withClasses) {
+std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, const DataSetFid &dataset, bool withClasses) {
   bool hasAttrIds = true;
   bool hasAttrNames = true;
   bool hasClassIds = true;

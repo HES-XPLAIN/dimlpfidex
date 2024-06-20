@@ -1344,22 +1344,22 @@ const List<Field> computeRocCurveFields = [
 const List<Field> cnnTrnFields = [
   rootFolderFld,
   Field(
-    "Original image size",
-    "original_img_size",
+    "Original input size",
+    "original_input_size",
     Datatype.listInteger, // TODO : change to pair ...
     minValue: "1",
     maxValue: "inf",
     isRequired: true,
-    description: "Original image size.",
+    description: "Original input size.",
   ),
   Field(
-    "Number of channels in the image",
+    "Number of channels in the input",
     "nb_channels",
     Datatype.integer,
     minValue: "1",
     maxValue: "inf",
     isRequired: true,
-    description: "Number of channels in the image (3 for RGB, 1 for B&W).",
+    description: "Number of channels in the input (3 for RGB image, 1 for B&W image).",
   ),
   Field(
     "Data format",
@@ -1380,7 +1380,7 @@ const List<Field> cnnTrnFields = [
   nbClassesFld,
   Field(
     "Image size in the model",
-    "model_img_size",
+    "model_input_size",
     Datatype.listInteger, // TODO : change to pair ...
     minValue: "1",
     maxValue: "inf",

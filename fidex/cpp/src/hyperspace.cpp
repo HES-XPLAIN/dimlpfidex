@@ -101,12 +101,10 @@ Rule Hyperspace::ruleExtraction(std::vector<double> &mainSampleData, const int m
  */
 double Hyperspace::computeRuleAccuracy(std::vector<int> &trainPreds, std::vector<int> &trainTrueClass, bool hasTrueClasses, bool mainSampleCorrect) const { // Percentage of correct model prediction on samples covered by the rule
 
-  int idSample;
   int total = 0; // Number of indexes predicted good
   std::vector<int> coveredSamples = hyperbox->getCoveredSamples();
 
-  for (int i = 0; i < coveredSamples.size(); i++) {
-    idSample = coveredSamples[i];
+  for (int idSample : coveredSamples) {
     if (trainPreds[idSample] == trainTrueClass[idSample]) {
       total += 1;
     }
@@ -135,13 +133,11 @@ double Hyperspace::computeRuleAccuracy(std::vector<int> &trainPreds, std::vector
  */
 double Hyperspace::computeRuleConfidence(std::vector<std::vector<double>> &trainOutputValuesPredictions, const int rulePred, double mainSamplePredValueOnRulePred) const { // Mean output value of prediction of class chosen by the rule(which is the main sample prediction) for the covered samples
 
-  int idSample;
   double total = 0; // Number of indexes predicted good
 
   std::vector<int> coveredSamples = hyperbox->getCoveredSamples();
   // Value of output prediction for class mainSamplePred(rule class)
-  for (int i = 0; i < coveredSamples.size(); i++) {
-    idSample = coveredSamples[i];
+  for (int idSample : coveredSamples) {
     total += trainOutputValuesPredictions[idSample][rulePred]; // Value of output prediction for class rulePred(rule class)
   }
 

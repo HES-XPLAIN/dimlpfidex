@@ -63,6 +63,7 @@ def gaussian_normalization(data_files, normalization_indices, normalized_file, f
     if normalization_file is not None:
         try:
             with open(normalization_file, 'w') as myfile:
+                # File opened in write mode to clear its contents
                 pass
         except FileNotFoundError:
                 raise ValueError(f"Error : File {normalization_file} not found.")

@@ -36,12 +36,16 @@ class LayerDimlp2 : public Layer {
   /**
    * @brief Overrides the method to prevent weight adaptation.
    */
-  void AdaptWeights() override {}
+  void AdaptWeights() override {
+    // This method intentionally left empty to prevent weight adaptation
+  }
 
   /**
    * @brief Overrides the method to prevent bias adaptation.
    */
-  void AdaptBias() override {}
+  void AdaptBias() override {
+    // This method intentionally left empty to prevent bias adaptation
+  }
 
   /**
    * @brief Computes the delta values for the input neurons using a specific method.

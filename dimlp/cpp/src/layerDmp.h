@@ -40,7 +40,9 @@ class LayerDimlp : public Layer {
   /**
    * @brief Overrides the method to prevent delta computation.
    */
-  void ComputeDeltaDown() override {}
+  void ComputeDeltaDown() override {
+    // This method intentionally left empty to prevent delta computation
+  }
 
   //----------------------------------------------------------------
 
