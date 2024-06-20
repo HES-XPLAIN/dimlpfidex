@@ -4,6 +4,7 @@ import 'package:dimlpfidex_gui/data/common_fields_data.dart';
 // TODO: Handle differenciation between float and int
 // TODO: handle this input to fit float & int options
 // TODO: Add the empty option in restricted choices list
+// TODO: Create pair type
 
 // const List<Field> testFields = [
 //   rootFolderFld,
@@ -1342,6 +1343,32 @@ const List<Field> computeRocCurveFields = [
 
 const List<Field> cnnTrnFields = [
   rootFolderFld,
+  Field(
+    "Original image size",
+    "original_img_size",
+    Datatype.listInteger, // TODO : change to pair ...
+    minValue: "1",
+    maxValue: "inf",
+    isRequired: true,
+    description: "Original image size.",
+  ),
+  Field(
+    "Number of channels in the image",
+    "nb_channels",
+    Datatype.integer,
+    minValue: "1",
+    maxValue: "inf",
+    isRequired: true,
+    description: "Number of channels in the image (3 for RGB, 1 for B&W).",
+  ),
+  Field(
+    "Data format",
+    "model",
+    Datatype.restrictedChoiceString,
+    items: ["normalized_01", "classic", "other"],
+    isRequired: true,
+    description: "Format of the values of the data, normalized_01 if the data are normalized between 0 and 1, classic if they are between 0 and 255.",
+  ),
   trainDataFileFld,
   Field(
     "Test data file",
@@ -1350,14 +1377,22 @@ const List<Field> cnnTrnFields = [
     description: "Path to the file containing the test portion of the dataset.",
     isRequired: true,
   ),
-  nbAttributesFld,
   nbClassesFld,
   Field(
-    "Dataset",
-    "dataset",
+    "Image size in the model",
+    "model_img_size",
+    Datatype.listInteger, // TODO : change to pair ...
+    minValue: "1",
+    maxValue: "inf",
+    description: "Image size in the model. A small size is recommended to speed up the process. The size is modified if necessary.",
+  ),
+  Field(
+    "Model",
+    "model",
     Datatype.restrictedChoiceString,
-    items: ["mnist", "cifar100", "cifar10", "fer"],
-    description: "Chosen dataset",
+    items: ["small", "large", "vgg", "resnet"],
+    isRequired: true,
+    description: "Training model.",
   ),
   Field(
     "Train true classes file",
@@ -1378,9 +1413,9 @@ const List<Field> cnnTrnFields = [
     "valid_ratio",
     Datatype.doublePrecision,
     minValue: "0",
-    maxValue: "inf",
+    maxValue: "1",
     defaultValue: "0.1",
-    description: "Percentage of train data taken for validation",
+    description: "Percentage of train data taken for validation.",
   ),
   Field(
     "Validation data file",
@@ -1393,14 +1428,7 @@ const List<Field> cnnTrnFields = [
     "valid_class_file",
     Datatype.filePath,
     description:
-        "Path to the file containing the validation true classes of the dataset, mandatory if classes are not specified in valid_data_file. BE CAREFUL if there is validation files, and you want to use Fidex algorithms later, you will have to use both train and validation datas given here in the train datas and classes of Fidex",
-  ),
-  Field(
-    "Image datas are normalized",
-    "normalized",
-    Datatype.boolean,
-    defaultValue: "false",
-    description: "Whether input image datas are normalized between 0 and 1",
+        "Path to the file containing the validation true classes of the dataset, mandatory if classes are not specified in valid_data_file. BE CAREFUL if there is validation files, and you want to use Fidex algorithms later, you will have to use both train and validation datas given here in the train datas and classes of Fidex.",
   ),
   Field(
     "Number of model training epochs",
@@ -1409,7 +1437,7 @@ const List<Field> cnnTrnFields = [
     minValue: "1",
     maxValue: "inf",
     defaultValue: "80",
-    description: "Number of model training epochs",
+    description: "Number of model training epochs.",
   ),
   Field(
     "Output train and validation prediction file",
@@ -1417,14 +1445,14 @@ const List<Field> cnnTrnFields = [
     Datatype.filePath,
     defaultValue: "predTrain.out",
     description:
-        "Output train and validation (in this order) prediction file name",
+        "Path to the file where the output train and validation (in this order) prediction will be stored.",
   ),
   Field(
     "Output test prediction file",
     "test_pred_outfile",
     Datatype.filePath,
     defaultValue: "predTest.out",
-    description: "Path to the file where the test predictions will be stored",
+    description: "Path to the file where the test predictions will be stored.",
   ),
   Field(
     "Output weights file",
@@ -1438,7 +1466,7 @@ const List<Field> cnnTrnFields = [
     "stats_file",
     Datatype.filePath,
     defaultValue: "stats.txt",
-    description: "Output statistic file name with train and test accuracy",
+    description: "Path to the file where the train and test accuracy will be stored.",
   ),
   consoleFileFld,
   nbQuantLevelsFld,
@@ -1449,29 +1477,9 @@ const List<Field> cnnTrnFields = [
     minValue: "0",
     maxValue: "inf",
     defaultValue: "1.0",
-    description: "Parameter to improve dynamics by normalizing input data",
+    description: "Parameter to improve dynamics by normalizing input data.",
   ),
-  Field(
-    "Convert RGB to HSL",
-    "with_hsl",
-    Datatype.boolean,
-    defaultValue: "false",
-    description: "Whether to change 3-channels data from RGB to HSL format",
-  ),
-  Field(
-    "Train with ResNet",
-    "with_resnet",
-    Datatype.boolean,
-    defaultValue: "false",
-    description: "Whether to train with ResNet",
-  ),
-  Field(
-    "Train with VGG",
-    "with_vgg",
-    Datatype.boolean,
-    defaultValue: "false",
-    description: "Whether to train with VGG",
-  ),
+  seedFld,
 ];
 
 const List<Field> gradBoostTrnFields = [
@@ -2394,20 +2402,27 @@ const List<Field> svmTrnFields = [
 const List<Field> normalizationFields = [
   rootFolderFld,
   nbAttributesFld,
-  nbClassesFld,
+  Field(
+    "Number of classes",
+    "nb_classes",
+    Datatype.integer,
+    minValue: "2",
+    maxValue: "inf",
+    description: "Number of classes in the dataset.",
+  ),
   Field(
     "Attributes file",
     "attributes_file",
     Datatype.filePath,
     description:
-        "Path to the file containing the labels of attributes and classes. Mandatory if rules or normalization stats are written with attribute names",
+        "Path to the file containing the labels of attributes and classes. Mandatory if rules or normalization stats are written with attribute names.",
   ),
   Field(
-    "String representing a missing value in your data",
+    "String representing a missing value in the data",
     "missing_values",
     Datatype.string,
     description:
-        "String representing a missing value in your data, put 'NaN' (or any string not present in your data) if you do not have any missing value, mandatory for normalization",
+        "String representing a missing value in the data, put 'NaN' (or any string not present in the data) if there is no missing value, mandatory for normalization.",
   ),
   Field(
     "Normalization file",
@@ -2416,22 +2431,46 @@ const List<Field> normalizationFields = [
     description:
         "Path to the file containing the mean and standard deviation of some attributes. Used to denormalize the rules if specified.",
   ),
-  musFld,
-  sigmasFld,
-  normalizationIndicesFld,
+  Field(
+    "Mus",
+    "mus",
+    Datatype.listDoublePrecision,
+    minValue: "-inf",
+    maxValue: "inf",
+    description:
+        "Mean or median of each attribute index of interest.",
+  ),
+  Field(
+    "Sigmas",
+    "sigmas",
+    Datatype.listDoublePrecision,
+    minValue: "-inf",
+    maxValue: "inf",
+    description:
+        "Standard deviation of each attribute index of interest.",
+  ),
+  Field(
+    "Normalization indices",
+    "normalization_indices",
+    Datatype.listInteger,
+    minValue: "0",
+    maxValue: "# attributes - 1",
+    description:
+        "Attribute indices to be normalized or denormalized, index starts at 0, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1]).",
+  ),
   Field(
     "Data files to normalize",
     "data_files",
     Datatype.listFilePath,
     description:
-        "Data files to normalize, they are normalized with respect to the first one if normalization_file is not specified",
+        "List of paths to data files to normalize, they are normalized with respect to the first one if normalization_file is not specified. Either 'data_files' or 'rule_files' must be specified.",
   ),
   Field(
     "Rule files to denormalize",
     "rule_files",
     Datatype.listFilePath,
     description:
-        "Rule files to denormalize, denormalization is possible only if a normalization_file file or mus, sigmas and normalization_indices are given. Either 'data_files' or 'rule_files' must be specified",
+        "List of paths to rule files to denormalize, denormalization is possible only if a normalization_file file or mus, sigmas and normalization_indices are given. Either 'data_files' or 'rule_files' must be specified.",
   ),
   Field(
     "Output normalization file",
@@ -2442,26 +2481,26 @@ const List<Field> normalizationFields = [
         "Path to the file where the mean and standard deviation of the normalized attributes will be stored if normalization_file is not specified.",
   ),
   Field(
-    "Normalized files names",
+    "Normalized files",
     "output_data_files",
     Datatype.listFilePath,
     description:
-        "Normalized files names, it is mandatory to specify everyone of them if one is specified (default: <original_name>_normalized<original_extension>)",
+        "List of paths where the normalized files will be saved, it is mandatory to specify each of them if one is specified (default: <original_name>_normalized<original_extension>).",
   ),
   Field(
-    "Normalized rule files names",
+    "Normalized rule files",
     "output_rule_files",
     Datatype.listFilePath,
     description:
-        "Normalized rule files names, it is mandatory to specify everyone of them if one is specified (default: <original_name>_denormalized<original_extension>)",
+        "List of paths where the normalized rule files will be saved, it is mandatory to specify each of them if one is specified (default: <original_name>_denormalized<original_extension>).",
   ),
   Field(
-    "Whether we use median instead of mean to compute normalization",
+    "Whether to use median instead of mean normalize",
     "with_median",
     Datatype.boolean,
     defaultValue: "false",
     description:
-        "Whether we use median instead of mean to compute normalitzation",
+        "Whether to use median instead of mean to normalize.",
   ),
   Field(
     "Whether to fill missing values with mean or median during normalization",
@@ -2469,6 +2508,6 @@ const List<Field> normalizationFields = [
     Datatype.boolean,
     defaultValue: "true",
     description:
-        "Whether we fill missing values with mean or median during normalization",
+        "Whether to fill missing values with mean (or median) during normalization.",
   ),
 ];
