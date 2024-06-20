@@ -288,7 +288,7 @@ const List<Field> fidexGloFields = [
     "weights_file",
     Datatype.filePath,
     description:
-        "Path to the file containing the trained weights of the model (mandatory if no rules file is given)",
+        "Path to the file containing the trained weights of the model (mandatory if no rules file is given).",
   ),
   Field(
     "Rules file",
@@ -394,7 +394,7 @@ const List<Field> fidexGloRulesFields = [
     "train_class_file",
     Datatype.filePath,
     description:
-        "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train data file..",
+        "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train data file.",
   ),
   Field(
     "Weights file",
@@ -1260,7 +1260,7 @@ const List<Field> dimlpClsFields = [
     "test_class_file",
     Datatype.filePath,
     description:
-        "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test data file",
+        "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test data file.",
   ),
   Field(
     "Output test prediction file",
@@ -1399,14 +1399,14 @@ const List<Field> cnnTrnFields = [
     "train_class_file",
     Datatype.filePath,
     description:
-        "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train_data_file",
+        "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train_data_file.",
   ),
   Field(
     "Test true classes file",
     "test_class_file",
     Datatype.filePath,
     description:
-        "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test_data_file",
+        "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test_data_file.",
   ),
   Field(
     "Percentage of train data taken for validation",
@@ -1492,7 +1492,7 @@ const List<Field> gradBoostTrnFields = [
     "train_class_file",
     Datatype.filePath,
     description:
-        "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train_data_file",
+        "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train_data_file.",
   ),
   Field(
     "Output train prediction file",
@@ -1513,7 +1513,7 @@ const List<Field> gradBoostTrnFields = [
     "test_class_file",
     Datatype.filePath,
     description:
-        "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test_data_file",
+        "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test_data_file.",
   ),
   Field(
     "Output test prediction file",
@@ -1979,7 +1979,7 @@ const List<Field> mlpTrnFields = [
     minValue: "1",
     maxValue: "inf",
     defaultValue: "15000",
-    description: "Maximum number of loss function calls for lbfgs",
+    description: "Maximum number of loss function calls for lbfgs.",
   ),
 ];
 
@@ -2000,21 +2000,21 @@ const List<Field> randForestsTrnFields = [
     "train_class_file",
     Datatype.filePath,
     description:
-        "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train_data_file",
+        "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train_data_file.",
   ),
   Field(
     "Output train prediction file",
     "train_pred_outfile",
     Datatype.filePath,
     defaultValue: "predTrain.out",
-    description: "Path to the file where the train predictions will be stored",
+    description: "Path to the file where the train predictions will be stored.",
   ),
   Field(
     "Test true classes file",
     "test_class_file",
     Datatype.filePath,
     description:
-        "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test_data_file",
+        "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test_data_file.",
   ),
   Field(
     "Output test prediction file",
