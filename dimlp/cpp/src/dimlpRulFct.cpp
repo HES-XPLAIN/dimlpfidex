@@ -23,9 +23,9 @@ void showDimlpRulParams()
   printOptionDescription("--train_data_file <str>", "Path to the file containing the train portion of the dataset");
   printOptionDescription("--train_class_file <str>", "Path to the file containing the train true classes of the dataset, not mandatory if classes are specified in train data file");
   printOptionDescription("--weights_file <str>", "Path to the file containing the weights of the model trained with dimlpTrn");
+  printOptionDescription("--hidden_layers_file <str>", "Path to the file containing hidden layers sizes");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in the dataset");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in the dataset");
-  printOptionDescription("--hidden_layers_file <str>", "Path to the file containing hidden layers sizes");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -35,14 +35,14 @@ void showDimlpRulParams()
 
   printOptionDescription("--json_config_file <str>", "Path to the JSON file that configures all parameters. If used, this must be the sole argument and must specify the file's relative path");
   printOptionDescription("--root_folder <str>", "Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder");
-  printOptionDescription("--attributes_file <str>", "Path to the file containing the labels of attributes and classes");
-  printOptionDescription("--valid_data_file <str>", "Path to the file containing the validation portion of the dataset");
   printOptionDescription("--test_data_file <str>", "Path to the file containing the test portion of the dataset");
   printOptionDescription("--test_class_file <str>", "Path to the file containing the test true classes of the dataset");
+  printOptionDescription("--valid_data_file <str>", "Path to the file containing the validation portion of the dataset");
   printOptionDescription("--valid_class_file <str>", "Path to the file containing the validation true classes of the dataset");
   printOptionDescription("--global_rules_outfile <str>", "Path to the file where the output rule(s) will be stored (default: dimlp.rls)");
-  printOptionDescription("--console_file <str>", "Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal");
+  printOptionDescription("--attributes_file <str>", "Path to the file containing the labels of attributes and classes");
   printOptionDescription("--stats_file <str>", "Path to the file where the train, test and validation accuracy will be stored");
+  printOptionDescription("--console_file <str>", "Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal");
   printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in the staircase activation function (default: 50)");
   printOptionDescription("--normalization_file <str>", "Path to the file containing the mean and standard deviation of some attributes. Used to denormalize the rules if specified");
   printOptionDescription("--mus <list<float ]-inf,inf[>>", "Mean or median of each attribute index to be denormalized in the rules");

@@ -23,9 +23,9 @@ void showDimlpClsParams()
   printOptionDescription("--test_data_file <str>", "Path to the file containing the test portion of the dataset");
   printOptionDescription("--test_class_file <str>", "Path to the file containing the test true classes of the dataset, not mandatory if classes are specified in test data file");
   printOptionDescription("--weights_file <str>", "Path to the file containing the weights of the model trained with dimlpTrn");
+  printOptionDescription("--hidden_layers_file <str>", "Path to the file containing hidden layers sizes");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in the dataset");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in the dataset");
-  printOptionDescription("--hidden_layers_file <str>", "Path to the file containing hidden layers sizes");
 
   std::cout << std::endl
             << "----------------------------" << std::endl
@@ -36,9 +36,9 @@ void showDimlpClsParams()
   printOptionDescription("--json_config_file <str>", "Path to the JSON file that configures all parameters. If used, this must be the sole argument and must specify the file's relative path");
   printOptionDescription("--root_folder <str>", "Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder");
   printOptionDescription("--test_pred_outfile <str>", "Path to the file where the test predictions will be stored (default: dimlpTest.out)");
-  printOptionDescription("--console_file <str>", "Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal");
-  printOptionDescription("--stats_file <str>", "Path to the file where the test accuracy will be stored");
   printOptionDescription("--hid_file <str>", "Path to the file where the first hidden layer values will be stored (default: dimlpTest.hid)");
+  printOptionDescription("--stats_file <str>", "Path to the file where the test accuracy will be stored");
+  printOptionDescription("--console_file <str>", "Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal");
   printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in the staircase activation function (default: 50)");
 
   std::cout << std::endl

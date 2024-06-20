@@ -22,9 +22,9 @@ void showDimlpPredParams()
 
   printOptionDescription("--test_data_file <str>", "Path to the file containing the test portion of the dataset");
   printOptionDescription("--weights_file <str>", "Path to the file containing the weights of the model trained with dimlpTrn");
+  printOptionDescription("--hidden_layers_file <str>", "Path to the file containing hidden layers sizes");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in the dataset");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in the dataset");
-  printOptionDescription("--hidden_layers_file <str>", "Path to the file containing hidden layers sizes");
 
   std::cout << std::endl
             << "----------------------------" << std::endl

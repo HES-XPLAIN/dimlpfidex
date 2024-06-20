@@ -17,8 +17,8 @@ void showFidexParams() {
             << std::endl;
 
   printOptionDescription("--train_data_file <str>", "Path to the file containing the train portion of the dataset");
-  printOptionDescription("--train_pred_file <str>", "Path to the file containing predictions on the train portion of the dataset");
   printOptionDescription("--train_class_file <str>", "Path to the file containing the train true classes of the dataset, not mandatory if classes are specified in train data file");
+  printOptionDescription("--train_pred_file <str>", "Path to the file containing predictions on the train portion of the dataset");
   printOptionDescription("--test_data_file <str>", "Path to the file containing the test sample(s) data, prediction (if no --test_pred_file) and true class(if no --test_class_file)");
   printOptionDescription("--weights_file <str>", "Path to the file containing the trained weights of the model (not mandatory if a rules file is given with --rules_file)");
   printOptionDescription("--rules_file <str>", "Path to the file containing the trained rules to be converted to hyperlocus (not mandatory if a weights file is given with --weights_file)");
@@ -34,8 +34,8 @@ void showFidexParams() {
 
   printOptionDescription("--json_config_file <str>", "Path to the JSON file that configures all parameters. If used, this must be the sole argument and must specify the file's relative path");
   printOptionDescription("--root_folder <str>", "Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder");
-  printOptionDescription("--test_pred_file <str>", "Path to the file containing predictions on the test portion of the dataset");
   printOptionDescription("--test_class_file <str>", "Path to the file containing the test true classes of the dataset. If at least --test_pred_file is specified, --test_data_file needs to have only test datas and eventually classes on same line (don't add --test_class_file in this case)");
+  printOptionDescription("--test_pred_file <str>", "Path to the file containing predictions on the test portion of the dataset");
   printOptionDescription("--attributes_file <str>", "Path to the file containing the labels of attributes and classes");
   printOptionDescription("--stats_file <str>", "Path to the file where statistics concerning the algorithm execution will be stored");
   printOptionDescription("--console_file <str>", "Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal");
@@ -47,9 +47,9 @@ void showFidexParams() {
   printOptionDescription("--lowest_min_fidelity <float [0,1]>", "Minimal min_fidelity to which we agree to go down during the covering_strategy (default: 0.75)");
   printOptionDescription("--dropout_dim <float [0,1]>", "Probability of dropping a dimension during rule extraction (default: 0.0)");
   printOptionDescription("--dropout_hyp <float [0,1]>", "Probability of dropping a hyperplane during rule extraction (default: 0.0)");
-  printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in the staircase activation function (default: 50)");
   printOptionDescription("--decision_threshold <float [0,1]>", "The decision threshold used for predictions, you need to specify the index of the positive class if you want to use it");
   printOptionDescription("--positive_class_index <int [0,nb_classes-1]>", "Index of the positive class for the usage of a decision threshold, index starts at 0");
+  printOptionDescription("--nb_quant_levels <int [3,inf[>", "Number of stairs in the staircase activation function (default: 50)");
   printOptionDescription("--normalization_file <str>", "Path to the file containing the mean and standard deviation of some attributes. Used to denormalize the rules if specified");
   printOptionDescription("--mus <list<float ]-inf,inf[>>", "Mean or median of each attribute index to be denormalized in the rules");
   printOptionDescription("--sigmas <list<float ]-inf,inf[>>", "Standard deviation of each attribute index to be denormalized in the rules");

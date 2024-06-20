@@ -4,7 +4,6 @@ import 'package:dimlpfidex_gui/data/common_fields_data.dart';
 // TODO: Handle differenciation between float and int
 // TODO: handle this input to fit float & int options
 // TODO: Add the empty option in restricted choices list
-// TODO: Create pair type
 
 // const List<Field> testFields = [
 //   rootFolderFld,
@@ -61,7 +60,6 @@ import 'package:dimlpfidex_gui/data/common_fields_data.dart';
 const List<Field> fidexFields = [
   rootFolderFld,
   trainDataFileFld,
-  trainPredFileFld,
   Field(
     "Train true classes file",
     "train_class_file",
@@ -69,6 +67,7 @@ const List<Field> fidexFields = [
     description:
         "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train data file.",
   ),
+  trainPredFileFld,
   Field(
     "Test data file",
     "test_data_file",
@@ -101,18 +100,18 @@ const List<Field> fidexFields = [
   nbAttributesFld,
   nbClassesFld,
   Field(
-    "Test prediction file",
-    "test_pred_file",
-    Datatype.filePath,
-    description:
-        "Path to the file containing predictions on the test portion of the dataset.",
-  ),
-  Field(
     "Test true classes file",
     "test_class_file",
     Datatype.filePath,
     description:
         "Path to the file containing the test true classes of the dataset. If at least the test prediction file is specified, the test data file needs to have only the test datas and eventually classes on same line (don't add the test true classes file in this case).",
+  ),
+  Field(
+    "Test prediction file",
+    "test_pred_file",
+    Datatype.filePath,
+    description:
+        "Path to the file containing predictions on the test portion of the dataset.",
   ),
   Field(
     "Attributes file",
@@ -186,7 +185,6 @@ const List<Field> fidexFields = [
   ),
   dropoutDimFld,
   dropoutHypFld,
-  nbQuantLevelsFld,
   Field(
     "Decision threshold for predictions",
     "decision_threshold",
@@ -205,6 +203,7 @@ const List<Field> fidexFields = [
     description:
         "Index of the positive class for the usage of a decision threshold, index starts at 0.",
   ),
+  nbQuantLevelsFld,
   Field(
     "Normalization file",
     "normalization_file",
@@ -238,13 +237,6 @@ const List<Field> fidexGloFields = [
   nbAttributesFld,
   nbClassesFld,
   Field(
-    "Attributes file",
-    "attributes_file",
-    Datatype.filePath,
-    description:
-        "Path to the file containing the labels of attributes and classes. Mandatory if rules file contains attribute names, if not, do not add it.",
-  ),
-  Field(
     "Test prediction file",
     "test_pred_file",
     Datatype.filePath,
@@ -257,7 +249,22 @@ const List<Field> fidexGloFields = [
     Datatype.filePath,
     description: "Path to the file where explanation(s) will be stored.",
   ),
+  Field(
+    "Attributes file",
+    "attributes_file",
+    Datatype.filePath,
+    description:
+        "Path to the file containing the labels of attributes and classes. Mandatory if rules file contains attribute names, if not, do not add it.",
+  ),
   consoleFileFld,
+  Field(
+    "Use minimal version",
+    "with_minimal_version",
+    Datatype.boolean,
+    defaultValue: "false",
+    description:
+        "Whether to use minimal version, which only gets correct activated rules and if with_fidex, launches Fidex when no such rule is found.",
+  ),
   Field(
     "Use fidex algorithm (train data, prediction and class files, and either weights file or rules files are then mandatory)",
     "with_fidex",
@@ -267,15 +274,11 @@ const List<Field> fidexGloFields = [
         "Whether to use the Fidex algorithm if no rule is found in global rules.",
   ),
   Field(
-    "Use minimal version",
-    "with_minimal_version",
-    Datatype.boolean,
-    defaultValue: "false",
-    description:
-        "Whether to use minimal version, which only gets correct activated rules and if with_fidex, launches Fidex when no such rule is found.",
-  ),
-  trainDataFileFld,
-  trainPredFileFld,
+    "Train data file",
+    "train_data_file",
+    Datatype.filePath,
+    description: "Path to the file containing the train portion of the dataset.",
+  );
   Field(
     "Train true classes file",
     "train_class_file",
@@ -283,6 +286,13 @@ const List<Field> fidexGloFields = [
     description:
         "Path to the file containing the train true classes of the dataset. Mandatory if classes are not specified in train data file.",
   ),
+  Field(
+    "Train prediction file",
+    "train_pred_file",
+    Datatype.filePath,
+    description:
+        "Path to the file containing predictions on the train portion of the dataset.",
+  );
   Field(
     "Weights file",
     "weights_file",
@@ -388,7 +398,6 @@ const List<Field> fidexGloFields = [
 const List<Field> fidexGloRulesFields = [
   rootFolderFld,
   trainDataFileFld,
-  trainPredFileFld,
   Field(
     "Train true classes file",
     "train_class_file",
@@ -396,6 +405,7 @@ const List<Field> fidexGloRulesFields = [
     description:
         "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train data file.",
   ),
+  trainPredFileFld,
   Field(
     "Weights file",
     "weights_file",
@@ -495,7 +505,6 @@ const List<Field> fidexGloRulesFields = [
   ),
   dropoutDimFld,
   dropoutHypFld,
-  nbQuantLevelsFld,
   Field(
     "Decision threshold for predictions",
     "decision_threshold",
@@ -514,6 +523,7 @@ const List<Field> fidexGloRulesFields = [
     description:
         "Index of the positive class for the usage of a decision threshold, index starts at 0.",
   ),
+  nbQuantLevelsFld,
   Field(
     "Normalization file",
     "normalization_file",
@@ -546,18 +556,18 @@ const List<Field> fidexGloStatsFields = [
     isRequired: true,
   ),
   Field(
-    "Test prediction file",
-    "test_pred_file",
-    Datatype.filePath,
-    description: "Path to the file containing predictions on the test portion of the dataset.",
-    isRequired: true,
-  ),
-  Field(
     "Test true classes file",
     "test_class_file",
     Datatype.filePath,
     description:
         "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test data file.",
+  ),
+  Field(
+    "Test prediction file",
+    "test_pred_file",
+    Datatype.filePath,
+    description: "Path to the file containing predictions on the test portion of the dataset.",
+    isRequired: true,
   ),
   Field(
     "Global rules input file",
@@ -568,6 +578,13 @@ const List<Field> fidexGloStatsFields = [
   ),
   nbAttributesFld,
   nbClassesFld,
+  Field(
+    "Output rules file",
+    "global_rules_outfile",
+    Datatype.filePath,
+    description:
+        "Path to the file where the output global rules will be stored with stats on test set, if you want to compute those statistics.",
+  ),
   Field(
     "Attributes file",
     "attributes_file",
@@ -580,13 +597,6 @@ const List<Field> fidexGloStatsFields = [
     "stats_file",
     Datatype.filePath,
     description: "Path to the file where statistics of the global ruleset will be stored.",
-  ),
-  Field(
-    "Output rules file",
-    "global_rules_outfile",
-    Datatype.filePath,
-    description:
-        "Path to the file where the output global rules will be stored with stats on test set, if you want to compute those statistics.",
   ),
   consoleFileFld,
   Field(
@@ -603,38 +613,27 @@ const List<Field> fidexGloStatsFields = [
 const List<Field> dimlpTrnFields = [
   rootFolderFld,
   trainDataFileFld,
-  nbAttributesFld,
-  nbClassesFld,
-  Field(
-    "Attributes file",
-    "attributes_file",
-    Datatype.filePath,
-    description: "Path to the file containing the labels of attributes and classes.",
-  ),
-  Field(
-    "Validation data file",
-    "valid_data_file",
-    Datatype.filePath,
-    description: "Path to the file containing the validation portion of the dataset.",
-  ),
-  Field(
-    "Test data file",
-    "test_data_file",
-    Datatype.filePath,
-    description: "Path to the file containing the test portion of the dataset.",
-  ),
-  Field(
-    "Pretrained weights file",
-    "weights_file",
-    Datatype.filePath,
-    description: "Path to the file containing pretrained weights.",
-  ),
   Field(
     "Train true classes file",
     "train_class_file",
     Datatype.filePath,
     description:
         "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in the train data file.",
+  ),
+  nbAttributesFld,
+  nbClassesFld,
+  Field(
+    "Output train prediction file",
+    "train_pred_outfile",
+    Datatype.filePath,
+    defaultValue: "dimlpTrain.out",
+    description: "Path to the file where the train predictions will be stored.",
+  ),
+  Field(
+    "Test data file",
+    "test_data_file",
+    Datatype.filePath,
+    description: "Path to the file containing the test portion of the dataset.",
   ),
   Field(
     "Test true classes file",
@@ -644,11 +643,37 @@ const List<Field> dimlpTrnFields = [
         "Path to the file containing the test true classes of the dataset.",
   ),
   Field(
+    "Output test prediction file",
+    "test_pred_outfile",
+    Datatype.filePath,
+    defaultValue: "dimlpTest.out",
+    description: "Path to the file where the test predictions will be stored.",
+  ),
+  Field(
+    "Validation data file",
+    "valid_data_file",
+    Datatype.filePath,
+    description: "Path to the file containing the validation portion of the dataset.",
+  ),
+  Field(
     "Validation true classes file",
     "valid_class_file",
     Datatype.filePath,
     description:
         "Path to the file containing the validation true classes of the dataset.",
+  ),
+  Field(
+    "Output validation prediction file",
+    "valid_pred_outfile",
+    Datatype.filePath,
+    defaultValue: "dimlpValidation.out",
+    description: "Path to the file where the validation predictions will be stored.",
+  ),
+  Field(
+    "Pretrained weights file",
+    "weights_file",
+    Datatype.filePath,
+    description: "Path to the file containing pretrained weights.",
   ),
   Field(
     "Output weights file",
@@ -658,11 +683,10 @@ const List<Field> dimlpTrnFields = [
     description: "Path to the file where the output trained weights of the model will be stored.",
   ),
   Field(
-    "Output train prediction file",
-    "train_pred_outfile",
+    "Attributes file",
+    "attributes_file",
     Datatype.filePath,
-    defaultValue: "dimlpTrain.out",
-    description: "Path to the file where the train predictions will be stored.",
+    description: "Path to the file containing the labels of attributes and classes.",
   ),
   Field(
     "Output statistics file",
@@ -671,28 +695,7 @@ const List<Field> dimlpTrnFields = [
     defaultValue: "statsDimlpTrn.txt",
     description: "Path to the file where the train, test and validation accuracy will be stored.",
   ),
-  Field(
-    "Output test prediction file",
-    "test_pred_outfile",
-    Datatype.filePath,
-    defaultValue: "dimlpTest.out",
-    description: "Path to the file where the test predictions will be stored.",
-  ),
-  Field(
-    "Output validation prediction file",
-    "valid_pred_outfile",
-    Datatype.filePath,
-    defaultValue: "dimlpValidation.out",
-    description: "Path to the file where the validation predictions will be stored.",
-  ),
   consoleFileFld,
-  Field(
-    "Output hidden layers file",
-    "hidden_layers_outfile",
-    Datatype.filePath,
-    defaultValue: "hidden_layers.out",
-    description: "Path to the file where output hidden layers sizes will be stored.",
-  ),
   Field(
     "Number of neurons in the first hidden layer",
     "first_hidden_layer",
@@ -710,6 +713,13 @@ const List<Field> dimlpTrnFields = [
     maxValue: "inf",
     description:
         "Number of neurons in each hidden layer, from the second layer to the last.",
+  ),
+  Field(
+    "Output hidden layers file",
+    "hidden_layers_outfile",
+    Datatype.filePath,
+    defaultValue: "hidden_layers.out",
+    description: "Path to the file where output hidden layers sizes will be stored.",
   ),
   Field(
     "Whether to extract rules with dimlp algorithm",
@@ -751,7 +761,6 @@ const List<Field> dimlpTrnFields = [
     defaultValue: "0.1",
     description: "Back-propagation flat spot elimination parameter.",
   ),
-  nbQuantLevelsFld,
   Field(
     "Error threshold",
     "error_thresh",
@@ -796,6 +805,7 @@ const List<Field> dimlpTrnFields = [
     defaultValue: "10",
     description: "Number of training epochs before showing error.",
   ),
+  nbQuantLevelsFld,
   Field(
     "Normalization file",
     "normalization_file",
@@ -825,8 +835,6 @@ const List<Field> dimlpPredFields = [
     isRequired: true,
     description: "Path to the file containing the weights of the model trained with dimlpTrn.",
   ),
-  nbAttributesFld,
-  nbClassesFld,
   Field(
     "Hidden layers' sizes file",
     "hidden_layers_file",
@@ -834,6 +842,8 @@ const List<Field> dimlpPredFields = [
     isRequired: true,
     description: "Path to the file containing hidden layers sizes.",
   ),
+  nbAttributesFld,
+  nbClassesFld,
   Field(
     "Output test prediction file",
     "test_pred_outfile",
@@ -850,40 +860,6 @@ const List<Field> dimlpRulFields = [
   rootFolderFld,
   trainDataFileFld,
   Field(
-    "Weights file trained with dimlpTrn",
-    "weights_file",
-    Datatype.filePath,
-    isRequired: true,
-    description: "Path to the file containing the weights of the model trained with dimlpTrn.",
-  ),
-  nbAttributesFld,
-  nbClassesFld,
-  Field(
-    "Hidden layers' sizes file",
-    "hidden_layers_file",
-    Datatype.filePath,
-    isRequired: true,
-    description: "Path to the file containing hidden layers sizes.",
-  ),
-  Field(
-    "Attributes file",
-    "attributes_file",
-    Datatype.filePath,
-    description: "Path to the file containing the labels of attributes and classes.",
-  ),
-  Field(
-    "Validation data file",
-    "valid_data_file",
-    Datatype.filePath,
-    description: "Path to the file containing the validation portion of the dataset.",
-  ),
-  Field(
-    "Test data file",
-    "test_data_file",
-    Datatype.filePath,
-    description: "Path to the file containing the test portion of the dataset.",
-  ),
-  Field(
     "Train true classes file",
     "train_class_file",
     Datatype.filePath,
@@ -891,11 +867,39 @@ const List<Field> dimlpRulFields = [
         "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train data file.",
   ),
   Field(
+    "Weights file trained with dimlpTrn",
+    "weights_file",
+    Datatype.filePath,
+    isRequired: true,
+    description: "Path to the file containing the weights of the model trained with dimlpTrn.",
+  ),
+  Field(
+    "Hidden layers' sizes file",
+    "hidden_layers_file",
+    Datatype.filePath,
+    isRequired: true,
+    description: "Path to the file containing hidden layers sizes.",
+  ),
+  nbAttributesFld,
+  nbClassesFld,
+  Field(
+    "Test data file",
+    "test_data_file",
+    Datatype.filePath,
+    description: "Path to the file containing the test portion of the dataset.",
+  ),
+  Field(
     "Test true classes file",
     "test_class_file",
     Datatype.filePath,
     description:
         "Path to the file containing the test true classes of the dataset.",
+  ),
+  Field(
+    "Validation data file",
+    "valid_data_file",
+    Datatype.filePath,
+    description: "Path to the file containing the validation portion of the dataset.",
   ),
   Field(
     "Validation true classes file",
@@ -911,7 +915,12 @@ const List<Field> dimlpRulFields = [
     defaultValue: "dimlp.rls",
     description: "Path to the file where the output rule(s) will be stored.",
     ),
-  consoleFileFld,
+  Field(
+    "Attributes file",
+    "attributes_file",
+    Datatype.filePath,
+    description: "Path to the file containing the labels of attributes and classes.",
+  ),
   Field(
     "Output statistics file",
     "stats_file",
@@ -919,6 +928,7 @@ const List<Field> dimlpRulFields = [
     description:
         "Path to the file where the train, test and validation accuracy will be stored.",
   ),
+  consoleFileFld,
   nbQuantLevelsFld,
   Field(
     "Normalization file",
@@ -935,6 +945,12 @@ const List<Field> dimlpRulFields = [
 const List<Field> dimlpBTFields = [
   rootFolderFld,
   trainDataFileFld,
+  Field(
+    "Train true classes file",
+    "train_class_file",
+    Datatype.filePath,
+    description: "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train data file.",
+  ),
   nbAttributesFld,
   nbClassesFld,
   Field(
@@ -947,10 +963,11 @@ const List<Field> dimlpBTFields = [
     description: "Number of networks.",
   ),
   Field(
-    "Attributes file",
-    "attributes_file",
+    "Output train prediction file",
+    "train_pred_outfile",
     Datatype.filePath,
-    description: "Path to the file containing the labels of attributes and classes.",
+    defaultValue: "dimlpBTTrain.out",
+    description: "Path to the file where the train predictions will be stored.",
   ),
   Field(
     "Test data file",
@@ -959,31 +976,10 @@ const List<Field> dimlpBTFields = [
     description: "Path to the file containing the test portion of the dataset.",
   ),
   Field(
-    "Train true classes file",
-    "train_class_file",
-    Datatype.filePath,
-    description: "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train data file.",
-  ),
-  Field(
     "Test true classes file",
     "test_class_file",
     Datatype.filePath,
     description: "Path to the file containing the test true classes of the dataset.",
-  ),
-  consoleFileFld,
-  Field(
-    "Output weights file",
-    "weights_outfile",
-    Datatype.filePath,
-    defaultValue: "dimlpBT.wts",
-    description: "Path to the file where the output trained weights of the model will be stored.",
-  ),
-  Field(
-    "Output train prediction file",
-    "train_pred_outfile",
-    Datatype.filePath,
-    defaultValue: "dimlpBTTrain.out",
-    description: "Path to the file where the train predictions will be stored.",
   ),
   Field(
     "Output test prediction file",
@@ -993,6 +989,19 @@ const List<Field> dimlpBTFields = [
     description: "Path to the file where the test predictions will be stored.",
   ),
   Field(
+    "Output weights file",
+    "weights_outfile",
+    Datatype.filePath,
+    defaultValue: "dimlpBT.wts",
+    description: "Path to the file where the output trained weights of the model will be stored.",
+  ),
+  Field(
+    "Attributes file",
+    "attributes_file",
+    Datatype.filePath,
+    description: "Path to the file containing the labels of attributes and classes.",
+  ),
+  Field(
     "Output statistics file",
     "stats_file",
     Datatype.filePath,
@@ -1000,6 +1009,7 @@ const List<Field> dimlpBTFields = [
     description:
         "Path to the file where the train, test and validation accuracy, as well as the train and test global accuracy will be stored.",
   ),
+  consoleFileFld,
   Field(
     "Number of neurons in the first hidden layer",
     "first_hidden_layer",
@@ -1055,7 +1065,6 @@ const List<Field> dimlpBTFields = [
     defaultValue: "0.01",
     description: "Back-propagation flat spot elimination parameter.",
   ),
-  nbQuantLevelsFld,
   Field(
     "Error threshold",
     "error_thresh",
@@ -1110,6 +1119,7 @@ const List<Field> dimlpBTFields = [
     description:
         "Number of examples for one single network, 0 for all examples, it is not recommended to change this value.",
   ),
+  nbQuantLevelsFld,
   Field(
     "Normalization file",
     "normalization_file",
@@ -1126,8 +1136,6 @@ const List<Field> dimlpBTFields = [
 const List<Field> densClsFields = [
   rootFolderFld,
   trainDataFileFld,
-  nbAttributesFld,
-  nbClassesFld,
   Field(
     "Train true classes file",
     "train_class_file",
@@ -1148,11 +1156,14 @@ const List<Field> densClsFields = [
     isRequired: true,
     description: "Path to the file containing hidden layers sizes.",
   ),
+  nbAttributesFld,
+  nbClassesFld,
   Field(
-    "Attributes file",
-    "attributes_file",
+    "Output train prediction file",
+    "train_pred_outfile",
     Datatype.filePath,
-    description: "Path to the file containing the labels of attributes and classes.",
+    defaultValue: "densClsTrain.out",
+    description: "Path to the file where the train predictions will be stored.",
   ),
   Field(
     "Test data file",
@@ -1167,14 +1178,6 @@ const List<Field> densClsFields = [
     description:
         "Path to the file containing the test true classes of the dataset.",
   ),
-  consoleFileFld,
-  Field(
-    "Output train prediction file",
-    "train_pred_outfile",
-    Datatype.filePath,
-    defaultValue: "densClsTrain.out",
-    description: "Path to the file where the train predictions will be stored.",
-  ),
   Field(
     "Output test prediction file",
     "test_pred_outfile",
@@ -1183,11 +1186,18 @@ const List<Field> densClsFields = [
     description: "Path to the file where the test predictions will be stored.",
   ),
   Field(
+    "Attributes file",
+    "attributes_file",
+    Datatype.filePath,
+    description: "Path to the file containing the labels of attributes and classes.",
+  ),
+  Field(
     "Output statistics file",
     "stats_file",
     Datatype.filePath,
     description: "Path to the file where the global train and test accuracy will be stored.",
   ),
+  consoleFileFld,
   Field(
     "Whether to extract rules with dimlpBT algorithm",
     "with_rule_extraction",
@@ -1224,29 +1234,18 @@ const List<Field> dimlpClsFields = [
     description: "Path to the file containing the test portion of the dataset.",
   ),
   Field(
+    "Test true classes file",
+    "test_class_file",
+    Datatype.filePath,
+    description:
+        "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test data file.",
+  ),
+  Field(
     "Weights file trained with dimlpTrn",
     "weights_file",
     Datatype.filePath,
     isRequired: true,
     description: "Path to the file containing the weights of the model trained with dimlpTrn.",
-  ),
-  Field(
-    "Number of attributes",
-    "nb_attributes",
-    Datatype.integer,
-    isRequired: true,
-    minValue: "1",
-    maxValue: "inf",
-    description: "Number of input neurons.",
-  ),
-  Field(
-    "Number of classes",
-    "nb_classes",
-    Datatype.integer,
-    isRequired: true,
-    minValue: "2",
-    maxValue: "inf",
-    description: "Number of output neurons.",
   ),
   Field(
     "Hidden layers' sizes file",
@@ -1255,13 +1254,8 @@ const List<Field> dimlpClsFields = [
     isRequired: true,
     description: "Path to the file containing hidden layers sizes.",
   ),
-  Field(
-    "Test true classes file",
-    "test_class_file",
-    Datatype.filePath,
-    description:
-        "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test data file.",
-  ),
+  nbAttributesFld,
+  nbClassesFld,
   Field(
     "Output test prediction file",
     "test_pred_outfile",
@@ -1270,13 +1264,6 @@ const List<Field> dimlpClsFields = [
     description:
         "Path to the file where the test predictions will be stored.",
   ),
-  consoleFileFld,
-  Field(
-    "Output statistics file",
-    "stats_file",
-    Datatype.filePath,
-    description: "Path to the file where the test accuracy will be stored.",
-  ),
   Field(
     "First hidden layer values file",
     "hid_file",
@@ -1284,6 +1271,13 @@ const List<Field> dimlpClsFields = [
     defaultValue: "dimlpTest.hid",
     description: "Path to the file where the first hidden layer values will be stored.",
   ),
+  Field(
+    "Output statistics file",
+    "stats_file",
+    Datatype.filePath,
+    description: "Path to the file where the test accuracy will be stored.",
+  ),
+  consoleFileFld,
   nbQuantLevelsFld,
 ];
 
@@ -1303,7 +1297,6 @@ const List<Field> computeRocCurveFields = [
     description: "Path to the file containing predictions on the test portion of the dataset.",
     isRequired: true,
   ),
-  nbClassesFld,
   Field(
     "Index of positive class",
     "positive_class_index",
@@ -1313,18 +1306,19 @@ const List<Field> computeRocCurveFields = [
     description: "Index of the positive class, index starts at 0.",
     isRequired: true,
   ),
+  nbClassesFld,
+  Field(
+    "Output ROC curve file",
+    "output_roc",
+    Datatype.filePath,
+    defaultValue: "roc_curve.png",
+    description: "Path to the file where the output ROC curve will be saved.",
+  ),
   Field(
     "Output statistics file",
     "stats_file",
     Datatype.filePath,
     description: "Path to the file where the AUC score will be added, it can be the training stats file.",
-  ),
-  Field(
-    "Show parameters",
-    "show_params",
-    Datatype.boolean,
-    defaultValue: "true",
-    description: "Whether to show the parameters.",
   ),
   Field(
     "Name of the estimator",
@@ -1333,20 +1327,42 @@ const List<Field> computeRocCurveFields = [
     description: "Name of the estimator.",
   ),
   Field(
-    "Output ROC curve file",
-    "output_roc",
-    Datatype.filePath,
-    defaultValue: "roc_curve.png",
-    description: "Path to the file where the output ROC curve will be saved.",
+    "Show parameters",
+    "show_params",
+    Datatype.boolean,
+    defaultValue: "true",
+    description: "Whether to show the parameters.",
   ),
 ];
 
 const List<Field> cnnTrnFields = [
   rootFolderFld,
+  trainDataFileFld,
   Field(
-    "Original image size",
-    "original_img_size",
-    Datatype.pairInteger, // TODO : change to pair ...
+    "Train true classes file",
+    "train_class_file",
+    Datatype.filePath,
+    description:
+        "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train_data_file.",
+  ),
+  Field(
+    "Test data file",
+    "test_data_file",
+    Datatype.filePath,
+    description: "Path to the file containing the test portion of the dataset.",
+    isRequired: true,
+  ),
+  Field(
+    "Test true classes file",
+    "test_class_file",
+    Datatype.filePath,
+    description:
+        "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test_data_file.",
+  ),
+  Field(
+    "Original input size",
+    "original_input_size",
+    Datatype.pairInteger,
     minValue: "1",
     maxValue: "inf",
     isRequired: true,
@@ -1362,31 +1378,6 @@ const List<Field> cnnTrnFields = [
     description: "Number of channels in the input (3 for RGB image, 1 for B&W image).",
   ),
   Field(
-    "Data format",
-    "model",
-    Datatype.restrictedChoiceString,
-    items: ["normalized_01", "classic", "other"],
-    isRequired: true,
-    description: "Format of the values of the data, normalized_01 if the data are normalized between 0 and 1, classic if they are between 0 and 255.",
-  ),
-  trainDataFileFld,
-  Field(
-    "Test data file",
-    "test_data_file",
-    Datatype.filePath,
-    description: "Path to the file containing the test portion of the dataset.",
-    isRequired: true,
-  ),
-  nbClassesFld,
-  Field(
-    "Image size in the model",
-    "model_img_size",
-    Datatype.pairInteger, // TODO : change to pair ...
-    minValue: "1",
-    maxValue: "inf",
-    description: "Image size in the model. A small size is recommended to speed up the process. The size is modified if necessary.",
-  ),
-  Field(
     "Model",
     "model",
     Datatype.restrictedChoiceString,
@@ -1395,18 +1386,28 @@ const List<Field> cnnTrnFields = [
     description: "Training model.",
   ),
   Field(
-    "Train true classes file",
-    "train_class_file",
+    "Data format",
+    "data_format",
+    Datatype.restrictedChoiceString,
+    items: ["normalized_01", "classic", "other"],
+    isRequired: true,
+    description: "Format of the values of the data, normalized_01 if the data are normalized between 0 and 1, classic if they are between 0 and 255.",
+  ),
+  nbClassesFld,
+  Field(
+    "Output train and validation prediction file",
+    "train_valid_pred_outfile",
     Datatype.filePath,
+    defaultValue: "predTrain.out",
     description:
-        "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train_data_file.",
+        "Path to the file where the output train and validation (in this order) prediction will be stored.",
   ),
   Field(
-    "Test true classes file",
-    "test_class_file",
+    "Output test prediction file",
+    "test_pred_outfile",
     Datatype.filePath,
-    description:
-        "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test_data_file.",
+    defaultValue: "predTest.out",
+    description: "Path to the file where the test predictions will be stored.",
   ),
   Field(
     "Percentage of train data taken for validation",
@@ -1431,30 +1432,6 @@ const List<Field> cnnTrnFields = [
         "Path to the file containing the validation true classes of the dataset, mandatory if classes are not specified in valid_data_file. BE CAREFUL if there is validation files, and you want to use Fidex algorithms later, you will have to use both train and validation datas given here in the train datas and classes of Fidex.",
   ),
   Field(
-    "Number of model training epochs",
-    "nb_epochs",
-    Datatype.integer,
-    minValue: "1",
-    maxValue: "inf",
-    defaultValue: "80",
-    description: "Number of model training epochs.",
-  ),
-  Field(
-    "Output train and validation prediction file",
-    "train_valid_pred_outfile",
-    Datatype.filePath,
-    defaultValue: "predTrain.out",
-    description:
-        "Path to the file where the output train and validation (in this order) prediction will be stored.",
-  ),
-  Field(
-    "Output test prediction file",
-    "test_pred_outfile",
-    Datatype.filePath,
-    defaultValue: "predTest.out",
-    description: "Path to the file where the test predictions will be stored.",
-  ),
-  Field(
     "Output weights file",
     "weights_outfile",
     Datatype.filePath,
@@ -1469,6 +1446,23 @@ const List<Field> cnnTrnFields = [
     description: "Path to the file where the train and test accuracy will be stored.",
   ),
   consoleFileFld,
+  Field(
+    "Number of model training epochs",
+    "nb_epochs",
+    Datatype.integer,
+    minValue: "1",
+    maxValue: "inf",
+    defaultValue: "80",
+    description: "Number of model training epochs.",
+  ),
+  Field(
+    "Input size in the model",
+    "model_input_size",
+    Datatype.pairInteger,
+    minValue: "1",
+    maxValue: "inf",
+    description: "Input size in the model. A small size is recommended to speed up the process. The size is modified if necessary.",
+  ),
   nbQuantLevelsFld,
   Field(
     "Parameter to improve dynamics by normalizing input data",
@@ -1485,21 +1479,12 @@ const List<Field> cnnTrnFields = [
 const List<Field> gradBoostTrnFields = [
   rootFolderFld,
   trainDataFileFld,
-  nbAttributesFld,
-  nbClassesFld,
   Field(
     "Train true classes file",
     "train_class_file",
     Datatype.filePath,
     description:
         "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train_data_file.",
-  ),
-  Field(
-    "Output train prediction file",
-    "train_pred_outfile",
-    Datatype.filePath,
-    defaultValue: "predTrain.out",
-    description: "Path to the file where the train predictions will be stored.",
   ),
   Field(
     "Test data file",
@@ -1515,6 +1500,15 @@ const List<Field> gradBoostTrnFields = [
     description:
         "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test_data_file.",
   ),
+  nbAttributesFld,
+  nbClassesFld,
+  Field(
+    "Output train prediction file",
+    "train_pred_outfile",
+    Datatype.filePath,
+    defaultValue: "predTrain.out",
+    description: "Path to the file where the train predictions will be stored.",
+  ),
   Field(
     "Output test prediction file",
     "test_pred_outfile",
@@ -1522,7 +1516,6 @@ const List<Field> gradBoostTrnFields = [
     defaultValue: "predTest.out",
     description: "Path to the file where the test predictions will be stored.",
   ),
-  consoleFileFld,
   Field(
     "Output statistics file",
     "stats_file",
@@ -1530,6 +1523,7 @@ const List<Field> gradBoostTrnFields = [
     defaultValue: "stats.txt",
     description: "Path to the file where the train and test accuracy will be stored.",
   ),
+  consoleFileFld,
   Field(
   "Rules output file",
   "rules_outfile",
@@ -1720,8 +1714,6 @@ const List<Field> gradBoostTrnFields = [
 const List<Field> mlpTrnFields = [
   rootFolderFld,
   trainDataFileFld,
-  nbAttributesFld,
-  nbClassesFld,
   Field(
     "Train true classes file",
     "train_class_file",
@@ -1737,18 +1729,20 @@ const List<Field> mlpTrnFields = [
     isRequired: true,
   ),
   Field(
-    "Output train prediction file",
-    "train_pred_outfile",
-    Datatype.filePath,
-    defaultValue: "predTrain.out",
-    description: "Path to the file where the train predictions will be stored.",
-  ),
-  Field(
     "Test true classes file",
     "test_class_file",
     Datatype.filePath,
     description:
         "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test_data_file.",
+  ),
+  nbAttributesFld,
+  nbClassesFld,
+  Field(
+    "Output train prediction file",
+    "train_pred_outfile",
+    Datatype.filePath,
+    defaultValue: "predTrain.out",
+    description: "Path to the file where the train predictions will be stored.",
   ),
   Field(
     "Output test prediction file",
@@ -1757,7 +1751,6 @@ const List<Field> mlpTrnFields = [
     defaultValue: "predTest.out",
     description: "Path to the file where the test predictions will be stored.",
   ),
-  consoleFileFld,
   Field(
     "Output statistics file",
     "stats_file",
@@ -1765,6 +1758,7 @@ const List<Field> mlpTrnFields = [
     defaultValue: "stats.txt",
     description: "Path to the file where the train and test accuracy will be stored.",
   ),
+  consoleFileFld,
   Field(
     "Output weights file",
     "weights_outfile",
@@ -1987,15 +1981,6 @@ const List<Field> randForestsTrnFields = [
   rootFolderFld,
   trainDataFileFld,
   Field(
-    "Test data file",
-    "test_data_file",
-    Datatype.filePath,
-    description: "Path to the file containing the test portion of the dataset.",
-    isRequired: true,
-  ),
-  nbAttributesFld,
-  nbClassesFld,
-  Field(
     "Train true classes file",
     "train_class_file",
     Datatype.filePath,
@@ -2003,11 +1988,11 @@ const List<Field> randForestsTrnFields = [
         "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train_data_file.",
   ),
   Field(
-    "Output train prediction file",
-    "train_pred_outfile",
+    "Test data file",
+    "test_data_file",
     Datatype.filePath,
-    defaultValue: "predTrain.out",
-    description: "Path to the file where the train predictions will be stored.",
+    description: "Path to the file containing the test portion of the dataset.",
+    isRequired: true,
   ),
   Field(
     "Test true classes file",
@@ -2016,6 +2001,15 @@ const List<Field> randForestsTrnFields = [
     description:
         "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test_data_file.",
   ),
+  nbAttributesFld,
+  nbClassesFld,
+  Field(
+    "Output train prediction file",
+    "train_pred_outfile",
+    Datatype.filePath,
+    defaultValue: "predTrain.out",
+    description: "Path to the file where the train predictions will be stored.",
+  ),
   Field(
     "Output test prediction file",
     "test_pred_outfile",
@@ -2023,7 +2017,6 @@ const List<Field> randForestsTrnFields = [
     defaultValue: "predTest.out",
     description: "Path to the file where the test predictions will be stored.",
   ),
-  consoleFileFld,
   Field(
     "Output statistics file",
     "stats_file",
@@ -2031,6 +2024,7 @@ const List<Field> randForestsTrnFields = [
     defaultValue: "stats.txt",
     description: "Path to the file where the train and test accuracy will be stored.",
   ),
+  consoleFileFld,
   Field(
     "Rules output file",
     "rules_outfile",
@@ -2200,15 +2194,6 @@ const List<Field> svmTrnFields = [
   rootFolderFld,
   trainDataFileFld,
   Field(
-    "Test data file",
-    "test_data_file",
-    Datatype.filePath,
-    description: "Path to the file containing the test portion of the dataset.",
-    isRequired: true,
-  ),
-  nbAttributesFld,
-  nbClassesFld,
-  Field(
     "Train true classes file",
     "train_class_file",
     Datatype.filePath,
@@ -2216,11 +2201,11 @@ const List<Field> svmTrnFields = [
         "Path to the file containing the train true classes of the dataset, mandatory if classes are not specified in train_data_file.",
   ),
   Field(
-    "Output train prediction file",
-    "train_pred_outfile",
+    "Test data file",
+    "test_data_file",
     Datatype.filePath,
-    defaultValue: "predTrain.out",
-    description: "Path to the file where the train predictions will be stored.",
+    description: "Path to the file containing the test portion of the dataset.",
+    isRequired: true,
   ),
   Field(
     "Test true classes file",
@@ -2229,6 +2214,15 @@ const List<Field> svmTrnFields = [
     description:
         "Path to the file containing the test true classes of the dataset, mandatory if classes are not specified in test_data_file.",
   ),
+  nbAttributesFld,
+  nbClassesFld,
+  Field(
+    "Output train prediction file",
+    "train_pred_outfile",
+    Datatype.filePath,
+    defaultValue: "predTrain.out",
+    description: "Path to the file where the train predictions will be stored.",
+  ),
   Field(
     "Output test prediction file",
     "test_pred_outfile",
@@ -2236,7 +2230,6 @@ const List<Field> svmTrnFields = [
     defaultValue: "predTest.out",
     description: "Path to the file where the test predictions will be stored.",
   ),
-  consoleFileFld,
   Field(
     "Output statistics file",
     "stats_file",
@@ -2244,6 +2237,7 @@ const List<Field> svmTrnFields = [
     defaultValue: "stats.txt",
     description: "Path to the file where the train and test accuracy will be stored.",
   ),
+  consoleFileFld,
   Field(
     "Output weights file",
     "weights_outfile",
@@ -2258,15 +2252,12 @@ const List<Field> svmTrnFields = [
     defaultValue: "roc_curve.png",
     description: "Path to the file where the output ROC curve will be saved.",
   ),
-  nbQuantLevelsFld,
   Field(
-    "Parameter to improve dynamics by normalizing input data",
-    "K",
-    Datatype.doublePrecision,
-    minValue: "0",
-    maxValue: "inf",
-    defaultValue: "1.0",
-    description: "Parameter to improve dynamics by normalizing input data.",
+    "Whether to return ROC statistics",
+    "return_roc",
+    Datatype.boolean,
+    defaultValue: "false",
+    description: "Whether to return ROC statistics.",
   ),
   Field(
     "Index of positive class",
@@ -2277,12 +2268,15 @@ const List<Field> svmTrnFields = [
     description:
         "Index of the positive class for the roc curve calculation, index starts at 0.",
   ),
+  nbQuantLevelsFld,
   Field(
-    "Whether to return ROC statistics",
-    "return_roc",
-    Datatype.boolean,
-    defaultValue: "false",
-    description: "Whether to return ROC statistics.",
+    "Parameter to improve dynamics by normalizing input data",
+    "K",
+    Datatype.doublePrecision,
+    minValue: "0",
+    maxValue: "inf",
+    defaultValue: "1.0",
+    description: "Parameter to improve dynamics by normalizing input data.",
   ),
   Field(
     "Regularization parameter",
@@ -2411,11 +2405,18 @@ const List<Field> normalizationFields = [
     description: "Number of classes in the dataset.",
   ),
   Field(
-    "Attributes file",
-    "attributes_file",
-    Datatype.filePath,
+    "Data files to normalize",
+    "data_files",
+    Datatype.listFilePath,
     description:
-        "Path to the file containing the labels of attributes and classes. Mandatory if rules or normalization stats are written with attribute names.",
+        "List of paths to data files to normalize, they are normalized with respect to the first one if normalization_file is not specified. Either 'data_files' or 'rule_files' must be specified.",
+  ),
+  Field(
+    "Rule files to denormalize",
+    "rule_files",
+    Datatype.listFilePath,
+    description:
+        "List of paths to rule files to denormalize, denormalization is possible only if a normalization_file file or mus, sigmas and normalization_indices are given. Either 'data_files' or 'rule_files' must be specified.",
   ),
   Field(
     "String representing a missing value in the data",
@@ -2459,20 +2460,6 @@ const List<Field> normalizationFields = [
         "Attribute indices to be normalized or denormalized, index starts at 0, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1]).",
   ),
   Field(
-    "Data files to normalize",
-    "data_files",
-    Datatype.listFilePath,
-    description:
-        "List of paths to data files to normalize, they are normalized with respect to the first one if normalization_file is not specified. Either 'data_files' or 'rule_files' must be specified.",
-  ),
-  Field(
-    "Rule files to denormalize",
-    "rule_files",
-    Datatype.listFilePath,
-    description:
-        "List of paths to rule files to denormalize, denormalization is possible only if a normalization_file file or mus, sigmas and normalization_indices are given. Either 'data_files' or 'rule_files' must be specified.",
-  ),
-  Field(
     "Output normalization file",
     "output_normalization_file",
     Datatype.filePath,
@@ -2493,6 +2480,13 @@ const List<Field> normalizationFields = [
     Datatype.listFilePath,
     description:
         "List of paths where the normalized rule files will be saved, it is mandatory to specify each of them if one is specified (default: <original_name>_denormalized<original_extension>).",
+  ),
+  Field(
+    "Attributes file",
+    "attributes_file",
+    Datatype.filePath,
+    description:
+        "Path to the file containing the labels of attributes and classes. Mandatory if rules or normalization stats are written with attribute names.",
   ),
   Field(
     "Whether to use median instead of mean normalize",

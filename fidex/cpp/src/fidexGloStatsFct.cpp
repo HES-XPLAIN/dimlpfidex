@@ -17,8 +17,8 @@ void showStatsParams() {
             << std::endl;
 
   printOptionDescription("--test_data_file <str>", "Path to the file containing the test portion of the dataset");
-  printOptionDescription("--test_pred_file <str>", "Path to the file containing predictions on the test portion of the dataset");
   printOptionDescription("--test_class_file <str>", "Path to the file containing the test true classes of the dataset, not mandatory if classes are specified in test data file");
+  printOptionDescription("--test_pred_file <str>", "Path to the file containing predictions on the test portion of the dataset");
   printOptionDescription("--global_rules_file <str>", "Path to the file containing the global rules obtained with fidexGloRules algorithm.");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in the dataset");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in the dataset");
@@ -31,9 +31,9 @@ void showStatsParams() {
 
   printOptionDescription("--json_config_file <str>", "Path to the JSON file that configures all parameters. If used, this must be the sole argument and must specify the file's relative path");
   printOptionDescription("--root_folder <str>", "Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder");
+  printOptionDescription("--global_rules_outfile <str>", "Path to the file where the output global rules will be stored with stats on test set, if you want to compute those statistics.");
   printOptionDescription("--attributes_file <str>", "Path to the file containing the labels of attributes and classes> Mandatory if rules file contains attribute names, if not, do not add it");
   printOptionDescription("--stats_file <str>", "Path to the file where statistics of the global ruleset will be stored");
-  printOptionDescription("--global_rules_outfile <str>", "Path to the file where the output global rules will be stored with stats on test set, if you want to compute those statistics.");
   printOptionDescription("--console_file <str>", "Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal");
   printOptionDescription("--positive_class_index <int [0,nb_classes-1]>", "Index of the positive class to compute true/false positive/negative rates, index starts at 0. If it is specified in the rules file, it has to be the same value.");
 
