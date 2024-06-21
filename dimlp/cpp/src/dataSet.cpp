@@ -336,7 +336,7 @@ DataSet::DataSet(const std::string &nameFile, int nbIn, int nbOut) {
         lineSize = currentLineSize;
       }
       auto oneHotCount = static_cast<int>(std::count(lineValues.end() - nbOut, lineValues.end(), 1.0f));
-      if (oneHotCount != 1 || std::count_if(lineValues.end() - nbOut, lineValues.end(), [](float val) { return val != 0.0f && val != 1.0f; }) > 0) {
+      if (oneHotCount != 1 || std::count_if(lineValues.end() - nbOut, lineValues.end(), [](double val) { return val != 0.0 && val != 1.0; }) > 0) {
         throw FileContentError("Error : Invalid one-hot encoding in file " + nameFile + ", line : " + line + ".");
       }
     } else if (currentLineSize == nbIn) {
@@ -374,7 +374,7 @@ DataSet::DataSet(const std::string &nameFile, int nbIn, int nbOut) {
 
   for (int i = 0; i < NbEx; ++i) {
     Set[i] = new float[NbAttr];
-    std::copy(tempSet[i].begin(), tempSet[i].end(), Set[i]);
+    std::transform(tempSet[i].begin(), tempSet[i].end(), Set[i], [](double val) { return static_cast<float>(val); });
   }
 
   std::cout << "Number of patterns in file " << nameFile << ": ";

@@ -92,9 +92,9 @@ public:
  */
 inline std::ostream &operator<<(std::ostream &stream, const Antecedent &antecedent) {
   return stream << " "
-                << antecedent.getAttribute() << " "
-                << antecedent.getInequality() << " "
-                << antecedent.getValue() << " ";
+                << std::to_string(antecedent.getAttribute()) << " "
+                << std::to_string(antecedent.getInequality()) << " "
+                << std::to_string(antecedent.getValue()) << " ";
 }
 
 /**

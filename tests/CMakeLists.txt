@@ -1,6 +1,6 @@
 project(tests)
 
-set(CMAKE_CXX_FLAGS "-O3 -fopenmp")
+set(CMAKE_CXX_FLAGS "-O3 -fopenmp /EHsc")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fopenmp")
 
 add_subdirectory("cpp")

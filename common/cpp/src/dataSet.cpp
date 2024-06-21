@@ -462,7 +462,7 @@ void DataSetFid::setDataLine(const std::string &line, const std::string &dataFil
         throw FileContentError("Error in dataset " + datasetName + " : in file " + dataFile + ", invalid class ID for a given sample.");
       }
       datas.emplace_back(valuesData.begin(), valuesData.begin() + _nbAttributes);
-      trueClasses.emplace_back(classId);
+      trueClasses.emplace_back(static_cast<int>(classId));
     }
   } else {
     throw InternalError("Error in dataset " + datasetName + " : wrong class format.");
@@ -546,7 +546,7 @@ void DataSetFid::setClassLine(const std::string &line, const std::string &classF
       if (classId < 0 || classId >= _nbClasses || classId != std::floor(classId)) {
         throw FileContentError("Error in dataset " + datasetName + " : in file " + classFile + ", invalid class ID for a given sample.");
       }
-      trueClasses.emplace_back(classId);
+      trueClasses.emplace_back(static_cast<int>(classId));
     }
   } else if (classFormat == "one-hot_combined" || classFormat == "id_combined") {
     throw InternalError("Error in dataset " + datasetName + " : classes were already added combined with data.");
