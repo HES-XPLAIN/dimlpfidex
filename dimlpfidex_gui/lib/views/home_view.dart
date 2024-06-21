@@ -1,6 +1,7 @@
 import 'package:dimlpfidex_gui/ui/input_field.dart';
 import 'package:dimlpfidex_gui/ui/simple_button.dart';
 import 'package:file_selector/file_selector.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +11,11 @@ class MainMenuView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ask for default generation path when it is not defined
+    if (!kIsWeb) {
+      _askForGenerationPath(context);
+    }
+
     return Container(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -97,6 +103,33 @@ class MainMenuView extends StatelessWidget {
           ),
         ));
   }
+}
+
+void _askForGenerationPath(BuildContext context) async {
+  String confKey = "generationPath";
+  await SharedPreferences.getInstance()
+      .then((value) => value.getString(confKey) ?? "")
+      .then((value) {
+    if (value.isEmpty) {
+      return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Welcome !"),
+              content: const Text(
+                  "Before starting, we need to know where, in your computer, would you\nlike do keep all your future generated files.\n\nClick 'understood' to proceed."),
+              actions: [
+                SimpleButton(
+                    onPressed: () {
+                      _openSettingsDialog(context);
+                      Navigator.of(context).pop();
+                    },
+                    label: "Understood"),
+              ],
+            );
+          });
+    }
+  });
 }
 
 void _openSettingsDialog(BuildContext context) async {
