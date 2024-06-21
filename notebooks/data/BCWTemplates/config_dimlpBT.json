@@ -10,7 +10,7 @@
     "console_file": "resultDimlpBT.txt",
     "with_rule_extraction": true,
     "global_rules_outfile": "dimlpBTRules.rls",
-    "weights_outfile": "Weights/weights.wts",
+    "weights_outfile": "weights.wts",
     "stats_file": "stats.txt",
     "nb_attributes": 30,
     "nb_classes": 2,
