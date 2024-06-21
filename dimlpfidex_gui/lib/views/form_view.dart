@@ -3,11 +3,9 @@ import "dart:io";
 import "package:dimlpfidex_gui/data/field.dart";
 import "package:dimlpfidex_gui/ui/input_field.dart";
 import "package:dimlpfidex_gui/ui/simple_button.dart";
-import "package:file_selector/file_selector.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_form_builder/flutter_form_builder.dart";
-import "package:path_provider/path_provider.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:universal_html/html.dart" as universal_html;
 
