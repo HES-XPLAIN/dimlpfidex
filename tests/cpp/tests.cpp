@@ -34,6 +34,6 @@ int main() {
   res += runFidextestsSuite();
   res += runCommonTestSuite();
 
-  std::cout << res << " tests done." << std::endl;
+  std::cout << std::to_string(res) << " tests done." << std::endl;
   return 0;
 }
