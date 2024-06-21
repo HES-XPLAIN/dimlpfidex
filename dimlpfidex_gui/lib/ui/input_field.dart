@@ -79,7 +79,7 @@ class _InputFieldState extends State<InputField> {
                   maxWidth: MediaQuery.of(context).size.width * 0.5),
               child: FormBuilderCheckbox(
                 title: Text(
-                  field.label,
+                  "[${field.datatype.name}] ${field.label}",
                   style: const TextStyle(fontSize: 17),
                 ),
                 key: inputFieldKey,
@@ -127,7 +127,7 @@ class _InputFieldState extends State<InputField> {
                         name: field.jsonLabel,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                            label: Text(field.label),
+                            label: Text("[${field.datatype.name}] ${field.label}"),
                             border: const OutlineInputBorder()),
                         validator: (value) => field.datatype == Datatype.integer
                             ? integerInputValidator(value, field)
@@ -175,7 +175,7 @@ class _InputFieldState extends State<InputField> {
               child: FormBuilderTextField(
                 key: inputFieldKey,
                 name: field.jsonLabel,
-                decoration: InputDecoration(label: Text(field.label)),
+                decoration: InputDecoration(label: Text("[${field.datatype.name}] ${field.label}")),
                 keyboardType: TextInputType.multiline,
                 validator: (value) => validator(value, field),
                 valueTransformer: (value) =>
@@ -200,7 +200,7 @@ class _InputFieldState extends State<InputField> {
                         value: item,
                         child: Text(item)))
                     .toList(),
-                decoration: InputDecoration(label: Text(field.label)),
+                decoration: InputDecoration(label: Text("[${field.datatype.name}] ${field.label}")),
               ))
         ]));
   }
@@ -215,7 +215,7 @@ class _InputFieldState extends State<InputField> {
               child: FormBuilderTextField(
                 key: inputFieldKey,
                 name: field.jsonLabel,
-                decoration: InputDecoration(label: Text(field.label)),
+                decoration: InputDecoration(label: Text("[${field.datatype.name}] ${field.label}")),
                 keyboardType: TextInputType.multiline,
                 validator: (field.datatype == Datatype.listFilePath)
                     ? (value) => listInputValidator(value, field)
