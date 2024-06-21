@@ -115,7 +115,7 @@ class _AppPageState extends State<AppPage> with TickerProviderStateMixin {
             "DimlpPred": dimlpPredFields,
             "DimlpRul": dimlpRulFields,
             "DimlpBT": dimlpBTFields,
-            // TODO: uncomment when ready: "DensCls": densClsFieldsFields,
+            "DensCls": densClsFields,
             "ComputeRocCurve": computeRocCurveFields,
             "CnnTrn": cnnTrnFields,
             "GradBoostTrn": gradBoostTrnFields,
