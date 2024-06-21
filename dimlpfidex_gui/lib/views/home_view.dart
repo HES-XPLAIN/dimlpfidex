@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dimlpfidex_gui/ui/input_field.dart';
 import 'package:dimlpfidex_gui/ui/simple_button.dart';
 import 'package:file_selector/file_selector.dart';
@@ -172,20 +174,21 @@ void _openSettingsDialog(BuildContext context) async {
             actions: [
               SimpleButton(
                   onPressed: () {
-                    sp.setString(confKey, path);
-                    Navigator.of(context).pop();
-                    showSnackBar(context,
-                        "Successfully changed generation path to: $path",
-                        color: Colors.green[700]!);
+                    bool isValidDir = Directory.fromUri(Uri(path:path)).existsSync();
+
+                    if (!isValidDir || path.isEmpty) {
+                      showSnackBar(context,
+                          "Path '$path' is not valid a valid directory path. Please specify a valid path.",
+                          color: Colors.red[500]!);
+                    } else {
+                      sp.setString(confKey, path);
+                      showSnackBar(context,
+                          "Successfully changed generation path to: $path",
+                          color: Colors.green[700]!);
+                      Navigator.of(context).pop();
+                    }
                   },
-                  label: "Save"),
-              SimpleButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    showSnackBar(context, "Operation cancelled");
-                  },
-                  label: "Cancel",
-                  buttonType: ButtonType.cancel),
+                  label: "Save")
             ],
           );
         });
