@@ -50,7 +50,7 @@ String? integerInputValidator(String? value, Field field) {
   // check parsing error
   int? parsedValue = int.tryParse(value);
   if (parsedValue == null) {
-    return "This field must be a valid number";
+    return "This field must be a valid integer";
   }
 
   if (minValue != null && minValue > parsedValue) {
@@ -79,7 +79,7 @@ String? listInputValidator(String? value, Field field) {
   }
 
   if (field.datatype == Datatype.pairInteger) {
-    if (!RegExp(r"^\[?([0-9]+((,| )+)[0-9]+)( )*\]?$").hasMatch(value)) {
+    if (!RegExp(r"^\[?([0-9]+((,| )+)[0-9]+)(\ )*\]?$").hasMatch(value)) {
       return "Pairs of integers cannot be anything else than a list of only 2 integers";
     }
   }
@@ -91,7 +91,7 @@ String? listInputValidator(String? value, Field field) {
       json.decode(value) as List<dynamic>;
     }
   } on FormatException {
-    return "There's a JSON syntax error in your input";
+    return "There's a syntax error in your collection (ex: missing comma)";
   }
 
   return null;
@@ -106,7 +106,7 @@ String? dictInputValidator(String? value, Field field) {
 
   if (!RegExp(r"^\{?(([0-9]+\:[0-9]+(\.[0-9]+)*)(,|\ )*)+\}?$")
       .hasMatch(value)) {
-    return "There's a syntax error in your input";
+    return "There's a syntax error in your dictionnary (ex: missing ':')";
   }
 
   return null;
