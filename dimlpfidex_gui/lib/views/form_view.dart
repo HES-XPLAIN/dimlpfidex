@@ -177,9 +177,9 @@ void _produceFileForOS(String json, BuildContext context) async {
       })
       .then((file) => file.writeAsString(json))
       .then((_) => showSnackBar(
-          context, 'JSON file successfully generated at $path',
+          context, 'Configuration file successfully generated at $path',
           color: Colors.green[700]!))
       .onError((error, _) => showSnackBar(
-          context, 'JSON file generation error: $error',
+          context, 'Configuration file generation error: $error',
           color: Colors.red[500]!));
 }
