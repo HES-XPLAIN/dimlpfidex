@@ -278,7 +278,7 @@ const List<Field> fidexGloFields = [
     "train_data_file",
     Datatype.filePath,
     description: "Path to the file containing the train portion of the dataset.",
-  );
+  ),
   Field(
     "Train true classes file",
     "train_class_file",
@@ -292,7 +292,7 @@ const List<Field> fidexGloFields = [
     Datatype.filePath,
     description:
         "Path to the file containing predictions on the train portion of the dataset.",
-  );
+  ),
   Field(
     "Weights file",
     "weights_file",
