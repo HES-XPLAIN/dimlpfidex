@@ -1,6 +1,6 @@
 pybind11>=2.10.4
 pybind11-global>=2.10.4
-numpy>=1.22
+numpy<2.0
 scikit-learn>=1.2.2
 keras>=3.3
 torch>=2.3
