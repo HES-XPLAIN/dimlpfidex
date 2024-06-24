@@ -182,6 +182,7 @@ autoexe.sh
 tests/dataset/data/out/
 compile_commands.json
 /data/
+/dimlpfidex/
 
 # Sphinx
 docs/api
