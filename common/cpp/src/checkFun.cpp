@@ -381,7 +381,7 @@ std::string getOSSeparator() {
 #if defined(__unix__) || defined(__APPLE__)
   return "/";
 #elif defined(_WIN32)
-  return "\\";
+  return "/";
 #endif
 }
 
