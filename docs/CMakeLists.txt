@@ -42,10 +42,25 @@ add_custom_target(Doxygen ALL DEPENDS ${DOXYGEN_INDEX_FILE})
 find_package(Sphinx REQUIRED)
 
 set(SPHINX_SOURCE ${CMAKE_CURRENT_SOURCE_DIR})
+get_filename_component(PARENT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
+set(SPHINX_PYTHON_SOURCE ${PARENT_SOURCE_DIR}/trainings)
 set(SPHINX_BUILD ${CMAKE_CURRENT_BINARY_DIR}/sphinx)
 set(SPHINX_INDEX_FILE ${SPHINX_BUILD}/index.html)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/_static)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/_templates)
+
+# Generate Python modules documentation
+add_custom_command(OUTPUT ${SPHINX_SOURCE}/modules/modules.rst
+                   COMMAND
+                   sphinx-apidoc -o ${SPHINX_SOURCE}/modules ${SPHINX_PYTHON_SOURCE}
+                   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                   DEPENDS
+                   # Other docs files to track should go here
+                   ${CMAKE_CURRENT_SOURCE_DIR}/index.rst
+                   MAIN_DEPENDENCY ${SPHINX_SOURCE}/conf.py
+                   COMMENT "Generating Python documentation with Sphinx")
+
+add_custom_target(Sphinx_python DEPENDS ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Only regenerate Sphinx when:
 # - Doxygen has rerun
@@ -60,9 +75,12 @@ add_custom_command(OUTPUT ${SPHINX_INDEX_FILE}
                    DEPENDS
                    # Other docs files to track should go here
                    ${CMAKE_CURRENT_SOURCE_DIR}/index.rst
+                   ${CMAKE_CURRENT_SOURCE_DIR}/modules/modules.rst
                    ${DOXYGEN_INDEX_FILE}
                    MAIN_DEPENDENCY ${SPHINX_SOURCE}/conf.py
                    COMMENT "Generating documentation with Sphinx")
 
 # add target so we can run the job easily
 add_custom_target(Sphinx ALL DEPENDS ${SPHINX_INDEX_FILE})
+
+add_dependencies(Sphinx Sphinx_python)
