@@ -56,6 +56,9 @@ Ensure `cmake.exe` is accessible in the `$PATH` environment variable.
 cmake.exe --version
 ```
 
+> [!NOTE]
+> You will have to restart your computer for the changes to take effect.
+
 ### Install Python
 
 Install [Python](https://www.python.org/), version 3.9 or newer (3.11 is recommended):
@@ -127,10 +130,13 @@ cmake --build .
 ```
 
 > [!NOTE]
-> On Windows, use `cmake -DCMAKE_PREFIX_PATH="C:\<Absolute\Path\to>\.venv" ..` instead.
+> On Windows, you may have to use `cmake -DCMAKE_PREFIX_PATH="C:\<Absolute\Path\to>\.venv" ..` instead.
 
 > [!TIP]
 > To speed up the compilation process, you can also add `-j X` with `X` being your number of CPU cores.
+
+> [!WARNING]
+> If you need to rebuild the project, you must erase the content of the `build/` directory.
 
 Create archives for distribution:
 
