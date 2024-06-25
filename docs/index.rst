@@ -11,6 +11,7 @@ Welcome to dimlpfidex's documentation!
    :caption: Contents:
 
    api/library_root
+   modules/modules
 
 Indices and tables
 ==================

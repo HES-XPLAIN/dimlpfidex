@@ -15,6 +15,10 @@ release = '0.0.0'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.duration',
+    'sphinx.ext.napoleon',
     'breathe',
     'exhale',
 ]
