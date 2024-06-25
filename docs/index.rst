@@ -3,14 +3,21 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to dimlpfidex's documentation!
-======================================
+DimlpFidex documentation
+========================
+
+API reference for the DIMLP and Fidex algorithms.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: C++ API reference
 
    api/library_root
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Python modules
+
    modules/modules
 
 Indices and tables
