@@ -1,0 +1,58 @@
+Parameters list:
+ - train_data_file                                                      data/MnistDataset/trainData.txt
+ - train_pred_file                                                      data/MnistDataset/predTrain.out
+ - train_class_file                                                    data/MnistDataset/trainClass.txt
+ - global_rules_outfile                                               data/MnistDataset/globalRules.txt
+ - console_file                                                    data/MnistDataset/fidexGloResult.txt
+ - root_folder                                                                        data/MnistDataset
+ - weights_file                                                           data/MnistDataset/weights.wts
+ - nb_attributes                                                                                    784
+ - nb_classes                                                                                        10
+ - nb_quant_levels                                                                                   50
+ - heuristic                                                                                          1
+ - max_iterations                                                                                    25
+ - min_covering                                                                                       2
+ - max_failed_attempts                                                                               30
+ - nb_threads                                                                                         8
+ - positive_class_index                                                                              -1
+ - seed                                                                                               0
+ - decision_threshold                                                                         -1.000000
+ - hi_knot                                                                                     5.000000
+ - dropout_hyp                                                                                 0.900000
+ - dropout_dim                                                                                 0.900000
+ - min_fidelity                                                                                1.000000
+ - lowest_min_fidelity                                                                         0.750000
+ - covering_strategy                                                                                  1
+End of Parameters list.
+
+Importing files...
+Files imported
+
+Creation of hyperspace...
+
+Parameters of hyperLocus :
+
+- Number of stairs 50
+- Interval : [-5,5]
+
+Import weight file...
+Weight file imported
+
+computation of hyperLocus
+HyperLocus computed
+
+Hyperspace created.
+
+Computing fidex rules...
+
+Threadpop #6 initialized, please wait for it to be done.
+Threadpop #1 initialized, please wait for it to be done.
+Threadpop #7 initialized, please wait for it to be done.
+Threadpop #0 initialized, please wait for it to be done.
+Threadpop #2 initialized, please wait for it to be done.
+Threadpop #3 initialized, please wait for it to be done.
+Threadpop #4 initialized, please wait for it to be done.
+Threadpop #5 initialized, please wait for it to be done.
+Estimated total execution time after 1 sample(s): 2 hours, 4 minutes, 52 seconds.
+Estimated total execution time after 10 sample(s): 2 hours, 43 minutes, 2 seconds.
+Estimated total execution time after 100 sample(s): 2 hours, 45 minutes, 58 seconds.

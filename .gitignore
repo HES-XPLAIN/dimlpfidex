@@ -187,3 +187,5 @@ compile_commands.json
 # Sphinx
 docs/api
 
+# Notebooks exceptions
+!notebooks/data/MnistDataset/**

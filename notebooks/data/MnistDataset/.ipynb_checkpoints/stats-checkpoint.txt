@@ -1,0 +1,2 @@
+Training accuracy : 99.901849%.
+Testing accuracy : 99.379998%.

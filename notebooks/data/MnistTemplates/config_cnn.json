@@ -1,0 +1,13 @@
+{
+    "root_folder": "data/MnistDataset",
+    "train_data_file": "trainData.txt",
+    "train_class_file": "trainClass.txt",
+    "test_data_file": "testData.txt",
+    "test_class_file": "testClass.txt",
+    "valid_ratio": 0.1,
+    "original_input_size": "[28,28]",
+    "data_format": "classic",
+    "nb_channels": 1,
+    "nb_classes": 10,
+    "model": "small"
+}
