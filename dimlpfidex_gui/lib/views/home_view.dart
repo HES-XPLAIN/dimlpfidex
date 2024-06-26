@@ -98,9 +98,10 @@ class MainMenuView extends StatelessWidget {
                   ),
                 ),
               ),
-              ElevatedButton(
-                  onPressed: () => _openSettingsDialog(context),
-                  child: const Icon(Icons.settings))
+              if (!kIsWeb)
+                ElevatedButton(
+                    onPressed: () => _openSettingsDialog(context),
+                    child: const Icon(Icons.settings))
             ],
           ),
         ));
@@ -174,7 +175,8 @@ void _openSettingsDialog(BuildContext context) async {
             actions: [
               SimpleButton(
                   onPressed: () {
-                    bool isValidDir = Directory.fromUri(Uri(path:path)).existsSync();
+                    bool isValidDir =
+                        Directory.fromUri(Uri(path: path)).existsSync();
 
                     if (!isValidDir || path.isEmpty) {
                       showSnackBar(context,
