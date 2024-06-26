@@ -2,7 +2,7 @@
 
 int runParametersTestSuite() {
   int res = 0;
-  
+
   res += testSetter();
   res += testGetter();
   res += testDefaultSetter();

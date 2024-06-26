@@ -25,7 +25,6 @@ int runFidextestsSuite() {
   return res;
 }
 
-
 int main() {
   int res = 0;
   std::cout << "Running tests... (can take a while to finish)" << std::endl;

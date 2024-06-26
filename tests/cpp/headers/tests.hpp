@@ -2,8 +2,8 @@
 #define TESTS_H
 
 #include "commonTests.hpp"
-#include "fidexTests.hpp"
 #include "dimlpTests.hpp"
+#include "fidexTests.hpp"
 
 int runDimlpTestsSuite();
 int runFidextestsSuite();
