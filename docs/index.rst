@@ -15,7 +15,7 @@ API reference for the DIMLP and Fidex algorithms.
    api/library_root
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Python modules
 
    modules/modules
