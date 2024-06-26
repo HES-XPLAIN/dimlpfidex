@@ -36,8 +36,8 @@ int testDimlpRul() {
 }
 
 int testDimlpTrn() {
-    std::string command = "--json_config_file " + TEMPLATES_PATH + "config_dimlpTrn.json";
+  std::string command = "--json_config_file " + TEMPLATES_PATH + "config_dimlpTrn.json";
   std::string testName = "Simple dimlpTrn execution";
 
-    return testExec(testName, command, dimlpTrn);
+  return testExec(testName, command, dimlpTrn);
 }

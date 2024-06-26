@@ -5,7 +5,7 @@ int? integerValueTransformer(String? value) {
   if (value == null || value.isEmpty) {
     return null;
   }
-    
+
   return int.tryParse(value);
 }
 
@@ -13,7 +13,7 @@ double? doubleValueTransformer(String? value) {
   if (value == null || value.isEmpty) {
     return null;
   }
-    
+
   return double.tryParse(value);
 }
 

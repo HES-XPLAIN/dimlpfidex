@@ -7,7 +7,7 @@
 
 /**
  * @brief RealHyp2 is a derived class from RealHyp that overrides the behavior of going left or right in the decision tree.
- * 
+ *
  * This class provides specific implementations for the methods to move left and right in the decision tree during the rule extraction process.
  */
 class RealHyp2 : public RealHyp {
@@ -16,7 +16,7 @@ class RealHyp2 : public RealHyp {
 
   /**
    * @brief Overrides the method to go left in the decision tree.
-   * 
+   *
    * @param var The variable index.
    * @param indPat The index of the pattern.
    * @param startVirt The starting index for virtual hyperplanes.
@@ -26,7 +26,7 @@ class RealHyp2 : public RealHyp {
 
   /**
    * @brief Overrides the method to go right in the decision tree.
-   * 
+   *
    * @param var The variable index.
    * @param indPat The index of the pattern.
    * @param startVirt The starting index for virtual hyperplanes.
@@ -37,7 +37,6 @@ class RealHyp2 : public RealHyp {
   //----------------------------------------------------------------
 
 public:
-
   /**
    * @brief Constructs a RealHyp2 object using the given dataset and neural network parameters.
    */

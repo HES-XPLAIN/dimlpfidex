@@ -75,7 +75,7 @@ const std::map<std::string, std::string> DEFAULT_ARGS{
     {"--min_fidelity", DEFAULT_MIN_FIDELITY}};
 
 int testAssert(const std::string &testName, bool condition);
-int testExec(const std::string &testName, const std::string &command, int (*fn)(const std::string&));
+int testExec(const std::string &testName, const std::string &command, int (*fn)(const std::string &));
 
 // specific helpers to handle Parameters tests use cases
 std::string argsToString(const std::map<std::string, std::string> &args);
