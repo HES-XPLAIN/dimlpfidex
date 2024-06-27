@@ -85,7 +85,7 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
             elif tag == "ROC":
                 self.add_text("computeRocCurve('--test_class_file dataclass2Test.txt --test_pred_file predTest.out --positive_class_index 1 --output_roc roc_curve.png --stats_file stats.txt --root_folder dimlp/datafiles --nb_classes 2')", raw=True)
             elif tag == "CNN":
-                self.add_text("cnnTrn('--model small --train_data_file trainData.txt --train_class_file trainClass.txt --test_data_file testData.txt --test_class_file testClass.txt --valid_data_file validData.txt --valid_class_file validClass.txt --original_input_size (28,28) --nb_channels 1 --data_format classic --nb_classes 10 --root_folder dimlp/datafiles/Mnist')", raw=True)
+                self.add_text("cnnTrn('--model small --train_data_file trainData.txt --train_class_file trainClass.txt --test_data_file testData.txt --test_class_file testClass.txt --original_input_size (28,28) --nb_channels 1 --data_format classic --nb_classes 10 --root_folder dimlp/datafiles/Mnist')", raw=True)
             elif tag == "Normalization":
                 self.add_text("For datafile normalization :", raw=True)
                 self.add_text("normalization('--data_files [datanormTrain.txt,datanormTest.txt] --normalization_indices [0,2,4] --nb_attributes 16 --missing_values NaN --root_folder dimlp/datafiles')", raw=True)

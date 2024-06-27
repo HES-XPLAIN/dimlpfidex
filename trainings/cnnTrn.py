@@ -114,7 +114,7 @@ def cnnTrn(args: str = None):
 
     Example of how to call the function:\n
     from trainings.cnnTrn import cnnTrn\n
-    cnnTrn('-\-model small -\-train_data_file trainData.txt -\-train_class_file trainClass.txt -\-test_data_file testData.txt -\-test_class_file testClass.txt -\-valid_data_file validData.txt -\-valid_class_file validClass.txt -\-original_input_size (28,28) -\-nb_channels 1 -\-data_format classic -\-nb_classes 10 -\-root_folder dimlp/datafiles/Mnist')
+    cnnTrn('-\-model small -\-train_data_file trainData.txt -\-train_class_file trainClass.txt -\-test_data_file testData.txt -\-test_class_file testClass.txt -\-original_input_size (28,28) -\-nb_channels 1 -\-data_format classic -\-nb_classes 10 -\-root_folder dimlp/datafiles/Mnist')
 
     :param args: A single string containing either the path to a JSON configuration file with all specified arguments or all arguments for the function, formatted like command-line input.
                  This includes dataset selection, file paths, training parameters, and options for model architecture and output files.
