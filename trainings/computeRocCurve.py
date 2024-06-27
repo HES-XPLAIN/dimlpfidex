@@ -49,26 +49,26 @@ def computeRocCurve(args: str = None):
     The function supports various customizations through command-line arguments, including specifying input files, choosing the
     positive class index, and output options.
 
-    Notes:<br>
-    - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
-    - The function is not compatible with SVM models directly due to the different process required for generating ROC curves for them.
-    - It's mandatory to specify the number of classes, the index of the positive class, and provide the test class labels and prediction scores.
-    - Parameters can be specified using the command line or a JSON configuration file.
-    - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
+    Notes:\n
+    - Each file is located with respect to the root folder dimlpfidex or to the content of the `root_folder` parameter if specified.\n
+    - The function is not compatible with SVM models directly due to the different process required for generating ROC curves for them.\n
+    - It's mandatory to specify the number of classes, the index of the positive class, and provide the test class labels and prediction scores.\n
+    - Parameters can be specified using the command line or a JSON configuration file.\n
+    - Providing no command-line arguments or using -h/-\-help displays usage instructions, detailing both required and optional parameters for user guidance.
 
-    Outputs:<br>
-    - stats_file : If specified, contains AUC scores.
-    - output_roc : PNG file containing the ROC curve.
+    Outputs:\n
+    - stats_file : If specified, contains AUC scores.\n
+    - output_roc : PNG file containing the ROC curve.\n
 
-    File formats:<br>
-    - **Class file**: Thesen files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:
-      1. Integer class ID.
-      2. One-hot encoded class.
+    File formats:\n
+    - **Class file**: Thesen files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:\n
+      1. Integer class ID.\n
+      2. One-hot encoded class.\n
     - **Prediction file** : These files should contain the prediction scores for the test set, with one sample per line, with scores (float) for each class separated either by spaces, tabs, semicolons or commas.
 
-    Example of how to call the function:
-    from trainings.computeRocCurve import computeRocCurve
-    computeRocCurve('--test_class_file dataclass2Test.txt --test_pred_file predTest.out --positive_class_index 1 --output_roc roc_curve.png --stats_file stats.txt --root_folder dimlp/datafiles --nb_classes 2')
+    Example of how to call the function:\n
+    from trainings.computeRocCurve import computeRocCurve\n
+    computeRocCurve('-\-test_class_file dataclass2Test.txt -\-test_pred_file predTest.out -\-positive_class_index 1 -\-output_roc roc_curve.png -\-stats_file stats.txt -\-root_folder dimlp/datafiles -\-nb_classes 2')
 
     :param args: A single string containing either the path to a JSON configuration file with all specified arguments or all arguments for the function, formatted like command-line input.
                  This includes file paths, the positive class index, and options for the output and statistical analysis.

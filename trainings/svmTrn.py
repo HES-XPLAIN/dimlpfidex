@@ -65,34 +65,34 @@ def svmTrn(args: str = None):
     for the characterization of discriminating hyperplanes, which are used in Fidex. This allows us to then use Fidex for comprehensible rule extraction.
     The function offers a wide range of customization through command-line arguments, allowing for the specification of SVM parameters, output options, and more.
 
-    Notes:
-    - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
-    - It's mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.
-    - True train and test class labels must be provided, either within the data file or separately through a class file.
-    - Parameters can be defined directly via the command line or through a JSON configuration file.
-    - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
+    Notes:\n
+    - Each file is located with respect to the root folder dimlpfidex or to the content of the `root_folder` parameter if specified.\n
+    - It's mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.\n
+    - True train and test class labels must be provided, either within the data file or separately through a class file.\n
+    - Parameters can be defined directly via the command line or through a JSON configuration file.\n
+    - Providing no command-line arguments or using -h/-\-help displays usage instructions, detailing both required and optional parameters for user guidance.\n
     - It's not necessary to normalize data before training because a normalization is done during the process.
 
-    Outputs:
-    - train_pred_outfile : File containing the model's train predictions.
-    - test_pred_outfile : File containing the model's test predictions.
-    - weights_outfile : File containing the model's trained weights.
-    - stats_file : File containing train and test accuracy.
-    - console_file : If specified, contains the console output.
+    Outputs:\n
+    - train_pred_outfile : File containing the model's train predictions.\n
+    - test_pred_outfile : File containing the model's test predictions.\n
+    - weights_outfile : File containing the model's trained weights.\n
+    - stats_file : File containing train and test accuracy.\n
+    - console_file : If specified, contains the console output.\n
     - output_roc : PNG file containing the ROC curve.
 
-    File formats:
-    - **Data files**: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:
-      1. Only attributes (floats).
-      2. Attributes (floats) followed by an integer class ID.
-      3. Attributes (floats) followed by one-hot encoded class.
-    - **Class files**: These files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:
-      1. Integer class ID.
+    File formats:\n
+    - **Data files**: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:\n
+      1. Only attributes (floats).\n
+      2. Attributes (floats) followed by an integer class ID.\n
+      3. Attributes (floats) followed by one-hot encoded class.\n
+    - **Class files**: These files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:\n
+      1. Integer class ID.\n
       2. One-hot encoded class.
 
-    Example of how to call the function:
-    from trainings.svmTrn import svmTrn
-    svmTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile svm/weights.wts --stats_file svm/stats.txt --train_pred_outfile svm/predTrain.out --test_pred_outfile svm/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')
+    Example of how to call the function:\n
+    from trainings.svmTrn import svmTrn\n
+    svmTrn('-\-train_data_file datanormTrain.txt -\-train_class_file dataclass2Train.txt -\-test_data_file datanormTest.txt -\-test_class_file dataclass2Test.txt -\-weights_outfile svm/weights.wts -\-stats_file svm/stats.txt -\-train_pred_outfile svm/predTrain.out -\-test_pred_outfile svm/predTest.out -\-nb_attributes 16 -\-nb_classes 2 -\-root_folder dimlp/datafiles')
 
     :param args: A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
                  This includes file paths, SVM parameters, and options for output and for the staircase activation process.
