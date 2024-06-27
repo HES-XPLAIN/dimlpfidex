@@ -141,8 +141,8 @@ def parse_normalization_file(file_name, nb_attributes, attributes=None):
                       "[attribute_name] : original (mean|median): [value], original std: [value]"
                       or
                       "[attribute_index] : original (mean|median): [value], original std: [value]"
-                      where [attribute_name] is a string from the 'attributes' list (if provided),
-                      [attribute_index] is an integer (if 'attributes' is not provided),
+                      where [attribute_name] is a string from the `attributes` list (if provided),
+                      [attribute_index] is an integer (if `attributes` is not provided),
                       and [value] is a floating-point number.
     :param nb_attributes: Number of attributes.
     :param attributes: List of attribute names (optional).
@@ -356,53 +356,53 @@ def normalization(args: str = None):
     This function serves two primary purposes: to normalize data files and to denormalize rule files.
     It offers flexibility in the normalization process through various options.
 
-    Normalization can be performed in several ways:
-    1. Using a 'normalization_file' file containing normalization parameters along with one or more data files.
-    2. Providing data files directly, where the first file is normalized to determine mean/median and standard deviation, which are then applied to other files.
-    3. Supplying mean/median (mus) and standard deviations (sigmas) as lists, along with the data files.
-    In the last two cases, indices of attributes to normalize must be provided, and a 'normalization_file' file is generated for future use.
+    Normalization can be performed in several ways:\n
+    1. Using a `normalization_file` file containing normalization parameters along with one or more data files.\n
+    2. Providing data files directly, where the first file is normalized to determine mean/median and standard deviation, which are then applied to other files.\n
+    3. Supplying mean/median (mus) and standard deviations (sigmas) as lists, along with the data files.\n
+    In the last two cases, indices of attributes to normalize must be provided, and a `normalization_file` file is generated for future use.
 
-    Denormalization can also be done in multiple ways:
-    1. Using a 'normalization_file' file with one or more rule files.
+    Denormalization can also be done in multiple ways:\n
+    1. Using a `normalization_file` file with one or more rule files.\n
     2. Directly providing mean/median (mus) and standard deviations (sigmas) along with the rule files. Attribute indices to be denormalized must be provided in this case.
 
     The function generates new normalized and/or denormalized files.
 
-    Notes:
-    - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
-    - It's mandatory to specify the number of attributes in the data and the symbol representing missing data.
-    - Choose whether to replace missing data or not.
-    - If normalizing training data, it is advisable to normalize test/validation files simultaneously for consistency.
-    - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
+    Notes:\n
+    - Each file is located with respect to the root folder dimlpfidex or to the content of the `root_folder` parameter if specified.\n
+    - It's mandatory to specify the number of attributes in the data and the symbol representing missing data.\n
+    - Choose whether to replace missing data or not.\n
+    - If normalizing training data, it is advisable to normalize test/validation files simultaneously for consistency.\n
+    - Providing no command-line arguments or using -h/-\-help displays usage instructions, detailing both required and optional parameters for user guidance.
 
-    When to use :
-    - It's good to normalize data before training with Dimlp and dimlpBT.
-    - It's not necessary to normalize data before training with cnnTrn, MLP and SVM because a normalization is done during the process.
+    When to use :\n
+    - It's good to normalize data before training with Dimlp and dimlpBT.\n
+    - It's not necessary to normalize data before training with cnnTrn, MLP and SVM because a normalization is done during the process.\n
     - It's not necessary to normalize data before training with GradientBoosting and RandomForests because decision trees don't need normalization.
 
-    Outputs :
-    - output_normalization_file : File containing the mean and std of the normalized attributes.
-    - output_data_files : Files containing the original data files normalized.
+    Outputs :\n
+    - output_normalization_file : File containing the mean and std of the normalized attributes.\n
+    - output_data_files : Files containing the original data files normalized.\n
     - output_rule_files : Files containing the original rule files denormalized.
 
-    File formats:
-    - **Normalization file**: Each line contains the mean/median and standard deviation for an attribute.
-      Format: '2 : original mean: 0.8307, original std: 0.0425'
-      Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.
-    - **Data files**: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:
-      1. Only attributes (floats).
-      2. Attributes (floats) followed by an integer class ID.
-      3. Attributes (floats) followed by one-hot encoded class.
-    - **Rule files**: Contain rules in Dimlp or Fidex format. Formats:
-      Dimlp: 'Rule 1: (x2 > 0.785787) (x5 > 0.591247) (x8 < 0.443135) Class = 1 (187)'
-      Fidex: 'X1>=0.414584 X10<0.507982 X5>=0.314835 X6>=0.356158 -> class 0'
-      In both formats, attribute indices (e.g., X1, x2) and class identifiers can be replaced with attribute names and class names, respectively, then an attribute file is required.
+    File formats:\n
+    - **Normalization file**: Each line contains the mean/median and standard deviation for an attribute.\n
+      Format: '2 : original mean: 0.8307, original std: 0.0425'\n
+      Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.\n
+    - **Data files**: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:\n
+      1. Only attributes (floats).\n
+      2. Attributes (floats) followed by an integer class ID.\n
+      3. Attributes (floats) followed by one-hot encoded class.\n
+    - **Rule files**: Contain rules in Dimlp or Fidex format. Formats:\n
+      Dimlp: 'Rule 1: (x2 > 0.785787) (x5 > 0.591247) (x8 < 0.443135) Class = 1 (187)'\n
+      Fidex: 'X1>=0.414584 X10<0.507982 X5>=0.314835 X6>=0.356158 -> class 0'\n
+      In both formats, attribute indices (e.g., X1, x2) and class identifiers can be replaced with attribute names and class names, respectively, then an attribute file is required.\n
     - **Attribute file**: Each line corresponds to an attribute's name, with optional class names at the end. Names can't have spaces inbetween (replace by _).
 
-    Examples of how to call the function:
-    from trainings.normalization import normalization
-    - For data files: normalization("--data_files [datanormTrain.txt,datanormTest.txt] --normalization_indices [0,2,4] --nb_attributes 16 --missing_values NaN --root_folder dimlp/datafiles")
-    - For rule files: normalization("--normalization_file normalization_stats.txt --rule_files globalRulesDatanorm.txt --nb_attributes 16 --root_folder dimlp/datafiles")
+    Examples of how to call the function:\n
+    from trainings.normalization import normalization\n
+    - For data files: normalization('-\-data_files [datanormTrain.txt,datanormTest.txt] -\-normalization_indices [0,2,4] -\-nb_attributes 16 -\-missing_values NaN -\-root_folder dimlp/datafiles')\n
+    - For rule files: normalization('-\-normalization_file normalization_stats.txt -\-rule_files globalRulesDatanorm.txt -\-nb_attributes 16 -\-root_folder dimlp/datafiles')
 
     :param args: A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
                 This includes file paths for the normalization/denormalization process and other options.

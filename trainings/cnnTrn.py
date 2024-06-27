@@ -80,43 +80,41 @@ def cnnTrn(args: str = None):
     various types of image datasets including MNIST, CIFAR-10, and CIFAR-100, and allows for extensive customization through command-line arguments.
     It's also possible to use other data types.
 
-    Notes:<br>
-    - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.<br>
-    - It's mandatory to specify the number of classes in the data, as well as the train and test datasets.<br>
-    - Validation data can either be specified directly or split from the training data based on a provided ratio.<br>
+    Notes:\n
+    - Each file is located with respect to the root folder dimlpfidex or to the content of the `root_folder` parameter if specified.\n
+    - It's mandatory to specify the number of classes in the data, as well as the train and test datasets.\n
+    - Validation data can either be specified directly or split from the training data based on a provided ratio.\n
     - If validation files are given, and you want to use Fidex algorithms later, you will have to use both train and
-      validation datas given here in the train datas and classes of Fidex.<br>
-    - It's mandatory to specify the size of the original inputs as well as the number of channels (it should be 3 for RGB and 1 for B&W). The number of attributes is inferred from it.<br>
-    - It's mandatory to chose a model. There is a large model, a small one, a VGG16 and a Resnet50 available. You can add any other model you want by modifying the code.<br>
-    - It's mandatory to specify the format of the data values: 'normalized_01' if the data are normalized between 0 and 1, 'classic' if they are between 0 and 255, and 'other' otherwise.<br>
-    - Data is reshaped in 3-channels shape if there is only one and usinf VGG or Resnet.<br>
-    - If Fidex is meant to be executed afterward for rule extraction, resizing inputs beforhand to a smaller size is recommended as it will take a lot of time because of the number of parameters.<br>
-    - It is also possible to resize the inputs just for training with the model_input_size parameter. Training with smaller inputs will be worst but will save a lot of time.<br>
-    - Parameters can be specified using the command line or a JSON configuration file.<br>
-    - Providing no command-line arguments or using <tt>-h/-\-help</tt> displays usage instructions, detailing both required and optional parameters for user guidance.<br>
-    - It's not necessary to normalize data before training because a normalization is done during the process.<br>
+      validation datas given here in the train datas and classes of Fidex.\n
+    - It's mandatory to specify the size of the original inputs as well as the number of channels (it should be 3 for RGB and 1 for B&W). The number of attributes is inferred from it.\n
+    - It's mandatory to chose a model. There is a large model, a small one, a VGG16 and a Resnet50 available. You can add any other model you want by modifying the code.\n
+    - It's mandatory to specify the format of the data values: 'normalized_01' if the data are normalized between 0 and 1, 'classic' if they are between 0 and 255, and 'other' otherwise.\n
+    - Data is reshaped in 3-channels shape if there is only one and usinf VGG or Resnet.\n
+    - If Fidex is meant to be executed afterward for rule extraction, resizing inputs beforhand to a smaller size is recommended as it will take a lot of time because of the number of parameters.\n
+    - It is also possible to resize the inputs just for training with the model_input_size parameter. Training with smaller inputs will be worst but will save a lot of time.\n
+    - Parameters can be specified using the command line or a JSON configuration file.\n
+    - Providing no command-line arguments or using -h/-\-help displays usage instructions, detailing both required and optional parameters for user guidance.\n
+    - It's not necessary to normalize data before training because a normalization is done during the process.
 
-    Outputs:<br>
-    - train_valid_pred_outfile : File containing the model's train and validation (in this order) predictions.<br>
-    - test_pred_outfile : File containing the model's test predictions.<br>
-    - weights_outfile : File containing the model's trained weights.<br>
-    - stats_file : File containing train and test accuracy.<br>
-    - console_file : If specified, contains the console output.<br>
+    Outputs:\n
+    - train_valid_pred_outfile : File containing the model's train and validation (in this order) predictions.\n
+    - test_pred_outfile : File containing the model's test predictions.\n
+    - weights_outfile : File containing the model's trained weights.\n
+    - stats_file : File containing train and test accuracy.\n
+    - console_file : If specified, contains the console output.
 
-    File formats:<br>
-    - **Data files**: These files should contain one sample (input/image) per line, with numbers separated either by spaces, tabs, semicolons or commas. Each pixel must be given one after the other. Supported formats:<br>
-      1. Only attributes (floats).
-      2. Attributes (floats) followed by an integer class ID.
-      3. Attributes (floats) followed by one-hot encoded class.
-    - **Class files**: These files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:<br>
-      1. Integer class ID.
+    File formats:\n
+    - **Data files**: These files should contain one sample (input/image) per line, with numbers separated either by spaces, tabs, semicolons or commas. Each pixel must be given one after the other. Supported formats:\n
+      1. Only attributes (floats).\n
+      2. Attributes (floats) followed by an integer class ID.\n
+      3. Attributes (floats) followed by one-hot encoded class.\n
+    - **Class files**: These files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:\n
+      1. Integer class ID.\n
       2. One-hot encoded class.
 
-    Example of how to call the function:
-    @par
-    <tt>from trainings.cnnTrn import cnnTrn</tt>
-    @par
-    <tt>cnnTrn('-\-model small -\-train_data_file trainData.txt -\-train_class_file trainClass.txt -\-test_data_file testData.txt -\-test_class_file testClass.txt -\-valid_data_file validData.txt -\-valid_class_file validClass.txt -\-original_input_size (28,28) -\-nb_channels 1 -\-data_format classic -\-nb_classes 10 -\-root_folder dimlp/datafiles/Mnist')</tt>
+    Example of how to call the function:\n
+    from trainings.cnnTrn import cnnTrn\n
+    cnnTrn('-\-model small -\-train_data_file trainData.txt -\-train_class_file trainClass.txt -\-test_data_file testData.txt -\-test_class_file testClass.txt -\-valid_data_file validData.txt -\-valid_class_file validClass.txt -\-original_input_size (28,28) -\-nb_channels 1 -\-data_format classic -\-nb_classes 10 -\-root_folder dimlp/datafiles/Mnist')
 
     :param args: A single string containing either the path to a JSON configuration file with all specified arguments or all arguments for the function, formatted like command-line input.
                  This includes dataset selection, file paths, training parameters, and options for model architecture and output files.

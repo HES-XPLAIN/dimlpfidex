@@ -22,10 +22,10 @@ def print_parameters(args):
 
 def get_tag_value(actions):
     """
-    Retrieves the 'tag' attribute from a list of argparse actions.
+    Retrieves the `tag` attribute from a list of argparse actions.
 
     :param actions: A list of argparse actions.
-    :return: The first 'tag' attribute value found among the actions, or None if no tag is present.
+    :return: The first `tag` attribute value found among the actions, or None if no tag is present.
     """
     for action in actions:
         tag_value = getattr(action, 'tag', None)
@@ -225,7 +225,7 @@ class CustomArgumentParser(argparse.ArgumentParser):
     # Remove sys.exit
     def exit(self, status=0, message=None):
         """
-        Overrides the default 'exit' method to prevent system exit on parsing errors.
+        Overrides the default `exit` method to prevent system exit on parsing errors.
 
         :param status: The exit status code.
         :param message: The error message to print.
@@ -444,8 +444,8 @@ def pair_type(str_list: str, valid_type: dict):
     :return: A pair of exactly 2 values of the specified type, with each element having passed the defined constraints.
              Raises a ValueError if the list does not contain exactly 2 elements.
 
-    Example usage:
-    pair_type("[1, 2]", valid_type={'func': int}) -> (1, 2)
+    Example usage:\n
+    pair_type("[1, 2]", valid_type={'func': int}) -> (1, 2)\n
     pair_type("(4 5)", valid_type={'func': int, 'min': 3}) -> (4, 5) with min value constraint applied
     """
     res_lst = list_type(str_list, valid_type)
@@ -457,17 +457,17 @@ def pair_type(str_list: str, valid_type: dict):
 
 def enum_type(value:str, *valid_strings, **valid_types):
     """
-    Attempts to match the given 'value' against a set of valid string values or some specified types.
+    Attempts to match the given `value` against a set of valid string values or some specified types.
 
     :param value: The value to be validated or converted.
-    :param valid_strings: A variable number of string arguments representing valid values for 'value'.
+    :param valid_strings: A variable number of string arguments representing valid values for `value`.
     :param valid_types: Keyword arguments where each key is a type identifier and its value is a dict containing the
                         type function under the key 'func' and any additional keyword arguments for the function.
 
-    :return: The original 'value' if it matches one of the 'valid_strings', or the type converted 'value' if it matches
-             one of the type constraints specified in 'valid_types'.
+    :return: The original `value` if it matches one of the `valid_strings`, or the type converted `value` if it matches
+             one of the type constraints specified in `valid_types`.
 
-    :raises argparse.ArgumentTypeError: If 'value' does not match any of the 'valid_strings' or cannot be converted
+    :raises argparse.ArgumentTypeError: If `value` does not match any of the `valid_strings` or cannot be converted
                                          to match the specified type constraints, with a detailed error message.
     """
     if value in valid_strings:

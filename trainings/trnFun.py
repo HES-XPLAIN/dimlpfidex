@@ -34,7 +34,7 @@ def get_data_pred(file_name, nb_classes):
     :type nb_classes: int
     :return: Predictions, a list of lists, where each inner list contains float values from one line of the file.
     :rtype: list[list[float]]
-    :raises ValueError: If the file is not found, cannot be opened, if a line does not contain 'nb_classes' floats,
+    :raises ValueError: If the file is not found, cannot be opened, if a line does not contain `nb_classes` floats,
                         or if any value in a line is not a float.
     """
     try:
@@ -64,10 +64,10 @@ def get_data(file_name, nb_attributes, nb_classes=0, keep_string=False):
     """
     Get data from file and separate it into attributes and classes(if there are some classes).
 
-    The file should contain one sample per line. Each number in line is separated by a space, a tab, a semicolon or a comma. Each sample can be in one of the following formats:
-    1. Attributes only: Each line contains each float attribute.
-    2. Attributes with Class ID: Each line contains all the float attributes followed by an integer class ID.
-    3. Attributes with One-Hot Class Encoding: Each line contains all the float attributes followed by a one-hot encoding of the class.
+    The file should contain one sample per line. Each number in line is separated by a space, a tab, a semicolon or a comma. Each sample can be in one of the following formats:\n
+    1. Attributes only: Each line contains each float attribute.\n
+    2. Attributes with Class ID: Each line contains all the float attributes followed by an integer class ID.\n
+    3. Attributes with One-Hot Class Encoding: Each line contains all the float attributes followed by a one-hot encoding of the class.\n
        The number of elements in this encoding should match the total number of classes, with exactly one '1' and the rest '0's.
 
     :param file_name: The name of the file to read data from.
@@ -76,8 +76,8 @@ def get_data(file_name, nb_attributes, nb_classes=0, keep_string=False):
     :type nb_attributes: int
     :param nb_classes: The number of classes, defaults to 0.
     :type nb_classes: int, optional
-    :param keep_string : Whether to keep data on string format (allows non numericals).
-    :type keep_string : bool
+    :param keep_string: Whether to keep data on string format (allows non numericals).
+    :type keep_string: bool
     :raises ValueError: If the file is not found, cannot be opened, or if the data format is incorrect.
     :return: A tuple containing two lists of list of float, one for data (attributes) and one for classes.
             Each element in the data list is a list of floats representing the attributes of a sample.
@@ -216,16 +216,16 @@ def get_data_class(file_name, nb_classes):
 
 def get_attribute_file(attribute_file, nb_attributes, nb_classes=None):
     """
-    Reads an attribute file and splits its content into two lists: 'attributes' and 'classes'.
-    The first 'nb_attributes' non-empty lines are stored in 'attributes', and the
-    remaining non-empty lines in 'classes'. Raises an error if the file does not
-    contain at least 'nb_attributes' non-empty lines and if there is not exactly
+    Reads an attribute file and splits its content into two lists: `attributes` and `classes`.
+    The first `nb_attributes` non-empty lines are stored in `attributes`, and the
+    remaining non-empty lines in `classes`. Raises an error if the file does not
+    contain at least `nb_attributes` non-empty lines and if there is not exactly
     nb_attributes + nb_classes lines when nb_classes is specified.
 
     Format of attribute_file : one attribute per line followed eventually by one class per line.
 
     :param attribute_file: Path to the file to be read.
-    :param nb_attributes: Number of non-empty lines to be included in 'attributes'.
+    :param nb_attributes: Number of non-empty lines to be included in `attributes`.
     :return: A tuple of two lists: (attributes, classes).
     """
     attributes = []
@@ -319,11 +319,11 @@ def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_o
     Compute the output of the first hidden layer in a neural network model, apply a staircase activation function, and optionally save weights.
 
     This function normalizes the input data and applies a linear transformation based on provided or calculated
-    mean (mu) and standard deviation (sigma). If in 'train' mode, it calculates and optionally saves the weights
-    and biases. The transformed data is then passed through a staircase activation function.The input data should
+    mean (mu) and standard deviation (sigma). If in `train` mode, it calculates and optionally saves the weights
+    and biases. The transformed data is then passed through a staircase activation function. The input data should
     be nbSamples x nbAttributes.
 
-    :param step: 'train' for training step, otherwise for testing step.
+    :param step: `train` for training step, otherwise for testing step.
     :type step: str
     :param input_data: Input data to be processed.
     :type input_data: list[list[float]] or np.ndarray
@@ -339,7 +339,7 @@ def compute_first_hidden_layer(step, input_data, k, nb_stairs, hiknot, weights_o
     :type mu: np.ndarray, optional
     :param sigma: Standard deviation for normalization, calculated if None. Defaults to None.
     :type sigma: np.ndarray, optional
-    :return: Transformed data, and mu and sigma if in 'train' mode.
+    :return: Transformed data, and mu and sigma if in `train` mode.
     :rtype: tuple (np.ndarray, np.ndarray, np.ndarray) or np.ndarray
     :raises ValueError: If file operations fail.
     """
