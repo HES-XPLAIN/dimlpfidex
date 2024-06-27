@@ -49,18 +49,18 @@ def computeRocCurve(args: str = None):
     The function supports various customizations through command-line arguments, including specifying input files, choosing the
     positive class index, and output options.
 
-    Notes:
+    Notes:<br>
     - Each file is located with respect to the root folder dimlpfidex or to the content of the 'root_folder' parameter if specified.
     - The function is not compatible with SVM models directly due to the different process required for generating ROC curves for them.
     - It's mandatory to specify the number of classes, the index of the positive class, and provide the test class labels and prediction scores.
     - Parameters can be specified using the command line or a JSON configuration file.
     - Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.
 
-    Outputs:
+    Outputs:<br>
     - stats_file : If specified, contains AUC scores.
     - output_roc : PNG file containing the ROC curve.
 
-    File formats:
+    File formats:<br>
     - **Class file**: Thesen files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:
       1. Integer class ID.
       2. One-hot encoded class.
