@@ -1,0 +1,20 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_errFunct.h:
+
+Program Listing for File errFunct.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_errFunct.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/errFunct.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef ERRFUNCT_H
+   #define ERRFUNCT_H
+   
+   #include <vector>
+   
+   float Lmse(int nbTar, std::vector<float> netOut, std::vector<float> target);
+   
+   #endif // ERRFUNCT_H

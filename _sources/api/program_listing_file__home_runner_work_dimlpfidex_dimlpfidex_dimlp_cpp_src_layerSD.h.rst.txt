@@ -1,0 +1,41 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSD.h:
+
+Program Listing for File layerSD.h
+==================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSD.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/layerSD.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LAYERSD_H
+   #define LAYERSD_H
+   
+   #include "layer.h"
+   
+   
+   class LayerSD : public Layer {
+   
+     //----------------------------------------------------------------
+   
+     float Activation1(float x) override { return Identity(x); }
+   
+     //----------------------------------------------------------------
+   
+   public:
+     LayerSD(
+         int nbDown,
+         int nbUp,
+         int nbWeights,
+         int nbWeightsForInit) :
+   
+                                 Layer(0, 0, 0, nbDown, nbUp, nbWeights, nbWeightsForInit)
+   
+     {
+     }
+   };
+   
+   
+   #endif // LAYERSD_H

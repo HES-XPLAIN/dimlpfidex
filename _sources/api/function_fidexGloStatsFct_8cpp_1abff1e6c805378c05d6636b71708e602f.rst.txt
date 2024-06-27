@@ -1,0 +1,14 @@
+.. _exhale_function_fidexGloStatsFct_8cpp_1abff1e6c805378c05d6636b71708e602f:
+
+Function getCovering(std::vector<int>&, const Rule&, std::vector<std::vector<double>>&)
+=======================================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStatsFct.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: getCovering(std::vector<int>&, const Rule&, std::vector<std::vector<double>>&)
+   :project: common

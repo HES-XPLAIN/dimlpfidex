@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Listing for File virtHyp.cpp &mdash; dimlpfidex 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7026087e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dimlpfidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">C++ API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/modules.html">trainings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dimlpfidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Program Listing for File virtHyp.cpp</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_virtHyp.cpp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="program-listing-for-file-virthyp-cpp">
+<span id="program-listing-file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-virthyp-cpp"></span><h1>Program Listing for File virtHyp.cpp<a class="headerlink" href="#program-listing-for-file-virthyp-cpp" title="Link to this heading"></a></h1>
+<p>↰ <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_virtHyp.cpp.html#file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-virthyp-cpp"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/virtHyp.cpp</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;virtHyp.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;misc.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stairObj.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">VirtualHyp::CreateVirtualHyp</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="n">VecVirtHyp</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbIn</span><span class="p">);</span>
+<span class="w">  </span><span class="n">VirtGoLeftEps</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbIn</span><span class="p">);</span>
+<span class="w">  </span><span class="n">VirtGoRightEps</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbIn</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">n</span><span class="p">].</span><span class="n">resize</span><span class="p">(</span><span class="n">NbHyp</span><span class="p">);</span>
+<span class="w">    </span><span class="n">VirtGoLeftEps</span><span class="p">[</span><span class="n">n</span><span class="p">].</span><span class="n">resize</span><span class="p">(</span><span class="n">NbHyp</span><span class="p">);</span>
+<span class="w">    </span><span class="n">VirtGoRightEps</span><span class="p">[</span><span class="n">n</span><span class="p">].</span><span class="n">resize</span><span class="p">(</span><span class="n">NbHyp</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">VirtualHyp::SetVirtualHyp</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="n">StairObj</span><span class="w"> </span><span class="n">stairObj</span><span class="p">(</span><span class="n">NbBins</span><span class="p">);</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">();</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrBias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bias</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrWeights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weights</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">Multiple</span><span class="p">;</span><span class="w"> </span><span class="n">m</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ptrBias</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">NbIn</span><span class="p">,</span><span class="w"> </span><span class="n">ptrWeights</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">NbIn</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrKnots</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stairObj</span><span class="p">.</span><span class="n">GetKnots</span><span class="p">().</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbKnots</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ptrKnots</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ptrVar</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">ptrWeights</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)</span>
+<span class="w">          </span><span class="o">*</span><span class="n">ptrVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">ptrKnots</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">*</span><span class="n">ptrBias</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="o">*</span><span class="n">ptrWeights</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">          </span><span class="o">*</span><span class="n">ptrVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">((</span><span class="o">*</span><span class="n">ptrKnots</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">*</span><span class="n">ptrBias</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1111111111.0</span><span class="w"> </span><span class="o">*</span>
+<span class="w">                                       </span><span class="mf">1111111111.0</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">VirtualHyp::SortVirtualHyp</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">qsort</span><span class="p">(</span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="n">NbHyp</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">),</span><span class="w"> </span><span class="n">Compare</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">VirtualHyp::SetEpsVirt</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">halfDiff</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbHyp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">first</span><span class="p">)</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">second</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">);</span>
+
+<span class="w">    </span><span class="o">*</span><span class="p">(</span><span class="n">VirtGoRightEps</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">((</span><span class="n">second</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">first</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.5</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbHyp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">halfDiff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">halfDiff</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)</span>
+<span class="w">        </span><span class="o">*</span><span class="p">(</span><span class="n">VirtGoRightEps</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">halfDiff</span><span class="p">;</span>
+<span class="w">      </span><span class="k">else</span>
+<span class="w">        </span><span class="o">*</span><span class="p">(</span><span class="n">VirtGoRightEps</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">VirtGoRightEps</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="o">*</span><span class="p">(</span><span class="n">VirtGoRightEps</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">NbHyp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">NbHyp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="mf">1.0</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="o">*</span><span class="p">(</span><span class="n">VirtGoLeftEps</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="mf">1.0</span><span class="p">);</span><span class="w"> </span><span class="c1">// not used</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbHyp</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">halfDiff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">halfDiff</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">)</span>
+<span class="w">        </span><span class="o">*</span><span class="p">(</span><span class="n">VirtGoLeftEps</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">halfDiff</span><span class="p">;</span>
+<span class="w">      </span><span class="k">else</span>
+<span class="w">        </span><span class="o">*</span><span class="p">(</span><span class="n">VirtGoLeftEps</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="n">VirtGoLeftEps</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">VirtualHyp::KnotInd</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">val</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">knots</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">var</span><span class="p">];</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbHyp</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">knots</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">val</span><span class="p">)</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">NbHyp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">VirtualHyp::GetInd</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">val</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">knots</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">var</span><span class="p">];</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbHyp</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">knots</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">val</span><span class="p">)</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">k</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="n">VirtualHyp</span><span class="o">::</span><span class="n">VirtualHyp</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbBins</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">multiple</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">bias</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">weights</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">NbBins</span><span class="p">(</span><span class="n">nbBins</span><span class="p">),</span><span class="w"> </span><span class="n">NbIn</span><span class="p">(</span><span class="n">nbIn</span><span class="p">),</span><span class="w"> </span><span class="n">Multiple</span><span class="p">(</span><span class="n">multiple</span><span class="p">),</span><span class="w"> </span><span class="n">Bias</span><span class="p">(</span><span class="n">bias</span><span class="p">),</span><span class="w"> </span><span class="n">Weights</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+
+<span class="p">{</span>
+
+<span class="w">  </span><span class="n">NbKnots</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NbBins</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="n">NbHyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NbKnots</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Multiple</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">CreateVirtualHyp</span><span class="p">();</span>
+<span class="w">  </span><span class="n">SetVirtualHyp</span><span class="p">();</span>
+<span class="w">  </span><span class="n">SortVirtualHyp</span><span class="p">();</span>
+<span class="w">  </span><span class="n">SetEpsVirt</span><span class="p">();</span>
+<span class="p">}</span>
+
+
+<span class="n">VirtualHyp</span><span class="o">::</span><span class="n">VirtualHyp</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbBins</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">multiple</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbNets</span><span class="p">,</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">VirtualHyp</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">virt</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">NbBins</span><span class="p">(</span><span class="n">nbBins</span><span class="p">),</span><span class="w"> </span><span class="n">NbIn</span><span class="p">(</span><span class="n">nbIn</span><span class="p">),</span><span class="w"> </span><span class="n">Multiple</span><span class="p">(</span><span class="n">multiple</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbHypOld</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">VirtualHyp</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ptrOldVirt</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">vectOldVirt</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">NbKnots</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NbBins</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="n">NbHyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NbKnots</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Multiple</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nbNets</span><span class="p">;</span>
+<span class="w">  </span><span class="n">nbHypOld</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NbKnots</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Multiple</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">CreateVirtualHyp</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbNets</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">ptrOldVirt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">virt</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+<span class="w">      </span><span class="n">vectOldVirt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ptrOldVirt</span><span class="o">-&gt;</span><span class="n">GetVirtHyp</span><span class="p">(</span><span class="n">v</span><span class="p">).</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbHypOld</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="o">*</span><span class="p">(</span><span class="n">VecVirtHyp</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nbHypOld</span><span class="p">))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vectOldVirt</span><span class="p">[</span><span class="n">h</span><span class="p">];</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">SortVirtualHyp</span><span class="p">();</span>
+<span class="w">  </span><span class="n">SetEpsVirt</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

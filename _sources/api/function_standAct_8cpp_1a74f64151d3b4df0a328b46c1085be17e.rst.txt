@@ -1,0 +1,14 @@
+.. _exhale_function_standAct_8cpp_1a74f64151d3b4df0a328b46c1085be17e:
+
+Function Identity(float)
+========================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_standAct.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: Identity(float)
+   :project: common

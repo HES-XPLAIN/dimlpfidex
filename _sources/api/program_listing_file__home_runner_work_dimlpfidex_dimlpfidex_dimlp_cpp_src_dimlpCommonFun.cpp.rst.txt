@@ -1,0 +1,51 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpCommonFun.cpp:
+
+Program Listing for File dimlpCommonFun.cpp
+===========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpCommonFun.cpp>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/dimlpCommonFun.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #include "dimlpCommonFun.h"
+   
+   void SaveOutputs(
+       DataSet &data,
+       std::shared_ptr<Dimlp> net,
+       int nbOut,
+       int nbWeightLayers,
+       const std::string &outfile)
+   
+   {
+     std::filebuf buf;
+   
+     if (buf.open(outfile, std::ios_base::out) == nullptr) {
+       throw CannotOpenFileError("Error : Cannot open output file " + outfile);
+     }
+   
+     std::shared_ptr<Layer> layer = net->GetLayer(nbWeightLayers - 1);
+     const float *out = layer->GetUp();
+   
+     std::cout << "\n\n"
+               << outfile << ": "
+               << "Writing ..." << std::endl;
+   
+     std::ostream outFile(&buf);
+   
+     for (int p = 0; p < data.GetNbEx(); p++) {
+       net->ForwardOneExample1(data, p);
+   
+       for (int o = 0; o < nbOut; o++) {
+         outFile << out[o] << " ";
+       }
+   
+       outFile << "" << std::endl;
+     }
+   
+     std::cout << outfile << ": "
+               << "Written.\n"
+               << std::endl;
+   }

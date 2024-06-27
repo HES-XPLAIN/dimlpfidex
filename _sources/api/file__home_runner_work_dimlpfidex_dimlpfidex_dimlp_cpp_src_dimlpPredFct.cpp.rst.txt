@@ -1,0 +1,44 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpPredFct.cpp:
+
+File dimlpPredFct.cpp
+=====================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/dimlpPredFct.cpp``)
+---------------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpPredFct.cpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``dimlpPredFct.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpPredFct.h`)
+
+
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_dimlpPredFct_8cpp_1a4ad1035048652e820d192719de2e461e`
+
+- :ref:`exhale_function_dimlpPredFct_8cpp_1ab8af5e163e0028faaddeecacca3b8a52`
+
+- :ref:`exhale_function_dimlpPredFct_8cpp_1a3e09148c0d41af190a21c5fefe298d88`
+

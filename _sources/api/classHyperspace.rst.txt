@@ -1,0 +1,17 @@
+.. _exhale_class_classHyperspace:
+
+Class Hyperspace
+================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperspace.h`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: Hyperspace
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

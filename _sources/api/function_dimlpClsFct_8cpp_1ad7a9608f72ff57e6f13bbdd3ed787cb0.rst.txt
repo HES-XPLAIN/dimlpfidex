@@ -1,0 +1,14 @@
+.. _exhale_function_dimlpClsFct_8cpp_1ad7a9608f72ff57e6f13bbdd3ed787cb0:
+
+Function dimlpCls(const std::string&)
+=====================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpClsFct.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: dimlpCls(const std::string&)
+   :project: common

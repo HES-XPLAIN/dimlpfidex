@@ -1,0 +1,79 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlp.h:
+
+Program Listing for File dimlp.h
+================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlp.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/dimlp.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef DIMLP_H
+   #define DIMLP_H
+   
+   #include "bpNN.h"
+   #include <vector>
+   
+   extern const std::string netType; // Extern declaration of the netType variable
+   
+   class Dimlp : public BpNN {
+   
+     //---------------------------------------------------------------------
+   
+   public:
+     float Error(DataSet &data, DataSet &target, float *accuracy)
+   
+     { return ComputeError(data, target, accuracy); }
+   
+     void Train(DataSet &train,
+                DataSet &trainTar,
+                DataSet &test,
+                DataSet &testTar,
+                DataSet &valid,
+                DataSet &validTar,
+                const std::string &accuracyFile,
+                bool fromBT = false)
+   
+     { TrainPhase(train, trainTar, test, testTar, valid, validTar, accuracyFile, fromBT); }
+   
+     //---------------------------------------------------------------------
+   
+     ~Dimlp() override = default; // Virtual destructor
+   
+     Dimlp(
+         float eta,
+         float mu,
+         float flat,
+         float errParam,
+         float accuracyParam,
+         float deltaErrParam,
+         int discrLevels,
+         int showErrParam,
+         int nbEpochsParam,
+         int nbLayers,
+         const std::vector<int> &nbNeurons,
+         const std::string &weightFile,
+         int seed = 0);
+   
+     Dimlp(const std::string &readFile, int nbLayers, const std::vector<int> &nbNeurons, int discrLevels, int netId = 1);
+   
+     Dimlp(
+         const std::string &readFile,
+         float eta,
+         float mu,
+         float flat,
+         float errParam,
+         float accuracyParam,
+         float deltaErrParam,
+         int discrLevels,
+         int showErrParam,
+         int nbEpochsParam,
+         int nbLayers,
+         const std::vector<int> &nbNeurons,
+         const std::string &weightFile,
+         int seed = 0);
+   };
+   
+   #endif // DIMLP_H

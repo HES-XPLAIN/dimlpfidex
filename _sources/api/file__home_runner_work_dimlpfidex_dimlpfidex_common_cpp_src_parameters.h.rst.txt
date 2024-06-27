@@ -1,0 +1,117 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_parameters.h:
+
+File parameters.h
+=================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/common/cpp/src/parameters.h``)
+------------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_parameters.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../json/single_include/nlohmann/json.hpp``
+
+- ``antecedent.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_antecedent.h`)
+
+- ``checkFun.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.h`)
+
+- ``errorHandler.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_errorHandler.h`)
+
+- ``fstream``
+
+- ``iomanip``
+
+- ``iostream``
+
+- ``map``
+
+- ``ostream``
+
+- ``sstream``
+
+- ``string`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_stringI.cpp`)
+
+- ``stringI.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_stringI.h`)
+
+- ``unordered_map``
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_densClsFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpBTFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpClsFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpPredFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpRulFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpTrnFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexAlgo.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStatsFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_parameters.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.h`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classParameters`
+
+
+Enums
+-----
+
+
+- :ref:`exhale_enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28`
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_parameters_8h_1a9b8003de7d2c42ce15f2ba0a30eea8a4`
+
+
+Variables
+---------
+
+
+- :ref:`exhale_variable_parameters_8h_1a1915d3a199584322acee9b957221794d`
+

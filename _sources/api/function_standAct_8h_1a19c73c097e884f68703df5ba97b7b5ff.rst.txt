@@ -1,0 +1,14 @@
+.. _exhale_function_standAct_8h_1a19c73c097e884f68703df5ba97b7b5ff:
+
+Function HyperTang(float)
+=========================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_standAct.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: HyperTang(float)
+   :project: common

@@ -1,0 +1,14 @@
+.. _exhale_function_rule_8cpp_1a78ed7b5e861276bee994711086766113:
+
+Function getStrPatternWithClassIds(int)
+=======================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: getStrPatternWithClassIds(int)
+   :project: common

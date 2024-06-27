@@ -1,0 +1,26 @@
+.. _exhale_class_classLayerSP4:
+
+Class LayerSP4
+==============
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSP4.h`
+
+
+Inheritance Relationships
+-------------------------
+
+Base Type
+*********
+
+- ``public Layer`` (:ref:`exhale_class_classLayer`)
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: LayerSP4
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

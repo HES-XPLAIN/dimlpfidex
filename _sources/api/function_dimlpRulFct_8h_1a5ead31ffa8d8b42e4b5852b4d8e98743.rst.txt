@@ -1,0 +1,14 @@
+.. _exhale_function_dimlpRulFct_8h_1a5ead31ffa8d8b42e4b5852b4d8e98743:
+
+Function dimlpRul(const std::string&)
+=====================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpRulFct.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: dimlpRul(const std::string&)
+   :project: common

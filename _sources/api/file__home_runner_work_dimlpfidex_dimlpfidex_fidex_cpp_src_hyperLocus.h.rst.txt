@@ -1,0 +1,72 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperLocus.h:
+
+File hyperLocus.h
+=================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/hyperLocus.h``)
+-----------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperLocus.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../common/cpp/src/checkFun.h``
+
+- ``../../../common/cpp/src/dataSet.h``
+
+- ``../../../common/cpp/src/errorHandler.h``
+
+- ``../../../common/cpp/src/rule.h``
+
+- ``fstream``
+
+- ``iomanip``
+
+- ``regex``
+
+- ``set``
+
+- ``sstream``
+
+- ``string.h``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperLocus.cpp`
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_hyperLocus_8h_1a21864c77708ec5a28783b4f50f8584b7`
+
+- :ref:`exhale_function_hyperLocus_8h_1a2a1e6d38d75bdfaf96bc9f2518bda777`
+

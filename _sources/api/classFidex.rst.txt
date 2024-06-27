@@ -1,0 +1,27 @@
+.. _exhale_class_classFidex:
+
+Class Fidex
+===========
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexAlgo.h`
+
+
+Nested Relationships
+--------------------
+
+
+Nested Types
+************
+
+- :ref:`exhale_struct_structFidex_1_1currentExecutionSpecs`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: Fidex
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

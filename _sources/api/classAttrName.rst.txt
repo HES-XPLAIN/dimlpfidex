@@ -1,0 +1,17 @@
+.. _exhale_class_classAttrName:
+
+Class AttrName
+==============
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_attrName.h`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: AttrName
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

@@ -1,0 +1,17 @@
+.. _exhale_class_classVirtualHyp:
+
+Class VirtualHyp
+================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_virtHyp.h`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: VirtualHyp
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

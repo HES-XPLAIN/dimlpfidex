@@ -1,0 +1,34 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_ante.h:
+
+Program Listing for File ante.h
+===============================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_ante.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/ante.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef ANTE_H
+   #define ANTE_H
+   
+   #include "dimlpRule.h"
+   
+   class Ante : public DimlpRule {
+   
+     //----------------------------------------------------------------
+   
+   public:
+     int GetVarAnte() const { return DimlpRule::GetVar(); }
+   
+     float GetValAnte() const { return DimlpRule::GetVal(); }
+   
+     char GetRelAnte() const { return DimlpRule::GetRel(); }
+   
+     void DelAnte() { DimlpRule::Del(); }
+   
+     Ante(int var, float val, char rel);
+   };
+   
+   #endif // ANTE_H

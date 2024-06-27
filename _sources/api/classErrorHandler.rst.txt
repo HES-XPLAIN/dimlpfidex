@@ -1,0 +1,38 @@
+.. _exhale_class_classErrorHandler:
+
+Class ErrorHandler
+==================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_errorHandler.h`
+
+
+Inheritance Relationships
+-------------------------
+
+Base Type
+*********
+
+- ``public std::exception``
+
+
+Derived Types
+*************
+
+- ``public CannotCreateDirectoryError`` (:ref:`exhale_class_classCannotCreateDirectoryError`)
+- ``public CannotOpenFileError`` (:ref:`exhale_class_classCannotOpenFileError`)
+- ``public CommandArgumentException`` (:ref:`exhale_class_classCommandArgumentException`)
+- ``public FileContentError`` (:ref:`exhale_class_classFileContentError`)
+- ``public FileFormatError`` (:ref:`exhale_class_classFileFormatError`)
+- ``public FileNotFoundError`` (:ref:`exhale_class_classFileNotFoundError`)
+- ``public InternalError`` (:ref:`exhale_class_classInternalError`)
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: ErrorHandler
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

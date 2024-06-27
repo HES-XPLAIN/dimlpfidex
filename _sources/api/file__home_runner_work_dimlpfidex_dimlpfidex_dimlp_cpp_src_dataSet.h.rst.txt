@@ -1,0 +1,70 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dataSet.h:
+
+File dimlp/cpp/src/dataSet.h
+============================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/dataSet.h``)
+--------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dataSet.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../common/cpp/src/checkFun.h``
+
+- ``../../../common/cpp/src/errorHandler.h``
+
+- ``../../../common/cpp/src/stringI.h``
+
+- ``algorithm``
+
+- ``cmath``
+
+- ``dimlpRule.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpRule.h`)
+
+- ``fstream``
+
+- ``iostream``
+
+- ``regex``
+
+- ``sstream``
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bpNN.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dataSet.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_rulePro.h`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classDataSet`
+

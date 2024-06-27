@@ -1,0 +1,17 @@
+.. _exhale_class_classParameters:
+
+Class Parameters
+================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_parameters.h`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: Parameters
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

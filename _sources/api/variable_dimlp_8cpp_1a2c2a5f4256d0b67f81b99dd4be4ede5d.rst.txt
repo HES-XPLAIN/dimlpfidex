@@ -1,0 +1,14 @@
+.. _exhale_variable_dimlp_8cpp_1a2c2a5f4256d0b67f81b99dd4be4ede5d:
+
+Variable netType
+================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlp.cpp`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: netType
+   :project: common

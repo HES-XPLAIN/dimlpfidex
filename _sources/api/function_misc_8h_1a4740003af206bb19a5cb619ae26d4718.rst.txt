@@ -1,0 +1,14 @@
+.. _exhale_function_misc_8h_1a4740003af206bb19a5cb619ae26d4718:
+
+Function AreSameClass(std::shared_ptr<StringInt>, std::vector<int>)
+===================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_misc.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: AreSameClass(std::shared_ptr<StringInt>, std::vector<int>)
+   :project: common

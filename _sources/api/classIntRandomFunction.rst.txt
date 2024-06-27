@@ -1,0 +1,17 @@
+.. _exhale_class_classIntRandomFunction:
+
+Class IntRandomFunction
+=======================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_randFun.h`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: IntRandomFunction
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

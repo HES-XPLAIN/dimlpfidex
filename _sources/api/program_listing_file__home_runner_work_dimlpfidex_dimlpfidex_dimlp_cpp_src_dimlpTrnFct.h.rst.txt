@@ -1,0 +1,36 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpTrnFct.h:
+
+Program Listing for File dimlpTrnFct.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpTrnFct.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/dimlpTrnFct.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef DIMLPTRNFCT_H
+   #define DIMLPTRNFCT_H
+   
+   #include "../../../common/cpp/src/parameters.h"
+   #include "dimlp.h"
+   #include "dimlpCommonFun.h"
+   #include "realHyp2.h"
+   
+   #include <fstream>
+   #include <memory>
+   #include <sstream>
+   #include <stdlib.h>
+   #include <string.h>
+   #include <time.h>
+   #include <unordered_map>
+   #include <vector>
+   
+   void showDimlpTrnParams();
+   
+   void checkDimlpTrnParametersLogicValues(Parameters &p);
+   
+   int dimlpTrn(const std::string &command = "");
+   
+   #endif // DIMLPTRNFCT_H

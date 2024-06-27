@@ -1,0 +1,14 @@
+.. _exhale_function_checkFun_8h_1aca7d63149a5001a1e88cca8d6bc68971:
+
+Function checkStringEmpty(const std::string&)
+=============================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: checkStringEmpty(const std::string&)
+   :project: common

@@ -1,0 +1,14 @@
+.. _exhale_function_checkFun_8cpp_1a55cf9f57c48be880465d077883291080:
+
+Function formattingDoubleToString(double)
+=========================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: formattingDoubleToString(double)
+   :project: common

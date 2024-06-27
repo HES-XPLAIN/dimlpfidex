@@ -1,0 +1,14 @@
+.. _exhale_function_dimlpPredFct_8h_1aa77e6007d38105d0c55fbd8adb12e553:
+
+Function dimlpPred(const std::string&)
+======================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpPredFct.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: dimlpPred(const std::string&)
+   :project: common

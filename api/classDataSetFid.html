@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class DataSetFid &mdash; dimlpfidex 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7026087e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class Dimlp" href="classDimlp.html" />
+    <link rel="prev" title="Class DataSet" href="classDataSet.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dimlpfidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">C++ API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="structCleanRuleStruct_1_1AssocAnte.html">Struct CleanRuleStruct::AssocAnte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structCleanRuleStruct_1_1CleanRule.html">Struct CleanRuleStruct::CleanRule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structDimlpRule_1_1Antecedent.html">Struct DimlpRule::Antecedent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structFidex_1_1currentExecutionSpecs.html">Struct Fidex::currentExecutionSpecs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structOneVarThresDescr_1_1Elem.html">Struct OneVarThresDescr::Elem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structRuleProcessing_1_1Saved.html">Struct RuleProcessing::Saved</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structStringInt_1_1Elem.html">Struct StringInt::Elem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAnte.html">Class Ante</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAntecedent.html">Class Antecedent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAttrName.html">Class AttrName</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classBagDimlp.html">Class BagDimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classBpNN.html">Class BpNN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCannotCreateDirectoryError.html">Class CannotCreateDirectoryError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCannotOpenFileError.html">Class CannotOpenFileError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCleanRuleStruct.html">Class CleanRuleStruct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCommandArgumentException.html">Class CommandArgumentException</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDataSet.html">Class DataSet</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Class DataSetFid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDimlp.html">Class Dimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDimlpRule.html">Class DimlpRule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classErrorHandler.html">Class ErrorHandler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFidex.html">Class Fidex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileContentError.html">Class FileContentError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileFormatError.html">Class FileFormatError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileNotFoundError.html">Class FileNotFoundError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFloatRandomFunction.html">Class FloatRandomFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classHyperbox.html">Class Hyperbox</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classHyperspace.html">Class Hyperspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classInternalError.html">Class InternalError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classIntRandomFunction.html">Class IntRandomFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayer.html">Class Layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp.html">Class LayerDimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp2.html">Class LayerDimlp2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp3.html">Class LayerDimlp3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp4.html">Class LayerDimlp4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerFdimlp.html">Class LayerFdimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerRad.html">Class LayerRad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSD.html">Class LayerSD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP3.html">Class LayerSP3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP4.html">Class LayerSP4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP5.html">Class LayerSP5</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classOneVarThresDescr.html">Class OneVarThresDescr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classParameters.html">Class Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRealHyp.html">Class RealHyp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRealHyp2.html">Class RealHyp2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRule.html">Class Rule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRuleProcessing.html">Class RuleProcessing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classStairObj.html">Class StairObj</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classStringInt.html">Class StringInt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classThresDescr.html">Class ThresDescr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVectWithRandVal.html">Class VectWithRandVal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVirtualHyp.html">Class VirtualHyp</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#enums">Enums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#typedefs">Typedefs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/modules.html">trainings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dimlpfidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="library_root.html">Library API</a></li>
+      <li class="breadcrumb-item active">Class DataSetFid</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/classDataSetFid.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-datasetfid">
+<span id="exhale-class-classdatasetfid"></span><h1>Class DataSetFid<a class="headerlink" href="#class-datasetfid" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_dataSet.h.html#file-home-runner-work-dimlpfidex-dimlpfidex-common-cpp-src-dataset-h"><span class="std std-ref">File common/cpp/src/dataSet.h</span></a></p></li>
+</ul>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv410DataSetFid">
+<span id="_CPPv310DataSetFid"></span><span id="_CPPv210DataSetFid"></span><span id="DataSetFid"></span><span class="target" id="classDataSetFid"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DataSetFid</span></span></span><a class="headerlink" href="#_CPPv410DataSetFid" title="Link to this definition"></a><br /></dt>
+<dd><p>The <a class="reference internal" href="#classDataSetFid"><span class="std std-ref">DataSetFid</span></a> class handles the loading, parsing, and storage of datasets including data, predictions, and classes. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DataSetFid10DataSetFidERKNSt6stringE">
+<span id="_CPPv3N10DataSetFid10DataSetFidERKNSt6stringE"></span><span id="_CPPv2N10DataSetFid10DataSetFidERKNSt6stringE"></span><span id="DataSetFid::DataSetFid__ssCR"></span><span class="target" id="classDataSetFid_1ab18330fb7c972d874b3c7d72c1098029"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DataSetFid</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DataSetFid10DataSetFidERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a new <a class="reference internal" href="#classDataSetFid"><span class="std std-ref">DataSetFid</span></a> object with a name. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DataSetFid10DataSetFidERKNSt6stringERKNSt6stringERKNSt6stringEiidiRKNSt6stringE">
+<span id="_CPPv3N10DataSetFid10DataSetFidERKNSt6stringERKNSt6stringERKNSt6stringEiidiRKNSt6stringE"></span><span id="_CPPv2N10DataSetFid10DataSetFidERKNSt6stringERKNSt6stringERKNSt6stringEiidiRKNSt6stringE"></span><span id="DataSetFid::DataSetFid__ssCR.ssCR.ssCR.i.i.double.i.ssCR"></span><span class="target" id="classDataSetFid_1add558b6abb52e238a8b35b6940d2d87c"></span><span class="sig-name descname"><span class="n"><span class="pre">DataSetFid</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dataFile</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">predFile</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbAttributes</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbClasses</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">decisionThresh</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">indexPositiveCl</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">trueClassFile</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DataSetFid10DataSetFidERKNSt6stringERKNSt6stringERKNSt6stringEiidiRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a new <a class="reference internal" href="#classDataSetFid"><span class="std std-ref">DataSetFid</span></a> object using separate data, prediction, and optional class files. </p>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">contain</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">attributes</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">sample</span><span class="p">,</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">optionally</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">information</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">also</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">included</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">file</span><span class="p">.</span>
+<span class="w">     </span><span class="n">If</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">information</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">included</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">there</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">no</span><span class="w"> </span><span class="n">need</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">provide</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">separate</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">file</span><span class="p">.</span>
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">prediction</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">contain</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">prediction</span><span class="w"> </span><span class="n">scores</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">per</span><span class="w"> </span><span class="n">sample</span><span class="p">.</span>
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="p">(</span><span class="n">optional</span><span class="p">)</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="n">only</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">information</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">included</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">file</span><span class="p">.</span><span class="w"> </span><span class="n">It</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">contain</span><span class="w"> </span><span class="n">either</span>
+<span class="w">     </span><span class="n">a</span><span class="w"> </span><span class="n">single</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ID</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">series</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">integers</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">one</span><span class="o">-</span><span class="n">hot</span><span class="w"> </span><span class="n">encoding</span><span class="w"> </span><span class="n">scheme</span><span class="w"> </span><span class="n">per</span><span class="w"> </span><span class="n">sample</span><span class="p">.</span>
+
+<span class="w">   </span><span class="n">Expected</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">formats</span><span class="o">:</span>
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">Data</span><span class="w"> </span><span class="n">file</span><span class="o">:</span><span class="w"> </span><span class="n">Each</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">contain</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">series</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">numerical</span><span class="w"> </span><span class="n">values</span><span class="w"> </span><span class="n">representing</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">attributes</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">sample</span><span class="p">,</span>
+<span class="w">     </span><span class="n">optionally</span><span class="w"> </span><span class="n">followed</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">information</span><span class="w"> </span><span class="p">(</span><span class="n">either</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">single</span><span class="w"> </span><span class="n">integer</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ID</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">one</span><span class="o">-</span><span class="n">hot</span><span class="w"> </span><span class="n">encoded</span><span class="w"> </span><span class="n">vector</span><span class="p">).</span>
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">Prediction</span><span class="w"> </span><span class="n">file</span><span class="o">:</span><span class="w"> </span><span class="n">Each</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">contain</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">series</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">numerical</span><span class="w"> </span><span class="n">values</span><span class="p">.</span>
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">Class</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="p">(</span><span class="n">optional</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">Only</span><span class="w"> </span><span class="n">needed</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">information</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">included</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">file</span><span class="p">.</span><span class="w"> </span><span class="n">Each</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">contain</span><span class="w"> </span><span class="n">either</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">single</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ID</span>
+<span class="w">     </span><span class="k">or</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">series</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">integers</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">one</span><span class="o">-</span><span class="n">hot</span><span class="w"> </span><span class="n">encoding</span><span class="w"> </span><span class="n">scheme</span><span class="p">.</span>
+
+<span class="w">   </span><span class="n">Each</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">separated</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">space</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">comma</span><span class="p">(</span><span class="n">CSV</span><span class="p">),</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">semicolon</span><span class="p">(;)</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">tab</span><span class="p">.</span>
+<span class="w">   </span><span class="n">The</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">attributes</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">dataset</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">validate</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">format</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">content</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">files</span><span class="p">.</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The name of the dataSet. </p></li>
+<li><p><strong>dataFile</strong> – The data file name. </p></li>
+<li><p><strong>predFile</strong> – The prediction file name. </p></li>
+<li><p><strong>nbAttributes</strong> – The number of attributes. </p></li>
+<li><p><strong>nbClasses</strong> – The number of classes. </p></li>
+<li><p><strong>decisionThresh</strong> – A double indicating the decision threshold, useful when choosing the decision (-1 for no threshold). </p></li>
+<li><p><strong>positiveClassIndex</strong> – An integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold). </p></li>
+<li><p><strong>trueClassFile</strong> – The class file name. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DataSetFid10DataSetFidERKNSt6stringERKNSt6stringEiidi">
+<span id="_CPPv3N10DataSetFid10DataSetFidERKNSt6stringERKNSt6stringEiidi"></span><span id="_CPPv2N10DataSetFid10DataSetFidERKNSt6stringERKNSt6stringEiidi"></span><span id="DataSetFid::DataSetFid__ssCR.ssCR.i.i.double.i"></span><span class="target" id="classDataSetFid_1afbb8e7aac5a950f227fbf061fb3aef3f"></span><span class="sig-name descname"><span class="n"><span class="pre">DataSetFid</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dataFile</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbAttributes</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbClasses</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">decisionThresh</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">indexPositiveCl</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DataSetFid10DataSetFidERKNSt6stringERKNSt6stringEiidi" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a new <a class="reference internal" href="#classDataSetFid"><span class="std std-ref">DataSetFid</span></a> object using a single data file containing data, predictions, and optionally classes. </p>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="w">   </span><span class="n">The</span><span class="w"> </span><span class="n">format</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">sample</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">follows</span><span class="o">:</span>
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">First</span><span class="w"> </span><span class="n">Line</span><span class="o">:</span><span class="w"> </span><span class="n">Contains</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">attributes</span><span class="p">.</span><span class="w"> </span><span class="n">It</span><span class="w"> </span><span class="n">may</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">followed</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">information</span><span class="w"> </span><span class="p">(</span><span class="n">either</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">one</span><span class="o">-</span><span class="n">hot</span><span class="w"> </span><span class="n">format</span><span class="p">).</span>
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">Second</span><span class="w"> </span><span class="n">Line</span><span class="o">:</span><span class="w"> </span><span class="n">Contains</span><span class="w"> </span><span class="n">prediction</span><span class="w"> </span><span class="n">values</span><span class="p">.</span>
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">Third</span><span class="w"> </span><span class="n">Line</span><span class="w"> </span><span class="p">(</span><span class="n">optional</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">Contains</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">information</span><span class="p">,</span><span class="w"> </span><span class="n">only</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">was</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">included</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">first</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">present</span><span class="p">.</span>
+<span class="w">   </span><span class="n">There</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">blank</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">between</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">sample</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">file</span><span class="p">.</span>
+<span class="w">   </span><span class="n">Each</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">separated</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">space</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">comma</span><span class="p">(</span><span class="n">CSV</span><span class="p">),</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">semicolon</span><span class="p">(;)</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">tab</span><span class="p">.</span>
+
+<span class="w">   </span><span class="n">The</span><span class="w"> </span><span class="n">presence</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">format</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">data</span><span class="w"> </span><span class="p">(</span><span class="n">ID</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">one</span><span class="o">-</span><span class="n">hot</span><span class="p">)</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">inferred</span><span class="w"> </span><span class="n">based</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">structure</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">lines</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">file</span><span class="p">.</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – A string containing the name of the dataSet. </p></li>
+<li><p><strong>dataFile</strong> – The data file name containing data, predictions and maybe classes(not mandatory). </p></li>
+<li><p><strong>nbAttributes</strong> – The number of attributes. </p></li>
+<li><p><strong>nbClasses</strong> – The number of classes. </p></li>
+<li><p><strong>decisionThresh</strong> – A double indicating the decision threshold, useful when choosing the decision (-1 for no threshold). </p></li>
+<li><p><strong>positiveClassIndex</strong> – An integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DataSetFid10DataSetFidERKNSt6stringERKNSt6stringE">
+<span id="_CPPv3N10DataSetFid10DataSetFidERKNSt6stringERKNSt6stringE"></span><span id="_CPPv2N10DataSetFid10DataSetFidERKNSt6stringERKNSt6stringE"></span><span id="DataSetFid::DataSetFid__ssCR.ssCR"></span><span class="target" id="classDataSetFid_1a3c0f2c7c93d4ad0fe4aa1090065ce36a"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DataSetFid</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">weightFile</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DataSetFid10DataSetFidERKNSt6stringERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a new <a class="reference internal" href="#classDataSetFid"><span class="std std-ref">DataSetFid</span></a> object using a weight file. </p>
+<p>This constructor is capable of handling both single and multiple network weight files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The name of the dataSet. </p></li>
+<li><p><strong>weightFile</strong> – The name of the weight file. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DataSetFid18parseSingleNetworkERNSt7fstreamE">
+<span id="_CPPv3N10DataSetFid18parseSingleNetworkERNSt7fstreamE"></span><span id="_CPPv2N10DataSetFid18parseSingleNetworkERNSt7fstreamE"></span><span id="DataSetFid::parseSingleNetwork__std::fstreamR"></span><span class="target" id="classDataSetFid_1ac3186b41020136e23fcda2e8c3f36d58"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">parseSingleNetwork</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">fstream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">fileWts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DataSetFid18parseSingleNetworkERNSt7fstreamE" title="Link to this definition"></a><br /></dt>
+<dd><p>Parses a weight file containing a single network’s weights and stores them in the weights vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fileWts</strong> – Reference to the file stream opened for reading the weight file. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DataSetFid21parseMultipleNetworksERNSt7fstreamE">
+<span id="_CPPv3N10DataSetFid21parseMultipleNetworksERNSt7fstreamE"></span><span id="_CPPv2N10DataSetFid21parseMultipleNetworksERNSt7fstreamE"></span><span id="DataSetFid::parseMultipleNetworks__std::fstreamR"></span><span class="target" id="classDataSetFid_1a82bb35b43c5b2ab38205a85e909c70b6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">parseMultipleNetworks</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">fstream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">fileWts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DataSetFid21parseMultipleNetworksERNSt7fstreamE" title="Link to this definition"></a><br /></dt>
+<dd><p>Parses a weight file containing multiple networks’ weights and stores them in the weights vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fileWts</strong> – Reference to the file stream opened for reading the weight file. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DataSetFid15setDataFromFileERKNSt6stringEii">
+<span id="_CPPv3N10DataSetFid15setDataFromFileERKNSt6stringEii"></span><span id="_CPPv2N10DataSetFid15setDataFromFileERKNSt6stringEii"></span><span id="DataSetFid::setDataFromFile__ssCR.i.i"></span><span class="target" id="classDataSetFid_1a8d37ef45898ffdd2eed3de9cf2a47953"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDataFromFile</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dataFile</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbAttributes</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbClasses</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DataSetFid15setDataFromFileERKNSt6stringEii" title="Link to this definition"></a><br /></dt>
+<dd><p>Get data from dataFile and save it in datas and trueClasses if it contains class information. </p>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="w">   </span><span class="n">The</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">contain</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">sample</span><span class="w"> </span><span class="n">per</span><span class="w"> </span><span class="n">line</span><span class="p">.</span><span class="w"> </span><span class="n">Each</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">separated</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">space</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">comma</span><span class="p">(</span><span class="n">CSV</span><span class="p">),</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">semicolon</span><span class="p">(;)</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">tab</span><span class="p">.</span><span class="w"> </span><span class="n">Each</span><span class="w"> </span><span class="n">sample</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">following</span><span class="w"> </span><span class="n">formats</span><span class="o">:</span>
+<span class="w">   </span><span class="mf">1.</span><span class="w"> </span><span class="n">Attributes</span><span class="w"> </span><span class="n">only</span><span class="o">:</span><span class="w"> </span><span class="n">Each</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">contains</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">attribute</span><span class="p">.</span>
+<span class="w">   </span><span class="mf">2.</span><span class="w"> </span><span class="n">Attributes</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">Class</span><span class="w"> </span><span class="n">ID</span><span class="o">:</span><span class="w"> </span><span class="n">Each</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">contains</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">attributes</span><span class="w"> </span><span class="n">followed</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">integer</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ID</span><span class="p">.</span>
+<span class="w">   </span><span class="mf">3.</span><span class="w"> </span><span class="n">Attributes</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">One</span><span class="o">-</span><span class="n">Hot</span><span class="w"> </span><span class="n">Class</span><span class="w"> </span><span class="n">Encoding</span><span class="o">:</span><span class="w"> </span><span class="n">Each</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">contains</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">attributes</span><span class="w"> </span><span class="n">followed</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">one</span><span class="o">-</span><span class="n">hot</span><span class="w"> </span><span class="n">encoding</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">class</span><span class="p">.</span>
+<span class="w">      </span><span class="n">The</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">elements</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">encoding</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">match</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">classes</span><span class="p">,</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">exactly</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="sc">&#39;1&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">rest</span><span class="w"> </span><span class="sc">&#39;0&#39;</span><span class="n">s</span><span class="p">.</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataFile</strong> – A string representing the name of the data file. This file should contain data in one of the supported formats. </p></li>
+<li><p><strong>nbAttributes</strong> – The number of attributes. </p></li>
+<li><p><strong>nbClasses</strong> – The number of classes. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DataSetFid15setPredFromFileERKNSt6stringEidi">
+<span id="_CPPv3N10DataSetFid15setPredFromFileERKNSt6stringEidi"></span><span id="_CPPv2N10DataSetFid15setPredFromFileERKNSt6stringEidi"></span><span id="DataSetFid::setPredFromFile__ssCR.i.double.i"></span><span class="target" id="classDataSetFid_1a3a778618f2eb5e099397511db7d5db04"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setPredFromFile</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">predFile</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbClasses</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">decisionThreshold</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">positiveClassIndex</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DataSetFid15setPredFromFileERKNSt6stringEidi" title="Link to this definition"></a><br /></dt>
+<dd><p>Add predictions to the dataset using a prediction file. </p>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="w">   </span><span class="n">The</span><span class="w"> </span><span class="n">prediction</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">contain</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">per</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">sample</span><span class="p">,</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">consisting</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">series</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">numerical</span><span class="w"> </span><span class="n">values</span><span class="w"> </span><span class="n">separated</span>
+<span class="w">   </span><span class="n">by</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">space</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">comma</span><span class="p">(</span><span class="n">CSV</span><span class="p">),</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">semicolon</span><span class="p">(;)</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">tab</span><span class="w"> </span><span class="n">representing</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">prediction</span><span class="w"> </span><span class="n">scores</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="k">class</span><span class="p">.</span>
+<span class="w">   </span><span class="n">The</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">values</span><span class="w"> </span><span class="n">per</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">match</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">classes</span><span class="p">.</span>
+<span class="w">   </span><span class="n">If</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">decision</span><span class="w"> </span><span class="n">threshold</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">uses</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">determine</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">predicted</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">based</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">threshold</span><span class="p">.</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predFile</strong> – The prediction file name. </p></li>
+<li><p><strong>nbClasses</strong> – The number of classes. </p></li>
+<li><p><strong>decisionThresh</strong> – An optional double indicating the decision threshold, useful when choosing the decision (-1 for no threshold). </p></li>
+<li><p><strong>positiveClassIndex</strong> – An optional integer corresponding to the index of the positive class for which we have the decision threshold (-1 if no threshold). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DataSetFid16setClassFromFileERKNSt6stringEi">
+<span id="_CPPv3N10DataSetFid16setClassFromFileERKNSt6stringEi"></span><span id="_CPPv2N10DataSetFid16setClassFromFileERKNSt6stringEi"></span><span id="DataSetFid::setClassFromFile__ssCR.i"></span><span class="target" id="classDataSetFid_1a60a81047c70519ceaf58968a0b20bfe2"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setClassFromFile</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">classFile</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbClasses</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DataSetFid16setClassFromFileERKNSt6stringEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Add classes from a specified file into the dataset. </p>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="w">   </span><span class="n">The</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">file</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">contain</span><span class="w"> </span><span class="n">lines</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">different</span><span class="w"> </span><span class="n">formats</span><span class="o">:</span>
+<span class="w">   </span><span class="mf">1.</span><span class="w"> </span><span class="n">Class</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="n">format</span><span class="o">:</span><span class="w"> </span><span class="n">Each</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">contains</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">single</span><span class="w"> </span><span class="n">integer</span><span class="w"> </span><span class="n">representing</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ID</span><span class="p">.</span>
+<span class="w">   </span><span class="mf">2.</span><span class="w"> </span><span class="n">One</span><span class="o">-</span><span class="n">hot</span><span class="w"> </span><span class="n">format</span><span class="o">:</span><span class="w"> </span><span class="n">Each</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">contains</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">integers</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">one</span><span class="o">-</span><span class="n">hot</span><span class="w"> </span><span class="n">encoding</span><span class="w"> </span><span class="n">scheme</span><span class="p">,</span>
+<span class="w">      </span><span class="n">where</span><span class="w"> </span><span class="n">exactly</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="n">indicating</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ID</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="n">others</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="mf">0.</span>
+<span class="w">   </span><span class="n">Each</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">separated</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">space</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">comma</span><span class="p">(</span><span class="n">CSV</span><span class="p">),</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">semicolon</span><span class="p">(;)</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">tab</span><span class="p">.</span>
+
+<span class="w">   </span><span class="n">The</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">determines</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">format</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">based</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">nbClasses</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">structure</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">line</span><span class="p">.</span>
+</pre></div>
+</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>classFile</strong> – A string representing the name of the class file. This file should contain class data. in one of the supported formats (either class ID or one-hot encoded). </p></li>
+<li><p><strong>nbClasses</strong> – An int specifying the number of classes. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DataSetFid8getDatasEv">
+<span id="_CPPv3N10DataSetFid8getDatasEv"></span><span id="_CPPv2N10DataSetFid8getDatasEv"></span><span id="DataSetFid::getDatas"></span><span class="target" id="classDataSetFid_1a502b5ac9917e3ec12ef482cb8eef76d3"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getDatas</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DataSetFid8getDatasEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the samples’ data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The samples’ data. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DataSetFid10getClassesEv">
+<span id="_CPPv3N10DataSetFid10getClassesEv"></span><span id="_CPPv2N10DataSetFid10getClassesEv"></span><span id="DataSetFid::getClasses"></span><span class="target" id="classDataSetFid_1a42a312d03bae6274236e6fd074a3c60c"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getClasses</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DataSetFid10getClassesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the classes of the samples. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The classes of the samples. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10DataSetFid13getHasClassesEv">
+<span id="_CPPv3NK10DataSetFid13getHasClassesEv"></span><span id="_CPPv2NK10DataSetFid13getHasClassesEv"></span><span id="DataSetFid::getHasClassesC"></span><span class="target" id="classDataSetFid_1a58319b6f201dceab71f8439d63ae9f12"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getHasClasses</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10DataSetFid13getHasClassesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether the dataset contains classes. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Whether the dataset contains classes. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DataSetFid14getPredictionsEv">
+<span id="_CPPv3N10DataSetFid14getPredictionsEv"></span><span id="_CPPv2N10DataSetFid14getPredictionsEv"></span><span id="DataSetFid::getPredictions"></span><span class="target" id="classDataSetFid_1abb3d3a198bfe99c0f718563c3678288c"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getPredictions</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DataSetFid14getPredictionsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the predictions of the samples. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The predictions of the samples. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DataSetFid26getOutputValuesPredictionsEv">
+<span id="_CPPv3N10DataSetFid26getOutputValuesPredictionsEv"></span><span id="_CPPv2N10DataSetFid26getOutputValuesPredictionsEv"></span><span id="DataSetFid::getOutputValuesPredictions"></span><span class="target" id="classDataSetFid_1ae11d12a8e35d51154e74d4b7bb382eda"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getOutputValuesPredictions</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DataSetFid26getOutputValuesPredictionsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the prediction output values of the samples. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The prediction output values of the samples. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10DataSetFid12getNbClassesEv">
+<span id="_CPPv3NK10DataSetFid12getNbClassesEv"></span><span id="_CPPv2NK10DataSetFid12getNbClassesEv"></span><span id="DataSetFid::getNbClassesC"></span><span class="target" id="classDataSetFid_1a207e5a175b013eafa0b10fccd57c38a5"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNbClasses</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10DataSetFid12getNbClassesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the number of classes in the dataset. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of classes in the dataset. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10DataSetFid15getNbAttributesEv">
+<span id="_CPPv3NK10DataSetFid15getNbAttributesEv"></span><span id="_CPPv2NK10DataSetFid15getNbAttributesEv"></span><span id="DataSetFid::getNbAttributesC"></span><span class="target" id="classDataSetFid_1a798d753ff5d51e1d423256468f121ee7"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNbAttributes</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10DataSetFid15getNbAttributesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the number of attributes in the dataset. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of attributes in the dataset. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10DataSetFid12getNbSamplesEv">
+<span id="_CPPv3NK10DataSetFid12getNbSamplesEv"></span><span id="_CPPv2NK10DataSetFid12getNbSamplesEv"></span><span id="DataSetFid::getNbSamplesC"></span><span class="target" id="classDataSetFid_1a14350320201c7de79650098bd24bd29b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNbSamples</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10DataSetFid12getNbSamplesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the number of samples in the dataset. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of samples in the dataset. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DataSetFid13setAttributesERKNSt6stringEii">
+<span id="_CPPv3N10DataSetFid13setAttributesERKNSt6stringEii"></span><span id="_CPPv2N10DataSetFid13setAttributesERKNSt6stringEii"></span><span id="DataSetFid::setAttributes__ssCR.i.i"></span><span class="target" id="classDataSetFid_1af6e45a4f292dc5fa6147afed3dfecb3d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setAttributes</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">attributesFile</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbAttributes</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbClasses</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DataSetFid13setAttributesERKNSt6stringEii" title="Link to this definition"></a><br /></dt>
+<dd><p>Add attributes and eventually classes from attribute file in the dataset. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>attributesFile</strong> – The attribute file name. </p></li>
+<li><p><strong>nbAttributes</strong> – The number of attributes. </p></li>
+<li><p><strong>nbClasses</strong> – The number of classes (optional). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DataSetFid17getAttributeNamesEv">
+<span id="_CPPv3N10DataSetFid17getAttributeNamesEv"></span><span id="_CPPv2N10DataSetFid17getAttributeNamesEv"></span><span id="DataSetFid::getAttributeNames"></span><span class="target" id="classDataSetFid_1a37ff3520e00b786d83017955b92a2a4a"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getAttributeNames</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DataSetFid17getAttributeNamesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return attribute names. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Attribute names. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10DataSetFid13getClassNamesEv">
+<span id="_CPPv3N10DataSetFid13getClassNamesEv"></span><span id="_CPPv2N10DataSetFid13getClassNamesEv"></span><span id="DataSetFid::getClassNames"></span><span class="target" id="classDataSetFid_1a6d6aab2dbeb4b4c7f7256498c1162a83"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getClassNames</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10DataSetFid13getClassNamesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return class names. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Class names. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10DataSetFid20getHasAttributeNamesEv">
+<span id="_CPPv3NK10DataSetFid20getHasAttributeNamesEv"></span><span id="_CPPv2NK10DataSetFid20getHasAttributeNamesEv"></span><span id="DataSetFid::getHasAttributeNamesC"></span><span class="target" id="classDataSetFid_1add154049d340d26253b15ce0e83d863b"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getHasAttributeNames</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10DataSetFid20getHasAttributeNamesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether the dataset contains attribute names. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Whether the dataset contains attribute names. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10DataSetFid16getHasClassNamesEv">
+<span id="_CPPv3NK10DataSetFid16getHasClassNamesEv"></span><span id="_CPPv2NK10DataSetFid16getHasClassNamesEv"></span><span id="DataSetFid::getHasClassNamesC"></span><span class="target" id="classDataSetFid_1a43a4c903af68fb4c1ac98aec155294ba"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getHasClassNames</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10DataSetFid16getHasClassNamesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether the dataset contains class names. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Whether the dataset contains class names. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10DataSetFid10getWeightsEv">
+<span id="_CPPv3NK10DataSetFid10getWeightsEv"></span><span id="_CPPv2NK10DataSetFid10getWeightsEv"></span><span id="DataSetFid::getWeightsC"></span><span class="target" id="classDataSetFid_1ad7a038c309b074ee3dd627771d1e5a26"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getWeights</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10DataSetFid10getWeightsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the weights. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The weights. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10DataSetFid10getInBiaisEi">
+<span id="_CPPv3NK10DataSetFid10getInBiaisEi"></span><span id="_CPPv2NK10DataSetFid10getInBiaisEi"></span><span id="DataSetFid::getInBiais__iC"></span><span class="target" id="classDataSetFid_1a79abe6a00eba54a6a2b4fda776d8ecf0"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getInBiais</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">netId</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10DataSetFid10getInBiaisEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the biases of the first layer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The biases of the first layer. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10DataSetFid12getInWeightsEi">
+<span id="_CPPv3NK10DataSetFid12getInWeightsEi"></span><span id="_CPPv2NK10DataSetFid12getInWeightsEi"></span><span id="DataSetFid::getInWeights__iC"></span><span class="target" id="classDataSetFid_1a0f66a6701734db0a3b1efdc17f86eb48"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getInWeights</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">netId</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10DataSetFid12getInWeightsEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the weights of the first layer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The weights of the first layer. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10DataSetFid9getNbNetsEv">
+<span id="_CPPv3NK10DataSetFid9getNbNetsEv"></span><span id="_CPPv2NK10DataSetFid9getNbNetsEv"></span><span id="DataSetFid::getNbNetsC"></span><span class="target" id="classDataSetFid_1a5b40878f3419438fa3d357aae1ced4ad"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNbNets</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10DataSetFid9getNbNetsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the number of training networks. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of training networks. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classDataSet.html" class="btn btn-neutral float-left" title="Class DataSet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classDimlp.html" class="btn btn-neutral float-right" title="Class Dimlp" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

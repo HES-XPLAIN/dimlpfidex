@@ -1,0 +1,14 @@
+.. _exhale_function_standAct_8h_1a9f297554f48d65d58962e61c25ca3efd:
+
+Function Gaussian(float)
+========================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_standAct.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: Gaussian(float)
+   :project: common

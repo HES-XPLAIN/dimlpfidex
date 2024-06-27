@@ -1,0 +1,26 @@
+.. _exhale_class_classLayerDimlp3:
+
+Class LayerDimlp3
+=================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerD3.h`
+
+
+Inheritance Relationships
+-------------------------
+
+Base Type
+*********
+
+- ``public Layer`` (:ref:`exhale_class_classLayer`)
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: LayerDimlp3
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

@@ -1,0 +1,58 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperbox.h:
+
+File hyperbox.h
+===============
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/hyperbox.h``)
+---------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperbox.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``cstring``
+
+- ``fstream``
+
+- ``iostream``
+
+- ``sstream``
+
+- ``string`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_stringI.cpp`)
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperbox.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperspace.h`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classHyperbox`
+

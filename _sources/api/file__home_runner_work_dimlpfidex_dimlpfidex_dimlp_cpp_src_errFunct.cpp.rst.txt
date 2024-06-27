@@ -1,0 +1,40 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_errFunct.cpp:
+
+File errFunct.cpp
+=================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/errFunct.cpp``)
+-----------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_errFunct.cpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``vector``
+
+
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_errFunct_8cpp_1a5ef1a2c8a10f53eb4e334c51c7694c0f`
+

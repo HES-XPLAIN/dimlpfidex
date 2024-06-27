@@ -1,0 +1,22 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_ante.cpp:
+
+Program Listing for File ante.cpp
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_ante.cpp>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/ante.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #include "ante.h"
+   
+   
+   Ante::Ante(int var, float val, char rel) : DimlpRule()
+   
+   {
+     DimlpRule::Insert(var, val, rel);
+     DimlpRule::GoToBeg();
+   }
+   

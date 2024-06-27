@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class BagDimlp &mdash; dimlpfidex 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7026087e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class BpNN" href="classBpNN.html" />
+    <link rel="prev" title="Class AttrName" href="classAttrName.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dimlpfidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">C++ API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="structCleanRuleStruct_1_1AssocAnte.html">Struct CleanRuleStruct::AssocAnte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structCleanRuleStruct_1_1CleanRule.html">Struct CleanRuleStruct::CleanRule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structDimlpRule_1_1Antecedent.html">Struct DimlpRule::Antecedent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structFidex_1_1currentExecutionSpecs.html">Struct Fidex::currentExecutionSpecs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structOneVarThresDescr_1_1Elem.html">Struct OneVarThresDescr::Elem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structRuleProcessing_1_1Saved.html">Struct RuleProcessing::Saved</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structStringInt_1_1Elem.html">Struct StringInt::Elem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAnte.html">Class Ante</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAntecedent.html">Class Antecedent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAttrName.html">Class AttrName</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Class BagDimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classBpNN.html">Class BpNN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCannotCreateDirectoryError.html">Class CannotCreateDirectoryError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCannotOpenFileError.html">Class CannotOpenFileError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCleanRuleStruct.html">Class CleanRuleStruct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCommandArgumentException.html">Class CommandArgumentException</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDataSet.html">Class DataSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDataSetFid.html">Class DataSetFid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDimlp.html">Class Dimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDimlpRule.html">Class DimlpRule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classErrorHandler.html">Class ErrorHandler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFidex.html">Class Fidex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileContentError.html">Class FileContentError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileFormatError.html">Class FileFormatError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileNotFoundError.html">Class FileNotFoundError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFloatRandomFunction.html">Class FloatRandomFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classHyperbox.html">Class Hyperbox</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classHyperspace.html">Class Hyperspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classInternalError.html">Class InternalError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classIntRandomFunction.html">Class IntRandomFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayer.html">Class Layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp.html">Class LayerDimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp2.html">Class LayerDimlp2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp3.html">Class LayerDimlp3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp4.html">Class LayerDimlp4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerFdimlp.html">Class LayerFdimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerRad.html">Class LayerRad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSD.html">Class LayerSD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP3.html">Class LayerSP3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP4.html">Class LayerSP4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP5.html">Class LayerSP5</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classOneVarThresDescr.html">Class OneVarThresDescr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classParameters.html">Class Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRealHyp.html">Class RealHyp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRealHyp2.html">Class RealHyp2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRule.html">Class Rule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRuleProcessing.html">Class RuleProcessing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classStairObj.html">Class StairObj</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classStringInt.html">Class StringInt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classThresDescr.html">Class ThresDescr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVectWithRandVal.html">Class VectWithRandVal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVirtualHyp.html">Class VirtualHyp</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#enums">Enums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#typedefs">Typedefs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/modules.html">trainings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dimlpfidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="library_root.html">Library API</a></li>
+      <li class="breadcrumb-item active">Class BagDimlp</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/classBagDimlp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-bagdimlp">
+<span id="exhale-class-classbagdimlp"></span><h1>Class BagDimlp<a class="headerlink" href="#class-bagdimlp" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bagDimlp.h.html#file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-bagdimlp-h"><span class="std std-ref">File bagDimlp.h</span></a></p></li>
+</ul>
+<section id="inheritance-relationships">
+<h2>Inheritance Relationships<a class="headerlink" href="#inheritance-relationships" title="Link to this heading"></a></h2>
+<section id="base-type">
+<h3>Base Type<a class="headerlink" href="#base-type" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">Dimlp</span></code> (<a class="reference internal" href="classDimlp.html#exhale-class-classdimlp"><span class="std std-ref">Class Dimlp</span></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv48BagDimlp">
+<span id="_CPPv38BagDimlp"></span><span id="_CPPv28BagDimlp"></span><span id="BagDimlp"></span><span class="target" id="classBagDimlp"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BagDimlp</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="classDimlp.html#_CPPv45Dimlp" title="Dimlp"><span class="n"><span class="pre">Dimlp</span></span></a><a class="headerlink" href="#_CPPv48BagDimlp" title="Link to this definition"></a><br /></dt>
+<dd><p>Implements a bagging ensemble of <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> neural networks. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8BagDimlp12GetGlobalOutEv">
+<span id="_CPPv3N8BagDimlp12GetGlobalOutEv"></span><span id="_CPPv2N8BagDimlp12GetGlobalOutEv"></span><span id="BagDimlp::GetGlobalOut"></span><span class="target" id="classBagDimlp_1a112c2c64e713032559c3bff5f56cf699"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetGlobalOut</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8BagDimlp12GetGlobalOutEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the global output of the ensemble. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pointer to the global output array. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8BagDimlp12MakeDataSetsER7DataSetR7DataSeti">
+<span id="_CPPv3N8BagDimlp12MakeDataSetsER7DataSetR7DataSeti"></span><span id="_CPPv2N8BagDimlp12MakeDataSetsER7DataSetR7DataSeti"></span><span id="BagDimlp::MakeDataSets__DataSetR.DataSetR.i"></span><span class="target" id="classBagDimlp_1a91c674ad8ac4d617f381034ad134d622"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeDataSets</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">masterTrain</span></span>, <a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">masterClass</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbPat</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8BagDimlp12MakeDataSetsER7DataSetR7DataSeti" title="Link to this definition"></a><br /></dt>
+<dd><p>Creates datasets for each <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> network in the ensemble using bootstrap sampling. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>masterTrain</strong> – The master training dataset. </p></li>
+<li><p><strong>masterClass</strong> – The master class dataset. </p></li>
+<li><p><strong>nbPat</strong> – Number of patterns in the dataset. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8BagDimlp8TrainAllER7DataSetR7DataSetRKNSt6stringERKNSt6stringEi">
+<span id="_CPPv3N8BagDimlp8TrainAllER7DataSetR7DataSetRKNSt6stringERKNSt6stringEi"></span><span id="_CPPv2N8BagDimlp8TrainAllER7DataSetR7DataSetRKNSt6stringERKNSt6stringEi"></span><span id="BagDimlp::TrainAll__DataSetR.DataSetR.ssCR.ssCR.i"></span><span class="target" id="classBagDimlp_1a97dd882db545c7fb97a4cff98618fde0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TrainAll</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">test</span></span>, <a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">testTar</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">genericWeightsFile</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">accuracyFile</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">seed</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8BagDimlp8TrainAllER7DataSetR7DataSetRKNSt6stringERKNSt6stringEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Trains all <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> networks in the ensemble. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>test</strong> – The test dataset. </p></li>
+<li><p><strong>testTar</strong> – The test target dataset. </p></li>
+<li><p><strong>genericWeightsFile</strong> – Path to the file for saving weights. </p></li>
+<li><p><strong>accuracyFile</strong> – Path to the file for saving accuracy. </p></li>
+<li><p><strong>seed</strong> – Seed for random number generation. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8BagDimlp18DefNetsWithWeightsERKNSt6stringE">
+<span id="_CPPv3N8BagDimlp18DefNetsWithWeightsERKNSt6stringE"></span><span id="_CPPv2N8BagDimlp18DefNetsWithWeightsERKNSt6stringE"></span><span id="BagDimlp::DefNetsWithWeights__ssCR"></span><span class="target" id="classBagDimlp_1a0608fa554ba5a37e92cdc404d923e932"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DefNetsWithWeights</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">prefix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8BagDimlp18DefNetsWithWeightsERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Initializes networks with pre-trained weights. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prefix</strong> – Prefix for the weight files. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8BagDimlp14MakeGlobalVirtEiii">
+<span id="_CPPv3N8BagDimlp14MakeGlobalVirtEiii"></span><span id="_CPPv2N8BagDimlp14MakeGlobalVirtEiii"></span><span id="BagDimlp::MakeGlobalVirt__i.i.i"></span><span class="target" id="classBagDimlp_1ae36fa5f53cb966f0d98543072f80e7c3"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classVirtualHyp.html#_CPPv410VirtualHyp" title="VirtualHyp"><span class="n"><span class="pre">VirtualHyp</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeGlobalVirt</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbBins</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbIn</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">multiple</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8BagDimlp14MakeGlobalVirtEiii" title="Link to this definition"></a><br /></dt>
+<dd><p>Creates a global virtual hyperplane for all networks in the ensemble. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nbBins</strong> – Number of bins. </p></li>
+<li><p><strong>nbIn</strong> – Number of input neurons. </p></li>
+<li><p><strong>multiple</strong> – Multiplication factor. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Shared pointer to the global virtual hyperplane. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8BagDimlp18ForwardOneExample1ER7DataSeti">
+<span id="_CPPv3N8BagDimlp18ForwardOneExample1ER7DataSeti"></span><span id="_CPPv2N8BagDimlp18ForwardOneExample1ER7DataSeti"></span><span id="BagDimlp::ForwardOneExample1__DataSetR.i"></span><span class="target" id="classBagDimlp_1a722967e2f77d0d6c7bd44cf546203da0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForwardOneExample1</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">index</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N8BagDimlp18ForwardOneExample1ER7DataSeti" title="Link to this definition"></a><br /></dt>
+<dd><p>Performs forward pass using the bagged ensemble of <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> networks for a single example. </p>
+<p>This method iterates over all the <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> networks in the ensemble (<code class="docutils literal notranslate"><span class="pre">VectDimlp</span></code>), performs a forward pass on each network, and averages their outputs to produce a final global output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – The dataset. </p></li>
+<li><p><strong>index</strong> – Index of the example. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8BagDimlp18ForwardOneExample1Ev">
+<span id="_CPPv3N8BagDimlp18ForwardOneExample1Ev"></span><span id="_CPPv2N8BagDimlp18ForwardOneExample1Ev"></span><span id="BagDimlp::ForwardOneExample1"></span><span class="target" id="classBagDimlp_1aa327c89fd21b3f7c8707d05b793c5f8c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForwardOneExample1</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N8BagDimlp18ForwardOneExample1Ev" title="Link to this definition"></a><br /></dt>
+<dd><p>Performs forward pass using the bagged ensemble of <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> networks for a single example. </p>
+<p>This method iterates over all the <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> networks in the ensemble (<code class="docutils literal notranslate"><span class="pre">VectDimlp</span></code>), performs a forward pass on each network, and averages their outputs to produce a final global output. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8BagDimlp10ComputeAccER7DataSetR7DataSetPfiRKNSt6stringE">
+<span id="_CPPv3N8BagDimlp10ComputeAccER7DataSetR7DataSetPfiRKNSt6stringE"></span><span id="_CPPv2N8BagDimlp10ComputeAccER7DataSetR7DataSetPfiRKNSt6stringE"></span><span id="BagDimlp::ComputeAcc__DataSetR.DataSetR.floatP.i.ssCR"></span><span class="target" id="classBagDimlp_1add08659686db3f3dea1f65de7a8ac57d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ComputeAcc</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">data</span></span>, <a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">target</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">accuracy</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tW</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">predFile</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8BagDimlp10ComputeAccER7DataSetR7DataSetPfiRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the accuracy of the ensemble on the given dataset. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – The dataset. </p></li>
+<li><p><strong>target</strong> – The target dataset. </p></li>
+<li><p><strong>accuracy</strong> – Pointer to store the computed accuracy. </p></li>
+<li><p><strong>toWrite</strong> – Flag to indicate whether to write the predictions to a file. </p></li>
+<li><p><strong>predFile</strong> – Path to the file for saving predictions. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8BagDimlp8BagDimlpEffffffiiiiNSt6vectorIiEEiRKNSt6stringEi">
+<span id="_CPPv3N8BagDimlp8BagDimlpEffffffiiiiNSt6vectorIiEEiRKNSt6stringEi"></span><span id="_CPPv2N8BagDimlp8BagDimlpEffffffiiiiNSt6vectorIiEEiRKNSt6stringEi"></span><span id="BagDimlp::BagDimlp__float.float.float.float.float.float.i.i.i.i.std::vector:i:.i.ssCR.i"></span><span class="target" id="classBagDimlp_1a59ff060335931f60ac858dad18a74213"></span><span class="sig-name descname"><span class="n"><span class="pre">BagDimlp</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">mu</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">flat</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">errParam</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">accuracyParam</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deltaErrParam</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">discrLevels</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">showErrParam</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbEpochsParam</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbLayers</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbNeurons</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbDimlpNets</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">weightFile</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">seed</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8BagDimlp8BagDimlpEffffffiiiiNSt6vectorIiEEiRKNSt6stringEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructs a <a class="reference internal" href="#classBagDimlp"><span class="std std-ref">BagDimlp</span></a> object. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eta</strong> – Learning rate. </p></li>
+<li><p><strong>mu</strong> – Momentum. </p></li>
+<li><p><strong>flat</strong> – Flat spot elimination parameter. </p></li>
+<li><p><strong>errParam</strong> – Error threshold parameter. </p></li>
+<li><p><strong>accuracyParam</strong> – Accuracy threshold parameter. </p></li>
+<li><p><strong>deltaErrParam</strong> – Delta error threshold parameter. </p></li>
+<li><p><strong>discrLevels</strong> – Number of discretization levels. </p></li>
+<li><p><strong>showErrParam</strong> – Frequency of error display. </p></li>
+<li><p><strong>nbEpochsParam</strong> – Number of training epochs. </p></li>
+<li><p><strong>nbLayers</strong> – Number of layers. </p></li>
+<li><p><strong>nbNeurons</strong> – Vector containing the number of neurons in each layer. </p></li>
+<li><p><strong>nbDimlpNets</strong> – Number of <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> networks in the ensemble. </p></li>
+<li><p><strong>weightFile</strong> – Path to the file for saving weights. </p></li>
+<li><p><strong>seed</strong> – Seed for random number generation. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8BagDimlp8BagDimlpEiiNSt6vectorIiEEiRKNSt6stringEi">
+<span id="_CPPv3N8BagDimlp8BagDimlpEiiNSt6vectorIiEEiRKNSt6stringEi"></span><span id="_CPPv2N8BagDimlp8BagDimlpEiiNSt6vectorIiEEiRKNSt6stringEi"></span><span id="BagDimlp::BagDimlp__i.i.std::vector:i:.i.ssCR.i"></span><span class="target" id="classBagDimlp_1a0395ebbca0e58d6a5a1c05b1ce9cb5e3"></span><span class="sig-name descname"><span class="n"><span class="pre">BagDimlp</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">discrLevels</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbLayers</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbNeurons</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbDimlpNets</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">weightFile</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">seed</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8BagDimlp8BagDimlpEiiNSt6vectorIiEEiRKNSt6stringEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructs a <a class="reference internal" href="#classBagDimlp"><span class="std std-ref">BagDimlp</span></a> object with specified discretization levels, layers, and neurons. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>discrLevels</strong> – Number of discretization levels. </p></li>
+<li><p><strong>nbLayers</strong> – Number of layers. </p></li>
+<li><p><strong>nbNeurons</strong> – Vector containing the number of neurons in each layer. </p></li>
+<li><p><strong>nbDimlpNets</strong> – Number of <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> networks in the ensemble. </p></li>
+<li><p><strong>weightFile</strong> – Path to the file for saving weights. </p></li>
+<li><p><strong>seed</strong> – Seed for random number generation. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8BagDimlp18ForwardOneExample1EPf">
+<span id="_CPPv3N8BagDimlp18ForwardOneExample1EPf"></span><span id="_CPPv2N8BagDimlp18ForwardOneExample1EPf"></span><span id="BagDimlp::ForwardOneExample1__floatP"></span><span class="target" id="classBagDimlp_1a819ccec883e8e7b74712eed64043fad2"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForwardOneExample1</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8BagDimlp18ForwardOneExample1EPf" title="Link to this definition"></a><br /></dt>
+<dd><p>Forwards one example through the network. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ex</strong> – The example to forward. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classAttrName.html" class="btn btn-neutral float-left" title="Class AttrName" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classBpNN.html" class="btn btn-neutral float-right" title="Class BpNN" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

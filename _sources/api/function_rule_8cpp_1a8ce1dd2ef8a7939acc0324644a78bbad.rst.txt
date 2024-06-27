@@ -1,0 +1,14 @@
+.. _exhale_function_rule_8cpp_1a8ce1dd2ef8a7939acc0324644a78bbad:
+
+Function writeRulesFile(const std::string&, const std::vector<Rule>&, const std::vector<std::string>&, const std::vector<std::string>&, float, int)
+===================================================================================================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: writeRulesFile(const std::string&, const std::vector<Rule>&, const std::vector<std::string>&, const std::vector<std::string>&, float, int)
+   :project: common

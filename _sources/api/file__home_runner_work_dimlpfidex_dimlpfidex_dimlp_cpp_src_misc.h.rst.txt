@@ -1,0 +1,54 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_misc.h:
+
+File misc.h
+===========
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/misc.h``)
+-----------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_misc.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../common/cpp/src/stringI.h``
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_rulePro.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_virtHyp.cpp`
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_misc_8h_1a4740003af206bb19a5cb619ae26d4718`
+
+- :ref:`exhale_function_misc_8h_1aaa422af68876dc8636fd20729ea1e1ef`
+

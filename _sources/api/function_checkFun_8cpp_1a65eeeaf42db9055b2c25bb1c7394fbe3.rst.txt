@@ -1,0 +1,14 @@
+.. _exhale_function_checkFun_8cpp_1a65eeeaf42db9055b2c25bb1c7394fbe3:
+
+Function getOSSeparator()
+=========================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: getOSSeparator()
+   :project: common

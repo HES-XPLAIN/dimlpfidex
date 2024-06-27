@@ -1,0 +1,487 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.cpp:
+
+Program Listing for File rule.cpp
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.cpp>` (``/home/runner/work/dimlpfidex/dimlpfidex/common/cpp/src/rule.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #include "rule.h"
+   
+   Rule::Rule(const std::vector<Antecedent> &antecedents, const std::vector<int> &coveredSamples, int outClass, double fidelity, double accuracy, double confidence) {
+     setAntecedents(antecedents);
+     setCoveredSamples(coveredSamples);
+     setCoveringSize(static_cast<int>(coveredSamples.size()));
+     setOutputClass(outClass);
+     setFidelity(fidelity);
+     setAccuracy(accuracy);
+     setConfidence(confidence);
+   }
+   
+   std::string Rule::toString(const std::vector<std::string> &attributes, const std::vector<std::string> &classes) const {
+     std::stringstream result;
+     int _outputClass = getOutputClass();
+     auto nbCoveredSamples = getCoveringSize();
+     double _fidelity = getFidelity();
+     double _accuracy = getAccuracy();
+     double _confidence = getConfidence();
+   
+     for (Antecedent a : getAntecedents()) {
+       if (!attributes.empty()) {
+         result << attributes[a.getAttribute()];
+       } else {
+         result << "X" + std::to_string(a.getAttribute());
+       }
+   
+       if (a.getInequality()) {
+         result << ">=";
+       } else {
+         result << "<";
+       }
+   
+       result << formattingDoubleToString(a.getValue()) << " ";
+     }
+   
+     if (!classes.empty()) {
+       result << "-> " << classes[_outputClass] << std::endl;
+     } else {
+       result << "-> class " << getOutputClass() << std::endl;
+     }
+   
+     result << "   Train Covering size : " << std::to_string(nbCoveredSamples)
+            << std::endl
+            << "   Train Fidelity : " << formattingDoubleToString(_fidelity)
+            << std::endl
+            << "   Train Accuracy : " << formattingDoubleToString(_accuracy)
+            << std::endl
+            << "   Train Confidence : " << formattingDoubleToString(_confidence)
+            << std::endl;
+   
+     return result.str();
+   }
+   
+   std::vector<Rule> Rule::fromJsonFile(const std::string &filename, float &decisionThreshold, int &positiveClassIndex) {
+     std::vector<Rule> result;
+     std::ifstream ifs(filename);
+   
+     if (!ifs.is_open() || ifs.fail()) {
+       throw FileNotFoundError("JSON file to parse named '" + filename + "' was not found or is corrupted, cannot proceed.");
+     }
+   
+     // this throws an exception if input is not valid JSON
+     Json jsonData = Json::parse(ifs);
+   
+     if (!jsonData.contains("rules") || !jsonData.contains("positive index class") || !jsonData.contains("threshold")) {
+       std::cout << "Parsing error: cannot find 'rules' list in json file." << std::endl;
+       return result;
+     }
+   
+     positiveClassIndex = jsonData["positive index class"];
+     decisionThreshold = jsonData["threshold"];
+     result = jsonData["rules"];
+   
+     return result;
+   }
+   
+   void Rule::toJsonFile(const std::string &filename, const std::vector<Rule> &rules, float threshold, int positiveIndex) {
+     std::ofstream ofs(filename);
+   
+     if (!ofs.is_open() || ofs.fail()) {
+       throw FileNotFoundError("JSON file to be written named '" + filename + "' couldn't be opened, cannot proceed.");
+     }
+   
+     Json jsonData;
+   
+     jsonData["threshold"] = threshold;
+     jsonData["positive index class"] = positiveIndex;
+     jsonData["rules"] = rules;
+   
+     ofs << std::setw(4) << jsonData << std::endl;
+   }
+   
+   bool Rule::isEqual(const Rule &other) const {
+     double epsilon = 10e-6;
+   
+     if (getAntecedents() != other.getAntecedents())
+       return false;
+   
+     if (getCoveredSamples() != other.getCoveredSamples())
+       return false;
+   
+     if (getOutputClass() != other.getOutputClass())
+       return false;
+   
+     if (fabs(getFidelity() - other.getFidelity()) > epsilon)
+       return false;
+   
+     if (fabs(getAccuracy() != other.getAccuracy()) > epsilon)
+       return false;
+   
+     if (fabs(getConfidence() != other.getConfidence()) > epsilon)
+       return false;
+   
+     return true;
+   }
+   
+   std::string generateRegexSmallerPositive(int maxNumber) {
+     std::ostringstream regexStream;
+     std::string maxStr = std::to_string(maxNumber);
+     auto nbDigits = static_cast<int>(maxStr.length());
+   
+     // Accept numbers with fewer digits
+     if (nbDigits > 1) {
+       regexStream << "\\d{1," << (nbDigits - 1) << "}|";
+     }
+   
+     // Accept numbers with the same number of digits but starting with lower digits
+     for (int i = 0; i < nbDigits; ++i) {
+       if (maxStr[i] != '0') {
+         regexStream << maxStr.substr(0, i) << "[0-" << (maxStr[i] - '1') << "]\\d{" << (nbDigits - i - 1) << "}|";
+       }
+     }
+   
+     // Remove the last '|'
+     std::string regex = regexStream.str();
+     if (!regex.empty() && regex.back() == '|') {
+       regex.pop_back();
+     }
+   
+     return regex;
+   }
+   
+   std::string getAntStrPatternWithAttrIds(int nbAttributes) {
+     std::string pattern = generateRegexSmallerPositive(nbAttributes);
+     std::string idPattern("X(" + pattern + ")([<>]=?)(-?(\\d+\\.?\\d*|\\.\\d+)([eE][+-]?\\d+)?)");
+     return idPattern;
+   }
+   
+   std::string getAntStrPatternWithAttrNames() {
+     std::string attrPattern = "[^\\s]+";
+     std::string attributesPattern("(" + attrPattern + ")([<>]=?)(-?(\\d+\\.?\\d*|\\.\\d+)([eE][+-]?\\d+)?)");
+     return attributesPattern;
+   }
+   
+   std::string getStrPatternWithClassIds(int nbClasses) {
+     std::string pattern = generateRegexSmallerPositive(nbClasses);
+     std::string idPattern("-> class (" + pattern + "\\b\\s*)");
+     return idPattern;
+   }
+   
+   std::string getStrPatternWithClassNames() {
+     std::string clPattern = "[^\\s]+";
+     std::string classesPattern("-> (" + clPattern + ")");
+     return classesPattern;
+   }
+   
+   std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, const DataSetFid &dataset, bool withClasses) {
+     bool hasAttrIds = true;
+     bool hasAttrNames = true;
+     bool hasClassIds = true;
+     bool hasClassNames = true;
+   
+     bool foundARule = false;
+   
+     std::ifstream fileDta(rulesFile);
+     if (!fileDta) {
+       throw FileNotFoundError("Error : file " + rulesFile + " not found");
+     }
+   
+     std::string line;
+     Rule rule;
+   
+     std::regex antecedentsPatternIds(": (" + getAntStrPatternWithAttrIds(dataset.getNbAttributes()) + " )*" + "->");
+     std::regex antecedentsPatternNames;
+     if (dataset.getHasAttributeNames()) {
+       antecedentsPatternNames = ": (" + getAntStrPatternWithAttrNames() + " )*" + "->";
+     }
+     auto patternWithClassIds = std::regex(getStrPatternWithClassIds(dataset.getNbClasses()));
+     std::regex patternWithClassNames;
+     if (dataset.getHasClassNames()) {
+       patternWithClassNames = std::regex(getStrPatternWithClassNames());
+     }
+   
+     while (getline(fileDta, line)) {
+       if (line.find("Rule") == 0) { // If line begins with "Rule"
+         foundARule = true;
+   
+         bool matched = false;
+         if (regex_search(line, antecedentsPatternIds)) {
+           matched = true;
+           hasAttrIds &= true; // Stays true only if it was already true, can't become true if it's false
+         } else {
+           hasAttrIds = false;
+         }
+         if (dataset.getHasAttributeNames() && regex_search(line, antecedentsPatternNames)) {
+           matched = true;
+           hasAttrNames &= true;
+         } else {
+           hasAttrNames = false;
+         }
+         if (!matched) {
+           throw FileContentError("Error : in file " + rulesFile + ", the rule " + line + " is not in a good format. Maybe an attribute or class id is wrong or you forgot to add the attribute file.");
+         }
+         matched = false;
+         if (regex_search(line, patternWithClassIds)) {
+           matched = true;
+           hasClassIds &= true;
+         } else {
+           hasClassIds = false;
+         }
+         if (dataset.getHasClassNames() && regex_search(line, patternWithClassNames)) {
+           matched = true;
+           hasClassNames &= true;
+         } else {
+           hasClassNames = false;
+         }
+         if (!matched) {
+           throw FileContentError("Error : in file " + rulesFile + ", the rule " + line + " is not in a good format. Maybe a class id is wrong or you forgot to add the attribute file.");
+         }
+   
+         // If no pattern matches each rule
+         if (!hasAttrIds && !hasAttrNames) {
+           throw FileContentError("Error : in file " + rulesFile + ", the rules are not always using the same convention for attributes, or a given attribute name or attribute id is wrong.");
+         }
+         if (!hasClassIds && !hasClassNames && withClasses) {
+           throw FileContentError("Error : in file " + rulesFile + ", the rules are not always using the same convention for classes, or a given class name or class id is wrong.");
+         }
+       }
+     }
+   
+     // If there is no rule in the file
+     if (!foundARule) {
+       throw FileContentError("Error : there is no rule in the file " + rulesFile + ". Note: a rule needs to start with 'Rule' keyword");
+     }
+   
+     return std::vector<bool>{hasAttrIds, hasClassIds};
+   }
+   
+   bool stringToRule(Rule &rule, const std::string &str, const std::regex &attributePattern, const std::regex &classPattern, bool withAttributeNames, bool withClassNames, DataSetFid &dataset) {
+   
+     std::vector<Antecedent> antecedents;
+     bool isRule = false;
+   
+     std::istringstream iss(str);
+     std::string token;
+   
+     while (iss >> token) {
+       std::smatch match;
+       if (regex_match(token, match, attributePattern)) {
+         isRule = true;
+         Antecedent antecedent;
+         if (!withAttributeNames) {
+           antecedent.setAttribute(stoi(match[1]));
+         } else {
+           auto it = find(dataset.getAttributeNames().begin(), dataset.getAttributeNames().end(), match[1]);
+           if (it != dataset.getAttributeNames().end()) {
+             antecedent.setAttribute(static_cast<int>(distance(dataset.getAttributeNames().begin(), it)));
+           } else {
+             throw FileContentError("Error : in rulefile, the rule " + str + " contains unknown named attribute " + std::string(match[1]) + ". If the attributes in the rules are not named, do not specify an attribute file.");
+           }
+         }
+         if (match[2] == ">=") {
+           antecedent.setInequality(true);
+         } else {
+           antecedent.setInequality(false);
+         }
+         antecedent.setValue(stod(match[3]));
+         antecedents.push_back(antecedent);
+       } else if (token == "->") {
+         std::string classString = token;
+         iss >> token;
+         classString += " " + token;
+         if (!withClassNames) {
+           iss >> token;
+           classString += " " + token;
+         }
+         if (regex_match(classString, match, classPattern)) {
+           isRule = true;
+           if (!withClassNames) {
+             rule.setOutputClass(stoi(match[1]));
+           } else {
+             auto it = find(dataset.getClassNames().begin(), dataset.getClassNames().end(), match[1]);
+             if (it != dataset.getClassNames().end()) {
+               rule.setOutputClass(static_cast<int>(distance(dataset.getClassNames().begin(), it)));
+             } else {
+               throw FileContentError("Error : in rulefile, the rule " + str + " contains unknown named class " + std::string(match[1]) + ". If the classes in the rules are not named, do not specify an attribute file.");
+             }
+           }
+         }
+       }
+     }
+   
+     if (isRule) {
+       rule.setAntecedents(antecedents);
+       return true;
+     }
+   
+     return false;
+   }
+   
+   void getRules(std::vector<Rule> &rules, const std::string &rulesFile, DataSetFid &dataset, float &decisionThreshold, int &positiveClassIndex) {
+     // if file is JSON read it properly
+     if (rulesFile.substr(rulesFile.find_last_of(".") + 1) == "json") {
+       rules = Rule::fromJsonFile(rulesFile, decisionThreshold, positiveClassIndex);
+     } else {
+       // Open rules file
+       std::fstream rulesData;
+       rulesData.open(rulesFile, std::ios::in); // Read data file
+       if (rulesData.fail()) {
+         throw FileNotFoundError("Error : file " + rulesFile + " not found.");
+       }
+   
+       // Check if the file has attribute names or ids
+       std::vector<bool> checkPatterns = getRulesPatternsFromRuleFile(rulesFile, dataset);
+       bool attributeIdsInFile = checkPatterns[0];
+       bool classeIdsInFile = checkPatterns[1];
+   
+       std::regex attributePattern;
+       std::regex classPattern;
+       if (attributeIdsInFile) {
+         attributePattern = getAntStrPatternWithAttrIds(dataset.getNbAttributes());
+       } else {
+         attributePattern = getAntStrPatternWithAttrNames();
+       }
+   
+       if (classeIdsInFile) {
+         classPattern = getStrPatternWithClassIds(dataset.getNbClasses());
+       } else {
+         classPattern = getStrPatternWithClassNames();
+       }
+   
+       std::string line;
+       while (getline(rulesData, line)) {
+         Rule rule;
+         bool isRule = stringToRule(rule, line, attributePattern, classPattern, !attributeIdsInFile, !classeIdsInFile, dataset);
+   
+         if (isRule) {
+           getline(rulesData, line); // Cov size
+           rule.setCoveringSize(stoi(splitString(line, " ")[4]));
+           getline(rulesData, line); // Fidelity
+           rule.setFidelity(stoi(splitString(line, " ")[3]));
+           getline(rulesData, line); // Accuracy
+           rule.setAccuracy(stod(splitString(line, " ")[3]));
+           getline(rulesData, line); // Confidence
+           rule.setConfidence(stod(splitString(line, " ")[3]));
+           rules.push_back(rule);
+         }
+       }
+     }
+   }
+   
+   std::tuple<double, double> writeRulesFile(const std::string &filename, const std::vector<Rule> &rules, const std::vector<std::string> &attributeNames,
+                                             const std::vector<std::string> &classNames, float threshold, int positiveIndex) {
+     if (rules.empty()) {
+       std::cout << "Warning: cannot write to file \"" << filename << "\", generated rules list is empty.";
+       return std::make_tuple(0, 0);
+     }
+   
+     double meanCovSize = 0;
+     double meanNbAntecedents = 0;
+   
+     if (filename.substr(filename.find_last_of(".") + 1) == "json") {
+       for (Rule r : rules) { // each rule
+         meanCovSize += static_cast<double>(r.getCoveredSamples().size());
+         meanNbAntecedents += static_cast<double>(r.getAntecedents().size());
+       }
+   
+       Rule::toJsonFile(filename, rules, threshold, positiveIndex);
+   
+     } else {
+       int counter = 0;
+       std::stringstream stream;
+       std::ofstream file(filename);
+       auto nbRules = static_cast<int>(rules.size());
+   
+       for (Rule r : rules) { // each rule
+         meanCovSize += static_cast<double>(r.getCoveredSamples().size());
+         meanNbAntecedents += static_cast<double>(r.getAntecedents().size());
+         counter++;
+         stream << "Rule " << counter << ": " << r.toString(attributeNames, classNames);
+         stream << std::endl;
+       }
+   
+       meanCovSize /= nbRules;
+       meanNbAntecedents /= nbRules;
+   
+       if (file.is_open()) {
+         file << "Number of rules : " << nbRules
+              << ", mean sample covering number per rule : " << formattingDoubleToString(meanCovSize)
+              << ", mean number of antecedents per rule : " << formattingDoubleToString(meanNbAntecedents)
+              << std::endl;
+         if (threshold != -1) {
+           file << "Using a decision threshold of " << threshold << " for class " << positiveIndex
+                << std::endl;
+         } else {
+           file << "No decision threshold is used.";
+         }
+         file << std::endl
+              << std::endl
+              << stream.str();
+   
+         file.close();
+   
+       } else {
+         throw CannotOpenFileError("Error : Couldn't open rules extraction file \"" + filename + "\".");
+       }
+     }
+     return std::make_tuple(meanCovSize, meanNbAntecedents);
+   }
+   
+   void getActivatedRules(std::vector<int> &activatedRules, std::vector<Rule> &rules, std::vector<double> &testValues) {
+     int attr;
+     bool ineq;
+     double val;
+     for (int r = 0; r < rules.size(); r++) { // For each rule
+       bool notActivated = false;
+       for (const auto &antecedent : rules[r].getAntecedents()) { // For each antecedent
+         attr = antecedent.getAttribute();
+         ineq = antecedent.getInequality();
+         val = antecedent.getValue();
+         if (ineq == 0 && testValues[attr] >= val) { // If the inequality is not verified
+           notActivated = true;
+         }
+         if (ineq == 1 && testValues[attr] < val) {
+           notActivated = true;
+         }
+       }
+       if (!notActivated) {
+         activatedRules.push_back(r);
+       }
+     }
+   }
+   
+   void getThresholdFromRulesFile(const std::string &filePath, float &decisionThreshold, int &positiveClassIndex) {
+     decisionThreshold = -1.0;
+     positiveClassIndex = -1;
+   
+     std::ifstream file(filePath);
+     std::string line;
+   
+     if (filePath.substr(filePath.find_last_of('.') + 1) == "json") {
+       std::vector<Rule> rules;
+       rules = Rule::fromJsonFile(filePath, decisionThreshold, positiveClassIndex);
+     } else {
+   
+       if (!file) {
+         throw FileNotFoundError("Error : file " + filePath + " not found");
+       }
+   
+       while (std::getline(file, line)) {
+         std::string tokenThresh;
+         std::string tokenClass;
+   
+         if (line.find("Using a decision threshold of") != std::string::npos) {
+           std::istringstream iss(line);
+           iss >> tokenThresh >> tokenThresh >> tokenThresh >> tokenThresh >> tokenThresh >> tokenThresh >> tokenClass >> tokenClass >> tokenClass; // Get decision threshold
+           decisionThreshold = std::stof(tokenThresh);
+           positiveClassIndex = std::stoi(tokenClass);
+         }
+       }
+   
+       file.close();
+     }
+   }

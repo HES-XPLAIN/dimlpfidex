@@ -1,0 +1,14 @@
+.. _exhale_function_dimlpCommonFun_8cpp_1a40264026b4b04ed2367a350546664711:
+
+Function SaveOutputs(DataSet&, std::shared_ptr<Dimlp>, int, int, const std::string&)
+====================================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpCommonFun.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: SaveOutputs(DataSet&, std::shared_ptr<Dimlp>, int, int, const std::string&)
+   :project: common

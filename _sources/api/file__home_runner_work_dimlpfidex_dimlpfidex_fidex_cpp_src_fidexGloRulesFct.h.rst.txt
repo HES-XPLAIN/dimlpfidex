@@ -1,0 +1,90 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h:
+
+File fidexGloRulesFct.h
+=======================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/fidexGloRulesFct.h``)
+-----------------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../common/cpp/src/checkFun.h``
+
+- ``../../../common/cpp/src/dataSet.h``
+
+- ``../../../common/cpp/src/errorHandler.h``
+
+- ``../../../common/cpp/src/parameters.h``
+
+- ``../../../common/cpp/src/rule.h``
+
+- ``algorithm``
+
+- ``chrono``
+
+- ``fidexAlgo.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexAlgo.h`)
+
+- ``hyperLocus.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperLocus.h`)
+
+- ``limits.h``
+
+- ``numeric``
+
+- ``omp.h``
+
+- ``random``
+
+- ``sstream``
+
+- ``string`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_stringI.cpp`)
+
+- ``time.h``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRules.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.cpp`
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_fidexGloRulesFct_8h_1a8e86b571228edbc074680a268dade666`
+
+- :ref:`exhale_function_fidexGloRulesFct_8h_1a1f7f80f0b911e8a8d6b2ae1da6b7aa8b`
+
+- :ref:`exhale_function_fidexGloRulesFct_8h_1a146b73414acfe48a460cfac6685166fa`
+
+- :ref:`exhale_function_fidexGloRulesFct_8h_1a391ba5ae9d3b76d288b344b3fdc54252`
+
+- :ref:`exhale_function_fidexGloRulesFct_8h_1a2413398bcc246c568e77a6db88ecb6a3`
+
+- :ref:`exhale_function_fidexGloRulesFct_8h_1ab8c118e80cdd95eb86088005fa210ad5`
+
+- :ref:`exhale_function_fidexGloRulesFct_8h_1a8d310f34a80c1a1837657150d763198c`
+

@@ -1,0 +1,89 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlp.cpp:
+
+Program Listing for File dimlp.cpp
+==================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlp.cpp>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/dimlp.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #include "dimlp.h"
+   
+   
+   const std::string netType = "Discretized Interpretable Multi-Layer Perceptron";
+   
+   Dimlp::Dimlp(
+       float eta,
+       float mu,
+       float flat,
+       float errParam,
+       float accuracyParam,
+       float deltaErrParam,
+       int discrLevels,
+       int showErrParam,
+       int nbEpochsParam,
+       int nbLayers,
+       const std::vector<int> &nbNeurons,
+       const std::string &weightFile,
+       int seed) :
+   
+                   BpNN(eta, mu, flat, errParam, accuracyParam, deltaErrParam,
+                        showErrParam, nbEpochsParam, nbLayers, nbNeurons, weightFile,
+                        netType, seed)
+   
+   {
+     std::cout << "Number of quantized levels = " << discrLevels << "\n"
+               << std::endl;
+   
+     DefineDimlp(discrLevels);
+   }
+   
+   
+   Dimlp::Dimlp(
+       const std::string &readFile,
+       int nbLayers,
+       const std::vector<int> &nbNeurons,
+       int discrLevels,
+       int netId) :
+   
+                    BpNN(readFile, nbLayers, nbNeurons,
+                         netType, netId)
+   
+   {
+     std::cout << "Number of quantized levels = " << discrLevels << "\n"
+               << std::endl;
+   
+     DefineDimlp(discrLevels);
+     ReadWeights();
+   }
+   
+   
+   Dimlp::Dimlp(
+       const std::string &readFile,
+       float eta,
+       float mu,
+       float flat,
+       float errParam,
+       float accuracyParam,
+       float deltaErrParam,
+       int discrLevels,
+       int showErrParam,
+       int nbEpochsParam,
+       int nbLayers,
+       const std::vector<int> &nbNeurons,
+       const std::string &weightFile,
+       int seed) :
+   
+                   BpNN(readFile, eta, mu, flat, errParam, accuracyParam, deltaErrParam,
+                        showErrParam, nbEpochsParam, nbLayers, nbNeurons, weightFile,
+                        netType, seed) {
+     std::cout << "Number of quantized levels = " << discrLevels << "\n"
+               << std::endl;
+   
+     DefineDimlp(discrLevels);
+     ReadWeights();
+   }
+   

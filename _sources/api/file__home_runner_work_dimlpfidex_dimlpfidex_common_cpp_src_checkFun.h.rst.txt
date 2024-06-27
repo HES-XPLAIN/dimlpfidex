@@ -1,0 +1,116 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.h:
+
+File checkFun.h
+===============
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/common/cpp/src/checkFun.h``)
+----------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``algorithm``
+
+- ``errorHandler.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_errorHandler.h`)
+
+- ``fstream``
+
+- ``iomanip``
+
+- ``iostream``
+
+- ``regex``
+
+- ``set``
+
+- ``sstream``
+
+- ``string`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_stringI.cpp`)
+
+- ``sys/stat.h``
+
+- ``tuple``
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_attrName.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bpNN.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_dataSet.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dataSet.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperLocus.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_parameters.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.h`
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_checkFun_8h_1afd97b7581a6b590a73af553572a158b9`
+
+- :ref:`exhale_function_checkFun_8h_1a18ee3a4275683c752805f93f7c72a4d4`
+
+- :ref:`exhale_function_checkFun_8h_1af9ba9b5087d5ecb945606ef63b0f6b14`
+
+- :ref:`exhale_function_checkFun_8h_1a18b1edae300649c3148053425b03aaff`
+
+- :ref:`exhale_function_checkFun_8h_1aca7d63149a5001a1e88cca8d6bc68971`
+
+- :ref:`exhale_function_checkFun_8h_1a1438728ae913faba5ebccd4008068c50`
+
+- :ref:`exhale_function_checkFun_8h_1ae033c59d263164d7f25cf3eb1d1d7700`
+
+- :ref:`exhale_function_checkFun_8h_1a55cf9f57c48be880465d077883291080`
+
+- :ref:`exhale_function_checkFun_8h_1abaf461792eb8f0f90862e21822ed9207`
+
+- :ref:`exhale_function_checkFun_8h_1a52a8475aa8cd1d82b52a2c7a3fca0126`
+
+- :ref:`exhale_function_checkFun_8h_1a65eeeaf42db9055b2c25bb1c7394fbe3`
+
+- :ref:`exhale_function_checkFun_8h_1a194cc4b6115b669c6012b314c4954bd2`
+
+- :ref:`exhale_function_checkFun_8h_1a7dccfc25151c67e10f017b962d0d80a3`
+
+- :ref:`exhale_function_checkFun_8h_1a79477ae82966da1d3256b8a33e41a014`
+
+- :ref:`exhale_function_checkFun_8h_1afc6734d19ba91f3936fc870a7a895883`
+
+- :ref:`exhale_function_checkFun_8h_1aeb2e4898ba6e4ae71103ee342087b553`
+

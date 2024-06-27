@@ -1,0 +1,52 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_oneVarTD.h:
+
+File oneVarTD.h
+===============
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/oneVarTD.h``)
+---------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_oneVarTD.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../common/cpp/src/stringI.h``
+
+- ``memory``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_oneVarTD.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_thresD.h`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_struct_structOneVarThresDescr_1_1Elem`
+
+- :ref:`exhale_class_classOneVarThresDescr`
+

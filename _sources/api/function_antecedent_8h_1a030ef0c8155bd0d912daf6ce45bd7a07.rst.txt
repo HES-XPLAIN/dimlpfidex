@@ -1,0 +1,14 @@
+.. _exhale_function_antecedent_8h_1a030ef0c8155bd0d912daf6ce45bd7a07:
+
+Function operator==(const Antecedent&, const Antecedent&)
+=========================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_antecedent.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: operator==(const Antecedent&, const Antecedent&)
+   :project: common

@@ -1,0 +1,14 @@
+.. _exhale_function_checkFun_8cpp_1a194cc4b6115b669c6012b314c4954bd2:
+
+Function hasSpaceBetweenWords(const std::string&)
+=================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: hasSpaceBetweenWords(const std::string&)
+   :project: common

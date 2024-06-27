@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>trainings package &mdash; dimlpfidex 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7026087e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="trainings" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dimlpfidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">C++ API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/library_root.html">Library API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python modules</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">trainings</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">trainings package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-trainings.cnnTrn">trainings.cnnTrn module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.cnnTrn.cnnTrn"><code class="docutils literal notranslate"><span class="pre">cnnTrn()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.cnnTrn.get_and_check_parameters"><code class="docutils literal notranslate"><span class="pre">get_and_check_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-trainings.computeRocCurve">trainings.computeRocCurve module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.computeRocCurve.computeRocCurve"><code class="docutils literal notranslate"><span class="pre">computeRocCurve()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.computeRocCurve.get_and_check_parameters"><code class="docutils literal notranslate"><span class="pre">get_and_check_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-trainings.crossValid">trainings.crossValid module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.crossValid.create_or_clear_directory"><code class="docutils literal notranslate"><span class="pre">create_or_clear_directory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.crossValid.crossValid"><code class="docutils literal notranslate"><span class="pre">crossValid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.crossValid.formatting"><code class="docutils literal notranslate"><span class="pre">formatting()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.crossValid.get_dimlprul_stats"><code class="docutils literal notranslate"><span class="pre">get_dimlprul_stats()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.crossValid.get_test_acc"><code class="docutils literal notranslate"><span class="pre">get_test_acc()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-trainings.gradBoostTrn">trainings.gradBoostTrn module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.gradBoostTrn.get_and_check_parameters"><code class="docutils literal notranslate"><span class="pre">get_and_check_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.gradBoostTrn.gradBoostTrn"><code class="docutils literal notranslate"><span class="pre">gradBoostTrn()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-trainings.mlpTrn">trainings.mlpTrn module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.mlpTrn.get_and_check_parameters"><code class="docutils literal notranslate"><span class="pre">get_and_check_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.mlpTrn.mlpTrn"><code class="docutils literal notranslate"><span class="pre">mlpTrn()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-trainings.normalization">trainings.normalization module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.normalization.denormalize_rule"><code class="docutils literal notranslate"><span class="pre">denormalize_rule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.normalization.gaussian_normalization"><code class="docutils literal notranslate"><span class="pre">gaussian_normalization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.normalization.get_and_check_parameters"><code class="docutils literal notranslate"><span class="pre">get_and_check_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.normalization.get_pattern_from_rule_file"><code class="docutils literal notranslate"><span class="pre">get_pattern_from_rule_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.normalization.normalization"><code class="docutils literal notranslate"><span class="pre">normalization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.normalization.parse_normalization_file"><code class="docutils literal notranslate"><span class="pre">parse_normalization_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-trainings.parameters">trainings.parameters module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.CustomArgumentParser"><code class="docutils literal notranslate"><span class="pre">CustomArgumentParser</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.CustomHelpFormatter"><code class="docutils literal notranslate"><span class="pre">CustomHelpFormatter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.TaggableAction"><code class="docutils literal notranslate"><span class="pre">TaggableAction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.bool_type"><code class="docutils literal notranslate"><span class="pre">bool_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.dict_type"><code class="docutils literal notranslate"><span class="pre">dict_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.directory"><code class="docutils literal notranslate"><span class="pre">directory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.enum_type"><code class="docutils literal notranslate"><span class="pre">enum_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.float_type"><code class="docutils literal notranslate"><span class="pre">float_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.get_args"><code class="docutils literal notranslate"><span class="pre">get_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.get_common_parser"><code class="docutils literal notranslate"><span class="pre">get_common_parser()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.get_initial_parser"><code class="docutils literal notranslate"><span class="pre">get_initial_parser()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.get_tag_value"><code class="docutils literal notranslate"><span class="pre">get_tag_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.int_type"><code class="docutils literal notranslate"><span class="pre">int_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.json_to_args"><code class="docutils literal notranslate"><span class="pre">json_to_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.list_type"><code class="docutils literal notranslate"><span class="pre">list_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.pair_type"><code class="docutils literal notranslate"><span class="pre">pair_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.print_parameters"><code class="docutils literal notranslate"><span class="pre">print_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.parameters.sanitizepath"><code class="docutils literal notranslate"><span class="pre">sanitizepath()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-trainings.randForestsTrn">trainings.randForestsTrn module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.randForestsTrn.get_and_check_parameters"><code class="docutils literal notranslate"><span class="pre">get_and_check_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.randForestsTrn.randForestsTrn"><code class="docutils literal notranslate"><span class="pre">randForestsTrn()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-trainings.stairObj">trainings.stairObj module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.stairObj.StairObj"><code class="docutils literal notranslate"><span class="pre">StairObj</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-trainings.svmTrn">trainings.svmTrn module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.svmTrn.get_and_check_parameters"><code class="docutils literal notranslate"><span class="pre">get_and_check_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.svmTrn.svmTrn"><code class="docutils literal notranslate"><span class="pre">svmTrn()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-trainings.trnFun">trainings.trnFun module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.trnFun.compute_first_hidden_layer"><code class="docutils literal notranslate"><span class="pre">compute_first_hidden_layer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.trnFun.compute_roc"><code class="docutils literal notranslate"><span class="pre">compute_roc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.trnFun.delete_file"><code class="docutils literal notranslate"><span class="pre">delete_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.trnFun.get_attribute_file"><code class="docutils literal notranslate"><span class="pre">get_attribute_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.trnFun.get_data"><code class="docutils literal notranslate"><span class="pre">get_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.trnFun.get_data_class"><code class="docutils literal notranslate"><span class="pre">get_data_class()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.trnFun.get_data_pred"><code class="docutils literal notranslate"><span class="pre">get_data_pred()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.trnFun.output_data"><code class="docutils literal notranslate"><span class="pre">output_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.trnFun.output_pred"><code class="docutils literal notranslate"><span class="pre">output_pred()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.trnFun.output_stats"><code class="docutils literal notranslate"><span class="pre">output_stats()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.trnFun.recurse"><code class="docutils literal notranslate"><span class="pre">recurse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.trnFun.trees_to_rules"><code class="docutils literal notranslate"><span class="pre">trees_to_rules()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-trainings">Module contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.cnnTrn"><code class="docutils literal notranslate"><span class="pre">cnnTrn()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.computeRocCurve"><code class="docutils literal notranslate"><span class="pre">computeRocCurve()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.gradBoostTrn"><code class="docutils literal notranslate"><span class="pre">gradBoostTrn()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.mlpTrn"><code class="docutils literal notranslate"><span class="pre">mlpTrn()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.normalization"><code class="docutils literal notranslate"><span class="pre">normalization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.randForestsTrn"><code class="docutils literal notranslate"><span class="pre">randForestsTrn()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trainings.svmTrn"><code class="docutils literal notranslate"><span class="pre">svmTrn()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dimlpfidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">trainings</a></li>
+      <li class="breadcrumb-item active">trainings package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/trainings.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="trainings-package">
+<h1>trainings package<a class="headerlink" href="#trainings-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-trainings.cnnTrn">
+<span id="trainings-cnntrn-module"></span><h2>trainings.cnnTrn module<a class="headerlink" href="#module-trainings.cnnTrn" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.cnnTrn.cnnTrn">
+<span class="sig-prename descclassname"><span class="pre">trainings.cnnTrn.</span></span><span class="sig-name descname"><span class="pre">cnnTrn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.cnnTrn.cnnTrn" title="Link to this definition"></a></dt>
+<dd><p>Trains a convolutional neural network (CNN) model using the Keras library with optional support for popular architectures like ResNet and VGG.
+This function processes data preprocessing that includes resizing, normalization and a staircase activation function that allows for the characterization
+of discriminating hyperplanes, which are used in Fidex. This allows us to then use Fidex for comprehensible rule extraction. It accommodates
+various types of image datasets including MNIST, CIFAR-10, and CIFAR-100, and allows for extensive customization through command-line arguments.
+It’s also possible to use other data types.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Each file is located with respect to the root folder dimlpfidex or to the content of the <cite>root_folder</cite> parameter if specified.</p></li>
+<li><p>It’s mandatory to specify the number of classes in the data, as well as the train and test datasets.</p></li>
+<li><p>Validation data can either be specified directly or split from the training data based on a provided ratio.</p></li>
+<li><p>If validation files are given, and you want to use Fidex algorithms later, you will have to use both train and
+validation datas given here in the train datas and classes of Fidex.</p></li>
+<li><p>It’s mandatory to specify the size of the original inputs as well as the number of channels (it should be 3 for RGB and 1 for B&amp;W). The number of attributes is inferred from it.</p></li>
+<li><p>It’s mandatory to chose a model. There is a large model, a small one, a VGG16 and a Resnet50 available. You can add any other model you want by modifying the code.</p></li>
+<li><p>It’s mandatory to specify the format of the data values: ‘normalized_01’ if the data are normalized between 0 and 1, ‘classic’ if they are between 0 and 255, and ‘other’ otherwise.</p></li>
+<li><p>Data is reshaped in 3-channels shape if there is only one and usinf VGG or Resnet.</p></li>
+<li><p>If Fidex is meant to be executed afterward for rule extraction, resizing inputs beforhand to a smaller size is recommended as it will take a lot of time because of the number of parameters.</p></li>
+<li><p>It is also possible to resize the inputs just for training with the model_input_size parameter. Training with smaller inputs will be worst but will save a lot of time.</p></li>
+<li><p>Parameters can be specified using the command line or a JSON configuration file.</p></li>
+<li><p>Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.</p></li>
+<li><p>It’s not necessary to normalize data before training because a normalization is done during the process.</p></li>
+</ul>
+<p>Outputs:</p>
+<ul class="simple">
+<li><p>train_valid_pred_outfile : File containing the model’s train and validation (in this order) predictions.</p></li>
+<li><p>test_pred_outfile : File containing the model’s test predictions.</p></li>
+<li><p>weights_outfile : File containing the model’s trained weights.</p></li>
+<li><p>stats_file : File containing train and test accuracy.</p></li>
+<li><p>console_file : If specified, contains the console output.</p></li>
+</ul>
+<p>File formats:</p>
+<ul class="simple">
+<li><p><strong>Data files</strong>: These files should contain one sample (input/image) per line, with numbers separated either by spaces, tabs, semicolons or commas. Each pixel must be given one after the other. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Only attributes (floats).</p></li>
+<li><p>Attributes (floats) followed by an integer class ID.</p></li>
+<li><p>Attributes (floats) followed by one-hot encoded class.</p></li>
+</ol>
+</li>
+<li><p><strong>Class files</strong>: These files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Integer class ID.</p></li>
+<li><p>One-hot encoded class.</p></li>
+</ol>
+</li>
+</ul>
+<p>Example of how to call the function:</p>
+<p>from trainings.cnnTrn import cnnTrn</p>
+<p>cnnTrn(‘--model small --train_data_file trainData.txt --train_class_file trainClass.txt --test_data_file testData.txt --test_class_file testClass.txt --original_input_size (28,28) --nb_channels 1 --data_format classic --nb_classes 10 --root_folder dimlp/datafiles/Mnist’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – A single string containing either the path to a JSON configuration file with all specified arguments or all arguments for the function, formatted like command-line input.
+This includes dataset selection, file paths, training parameters, and options for model architecture and output files.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns 0 for successful execution, -1 for any errors encountered during the process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.cnnTrn.get_and_check_parameters">
+<span class="sig-prename descclassname"><span class="pre">trainings.cnnTrn.</span></span><span class="sig-name descname"><span class="pre">get_and_check_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.cnnTrn.get_and_check_parameters" title="Link to this definition"></a></dt>
+<dd><p>Processes and validates command-line arguments for a convolution model training.
+This function cleans the input arguments by removing None values ensuring no unnecessary
+arguments are passed to the parser. It initializes the argument parser with basic
+configurations and adds various arguments required for the normalization process.
+It deternines which arguments are required or not and defines their default values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>init_args</strong> (<em>list</em>) – A list of command-line arguments passed to the program.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A namespace object containing all the arguments that have been parsed and validated.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>argparse.Namespace</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-trainings.computeRocCurve">
+<span id="trainings-computeroccurve-module"></span><h2>trainings.computeRocCurve module<a class="headerlink" href="#module-trainings.computeRocCurve" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.computeRocCurve.computeRocCurve">
+<span class="sig-prename descclassname"><span class="pre">trainings.computeRocCurve.</span></span><span class="sig-name descname"><span class="pre">computeRocCurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.computeRocCurve.computeRocCurve" title="Link to this definition"></a></dt>
+<dd><p>Computes and plots the Receiver Operating Characteristic (ROC) curve for a given set of test predictions and true class labels.
+The function supports various customizations through command-line arguments, including specifying input files, choosing the
+positive class index, and output options.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Each file is located with respect to the root folder dimlpfidex or to the content of the <cite>root_folder</cite> parameter if specified.</p></li>
+<li><p>The function is not compatible with SVM models directly due to the different process required for generating ROC curves for them.</p></li>
+<li><p>It’s mandatory to specify the number of classes, the index of the positive class, and provide the test class labels and prediction scores.</p></li>
+<li><p>Parameters can be specified using the command line or a JSON configuration file.</p></li>
+<li><p>Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.</p></li>
+</ul>
+<p>Outputs:</p>
+<ul class="simple">
+<li><p>stats_file : If specified, contains AUC scores.</p></li>
+<li><p>output_roc : PNG file containing the ROC curve.</p></li>
+</ul>
+<p>File formats:</p>
+<ul class="simple">
+<li><p><strong>Class file</strong>: Thesen files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Integer class ID.</p></li>
+<li><p>One-hot encoded class.</p></li>
+</ol>
+</li>
+<li><p><strong>Prediction file</strong> : These files should contain the prediction scores for the test set, with one sample per line, with scores (float) for each class separated either by spaces, tabs, semicolons or commas.</p></li>
+</ul>
+<p>Example of how to call the function:</p>
+<p>from trainings.computeRocCurve import computeRocCurve</p>
+<p>computeRocCurve(‘--test_class_file dataclass2Test.txt --test_pred_file predTest.out --positive_class_index 1 --output_roc roc_curve.png --stats_file stats.txt --root_folder dimlp/datafiles --nb_classes 2’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – A single string containing either the path to a JSON configuration file with all specified arguments or all arguments for the function, formatted like command-line input.
+This includes file paths, the positive class index, and options for the output and statistical analysis.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns 0 for successful execution, -1 for any errors encountered during the process. Additionally, it returns an array containing interpolated false positive rates (FPR), true positive rates (TPR), and the area under the ROC curve (AUC) for further analysis or cross-validation purposes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.computeRocCurve.get_and_check_parameters">
+<span class="sig-prename descclassname"><span class="pre">trainings.computeRocCurve.</span></span><span class="sig-name descname"><span class="pre">get_and_check_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.computeRocCurve.get_and_check_parameters" title="Link to this definition"></a></dt>
+<dd><p>Processes and validates command-line arguments for a ROC curve computation.
+This function cleans the input arguments by removing None values ensuring no unnecessary
+arguments are passed to the parser. It initializes the argument parser with basic
+configurations and adds various arguments required for the normalization process.
+It deternines which arguments are required or not and defines their default values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>init_args</strong> (<em>list</em>) – A list of command-line arguments passed to the program.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A namespace object containing all the arguments that have been parsed and validated.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>argparse.Namespace</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-trainings.crossValid">
+<span id="trainings-crossvalid-module"></span><h2>trainings.crossValid module<a class="headerlink" href="#module-trainings.crossValid" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.crossValid.create_or_clear_directory">
+<span class="sig-prename descclassname"><span class="pre">trainings.crossValid.</span></span><span class="sig-name descname"><span class="pre">create_or_clear_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.crossValid.create_or_clear_directory" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.crossValid.crossValid">
+<span class="sig-prename descclassname"><span class="pre">trainings.crossValid.</span></span><span class="sig-name descname"><span class="pre">crossValid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.crossValid.crossValid" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.crossValid.formatting">
+<span class="sig-prename descclassname"><span class="pre">trainings.crossValid.</span></span><span class="sig-name descname"><span class="pre">formatting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.crossValid.formatting" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.crossValid.get_dimlprul_stats">
+<span class="sig-prename descclassname"><span class="pre">trainings.crossValid.</span></span><span class="sig-name descname"><span class="pre">get_dimlprul_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rule_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.crossValid.get_dimlprul_stats" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.crossValid.get_test_acc">
+<span class="sig-prename descclassname"><span class="pre">trainings.crossValid.</span></span><span class="sig-name descname"><span class="pre">get_test_acc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stats_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_method</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.crossValid.get_test_acc" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-trainings.gradBoostTrn">
+<span id="trainings-gradboosttrn-module"></span><h2>trainings.gradBoostTrn module<a class="headerlink" href="#module-trainings.gradBoostTrn" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.gradBoostTrn.get_and_check_parameters">
+<span class="sig-prename descclassname"><span class="pre">trainings.gradBoostTrn.</span></span><span class="sig-name descname"><span class="pre">get_and_check_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.gradBoostTrn.get_and_check_parameters" title="Link to this definition"></a></dt>
+<dd><p>Processes and validates command-line arguments for a model training with gradient boosting.
+This function cleans the input arguments by removing None values ensuring no unnecessary
+arguments are passed to the parser. It initializes the argument parser with basic
+configurations and adds various arguments required for the normalization process.
+It deternines which arguments are required or not and defines their default values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>init_args</strong> (<em>list</em>) – A list of command-line arguments passed to the program.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A namespace object containing all the arguments that have been parsed and validated.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>argparse.Namespace</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.gradBoostTrn.gradBoostTrn">
+<span class="sig-prename descclassname"><span class="pre">trainings.gradBoostTrn.</span></span><span class="sig-name descname"><span class="pre">gradBoostTrn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.gradBoostTrn.gradBoostTrn" title="Link to this definition"></a></dt>
+<dd><p>Trains a gradient boosting decision trees model. The nodes of the trees represent the discriminating hyperplanes used in Fidex. This allows
+us to then use Fidex for comprehensible rule extraction. The function offers a wide range of customization through command-line arguments,
+allowing for the specification of gradient boosting parameters, output options, and more.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Each file is located with respect to the root folder dimlpfidex or to the content of the <cite>root_folder</cite> parameter if specified.</p></li>
+<li><p>It’s mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.</p></li>
+<li><p>True train and test class labels must be provided, either within the data file or separately through a class file.</p></li>
+<li><p>Parameters can be defined directly via the command line or through a JSON configuration file.</p></li>
+<li><p>Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.</p></li>
+<li><p>It’s not necessary to normalize data before training because decision trees don’t need normalization.</p></li>
+</ul>
+<p>Outputs:</p>
+<ul class="simple">
+<li><p>train_pred_outfile : File containing the model’s train predictions.</p></li>
+<li><p>test_pred_outfile : File containing the model’s test predictions.</p></li>
+<li><p>rules_outfile : File containing the model’s trained rules.</p></li>
+<li><p>stats_file : File containing train and test accuracy.</p></li>
+<li><p>console_file : If specified, contains the console output.</p></li>
+</ul>
+<p>File formats:</p>
+<ul class="simple">
+<li><p><strong>Data files</strong>: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Only attributes (floats).</p></li>
+<li><p>Attributes (floats) followed by an integer class ID.</p></li>
+<li><p>Attributes (floats) followed by one-hot encoded class.</p></li>
+</ol>
+</li>
+<li><p><strong>Class files</strong>: These files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Integer class ID.</p></li>
+<li><p>One-hot encoded class.</p></li>
+</ol>
+</li>
+</ul>
+<p>Example of how to call the function:</p>
+<p>from trainings.gradBoostTrn import gradBoostTrn</p>
+<p>gradBoostTrn(‘--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --stats_file gb/stats.txt --train_pred_outfile gb/predTrain.out --test_pred_outfile gb/predTest.out --rules_outfile gb/RF_rules.rls --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
+This includes file paths, gradient boosting parameters, and options for output.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns 0 for successful execution, -1 for errors encountered during the process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-trainings.mlpTrn">
+<span id="trainings-mlptrn-module"></span><h2>trainings.mlpTrn module<a class="headerlink" href="#module-trainings.mlpTrn" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.mlpTrn.get_and_check_parameters">
+<span class="sig-prename descclassname"><span class="pre">trainings.mlpTrn.</span></span><span class="sig-name descname"><span class="pre">get_and_check_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.mlpTrn.get_and_check_parameters" title="Link to this definition"></a></dt>
+<dd><p>Processes and validates command-line arguments for a model training with MLP.
+This function cleans the input arguments by removing None values ensuring no unnecessary
+arguments are passed to the parser. It initializes the argument parser with basic
+configurations and adds various arguments required for the normalization process.
+It deternines which arguments are required or not and defines their default values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>init_args</strong> (<em>list</em>) – A list of command-line arguments passed to the program.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A namespace object containing all the arguments that have been parsed and validated.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>argparse.Namespace</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.mlpTrn.mlpTrn">
+<span class="sig-prename descclassname"><span class="pre">trainings.mlpTrn.</span></span><span class="sig-name descname"><span class="pre">mlpTrn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.mlpTrn.mlpTrn" title="Link to this definition"></a></dt>
+<dd><p>Trains an MLP model with data preprocessing that includes normalization and a staircase activation function that allows
+for the characterization of discriminating hyperplanes, which are used in Fidex. This allows us to then use Fidex for comprehensible rule extraction.
+The function offers a wide range of customization through command-line arguments, allowing for the specification of MLP parameters, output options, and more.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Each file is located with respect to the root folder dimlpfidex or to the content of the <cite>root_folder</cite> parameter if specified.</p></li>
+<li><p>It’s mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.</p></li>
+<li><p>True train and test class labels must be provided, either within the data file or separately through a class file.</p></li>
+<li><p>Parameters can be defined directly via the command line or through a JSON configuration file.</p></li>
+<li><p>Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.</p></li>
+<li><p>It’s not necessary to normalize data before training because a normalization is done during the process.</p></li>
+</ul>
+<p>Outputs:</p>
+<ul class="simple">
+<li><p>train_pred_outfile : File containing the model’s train predictions.</p></li>
+<li><p>test_pred_outfile : File containing the model’s test predictions.</p></li>
+<li><p>weights_outfile : File containing the model’s trained weights.</p></li>
+<li><p>stats_file : File containing train and test accuracy.</p></li>
+<li><p>console_file : If specified, contains the console output.</p></li>
+</ul>
+<p>File formats:</p>
+<ul class="simple">
+<li><p><strong>Data files</strong>: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Only attributes (floats).</p></li>
+<li><p>Attributes (floats) followed by an integer class ID.</p></li>
+<li><p>Attributes (floats) followed by one-hot encoded class.</p></li>
+</ol>
+</li>
+<li><p><strong>Class files</strong>: These files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Integer class ID.</p></li>
+<li><p>One-hot encoded class.</p></li>
+</ol>
+</li>
+</ul>
+<p>Example of how to call the function:</p>
+<p>from trainings.mlpTrn import mlpTrn</p>
+<p>mlpTrn(‘--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile mlp/weights.wts --stats_file mlp/stats.txt --train_pred_outfile mlp/predTrain.out --test_pred_outfile mlp/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
+This includes file paths, MLP parameters, and options for output and for the staircase activation process.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns 0 for successful execution, -1 for errors encountered during the process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-trainings.normalization">
+<span id="trainings-normalization-module"></span><h2>trainings.normalization module<a class="headerlink" href="#module-trainings.normalization" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.normalization.denormalize_rule">
+<span class="sig-prename descclassname"><span class="pre">trainings.normalization.</span></span><span class="sig-name descname"><span class="pre">denormalize_rule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">antecedent_pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimlp_rule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_attribute_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalization_indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mus</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.normalization.denormalize_rule" title="Link to this definition"></a></dt>
+<dd><p>This function denormalizes a given rule line based on specified rule patterns and normalization parameters.
+If the line don’t correspond to the pattern, it’s left unchanged.
+Otherwise, it parses the rule line using the provided regular expression patterns, identifies each antecedent corresponding to indices that we need to denormalize,
+and applies denormalization to the numeric values using the provided sigma (standard deviation) and mu (mean) values.
+The function reconstructs the rule with the denormalized values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>line</strong> (<em>str</em>) – The rule line to be denormalized.</p></li>
+<li><p><strong>pattern</strong> (<em>str</em>) – The regular expression pattern for identifying and parsing the entire rule line.</p></li>
+<li><p><strong>antecedent_pattern</strong> (<em>str</em>) – The regular expression pattern for identifying each antecedent in the rule.</p></li>
+<li><p><strong>dimlp_rule</strong> (<em>bool</em>) – A flag indicating whether the rule is a DIMLP rule or a Fidex rule, which affects attribute indexing and rule pattern.</p></li>
+<li><p><strong>with_attribute_names</strong> (<em>bool</em>) – A flag indicating whether the rules use attribute names instead of numeric IDs.</p></li>
+<li><p><strong>normalization_indices</strong> (<em>list</em><em> of </em><em>int</em>) – A list of indices of the attributes to be denormalized.</p></li>
+<li><p><strong>attributes</strong> (<em>list</em><em> of </em><em>str</em><em> or </em><em>int</em>) – A list of attribute names or numeric IDs of the attributes.</p></li>
+<li><p><strong>sigmas</strong> (<em>list</em><em> of </em><em>float</em>) – A list of standard deviation values for denormalization, corresponding to each attribute of normalization_indices.</p></li>
+<li><p><strong>mus</strong> (<em>list</em><em> of </em><em>float</em>) – A list of mean or median values for denormalization, corresponding to each attribute of normalization_indices.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The denormalized rule line.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.normalization.gaussian_normalization">
+<span class="sig-prename descclassname"><span class="pre">trainings.normalization.</span></span><span class="sig-name descname"><span class="pre">gaussian_normalization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalization_indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalized_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_missing_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalization_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_median</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.normalization.gaussian_normalization" title="Link to this definition"></a></dt>
+<dd><p>Perform Gaussian normalization on specified attributes of the given data.</p>
+<p>This function normalizes the data based on the Gaussian distribution, where each selected attribute is
+adjusted to have a mean (or median) of zero and a standard deviation of one. It handles missing values,
+writes the normalization statistics to a file if provided, and saves the normalized data to a specified file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_files</strong> (<em>list</em><em> of </em><em>lists</em>) – The dataset to be normalized.</p></li>
+<li><p><strong>normalization_indices</strong> (<em>list</em>) – Indices of the attributes to be normalized.</p></li>
+<li><p><strong>normalized_file</strong> (<em>str</em>) – File path to save the normalized data.</p></li>
+<li><p><strong>fill_missing_values</strong> (<em>bool</em>) – Flag to fill missing values with the mean/median.</p></li>
+<li><p><strong>normalization_file</strong> (<em>str</em><em>, </em><em>optional</em>) – Optional file path to save the normalization statistics.</p></li>
+<li><p><strong>attributes</strong> (<em>list</em><em>, </em><em>optional</em>) – Optional list of attribute names corresponding to indices.</p></li>
+<li><p><strong>missing_value</strong> (<em>str</em><em> or </em><em>None</em>) – Representation of missing values in the data.</p></li>
+<li><p><strong>with_median</strong> (<em>bool</em>) – Flag to use median for normalization instead of mean.</p></li>
+<li><p><strong>mus</strong> (<em>list</em><em> of </em><em>float</em><em>, </em><em>optional</em>) – Predefined list of mean (or median) values for each attribute, defaults to None.</p></li>
+<li><p><strong>sigmas</strong> (<em>list</em><em> of </em><em>float</em><em>, </em><em>optional</em>) – Predefined list of standard deviation values for each attribute, defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If mus, sigmas, and normalization_indices are not of the same length or other existing conditions.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple containing the mean (or median) and standard deviation used for normalization.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(float, float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.normalization.get_and_check_parameters">
+<span class="sig-prename descclassname"><span class="pre">trainings.normalization.</span></span><span class="sig-name descname"><span class="pre">get_and_check_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.normalization.get_and_check_parameters" title="Link to this definition"></a></dt>
+<dd><p>Processes and validates command-line arguments for a data normalization application.
+This function cleans the input arguments by removing None values ensuring no unnecessary
+arguments are passed to the parser. It initializes the argument parser with basic
+configurations and adds various arguments required for the normalization process.
+It deternines which arguments are required or not and defines their default values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>init_args</strong> (<em>list</em>) – A list of command-line arguments passed to the program.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A namespace object containing all the arguments that have been parsed and validated.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>argparse.Namespace</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.normalization.get_pattern_from_rule_file">
+<span class="sig-prename descclassname"><span class="pre">trainings.normalization.</span></span><span class="sig-name descname"><span class="pre">get_pattern_from_rule_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rule_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">possible_patterns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.normalization.get_pattern_from_rule_file" title="Link to this definition"></a></dt>
+<dd><p>This function reads through a given rule file and identifies the pattern that matches the rules in the file.
+It narrows down the possible patterns to the one that matches the content of the file.
+If no pattern matches, or if multiple patterns match different rules, an error is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rule_file</strong> (<em>str</em>) – The path to the rule file to be analyzed.</p></li>
+<li><p><strong>possible_patterns</strong> (<em>list</em><em> of </em><em>str</em>) – A list of regular expression patterns to check against the lines in the file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If no rule matches the provided patterns, or if multiple patterns match different rules.</p></li>
+<li><p><strong>ValueError</strong> – If the file is not found or cannot be opened.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The pattern that matches the rules in the file.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.normalization.normalization">
+<span class="sig-prename descclassname"><span class="pre">trainings.normalization.</span></span><span class="sig-name descname"><span class="pre">normalization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.normalization.normalization" title="Link to this definition"></a></dt>
+<dd><p>This function serves two primary purposes: to normalize data files and to denormalize rule files.
+It offers flexibility in the normalization process through various options.</p>
+<p>Normalization can be performed in several ways:</p>
+<ol class="arabic simple">
+<li><p>Using a <cite>normalization_file</cite> file containing normalization parameters along with one or more data files.</p></li>
+<li><p>Providing data files directly, where the first file is normalized to determine mean/median and standard deviation, which are then applied to other files.</p></li>
+<li><p>Supplying mean/median (mus) and standard deviations (sigmas) as lists, along with the data files.</p></li>
+</ol>
+<p>In the last two cases, indices of attributes to normalize must be provided, and a <cite>normalization_file</cite> file is generated for future use.</p>
+<p>Denormalization can also be done in multiple ways:</p>
+<ol class="arabic simple">
+<li><p>Using a <cite>normalization_file</cite> file with one or more rule files.</p></li>
+<li><p>Directly providing mean/median (mus) and standard deviations (sigmas) along with the rule files. Attribute indices to be denormalized must be provided in this case.</p></li>
+</ol>
+<p>The function generates new normalized and/or denormalized files.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Each file is located with respect to the root folder dimlpfidex or to the content of the <cite>root_folder</cite> parameter if specified.</p></li>
+<li><p>It’s mandatory to specify the number of attributes in the data and the symbol representing missing data.</p></li>
+<li><p>Choose whether to replace missing data or not.</p></li>
+<li><p>If normalizing training data, it is advisable to normalize test/validation files simultaneously for consistency.</p></li>
+<li><p>Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.</p></li>
+</ul>
+<p>When to use :</p>
+<ul class="simple">
+<li><p>It’s good to normalize data before training with Dimlp and dimlpBT.</p></li>
+<li><p>It’s not necessary to normalize data before training with cnnTrn, MLP and SVM because a normalization is done during the process.</p></li>
+<li><p>It’s not necessary to normalize data before training with GradientBoosting and RandomForests because decision trees don’t need normalization.</p></li>
+</ul>
+<p>Outputs :</p>
+<ul class="simple">
+<li><p>output_normalization_file : File containing the mean and std of the normalized attributes.</p></li>
+<li><p>output_data_files : Files containing the original data files normalized.</p></li>
+<li><p>output_rule_files : Files containing the original rule files denormalized.</p></li>
+</ul>
+<p>File formats:</p>
+<ul>
+<li><p><strong>Normalization file</strong>: Each line contains the mean/median and standard deviation for an attribute.</p>
+<p>Format: ‘2 : original mean: 0.8307, original std: 0.0425’</p>
+<p>Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.</p>
+</li>
+<li><p><strong>Data files</strong>: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Only attributes (floats).</p></li>
+<li><p>Attributes (floats) followed by an integer class ID.</p></li>
+<li><p>Attributes (floats) followed by one-hot encoded class.</p></li>
+</ol>
+</li>
+<li><p><strong>Rule files</strong>: Contain rules in Dimlp or Fidex format. Formats:</p>
+<p>Dimlp: ‘Rule 1: (x2 &gt; 0.785787) (x5 &gt; 0.591247) (x8 &lt; 0.443135) Class = 1 (187)’</p>
+<p>Fidex: ‘X1&gt;=0.414584 X10&lt;0.507982 X5&gt;=0.314835 X6&gt;=0.356158 -&gt; class 0’</p>
+<p>In both formats, attribute indices (e.g., X1, x2) and class identifiers can be replaced with attribute names and class names, respectively, then an attribute file is required.</p>
+</li>
+<li><p><strong>Attribute file</strong>: Each line corresponds to an attribute’s name, with optional class names at the end. Names can’t have spaces inbetween (replace by _).</p></li>
+</ul>
+<p>Examples of how to call the function:</p>
+<p>from trainings.normalization import normalization</p>
+<ul class="simple">
+<li><p>For data files: normalization(‘--data_files [datanormTrain.txt,datanormTest.txt] --normalization_indices [0,2,4] --nb_attributes 16 --missing_values NaN --root_folder dimlp/datafiles’)</p></li>
+<li><p>For rule files: normalization(‘--normalization_file normalization_stats.txt --rule_files globalRulesDatanorm.txt --nb_attributes 16 --root_folder dimlp/datafiles’)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
+This includes file paths for the normalization/denormalization process and other options.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns 0 for successful execution, -1 for errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.normalization.parse_normalization_file">
+<span class="sig-prename descclassname"><span class="pre">trainings.normalization.</span></span><span class="sig-name descname"><span class="pre">parse_normalization_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_attributes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.normalization.parse_normalization_file" title="Link to this definition"></a></dt>
+<dd><p>Parse a file containing normalization statistics previously generated using the normalization function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> – Name of the file containing the normalization statistics.
+The expected format for each line in the file is either:
+“[attribute_name] : original (mean|median): [value], original std: [value]”
+or
+“[attribute_index] : original (mean|median): [value], original std: [value]”
+where [attribute_name] is a string from the <cite>attributes</cite> list (if provided),
+[attribute_index] is an integer (if <cite>attributes</cite> is not provided),
+and [value] is a floating-point number.</p></li>
+<li><p><strong>nb_attributes</strong> – Number of attributes.</p></li>
+<li><p><strong>attributes</strong> – List of attribute names (optional).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the file is not found, cannot be opened, is not in the correct format,
+or if there is an inconsistency in using mean or median across different lines.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple of (indices_list, with_median, mean_median_values, std_values).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-trainings.parameters">
+<span id="trainings-parameters-module"></span><h2>trainings.parameters module<a class="headerlink" href="#module-trainings.parameters" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="trainings.parameters.CustomArgumentParser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">CustomArgumentParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prog=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usage=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epilog=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parents=[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter_class=&lt;class</span> <span class="pre">'argparse.HelpFormatter'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix_chars='-'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fromfile_prefix_chars=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">argument_default=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conflict_handler='error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_help=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_abbrev=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exit_on_error=True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.CustomArgumentParser" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ArgumentParser</span></code></p>
+<p>A custom argument parser that overrides the default exit behavior to raise an exception instead of exiting.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="trainings.parameters.CustomArgumentParser.exit">
+<span class="sig-name descname"><span class="pre">exit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.CustomArgumentParser.exit" title="Link to this definition"></a></dt>
+<dd><p>Overrides the default <cite>exit</cite> method to prevent system exit on parsing errors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>status</strong> – The exit status code.</p></li>
+<li><p><strong>message</strong> – The error message to print.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Always raised to avoid exiting the script.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="trainings.parameters.CustomHelpFormatter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">CustomHelpFormatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent_increment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_help_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.CustomHelpFormatter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ArgumentDefaultsHelpFormatter</span></code></p>
+<p>A custom help formatter for argparse that categorizes arguments into required, optional, and tagged parameters
+and enhances help message formatting.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="trainings.parameters.CustomHelpFormatter.add_arguments">
+<span class="sig-name descname"><span class="pre">add_arguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.CustomHelpFormatter.add_arguments" title="Link to this definition"></a></dt>
+<dd><p>Organizes and adds argument descriptions to the help message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>actions</strong> – A list of argparse actions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="trainings.parameters.CustomHelpFormatter.add_text">
+<span class="sig-name descname"><span class="pre">add_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.CustomHelpFormatter.add_text" title="Link to this definition"></a></dt>
+<dd><p>Adds custom text to the help message. This method allows for raw text addition,
+bypassing the standard formatting applied by argparse.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>str</em>) – The text to be added to the help message.</p></li>
+<li><p><strong>raw</strong> (<em>bool</em>) – If True, adds the text without any formatting. If False, the standard formatting is applied.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="trainings.parameters.CustomHelpFormatter.format_help">
+<span class="sig-name descname"><span class="pre">format_help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.CustomHelpFormatter.format_help" title="Link to this definition"></a></dt>
+<dd><p>Cleans up and formats the overall help message, removing unnecessary lines and organizing content.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A cleaned and formatted help message string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="trainings.parameters.TaggableAction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">TaggableAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.TaggableAction" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code></p>
+<p>A custom argparse action that supports tagging, allowing for additional metadata to be associated with arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tag</strong> – An optional tag to associate with the action.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.parameters.bool_type">
+<span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">bool_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.bool_type" title="Link to this definition"></a></dt>
+<dd><p>Converts a string to a boolean value, recognizing various true/false representations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> – The input string to convert.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The converted boolean value.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>argparse.ArgumentTypeError</strong> – If the input cannot be interpreted as a boolean.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.parameters.dict_type">
+<span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">dict_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.dict_type" title="Link to this definition"></a></dt>
+<dd><p>Validates and converts a string representation of a dictionary into a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value_str</strong> – The string representation of a dictionary.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The dictionary represented by the input string.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>argparse.ArgumentTypeError</strong> – If the input string does not represent a valid dictionary.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.parameters.directory">
+<span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.directory" title="Link to this definition"></a></dt>
+<dd><p>An argparse type function that validates if the provided path is a directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> – The input path string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The validated directory path.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>argparse.ArgumentTypeError</strong> – If the path is not a valid directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.parameters.enum_type">
+<span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">enum_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">valid_strings</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">valid_types</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.enum_type" title="Link to this definition"></a></dt>
+<dd><p>Attempts to match the given <cite>value</cite> against a set of valid string values or some specified types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> – The value to be validated or converted.</p></li>
+<li><p><strong>valid_strings</strong> – A variable number of string arguments representing valid values for <cite>value</cite>.</p></li>
+<li><p><strong>valid_types</strong> – Keyword arguments where each key is a type identifier and its value is a dict containing the
+type function under the key ‘func’ and any additional keyword arguments for the function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The original <cite>value</cite> if it matches one of the <cite>valid_strings</cite>, or the type converted <cite>value</cite> if it matches
+one of the type constraints specified in <cite>valid_types</cite>.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>argparse.ArgumentTypeError</strong> – If <cite>value</cite> does not match any of the <cite>valid_strings</cite> or cannot be converted
+to match the specified type constraints, with a detailed error message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.parameters.float_type">
+<span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">float_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_inclusive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_inclusive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.float_type" title="Link to this definition"></a></dt>
+<dd><p>Validates and converts a string to a float, with optional range constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> – The input string to convert.</p></li>
+<li><p><strong>min</strong> – The minimum acceptable value.</p></li>
+<li><p><strong>max</strong> – The maximum acceptable value.</p></li>
+<li><p><strong>min_inclusive</strong> – Whether the minimum value is inclusive.</p></li>
+<li><p><strong>max_inclusive</strong> – Whether the maximum value is inclusive.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The converted float.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>argparse.ArgumentTypeError</strong> – If the input is invalid or out of the specified range.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.parameters.get_args">
+<span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">get_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.get_args" title="Link to this definition"></a></dt>
+<dd><p>Finalizes argument parsing, either from the JSON configuration file or command-line input, using a given parser.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – The arguments previously parsed by the initial parser.</p></li>
+<li><p><strong>init_args</strong> – The initial command-line arguments.</p></li>
+<li><p><strong>parser</strong> – The argparse parser instance to use for final argument parsing.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The fully parsed arguments.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.parameters.get_common_parser">
+<span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">get_common_parser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_parser</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.get_common_parser" title="Link to this definition"></a></dt>
+<dd><p>Creates and returns a common argument parser for handling shared training arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – The arguments previously parsed by the initial parser.</p></li>
+<li><p><strong>initial_parser</strong> – The instance of the initial parser to use as a parent for common arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The instance of the common argument parser.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.parameters.get_initial_parser">
+<span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">get_initial_parser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.get_initial_parser" title="Link to this definition"></a></dt>
+<dd><p>Creates and returns an initial argument parser for handling the root folder and JSON configuration file options.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>init_args</strong> – The initial command-line arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the parsed arguments and the initial parser instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.parameters.get_tag_value">
+<span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">get_tag_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.get_tag_value" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the <cite>tag</cite> attribute from a list of argparse actions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>actions</strong> – A list of argparse actions.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The first <cite>tag</cite> attribute value found among the actions, or None if no tag is present.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.parameters.int_type">
+<span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">int_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.int_type" title="Link to this definition"></a></dt>
+<dd><p>Validates and converts a string to an integer, with optional range constraints and the option to allow None as a value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> – The input string to convert.</p></li>
+<li><p><strong>min</strong> – The minimum acceptable value.</p></li>
+<li><p><strong>max</strong> – The maximum acceptable value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The converted integer.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>argparse.ArgumentTypeError</strong> – If the input is invalid or out of the specified range.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.parameters.json_to_args">
+<span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">json_to_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jsonfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.json_to_args" title="Link to this definition"></a></dt>
+<dd><p>Parses a JSON file and converts it into a list of command-line arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>jsonfile</strong> – The path to the JSON configuration file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of command-line arguments derived from the JSON file.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If there is an error parsing the JSON file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.parameters.list_type">
+<span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">list_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">str_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.list_type" title="Link to this definition"></a></dt>
+<dd><p>Converts a string representation of a list into a list of values of a specified type,
+checking this type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>str_list</strong> – The string representation of the list to be converted. The string should be
+delimited by commas or spaces, and optionally enclosed in brackets or parentheses.</p></li>
+<li><p><strong>valid_type</strong> – A dictionary specifying the type to which each element of the list should be converted.
+It must contain a ‘func’ key with a function for type conversion, and can include
+additional keys for type-specific constraints.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of values of the specified type, with each element having passed the defined constraints.</p>
+</dd>
+</dl>
+<p>Example usage:
+list_type(“[1, 2, 3]”, valid_type={‘func’: int}) -&gt; [1, 2, 3]
+list_type(“4 5 6”, valid_type={‘func’: int, ‘min’: 3}) -&gt; [4, 5, 6] with min value constraint applied</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.parameters.pair_type">
+<span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">pair_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">str_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.pair_type" title="Link to this definition"></a></dt>
+<dd><p>Converts a string representation of a pair into a pair of values of a specified type,
+ensuring that the pair contains exactly 2 elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>str_list</strong> – The string representation of the pair to be converted. The string should be
+delimited by commas or spaces, and optionally enclosed in brackets or parentheses.</p></li>
+<li><p><strong>valid_type</strong> – A dictionary specifying the type to which each element of the pair should be converted.
+It must contain a ‘func’ key with a function for type conversion, and can include
+additional keys for type-specific constraints.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pair of exactly 2 values of the specified type, with each element having passed the defined constraints.
+Raises a ValueError if the list does not contain exactly 2 elements.</p>
+</dd>
+</dl>
+<p>Example usage:</p>
+<p>pair_type(“[1, 2]”, valid_type={‘func’: int}) -&gt; (1, 2)</p>
+<p>pair_type(“(4 5)”, valid_type={‘func’: int, ‘min’: 3}) -&gt; (4, 5) with min value constraint applied</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.parameters.print_parameters">
+<span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">print_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.print_parameters" title="Link to this definition"></a></dt>
+<dd><p>Prints the list of parameters passed to the program.</p>
+<p>This function iterates over all arguments contained within <cite>args</cite> (expected to be an argparse Namespace)
+and prints them to the standard output along with their values, provided they are not None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – A Namespace containing the program’s arguments.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.parameters.sanitizepath">
+<span class="sig-prename descclassname"><span class="pre">trainings.parameters.</span></span><span class="sig-name descname"><span class="pre">sanitizepath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'r'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.parameters.sanitizepath" title="Link to this definition"></a></dt>
+<dd><p>Validates and constructs a full file path based on a base path and a filename, checking for file existence based on access type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – The base path.</p></li>
+<li><p><strong>file</strong> – The filename to append to the base path.</p></li>
+<li><p><strong>access_type</strong> – The file access type (‘r’ for read, ‘w’ for write).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The constructed and validated file path.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>argparse.ArgumentTypeError</strong> – If the path does not exist or the file is not valid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-trainings.randForestsTrn">
+<span id="trainings-randforeststrn-module"></span><h2>trainings.randForestsTrn module<a class="headerlink" href="#module-trainings.randForestsTrn" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.randForestsTrn.get_and_check_parameters">
+<span class="sig-prename descclassname"><span class="pre">trainings.randForestsTrn.</span></span><span class="sig-name descname"><span class="pre">get_and_check_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.randForestsTrn.get_and_check_parameters" title="Link to this definition"></a></dt>
+<dd><p>Processes and validates command-line arguments for a model training with random forests.
+This function cleans the input arguments by removing None values ensuring no unnecessary
+arguments are passed to the parser. It initializes the argument parser with basic
+configurations and adds various arguments required for the normalization process.
+It deternines which arguments are required or not and defines their default values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>init_args</strong> (<em>list</em>) – A list of command-line arguments passed to the program.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A namespace object containing all the arguments that have been parsed and validated.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>argparse.Namespace</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.randForestsTrn.randForestsTrn">
+<span class="sig-prename descclassname"><span class="pre">trainings.randForestsTrn.</span></span><span class="sig-name descname"><span class="pre">randForestsTrn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.randForestsTrn.randForestsTrn" title="Link to this definition"></a></dt>
+<dd><p>Trains a random forests decision trees model. The nodes of the trees represent the discriminating hyperplanes used in Fidex. This allows
+us to then use Fidex for comprehensible rule extraction. The function offers a wide range of customization through command-line arguments,
+allowing for the specification of random forests parameters, output options, and more.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Each file is located with respect to the root folder dimlpfidex or to the content of the <cite>root_folder</cite> parameter if specified.</p></li>
+<li><p>It’s mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.</p></li>
+<li><p>True train and test class labels must be provided, either within the data file or separately through a class file.</p></li>
+<li><p>Parameters can be defined directly via the command line or through a JSON configuration file.</p></li>
+<li><p>Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.</p></li>
+<li><p>It’s not necessary to normalize data before training because decision trees don’t need normalization.</p></li>
+</ul>
+<p>Outputs:</p>
+<ul class="simple">
+<li><p>train_pred_outfile : File containing the model’s train predictions.</p></li>
+<li><p>test_pred_outfile : File containing the model’s test predictions.</p></li>
+<li><p>rules_outfile : File containing the model’s trained rules.</p></li>
+<li><p>stats_file : File containing train and test accuracy.</p></li>
+<li><p>console_file : If specified, contains the console output.</p></li>
+</ul>
+<p>File formats:</p>
+<ul class="simple">
+<li><p><strong>Data files</strong>: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Only attributes (floats).</p></li>
+<li><p>Attributes (floats) followed by an integer class ID.</p></li>
+<li><p>Attributes (floats) followed by one-hot encoded class.</p></li>
+</ol>
+</li>
+<li><p><strong>Class files</strong>: These files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Integer class ID.</p></li>
+<li><p>One-hot encoded class.</p></li>
+</ol>
+</li>
+</ul>
+<p>Example of how to call the function:</p>
+<p>from trainings.randForestsTrn import randForestsTrn</p>
+<p>randForestsTrn(‘--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --stats_file rf/stats.txt --train_pred_outfile rf/predTrain.out --test_pred_outfile rf/predTest.out --rules_outfile rf/RF_rules.rls --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
+This includes file paths, random forests parameters, and options for output.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns 0 for successful execution, -1 for errors encountered during the process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-trainings.stairObj">
+<span id="trainings-stairobj-module"></span><h2>trainings.stairObj module<a class="headerlink" href="#module-trainings.stairObj" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="trainings.stairObj.StairObj">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">trainings.stairObj.</span></span><span class="sig-name descname"><span class="pre">StairObj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nb_bins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hiknot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.stairObj.StairObj" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class represents an object for manipulating stair-like structures in data.</p>
+<p>A <cite>StairObj</cite> is initialized with a number of bins (steps) and a high knot value,
+defining a range of activation where the value gradually increases across bins
+until it reaches the high knot point. The low knot point is automatically set
+to the opposite of the high knot value, creating a symmetric range of activation
+around zero. It calculates and stores knot values and their corresponding activation levels.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="trainings.stairObj.StairObj.activate_knots">
+<span class="sig-name descname"><span class="pre">activate_knots</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trainings.stairObj.StairObj.activate_knots" title="Link to this definition"></a></dt>
+<dd><p>Calculates and stores the positions of knots and their respective activation levels
+based on the stair structure defined by <cite>nb_bins</cite> and <cite>hiknot</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="trainings.stairObj.StairObj.activation">
+<span class="sig-name descname"><span class="pre">activation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.stairObj.StairObj.activation" title="Link to this definition"></a></dt>
+<dd><p>Computes the activation level for a given input <cite>x</cite> using the sigmoid function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>float</em>) – The input value for which to compute the activation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The activation level for <cite>x</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="trainings.stairObj.StairObj.funct">
+<span class="sig-name descname"><span class="pre">funct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.stairObj.StairObj.funct" title="Link to this definition"></a></dt>
+<dd><p>Returns the activation level for a given value <cite>x</cite>, taking into account
+the defined stair structure of the object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>float</em>) – The input value for which to find the activation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The activation level for <cite>x</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="trainings.stairObj.StairObj.init_member_const_for_ansi">
+<span class="sig-name descname"><span class="pre">init_member_const_for_ansi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trainings.stairObj.StairObj.init_member_const_for_ansi" title="Link to this definition"></a></dt>
+<dd><p>Initializes member constants of the stair structure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="trainings.stairObj.StairObj.sigmoid">
+<span class="sig-name descname"><span class="pre">sigmoid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.stairObj.StairObj.sigmoid" title="Link to this definition"></a></dt>
+<dd><p>The sigmoid function, used as the activation function in this stair object.
+Handles overflow by returning 1.0 for high positive inputs and 0.0 for high negative inputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>float</em>) – The input value.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The sigmoid activation for <cite>x</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-trainings.svmTrn">
+<span id="trainings-svmtrn-module"></span><h2>trainings.svmTrn module<a class="headerlink" href="#module-trainings.svmTrn" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.svmTrn.get_and_check_parameters">
+<span class="sig-prename descclassname"><span class="pre">trainings.svmTrn.</span></span><span class="sig-name descname"><span class="pre">get_and_check_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.svmTrn.get_and_check_parameters" title="Link to this definition"></a></dt>
+<dd><p>Processes and validates command-line arguments for a model training with SVM.
+This function cleans the input arguments by removing None values ensuring no unnecessary
+arguments are passed to the parser. It initializes the argument parser with basic
+configurations and adds various arguments required for the normalization process.
+It deternines which arguments are required or not and defines their default values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>init_args</strong> (<em>list</em>) – A list of command-line arguments passed to the program.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A namespace object containing all the arguments that have been parsed and validated.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>argparse.Namespace</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.svmTrn.svmTrn">
+<span class="sig-prename descclassname"><span class="pre">trainings.svmTrn.</span></span><span class="sig-name descname"><span class="pre">svmTrn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.svmTrn.svmTrn" title="Link to this definition"></a></dt>
+<dd><p>Trains an SVM model with data preprocessing that includes normalization and a staircase activation function that allows
+for the characterization of discriminating hyperplanes, which are used in Fidex. This allows us to then use Fidex for comprehensible rule extraction.
+The function offers a wide range of customization through command-line arguments, allowing for the specification of SVM parameters, output options, and more.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Each file is located with respect to the root folder dimlpfidex or to the content of the <cite>root_folder</cite> parameter if specified.</p></li>
+<li><p>It’s mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.</p></li>
+<li><p>True train and test class labels must be provided, either within the data file or separately through a class file.</p></li>
+<li><p>Parameters can be defined directly via the command line or through a JSON configuration file.</p></li>
+<li><p>Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.</p></li>
+<li><p>It’s not necessary to normalize data before training because a normalization is done during the process.</p></li>
+</ul>
+<p>Outputs:</p>
+<ul class="simple">
+<li><p>train_pred_outfile : File containing the model’s train predictions.</p></li>
+<li><p>test_pred_outfile : File containing the model’s test predictions.</p></li>
+<li><p>weights_outfile : File containing the model’s trained weights.</p></li>
+<li><p>stats_file : File containing train and test accuracy.</p></li>
+<li><p>console_file : If specified, contains the console output.</p></li>
+<li><p>output_roc : PNG file containing the ROC curve.</p></li>
+</ul>
+<p>File formats:</p>
+<ul class="simple">
+<li><p><strong>Data files</strong>: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Only attributes (floats).</p></li>
+<li><p>Attributes (floats) followed by an integer class ID.</p></li>
+<li><p>Attributes (floats) followed by one-hot encoded class.</p></li>
+</ol>
+</li>
+<li><p><strong>Class files</strong>: These files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Integer class ID.</p></li>
+<li><p>One-hot encoded class.</p></li>
+</ol>
+</li>
+</ul>
+<p>Example of how to call the function:</p>
+<p>from trainings.svmTrn import svmTrn</p>
+<p>svmTrn(‘--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile svm/weights.wts --stats_file svm/stats.txt --train_pred_outfile svm/predTrain.out --test_pred_outfile svm/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
+This includes file paths, SVM parameters, and options for output and for the staircase activation process.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns 0 for successful execution, -1 for errors encountered during the process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-trainings.trnFun">
+<span id="trainings-trnfun-module"></span><h2>trainings.trnFun module<a class="headerlink" href="#module-trainings.trnFun" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.trnFun.compute_first_hidden_layer">
+<span class="sig-prename descclassname"><span class="pre">trainings.trnFun.</span></span><span class="sig-name descname"><span class="pre">compute_first_hidden_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_stairs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hiknot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights_outfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.trnFun.compute_first_hidden_layer" title="Link to this definition"></a></dt>
+<dd><p>Compute the output of the first hidden layer in a neural network model, apply a staircase activation function, and optionally save weights.</p>
+<p>This function normalizes the input data and applies a linear transformation based on provided or calculated
+mean (mu) and standard deviation (sigma). If in <cite>train</cite> mode, it calculates and optionally saves the weights
+and biases. The transformed data is then passed through a staircase activation function. The input data should
+be nbSamples x nbAttributes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>step</strong> (<em>str</em>) – <cite>train</cite> for training step, otherwise for testing step.</p></li>
+<li><p><strong>input_data</strong> (<em>list</em><em>[</em><em>list</em><em>[</em><em>float</em><em>]</em><em>] or </em><em>np.ndarray</em>) – Input data to be processed.</p></li>
+<li><p><strong>k</strong> (<em>float</em>) – Scaling factor for normalization.</p></li>
+<li><p><strong>nb_stairs</strong> (<em>int</em>) – Number of stairs in the staircase activation function.</p></li>
+<li><p><strong>hiknot</strong> (<em>list</em><em>[</em><em>float</em><em>]</em>) – Knots for the staircase activation function.</p></li>
+<li><p><strong>weights_outfile</strong> (<em>str</em><em>, </em><em>optional</em>) – File path to save weights, defaults to None, mandatory for training step.</p></li>
+<li><p><strong>mu</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – Mean for normalization, calculated if None. Defaults to None.</p></li>
+<li><p><strong>sigma</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – Standard deviation for normalization, calculated if None. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Transformed data, and mu and sigma if in <cite>train</cite> mode.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple (np.ndarray, np.ndarray, np.ndarray) or np.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If file operations fail.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.trnFun.compute_roc">
+<span class="sig-prename descclassname"><span class="pre">trainings.trnFun.</span></span><span class="sig-name descname"><span class="pre">compute_roc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estimator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_roc</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.trnFun.compute_roc" title="Link to this definition"></a></dt>
+<dd><p>Compute and save the ROC curve for a given estimator, test and prediction data.</p>
+<p>This function calculates the false positive rate (fpr) and true positive rate (tpr) for the provided test classes
+and predictions. It then generates a ROC curve plot with the computed AUC (Area Under Curve) score and saves it
+to the specified file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>estimator</strong> (<em>str</em>) – The name of the estimator used for generating the predictions.</p></li>
+<li><p><strong>output_roc</strong> (<em>str</em>) – The file path where the ROC curve plot will be saved.</p></li>
+<li><p><strong>args</strong> (<em>tuple</em>) – A variable-length argument list containing the test classes and test predictions.
+args[0] should be the test classes, and args[1] should be the test predictions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing the false positive rate, true positive rate, and AUC score.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.trnFun.delete_file">
+<span class="sig-prename descclassname"><span class="pre">trainings.trnFun.</span></span><span class="sig-name descname"><span class="pre">delete_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.trnFun.delete_file" title="Link to this definition"></a></dt>
+<dd><p>Delete file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – The name of the file to be deleted.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.trnFun.get_attribute_file">
+<span class="sig-prename descclassname"><span class="pre">trainings.trnFun.</span></span><span class="sig-name descname"><span class="pre">get_attribute_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_attributes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.trnFun.get_attribute_file" title="Link to this definition"></a></dt>
+<dd><p>Reads an attribute file and splits its content into two lists: <cite>attributes</cite> and <cite>classes</cite>.
+The first <cite>nb_attributes</cite> non-empty lines are stored in <cite>attributes</cite>, and the
+remaining non-empty lines in <cite>classes</cite>. Raises an error if the file does not
+contain at least <cite>nb_attributes</cite> non-empty lines and if there is not exactly
+nb_attributes + nb_classes lines when nb_classes is specified.</p>
+<p>Format of attribute_file : one attribute per line followed eventually by one class per line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>attribute_file</strong> – Path to the file to be read.</p></li>
+<li><p><strong>nb_attributes</strong> – Number of non-empty lines to be included in <cite>attributes</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple of two lists: (attributes, classes).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.trnFun.get_data">
+<span class="sig-prename descclassname"><span class="pre">trainings.trnFun.</span></span><span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_attributes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_string</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.trnFun.get_data" title="Link to this definition"></a></dt>
+<dd><p>Get data from file and separate it into attributes and classes(if there are some classes).</p>
+<p>The file should contain one sample per line. Each number in line is separated by a space, a tab, a semicolon or a comma. Each sample can be in one of the following formats:</p>
+<ol class="arabic">
+<li><p>Attributes only: Each line contains each float attribute.</p></li>
+<li><p>Attributes with Class ID: Each line contains all the float attributes followed by an integer class ID.</p></li>
+<li><p>Attributes with One-Hot Class Encoding: Each line contains all the float attributes followed by a one-hot encoding of the class.</p>
+<p>The number of elements in this encoding should match the total number of classes, with exactly one ‘1’ and the rest ‘0’s.</p>
+</li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> (<em>str</em>) – The name of the file to read data from.</p></li>
+<li><p><strong>nb_attributes</strong> (<em>int</em>) – The number of attributes.</p></li>
+<li><p><strong>nb_classes</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of classes, defaults to 0.</p></li>
+<li><p><strong>keep_string</strong> (<em>bool</em>) – Whether to keep data on string format (allows non numericals).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the file is not found, cannot be opened, or if the data format is incorrect.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple containing two lists of list of float, one for data (attributes) and one for classes.
+Each element in the data list is a list of floats representing the attributes of a sample.
+Each element in the classes list is an integer representing the class ID.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list[list[float]], list[int])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.trnFun.get_data_class">
+<span class="sig-prename descclassname"><span class="pre">trainings.trnFun.</span></span><span class="sig-name descname"><span class="pre">get_data_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_classes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.trnFun.get_data_class" title="Link to this definition"></a></dt>
+<dd><p>Get class data from file. The file can contain class data in two formats:</p>
+<ol class="arabic simple">
+<li><p>Class ID format: Each line contains a single integer representing the class ID.
+The class ID must be a non-negative integer less than the number of classes.</p></li>
+<li><p>One-Hot Encoding format: Each line contains numbers separated by spaces, tabs, semicolons or commas, representing a one-hot encoding of the class.
+The number of elements in each line should match the total number of classes, with exactly one ‘1’ and the rest ‘0’s.</p></li>
+</ol>
+<p>Each number in line is separated by a space, a tab, a semicolon or a comma.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> (<em>str</em>) – The name of the file to read class data from.</p></li>
+<li><p><strong>nb_classes</strong> (<em>int</em>) – The number of classes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the file is not found, cannot be opened, or if the data format is incorrect.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list containing class data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.trnFun.get_data_pred">
+<span class="sig-prename descclassname"><span class="pre">trainings.trnFun.</span></span><span class="sig-name descname"><span class="pre">get_data_pred</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_classes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.trnFun.get_data_pred" title="Link to this definition"></a></dt>
+<dd><p>Add predictions to the dataset using a prediction file.
+The prediction file should contain one line per data sample, each line consisting of a series of numerical values separated by spaces,
+tabs, semicolons or commas, representing the prediction scores scores for each class.
+The number of values per line should match the specified number of classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> (<em>str</em>) – The path of the file to read data from.</p></li>
+<li><p><strong>nb_classes</strong> (<em>int</em>) – The expected number of float values per line.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Predictions, a list of lists, where each inner list contains float values from one line of the file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[list[float]]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the file is not found, cannot be opened, if a line does not contain <cite>nb_classes</cite> floats,
+or if any value in a line is not a float.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.trnFun.output_data">
+<span class="sig-prename descclassname"><span class="pre">trainings.trnFun.</span></span><span class="sig-name descname"><span class="pre">output_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.trnFun.output_data" title="Link to this definition"></a></dt>
+<dd><p>Write the provided data to a specified file.</p>
+<p>This function takes a list of lists (<cite>data</cite>) where each inner list represents a series of values,
+and writes these values to a file specified by <cite>data_file</cite>. Each inner list is written to a new line
+in the file with values separated by spaces.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>list</em><em>[</em><em>list</em><em>[</em><em>float</em><em>]</em><em>] or </em><em>list</em><em>[</em><em>list</em><em>[</em><em>int</em><em>]</em><em>]</em>) – A list of lists, where each inner list contains values to be written to the file.</p></li>
+<li><p><strong>data_file</strong> (<em>str</em>) – The path of the file where the data will be saved.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the specified file cannot be found or opened.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.trnFun.output_pred">
+<span class="sig-prename descclassname"><span class="pre">trainings.trnFun.</span></span><span class="sig-name descname"><span class="pre">output_pred</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_classes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.trnFun.output_pred" title="Link to this definition"></a></dt>
+<dd><p>Save the predictions in one-hot encoded format to a specified file.</p>
+<p>This function takes a list of predicted class indices and converts them into one-hot encoded vectors,
+where each vector has a length equal to the number of classes (<cite>nb_classes</cite>). Each vector is a row in the output file,
+with ‘1’ in the position of the predicted class and ‘0’s elsewhere. The output is saved to a file specified by <cite>pred_file</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pred</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – A list of predicted class indices.</p></li>
+<li><p><strong>pred_file</strong> (<em>str</em>) – The path of the file where the one-hot encoded predictions will be saved.</p></li>
+<li><p><strong>nb_classes</strong> (<em>int</em>) – The total number of classes, determining the length of the one-hot encoded vectors.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the specified file cannot be found or opened.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.trnFun.output_stats">
+<span class="sig-prename descclassname"><span class="pre">trainings.trnFun.</span></span><span class="sig-name descname"><span class="pre">output_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stats_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acc_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acc_test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.trnFun.output_stats" title="Link to this definition"></a></dt>
+<dd><p>Write training and testing accuracy statistics to a specified file.</p>
+<p>This function takes the training and testing accuracy values and writes them to the file specified by <cite>stats_file</cite>.
+The accuracies are written in percentage format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stats_file</strong> (<em>str</em>) – The path of the file where the accuracy statistics will be saved.</p></li>
+<li><p><strong>acc_train</strong> (<em>float</em>) – The training accuracy percentage.</p></li>
+<li><p><strong>acc_test</strong> (<em>float</em>) – The testing accuracy percentage.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the specified file cannot be found or opened.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.trnFun.recurse">
+<span class="sig-prename descclassname"><span class="pre">trainings.trnFun.</span></span><span class="sig-name descname"><span class="pre">recurse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_rules_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_grad_boost</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.trnFun.recurse" title="Link to this definition"></a></dt>
+<dd><p>Recursively traverse the decision tree to generate rules.</p>
+<p>This function walks through the decision tree from a given node down to its leaves. For each node,
+it constructs a rule as a string and writes the rules for leaf nodes to an output file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tree</strong> (<em>_tree.Tree</em>) – The decision tree object.</p></li>
+<li><p><strong>node</strong> (<em>int</em>) – The current node index in the tree to start from.</p></li>
+<li><p><strong>parent_path</strong> (<em>str</em>) – The rule string constructed up to the current node.</p></li>
+<li><p><strong>feature_names</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of feature names used in the tree.</p></li>
+<li><p><strong>output_rules_file</strong> – Opened file object to write the rules.</p></li>
+<li><p><strong>k_dict</strong> (<em>dict</em>) – Dictionary holding the count of rules processed.</p></li>
+<li><p><strong>from_grad_boost</strong> (<em>bool</em>) – Boolean indicating if the tree is from gradient boosting.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.trnFun.trees_to_rules">
+<span class="sig-prename descclassname"><span class="pre">trainings.trnFun.</span></span><span class="sig-name descname"><span class="pre">trees_to_rules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trees</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_grad_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.trnFun.trees_to_rules" title="Link to this definition"></a></dt>
+<dd><p>Convert a list of decision trees into human-readable rules and save them to a file.</p>
+<p>This function takes a list of decision tree objects and converts each tree into a set of rules.
+These rules are then written to a specified output file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trees</strong> (<em>list</em><em>[</em><em>DecisionTreeClassifier</em><em> or </em><em>DecisionTreeRegressor</em><em>]</em>) – List of decision tree objects.</p></li>
+<li><p><strong>rules_file</strong> (<em>str</em>) – File path where the rules will be saved.</p></li>
+<li><p><strong>from_grad_boost</strong> (<em>bool</em>) – Boolean indicating if the trees are from gradient boosting.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the specified file cannot be found or opened.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-trainings">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-trainings" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.cnnTrn">
+<span class="sig-prename descclassname"><span class="pre">trainings.</span></span><span class="sig-name descname"><span class="pre">cnnTrn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.cnnTrn" title="Link to this definition"></a></dt>
+<dd><p>Trains a convolutional neural network (CNN) model using the Keras library with optional support for popular architectures like ResNet and VGG.
+This function processes data preprocessing that includes resizing, normalization and a staircase activation function that allows for the characterization
+of discriminating hyperplanes, which are used in Fidex. This allows us to then use Fidex for comprehensible rule extraction. It accommodates
+various types of image datasets including MNIST, CIFAR-10, and CIFAR-100, and allows for extensive customization through command-line arguments.
+It’s also possible to use other data types.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Each file is located with respect to the root folder dimlpfidex or to the content of the <cite>root_folder</cite> parameter if specified.</p></li>
+<li><p>It’s mandatory to specify the number of classes in the data, as well as the train and test datasets.</p></li>
+<li><p>Validation data can either be specified directly or split from the training data based on a provided ratio.</p></li>
+<li><p>If validation files are given, and you want to use Fidex algorithms later, you will have to use both train and
+validation datas given here in the train datas and classes of Fidex.</p></li>
+<li><p>It’s mandatory to specify the size of the original inputs as well as the number of channels (it should be 3 for RGB and 1 for B&amp;W). The number of attributes is inferred from it.</p></li>
+<li><p>It’s mandatory to chose a model. There is a large model, a small one, a VGG16 and a Resnet50 available. You can add any other model you want by modifying the code.</p></li>
+<li><p>It’s mandatory to specify the format of the data values: ‘normalized_01’ if the data are normalized between 0 and 1, ‘classic’ if they are between 0 and 255, and ‘other’ otherwise.</p></li>
+<li><p>Data is reshaped in 3-channels shape if there is only one and usinf VGG or Resnet.</p></li>
+<li><p>If Fidex is meant to be executed afterward for rule extraction, resizing inputs beforhand to a smaller size is recommended as it will take a lot of time because of the number of parameters.</p></li>
+<li><p>It is also possible to resize the inputs just for training with the model_input_size parameter. Training with smaller inputs will be worst but will save a lot of time.</p></li>
+<li><p>Parameters can be specified using the command line or a JSON configuration file.</p></li>
+<li><p>Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.</p></li>
+<li><p>It’s not necessary to normalize data before training because a normalization is done during the process.</p></li>
+</ul>
+<p>Outputs:</p>
+<ul class="simple">
+<li><p>train_valid_pred_outfile : File containing the model’s train and validation (in this order) predictions.</p></li>
+<li><p>test_pred_outfile : File containing the model’s test predictions.</p></li>
+<li><p>weights_outfile : File containing the model’s trained weights.</p></li>
+<li><p>stats_file : File containing train and test accuracy.</p></li>
+<li><p>console_file : If specified, contains the console output.</p></li>
+</ul>
+<p>File formats:</p>
+<ul class="simple">
+<li><p><strong>Data files</strong>: These files should contain one sample (input/image) per line, with numbers separated either by spaces, tabs, semicolons or commas. Each pixel must be given one after the other. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Only attributes (floats).</p></li>
+<li><p>Attributes (floats) followed by an integer class ID.</p></li>
+<li><p>Attributes (floats) followed by one-hot encoded class.</p></li>
+</ol>
+</li>
+<li><p><strong>Class files</strong>: These files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Integer class ID.</p></li>
+<li><p>One-hot encoded class.</p></li>
+</ol>
+</li>
+</ul>
+<p>Example of how to call the function:</p>
+<p>from trainings.cnnTrn import cnnTrn</p>
+<p>cnnTrn(‘--model small --train_data_file trainData.txt --train_class_file trainClass.txt --test_data_file testData.txt --test_class_file testClass.txt --original_input_size (28,28) --nb_channels 1 --data_format classic --nb_classes 10 --root_folder dimlp/datafiles/Mnist’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – A single string containing either the path to a JSON configuration file with all specified arguments or all arguments for the function, formatted like command-line input.
+This includes dataset selection, file paths, training parameters, and options for model architecture and output files.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns 0 for successful execution, -1 for any errors encountered during the process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.computeRocCurve">
+<span class="sig-prename descclassname"><span class="pre">trainings.</span></span><span class="sig-name descname"><span class="pre">computeRocCurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.computeRocCurve" title="Link to this definition"></a></dt>
+<dd><p>Computes and plots the Receiver Operating Characteristic (ROC) curve for a given set of test predictions and true class labels.
+The function supports various customizations through command-line arguments, including specifying input files, choosing the
+positive class index, and output options.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Each file is located with respect to the root folder dimlpfidex or to the content of the <cite>root_folder</cite> parameter if specified.</p></li>
+<li><p>The function is not compatible with SVM models directly due to the different process required for generating ROC curves for them.</p></li>
+<li><p>It’s mandatory to specify the number of classes, the index of the positive class, and provide the test class labels and prediction scores.</p></li>
+<li><p>Parameters can be specified using the command line or a JSON configuration file.</p></li>
+<li><p>Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.</p></li>
+</ul>
+<p>Outputs:</p>
+<ul class="simple">
+<li><p>stats_file : If specified, contains AUC scores.</p></li>
+<li><p>output_roc : PNG file containing the ROC curve.</p></li>
+</ul>
+<p>File formats:</p>
+<ul class="simple">
+<li><p><strong>Class file</strong>: Thesen files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Integer class ID.</p></li>
+<li><p>One-hot encoded class.</p></li>
+</ol>
+</li>
+<li><p><strong>Prediction file</strong> : These files should contain the prediction scores for the test set, with one sample per line, with scores (float) for each class separated either by spaces, tabs, semicolons or commas.</p></li>
+</ul>
+<p>Example of how to call the function:</p>
+<p>from trainings.computeRocCurve import computeRocCurve</p>
+<p>computeRocCurve(‘--test_class_file dataclass2Test.txt --test_pred_file predTest.out --positive_class_index 1 --output_roc roc_curve.png --stats_file stats.txt --root_folder dimlp/datafiles --nb_classes 2’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – A single string containing either the path to a JSON configuration file with all specified arguments or all arguments for the function, formatted like command-line input.
+This includes file paths, the positive class index, and options for the output and statistical analysis.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns 0 for successful execution, -1 for any errors encountered during the process. Additionally, it returns an array containing interpolated false positive rates (FPR), true positive rates (TPR), and the area under the ROC curve (AUC) for further analysis or cross-validation purposes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.gradBoostTrn">
+<span class="sig-prename descclassname"><span class="pre">trainings.</span></span><span class="sig-name descname"><span class="pre">gradBoostTrn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.gradBoostTrn" title="Link to this definition"></a></dt>
+<dd><p>Trains a gradient boosting decision trees model. The nodes of the trees represent the discriminating hyperplanes used in Fidex. This allows
+us to then use Fidex for comprehensible rule extraction. The function offers a wide range of customization through command-line arguments,
+allowing for the specification of gradient boosting parameters, output options, and more.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Each file is located with respect to the root folder dimlpfidex or to the content of the <cite>root_folder</cite> parameter if specified.</p></li>
+<li><p>It’s mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.</p></li>
+<li><p>True train and test class labels must be provided, either within the data file or separately through a class file.</p></li>
+<li><p>Parameters can be defined directly via the command line or through a JSON configuration file.</p></li>
+<li><p>Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.</p></li>
+<li><p>It’s not necessary to normalize data before training because decision trees don’t need normalization.</p></li>
+</ul>
+<p>Outputs:</p>
+<ul class="simple">
+<li><p>train_pred_outfile : File containing the model’s train predictions.</p></li>
+<li><p>test_pred_outfile : File containing the model’s test predictions.</p></li>
+<li><p>rules_outfile : File containing the model’s trained rules.</p></li>
+<li><p>stats_file : File containing train and test accuracy.</p></li>
+<li><p>console_file : If specified, contains the console output.</p></li>
+</ul>
+<p>File formats:</p>
+<ul class="simple">
+<li><p><strong>Data files</strong>: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Only attributes (floats).</p></li>
+<li><p>Attributes (floats) followed by an integer class ID.</p></li>
+<li><p>Attributes (floats) followed by one-hot encoded class.</p></li>
+</ol>
+</li>
+<li><p><strong>Class files</strong>: These files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Integer class ID.</p></li>
+<li><p>One-hot encoded class.</p></li>
+</ol>
+</li>
+</ul>
+<p>Example of how to call the function:</p>
+<p>from trainings.gradBoostTrn import gradBoostTrn</p>
+<p>gradBoostTrn(‘--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --stats_file gb/stats.txt --train_pred_outfile gb/predTrain.out --test_pred_outfile gb/predTest.out --rules_outfile gb/RF_rules.rls --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
+This includes file paths, gradient boosting parameters, and options for output.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns 0 for successful execution, -1 for errors encountered during the process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.mlpTrn">
+<span class="sig-prename descclassname"><span class="pre">trainings.</span></span><span class="sig-name descname"><span class="pre">mlpTrn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.mlpTrn" title="Link to this definition"></a></dt>
+<dd><p>Trains an MLP model with data preprocessing that includes normalization and a staircase activation function that allows
+for the characterization of discriminating hyperplanes, which are used in Fidex. This allows us to then use Fidex for comprehensible rule extraction.
+The function offers a wide range of customization through command-line arguments, allowing for the specification of MLP parameters, output options, and more.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Each file is located with respect to the root folder dimlpfidex or to the content of the <cite>root_folder</cite> parameter if specified.</p></li>
+<li><p>It’s mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.</p></li>
+<li><p>True train and test class labels must be provided, either within the data file or separately through a class file.</p></li>
+<li><p>Parameters can be defined directly via the command line or through a JSON configuration file.</p></li>
+<li><p>Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.</p></li>
+<li><p>It’s not necessary to normalize data before training because a normalization is done during the process.</p></li>
+</ul>
+<p>Outputs:</p>
+<ul class="simple">
+<li><p>train_pred_outfile : File containing the model’s train predictions.</p></li>
+<li><p>test_pred_outfile : File containing the model’s test predictions.</p></li>
+<li><p>weights_outfile : File containing the model’s trained weights.</p></li>
+<li><p>stats_file : File containing train and test accuracy.</p></li>
+<li><p>console_file : If specified, contains the console output.</p></li>
+</ul>
+<p>File formats:</p>
+<ul class="simple">
+<li><p><strong>Data files</strong>: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Only attributes (floats).</p></li>
+<li><p>Attributes (floats) followed by an integer class ID.</p></li>
+<li><p>Attributes (floats) followed by one-hot encoded class.</p></li>
+</ol>
+</li>
+<li><p><strong>Class files</strong>: These files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Integer class ID.</p></li>
+<li><p>One-hot encoded class.</p></li>
+</ol>
+</li>
+</ul>
+<p>Example of how to call the function:</p>
+<p>from trainings.mlpTrn import mlpTrn</p>
+<p>mlpTrn(‘--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile mlp/weights.wts --stats_file mlp/stats.txt --train_pred_outfile mlp/predTrain.out --test_pred_outfile mlp/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
+This includes file paths, MLP parameters, and options for output and for the staircase activation process.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns 0 for successful execution, -1 for errors encountered during the process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.normalization">
+<span class="sig-prename descclassname"><span class="pre">trainings.</span></span><span class="sig-name descname"><span class="pre">normalization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.normalization" title="Link to this definition"></a></dt>
+<dd><p>This function serves two primary purposes: to normalize data files and to denormalize rule files.
+It offers flexibility in the normalization process through various options.</p>
+<p>Normalization can be performed in several ways:</p>
+<ol class="arabic simple">
+<li><p>Using a <cite>normalization_file</cite> file containing normalization parameters along with one or more data files.</p></li>
+<li><p>Providing data files directly, where the first file is normalized to determine mean/median and standard deviation, which are then applied to other files.</p></li>
+<li><p>Supplying mean/median (mus) and standard deviations (sigmas) as lists, along with the data files.</p></li>
+</ol>
+<p>In the last two cases, indices of attributes to normalize must be provided, and a <cite>normalization_file</cite> file is generated for future use.</p>
+<p>Denormalization can also be done in multiple ways:</p>
+<ol class="arabic simple">
+<li><p>Using a <cite>normalization_file</cite> file with one or more rule files.</p></li>
+<li><p>Directly providing mean/median (mus) and standard deviations (sigmas) along with the rule files. Attribute indices to be denormalized must be provided in this case.</p></li>
+</ol>
+<p>The function generates new normalized and/or denormalized files.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Each file is located with respect to the root folder dimlpfidex or to the content of the <cite>root_folder</cite> parameter if specified.</p></li>
+<li><p>It’s mandatory to specify the number of attributes in the data and the symbol representing missing data.</p></li>
+<li><p>Choose whether to replace missing data or not.</p></li>
+<li><p>If normalizing training data, it is advisable to normalize test/validation files simultaneously for consistency.</p></li>
+<li><p>Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.</p></li>
+</ul>
+<p>When to use :</p>
+<ul class="simple">
+<li><p>It’s good to normalize data before training with Dimlp and dimlpBT.</p></li>
+<li><p>It’s not necessary to normalize data before training with cnnTrn, MLP and SVM because a normalization is done during the process.</p></li>
+<li><p>It’s not necessary to normalize data before training with GradientBoosting and RandomForests because decision trees don’t need normalization.</p></li>
+</ul>
+<p>Outputs :</p>
+<ul class="simple">
+<li><p>output_normalization_file : File containing the mean and std of the normalized attributes.</p></li>
+<li><p>output_data_files : Files containing the original data files normalized.</p></li>
+<li><p>output_rule_files : Files containing the original rule files denormalized.</p></li>
+</ul>
+<p>File formats:</p>
+<ul>
+<li><p><strong>Normalization file</strong>: Each line contains the mean/median and standard deviation for an attribute.</p>
+<p>Format: ‘2 : original mean: 0.8307, original std: 0.0425’</p>
+<p>Attribute indices (index 2 here) can be replaced with attribute names, then an attribute file is required.</p>
+</li>
+<li><p><strong>Data files</strong>: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Only attributes (floats).</p></li>
+<li><p>Attributes (floats) followed by an integer class ID.</p></li>
+<li><p>Attributes (floats) followed by one-hot encoded class.</p></li>
+</ol>
+</li>
+<li><p><strong>Rule files</strong>: Contain rules in Dimlp or Fidex format. Formats:</p>
+<p>Dimlp: ‘Rule 1: (x2 &gt; 0.785787) (x5 &gt; 0.591247) (x8 &lt; 0.443135) Class = 1 (187)’</p>
+<p>Fidex: ‘X1&gt;=0.414584 X10&lt;0.507982 X5&gt;=0.314835 X6&gt;=0.356158 -&gt; class 0’</p>
+<p>In both formats, attribute indices (e.g., X1, x2) and class identifiers can be replaced with attribute names and class names, respectively, then an attribute file is required.</p>
+</li>
+<li><p><strong>Attribute file</strong>: Each line corresponds to an attribute’s name, with optional class names at the end. Names can’t have spaces inbetween (replace by _).</p></li>
+</ul>
+<p>Examples of how to call the function:</p>
+<p>from trainings.normalization import normalization</p>
+<ul class="simple">
+<li><p>For data files: normalization(‘--data_files [datanormTrain.txt,datanormTest.txt] --normalization_indices [0,2,4] --nb_attributes 16 --missing_values NaN --root_folder dimlp/datafiles’)</p></li>
+<li><p>For rule files: normalization(‘--normalization_file normalization_stats.txt --rule_files globalRulesDatanorm.txt --nb_attributes 16 --root_folder dimlp/datafiles’)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
+This includes file paths for the normalization/denormalization process and other options.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns 0 for successful execution, -1 for errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.randForestsTrn">
+<span class="sig-prename descclassname"><span class="pre">trainings.</span></span><span class="sig-name descname"><span class="pre">randForestsTrn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.randForestsTrn" title="Link to this definition"></a></dt>
+<dd><p>Trains a random forests decision trees model. The nodes of the trees represent the discriminating hyperplanes used in Fidex. This allows
+us to then use Fidex for comprehensible rule extraction. The function offers a wide range of customization through command-line arguments,
+allowing for the specification of random forests parameters, output options, and more.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Each file is located with respect to the root folder dimlpfidex or to the content of the <cite>root_folder</cite> parameter if specified.</p></li>
+<li><p>It’s mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.</p></li>
+<li><p>True train and test class labels must be provided, either within the data file or separately through a class file.</p></li>
+<li><p>Parameters can be defined directly via the command line or through a JSON configuration file.</p></li>
+<li><p>Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.</p></li>
+<li><p>It’s not necessary to normalize data before training because decision trees don’t need normalization.</p></li>
+</ul>
+<p>Outputs:</p>
+<ul class="simple">
+<li><p>train_pred_outfile : File containing the model’s train predictions.</p></li>
+<li><p>test_pred_outfile : File containing the model’s test predictions.</p></li>
+<li><p>rules_outfile : File containing the model’s trained rules.</p></li>
+<li><p>stats_file : File containing train and test accuracy.</p></li>
+<li><p>console_file : If specified, contains the console output.</p></li>
+</ul>
+<p>File formats:</p>
+<ul class="simple">
+<li><p><strong>Data files</strong>: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Only attributes (floats).</p></li>
+<li><p>Attributes (floats) followed by an integer class ID.</p></li>
+<li><p>Attributes (floats) followed by one-hot encoded class.</p></li>
+</ol>
+</li>
+<li><p><strong>Class files</strong>: These files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Integer class ID.</p></li>
+<li><p>One-hot encoded class.</p></li>
+</ol>
+</li>
+</ul>
+<p>Example of how to call the function:</p>
+<p>from trainings.randForestsTrn import randForestsTrn</p>
+<p>randForestsTrn(‘--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --stats_file rf/stats.txt --train_pred_outfile rf/predTrain.out --test_pred_outfile rf/predTest.out --rules_outfile rf/RF_rules.rls --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
+This includes file paths, random forests parameters, and options for output.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns 0 for successful execution, -1 for errors encountered during the process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trainings.svmTrn">
+<span class="sig-prename descclassname"><span class="pre">trainings.</span></span><span class="sig-name descname"><span class="pre">svmTrn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trainings.svmTrn" title="Link to this definition"></a></dt>
+<dd><p>Trains an SVM model with data preprocessing that includes normalization and a staircase activation function that allows
+for the characterization of discriminating hyperplanes, which are used in Fidex. This allows us to then use Fidex for comprehensible rule extraction.
+The function offers a wide range of customization through command-line arguments, allowing for the specification of SVM parameters, output options, and more.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Each file is located with respect to the root folder dimlpfidex or to the content of the <cite>root_folder</cite> parameter if specified.</p></li>
+<li><p>It’s mandatory to specify the number of attributes and classes in the data, as well as the train and test datasets.</p></li>
+<li><p>True train and test class labels must be provided, either within the data file or separately through a class file.</p></li>
+<li><p>Parameters can be defined directly via the command line or through a JSON configuration file.</p></li>
+<li><p>Providing no command-line arguments or using -h/--help displays usage instructions, detailing both required and optional parameters for user guidance.</p></li>
+<li><p>It’s not necessary to normalize data before training because a normalization is done during the process.</p></li>
+</ul>
+<p>Outputs:</p>
+<ul class="simple">
+<li><p>train_pred_outfile : File containing the model’s train predictions.</p></li>
+<li><p>test_pred_outfile : File containing the model’s test predictions.</p></li>
+<li><p>weights_outfile : File containing the model’s trained weights.</p></li>
+<li><p>stats_file : File containing train and test accuracy.</p></li>
+<li><p>console_file : If specified, contains the console output.</p></li>
+<li><p>output_roc : PNG file containing the ROC curve.</p></li>
+</ul>
+<p>File formats:</p>
+<ul class="simple">
+<li><p><strong>Data files</strong>: These files should contain one sample per line, with numbers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Only attributes (floats).</p></li>
+<li><p>Attributes (floats) followed by an integer class ID.</p></li>
+<li><p>Attributes (floats) followed by one-hot encoded class.</p></li>
+</ol>
+</li>
+<li><p><strong>Class files</strong>: These files should contain one class sample per line, with integers separated either by spaces, tabs, semicolons or commas. Supported formats:</p>
+<ol class="arabic simple">
+<li><p>Integer class ID.</p></li>
+<li><p>One-hot encoded class.</p></li>
+</ol>
+</li>
+</ul>
+<p>Example of how to call the function:</p>
+<p>from trainings.svmTrn import svmTrn</p>
+<p>svmTrn(‘--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile svm/weights.wts --stats_file svm/stats.txt --train_pred_outfile svm/predTrain.out --test_pred_outfile svm/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
+This includes file paths, SVM parameters, and options for output and for the staircase activation process.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns 0 for successful execution, -1 for errors encountered during the process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="trainings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

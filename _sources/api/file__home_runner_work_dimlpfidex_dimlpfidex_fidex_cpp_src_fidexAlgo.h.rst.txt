@@ -1,0 +1,84 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexAlgo.h:
+
+File fidexAlgo.h
+================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/fidexAlgo.h``)
+----------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexAlgo.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../common/cpp/src/dataSet.h``
+
+- ``../../../common/cpp/src/parameters.h``
+
+- ``algorithm``
+
+- ``chrono``
+
+- ``ctime``
+
+- ``fstream``
+
+- ``hyperspace.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperspace.h`)
+
+- ``iostream``
+
+- ``math.h``
+
+- ``numeric``
+
+- ``omp.h``
+
+- ``random``
+
+- ``sstream``
+
+- ``time.h``
+
+- ``tuple``
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexAlgo.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_struct_structFidex_1_1currentExecutionSpecs`
+
+- :ref:`exhale_class_classFidex`
+

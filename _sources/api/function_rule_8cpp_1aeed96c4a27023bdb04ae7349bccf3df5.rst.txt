@@ -1,0 +1,14 @@
+.. _exhale_function_rule_8cpp_1aeed96c4a27023bdb04ae7349bccf3df5:
+
+Function getActivatedRules(std::vector<int>&, std::vector<Rule>&, std::vector<double>&)
+=======================================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: getActivatedRules(std::vector<int>&, std::vector<Rule>&, std::vector<double>&)
+   :project: common

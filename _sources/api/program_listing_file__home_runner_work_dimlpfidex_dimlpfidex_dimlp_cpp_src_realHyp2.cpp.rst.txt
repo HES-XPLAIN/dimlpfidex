@@ -1,0 +1,47 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp2.cpp:
+
+Program Listing for File realHyp2.cpp
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp2.cpp>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/realHyp2.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #include "realHyp2.h"
+   
+   
+   RealHyp2::RealHyp2(
+       DataSet &data,
+       std::shared_ptr<BpNN> nn,
+       int nbBins,
+       int nbIn,
+       int multiple,
+       int nbWeightLayers) :
+   
+                             RealHyp(data, nn, nbBins, nbIn, multiple, nbWeightLayers, 333) {
+     SetConfirmedVirt(data);
+     SetRealHyp(data);
+   }
+   
+   
+   RealHyp2::RealHyp2(
+       std::shared_ptr<VirtualHyp> globalVirt,
+       int nbNets,
+       float *out,
+       int nbOut,
+       DataSet &data,
+       std::shared_ptr<BpNN> nn,
+       int nbBins,
+       int nbIn,
+       int multiple,
+       int nbWeightLayers) :
+   
+                             RealHyp(globalVirt, nbNets, out, nbOut,
+                                     data, nn, nbBins, nbIn, multiple, nbWeightLayers, 333) {
+     SetConfirmedVirt(data);
+     SetRealHyp(data);
+   }
+   

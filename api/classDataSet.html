@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class DataSet &mdash; dimlpfidex 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7026087e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class DataSetFid" href="classDataSetFid.html" />
+    <link rel="prev" title="Class CommandArgumentException" href="classCommandArgumentException.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dimlpfidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">C++ API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="structCleanRuleStruct_1_1AssocAnte.html">Struct CleanRuleStruct::AssocAnte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structCleanRuleStruct_1_1CleanRule.html">Struct CleanRuleStruct::CleanRule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structDimlpRule_1_1Antecedent.html">Struct DimlpRule::Antecedent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structFidex_1_1currentExecutionSpecs.html">Struct Fidex::currentExecutionSpecs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structOneVarThresDescr_1_1Elem.html">Struct OneVarThresDescr::Elem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structRuleProcessing_1_1Saved.html">Struct RuleProcessing::Saved</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structStringInt_1_1Elem.html">Struct StringInt::Elem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAnte.html">Class Ante</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAntecedent.html">Class Antecedent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAttrName.html">Class AttrName</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classBagDimlp.html">Class BagDimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classBpNN.html">Class BpNN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCannotCreateDirectoryError.html">Class CannotCreateDirectoryError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCannotOpenFileError.html">Class CannotOpenFileError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCleanRuleStruct.html">Class CleanRuleStruct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCommandArgumentException.html">Class CommandArgumentException</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Class DataSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDataSetFid.html">Class DataSetFid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDimlp.html">Class Dimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDimlpRule.html">Class DimlpRule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classErrorHandler.html">Class ErrorHandler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFidex.html">Class Fidex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileContentError.html">Class FileContentError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileFormatError.html">Class FileFormatError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileNotFoundError.html">Class FileNotFoundError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFloatRandomFunction.html">Class FloatRandomFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classHyperbox.html">Class Hyperbox</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classHyperspace.html">Class Hyperspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classInternalError.html">Class InternalError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classIntRandomFunction.html">Class IntRandomFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayer.html">Class Layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp.html">Class LayerDimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp2.html">Class LayerDimlp2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp3.html">Class LayerDimlp3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp4.html">Class LayerDimlp4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerFdimlp.html">Class LayerFdimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerRad.html">Class LayerRad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSD.html">Class LayerSD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP3.html">Class LayerSP3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP4.html">Class LayerSP4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP5.html">Class LayerSP5</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classOneVarThresDescr.html">Class OneVarThresDescr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classParameters.html">Class Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRealHyp.html">Class RealHyp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRealHyp2.html">Class RealHyp2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRule.html">Class Rule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRuleProcessing.html">Class RuleProcessing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classStairObj.html">Class StairObj</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classStringInt.html">Class StringInt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classThresDescr.html">Class ThresDescr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVectWithRandVal.html">Class VectWithRandVal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVirtualHyp.html">Class VirtualHyp</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#enums">Enums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#typedefs">Typedefs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/modules.html">trainings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dimlpfidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="library_root.html">Library API</a></li>
+      <li class="breadcrumb-item active">Class DataSet</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/classDataSet.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-dataset">
+<span id="exhale-class-classdataset"></span><h1>Class DataSet<a class="headerlink" href="#class-dataset" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dataSet.h.html#file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-dataset-h"><span class="std std-ref">File dimlp/cpp/src/dataSet.h</span></a></p></li>
+</ul>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv47DataSet">
+<span id="_CPPv37DataSet"></span><span id="_CPPv27DataSet"></span><span id="DataSet"></span><span class="target" id="classDataSet"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DataSet</span></span></span><a class="headerlink" href="#_CPPv47DataSet" title="Link to this definition"></a><br /></dt>
+<dd><p>Represents a dataset for the <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> algorithm. </p>
+<p>This class handles reading datasets from files, storing them, and providing methods to manipulate and access the data. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7DataSet7DataSetEv">
+<span id="_CPPv3N7DataSet7DataSetEv"></span><span id="_CPPv2N7DataSet7DataSetEv"></span><span id="DataSet::DataSet"></span><span class="target" id="classDataSet_1a3c97ebb583b6247b93365c5648d84eb1"></span><span class="sig-name descname"><span class="n"><span class="pre">DataSet</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N7DataSet7DataSetEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Default constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7DataSet7DataSetEi">
+<span id="_CPPv3N7DataSet7DataSetEi"></span><span id="_CPPv2N7DataSet7DataSetEi"></span><span id="DataSet::DataSet__i"></span><span class="target" id="classDataSet_1ab9a73c9e78c8b9293b80f97f2f39e41c"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DataSet</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbEx</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7DataSet7DataSetEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a <a class="reference internal" href="#classDataSet"><span class="std std-ref">DataSet</span></a> with a specified number of examples. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nbEx</strong> – Number of examples. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7DataSet7DataSetERKNSt6stringEi">
+<span id="_CPPv3N7DataSet7DataSetERKNSt6stringEi"></span><span id="_CPPv2N7DataSet7DataSetERKNSt6stringEi"></span><span id="DataSet::DataSet__ssCR.i"></span><span class="target" id="classDataSet_1a87257369dec6724c04ea51cc7e14c5b5"></span><span class="sig-name descname"><span class="n"><span class="pre">DataSet</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">nameFile</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbAttr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7DataSet7DataSetERKNSt6stringEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a <a class="reference internal" href="#classDataSet"><span class="std std-ref">DataSet</span></a> from a file with a specified number of attributes. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nameFile</strong> – Path to the dataset file. </p></li>
+<li><p><strong>nbAttr</strong> – Number of attributes. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7DataSet7DataSetERKNSt6stringEii">
+<span id="_CPPv3N7DataSet7DataSetERKNSt6stringEii"></span><span id="_CPPv2N7DataSet7DataSetERKNSt6stringEii"></span><span id="DataSet::DataSet__ssCR.i.i"></span><span class="target" id="classDataSet_1a4e0e2271120cd6f982f3cc51f44a3cf7"></span><span class="sig-name descname"><span class="n"><span class="pre">DataSet</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">nameFile</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbIn</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbOut</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7DataSet7DataSetERKNSt6stringEii" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a <a class="reference internal" href="#classDataSet"><span class="std std-ref">DataSet</span></a> from a file with a specified number of attributes and classes. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nameFile</strong> – Path to the data file. </p></li>
+<li><p><strong>nbIn</strong> – Number of input attributes (attributes). </p></li>
+<li><p><strong>nbOut</strong> – Number of output attributes (class labels). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classFileContentError.html#_CPPv416FileContentError" title="FileContentError"><span class="n">FileContentError</span></a></span></span> – If there is a problem with the file format or content. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7DataSet7DataSetER7DataSetP9StringInt">
+<span id="_CPPv3N7DataSet7DataSetER7DataSetP9StringInt"></span><span id="_CPPv2N7DataSet7DataSetER7DataSetP9StringInt"></span><span id="DataSet::DataSet__DataSetR.StringIntP"></span><span class="target" id="classDataSet_1a84473bcf422add29fbc6dc6d923ad12b"></span><span class="sig-name descname"><span class="n"><span class="pre">DataSet</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N7DataSet7DataSetER7DataSetP9StringInt" title="DataSet::DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">bigData</span></span>, <a class="reference internal" href="classStringInt.html#_CPPv49StringInt" title="StringInt"><span class="n"><span class="pre">StringInt</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">listPat</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7DataSet7DataSetER7DataSetP9StringInt" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a <a class="reference internal" href="#classDataSet"><span class="std std-ref">DataSet</span></a> from a larger dataset and a list of pattern indices. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bigData</strong> – Larger dataset. </p></li>
+<li><p><strong>listPat</strong> – List of pattern indices. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7DataSet7DataSetER7DataSetPKii">
+<span id="_CPPv3N7DataSet7DataSetER7DataSetPKii"></span><span id="_CPPv2N7DataSet7DataSetER7DataSetPKii"></span><span id="DataSet::DataSet__DataSetR.iCP.i"></span><span class="target" id="classDataSet_1a49464a6e9d52796734095704c51b36bc"></span><span class="sig-name descname"><span class="n"><span class="pre">DataSet</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N7DataSet7DataSetER7DataSetPKii" title="DataSet::DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">master</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">indPat</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbEx</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7DataSet7DataSetER7DataSetPKii" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a <a class="reference internal" href="#classDataSet"><span class="std std-ref">DataSet</span></a> from a master dataset and an array of pattern indices. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>master</strong> – Master dataset. </p></li>
+<li><p><strong>indPat</strong> – Array of pattern indices. </p></li>
+<li><p><strong>nbEx</strong> – Number of examples. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7DataSet7DataSetER7DataSetR7DataSet">
+<span id="_CPPv3N7DataSet7DataSetER7DataSetR7DataSet"></span><span id="_CPPv2N7DataSet7DataSetER7DataSetR7DataSet"></span><span id="DataSet::DataSet__DataSetR.DataSetR"></span><span class="target" id="classDataSet_1aa709151aea7544f107e8418584217dd8"></span><span class="sig-name descname"><span class="n"><span class="pre">DataSet</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N7DataSet7DataSetER7DataSetR7DataSet" title="DataSet::DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">data1</span></span>, <a class="reference internal" href="#_CPPv4N7DataSet7DataSetER7DataSetR7DataSet" title="DataSet::DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">data2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7DataSet7DataSetER7DataSetR7DataSet" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a <a class="reference internal" href="#classDataSet"><span class="std std-ref">DataSet</span></a> by merging two datasets. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data1</strong> – First dataset. </p></li>
+<li><p><strong>data2</strong> – Second dataset. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7DataSet3DelEv">
+<span id="_CPPv3N7DataSet3DelEv"></span><span id="_CPPv2N7DataSet3DelEv"></span><span id="DataSet::Del"></span><span class="target" id="classDataSet_1af9625842a29af31e5a9bc3eb0f81e116"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Del</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7DataSet3DelEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Delete the dataset and free memory. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7DataSet10GetExampleEi">
+<span id="_CPPv3N7DataSet10GetExampleEi"></span><span id="_CPPv2N7DataSet10GetExampleEi"></span><span id="DataSet::GetExample__i"></span><span class="target" id="classDataSet_1a8b1204a713ddd88779624e583aaf9576"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetExample</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">index</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7DataSet10GetExampleEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Get an example from the dataset. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> – Index of the example. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pointer to the example. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7DataSet7GetNbExEv">
+<span id="_CPPv3NK7DataSet7GetNbExEv"></span><span id="_CPPv2NK7DataSet7GetNbExEv"></span><span id="DataSet::GetNbExC"></span><span class="target" id="classDataSet_1a590eb5e29036c57e8036aebb0b6ed1b3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetNbEx</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7DataSet7GetNbExEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the number of examples. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of examples. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7DataSet9GetNbAttrEv">
+<span id="_CPPv3NK7DataSet9GetNbAttrEv"></span><span id="_CPPv2NK7DataSet9GetNbAttrEv"></span><span id="DataSet::GetNbAttrC"></span><span class="target" id="classDataSet_1a41b10542b14a9f11443dcdb0c2868415"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetNbAttr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7DataSet9GetNbAttrEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the number of attributes. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of attributes. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7DataSet6SelectENSt10shared_ptrI9DimlpRuleEE">
+<span id="_CPPv3N7DataSet6SelectENSt10shared_ptrI9DimlpRuleEE"></span><span id="_CPPv2N7DataSet6SelectENSt10shared_ptrI9DimlpRuleEE"></span><span id="DataSet::Select__std::shared_ptr:DimlpRule:"></span><span class="target" id="classDataSet_1a0b372671680ee062ccd2a930e9a15485"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classStringInt.html#_CPPv49StringInt" title="StringInt"><span class="n"><span class="pre">StringInt</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Select</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classDimlpRule.html#_CPPv49DimlpRule" title="DimlpRule"><span class="n"><span class="pre">DimlpRule</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7DataSet6SelectENSt10shared_ptrI9DimlpRuleEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Select examples from the dataset based on a given rule. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> – Pointer to the rule. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pointer to a <a class="reference internal" href="classStringInt.html#classStringInt"><span class="std std-ref">StringInt</span></a> object containing the selected example indices. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7DataSet6SelectENSt10shared_ptrI9DimlpRuleEENSt10shared_ptrI9StringIntEE">
+<span id="_CPPv3N7DataSet6SelectENSt10shared_ptrI9DimlpRuleEENSt10shared_ptrI9StringIntEE"></span><span id="_CPPv2N7DataSet6SelectENSt10shared_ptrI9DimlpRuleEENSt10shared_ptrI9StringIntEE"></span><span id="DataSet::Select__std::shared_ptr:DimlpRule:.std::shared_ptr:StringInt:"></span><span class="target" id="classDataSet_1afe76d9b32788465febd4901c53ce83cc"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classStringInt.html#_CPPv49StringInt" title="StringInt"><span class="n"><span class="pre">StringInt</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Select</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classDimlpRule.html#_CPPv49DimlpRule" title="DimlpRule"><span class="n"><span class="pre">DimlpRule</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classStringInt.html#_CPPv49StringInt" title="StringInt"><span class="n"><span class="pre">StringInt</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">subSet</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7DataSet6SelectENSt10shared_ptrI9DimlpRuleEENSt10shared_ptrI9StringIntEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Select examples from a subset of the dataset based on a given rule. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> – Pointer to the rule. </p></li>
+<li><p><strong>subSet</strong> – Pointer to a <a class="reference internal" href="classStringInt.html#classStringInt"><span class="std std-ref">StringInt</span></a> object containing the subset of example indices. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pointer to a <a class="reference internal" href="classStringInt.html#classStringInt"><span class="std std-ref">StringInt</span></a> object containing the selected example indices. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7DataSet20ExtractDataAndTargetER7DataSetiR7DataSeti">
+<span id="_CPPv3NK7DataSet20ExtractDataAndTargetER7DataSetiR7DataSeti"></span><span id="_CPPv2NK7DataSet20ExtractDataAndTargetER7DataSetiR7DataSeti"></span><span id="DataSet::ExtractDataAndTarget__DataSetR.i.DataSetR.iC"></span><span class="target" id="classDataSet_1a3a3e981e4b521f4a1c582b1fc46850ce"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExtractDataAndTarget</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">data1</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbAttr1</span></span>, <a class="reference internal" href="#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">data2</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbAttr2</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7DataSet20ExtractDataAndTargetER7DataSetiR7DataSeti" title="Link to this definition"></a><br /></dt>
+<dd><p>Extract data and target (class) attributes from the current dataset. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data1</strong> – Dataset for the attributes. </p></li>
+<li><p><strong>nbAttr1</strong> – Number of attributes. </p></li>
+<li><p><strong>data2</strong> – Dataset for the targets (classes). </p></li>
+<li><p><strong>nbAttr2</strong> – Number of targets (classes). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classFileContentError.html#_CPPv416FileContentError" title="FileContentError"><span class="n">FileContentError</span></a></span></span> – If the class data is missing or invalid. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classCommandArgumentException.html" class="btn btn-neutral float-left" title="Class CommandArgumentException" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classDataSetFid.html" class="btn btn-neutral float-right" title="Class DataSetFid" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

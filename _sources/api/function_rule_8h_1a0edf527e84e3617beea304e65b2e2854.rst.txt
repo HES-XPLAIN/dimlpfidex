@@ -1,0 +1,14 @@
+.. _exhale_function_rule_8h_1a0edf527e84e3617beea304e65b2e2854:
+
+Function getAntStrPatternWithAttrIds(int)
+=========================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: getAntStrPatternWithAttrIds(int)
+   :project: common

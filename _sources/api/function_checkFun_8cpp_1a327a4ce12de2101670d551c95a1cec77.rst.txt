@@ -1,0 +1,14 @@
+.. _exhale_function_checkFun_8cpp_1a327a4ce12de2101670d551c95a1cec77:
+
+Function checkBool(const std::string&)
+======================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: checkBool(const std::string&)
+   :project: common

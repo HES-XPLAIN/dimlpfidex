@@ -1,0 +1,32 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpPredFct.h:
+
+Program Listing for File dimlpPredFct.h
+=======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpPredFct.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/dimlpPredFct.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef DIMLPPREDFCT_H
+   #define DIMLPPREDFCT_H
+   
+   #include "../../../common/cpp/src/parameters.h"
+   #include "dimlp.h"
+   #include "dimlpCommonFun.h"
+   #include <fstream>
+   #include <sstream>
+   #include <stdlib.h>
+   #include <string.h>
+   #include <unordered_map>
+   #include <vector>
+   
+   void showDimlpPredParams();
+   
+   void checkDimlpPredParametersLogicValues(Parameters &p);
+   
+   int dimlpPred(const std::string &command = "");
+   
+   #endif // DIMLPPREDFCT_H

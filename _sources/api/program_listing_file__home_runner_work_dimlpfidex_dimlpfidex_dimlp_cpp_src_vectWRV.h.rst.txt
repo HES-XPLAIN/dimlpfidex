@@ -1,0 +1,37 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_vectWRV.h:
+
+Program Listing for File vectWRV.h
+==================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_vectWRV.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/vectWRV.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef VECTWRV_H
+   #define VECTWRV_H
+   
+   #include "../../../common/cpp/src/stringI.h"
+   
+   #include <memory>
+   #include <vector>
+   
+   class VectWithRandVal
+   
+   {
+     int NbElAll;           
+     std::vector<int> Busy; 
+   
+   public:
+     std::shared_ptr<StringInt> FillWithUniqueInd(int nbElSub);
+   
+     void Append(StringInt *originalList, StringInt *toAppend);
+   
+     explicit VectWithRandVal(int nbElAll);
+   
+     ~VectWithRandVal() = default;
+   };
+   
+   #endif // VECTWRV_H

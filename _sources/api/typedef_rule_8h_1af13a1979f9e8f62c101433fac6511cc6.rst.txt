@@ -1,0 +1,14 @@
+.. _exhale_typedef_rule_8h_1af13a1979f9e8f62c101433fac6511cc6:
+
+Typedef Json
+============
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.h`
+
+
+Typedef Documentation
+---------------------
+
+
+.. doxygentypedef:: Json
+   :project: common

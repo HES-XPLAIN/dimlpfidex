@@ -1,0 +1,14 @@
+.. _exhale_function_fidexGloRulesFct_8h_1a391ba5ae9d3b76d288b344b3fdc54252:
+
+Function heuristic_1(DataSetFid&, Parameters&, const std::vector<std::vector<double>>&)
+=======================================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: heuristic_1(DataSetFid&, Parameters&, const std::vector<std::vector<double>>&)
+   :project: common

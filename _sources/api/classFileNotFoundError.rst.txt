@@ -1,0 +1,26 @@
+.. _exhale_class_classFileNotFoundError:
+
+Class FileNotFoundError
+=======================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_errorHandler.h`
+
+
+Inheritance Relationships
+-------------------------
+
+Base Type
+*********
+
+- ``public ErrorHandler`` (:ref:`exhale_class_classErrorHandler`)
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: FileNotFoundError
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

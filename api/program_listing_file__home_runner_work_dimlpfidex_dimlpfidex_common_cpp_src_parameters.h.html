@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Listing for File parameters.h &mdash; dimlpfidex 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7026087e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dimlpfidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">C++ API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/modules.html">trainings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dimlpfidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Program Listing for File parameters.h</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_parameters.h.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="program-listing-for-file-parameters-h">
+<span id="program-listing-file-home-runner-work-dimlpfidex-dimlpfidex-common-cpp-src-parameters-h"></span><h1>Program Listing for File parameters.h<a class="headerlink" href="#program-listing-for-file-parameters-h" title="Link to this heading"></a></h1>
+<p>↰ <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_parameters.h.html#file-home-runner-work-dimlpfidex-dimlpfidex-common-cpp-src-parameters-h"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">/home/runner/work/dimlpfidex/dimlpfidex/common/cpp/src/parameters.h</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef PARAMETERS_H</span>
+<span class="cp">#define PARAMETERS_H</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../../../json/single_include/nlohmann/json.hpp&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;antecedent.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;checkFun.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;errorHandler.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stringI.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fstream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iomanip&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;map&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sstream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unordered_map&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;vector&gt;</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="nc">ParameterCode</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// to add a new parameter, just add a new parameter code BEFORE &quot;_NB_PARAMETERS&quot;</span>
+<span class="w">  </span><span class="n">TRAIN_DATA_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">TRAIN_PRED_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">TRAIN_PRED_OUTFILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">TRAIN_CLASS_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">TEST_DATA_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">TEST_PRED_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">TEST_PRED_OUTFILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">TEST_CLASS_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">VALID_DATA_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">VALID_CLASS_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">VALID_PRED_OUTFILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">RULES_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">RULES_OUTFILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">GLOBAL_RULES_OUTFILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">GLOBAL_RULES_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">EXPLANATION_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">CONSOLE_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">ROOT_FOLDER</span><span class="p">,</span>
+<span class="w">  </span><span class="n">ATTRIBUTES_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">WEIGHTS_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">WEIGHTS_OUTFILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">HID_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">STATS_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">NB_ATTRIBUTES</span><span class="p">,</span>
+<span class="w">  </span><span class="n">NB_CLASSES</span><span class="p">,</span>
+<span class="w">  </span><span class="n">NB_DIMLP_NETS</span><span class="p">,</span>
+<span class="w">  </span><span class="n">NB_EX_PER_NET</span><span class="p">,</span>
+<span class="w">  </span><span class="n">NB_QUANT_LEVELS</span><span class="p">,</span>
+<span class="w">  </span><span class="n">NB_FIDEX_RULES</span><span class="p">,</span>
+<span class="w">  </span><span class="n">HEURISTIC</span><span class="p">,</span>
+<span class="w">  </span><span class="n">MAX_ITERATIONS</span><span class="p">,</span>
+<span class="w">  </span><span class="n">MIN_COVERING</span><span class="p">,</span>
+<span class="w">  </span><span class="n">COVERING_STRATEGY</span><span class="p">,</span>
+<span class="w">  </span><span class="n">MAX_FAILED_ATTEMPTS</span><span class="p">,</span>
+<span class="w">  </span><span class="n">NB_THREADS</span><span class="p">,</span>
+<span class="w">  </span><span class="n">POSITIVE_CLASS_INDEX</span><span class="p">,</span>
+<span class="w">  </span><span class="n">SEED</span><span class="p">,</span>
+<span class="w">  </span><span class="n">DECISION_THRESHOLD</span><span class="p">,</span>
+<span class="w">  </span><span class="n">HI_KNOT</span><span class="p">,</span>
+<span class="w">  </span><span class="n">DROPOUT_HYP</span><span class="p">,</span>
+<span class="w">  </span><span class="n">DROPOUT_DIM</span><span class="p">,</span>
+<span class="w">  </span><span class="n">MIN_FIDELITY</span><span class="p">,</span>
+<span class="w">  </span><span class="n">LOWEST_MIN_FIDELITY</span><span class="p">,</span>
+<span class="w">  </span><span class="n">LEARNING_RATE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">MOMENTUM</span><span class="p">,</span>
+<span class="w">  </span><span class="n">FLAT</span><span class="p">,</span>
+<span class="w">  </span><span class="n">ERROR_THRESH</span><span class="p">,</span>
+<span class="w">  </span><span class="n">ACC_THRESH</span><span class="p">,</span>
+<span class="w">  </span><span class="n">ABS_ERROR_THRESH</span><span class="p">,</span>
+<span class="w">  </span><span class="n">NB_EPOCHS</span><span class="p">,</span>
+<span class="w">  </span><span class="n">NB_EPOCHS_ERROR</span><span class="p">,</span>
+<span class="w">  </span><span class="n">WITH_RULE_EXTRACTION</span><span class="p">,</span>
+<span class="w">  </span><span class="n">NORMALIZATION_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">MUS</span><span class="p">,</span>
+<span class="w">  </span><span class="n">SIGMAS</span><span class="p">,</span>
+<span class="w">  </span><span class="n">NORMALIZATION_INDICES</span><span class="p">,</span>
+<span class="w">  </span><span class="n">WITH_FIDEX</span><span class="p">,</span>
+<span class="w">  </span><span class="n">WITH_MINIMAL_VERSION</span><span class="p">,</span>
+<span class="w">  </span><span class="n">FIRST_HIDDEN_LAYER</span><span class="p">,</span>
+<span class="w">  </span><span class="n">HIDDEN_LAYERS</span><span class="p">,</span>
+<span class="w">  </span><span class="n">HIDDEN_LAYERS_OUTFILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">HIDDEN_LAYERS_FILE</span><span class="p">,</span>
+<span class="w">  </span><span class="n">_NB_PARAMETERS</span><span class="w"> </span><span class="c1">// internal use only, do not consider it as a usable parameter</span>
+<span class="p">};</span>
+
+<span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">ParameterCode</span><span class="o">&gt;</span><span class="w"> </span><span class="n">parameterNames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;train_data_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TRAIN_DATA_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;train_pred_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TRAIN_PRED_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;train_pred_outfile&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TRAIN_PRED_OUTFILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;train_class_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TRAIN_CLASS_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;test_data_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TEST_DATA_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;test_pred_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TEST_PRED_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;test_pred_outfile&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TEST_PRED_OUTFILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;test_class_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TEST_CLASS_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;valid_data_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">VALID_DATA_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;valid_class_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">VALID_CLASS_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;valid_pred_outfile&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">VALID_PRED_OUTFILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;rules_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">RULES_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;rules_outfile&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">RULES_OUTFILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;global_rules_outfile&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">GLOBAL_RULES_OUTFILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;global_rules_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">GLOBAL_RULES_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;explanation_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">EXPLANATION_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;console_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">CONSOLE_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;root_folder&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ROOT_FOLDER</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;attributes_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ATTRIBUTES_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;weights_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">WEIGHTS_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;weights_outfile&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">WEIGHTS_OUTFILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;hid_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">HID_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;stats_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">STATS_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nb_attributes&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">NB_ATTRIBUTES</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nb_classes&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">NB_CLASSES</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nb_dimlp_nets&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">NB_DIMLP_NETS</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nb_ex_per_net&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">NB_EX_PER_NET</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nb_quant_levels&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">NB_QUANT_LEVELS</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nb_fidex_rules&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">NB_FIDEX_RULES</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;heuristic&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">HEURISTIC</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;max_iterations&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MAX_ITERATIONS</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;min_covering&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MIN_COVERING</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;learning_rate&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">LEARNING_RATE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;momentum&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MOMENTUM</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;flat&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">FLAT</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;error_thresh&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ERROR_THRESH</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;acc_thresh&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ACC_THRESH</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;abs_error_thresh&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ABS_ERROR_THRESH</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nb_epochs&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">NB_EPOCHS</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nb_epochs_error&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">NB_EPOCHS_ERROR</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;with_rule_extraction&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">WITH_RULE_EXTRACTION</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;covering_strategy&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">COVERING_STRATEGY</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;max_failed_attempts&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MAX_FAILED_ATTEMPTS</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;nb_threads&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">NB_THREADS</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;positive_class_index&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">POSITIVE_CLASS_INDEX</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;seed&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">SEED</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;decision_threshold&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">DECISION_THRESHOLD</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;hi_knot&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">HI_KNOT</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;dropout_hyp&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">DROPOUT_HYP</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;dropout_dim&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">DROPOUT_DIM</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;min_fidelity&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MIN_FIDELITY</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;lowest_min_fidelity&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">LOWEST_MIN_FIDELITY</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;normalization_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">NORMALIZATION_FILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;mus&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MUS</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;sigmas&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">SIGMAS</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;normalization_indices&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">NORMALIZATION_INDICES</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;with_fidex&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">WITH_FIDEX</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;with_minimal_version&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">WITH_MINIMAL_VERSION</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;first_hidden_layer&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">FIRST_HIDDEN_LAYER</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;hidden_layers&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">HIDDEN_LAYERS</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;hidden_layers_outfile&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">HIDDEN_LAYERS_OUTFILE</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;hidden_layers_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">HIDDEN_LAYERS_FILE</span><span class="p">}};</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Parameters</span><span class="w"> </span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">_intParams</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">_floatParams</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">_doubleParams</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="n">_boolParams</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">_doubleVectorParams</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">_intVectorParams</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">_stringParams</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">_weightFiles</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// private parser</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">parseArg</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">param</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">arg</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">validParams</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// path checker</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">checkFilesIntegrity</span><span class="p">();</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">checkPath</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">path</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">completePath</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+
+<span class="w">  </span><span class="c1">// throwables</span>
+
+<span class="w">  </span><span class="p">[[</span><span class="n">noreturn</span><span class="p">]]</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">throwInvalidDataTypeException</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">wrongValue</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">typeName</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Parsing error: argument (ID &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">getParameterName</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;) with value </span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">wrongValue</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s"> is not a valid &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">typeName</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="p">[[</span><span class="n">noreturn</span><span class="p">]]</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">throwAlreadySetArgumentException</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Parsing error: argument (ID &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">getParameterName</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;) with value </span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s"> is already set, cannot override it.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="p">[[</span><span class="n">noreturn</span><span class="p">]]</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">throwArgumentNotFoundException</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Parameters error: argument (ID &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">getParameterName</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;) requested was not found, try to rerun including it.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="p">[[</span><span class="n">noreturn</span><span class="p">]]</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">throwInvalidFileOrDirectory</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">wrongValue</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Parameters error: argument (ID &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">getParameterName</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;) with value </span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">wrongValue</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s"> is not a valid path. The directory or file specified could not be found.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="p">[[</span><span class="n">noreturn</span><span class="p">]]</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">throwInvalidParameter</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">wrongValue</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Parameters error: argument (ID &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">getParameterName</span><span class="p">(</span><span class="n">wrongValue</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;) is not a valid parameter for this execution.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">  </span><span class="c1">// constructor</span>
+<span class="w">  </span><span class="n">Parameters</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">explicit</span><span class="w"> </span><span class="n">Parameters</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">validParams</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">explicit</span><span class="w"> </span><span class="n">Parameters</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">jsonfile</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">validParams</span><span class="p">);</span>
+
+
+<span class="w">  </span><span class="c1">// setters handle formatting from string argument</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setInt</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setInt</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setFloat</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setFloat</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setDouble</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setDouble</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setBool</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setBool</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setDoubleVector</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setDoubleVector</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setIntVector</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setIntVector</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setString</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">);</span>
+
+
+<span class="w">  </span><span class="c1">// default setter if value not set</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setDefaultInt</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setDefaultFloat</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setDefaultDouble</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setDefaultBool</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setDefaultDoubleVector</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">defaultValue</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setDefaultIntVector</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">defaultValue</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setDefaultString</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">defaultValue</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">withRoot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+
+
+<span class="w">  </span><span class="c1">// getters</span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getInt</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="nf">getFloat</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="nf">getDouble</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">getBool</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getDoubleVector</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getIntVector</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">getString</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">StringInt</span><span class="w"> </span><span class="nf">getArch</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">StringInt</span><span class="w"> </span><span class="nf">getArchInd</span><span class="p">();</span>
+
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getAllInts</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_intParams</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getAllFloats</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_floatParams</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getAllDoubles</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_doubleParams</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getAllBools</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_boolParams</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">getAllDoubleVectors</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_doubleVectorParams</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">getAllIntVectors</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_intVectorParams</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getAllStrings</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">_stringParams</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">isIntSet</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">isFloatSet</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">isDoubleSet</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">isBoolSet</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">isDoubleVectorSet</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">isIntVectorSet</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">isStringSet</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+
+<span class="w">  </span><span class="c1">// special operations</span>
+
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">getParameterName</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">sanitizePath</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">shouldFileExist</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">writeHiddenLayersFile</span><span class="p">();</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">readHiddenLayersFile</span><span class="p">(</span><span class="n">StringInt</span><span class="w"> </span><span class="o">&amp;</span><span class="n">arch</span><span class="p">,</span><span class="w"> </span><span class="n">StringInt</span><span class="w"> </span><span class="o">&amp;</span><span class="n">archInd</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">vectorToString</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">vec</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">stringstream</span><span class="w"> </span><span class="n">ss</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ss</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;[&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">ss</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ss</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;, &quot;</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">ss</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;]&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+
+
+<span class="w">  </span><span class="c1">// assertions</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">assertStringExists</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">assertIntExists</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">assertFloatExists</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">assertDoubleExists</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">assertBoolExists</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">assertDoubleVectorExists</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">assertIntVectorExists</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+
+<span class="w">  </span><span class="c1">// check common parameters</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">checkAttributeAndClassCounts</span><span class="p">();</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">checkParametersCommon</span><span class="p">();</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">checkParametersFidex</span><span class="p">();</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">checkParametersDecisionThreshold</span><span class="p">();</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">checkParametersDimlpTrn</span><span class="p">();</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">checkParametersNormalization</span><span class="p">();</span>
+
+
+<span class="w">  </span><span class="c1">// set common default parameters</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setDefaultNbQuantLevels</span><span class="p">();</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setDefaultFidex</span><span class="p">();</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setDefaultDecisionThreshold</span><span class="p">();</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setDefaultDimlpTrn</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="kr">inline</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="w"> </span><span class="o">&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="w"> </span><span class="o">&amp;</span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Parameters</span><span class="w"> </span><span class="o">&amp;</span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">pad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+<span class="w">  </span><span class="n">stream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Parameters list:&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">getAllStrings</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">stream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; - &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getParameterName</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">first</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setw</span><span class="p">(</span><span class="n">pad</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Parameters</span><span class="o">::</span><span class="n">getParameterName</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">first</span><span class="p">).</span><span class="n">size</span><span class="p">()))</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">second</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">getAllInts</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">stream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; - &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getParameterName</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">first</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setw</span><span class="p">(</span><span class="n">pad</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Parameters</span><span class="o">::</span><span class="n">getParameterName</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">first</span><span class="p">).</span><span class="n">size</span><span class="p">()))</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">second</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">getAllFloats</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">stream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; - &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getParameterName</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">first</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setw</span><span class="p">(</span><span class="n">pad</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Parameters</span><span class="o">::</span><span class="n">getParameterName</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">first</span><span class="p">).</span><span class="n">size</span><span class="p">()))</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">second</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">getAllDoubles</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">stream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; - &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getParameterName</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">first</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setw</span><span class="p">(</span><span class="n">pad</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Parameters</span><span class="o">::</span><span class="n">getParameterName</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">first</span><span class="p">).</span><span class="n">size</span><span class="p">()))</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">second</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">getAllBools</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">stream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; - &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getParameterName</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">first</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setw</span><span class="p">(</span><span class="n">pad</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Parameters</span><span class="o">::</span><span class="n">getParameterName</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">first</span><span class="p">).</span><span class="n">size</span><span class="p">()))</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">second</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">getAllIntVectors</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">stream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; - &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getParameterName</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">first</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setw</span><span class="p">(</span><span class="n">pad</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Parameters</span><span class="o">::</span><span class="n">getParameterName</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">first</span><span class="p">).</span><span class="n">size</span><span class="p">()))</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">vectorToString</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">second</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">getAllDoubleVectors</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">stream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; - &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getParameterName</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">first</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setw</span><span class="p">(</span><span class="n">pad</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Parameters</span><span class="o">::</span><span class="n">getParameterName</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">first</span><span class="p">).</span><span class="n">size</span><span class="p">()))</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">vectorToString</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">second</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">stream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;End of Parameters list.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span>
+<span class="w">         </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">stream</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#endif </span><span class="c1">// PARAMETERS_H</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

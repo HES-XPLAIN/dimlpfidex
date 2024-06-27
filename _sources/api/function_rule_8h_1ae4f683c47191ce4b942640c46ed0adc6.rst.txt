@@ -1,0 +1,14 @@
+.. _exhale_function_rule_8h_1ae4f683c47191ce4b942640c46ed0adc6:
+
+Function getRules(std::vector<Rule>&, const std::string&, DataSetFid&, float&, int&)
+====================================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: getRules(std::vector<Rule>&, const std::string&, DataSetFid&, float&, int&)
+   :project: common

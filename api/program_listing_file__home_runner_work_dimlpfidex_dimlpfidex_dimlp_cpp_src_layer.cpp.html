@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Listing for File layer.cpp &mdash; dimlpfidex 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7026087e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dimlpfidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">C++ API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/modules.html">trainings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dimlpfidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Program Listing for File layer.cpp</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layer.cpp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="program-listing-for-file-layer-cpp">
+<span id="program-listing-file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-layer-cpp"></span><h1>Program Listing for File layer.cpp<a class="headerlink" href="#program-listing-for-file-layer-cpp" title="Link to this heading"></a></h1>
+<p>↰ <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layer.cpp.html#file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-layer-cpp"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/layer.cpp</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;layer.h&quot;</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::AssignParam</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">eta</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">mu</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">flat</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbDown</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbUp</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbWeights</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbWeightsForInit</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="n">Eta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eta</span><span class="p">;</span>
+<span class="w">  </span><span class="n">Mu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mu</span><span class="p">;</span>
+<span class="w">  </span><span class="n">Flat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flat</span><span class="p">;</span>
+<span class="w">  </span><span class="n">NbDown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbDown</span><span class="p">;</span>
+<span class="w">  </span><span class="n">NbUp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbUp</span><span class="p">;</span>
+<span class="w">  </span><span class="n">NbWeights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbWeights</span><span class="p">;</span>
+<span class="w">  </span><span class="n">NbWeightsForInit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbWeightsForInit</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::CreateStruct</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="n">Up</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbUp</span><span class="p">);</span>
+<span class="w">  </span><span class="n">DeltaUp</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbUp</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Weights</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbWeights</span><span class="p">);</span>
+<span class="w">  </span><span class="n">OldWeights</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbWeights</span><span class="p">);</span>
+<span class="w">  </span><span class="n">ValidWeights</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbWeights</span><span class="p">);</span>
+<span class="w">  </span><span class="n">BiasWeights</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbUp</span><span class="p">);</span>
+<span class="w">  </span><span class="n">OldBiasWeights</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbUp</span><span class="p">);</span>
+<span class="w">  </span><span class="n">ValidBiasWeights</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbUp</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::InitWeights</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrW</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">oldW</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">sqrt3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">));</span>
+
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">bound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sqrt3</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">NbWeightsForInit</span><span class="p">));</span>
+<span class="w">  </span><span class="n">FloatRandomFunction</span><span class="w"> </span><span class="n">randVal</span><span class="p">(</span><span class="o">-</span><span class="n">bound</span><span class="p">,</span><span class="w"> </span><span class="n">bound</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">oldW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OldWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">ptrW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbWeights</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ptrW</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">oldW</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="o">*</span><span class="n">ptrW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">randVal</span><span class="p">.</span><span class="n">RandomFloat</span><span class="p">();</span>
+<span class="w">    </span><span class="o">*</span><span class="n">oldW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptrW</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">oldW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OldBiasWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">ptrW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BiasWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ptrW</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">oldW</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="o">*</span><span class="n">ptrW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">randVal</span><span class="p">.</span><span class="n">RandomFloat</span><span class="p">();</span>
+<span class="w">    </span><span class="o">*</span><span class="n">oldW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptrW</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::ApplyTransf1</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Up</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Activation1</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::ApplyTransf2</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Up</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Activation2</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::ComputeDeltaDownStand</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">sum</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">down</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">deltaDown</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">weights</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">deltaUp</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">down</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Down</span><span class="p">;</span>
+<span class="w">  </span><span class="n">deltaDown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DeltaDown</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbDown</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">down</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">deltaDown</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weights</span><span class="p">.</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="n">deltaUp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DeltaUp</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">deltaUp</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">weights</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">NbDown</span><span class="p">)</span>
+<span class="w">      </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">weights</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">deltaUp</span><span class="p">);</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">deltaDown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="o">*</span><span class="n">down</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mf">1.0f</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">*</span><span class="n">down</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Flat</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sum</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::ComputeDeltaDownSpec2</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">sum</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">down</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">deltaDown</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">weights</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">deltaUp</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">down</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Down</span><span class="p">;</span>
+<span class="w">  </span><span class="n">deltaDown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DeltaDown</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbDown</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">down</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">deltaDown</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weights</span><span class="p">.</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="n">deltaUp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DeltaUp</span><span class="p">.</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">NbDown</span><span class="p">,</span><span class="w"> </span><span class="n">deltaUp</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">NbDown</span><span class="p">,</span><span class="w"> </span><span class="n">weights</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">NbDown</span><span class="p">)</span>
+<span class="w">      </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">weights</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">deltaUp</span><span class="p">);</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">deltaDown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">down</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sum</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::AdaptBiasStand</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">biasDelta</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">bias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BiasWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">oldBias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OldBiasWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">deltaUp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DeltaUp</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">bias</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">oldBias</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">deltaUp</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">biasDelta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Eta</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">deltaUp</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">Mu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">((</span><span class="o">*</span><span class="n">bias</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">oldBias</span><span class="p">)));</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">oldBias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">bias</span><span class="p">;</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">bias</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">biasDelta</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::AdaptBiasSpec2</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">biasDelta</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">norm</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">down</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Down</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Up</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">bias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BiasWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">oldBias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OldBiasWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">deltaUp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DeltaUp</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">bias</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">weights</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">oldBias</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">deltaUp</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">down</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">up</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NbDown</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">down</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Down</span><span class="p">;</span>
+<span class="w">      </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">norm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">down</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">*</span><span class="n">weights</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">down</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">*</span><span class="n">weights</span><span class="p">)</span><span class="w"> </span><span class="o">/</span>
+<span class="w">           </span><span class="p">((</span><span class="o">*</span><span class="n">bias</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">bias</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">bias</span><span class="p">));</span>
+
+<span class="w">    </span><span class="n">biasDelta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">EtaSpread</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">deltaUp</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">norm</span><span class="p">);</span>
+<span class="w">    </span><span class="o">*</span><span class="n">bias</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">biasDelta</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::ReadWeights</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">istream</span><span class="w"> </span><span class="o">&amp;</span><span class="n">inFile</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">w</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrW</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrOldW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OldBiasWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">ptrW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BiasWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">w</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ptrW</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ptrOldW</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">inFile</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">ptrW</span><span class="p">;</span>
+<span class="w">    </span><span class="o">*</span><span class="n">ptrOldW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptrW</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">ptrOldW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OldWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">ptrW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbWeights</span><span class="p">;</span><span class="w"> </span><span class="n">w</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ptrW</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ptrOldW</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">inFile</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">ptrW</span><span class="p">;</span>
+<span class="w">    </span><span class="o">*</span><span class="n">ptrOldW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptrW</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::WriteWeights</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="w"> </span><span class="o">&amp;</span><span class="n">outFile</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">w</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrW</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">ptrW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BiasWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">w</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ptrW</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">outFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="o">*</span><span class="n">ptrW</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">outFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">ptrW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbWeights</span><span class="p">;</span><span class="w"> </span><span class="n">w</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ptrW</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">outFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="o">*</span><span class="n">ptrW</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">outFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::PushWeights</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">w</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">w</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">ValidBiasWeights</span><span class="p">[</span><span class="n">w</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BiasWeights</span><span class="p">[</span><span class="n">w</span><span class="p">];</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbWeights</span><span class="p">;</span><span class="w"> </span><span class="n">w</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">ValidWeights</span><span class="p">[</span><span class="n">w</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weights</span><span class="p">[</span><span class="n">w</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::PopWeights</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">w</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">w</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">BiasWeights</span><span class="p">[</span><span class="n">w</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ValidBiasWeights</span><span class="p">[</span><span class="n">w</span><span class="p">];</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbWeights</span><span class="p">;</span><span class="w"> </span><span class="n">w</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">Weights</span><span class="p">[</span><span class="n">w</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ValidWeights</span><span class="p">[</span><span class="n">w</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::ForwFully</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">down</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Up</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">bias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BiasWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">up</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">bias</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">down</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Down</span><span class="p">;</span>
+<span class="w">    </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">bias</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbDown</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">down</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">weights</span><span class="o">++</span><span class="p">)</span>
+<span class="w">      </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">down</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">weights</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::ForwSpec</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Up</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">down</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Down</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">bias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BiasWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">down</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">weights</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">up</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">bias</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NbDown</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">down</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Down</span><span class="p">;</span>
+<span class="w">      </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">bias</span><span class="p">;</span>
+<span class="w">    </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">down</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">weights</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::ForwSpec2</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Up</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">down</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Down</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">bias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BiasWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">down</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">weights</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">up</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">bias</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NbDown</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">down</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Down</span><span class="p">;</span>
+<span class="w">      </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">down</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">weights</span><span class="p">);</span>
+<span class="w">    </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="o">*</span><span class="n">bias</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::ForwRadial</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">down</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Up</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">bias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BiasWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">up</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">bias</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">down</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Down</span><span class="p">;</span>
+<span class="w">    </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbDown</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">down</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">weights</span><span class="o">++</span><span class="p">)</span>
+<span class="w">      </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(((</span><span class="o">*</span><span class="n">down</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">weights</span><span class="p">))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">((</span><span class="o">*</span><span class="n">down</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">weights</span><span class="p">)));</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="o">*</span><span class="n">up</span><span class="p">);</span>
+<span class="w">    </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="n">bias</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::ComputeDeltaOut</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">target</span><span class="p">[])</span>
+
+<span class="p">{</span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Up</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">deltaOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DeltaUp</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">out</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">deltaOut</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="o">*</span><span class="n">deltaOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="o">*</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mf">1.0f</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">*</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Flat</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">target</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">*</span><span class="n">out</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::AdaptWeightsFully</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">weightDelta</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">down</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">deltaUp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DeltaUp</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">oldWeights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OldWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">deltaUp</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">down</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Down</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbDown</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">down</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">weights</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">oldWeights</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">weightDelta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Eta</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">deltaUp</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">down</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                    </span><span class="p">(</span><span class="n">Mu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">((</span><span class="o">*</span><span class="n">weights</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">oldWeights</span><span class="p">)));</span>
+
+<span class="w">      </span><span class="o">*</span><span class="n">oldWeights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">weights</span><span class="p">;</span>
+
+<span class="w">      </span><span class="o">*</span><span class="n">weights</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">weightDelta</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::AdaptWeightsSpec</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">weightDelta</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">down</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Down</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">deltaUp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DeltaUp</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">oldWeights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OldWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">down</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">weights</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">oldWeights</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">deltaUp</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NbDown</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">down</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Down</span><span class="p">;</span>
+<span class="w">      </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">weightDelta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Eta</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">deltaUp</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">down</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                  </span><span class="p">(</span><span class="n">Mu</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">((</span><span class="o">*</span><span class="n">weights</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">oldWeights</span><span class="p">)));</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">oldWeights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">weights</span><span class="p">;</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">weights</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">weightDelta</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Layer::AdaptWeightsSpec2</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">weightDelta</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">norm</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">down</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Down</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">up</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Up</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">deltaUp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DeltaUp</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">bias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BiasWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">oldWeights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OldWeights</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbUp</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">down</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">up</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">weights</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">bias</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">oldWeights</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">deltaUp</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NbDown</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">down</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Down</span><span class="p">;</span>
+<span class="w">      </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">norm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">down</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">*</span><span class="n">weights</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">((</span><span class="o">*</span><span class="n">bias</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">bias</span><span class="p">));</span>
+
+<span class="w">    </span><span class="n">weightDelta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">EtaCentre</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">deltaUp</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">norm</span><span class="p">);</span>
+<span class="w">    </span><span class="o">*</span><span class="n">weights</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">weightDelta</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="n">Layer</span><span class="o">::</span><span class="n">Layer</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">eta</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">mu</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">flat</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbDown</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbUp</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbWeights</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbWeightsForInit</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="n">AssignParam</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="p">,</span><span class="w"> </span><span class="n">flat</span><span class="p">,</span><span class="w"> </span><span class="n">nbDown</span><span class="p">,</span><span class="w"> </span><span class="n">nbUp</span><span class="p">,</span><span class="w"> </span><span class="n">nbWeights</span><span class="p">,</span><span class="w"> </span><span class="n">nbWeightsForInit</span><span class="p">);</span>
+<span class="w">  </span><span class="n">CreateStruct</span><span class="p">();</span>
+<span class="w">  </span><span class="n">InitWeights</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

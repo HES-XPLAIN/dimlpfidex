@@ -1,0 +1,14 @@
+.. _exhale_function_fidexGloRulesFct_8h_1a8d310f34a80c1a1837657150d763198c:
+
+Function showRulesParams()
+==========================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: showRulesParams()
+   :project: common

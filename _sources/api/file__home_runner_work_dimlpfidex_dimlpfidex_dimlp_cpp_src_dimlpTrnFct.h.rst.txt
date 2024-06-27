@@ -1,0 +1,74 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpTrnFct.h:
+
+File dimlpTrnFct.h
+==================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/dimlpTrnFct.h``)
+------------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpTrnFct.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../common/cpp/src/parameters.h``
+
+- ``dimlp.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlp.h`)
+
+- ``dimlpCommonFun.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpCommonFun.h`)
+
+- ``fstream``
+
+- ``memory``
+
+- ``realHyp2.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp2.h`)
+
+- ``sstream``
+
+- ``stdlib.h``
+
+- ``string.h``
+
+- ``time.h``
+
+- ``unordered_map``
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpTrn.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpTrnFct.cpp`
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_dimlpTrnFct_8h_1a15d5af386177f468bf3fabf46b42c164`
+
+- :ref:`exhale_function_dimlpTrnFct_8h_1a25666d2f2c0d457e5a9a77d9d59e265e`
+
+- :ref:`exhale_function_dimlpTrnFct_8h_1a18371675716361dfc9ab775abc42a681`
+

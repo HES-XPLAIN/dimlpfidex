@@ -1,0 +1,90 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bpNN.h:
+
+File bpNN.h
+===========
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/bpNN.h``)
+-----------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bpNN.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../common/cpp/src/checkFun.h``
+
+- ``algorithm``
+
+- ``dataSet.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_dataSet.h`)
+
+- ``fstream``
+
+- ``iomanip``
+
+- ``iostream``
+
+- ``layerD2.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerD2.h`)
+
+- ``layerD3.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerD3.h`)
+
+- ``layerD4.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerD4.h`)
+
+- ``layerDmp.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerDmp.h`)
+
+- ``layerFdp.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerFdp.h`)
+
+- ``layerRad.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerRad.h`)
+
+- ``layerSD.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSD.h`)
+
+- ``layerSP3.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSP3.h`)
+
+- ``layerSP4.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSP4.h`)
+
+- ``layerSP5.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSP5.h`)
+
+- ``math.h``
+
+- ``randFun.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_randFun.h`)
+
+- ``sstream``
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bpNN.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_cleanRS.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlp.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp.h`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classBpNN`
+

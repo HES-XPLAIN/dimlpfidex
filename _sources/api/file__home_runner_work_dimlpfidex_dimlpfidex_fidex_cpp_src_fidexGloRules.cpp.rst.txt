@@ -1,0 +1,33 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRules.cpp:
+
+File fidexGloRules.cpp
+======================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/fidexGloRules.cpp``)
+----------------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRules.cpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``fidexGloRulesFct.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h`)
+
+
+
+
+

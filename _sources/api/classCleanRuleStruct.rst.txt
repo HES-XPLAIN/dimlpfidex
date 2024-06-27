@@ -1,0 +1,28 @@
+.. _exhale_class_classCleanRuleStruct:
+
+Class CleanRuleStruct
+=====================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_cleanRS.h`
+
+
+Nested Relationships
+--------------------
+
+
+Nested Types
+************
+
+- :ref:`exhale_struct_structCleanRuleStruct_1_1AssocAnte`
+- :ref:`exhale_struct_structCleanRuleStruct_1_1CleanRule`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: CleanRuleStruct
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

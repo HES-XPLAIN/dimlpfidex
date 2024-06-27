@@ -1,0 +1,41 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_virtHyp.cpp:
+
+File virtHyp.cpp
+================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/virtHyp.cpp``)
+----------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_virtHyp.cpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``iostream``
+
+- ``misc.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_misc.h`)
+
+- ``stairObj.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_stairObj.h`)
+
+- ``stdlib.h``
+
+- ``virtHyp.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_virtHyp.h`)
+
+
+
+
+

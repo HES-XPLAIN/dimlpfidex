@@ -1,0 +1,66 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_errorHandler.h:
+
+Program Listing for File errorHandler.h
+=======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_errorHandler.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/common/cpp/src/errorHandler.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef ERRORHANDLER_H
+   #define ERRORHANDLER_H
+   
+   #include <exception>
+   #include <string>
+   
+   class ErrorHandler : public std::exception {
+   private:
+     std::string message_;
+   
+   public:
+     explicit ErrorHandler(const std::string &message) : message_(message) {}
+   
+     const char *what() const noexcept override {
+       return message_.c_str();
+     }
+   };
+   
+   class CommandArgumentException : public ErrorHandler {
+   public:
+     explicit CommandArgumentException(const std::string &message) : ErrorHandler("CommandArgumentException: " + message) {}
+   };
+   
+   class FileNotFoundError : public ErrorHandler {
+   public:
+     explicit FileNotFoundError(const std::string &message) : ErrorHandler("FileNotFoundError: " + message) {}
+   };
+   
+   class CannotOpenFileError : public ErrorHandler {
+   public:
+     explicit CannotOpenFileError(const std::string &message) : ErrorHandler("CannotOpenFileError: " + message) {}
+   };
+   
+   class FileFormatError : public ErrorHandler {
+   public:
+     explicit FileFormatError(const std::string &message) : ErrorHandler("FileFormatError: " + message) {}
+   };
+   
+   class FileContentError : public ErrorHandler {
+   public:
+     explicit FileContentError(const std::string &message) : ErrorHandler("FileContentError: " + message) {}
+   };
+   
+   class InternalError : public ErrorHandler {
+   public:
+     explicit InternalError(const std::string &message) : ErrorHandler("InternalError: " + message) {}
+   };
+   
+   class CannotCreateDirectoryError : public ErrorHandler {
+   public:
+     explicit CannotCreateDirectoryError(const std::string &message) : ErrorHandler("CannotCreateDirectoryError: " + message) {}
+   };
+   
+   #endif

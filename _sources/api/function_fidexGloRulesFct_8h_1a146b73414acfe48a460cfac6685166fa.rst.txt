@@ -1,0 +1,14 @@
+.. _exhale_function_fidexGloRulesFct_8h_1a146b73414acfe48a460cfac6685166fa:
+
+Function generateRules(std::vector<Rule>&, std::vector<int>&, DataSetFid&, Parameters&, const std::vector<std::vector<double>>&)
+================================================================================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: generateRules(std::vector<Rule>&, std::vector<int>&, DataSetFid&, Parameters&, const std::vector<std::vector<double>>&)
+   :project: common

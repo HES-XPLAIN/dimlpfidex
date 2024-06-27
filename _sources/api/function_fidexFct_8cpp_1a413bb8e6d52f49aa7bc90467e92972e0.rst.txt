@@ -1,0 +1,14 @@
+.. _exhale_function_fidexFct_8cpp_1a413bb8e6d52f49aa7bc90467e92972e0:
+
+Function fidex(const std::string&)
+==================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: fidex(const std::string&)
+   :project: common

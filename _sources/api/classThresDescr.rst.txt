@@ -1,0 +1,17 @@
+.. _exhale_class_classThresDescr:
+
+Class ThresDescr
+================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_thresD.h`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: ThresDescr
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

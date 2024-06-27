@@ -1,0 +1,52 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperbox.h:
+
+Program Listing for File hyperbox.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperbox.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/hyperbox.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef HYPERBOX_H
+   #define HYPERBOX_H
+   
+   #include <cstring>
+   #include <fstream>
+   #include <iostream>
+   #include <sstream>
+   #include <string>
+   #include <vector>
+   
+   class Hyperbox {
+     std::vector<std::pair<int, int>> discriminativeHyperplans; 
+     std::vector<int> coveredSamples;                           
+     double fidelity = -1;                                      
+   
+   public:
+     Hyperbox();
+   
+     explicit Hyperbox(const std::vector<std::pair<int, int>> &m_discriminativeHyperplans);
+   
+     void setCoveredSamples(const std::vector<int> &m_coveredSamples);
+   
+     std::vector<std::pair<int, int>> getDiscriminativeHyperplans() const;
+   
+     void resetDiscriminativeHyperplans();
+   
+     void computeCoveredSamples(const std::vector<int> &ancienCoveredSamples, int attribut, std::vector<std::vector<double>> &trainData, bool mainSampleGreater, double hypValue);
+   
+     void computeFidelity(const int mainsamplePred, std::vector<int> &trainPreds);
+   
+     double getFidelity() const;
+   
+     void setFidelity(double x);
+   
+     std::vector<int> getCoveredSamples() const;
+   
+     void discriminateHyperplan(int dimVal, int hypVal);
+   };
+   
+   #endif // HYPERBOX_H

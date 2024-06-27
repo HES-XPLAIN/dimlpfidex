@@ -1,0 +1,78 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStatsFct.h:
+
+File fidexGloStatsFct.h
+=======================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/fidexGloStatsFct.h``)
+-----------------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStatsFct.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../common/cpp/src/dataSet.h``
+
+- ``../../../common/cpp/src/errorHandler.h``
+
+- ``../../../common/cpp/src/parameters.h``
+
+- ``../../../common/cpp/src/rule.h``
+
+- ``fstream``
+
+- ``iostream``
+
+- ``memory``
+
+- ``sstream``
+
+- ``time.h``
+
+- ``tuple``
+
+- ``unordered_map``
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStats.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStatsFct.cpp`
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_fidexGloStatsFct_8h_1a05ace18a6573665a8433d2df5427e383`
+
+- :ref:`exhale_function_fidexGloStatsFct_8h_1a50c7aaa6451462cc498560da51c718a7`
+
+- :ref:`exhale_function_fidexGloStatsFct_8h_1aec2aeabf5ec6dcadbffc232998b38ea7`
+
+- :ref:`exhale_function_fidexGloStatsFct_8h_1abff1e6c805378c05d6636b71708e602f`
+
+- :ref:`exhale_function_fidexGloStatsFct_8h_1ac902242b0280a2c02dfb72a13378bd9e`
+

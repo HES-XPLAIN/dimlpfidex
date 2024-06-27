@@ -1,0 +1,14 @@
+.. _exhale_enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28:
+
+Enum ParameterCode
+==================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_parameters.h`
+
+
+Enum Documentation
+------------------
+
+
+.. doxygenenum:: ParameterCode
+   :project: common

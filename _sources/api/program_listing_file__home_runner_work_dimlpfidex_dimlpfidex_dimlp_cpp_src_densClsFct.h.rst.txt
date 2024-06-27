@@ -1,0 +1,32 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_densClsFct.h:
+
+Program Listing for File densClsFct.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_densClsFct.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/densClsFct.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef DENSCLSFCT_H
+   #define DENSCLSFCT_H
+   
+   #include "../../../common/cpp/src/parameters.h"
+   #include "bagDimlp.h"
+   #include "realHyp2.h"
+   #include <fstream>
+   #include <sstream>
+   #include <stdlib.h>
+   #include <string.h>
+   #include <unordered_map>
+   #include <vector>
+   
+   void showDensClsParams();
+   
+   void checkDensClsParametersLogicValues(Parameters &p);
+   
+   int densCls(const std::string &command = "");
+   
+   #endif // DENSCLSFCT_H

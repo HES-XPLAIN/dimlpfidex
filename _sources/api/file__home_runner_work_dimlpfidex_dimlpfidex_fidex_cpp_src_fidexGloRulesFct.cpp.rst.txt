@@ -1,0 +1,52 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.cpp:
+
+File fidexGloRulesFct.cpp
+=========================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/fidexGloRulesFct.cpp``)
+-------------------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.cpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``fidexGloRulesFct.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h`)
+
+
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_fidexGloRulesFct_8cpp_1a8e86b571228edbc074680a268dade666`
+
+- :ref:`exhale_function_fidexGloRulesFct_8cpp_1a90754c35e71df979efeaefd5d30ec761`
+
+- :ref:`exhale_function_fidexGloRulesFct_8cpp_1a146b73414acfe48a460cfac6685166fa`
+
+- :ref:`exhale_function_fidexGloRulesFct_8cpp_1a391ba5ae9d3b76d288b344b3fdc54252`
+
+- :ref:`exhale_function_fidexGloRulesFct_8cpp_1a2413398bcc246c568e77a6db88ecb6a3`
+
+- :ref:`exhale_function_fidexGloRulesFct_8cpp_1ab8c118e80cdd95eb86088005fa210ad5`
+
+- :ref:`exhale_function_fidexGloRulesFct_8cpp_1a8d310f34a80c1a1837657150d763198c`
+

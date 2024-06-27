@@ -1,0 +1,57 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_stairObj.h:
+
+Program Listing for File stairObj.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_stairObj.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/stairObj.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef STAIROBJ_H
+   #define STAIROBJ_H
+   
+   #include "standAct.h"
+   #include <vector>
+   
+   
+   class StairObj {
+     int NbBins; 
+     // Stair is <= activation
+     int NbKnots; 
+   
+     float HiKnot;      
+     float LowKnot;     
+     float ValLowKnot;  
+     float ValHighKnot; 
+     float Dist;        
+   
+     float BinWidth; 
+   
+     std::vector<float> Knots;     
+     std::vector<float> EvalKnots; 
+   
+     //----------------------------------------------------------------
+   
+     void InitMemberConstForAnsi();
+   
+     void ActivateKnots();
+   
+     float Activation(float x) const { return Sigmoid(x); }
+   
+     //----------------------------------------------------------------
+   
+   public:
+     float GetHiKnot() const { return HiKnot; }
+   
+     std::vector<float> &GetKnots() { return Knots; }
+   
+     float Funct(float x) const;
+   
+     explicit StairObj(int nbBins);
+   };
+   
+   
+   #endif // STAIROBJ_H

@@ -1,0 +1,26 @@
+.. _exhale_class_classBpNN:
+
+Class BpNN
+==========
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bpNN.h`
+
+
+Inheritance Relationships
+-------------------------
+
+Derived Type
+************
+
+- ``public Dimlp`` (:ref:`exhale_class_classDimlp`)
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: BpNN
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

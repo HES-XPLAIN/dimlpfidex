@@ -1,0 +1,17 @@
+.. _exhale_class_classHyperbox:
+
+Class Hyperbox
+==============
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperbox.h`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: Hyperbox
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

@@ -1,0 +1,116 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.h:
+
+File rule.h
+===========
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/common/cpp/src/rule.h``)
+------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../json/single_include/nlohmann/json.hpp``
+
+- ``algorithm``
+
+- ``antecedent.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_antecedent.h`)
+
+- ``checkFun.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.h`)
+
+- ``cmath``
+
+- ``dataSet.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_dataSet.h`)
+
+- ``fstream``
+
+- ``iostream``
+
+- ``parameters.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_parameters.h`)
+
+- ``string`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_stringI.cpp`)
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStatsFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperLocus.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperspace.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.cpp`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classRule`
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_rule_8h_1aad819dbff207798a4f801c19b29ccf6a`
+
+- :ref:`exhale_function_rule_8h_1aeed96c4a27023bdb04ae7349bccf3df5`
+
+- :ref:`exhale_function_rule_8h_1a0edf527e84e3617beea304e65b2e2854`
+
+- :ref:`exhale_function_rule_8h_1aa55790e8cf2e4a60cc94debd17d4bd03`
+
+- :ref:`exhale_function_rule_8h_1ae4f683c47191ce4b942640c46ed0adc6`
+
+- :ref:`exhale_function_rule_8h_1a8296a70185527afa301eff9bd76cc0b5`
+
+- :ref:`exhale_function_rule_8h_1a78ed7b5e861276bee994711086766113`
+
+- :ref:`exhale_function_rule_8h_1a5aebd3b01de68a8d4bfd516dbb497b4c`
+
+- :ref:`exhale_function_rule_8h_1ab26149c49b7a422dad765ae053a71bd1`
+
+- :ref:`exhale_function_rule_8h_1a320143c3e5e3c6fb4d4081fc2d3b396c`
+
+- :ref:`exhale_function_rule_8h_1ab5012c017191b1c814ecf6d133f0b0b4`
+
+- :ref:`exhale_function_rule_8h_1a8c06d7b062ea5243b8fc92775e749e9a`
+
+- :ref:`exhale_function_rule_8h_1a78a594e76d10e8b524cb82934d25eb6c`
+
+- :ref:`exhale_function_rule_8h_1a8ce1dd2ef8a7939acc0324644a78bbad`
+
+
+Typedefs
+--------
+
+
+- :ref:`exhale_typedef_rule_8h_1af13a1979f9e8f62c101433fac6511cc6`
+

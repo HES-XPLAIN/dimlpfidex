@@ -1,0 +1,14 @@
+.. _exhale_function_standAct_8cpp_1a54ae6086b82e034fd7d5ff24f1771e04:
+
+Function Power3(float)
+======================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_standAct.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: Power3(float)
+   :project: common

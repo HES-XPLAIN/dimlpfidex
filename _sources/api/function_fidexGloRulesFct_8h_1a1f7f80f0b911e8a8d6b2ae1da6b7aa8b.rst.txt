@@ -1,0 +1,14 @@
+.. _exhale_function_fidexGloRulesFct_8h_1a1f7f80f0b911e8a8d6b2ae1da6b7aa8b:
+
+Function fidexGloRules(const std::string&)
+==========================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: fidexGloRules(const std::string&)
+   :project: common

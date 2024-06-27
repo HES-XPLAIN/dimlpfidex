@@ -1,0 +1,70 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpClsFct.h:
+
+File dimlpClsFct.h
+==================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/dimlpClsFct.h``)
+------------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpClsFct.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../common/cpp/src/parameters.h``
+
+- ``dimlp.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlp.h`)
+
+- ``dimlpCommonFun.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpCommonFun.h`)
+
+- ``fstream``
+
+- ``sstream``
+
+- ``stdlib.h``
+
+- ``string.h``
+
+- ``unordered_map``
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpCls.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpClsFct.cpp`
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_dimlpClsFct_8h_1a7efbf29e6df491f10264d9940cff462d`
+
+- :ref:`exhale_function_dimlpClsFct_8h_1a1bf5e2ef55feb3d19fdb0fc7f002cdbd`
+
+- :ref:`exhale_function_dimlpClsFct_8h_1a92c3b7695646859c1f1d3bd5a47decc2`
+
+- :ref:`exhale_function_dimlpClsFct_8h_1ac93a5de2dc190cdc76d5866673712011`
+

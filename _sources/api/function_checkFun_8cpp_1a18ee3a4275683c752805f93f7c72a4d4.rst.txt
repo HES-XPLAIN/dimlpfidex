@@ -1,0 +1,14 @@
+.. _exhale_function_checkFun_8cpp_1a18ee3a4275683c752805f93f7c72a4d4:
+
+Function checkFloat(const std::string&)
+=======================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: checkFloat(const std::string&)
+   :project: common

@@ -1,0 +1,14 @@
+.. _exhale_function_checkFun_8h_1a79477ae82966da1d3256b8a33e41a014:
+
+Function parseNormalizationStats(const std::string&, int, const std::vector<std::string>&)
+==========================================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: parseNormalizationStats(const std::string&, int, const std::vector<std::string>&)
+   :project: common

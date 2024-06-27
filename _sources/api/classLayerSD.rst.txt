@@ -1,0 +1,26 @@
+.. _exhale_class_classLayerSD:
+
+Class LayerSD
+=============
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSD.h`
+
+
+Inheritance Relationships
+-------------------------
+
+Base Type
+*********
+
+- ``public Layer`` (:ref:`exhale_class_classLayer`)
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: LayerSD
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

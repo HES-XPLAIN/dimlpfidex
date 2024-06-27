@@ -1,0 +1,14 @@
+.. _exhale_function_rule_8h_1a8296a70185527afa301eff9bd76cc0b5:
+
+Function getRulesPatternsFromRuleFile(const std::string&, const DataSetFid&, bool)
+==================================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: getRulesPatternsFromRuleFile(const std::string&, const DataSetFid&, bool)
+   :project: common

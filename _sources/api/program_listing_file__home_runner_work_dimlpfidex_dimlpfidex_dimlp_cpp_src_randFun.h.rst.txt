@@ -1,0 +1,52 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_randFun.h:
+
+Program Listing for File randFun.h
+==================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_randFun.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/randFun.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef RANDFUN_H
+   #define RANDFUN_H
+   #include <chrono>
+   
+   
+   class IntRandomFunction {
+     int LowBound; 
+     int HiBound;  
+     int Diff;     
+   
+     void StartOnlyOnece(int seed = 0) const;
+   
+   public:
+     explicit IntRandomFunction(int seed = 0);
+   
+     explicit IntRandomFunction(int lowBound, int hiBound);
+   
+     int RandomInteger() const;
+   };
+   
+   
+   class FloatRandomFunction {
+     float LowBound; 
+     float HiBound;  
+     float Diff;     
+   
+     void StartOnlyOnece(int seed = 0) const;
+   
+   public:
+     explicit FloatRandomFunction(int seed = 0);
+   
+     explicit FloatRandomFunction(float lowBound, float hiBound);
+   
+     float RandomFloat() const;
+   
+     double RandomDouble() const;
+   };
+   
+   
+   #endif // RANDFUN_H

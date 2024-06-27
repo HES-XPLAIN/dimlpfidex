@@ -1,0 +1,47 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerFdp.h:
+
+Program Listing for File layerFdp.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerFdp.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/layerFdp.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LAYERFDP_H
+   #define LAYERFDP_H
+   
+   #include "layer.h"
+   
+   
+   class LayerFdimlp : public Layer {
+   
+     //----------------------------------------------------------------
+   
+     float Activation1(float x) override { return Gaussian(x); }
+   
+     float Activation2(float x) override { return Gaussian(x); }
+   
+     void ForwLayer() override { ForwSpec2(); }
+   
+     void AdaptWeights() override { AdaptWeightsSpec2(); }
+   
+     void AdaptBias() override { AdaptBiasSpec2(); }
+   
+     //----------------------------------------------------------------
+   
+   public:
+     LayerFdimlp(
+         float eta,
+         float mu,
+         float flat,
+         int nbDown,
+         int nbUp,
+         int nbWeights,
+         int nbWeightsForInit);
+   };
+   
+   
+   #endif // LAYERFDP_H

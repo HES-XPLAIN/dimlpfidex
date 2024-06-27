@@ -1,0 +1,27 @@
+.. _exhale_class_classOneVarThresDescr:
+
+Class OneVarThresDescr
+======================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_oneVarTD.h`
+
+
+Nested Relationships
+--------------------
+
+
+Nested Types
+************
+
+- :ref:`exhale_struct_structOneVarThresDescr_1_1Elem`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: OneVarThresDescr
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

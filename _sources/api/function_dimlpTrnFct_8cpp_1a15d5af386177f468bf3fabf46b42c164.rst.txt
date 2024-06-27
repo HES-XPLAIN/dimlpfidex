@@ -1,0 +1,14 @@
+.. _exhale_function_dimlpTrnFct_8cpp_1a15d5af386177f468bf3fabf46b42c164:
+
+Function checkDimlpTrnParametersLogicValues(Parameters&)
+========================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpTrnFct.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: checkDimlpTrnParametersLogicValues(Parameters&)
+   :project: common

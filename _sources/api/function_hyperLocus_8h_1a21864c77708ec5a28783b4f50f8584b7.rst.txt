@@ -1,0 +1,14 @@
+.. _exhale_function_hyperLocus_8h_1a21864c77708ec5a28783b4f50f8584b7:
+
+Function calcHypLocus(const std::string&, DataSetFid&)
+======================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperLocus.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: calcHypLocus(const std::string&, DataSetFid&)
+   :project: common

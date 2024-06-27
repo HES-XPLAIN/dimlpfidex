@@ -1,0 +1,40 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_thresD.h:
+
+Program Listing for File thresD.h
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_thresD.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/thresD.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef THRESD_H
+   #define THRESD_H
+   
+   #include "oneVarTD.h"
+   #include <vector>
+   
+   
+   class ThresDescr {
+   
+     std::vector<std::shared_ptr<OneVarThresDescr>> Descr; 
+     int NbVar;                                            
+   
+     //----------------------------------------------------------------
+   
+   public:
+     OneVarThresDescr *GetDescr(int var) { return Descr[var].get(); }
+   
+     void Insert(int var, float thres, int indPat) { (Descr[var])->OneVarThresDescr::Insert(thres, indPat); }
+   
+     void ResetAllCountPatDiscr();
+   
+     void Del();
+   
+     explicit ThresDescr(int nbVar);
+   };
+   
+   
+   #endif // THRESD_H

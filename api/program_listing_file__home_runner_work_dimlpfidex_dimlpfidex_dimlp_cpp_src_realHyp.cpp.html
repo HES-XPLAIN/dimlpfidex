@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Listing for File realHyp.cpp &mdash; dimlpfidex 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7026087e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dimlpfidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">C++ API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/modules.html">trainings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dimlpfidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Program Listing for File realHyp.cpp</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp.cpp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="program-listing-for-file-realhyp-cpp">
+<span id="program-listing-file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-realhyp-cpp"></span><h1>Program Listing for File realHyp.cpp<a class="headerlink" href="#program-listing-for-file-realhyp-cpp" title="Link to this heading"></a></h1>
+<p>↰ <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp.cpp.html#file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-realhyp-cpp"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/realHyp.cpp</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;realHyp.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;cleanRS.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;misc.h&quot;</span>
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">RealHyp::MaxOnPos</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">vec</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vec</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">max</span><span class="p">)</span>
+<span class="w">      </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">max</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">RealHyp::GiveIndMax</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">vec</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nbEl</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">vec</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">indMax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbEl</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">max</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">      </span><span class="n">indMax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">indMax</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RealHyp::SetConfirmedVirt</span><span class="p">(</span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbPat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">hyp</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">h</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">indVirt</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">pat</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">*** EXCLUDING UNRELEVANT HYPER-PLANES ...</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ConfBefFirstHyp</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">hyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ConfirmedVirt</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbHyp</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">hyp</span><span class="o">++</span><span class="p">)</span>
+<span class="w">      </span><span class="o">*</span><span class="n">hyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbPat</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">pat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">GetExample</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">pat</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">indVirt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Virt</span><span class="o">-&gt;</span><span class="n">KnotInd</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">pat</span><span class="p">);</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">indVirt</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">indVirt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">NbHyp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span>
+<span class="w">        </span><span class="o">*</span><span class="p">(</span><span class="n">ConfirmedVirt</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">indVirt</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">      </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">indVirt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span>
+<span class="w">        </span><span class="n">ConfBefFirstHyp</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">      </span><span class="k">else</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;*** ELSE WARNING !</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">                  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">hyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ConfirmedVirt</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbHyp</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">hyp</span><span class="o">++</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">hyp</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">        </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;*** RELEVANT VIRTUAL HYPER-PLANES = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RealHyp::SetConfirmedVirt2</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nbRules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">GetNbRules</span><span class="p">();</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rule</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">hyp</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">h</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">var</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">indVirt</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">val</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">*** EXCLUDING UNRELEVANT HYPER-PLANES FROM RULES ...</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">hyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ConfirmedVirt</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbHyp</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">hyp</span><span class="o">++</span><span class="p">)</span>
+<span class="w">      </span><span class="o">*</span><span class="n">hyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbRules</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">rule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">GetRule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">IsRuleEmpty</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">      </span><span class="k">continue</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">nbAnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GetNbAnt</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">IsAntDeleted</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GetVar</span><span class="p">();</span>
+<span class="w">        </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GetVal</span><span class="p">();</span>
+
+<span class="w">        </span><span class="n">indVirt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Virt</span><span class="o">-&gt;</span><span class="n">GetInd</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="n">val</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">indVirt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Warning ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">var</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">else</span>
+<span class="w">          </span><span class="o">*</span><span class="p">(</span><span class="n">ConfirmedVirt</span><span class="p">[</span><span class="n">var</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">indVirt</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">hyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ConfirmedVirt</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">data</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbHyp</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">hyp</span><span class="o">++</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">hyp</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">        </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;*** RELEVANT VIRTUAL HYPER-PLANES = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RealHyp::Gr1</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">var</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">indPat</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">startVirt</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">netAns</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">newNetAns</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">In</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">var</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrVirt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Virt</span><span class="o">-&gt;</span><span class="n">GetEpsGoRight</span><span class="p">(</span><span class="n">var</span><span class="p">).</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">startVirt</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">ptrConf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ConfirmedVirt</span><span class="p">[</span><span class="n">var</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">startVirt</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">startVirt</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbHyp</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ptrVirt</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ptrConf</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">ptrConf</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">      </span><span class="k">continue</span><span class="p">;</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">ptrIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptrVirt</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">ForwardOneExample1</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">newNetAns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">Max</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Out</span><span class="p">,</span><span class="w"> </span><span class="n">Out</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">NbOut</span><span class="p">));</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">newNetAns</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">netAns</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">Descr</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="p">((</span><span class="n">Virt</span><span class="o">-&gt;</span><span class="n">GetVirtHyp</span><span class="p">(</span><span class="n">var</span><span class="p">)).</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">),</span><span class="w"> </span><span class="n">indPat</span><span class="p">);</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RealHyp::Gr2</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">var</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">indPat</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">startVirt</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">netAns</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">newNetAns</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NbHyp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">In</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">var</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrVirt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Virt</span><span class="o">-&gt;</span><span class="n">GetEpsGoRight</span><span class="p">(</span><span class="n">var</span><span class="p">).</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">startVirt</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">ptrConf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ConfirmedVirt</span><span class="p">[</span><span class="n">var</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">startVirt</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">startVirt</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbHyp</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ptrVirt</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ptrConf</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">ptrConf</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">      </span><span class="k">continue</span><span class="p">;</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">ptrIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptrVirt</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">ForwardOneExample1</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">newNetAns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">Max</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Out</span><span class="p">,</span><span class="w"> </span><span class="n">Out</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">NbOut</span><span class="p">));</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">newNetAns</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">netAns</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">Descr</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="p">((</span><span class="n">Virt</span><span class="o">-&gt;</span><span class="n">GetVirtHyp</span><span class="p">(</span><span class="n">var</span><span class="p">)).</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">),</span><span class="w"> </span><span class="n">indPat</span><span class="p">);</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">last</span><span class="p">)</span>
+<span class="w">      </span><span class="n">Descr</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="p">((</span><span class="n">Virt</span><span class="o">-&gt;</span><span class="n">GetVirtHyp</span><span class="p">(</span><span class="n">var</span><span class="p">)).</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">startVirt</span><span class="p">),</span><span class="w"> </span><span class="n">indPat</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RealHyp::Gl1</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">var</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">indPat</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">startVirt</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">netAns</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">newNetAns</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">In</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">var</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrVirt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Virt</span><span class="o">-&gt;</span><span class="n">GetEpsGoLeft</span><span class="p">(</span><span class="n">var</span><span class="p">).</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">startVirt</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrStart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Virt</span><span class="o">-&gt;</span><span class="n">GetVirtHyp</span><span class="p">(</span><span class="n">var</span><span class="p">).</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">startVirt</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">ptrConf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ConfirmedVirt</span><span class="p">[</span><span class="n">var</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">startVirt</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">startVirt</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">--</span><span class="p">,</span><span class="w"> </span><span class="n">ptrVirt</span><span class="o">--</span><span class="p">,</span><span class="w"> </span><span class="n">ptrConf</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">ptrConf</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">        </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ConfBefFirstHyp</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">        </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">ptrIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptrVirt</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">ForwardOneExample1</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">newNetAns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">Max</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Out</span><span class="p">,</span><span class="w"> </span><span class="n">Out</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">NbOut</span><span class="p">));</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">newNetAns</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">netAns</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">Descr</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">ptrStart</span><span class="p">,</span><span class="w"> </span><span class="n">indPat</span><span class="p">);</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RealHyp::Gl2</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">var</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">indPat</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">startVirt</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">netAns</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">newNetAns</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">In</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">var</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrVirt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Virt</span><span class="o">-&gt;</span><span class="n">GetEpsGoLeft</span><span class="p">(</span><span class="n">var</span><span class="p">).</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">startVirt</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">ptrStart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Virt</span><span class="o">-&gt;</span><span class="n">GetVirtHyp</span><span class="p">(</span><span class="n">var</span><span class="p">).</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">startVirt</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">ptrConf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ConfirmedVirt</span><span class="p">[</span><span class="n">var</span><span class="p">].</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">startVirt</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">startVirt</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">--</span><span class="p">,</span><span class="w"> </span><span class="n">ptrVirt</span><span class="o">--</span><span class="p">,</span><span class="w"> </span><span class="n">ptrConf</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">ptrConf</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">        </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">Descr</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">ptrStart</span><span class="p">,</span><span class="w"> </span><span class="n">indPat</span><span class="p">);</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="o">*</span><span class="n">ptrIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptrVirt</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">ForwardOneExample1</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">newNetAns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">Max</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Out</span><span class="p">,</span><span class="w"> </span><span class="n">Out</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">NbOut</span><span class="p">));</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">newNetAns</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">netAns</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">Descr</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">ptrStart</span><span class="p">,</span><span class="w"> </span><span class="n">indPat</span><span class="p">);</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RealHyp::OneExRealHyp</span><span class="p">(</span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">indPat</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">indVirt</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">netAns</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">inv</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">ForwardOneExample1</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">indPat</span><span class="p">);</span>
+<span class="w">  </span><span class="n">netAns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ClassPatNet</span><span class="p">[</span><span class="n">indPat</span><span class="p">];</span>
+<span class="w">  </span><span class="n">In</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">GetExample</span><span class="p">(</span><span class="n">indPat</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">inv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">In</span><span class="p">[</span><span class="n">v</span><span class="p">];</span>
+<span class="w">    </span><span class="n">indVirt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Virt</span><span class="o">-&gt;</span><span class="n">KnotInd</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">inv</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">indVirt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span>
+<span class="w">      </span><span class="n">GoRight</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">indPat</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">netAns</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">indVirt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NbHyp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">      </span><span class="n">GoLeft</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">indPat</span><span class="p">,</span><span class="w"> </span><span class="n">NbHyp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">netAns</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">GoLeft</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">indPat</span><span class="p">,</span><span class="w"> </span><span class="n">indVirt</span><span class="p">,</span><span class="w"> </span><span class="n">netAns</span><span class="p">);</span>
+<span class="w">      </span><span class="n">GoRight</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">indPat</span><span class="p">,</span><span class="w"> </span><span class="n">indVirt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">netAns</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">In</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inv</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RealHyp::SetRealHyp</span><span class="p">(</span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">modulo</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nbEx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;*** ESTIMATING RELEVANCE OF DISCRIMINANT HYPER-PLANES &quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;WITH AVAILABLE EXAMPLES ...</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbEx</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="w">    </span><span class="n">modulo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbEx</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="w">  </span><span class="k">else</span>
+<span class="w">    </span><span class="n">modulo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbEx</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">modulo</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">OneExRealHyp</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RealHyp::SetCountPatDiscr</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">listPat</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbThres</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbPatThres</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">listPatThresVal</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">val</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">thres</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">OneVarThresDescr</span><span class="w"> </span><span class="o">*</span><span class="n">varDescr</span><span class="p">;</span>
+<span class="w">  </span><span class="n">StringInt</span><span class="w"> </span><span class="o">*</span><span class="n">listPatOneThres</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbPat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">listPat</span><span class="o">-&gt;</span><span class="n">GetNbEl</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbRuleAnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetNbAnt</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">Descr</span><span class="o">-&gt;</span><span class="n">ResetAllCountPatDiscr</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">varDescr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Descr</span><span class="o">-&gt;</span><span class="n">GetDescr</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+<span class="w">    </span><span class="n">nbThres</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">varDescr</span><span class="o">-&gt;</span><span class="n">GetNbThres</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">varDescr</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbThres</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">varDescr</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">      </span><span class="n">thres</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">varDescr</span><span class="o">-&gt;</span><span class="n">GetThres</span><span class="p">();</span>
+
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbRuleAnt</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">v</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVar</span><span class="p">())</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">thres</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVal</span><span class="p">()))</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">nbRuleAnt</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="n">listPatOneThres</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">varDescr</span><span class="o">-&gt;</span><span class="n">GetPtrPat</span><span class="p">();</span>
+<span class="w">      </span><span class="n">nbPatThres</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">listPatOneThres</span><span class="o">-&gt;</span><span class="n">GetNbEl</span><span class="p">();</span>
+
+<span class="w">      </span><span class="n">listPatOneThres</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbPatThres</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">listPatOneThres</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">listPatThresVal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">listPatOneThres</span><span class="o">-&gt;</span><span class="n">GetVal</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">listPat</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbPat</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">listPat</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">listPat</span><span class="o">-&gt;</span><span class="n">GetVal</span><span class="p">();</span>
+
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">listPatThresVal</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">val</span><span class="p">)</span>
+<span class="w">            </span><span class="n">varDescr</span><span class="o">-&gt;</span><span class="n">IncCountPatDiscr</span><span class="p">();</span>
+
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">val</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">listPatThresVal</span><span class="p">)</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Ante</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RealHyp</span><span class="o">::</span><span class="n">FindMostDiscrAnt</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sel</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">var</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">oldCount</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">newCount</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbThres</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">val</span><span class="p">;</span>
+<span class="w">  </span><span class="n">OneVarThresDescr</span><span class="w"> </span><span class="o">*</span><span class="n">oneDescr</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">  </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">oldCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sel</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">oneDescr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Descr</span><span class="o">-&gt;</span><span class="n">GetDescr</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+<span class="w">    </span><span class="n">nbThres</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oneDescr</span><span class="o">-&gt;</span><span class="n">GetNbThres</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">oneDescr</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbThres</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">oneDescr</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">newCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oneDescr</span><span class="o">-&gt;</span><span class="n">GetCountPatDiscr</span><span class="p">();</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">newCount</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">oldCount</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
+<span class="w">        </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oneDescr</span><span class="o">-&gt;</span><span class="n">GetThres</span><span class="p">();</span>
+<span class="w">        </span><span class="n">oldCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">newCount</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">ant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Ante</span><span class="o">&gt;</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;?&#39;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">ant</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="n">RealHyp</span><span class="o">::</span><span class="n">DeepSearch</span><span class="p">(</span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">subSet</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="n">DimlpRule</span><span class="w"> </span><span class="n">newLeftPath</span><span class="p">;</span>
+<span class="w">  </span><span class="n">DimlpRule</span><span class="w"> </span><span class="n">newRightPath</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">newListPat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">subSet</span><span class="p">);</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">newListPat</span><span class="o">-&gt;</span><span class="n">GetNbEl</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">newListPat</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="n">path</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">AreSameClass</span><span class="p">(</span><span class="n">newListPat</span><span class="p">,</span><span class="w"> </span><span class="n">ClassPatNet</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">newListPat</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="n">SaveRule</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+<span class="w">    </span><span class="n">path</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">SetCountPatDiscr</span><span class="p">(</span><span class="n">newListPat</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Ante</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FindMostDiscrAnt</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ant</span><span class="o">-&gt;</span><span class="n">GetVarAnte</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ant</span><span class="o">-&gt;</span><span class="n">GetValAnte</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">var</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ant</span><span class="o">-&gt;</span><span class="n">DelAnte</span><span class="p">();</span>
+<span class="w">    </span><span class="n">newListPat</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="n">DeepSearch2</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
+<span class="w">    </span><span class="n">path</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="p">(</span><span class="n">newLeftPath</span><span class="p">.</span><span class="n">Copy</span><span class="p">(</span><span class="n">path</span><span class="p">))</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;&lt;&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">(</span><span class="n">newRightPath</span><span class="p">.</span><span class="n">Copy</span><span class="p">(</span><span class="n">path</span><span class="p">))</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;&gt;&#39;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">path</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">  </span><span class="n">ant</span><span class="o">-&gt;</span><span class="n">DelAnte</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">DeepSearch</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="p">(</span><span class="n">newLeftPath</span><span class="p">),</span><span class="w"> </span><span class="n">newListPat</span><span class="p">);</span>
+<span class="w">  </span><span class="n">DeepSearch</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="p">(</span><span class="n">newRightPath</span><span class="p">),</span><span class="w"> </span><span class="n">newListPat</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">newListPat</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span><span class="w"> </span><span class="n">RealHyp</span><span class="o">::</span><span class="n">ComputeCorrect</span><span class="p">(</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">listPatLeft</span><span class="p">,</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">listPatRight</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">ind</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbPat</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">max</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">classLeft</span><span class="p">(</span><span class="n">NbOut</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">classRight</span><span class="p">(</span><span class="n">NbOut</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbComp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NbOut</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">NbOut</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vectMax</span><span class="p">(</span><span class="n">nbComp</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">nbPat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">listPatLeft</span><span class="o">-&gt;</span><span class="n">GetNbEl</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">listPatLeft</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbPat</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">listPatLeft</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span>
+<span class="w">    </span><span class="n">classLeft</span><span class="p">[</span><span class="n">ClassPatNet</span><span class="p">[</span><span class="n">listPatLeft</span><span class="o">-&gt;</span><span class="n">GetVal</span><span class="p">()]]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">nbPat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">listPatRight</span><span class="o">-&gt;</span><span class="n">GetNbEl</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">listPatRight</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbPat</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">listPatRight</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span>
+<span class="w">    </span><span class="n">classRight</span><span class="p">[</span><span class="n">ClassPatNet</span><span class="p">[</span><span class="n">listPatRight</span><span class="o">-&gt;</span><span class="n">GetVal</span><span class="p">()]]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">ind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbOut</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">q</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">q</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbOut</span><span class="p">;</span><span class="w"> </span><span class="n">q</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">q</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">p</span><span class="p">)</span>
+<span class="w">        </span><span class="k">continue</span><span class="p">;</span>
+
+<span class="w">      </span><span class="n">vectMax</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">classLeft</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">classRight</span><span class="p">[</span><span class="n">q</span><span class="p">];</span>
+<span class="w">      </span><span class="n">ind</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MaxOnPos</span><span class="p">(</span><span class="n">vectMax</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">max</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="n">RealHyp</span><span class="o">::</span><span class="n">SetCountPatDiscr2</span><span class="p">(</span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">r</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbThres</span><span class="p">;</span>
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nbCorrect</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">thres</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">OneVarThresDescr</span><span class="w"> </span><span class="o">*</span><span class="n">varDescr</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">newListPatLeft</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">newListPatRight</span><span class="p">;</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">newLeftPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">newRightPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">Descr</span><span class="o">-&gt;</span><span class="n">ResetAllCountPatDiscr</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbRuleAnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetNbAnt</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">v</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">varDescr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Descr</span><span class="o">-&gt;</span><span class="n">GetDescr</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+<span class="w">    </span><span class="n">nbThres</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">varDescr</span><span class="o">-&gt;</span><span class="n">GetNbThres</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">varDescr</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbThres</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">varDescr</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">thres</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">varDescr</span><span class="o">-&gt;</span><span class="n">GetThres</span><span class="p">();</span>
+
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbRuleAnt</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">v</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVar</span><span class="p">())</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">thres</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVal</span><span class="p">()))</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">nbRuleAnt</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="p">(</span><span class="n">newLeftPath</span><span class="o">-&gt;</span><span class="n">Copy</span><span class="p">(</span><span class="n">r</span><span class="p">))</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">thres</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;&lt;&#39;</span><span class="p">);</span><span class="w">  </span><span class="c1">// to del</span>
+<span class="w">      </span><span class="p">(</span><span class="n">newRightPath</span><span class="o">-&gt;</span><span class="n">Copy</span><span class="p">(</span><span class="n">r</span><span class="p">))</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">thres</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;&gt;&#39;</span><span class="p">);</span><span class="w"> </span><span class="c1">// to del</span>
+
+<span class="w">      </span><span class="n">newListPatLeft</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">newLeftPath</span><span class="p">);</span><span class="w">   </span><span class="c1">// to del</span>
+<span class="w">      </span><span class="n">newListPatRight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">newRightPath</span><span class="p">);</span><span class="w"> </span><span class="c1">// to del</span>
+
+<span class="w">      </span><span class="n">nbCorrect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ComputeCorrect</span><span class="p">(</span><span class="n">newListPatLeft</span><span class="p">,</span><span class="w"> </span><span class="n">newListPatRight</span><span class="p">);</span>
+<span class="w">      </span><span class="n">varDescr</span><span class="o">-&gt;</span><span class="n">SetCountPat</span><span class="p">(</span><span class="n">nbCorrect</span><span class="p">);</span>
+
+<span class="w">      </span><span class="n">newLeftPath</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">      </span><span class="n">newRightPath</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">      </span><span class="n">newListPatLeft</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">      </span><span class="n">newListPatRight</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="n">RealHyp</span><span class="o">::</span><span class="n">DeepSearch2</span><span class="p">(</span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">path</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="n">DimlpRule</span><span class="w"> </span><span class="n">newLeftPath</span><span class="p">;</span>
+<span class="w">  </span><span class="n">DimlpRule</span><span class="w"> </span><span class="n">newRightPath</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">newListPat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">newListPat</span><span class="o">-&gt;</span><span class="n">GetNbEl</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">newListPat</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="n">path</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">AreSameClass</span><span class="p">(</span><span class="n">newListPat</span><span class="p">,</span><span class="w"> </span><span class="n">ClassPatNet</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">newListPat</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="n">SaveRule</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+<span class="w">    </span><span class="n">path</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">SetCountPatDiscr2</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Ante</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FindMostDiscrAnt</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ant</span><span class="o">-&gt;</span><span class="n">GetVarAnte</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ant</span><span class="o">-&gt;</span><span class="n">GetValAnte</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">var</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Aborted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ant</span><span class="o">-&gt;</span><span class="n">DelAnte</span><span class="p">();</span>
+<span class="w">    </span><span class="n">newListPat</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="p">(</span><span class="n">newLeftPath</span><span class="p">.</span><span class="n">Copy</span><span class="p">(</span><span class="n">path</span><span class="p">))</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;&lt;&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">(</span><span class="n">newRightPath</span><span class="p">.</span><span class="n">Copy</span><span class="p">(</span><span class="n">path</span><span class="p">))</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="w"> </span><span class="n">val</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;&gt;&#39;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">path</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">  </span><span class="n">ant</span><span class="o">-&gt;</span><span class="n">DelAnte</span><span class="p">();</span>
+<span class="w">  </span><span class="n">newListPat</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">DeepSearch2</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="p">(</span><span class="n">newLeftPath</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DeepSearch2</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="p">(</span><span class="n">newRightPath</span><span class="p">));</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="n">RealHyp</span><span class="o">::</span><span class="n">RuleExtraction</span><span class="p">(</span>
+<span class="w">    </span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">train</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">trainClass</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">valid</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">validClass</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">test</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">testClass</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">AttrName</span><span class="w"> </span><span class="o">&amp;</span><span class="n">attr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="w"> </span><span class="o">&amp;</span><span class="n">ruleFile</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">mus</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sigmas</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">normalizationIndices</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="n">DimlpRule</span><span class="w"> </span><span class="n">empty</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">listAll</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbAnt1</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbAnt2</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">Aborted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">SavedRules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">RuleProcessing</span><span class="o">&gt;</span><span class="p">(</span><span class="n">NbIn</span><span class="p">,</span><span class="w"> </span><span class="n">NbHyp</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">ClassPatNet</span><span class="p">,</span><span class="w"> </span><span class="n">Descr</span><span class="p">);</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;*** BUILDING DECISION TREE ...</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">listAll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="p">(</span><span class="n">empty</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DeepSearch</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="p">(</span><span class="n">empty</span><span class="p">),</span><span class="w"> </span><span class="n">listAll</span><span class="p">);</span>
+<span class="w">  </span><span class="n">listAll</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Aborted</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;*** TREE ABORTED !</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;*** TRYING AN ALTERNATIVE ALGORITHM </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="n">Descr</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">Clean</span><span class="p">();</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;4&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">CountAnt</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;*** NO RULES !</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;--- Number of rules = 0&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;--- Number of antecedents = 0&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;--- Number of antecedents per rule = 0&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;--- Number of examples per rule = 0&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;*** NO RULES !</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;--- Number of rules = 0&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;--- Number of antecedents = 0&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;--- Number of antecedents per rule = 0&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;--- Number of examples per rule = 0&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">Descr</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">*** PRUNING ANTECEDENTS AND PRUNING RULES ...</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">MixPrune</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">*** EXPANDING RULES ...</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">EnlargeAndPrune</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">nbAnt1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">CountAnt</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">*** RETRYING RULE EXTRACTION ...</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">CleanRuleStruct</span><span class="w"> </span><span class="nf">clean</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">train</span><span class="p">,</span><span class="w"> </span><span class="n">trainClass</span><span class="p">,</span>
+<span class="w">                        </span><span class="n">valid</span><span class="p">,</span><span class="w"> </span><span class="n">validClass</span><span class="p">,</span><span class="w"> </span><span class="n">test</span><span class="p">,</span><span class="w"> </span><span class="n">testClass</span><span class="p">,</span>
+<span class="w">                        </span><span class="n">SavedRules</span><span class="p">,</span><span class="w"> </span><span class="n">Bpnn</span><span class="p">,</span><span class="w"> </span><span class="n">Out</span><span class="p">,</span><span class="w"> </span><span class="n">NbOut</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">Descr</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">  </span><span class="n">SetConfirmedVirt2</span><span class="p">();</span>
+<span class="w">  </span><span class="n">SetRealHyp</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;*** BUILDING DECISION TREE ...</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">listAll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="p">(</span><span class="n">empty</span><span class="p">));</span>
+<span class="w">  </span><span class="n">DeepSearch</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="p">(</span><span class="n">empty</span><span class="p">),</span><span class="w"> </span><span class="n">listAll</span><span class="p">);</span>
+<span class="w">  </span><span class="n">listAll</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Aborted</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;*** TREE ABORTED !</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Aborted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">goto</span><span class="w"> </span><span class="n">A</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">Clean</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">*** PRUNING ANTECEDENTS AND PRUNING RULES ...</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">MixPrune</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">*** EXPANDING RULES ...</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">EnlargeAndPrune</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">nbAnt2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">CountAnt</span><span class="p">();</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbAnt2</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbAnt1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">*** RULE SET IMPROVED BY &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">nbAnt1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">nbAnt2</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; ANTECEDENTS&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">clean</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="n">CleanRuleStruct</span><span class="w"> </span><span class="nf">clean2</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">train</span><span class="p">,</span><span class="w"> </span><span class="n">trainClass</span><span class="p">,</span>
+<span class="w">                           </span><span class="n">valid</span><span class="p">,</span><span class="w"> </span><span class="n">validClass</span><span class="p">,</span><span class="w"> </span><span class="n">test</span><span class="p">,</span><span class="w"> </span><span class="n">testClass</span><span class="p">,</span>
+<span class="w">                           </span><span class="n">SavedRules</span><span class="p">,</span><span class="w"> </span><span class="n">Bpnn</span><span class="p">,</span><span class="w"> </span><span class="n">Out</span><span class="p">,</span><span class="w"> </span><span class="n">NbOut</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">*** WRITING IF-THEN RULES ...</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">attr</span><span class="p">.</span><span class="n">IsFileAttr</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">clean2</span><span class="p">.</span><span class="n">SetAttr</span><span class="p">(</span><span class="n">attr</span><span class="p">.</span><span class="n">GetListAttr</span><span class="p">());</span>
+<span class="w">      </span><span class="n">clean2</span><span class="p">.</span><span class="n">SetStrClass</span><span class="p">(</span><span class="n">attr</span><span class="p">.</span><span class="n">GetListClasses</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">clean2</span><span class="p">.</span><span class="n">SetAttr</span><span class="p">();</span>
+<span class="w">      </span><span class="n">clean2</span><span class="p">.</span><span class="n">SetStrClass</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mus</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">clean2</span><span class="p">.</span><span class="n">WriteRules</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">ruleFile</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">clean2</span><span class="p">.</span><span class="n">WriteRules</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">ruleFile</span><span class="p">,</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">sigmas</span><span class="p">,</span><span class="w"> </span><span class="n">normalizationIndices</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">*** RULE SET DOES NOT IMPROVE (&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">nbAnt1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">nbAnt2</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;)&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="nl">A</span><span class="p">:</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">    (WRITING PREVIOUS ONE)&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">*** WRITING IF-THEN RULES ...</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">attr</span><span class="p">.</span><span class="n">IsFileAttr</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">clean</span><span class="p">.</span><span class="n">SetAttr</span><span class="p">(</span><span class="n">attr</span><span class="p">.</span><span class="n">GetListAttr</span><span class="p">());</span>
+<span class="w">      </span><span class="n">clean</span><span class="p">.</span><span class="n">SetStrClass</span><span class="p">(</span><span class="n">attr</span><span class="p">.</span><span class="n">GetListClasses</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">clean</span><span class="p">.</span><span class="n">SetAttr</span><span class="p">();</span>
+<span class="w">      </span><span class="n">clean</span><span class="p">.</span><span class="n">SetStrClass</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mus</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">clean</span><span class="p">.</span><span class="n">WriteRules</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">ruleFile</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">clean</span><span class="p">.</span><span class="n">WriteRules</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">ruleFile</span><span class="p">,</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">sigmas</span><span class="p">,</span><span class="w"> </span><span class="n">normalizationIndices</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">SavedRules</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">Descr</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="p">}</span>
+
+
+<span class="n">RealHyp</span><span class="o">::</span><span class="n">RealHyp</span><span class="p">(</span>
+<span class="w">    </span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">BpNN</span><span class="o">&gt;</span><span class="w"> </span><span class="n">nn</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbBins</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">multiple</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbWeightLayers</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Bpnn</span><span class="p">(</span><span class="n">nn</span><span class="p">),</span><span class="w"> </span><span class="n">NbBins</span><span class="p">(</span><span class="n">nbBins</span><span class="p">),</span><span class="w"> </span><span class="n">NbIn</span><span class="p">(</span><span class="n">nbIn</span><span class="p">),</span><span class="w"> </span><span class="n">Multiple</span><span class="p">(</span><span class="n">multiple</span><span class="p">),</span><span class="w"> </span><span class="n">NbWeightLayers</span><span class="p">(</span><span class="n">nbWeightLayers</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">NbHyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">NbBins</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Multiple</span><span class="p">;</span>
+<span class="w">  </span><span class="n">NbOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">GetLayer</span><span class="p">(</span><span class="n">NbWeightLayers</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="o">-&gt;</span><span class="n">GetNbUp</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">Bias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span><span class="o">-&gt;</span><span class="n">GetBias</span><span class="p">();</span>
+<span class="w">  </span><span class="n">Weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span><span class="o">-&gt;</span><span class="n">GetWeights</span><span class="p">();</span>
+<span class="w">  </span><span class="n">Out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">GetLayer</span><span class="p">(</span><span class="n">NbWeightLayers</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="o">-&gt;</span><span class="n">GetUp</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">Virt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">VirtualHyp</span><span class="o">&gt;</span><span class="p">(</span><span class="n">NbBins</span><span class="p">,</span><span class="w"> </span><span class="n">NbIn</span><span class="p">,</span><span class="w"> </span><span class="n">Multiple</span><span class="p">,</span><span class="w"> </span><span class="n">Bias</span><span class="p">,</span><span class="w"> </span><span class="n">Weights</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Descr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">ThresDescr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">NbIn</span><span class="p">);</span>
+<span class="w">  </span><span class="n">ClassPatNet</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">());</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">();</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">ForwardOneExample1</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
+<span class="w">    </span><span class="n">ClassPatNet</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">Max</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Out</span><span class="p">,</span><span class="w"> </span><span class="n">Out</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">NbOut</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">ConfirmedVirt</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbIn</span><span class="p">);</span>
+<span class="w">  </span><span class="n">ConfBefFirstHyp</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbIn</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">ConfirmedVirt</span><span class="p">[</span><span class="n">p</span><span class="p">].</span><span class="n">resize</span><span class="p">(</span><span class="n">NbHyp</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">SetConfirmedVirt</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="w">  </span><span class="n">SetRealHyp</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="n">RealHyp</span><span class="o">::</span><span class="n">RealHyp</span><span class="p">(</span>
+<span class="w">    </span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">BpNN</span><span class="o">&gt;</span><span class="w"> </span><span class="n">nn</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbBins</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">multiple</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbWeightLayers</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="cm">/*dummy*/</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Bpnn</span><span class="p">(</span><span class="n">nn</span><span class="p">),</span><span class="w"> </span><span class="n">NbBins</span><span class="p">(</span><span class="n">nbBins</span><span class="p">),</span><span class="w"> </span><span class="n">NbIn</span><span class="p">(</span><span class="n">nbIn</span><span class="p">),</span><span class="w"> </span><span class="n">Multiple</span><span class="p">(</span><span class="n">multiple</span><span class="p">),</span><span class="w"> </span><span class="n">NbWeightLayers</span><span class="p">(</span><span class="n">nbWeightLayers</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">NbHyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">NbBins</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Multiple</span><span class="p">;</span>
+<span class="w">  </span><span class="n">NbOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">GetLayer</span><span class="p">(</span><span class="n">NbWeightLayers</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="o">-&gt;</span><span class="n">GetNbUp</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">Bias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span><span class="o">-&gt;</span><span class="n">GetBias</span><span class="p">();</span>
+<span class="w">  </span><span class="n">Weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span><span class="o">-&gt;</span><span class="n">GetWeights</span><span class="p">();</span>
+<span class="w">  </span><span class="n">Out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">GetLayer</span><span class="p">(</span><span class="n">NbWeightLayers</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="o">-&gt;</span><span class="n">GetUp</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">Virt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">VirtualHyp</span><span class="o">&gt;</span><span class="p">(</span><span class="n">NbBins</span><span class="p">,</span><span class="w"> </span><span class="n">NbIn</span><span class="p">,</span><span class="w"> </span><span class="n">Multiple</span><span class="p">,</span><span class="w"> </span><span class="n">Bias</span><span class="p">,</span><span class="w"> </span><span class="n">Weights</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Descr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">ThresDescr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">NbIn</span><span class="p">);</span>
+<span class="w">  </span><span class="n">ClassPatNet</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">());</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">();</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">ForwardOneExample1</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
+<span class="w">    </span><span class="n">ClassPatNet</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">Max</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Out</span><span class="p">,</span><span class="w"> </span><span class="n">Out</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">NbOut</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">ConfirmedVirt</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbIn</span><span class="p">);</span>
+<span class="w">  </span><span class="n">ConfBefFirstHyp</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbIn</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">ConfirmedVirt</span><span class="p">[</span><span class="n">p</span><span class="p">].</span><span class="n">resize</span><span class="p">(</span><span class="n">NbHyp</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="n">RealHyp</span><span class="o">::</span><span class="n">RealHyp</span><span class="p">(</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">VirtualHyp</span><span class="o">&gt;</span><span class="w"> </span><span class="n">globalVirt</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbNets</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">out</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbOut</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">BpNN</span><span class="o">&gt;</span><span class="w"> </span><span class="n">nn</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbBins</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">multiple</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbWeightLayers</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Bpnn</span><span class="p">(</span><span class="n">nn</span><span class="p">),</span><span class="w"> </span><span class="n">Virt</span><span class="p">(</span><span class="n">globalVirt</span><span class="p">),</span><span class="w"> </span><span class="n">Out</span><span class="p">(</span><span class="n">out</span><span class="p">),</span><span class="w"> </span><span class="n">NbBins</span><span class="p">(</span><span class="n">nbBins</span><span class="p">),</span><span class="w"> </span><span class="n">NbIn</span><span class="p">(</span><span class="n">nbIn</span><span class="p">),</span><span class="w"> </span><span class="n">Multiple</span><span class="p">(</span><span class="n">multiple</span><span class="p">),</span><span class="w"> </span><span class="n">NbWeightLayers</span><span class="p">(</span><span class="n">nbWeightLayers</span><span class="p">),</span><span class="w"> </span><span class="n">NbOut</span><span class="p">(</span><span class="n">nbOut</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">NbHyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">NbBins</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Multiple</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nbNets</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">Descr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">ThresDescr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">NbIn</span><span class="p">);</span>
+<span class="w">  </span><span class="n">ClassPatNet</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">());</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">();</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">ForwardOneExample1</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
+<span class="w">    </span><span class="n">ClassPatNet</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">Max</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Out</span><span class="p">,</span><span class="w"> </span><span class="n">Out</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">NbOut</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">ConfirmedVirt</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbIn</span><span class="p">);</span>
+<span class="w">  </span><span class="n">ConfBefFirstHyp</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbIn</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">ConfirmedVirt</span><span class="p">[</span><span class="n">p</span><span class="p">].</span><span class="n">resize</span><span class="p">(</span><span class="n">NbHyp</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">SetConfirmedVirt</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="w">  </span><span class="n">SetRealHyp</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="n">RealHyp</span><span class="o">::</span><span class="n">RealHyp</span><span class="p">(</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">VirtualHyp</span><span class="o">&gt;</span><span class="w"> </span><span class="n">globalVirt</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbNets</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">out</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbOut</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DataSet</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">BpNN</span><span class="o">&gt;</span><span class="w"> </span><span class="n">nn</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbBins</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">multiple</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbWeightLayers</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="cm">/*dummy*/</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Bpnn</span><span class="p">(</span><span class="n">nn</span><span class="p">),</span><span class="w"> </span><span class="n">Virt</span><span class="p">(</span><span class="n">globalVirt</span><span class="p">),</span><span class="w"> </span><span class="n">Out</span><span class="p">(</span><span class="n">out</span><span class="p">),</span><span class="w"> </span><span class="n">NbBins</span><span class="p">(</span><span class="n">nbBins</span><span class="p">),</span><span class="w"> </span><span class="n">NbIn</span><span class="p">(</span><span class="n">nbIn</span><span class="p">),</span><span class="w"> </span><span class="n">Multiple</span><span class="p">(</span><span class="n">multiple</span><span class="p">),</span><span class="w"> </span><span class="n">NbWeightLayers</span><span class="p">(</span><span class="n">nbWeightLayers</span><span class="p">),</span><span class="w"> </span><span class="n">NbOut</span><span class="p">(</span><span class="n">nbOut</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">NbHyp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">NbBins</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Multiple</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nbNets</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">Descr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">ThresDescr</span><span class="o">&gt;</span><span class="p">(</span><span class="n">NbIn</span><span class="p">);</span>
+<span class="w">  </span><span class="n">ClassPatNet</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">());</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">();</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">ForwardOneExample1</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
+<span class="w">    </span><span class="n">ClassPatNet</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bpnn</span><span class="o">-&gt;</span><span class="n">Max</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Out</span><span class="p">,</span><span class="w"> </span><span class="n">Out</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">NbOut</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">ConfirmedVirt</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbIn</span><span class="p">);</span>
+<span class="w">  </span><span class="n">ConfBefFirstHyp</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbIn</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbIn</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">ConfirmedVirt</span><span class="p">[</span><span class="n">p</span><span class="p">].</span><span class="n">resize</span><span class="p">(</span><span class="n">NbHyp</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

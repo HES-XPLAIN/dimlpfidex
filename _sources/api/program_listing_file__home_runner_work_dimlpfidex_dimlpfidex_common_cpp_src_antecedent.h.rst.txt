@@ -1,0 +1,70 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_antecedent.h:
+
+Program Listing for File antecedent.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_antecedent.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/common/cpp/src/antecedent.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef ANTECEDENT_H
+   #define ANTECEDENT_H
+   #include "../../../json/single_include/nlohmann/json.hpp"
+   #include <cmath>
+   #include <iostream>
+   #include <ostream>
+   
+   using Json = nlohmann::json;
+   
+   class Antecedent {
+   private:
+     int attribute;   
+     bool inequality; 
+     double value;    
+   
+     NLOHMANN_DEFINE_TYPE_INTRUSIVE(Antecedent, attribute, inequality, value)
+   
+   public:
+     Antecedent() = default;
+     Antecedent(int attribute, bool inequality, double value);
+   
+     // Getters
+   
+     int getAttribute() const { return attribute; }
+   
+     bool getInequality() const { return inequality; }
+   
+     double getValue() const { return value; }
+   
+     // Setters
+   
+     void setAttribute(int val) { attribute = val; }
+   
+     void setInequality(bool val) { inequality = val; }
+   
+     void setValue(double val) { value = val; }
+   
+     bool isEqual(Antecedent other) const;
+   };
+   
+   // Operator overloads
+   
+   inline std::ostream &operator<<(std::ostream &stream, const Antecedent &antecedent) {
+     return stream << " "
+                   << std::to_string(antecedent.getAttribute()) << " "
+                   << std::to_string(antecedent.getInequality()) << " "
+                   << std::to_string(antecedent.getValue()) << " ";
+   }
+   
+   inline bool operator==(const Antecedent &a1, const Antecedent &a2) {
+     return a1.isEqual(a2);
+   }
+   
+   inline bool operator!=(const Antecedent &a1, const Antecedent &a2) {
+     return !a1.isEqual(a2);
+   }
+   
+   #endif // ANTECEDENT_H

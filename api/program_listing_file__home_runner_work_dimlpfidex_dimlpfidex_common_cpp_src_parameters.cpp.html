@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Listing for File parameters.cpp &mdash; dimlpfidex 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7026087e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dimlpfidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">C++ API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/modules.html">trainings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dimlpfidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Program Listing for File parameters.cpp</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_parameters.cpp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="program-listing-for-file-parameters-cpp">
+<span id="program-listing-file-home-runner-work-dimlpfidex-dimlpfidex-common-cpp-src-parameters-cpp"></span><h1>Program Listing for File parameters.cpp<a class="headerlink" href="#program-listing-for-file-parameters-cpp" title="Link to this heading"></a></h1>
+<p>↰ <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_parameters.cpp.html#file-home-runner-work-dimlpfidex-dimlpfidex-common-cpp-src-parameters-cpp"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">/home/runner/work/dimlpfidex/dimlpfidex/common/cpp/src/parameters.cpp</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;parameters.h&quot;</span>
+
+<span class="n">Parameters</span><span class="o">::</span><span class="n">Parameters</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">validParams</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">args</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="p">[</span><span class="n">p</span><span class="p">];</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">param</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;--&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">param</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="w">      </span><span class="n">p</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">args</span><span class="p">.</span><span class="n">size</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Missing something at the end of the command.&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">arg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">args</span><span class="p">[</span><span class="n">p</span><span class="p">];</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">args</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">].</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s">&quot;--&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">args</span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">].</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;There is a parameter without -- (&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">args</span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;).&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="n">parseArg</span><span class="p">(</span><span class="n">param</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">,</span><span class="w"> </span><span class="n">validParams</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">checkFilesIntegrity</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">Parameters</span><span class="o">::</span><span class="n">Parameters</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">jsonfile</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">validParams</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">ifstream</span><span class="w"> </span><span class="n">ifs</span><span class="p">;</span>
+<span class="w">  </span><span class="n">ifs</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">jsonfile</span><span class="p">);</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">args</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ifs</span><span class="p">.</span><span class="n">is_open</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">ifs</span><span class="p">.</span><span class="n">fail</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">FileNotFoundError</span><span class="p">(</span><span class="s">&quot;JSON file to parse named &#39;&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">jsonfile</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;&#39; was not found, cannot proceed.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">Json</span><span class="w"> </span><span class="n">jsonData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Json</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">ifs</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="o">&amp;</span><span class="n">item</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">jsonData</span><span class="p">.</span><span class="n">items</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">value</span><span class="p">().</span><span class="n">is_string</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">value</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">to_string</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">value</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">parseArg</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">key</span><span class="p">(),</span><span class="w"> </span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="n">validParams</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">checkFilesIntegrity</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">checkFilesIntegrity</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// input files checks</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">TRAIN_DATA_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">TRAIN_PRED_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">TRAIN_CLASS_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">TEST_DATA_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">VALID_DATA_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">VALID_CLASS_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">TEST_PRED_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">TEST_CLASS_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">RULES_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">GLOBAL_RULES_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">ATTRIBUTES_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">WEIGHTS_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">NORMALIZATION_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">HIDDEN_LAYERS_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// handling output files checks (files that will be generated by the program)</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">TRAIN_PRED_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">TEST_PRED_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">VALID_PRED_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">WEIGHTS_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">HID_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">STATS_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">CONSOLE_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">RULES_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">GLOBAL_RULES_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">EXPLANATION_FILE</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="w">  </span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">HIDDEN_LAYERS_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">parseArg</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">param</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">arg</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">validParams</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">option</span><span class="p">;</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parameterNames</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">param</span><span class="p">);</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">it</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">parameterNames</span><span class="p">.</span><span class="n">end</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">option</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">param</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;json_config_file&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Option &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">param</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; has to be the only option in the command if specified.&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Illegal option : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">param</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// Check for invalid parameter</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">find</span><span class="p">(</span><span class="n">validParams</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">validParams</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">option</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">validParams</span><span class="p">.</span><span class="n">end</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwInvalidParameter</span><span class="p">(</span><span class="n">option</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">option</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// Handle each parameter case</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">TRAIN_DATA_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">TRAIN_DATA_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">TRAIN_PRED_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">TRAIN_PRED_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">TRAIN_PRED_OUTFILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">TRAIN_PRED_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">TEST_DATA_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">TEST_DATA_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">TEST_PRED_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">TEST_PRED_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">TEST_PRED_OUTFILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">TEST_PRED_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">NB_ATTRIBUTES</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">NB_ATTRIBUTES</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">NB_CLASSES</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">NB_CLASSES</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">TRAIN_CLASS_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">TRAIN_CLASS_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">TEST_CLASS_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">TEST_CLASS_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">VALID_DATA_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">VALID_DATA_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">VALID_CLASS_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">VALID_CLASS_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">VALID_PRED_OUTFILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">VALID_PRED_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">WEIGHTS_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">WEIGHTS_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">WEIGHTS_OUTFILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">WEIGHTS_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">HID_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">HID_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">STATS_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">STATS_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">RULES_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">RULES_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">RULES_OUTFILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">RULES_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">NB_DIMLP_NETS</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">NB_DIMLP_NETS</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">NB_EX_PER_NET</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">NB_EX_PER_NET</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">NB_QUANT_LEVELS</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">NB_QUANT_LEVELS</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">NB_FIDEX_RULES</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">NB_FIDEX_RULES</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">GLOBAL_RULES_OUTFILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">GLOBAL_RULES_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">GLOBAL_RULES_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">GLOBAL_RULES_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">EXPLANATION_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">EXPLANATION_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">CONSOLE_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">CONSOLE_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">ATTRIBUTES_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">ATTRIBUTES_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">ROOT_FOLDER</span><span class="p">:</span>
+<span class="w">    </span><span class="n">checkPath</span><span class="p">(</span><span class="n">ROOT_FOLDER</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span><span class="w"> </span><span class="c1">// root directory existence must be checked</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">ROOT_FOLDER</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">HEURISTIC</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">HEURISTIC</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">MAX_ITERATIONS</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">MAX_ITERATIONS</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">MIN_COVERING</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">MIN_COVERING</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">LEARNING_RATE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setFloat</span><span class="p">(</span><span class="n">LEARNING_RATE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">MOMENTUM</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setFloat</span><span class="p">(</span><span class="n">MOMENTUM</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">FLAT</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setFloat</span><span class="p">(</span><span class="n">FLAT</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">ERROR_THRESH</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setFloat</span><span class="p">(</span><span class="n">ERROR_THRESH</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">ACC_THRESH</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setFloat</span><span class="p">(</span><span class="n">ACC_THRESH</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">ABS_ERROR_THRESH</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setFloat</span><span class="p">(</span><span class="n">ABS_ERROR_THRESH</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">NB_EPOCHS</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">NB_EPOCHS</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">NB_EPOCHS_ERROR</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">NB_EPOCHS_ERROR</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">WITH_RULE_EXTRACTION</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setBool</span><span class="p">(</span><span class="n">WITH_RULE_EXTRACTION</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">COVERING_STRATEGY</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setBool</span><span class="p">(</span><span class="n">COVERING_STRATEGY</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">NB_THREADS</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">NB_THREADS</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">MIN_FIDELITY</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setFloat</span><span class="p">(</span><span class="n">MIN_FIDELITY</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">LOWEST_MIN_FIDELITY</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setFloat</span><span class="p">(</span><span class="n">LOWEST_MIN_FIDELITY</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">DROPOUT_DIM</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setFloat</span><span class="p">(</span><span class="n">DROPOUT_DIM</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">DROPOUT_HYP</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setFloat</span><span class="p">(</span><span class="n">DROPOUT_HYP</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">MAX_FAILED_ATTEMPTS</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">MAX_FAILED_ATTEMPTS</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">DECISION_THRESHOLD</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setFloat</span><span class="p">(</span><span class="n">DECISION_THRESHOLD</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">POSITIVE_CLASS_INDEX</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">POSITIVE_CLASS_INDEX</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">NORMALIZATION_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">NORMALIZATION_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">MUS</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setDoubleVector</span><span class="p">(</span><span class="n">MUS</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">SIGMAS</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setDoubleVector</span><span class="p">(</span><span class="n">SIGMAS</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">NORMALIZATION_INDICES</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setIntVector</span><span class="p">(</span><span class="n">NORMALIZATION_INDICES</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">WITH_FIDEX</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setBool</span><span class="p">(</span><span class="n">WITH_FIDEX</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">WITH_MINIMAL_VERSION</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setBool</span><span class="p">(</span><span class="n">WITH_MINIMAL_VERSION</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">SEED</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">SEED</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">FIRST_HIDDEN_LAYER</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">FIRST_HIDDEN_LAYER</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">HIDDEN_LAYERS</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setIntVector</span><span class="p">(</span><span class="n">HIDDEN_LAYERS</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">HIDDEN_LAYERS_OUTFILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">HIDDEN_LAYERS_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">HIDDEN_LAYERS_FILE</span><span class="p">:</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">HIDDEN_LAYERS_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="c1">// If we put another -X option</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Illegal option : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">param</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setInt</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isIntSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwAlreadySetArgumentException</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">checkInt</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">_intParams</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stoi</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwInvalidDataTypeException</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;integer&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setInt</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isIntSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwAlreadySetArgumentException</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">value</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">_intParams</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setFloat</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isFloatSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwAlreadySetArgumentException</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">checkFloat</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">_floatParams</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stof</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwInvalidDataTypeException</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;float&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setFloat</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isFloatSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwAlreadySetArgumentException</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">value</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">_floatParams</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">checkPath</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">path</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwInvalidFileOrDirectory</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setDouble</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isDoubleSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwAlreadySetArgumentException</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">checkFloat</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">_doubleParams</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stod</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwInvalidDataTypeException</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;double&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setDouble</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isDoubleSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwAlreadySetArgumentException</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">value</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">_doubleParams</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setBool</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isBoolSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwAlreadySetArgumentException</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">checkBool</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">transform</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">value</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">value</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span>
+<span class="w">                   </span><span class="p">[](</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">tolower</span><span class="p">(</span><span class="n">c</span><span class="p">);</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="n">_boolParams</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : invalide type for parameter &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">getParameterName</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;, boolean requested.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setBool</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isBoolSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwAlreadySetArgumentException</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">value</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">_boolParams</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setDoubleVector</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isDoubleVectorSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwAlreadySetArgumentException</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">checkList</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : invalide type for parameter &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">getParameterName</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;, list in the form [a,b,...,c] without spaces requested, a,b,c are numbers. Received &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">_doubleVectorParams</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getDoubleVectorFromString</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setDoubleVector</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isDoubleVectorSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwAlreadySetArgumentException</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">vectorToString</span><span class="p">(</span><span class="n">value</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">_doubleVectorParams</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setIntVector</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isIntVectorSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwAlreadySetArgumentException</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">checkList</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : invalide type for parameter &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">getParameterName</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;, list in the form [a,b,...,c] without spaces requested, a,b,c are integers. Received &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">_intVectorParams</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getIntVectorFromString</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setIntVector</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isIntVectorSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwAlreadySetArgumentException</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">vectorToString</span><span class="p">(</span><span class="n">value</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">_intVectorParams</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setString</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwAlreadySetArgumentException</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">_stringParams</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">completePath</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// avoid error cases</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">ROOT_FOLDER</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ROOT_FOLDER</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">fullPath</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getString</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">separator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getOSSeparator</span><span class="p">();</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">isStringSet</span><span class="p">(</span><span class="n">ROOT_FOLDER</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">getString</span><span class="p">(</span><span class="n">ROOT_FOLDER</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">target</span><span class="p">.</span><span class="n">back</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">separator</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwInvalidFileOrDirectory</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">root</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">root</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">root</span><span class="p">.</span><span class="n">back</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">separator</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">target</span><span class="p">.</span><span class="n">front</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">separator</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">fullPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">target</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">fullPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">separator</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">target</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">_stringParams</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fullPath</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">sanitizePath</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">shouldFileExist</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// ignore if target is not set and avoid duplicating the root path for no reason</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ROOT_FOLDER</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">completePath</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">fullPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getString</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">shouldFileExist</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">checkPath</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">fullPath</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">checkPath</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">fullPath</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">fullPath</span><span class="p">.</span><span class="n">find_last_of</span><span class="p">(</span><span class="n">getOSSeparator</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// public getters</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getInt</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">assertIntExists</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">_intParams</span><span class="p">[</span><span class="n">id</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kt">float</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getFloat</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">assertFloatExists</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">_floatParams</span><span class="p">[</span><span class="n">id</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kt">double</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getDouble</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">assertDoubleExists</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">_doubleParams</span><span class="p">[</span><span class="n">id</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getBool</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">assertBoolExists</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">_boolParams</span><span class="p">[</span><span class="n">id</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getDoubleVector</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">assertDoubleVectorExists</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">_doubleVectorParams</span><span class="p">[</span><span class="n">id</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getIntVector</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">assertIntVectorExists</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">_intVectorParams</span><span class="p">[</span><span class="n">id</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getString</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">assertStringExists</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">_stringParams</span><span class="p">[</span><span class="n">id</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="n">StringInt</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getArch</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">StringInt</span><span class="w"> </span><span class="n">arch</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isIntSet</span><span class="p">(</span><span class="n">FIRST_HIDDEN_LAYER</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">arch</span><span class="p">.</span><span class="n">Insert</span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">FIRST_HIDDEN_LAYER</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isIntVectorSet</span><span class="p">(</span><span class="n">HIDDEN_LAYERS</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">getIntVector</span><span class="p">(</span><span class="n">HIDDEN_LAYERS</span><span class="p">).</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">arch</span><span class="p">.</span><span class="n">Insert</span><span class="p">(</span><span class="n">getIntVector</span><span class="p">(</span><span class="n">HIDDEN_LAYERS</span><span class="p">)[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">arch</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">StringInt</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getArchInd</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">StringInt</span><span class="w"> </span><span class="n">archInd</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isIntSet</span><span class="p">(</span><span class="n">FIRST_HIDDEN_LAYER</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">archInd</span><span class="p">.</span><span class="n">Insert</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isIntVectorSet</span><span class="p">(</span><span class="n">HIDDEN_LAYERS</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">getIntVector</span><span class="p">(</span><span class="n">HIDDEN_LAYERS</span><span class="p">).</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">archInd</span><span class="p">.</span><span class="n">Insert</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">archInd</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">getParameterName</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pair</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">parameterNames</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pair</span><span class="p">.</span><span class="n">second</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">pair</span><span class="p">.</span><span class="n">first</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;unknown&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">isIntSet</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">_intParams</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">_intParams</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">isFloatSet</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">_floatParams</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">_floatParams</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">isDoubleSet</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">_doubleParams</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">_doubleParams</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">isBoolSet</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">_boolParams</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">_boolParams</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">isDoubleVectorSet</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">_doubleVectorParams</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">_doubleVectorParams</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">isIntVectorSet</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">_intVectorParams</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">_intVectorParams</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">_stringParams</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">_stringParams</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// public assertions</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">assertStringExists</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwArgumentNotFoundException</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">assertIntExists</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isIntSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwArgumentNotFoundException</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">assertFloatExists</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isFloatSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwArgumentNotFoundException</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">assertDoubleExists</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isDoubleSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwArgumentNotFoundException</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">assertBoolExists</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isBoolSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwArgumentNotFoundException</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">assertDoubleVectorExists</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isDoubleVectorSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwArgumentNotFoundException</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">assertIntVectorExists</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isIntVectorSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">throwArgumentNotFoundException</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Default setters</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setDefaultInt</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">defaultValue</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isIntSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span>
+<span class="w">    </span><span class="n">setInt</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">defaultValue</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setDefaultFloat</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">defaultValue</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isFloatSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span>
+<span class="w">    </span><span class="n">setFloat</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">defaultValue</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setDefaultDouble</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">defaultValue</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isDoubleSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span>
+<span class="w">    </span><span class="n">setDouble</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">defaultValue</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setDefaultBool</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">defaultValue</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isBoolSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span>
+<span class="w">    </span><span class="n">setBool</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">defaultValue</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setDefaultDoubleVector</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">defaultValue</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isDoubleVectorSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span>
+<span class="w">    </span><span class="n">setDoubleVector</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">defaultValue</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setDefaultIntVector</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">defaultValue</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isIntVectorSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span>
+<span class="w">    </span><span class="n">setIntVector</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">defaultValue</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setDefaultString</span><span class="p">(</span><span class="n">ParameterCode</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">defaultValue</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">withRoot</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">defaultValue</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">withRoot</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// define separator depending on OS</span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">separator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getOSSeparator</span><span class="p">();</span>
+<span class="w">      </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getString</span><span class="p">(</span><span class="n">ROOT_FOLDER</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">separator</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">defaultValue</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">setString</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">checkAttributeAndClassCounts</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_ATTRIBUTES</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Number of attributes must be strictly positive (&gt;=1).&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_CLASSES</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Number of classes must be greater than 1.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">checkParametersCommon</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="n">checkAttributeAndClassCounts</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_QUANT_LEVELS</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Number of stairs in the staircase activation function must be greater than 2.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">checkParametersFidex</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">WEIGHTS_FILE</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">isStringSet</span><span class="p">(</span><span class="n">RULES_FILE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error: Please choose only one among a weight file(--&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">getParameterName</span><span class="p">(</span><span class="n">WEIGHTS_FILE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;) and a rules input file(--&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">getParameterName</span><span class="p">(</span><span class="n">RULES_FILE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">WEIGHTS_FILE</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">RULES_FILE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : A weight file(--&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">getParameterName</span><span class="p">(</span><span class="n">WEIGHTS_FILE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;) or a rules file(--&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">getParameterName</span><span class="p">(</span><span class="n">RULES_FILE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;) has to be given.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">MAX_ITERATIONS</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Maximum number of iterations must be strictly positive (&gt;=1).&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">MIN_COVERING</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Minimium covering must be strictly positive (&gt;=1).&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">MAX_FAILED_ATTEMPTS</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Maximum number of failed attempts has to be positive (&gt;=0)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getFloat</span><span class="p">(</span><span class="n">MIN_FIDELITY</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">getFloat</span><span class="p">(</span><span class="n">MIN_FIDELITY</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Minimum fidelity has to be between [0.0, 1.0]&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getFloat</span><span class="p">(</span><span class="n">LOWEST_MIN_FIDELITY</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">getFloat</span><span class="p">(</span><span class="n">LOWEST_MIN_FIDELITY</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Minimum fidelity has to be between [0.0, 1.0]&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getFloat</span><span class="p">(</span><span class="n">DROPOUT_DIM</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">getFloat</span><span class="p">(</span><span class="n">DROPOUT_DIM</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Dropout dim must be between [0.0, 1.0].&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getFloat</span><span class="p">(</span><span class="n">DROPOUT_HYP</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">getFloat</span><span class="p">(</span><span class="n">DROPOUT_HYP</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Dropout hyp must be between [0.0, 1.0].&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : random seed mus be positive (&gt;=0).&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">checkParametersDecisionThreshold</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">getFloat</span><span class="p">(</span><span class="n">DECISION_THRESHOLD</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">getFloat</span><span class="p">(</span><span class="n">DECISION_THRESHOLD</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">getFloat</span><span class="p">(</span><span class="n">DECISION_THRESHOLD</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mf">-1.0f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Decision threshold must be beetween [0.0, 1.0].&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">POSITIVE_CLASS_INDEX</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">getInt</span><span class="p">(</span><span class="n">POSITIVE_CLASS_INDEX</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Positive class index must be positive (&gt;=0)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">POSITIVE_CLASS_INDEX</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_CLASSES</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : The index of positive class cannot be greater or equal to the number of classes (&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_CLASSES</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;).&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getFloat</span><span class="p">(</span><span class="n">DECISION_THRESHOLD</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">-1</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">getInt</span><span class="p">(</span><span class="n">POSITIVE_CLASS_INDEX</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : The positive class index has to be given with option --positive_class_index if the decision threshold is given (--decision_threshold)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">checkParametersDimlpTrn</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getFloat</span><span class="p">(</span><span class="n">LEARNING_RATE</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;The learning parameter must be strictly positive (&gt;0).&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getFloat</span><span class="p">(</span><span class="n">MOMENTUM</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;The momentum parameter must be positive (&gt;=0).&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getFloat</span><span class="p">(</span><span class="n">FLAT</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;The flat parameter must be positive (&gt;=0).&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getFloat</span><span class="p">(</span><span class="n">ERROR_THRESH</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">getFloat</span><span class="p">(</span><span class="n">ERROR_THRESH</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mf">-1111111111.0f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;The error threshold must be positive (&gt;=0).&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">getFloat</span><span class="p">(</span><span class="n">ACC_THRESH</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">getFloat</span><span class="p">(</span><span class="n">ACC_THRESH</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">getFloat</span><span class="p">(</span><span class="n">ACC_THRESH</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mf">11111111111111.0f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;The accuracy threshold must be between ]0,1].&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getFloat</span><span class="p">(</span><span class="n">ABS_ERROR_THRESH</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;The delta error parameter (ABS_ERROR_THRESH) must be positive (&gt;=0, 0=not using delta).&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_EPOCHS</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Number of epochs must be strictly positive (&gt;=1).&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_EPOCHS_ERROR</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Number of epochs to show errors must be strictly positive (&gt;=1).&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isIntSet</span><span class="p">(</span><span class="n">FIRST_HIDDEN_LAYER</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">FIRST_HIDDEN_LAYER</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">getInt</span><span class="p">(</span><span class="n">FIRST_HIDDEN_LAYER</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_ATTRIBUTES</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Number of neurons in first hidden layer must be a multiple of the number of attributes (&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_ATTRIBUTES</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;).&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isIntVectorSet</span><span class="p">(</span><span class="n">HIDDEN_LAYERS</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">getIntVector</span><span class="p">(</span><span class="n">HIDDEN_LAYERS</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">l</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Number of neurons in each hidden layers must be strictly positive (&gt;=1).&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : random seed mus be positive (&gt;=0).&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">checkParametersNormalization</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="c1">// Check denormalization parameters</span>
+
+<span class="w">  </span><span class="c1">// If normalizationIndices were not specified, it&#39;s all attributes</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">NORMALIZATION_FILE</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">isIntVectorSet</span><span class="p">(</span><span class="n">NORMALIZATION_INDICES</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">isDoubleVectorSet</span><span class="p">(</span><span class="n">MUS</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">normalizationIndicesTemp</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_ATTRIBUTES</span><span class="p">);</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">normalizationIndicesTemp</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">setIntVector</span><span class="p">(</span><span class="n">NORMALIZATION_INDICES</span><span class="p">,</span><span class="w"> </span><span class="n">normalizationIndicesTemp</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// Check if mus and sigmas are both given or both not</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">isDoubleVectorSet</span><span class="p">(</span><span class="n">MUS</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">isDoubleVectorSet</span><span class="p">(</span><span class="n">SIGMAS</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">      </span><span class="o">!</span><span class="p">(</span><span class="n">isDoubleVectorSet</span><span class="p">(</span><span class="n">MUS</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">isDoubleVectorSet</span><span class="p">(</span><span class="n">SIGMAS</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : One of Mus(--mus) and sigmas(--sigmas) is given but not the other.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">NORMALIZATION_FILE</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">isDoubleVectorSet</span><span class="p">(</span><span class="n">MUS</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">isStringSet</span><span class="p">(</span><span class="n">NORMALIZATION_FILE</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">isIntVectorSet</span><span class="p">(</span><span class="n">NORMALIZATION_INDICES</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : normlization file (--normalization_file) and mus or normalizationIndices (--normalization_indices) are both given.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// Mus, sigmas and normalizationIndices must have the same size and not be empty</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isDoubleVectorSet</span><span class="p">(</span><span class="n">MUS</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">getDoubleVector</span><span class="p">(</span><span class="n">MUS</span><span class="p">).</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">getDoubleVector</span><span class="p">(</span><span class="n">SIGMAS</span><span class="p">).</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">getDoubleVector</span><span class="p">(</span><span class="n">MUS</span><span class="p">).</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">getIntVector</span><span class="p">(</span><span class="n">NORMALIZATION_INDICES</span><span class="p">).</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">getDoubleVector</span><span class="p">(</span><span class="n">MUS</span><span class="p">).</span><span class="n">empty</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : mus (--mus), sigmas (--sigmas) and normalization indices (--normalization_indices) don&#39;t have the same size or are empty.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// Check normalizationIndices</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isIntVectorSet</span><span class="p">(</span><span class="n">NORMALIZATION_INDICES</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">tempVect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getIntVector</span><span class="p">(</span><span class="n">NORMALIZATION_INDICES</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">uniqueIndices</span><span class="p">(</span><span class="n">tempVect</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">tempVect</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">uniqueIndices</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">getIntVector</span><span class="p">(</span><span class="n">NORMALIZATION_INDICES</span><span class="p">).</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">||</span>
+<span class="w">        </span><span class="o">*</span><span class="n">std</span><span class="o">::</span><span class="n">max_element</span><span class="p">(</span><span class="n">uniqueIndices</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">uniqueIndices</span><span class="p">.</span><span class="n">end</span><span class="p">())</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_ATTRIBUTES</span><span class="p">)</span><span class="w"> </span><span class="o">||</span>
+<span class="w">        </span><span class="o">*</span><span class="n">std</span><span class="o">::</span><span class="n">min_element</span><span class="p">(</span><span class="n">uniqueIndices</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">uniqueIndices</span><span class="p">.</span><span class="n">end</span><span class="p">())</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : parameter normalization indices (--normalization_indices) must be a list composed of integers between [0, nb_attributes-1(&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_ATTRIBUTES</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;)] without repeted elements.&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setDefaultNbQuantLevels</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">setDefaultInt</span><span class="p">(</span><span class="n">NB_QUANT_LEVELS</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setDefaultFidex</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">setDefaultInt</span><span class="p">(</span><span class="n">MAX_ITERATIONS</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultInt</span><span class="p">(</span><span class="n">MIN_COVERING</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultInt</span><span class="p">(</span><span class="n">MAX_FAILED_ATTEMPTS</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultFloat</span><span class="p">(</span><span class="n">MIN_FIDELITY</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultFloat</span><span class="p">(</span><span class="n">LOWEST_MIN_FIDELITY</span><span class="p">,</span><span class="w"> </span><span class="mf">0.75</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultBool</span><span class="p">(</span><span class="n">COVERING_STRATEGY</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultFloat</span><span class="p">(</span><span class="n">DROPOUT_DIM</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultFloat</span><span class="p">(</span><span class="n">DROPOUT_HYP</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultFloat</span><span class="p">(</span><span class="n">HI_KNOT</span><span class="p">,</span><span class="w"> </span><span class="mf">5.0f</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultInt</span><span class="p">(</span><span class="n">SEED</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setDefaultDecisionThreshold</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">setDefaultFloat</span><span class="p">(</span><span class="n">DECISION_THRESHOLD</span><span class="p">,</span><span class="w"> </span><span class="mf">-1.0f</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultInt</span><span class="p">(</span><span class="n">POSITIVE_CLASS_INDEX</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">setDefaultDimlpTrn</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">setDefaultFloat</span><span class="p">(</span><span class="n">LEARNING_RATE</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1f</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultFloat</span><span class="p">(</span><span class="n">MOMENTUM</span><span class="p">,</span><span class="w"> </span><span class="mf">0.6f</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultFloat</span><span class="p">(</span><span class="n">FLAT</span><span class="p">,</span><span class="w"> </span><span class="mf">0.01f</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultFloat</span><span class="p">(</span><span class="n">ERROR_THRESH</span><span class="p">,</span><span class="w"> </span><span class="mf">-1111111111.0f</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultFloat</span><span class="p">(</span><span class="n">ACC_THRESH</span><span class="p">,</span><span class="w"> </span><span class="mf">11111111111111.0f</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultFloat</span><span class="p">(</span><span class="n">ABS_ERROR_THRESH</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultInt</span><span class="p">(</span><span class="n">NB_EPOCHS_ERROR</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultInt</span><span class="p">(</span><span class="n">NB_EPOCHS</span><span class="p">,</span><span class="w"> </span><span class="mi">1500</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultBool</span><span class="p">(</span><span class="n">WITH_RULE_EXTRACTION</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultString</span><span class="p">(</span><span class="n">HIDDEN_LAYERS_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hidden_layers.out&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">setDefaultInt</span><span class="p">(</span><span class="n">SEED</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">writeHiddenLayersFile</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">fileName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getString</span><span class="p">(</span><span class="n">HIDDEN_LAYERS_OUTFILE</span><span class="p">);</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="w"> </span><span class="nf">hidFile</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="o">::</span><span class="n">out</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">hidFile</span><span class="p">.</span><span class="n">is_open</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CannotOpenFileError</span><span class="p">(</span><span class="s">&quot;Erroe : Impossible to open file : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fileName</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hidFile</span><span class="p">.</span><span class="n">fail</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">InternalError</span><span class="p">(</span><span class="s">&quot;Error during the writing of file : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fileName</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isIntSet</span><span class="p">(</span><span class="n">FIRST_HIDDEN_LAYER</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">hidFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;1 &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">getInt</span><span class="p">(</span><span class="n">FIRST_HIDDEN_LAYER</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">hidFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;1 &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_ATTRIBUTES</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">hidFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isIntVectorSet</span><span class="p">(</span><span class="n">HIDDEN_LAYERS</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">getIntVector</span><span class="p">(</span><span class="n">HIDDEN_LAYERS</span><span class="p">).</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">hidFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">getIntVector</span><span class="p">(</span><span class="n">HIDDEN_LAYERS</span><span class="p">)[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">hidFile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">fileName</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;: Written.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">Parameters</span><span class="o">::</span><span class="n">readHiddenLayersFile</span><span class="p">(</span><span class="n">StringInt</span><span class="w"> </span><span class="o">&amp;</span><span class="n">arch</span><span class="p">,</span><span class="w"> </span><span class="n">StringInt</span><span class="w"> </span><span class="o">&amp;</span><span class="n">archInd</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">fileName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getString</span><span class="p">(</span><span class="n">HIDDEN_LAYERS_FILE</span><span class="p">);</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">fstream</span><span class="w"> </span><span class="n">hidFile</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">hidFile</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">in</span><span class="p">);</span><span class="w"> </span><span class="c1">// Read file</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hidFile</span><span class="p">.</span><span class="n">fail</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">FileNotFoundError</span><span class="p">(</span><span class="s">&quot;Error : file &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fileName</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; not found.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">regex</span><span class="w"> </span><span class="n">lineFormat</span><span class="p">(</span><span class="sa">R</span><span class="s">&quot;</span><span class="dl">(</span><span class="s">^\s*(\d+)\s+(\d+)\s*$</span><span class="dl">)</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">smatch</span><span class="w"> </span><span class="n">match</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">line</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">idLayer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">getline</span><span class="p">(</span><span class="n">hidFile</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">checkStringEmpty</span><span class="p">(</span><span class="n">line</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">regex_match</span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="w"> </span><span class="n">match</span><span class="p">,</span><span class="w"> </span><span class="n">lineFormat</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">stoi</span><span class="p">(</span><span class="n">match</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">str</span><span class="p">());</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">idLayer</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">archInd</span><span class="p">.</span><span class="n">Insert</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="k">throw</span><span class="w"> </span><span class="n">FileContentError</span><span class="p">(</span><span class="s">&quot;Error in file &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fileName</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; : id of layer not correct, it must start at 1 and increment by 1 for each layer, received &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">stoi</span><span class="p">(</span><span class="n">match</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="n">str</span><span class="p">());</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">arch</span><span class="p">.</span><span class="n">Insert</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="k">throw</span><span class="w"> </span><span class="n">FileContentError</span><span class="p">(</span><span class="s">&quot;Error in file &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fileName</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; : the number of neurons in each layer must be strictly positive, received &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_ATTRIBUTES</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="k">throw</span><span class="w"> </span><span class="n">FileContentError</span><span class="p">(</span><span class="s">&quot;Error : File &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fileName</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; : the number of neurons in the first layer (&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;) has to be a multiple of the number of attributes (&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_ATTRIBUTES</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;).&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">FileContentError</span><span class="p">(</span><span class="s">&quot;Error : File &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fileName</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; is not on good format. Each layer id and value must be strictly positive numbers separated by a space, each layer on a new line. Index starts at 1.&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="n">idLayer</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">idLayer</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">FileContentError</span><span class="p">(</span><span class="s">&quot;Error : File &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fileName</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; has no layer data.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

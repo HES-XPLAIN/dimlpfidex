@@ -1,0 +1,23 @@
+.. _exhale_struct_structFidex_1_1currentExecutionSpecs:
+
+Struct Fidex::currentExecutionSpecs
+===================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexAlgo.h`
+
+
+Nested Relationships
+--------------------
+
+This struct is a nested type of :ref:`exhale_class_classFidex`.
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: Fidex::currentExecutionSpecs
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

@@ -1,0 +1,41 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSP5.h:
+
+Program Listing for File layerSP5.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSP5.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/layerSP5.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LAYERSP5_H
+   #define LAYERSP5_H
+   
+   #include "layer.h"
+   
+   
+   class LayerSP5 : public Layer {
+   
+     //----------------------------------------------------------------
+   
+     float Activation1(float x) override { return Power5(x); }
+   
+     //----------------------------------------------------------------
+   
+   public:
+     LayerSP5(
+         int nbDown,
+         int nbUp,
+         int nbWeights,
+         int nbWeightsForInit) :
+   
+                                 Layer(0, 0, 0, nbDown, nbUp, nbWeights, nbWeightsForInit)
+   
+     {
+     }
+   };
+   
+   
+   #endif // LAYERSP5_H

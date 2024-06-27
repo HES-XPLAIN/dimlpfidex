@@ -1,0 +1,64 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_oneVarTD.h:
+
+Program Listing for File oneVarTD.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_oneVarTD.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/oneVarTD.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef ONEVARTD_H
+   #define ONEVARTD_H
+   
+   #include "../../../common/cpp/src/stringI.h"
+   #include <memory>
+   
+   
+   class OneVarThresDescr {
+     struct Elem {
+       float Thres;                        
+       std::unique_ptr<StringInt> ListPat; 
+       int CountPatDiscr;                  
+       std::shared_ptr<Elem> Next;         
+     };
+   
+     int NbThres = 0;               
+     std::shared_ptr<Elem> First;   
+     std::shared_ptr<Elem> PtrList; 
+   
+     //----------------------------------------------------------------
+     std::shared_ptr<Elem> CreateElem(float thres, int indPat);
+   
+     //----------------------------------------------------------------
+   
+   public:
+     int GetNbThres() const { return NbThres; }
+   
+     void GoToBeg() { PtrList = First; }
+   
+     void GoToNext() { PtrList = PtrList->Next; }
+   
+     float GetThres() const { return PtrList->Thres; }
+   
+     StringInt *GetPtrPat() { return PtrList->ListPat.get(); }
+   
+     int GetCountPatDiscr() const { return PtrList->CountPatDiscr; }
+   
+     void IncCountPatDiscr() const { (PtrList->CountPatDiscr)++; }
+   
+     void SetCountPat(int val) const { PtrList->CountPatDiscr = val; }
+   
+     void ResetCountPatDiscr();
+   
+     void Insert(float thres, int indPat);
+   
+     void Del();
+   
+     OneVarThresDescr() = default;
+   };
+   
+   
+   #endif // ONEVARTD_H

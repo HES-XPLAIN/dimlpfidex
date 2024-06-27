@@ -1,0 +1,59 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerD4.h:
+
+Program Listing for File layerD4.h
+==================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerD4.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/layerD4.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LAYERD4_H
+   #define LAYERD4_H
+   
+   #include "layer.h"
+   #include "stairObj.h"
+   
+   #include <memory>
+   
+   
+   class LayerDimlp4 : public Layer {
+   
+     std::unique_ptr<StairObj> Stair; 
+   
+     //----------------------------------------------------------------
+   
+     float Activation1(float x) override { return Stair->Funct(x); }
+   
+     void ForwLayer() override { ForwSpec(); }
+   
+     void AdaptWeights() override {
+       // This method intentionally left empty to prevent weight adaptation
+     }
+   
+     void AdaptBias() override {
+       // This method intentionally left empty to prevent bias adaptation
+     }
+   
+     void ComputeDeltaDown() override {
+       // This method intentionally left empty to prevent delta computation
+     }
+   
+     //----------------------------------------------------------------
+   
+   public:
+     LayerDimlp4(
+         float eta,
+         float mu,
+         float flat,
+         int nbDown,
+         int nbUp,
+         int nbWeights,
+         int nbWeightsForInit,
+         int nbKnots);
+   };
+   
+   
+   #endif // LAYERD4_H

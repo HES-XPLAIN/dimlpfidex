@@ -1,0 +1,14 @@
+.. _exhale_function_checkFun_8cpp_1a39267a079508286a15aac356ed73574b:
+
+Function printOptionDescription(const std::string&, const std::string&, int)
+============================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: printOptionDescription(const std::string&, const std::string&, int)
+   :project: common

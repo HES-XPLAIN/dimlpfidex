@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class BpNN &mdash; dimlpfidex 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7026087e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class CannotCreateDirectoryError" href="classCannotCreateDirectoryError.html" />
+    <link rel="prev" title="Class BagDimlp" href="classBagDimlp.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dimlpfidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">C++ API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="structCleanRuleStruct_1_1AssocAnte.html">Struct CleanRuleStruct::AssocAnte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structCleanRuleStruct_1_1CleanRule.html">Struct CleanRuleStruct::CleanRule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structDimlpRule_1_1Antecedent.html">Struct DimlpRule::Antecedent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structFidex_1_1currentExecutionSpecs.html">Struct Fidex::currentExecutionSpecs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structOneVarThresDescr_1_1Elem.html">Struct OneVarThresDescr::Elem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structRuleProcessing_1_1Saved.html">Struct RuleProcessing::Saved</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structStringInt_1_1Elem.html">Struct StringInt::Elem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAnte.html">Class Ante</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAntecedent.html">Class Antecedent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAttrName.html">Class AttrName</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classBagDimlp.html">Class BagDimlp</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Class BpNN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCannotCreateDirectoryError.html">Class CannotCreateDirectoryError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCannotOpenFileError.html">Class CannotOpenFileError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCleanRuleStruct.html">Class CleanRuleStruct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCommandArgumentException.html">Class CommandArgumentException</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDataSet.html">Class DataSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDataSetFid.html">Class DataSetFid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDimlp.html">Class Dimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDimlpRule.html">Class DimlpRule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classErrorHandler.html">Class ErrorHandler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFidex.html">Class Fidex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileContentError.html">Class FileContentError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileFormatError.html">Class FileFormatError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileNotFoundError.html">Class FileNotFoundError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFloatRandomFunction.html">Class FloatRandomFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classHyperbox.html">Class Hyperbox</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classHyperspace.html">Class Hyperspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classInternalError.html">Class InternalError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classIntRandomFunction.html">Class IntRandomFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayer.html">Class Layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp.html">Class LayerDimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp2.html">Class LayerDimlp2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp3.html">Class LayerDimlp3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp4.html">Class LayerDimlp4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerFdimlp.html">Class LayerFdimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerRad.html">Class LayerRad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSD.html">Class LayerSD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP3.html">Class LayerSP3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP4.html">Class LayerSP4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP5.html">Class LayerSP5</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classOneVarThresDescr.html">Class OneVarThresDescr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classParameters.html">Class Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRealHyp.html">Class RealHyp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRealHyp2.html">Class RealHyp2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRule.html">Class Rule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRuleProcessing.html">Class RuleProcessing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classStairObj.html">Class StairObj</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classStringInt.html">Class StringInt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classThresDescr.html">Class ThresDescr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVectWithRandVal.html">Class VectWithRandVal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVirtualHyp.html">Class VirtualHyp</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#enums">Enums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#typedefs">Typedefs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/modules.html">trainings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dimlpfidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="library_root.html">Library API</a></li>
+      <li class="breadcrumb-item active">Class BpNN</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/classBpNN.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-bpnn">
+<span id="exhale-class-classbpnn"></span><h1>Class BpNN<a class="headerlink" href="#class-bpnn" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bpNN.h.html#file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-bpnn-h"><span class="std std-ref">File bpNN.h</span></a></p></li>
+</ul>
+<section id="inheritance-relationships">
+<h2>Inheritance Relationships<a class="headerlink" href="#inheritance-relationships" title="Link to this heading"></a></h2>
+<section id="derived-type">
+<h3>Derived Type<a class="headerlink" href="#derived-type" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">Dimlp</span></code> (<a class="reference internal" href="classDimlp.html#exhale-class-classdimlp"><span class="std std-ref">Class Dimlp</span></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv44BpNN">
+<span id="_CPPv34BpNN"></span><span id="_CPPv24BpNN"></span><span id="BpNN"></span><span class="target" id="classBpNN"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BpNN</span></span></span><a class="headerlink" href="#_CPPv44BpNN" title="Link to this definition"></a><br /></dt>
+<dd><p>Represents a Backpropagation Neural Network (<a class="reference internal" href="#classBpNN"><span class="std std-ref">BpNN</span></a>). </p>
+<p>This class implements the structure and functionalities of a neural network using backpropagation for training. </p>
+<p>Subclassed by <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4BpNN11GetNbLayersEv">
+<span id="_CPPv3NK4BpNN11GetNbLayersEv"></span><span id="_CPPv2NK4BpNN11GetNbLayersEv"></span><span id="BpNN::GetNbLayersC"></span><span class="target" id="classBpNN_1af464745750ab4fb6b8ba7a4822ca7656"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetNbLayers</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4BpNN11GetNbLayersEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the number of layers. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of layers. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4BpNN17GetNbWeightLayersEv">
+<span id="_CPPv3NK4BpNN17GetNbWeightLayersEv"></span><span id="_CPPv2NK4BpNN17GetNbWeightLayersEv"></span><span id="BpNN::GetNbWeightLayersC"></span><span class="target" id="classBpNN_1a86e7330349731b156e3793c0c09aeeae"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetNbWeightLayers</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4BpNN17GetNbWeightLayersEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the number of weight layers. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of weight layers. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4BpNN3MaxERKNSt6vectorIfEE">
+<span id="_CPPv3NK4BpNN3MaxERKNSt6vectorIfEE"></span><span id="_CPPv2NK4BpNN3MaxERKNSt6vectorIfEE"></span><span id="BpNN::Max__std::vector:float:CRC"></span><span class="target" id="classBpNN_1ae933f0834f80c318667c12d162268896"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Max</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">vec</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4BpNN3MaxERKNSt6vectorIfEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Finds the index of the maximum value in a vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vec</strong> – The vector to search. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The index of the maximum value. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN8GetLayerEi">
+<span id="_CPPv3N4BpNN8GetLayerEi"></span><span id="_CPPv2N4BpNN8GetLayerEi"></span><span id="BpNN::GetLayer__i"></span><span class="target" id="classBpNN_1a29d2f6770836bede52ab63c8415778f3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classLayer.html#_CPPv45Layer" title="Layer"><span class="n"><span class="pre">Layer</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetLayer</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">indLayer</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN8GetLayerEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the layer at the specified index. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>indLayer</strong> – The index of the layer. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The shared pointer to the layer. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4BpNN11SaveWeightsERKNSt6stringEi">
+<span id="_CPPv3NK4BpNN11SaveWeightsERKNSt6stringEi"></span><span id="_CPPv2NK4BpNN11SaveWeightsERKNSt6stringEi"></span><span id="BpNN::SaveWeights__ssCR.iC"></span><span class="target" id="classBpNN_1a1a99b45e22062946d557685b289d07f2"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SaveWeights</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">str</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">netId</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4BpNN11SaveWeightsERKNSt6stringEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Saves the weights to a specified file. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>str</strong> – The file to which the weights are saved. </p></li>
+<li><p><strong>netId</strong> – The ID of the network. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN18ForwardOneExample1ER7DataSeti">
+<span id="_CPPv3N4BpNN18ForwardOneExample1ER7DataSeti"></span><span id="_CPPv2N4BpNN18ForwardOneExample1ER7DataSeti"></span><span id="BpNN::ForwardOneExample1__DataSetR.i"></span><span class="target" id="classBpNN_1af39c1ffb318ee8fe3ea8e39c30b50d42"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForwardOneExample1</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">index</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN18ForwardOneExample1ER7DataSeti" title="Link to this definition"></a><br /></dt>
+<dd><p>Forwards one example through the network. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – The dataset containing the example. </p></li>
+<li><p><strong>index</strong> – The index of the example in the dataset. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN18ForwardOneExample1EPf">
+<span id="_CPPv3N4BpNN18ForwardOneExample1EPf"></span><span id="_CPPv2N4BpNN18ForwardOneExample1EPf"></span><span id="BpNN::ForwardOneExample1__floatP"></span><span class="target" id="classBpNN_1a819ccec883e8e7b74712eed64043fad2"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForwardOneExample1</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN18ForwardOneExample1EPf" title="Link to this definition"></a><br /></dt>
+<dd><p>Forwards one example through the network. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ex</strong> – The example to forward. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN18ForwardOneExample1Ev">
+<span id="_CPPv3N4BpNN18ForwardOneExample1Ev"></span><span id="_CPPv2N4BpNN18ForwardOneExample1Ev"></span><span id="BpNN::ForwardOneExample1"></span><span class="target" id="classBpNN_1a127c57bf67be296ac3d323fb448096e1"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForwardOneExample1</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN18ForwardOneExample1Ev" title="Link to this definition"></a><br /></dt>
+<dd><p>Forwards one example through the network. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4BpNN11ReadWeightsEv">
+<span id="_CPPv3NK4BpNN11ReadWeightsEv"></span><span id="_CPPv2NK4BpNN11ReadWeightsEv"></span><span id="BpNN::ReadWeightsC"></span><span class="target" id="classBpNN_1aba61b0aecff3d7691aec116f6212d91d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReadWeights</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4BpNN11ReadWeightsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Reads the weights from a file. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4BpNN17PrintSpecErrDimlpEff">
+<span id="_CPPv3NK4BpNN17PrintSpecErrDimlpEff"></span><span id="_CPPv2NK4BpNN17PrintSpecErrDimlpEff"></span><span id="BpNN::PrintSpecErrDimlp__float.floatC"></span><span class="target" id="classBpNN_1af70f416092d5103dbf57cb16ae8d848f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PrintSpecErrDimlp</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">specErr</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">specAcc</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4BpNN17PrintSpecErrDimlpEff" title="Link to this definition"></a><br /></dt>
+<dd><p>Prints the specific error for the <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> network. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>specErr</strong> – The specific error. </p></li>
+<li><p><strong>specAcc</strong> – The specific accuracy. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN12PrintSpecErrEff">
+<span id="_CPPv3N4BpNN12PrintSpecErrEff"></span><span id="_CPPv2N4BpNN12PrintSpecErrEff"></span><span id="BpNN::PrintSpecErr__float.float"></span><span class="target" id="classBpNN_1a70fde91c17570c7a4eb17549751092da"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PrintSpecErr</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">err</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">acc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN12PrintSpecErrEff" title="Link to this definition"></a><br /></dt>
+<dd><p>Prints the specific error. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>err</strong> – The error. </p></li>
+<li><p><strong>acc</strong> – The accuracy. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN10DefineSmlpEv">
+<span id="_CPPv3N4BpNN10DefineSmlpEv"></span><span id="_CPPv2N4BpNN10DefineSmlpEv"></span><span id="BpNN::DefineSmlp"></span><span class="target" id="classBpNN_1a0250c898b5fc934263c222395784e674"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DefineSmlp</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN10DefineSmlpEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Defines a Smlp (standard multilayer perceptron) network. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN11DefineDimlpEi">
+<span id="_CPPv3N4BpNN11DefineDimlpEi"></span><span id="_CPPv2N4BpNN11DefineDimlpEi"></span><span id="BpNN::DefineDimlp__i"></span><span class="target" id="classBpNN_1a698447b24aab4acea741271251b82bb9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DefineDimlp</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">discrLevels</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN11DefineDimlpEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Defines a <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> network with a <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> layer that uses a staircase activation function. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>discrLevels</strong> – The number of discrete levels. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN10DefineQmlpEi">
+<span id="_CPPv3N4BpNN10DefineQmlpEi"></span><span id="_CPPv2N4BpNN10DefineQmlpEi"></span><span id="BpNN::DefineQmlp__i"></span><span class="target" id="classBpNN_1a449563cd66f952de42a676c6ad54305f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DefineQmlp</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">discrLevels</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN10DefineQmlpEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Defines a Qmlp (Quantized multilayer perceptron) network with a <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> layer that uses a staircase activation function. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>discrLevels</strong> – The number of discrete levels. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN12DefineFdimlpEi">
+<span id="_CPPv3N4BpNN12DefineFdimlpEi"></span><span id="_CPPv2N4BpNN12DefineFdimlpEi"></span><span id="BpNN::DefineFdimlp__i"></span><span class="target" id="classBpNN_1a1b2608c6f1d05e354ee192e5427d89bb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DefineFdimlp</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">discrLevels</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN12DefineFdimlpEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Defines a Fdimlp network with a <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> layer and a fuzzy <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> layer that use a staircase activation function. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>discrLevels</strong> – The number of discrete levels. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN13DefineFdimlp2Ei">
+<span id="_CPPv3N4BpNN13DefineFdimlp2Ei"></span><span id="_CPPv2N4BpNN13DefineFdimlp2Ei"></span><span id="BpNN::DefineFdimlp2__i"></span><span class="target" id="classBpNN_1a0943d5716d6223613df67b45106e3c80"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DefineFdimlp2</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">discrLevels</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN13DefineFdimlp2Ei" title="Link to this definition"></a><br /></dt>
+<dd><p>Defines a Fdimlp2 network with a <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> layer and a fuzzy <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> layer that use a staircase activation function. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>discrLevels</strong> – The number of discrete levels. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN8DefineSDEi">
+<span id="_CPPv3N4BpNN8DefineSDEi"></span><span id="_CPPv2N4BpNN8DefineSDEi"></span><span id="BpNN::DefineSD__i"></span><span class="target" id="classBpNN_1a94d803dfa84ec839078c9ba4dc2ab083"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DefineSD</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">discrLevels</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN8DefineSDEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Defines a SD (Quantized Support Vector Machine Dot product (linear kernel)) network with a layer using an identity activation function and a <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> layer with a staircase activation function. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>discrLevels</strong> – The number of discrete levels. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN9DefineSP3Ei">
+<span id="_CPPv3N4BpNN9DefineSP3Ei"></span><span id="_CPPv2N4BpNN9DefineSP3Ei"></span><span id="BpNN::DefineSP3__i"></span><span class="target" id="classBpNN_1a86e173feba2c4003433501fc6ed995fa"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DefineSP3</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">discrLevels</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN9DefineSP3Ei" title="Link to this definition"></a><br /></dt>
+<dd><p>Defines a SP3 network with a layer using a cubic activation function and a <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> layer with a staircase activation function. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>discrLevels</strong> – The number of discrete levels. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN9DefineSP4Ei">
+<span id="_CPPv3N4BpNN9DefineSP4Ei"></span><span id="_CPPv2N4BpNN9DefineSP4Ei"></span><span id="BpNN::DefineSP4__i"></span><span class="target" id="classBpNN_1aaa69f770f8134c558079e449d7657ff7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DefineSP4</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">discrLevels</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN9DefineSP4Ei" title="Link to this definition"></a><br /></dt>
+<dd><p>Defines a SP4 network with a layer using a quartic (fourth power) activation function and a <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> layer with a staircase activation function. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>discrLevels</strong> – The number of discrete levels. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN9DefineSP5Ei">
+<span id="_CPPv3N4BpNN9DefineSP5Ei"></span><span id="_CPPv2N4BpNN9DefineSP5Ei"></span><span id="BpNN::DefineSP5__i"></span><span class="target" id="classBpNN_1a9d29a488a00119ff2f40a78ca0f79552"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DefineSP5</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">discrLevels</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN9DefineSP5Ei" title="Link to this definition"></a><br /></dt>
+<dd><p>Defines a SP5 network with a layer using a quintic (fifth power) activation function and a <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> layer with a staircase activation function. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>discrLevels</strong> – The number of discrete levels. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN8DefineSREi">
+<span id="_CPPv3N4BpNN8DefineSREi"></span><span id="_CPPv2N4BpNN8DefineSREi"></span><span id="BpNN::DefineSR__i"></span><span class="target" id="classBpNN_1a44e8fcb19cf83936a43ca450588ee300"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DefineSR</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">discrLevels</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN8DefineSREi" title="Link to this definition"></a><br /></dt>
+<dd><p>Defines a SR (Quantized Support Vector Machine Radial basis function) network that uses a specialized radial basis function (RBF) layer with a Gaussian activation function and a <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> layer with a staircase activation function. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>discrLevels</strong> – The number of discrete levels. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN12ComputeErrorER7DataSetR7DataSetPf">
+<span id="_CPPv3N4BpNN12ComputeErrorER7DataSetR7DataSetPf"></span><span id="_CPPv2N4BpNN12ComputeErrorER7DataSetR7DataSetPf"></span><span id="BpNN::ComputeError__DataSetR.DataSetR.floatP"></span><span class="target" id="classBpNN_1a3cfa4a7a8642172b9d607fd341a45305"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ComputeError</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">data</span></span>, <a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">target</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">accuracy</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN12ComputeErrorER7DataSetR7DataSetPf" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the error and accuracy by performing the forward pass. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – The dataset containing the examples. </p></li>
+<li><p><strong>target</strong> – The target dataset. </p></li>
+<li><p><strong>accuracy</strong> – Pointer to store the accuracy. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The computed error. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN10TrainPhaseER7DataSetR7DataSetR7DataSetR7DataSetR7DataSetR7DataSetRKNSt6stringEb">
+<span id="_CPPv3N4BpNN10TrainPhaseER7DataSetR7DataSetR7DataSetR7DataSetR7DataSetR7DataSetRKNSt6stringEb"></span><span id="_CPPv2N4BpNN10TrainPhaseER7DataSetR7DataSetR7DataSetR7DataSetR7DataSetR7DataSetRKNSt6stringEb"></span><span id="BpNN::TrainPhase__DataSetR.DataSetR.DataSetR.DataSetR.DataSetR.DataSetR.ssCR.b"></span><span class="target" id="classBpNN_1a5a982f2bdd41f6176d8b6907bdf8199a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TrainPhase</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">train</span></span>, <a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">trainTar</span></span>, <a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">test</span></span>, <a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">testTar</span></span>, <a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">valid</span></span>, <a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">validTar</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">accuracyFile</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">fromBT</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN10TrainPhaseER7DataSetR7DataSetR7DataSetR7DataSetR7DataSetR7DataSetRKNSt6stringEb" title="Link to this definition"></a><br /></dt>
+<dd><p>Trains the network. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – The training dataset. </p></li>
+<li><p><strong>trainTar</strong> – The training target dataset. </p></li>
+<li><p><strong>test</strong> – The testing dataset. </p></li>
+<li><p><strong>testTar</strong> – The testing target dataset. </p></li>
+<li><p><strong>valid</strong> – The validation dataset. </p></li>
+<li><p><strong>validTar</strong> – The validation target dataset. </p></li>
+<li><p><strong>accuracyFile</strong> – The file to save accuracy statistics. </p></li>
+<li><p><strong>fromBT</strong> – Flag to indicate if training is done with bagging. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN4BpNNERK4BpNN">
+<span id="_CPPv3N4BpNN4BpNNERK4BpNN"></span><span id="_CPPv2N4BpNN4BpNNERK4BpNN"></span><span id="BpNN::BpNN__BpNNCR"></span><span class="target" id="classBpNN_1a41d061b01ba24102bad41eaf82311c87"></span><span class="sig-name descname"><span class="n"><span class="pre">BpNN</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4BpNN4BpNNERK4BpNN" title="BpNN::BpNN"><span class="n"><span class="pre">BpNN</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4BpNN4BpNNERK4BpNN" title="Link to this definition"></a><br /></dt>
+<dd><p>Default copy constructor for <a class="reference internal" href="#classBpNN"><span class="std std-ref">BpNN</span></a>. </p>
+<p>This constructor creates a new instance of <a class="reference internal" href="#classBpNN"><span class="std std-ref">BpNN</span></a> as a copy of an existing instance. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNNaSERK4BpNN">
+<span id="_CPPv3N4BpNNaSERK4BpNN"></span><span id="_CPPv2N4BpNNaSERK4BpNN"></span><span id="BpNN::assign-operator__BpNNCR"></span><span class="target" id="classBpNN_1aaf317dfdb0a3a055fac807384ccd391c"></span><a class="reference internal" href="#_CPPv44BpNN" title="BpNN"><span class="n"><span class="pre">BpNN</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv44BpNN" title="BpNN"><span class="n"><span class="pre">BpNN</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4BpNNaSERK4BpNN" title="Link to this definition"></a><br /></dt>
+<dd><p>Default copy assignment operator for <a class="reference internal" href="#classBpNN"><span class="std std-ref">BpNN</span></a>. </p>
+<p>This operator assigns the values from an existing instance of <a class="reference internal" href="#classBpNN"><span class="std std-ref">BpNN</span></a> to another instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A reference to the assigned <a class="reference internal" href="#classBpNN"><span class="std std-ref">BpNN</span></a> instance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNND0Ev">
+<span id="_CPPv3N4BpNND0Ev"></span><span id="_CPPv2N4BpNND0Ev"></span><span id="BpNN::~BpNN"></span><span class="target" id="classBpNN_1a75a8ab80b82222881d4395814f73b96a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~BpNN</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4BpNND0Ev" title="Link to this definition"></a><br /></dt>
+<dd><p>Virtual destructor for <a class="reference internal" href="#classBpNN"><span class="std std-ref">BpNN</span></a>. </p>
+<p>This destructor ensures that the destructor of the derived class is called when an object is deleted through a pointer to the base class. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN4BpNNEffffffiiiRKNSt6vectorIiEERKNSt6stringERKNSt6stringEi">
+<span id="_CPPv3N4BpNN4BpNNEffffffiiiRKNSt6vectorIiEERKNSt6stringERKNSt6stringEi"></span><span id="_CPPv2N4BpNN4BpNNEffffffiiiRKNSt6vectorIiEERKNSt6stringERKNSt6stringEi"></span><span id="BpNN::BpNN__float.float.float.float.float.float.i.i.i.std::vector:i:CR.ssCR.ssCR.i"></span><span class="target" id="classBpNN_1a3086516bda1065f3eb35314b24f36a05"></span><span class="sig-name descname"><span class="n"><span class="pre">BpNN</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">mu</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">flat</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">errParam</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">accuracyParam</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deltaErrParam</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">showErrParam</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbEpochsParam</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbLayers</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">nbNeurons</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">saveFile</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">printNetType</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">seed</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN4BpNNEffffffiiiRKNSt6vectorIiEERKNSt6stringERKNSt6stringEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructs a <a class="reference internal" href="#classBpNN"><span class="std std-ref">BpNN</span></a> with the specified parameters. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eta</strong> – Learning rate for weight updates. </p></li>
+<li><p><strong>mu</strong> – Momentum rate for weight updates. </p></li>
+<li><p><strong>flat</strong> – Flatness parameter used in some activation functions. </p></li>
+<li><p><strong>errParam</strong> – Error threshold parameter. </p></li>
+<li><p><strong>accuracyParam</strong> – Accuracy threshold parameter. </p></li>
+<li><p><strong>deltaErrParam</strong> – Delta error threshold parameter. </p></li>
+<li><p><strong>showErrParam</strong> – Number of epochs between error displays. </p></li>
+<li><p><strong>nbEpochsParam</strong> – Number of epochs for training. </p></li>
+<li><p><strong>nbLayers</strong> – Total number of layers including input and output layers. </p></li>
+<li><p><strong>nbNeurons</strong> – Number of neurons in each layer. </p></li>
+<li><p><strong>saveFile</strong> – The file to which the network’s weights are saved. </p></li>
+<li><p><strong>printNetType</strong> – The type of network to print. </p></li>
+<li><p><strong>seed</strong> – Seed for random number generation. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN4BpNNERKNSt6stringEiRKNSt6vectorIiEERKNSt6stringEi">
+<span id="_CPPv3N4BpNN4BpNNERKNSt6stringEiRKNSt6vectorIiEERKNSt6stringEi"></span><span id="_CPPv2N4BpNN4BpNNERKNSt6stringEiRKNSt6vectorIiEERKNSt6stringEi"></span><span id="BpNN::BpNN__ssCR.i.std::vector:i:CR.ssCR.i"></span><span class="target" id="classBpNN_1ada51d1d9886c19d1e5526677397ca758"></span><span class="sig-name descname"><span class="n"><span class="pre">BpNN</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">readFile</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbLayers</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">nbNeurons</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">printNetType</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">netId</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN4BpNNERKNSt6stringEiRKNSt6vectorIiEERKNSt6stringEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructs a <a class="reference internal" href="#classBpNN"><span class="std std-ref">BpNN</span></a> from a file. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>readFile</strong> – The file from which to read the network’s weights. </p></li>
+<li><p><strong>nbLayers</strong> – Total number of layers including input and output layers. </p></li>
+<li><p><strong>nbNeurons</strong> – Number of neurons in each layer. </p></li>
+<li><p><strong>printNetType</strong> – The type of network to print. </p></li>
+<li><p><strong>netId</strong> – Network ID, used for identifying networks in a file. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN4BpNNERKNSt6stringEffffffiiiRKNSt6vectorIiEERKNSt6stringERKNSt6stringEi">
+<span id="_CPPv3N4BpNN4BpNNERKNSt6stringEffffffiiiRKNSt6vectorIiEERKNSt6stringERKNSt6stringEi"></span><span id="_CPPv2N4BpNN4BpNNERKNSt6stringEffffffiiiRKNSt6vectorIiEERKNSt6stringERKNSt6stringEi"></span><span id="BpNN::BpNN__ssCR.float.float.float.float.float.float.i.i.i.std::vector:i:CR.ssCR.ssCR.i"></span><span class="target" id="classBpNN_1a9485957c49c93c2f415af10cc41af497"></span><span class="sig-name descname"><span class="n"><span class="pre">BpNN</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">readFile</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">mu</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">flat</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">errParam</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">accuracyParam</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deltaErrParam</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">showErrParam</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbEpochsParam</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbLayers</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">nbNeurons</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">saveFile</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">printNetType</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">seed</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN4BpNNERKNSt6stringEffffffiiiRKNSt6vectorIiEERKNSt6stringERKNSt6stringEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructs a <a class="reference internal" href="#classBpNN"><span class="std std-ref">BpNN</span></a> with the specified parameters and reads weights from a file. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>readFile</strong> – The file from which to read the network’s weights. </p></li>
+<li><p><strong>eta</strong> – Learning rate for weight updates. </p></li>
+<li><p><strong>mu</strong> – Momentum rate for weight updates. </p></li>
+<li><p><strong>flat</strong> – Flatness parameter used in some activation functions. </p></li>
+<li><p><strong>errParam</strong> – Error threshold parameter. </p></li>
+<li><p><strong>accuracyParam</strong> – Accuracy threshold parameter. </p></li>
+<li><p><strong>deltaErrParam</strong> – Delta error threshold parameter. </p></li>
+<li><p><strong>showErrParam</strong> – Number of epochs between error displays. </p></li>
+<li><p><strong>nbEpochsParam</strong> – Number of epochs for training. </p></li>
+<li><p><strong>nbLayers</strong> – Total number of layers including input and output layers. </p></li>
+<li><p><strong>nbNeurons</strong> – Number of neurons in each layer. </p></li>
+<li><p><strong>saveFile</strong> – The file to which the network’s weights are saved. </p></li>
+<li><p><strong>printNetType</strong> – The type of network to print. </p></li>
+<li><p><strong>seed</strong> – Seed for random number generation. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4BpNN18resetInitRandomGenEv">
+<span id="_CPPv3N4BpNN18resetInitRandomGenEv"></span><span id="_CPPv2N4BpNN18resetInitRandomGenEv"></span><span id="BpNN::resetInitRandomGen"></span><span class="target" id="classBpNN_1a46f140f133e30bbca278b453a5bff9c9"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">resetInitRandomGen</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4BpNN18resetInitRandomGenEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Resets the random generator initialization flag. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classBagDimlp.html" class="btn btn-neutral float-left" title="Class BagDimlp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classCannotCreateDirectoryError.html" class="btn btn-neutral float-right" title="Class CannotCreateDirectoryError" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

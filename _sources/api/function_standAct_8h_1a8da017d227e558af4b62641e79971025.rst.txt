@@ -1,0 +1,14 @@
+.. _exhale_function_standAct_8h_1a8da017d227e558af4b62641e79971025:
+
+Function Power4(float)
+======================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_standAct.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: Power4(float)
+   :project: common

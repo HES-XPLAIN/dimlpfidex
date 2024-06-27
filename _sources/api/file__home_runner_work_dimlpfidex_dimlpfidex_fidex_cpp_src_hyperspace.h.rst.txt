@@ -1,0 +1,68 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperspace.h:
+
+File hyperspace.h
+=================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/hyperspace.h``)
+-----------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperspace.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../common/cpp/src/errorHandler.h``
+
+- ``../../../common/cpp/src/rule.h``
+
+- ``cstring``
+
+- ``fstream``
+
+- ``hyperbox.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperbox.h`)
+
+- ``iostream``
+
+- ``memory``
+
+- ``sstream``
+
+- ``tuple``
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexAlgo.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperspace.cpp`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classHyperspace`
+

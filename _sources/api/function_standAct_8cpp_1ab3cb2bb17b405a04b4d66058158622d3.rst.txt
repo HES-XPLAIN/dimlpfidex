@@ -1,0 +1,14 @@
+.. _exhale_function_standAct_8cpp_1ab3cb2bb17b405a04b4d66058158622d3:
+
+Function Sigmoid(float)
+=======================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_standAct.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: Sigmoid(float)
+   :project: common

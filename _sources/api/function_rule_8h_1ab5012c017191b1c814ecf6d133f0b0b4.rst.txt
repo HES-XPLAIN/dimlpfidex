@@ -1,0 +1,14 @@
+.. _exhale_function_rule_8h_1ab5012c017191b1c814ecf6d133f0b0b4:
+
+Function operator<<(std::ostream&, const Rule&)
+===============================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: operator<<(std::ostream&, const Rule&)
+   :project: common

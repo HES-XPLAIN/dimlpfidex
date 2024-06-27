@@ -1,0 +1,608 @@
+:orphan:
+
+
+Full API
+========
+
+Directories
+***********
+
+
+.. toctree::
+   :maxdepth: 5
+
+   dir_common.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   dir_cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   dir_cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   dir_cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   dir_dimlp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   dir_fidex.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   dir_src.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   dir_src.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   dir_src.rst
+
+Files
+*****
+
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_ante.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_ante.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_antecedent.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_antecedent.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_attrName.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_attrName.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bagDimlp.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bagDimlp.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bpNN.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bpNN.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_cleanRS.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_cleanRS.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_dataSet.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_dataSet.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_densCls.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_densClsFct.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_densClsFct.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlp.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlp.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dataSet.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dataSet.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpBT.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpBTFct.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpBTFct.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpCls.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpClsFct.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpClsFct.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpCommonFun.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpCommonFun.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpPred.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpPredFct.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpPredFct.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpRul.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpRule.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpRule.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpRulFct.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpRulFct.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpTrn.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpTrnFct.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpTrnFct.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_errFunct.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_errFunct.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_errorHandler.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidex.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexAlgo.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexAlgo.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGlo.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloFct.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloFct.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRules.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStats.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStatsFct.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStatsFct.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperbox.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperbox.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperLocus.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperLocus.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperspace.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperspace.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layer.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layer.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerD2.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerD2.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerD3.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerD3.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerD4.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerD4.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerDmp.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerDmp.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerFdp.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerFdp.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerRad.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSD.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSP3.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSP4.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSP5.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_misc.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_misc.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_oneVarTD.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_oneVarTD.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_parameters.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_parameters.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_randFun.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_randFun.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp2.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp2.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_rulePro.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_rulePro.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_stairObj.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_stairObj.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_standAct.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_standAct.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_stringI.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_stringI.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_thresD.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_thresD.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_vectWRV.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_vectWRV.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_virtHyp.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_virtHyp.h.rst

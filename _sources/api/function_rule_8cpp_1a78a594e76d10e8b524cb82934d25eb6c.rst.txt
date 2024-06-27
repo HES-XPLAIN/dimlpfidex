@@ -1,0 +1,14 @@
+.. _exhale_function_rule_8cpp_1a78a594e76d10e8b524cb82934d25eb6c:
+
+Function stringToRule(Rule&, const std::string&, const std::regex&, const std::regex&, bool, bool, DataSetFid&)
+===============================================================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: stringToRule(Rule&, const std::string&, const std::regex&, const std::regex&, bool, bool, DataSetFid&)
+   :project: common

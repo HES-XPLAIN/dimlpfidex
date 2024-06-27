@@ -1,0 +1,30 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_standAct.h:
+
+Program Listing for File standAct.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_standAct.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/standAct.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef STANDACT_H
+   #define STANDACT_H
+   
+   float Sigmoid(float x);
+   
+   float HyperTang(float x);
+   
+   float Gaussian(float x);
+   
+   float Identity(float x);
+   
+   float Power3(float x);
+   
+   float Power4(float x);
+   
+   float Power5(float x);
+   
+   #endif // STANDACT_H

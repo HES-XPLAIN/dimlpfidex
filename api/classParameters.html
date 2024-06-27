@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class Parameters &mdash; dimlpfidex 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7026087e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class RealHyp" href="classRealHyp.html" />
+    <link rel="prev" title="Class OneVarThresDescr" href="classOneVarThresDescr.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dimlpfidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">C++ API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="structCleanRuleStruct_1_1AssocAnte.html">Struct CleanRuleStruct::AssocAnte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structCleanRuleStruct_1_1CleanRule.html">Struct CleanRuleStruct::CleanRule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structDimlpRule_1_1Antecedent.html">Struct DimlpRule::Antecedent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structFidex_1_1currentExecutionSpecs.html">Struct Fidex::currentExecutionSpecs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structOneVarThresDescr_1_1Elem.html">Struct OneVarThresDescr::Elem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structRuleProcessing_1_1Saved.html">Struct RuleProcessing::Saved</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structStringInt_1_1Elem.html">Struct StringInt::Elem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAnte.html">Class Ante</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAntecedent.html">Class Antecedent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAttrName.html">Class AttrName</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classBagDimlp.html">Class BagDimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classBpNN.html">Class BpNN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCannotCreateDirectoryError.html">Class CannotCreateDirectoryError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCannotOpenFileError.html">Class CannotOpenFileError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCleanRuleStruct.html">Class CleanRuleStruct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCommandArgumentException.html">Class CommandArgumentException</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDataSet.html">Class DataSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDataSetFid.html">Class DataSetFid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDimlp.html">Class Dimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDimlpRule.html">Class DimlpRule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classErrorHandler.html">Class ErrorHandler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFidex.html">Class Fidex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileContentError.html">Class FileContentError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileFormatError.html">Class FileFormatError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileNotFoundError.html">Class FileNotFoundError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFloatRandomFunction.html">Class FloatRandomFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classHyperbox.html">Class Hyperbox</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classHyperspace.html">Class Hyperspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classInternalError.html">Class InternalError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classIntRandomFunction.html">Class IntRandomFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayer.html">Class Layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp.html">Class LayerDimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp2.html">Class LayerDimlp2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp3.html">Class LayerDimlp3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp4.html">Class LayerDimlp4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerFdimlp.html">Class LayerFdimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerRad.html">Class LayerRad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSD.html">Class LayerSD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP3.html">Class LayerSP3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP4.html">Class LayerSP4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP5.html">Class LayerSP5</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classOneVarThresDescr.html">Class OneVarThresDescr</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Class Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRealHyp.html">Class RealHyp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRealHyp2.html">Class RealHyp2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRule.html">Class Rule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRuleProcessing.html">Class RuleProcessing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classStairObj.html">Class StairObj</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classStringInt.html">Class StringInt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classThresDescr.html">Class ThresDescr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVectWithRandVal.html">Class VectWithRandVal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVirtualHyp.html">Class VirtualHyp</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#enums">Enums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#typedefs">Typedefs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/modules.html">trainings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dimlpfidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="library_root.html">Library API</a></li>
+      <li class="breadcrumb-item active">Class Parameters</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/classParameters.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-parameters">
+<span id="exhale-class-classparameters"></span><h1>Class Parameters<a class="headerlink" href="#class-parameters" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_parameters.h.html#file-home-runner-work-dimlpfidex-dimlpfidex-common-cpp-src-parameters-h"><span class="std std-ref">File parameters.h</span></a></p></li>
+</ul>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv410Parameters">
+<span id="_CPPv310Parameters"></span><span id="_CPPv210Parameters"></span><span id="Parameters"></span><span class="target" id="classParameters"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Parameters</span></span></span><a class="headerlink" href="#_CPPv410Parameters" title="Link to this definition"></a><br /></dt>
+<dd><p>The <a class="reference internal" href="#classParameters"><span class="std std-ref">Parameters</span></a> class manages configuration parameters for each program. </p>
+<p>This class handles the parsing, validation, and storage of parameters passed via command-line arguments or a JSON configuration file. It supports various data types and provides utility functions to ensure parameters are correctly set and valid. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters10ParametersEv">
+<span id="_CPPv3N10Parameters10ParametersEv"></span><span id="_CPPv2N10Parameters10ParametersEv"></span><span id="Parameters::Parameters"></span><span class="target" id="classParameters_1a1e3c72bebe6cc8a15ada7346f7e16e2a"></span><span class="sig-name descname"><span class="n"><span class="pre">Parameters</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N10Parameters10ParametersEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters10ParametersERKNSt6vectorINSt6stringEEERKNSt6vectorI13ParameterCodeEE">
+<span id="_CPPv3N10Parameters10ParametersERKNSt6vectorINSt6stringEEERKNSt6vectorI13ParameterCodeEE"></span><span id="_CPPv2N10Parameters10ParametersERKNSt6vectorINSt6stringEEERKNSt6vectorI13ParameterCodeEE"></span><span id="Parameters::Parameters__std::vector:ss:CR.std::vector:ParameterCode:CR"></span><span class="target" id="classParameters_1a3a27018f3277839cdcbc1b29c6c00b47"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Parameters</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">args</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">validParams</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters10ParametersERKNSt6vectorINSt6stringEEERKNSt6vectorI13ParameterCodeEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a new <a class="reference internal" href="#classParameters"><span class="std std-ref">Parameters</span></a> object containing all arguments passed by CLI. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – Program arguments. </p></li>
+<li><p><strong>validParams</strong> – Valid parameter codes. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters10ParametersERKNSt6stringERKNSt6vectorI13ParameterCodeEE">
+<span id="_CPPv3N10Parameters10ParametersERKNSt6stringERKNSt6vectorI13ParameterCodeEE"></span><span id="_CPPv2N10Parameters10ParametersERKNSt6stringERKNSt6vectorI13ParameterCodeEE"></span><span id="Parameters::Parameters__ssCR.std::vector:ParameterCode:CR"></span><span class="target" id="classParameters_1a108965668adbc7ed38086a82a28c7dea"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Parameters</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">jsonfile</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">validParams</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters10ParametersERKNSt6stringERKNSt6vectorI13ParameterCodeEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a new <a class="reference internal" href="#classParameters"><span class="std std-ref">Parameters</span></a> object containing all arguments passed by JSON config file. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>jsonfile</strong> – JSON config file name. </p></li>
+<li><p><strong>validParams</strong> – Valid parameter codes. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters6setIntE13ParameterCodeRKNSt6stringE">
+<span id="_CPPv3N10Parameters6setIntE13ParameterCodeRKNSt6stringE"></span><span id="_CPPv2N10Parameters6setIntE13ParameterCodeRKNSt6stringE"></span><span id="Parameters::setInt__ParameterCode.ssCR"></span><span class="target" id="classParameters_1a2841a2117465bcbfe5b4105a4625af85"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setInt</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters6setIntE13ParameterCodeRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets an integer parameter from a string value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code to set. </p></li>
+<li><p><strong>value</strong> – The string value to convert and set as the integer parameter. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is already set or if the value is not a valid integer. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters6setIntE13ParameterCodei">
+<span id="_CPPv3N10Parameters6setIntE13ParameterCodei"></span><span id="_CPPv2N10Parameters6setIntE13ParameterCodei"></span><span id="Parameters::setInt__ParameterCode.i"></span><span class="target" id="classParameters_1a74214ed50a66a7e821c645bb24a1958f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setInt</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters6setIntE13ParameterCodei" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets an integer parameter. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code to set. </p></li>
+<li><p><strong>value</strong> – The integer value to set. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is already set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters8setFloatE13ParameterCodeRKNSt6stringE">
+<span id="_CPPv3N10Parameters8setFloatE13ParameterCodeRKNSt6stringE"></span><span id="_CPPv2N10Parameters8setFloatE13ParameterCodeRKNSt6stringE"></span><span id="Parameters::setFloat__ParameterCode.ssCR"></span><span class="target" id="classParameters_1ac5a2cb4c01f4abae223db75db6c423d2"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setFloat</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters8setFloatE13ParameterCodeRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets a float parameter from a string value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code to set. </p></li>
+<li><p><strong>value</strong> – The string value to convert and set as the float parameter. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is already set or if the value is not a valid float. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters8setFloatE13ParameterCodef">
+<span id="_CPPv3N10Parameters8setFloatE13ParameterCodef"></span><span id="_CPPv2N10Parameters8setFloatE13ParameterCodef"></span><span id="Parameters::setFloat__ParameterCode.float"></span><span class="target" id="classParameters_1adecd417dbe514ca9e0b7b7fe0e88b25a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setFloat</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters8setFloatE13ParameterCodef" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets a float parameter. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code to set. </p></li>
+<li><p><strong>value</strong> – The float value to set. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is already set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters9setDoubleE13ParameterCodeRKNSt6stringE">
+<span id="_CPPv3N10Parameters9setDoubleE13ParameterCodeRKNSt6stringE"></span><span id="_CPPv2N10Parameters9setDoubleE13ParameterCodeRKNSt6stringE"></span><span id="Parameters::setDouble__ParameterCode.ssCR"></span><span class="target" id="classParameters_1a15496bcead8b1ff7bd3c824a339dae52"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDouble</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters9setDoubleE13ParameterCodeRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets a double parameter from a string value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code to set. </p></li>
+<li><p><strong>value</strong> – The string value to convert and set as the double parameter. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is already set or if the value is not a valid double. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters9setDoubleE13ParameterCoded">
+<span id="_CPPv3N10Parameters9setDoubleE13ParameterCoded"></span><span id="_CPPv2N10Parameters9setDoubleE13ParameterCoded"></span><span id="Parameters::setDouble__ParameterCode.double"></span><span class="target" id="classParameters_1acf2511e81f350e5337618ee9562286a3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDouble</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters9setDoubleE13ParameterCoded" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets a double parameter. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code to set. </p></li>
+<li><p><strong>value</strong> – The double value to set. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is already set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters7setBoolE13ParameterCodeNSt6stringE">
+<span id="_CPPv3N10Parameters7setBoolE13ParameterCodeNSt6stringE"></span><span id="_CPPv2N10Parameters7setBoolE13ParameterCodeNSt6stringE"></span><span id="Parameters::setBool__ParameterCode.ss"></span><span class="target" id="classParameters_1ae763457ca9fef1840fde3a7d1a7fd7bf"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setBool</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters7setBoolE13ParameterCodeNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets a boolean parameter from a string value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code to set. </p></li>
+<li><p><strong>value</strong> – The string value to convert and set as the boolean parameter. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is already set or if the value is not a valid boolean. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters7setBoolE13ParameterCodeb">
+<span id="_CPPv3N10Parameters7setBoolE13ParameterCodeb"></span><span id="_CPPv2N10Parameters7setBoolE13ParameterCodeb"></span><span id="Parameters::setBool__ParameterCode.b"></span><span class="target" id="classParameters_1a27921aa5d45c087c2558fb560b03012b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setBool</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters7setBoolE13ParameterCodeb" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets a boolean parameter. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code to set. </p></li>
+<li><p><strong>value</strong> – The boolean value to set. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is already set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters15setDoubleVectorE13ParameterCodeRKNSt6stringE">
+<span id="_CPPv3N10Parameters15setDoubleVectorE13ParameterCodeRKNSt6stringE"></span><span id="_CPPv2N10Parameters15setDoubleVectorE13ParameterCodeRKNSt6stringE"></span><span id="Parameters::setDoubleVector__ParameterCode.ssCR"></span><span class="target" id="classParameters_1af525ce7cd4a8470d7eb24558a70247fa"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDoubleVector</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters15setDoubleVectorE13ParameterCodeRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets a double vector parameter from a string value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code to set. </p></li>
+<li><p><strong>value</strong> – The string value to convert and set as the double vector parameter. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is already set or if the value is not a valid list of doubles. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters15setDoubleVectorE13ParameterCodeRKNSt6vectorIdEE">
+<span id="_CPPv3N10Parameters15setDoubleVectorE13ParameterCodeRKNSt6vectorIdEE"></span><span id="_CPPv2N10Parameters15setDoubleVectorE13ParameterCodeRKNSt6vectorIdEE"></span><span id="Parameters::setDoubleVector__ParameterCode.std::vector:double:CR"></span><span class="target" id="classParameters_1a3ad72db802f0384a2bb8f07ad898916d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDoubleVector</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters15setDoubleVectorE13ParameterCodeRKNSt6vectorIdEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets a double vector parameter. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code to set. </p></li>
+<li><p><strong>value</strong> – The vector of double values to set. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters12setIntVectorE13ParameterCodeRKNSt6stringE">
+<span id="_CPPv3N10Parameters12setIntVectorE13ParameterCodeRKNSt6stringE"></span><span id="_CPPv2N10Parameters12setIntVectorE13ParameterCodeRKNSt6stringE"></span><span id="Parameters::setIntVector__ParameterCode.ssCR"></span><span class="target" id="classParameters_1a4e49f79fa92238bde61e38091fb0485b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setIntVector</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters12setIntVectorE13ParameterCodeRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets an integer vector parameter from a string value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code to set. </p></li>
+<li><p><strong>value</strong> – The string value to convert and set as the integer vector parameter. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is already set or if the value is not a valid list of integers. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters12setIntVectorE13ParameterCodeRKNSt6vectorIiEE">
+<span id="_CPPv3N10Parameters12setIntVectorE13ParameterCodeRKNSt6vectorIiEE"></span><span id="_CPPv2N10Parameters12setIntVectorE13ParameterCodeRKNSt6vectorIiEE"></span><span id="Parameters::setIntVector__ParameterCode.std::vector:i:CR"></span><span class="target" id="classParameters_1a62802a7db2d7c906724f1a7979b42073"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setIntVector</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters12setIntVectorE13ParameterCodeRKNSt6vectorIiEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets an integer vector parameter. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code to set. </p></li>
+<li><p><strong>value</strong> – The vector of integer values to set. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters9setStringE13ParameterCodeRKNSt6stringE">
+<span id="_CPPv3N10Parameters9setStringE13ParameterCodeRKNSt6stringE"></span><span id="_CPPv2N10Parameters9setStringE13ParameterCodeRKNSt6stringE"></span><span id="Parameters::setString__ParameterCode.ssCR"></span><span class="target" id="classParameters_1afc53361ad319098188d46ac412995e42"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setString</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters9setStringE13ParameterCodeRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets a string parameter. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code to set. </p></li>
+<li><p><strong>value</strong> – The string value to set. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is already set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters13setDefaultIntE13ParameterCodei">
+<span id="_CPPv3N10Parameters13setDefaultIntE13ParameterCodei"></span><span id="_CPPv2N10Parameters13setDefaultIntE13ParameterCodei"></span><span id="Parameters::setDefaultInt__ParameterCode.i"></span><span class="target" id="classParameters_1aa4cf2df29a7ce9f79ff88a43a2762a5b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDefaultInt</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters13setDefaultIntE13ParameterCodei" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets a default integer value for the given parameter code if not already set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code. </p></li>
+<li><p><strong>defaultValue</strong> – The default value to set. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters15setDefaultFloatE13ParameterCodef">
+<span id="_CPPv3N10Parameters15setDefaultFloatE13ParameterCodef"></span><span id="_CPPv2N10Parameters15setDefaultFloatE13ParameterCodef"></span><span id="Parameters::setDefaultFloat__ParameterCode.float"></span><span class="target" id="classParameters_1a618ac9ea4c8a7cf90a5a0fbe867da49c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDefaultFloat</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters15setDefaultFloatE13ParameterCodef" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets a default float value for the given parameter code if not already set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code. </p></li>
+<li><p><strong>defaultValue</strong> – The default value to set. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters16setDefaultDoubleE13ParameterCoded">
+<span id="_CPPv3N10Parameters16setDefaultDoubleE13ParameterCoded"></span><span id="_CPPv2N10Parameters16setDefaultDoubleE13ParameterCoded"></span><span id="Parameters::setDefaultDouble__ParameterCode.double"></span><span class="target" id="classParameters_1a1d332e1348c01f4c03548398355b5b32"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDefaultDouble</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters16setDefaultDoubleE13ParameterCoded" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets a default double value for the given parameter code if not already set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code. </p></li>
+<li><p><strong>defaultValue</strong> – The default value to set. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters14setDefaultBoolE13ParameterCodeb">
+<span id="_CPPv3N10Parameters14setDefaultBoolE13ParameterCodeb"></span><span id="_CPPv2N10Parameters14setDefaultBoolE13ParameterCodeb"></span><span id="Parameters::setDefaultBool__ParameterCode.b"></span><span class="target" id="classParameters_1a6c04997eda72d76aa2563a82b02e61b2"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDefaultBool</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters14setDefaultBoolE13ParameterCodeb" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets a default boolean value for the given parameter code if not already set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code. </p></li>
+<li><p><strong>defaultValue</strong> – The default value to set. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters22setDefaultDoubleVectorE13ParameterCodeRKNSt6stringE">
+<span id="_CPPv3N10Parameters22setDefaultDoubleVectorE13ParameterCodeRKNSt6stringE"></span><span id="_CPPv2N10Parameters22setDefaultDoubleVectorE13ParameterCodeRKNSt6stringE"></span><span id="Parameters::setDefaultDoubleVector__ParameterCode.ssCR"></span><span class="target" id="classParameters_1ab93d5860ab92271dd390c9a7a83ceeb3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDefaultDoubleVector</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">defaultValue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters22setDefaultDoubleVectorE13ParameterCodeRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets a default double vector value for the given parameter code if not already set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code. </p></li>
+<li><p><strong>defaultValue</strong> – The default value to set. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters19setDefaultIntVectorE13ParameterCodeRKNSt6stringE">
+<span id="_CPPv3N10Parameters19setDefaultIntVectorE13ParameterCodeRKNSt6stringE"></span><span id="_CPPv2N10Parameters19setDefaultIntVectorE13ParameterCodeRKNSt6stringE"></span><span id="Parameters::setDefaultIntVector__ParameterCode.ssCR"></span><span class="target" id="classParameters_1a1e07329692779395da36ecbde77471ab"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDefaultIntVector</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">defaultValue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters19setDefaultIntVectorE13ParameterCodeRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets a default integer vector value for the given parameter code if not already set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code. </p></li>
+<li><p><strong>defaultValue</strong> – The default value to set. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters16setDefaultStringE13ParameterCodeRKNSt6stringEb">
+<span id="_CPPv3N10Parameters16setDefaultStringE13ParameterCodeRKNSt6stringEb"></span><span id="_CPPv2N10Parameters16setDefaultStringE13ParameterCodeRKNSt6stringEb"></span><span id="Parameters::setDefaultString__ParameterCode.ssCR.b"></span><span class="target" id="classParameters_1a2c17d11d8996823e0adbfebb244da8ca"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDefaultString</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">defaultValue</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">withRoot</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters16setDefaultStringE13ParameterCodeRKNSt6stringEb" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets a default string value for the given parameter code if not already set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The parameter code. </p></li>
+<li><p><strong>defaultValue</strong> – The default value to set. </p></li>
+<li><p><strong>withRoot</strong> – Whether to prepend the ROOT_FOLDER to the default value. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters6getIntE13ParameterCode">
+<span id="_CPPv3N10Parameters6getIntE13ParameterCode"></span><span id="_CPPv2N10Parameters6getIntE13ParameterCode"></span><span id="Parameters::getInt__ParameterCode"></span><span class="target" id="classParameters_1a1b0532cb8f4c7c818cd3bc0f308b29a5"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getInt</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters6getIntE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the integer value for the given parameter code. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is not set. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The integer value associated with the parameter code. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters8getFloatE13ParameterCode">
+<span id="_CPPv3N10Parameters8getFloatE13ParameterCode"></span><span id="_CPPv2N10Parameters8getFloatE13ParameterCode"></span><span id="Parameters::getFloat__ParameterCode"></span><span class="target" id="classParameters_1a36d1b2cb1123ae399154ad9ad8935724"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getFloat</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters8getFloatE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the float value for the given parameter code. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is not set. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The float value associated with the parameter code. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters9getDoubleE13ParameterCode">
+<span id="_CPPv3N10Parameters9getDoubleE13ParameterCode"></span><span id="_CPPv2N10Parameters9getDoubleE13ParameterCode"></span><span id="Parameters::getDouble__ParameterCode"></span><span class="target" id="classParameters_1aecc88ff9ba0db994c14048c20d4a3a40"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDouble</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters9getDoubleE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the double value for the given parameter code. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is not set. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The double value associated with the parameter code. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters7getBoolE13ParameterCode">
+<span id="_CPPv3N10Parameters7getBoolE13ParameterCode"></span><span id="_CPPv2N10Parameters7getBoolE13ParameterCode"></span><span id="Parameters::getBool__ParameterCode"></span><span class="target" id="classParameters_1a797b4524856745704ca7ed2ab41f015a"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getBool</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters7getBoolE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the boolean value for the given parameter code. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is not set. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The boolean value associated with the parameter code. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters15getDoubleVectorE13ParameterCode">
+<span id="_CPPv3N10Parameters15getDoubleVectorE13ParameterCode"></span><span id="_CPPv2N10Parameters15getDoubleVectorE13ParameterCode"></span><span id="Parameters::getDoubleVector__ParameterCode"></span><span class="target" id="classParameters_1aad895f1a5c4ea11120199d93b4767773"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDoubleVector</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters15getDoubleVectorE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the vector of double values for the given parameter code. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is not set. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The vector of double values associated with the parameter code. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters12getIntVectorE13ParameterCode">
+<span id="_CPPv3N10Parameters12getIntVectorE13ParameterCode"></span><span id="_CPPv2N10Parameters12getIntVectorE13ParameterCode"></span><span id="Parameters::getIntVector__ParameterCode"></span><span class="target" id="classParameters_1a5acc65788f5a249ff520a94755b45894"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getIntVector</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters12getIntVectorE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the vector of integer values for the given parameter code. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is not set. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The vector of integer values associated with the parameter code. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters9getStringE13ParameterCode">
+<span id="_CPPv3N10Parameters9getStringE13ParameterCode"></span><span id="_CPPv2N10Parameters9getStringE13ParameterCode"></span><span id="Parameters::getString__ParameterCode"></span><span class="target" id="classParameters_1a982cb44df67950bd6129e020f9d2ebdf"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getString</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters9getStringE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the string value for the given parameter code. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is not set. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The string value associated with the parameter code. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters7getArchEv">
+<span id="_CPPv3N10Parameters7getArchEv"></span><span id="_CPPv2N10Parameters7getArchEv"></span><span id="Parameters::getArch"></span><span class="target" id="classParameters_1af6cddce856914e250089dee5b037003d"></span><a class="reference internal" href="classStringInt.html#_CPPv49StringInt" title="StringInt"><span class="n"><span class="pre">StringInt</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getArch</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters7getArchEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the architecture of hidden layers. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The architecture of hidden layers. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters10getArchIndEv">
+<span id="_CPPv3N10Parameters10getArchIndEv"></span><span id="_CPPv2N10Parameters10getArchIndEv"></span><span id="Parameters::getArchInd"></span><span class="target" id="classParameters_1add8672e66e38b8464edfc4eccc6cac73"></span><a class="reference internal" href="classStringInt.html#_CPPv49StringInt" title="StringInt"><span class="n"><span class="pre">StringInt</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getArchInd</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters10getArchIndEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the indices of the architecture of hidden layers. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The indices of the architecture of hidden layers. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10Parameters10getAllIntsEv">
+<span id="_CPPv3NK10Parameters10getAllIntsEv"></span><span id="_CPPv2NK10Parameters10getAllIntsEv"></span><span id="Parameters::getAllIntsC"></span><span class="target" id="classParameters_1aae2c499b98dc161e722ecc013ec4c6f4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getAllInts</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10Parameters10getAllIntsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets all integer parameters. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A map of all integer parameters. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10Parameters12getAllFloatsEv">
+<span id="_CPPv3NK10Parameters12getAllFloatsEv"></span><span id="_CPPv2NK10Parameters12getAllFloatsEv"></span><span id="Parameters::getAllFloatsC"></span><span class="target" id="classParameters_1af6caff07fe369d3437198892c9271309"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getAllFloats</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10Parameters12getAllFloatsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets all float parameters. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A map of all float parameters. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10Parameters13getAllDoublesEv">
+<span id="_CPPv3NK10Parameters13getAllDoublesEv"></span><span id="_CPPv2NK10Parameters13getAllDoublesEv"></span><span id="Parameters::getAllDoublesC"></span><span class="target" id="classParameters_1a7a75c68d41bbc2698724aa34b8098a8f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getAllDoubles</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10Parameters13getAllDoublesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets all double parameters. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A map of all double parameters. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10Parameters11getAllBoolsEv">
+<span id="_CPPv3NK10Parameters11getAllBoolsEv"></span><span id="_CPPv2NK10Parameters11getAllBoolsEv"></span><span id="Parameters::getAllBoolsC"></span><span class="target" id="classParameters_1ac5c9586570f5f3a434d25ed20148b7a6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getAllBools</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10Parameters11getAllBoolsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets all boolean parameters. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A map of all boolean parameters. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10Parameters19getAllDoubleVectorsEv">
+<span id="_CPPv3NK10Parameters19getAllDoubleVectorsEv"></span><span id="_CPPv2NK10Parameters19getAllDoubleVectorsEv"></span><span id="Parameters::getAllDoubleVectorsC"></span><span class="target" id="classParameters_1a259d144802659e2a280bae5efd3e58c9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getAllDoubleVectors</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10Parameters19getAllDoubleVectorsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets all double vector parameters. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A map of all double vector parameters. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10Parameters16getAllIntVectorsEv">
+<span id="_CPPv3NK10Parameters16getAllIntVectorsEv"></span><span id="_CPPv2NK10Parameters16getAllIntVectorsEv"></span><span id="Parameters::getAllIntVectorsC"></span><span class="target" id="classParameters_1a383052103bf3e887148715b4a584592e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getAllIntVectors</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10Parameters16getAllIntVectorsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets all integer vector parameters. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A map of all integer vector parameters. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10Parameters13getAllStringsEv">
+<span id="_CPPv3NK10Parameters13getAllStringsEv"></span><span id="_CPPv2NK10Parameters13getAllStringsEv"></span><span id="Parameters::getAllStringsC"></span><span class="target" id="classParameters_1af21aa77acefaf76f673a37b59cc92071"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getAllStrings</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10Parameters13getAllStringsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets all string parameters. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A map of all string parameters. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters8isIntSetE13ParameterCode">
+<span id="_CPPv3N10Parameters8isIntSetE13ParameterCode"></span><span id="_CPPv2N10Parameters8isIntSetE13ParameterCode"></span><span id="Parameters::isIntSet__ParameterCode"></span><span class="target" id="classParameters_1acc6bd3781d27a7f9be78c30626a28a3e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isIntSet</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters8isIntSetE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Checks if an integer parameter is set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the parameter is set, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters10isFloatSetE13ParameterCode">
+<span id="_CPPv3N10Parameters10isFloatSetE13ParameterCode"></span><span id="_CPPv2N10Parameters10isFloatSetE13ParameterCode"></span><span id="Parameters::isFloatSet__ParameterCode"></span><span class="target" id="classParameters_1af3e66cf82b1d5c8b67faf68818d93427"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isFloatSet</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters10isFloatSetE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Checks if a float parameter is set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the parameter is set, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters11isDoubleSetE13ParameterCode">
+<span id="_CPPv3N10Parameters11isDoubleSetE13ParameterCode"></span><span id="_CPPv2N10Parameters11isDoubleSetE13ParameterCode"></span><span id="Parameters::isDoubleSet__ParameterCode"></span><span class="target" id="classParameters_1a6568bd7752ae4f1feedb7d63c1a910bc"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isDoubleSet</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters11isDoubleSetE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Checks if a double parameter is set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the parameter is set, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters9isBoolSetE13ParameterCode">
+<span id="_CPPv3N10Parameters9isBoolSetE13ParameterCode"></span><span id="_CPPv2N10Parameters9isBoolSetE13ParameterCode"></span><span id="Parameters::isBoolSet__ParameterCode"></span><span class="target" id="classParameters_1ab4c884fb45a4b28b389b3a6f7cacd432"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isBoolSet</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters9isBoolSetE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Checks if a boolean parameter is set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the parameter is set, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters17isDoubleVectorSetE13ParameterCode">
+<span id="_CPPv3N10Parameters17isDoubleVectorSetE13ParameterCode"></span><span id="_CPPv2N10Parameters17isDoubleVectorSetE13ParameterCode"></span><span id="Parameters::isDoubleVectorSet__ParameterCode"></span><span class="target" id="classParameters_1a405ab4cf3c4e1676668580bda060548e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isDoubleVectorSet</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters17isDoubleVectorSetE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Checks if a double vector parameter is set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the parameter is set, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters14isIntVectorSetE13ParameterCode">
+<span id="_CPPv3N10Parameters14isIntVectorSetE13ParameterCode"></span><span id="_CPPv2N10Parameters14isIntVectorSetE13ParameterCode"></span><span id="Parameters::isIntVectorSet__ParameterCode"></span><span class="target" id="classParameters_1aaaa9d1b3ed851ae7a41195707e3e7f36"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isIntVectorSet</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters14isIntVectorSetE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Checks if an integer vector parameter is set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the parameter is set, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10Parameters11isStringSetE13ParameterCode">
+<span id="_CPPv3NK10Parameters11isStringSetE13ParameterCode"></span><span id="_CPPv2NK10Parameters11isStringSetE13ParameterCode"></span><span id="Parameters::isStringSet__ParameterCodeC"></span><span class="target" id="classParameters_1a360f7520ca274b8c9f90bf25891f4e63"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isStringSet</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10Parameters11isStringSetE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Checks if a string parameter is set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the parameter is set, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters12sanitizePathE13ParameterCodeb">
+<span id="_CPPv3N10Parameters12sanitizePathE13ParameterCodeb"></span><span id="_CPPv2N10Parameters12sanitizePathE13ParameterCodeb"></span><span id="Parameters::sanitizePath__ParameterCode.b"></span><span class="target" id="classParameters_1a9c719d6e1cc93d54e300233649a117e5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sanitizePath</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">shouldFileExist</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters12sanitizePathE13ParameterCodeb" title="Link to this definition"></a><br /></dt>
+<dd><p>Handles every aspect of parameters that represents files. </p>
+<p><ul class="simple">
+<li><p>Checks if a file exists if “shouldFileExist” is set to true.</p></li>
+<li><p>Appends the ROOT_FOLDER path to every file if ROOT_FOLDER is set.</p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – Parameter code to be processed. </p></li>
+<li><p><strong>shouldFileExist</strong> – Flag indicating whether the file should exist. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters21writeHiddenLayersFileEv">
+<span id="_CPPv3N10Parameters21writeHiddenLayersFileEv"></span><span id="_CPPv2N10Parameters21writeHiddenLayersFileEv"></span><span id="Parameters::writeHiddenLayersFile"></span><span class="target" id="classParameters_1a1016218cfd361038b03e93194cebc82a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">writeHiddenLayersFile</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters21writeHiddenLayersFileEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Write the configuration of hidden layers to a file. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters20readHiddenLayersFileER9StringIntR9StringInt">
+<span id="_CPPv3N10Parameters20readHiddenLayersFileER9StringIntR9StringInt"></span><span id="_CPPv2N10Parameters20readHiddenLayersFileER9StringIntR9StringInt"></span><span id="Parameters::readHiddenLayersFile__StringIntR.StringIntR"></span><span class="target" id="classParameters_1a792019f5900f88135d357fc550f971e5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">readHiddenLayersFile</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classStringInt.html#_CPPv49StringInt" title="StringInt"><span class="n"><span class="pre">StringInt</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">arch</span></span>, <a class="reference internal" href="classStringInt.html#_CPPv49StringInt" title="StringInt"><span class="n"><span class="pre">StringInt</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">archInd</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters20readHiddenLayersFileER9StringIntR9StringInt" title="Link to this definition"></a><br /></dt>
+<dd><p>Reads, checks, and stores the hidden layers configuration file. </p>
+<p>Format of the file: The file format should include pairs of strictly positive integers on each line, where the first integer represents the layer’s ID (starting at 1 and incrementing by 1 for each layer) and the second integer represents the number of neurons in that layer. The first layer’s number of neurons must be a multiple of the number of attributes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arch</strong> – A reference to a <a class="reference internal" href="classStringInt.html#classStringInt"><span class="std std-ref">StringInt</span></a> object where the neuron counts of each layer will be stored. </p></li>
+<li><p><strong>archInd</strong> – A reference to a <a class="reference internal" href="classStringInt.html#classStringInt"><span class="std std-ref">StringInt</span></a> object where the IDs of each layer will be stored. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0ENK10Parameters14vectorToStringENSt6stringERKNSt6vectorI1TEE">
+<span id="_CPPv3I0ENK10Parameters14vectorToStringERKNSt6vectorI1TEE"></span><span id="_CPPv2I0ENK10Parameters14vectorToStringERKNSt6vectorI1TEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classParameters_1ae72d1403a8083e981dbcfd38b92b1157"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vectorToString</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK10Parameters14vectorToStringENSt6stringERKNSt6vectorI1TEE" title="Parameters::vectorToString::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">vec</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK10Parameters14vectorToStringENSt6stringERKNSt6vectorI1TEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Converts a vector of any type to a string representation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – The type of elements in the vector. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>vec</strong> – The vector to convert. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>std::string The string representation of the vector. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10Parameters18assertStringExistsE13ParameterCode">
+<span id="_CPPv3NK10Parameters18assertStringExistsE13ParameterCode"></span><span id="_CPPv2NK10Parameters18assertStringExistsE13ParameterCode"></span><span id="Parameters::assertStringExists__ParameterCodeC"></span><span class="target" id="classParameters_1af1fae8c21171a0f3dd457699a4201e37"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assertStringExists</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10Parameters18assertStringExistsE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Asserts that a string parameter is set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is not set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters15assertIntExistsE13ParameterCode">
+<span id="_CPPv3N10Parameters15assertIntExistsE13ParameterCode"></span><span id="_CPPv2N10Parameters15assertIntExistsE13ParameterCode"></span><span id="Parameters::assertIntExists__ParameterCode"></span><span class="target" id="classParameters_1a4ba4e99e9c0dbe9b18ff6e60d877970e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assertIntExists</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters15assertIntExistsE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Asserts that an integer parameter is set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is not set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters17assertFloatExistsE13ParameterCode">
+<span id="_CPPv3N10Parameters17assertFloatExistsE13ParameterCode"></span><span id="_CPPv2N10Parameters17assertFloatExistsE13ParameterCode"></span><span id="Parameters::assertFloatExists__ParameterCode"></span><span class="target" id="classParameters_1a9649ed48972ea7e05038d0fd5785c9c0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assertFloatExists</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters17assertFloatExistsE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Asserts that a float parameter is set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is not set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters18assertDoubleExistsE13ParameterCode">
+<span id="_CPPv3N10Parameters18assertDoubleExistsE13ParameterCode"></span><span id="_CPPv2N10Parameters18assertDoubleExistsE13ParameterCode"></span><span id="Parameters::assertDoubleExists__ParameterCode"></span><span class="target" id="classParameters_1adf2182ab8d203a0fc5d8848ec4f5f45c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assertDoubleExists</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters18assertDoubleExistsE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Asserts that a double parameter is set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is not set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters16assertBoolExistsE13ParameterCode">
+<span id="_CPPv3N10Parameters16assertBoolExistsE13ParameterCode"></span><span id="_CPPv2N10Parameters16assertBoolExistsE13ParameterCode"></span><span id="Parameters::assertBoolExists__ParameterCode"></span><span class="target" id="classParameters_1a171356257cf68f1c096e9d3f7e629093"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assertBoolExists</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters16assertBoolExistsE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Asserts that a boolean parameter is set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is not set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters24assertDoubleVectorExistsE13ParameterCode">
+<span id="_CPPv3N10Parameters24assertDoubleVectorExistsE13ParameterCode"></span><span id="_CPPv2N10Parameters24assertDoubleVectorExistsE13ParameterCode"></span><span id="Parameters::assertDoubleVectorExists__ParameterCode"></span><span class="target" id="classParameters_1a920d1d4ced963f411ef035b59b0d26ea"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assertDoubleVectorExists</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters24assertDoubleVectorExistsE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Asserts that a double vector parameter is set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is not set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters21assertIntVectorExistsE13ParameterCode">
+<span id="_CPPv3N10Parameters21assertIntVectorExistsE13ParameterCode"></span><span id="_CPPv2N10Parameters21assertIntVectorExistsE13ParameterCode"></span><span id="Parameters::assertIntVectorExists__ParameterCode"></span><span class="target" id="classParameters_1a972dd984447eb2c76870dca89c90e807"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assertIntVectorExists</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters21assertIntVectorExistsE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Asserts that an integer vector parameter is set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the parameter is not set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters28checkAttributeAndClassCountsEv">
+<span id="_CPPv3N10Parameters28checkAttributeAndClassCountsEv"></span><span id="_CPPv2N10Parameters28checkAttributeAndClassCountsEv"></span><span id="Parameters::checkAttributeAndClassCounts"></span><span class="target" id="classParameters_1a691363f60defedab9396c9489e9334ee"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkAttributeAndClassCounts</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters28checkAttributeAndClassCountsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Checks the attribute and class counts for validity. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if the number of attributes or classes is invalid. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters21checkParametersCommonEv">
+<span id="_CPPv3N10Parameters21checkParametersCommonEv"></span><span id="_CPPv2N10Parameters21checkParametersCommonEv"></span><span id="Parameters::checkParametersCommon"></span><span class="target" id="classParameters_1a539ef0296cf158582e9e3b4471486213"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkParametersCommon</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters21checkParametersCommonEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Checks common parameters for validity. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if any common parameter is invalid. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters20checkParametersFidexEv">
+<span id="_CPPv3N10Parameters20checkParametersFidexEv"></span><span id="_CPPv2N10Parameters20checkParametersFidexEv"></span><span id="Parameters::checkParametersFidex"></span><span class="target" id="classParameters_1ad2fc8edefb7d4add38d6e87dd8e9914a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkParametersFidex</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters20checkParametersFidexEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Checks Fidex-specific parameters for validity. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if any <a class="reference internal" href="classFidex.html#classFidex"><span class="std std-ref">Fidex</span></a> parameter is invalid. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters32checkParametersDecisionThresholdEv">
+<span id="_CPPv3N10Parameters32checkParametersDecisionThresholdEv"></span><span id="_CPPv2N10Parameters32checkParametersDecisionThresholdEv"></span><span id="Parameters::checkParametersDecisionThreshold"></span><span class="target" id="classParameters_1a76b59cca37d715bda994c29266edaa52"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkParametersDecisionThreshold</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters32checkParametersDecisionThresholdEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Checks decision threshold and positive class index parameters for validity. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if any parameter is invalid. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters23checkParametersDimlpTrnEv">
+<span id="_CPPv3N10Parameters23checkParametersDimlpTrnEv"></span><span id="_CPPv2N10Parameters23checkParametersDimlpTrnEv"></span><span id="Parameters::checkParametersDimlpTrn"></span><span class="target" id="classParameters_1a3dd175acfdf4470d5a7393ccd0d02519"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkParametersDimlpTrn</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters23checkParametersDimlpTrnEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Checks <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> training specific parameters for validity. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if any <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> training parameter is invalid. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters28checkParametersNormalizationEv">
+<span id="_CPPv3N10Parameters28checkParametersNormalizationEv"></span><span id="_CPPv2N10Parameters28checkParametersNormalizationEv"></span><span id="Parameters::checkParametersNormalization"></span><span class="target" id="classParameters_1af814d70c006bef8a0bbd67cc4c916ab9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkParametersNormalization</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters28checkParametersNormalizationEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Checks normalization parameters for validity. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="classCommandArgumentException.html#_CPPv424CommandArgumentException" title="CommandArgumentException"><span class="n">CommandArgumentException</span></a></span></span> – if any normalization parameter is invalid. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters23setDefaultNbQuantLevelsEv">
+<span id="_CPPv3N10Parameters23setDefaultNbQuantLevelsEv"></span><span id="_CPPv2N10Parameters23setDefaultNbQuantLevelsEv"></span><span id="Parameters::setDefaultNbQuantLevels"></span><span class="target" id="classParameters_1a2278fb13dffee0d594f5e5c4f1d95623"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDefaultNbQuantLevels</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters23setDefaultNbQuantLevelsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the default number of quantization levels. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters15setDefaultFidexEv">
+<span id="_CPPv3N10Parameters15setDefaultFidexEv"></span><span id="_CPPv2N10Parameters15setDefaultFidexEv"></span><span id="Parameters::setDefaultFidex"></span><span class="target" id="classParameters_1a926562b3737057ec0dd2129440d5c961"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDefaultFidex</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters15setDefaultFidexEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the default values of <a class="reference internal" href="classFidex.html#classFidex"><span class="std std-ref">Fidex</span></a> parameters. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters27setDefaultDecisionThresholdEv">
+<span id="_CPPv3N10Parameters27setDefaultDecisionThresholdEv"></span><span id="_CPPv2N10Parameters27setDefaultDecisionThresholdEv"></span><span id="Parameters::setDefaultDecisionThreshold"></span><span class="target" id="classParameters_1a5b3483d95a47d4c871a858043e870a63"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDefaultDecisionThreshold</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters27setDefaultDecisionThresholdEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the default values of decision threshold and positive class index parameters. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters18setDefaultDimlpTrnEv">
+<span id="_CPPv3N10Parameters18setDefaultDimlpTrnEv"></span><span id="_CPPv2N10Parameters18setDefaultDimlpTrnEv"></span><span id="Parameters::setDefaultDimlpTrn"></span><span class="target" id="classParameters_1a1ca47b7d9c18cee9c4c8f61aaed76881"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setDefaultDimlpTrn</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters18setDefaultDimlpTrnEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the default values of <a class="reference internal" href="classDimlp.html#classDimlp"><span class="std std-ref">Dimlp</span></a> training parameters. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10Parameters16getParameterNameE13ParameterCode">
+<span id="_CPPv3N10Parameters16getParameterNameE13ParameterCode"></span><span id="_CPPv2N10Parameters16getParameterNameE13ParameterCode"></span><span id="Parameters::getParameterName__ParameterCode"></span><span class="target" id="classParameters_1a46c66282c9607fd9139deef03113869a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getParameterName</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="enum_parameters_8h_1a87f0d45be52a22db176e38b4a9a5ff28.html#_CPPv413ParameterCode" title="ParameterCode"><span class="n"><span class="pre">ParameterCode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10Parameters16getParameterNameE13ParameterCode" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the name of the parameter associated with the given parameter code. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The parameter code. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The name of the parameter. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classOneVarThresDescr.html" class="btn btn-neutral float-left" title="Class OneVarThresDescr" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classRealHyp.html" class="btn btn-neutral float-right" title="Class RealHyp" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

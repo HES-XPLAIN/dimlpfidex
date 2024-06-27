@@ -1,0 +1,68 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_densClsFct.h:
+
+File densClsFct.h
+=================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/densClsFct.h``)
+-----------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_densClsFct.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../common/cpp/src/parameters.h``
+
+- ``bagDimlp.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_bagDimlp.h`)
+
+- ``fstream``
+
+- ``realHyp2.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp2.h`)
+
+- ``sstream``
+
+- ``stdlib.h``
+
+- ``string.h``
+
+- ``unordered_map``
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_densCls.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_densClsFct.cpp`
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_densClsFct_8h_1ab4507a9716b8bb56e626ab89d31613f7`
+
+- :ref:`exhale_function_densClsFct_8h_1a8c2736a20a81a1f5e564a1e1d2b38c9d`
+
+- :ref:`exhale_function_densClsFct_8h_1a2bc1ee3c4bb46e3de9a70b7e88769932`
+

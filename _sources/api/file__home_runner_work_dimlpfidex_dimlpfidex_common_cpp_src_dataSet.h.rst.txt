@@ -1,0 +1,76 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_dataSet.h:
+
+File common/cpp/src/dataSet.h
+=============================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/common/cpp/src/dataSet.h``)
+---------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_dataSet.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``algorithm``
+
+- ``checkFun.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.h`)
+
+- ``cmath``
+
+- ``cstring``
+
+- ``errorHandler.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_errorHandler.h`)
+
+- ``fstream``
+
+- ``iostream``
+
+- ``sstream``
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_dataSet.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexAlgo.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStatsFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperLocus.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.h`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classDataSetFid`
+

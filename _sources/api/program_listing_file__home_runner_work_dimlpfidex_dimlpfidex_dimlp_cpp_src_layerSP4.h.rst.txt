@@ -1,0 +1,41 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSP4.h:
+
+Program Listing for File layerSP4.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSP4.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/layerSP4.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LAYERSP4_H
+   #define LAYERSP4_H
+   
+   #include "layer.h"
+   
+   
+   class LayerSP4 : public Layer {
+   
+     //----------------------------------------------------------------
+   
+     float Activation1(float x) override { return Power4(x); }
+   
+     //----------------------------------------------------------------
+   
+   public:
+     LayerSP4(
+         int nbDown,
+         int nbUp,
+         int nbWeights,
+         int nbWeightsForInit) :
+   
+                                 Layer(0, 0, 0, nbDown, nbUp, nbWeights, nbWeightsForInit)
+   
+     {
+     }
+   };
+   
+   
+   #endif // LAYERSP4_H

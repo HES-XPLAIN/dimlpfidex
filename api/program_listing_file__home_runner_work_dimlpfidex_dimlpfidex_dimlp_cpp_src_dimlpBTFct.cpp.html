@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Listing for File dimlpBTFct.cpp &mdash; dimlpfidex 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7026087e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dimlpfidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">C++ API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/modules.html">trainings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dimlpfidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Program Listing for File dimlpBTFct.cpp</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpBTFct.cpp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="program-listing-for-file-dimlpbtfct-cpp">
+<span id="program-listing-file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-dimlpbtfct-cpp"></span><h1>Program Listing for File dimlpBTFct.cpp<a class="headerlink" href="#program-listing-for-file-dimlpbtfct-cpp" title="Link to this heading"></a></h1>
+<p>↰ <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpBTFct.cpp.html#file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-dimlpbtfct-cpp"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/dimlpBTFct.cpp</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;dimlpBTFct.h&quot;</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">showDimlpBTParams</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;---------------------------------------------------------------------&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Warning! The files are located with respect to the root folder dimlpfidex.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The arguments can be specified in the command or in a json configuration file with --json_config_file your_config_file.json.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;----------------------------&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Required parameters:&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--train_data_file &lt;str&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Path to the file containing the train portion of the dataset&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--train_class_file &lt;str&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Path to the file containing the train true classes of the dataset, not mandatory if classes are specified in train data file&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--nb_attributes &lt;int [1,inf[&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Number of attributes in the dataset&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--nb_classes &lt;int [2,inf[&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Number of classes in the dataset&quot;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;----------------------------&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Optional parameters: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--json_config_file &lt;str&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Path to the JSON file that configures all parameters. If used, this must be the sole argument and must specify the file&#39;s relative path&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--root_folder &lt;str&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--nb_dimlp_nets &lt;int [1,inf[&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Number of networks (default: 25)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--train_pred_outfile &lt;str&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Path to the file where the train predictions will be stored (default: dimlpBTTrain.out)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--test_data_file &lt;str&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Path to the file containing the test portion of the dataset&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--test_class_file &lt;str&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Path to the file containing the test true classes of the dataset&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--test_pred_outfile &lt;str&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Path to the file where the test predictions will be stored (default: dimlpBTTest.out)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--weights_outfile &lt;str&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Path to the file where the output trained weights of the model will be stored (default: dimlpBT.wts)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--attributes_file &lt;str&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Path to the file containing the labels of attributes and classes&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--stats_file &lt;str&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Path to the file where the train, test and validation accuracy, as well as the train and test global accuracy will be stored (default: statsDimlpBT.txt)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--console_file &lt;str&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--first_hidden_layer &lt;int k*nb_attributes, k in [1,inf[&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Number of neurons in the first hidden layer (default: nb_attributes)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--hidden_layers &lt;list&lt;int [1,inf[&gt;&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Number of neurons in each hidden layer, from the second layer to the last&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--hidden_layers_outfile &lt;str&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Path to the file where output hidden layers sizes will be stored (default: hidden_layers.out)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--with_rule_extraction &lt;bool&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Whether to extract rules with dimlpBT algorithm (default: False)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--global_rules_outfile &lt;str&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Path to the file where the output rule(s) will be stored&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--momentum &lt;float [0,inf[&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Back-propagation momentum parameter (default: 0.6)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--flat &lt;float [0,inf[&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Back-propagation flat spot elimination parameter (default: 0.01)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--error_thresh &lt;float [0,inf[&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Error threshold to stop training&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--acc_thresh &lt;float ]0,1]&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Accuracy threshold to stop training&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--abs_error_thresh &lt;float [0,inf[&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Absolute difference error threshold, 0 if not using this stopping criteria (default: 0)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--nb_epochs &lt;int [1,inf[&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Number of model training epochs (default: 1500)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--nb_epochs_error &lt;int [1,inf[&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Number of training epochs before showing error (default: 10)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--nb_ex_per_net &lt;int [1,inf[&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Number of examples for one single network, 0 for all examples, it is not recommended to change this value (default: 0)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--nb_quant_levels &lt;int [3,inf[&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Number of stairs in the staircase activation function (default: 50)&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--normalization_file &lt;str&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Path to the file containing the mean and standard deviation of some attributes. Used to denormalize the rules if specified&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--mus &lt;list&lt;float ]-inf,inf[&gt;&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Mean or median of each attribute index to be denormalized in the rules&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--sigmas &lt;list&lt;float ]-inf,inf[&gt;&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Standard deviation of each attribute index to be denormalized in the rules&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--normalization_indices &lt;list&lt;int [0,nb_attributes-1]&gt;&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Attribute indices to be denormalized in the rules, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1])&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">printOptionDescription</span><span class="p">(</span><span class="s">&quot;--seed &lt;int [0,inf[&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Seed for random number generation, 0=random. Anything else than 0 is an arbitrary seed that can be reused to obtain the same randomly generated sequence and therefore getting same results (default: 0)&quot;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;----------------------------&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Execution example :&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;dimlp.dimlpBT(</span><span class="se">\&quot;</span><span class="s">--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --hidden_layers 5 --nb_classes 2 --nb_dimlp_nets 2 --weights_outfile dimlpDatanormBT.wts --with_rule_extraction true --global_rules_outfile globalRules.rls --train_pred_outfile predTrain.out --test_pred_outfile predTest.out --root_folder dimlp/datafiles</span><span class="se">\&quot;</span><span class="s">)&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;---------------------------------------------------------------------&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span>
+<span class="w">            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">checkDimlpBTParametersLogicValues</span><span class="p">(</span><span class="n">Parameters</span><span class="w"> </span><span class="o">&amp;</span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// setting default values</span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">setDefaultString</span><span class="p">(</span><span class="n">TRAIN_PRED_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;dimlpBTTrain.out&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">setDefaultString</span><span class="p">(</span><span class="n">TEST_PRED_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;dimlpBTTest.out&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">setDefaultString</span><span class="p">(</span><span class="n">WEIGHTS_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;dimlpBT.wts&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">setDefaultString</span><span class="p">(</span><span class="n">STATS_FILE</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;statsDimlpBT.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">setDefaultNbQuantLevels</span><span class="p">();</span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">setDefaultDimlpTrn</span><span class="p">();</span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">setDefaultInt</span><span class="p">(</span><span class="n">NB_DIMLP_NETS</span><span class="p">,</span><span class="w"> </span><span class="mi">25</span><span class="p">);</span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">setDefaultInt</span><span class="p">(</span><span class="n">NB_EX_PER_NET</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// this sections check if values comply with program logic</span>
+
+<span class="w">  </span><span class="c1">// asserting mandatory parameters</span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">assertIntExists</span><span class="p">(</span><span class="n">NB_ATTRIBUTES</span><span class="p">);</span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">assertIntExists</span><span class="p">(</span><span class="n">NB_CLASSES</span><span class="p">);</span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">assertStringExists</span><span class="p">(</span><span class="n">TRAIN_DATA_FILE</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// verifying logic between parameters, values range and so on...</span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">checkParametersCommon</span><span class="p">();</span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">checkParametersDimlpTrn</span><span class="p">();</span>
+<span class="w">  </span><span class="n">p</span><span class="p">.</span><span class="n">checkParametersNormalization</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_DIMLP_NETS</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Number of dimlp nets must be strictly positive (&gt;=1).&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_EX_PER_NET</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Error : Number of examples per net must be positive (&gt;=0, 0=all examples).&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">dimlpBT</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">command</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// Save buffer where we output results</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="w"> </span><span class="n">ofs</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">streambuf</span><span class="w"> </span><span class="o">*</span><span class="n">cout_buff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">.</span><span class="n">rdbuf</span><span class="p">();</span><span class="w"> </span><span class="c1">// Save old buf</span>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">temps</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">clock_t</span><span class="w"> </span><span class="n">t1</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">clock_t</span><span class="w"> </span><span class="n">t2</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">t1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clock</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Parsing the command</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">commandList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;dimlpBT&quot;</span><span class="p">};</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">s</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">stringstream</span><span class="w"> </span><span class="n">ss</span><span class="p">(</span><span class="n">command</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">ss</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">commandList</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nbParam</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">commandList</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbParam</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">commandList</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;-h&quot;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">commandList</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;--help&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">showDimlpBTParams</span><span class="p">();</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Import parameters</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Parameters</span><span class="o">&gt;</span><span class="w"> </span><span class="n">params</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ParameterCode</span><span class="o">&gt;</span><span class="w"> </span><span class="n">validParams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">TRAIN_DATA_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">NB_ATTRIBUTES</span><span class="p">,</span><span class="w"> </span><span class="n">NB_CLASSES</span><span class="p">,</span><span class="w"> </span><span class="n">ROOT_FOLDER</span><span class="p">,</span><span class="w"> </span><span class="n">NB_DIMLP_NETS</span><span class="p">,</span><span class="w"> </span><span class="n">ATTRIBUTES_FILE</span><span class="p">,</span>
+<span class="w">                                              </span><span class="n">TEST_DATA_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">TRAIN_CLASS_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">TEST_CLASS_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">CONSOLE_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">WEIGHTS_OUTFILE</span><span class="p">,</span>
+<span class="w">                                              </span><span class="n">TRAIN_PRED_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="n">TEST_PRED_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="n">STATS_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">FIRST_HIDDEN_LAYER</span><span class="p">,</span><span class="w"> </span><span class="n">HIDDEN_LAYERS</span><span class="p">,</span><span class="w"> </span><span class="n">HIDDEN_LAYERS_OUTFILE</span><span class="p">,</span><span class="w"> </span><span class="n">WITH_RULE_EXTRACTION</span><span class="p">,</span><span class="w"> </span><span class="n">GLOBAL_RULES_OUTFILE</span><span class="p">,</span>
+<span class="w">                                              </span><span class="n">LEARNING_RATE</span><span class="p">,</span><span class="w"> </span><span class="n">MOMENTUM</span><span class="p">,</span><span class="w"> </span><span class="n">FLAT</span><span class="p">,</span><span class="w"> </span><span class="n">NB_QUANT_LEVELS</span><span class="p">,</span><span class="w"> </span><span class="n">ERROR_THRESH</span><span class="p">,</span><span class="w"> </span><span class="n">ACC_THRESH</span><span class="p">,</span><span class="w"> </span><span class="n">ABS_ERROR_THRESH</span><span class="p">,</span>
+<span class="w">                                              </span><span class="n">NB_EPOCHS</span><span class="p">,</span><span class="w"> </span><span class="n">NB_EPOCHS_ERROR</span><span class="p">,</span><span class="w"> </span><span class="n">NB_EX_PER_NET</span><span class="p">,</span><span class="w"> </span><span class="n">NORMALIZATION_FILE</span><span class="p">,</span><span class="w"> </span><span class="n">MUS</span><span class="p">,</span><span class="w"> </span><span class="n">SIGMAS</span><span class="p">,</span><span class="w"> </span><span class="n">NORMALIZATION_INDICES</span><span class="p">,</span><span class="w"> </span><span class="n">SEED</span><span class="p">};</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">commandList</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">compare</span><span class="p">(</span><span class="s">&quot;--json_config_file&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">commandList</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;JSON config file name/path is missing&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">commandList</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Option &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">commandList</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; has to be the only option in the command if specified.&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Parameters</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Parameters</span><span class="p">(</span><span class="n">commandList</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="n">validParams</span><span class="p">));</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">out_of_range</span><span class="w"> </span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Some value inside your JSON config file &#39;&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">commandList</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;&#39; is out of range.</span><span class="se">\n</span><span class="s">(Probably due to a too large or too tiny numeric value).&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="w"> </span><span class="o">&amp;</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">msg</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">());</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">CommandArgumentException</span><span class="p">(</span><span class="s">&quot;Unknown JSON config file error: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">msg</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// Read parameters from CLI</span>
+<span class="w">      </span><span class="n">params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Parameters</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Parameters</span><span class="p">(</span><span class="n">commandList</span><span class="p">,</span><span class="w"> </span><span class="n">validParams</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// getting all program arguments from CLI</span>
+<span class="w">    </span><span class="n">checkDimlpBTParametersLogicValues</span><span class="p">(</span><span class="o">*</span><span class="n">params</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Get console results to file</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">CONSOLE_FILE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">ofs</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">CONSOLE_FILE</span><span class="p">));</span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">.</span><span class="n">rdbuf</span><span class="p">(</span><span class="n">ofs</span><span class="p">.</span><span class="n">rdbuf</span><span class="p">());</span><span class="w"> </span><span class="c1">// redirect cout to file</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Show chosen parameters</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="o">*</span><span class="n">params</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// ----------------------------------------------------------------------</span>
+
+<span class="w">    </span><span class="c1">// Get parameters values</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_ATTRIBUTES</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_CLASSES</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">learnFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">TRAIN_DATA_FILE</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">predTrainFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">TRAIN_PRED_OUTFILE</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">predTestFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">TEST_PRED_OUTFILE</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">genericWeightsFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">WEIGHTS_OUTFILE</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">eta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getFloat</span><span class="p">(</span><span class="n">LEARNING_RATE</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getFloat</span><span class="p">(</span><span class="n">MOMENTUM</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">flat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getFloat</span><span class="p">(</span><span class="n">FLAT</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">errThres</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getFloat</span><span class="p">(</span><span class="n">ERROR_THRESH</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">accThres</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getFloat</span><span class="p">(</span><span class="n">ACC_THRESH</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">deltaErr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getFloat</span><span class="p">(</span><span class="n">ABS_ERROR_THRESH</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">showErr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_EPOCHS_ERROR</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">epochs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_EPOCHS</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">quant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_QUANT_LEVELS</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbDimlpNets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_DIMLP_NETS</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbExInOne</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_EX_PER_NET</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">seed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getInt</span><span class="p">(</span><span class="n">SEED</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">DataSet</span><span class="w"> </span><span class="n">Train</span><span class="p">;</span>
+<span class="w">    </span><span class="n">DataSet</span><span class="w"> </span><span class="n">Test</span><span class="p">;</span>
+<span class="w">    </span><span class="n">DataSet</span><span class="w"> </span><span class="n">TrainClass</span><span class="p">;</span>
+<span class="w">    </span><span class="n">DataSet</span><span class="w"> </span><span class="n">TestClass</span><span class="p">;</span>
+<span class="w">    </span><span class="n">DataSet</span><span class="w"> </span><span class="n">Valid</span><span class="p">;</span>
+<span class="w">    </span><span class="n">DataSet</span><span class="w"> </span><span class="n">ValidClass</span><span class="p">;</span>
+<span class="w">    </span><span class="n">DataSet</span><span class="w"> </span><span class="n">All</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">AttrName</span><span class="w"> </span><span class="n">Attr</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbLayers</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbWeightLayers</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vecNbNeurons</span><span class="p">;</span>
+<span class="w">    </span><span class="n">StringInt</span><span class="w"> </span><span class="n">arch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getArch</span><span class="p">();</span>
+<span class="w">    </span><span class="n">StringInt</span><span class="w"> </span><span class="n">archInd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getArchInd</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">weightFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dimlp.wts&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// ----------------------------------------------------------------------</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">arch</span><span class="p">.</span><span class="n">GetNbEl</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">nbLayers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w">      </span><span class="n">nbWeightLayers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbLayers</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">      </span><span class="n">vecNbNeurons</span><span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="n">nbLayers</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">      </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbIn</span><span class="p">;</span>
+<span class="w">      </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbIn</span><span class="p">;</span>
+<span class="w">      </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbOut</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">archInd</span><span class="p">.</span><span class="n">GoToBeg</span><span class="p">();</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">archInd</span><span class="p">.</span><span class="n">GetVal</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">arch</span><span class="p">.</span><span class="n">GoToBeg</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">arch</span><span class="p">.</span><span class="n">GetVal</span><span class="p">()</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">nbIn</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="k">throw</span><span class="w"> </span><span class="n">InternalError</span><span class="p">(</span><span class="s">&quot;The number of neurons in the first hidden layer must be a multiple of the number of input neurons.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">nbLayers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GetNbEl</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">        </span><span class="n">nbWeightLayers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbLayers</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">vecNbNeurons</span><span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="n">nbLayers</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbIn</span><span class="p">;</span>
+<span class="w">        </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="n">nbLayers</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbOut</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">arch</span><span class="p">.</span><span class="n">GoToBeg</span><span class="p">();</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GetNbEl</span><span class="p">();</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GetVal</span><span class="p">();</span>
+
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="n">InternalError</span><span class="p">(</span><span class="s">&quot;The number of neurons must be greater than 0.&quot;</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">nbLayers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GetNbEl</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w">        </span><span class="n">nbWeightLayers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbLayers</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">vecNbNeurons</span><span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="n">nbLayers</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbIn</span><span class="p">;</span>
+<span class="w">        </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbIn</span><span class="p">;</span>
+<span class="w">        </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="n">nbLayers</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbOut</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">arch</span><span class="p">.</span><span class="n">GoToBeg</span><span class="p">();</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GetNbEl</span><span class="p">();</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arch</span><span class="p">.</span><span class="n">GetVal</span><span class="p">();</span>
+
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="n">InternalError</span><span class="p">(</span><span class="s">&quot;The number of neurons must be greater than 0.&quot;</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// ----------------------------------------------------------------------</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">TRAIN_CLASS_FILE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">DataSet</span><span class="w"> </span><span class="n">train</span><span class="p">(</span><span class="n">learnFile</span><span class="p">,</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span><span class="w"> </span><span class="n">nbOut</span><span class="p">);</span>
+<span class="w">      </span><span class="n">DataSet</span><span class="w"> </span><span class="n">trainClass</span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">TRAIN_CLASS_FILE</span><span class="p">),</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span><span class="w"> </span><span class="n">nbOut</span><span class="p">);</span>
+
+<span class="w">      </span><span class="n">Train</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">train</span><span class="p">;</span>
+<span class="w">      </span><span class="n">TrainClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">trainClass</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">DataSet</span><span class="w"> </span><span class="n">data</span><span class="p">(</span><span class="n">learnFile</span><span class="p">,</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span><span class="w"> </span><span class="n">nbOut</span><span class="p">);</span>
+
+<span class="w">      </span><span class="n">DataSet</span><span class="w"> </span><span class="n">train</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">());</span>
+<span class="w">      </span><span class="n">DataSet</span><span class="w"> </span><span class="n">trainClass</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">());</span>
+
+<span class="w">      </span><span class="n">data</span><span class="p">.</span><span class="n">ExtractDataAndTarget</span><span class="p">(</span><span class="n">train</span><span class="p">,</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span><span class="w"> </span><span class="n">trainClass</span><span class="p">,</span><span class="w"> </span><span class="n">nbOut</span><span class="p">);</span>
+
+<span class="w">      </span><span class="n">Train</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">train</span><span class="p">;</span>
+<span class="w">      </span><span class="n">TrainClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">trainClass</span><span class="p">;</span>
+
+<span class="w">      </span><span class="n">data</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">TEST_DATA_FILE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">TEST_CLASS_FILE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">DataSet</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">TEST_DATA_FILE</span><span class="p">),</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span><span class="w"> </span><span class="n">nbOut</span><span class="p">);</span>
+<span class="w">        </span><span class="n">DataSet</span><span class="w"> </span><span class="n">testClass</span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">TEST_CLASS_FILE</span><span class="p">),</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span><span class="w"> </span><span class="n">nbOut</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">Test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">test</span><span class="p">;</span>
+<span class="w">        </span><span class="n">TestClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">testClass</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">DataSet</span><span class="w"> </span><span class="n">data</span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">TEST_DATA_FILE</span><span class="p">),</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span><span class="w"> </span><span class="n">nbOut</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">DataSet</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">());</span>
+<span class="w">        </span><span class="n">DataSet</span><span class="w"> </span><span class="n">testClass</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">());</span>
+
+<span class="w">        </span><span class="n">data</span><span class="p">.</span><span class="n">ExtractDataAndTarget</span><span class="p">(</span><span class="n">test</span><span class="p">,</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span><span class="w"> </span><span class="n">testClass</span><span class="p">,</span><span class="w"> </span><span class="n">nbOut</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">Test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">test</span><span class="p">;</span>
+<span class="w">        </span><span class="n">TestClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">testClass</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">data</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">net</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">BagDimlp</span><span class="o">&gt;</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="p">,</span><span class="w"> </span><span class="n">flat</span><span class="p">,</span><span class="w"> </span><span class="n">errThres</span><span class="p">,</span><span class="w"> </span><span class="n">accThres</span><span class="p">,</span><span class="w"> </span><span class="n">deltaErr</span><span class="p">,</span>
+<span class="w">                                          </span><span class="n">quant</span><span class="p">,</span><span class="w"> </span><span class="n">showErr</span><span class="p">,</span><span class="w"> </span><span class="n">epochs</span><span class="p">,</span><span class="w"> </span><span class="n">nbLayers</span><span class="p">,</span><span class="w"> </span><span class="n">vecNbNeurons</span><span class="p">,</span>
+<span class="w">                                          </span><span class="n">nbDimlpNets</span><span class="p">,</span><span class="w"> </span><span class="n">weightFile</span><span class="p">,</span><span class="w"> </span><span class="n">seed</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbExInOne</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">      </span><span class="n">nbExInOne</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Train</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">();</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbExInOne</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">Train</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">())</span>
+<span class="w">      </span><span class="n">nbExInOne</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Train</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">net</span><span class="o">-&gt;</span><span class="n">MakeDataSets</span><span class="p">(</span><span class="n">Train</span><span class="p">,</span><span class="w"> </span><span class="n">TrainClass</span><span class="p">,</span><span class="w"> </span><span class="n">nbExInOne</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">STATS_FILE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="w"> </span><span class="n">accFile</span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">STATS_FILE</span><span class="p">));</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">accFile</span><span class="p">.</span><span class="n">is_open</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">accFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Accuracy for Bag training : </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">                </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="n">accFile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">CannotOpenFileError</span><span class="p">(</span><span class="s">&quot;Error : Cannot open accuracy file &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">STATS_FILE</span><span class="p">));</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">net</span><span class="o">-&gt;</span><span class="n">TrainAll</span><span class="p">(</span><span class="n">Test</span><span class="p">,</span><span class="w"> </span><span class="n">TestClass</span><span class="p">,</span><span class="w"> </span><span class="n">genericWeightsFile</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">STATS_FILE</span><span class="p">),</span><span class="w"> </span><span class="n">seed</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">acc</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">accTest</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">net</span><span class="o">-&gt;</span><span class="n">ComputeAcc</span><span class="p">(</span><span class="n">Train</span><span class="p">,</span><span class="w"> </span><span class="n">TrainClass</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">acc</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">predTrainFile</span><span class="p">);</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">*** GLOBAL ACCURACY ON TRAINING SET = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">acc</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Test</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">net</span><span class="o">-&gt;</span><span class="n">ComputeAcc</span><span class="p">(</span><span class="n">Test</span><span class="p">,</span><span class="w"> </span><span class="n">TestClass</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">accTest</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">predTestFile</span><span class="p">);</span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;*** GLOBAL ACCURACY ON TESTING SET = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">accTest</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Output accuracy stats in file</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">STATS_FILE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="w"> </span><span class="n">accFile</span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">STATS_FILE</span><span class="p">),</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">app</span><span class="p">);</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">accFile</span><span class="p">.</span><span class="n">is_open</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">accFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-------------------------------------------------------&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="n">accFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;-------------------------------------------------------</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">                </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="n">accFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Global accuracy on training set = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">acc</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Test</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">accFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Global accuracy on testing set = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">accTest</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">accFile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">CannotOpenFileError</span><span class="p">(</span><span class="s">&quot;Error : could not open accuracy file &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">STATS_FILE</span><span class="p">));</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getBool</span><span class="p">(</span><span class="n">WITH_RULE_EXTRACTION</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">attributeNames</span><span class="p">;</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">ATTRIBUTES_FILE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">AttrName</span><span class="w"> </span><span class="n">attr</span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">ATTRIBUTES_FILE</span><span class="p">),</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span><span class="w"> </span><span class="n">nbOut</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">attr</span><span class="p">.</span><span class="n">ReadAttr</span><span class="p">())</span>
+<span class="w">          </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span>
+<span class="w">                    </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">ATTRIBUTES_FILE</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;: Read file of attributes.</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">                    </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">Attr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">attr</span><span class="p">;</span>
+<span class="w">        </span><span class="n">attributeNames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Attr</span><span class="p">.</span><span class="n">GetListAttr</span><span class="p">();</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="n">All</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Train</span><span class="p">;</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">GLOBAL_RULES_OUTFILE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Extraction Part :: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">normalizationIndices</span><span class="p">;</span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">mus</span><span class="p">;</span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">sigmas</span><span class="p">;</span>
+
+<span class="w">      </span><span class="c1">// Get mus, sigmas and normalizationIndices from normalizationFile for denormalization :</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">NORMALIZATION_FILE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parseNormalizationStats</span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">NORMALIZATION_FILE</span><span class="p">),</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getInt</span><span class="p">(</span><span class="n">NB_ATTRIBUTES</span><span class="p">),</span><span class="w"> </span><span class="n">attributeNames</span><span class="p">);</span>
+<span class="w">        </span><span class="n">normalizationIndices</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">(</span><span class="n">results</span><span class="p">);</span>
+<span class="w">        </span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">results</span><span class="p">);</span>
+<span class="w">        </span><span class="n">sigmas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="mi">3</span><span class="o">&gt;</span><span class="p">(</span><span class="n">results</span><span class="p">);</span>
+<span class="w">        </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">setIntVector</span><span class="p">(</span><span class="n">NORMALIZATION_INDICES</span><span class="p">,</span><span class="w"> </span><span class="n">normalizationIndices</span><span class="p">);</span>
+<span class="w">        </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">setDoubleVector</span><span class="p">(</span><span class="n">MUS</span><span class="p">,</span><span class="w"> </span><span class="n">mus</span><span class="p">);</span>
+<span class="w">        </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">setDoubleVector</span><span class="p">(</span><span class="n">SIGMAS</span><span class="p">,</span><span class="w"> </span><span class="n">sigmas</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">****************************************************</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">                </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;*** RULE EXTRACTION&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">VirtualHyp</span><span class="o">&gt;</span><span class="w"> </span><span class="n">globVirt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">net</span><span class="o">-&gt;</span><span class="n">MakeGlobalVirt</span><span class="p">(</span><span class="n">quant</span><span class="p">,</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span>
+<span class="w">                                                                 </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">nbIn</span><span class="p">);</span>
+
+<span class="w">      </span><span class="n">RealHyp</span><span class="w"> </span><span class="n">ryp</span><span class="p">(</span><span class="n">globVirt</span><span class="p">,</span><span class="w"> </span><span class="n">nbDimlpNets</span><span class="p">,</span><span class="w"> </span><span class="n">net</span><span class="o">-&gt;</span><span class="n">GetGlobalOut</span><span class="p">(),</span><span class="w"> </span><span class="n">nbOut</span><span class="p">,</span>
+<span class="w">                  </span><span class="n">All</span><span class="p">,</span><span class="w"> </span><span class="n">net</span><span class="p">,</span><span class="w"> </span><span class="n">quant</span><span class="p">,</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span><span class="w"> </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span>
+<span class="w">                  </span><span class="n">nbWeightLayers</span><span class="p">);</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">isStringSet</span><span class="p">(</span><span class="n">GLOBAL_RULES_OUTFILE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">filebuf</span><span class="w"> </span><span class="n">buf</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">GLOBAL_RULES_OUTFILE</span><span class="p">),</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios_base</span><span class="o">::</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="k">throw</span><span class="w"> </span><span class="n">CannotOpenFileError</span><span class="p">(</span><span class="s">&quot;Error : Cannot open rules file &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">GLOBAL_RULES_OUTFILE</span><span class="p">));</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="w"> </span><span class="n">rulesFileost</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">isDoubleVectorSet</span><span class="p">(</span><span class="n">MUS</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">ryp</span><span class="p">.</span><span class="n">RuleExtraction</span><span class="p">(</span><span class="n">All</span><span class="p">,</span><span class="w"> </span><span class="n">Train</span><span class="p">,</span><span class="w"> </span><span class="n">TrainClass</span><span class="p">,</span><span class="w"> </span><span class="n">Valid</span><span class="p">,</span><span class="w"> </span><span class="n">ValidClass</span><span class="p">,</span>
+<span class="w">                             </span><span class="n">Test</span><span class="p">,</span><span class="w"> </span><span class="n">TestClass</span><span class="p">,</span><span class="w"> </span><span class="n">Attr</span><span class="p">,</span><span class="w"> </span><span class="n">rulesFileost</span><span class="p">,</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">sigmas</span><span class="p">,</span><span class="w"> </span><span class="n">normalizationIndices</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">ryp</span><span class="p">.</span><span class="n">RuleExtraction</span><span class="p">(</span><span class="n">All</span><span class="p">,</span><span class="w"> </span><span class="n">Train</span><span class="p">,</span><span class="w"> </span><span class="n">TrainClass</span><span class="p">,</span><span class="w"> </span><span class="n">Valid</span><span class="p">,</span><span class="w"> </span><span class="n">ValidClass</span><span class="p">,</span>
+<span class="w">                             </span><span class="n">Test</span><span class="p">,</span><span class="w"> </span><span class="n">TestClass</span><span class="p">,</span><span class="w"> </span><span class="n">Attr</span><span class="p">,</span><span class="w"> </span><span class="n">rulesFileost</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ryp</span><span class="p">.</span><span class="n">TreeAborted</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">          </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">VirtualHyp</span><span class="o">&gt;</span><span class="w"> </span><span class="n">globVirt2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">net</span><span class="o">-&gt;</span><span class="n">MakeGlobalVirt</span><span class="p">(</span><span class="n">quant</span><span class="p">,</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span>
+<span class="w">                                                                      </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">nbIn</span><span class="p">);</span>
+
+<span class="w">          </span><span class="n">RealHyp2</span><span class="w"> </span><span class="n">ryp2</span><span class="p">(</span><span class="n">globVirt2</span><span class="p">,</span><span class="w"> </span><span class="n">nbDimlpNets</span><span class="p">,</span><span class="w"> </span><span class="n">net</span><span class="o">-&gt;</span><span class="n">GetGlobalOut</span><span class="p">(),</span><span class="w"> </span><span class="n">nbOut</span><span class="p">,</span>
+<span class="w">                        </span><span class="n">All</span><span class="p">,</span><span class="w"> </span><span class="n">net</span><span class="p">,</span><span class="w"> </span><span class="n">quant</span><span class="p">,</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span><span class="w"> </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span>
+<span class="w">                        </span><span class="n">nbWeightLayers</span><span class="p">);</span>
+
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">isDoubleVectorSet</span><span class="p">(</span><span class="n">MUS</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ryp2</span><span class="p">.</span><span class="n">RuleExtraction</span><span class="p">(</span><span class="n">All</span><span class="p">,</span><span class="w"> </span><span class="n">Train</span><span class="p">,</span><span class="w"> </span><span class="n">TrainClass</span><span class="p">,</span><span class="w"> </span><span class="n">Valid</span><span class="p">,</span><span class="w"> </span><span class="n">ValidClass</span><span class="p">,</span>
+<span class="w">                                </span><span class="n">Test</span><span class="p">,</span><span class="w"> </span><span class="n">TestClass</span><span class="p">,</span><span class="w"> </span><span class="n">Attr</span><span class="p">,</span><span class="w"> </span><span class="n">rulesFileost</span><span class="p">,</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">sigmas</span><span class="p">,</span><span class="w"> </span><span class="n">normalizationIndices</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ryp2</span><span class="p">.</span><span class="n">RuleExtraction</span><span class="p">(</span><span class="n">All</span><span class="p">,</span><span class="w"> </span><span class="n">Train</span><span class="p">,</span><span class="w"> </span><span class="n">TrainClass</span><span class="p">,</span><span class="w"> </span><span class="n">Valid</span><span class="p">,</span><span class="w"> </span><span class="n">ValidClass</span><span class="p">,</span>
+<span class="w">                                </span><span class="n">Test</span><span class="p">,</span><span class="w"> </span><span class="n">TestClass</span><span class="p">,</span><span class="w"> </span><span class="n">Attr</span><span class="p">,</span><span class="w"> </span><span class="n">rulesFileost</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span>
+<span class="w">                  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">getString</span><span class="p">(</span><span class="n">GLOBAL_RULES_OUTFILE</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;: &quot;</span>
+<span class="w">                  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Written.</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">                  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">isDoubleVectorSet</span><span class="p">(</span><span class="n">MUS</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">ryp</span><span class="p">.</span><span class="n">RuleExtraction</span><span class="p">(</span><span class="n">All</span><span class="p">,</span><span class="w"> </span><span class="n">Train</span><span class="p">,</span><span class="w"> </span><span class="n">TrainClass</span><span class="p">,</span><span class="w"> </span><span class="n">Valid</span><span class="p">,</span><span class="w"> </span><span class="n">ValidClass</span><span class="p">,</span>
+<span class="w">                             </span><span class="n">Test</span><span class="p">,</span><span class="w"> </span><span class="n">TestClass</span><span class="p">,</span><span class="w"> </span><span class="n">Attr</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">,</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">sigmas</span><span class="p">,</span><span class="w"> </span><span class="n">normalizationIndices</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">ryp</span><span class="p">.</span><span class="n">RuleExtraction</span><span class="p">(</span><span class="n">All</span><span class="p">,</span><span class="w"> </span><span class="n">Train</span><span class="p">,</span><span class="w"> </span><span class="n">TrainClass</span><span class="p">,</span><span class="w"> </span><span class="n">Valid</span><span class="p">,</span><span class="w"> </span><span class="n">ValidClass</span><span class="p">,</span>
+<span class="w">                             </span><span class="n">Test</span><span class="p">,</span><span class="w"> </span><span class="n">TestClass</span><span class="p">,</span><span class="w"> </span><span class="n">Attr</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ryp</span><span class="p">.</span><span class="n">TreeAborted</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">          </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">VirtualHyp</span><span class="o">&gt;</span><span class="w"> </span><span class="n">globVirt3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">net</span><span class="o">-&gt;</span><span class="n">MakeGlobalVirt</span><span class="p">(</span><span class="n">quant</span><span class="p">,</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span>
+<span class="w">                                                                      </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">nbIn</span><span class="p">);</span>
+
+<span class="w">          </span><span class="n">RealHyp2</span><span class="w"> </span><span class="n">ryp2</span><span class="p">(</span><span class="n">globVirt3</span><span class="p">,</span><span class="w"> </span><span class="n">nbDimlpNets</span><span class="p">,</span><span class="w"> </span><span class="n">net</span><span class="o">-&gt;</span><span class="n">GetGlobalOut</span><span class="p">(),</span><span class="w"> </span><span class="n">nbOut</span><span class="p">,</span>
+<span class="w">                        </span><span class="n">All</span><span class="p">,</span><span class="w"> </span><span class="n">net</span><span class="p">,</span><span class="w"> </span><span class="n">quant</span><span class="p">,</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span><span class="w"> </span><span class="n">vecNbNeurons</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">nbIn</span><span class="p">,</span>
+<span class="w">                        </span><span class="n">nbWeightLayers</span><span class="p">);</span>
+
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">isDoubleVectorSet</span><span class="p">(</span><span class="n">MUS</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ryp2</span><span class="p">.</span><span class="n">RuleExtraction</span><span class="p">(</span><span class="n">All</span><span class="p">,</span><span class="w"> </span><span class="n">Train</span><span class="p">,</span><span class="w"> </span><span class="n">TrainClass</span><span class="p">,</span><span class="w"> </span><span class="n">Valid</span><span class="p">,</span><span class="w"> </span><span class="n">ValidClass</span><span class="p">,</span>
+<span class="w">                                </span><span class="n">Test</span><span class="p">,</span><span class="w"> </span><span class="n">TestClass</span><span class="p">,</span><span class="w"> </span><span class="n">Attr</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">,</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">sigmas</span><span class="p">,</span><span class="w"> </span><span class="n">normalizationIndices</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ryp2</span><span class="p">.</span><span class="n">RuleExtraction</span><span class="p">(</span><span class="n">All</span><span class="p">,</span><span class="w"> </span><span class="n">Train</span><span class="p">,</span><span class="w"> </span><span class="n">TrainClass</span><span class="p">,</span><span class="w"> </span><span class="n">Valid</span><span class="p">,</span><span class="w"> </span><span class="n">ValidClass</span><span class="p">,</span>
+<span class="w">                                </span><span class="n">Test</span><span class="p">,</span><span class="w"> </span><span class="n">TestClass</span><span class="p">,</span><span class="w"> </span><span class="n">Attr</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Save hidden layers sizes</span>
+<span class="w">    </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">writeHiddenLayersFile</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">t2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clock</span><span class="p">();</span>
+<span class="w">    </span><span class="n">temps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)(</span><span class="n">t2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">CLOCKS_PER_SEC</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Full execution time = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">temps</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; sec&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">.</span><span class="n">rdbuf</span><span class="p">(</span><span class="n">cout_buff</span><span class="p">);</span><span class="w"> </span><span class="c1">// reset to standard output again</span>
+<span class="w">    </span><span class="n">BpNN</span><span class="o">::</span><span class="n">resetInitRandomGen</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">Train</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="n">TrainClass</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Test</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">Test</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">      </span><span class="n">TestClass</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Valid</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">Valid</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">      </span><span class="n">ValidClass</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ErrorHandler</span><span class="w"> </span><span class="o">&amp;</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">.</span><span class="n">rdbuf</span><span class="p">(</span><span class="n">cout_buff</span><span class="p">);</span><span class="w"> </span><span class="c1">// reset to standard output again</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

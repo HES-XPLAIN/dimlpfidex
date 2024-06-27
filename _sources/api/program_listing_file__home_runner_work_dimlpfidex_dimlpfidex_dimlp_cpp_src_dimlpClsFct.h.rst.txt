@@ -1,0 +1,34 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpClsFct.h:
+
+Program Listing for File dimlpClsFct.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpClsFct.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/dimlpClsFct.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef DIMLPCLSFCT_H
+   #define DIMLPCLSFCT_H
+   
+   #include "../../../common/cpp/src/parameters.h"
+   #include "dimlp.h"
+   #include "dimlpCommonFun.h"
+   #include <fstream>
+   #include <sstream>
+   #include <stdlib.h>
+   #include <string.h>
+   #include <unordered_map>
+   #include <vector>
+   
+   void showDimlpClsParams();
+   
+   void checkDimlpClsParametersLogicValues(Parameters &p);
+   
+   void SaveFirstHid(DataSet &data, Dimlp *net, int nbHid, const std::string &outfile, const std::string &firsthidFile);
+   
+   int dimlpCls(const std::string &command = "");
+   
+   #endif // DIMLPCLSFCT_H

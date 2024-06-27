@@ -1,0 +1,14 @@
+.. _exhale_function_hyperLocus_8cpp_1a2a1e6d38d75bdfaf96bc9f2518bda777:
+
+Function calcHypLocus(const std::string&, int, double)
+======================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperLocus.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: calcHypLocus(const std::string&, int, double)
+   :project: common

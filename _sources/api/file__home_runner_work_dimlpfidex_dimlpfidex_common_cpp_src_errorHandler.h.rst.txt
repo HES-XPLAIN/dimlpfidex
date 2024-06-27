@@ -1,0 +1,82 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_errorHandler.h:
+
+File errorHandler.h
+===================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/common/cpp/src/errorHandler.h``)
+--------------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_errorHandler.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``exception``
+
+- ``string`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_stringI.cpp`)
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_attrName.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_dataSet.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dataSet.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStatsFct.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperLocus.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperspace.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_parameters.h`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classCannotCreateDirectoryError`
+
+- :ref:`exhale_class_classCannotOpenFileError`
+
+- :ref:`exhale_class_classCommandArgumentException`
+
+- :ref:`exhale_class_classErrorHandler`
+
+- :ref:`exhale_class_classFileContentError`
+
+- :ref:`exhale_class_classFileFormatError`
+
+- :ref:`exhale_class_classFileNotFoundError`
+
+- :ref:`exhale_class_classInternalError`
+

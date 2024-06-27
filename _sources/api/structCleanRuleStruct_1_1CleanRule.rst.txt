@@ -1,0 +1,23 @@
+.. _exhale_struct_structCleanRuleStruct_1_1CleanRule:
+
+Struct CleanRuleStruct::CleanRule
+=================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_cleanRS.h`
+
+
+Nested Relationships
+--------------------
+
+This struct is a nested type of :ref:`exhale_class_classCleanRuleStruct`.
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: CleanRuleStruct::CleanRule
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

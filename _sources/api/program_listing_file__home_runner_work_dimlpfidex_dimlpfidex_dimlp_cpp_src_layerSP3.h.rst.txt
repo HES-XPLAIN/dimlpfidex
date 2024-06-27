@@ -1,0 +1,41 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSP3.h:
+
+Program Listing for File layerSP3.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerSP3.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/layerSP3.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LAYERSP3_H
+   #define LAYERSP3_H
+   
+   #include "layer.h"
+   
+   
+   class LayerSP3 : public Layer {
+   
+     //----------------------------------------------------------------
+   
+     float Activation1(float x) override { return Power3(x); }
+   
+     //----------------------------------------------------------------
+   
+   public:
+     LayerSP3(
+         int nbDown,
+         int nbUp,
+         int nbWeights,
+         int nbWeightsForInit) :
+   
+                                 Layer(0, 0, 0, nbDown, nbUp, nbWeights, nbWeightsForInit)
+   
+     {
+     }
+   };
+   
+   
+   #endif // LAYERSP3_H

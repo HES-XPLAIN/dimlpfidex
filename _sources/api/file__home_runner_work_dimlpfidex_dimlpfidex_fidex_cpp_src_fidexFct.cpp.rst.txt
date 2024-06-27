@@ -1,0 +1,44 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.cpp:
+
+File fidexFct.cpp
+=================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/fidexFct.cpp``)
+-----------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.cpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``fidexFct.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.h`)
+
+
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_fidexFct_8cpp_1a4d9c4d5a96247077b1211d0c605a9e2c`
+
+- :ref:`exhale_function_fidexFct_8cpp_1a413bb8e6d52f49aa7bc90467e92972e0`
+
+- :ref:`exhale_function_fidexFct_8cpp_1afb3c1683e14a0a8d7273cc282879b303`
+

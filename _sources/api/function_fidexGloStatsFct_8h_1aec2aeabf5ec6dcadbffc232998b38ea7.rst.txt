@@ -1,0 +1,14 @@
+.. _exhale_function_fidexGloStatsFct_8h_1aec2aeabf5ec6dcadbffc232998b38ea7:
+
+Function fidexGloStats(const std::string&)
+==========================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStatsFct.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: fidexGloStats(const std::string&)
+   :project: common

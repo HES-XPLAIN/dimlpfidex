@@ -1,0 +1,41 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloFct.h:
+
+Program Listing for File fidexGloFct.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloFct.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/fidexGloFct.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef FIDEXGLOFCT_H
+   #define FIDEXGLOFCT_H
+   
+   #include "../../../common/cpp/src/dataSet.h"
+   #include "../../../common/cpp/src/errorHandler.h"
+   #include "../../../common/cpp/src/parameters.h"
+   #include "../../../common/cpp/src/rule.h"
+   #include "fidexAlgo.h"
+   #include "hyperLocus.h"
+   #include <algorithm>
+   #include <fstream>
+   #include <iostream>
+   #include <memory>
+   #include <sstream>
+   #include <string.h>
+   #include <time.h>
+   #include <tuple>
+   #include <unordered_map>
+   #include <vector>
+   
+   void showFidexGloParams();
+   
+   void checkParametersLogicValues(Parameters &p);
+   
+   void executeFidex(std::vector<std::string> &lines, DataSetFid &trainDataset, Parameters &p, Hyperspace &hyperspace, std::vector<double> &mainSampleValues, int mainSamplePred, double mainSamplePredValue, int mainSampleClass, const std::vector<std::string> &attributeNames, const std::vector<std::string> &classNames);
+   
+   int fidexGlo(const std::string &command = "");
+   
+   #endif // FIDEXGLOFCT_H

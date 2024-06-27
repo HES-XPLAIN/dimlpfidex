@@ -1,0 +1,14 @@
+.. _exhale_function_dimlpTrnFct_8h_1a18371675716361dfc9ab775abc42a681:
+
+Function showDimlpTrnParams()
+=============================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_dimlpTrnFct.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: showDimlpTrnParams()
+   :project: common

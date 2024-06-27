@@ -1,0 +1,14 @@
+.. _exhale_function_checkFun_8h_1ae033c59d263164d7f25cf3eb1d1d7700:
+
+Function exists(const std::string&)
+===================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: exists(const std::string&)
+   :project: common

@@ -1,0 +1,47 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h:
+
+Program Listing for File fidexGloRulesFct.h
+===========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloRulesFct.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/fidexGloRulesFct.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef FIDEXGLORULESFCT_H
+   #define FIDEXGLORULESFCT_H
+   
+   #include "../../../common/cpp/src/checkFun.h"
+   #include "../../../common/cpp/src/dataSet.h"
+   #include "../../../common/cpp/src/errorHandler.h"
+   #include "../../../common/cpp/src/parameters.h"
+   #include "../../../common/cpp/src/rule.h"
+   #include "fidexAlgo.h"
+   #include "hyperLocus.h"
+   #include <algorithm>
+   #include <chrono>
+   #include <limits.h>
+   #include <numeric>
+   #include <omp.h>
+   #include <random>
+   #include <sstream>
+   #include <string>
+   #include <time.h>
+   
+   void showRulesParams();
+   
+   void checkRulesParametersLogicValues(Parameters &p);
+   
+   void generateRules(std::vector<Rule> &rules, std::vector<int> &notCoveredSamples, DataSetFid &trainDataset, Parameters &p, const std::vector<std::vector<double>> &hyperlocus);
+   
+   std::vector<Rule> heuristic_1(DataSetFid &trainDataset, Parameters &p, const std::vector<std::vector<double>> &hyperlocus);
+   
+   std::vector<Rule> heuristic_2(DataSetFid &trainDataset, Parameters &p, const std::vector<std::vector<double>> &hyperlocus);
+   
+   std::vector<Rule> heuristic_3(DataSetFid &trainDataset, Parameters &p, const std::vector<std::vector<double>> &hyperlocus);
+   
+   int fidexGloRules(const std::string &command = "");
+   
+   #endif // FIDEXGLORULESFCT_H

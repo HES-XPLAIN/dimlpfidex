@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Listing for File rulePro.cpp &mdash; dimlpfidex 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7026087e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dimlpfidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">C++ API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/modules.html">trainings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dimlpfidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Program Listing for File rulePro.cpp</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_rulePro.cpp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="program-listing-for-file-rulepro-cpp">
+<span id="program-listing-file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-rulepro-cpp"></span><h1>Program Listing for File rulePro.cpp<a class="headerlink" href="#program-listing-for-file-rulepro-cpp" title="Link to this heading"></a></h1>
+<p>↰ <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_rulePro.cpp.html#file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-rulepro-cpp"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/rulePro.cpp</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;rulePro.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;misc.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;randFun.h&quot;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">RuleProcessing::Max</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tab</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nbRules</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">max</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">newVal</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">indMax</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbRules</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbRules</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tab</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">  </span><span class="n">indMax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbRules</span><span class="p">;</span><span class="w"> </span><span class="n">e</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">newVal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tab</span><span class="p">[</span><span class="n">e</span><span class="p">];</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">newVal</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">max</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">newVal</span><span class="p">;</span>
+<span class="w">      </span><span class="n">indMax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">max</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">indMax</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">RuleProcessing::Min</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tab</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nbRules</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">min</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">newVal</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">indMin</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbRules</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbRules</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1111111111</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbRules</span><span class="p">;</span><span class="w"> </span><span class="n">e</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">newVal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tab</span><span class="p">[</span><span class="n">e</span><span class="p">];</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">newVal</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">newVal</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">min</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">newVal</span><span class="p">;</span>
+<span class="w">      </span><span class="n">indMin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">min</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1111111111</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">indMin</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">RuleProcessing::IsRuleEmpty</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rule</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbAnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GetNbAnt</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">IsAntDeleted</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">((</span><span class="n">r</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">RuleProcessing::CountAnt</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rule</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbRules</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">rule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetRule</span><span class="p">();</span>
+<span class="w">    </span><span class="n">nbAnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GetNbAnt</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">IsAntDeleted</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">        </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">RuleProcessing::CountRules</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbRules</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">IsRuleEmpty</span><span class="p">(</span><span class="n">GetRule</span><span class="p">())</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">      </span><span class="k">continue</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RuleProcessing::SetCarriedField</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rule</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbRules</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">rule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetRule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">IsRuleEmpty</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">      </span><span class="k">continue</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">Current</span><span class="o">-&gt;</span><span class="n">Carried</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Data</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">rule</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RuleProcessing::DelListCar</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rule</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">carried</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbRules</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">rule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetRule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">IsRuleEmpty</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">      </span><span class="k">continue</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">carried</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Current</span><span class="o">-&gt;</span><span class="n">Carried</span><span class="p">;</span>
+<span class="w">    </span><span class="n">carried</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">RuleProcessing::CheckAllCarried</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">toDrop</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbEl</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbEx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Data</span><span class="p">.</span><span class="n">GetNbEx</span><span class="p">();</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">checkTab</span><span class="p">(</span><span class="n">nbEx</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rule</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">carriedEx</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbRules</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">toDrop</span><span class="p">)</span>
+<span class="w">      </span><span class="k">continue</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">rule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetRule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">IsRuleEmpty</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">      </span><span class="k">continue</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">carriedEx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Current</span><span class="o">-&gt;</span><span class="n">Carried</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">nbEl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">carriedEx</span><span class="o">-&gt;</span><span class="n">GetNbEl</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">carriedEx</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbEl</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">carriedEx</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span>
+<span class="w">      </span><span class="n">checkTab</span><span class="p">[</span><span class="n">carriedEx</span><span class="o">-&gt;</span><span class="n">GetVal</span><span class="p">()]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbEx</span><span class="p">;</span><span class="w"> </span><span class="n">p</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">checkTab</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RuleProcessing::SetCountAntRules</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rule</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbRules</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">rule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetRule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">IsRuleEmpty</span><span class="p">(</span><span class="n">rule</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">TabRules</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">      </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">TabRules</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GetNbAntWithout</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">RuleProcessing::GoToSavedAndRemRule</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">indPrune</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rule</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">CheckAllCarried</span><span class="p">(</span><span class="n">indPrune</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">indPrune</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">GoToNext</span><span class="p">())</span>
+<span class="w">      </span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">rule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetRule</span><span class="p">();</span>
+<span class="w">    </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">DeleteRule</span><span class="p">();</span>
+<span class="w">    </span><span class="p">(</span><span class="n">Current</span><span class="o">-&gt;</span><span class="n">Carried</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RuleProcessing::FastRulePrune</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">nbIt</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">indMax</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">TabRules</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbRules</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">SetCountAntRules</span><span class="p">();</span>
+<span class="w">  </span><span class="n">SetCarriedField</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbIt</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">indMax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Max</span><span class="p">(</span><span class="n">TabRules</span><span class="p">,</span><span class="w"> </span><span class="n">NbRules</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">indMax</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">TabRules</span><span class="p">[</span><span class="n">indMax</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">count</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">GoToSavedAndRemRule</span><span class="p">(</span><span class="n">indMax</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">DelListCar</span><span class="p">();</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RuleProcessing::RulePruneByMinCar</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">indMin</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">carried</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">TabRules</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbRules</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">SetCountAntRules</span><span class="p">();</span>
+<span class="w">  </span><span class="n">SetCarriedField</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbRules</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">TabRules</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">      </span><span class="k">continue</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">carried</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Data</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">GetRule</span><span class="p">());</span>
+<span class="w">    </span><span class="n">TabRules</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">carried</span><span class="o">-&gt;</span><span class="n">GetNbEl</span><span class="p">();</span>
+<span class="w">    </span><span class="n">carried</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbRules</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">indMin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Min</span><span class="p">(</span><span class="n">TabRules</span><span class="p">,</span><span class="w"> </span><span class="n">NbRules</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">indMin</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">TabRules</span><span class="p">[</span><span class="n">indMin</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">count</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">GoToSavedAndRemRule</span><span class="p">(</span><span class="n">indMin</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">DelListCar</span><span class="p">();</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RuleProcessing::GoToRuleAndRemAnt</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">indPrune</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">indRule</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">indAnt</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">remAnt</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rule</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">newCarried</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">RuleInd</span><span class="p">.</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">indPrune</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">RuleInd</span><span class="p">.</span><span class="n">GoToNext</span><span class="p">())</span>
+<span class="w">    </span><span class="p">;</span>
+<span class="w">  </span><span class="n">indRule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RuleInd</span><span class="p">.</span><span class="n">GetVal</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">AntInd</span><span class="p">.</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">indPrune</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">AntInd</span><span class="p">.</span><span class="n">GoToNext</span><span class="p">())</span>
+<span class="w">    </span><span class="p">;</span>
+<span class="w">  </span><span class="n">indAnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AntInd</span><span class="p">.</span><span class="n">GetVal</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">indRule</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">GoToNext</span><span class="p">())</span>
+<span class="w">    </span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">rule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetRule</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">indAnt</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span>
+<span class="w">    </span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">remAnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GetVar</span><span class="p">();</span>
+<span class="w">  </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">RemAnt</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">SavePtrAnt</span><span class="p">();</span>
+<span class="w">  </span><span class="n">newCarried</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Data</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">rule</span><span class="p">);</span>
+<span class="w">  </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">PrevPtrAnt</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">AreSameClass</span><span class="p">(</span><span class="n">newCarried</span><span class="p">,</span><span class="w"> </span><span class="n">ClassPatNet</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">SetAnt</span><span class="p">(</span><span class="n">remAnt</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">newCarried</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RuleProcessing::ComputeGain</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">remAnt</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">diff</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rule</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">oldCarried</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">newCarried</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbRules</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">rule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetRule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">IsRuleEmpty</span><span class="p">(</span><span class="n">rule</span><span class="p">))</span>
+<span class="w">      </span><span class="k">continue</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">oldCarried</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Data</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">rule</span><span class="p">);</span>
+<span class="w">    </span><span class="n">nbAnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GetNbAnt</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">IsAntDeleted</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">        </span><span class="k">continue</span><span class="p">;</span>
+
+<span class="w">      </span><span class="n">remAnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GetVar</span><span class="p">();</span>
+<span class="w">      </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">RemAnt</span><span class="p">();</span>
+
+<span class="w">      </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">SavePtrAnt</span><span class="p">();</span>
+<span class="w">      </span><span class="n">newCarried</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Data</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">rule</span><span class="p">);</span>
+<span class="w">      </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">PrevPtrAnt</span><span class="p">();</span>
+
+<span class="w">      </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">SetAnt</span><span class="p">(</span><span class="n">remAnt</span><span class="p">);</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">AreSameClass</span><span class="p">(</span><span class="n">newCarried</span><span class="p">,</span><span class="w"> </span><span class="n">ClassPatNet</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">diff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">newCarried</span><span class="o">-&gt;</span><span class="n">GetNbEl</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">oldCarried</span><span class="o">-&gt;</span><span class="n">GetNbEl</span><span class="p">();</span>
+
+<span class="w">        </span><span class="n">RuleInd</span><span class="p">.</span><span class="n">Insert</span><span class="p">(</span><span class="n">r</span><span class="p">);</span>
+<span class="w">        </span><span class="n">AntInd</span><span class="p">.</span><span class="n">Insert</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Gain</span><span class="p">.</span><span class="n">Insert</span><span class="p">(</span><span class="n">diff</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="n">newCarried</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">oldCarried</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RuleProcessing::MixPrune</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">indPrune</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbIt</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">ComputeGain</span><span class="p">();</span>
+<span class="w">  </span><span class="n">nbIt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Gain</span><span class="p">.</span><span class="n">GetNbEl</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbIt</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="w">    </span><span class="n">nbIt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbIt</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">Gain</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">  </span><span class="n">RuleInd</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">  </span><span class="n">AntInd</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(;;)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Number of rules = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">CountRules</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Number of antecedents = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">CountAnt</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">ComputeGain</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Number of possible antecedents to prune = &quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Gain</span><span class="p">.</span><span class="n">GetNbEl</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Gain</span><span class="p">.</span><span class="n">GetNbEl</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">      </span><span class="k">return</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbIt</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">indPrune</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Gain</span><span class="p">.</span><span class="n">FindIndMax</span><span class="p">();</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">indPrune</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="n">Gain</span><span class="p">.</span><span class="n">DelVal</span><span class="p">(</span><span class="n">indPrune</span><span class="p">,</span><span class="w"> </span><span class="mi">-1111111111</span><span class="p">);</span>
+<span class="w">      </span><span class="n">GoToRuleAndRemAnt</span><span class="p">(</span><span class="n">indPrune</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">Gain</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="n">RuleInd</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="n">AntInd</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">FastRulePrune</span><span class="p">(</span><span class="n">NbRules</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RuleProcessing::RemSevThres</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">h</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">first</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">min</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">max</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">currentVal</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">tabFreqLess</span><span class="p">(</span><span class="n">NbVar</span><span class="p">);</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">tabFreqGreat</span><span class="p">(</span><span class="n">NbVar</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbVar</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">tabFreqLess</span><span class="p">[</span><span class="n">h</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">tabFreqGreat</span><span class="p">[</span><span class="n">h</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbAnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetNbAnt</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetRel</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;&lt;&#39;</span><span class="p">:</span>
+<span class="w">      </span><span class="n">tabFreqLess</span><span class="p">[</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVar</span><span class="p">()]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;&gt;&#39;</span><span class="p">:</span>
+<span class="w">      </span><span class="n">tabFreqGreat</span><span class="p">[</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVar</span><span class="p">()]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">default</span><span class="o">:</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbVar</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tabFreqGreat</span><span class="p">[</span><span class="n">h</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">(),</span><span class="w"> </span><span class="n">first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVar</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetRel</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;&gt;&#39;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">first</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">first</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVal</span><span class="p">();</span>
+<span class="w">          </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">currentVal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVal</span><span class="p">();</span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">currentVal</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">max</span><span class="p">)</span>
+<span class="w">              </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">currentVal</span><span class="p">;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVar</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetRel</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;&gt;&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVal</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">max</span><span class="p">))</span>
+<span class="w">          </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">RemAnt</span><span class="p">();</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbVar</span><span class="p">;</span><span class="w"> </span><span class="n">h</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tabFreqLess</span><span class="p">[</span><span class="n">h</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">(),</span><span class="w"> </span><span class="n">first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVar</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetRel</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;&lt;&#39;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">first</span><span class="o">++</span><span class="p">;</span>
+
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">first</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVal</span><span class="p">();</span>
+<span class="w">          </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">currentVal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVal</span><span class="p">();</span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">currentVal</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">min</span><span class="p">)</span>
+<span class="w">              </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">currentVal</span><span class="p">;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVar</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetRel</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;&lt;&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVal</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">min</span><span class="p">))</span>
+<span class="w">          </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">RemAnt</span><span class="p">();</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RuleProcessing::Clean</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbRules</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">GoToNext</span><span class="p">())</span>
+<span class="w">    </span><span class="n">RemSevThres</span><span class="p">(</span><span class="n">GetRule</span><span class="p">());</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RuleProcessing::Insert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">r</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbAnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetNbAnt</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">NbRules</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">    </span><span class="n">Current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">First</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">First</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Saved</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">ru</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ru</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVar</span><span class="p">(),</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetVal</span><span class="p">(),</span><span class="w"> </span><span class="n">r</span><span class="o">-&gt;</span><span class="n">GetRel</span><span class="p">());</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">First</span><span class="o">-&gt;</span><span class="n">OneRule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ru</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">NbRules</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">    </span><span class="n">First</span><span class="o">-&gt;</span><span class="n">Next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Current</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">NbRules</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RuleProcessing::Del</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="n">Current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">First</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NbRules</span><span class="p">;</span><span class="w"> </span><span class="n">e</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Current</span><span class="o">-&gt;</span><span class="n">Next</span><span class="p">;</span>
+<span class="w">    </span><span class="p">(</span><span class="n">First</span><span class="o">-&gt;</span><span class="n">OneRule</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="n">First</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Current</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">NbRules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RuleProcessing::RemCurrentRule</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetRule</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbAnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GetNbAnt</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span>
+<span class="w">    </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">RemAnt</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">RuleProcessing::TryEnlargedThres</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">var</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbThresOneVar</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbCarried</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbCarriedMod</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbEnlarged</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">indMax</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vecCarried</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">val</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">thres</span><span class="p">;</span>
+<span class="w">  </span><span class="n">DimlpRule</span><span class="w"> </span><span class="n">oneCopy</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">anotherCopy</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rule</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">enlarged</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">OneVarThresDescr</span><span class="w"> </span><span class="o">*</span><span class="n">oneVarDescr</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">carried</span><span class="p">;</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">StringInt</span><span class="o">&gt;</span><span class="w"> </span><span class="n">carriedMod</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nbRules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NbRules</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">GoToBeg</span><span class="p">();</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbRules</span><span class="p">;</span><span class="w"> </span><span class="n">r</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">rule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetRule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">IsRuleEmpty</span><span class="p">(</span><span class="n">rule</span><span class="p">))</span>
+<span class="w">      </span><span class="k">continue</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">nbAnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rule</span><span class="o">-&gt;</span><span class="n">GetNbAnt</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">oneCopy</span><span class="p">.</span><span class="n">Copy</span><span class="p">(</span><span class="n">rule</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">enlarged</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbHyp</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NbVar</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="w">    </span><span class="n">vecCarried</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">NbHyp</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NbVar</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="w">    </span><span class="n">nbEnlarged</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">carried</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Data</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">rule</span><span class="p">);</span>
+<span class="w">    </span><span class="n">nbCarried</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">carried</span><span class="o">-&gt;</span><span class="n">GetNbEl</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">oneCopy</span><span class="p">.</span><span class="n">GoToBeg</span><span class="p">();</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbAnt</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">oneCopy</span><span class="p">.</span><span class="n">IsAntDeleted</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">a</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="n">oneCopy</span><span class="p">.</span><span class="n">GoToNext</span><span class="p">();</span>
+<span class="w">        </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="n">var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oneCopy</span><span class="p">.</span><span class="n">GetVar</span><span class="p">();</span>
+<span class="w">      </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oneCopy</span><span class="p">.</span><span class="n">GetVal</span><span class="p">();</span>
+
+<span class="w">      </span><span class="n">oneVarDescr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Descr</span><span class="o">-&gt;</span><span class="n">GetDescr</span><span class="p">(</span><span class="n">var</span><span class="p">);</span>
+
+<span class="w">      </span><span class="n">nbThresOneVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oneVarDescr</span><span class="o">-&gt;</span><span class="n">GetNbThres</span><span class="p">();</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbThresOneVar</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">oneVarDescr</span><span class="o">-&gt;</span><span class="n">GoToBeg</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbThresOneVar</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">oneVarDescr</span><span class="o">-&gt;</span><span class="n">GoToNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">thres</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oneVarDescr</span><span class="o">-&gt;</span><span class="n">GetThres</span><span class="p">();</span>
+
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">thres</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">val</span><span class="p">)</span>
+<span class="w">            </span><span class="k">continue</span><span class="p">;</span>
+
+<span class="w">          </span><span class="n">oneCopy</span><span class="p">.</span><span class="n">SetThres</span><span class="p">(</span><span class="n">thres</span><span class="p">);</span>
+
+<span class="w">          </span><span class="n">oneCopy</span><span class="p">.</span><span class="n">SavePtrAnt</span><span class="p">();</span>
+<span class="w">          </span><span class="n">carriedMod</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Data</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="p">(</span><span class="n">oneCopy</span><span class="p">));</span>
+<span class="w">          </span><span class="n">oneCopy</span><span class="p">.</span><span class="n">PrevPtrAnt</span><span class="p">();</span>
+
+<span class="w">          </span><span class="n">nbCarriedMod</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">carriedMod</span><span class="o">-&gt;</span><span class="n">GetNbEl</span><span class="p">();</span>
+
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbCarriedMod</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">nbCarried</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">AreSameClass</span><span class="p">(</span><span class="n">carriedMod</span><span class="p">,</span><span class="w"> </span><span class="n">ClassPatNet</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">anotherCopy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="w">            </span><span class="n">oneCopy</span><span class="p">.</span><span class="n">SavePtrAnt</span><span class="p">();</span>
+<span class="w">            </span><span class="n">anotherCopy</span><span class="o">-&gt;</span><span class="n">Copy</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">DimlpRule</span><span class="o">&gt;</span><span class="p">(</span><span class="n">oneCopy</span><span class="p">));</span>
+<span class="w">            </span><span class="n">oneCopy</span><span class="p">.</span><span class="n">PrevPtrAnt</span><span class="p">();</span>
+
+<span class="w">            </span><span class="n">vecCarried</span><span class="p">[</span><span class="n">nbEnlarged</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nbCarriedMod</span><span class="p">;</span>
+<span class="w">            </span><span class="n">enlarged</span><span class="p">[</span><span class="n">nbEnlarged</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">anotherCopy</span><span class="p">;</span>
+<span class="w">            </span><span class="n">nbEnlarged</span><span class="o">++</span><span class="p">;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">          </span><span class="n">carriedMod</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">          </span><span class="n">oneCopy</span><span class="p">.</span><span class="n">SetThres</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="n">a</span><span class="o">++</span><span class="p">;</span>
+<span class="w">      </span><span class="n">oneCopy</span><span class="p">.</span><span class="n">GoToNext</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">oneCopy</span><span class="p">.</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="n">carried</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nbEnlarged</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">RemCurrentRule</span><span class="p">();</span>
+
+<span class="w">      </span><span class="n">indMax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Max</span><span class="p">(</span><span class="n">vecCarried</span><span class="p">,</span><span class="w"> </span><span class="n">nbEnlarged</span><span class="p">);</span>
+<span class="w">      </span><span class="n">rule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">enlarged</span><span class="p">[</span><span class="n">indMax</span><span class="p">];</span>
+
+<span class="w">      </span><span class="n">Save</span><span class="p">();</span>
+<span class="w">      </span><span class="n">Insert</span><span class="p">(</span><span class="n">rule</span><span class="p">);</span>
+<span class="w">      </span><span class="n">Previous</span><span class="p">();</span>
+
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nbEnlarged</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">enlarged</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">Del</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">count</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">nbEnlarged</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RuleProcessing::EnlargeAndPrune</span><span class="p">()</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">found</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">do</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Number of rules = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">CountRules</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Number of antecedents = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">CountAnt</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">found</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TryEnlargedThres</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Number of possible extensions = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">RulePruneByMinCar</span><span class="p">();</span>
+
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">found</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="n">RuleProcessing</span><span class="o">::</span><span class="n">RuleProcessing</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbVar</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nbHyp</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DataSet</span><span class="w"> </span><span class="n">data</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">classPatNet</span><span class="p">,</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">ThresDescr</span><span class="o">&gt;</span><span class="w"> </span><span class="n">descr</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">NbVar</span><span class="p">(</span><span class="n">nbVar</span><span class="p">),</span><span class="w"> </span><span class="n">NbHyp</span><span class="p">(</span><span class="n">nbHyp</span><span class="p">),</span><span class="w"> </span><span class="n">Data</span><span class="p">(</span><span class="n">data</span><span class="p">),</span><span class="w"> </span><span class="n">ClassPatNet</span><span class="p">(</span><span class="n">classPatNet</span><span class="p">),</span><span class="w"> </span><span class="n">Descr</span><span class="p">(</span><span class="n">descr</span><span class="p">)</span>
+
+<span class="p">{</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

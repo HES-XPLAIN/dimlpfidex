@@ -1,0 +1,58 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_attrName.h:
+
+File attrName.h
+===============
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/attrName.h``)
+---------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_attrName.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../common/cpp/src/checkFun.h``
+
+- ``../../../common/cpp/src/errorHandler.h``
+
+- ``fstream``
+
+- ``iostream``
+
+- ``string.h``
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_attrName.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp.h`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classAttrName`
+

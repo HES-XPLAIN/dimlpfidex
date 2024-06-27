@@ -1,0 +1,23 @@
+.. _exhale_struct_structOneVarThresDescr_1_1Elem:
+
+Struct OneVarThresDescr::Elem
+=============================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_oneVarTD.h`
+
+
+Nested Relationships
+--------------------
+
+This struct is a nested type of :ref:`exhale_class_classOneVarThresDescr`.
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: OneVarThresDescr::Elem
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

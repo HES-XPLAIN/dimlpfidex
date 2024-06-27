@@ -1,0 +1,31 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperLocus.h:
+
+Program Listing for File hyperLocus.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperLocus.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/hyperLocus.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef HYPERLOCUSFCT_H
+   #define HYPERLOCUSFCT_H
+   
+   #include "../../../common/cpp/src/checkFun.h"
+   #include "../../../common/cpp/src/dataSet.h"
+   #include "../../../common/cpp/src/errorHandler.h"
+   #include "../../../common/cpp/src/rule.h"
+   #include <fstream>
+   #include <iomanip>
+   #include <regex>
+   #include <set>
+   #include <sstream>
+   #include <string.h>
+   
+   std::vector<std::vector<double>> calcHypLocus(const std::string &dataFileWeights, int nbQuantLevels, double hiKnot);
+   
+   std::vector<std::vector<double>> calcHypLocus(const std::string &rulesFile, DataSetFid &dataset);
+   
+   #endif // HYPERLOCUSFCT_H

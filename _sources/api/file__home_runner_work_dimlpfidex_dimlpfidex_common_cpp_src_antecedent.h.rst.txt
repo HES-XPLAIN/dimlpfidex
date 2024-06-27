@@ -1,0 +1,74 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_antecedent.h:
+
+File antecedent.h
+=================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/common/cpp/src/antecedent.h``)
+------------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_antecedent.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../json/single_include/nlohmann/json.hpp``
+
+- ``cmath``
+
+- ``iostream``
+
+- ``ostream``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_antecedent.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_parameters.h`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.h`
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classAntecedent`
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_antecedent_8h_1a9455f796444b69656792ca293a48da65`
+
+- :ref:`exhale_function_antecedent_8h_1a1d65226b39c756c399555088f28c33f8`
+
+- :ref:`exhale_function_antecedent_8h_1a030ef0c8155bd0d912daf6ce45bd7a07`
+
+
+Typedefs
+--------
+
+
+- :ref:`exhale_typedef_antecedent_8h_1af13a1979f9e8f62c101433fac6511cc6`
+

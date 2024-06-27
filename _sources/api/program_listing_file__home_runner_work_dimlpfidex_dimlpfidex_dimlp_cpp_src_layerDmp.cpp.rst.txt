@@ -1,0 +1,31 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerDmp.cpp:
+
+Program Listing for File layerDmp.cpp
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerDmp.cpp>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/layerDmp.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #include "layerDmp.h"
+   
+   
+   LayerDimlp::LayerDimlp(
+       float eta,
+       float mu,
+       float flat,
+       int nbDown,
+       int nbUp,
+       int nbWeights,
+       int nbWeightsForInit,
+       int nbKnots) :
+   
+                      Layer(eta, mu, flat, nbDown, nbUp, nbWeights, nbWeightsForInit),
+                      Stair(std::unique_ptr<StairObj>(new StairObj(nbKnots)))
+   
+   {
+   }
+   

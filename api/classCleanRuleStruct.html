@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class CleanRuleStruct &mdash; dimlpfidex 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7026087e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+        <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class CommandArgumentException" href="classCommandArgumentException.html" />
+    <link rel="prev" title="Class CannotOpenFileError" href="classCannotOpenFileError.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            dimlpfidex
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">C++ API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="library_root.html">Library API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library_root.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="library_root.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="library_root.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="structCleanRuleStruct_1_1AssocAnte.html">Struct CleanRuleStruct::AssocAnte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structCleanRuleStruct_1_1CleanRule.html">Struct CleanRuleStruct::CleanRule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structDimlpRule_1_1Antecedent.html">Struct DimlpRule::Antecedent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structFidex_1_1currentExecutionSpecs.html">Struct Fidex::currentExecutionSpecs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structOneVarThresDescr_1_1Elem.html">Struct OneVarThresDescr::Elem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structRuleProcessing_1_1Saved.html">Struct RuleProcessing::Saved</a></li>
+<li class="toctree-l4"><a class="reference internal" href="structStringInt_1_1Elem.html">Struct StringInt::Elem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAnte.html">Class Ante</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAntecedent.html">Class Antecedent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classAttrName.html">Class AttrName</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classBagDimlp.html">Class BagDimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classBpNN.html">Class BpNN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCannotCreateDirectoryError.html">Class CannotCreateDirectoryError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCannotOpenFileError.html">Class CannotOpenFileError</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Class CleanRuleStruct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classCommandArgumentException.html">Class CommandArgumentException</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDataSet.html">Class DataSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDataSetFid.html">Class DataSetFid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDimlp.html">Class Dimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classDimlpRule.html">Class DimlpRule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classErrorHandler.html">Class ErrorHandler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFidex.html">Class Fidex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileContentError.html">Class FileContentError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileFormatError.html">Class FileFormatError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFileNotFoundError.html">Class FileNotFoundError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classFloatRandomFunction.html">Class FloatRandomFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classHyperbox.html">Class Hyperbox</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classHyperspace.html">Class Hyperspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classInternalError.html">Class InternalError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classIntRandomFunction.html">Class IntRandomFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayer.html">Class Layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp.html">Class LayerDimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp2.html">Class LayerDimlp2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp3.html">Class LayerDimlp3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerDimlp4.html">Class LayerDimlp4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerFdimlp.html">Class LayerFdimlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerRad.html">Class LayerRad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSD.html">Class LayerSD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP3.html">Class LayerSP3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP4.html">Class LayerSP4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classLayerSP5.html">Class LayerSP5</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classOneVarThresDescr.html">Class OneVarThresDescr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classParameters.html">Class Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRealHyp.html">Class RealHyp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRealHyp2.html">Class RealHyp2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRule.html">Class Rule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classRuleProcessing.html">Class RuleProcessing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classStairObj.html">Class StairObj</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classStringInt.html">Class StringInt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classThresDescr.html">Class ThresDescr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVectWithRandVal.html">Class VectWithRandVal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVirtualHyp.html">Class VirtualHyp</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#enums">Enums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="library_root.html#typedefs">Typedefs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/modules.html">trainings</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">dimlpfidex</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="library_root.html">Library API</a></li>
+      <li class="breadcrumb-item active">Class CleanRuleStruct</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/classCleanRuleStruct.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-cleanrulestruct">
+<span id="exhale-class-classcleanrulestruct"></span><h1>Class CleanRuleStruct<a class="headerlink" href="#class-cleanrulestruct" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_cleanRS.h.html#file-home-runner-work-dimlpfidex-dimlpfidex-dimlp-cpp-src-cleanrs-h"><span class="std std-ref">File cleanRS.h</span></a></p></li>
+</ul>
+<section id="nested-relationships">
+<h2>Nested Relationships<a class="headerlink" href="#nested-relationships" title="Link to this heading"></a></h2>
+<section id="nested-types">
+<h3>Nested Types<a class="headerlink" href="#nested-types" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="structCleanRuleStruct_1_1AssocAnte.html#exhale-struct-structcleanrulestruct-1-1assocante"><span class="std std-ref">Struct CleanRuleStruct::AssocAnte</span></a></p></li>
+<li><p><a class="reference internal" href="structCleanRuleStruct_1_1CleanRule.html#exhale-struct-structcleanrulestruct-1-1cleanrule"><span class="std std-ref">Struct CleanRuleStruct::CleanRule</span></a></p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv415CleanRuleStruct">
+<span id="_CPPv315CleanRuleStruct"></span><span id="_CPPv215CleanRuleStruct"></span><span id="CleanRuleStruct"></span><span class="target" id="classCleanRuleStruct"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CleanRuleStruct</span></span></span><a class="headerlink" href="#_CPPv415CleanRuleStruct" title="Link to this definition"></a><br /></dt>
+<dd><p>Class <a class="reference internal" href="#classCleanRuleStruct"><span class="std std-ref">CleanRuleStruct</span></a> is used to simplify and manage the rules derived from the rule extraction process. </p>
+<p>This class provides functionalities to:<ul class="simple">
+<li><p>Simplify the rule set using else-clauses.</p></li>
+<li><p>Prune and expand rules to ensure they are both minimal and effective.</p></li>
+<li><p>Calculate and track the accuracy and coverage of the rules on different datasets (training, testing, validation).</p></li>
+<li><p>Handle the classification and representation of rules.</p></li>
+<li><p>Ensure the fidelity of the rules, meaning that the rules correctly cover all examples. </p></li>
+</ul>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N15CleanRuleStruct10WriteRulesEiRNSt7ostreamERKNSt6vectorIdEERKNSt6vectorIdEERKNSt6vectorIiEE">
+<span id="_CPPv3N15CleanRuleStruct10WriteRulesEiRNSt7ostreamERKNSt6vectorIdEERKNSt6vectorIdEERKNSt6vectorIiEE"></span><span id="_CPPv2N15CleanRuleStruct10WriteRulesEiRNSt7ostreamERKNSt6vectorIdEERKNSt6vectorIdEERKNSt6vectorIiEE"></span><span id="CleanRuleStruct::WriteRules__i.osR.std::vector:double:CR.std::vector:double:CR.std::vector:i:CR"></span><span class="target" id="classCleanRuleStruct_1a85f5cd80994352fb0340db9c49872ca3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WriteRules</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">def</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ruleFile</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">mus</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sigmas</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">normalizationIndices</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15CleanRuleStruct10WriteRulesEiRNSt7ostreamERKNSt6vectorIdEERKNSt6vectorIdEERKNSt6vectorIiEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Writes the rules to a file. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>def</strong> – Flag indicating whether to include the default rule. </p></li>
+<li><p><strong>ruleFile</strong> – Output stream to write the rules. </p></li>
+<li><p><strong>mus</strong> – Means for denormalization (optional). </p></li>
+<li><p><strong>sigmas</strong> – Standard deviations for denormalization (optional). </p></li>
+<li><p><strong>normalizationIndices</strong> – Indices of normalized attributes (optional). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N15CleanRuleStruct18ElseRepresentationEv">
+<span id="_CPPv3N15CleanRuleStruct18ElseRepresentationEv"></span><span id="_CPPv2N15CleanRuleStruct18ElseRepresentationEv"></span><span id="CleanRuleStruct::ElseRepresentation"></span><span class="target" id="classCleanRuleStruct_1accaea837f1d0bdedd3a55623e5c5f19b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ElseRepresentation</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15CleanRuleStruct18ElseRepresentationEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Represents the rules using else-clauses for various datasets. </p>
+<p>This function resets certain fields and then applies the else-clause representation for all datasets including the full dataset, training set, testing set, and validation set. The else-clause ensures that each instance in the datasets is covered by a rule, providing a classification even when no specific rule applies to the instance. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N15CleanRuleStruct12SimplifyElseEP10ThresDescr">
+<span id="_CPPv3N15CleanRuleStruct12SimplifyElseEP10ThresDescr"></span><span id="_CPPv2N15CleanRuleStruct12SimplifyElseEP10ThresDescr"></span><span id="CleanRuleStruct::SimplifyElse__ThresDescrP"></span><span class="target" id="classCleanRuleStruct_1a0f083a98406da249d1fae124573f1911"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SimplifyElse</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classThresDescr.html#_CPPv410ThresDescr" title="ThresDescr"><span class="n"><span class="pre">ThresDescr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">descr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15CleanRuleStruct12SimplifyElseEP10ThresDescr" title="Link to this definition"></a><br /></dt>
+<dd><p>Simplifies the rules using else-clauses. </p>
+<p>This function performs a series of operations to simplify the rule set by using else-clauses. It follows these steps:<ol class="lowerroman simple">
+<li><p>Sorts the rules.</p></li>
+<li><p>Flags all rules for processing.</p></li>
+<li><p>Iteratively prunes and expands the rules:<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RandomPruneAnt()</span></code>: Randomly prunes antecedents from the rules.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PruneRule()</span></code>: Prunes rules that do not significantly contribute to the classification.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OrderedExpand(ThresDescr</span> <span class="pre">*descr)</span></code>: Expands the rules by adjusting the thresholds.</p></li>
+</ul>
+</p></li>
+<li><p>Ensures fidelity, which means that the simplified rules still cover all examples correctly.</p></li>
+<li><p>Creates a new cleaned set of rules.</p></li>
+<li><p>Sets the default class for cases not covered by any rule.</p></li>
+<li><p>Prunes the rules again to ensure optimal simplification.</p></li>
+<li><p>Writes the number of rules and antecedents.</p></li>
+</ol>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>descr</strong> – Description of thresholds used to expand and adjust the rules. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N15CleanRuleStruct3DelEv">
+<span id="_CPPv3N15CleanRuleStruct3DelEv"></span><span id="_CPPv2N15CleanRuleStruct3DelEv"></span><span id="CleanRuleStruct::Del"></span><span class="target" id="classCleanRuleStruct_1a007f5bf5d8466415cb561eb78efe1b17"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Del</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15CleanRuleStruct3DelEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Deletes all rules. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK15CleanRuleStruct7SetAttrENSt6vectorINSt6stringEEE">
+<span id="_CPPv3NK15CleanRuleStruct7SetAttrENSt6vectorINSt6stringEEE"></span><span id="_CPPv2NK15CleanRuleStruct7SetAttrENSt6vectorINSt6stringEEE"></span><span id="CleanRuleStruct::SetAttr__std::vector:ss:C"></span><span class="target" id="classCleanRuleStruct_1ac9c584aba0af0df7f737e13eafabf4a2"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetAttr</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">listAttr</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK15CleanRuleStruct7SetAttrENSt6vectorINSt6stringEEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the attribute names for the rules. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>listAttr</strong> – List of attribute names. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N15CleanRuleStruct7SetAttrEv">
+<span id="_CPPv3N15CleanRuleStruct7SetAttrEv"></span><span id="_CPPv2N15CleanRuleStruct7SetAttrEv"></span><span id="CleanRuleStruct::SetAttr"></span><span class="target" id="classCleanRuleStruct_1a80066bc360b44d131f7efd86e9a36d35"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetAttr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15CleanRuleStruct7SetAttrEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the attribute names for the rules using attribute ids. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK15CleanRuleStruct11SetStrClassENSt6vectorINSt6stringEEEi">
+<span id="_CPPv3NK15CleanRuleStruct11SetStrClassENSt6vectorINSt6stringEEEi"></span><span id="_CPPv2NK15CleanRuleStruct11SetStrClassENSt6vectorINSt6stringEEEi"></span><span id="CleanRuleStruct::SetStrClass__std::vector:ss:.iC"></span><span class="target" id="classCleanRuleStruct_1a834dbf77455fc20229f9462b9313797c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetStrClass</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">listClass</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">def</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK15CleanRuleStruct11SetStrClassENSt6vectorINSt6stringEEEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the class names for the rules. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>listClass</strong> – List of class names. </p></li>
+<li><p><strong>def</strong> – Default class flag. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N15CleanRuleStruct11SetStrClassEi">
+<span id="_CPPv3N15CleanRuleStruct11SetStrClassEi"></span><span id="_CPPv2N15CleanRuleStruct11SetStrClassEi"></span><span id="CleanRuleStruct::SetStrClass__i"></span><span class="target" id="classCleanRuleStruct_1a23a0fc29d6ebc467b285edee8d56dd2d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetStrClass</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">def</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15CleanRuleStruct11SetStrClassEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the class names for the rules using class ids. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>def</strong> – Default class flag. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N15CleanRuleStruct15CleanRuleStructERK7DataSetRK7DataSetRK7DataSetRK7DataSetRK7DataSetRK7DataSetRK7DataSetNSt10shared_ptrI14RuleProcessingEENSt10shared_ptrI4BpNNEEPfi">
+<span id="_CPPv3N15CleanRuleStruct15CleanRuleStructERK7DataSetRK7DataSetRK7DataSetRK7DataSetRK7DataSetRK7DataSetRK7DataSetNSt10shared_ptrI14RuleProcessingEENSt10shared_ptrI4BpNNEEPfi"></span><span id="_CPPv2N15CleanRuleStruct15CleanRuleStructERK7DataSetRK7DataSetRK7DataSetRK7DataSetRK7DataSetRK7DataSetRK7DataSetNSt10shared_ptrI14RuleProcessingEENSt10shared_ptrI4BpNNEEPfi"></span><span id="CleanRuleStruct::CleanRuleStruct__DataSetCR.DataSetCR.DataSetCR.DataSetCR.DataSetCR.DataSetCR.DataSetCR.std::shared_ptr:RuleProcessing:.std::shared_ptr:BpNN:.floatP.i"></span><span class="target" id="classCleanRuleStruct_1a4a19b30d9b10f8029d53367616d453de"></span><span class="sig-name descname"><span class="n"><span class="pre">CleanRuleStruct</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">all</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">train</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">trainClass</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">valid</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">validClass</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">test</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="classDataSet.html#_CPPv47DataSet" title="DataSet"><span class="n"><span class="pre">DataSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">testClass</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classRuleProcessing.html#_CPPv414RuleProcessing" title="RuleProcessing"><span class="n"><span class="pre">RuleProcessing</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">processed</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classBpNN.html#_CPPv44BpNN" title="BpNN"><span class="n"><span class="pre">BpNN</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bpNn</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">out</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nbOut</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15CleanRuleStruct15CleanRuleStructERK7DataSetRK7DataSetRK7DataSetRK7DataSetRK7DataSetRK7DataSetRK7DataSetNSt10shared_ptrI14RuleProcessingEENSt10shared_ptrI4BpNNEEPfi" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructs a <a class="reference internal" href="#classCleanRuleStruct"><span class="std std-ref">CleanRuleStruct</span></a> object. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>all</strong> – All data. </p></li>
+<li><p><strong>train</strong> – Training data. </p></li>
+<li><p><strong>trainClass</strong> – Training class labels. </p></li>
+<li><p><strong>valid</strong> – Validation data. </p></li>
+<li><p><strong>validClass</strong> – Validation class labels. </p></li>
+<li><p><strong>test</strong> – Testing data. </p></li>
+<li><p><strong>testClass</strong> – Testing class labels. </p></li>
+<li><p><strong>processed</strong> – Processed rules. </p></li>
+<li><p><strong>bpNn</strong> – Neural network pointer. </p></li>
+<li><p><strong>out</strong> – Neural network output. </p></li>
+<li><p><strong>nbOut</strong> – Number of output classes. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classCannotOpenFileError.html" class="btn btn-neutral float-left" title="Class CannotOpenFileError" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classCommandArgumentException.html" class="btn btn-neutral float-right" title="Class CommandArgumentException" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, HES-XPLAIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

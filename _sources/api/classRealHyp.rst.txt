@@ -1,0 +1,26 @@
+.. _exhale_class_classRealHyp:
+
+Class RealHyp
+=============
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_realHyp.h`
+
+
+Inheritance Relationships
+-------------------------
+
+Derived Type
+************
+
+- ``public RealHyp2`` (:ref:`exhale_class_classRealHyp2`)
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: RealHyp
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

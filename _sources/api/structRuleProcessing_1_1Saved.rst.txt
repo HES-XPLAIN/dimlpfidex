@@ -1,0 +1,23 @@
+.. _exhale_struct_structRuleProcessing_1_1Saved:
+
+Struct RuleProcessing::Saved
+============================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_rulePro.h`
+
+
+Nested Relationships
+--------------------
+
+This struct is a nested type of :ref:`exhale_class_classRuleProcessing`.
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: RuleProcessing::Saved
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

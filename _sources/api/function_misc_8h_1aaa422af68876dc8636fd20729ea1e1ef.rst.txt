@@ -1,0 +1,14 @@
+.. _exhale_function_misc_8h_1aaa422af68876dc8636fd20729ea1e1ef:
+
+Function Compare(const void \*, const void \*)
+==============================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_misc.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: Compare(const void *, const void *)
+   :project: common

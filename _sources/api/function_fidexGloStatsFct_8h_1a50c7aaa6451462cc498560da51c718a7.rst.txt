@@ -1,0 +1,14 @@
+.. _exhale_function_fidexGloStatsFct_8h_1a50c7aaa6451462cc498560da51c718a7:
+
+Function computeTFPN(int, int, int, int&, int&, int&, int&)
+===========================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStatsFct.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: computeTFPN(int, int, int, int&, int&, int&, int&)
+   :project: common

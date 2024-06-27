@@ -1,0 +1,35 @@
+.. _exhale_class_classLayer:
+
+Class Layer
+===========
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layer.h`
+
+
+Inheritance Relationships
+-------------------------
+
+Derived Types
+*************
+
+- ``public LayerDimlp`` (:ref:`exhale_class_classLayerDimlp`)
+- ``public LayerDimlp2`` (:ref:`exhale_class_classLayerDimlp2`)
+- ``public LayerDimlp3`` (:ref:`exhale_class_classLayerDimlp3`)
+- ``public LayerDimlp4`` (:ref:`exhale_class_classLayerDimlp4`)
+- ``public LayerFdimlp`` (:ref:`exhale_class_classLayerFdimlp`)
+- ``public LayerRad`` (:ref:`exhale_class_classLayerRad`)
+- ``public LayerSD`` (:ref:`exhale_class_classLayerSD`)
+- ``public LayerSP3`` (:ref:`exhale_class_classLayerSP3`)
+- ``public LayerSP4`` (:ref:`exhale_class_classLayerSP4`)
+- ``public LayerSP5`` (:ref:`exhale_class_classLayerSP5`)
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: Layer
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

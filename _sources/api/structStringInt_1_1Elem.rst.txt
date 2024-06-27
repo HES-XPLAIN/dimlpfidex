@@ -1,0 +1,23 @@
+.. _exhale_struct_structStringInt_1_1Elem:
+
+Struct StringInt::Elem
+======================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_stringI.h`
+
+
+Nested Relationships
+--------------------
+
+This struct is a nested type of :ref:`exhale_class_classStringInt`.
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: StringInt::Elem
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

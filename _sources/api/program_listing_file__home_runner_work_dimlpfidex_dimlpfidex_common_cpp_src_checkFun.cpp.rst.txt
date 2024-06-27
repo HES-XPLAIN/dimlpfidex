@@ -1,0 +1,342 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.cpp:
+
+Program Listing for File checkFun.cpp
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.cpp>` (``/home/runner/work/dimlpfidex/dimlpfidex/common/cpp/src/checkFun.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #include "checkFun.h"
+   
+   bool checkInt(const std::string &input) {
+     try {
+       std::size_t pos;
+       std::stoi(input, &pos);
+   
+       if (pos != input.length()) {
+         return false; // There are some non-numerical characters
+       }
+     } catch (const std::invalid_argument &) {
+       return false;
+     } catch (const std::out_of_range &) {
+       return false;
+     }
+     return true;
+   }
+   
+   bool checkFloat(const std::string &input) {
+     try {
+       std::size_t pos;        // To store the position of the last processed character
+       std::stod(input, &pos); // Convert string to double
+   
+       if (pos != input.length()) {
+         return false; // There are unprocessed characters left in the string
+       }
+     } catch (const std::invalid_argument &) { // Handle invalid arguments
+       return false;
+     } catch (const std::out_of_range &) { // Handles cases where the value is out of range
+       return false;
+     }
+     return true;
+   }
+   
+   
+   bool checkBool(const std::string &inputTemp) {
+     std::string input = inputTemp;
+     std::transform(input.begin(), input.end(), input.begin(),
+                    [](unsigned char c) { return std::tolower(c); });
+     return (input == "true" || input == "false" || input == "0" || input == "1");
+   }
+   
+   
+   bool checkList(const std::string &str) {
+     std::string floatPattern = "(-?\\d+(\\.\\d+)?)";
+   
+     std::regex listPattern("(\\[|\\()?(" + floatPattern + ")([ ,]+" + floatPattern + ")*(\\]|\\))?");
+   
+     return std::regex_match(str, listPattern);
+   }
+   
+   
+   bool checkStringEmpty(const std::string &line) {
+     if (line.length() == 0) {
+       return true;
+     } else {
+       if (std::any_of(line.begin(), line.end(), [](int c) { return isgraph(c); })) {
+         return false;
+       }
+       return true;
+     }
+   }
+   
+   
+   std::string formattingDoubleToString(double number) {
+     std::string str = std::to_string(number);
+     str.erase(str.find_last_not_of('0') + 1, std::string::npos);
+     str.erase(str.find_last_not_of('.') + 1, std::string::npos);
+     return str;
+   }
+   
+   
+   std::vector<std::string> splitString(const std::string &str, const std::string &delimiter) {
+     std::vector<std::string> tokens;
+     size_t start = 0;
+     size_t end = str.find(delimiter);
+   
+     // Loop to find and add new sub-strings
+     while (end != std::string::npos) {
+       if (start != end) { // Not adding empty strings
+         tokens.push_back(str.substr(start, end - start));
+       }
+       start = end + delimiter.length();
+       end = str.find(delimiter, start);
+     }
+   
+     // Add last string if not empty
+     if (start != str.length()) {
+       tokens.push_back(str.substr(start));
+     }
+   
+     return tokens;
+   }
+   
+   
+   std::vector<double> getDoubleVectorFromString(std::string str) {
+     std::regex floatPattern("(-?\\d+(\\.\\d+)?)");
+     std::smatch match;
+     std::vector<double> numbers;
+     while (std::regex_search(str, match, floatPattern)) {
+       numbers.push_back(std::stof(match[0].str()));
+       str = match.suffix().str(); // Continue with the rest of the string
+     }
+     return numbers;
+   }
+   
+   
+   std::vector<int> getIntVectorFromString(std::string str) {
+     std::regex floatPattern("(-?\\d+(\\.\\d+)?)");
+     std::smatch match;
+     std::vector<int> numbers;
+     while (std::regex_search(str, match, floatPattern)) {
+       if (checkInt(match[0])) {
+         numbers.push_back(std::stoi(match[0].str()));
+       } else {
+         throw CommandArgumentException("Error : Invalid integer value in int vector: " + match[0].str());
+       }
+       str = match.suffix().str(); // Continue with the rest of the string
+     }
+     return numbers;
+   }
+   
+   
+   std::tuple<std::vector<int>, bool, std::vector<double>, std::vector<double>> parseNormalizationStats(const std::string &normalizationFile, int nbAttributes, const std::vector<std::string> &attributes) {
+     std::vector<int> indices_list;
+     std::vector<double> mus;
+     std::vector<double> sigmas;
+     bool withMedian = false;
+     bool withMedian_initialized = false;
+     std::set<int> unique_indices;
+   
+     if (!attributes.empty() && attributes.size() != nbAttributes) {
+       throw FileContentError("Error during parsing of " + normalizationFile + ": The number of attributes is not equal to the length of attributes list.");
+     }
+   
+     // Create some general regex patterns
+     std::string indexPattern = "(";
+   
+     for (int i = 0; i < nbAttributes; i++) {
+       indexPattern += std::to_string(i);
+       if (i < nbAttributes - 1) {
+         indexPattern += "|";
+       }
+     }
+     indexPattern += ")";
+   
+     std::string attrPattern = "";
+     if (!attributes.empty()) {
+       attrPattern += "(";
+       for (int i = 0; i < nbAttributes; i++) {
+         attrPattern += attributes[i];
+         if (i < nbAttributes - 1) {
+           attrPattern += "|";
+         }
+       }
+       attrPattern += ")";
+     }
+   
+     std::string floatPattern = "(-?\\d+(\\.\\d+)?)(?=$|[^\\d])"; // We ask that the float is followed either by the end of the line either by a not-number character
+   
+     // Create regex patterns for a line
+     std::vector<std::pair<std::regex, std::string>> patterns;
+     std::regex patternIndices("^" + indexPattern + " : original (mean|median): " + floatPattern + ", original std: " + floatPattern);
+     std::string patternIndicesStr = "indexPattern";
+     std::regex patternAttributes("^" + attrPattern + " : original (mean|median): " + floatPattern + ", original std: " + floatPattern);
+     std::string patternAttributesStr = "attributePattern";
+     if (!attributes.empty()) {
+       patterns.emplace_back(patternAttributes, patternAttributesStr);
+     }
+     patterns.emplace_back(patternIndices, patternIndicesStr);
+   
+     bool patternError;
+   
+     for (const auto &pattern : patterns) {
+   
+       std::ifstream file(normalizationFile);
+       if (!file) {
+         throw FileNotFoundError("Error : file " + std::string(normalizationFile) + " not found or couldn't be opened.");
+       }
+   
+       patternError = false;
+       std::string line;
+       while (getline(file, line)) {
+         std::string mean_median;
+         int index;
+   
+         if (line.empty())
+           continue;
+   
+         std::istringstream iss(line);
+   
+         std::smatch matches;
+   
+         if (std::regex_search(line, matches, pattern.first)) {
+           mean_median = matches[2];
+           mus.push_back(stod(matches[3]));
+           sigmas.push_back(stod(matches[5]));
+           if (pattern.second == patternIndicesStr) {
+             index = stoi(matches[1]);
+           } else {
+             std::string attr = matches[1];
+             auto it = std::find(attributes.begin(), attributes.end(), attr);
+             if (it == attributes.end()) {
+               throw FileContentError("Error in " + normalizationFile + ": Attribute not found.");
+             }
+             index = static_cast<int>(std::distance(attributes.begin(), it));
+           }
+   
+         } else {
+           patternError = true;
+           break;
+         }
+   
+         indices_list.push_back(index);
+         unique_indices.insert(index);
+   
+         if (!withMedian_initialized) {
+           withMedian = (mean_median == "median");
+           withMedian_initialized = true;
+         } else if ((withMedian && mean_median != "median") || (!withMedian && mean_median != "mean")) {
+           throw FileContentError("Error in " + normalizationFile + ": Inconsistency in using mean or median.");
+         }
+       }
+       if (!patternError) {
+         break;
+       }
+     }
+   
+     if (patternError) {
+       if (attributes.empty()) {
+         throw FileContentError("Error in " + normalizationFile + ": File not in the correct format, maybe you forgot to add the attribute file.");
+       } else {
+         throw FileContentError("Error in " + normalizationFile + ": File not in the correct format.");
+       }
+     }
+   
+     if (indices_list.size() != unique_indices.size()) {
+       throw FileContentError("Error in " + normalizationFile + ": Duplicate indices found.");
+     }
+   
+     return std::make_tuple(indices_list, withMedian, mus, sigmas);
+   }
+   
+   
+   bool hasSpaceBetweenWords(const std::string &str) {
+     for (size_t i = 0; i < str.length(); ++i) {
+       if (str[i] == ' ' &&
+           i > 0 &&
+           i < str.length() - 1 &&
+           str[i - 1] != ' ' &&
+           str[i + 1] != ' ') {
+         return true; // Space found between words
+       }
+     }
+     return false; // No space found between words or only tabs are present
+   }
+   
+   
+   bool exists(const std::string &path) {
+     struct stat buffer;
+     return (stat(path.c_str(), &buffer) == 0);
+   }
+   
+   
+   std::string getOSSeparator() {
+   // define separator depending on OS
+   #if defined(__unix__) || defined(__APPLE__)
+     return "/";
+   #elif defined(_WIN32)
+     return "/";
+   #endif
+   }
+   
+   
+   void printOptionDescription(const std::string &option, const std::string &description, int width) {
+     if (option.length() >= width) {
+       std::cout << option << std::endl;
+       std::cout << std::setw(width) << " " << description << std::endl;
+     } else {
+       std::cout << std::left << std::setw(width) << option << description << std::endl;
+       std::cout << std::right; // Reinitialize alignment
+     }
+   }
+   
+   
+   int countNetworksInFile(const std::string &weightsFile) {
+   
+     std::filebuf buf;
+   
+     if (buf.open(weightsFile, std::ios_base::in) == nullptr) {
+       throw CannotOpenFileError("Cannot open weights file " + weightsFile);
+     }
+   
+     std::istream fileWts(&buf);
+   
+     std::string line;
+     int count = 0;
+     while (std::getline(fileWts, line)) {
+       if (line.find("Network") != std::string::npos) {
+         ++count;
+       }
+     }
+     return count > 0 ? count : 1; // If no "Network" keyword is found, assume there's one network
+   }
+   
+   
+   std::vector<double> parseFileLine(std::string str, const std::string &fileName) {
+   
+     std::vector<double> valuesData;
+   
+     std::regex re("([ \\t]+)|[,;]");
+     std::sregex_token_iterator first{str.begin(), str.end(), re, -1}; //  -1 makes the regex split, it keeps only what was not matched
+     std::sregex_token_iterator last;
+     std::vector<std::string> stringTokens{first, last};
+   
+     for (const std::string &strToken : stringTokens) {
+       try {
+         if (!checkStringEmpty(strToken)) {
+           valuesData.push_back(std::stod(strToken));
+         }
+       } catch (const std::invalid_argument &) {
+         throw FileContentError("Error : Non number found in file " + fileName + " : " + strToken + ".");
+       } catch (const std::out_of_range &) {
+         throw FileContentError("Error: Number out of range in file " + fileName + " : " + strToken + ".");
+       }
+     }
+   
+     return valuesData;
+   }
+   

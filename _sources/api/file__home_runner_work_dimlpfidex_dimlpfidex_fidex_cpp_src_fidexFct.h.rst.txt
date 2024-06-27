@@ -1,0 +1,92 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.h:
+
+File fidexFct.h
+===============
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/fidexFct.h``)
+---------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../../common/cpp/src/checkFun.h``
+
+- ``../../../common/cpp/src/dataSet.h``
+
+- ``../../../common/cpp/src/errorHandler.h``
+
+- ``../../../common/cpp/src/parameters.h``
+
+- ``algorithm``
+
+- ``chrono``
+
+- ``ctime``
+
+- ``fidexAlgo.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexAlgo.h`)
+
+- ``fstream``
+
+- ``hyperLocus.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperLocus.h`)
+
+- ``hyperspace.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_hyperspace.h`)
+
+- ``iostream``
+
+- ``memory``
+
+- ``numeric``
+
+- ``random``
+
+- ``sstream``
+
+- ``string`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_stringI.cpp`)
+
+- ``time.h``
+
+- ``tuple``
+
+- ``unordered_map``
+
+- ``vector``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidex.cpp`
+
+- :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexFct.cpp`
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_fidexFct_8h_1a4d9c4d5a96247077b1211d0c605a9e2c`
+
+- :ref:`exhale_function_fidexFct_8h_1a6293271ca1f8e706c83c7b1a9aee6e29`
+
+- :ref:`exhale_function_fidexFct_8h_1afb3c1683e14a0a8d7273cc282879b303`
+

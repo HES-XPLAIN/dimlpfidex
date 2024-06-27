@@ -1,0 +1,17 @@
+.. _exhale_class_classDataSetFid:
+
+Class DataSetFid
+================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_dataSet.h`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: DataSetFid
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

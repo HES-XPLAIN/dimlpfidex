@@ -1,0 +1,43 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerRad.h:
+
+Program Listing for File layerRad.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_layerRad.h>` (``/home/runner/work/dimlpfidex/dimlpfidex/dimlp/cpp/src/layerRad.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LAYERRAD_H
+   #define LAYERRAD_H
+   
+   #include "layer.h"
+   
+   
+   class LayerRad : public Layer {
+   
+     //----------------------------------------------------------------
+   
+     float Activation1(float x) override { return Gaussian(x); }
+   
+     void ForwLayer() override { ForwRadial(); }
+   
+     //----------------------------------------------------------------
+   
+   public:
+     LayerRad(
+         int nbDown,
+         int nbUp,
+         int nbWeights,
+         int nbWeightsForInit) :
+   
+                                 Layer(0, 0, 0, nbDown, nbUp, nbWeights, nbWeightsForInit)
+   
+     {
+     }
+   };
+   
+   
+   #endif // LAYERRAD_H

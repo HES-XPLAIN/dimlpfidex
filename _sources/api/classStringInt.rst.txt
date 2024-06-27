@@ -1,0 +1,27 @@
+.. _exhale_class_classStringInt:
+
+Class StringInt
+===============
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_stringI.h`
+
+
+Nested Relationships
+--------------------
+
+
+Nested Types
+************
+
+- :ref:`exhale_struct_structStringInt_1_1Elem`
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: StringInt
+   :project: common
+   :members:
+   :protected-members:
+   :undoc-members:

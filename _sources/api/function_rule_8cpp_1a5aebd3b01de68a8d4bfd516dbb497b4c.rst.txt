@@ -1,0 +1,14 @@
+.. _exhale_function_rule_8cpp_1a5aebd3b01de68a8d4bfd516dbb497b4c:
+
+Function getStrPatternWithClassNames()
+======================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: getStrPatternWithClassNames()
+   :project: common

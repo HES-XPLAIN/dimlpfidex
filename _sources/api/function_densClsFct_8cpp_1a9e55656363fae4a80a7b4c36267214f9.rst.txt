@@ -1,0 +1,14 @@
+.. _exhale_function_densClsFct_8cpp_1a9e55656363fae4a80a7b4c36267214f9:
+
+Function densCls(const std::string&)
+====================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_dimlp_cpp_src_densClsFct.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: densCls(const std::string&)
+   :project: common

@@ -1,0 +1,14 @@
+.. _exhale_function_rule_8h_1ab26149c49b7a422dad765ae053a71bd1:
+
+Function getThresholdFromRulesFile(const std::string&, float&, int&)
+====================================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_rule.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: getThresholdFromRulesFile(const std::string&, float&, int&)
+   :project: common

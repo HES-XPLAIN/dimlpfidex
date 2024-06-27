@@ -1,0 +1,14 @@
+.. _exhale_function_antecedent_8h_1a1d65226b39c756c399555088f28c33f8:
+
+Function operator<<(std::ostream&, const Antecedent&)
+=====================================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_antecedent.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: operator<<(std::ostream&, const Antecedent&)
+   :project: common

@@ -1,0 +1,14 @@
+.. _exhale_function_checkFun_8cpp_1abaf461792eb8f0f90862e21822ed9207:
+
+Function getDoubleVectorFromString(std::string)
+===============================================
+
+- Defined in :ref:`file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_checkFun.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: getDoubleVectorFromString(std::string)
+   :project: common

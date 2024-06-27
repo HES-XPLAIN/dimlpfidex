@@ -1,0 +1,48 @@
+
+.. _file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStatsFct.cpp:
+
+File fidexGloStatsFct.cpp
+=========================
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/runner/work/dimlpfidex/dimlpfidex/fidex/cpp/src/fidexGloStatsFct.cpp``)
+-------------------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStatsFct.cpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``fidexGloStatsFct.h`` (:ref:`file__home_runner_work_dimlpfidex_dimlpfidex_fidex_cpp_src_fidexGloStatsFct.h`)
+
+
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_fidexGloStatsFct_8cpp_1a05ace18a6573665a8433d2df5427e383`
+
+- :ref:`exhale_function_fidexGloStatsFct_8cpp_1a50c7aaa6451462cc498560da51c718a7`
+
+- :ref:`exhale_function_fidexGloStatsFct_8cpp_1a12eb8b45a566e7b548448bbd4ee2472e`
+
+- :ref:`exhale_function_fidexGloStatsFct_8cpp_1abff1e6c805378c05d6636b71708e602f`
+
+- :ref:`exhale_function_fidexGloStatsFct_8cpp_1ac902242b0280a2c02dfb72a13378bd9e`
+

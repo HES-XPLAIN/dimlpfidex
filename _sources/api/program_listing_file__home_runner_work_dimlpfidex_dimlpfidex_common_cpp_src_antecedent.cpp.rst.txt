@@ -1,0 +1,34 @@
+
+.. _program_listing_file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_antecedent.cpp:
+
+Program Listing for File antecedent.cpp
+=======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_runner_work_dimlpfidex_dimlpfidex_common_cpp_src_antecedent.cpp>` (``/home/runner/work/dimlpfidex/dimlpfidex/common/cpp/src/antecedent.cpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #include "antecedent.h"
+   
+   Antecedent::Antecedent(int attribute, bool inequality, double value) {
+     setAttribute(attribute);
+     setInequality(inequality);
+     setValue(value);
+   }
+   
+   bool Antecedent::isEqual(const Antecedent other) const {
+     double epsilon = 10e-6;
+   
+     if (getAttribute() != other.getAttribute())
+       return false;
+   
+     if (getInequality() != other.getInequality())
+       return false;
+   
+     if (fabs(getValue() != other.getValue()) > epsilon)
+       return false;
+   
+     return true;
+   }
