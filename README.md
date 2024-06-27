@@ -31,6 +31,7 @@ $ git submodule update
 Install with your package manager:
 
 * a C++ compiler (gcc/g++)
+* the ninja build system (ninja or ninja-build)
 * cmake
 
 #### Windows
