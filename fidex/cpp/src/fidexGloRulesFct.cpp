@@ -121,7 +121,7 @@ void generateRules(std::vector<Rule> &rules, std::vector<int> &notCoveredSamples
 
 #pragma omp critical
     {
-      std::cout << "Threadpop #" << threadId << " initialized, please wait for it to be done." << std::endl;
+      std::cout << "Thread #" << threadId << " initialized, please wait for it to be done." << std::endl;
     }
 
     t1 = omp_get_wtime();
