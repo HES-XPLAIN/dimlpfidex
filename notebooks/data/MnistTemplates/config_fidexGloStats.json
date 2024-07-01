@@ -1,0 +1,11 @@
+{
+    "root_folder": "data/MnistDataset",
+    "test_data_file": "testData.txt",
+    "test_pred_file": "predTest.out",
+    "test_class_file": "testClass.txt",
+    "global_rules_file": "globalRules.txt",
+    "nb_attributes": 784,
+    "nb_classes": 10,
+    "stats_file": "fidexGloStats.txt",
+    "global_rules_outfile": "globalRulesWithTestStats.rls"
+}
