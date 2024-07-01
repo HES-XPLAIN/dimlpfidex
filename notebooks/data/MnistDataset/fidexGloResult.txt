@@ -56,3 +56,4 @@ Threadpop #5 initialized, please wait for it to be done.
 Estimated total execution time after 1 sample(s): 2 hours, 4 minutes, 52 seconds.
 Estimated total execution time after 10 sample(s): 2 hours, 43 minutes, 2 seconds.
 Estimated total execution time after 100 sample(s): 2 hours, 45 minutes, 58 seconds.
+Estimated total execution time after 1000 sample(s): 2 hours, 41 minutes, 48 seconds.
