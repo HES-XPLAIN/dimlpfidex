@@ -176,7 +176,7 @@ def cnnTrn(args: str = None):
             if img_size[0] < 36 or img_size[1] < 36:
                 raise ValueError('Error : The large model do not accept an input size smaller than 36 in each coordinate. Use model_input_size to increase the input size in the model.')
 
-        model_checkpoint_weights = "weightsModel.keras"
+        model_checkpoint_weights = "weightsModel.weights.h5"
         if (args.root_folder is not None):
             model_checkpoint_weights = os.path.join(args.root_folder, model_checkpoint_weights)
 
@@ -421,18 +421,28 @@ def cnnTrn(args: str = None):
 
         ##############################################################################
 
-        checkpointer = ModelCheckpoint(filepath=model_checkpoint_weights, verbose=1, save_best_only=True)
+        checkpointer = ModelCheckpoint(filepath=model_checkpoint_weights, verbose=1, save_best_only=True, save_weights_only=True)
         model.fit(x_train_h1, y_train, batch_size=32, epochs=args.nb_epochs, validation_data=(x_val_h1, y_val), callbacks=[checkpointer], verbose=2)
-
-        ##############################################################################
-
-        model_best = load_model(model_checkpoint_weights)
 
         print("model trained")
 
-        train_pred = model_best.predict(x_train_h1)    # Predict the response for train dataset
-        test_pred = model_best.predict(x_test_h1)    # Predict the response for test dataset
-        valid_pred = model_best.predict(x_val_h1)   # Predict the response for validation dataset
+        ##############################################################################
+
+        print("\nResult :")
+
+        score = model.evaluate(x_train_h1, y_train)
+        print("Train score : ", score)
+
+        score = model.evaluate(x_test_h1, y_test)
+        print("Test score : ", score)
+
+        ##############################################################################
+
+        model.load_weights(model_checkpoint_weights)
+
+        train_pred = model.predict(x_train_h1)    # Predict the response for train dataset
+        test_pred = model.predict(x_test_h1)    # Predict the response for test dataset
+        valid_pred = model.predict(x_val_h1)   # Predict the response for validation dataset
         train_valid_pred = np.concatenate((train_pred,valid_pred)) # We output predictions of both validation and training sets
 
 
@@ -452,7 +462,7 @@ def cnnTrn(args: str = None):
 
         ##############################################################################
 
-        print("\nResult :")
+        print("\nBest result :")
 
         score = model.evaluate(x_train_h1, y_train)
         print("Train score : ", score)
@@ -460,18 +470,8 @@ def cnnTrn(args: str = None):
         score = model.evaluate(x_test_h1, y_test)
         print("Test score : ", score)
 
-        ##############################################################################
-
-        print("\nBest result :")
-
-        score = model_best.evaluate(x_train_h1, y_train)
-        print("Train score : ", score)
-
-        score = model_best.evaluate(x_test_h1, y_test)
-        print("Test score : ", score)
-
-        acc_train = model_best.evaluate(x_train_h1, y_train, verbose=0)[1]
-        acc_test = model_best.evaluate(x_test_h1, y_test, verbose=0)[1]
+        acc_train = model.evaluate(x_train_h1, y_train, verbose=0)[1]
+        acc_test = model.evaluate(x_test_h1, y_test, verbose=0)[1]
 
         formatted_acc_train = "{:.6f}".format(acc_train*100)
         formatted_acc_test = "{:.6f}".format(acc_test*100)
