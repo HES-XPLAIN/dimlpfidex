@@ -36,7 +36,7 @@ void showRulesParams() {
   printOptionDescription("--root_folder <str>", "Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder");
   printOptionDescription("--attributes_file <str>", "Path to the file containing the labels of attributes and classes");
   printOptionDescription("--console_file <str>", "Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal");
-  printOptionDescription("--max_iterations <int [1,inf[>", "Maximum iteration number, also the maximum possible number of attributes in a rule, it should be 25 when working with images (default: 10)");
+  printOptionDescription("--max_iterations <int [1,inf[>", "Maximum number of iterations, also the maximum possible number of antecedents in a rule, it should be 25 when working with images (default: 10)");
   printOptionDescription("--min_covering <int [1,inf[>", "Minimum number of samples covered by the generated rules (default: 2)");
   printOptionDescription("--covering_strategy <bool>", "Whether to use the covering strategy : if no rule is found with min_covering, find best rule with best covering using dichotomic search. Decreases min_fidelity if needed (default: True)");
   printOptionDescription("--max_failed_attempts <int [0,inf[>", "Maximum number of failed attempts to find a Fidex rule when the covering is 1 and the covering strategy is used (default: 30)");
