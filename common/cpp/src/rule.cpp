@@ -316,21 +316,23 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, con
       if (!matched) {
         throw FileContentError("Error : in file " + rulesFile + ", the rule " + line + " is not in a good format. Maybe an attribute or class id is wrong or you forgot to add the attribute file.");
       }
-      matched = false;
-      if (regex_search(line, patternWithClassIds)) {
-        matched = true;
-        hasClassIds &= true;
-      } else {
-        hasClassIds = false;
-      }
-      if (dataset.getHasClassNames() && regex_search(line, patternWithClassNames)) {
-        matched = true;
-        hasClassNames &= true;
-      } else {
-        hasClassNames = false;
-      }
-      if (!matched) {
-        throw FileContentError("Error : in file " + rulesFile + ", the rule " + line + " is not in a good format. Maybe a class id is wrong or you forgot to add the attribute file.");
+      if (withClasses) {
+        matched = false;
+        if (regex_search(line, patternWithClassIds)) {
+          matched = true;
+          hasClassIds &= true;
+        } else {
+          hasClassIds = false;
+        }
+        if (dataset.getHasClassNames() && regex_search(line, patternWithClassNames)) {
+          matched = true;
+          hasClassNames &= true;
+        } else {
+          hasClassNames = false;
+        }
+        if (!matched) {
+          throw FileContentError("Error : in file " + rulesFile + ", the rule " + line + " is not in a good format. Maybe a class id is wrong or you forgot to add the attribute file.");
+        }
       }
 
       // If no pattern matches each rule

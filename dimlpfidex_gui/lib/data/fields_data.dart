@@ -1577,7 +1577,7 @@ const List<Field> gradBoostTrnFields = [
     "Maximum depth",
     "max_depth",
     Datatype.integer, // TODO add category too ("no_max_depth")
-    minValue: "2",
+    minValue: "1",
     maxValue: "inf",
     defaultValue: "3",
     description: "Maximum depth of the individual regression estimators.",
