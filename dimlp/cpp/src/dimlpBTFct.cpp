@@ -47,6 +47,7 @@ void showDimlpBTParams()
   printOptionDescription("--hidden_layers_outfile <str>", "Path to the file where output hidden layers sizes will be stored (default: hidden_layers.out)");
   printOptionDescription("--with_rule_extraction <bool>", "Whether to extract rules with dimlpBT algorithm (default: False)");
   printOptionDescription("--global_rules_outfile <str>", "Path to the file where the output rule(s) will be stored");
+  printOptionDescription("--learning_rate <float ]0,inf[>", "Back-propagation learning parameter (default: 0.1)");
   printOptionDescription("--momentum <float [0,inf[>", "Back-propagation momentum parameter (default: 0.6)");
   printOptionDescription("--flat <float [0,inf[>", "Back-propagation flat spot elimination parameter (default: 0.01)");
   printOptionDescription("--error_thresh <float [0,inf[>", "Error threshold to stop training");
