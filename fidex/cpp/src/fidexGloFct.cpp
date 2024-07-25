@@ -17,6 +17,7 @@ void showFidexGloParams() {
             << std::endl;
 
   printOptionDescription("--test_data_file <str>", "Path to the file containing test sample(s) data, prediction (if no --test_pred_file) and true classes if launching with fidex (--with_fidex and if no --test_class_file)");
+  printOptionDescription("--test_pred_file <str>", "Path to the file containing predictions on the test portion of the dataset. If given, --test_data_file needs to have only the test data");
   printOptionDescription("--global_rules_file <str>", "Path to the file containing the global rules obtained with fidexGloRules algorithm.");
   printOptionDescription("--nb_attributes <int [1,inf[>", "Number of attributes in the dataset");
   printOptionDescription("--nb_classes <int [2,inf[>", "Number of classes in the dataset");
@@ -29,7 +30,6 @@ void showFidexGloParams() {
 
   printOptionDescription("--json_config_file <str>", "Path to the JSON file that configures all parameters. If used, this must be the sole argument and must specify the file's relative path");
   printOptionDescription("--root_folder <str>", "Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder");
-  printOptionDescription("--test_pred_file <str>", "Path to the file containing predictions on the test portion of the dataset. If given, --test_data_file needs to have only the test data");
   printOptionDescription("--explanation_file <str>", "Path to the file where explanation(s) will be stored");
   printOptionDescription("--attributes_file <str>", "Path to the file containing the labels of attributes and classes. Mandatory if rules file contains attribute names; if not, do not add it");
   printOptionDescription("--console_file <str>", "Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal");
