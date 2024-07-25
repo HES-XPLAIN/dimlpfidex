@@ -20,6 +20,7 @@ void showFidexParams() {
   printOptionDescription("--train_class_file <str>", "Path to the file containing the train true classes of the dataset, not mandatory if classes are specified in train data file");
   printOptionDescription("--train_pred_file <str>", "Path to the file containing predictions on the train portion of the dataset");
   printOptionDescription("--test_data_file <str>", "Path to the file containing the test sample(s) data, prediction (if no --test_pred_file) and true class(if no --test_class_file)");
+  printOptionDescription("--test_pred_file <str>", "Path to the file containing predictions on the test portion of the dataset");
   printOptionDescription("--weights_file <str>", "Path to the file containing the trained weights of the model (not mandatory if a rules file is given with --rules_file)");
   printOptionDescription("--rules_file <str>", "Path to the file containing the trained rules to be converted to hyperlocus (not mandatory if a weights file is given with --weights_file)");
   printOptionDescription("--rules_outfile <str>", "Path to the file where the output rule(s) will be stored. If a .json extension is given, rules are saved in JSON format");
@@ -35,7 +36,6 @@ void showFidexParams() {
   printOptionDescription("--json_config_file <str>", "Path to the JSON file that configures all parameters. If used, this must be the sole argument and must specify the file's relative path");
   printOptionDescription("--root_folder <str>", "Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder");
   printOptionDescription("--test_class_file <str>", "Path to the file containing the test true classes of the dataset. If at least --test_pred_file is specified, --test_data_file needs to have only test datas and eventually classes on same line (don't add --test_class_file in this case)");
-  printOptionDescription("--test_pred_file <str>", "Path to the file containing predictions on the test portion of the dataset");
   printOptionDescription("--attributes_file <str>", "Path to the file containing the labels of attributes and classes");
   printOptionDescription("--stats_file <str>", "Path to the file where statistics concerning the algorithm execution will be stored");
   printOptionDescription("--console_file <str>", "Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal");
