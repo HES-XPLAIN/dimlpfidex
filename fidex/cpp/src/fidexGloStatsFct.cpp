@@ -29,6 +29,7 @@ void showStatsParams() {
   std::cout << "Optional parameters: " << std::endl
             << std::endl;
 
+  printOptionDescription("-h --help", "Show this help message and exit");
   printOptionDescription("--json_config_file <str>", "Path to the JSON file that configures all parameters. If used, this must be the sole argument and must specify the file's relative path");
   printOptionDescription("--root_folder <str>", "Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder");
   printOptionDescription("--global_rules_outfile <str>", "Path to the file where the output global rules will be stored with stats on test set, if you want to compute those statistics. If a .json extension is given, rules are saved in JSON format");
