@@ -31,6 +31,7 @@ void showDimlpBTParams()
   std::cout << "Optional parameters: " << std::endl
             << std::endl;
 
+  printOptionDescription("-h --help", "Show this help message and exit");
   printOptionDescription("--json_config_file <str>", "Path to the JSON file that configures all parameters. If used, this must be the sole argument and must specify the file's relative path");
   printOptionDescription("--root_folder <str>", "Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder");
   printOptionDescription("--nb_dimlp_nets <int [1,inf[>", "Number of networks (default: 25)");
