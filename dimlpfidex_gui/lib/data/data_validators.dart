@@ -111,3 +111,15 @@ String? dictInputValidator(String? value, Field field) {
 
   return null;
 }
+
+// This validator has limitations, it can only guarantee that the input is a numeric value
+String? numberInputValidator(String? value, Field field) {
+  var resDouble = doubleInputValidator(value, field);
+  var resInteger = integerInputValidator(value, field);
+  
+  if (resDouble != null && resInteger != null) {
+    return "Your input was not recognised as an integer nor floating point number.";
+  }
+
+  return null;
+}

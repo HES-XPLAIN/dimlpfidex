@@ -69,6 +69,7 @@ class GlossaryCard extends StatelessWidget {
     );
   }
 
+// TODO: (nice to have) complete the set of icons for datatypes
   Icon _getIconByFieldType(Field field) {
     const double iconSize = 100.0;
 
@@ -78,7 +79,6 @@ class GlossaryCard extends StatelessWidget {
     Icon arrayIcon = const Icon(Icons.data_array, size: iconSize);
     Icon fileIcon = const Icon(Icons.file_open, size: iconSize);
     Icon directoryIcon = const Icon(Icons.folder, size: iconSize);
-
 
     switch (field.datatype) {
       case Datatype.string:
