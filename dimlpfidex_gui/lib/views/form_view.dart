@@ -1,7 +1,7 @@
 import "dart:convert";
 import "dart:io";
 import "package:dimlpfidex_gui/data/field.dart";
-import "package:dimlpfidex_gui/ui/input_field.dart";
+import "package:dimlpfidex_gui/ui/alerts.dart";
 import "package:dimlpfidex_gui/ui/simple_button.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
@@ -74,7 +74,7 @@ void _validateForm(GlobalKey<FormBuilderState> key, BuildContext context) {
         duration: const Duration(milliseconds: 800));
     _generateJson(key, context);
   } else {
-    showSnackBar(context, 'Input(s) are missing.', color: Colors.red[500]!);
+    showSnackBar(context, 'Input(s) are missing.', color: AlertColor.failure);
   }
 }
 
@@ -124,7 +124,7 @@ Future<void> _generateJson(
   if (values.containsKey("gamma_1") && values.containsKey("gamma_2")) {
     showSnackBar(context,
         "Cannot generate JSON with both gamma fields set. Please fill only one of them",
-        color: Colors.red[500]!);
+        color: AlertColor.failure);
     return;
   } else if (values.containsKey("gamma_2")) {
     values["gamma"] = values["gamma_2"];
@@ -145,7 +145,7 @@ Future<void> _generateJson(
     }
   } on JsonUnsupportedObjectError catch (e) {
     showSnackBar(context, "JSON generation as failed... (error: $e)",
-        color: Colors.red[500]!);
+        color: AlertColor.failure);
   }
 }
 
@@ -158,10 +158,10 @@ void _produceFileForWeb(String json, BuildContext context) {
       ..setAttribute("download", "config.json")
       ..click();
     showSnackBar(context, 'JSON file successfully generated !',
-        color: Colors.green[700]!);
+        color: AlertColor.success);
   } catch (error) {
     showSnackBar(context, "JSON file generation error: $error",
-        color: Colors.red[500]!);
+        color: AlertColor.failure);
   }
 }
 
@@ -178,8 +178,8 @@ void _produceFileForOS(String json, BuildContext context) async {
       .then((file) => file.writeAsString(json))
       .then((_) => showSnackBar(
           context, 'Configuration file successfully generated at $path',
-          color: Colors.green[700]!))
+          color: AlertColor.success))
       .onError((error, _) => showSnackBar(
           context, 'Configuration file generation error: $error',
-          color: Colors.red[500]!));
+          color: AlertColor.failure));
 }

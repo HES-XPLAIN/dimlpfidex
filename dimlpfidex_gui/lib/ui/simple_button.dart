@@ -1,3 +1,4 @@
+import 'package:dimlpfidex_gui/ui/alerts.dart';
 import 'package:flutter/material.dart';
 
 enum ButtonType { action, confirm, cancel }
@@ -30,7 +31,7 @@ class SimpleButton extends StatelessWidget {
       onPressed: isEnabled ? onPressed : null,
       style: ElevatedButton.styleFrom(
           backgroundColor:
-              isEnabled ? colors[buttonType.index] : Colors.grey[400],
+              isEnabled ? colors[buttonType.index] : AlertColor.disabled,
           padding: padding),
       child: Text(label),
     );

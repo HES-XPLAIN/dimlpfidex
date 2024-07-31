@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dimlpfidex_gui/ui/input_field.dart';
+import 'package:dimlpfidex_gui/ui/alerts.dart';
 import 'package:dimlpfidex_gui/ui/simple_button.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/foundation.dart';
@@ -181,12 +181,12 @@ void _openSettingsDialog(BuildContext context) async {
                     if (!isValidDir || path.isEmpty) {
                       showSnackBar(context,
                           "Path '$path' is not valid a valid directory path. Please specify a valid path.",
-                          color: Colors.red[500]!);
+                          color: AlertColor.failure);
                     } else {
                       sp.setString(confKey, path);
                       showSnackBar(context,
                           "Successfully changed generation path to: $path",
-                          color: Colors.green[700]!);
+                          color: AlertColor.success);
                       Navigator.of(context).pop();
                     }
                   },

@@ -1,6 +1,7 @@
 import 'package:dimlpfidex_gui/data/data_transformers.dart';
 import 'package:dimlpfidex_gui/data/data_validators.dart';
 import 'package:dimlpfidex_gui/data/field.dart';
+import 'package:dimlpfidex_gui/ui/alerts.dart';
 import 'package:dimlpfidex_gui/ui/simple_button.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/foundation.dart';
@@ -274,7 +275,7 @@ class _InputFieldState extends State<InputField> {
   }
 
   Widget _buildRequirementIcon() {
-    Color iconColor = field.isRequired ? Colors.red[900]! : Colors.grey;
+    Color iconColor = field.isRequired ? AlertColor.warning : AlertColor.disabled;
     String tooltipMsg = field.isRequired
         ? "This field must be filled"
         : "This field is optional";
@@ -316,17 +317,7 @@ class _InputFieldState extends State<InputField> {
       // ignore: use_build_context_synchronously
       showSnackBar(context,
           "File choser has failed. Please, try again. (error: ${e.toString()})",
-          color: Colors.red[500]!);
+          color: AlertColor.failure);
     }
   }
-}
-
-void showSnackBar(BuildContext context, String message,
-    {Color color = const Color.fromARGB(255, 90, 90, 90),
-    Duration duration = const Duration(seconds: 4)}) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    content: Text(message),
-    backgroundColor: color,
-    duration: duration,
-  ));
 }
