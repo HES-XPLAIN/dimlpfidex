@@ -52,6 +52,12 @@ List<Widget> _createFields(List<Field> fields, GlobalKey<FormBuilderState> key,
     result.add(field.toInputField());
   }
 
+  result.add(const UnstableField("--test", "test", true, [
+    Metadata(Datatype.integer),
+    Metadata(Datatype.filePath),
+    Metadata(Datatype.listDoublePrecision),
+  ]).toInputField());
+
 // action buttons
   result.add(Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
