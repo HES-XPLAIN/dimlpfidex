@@ -45,7 +45,7 @@ def get_and_check_parameters(init_args):
     parser.add_argument("--min_samples_split", type=lambda x: enum_type(x, int_type=dict(func=int_type, min=2), float_type=dict(func=float_type, min=0, min_inclusive=False, max=1)), metavar="<int [2,inf[ U float]0,1.0]>", help="Minimum number of samples required to split an internal node, if float, it is a fraction of the number of samples.", default=2, action=TaggableAction, tag="GB")
     parser.add_argument("--min_samples_leaf", type=lambda x: enum_type(x, int_type=dict(func=int_type, min=1), float_type=dict(func=float_type, min=0, min_inclusive=False, max=1, max_inclusive=False)), metavar="<int [1,inf[ U float]0,1[>", help="Minimum number of samples required to be at a leaf node, if float, it is a fraction of the number of samples", default=1, action=TaggableAction, tag="GB")
     parser.add_argument("--min_weight_fraction_leaf", type=lambda x: float_type(x, min=0, max=0.5), metavar="<float [0,0.5]>", help="Minimum weighted fraction of the sum total of input samples weights required to be at a leaf node", default=0.0, action=TaggableAction, tag="GB")
-    parser.add_argument("--max_features", type=lambda x: enum_type(x, "sqrt", "log2", "all", _=dict(func=float_type, min=0, min_inclusive=False, max=1, max_inclusive=False), int_type=dict(func=int_type, min=1)), metavar="<{sqrt, log2, all, float ]0,1[, int [1,inf[}>", help="Number of features to consider when looking for the best splitif float, it is a fraction of the number of features. 1 stands for 1 feature, for all features put 'all', not 1.0", default="sqrt", action=TaggableAction, tag="RF")
+    parser.add_argument("--max_features", type=lambda x: enum_type(x, "sqrt", "log2", "all", _=dict(func=float_type, min=0, min_inclusive=False, max=1, max_inclusive=False), int_type=dict(func=int_type, min=1)), metavar="<{sqrt, log2, all, float ]0,1[, int [1,inf[}>", help="Number of features to consider when looking for the best splitif float, it is a fraction of the number of features. 1 stands for 1 feature, for all features put 'all', not 1.0", default="sqrt", action=TaggableAction, tag="GB")
     parser.add_argument("--max_leaf_nodes", type=lambda x: int_type(x, min=2), metavar="<int [2,inf[>", help="Grow trees with max_leaf_nodes in best-first fashion", action=TaggableAction, tag="GB")
     parser.add_argument("--min_impurity_decrease", type=lambda x: float_type(x, min=0), metavar="<float [0,inf[>", help="A node will be split if this split induces a decrease of the impurity greater than or equal to this value", default=0.0, action=TaggableAction, tag="GB")
     parser.add_argument("--init", choices=["zero"], metavar="<{zero}>", help="Estimator object used to compute the initial predictions", action=TaggableAction, tag="GB")
@@ -91,7 +91,7 @@ def gradBoostTrn(args: str = None):
 
     Example of how to call the function:\n
     from trainings.gradBoostTrn import gradBoostTrn\n
-    gradBoostTrn('-\-train_data_file datanormTrain.txt -\-train_class_file dataclass2Train.txt -\-test_data_file datanormTest.txt -\-test_class_file dataclass2Test.txt -\-stats_file gb/stats.txt -\-train_pred_outfile gb/predTrain.out -\-test_pred_outfile gb/predTest.out -\-rules_outfile gb/RF_rules.rls -\-nb_attributes 16 -\-nb_classes 2 -\-root_folder dimlp/datafiles')
+    gradBoostTrn('-\-train_data_file datanormTrain.txt -\-train_class_file dataclass2Train.txt -\-test_data_file datanormTest.txt -\-test_class_file dataclass2Test.txt -\-stats_file gb/stats.txt -\-train_pred_outfile gb/predTrain.out -\-test_pred_outfile gb/predTest.out -\-rules_outfile gb/GB_rules.rls -\-nb_attributes 16 -\-nb_classes 2 -\-root_folder dimlp/datafiles')
 
     :param args: A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
                  This includes file paths, gradient boosting parameters, and options for output.
@@ -225,7 +225,7 @@ if __name__ == "__main__":
         python script.py --train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt \
                          --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt \
                          --stats_file gb/stats.txt --train_pred_outfile gb/predTrain.out --test_pred_outfile gb/predTest.out \
-                         --rules_outfile gb/RF_rules.rls --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles
+                         --rules_outfile gb/GB_rules.rls --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles
 
     :param sys.argv: List of command-line arguments passed to the script.
     :type sys.argv: list
