@@ -38,7 +38,7 @@ def get_and_check_parameters(init_args):
     # Add new attributes
     parser = CustomArgumentParser(description="This is a parser for svmTrn", parents=[common_parser], formatter_class=formatter, add_help=True)
     parser.add_argument("--weights_outfile", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Path to the file where the output trained weights of the model will be stored", metavar="<str>", default="weights.wts")
-    parser.add_argument("--output_roc", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Path to the file where the output ROC curve will be saved", metavar="<str>", default="roc_curve.png")
+    parser.add_argument("--output_roc", type=lambda x: sanitizepath(args.root_folder, x, "w"), help="Path to the file where the output ROC curve will be saved", metavar="<str>")
     parser.add_argument("--return_roc", type=bool_type, metavar="<bool>", help="Whether to return ROC statistics", default=False)
     parser.add_argument("--positive_class_index", type=lambda x: int_type(x, min=0), metavar="<int [0,nb_class-1]>", help="Index of the positive class for the roc curve calculation, index starts at 0")
     parser.add_argument("--nb_quant_levels", type=lambda x: int_type(x, min=3), metavar="<int [3,inf[>", help="Number of stairs in the staircase activation function", default=50)
@@ -142,10 +142,17 @@ def svmTrn(args: str = None):
         if len(test_data) != len(test_class):
             raise ValueError('Error, there is not the same amount of test data and test class.')
 
-        with_roc = True
-        if args.positive_class_index is None:
-            with_roc = False
-        elif args.positive_class_index >= args.nb_classes:
+        with_roc = False
+        if args.positive_class_index is not None and args.output_roc is not None:
+            with_roc = True
+
+        if args.return_roc and (args.output_roc is None or args.positive_class_index is None):
+            raise ValueError('Error : parameter positive_class_index and output_roc have to be a set when the return_roc parameter is True.')
+
+        if args.positive_class_index is None and args.output_roc is not None:
+                raise ValueError('Error : parameter positive_class_index has to be a set when the output_roc parameter is set.')
+
+        if args.positive_class_index is not None and args.positive_class_index >= args.nb_classes:
             raise ValueError(f'Error : parameter positive_class_index has to be a positive integer smaller than {args.nb_classes}.')
 
 
