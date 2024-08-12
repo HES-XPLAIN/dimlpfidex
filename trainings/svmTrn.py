@@ -147,10 +147,10 @@ def svmTrn(args: str = None):
             with_roc = True
 
         if args.return_roc and (args.output_roc is None or args.positive_class_index is None):
-            raise ValueError('Error : parameter positive_class_index and output_roc have to be a set when the return_roc parameter is True.')
+            raise ValueError('Error : parameter positive_class_index and output_roc have to be set when the return_roc parameter is True.')
 
         if args.positive_class_index is None and args.output_roc is not None:
-                raise ValueError('Error : parameter positive_class_index has to be a set when the output_roc parameter is set.')
+                raise ValueError('Error : parameter positive_class_index has to be set when the output_roc parameter is set.')
 
         if args.positive_class_index is not None and args.positive_class_index >= args.nb_classes:
             raise ValueError(f'Error : parameter positive_class_index has to be a positive integer smaller than {args.nb_classes}.')
