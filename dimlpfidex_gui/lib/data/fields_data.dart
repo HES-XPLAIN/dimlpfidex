@@ -2249,7 +2249,6 @@ const List<Field> svmTrnFields = [
     "Output ROC curve file",
     "output_roc",
     Datatype.filePath,
-    defaultValue: "roc_curve.png",
     description: "Path to the file where the output ROC curve will be saved.",
   ),
   Field(

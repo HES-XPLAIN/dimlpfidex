@@ -1610,7 +1610,7 @@ def crossValid(*args, **kwargs):
                     formatted_mean_aucs = formatting(mean_aucs[-1])
                     viz = RocCurveDisplay(fpr=mean_fprs[-1],
                     tpr=mean_tprs[-1],
-                    roc_auc=mean_aucs[-1]).plot(color="darkorange", plot_chance_level=True)
+                    roc_auc=mean_aucs[-1]).plot(color="darkorange")
 
                     viz.figure_.savefig(str(crossval_folder) + separator + "Execution" + str(ni + 1) + separator + "ROC_curve.png")
                     plt.close(viz.figure_)
@@ -1904,7 +1904,7 @@ def crossValid(*args, **kwargs):
 
                 viz = RocCurveDisplay(fpr=mean_all_fprs,
                                     tpr=mean_all_tprs,
-                                    roc_auc=mean_all_aucs).plot(color="darkorange", plot_chance_level=True)
+                                    roc_auc=mean_all_aucs).plot(color="darkorange")
 
                 viz.figure_.savefig(crossval_folder + separator + "ROC_curve.png")
                 plt.close(viz.figure_)

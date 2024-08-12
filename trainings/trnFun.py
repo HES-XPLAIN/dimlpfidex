@@ -507,7 +507,7 @@ def compute_roc(estimator, output_roc, *args): #test_class, test_pred
 
     try:
         viz = RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=auc_score, estimator_name=estimator)
-        viz.plot(color="darkorange", plot_chance_level=True)
+        viz.plot(color="darkorange")
         viz.figure_.savefig(output_roc)
         plt.close(viz.figure_)
     except Exception as e:

@@ -285,10 +285,10 @@ std::vector<bool> getRulesPatternsFromRuleFile(const std::string &rulesFile, con
   std::string line;
   Rule rule;
 
-  std::regex antecedentsPatternIds(": (" + getAntStrPatternWithAttrIds(dataset.getNbAttributes()) + " )*" + "->");
+  std::regex antecedentsPatternIds(": (" + getAntStrPatternWithAttrIds(dataset.getNbAttributes()) + " )*" + "\\s?->");
   std::regex antecedentsPatternNames;
   if (dataset.getHasAttributeNames()) {
-    antecedentsPatternNames = ": (" + getAntStrPatternWithAttrNames() + " )*" + "->";
+    antecedentsPatternNames = ": (" + getAntStrPatternWithAttrNames() + " )*" + "\\s?->";
   }
   auto patternWithClassIds = std::regex(getStrPatternWithClassIds(dataset.getNbClasses()));
   std::regex patternWithClassNames;
