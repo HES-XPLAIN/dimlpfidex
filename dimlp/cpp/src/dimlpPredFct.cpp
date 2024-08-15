@@ -44,7 +44,7 @@ void showDimlpPredParams()
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "dimlp.dimlpPred(\"--test_data_file datanormTest.txt --weights_file dimlpDatanorm.wts --nb_attributes 16 --hidden_layers_file hidden_layers.out --nb_classes 2 --test_pred_outfile predTest.out --root_folder dimlp/datafiles\")" << std::endl
+  std::cout << "dimlp.dimlpPred(\"--test_data_file test_data.txt --weights_file weights.wts --nb_attributes 16 --hidden_layers_file hidden_layers.out --nb_classes 2 --test_pred_outfile predTest.out --root_folder dimlp/datafiles\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
@@ -113,7 +113,7 @@ void checkDimlpPredParametersLogicValues(Parameters &p) {
  * @par
  * <tt>from dimlpfidex import dimlp</tt>
  * @par
- * <tt>dimlp.dimlpPred('-\-test_data_file datanormTest.txt -\-weights_file dimlpDatanorm.wts -\-nb_attributes 16 -\-hidden_layers_file hidden_layers.out -\-nb_classes 2 -\-test_pred_outfile predTest.out -\-root_folder dimlp/datafiles')</tt>
+ * <tt>dimlp.dimlpPred('-\-test_data_file test_data.txt -\-weights_file weights.wts -\-nb_attributes 16 -\-hidden_layers_file hidden_layers.out -\-nb_classes 2 -\-test_pred_outfile predTest.out -\-root_folder dimlp/datafiles')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.

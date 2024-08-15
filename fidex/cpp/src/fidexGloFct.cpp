@@ -77,7 +77,7 @@ void showFidexGloParams() {
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "fidex.fidexGlo(\"--test_data_file datanormTest.txt --test_pred_file predTest.out --global_rules_file globalRules.rls --nb_attributes 16 --nb_classes 2 --explanation_file explanation.txt --root_folder dimlp/datafiles --with_fidex true --train_data_file datanormTrain.txt --train_pred_file predTrain.out --train_class_file dataclass2Train.txt --test_class_file dataclass2Test.txt --weights_file weights.wts\")" << std::endl
+  std::cout << "fidex.fidexGlo(\"--root_folder dimlp/datafiles --test_data_file test_data.txt --test_pred_file predTest.out --global_rules_file globalRules.rls --nb_attributes 16 --nb_classes 2 --explanation_file explanation.txt --with_fidex true --train_data_file train_data.txt --train_pred_file predTrain.out --train_class_file train_class.txt --test_class_file test_class.txt --weights_file weights.wts\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
@@ -250,7 +250,7 @@ void checkParametersLogicValues(Parameters &p) {
  * @par
  * <tt>from dimlpfidex import fidex</tt>
  * @par
- * <tt>fidex.fidexGlo('-\-test_data_file datanormTest.txt -\-test_pred_file predTest.out -\-global_rules_file globalRules.rls -\-nb_attributes 16 -\-nb_classes 2 -\-explanation_file explanation.txt -\-root_folder dimlp/datafiles -\-with_fidex true -\-train_data_file datanormTrain.txt -\-train_pred_file predTrain.out -\-train_class_file dataclass2Train.txt -\-test_class_file dataclass2Test.txt -\-weights_file weights.wts')</tt>
+ * <tt>fidex.fidexGlo('-\-root_folder dimlp/datafiles -\-test_data_file test_data.txt -\-test_pred_file predTest.out -\-global_rules_file globalRules.rls -\-nb_attributes 16 -\-nb_classes 2 -\-explanation_file explanation.txt -\-with_fidex true -\-train_data_file train_data.txt -\-train_pred_file predTrain.out -\-train_class_file train_class.txt -\-test_class_file test_class.txt -\-weights_file weights.wts')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.

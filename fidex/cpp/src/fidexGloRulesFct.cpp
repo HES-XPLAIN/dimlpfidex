@@ -60,7 +60,7 @@ void showRulesParams() {
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "fidex.fidexGloRules(\"--train_data_file datanormTrain.txt --train_pred_file predTrain.out --train_class_file dataclass2Train.txt --weights_file weights.wts --nb_attributes 16 --nb_classes 2 --heuristic 1 --global_rules_outfile globalRules.rls --root_folder dimlp/datafiles\")" << std::endl
+  std::cout << "fidex.fidexGloRules(\"--root_folder dimlp/datafiles --train_data_file train_data.txt --train_pred_file predTrain.out --train_class_file train_class.txt  --nb_attributes 16 --nb_classes 2 --weights_file weights.wts --global_rules_outfile globalRules.rls --heuristic 1 --nb_threads 4\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
@@ -537,7 +537,7 @@ void checkRulesParametersLogicValues(Parameters &p) {
  * @par
  * <tt>from dimlpfidex import fidex</tt>
  * @par
- * <tt>fidex.fidexGloRules('-\-train_data_file datanormTrain.txt -\-train_pred_file predTrain.out -\-train_class_file dataclass2Train.txt -\-weights_file weights.wts -\-nb_attributes 16 -\-nb_classes 2 -\-heuristic 1 -\-global_rules_outfile globalRules.rls -\-root_folder dimlp/datafiles')</tt>
+ * <tt>fidex.fidexGloRules('-\-root_folder dimlp/datafiles -\-train_data_file train_data.txt -\-train_pred_file predTrain.out -\-train_class_file train_class.txt -\-nb_attributes 16 -\-nb_classes 2 -\-weights_file weights.wts -\-global_rules_outfile globalRules.rls -\-heuristic 1 -\-nb_threads 4')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.

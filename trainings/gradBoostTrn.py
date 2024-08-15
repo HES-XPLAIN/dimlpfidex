@@ -90,8 +90,8 @@ def gradBoostTrn(args: str = None):
       2. One-hot encoded class.
 
     Example of how to call the function:\n
-    from trainings.gradBoostTrn import gradBoostTrn\n
-    gradBoostTrn('-\-train_data_file datanormTrain.txt -\-train_class_file dataclass2Train.txt -\-test_data_file datanormTest.txt -\-test_class_file dataclass2Test.txt -\-stats_file gb/stats.txt -\-train_pred_outfile gb/predTrain.out -\-test_pred_outfile gb/predTest.out -\-rules_outfile gb/GB_rules.rls -\-nb_attributes 16 -\-nb_classes 2 -\-root_folder dimlp/datafiles')
+    from trainings import gradBoostTrn\n
+    gradBoostTrn('-\-train_data_file train_data.txt -\-train_class_file train_class.txt -\-test_data_file test_data.txt -\-test_class_file test_class.txt -\-stats_file gb/stats.txt -\-train_pred_outfile gb/predTrain.out -\-test_pred_outfile gb/predTest.out -\-rules_outfile gb/GB_rules.rls -\-nb_attributes 16 -\-nb_classes 2 -\-root_folder dimlp/datafiles')
 
     :param args: A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
                  This includes file paths, gradient boosting parameters, and options for output.
