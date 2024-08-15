@@ -55,7 +55,7 @@ void showDimlpRulParams()
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "dimlp.dimlpRul(\"--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --weights_file dimlpDatanorm.wts --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --nb_attributes 16 --hidden_layers_file hidden_layers.out --nb_classes 2 --global_rules_outfile globalRules.rls --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
+  std::cout << "dimlp.dimlpRul(\"--train_data_file train_data.txt --train_class_file train_class.txt --weights_file weights.wts --test_data_file test_data.txt --test_class_file test_class.txt --nb_attributes 16 --hidden_layers_file hidden_layers.out --nb_classes 2 --global_rules_outfile globalRules.rls --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
@@ -137,7 +137,7 @@ void checkDimlpRulParametersLogicValues(Parameters &p) {
  * @par
  * <tt>from dimlpfidex import dimlp</tt>
  * @par
- * <tt>dimlp.dimlpRul('-\-train_data_file datanormTrain.txt -\-train_class_file dataclass2Train.txt -\-weights_file dimlpDatanorm.wts -\-test_data_file datanormTest.txt -\-test_class_file dataclass2Test.txt -\-nb_attributes 16 -\-hidden_layers_file hidden_layers.out -\-nb_classes 2 -\-global_rules_outfile globalRules.rls -\-stats_file stats.txt -\-root_folder dimlp/datafiles')</tt>
+ * <tt>dimlp.dimlpRul('-\-train_data_file train_data.txt -\-train_class_file train_class.txt -\-weights_file weights.wts -\-test_data_file test_data.txt -\-test_class_file test_class.txt -\-nb_attributes 16 -\-hidden_layers_file hidden_layers.out -\-nb_classes 2 -\-global_rules_outfile globalRules.rls -\-stats_file stats.txt -\-root_folder dimlp/datafiles')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, rule extraction parameters, and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.

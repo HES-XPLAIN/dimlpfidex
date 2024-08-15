@@ -62,7 +62,7 @@ void showFidexParams() {
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "fidex.fidex(\"--train_data_file datanormTrain.txt --train_pred_file predTrain.out --train_class_file dataclass2Train.txt --test_data_file testSampleDataCombine.txt --nb_attributes 16 --nb_classes 2 --weights_file weights.wts --rules_outfile rules.rls --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
+  std::cout << "fidex.fidex(\"--root_folder dimlp/datafiles --train_data_file train_data.txt --train_pred_file predTrain.out --train_class_file train_class.txt --test_data_file test_data.txt --test_class_file test_class.txt --test_pred_file predTest.out --nb_attributes 16 --nb_classes 2 --weights_file weights.wts --rules_outfile output_rules.rls --stats_file output_stats.txt\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
@@ -167,7 +167,7 @@ void checkFidexParametersLogicValues(Parameters &p) {
  * @par
  * <tt>from dimlpfidex import fidex</tt>
  * @par
- * <tt>fidex.fidex('-\-train_data_file datanorm -\-train_pred_file dimlp.out -\-train_class_file dataclass2 -\-test_data_file testSampleDataCombine -\-nb_attributes 16 -\-nb_classes 2 -\-weights_file dimlp.wts -\-nb_quant_levels 50 -\-rules_outfile rule.txt -\-stats_file stats -\-max_iterations 100 -\-min_covering 25 -\-dropout_dim 0.5 -\-dropout_hyp 0.5 -\-root_folder fidex/datafiles')</tt>
+ * <tt>fidex.fidex('-\-root_folder dimlp/datafiles -\-train_data_file train_data.txt -\-train_pred_file predTrain.out -\-train_class_file train_class.txt -\-test_data_file test_data.txt -\-test_class_file test_class.txt -\-test_pred_file predTest.out -\-nb_attributes 16 -\-nb_classes 2 -\-weights_file weights.wts -\-rules_outfile output_rules.rls -\-stats_file output_stats.txt')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths, Fidex parameters, and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.

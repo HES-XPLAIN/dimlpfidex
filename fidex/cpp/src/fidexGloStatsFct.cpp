@@ -43,7 +43,7 @@ void showStatsParams() {
             << std::endl;
   std::cout << "Execution example :" << std::endl
             << std::endl;
-  std::cout << "fidex.fidexGloStats(\"--test_data_file datanormTest.txt --test_pred_file predTest.out --test_class_file dataclass2Test.txt --global_rules_file globalRules.rls --nb_attributes 16 --nb_classes 2 --stats_file stats.txt --root_folder dimlp/datafiles\")" << std::endl
+  std::cout << "fidex.fidexGloStats(\"--test_data_file test_data.txt --test_pred_file predTest.out --test_class_file test_class.txt --nb_attributes 16 --nb_classes 2 --stats_file stats.txt --global_rules_file globalRules.rls --root_folder dimlp/datafiles\")" << std::endl
             << std::endl;
   std::cout << "---------------------------------------------------------------------" << std::endl
             << std::endl;
@@ -204,7 +204,7 @@ void checkStatsParametersLogicValues(Parameters &p) {
  * @par
  * <tt>from dimlpfidex import fidex</tt>
  * @par
- * <tt>fidex.fidexGloStats('-\-test_data_file datanormTest.txt -\-test_pred_file predTest.out -\-test_class_file dataclass2Test.txt -\-global_rules_file globalRules.rls -\-nb_attributes 16 -\-nb_classes 2 -\-stats_file stats.txt -\-root_folder dimlp/datafiles')</tt>
+ * <tt>fidex.fidexGloStats('-\-test_data_file test_data.txt -\-test_pred_file predTest.out -\-test_class_file test_class.txt -\-nb_attributes 16 -\-nb_classes 2 -\-stats_file stats.txt -\-global_rules_file globalRules.rls -\-root_folder dimlp/datafiles')</tt>
  *
  * @param command A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input. This includes file paths and options for output.
  * @return Returns 0 for successful execution, -1 for errors encountered during the process.

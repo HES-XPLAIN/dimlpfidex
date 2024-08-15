@@ -67,8 +67,8 @@ def computeRocCurve(args: str = None):
     - **Prediction file** : These files should contain the prediction scores for the test set, with one sample per line, with scores (float) for each class separated either by spaces, tabs, semicolons or commas.
 
     Example of how to call the function:\n
-    from trainings.computeRocCurve import computeRocCurve\n
-    computeRocCurve('-\-test_class_file dataclass2Test.txt -\-test_pred_file predTest.out -\-positive_class_index 1 -\-output_roc roc_curve.png -\-stats_file stats.txt -\-root_folder dimlp/datafiles -\-nb_classes 2')
+    from trainings import computeRocCurve\n
+    computeRocCurve('-\-test_class_file test_class.txt -\-test_pred_file predTest.out -\-positive_class_index 1 -\-output_roc roc_curve.png -\-stats_file stats.txt -\-root_folder dimlp/datafiles -\-nb_classes 2')
 
     :param args: A single string containing either the path to a JSON configuration file with all specified arguments or all arguments for the function, formatted like command-line input.
                  This includes file paths, the positive class index, and options for the output and statistical analysis.

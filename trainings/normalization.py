@@ -401,8 +401,8 @@ def normalization(args: str = None):
 
     Examples of how to call the function:\n
     from trainings.normalization import normalization\n
-    - For data files: normalization('-\-data_files [datanormTrain.txt,datanormTest.txt] -\-normalization_indices [0,2,4] -\-nb_attributes 16 -\-missing_values NaN -\-root_folder dimlp/datafiles')\n
-    - For rule files: normalization('-\-normalization_file normalization_stats.txt -\-rule_files globalRulesDatanorm.txt -\-nb_attributes 16 -\-root_folder dimlp/datafiles')
+    - For data files: normalization('-\-data_files [train_data.txt,test_data.txt] -\-normalization_indices [0,2,4] -\-nb_attributes 16 -\-missing_values NaN -\-root_folder dimlp/datafiles')\n
+    - For rule files: normalization('-\-normalization_file normalization_stats.txt -\-rule_files globalRules.rls -\-nb_attributes 16 -\-root_folder dimlp/datafiles')
 
     :param args: A single string containing either the path to a JSON configuration file with all specified arguments, or all arguments for the function formatted like command-line input.
                 This includes file paths for the normalization/denormalization process and other options.

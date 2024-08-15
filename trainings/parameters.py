@@ -75,22 +75,22 @@ class CustomHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
             self.add_text("----------------------------")
             self.add_text("Execution example :", raw=True)
             if tag == "MLP":
-                self.add_text("mlpTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile mlp/weights.wts --stats_file mlp/stats.txt --train_pred_outfile mlp/predTrain.out --test_pred_outfile mlp/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')", raw=True)
+                self.add_text("mlpTrn('--train_data_file train_data.txt --train_class_file train_class.txt --test_data_file test_data.txt --test_class_file test_class.txt --weights_outfile mlp/weights.wts --stats_file mlp/stats.txt --train_pred_outfile mlp/predTrain.out --test_pred_outfile mlp/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')", raw=True)
             elif tag == "SVM":
-                self.add_text("svmTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --weights_outfile svm/weights.wts --stats_file svm/stats.txt --train_pred_outfile svm/predTrain.out --test_pred_outfile svm/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')", raw=True)
+                self.add_text("svmTrn('--train_data_file train_data.txt --train_class_file train_class.txt --test_data_file test_data.txt --test_class_file test_class.txt --weights_outfile svm/weights.wts --stats_file svm/stats.txt --train_pred_outfile svm/predTrain.out --test_pred_outfile svm/predTest.out --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')", raw=True)
             elif tag == "RF":
-                self.add_text("randForestsTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --stats_file rf/stats.txt --train_pred_outfile rf/predTrain.out --test_pred_outfile rf/predTest.out --rules_outfile rf/RF_rules.rls --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')", raw=True)
+                self.add_text("randForestsTrn('--train_data_file train_data.txt --train_class_file train_class.txt --test_data_file test_data.txt --test_class_file test_class.txt --stats_file rf/stats.txt --train_pred_outfile rf/predTrain.out --test_pred_outfile rf/predTest.out --rules_outfile rf/RF_rules.rls --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')", raw=True)
             elif tag == "GB":
-                self.add_text("gradBoostTrn('--train_data_file datanormTrain.txt --train_class_file dataclass2Train.txt --test_data_file datanormTest.txt --test_class_file dataclass2Test.txt --stats_file gb/stats.txt --train_pred_outfile gb/predTrain.out --test_pred_outfile gb/predTest.out --rules_outfile gb/GB_rules.rls --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')", raw=True)
+                self.add_text("gradBoostTrn('--train_data_file train_data.txt --train_class_file train_class.txt --test_data_file test_data.txt --test_class_file test_class.txt --stats_file gb/stats.txt --train_pred_outfile gb/predTrain.out --test_pred_outfile gb/predTest.out --rules_outfile gb/GB_rules.rls --nb_attributes 16 --nb_classes 2 --root_folder dimlp/datafiles')", raw=True)
             elif tag == "ROC":
-                self.add_text("computeRocCurve('--test_class_file dataclass2Test.txt --test_pred_file predTest.out --positive_class_index 1 --output_roc roc_curve.png --stats_file stats.txt --root_folder dimlp/datafiles --nb_classes 2')", raw=True)
+                self.add_text("computeRocCurve('--test_class_file test_class.txt --test_pred_file predTest.out --positive_class_index 1 --output_roc roc_curve.png --stats_file stats.txt --root_folder dimlp/datafiles --nb_classes 2')", raw=True)
             elif tag == "CNN":
-                self.add_text("cnnTrn('--model small --train_data_file trainData.txt --train_class_file trainClass.txt --test_data_file testData.txt --test_class_file testClass.txt --original_input_size (28,28) --nb_channels 1 --data_format classic --nb_classes 10 --root_folder dimlp/datafiles/Mnist')", raw=True)
+                self.add_text("cnnTrn('--model small --train_data_file train_data.txt --train_class_file train_class.txt --test_data_file test_data.txt --test_class_file test_class.txt --original_input_size (28,28) --nb_channels 1 --data_format classic --nb_classes 10 --root_folder dimlp/datafiles/Mnist')", raw=True)
             elif tag == "Normalization":
                 self.add_text("For datafile normalization :", raw=True)
-                self.add_text("normalization('--data_files [datanormTrain.txt,datanormTest.txt] --normalization_indices [0,2,4] --nb_attributes 16 --missing_values NaN --root_folder dimlp/datafiles')", raw=True)
+                self.add_text("normalization('--data_files [train_data.txt,test_data.txt] --normalization_indices [0,2,4] --nb_attributes 16 --missing_values NaN --root_folder dimlp/datafiles')", raw=True)
                 self.add_text("For rulefile denormalization :", raw=True)
-                self.add_text("normalization('--normalization_file normalization_stats.txt --rule_files globalRulesDatanorm.txt --nb_attributes 16 --root_folder dimlp/datafiles')", raw=True)
+                self.add_text("normalization('--normalization_file normalization_stats.txt --rule_files globalRules.rls --nb_attributes 16 --root_folder dimlp/datafiles')", raw=True)
         self.add_text("---------------------------------------------------------------------", raw=True)
 
     # To display execution examples on one line
