@@ -1,0 +1,14 @@
+{
+    "root_folder": "tests/dataset/data",
+    "test_data_file": "test.txt",
+    "test_class_file": "test_true_classes.txt",
+    "console_file": "out/dimlpTest_console.out",
+    "test_pred_outfile": "out/dimlp_test.out",
+    "weights_file": "out/weights.wts",
+    "stats_file": "out/dimlpCls_stats.txt",
+    "hid_file": "out/dimlp.hid",
+    "nb_attributes": 31,
+    "nb_classes": 7,
+    "hidden_layers_file": "out/hidden_layers.out",
+    "nb_quant_levels": 50
+}

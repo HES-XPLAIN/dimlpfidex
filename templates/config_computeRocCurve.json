@@ -1,0 +1,11 @@
+{
+    "root_folder": "dimlp/datafiles",
+    "test_pred_file": "predTest.out",
+    "test_class_file": "dataclass2Test.txt",
+    "nb_classes": 2,
+    "positive_class_index": 1,
+    "estimator": "estimator name",
+    "stats_file": "stats.txt",
+    "output_roc": "roc_curve.png",
+    "show_params": "True"
+}
