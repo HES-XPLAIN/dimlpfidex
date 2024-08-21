@@ -1,0 +1,19 @@
+{
+    "root_folder": "tests/dataset/data",
+    "train_data_file": "train.txt",
+    "train_class_file": "train_true_classes.txt",
+    "test_data_file": "test.txt",
+    "test_class_file": "test_true_classes.txt",
+    "train_pred_outfile": "out/densCls_train.out",
+    "test_pred_outfile": "out/densCls_test.out",
+    "console_file": "out/densCls_console.out",
+    "attributes_file": "attributes.txt",
+    "weights_file": "out/dimlpBT",
+    "stats_file": "out/densCls_stats.txt",
+    "with_rule_extraction": true,
+    "global_rules_outfile": "out/densCls.rls",
+    "nb_attributes": 31,
+    "nb_classes": 7,
+    "hidden_layers_file": "out/hidden_layers.out",
+    "nb_quant_levels": 50
+}

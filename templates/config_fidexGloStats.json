@@ -1,0 +1,14 @@
+{
+    "root_folder": "tests/dataset/data",
+    "test_data_file": "test.txt",
+    "test_pred_file": "out/dimlp_test.out",
+    "test_class_file": "test_true_classes.txt",
+    "global_rules_file": "out/fidexglorules_1_rules.json",
+    "attributes_file": "attributes.txt",
+    "console_file": "out/fidexGloStats_console.out",
+    "nb_attributes": 31,
+    "nb_classes": 7,
+    "positive_class_index": -1,
+    "stats_file": "out/fidexGloStats_stats.txt",
+    "global_rules_outfile": "out/new_rules_with_test_stats.json"
+}

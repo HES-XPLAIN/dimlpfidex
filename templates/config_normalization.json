@@ -1,0 +1,12 @@
+{
+    "root_folder": "dimlp/datafiles",
+    "missing_values": "NaN",
+    "nb_attributes": 16,
+    "nb_classes": 2,
+    "normalization_file": "normalization_stats.txt",
+    "data_files": "[datanormTrain.txt,datanormTest.txt]",
+    "rule_files": "globalRulesDatanorm.txt",
+    "attributes_file": "attributes.txt",
+    "with_median": "False",
+    "fill_missing_values": "True"
+}
