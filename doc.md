@@ -36,6 +36,3 @@ Categorisation of attributes (ex : Smoker/No_Smoker) -> where to include this? I
 
 ### Normalization
 - Topo sur la normalisation (importance, quand l'utiliser et quand ne pas...) -> où en parler ? Dans le fichier normalization c'est suffisant ? Pas sûr...  It's data preprocessing...
-
-### Imports
-Import des algos depuis Python (from dimlpfidex.dimlp import dimlpBT etc. -> l'indiquer à un autre endroit que dans usage example?)
