@@ -138,7 +138,7 @@ DataSetFid::DataSetFid(const std::string &name, const std::string &dataFile, int
       if (!fileDta.eof()) {
         getline(fileDta, line);
         if (!checkStringEmpty(line)) {
-          throw FileFormatError("Error in dataset " + datasetName + " : in file " + dataFile + ", you need to have empty lines between samples. You have chosen to give data, predictions and classes in one file. If you want to separate them, use -p and -c.");
+          throw FileFormatError("Error in dataset " + datasetName + " : in file " + dataFile + ", you need to have empty lines between samples. You have chosen to give data, predictions and classes in one file. If you want to separate them, specify a prediction file.");
         }
       }
     }
