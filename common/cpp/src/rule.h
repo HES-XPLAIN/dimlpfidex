@@ -11,6 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <tuple>
 #include <vector>
 
 using Json = nlohmann::json;
@@ -193,10 +194,17 @@ public:
    */
   static std::vector<Rule> fromJsonFile(const std::string &filename, float &decisionThreshold, int &positiveClassIndex);
 
+
+
   /**
    * @brief Writes a vector of rules into a JSON file.
    */
   static void toJsonFile(const std::string &filename, const std::vector<Rule> &rules, float threshold, int positiveIndex);
+
+    /**
+   * @brief Writes a vector of train rules and test rules into a JSON file.
+   */
+  static void toJsonStatsFile(const std::string &filename, const std::vector<Rule> &trainRules, const std::vector<Rule> &testRules, float threshold, int positiveIndex);
 };
 
 // OPERATOR OVERLOAD TO EASE PRINTING PURPOSES

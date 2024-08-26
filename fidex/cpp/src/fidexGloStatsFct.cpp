@@ -572,7 +572,45 @@ int fidexGloStats(const std::string &command) {
       std::string ruleFile = params->getString(GLOBAL_RULES_OUTFILE);
 
       if (ruleFile.substr(ruleFile.find_last_of('.') + 1) == "json") {
-        Rule::toJsonFile(ruleFile, rules, decisionThreshold, positiveClassIndex);
+        std::vector<Rule> testRules;
+
+        for (int r = 0; r < rules.size(); r++) { // For each rule
+          std::vector<int> testCoveredSamples;
+          getCovering(testCoveredSamples, rules[r], testData);
+
+          size_t coverSize = testCoveredSamples.size();
+          double ruleFidelity = 0;   // porcentage of correct covered samples predictions with respect to the rule prediction
+          double ruleAccuracy = 0;   // porcentage of correct covered samples predictions with respect to the samples true class
+          double ruleConfidence = 0; // mean output prediction score of covered samples
+          int rulePred = rules[r].getOutputClass();
+
+          for (int sampleId : testCoveredSamples) {
+            int samplePred = testPreds[sampleId];
+            double sampleOutputPred = 0.0;
+            sampleOutputPred = testOutputValuesPredictions[sampleId][rulePred];
+            int trueClass = testTrueClasses[sampleId];
+            if (samplePred == rulePred) {
+              ruleFidelity += 1;
+            }
+            if (samplePred == trueClass) {
+              ruleAccuracy += 1;
+            }
+            ruleConfidence += sampleOutputPred;
+          }
+
+          if (coverSize != 0) {
+            ruleFidelity /= static_cast<double>(coverSize);
+            ruleAccuracy /= static_cast<double>(coverSize);
+            ruleConfidence /= static_cast<double>(coverSize);
+          }
+          // if fidelity, accuracy and confidence are 0, ignore it in json writing
+          if (ruleFidelity != 0 || ruleAccuracy != 0 || ruleConfidence != 0) {
+            testRules.push_back(Rule(rules[r].getAntecedents(), testCoveredSamples, rulePred, ruleFidelity, ruleAccuracy, ruleConfidence));
+          }else {
+            testRules.push_back(Rule(rules[r].getAntecedents(), {}, rulePred, ruleFidelity, ruleAccuracy, ruleConfidence));
+          }
+        }
+        Rule::toJsonStatsFile(ruleFile, rules, testRules, decisionThreshold, positiveClassIndex);
       } else {
         std::ofstream outputFile(ruleFile);
         if (outputFile.is_open()) {
@@ -594,9 +632,8 @@ int fidexGloStats(const std::string &command) {
             for (int sampleId : sampleIds) {
               int samplePred = testPreds[sampleId];
               double sampleOutputPred = 0.0;
-              int classRule = rules[r].getOutputClass();
-              sampleOutputPred = testOutputValuesPredictions[sampleId][classRule];
               int rulePred = rules[r].getOutputClass();
+              sampleOutputPred = testOutputValuesPredictions[sampleId][rulePred];
               int trueClass = testTrueClasses[sampleId];
               if (samplePred == rulePred) {
                 ruleFidelity += 1;
