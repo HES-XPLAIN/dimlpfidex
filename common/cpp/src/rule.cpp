@@ -152,6 +152,36 @@ void Rule::toJsonFile(const std::string &filename, const std::vector<Rule> &rule
 }
 
 /**
+ * @brief Writes vectors of train rules and test into a JSON file.
+ *
+ * @param filename Name of the file to be written.
+ * @param trainRules Vector of train rules to be written.
+ * @param testRules Vector of test rules to be written.
+ * @param threshold Decision threshold.
+ * @param positiveIndex Positive class index.
+ */
+void Rule::toJsonStatsFile(const std::string &filename, const std::vector<Rule> &trainRules, const std::vector<Rule> &testRules, float threshold, int positiveIndex) {
+  std::ofstream ofs(filename);
+
+  if (!ofs.is_open() || ofs.fail()) {
+    throw FileNotFoundError("JSON file to be written named '" + filename + "' couldn't be opened, cannot proceed.");
+  }
+
+  Json jsonData;
+  std::vector<std::tuple<Rule, Rule>> rules;
+
+  jsonData["threshold"] = threshold;
+  jsonData["positive index class"] = positiveIndex;
+
+
+  for (int i = 0; i < trainRules.size(); i++) {
+    jsonData["rules"].push_back({{"train", trainRules[i]},{"test",testRules[i]}});
+  }
+
+  ofs << std::setw(4) << jsonData << std::endl;
+}
+
+/**
  * @brief Compares a rule with another to determine whether they're identical.
  *
  * @param other Other rule for comparison.
