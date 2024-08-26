@@ -1,6 +1,6 @@
 [project]
 name = "dimlpfidex"
-version = "0.0.5"
+version = "0.0.6"
 description = "Discretized Interpretable Multi Layer Perceptron (DIMLP) and related algorithms"
 authors = [
     { name = "Jean-Marc Boutay", email = "jean-marc.boutay@hesge.ch" },
