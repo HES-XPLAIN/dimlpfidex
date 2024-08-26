@@ -4,6 +4,7 @@ import numpy as np
 import os
 import math
 import re
+import json
 
 from trainings.trnFun import get_data, get_attribute_file
 from trainings.parameters import get_initial_parser, get_args, sanitizepath, CustomArgumentParser, CustomHelpFormatter, TaggableAction, int_type, float_type, bool_type, list_type, print_parameters
@@ -531,9 +532,10 @@ def normalization(args: str = None):
 
 
         if args.rule_files is not None:
+
             #Denormalize each rule file with mean/median and std obtained above
 
-            #Patterns corresponding to rules, there are 6 possible patterns :
+            #Patterns corresponding to rules (if in txt form), there are 6 possible patterns :
             float_pattern = r'-?\d+(\.\d+)?'
             int_pattern = r'\d+'
             if args.attributes_file is not None:
@@ -551,61 +553,81 @@ def normalization(args: str = None):
             for r in range(len(args.rule_files)): # For each rule file
                 rule_file = args.rule_files[r]
                 output_rule_file = args.output_rule_files[r]
+                if rule_file.endswith(".json"): # If it's a JSON file
+                    with open(rule_file, 'r') as file:
+                        data = json.load(file)
+                        if 'rules' in data:
+                            rules = data['rules']
+                        else:
+                            raise KeyError("The 'rules' key is not in the JSON file. The rules file is not on a correct format.")
+                        for rule in rules:
+                            if 'antecedents' in rule:
+                                for antecedent in rule['antecedents']:
+                                    if 'attribute' in antecedent and 'value' in antecedent:
+                                        if antecedent['attribute'] in args.normalization_indices:
+                                            idx = args.normalization_indices.index(antecedent['attribute'])
+                                            antecedent['value'] = antecedent['value']*args.sigmas[idx]+args.mus[idx]
+                                    else:
+                                        raise KeyError("There is an antecedant without 'attribute' or 'value' in JSON file. The rules file is not on a correct format.")
 
-                possible_patterns = [pattern_fidex_id, pattern_dimlp_id]
-                possible_dimlp_patters = [pattern_dimlp_id]
-                possible_patterns_with_attribute_names = []
-                if args.attributes_file is not None:
-                    possible_patterns.append(pattern_fidex_attributes)
-                    possible_patterns.append(pattern_dimlp_attributes)
-                    possible_dimlp_patters.append(pattern_dimlp_attributes)
-                    possible_patterns_with_attribute_names.append(pattern_fidex_attributes)
-                    possible_patterns_with_attribute_names.append(pattern_dimlp_attributes)
-                    if has_classes:
-                        possible_patterns.append(pattern_fidex_attributes_and_classes)
-                        possible_patterns.append(pattern_dimlp_attributes_and_classes)
-                        possible_dimlp_patters.append(pattern_dimlp_attributes_and_classes)
-                        possible_patterns_with_attribute_names.append(pattern_fidex_attributes_and_classes)
-                        possible_patterns_with_attribute_names.append(pattern_dimlp_attributes_and_classes)
+                    with open(output_rule_file, 'w') as file:
+                        json.dump(data, file, indent=4)
 
-                # Check which pattern is in the file
-                pattern = get_pattern_from_rule_file(rule_file, possible_patterns)
+                else: # TXT file
+                    possible_patterns = [pattern_fidex_id, pattern_dimlp_id]
+                    possible_dimlp_patters = [pattern_dimlp_id]
+                    possible_patterns_with_attribute_names = []
+                    if args.attributes_file is not None:
+                        possible_patterns.append(pattern_fidex_attributes)
+                        possible_patterns.append(pattern_dimlp_attributes)
+                        possible_dimlp_patters.append(pattern_dimlp_attributes)
+                        possible_patterns_with_attribute_names.append(pattern_fidex_attributes)
+                        possible_patterns_with_attribute_names.append(pattern_dimlp_attributes)
+                        if has_classes:
+                            possible_patterns.append(pattern_fidex_attributes_and_classes)
+                            possible_patterns.append(pattern_dimlp_attributes_and_classes)
+                            possible_dimlp_patters.append(pattern_dimlp_attributes_and_classes)
+                            possible_patterns_with_attribute_names.append(pattern_fidex_attributes_and_classes)
+                            possible_patterns_with_attribute_names.append(pattern_dimlp_attributes_and_classes)
 
-                dimlp_rules = pattern in possible_dimlp_patters
-                with_attribute_names = pattern in possible_patterns_with_attribute_names
+                    # Check which pattern is in the file
+                    pattern = get_pattern_from_rule_file(rule_file, possible_patterns)
 
-                # Build antecedent pattern
-                if dimlp_rules:
-                    if with_attribute_names:
-                        dimlp_attr_pattern = fr'(\()(?P<attribute>{attr_pattern})'
+                    dimlp_rules = pattern in possible_dimlp_patters
+                    with_attribute_names = pattern in possible_patterns_with_attribute_names
+
+                    # Build antecedent pattern
+                    if dimlp_rules:
+                        if with_attribute_names:
+                            dimlp_attr_pattern = fr'(\()(?P<attribute>{attr_pattern})'
+                        else:
+                            dimlp_attr_pattern = fr'(\(x)(?P<attribute>{int_pattern})'
+                        antecedent_pattern = fr'{dimlp_attr_pattern}(?P<inequality> [<>] )(?P<value>{float_pattern})(?P<last_part>\) )'
                     else:
-                        dimlp_attr_pattern = fr'(\(x)(?P<attribute>{int_pattern})'
-                    antecedent_pattern = fr'{dimlp_attr_pattern}(?P<inequality> [<>] )(?P<value>{float_pattern})(?P<last_part>\) )'
-                else:
-                    if with_attribute_names:
-                        fidex_attr_pattern = fr'()(?P<attribute>{attr_pattern})'
-                    else:
-                        fidex_attr_pattern = fr'(X)(?P<attribute>{int_pattern})'
-                    antecedent_pattern = fr'{fidex_attr_pattern}(?P<inequality>[<>]=?)(?P<value>{float_pattern})(?P<last_part> )'
+                        if with_attribute_names:
+                            fidex_attr_pattern = fr'()(?P<attribute>{attr_pattern})'
+                        else:
+                            fidex_attr_pattern = fr'(X)(?P<attribute>{int_pattern})'
+                        antecedent_pattern = fr'{fidex_attr_pattern}(?P<inequality>[<>]=?)(?P<value>{float_pattern})(?P<last_part> )'
 
-                # Denormalize each rules
-                try:
-                    with open(rule_file, "r") as file:
-                        try:
-                            with open(output_rule_file, "w") as output_file:
-                                for line in file:
-                                    #Denormalize rule
-                                    new_line = denormalize_rule(line.rstrip("\n"), pattern, antecedent_pattern, dimlp_rules, with_attribute_names, args.normalization_indices, attributes, args.sigmas, args.mus) + "\n"
-                                    output_file.write(new_line) # Write line in output file
+                    # Denormalize each rules
+                    try:
+                        with open(rule_file, "r") as file:
+                            try:
+                                with open(output_rule_file, "w") as output_file:
+                                    for line in file:
+                                        #Denormalize rule
+                                        new_line = denormalize_rule(line.rstrip("\n"), pattern, antecedent_pattern, dimlp_rules, with_attribute_names, args.normalization_indices, attributes, args.sigmas, args.mus) + "\n"
+                                        output_file.write(new_line) # Write line in output file
 
-                        except FileNotFoundError:
-                                raise ValueError(f"Error : File {output_file} not found.")
-                        except IOError:
-                            raise ValueError(f"Error : Couldn't open file {output_file}.")
-                except FileNotFoundError:
-                        raise ValueError(f"Error : File {rule_file} not found.")
-                except IOError:
-                    raise ValueError(f"Error : Couldn't open file {rule_file}.")
+                            except FileNotFoundError:
+                                    raise ValueError(f"Error : File {output_file} not found.")
+                            except IOError:
+                                raise ValueError(f"Error : Couldn't open file {output_file}.")
+                    except FileNotFoundError:
+                            raise ValueError(f"Error : File {rule_file} not found.")
+                    except IOError:
+                        raise ValueError(f"Error : Couldn't open file {rule_file}.")
 
 
         end_time = time.time()
