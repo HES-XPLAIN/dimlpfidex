@@ -32,7 +32,7 @@ void showStatsParams() {
   printOptionDescription("-h --help", "Show this help message and exit");
   printOptionDescription("--json_config_file <str>", "Path to the JSON file that configures all parameters. If used, this must be the sole argument and must specify the file's relative path");
   printOptionDescription("--root_folder <str>", "Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder");
-  printOptionDescription("--global_rules_outfile <str>", "Path to the file where the output global rules will be stored with stats on test set, if you want to compute those statistics. If a .json extension is given, rules are saved in JSON format without the test stats.");
+  printOptionDescription("--global_rules_outfile <str>", "Path to the file where the output global rules will be stored with stats on test set, if you want to compute those statistics. If a .json extension is given, rules are saved in JSON format.");
   printOptionDescription("--attributes_file <str>", "Path to the file containing the labels of attributes and classes> Mandatory if rules file contains attribute names, if not, do not add it");
   printOptionDescription("--stats_file <str>", "Path to the file where statistics of the global ruleset will be stored");
   printOptionDescription("--console_file <str>", "Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal");
@@ -606,7 +606,7 @@ int fidexGloStats(const std::string &command) {
           // if fidelity, accuracy and confidence are 0, ignore it in json writing
           if (ruleFidelity != 0 || ruleAccuracy != 0 || ruleConfidence != 0) {
             testRules.push_back(Rule(rules[r].getAntecedents(), testCoveredSamples, rulePred, ruleFidelity, ruleAccuracy, ruleConfidence));
-          }else {
+          } else {
             testRules.push_back(Rule(rules[r].getAntecedents(), {}, rulePred, ruleFidelity, ruleAccuracy, ruleConfidence));
           }
         }
