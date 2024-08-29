@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dimlpfidex_gui/data/data_transformers.dart';
 import 'package:dimlpfidex_gui/data/data_validators.dart';
 import 'package:dimlpfidex_gui/data/field.dart';
@@ -19,273 +18,261 @@ class InputUnstableField extends StatefulWidget {
 }
 
 class _InputFieldState extends State<InputUnstableField> {
-  late UnstableField field = widget.field;
   final inputFieldKey = GlobalKey<FormBuilderFieldState>();
+  late UnstableField field = widget.field;
+  late Metadata _currentMetadata;
 
   @override
   void initState() {
     super.initState();
+    _currentMetadata = field.metadatas[0];
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: _buildFields());
-  }
+    final List<Widget> fieldRow = [];
 
-  Widget _buildFields() {
-    List<Row> fields = [];
-    for (var metadata in field.metadatas) {
-      fields
-          .add(Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        _buildField(metadata),
-        _buildDefaultValueButton(metadata),
-        _buildHelpIcon(context, metadata),
-        _buildRequirementIcon()
-      ]));
+    // adding radio buttons if several metadatas are present
+    if (field.metadatas.length > 1) {
+      fieldRow.add(_buildRadioButtons());
     }
 
-    return CarouselSlider(items: fields, options: CarouselOptions());
+    fieldRow.add(_buildField());
+    fieldRow.add(_buildInteractibles(context));
+
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: fieldRow));
   }
 
-  Widget _buildField(Metadata metadata) {
-    switch (metadata.datatype) {
+  Widget _buildField() {
+    switch (_currentMetadata.datatype) {
       case Datatype.integer || Datatype.doublePrecision:
-        return _buildNumericField(context, metadata);
+        return _buildNumericField(context);
 
       case Datatype.restrictedChoiceString:
-        return _buildStringDropdownField(context, metadata);
+        return _buildStringDropdownField(context);
 
       case Datatype.boolean:
-        return _buildBooleanField(context, metadata);
+        return _buildBooleanField(context);
 
-      case Datatype.filePath || Datatype.directoryPath:
-        return _buildFilePathPickerField(context, metadata);
-
-      case Datatype.listFilePath:
-        return _buildFilePathPickerField(context, metadata);
+      case Datatype.filePath || Datatype.directoryPath || Datatype.listFilePath:
+        return _buildFilePathPickerField(context);
 
       case Datatype.listInteger ||
             Datatype.listDoublePrecision ||
             Datatype.pairInteger ||
             Datatype.listString:
         return _buildTextField(
-            context, metadata, listInputValidator, listValueTransformer);
+            context, listInputValidator, listValueTransformer);
 
       case Datatype.dictionary:
-        return _buildTextField(context, metadata, dictInputValidator,
-            iterableAsStringValueTransformer);
+        return _buildTextField(
+            context, dictInputValidator, iterableAsStringValueTransformer);
 
       default:
-        return _buildTextField(context, metadata, basicInputValidator, null);
+        return _buildTextField(context, basicInputValidator, null);
     }
   }
 
-  Widget _buildBooleanField(BuildContext context, Metadata metadata) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          ConstrainedBox(
-              constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.5),
-              child: FormBuilderCheckbox(
-                title: Text(
-                  "[${metadata.datatype.name}] ${field.label}",
-                  style: const TextStyle(fontSize: 17),
-                ),
-                key: inputFieldKey,
-                name: field.jsonLabel,
-                initialValue: metadata.defaultValue.toLowerCase() == 'true',
-              ))
-        ]));
+  Widget _buildBooleanField(BuildContext context) {
+    return ConstrainedBox(
+        constraints:
+            BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
+        child: FormBuilderCheckbox(
+          title: Text(
+            "[${_currentMetadata.datatype.name}] ${field.label}",
+            style: const TextStyle(fontSize: 17),
+          ),
+          key: inputFieldKey,
+          name: field.jsonLabel,
+          initialValue: _currentMetadata.defaultValue.toLowerCase() == 'true',
+        ));
   }
 
-  Widget _buildNumericField(BuildContext context, Metadata metadata) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          ConstrainedBox(
-              constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.05,
-                      child: metadata.minValue.isNotEmpty
-                          ? Tooltip(
-                              message:
-                                  "Minimum value allowed is ${metadata.minValue}",
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Flexible(
-                                      child: Text(metadata.minValue,
-                                          overflow: TextOverflow.ellipsis,
-                                          style:
-                                              const TextStyle(fontSize: 17))),
-                                  const Text("≤",
-                                      style: TextStyle(fontSize: 17)),
-                                ],
-                              ))
-                          : null),
-                  ConstrainedBox(
-                      constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width * 0.25),
-                      child: FormBuilderTextField(
-                        key: inputFieldKey,
-                        name: field.jsonLabel,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            label: Text(
-                                "[${metadata.datatype.name}] ${field.label}"),
-                            border: const OutlineInputBorder()),
-                        // validator: (value) => metadata.datatype == Datatype.integer
-                        //     ? integerInputValidator(value, field)
-                        //     : doubleInputValidator(value, field),
-                        valueTransformer: (value) =>
-                            metadata.datatype == Datatype.integer
-                                ? integerValueTransformer(value)
-                                : doubleValueTransformer(value),
-                      )),
-                  SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.05,
-                      child: metadata.maxValue.isNotEmpty
-                          ? Tooltip(
-                              message:
-                                  "Maximum value allowed is ${metadata.maxValue}",
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text("≤",
-                                      style: TextStyle(fontSize: 17)),
-                                  Flexible(
-                                      child: Text(metadata.maxValue,
-                                          overflow: TextOverflow.ellipsis,
-                                          style:
-                                              const TextStyle(fontSize: 17))),
-                                ],
-                              ))
-                          : null),
-                ],
-              ))
-        ]));
+  //TODO: refactor this ugly method
+  Widget _buildNumericField(BuildContext context) {
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+      ConstrainedBox(
+          constraints:
+              BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              if (_currentMetadata.minValue.isNotEmpty)
+                SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.05,
+                    child: Tooltip(
+                        message:
+                            "Minimum value allowed is ${_currentMetadata.minValue}",
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                                child: Text(_currentMetadata.minValue,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(fontSize: 17))),
+                            const Text("≤", style: TextStyle(fontSize: 17)),
+                          ],
+                        ))),
+              ConstrainedBox(
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.3),
+                  child: FormBuilderTextField(
+                    key: inputFieldKey,
+                    name: field.jsonLabel,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                        label: Text(
+                            "[${_currentMetadata.datatype.name}] ${field.label}"),
+                        border: const OutlineInputBorder()),
+                    valueTransformer: (value) =>
+                        _currentMetadata.datatype == Datatype.integer
+                            ? integerValueTransformer(value)
+                            : doubleValueTransformer(value),
+                  )),
+              if (_currentMetadata.maxValue.isNotEmpty)
+                SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.05,
+                    child: Tooltip(
+                        message:
+                            "Maximum value allowed is ${_currentMetadata.maxValue}",
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("≤", style: TextStyle(fontSize: 17)),
+                            Flexible(
+                                child: Text(_currentMetadata.maxValue,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(fontSize: 17))),
+                          ],
+                        ))),
+            ],
+          ))
+    ]);
   }
 
   Widget _buildTextField(
       BuildContext context,
-      Metadata metadata,
       Function(String?, Field) validator,
       Function(String?, Field)? valueTransformer) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          ConstrainedBox(
-              constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.5),
-              child: FormBuilderTextField(
-                key: inputFieldKey,
-                name: field.jsonLabel,
-                decoration: InputDecoration(
-                    label: Text("[${metadata.datatype.name}] ${field.label}")),
-                keyboardType: TextInputType.multiline,
-                // validator: (value) => validator(value, field),
-                // valueTransformer: (value) =>
-                //     valueTransformer?.call(value, field) ?? value,
-              ))
-        ]));
+    return ConstrainedBox(
+        constraints:
+            BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
+        child: FormBuilderTextField(
+          key: inputFieldKey,
+          name: field.jsonLabel,
+          decoration: InputDecoration(
+              label:
+                  Text("[${_currentMetadata.datatype.name}] ${field.label}")),
+          keyboardType: TextInputType.multiline,
+        ));
   }
 
-  Widget _buildStringDropdownField(BuildContext context, Metadata metadata) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          ConstrainedBox(
-              constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.5),
-              child: FormBuilderDropdown<String>(
-                key: inputFieldKey,
-                name: field.jsonLabel,
-                items: metadata.items
-                    .map((item) => DropdownMenuItem(
-                        alignment: Alignment.center,
-                        value: item,
-                        child: Text(item)))
-                    .toList(),
-                decoration: InputDecoration(
-                    label: Text("[${metadata.datatype.name}] ${field.label}")),
-              ))
-        ]));
+  Widget _buildStringDropdownField(BuildContext context) {
+    return ConstrainedBox(
+        constraints:
+            BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
+        child: FormBuilderDropdown<String>(
+          key: inputFieldKey,
+          name: field.jsonLabel,
+          items: _currentMetadata.items
+              .map((item) => DropdownMenuItem(
+                  alignment: Alignment.center, value: item, child: Text(item)))
+              .toList(),
+          decoration: InputDecoration(
+              label:
+                  Text("[${_currentMetadata.datatype.name}] ${field.label}")),
+        ));
   }
 
-  Widget _buildFilePathPickerField(BuildContext context, Metadata metadata) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          ConstrainedBox(
-              constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.5),
-              child: FormBuilderTextField(
-                key: inputFieldKey,
-                name: field.jsonLabel,
-                decoration: InputDecoration(
-                    label: Text("[${metadata.datatype.name}] ${field.label}")),
-                keyboardType: TextInputType.multiline,
-                // validator: (metadata.datatype == Datatype.listFilePath)
-                //     ? (value) => listInputValidator(value, field)
-                //     : null,
-                // valueTransformer: (metadata.datatype == Datatype.listFilePath)
-                //     ? (value) => iterableAsStringValueTransformer(value, field)
-                //     : null,
-              )),
-          if (!kIsWeb)
-            Tooltip(
-                message:
-                    "Get the path of the file by browsing it. \nBe careful ! You should not use this feature if you already specified the root folder field!\nIf you did so, only specify the file name.",
-                child: Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.file_open,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      onPressed: () => _askForPath(context, metadata.datatype),
-                    )))
-        ]));
+  Widget _buildFilePathPickerField(BuildContext context) {
+    return ConstrainedBox(
+          constraints:
+              BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
+          child: FormBuilderTextField(
+            key: inputFieldKey,
+            name: field.jsonLabel,
+            decoration: InputDecoration(
+                label:
+                    Text("[${_currentMetadata.datatype.name}] ${field.label}")),
+            keyboardType: TextInputType.multiline,
+          ));
   }
 
-  Widget _buildDefaultValueButton(Metadata metadata) {
+  Widget _buildRadioButtons() {
+    final List<Widget> radioBtns = [];
+
+    for (final metadata in field.metadatas) {
+      radioBtns.add(Radio<Metadata>(
+          value: metadata,
+          groupValue: _currentMetadata,
+          onChanged: (Metadata? value) =>
+              setState(() => _currentMetadata = value!)));
+    }
+
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.center, children: radioBtns);
+  }
+
+  Widget _buildInteractibles(BuildContext context) {
+    bool isFileRelatedField = _currentMetadata.datatype == Datatype.filePath ||
+        _currentMetadata.datatype == Datatype.listFilePath;
+
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+      if (!kIsWeb && isFileRelatedField) _buildFilePickerButton(),
+      _buildDefaultValueButton(),
+      _buildHelpIcon(context),
+      _buildRequirementIcon()
+    ]);
+  }
+
+  Widget _buildFilePickerButton() {
     return Tooltip(
-        message: metadata.defaultValue.isNotEmpty
+        message:
+            "Get the path of the file by browsing it. \nBe careful ! You should not use this feature if you already specified the root folder field!\nIf you did so, only specify the file name.",
+        child: Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: IconButton(
+              icon: Icon(
+                Icons.file_open,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              onPressed: () => _askForPath(context, _currentMetadata.datatype),
+            )));
+  }
+
+  Widget _buildDefaultValueButton() {
+    return Tooltip(
+        message: _currentMetadata.defaultValue.isNotEmpty
             ? "Autocomplete this field's value for me"
             : "There's no default value available to autocomplete this field",
         child: Padding(
             padding: const EdgeInsets.only(top: 10),
             child: SimpleButton(
                 label: "Default value",
-                isEnabled: metadata.defaultValue != "",
+                isEnabled: _currentMetadata.defaultValue != "",
                 padding: const EdgeInsets.symmetric(
                     vertical: 15.0, horizontal: 10.0),
                 onPressed: () {
-                  if (metadata.datatype != Datatype.boolean) {
+                  if (_currentMetadata.datatype != Datatype.boolean) {
                     inputFieldKey.currentState
-                        ?.didChange(metadata.defaultValue.toString());
+                        ?.didChange(_currentMetadata.defaultValue.toString());
                   } else {
                     inputFieldKey.currentState?.didChange(
-                        metadata.defaultValue.toLowerCase() == 'true');
+                        _currentMetadata.defaultValue.toLowerCase() == 'true');
                   }
                 },
                 buttonType: ButtonType.action)));
   }
 
-  Widget _buildHelpIcon(BuildContext context, Metadata metadata) {
+  Widget _buildHelpIcon(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.only(top: 10),
         child: Tooltip(
-            message: metadata.description,
+            message: _currentMetadata.description,
             child: Icon(Icons.info,
                 size: 25, color: Theme.of(context).colorScheme.primary)));
   }
