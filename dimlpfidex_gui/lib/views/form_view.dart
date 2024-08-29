@@ -34,7 +34,7 @@ class _FormViewState extends State<FormView>
             padding: const EdgeInsets.only(top: 30.0, bottom: 100.0),
             child: FractionallySizedBox(
               alignment: Alignment.topCenter,
-              widthFactor: 0.7,
+              widthFactor: 0.9,
               child: FormBuilder(
                   key: _key,
                   child: Column(
@@ -52,8 +52,8 @@ List<Widget> _createFields(List<Field> fields, GlobalKey<FormBuilderState> key,
     result.add(field.toInputField());
   }
 
-  result.add(const UnstableField("--test", "test", true, [
-    Metadata(Datatype.integer),
+  result.add(const UnstableField("Unstable label", "unstable_field", true, [
+    Metadata(Datatype.integer, defaultValue: "2", minValue: "1", maxValue: "3", description: "This is an unstable label"),
     Metadata(Datatype.filePath),
     Metadata(Datatype.listDoublePrecision),
   ]).toInputField());
