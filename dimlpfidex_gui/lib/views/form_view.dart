@@ -48,15 +48,27 @@ List<Widget> _createFields(List<Field> fields, GlobalKey<FormBuilderState> key,
     BuildContext context, TabController tabController) {
   List<Widget> result = [];
 
-  for (Field field in fields) {
-    result.add(field.toInputField());
-  }
-
   result.add(const UnstableField("Unstable label", "unstable_field", true, [
-    Metadata(Datatype.integer, defaultValue: "2", minValue: "1", maxValue: "3", description: "This is an unstable label"),
+    Metadata(Datatype.integer,
+        defaultValue: "2",
+        minValue: "1",
+        maxValue: "3",
+        description: "This is an unstable label"),
     Metadata(Datatype.filePath),
     Metadata(Datatype.listDoublePrecision),
   ]).toInputField());
+
+  result.add(const UnstableField("Unstable label 2", "unstable_field_2", true, [
+    Metadata(Datatype.boolean),
+    Metadata(Datatype.string),
+    Metadata(Datatype.integer),
+    Metadata(Datatype.doublePrecision),
+    // Metadata(Datatype.restrictedChoiceString, items: ["item 1", "item 2", "item 3"]),
+  ]).toInputField());
+
+  for (Field field in fields) {
+    result.add(field.toInputField());
+  }
 
 // action buttons
   result.add(Row(
@@ -127,6 +139,7 @@ Future<void> _generateJson(
     ..removeWhere((dynamic key, dynamic value) => value == null || value == "");
 
   // handle sketchy edge case
+  // TODO: remove when dynamic fields are done
   if (values.containsKey("gamma_1") && values.containsKey("gamma_2")) {
     showSnackBar(context,
         "Cannot generate JSON with both gamma fields set. Please fill only one of them",
