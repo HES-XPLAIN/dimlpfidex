@@ -42,9 +42,9 @@ class Field {
     return InputField(field: this);
   }
 
-  GlossaryCard toGlossaryCard() {
-    return GlossaryCard(field: this);
-  }
+  // GlossaryCard toGlossaryCard() {
+  //   return GlossaryCard(field: this);
+  // }
 
   // used by the glossary card builder
   DataTable toDataTable() {
@@ -97,21 +97,48 @@ class Field {
   }
 }
 
-
-
 class UnstableField {
   final String label;
   final String jsonLabel;
   final bool isRequired;
   final List<Metadata> metadatas;
 
-  const UnstableField(this.label, this.jsonLabel, this.isRequired,this.metadatas);
+  const UnstableField(
+      this.label, this.jsonLabel, this.isRequired, this.metadatas);
 
   Widget toInputField() {
     return InputUnstableField(field: this);
   }
-}
 
+  GlossaryCard toGlossaryCard() {
+    return GlossaryCard(field: this);
+  }
+
+  List<DataTable> toDataTable() {
+    List<DataTable> rows = [];
+
+    for (Metadata metadata in metadatas) {
+      rows.add(DataTable(columns: const [
+        DataColumn(
+            label: Expanded(
+          child: Text(
+            "Property",
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+        )),
+        DataColumn(
+            label: Expanded(
+          child: Text(
+            "Value",
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+        ))
+      ], rows: metadata.toDataRow()));
+    }
+
+    return rows;
+  }
+}
 
 class Metadata {
   final Datatype datatype;
@@ -128,8 +155,21 @@ class Metadata {
       this.items = const [],
       this.description = "No description available"});
 
-  List<DataRow> toDataTable() {
+  @override
+  String toString() {
+    return "Instance of 'Metadata':\n\tDatatype: ${datatype.name}\n\tMin value: $minValue\n\tMax value: $maxValue\n\tItems: $items\n\tDesc: $description";
+  }
+
+  List<DataRow> toDataRow() {
     return [
+      DataRow(cells: [
+        const DataCell(Text("Datatype")),
+        DataCell(Text(datatype.name)),
+      ]),
+      DataRow(cells: [
+        const DataCell(Text("Description")),
+        DataCell(Text(description)),
+      ]),
       if (datatype == Datatype.restrictedChoiceString)
         DataRow(cells: [
           const DataCell(Text("Choices")),

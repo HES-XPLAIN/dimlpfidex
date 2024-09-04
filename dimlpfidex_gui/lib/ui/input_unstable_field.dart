@@ -1,5 +1,5 @@
-import 'package:dimlpfidex_gui/data/data_transformers.dart';
-import 'package:dimlpfidex_gui/data/data_validators.dart';
+import 'package:dimlpfidex_gui/data/unstable_data_transformers.dart';
+import 'package:dimlpfidex_gui/data/unstable_data_validators.dart';
 import 'package:dimlpfidex_gui/data/field.dart';
 import 'package:dimlpfidex_gui/ui/alerts.dart';
 import 'package:dimlpfidex_gui/ui/simple_button.dart';
@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
+//! WARNING: boolean fields cannot be binded with another datatype. It must be alone in its own field
 class InputUnstableField extends StatefulWidget {
   final UnstableField field;
 
@@ -81,12 +82,12 @@ class _InputFieldState extends State<InputUnstableField> {
             "[${_currentMetadata.datatype.name}] ${field.label}",
             style: const TextStyle(fontSize: 17),
           ),
-          // initialValue: _currentMetadata.defaultValue.toLowerCase() == 'true',
+          initialValue: _currentMetadata.defaultValue.toLowerCase() == 'true',
         ));
   }
 
   Widget _buildNumericField(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.center ,children: [
       if (_currentMetadata.minValue.isNotEmpty) _buildIntervalText(false),
       ConstrainedBox(
           constraints:
@@ -99,6 +100,11 @@ class _InputFieldState extends State<InputUnstableField> {
                 label:
                     Text("[${_currentMetadata.datatype.name}] ${field.label}"),
                 border: const OutlineInputBorder()),
+            validator: (value) => _currentMetadata.datatype == Datatype.integer
+                ? integerInputValidator(
+                    value, field.isRequired, _currentMetadata)
+                : doubleInputValidator(
+                    value, field.isRequired, _currentMetadata),
             valueTransformer: (value) =>
                 _currentMetadata.datatype == Datatype.integer
                     ? integerValueTransformer(value)
@@ -110,8 +116,8 @@ class _InputFieldState extends State<InputUnstableField> {
 
   Widget _buildTextField(
       BuildContext context,
-      Function(String?, Field) validator,
-      Function(String?, Field)? valueTransformer) {
+      Function(String?, bool, Metadata) validator,
+      Function(String?, Metadata)? valueTransformer) {
     return ConstrainedBox(
         constraints:
             BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
@@ -122,6 +128,10 @@ class _InputFieldState extends State<InputUnstableField> {
               label:
                   Text("[${_currentMetadata.datatype.name}] ${field.label}")),
           keyboardType: TextInputType.multiline,
+          validator: (value) =>
+              validator(value, field.isRequired, _currentMetadata),
+          // valueTransformer: (value) =>
+          //     valueTransformer?.call(value) ?? value,
         ));
   }
 
@@ -153,6 +163,13 @@ class _InputFieldState extends State<InputUnstableField> {
               label:
                   Text("[${_currentMetadata.datatype.name}] ${field.label}")),
           keyboardType: TextInputType.multiline,
+          validator: (_currentMetadata.datatype == Datatype.listFilePath)
+              ? (value) =>
+                  listInputValidator(value, field.isRequired, _currentMetadata)
+              : null,
+          valueTransformer: (_currentMetadata.datatype == Datatype.listFilePath)
+              ? (value) => iterableAsStringValueTransformer(value, _currentMetadata)
+              : null,
         ));
   }
 
@@ -163,9 +180,9 @@ class _InputFieldState extends State<InputUnstableField> {
       radioBtns.add(Radio<Metadata>(
           value: metadata,
           groupValue: _currentMetadata,
-          onChanged: (Metadata? value) =>
-              // TODO: What does setState does exactly ? boolean field does not like it...
-              setState(() => _currentMetadata = value!)));
+          onChanged: (Metadata? value) {
+            setState(() => _currentMetadata = value!);
+          }));
     }
 
     return Row(
@@ -174,7 +191,8 @@ class _InputFieldState extends State<InputUnstableField> {
 
   Widget _buildInteractibles(BuildContext context) {
     bool isFileRelatedField = _currentMetadata.datatype == Datatype.filePath ||
-        _currentMetadata.datatype == Datatype.listFilePath;
+        _currentMetadata.datatype == Datatype.listFilePath ||
+        _currentMetadata.datatype == Datatype.directoryPath;
 
     return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
       if (!kIsWeb && isFileRelatedField) _buildFilePickerButton(),
@@ -202,7 +220,7 @@ class _InputFieldState extends State<InputUnstableField> {
 
             // if is lower bound display ... > maxValue
             if (isGreater)
-              const Text(">", style: TextStyle(fontSize: fontSize)),
+              const Text("≤", style: TextStyle(fontSize: fontSize)),
             if (isGreater)
               Text(_currentMetadata.maxValue,
                   overflow: TextOverflow.ellipsis,

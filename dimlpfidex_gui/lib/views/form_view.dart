@@ -10,7 +10,7 @@ import "package:shared_preferences/shared_preferences.dart";
 import "package:universal_html/html.dart" as universal_html;
 
 class FormView extends StatefulWidget {
-  final List<Field> fields;
+  final List<UnstableField> fields;
   final TabController tabController;
   const FormView(
       {super.key, required this.fields, required this.tabController});
@@ -44,29 +44,11 @@ class _FormViewState extends State<FormView>
   }
 }
 
-List<Widget> _createFields(List<Field> fields, GlobalKey<FormBuilderState> key,
+List<Widget> _createFields(List<UnstableField> fields, GlobalKey<FormBuilderState> key,
     BuildContext context, TabController tabController) {
   List<Widget> result = [];
 
-  result.add(const UnstableField("Unstable label", "unstable_field", true, [
-    Metadata(Datatype.integer,
-        defaultValue: "2",
-        minValue: "1",
-        maxValue: "3",
-        description: "This is an unstable label"),
-    Metadata(Datatype.filePath),
-    Metadata(Datatype.listDoublePrecision),
-  ]).toInputField());
-
-  result.add(const UnstableField("Unstable label 2", "unstable_field_2", true, [
-    Metadata(Datatype.boolean),
-    Metadata(Datatype.string),
-    Metadata(Datatype.integer),
-    Metadata(Datatype.doublePrecision),
-    // Metadata(Datatype.restrictedChoiceString, items: ["item 1", "item 2", "item 3"]),
-  ]).toInputField());
-
-  for (Field field in fields) {
+  for (UnstableField field in fields) {
     result.add(field.toInputField());
   }
 

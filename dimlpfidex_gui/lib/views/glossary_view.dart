@@ -3,9 +3,8 @@ import 'package:dimlpfidex_gui/ui/glossary_card.dart';
 import 'package:flutter/material.dart';
 
 
-// TODO: search bar (nice to have)
 class GlossaryView extends StatefulWidget {
-  final Map<String, List<Field>> fields;
+  final Map<String, List<UnstableField>> fields;
 
   const GlossaryView({super.key, required this.fields});
 
@@ -28,7 +27,7 @@ class _GlossaryViewState extends State<GlossaryView> {
   }
 
   List<ExpansionTile> _buildGlossaryExpansionTile(
-      Map<String, List<Field>> map) {
+      Map<String, List<UnstableField>> map) {
     List<ExpansionTile> result = [];
 
     for (MapEntry entry in map.entries) {
@@ -46,10 +45,10 @@ class _GlossaryViewState extends State<GlossaryView> {
     return result;
   }
 
-  List<GlossaryCard> _buildGlossaryCards(List<Field> fields) {
+  List<GlossaryCard> _buildGlossaryCards(List<UnstableField> fields) {
     List<GlossaryCard> result = [];
 
-    for (Field field in fields) {
+    for (UnstableField field in fields) {
       result.add(field.toGlossaryCard());
     }
 
