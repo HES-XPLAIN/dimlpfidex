@@ -1,0 +1,124 @@
+import 'package:dimlpfidex_gui/data/field.dart';
+
+const rootFolderFld = UnstableField("Root folder", "root_folder", false, [
+  Metadata(Datatype.directoryPath,
+      description:
+          "Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder.")
+]);
+
+const trainDataFileFld =
+    UnstableField("Train data file", "train_data_file", true, [
+  Metadata(
+    Datatype.filePath,
+    description:
+        "Path to the file containing the train portion of the dataset.",
+  )
+]);
+
+const trainPredFileFld =
+    UnstableField("Train prediction file", "train_pred_file", true, [
+  Metadata(
+    Datatype.filePath,
+    description:
+        "Path to the file containing predictions on the train portion of the dataset.",
+  )
+]);
+
+const nbAttributesFld =
+    UnstableField("Number of attributes", "nb_attributes", true, [
+  Metadata(
+    Datatype.integer,
+    minValue: "1",
+    maxValue: "inf",
+    description: "Number of attributes in the dataset.",
+  )
+]);
+const nbClassesFld = UnstableField("Number of classes", "nb_classes", true, [
+  Metadata(
+    Datatype.integer,
+    minValue: "2",
+    maxValue: "inf",
+    description: "Number of classes in the dataset.",
+  )
+]);
+
+const nbQuantLevelsFld = UnstableField(
+    "Number of stairs in staircase function", "nb_quant_levels", false, [
+  Metadata(
+    Datatype.integer,
+    minValue: "3",
+    maxValue: "inf",
+    defaultValue: "50",
+    description: "Number of stairs in the staircase activation function.",
+  )
+]);
+
+const dropoutDimFld = UnstableField("Dimension dropout", "dropout_dim", false, [
+  Metadata(
+    Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "1.0",
+    defaultValue: "0.0",
+    description: "Probability of dropping a dimension during rule extraction.",
+  )
+]);
+
+const dropoutHypFld = UnstableField("Hyperplan dropout", "dropout_hyp", false, [
+  Metadata(
+    Datatype.doublePrecision,
+    minValue: "0.0",
+    maxValue: "1.0",
+    defaultValue: "0.0",
+    description: "Probability of dropping a hyperplane during rule extraction.",
+  )
+]);
+
+const consoleFileFld = UnstableField("Console file", "console_file", false, [
+  Metadata(
+    Datatype.filePath,
+    description:
+        "Path to the file where the terminal output will be redirected. If not specified, all output will be shown on your terminal.",
+  )
+]);
+
+const musFld = UnstableField("Mus", "mus", false, [
+  Metadata(
+    Datatype.listDoublePrecision,
+    minValue: "-inf",
+    maxValue: "inf",
+    description:
+        "Mean or median of each attribute index to be denormalized in the rules.",
+  )
+]);
+
+const sigmasFld = UnstableField("Sigmas", "sigmas", false, [
+  Metadata(
+    Datatype.listDoublePrecision,
+    minValue: "-inf",
+    maxValue: "inf",
+    description:
+        "Standard deviation of each attribute index to be denormalized in the rules.",
+  )
+]);
+
+const normalizationIndicesFld =
+    UnstableField("Normalization indices", "normalization_indices", false, [
+  Metadata(
+    Datatype.listInteger,
+    minValue: "0",
+    maxValue: "# attributes - 1",
+    description:
+        "Attribute indices to be denormalized in the rules, only used when no normalization_file is given, index starts at 0 (default: [0,...,nb_attributes-1]).",
+  )
+]);
+
+const seedFld = UnstableField("Seed", "seed", false, [
+  Metadata(
+    Datatype.integer,
+    minValue: "0",
+    maxValue: "inf",
+    defaultValue: "0",
+    description:
+        "Seed for random number generation, 0=random. Anything else than 0 is an arbitrary seed that can be reused to obtain the same randomly generated sequence and therefore getting same results.",
+  )
+]);

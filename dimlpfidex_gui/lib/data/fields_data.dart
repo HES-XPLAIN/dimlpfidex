@@ -5,58 +5,6 @@ import 'package:dimlpfidex_gui/data/common_fields_data.dart';
 // TODO: handle this input to fit float & int options
 // TODO: Add the empty option in restricted choices list
 
-// const List<Field> testFields = [
-//   rootFolderFld,
-//   Field(
-//     "Normalization file",
-//     "normalization_file",
-//     Datatype.filePath,
-//     defaultValue: "normalization.txt",
-//   ),
-//   seedFld,
-//   dropoutDimFld,
-//   Field(
-//     "Data files to normalize",
-//     "data_files",
-//     Datatype.listFilePath,
-//     description:
-//         "Data files to normalize, they are normalized with respect to the first one if normalization_file is not specified",
-//   ),
-//   Field("Dropdown", "dropdown", Datatype.restrictedChoiceString,
-//       description: "Random dropdown",
-//       items: [
-//         "choice one",
-//         "choice two",
-//         "choice three",
-//         "choice four",
-//         "choice five"
-//       ]),
-//   Field(
-//     "Using dichotomic search",
-//     "search-strategy",
-//     Datatype.boolean,
-//     description:
-//         "Whether or not to use the dichotomic search strategy, can increase speed.",
-//     defaultValue: "true",
-//   ),
-//   musFld,
-//   sigmasFld,
-//   Field(
-//     "Enums",
-//     "enums",
-//     Datatype.listString,
-//     description: "List of words",
-//     defaultValue: "hello, my, name, is, test",
-//   ),
-//   Field(
-//     "Random dict",
-//     "random_dict",
-//     Datatype.dictionary,
-//     description: "Dictionary",
-//     defaultValue: "{1:2, 3:4, 5:6}",
-//   ),
-// ];
-
 const List<Field> fidexFields = [
   rootFolderFld,
   trainDataFileFld,
