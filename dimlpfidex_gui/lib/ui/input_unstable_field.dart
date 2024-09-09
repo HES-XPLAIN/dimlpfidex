@@ -34,7 +34,7 @@ class _InputFieldState extends State<InputUnstableField> {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
         child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           if (field.metadatas.length > 1) _buildRadioButtons(),
           _buildField(),
           _buildInteractibles(context)
@@ -87,31 +87,39 @@ class _InputFieldState extends State<InputUnstableField> {
   }
 
   Widget _buildNumericField(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.center ,children: [
-      if (_currentMetadata.minValue.isNotEmpty) _buildIntervalText(false),
-      ConstrainedBox(
-          constraints:
-              BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.3),
-          child: FormBuilderTextField(
-            key: inputFieldKey,
-            name: field.jsonLabel,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-                label:
-                    Text("[${_currentMetadata.datatype.name}] ${field.label}"),
-                border: const OutlineInputBorder()),
-            validator: (value) => _currentMetadata.datatype == Datatype.integer
-                ? integerInputValidator(
-                    value, field.isRequired, _currentMetadata)
-                : doubleInputValidator(
-                    value, field.isRequired, _currentMetadata),
-            valueTransformer: (value) =>
-                _currentMetadata.datatype == Datatype.integer
-                    ? integerValueTransformer(value)
-                    : doubleValueTransformer(value),
-          )),
-      if (_currentMetadata.maxValue.isNotEmpty) _buildIntervalText(true)
-    ]);
+    Container spacing = Container(width: 30);
+
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (_currentMetadata.minValue.isNotEmpty) _buildIntervalText(false),
+          if (_currentMetadata.minValue.isNotEmpty) spacing,
+          ConstrainedBox(
+              constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.4),
+              child: FormBuilderTextField(
+                key: inputFieldKey,
+                name: field.jsonLabel,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    label: Text(
+                        "[${_currentMetadata.datatype.name}] ${field.label}"),
+                    border: const OutlineInputBorder()),
+                validator: (value) =>
+                    _currentMetadata.datatype == Datatype.integer
+                        ? integerInputValidator(
+                            value, field.isRequired, _currentMetadata)
+                        : doubleInputValidator(
+                            value, field.isRequired, _currentMetadata),
+                valueTransformer: (value) =>
+                    _currentMetadata.datatype == Datatype.integer
+                        ? integerValueTransformer(value)
+                        : doubleValueTransformer(value),
+              )),
+          if (_currentMetadata.maxValue.isNotEmpty) spacing,
+          if (_currentMetadata.maxValue.isNotEmpty) _buildIntervalText(true)
+        ]);
   }
 
   Widget _buildTextField(
@@ -168,7 +176,8 @@ class _InputFieldState extends State<InputUnstableField> {
                   listInputValidator(value, field.isRequired, _currentMetadata)
               : null,
           valueTransformer: (_currentMetadata.datatype == Datatype.listFilePath)
-              ? (value) => iterableAsStringValueTransformer(value, _currentMetadata)
+              ? (value) =>
+                  iterableAsStringValueTransformer(value, _currentMetadata)
               : null,
         ));
   }
@@ -190,14 +199,19 @@ class _InputFieldState extends State<InputUnstableField> {
   }
 
   Widget _buildInteractibles(BuildContext context) {
+    Container spacing = Container(width: 10);
+
     bool isFileRelatedField = _currentMetadata.datatype == Datatype.filePath ||
         _currentMetadata.datatype == Datatype.listFilePath ||
         _currentMetadata.datatype == Datatype.directoryPath;
 
     return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-      if (!kIsWeb && isFileRelatedField) _buildFilePickerButton(),
+      !kIsWeb && isFileRelatedField ? _buildFilePickerButton(): Container(width: 30),
+      spacing,
       _buildDefaultValueButton(),
+      spacing,
       _buildHelpIcon(context),
+      spacing,
       _buildRequirementIcon()
     ]);
   }
