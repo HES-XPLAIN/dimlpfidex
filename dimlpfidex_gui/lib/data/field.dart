@@ -41,7 +41,6 @@ class UnstableField {
     for (Metadata metadata in metadatas) {
       rows.add(Card(
           color: Colors.blueGrey[50],
-          margin: const EdgeInsets.all(30.0),
           child: DataTable(columns: const [
             DataColumn(
                 label: Expanded(
