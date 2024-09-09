@@ -8,8 +8,14 @@ class GlossaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<String> typenames = [];
+
+    for (Metadata metadata in field.metadatas) {
+      typenames.add(metadata.datatype.name);
+    }
+
     return Card(
-      color: Colors.grey[300],
+      color: Colors.blueGrey[100],
       elevation: 5.0,
       margin: const EdgeInsets.all(30.0),
       child: Column(
@@ -31,7 +37,62 @@ class GlossaryCard extends StatelessWidget {
                         Text(field.label,
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 22)),
-                        Container(height: 5),
+                        Container(height: 15),
+                        Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Card(
+                                  color: Colors.blueGrey[50],
+                                  child: DataTable(
+                                    headingRowHeight: 0,
+                                    columns: const [
+                                      DataColumn(label: Text("")),
+                                      DataColumn(label: Text(""))
+                                    ],
+                                    rows: [
+                                      DataRow(cells: [
+                                        const DataCell(
+                                          Text("Is a mandatory field",
+                                              style: TextStyle(fontSize: 15)),
+                                        ),
+                                        DataCell(
+                                          Text(field.isRequired ? "yes" : "no",
+                                              style: const TextStyle(
+                                                  fontSize: 15)),
+                                        )
+                                      ]),
+                                      DataRow(cells: [
+                                        const DataCell(
+                                          Text(
+                                              "Has multiple kind of input available",
+                                              style: TextStyle(fontSize: 15)),
+                                        ),
+                                        DataCell(
+                                          Text(
+                                              typenames.length > 1
+                                                  ? "yes"
+                                                  : "no",
+                                              style: const TextStyle(
+                                                  fontSize: 15)),
+                                        )
+                                      ]),
+                                      if (typenames.length > 1)
+                                        DataRow(cells: [
+                                          const DataCell(Text(
+                                              "Kinds of input available",
+                                              style: TextStyle(fontSize: 15))),
+                                          DataCell(
+                                            Text(
+                                                typenames.toString().replaceAll(
+                                                    RegExp(r'(\[|\])+'), ''),
+                                                style: const TextStyle(
+                                                    fontSize: 15)),
+                                          )
+                                        ])
+                                    ],
+                                  ))
+                            ]),
                       ],
                     ))
                   ],
