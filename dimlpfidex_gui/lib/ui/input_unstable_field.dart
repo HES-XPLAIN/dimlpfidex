@@ -138,8 +138,8 @@ class _InputFieldState extends State<InputUnstableField> {
           keyboardType: TextInputType.multiline,
           validator: (value) =>
               validator(value, field.isRequired, _currentMetadata),
-          // valueTransformer: (value) =>
-          //     valueTransformer?.call(value) ?? value,
+          valueTransformer: (value) =>
+              valueTransformer?.call(value, _currentMetadata) ?? value,
         ));
   }
 
@@ -230,11 +230,11 @@ class _InputFieldState extends State<InputUnstableField> {
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontSize: fontSize)),
             if (!isGreater)
-              const Text("≤", style: TextStyle(fontSize: fontSize)),
+              const Text(" ≤", style: TextStyle(fontSize: fontSize)),
 
             // if is lower bound display ... > maxValue
             if (isGreater)
-              const Text("≤", style: TextStyle(fontSize: fontSize)),
+              const Text("≤ ", style: TextStyle(fontSize: fontSize)),
             if (isGreater)
               Text(_currentMetadata.maxValue,
                   overflow: TextOverflow.ellipsis,
