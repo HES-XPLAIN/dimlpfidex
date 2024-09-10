@@ -210,7 +210,7 @@ class _InputFieldState extends State<InputUnstableField> {
     const double fontSize = 20.0;
 
     return Tooltip(
-        message: "Maximum value allowed is ${_currentMetadata.maxValue}",
+        message: isGreater ? "Maximum value allowed is ${_currentMetadata.maxValue}" : "Minimum value allowed is ${_currentMetadata.minValue}",
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,

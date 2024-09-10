@@ -66,8 +66,17 @@ class GlossaryCard extends StatelessWidget {
                     rows: [
                       DataRow(cells: [
                         const DataCell(
+                          Text("JSON label", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, fontStyle: FontStyle.italic)),
+                        ),
+                        DataCell(
+                          Text(field.jsonLabel,
+                              style: const TextStyle(fontSize: 15)),
+                        ),
+                      ]),
+                      DataRow(cells: [
+                        const DataCell(
                           Text("Is a mandatory field",
-                              style: TextStyle(fontSize: 15)),
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, fontStyle: FontStyle.italic)),
                         ),
                         DataCell(
                           Text(field.isRequired ? "yes" : "no",
@@ -77,7 +86,7 @@ class GlossaryCard extends StatelessWidget {
                       DataRow(cells: [
                         const DataCell(
                           Text("Has multiple kind of input available",
-                              style: TextStyle(fontSize: 15)),
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, fontStyle: FontStyle.italic)),
                         ),
                         DataCell(
                           Text(typenames.length > 1 ? "yes" : "no",
@@ -87,7 +96,7 @@ class GlossaryCard extends StatelessWidget {
                       if (typenames.length > 1)
                         DataRow(cells: [
                           const DataCell(Text("Kinds of input available",
-                              style: TextStyle(fontSize: 15))),
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, fontStyle: FontStyle.italic))),
                           DataCell(
                             Text(
                                 typenames
