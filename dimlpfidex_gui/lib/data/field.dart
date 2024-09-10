@@ -1,5 +1,5 @@
 import 'package:dimlpfidex_gui/ui/glossary_card.dart';
-import 'package:dimlpfidex_gui/ui/input_unstable_field.dart';
+import 'package:dimlpfidex_gui/ui/input_field.dart';
 import 'package:flutter/material.dart';
 
 enum Datatype {
@@ -19,13 +19,13 @@ enum Datatype {
 }
 
 //! WARNING: boolean metadata cannot be binded with another datatype. It must be alone in its own field
-class UnstableField {
+class Field {
   final String label;
   final String jsonLabel;
   final bool isRequired;
   final List<Metadata> metadatas;
 
-  const UnstableField(
+  const Field(
       this.label, this.jsonLabel, this.isRequired, this.metadatas);
 
   Widget toInputField() {

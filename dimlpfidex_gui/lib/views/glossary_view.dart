@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 
 class GlossaryView extends StatefulWidget {
-  final Map<String, List<UnstableField>> fields;
+  final Map<String, List<Field>> fields;
 
   const GlossaryView({super.key, required this.fields});
 
@@ -27,7 +27,7 @@ class _GlossaryViewState extends State<GlossaryView> {
   }
 
   List<ExpansionTile> _buildGlossaryExpansionTile(
-      Map<String, List<UnstableField>> map) {
+      Map<String, List<Field>> map) {
     List<ExpansionTile> result = [];
 
     for (MapEntry entry in map.entries) {
@@ -45,10 +45,10 @@ class _GlossaryViewState extends State<GlossaryView> {
     return result;
   }
 
-  List<GlossaryCard> _buildGlossaryCards(List<UnstableField> fields) {
+  List<GlossaryCard> _buildGlossaryCards(List<Field> fields) {
     List<GlossaryCard> result = [];
 
-    for (UnstableField field in fields) {
+    for (Field field in fields) {
       result.add(field.toGlossaryCard());
     }
 

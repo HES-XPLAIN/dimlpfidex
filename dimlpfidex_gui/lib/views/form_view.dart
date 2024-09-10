@@ -10,7 +10,7 @@ import "package:shared_preferences/shared_preferences.dart";
 import "package:universal_html/html.dart" as universal_html;
 
 class FormView extends StatefulWidget {
-  final List<UnstableField> fields;
+  final List<Field> fields;
   final TabController tabController;
   const FormView(
       {super.key, required this.fields, required this.tabController});
@@ -44,13 +44,13 @@ class _FormViewState extends State<FormView>
 }
 
 List<Widget> _createFields(
-    List<UnstableField> fields,
+    List<Field> fields,
     GlobalKey<FormBuilderState> key,
     BuildContext context,
     TabController tabController) {
   List<Widget> result = [];
 
-  for (UnstableField field in fields) {
+  for (Field field in fields) {
     result.add(field.toInputField());
   }
 

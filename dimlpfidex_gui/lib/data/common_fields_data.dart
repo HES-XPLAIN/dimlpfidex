@@ -1,13 +1,13 @@
 import 'package:dimlpfidex_gui/data/field.dart';
 
-const rootFolderFld = UnstableField("Root folder", "root_folder", false, [
+const rootFolderFld = Field("Root folder", "root_folder", false, [
   Metadata(Datatype.directoryPath,
       description:
           "Path to the folder, based on main default folder dimlpfidex, containing all used files and where generated files will be saved. If a file name is specified with another option, its path will be relative to this root folder.")
 ]);
 
 const trainDataFileFld =
-    UnstableField("Train data file", "train_data_file", true, [
+    Field("Train data file", "train_data_file", true, [
   Metadata(
     Datatype.filePath,
     description:
@@ -16,7 +16,7 @@ const trainDataFileFld =
 ]);
 
 const trainPredFileFld =
-    UnstableField("Train prediction file", "train_pred_file", true, [
+    Field("Train prediction file", "train_pred_file", true, [
   Metadata(
     Datatype.filePath,
     description:
@@ -25,7 +25,7 @@ const trainPredFileFld =
 ]);
 
 const nbAttributesFld =
-    UnstableField("Number of attributes", "nb_attributes", true, [
+    Field("Number of attributes", "nb_attributes", true, [
   Metadata(
     Datatype.integer,
     minValue: "1",
@@ -33,7 +33,7 @@ const nbAttributesFld =
     description: "Number of attributes in the dataset.",
   )
 ]);
-const nbClassesFld = UnstableField("Number of classes", "nb_classes", true, [
+const nbClassesFld = Field("Number of classes", "nb_classes", true, [
   Metadata(
     Datatype.integer,
     minValue: "2",
@@ -42,7 +42,7 @@ const nbClassesFld = UnstableField("Number of classes", "nb_classes", true, [
   )
 ]);
 
-const nbQuantLevelsFld = UnstableField(
+const nbQuantLevelsFld = Field(
     "Number of stairs in staircase function", "nb_quant_levels", false, [
   Metadata(
     Datatype.integer,
@@ -53,7 +53,7 @@ const nbQuantLevelsFld = UnstableField(
   )
 ]);
 
-const dropoutDimFld = UnstableField("Dimension dropout", "dropout_dim", false, [
+const dropoutDimFld = Field("Dimension dropout", "dropout_dim", false, [
   Metadata(
     Datatype.doublePrecision,
     minValue: "0.0",
@@ -63,7 +63,7 @@ const dropoutDimFld = UnstableField("Dimension dropout", "dropout_dim", false, [
   )
 ]);
 
-const dropoutHypFld = UnstableField("Hyperplan dropout", "dropout_hyp", false, [
+const dropoutHypFld = Field("Hyperplan dropout", "dropout_hyp", false, [
   Metadata(
     Datatype.doublePrecision,
     minValue: "0.0",
@@ -73,7 +73,7 @@ const dropoutHypFld = UnstableField("Hyperplan dropout", "dropout_hyp", false, [
   )
 ]);
 
-const consoleFileFld = UnstableField("Console file", "console_file", false, [
+const consoleFileFld = Field("Console file", "console_file", false, [
   Metadata(
     Datatype.filePath,
     description:
@@ -81,7 +81,7 @@ const consoleFileFld = UnstableField("Console file", "console_file", false, [
   )
 ]);
 
-const musFld = UnstableField("Mus", "mus", false, [
+const musFld = Field("Mus", "mus", false, [
   Metadata(
     Datatype.listDoublePrecision,
     minValue: "-inf",
@@ -91,7 +91,7 @@ const musFld = UnstableField("Mus", "mus", false, [
   )
 ]);
 
-const sigmasFld = UnstableField("Sigmas", "sigmas", false, [
+const sigmasFld = Field("Sigmas", "sigmas", false, [
   Metadata(
     Datatype.listDoublePrecision,
     minValue: "-inf",
@@ -102,7 +102,7 @@ const sigmasFld = UnstableField("Sigmas", "sigmas", false, [
 ]);
 
 const normalizationIndicesFld =
-    UnstableField("Normalization indices", "normalization_indices", false, [
+    Field("Normalization indices", "normalization_indices", false, [
   Metadata(
     Datatype.listInteger,
     minValue: "0",
@@ -112,7 +112,7 @@ const normalizationIndicesFld =
   )
 ]);
 
-const seedFld = UnstableField("Seed", "seed", false, [
+const seedFld = Field("Seed", "seed", false, [
   Metadata(
     Datatype.integer,
     minValue: "0",

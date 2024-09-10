@@ -2,7 +2,7 @@ import 'package:dimlpfidex_gui/data/field.dart';
 import 'package:flutter/material.dart';
 
 class GlossaryCard extends StatelessWidget {
-  final UnstableField field;
+  final Field field;
 
   const GlossaryCard({super.key, required this.field});
 
@@ -30,7 +30,7 @@ class GlossaryCard extends StatelessWidget {
     );
   }
 
-  Widget _buildFieldSpecs(UnstableField field) {
+  Widget _buildFieldSpecs(Field field) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -38,7 +38,7 @@ class GlossaryCard extends StatelessWidget {
     );
   }
 
-  Widget _buildGeneralSpecs(UnstableField field) {
+  Widget _buildGeneralSpecs(Field field) {
     List<String> typenames = [];
 
     for (Metadata metadata in field.metadatas) {
@@ -113,7 +113,7 @@ class GlossaryCard extends StatelessWidget {
   }
 
 // TODO: (nice to have) complete the set of icons for datatypes
-  Icon _getIconByFieldType(UnstableField field) {
+  Icon _getIconByFieldType(Field field) {
     const double iconSize = 100.0;
 
     Icon stringIcon = const Icon(Icons.abc, size: iconSize);
