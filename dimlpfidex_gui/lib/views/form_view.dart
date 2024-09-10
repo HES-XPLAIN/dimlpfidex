@@ -31,21 +31,23 @@ class _FormViewState extends State<FormView>
     super.build(context);
     return SingleChildScrollView(
         child: Padding(
-            padding: const EdgeInsets.only(top: 30.0, bottom: 100.0),
-            child: FractionallySizedBox(
-              alignment: Alignment.topCenter,
-              widthFactor: 0.9,
-              child: FormBuilder(
-                  key: _key,
-                  child: Column(
-                      children: _createFields(
-                          widget.fields, _key, context, widget.tabController))),
-            )));
+      padding: const EdgeInsets.only(top: 30.0, bottom: 100.0),
+      child: FormBuilder(
+          key: _key,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: _createFields(
+                  widget.fields, _key, context, widget.tabController))),
+    ));
   }
 }
 
-List<Widget> _createFields(List<UnstableField> fields, GlobalKey<FormBuilderState> key,
-    BuildContext context, TabController tabController) {
+List<Widget> _createFields(
+    List<UnstableField> fields,
+    GlobalKey<FormBuilderState> key,
+    BuildContext context,
+    TabController tabController) {
   List<Widget> result = [];
 
   for (UnstableField field in fields) {
