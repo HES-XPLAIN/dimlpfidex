@@ -1,5 +1,5 @@
-import 'package:dimlpfidex_gui/data/unstable_data_transformers.dart';
-import 'package:dimlpfidex_gui/data/unstable_data_validators.dart';
+import 'package:dimlpfidex_gui/data/data_transformers.dart';
+import 'package:dimlpfidex_gui/data/data_validators.dart';
 import 'package:dimlpfidex_gui/data/field.dart';
 import 'package:dimlpfidex_gui/ui/alerts.dart';
 import 'package:dimlpfidex_gui/ui/simple_button.dart';
@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class InputUnstableField extends StatefulWidget {
-  final UnstableField field;
+  final Field field;
 
   const InputUnstableField({super.key, required this.field});
 
@@ -19,7 +19,7 @@ class InputUnstableField extends StatefulWidget {
 
 class _InputFieldState extends State<InputUnstableField> {
   final inputFieldKey = GlobalKey<FormBuilderFieldState>();
-  late UnstableField field = widget.field;
+  late Field field = widget.field;
   late Metadata _currentMetadata;
 
   @override
@@ -162,7 +162,7 @@ class _InputFieldState extends State<InputUnstableField> {
     );
   }
 
-  Widget _buildRadioButtons(UnstableField field) {
+  Widget _buildRadioButtons(Field field) {
     final List<Widget> radioBtns = [];
     double width = 100.0;
 
