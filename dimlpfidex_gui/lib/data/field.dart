@@ -18,6 +18,7 @@ enum Datatype {
   pairInteger
 }
 
+//! WARNING: boolean metadata cannot be binded with another datatype. It must be alone in its own field
 class UnstableField {
   final String label;
   final String jsonLabel;
