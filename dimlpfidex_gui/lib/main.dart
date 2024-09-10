@@ -9,7 +9,7 @@ Future<void> main() async {
 
   if (!kIsWeb) {
     if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-      const Size minScreenSize = Size(1100, 800);
+      const Size minScreenSize = Size(1100, 850);
       setWindowMinSize(minScreenSize);
     }
   }

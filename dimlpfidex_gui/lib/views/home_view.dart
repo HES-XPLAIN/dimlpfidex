@@ -35,7 +35,7 @@ class MainMenuView extends StatelessWidget {
               ),
               const SizedBox(height: 50.0),
               Card(
-                color: Colors.grey[300],
+                color: Colors.blueGrey[100],
                 elevation: 5.0,
                 child: Container(
                   padding: const EdgeInsets.all(20.0),
@@ -60,7 +60,7 @@ class MainMenuView extends StatelessWidget {
               ),
               const SizedBox(height: 20.0),
               Card(
-                color: Colors.grey[300],
+                color: Colors.blueGrey[100],
                 elevation: 5.0,
                 child: Container(
                   padding: const EdgeInsets.all(20.0),
@@ -98,10 +98,14 @@ class MainMenuView extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 30.0),
               if (!kIsWeb)
                 ElevatedButton(
                     onPressed: () => _openSettingsDialog(context),
-                    child: const Icon(Icons.settings))
+                    style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsets>(
+                            const EdgeInsets.all(20))),
+                    child: const Icon(Icons.settings)),
             ],
           ),
         ));
