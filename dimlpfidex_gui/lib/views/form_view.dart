@@ -120,21 +120,6 @@ Future<void> _generateJson(
   Map<String, dynamic> values = Map.from(key.currentState!.value)
     ..removeWhere((dynamic key, dynamic value) => value == null || value == "");
 
-  // handle sketchy edge case
-  // TODO: remove when dynamic fields are done
-  if (values.containsKey("gamma_1") && values.containsKey("gamma_2")) {
-    showSnackBar(context,
-        "Cannot generate JSON with both gamma fields set. Please fill only one of them",
-        color: AlertColor.failure);
-    return;
-  } else if (values.containsKey("gamma_2")) {
-    values["gamma"] = values["gamma_2"];
-    values.remove("gamma_2");
-  } else if (values.containsKey("gamma_1")) {
-    values["gamma"] = values["gamma_1"];
-    values.remove("gamma_1");
-  }
-
   try {
     JsonEncoder encoder = const JsonEncoder.withIndent("  ");
     String json = encoder.convert(values);
