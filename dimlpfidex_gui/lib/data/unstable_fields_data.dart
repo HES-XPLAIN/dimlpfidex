@@ -1,10 +1,6 @@
 import 'package:dimlpfidex_gui/data/field.dart';
 import 'package:dimlpfidex_gui/data/unstable_common_fields_data.dart';
 
-// TODO: Handle differenciation between float and int
-// TODO: handle this input to fit float & int options
-// TODO: Add the empty option in restricted choices list
-
 const List<UnstableField> fidexFields = [
   rootFolderFld,
   trainDataFileFld,
@@ -1604,23 +1600,35 @@ const List<UnstableField> gradBoostTrnFields = [
   UnstableField(
       "Minimum number of samples to split a node", "min_samples_split", false, [
     Metadata(
-      Datatype.integer, // TODO float & integer
+      Datatype.integer,
       minValue: "2",
       maxValue: "inf",
       defaultValue: "2",
       description:
-          "Minimum number of samples required to split an internal node, if float, it is a fraction of the number of samples.",
-    )
+          "Minimum number of samples required to split an internal node.",
+    ),
+    Metadata(
+      Datatype.doublePrecision,
+      minValue: "0.0",
+      maxValue: "1.0",
+      description:
+          "A fraction of the number of samples required to split an internal node.",
+    ),
   ]),
   UnstableField(
       "Minimum number of samples at leaf node", "min_samples_leaf", false, [
     Metadata(
-      Datatype.integer, // TODO float & integer
+      Datatype.integer,
       defaultValue: "1",
       minValue: "1",
       maxValue: "inf",
+      description: "Minimum number of samples required to be at a leaf node.",
+    ),
+    Metadata(
+      Datatype.doublePrecision,
+      maxValue: "1.0",
       description:
-          "Minimum number of samples required to be at a leaf node, if float, it is a fraction of the number of samples.",
+          "A fraction of the number of samples required to be at a leaf node.",
     )
   ]),
   UnstableField(
@@ -1638,9 +1646,14 @@ const List<UnstableField> gradBoostTrnFields = [
     Metadata(
       Datatype.restrictedChoiceString,
       defaultValue: "sqrt",
-      items: ["sqrt", "log2", "all"], // TODO add float option
+      items: ["sqrt", "log2", "all"],
       description:
           "Number of features to consider when looking for the best split if float, it is a fraction of the number of features. 1 stands for 1 feature, for all features put 'all', not 1.0.",
+    ),
+    Metadata(
+      Datatype.doublePrecision,
+      description:
+          "A fraction of the number of features to consider when looking for the best split. 1 stands for 1 feature, for all features put 'all', not 1.0.",
     )
   ]),
   UnstableField("Maximum leaf nodes", "max_leaf_nodes", false, [
@@ -1842,9 +1855,16 @@ const List<UnstableField> mlpTrnFields = [
   ]),
   UnstableField("Size of minibatches", "batch_size", false, [
     Metadata(
-      Datatype.integer, //TODO auto or int, default : auto
+      Datatype.integer,
       minValue: "0",
       maxValue: "inf",
+      description:
+          "Size of minibatches for stochastic optimizers for adam and stochastic gradient descent.",
+    ),
+    Metadata(
+      Datatype.restrictedChoiceString,
+      defaultValue: "auto",
+      items: ["auto"],
       description:
           "Size of minibatches for stochastic optimizers for adam and stochastic gradient descent.",
     )
@@ -2109,29 +2129,38 @@ const List<UnstableField> randForestsTrnFields = [
   UnstableField("Minimum number of samples to split an internal node",
       "min_samples_split", false, [
     Metadata(
-      Datatype
-          .doublePrecision, //TODO Handle differenciation between float and int
+      Datatype.integer,
       defaultValue: "2",
       minValue: "2",
       maxValue: "inf",
       description:
           "Minimum number of samples required to split an internal node, if float, it is a fraction of the number of samples.",
+    ),
+    Metadata(
+      Datatype.doublePrecision,
+      minValue: "0.0",
+      maxValue: "1.0",
+      description:
+          "A fraction of the number of samples required to split an internal node.",
     )
   ]),
   UnstableField(
-      "Minimum number of samples to be at a leaf", //TODO Handle differenciation between float and int
-      "min_samples_leaf",
-      false,
-      [
-        Metadata(
-          Datatype.doublePrecision,
-          defaultValue: "1",
-          minValue: "1",
-          maxValue: "inf",
-          description:
-              "Minimum number of samples required to be at a leaf node, if float, it is a fraction of the number of samples.",
-        )
-      ]),
+      "Minimum number of samples to be at a leaf", "min_samples_leaf", false, [
+    Metadata(
+      Datatype.integer,
+      defaultValue: "1",
+      minValue: "1",
+      maxValue: "inf",
+      description: "Minimum number of samples required to be at a leaf node.",
+    ),
+    Metadata(
+      Datatype.doublePrecision,
+      minValue: "0.0",
+      maxValue: "1.0",
+      description:
+          "A fraction of the number of samples required to be at a leaf node.",
+    )
+  ]),
   UnstableField(
       "Minimum weighted fraction", "min_weight_fraction_leaf", false, [
     Metadata(
@@ -2144,18 +2173,31 @@ const List<UnstableField> randForestsTrnFields = [
     )
   ]),
   UnstableField(
-      "Number of features to consider when looking for the best split", // TODO: handle this input to fit float & int options and remove comment in description
+      "Number of features to consider when looking for the best split",
       "max_features",
-      false,
-      [
-        Metadata(
-          Datatype.restrictedChoiceString,
-          defaultValue: "sqrt",
-          items: ["sqrt", "log2", "all"],
-          description:
-              "(ONLY CATEGORIES ARE AVAILABLE YET, NO FLOAT OR INT OPTIONS. DO IT MANUALLY IF NECESSARY)\nNumber of features to consider when looking for the best split. If float, it is a fraction of the number of features. 1 stands for 1 feature, for all features put 'all', not 1.0.",
-        )
-      ]),
+      false, [
+    Metadata(
+      Datatype.restrictedChoiceString,
+      defaultValue: "sqrt",
+      items: ["sqrt", "log2", "all"],
+      description:
+          "Number of features to consider when looking for the best split.",
+    ),
+    Metadata(
+      Datatype.doublePrecision,
+      minValue: "0.0",
+      maxValue: "1.0",
+      description:
+          "A fraction of the number of features to consider when looking for the best split. For all features put 'all', not 1.0.",
+    ),
+    Metadata(
+      Datatype.integer,
+      minValue: "1",
+      maxValue: "inf",
+      description:
+          "Number of features to consider when looking for the best split. 1 stand for 1 feature.",
+    )
+  ]),
   UnstableField("Maximum number of leaf nodes", "max_leaf_nodes", false, [
     Metadata(
       minValue: "2",
@@ -2227,9 +2269,14 @@ const List<UnstableField> randForestsTrnFields = [
   ]),
   UnstableField("Class balance", "class_weight", false, [
     Metadata(
-      Datatype.string, // TODO : Add categories...
+      Datatype.dictionary,
       description:
           "Class balance, for example with a dictionary and 2 classes: {0:1.2, 1:3.5}.",
+    ),
+    Metadata(
+      Datatype.restrictedChoiceString,
+      items: ["balanced", "balanced_subsample"],
+      description: "Class balance, can be 'balanced' and 'balanced_subsample'.",
     )
   ]),
   UnstableField("Complexity parameter", "ccp_alpha", false, [
@@ -2242,13 +2289,20 @@ const List<UnstableField> randForestsTrnFields = [
           "Complexity parameter used for Minimal Cost-Complexity Pruning.",
     )
   ]),
-  UnstableField("Maximum number of samples", "max_samples", false, [
+  UnstableField("Maximum number of samples to draw", "max_samples", false, [
     Metadata(
-      Datatype.doublePrecision, // TODO : float or int ...
+      Datatype.doublePrecision,
+      minValue: "0.0",
+      maxValue: "1.0",
+      description:
+          "A fraction of the number of samples to draw to train each base estimator for bootstrap.",
+    ),
+    Metadata(
+      Datatype.integer,
       minValue: "0",
       maxValue: "inf",
       description:
-          "Number of samples to draw to train each base estimator for bootstrap, if float, it is a fraction of the number of samples.",
+          "Number of samples to draw to train each base estimator for bootstrap.",
     )
   ]),
 ];
@@ -2372,20 +2426,15 @@ const List<UnstableField> svmTrnFields = [
     )
   ]),
   UnstableField(
-      "Gamma predefined value (do not use with the custom field below)",
-      "gamma_1",
+      "Gamma predefined value.",
+      "gamma",
       false, [
     Metadata(
       Datatype.restrictedChoiceString,
       defaultValue: "scale",
       items: ["", "scale", "auto"],
       description: "Gamma predefined value.",
-    )
-  ]),
-  UnstableField(
-      "Gamma custom value (do not use with the predefined field above)",
-      "gamma_2",
-      false, [
+    ),
     Metadata(
       Datatype.doublePrecision,
       minValue: "0.0",
@@ -2427,9 +2476,14 @@ const List<UnstableField> svmTrnFields = [
   ]),
   UnstableField("Class balance", "class_weight", false, [
     Metadata(
-      Datatype.dictionary, // TODO : add balanced, so dict or category
+      Datatype.dictionary,
       description:
-          "Class balance, for example with a dictionary and 2 classes: {0:1.2, 1:3.5}.",
+          "Class balance, i.e. using a dictionary and 2 classes: {0:1.2, 1:3.5}.",
+    ),
+    Metadata(
+      Datatype.restrictedChoiceString,
+      items: ["balanced"],
+      description: "Class balance, can be set to 'balanced'.",
     )
   ]),
   UnstableField("Enable verbose output", "verbose", false, [
