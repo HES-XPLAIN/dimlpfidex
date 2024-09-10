@@ -1,6 +1,6 @@
 import 'package:dimlpfidex_gui/ui/nested_tab_bar.dart';
 import 'package:dimlpfidex_gui/views/form_view.dart';
-import 'package:dimlpfidex_gui/data/unstable_fields_data.dart';
+import 'package:dimlpfidex_gui/data/fields_data.dart';
 import 'package:dimlpfidex_gui/views/glossary_view.dart';
 import 'package:dimlpfidex_gui/views/home_view.dart';
 import 'package:flutter/material.dart';
