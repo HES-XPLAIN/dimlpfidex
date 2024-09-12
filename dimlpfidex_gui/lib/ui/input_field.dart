@@ -179,7 +179,6 @@ class _InputFieldState extends State<InputUnstableField> {
           }));
     }
 
-
     return SizedBox(
         width: width,
         child: Row(
@@ -210,7 +209,9 @@ class _InputFieldState extends State<InputUnstableField> {
     const double fontSize = 20.0;
 
     return Tooltip(
-        message: isGreater ? "Maximum value allowed is ${_currentMetadata.maxValue}" : "Minimum value allowed is ${_currentMetadata.minValue}",
+        message: isGreater
+            ? "Maximum value allowed is ${_currentMetadata.maxValue}"
+            : "Minimum value allowed is ${_currentMetadata.minValue}",
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -296,31 +297,28 @@ class _InputFieldState extends State<InputUnstableField> {
   }
 
   void _askForPath(BuildContext context, Datatype type) async {
-    String? path;
-
     try {
       switch (type) {
         case Datatype.listFilePath:
-          await openFiles().then((files) => path = files
-              .map((file) => file.path)
-              .toList()
-              .toString()
-              .replaceAll(RegExp(r'(\[|\])+'), ''));
+          await openFiles().then((files) => inputFieldKey.currentState
+              ?.didChange(files
+                  .map((file) => file.path)
+                  .toList()
+                  .toString()
+                  .replaceAll(RegExp(r'(\[|\])+'), '')));
 
         case Datatype.filePath:
-          path = await openFile().then((value) => value!.path);
+          await openFile().then(
+              (value) => inputFieldKey.currentState?.didChange(value!.path));
           break;
 
         case Datatype.directoryPath:
-          path = await getDirectoryPath();
+          await getDirectoryPath()
+              .then((path) => inputFieldKey.currentState?.didChange(path));
           break;
 
         default:
           return;
-      }
-
-      if (path != null) {
-        inputFieldKey.currentState?.didChange(path);
       }
     } catch (e) {
       // ignore: use_build_context_synchronously
