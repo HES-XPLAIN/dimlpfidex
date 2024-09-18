@@ -456,7 +456,9 @@ void Parameters::setFloat(ParameterCode id, float value) {
  * @throws CommandArgumentException if the path does not exist.
  */
 void Parameters::checkPath(ParameterCode id, const std::string &path) const {
-  if (!exists(path)) {
+    std::string toCheck = path.empty() ? "." : path;
+    
+    if (!exists(toCheck)) {
     throwInvalidFileOrDirectory(id, path);
   }
 }
